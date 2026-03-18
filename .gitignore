@@ -1,0 +1,19 @@
+# Private directories
+daily-work-item/
+excalidraw-diagram-skill/
+
+# Obsidian internals
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.obsidian/plugins/
+
+# Claude Code
+.claude/
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# System files
+.DS_Store
+.trash/
