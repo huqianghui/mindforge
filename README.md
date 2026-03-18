@@ -35,6 +35,10 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md)
 - [西方本体论的当代转折](book/西方本体论的当代转折.md)
 
+### product
+
+- [Palantir 数据本体论（Ontology）：从概念到产品的深度解析](product/Palantir数据本体论（Ontology）：从概念到产品的深度解析.md)
+
 ### paper
 
 - [How AI Impacts Skill Formation — 读书笔记与质疑](paper/2026-03-18-How-AI-Impacts-Skill-Formation.md)
