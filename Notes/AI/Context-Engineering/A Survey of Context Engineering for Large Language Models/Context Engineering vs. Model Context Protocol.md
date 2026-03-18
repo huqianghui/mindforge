@@ -13,17 +13,17 @@ status: hub
 
 This note has been reorganized for Obsidian. Use the MOC to navigate the split sections, or open the embedded full article.
 
-• Open the Map of Content → [[Notes/AI/Context Engineering vs MCP/Context Engineering vs MCP - MOC]]  
-• Read as one page → [[Notes/AI/Context Engineering vs MCP/00 - Full Article]]
+• Open the Map of Content → [[Notes/AI/Context-Engineering/Context Engineering vs MCP/Context Engineering vs MCP - MOC]]  
+• Read as one page → [[Notes/AI/Context-Engineering/Context Engineering vs MCP/00 - Full Article]]
 
 Quick links:
-1. [[Notes/AI/Context Engineering vs MCP/01 - Defining the Modern AI Interaction Paradigm]]
-2. [[Notes/AI/Context Engineering vs MCP/02 - Context Engineering]]
-3. [[Notes/AI/Context Engineering vs MCP/03 - Model Context Protocol (MCP)]]
-4. [[Notes/AI/Context Engineering vs MCP/04 - A Comparative Framework]]
-5. [[Notes/AI/Context Engineering vs MCP/05 - Strategic Implications and Future Outlook]]
-6. [[Notes/AI/Context Engineering vs MCP/98 - Conclusion]]
-7. [[Notes/AI/Context Engineering vs MCP/99 - Works Cited]]
+1. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/01 - Defining the Modern AI Interaction Paradigm]]
+2. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/02 - Context Engineering]]
+3. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/03 - Model Context Protocol (MCP)]]
+4. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/04 - A Comparative Framework]]
+5. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/05 - Strategic Implications and Future Outlook]]
+6. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/98 - Conclusion]]
+7. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/99 - Works Cited]]
 
 ---
 
