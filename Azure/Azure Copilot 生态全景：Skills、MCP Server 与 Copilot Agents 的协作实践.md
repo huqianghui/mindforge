@@ -93,6 +93,26 @@ docker run mcr.microsoft.com/azure-sdk/azure-mcp:latest
 
 简单说：**MCP Server 负责"看"（查询状态），CLI 负责"做"（执行变更），Skills 负责"想"（决策和流程编排）。**
 
+**插件机制：一键组装三层能力**
+
+Azure Skills 通过 `/plugin` 命令安装，其核心是一个 `plugin.json` 配置文件，将三层能力打包为一个整体：
+
+```json
+// Azure Skills 的 plugin.json——定义了插件的组装方式
+{
+  "name": "azure",
+  "skills": "./skills/",      // 22 个 SKILL.md 剧本（注入 Agent 上下文）
+  "mcpServers": "./.mcp.json"  // Azure MCP Server + Context7 文档查询（注册为工具）
+}
+```
+
+安装时，插件**同时完成三件事**：
+1. **注入 SKILL.md 剧本**——22 个领域专家剧本作为系统级指令加载到 Agent 上下文中
+2. **启动 Azure MCP Server**——注册 200+ 结构化工具（查询/读取 Azure 资源）
+3. **启动 Context7 MCP**——提供 Azure 官方文档的实时查询能力
+
+这意味着：**SKILL.md 不是独立的参考文档——它们是"结构化提示注入"（Structured Prompt Injection）**，与 MCP 工具定义同时加载到 Agent 运行时中，形成一个完整的"知识（剧本）+ 工具（MCP）+ 执行力（CLI）"环境。Agent 不需要自己"理解" Azure——Skills 已经把专家知识和工具调用编排好了。
+
 **22 个 Skill 完整列表**：
 
 | # | Skill | 用途 |
@@ -336,9 +356,50 @@ Azure Skills 的架构设计引出一个值得深入讨论的问题：**既然 `
 
 > **MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。**
 
-Azure Skills 的设计是这个框架的**最佳实战案例**——它不是随意地混用两种方式，而是根据操作性质做了精确的分工。
+Azure Skills 的设计是这个框架的**最佳实战案例**——它不是随意地混用两种方式，而是根据操作性质做了精确的分工。更重要的是：**这个分工不是交给 Agent 自行判断的，而是 Skills 在剧本中预先编排好的。**
 
-### 5.2 本质判断标准：关键专有 API 走 MCP，常见成熟命令走 CLI
+### 5.2 关键发现：Skills 预设了工具路由，而非让 Agent 自行选择
+
+深入阅读 Azure Skills 的 SKILL.md 源码会发现一个重要事实：**Skills 不是把 MCP 和 CLI 两套工具一股脑扔给 Agent 让它自己选择，而是在剧本中明确规定了每一步该用哪个工具。** SKILL.md 本质上是一棵**预编排的决策树**。
+
+**证据 1：AKS 故障排查——显式优先级链**
+
+`azure-diagnostics/aks-troubleshooting.md` 明确规定工具选择优先级：
+
+> `mcp_azure_mcp_aks` → 其他 AKS MCP 工具 → AppLens / Monitor MCP 工具 → **最后才是 `az aks` 和 `kubectl` CLI 命令，仅用于 MCP 无法处理的场景。**
+
+Agent 不需要判断"这一步用 MCP 还是 CLI"——剧本已经定义了优先级链。
+
+**证据 2：azure-kusto——显式回退触发条件**
+
+`azure-kusto/SKILL.md` 定义了四个精确的回退触发条件：
+
+> 当 MCP 工具**超时（>60 秒）、返回服务不可用、认证失败、或已知数据集返回空结果**时，切换到 Azure CLI 命令。
+
+不是"让 Agent 感觉哪个好就用哪个"，而是**精确定义了什么条件下切换**。
+
+**证据 3：azure-cost-optimization——任务级路由表**
+
+`azure-cost-optimization/SKILL.md` 包含一张完整的任务→工具映射表：
+
+| 任务 | 工具 | 选择理由 |
+|------|------|---------|
+| 成本查询 | `az rest`（REST API） | "比 `az costmanagement query` 更可靠" |
+| 孤立资源扫描 | `extension_azqr`（MCP） | 专用扫描能力 |
+| 最佳实践建议 | `mcp_azure_mcp_get_azure_bestpractices`（MCP） | 专有推荐 API |
+| 通用资源操作 | `az` CLI | MCP 未覆盖的服务 |
+
+**证据 4：azure-quotas——CLI 优先的反例**
+
+`azure-quotas/SKILL.md` 明确声明：
+
+> **Azure CLI（`az quota`）是检查配额的唯一可靠方法**——始终使用 CLI，不要使用 Portal 或 REST API 替代。
+
+这个反例证明 Skills 的路由不是简单的"MCP 优先"教条，而是**根据每个场景的实际可靠性做了精确的工具选择**。
+
+**核心结论**：Azure Skills 的 `/plugin` 机制不只是"把 MCP 和 CLI 组装在一起"——它通过 SKILL.md 剧本**把最佳实践内嵌到了工具路由中**。Agent 只需按照剧本执行，不需要自行判断该用哪个工具。这正是 Skills 比单纯的"MCP + CLI"组合有价值的地方：**专家级的工具选择决策已经预编排好了。**
+
+### 5.3 本质判断标准：关键专有 API 走 MCP，常见成熟命令走 CLI
 
 分工的本质很简单——**一张表就能说清楚**：
 
@@ -363,7 +424,7 @@ Azure Skills 中的具体分工：
 | `kubectl`（AKS 操作） | 模型非常熟悉，操作透明 |
 | `az aks nodepool scale` | MCP 中没有等价工具 |
 
-### 5.3 与 MCP vs CLI 文章的交叉印证
+### 5.4 与 MCP vs CLI 文章的交叉印证
 
 这个分工模式完美印证了 [MCP vs CLI — 为什么开发者在重新审视 MCP](../Notes/AI/Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md) 一文中的核心结论：
 

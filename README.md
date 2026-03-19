@@ -14,6 +14,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [A Survey of Context Engineering for Large Language Models 读书笔记](Notes/AI/Context-Engineering/A%20Survey%20of%20Context%20Engineering%20for%20Large%20Language%20Models/A%20Survey%20of%20Context%20Engineering%20for%20LargeLanguage%20Models%20读书笔记.md)
 - [Context Engineering vs. Model Context Protocol](Notes/AI/Context-Engineering/A%20Survey%20of%20Context%20Engineering%20for%20Large%20Language%20Models/Context%20Engineering%20vs.%20Model%20Context%20Protocol.md)
 - [MCP vs CLI — 为什么开发者在重新审视 MCP](Notes/AI/Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md)
+- [Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例](Notes/AI/Context-Engineering/Context7：让%20AI%20Agent%20实时获取最新文档的%20MCP%20Server——以%20Azure%20文档为例.md)
 
 ### Notes/AI/Claude-Code
 
