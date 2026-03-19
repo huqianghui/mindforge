@@ -326,7 +326,106 @@ azd coding-agent config
 
 ---
 
-## 五、Azure Skills + Azure MCP Server 能否替代 Azure Copilot Agents？
+## 五、为什么 Azure Skills 同时使用 MCP Server 和 CLI？
+
+### 5.1 一个自然的疑问
+
+Azure Skills 的架构设计引出一个值得深入讨论的问题：**既然 `az` CLI 也能查看资源和日志，为什么不全部用 CLI 完成，还要引入 MCP Server？**
+
+这个问题的答案，恰好印证了 [MCP vs CLI — 为什么开发者在重新审视 MCP](../Notes/AI/Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md) 一文中的核心框架：
+
+> **MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。**
+
+Azure Skills 的设计是这个框架的**最佳实战案例**——它不是随意地混用两种方式，而是根据操作性质做了精确的分工。
+
+### 5.2 为什么"查询/读取"选择 MCP Server 而非 CLI
+
+表面上看，`az monitor activity-log list` 和 `mcp_azure_mcp_monitor` 能达到相同目的。但深入分析，MCP 在查询场景有 5 个 CLI 无法提供的优势：
+
+**1. 专有诊断能力——CLI 根本不存在等价命令**
+
+`mcp_azure_mcp_applens`（AI 诊断引擎）调用的是 Azure 内部的 App Lens 诊断 API——这是一个**专有的 AI 诊断服务**，没有对应的 `az` CLI 命令。`mcp_azure_mcp_resourcehealth` 调用的 Resource Health API 也没有直接的 CLI 等价物。这些工具提供的是 CLI 无法触达的能力。
+
+**2. 结构化输出 vs 纯文本解析**
+
+```
+# CLI 方式——返回大段 JSON 文本，模型需要自行解析
+az monitor activity-log list --resource-group myRG --output json
+→ 返回数百行 JSON，模型需要理解哪些字段有用
+
+# MCP 方式——返回结构化、预处理的结果
+mcp_azure_mcp_monitor(query="...", resourceGroup="myRG")
+→ 返回精确的、已过滤的结果，减少模型解析负担
+```
+
+MCP vs CLI 文章中指出：CLI 返回值是"纯文本，需模型解析"，而 MCP 返回值是"结构化 JSON"。对于 Azure 这类复杂服务，`az` 命令返回的 JSON 往往层级很深、字段很多，模型容易在解析中出错。MCP 工具可以在 Server 端完成预处理和过滤。
+
+**3. 安全边界控制——MCP 可以精确限制，CLI 无法细粒度控制**
+
+```
+# MCP Server 可以做到：
+- 配置 --read-only 模式，物理上阻止所有写操作
+- Namespace 隔离，只暴露 aks + monitor 工具
+- 敏感操作（Key Vault）触发 Elicitation 确认
+- 每个工具标注为 destructive / readOnly / idempotent
+
+# CLI 做不到：
+- 一旦 Agent 有 Bash 访问权，无法阻止它执行 az resource delete
+- 无法限制它只用 az monitor 而不用 az vm delete
+- 权限控制只能依赖 Azure RBAC（粗粒度）
+```
+
+这正是 MCP vs CLI 文章中的关键观点——内置工具（如 Read vs cat）存在的核心原因是**权限分级**。Azure MCP Server 的 `readOnly` 模式就是这种分级的 Azure 版本。
+
+**4. 跨客户端一致性——同一个 MCP Server 服务所有 Agent**
+
+MCP vs CLI 文章中指出 MCP 的最大价值是"一次构建，多处集成"。Azure MCP Server 可以同时被 Claude Code、VS Code、Cursor、Copilot Studio、自建 Agent 使用。而 CLI 方式依赖每个 Agent 各自的 Bash 能力——Copilot Studio 就没有 Shell 环境。
+
+**5. 工具发现——模型不需要"认识" Azure CLI**
+
+MCP vs CLI 文章中有一个关键洞察：CLI 依赖模型训练数据中的知识。`az` CLI 有 **数百个子命令和数千个参数组合**，模型不一定都记得正确用法——尤其是 AKS 的诊断命令（`az aks check-acr`、`az aks get-credentials --admin` 等参数组合很复杂）。MCP 通过 `tools/list` 将精确的工具定义注入上下文，模型不需要"猜"参数。
+
+### 5.3 为什么"部署/变更"选择 CLI 而非 MCP
+
+反过来，Azure Skills 在部署和变更操作上选择 CLI 而非 MCP，同样有充分理由：
+
+**1. 模型已经"认识"这些命令——零上下文成本**
+
+`azd up`、`terraform apply`、`az deployment group create`——这些是 AI 模型训练数据中的高频命令，模型不需要 MCP 的工具定义来告诉它怎么用。正如 MCP vs CLI 文章所说："CLI 知识存储在模型权重中，不占上下文窗口。"
+
+**2. CLI 的变更能力更完整——MCP 写操作仍有限**
+
+Azure MCP Server 的写操作覆盖面远不及 `az` CLI。例如：
+- `az aks nodepool scale` → MCP 中没有等价工具
+- `terraform apply` → MCP 不提供 Terraform 执行能力
+- `azd up` → MCP 不提供 azd 生命周期管理（虽然有 `mcp_azure_mcp_azd` 但能力有限）
+
+**3. 成熟的错误处理和交互模式**
+
+`azd up` 支持交互式错误恢复、自动重试、回滚；`terraform apply` 有 `-auto-approve` 和 plan/apply 分离。这些经过多年打磨的交互模式，比 MCP 工具更可靠。
+
+**4. 用户可审计——Shell 命令透明可见**
+
+Skills 让 Agent 执行的部署命令是透明的 Shell 命令——用户可以直接看到 `az deployment group create --template-file main.bicep`，可以理解、审查和手动复现。如果通过 MCP 执行，用户看到的是 `mcp_azure_mcp_deploy(template="main.bicep")`——抽象层让审计变困难。
+
+### 5.4 设计哲学总结：精确分工
+
+| 操作性质 | 选择 | 原因 |
+|---------|------|------|
+| **Azure 专有诊断**（AppLens、Resource Health） | MCP | CLI 无等价命令 |
+| **资源状态查询**（Monitor、Activity Log） | MCP | 结构化输出 + 安全边界控制 |
+| **工具发现/参数提示** | MCP | 模型不一定记得所有 `az` 子命令的正确参数 |
+| **基础设施部署** | CLI（azd/terraform/az） | 模型熟悉 + 能力完整 + 错误处理成熟 |
+| **AKS 操作命令** | CLI（kubectl） | 模型训练数据丰富 + 操作透明 |
+| **文件生成**（Bicep/Dockerfile） | 直接写文件 | Skills 指导 Agent 直接生成文件内容 |
+
+**一句话总结**：Azure Skills 的设计完美体现了 MCP vs CLI 文章的核心结论——**不是替代，而是分层：MCP 用于精确查询和安全隔离，CLI 用于成熟的变更操作。**
+
+> 更多关于 MCP 和 CLI 的权衡分析，参见 [MCP vs CLI — 为什么开发者在重新审视 MCP](../Notes/AI/Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md)
+
+---
+
+## 六、Azure Skills + Azure MCP Server 能否替代 Azure Copilot Agents？
 
 这是核心问题。答案是：**大部分场景可以，但有不可替代的差异**。
 
@@ -349,7 +448,7 @@ azd coding-agent config
 | **CI/CD 集成** | ✗ | ✅ GitHub Actions、Azure Pipelines |
 | **多工具协同** | ✗ | ✅ 22 个 Skills 互相调用 |
 
-### 不可替代的 Portal Copilot 能力
+### 不可替代的 Portal Copilot 独有能力
 
 1. **一键修复（One-click fix）**——Troubleshooting Agent 对部分已知问题可以直接在 Portal 中执行修复，无需用户编写或执行任何命令
 2. **自动 Support Ticket**——诊断结果可一键转为微软技术支持工单，预填充所有上下文信息
@@ -366,9 +465,9 @@ azd coding-agent config
 
 ---
 
-## 六、最佳实践推荐
+## 七、最佳实践推荐
 
-### 6.1 选择合适的工具
+### 7.1 选择合适的工具
 
 ```
                      ┌─ 临时诊断/一键修复 ──→ Azure Portal Copilot Agents
@@ -381,7 +480,7 @@ azd coding-agent config
                      └─ 团队协作/审批 ────→ Copilot Studio + 远程 MCP Server
 ```
 
-### 6.2 开发者日常工作流
+### 7.2 开发者日常工作流
 
 **推荐组合**：VS Code + GitHub Copilot for Azure + Azure Skills
 
@@ -402,7 +501,7 @@ azd coding-agent config
    → 一键创建 Support Ticket
 ```
 
-### 6.3 安全最佳实践
+### 7.3 安全最佳实践
 
 1. **最小权限原则**——Azure MCP Server 默认使用当前 `az login` 的身份，确保是最小必要权限
 2. **只读模式**——在不需要写操作的场景（如分析、查询）中使用 `--read-only` 标志
@@ -410,7 +509,7 @@ azd coding-agent config
 4. **提示词安全**——在提示词中不要包含密钥、连接字符串等敏感信息
 5. **Coding Agent 权限**——GitHub Coding Agent 默认 Reader 角色是安全的；如需写权限，要严格评估风险
 
-### 6.4 提示词工程模式
+### 7.4 提示词工程模式
 
 微软推荐的 6 步模式（Agent Mode）：
 
@@ -421,7 +520,7 @@ azd coding-agent config
 5. **计划**：要求 Agent "创建一个分步骤的检查清单计划让我审核"
 6. **授权**：审核通过后明确授权执行
 
-### 6.5 AKS + GPU 场景的推荐路径
+### 7.5 AKS + GPU 场景的推荐路径
 
 针对 AKS + GPU + 模型推理性能测试这类场景：
 
@@ -437,7 +536,7 @@ azd coding-agent config
 
 ---
 
-## 七、总结
+## 八、总结
 
 ### 生态定位图
 
