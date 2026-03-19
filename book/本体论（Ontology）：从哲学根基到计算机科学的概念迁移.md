@@ -10,7 +10,7 @@ tags: [ontology, philosophy, aristotle, plato, heidegger, knowledge-representati
 
 ### 1.1 什么是本体论
 
-本体论（Ontology），源自希腊语 *ontos*（存在）+ *logos*（学说），字面含义即"关于存在的学说"。斯坦福哲学百科给出的经典近似定义是：**"本体论是对'有什么'的研究"（the study of what there is）**。但这只是第一层含义——本体论还包括对**存在者的最一般特征和关系**的系统考察。
+本体论（Ontology），源自希腊语 *ontos*（存在）+ *logos*（学说），字面含义即"关于存在的学说"。斯坦福哲学百科给出的经典近似定义是：**"本体论是对'是什么'的研究"（the study of what there is）**。但这只是第一层含义——本体论还包括对**存在者的最一般特征和关系**的系统考察。
 
 具体来说，本体论涵盖四个维度（Stanford Encyclopedia of Philosophy）：
 
