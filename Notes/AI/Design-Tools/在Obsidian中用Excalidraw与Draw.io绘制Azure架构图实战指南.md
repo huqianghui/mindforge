@@ -61,7 +61,7 @@ git clone https://github.com/coleam00/excalidraw-diagram-skill.git .claude/skill
 
 **实际生成效果**（使用 Excalidraw Diagram Skill 自动生成的 AI 辅助绘图工作流图）：
 
-![ai-diagramming-workflow](../../asset/ai-diagramming-workflow.excalidraw.png)
+![ai-diagramming-workflow](../../../asset/ai-diagramming-workflow.excalidraw.png)
 
 ---
 
@@ -71,7 +71,7 @@ git clone https://github.com/coleam00/excalidraw-diagram-skill.git .claude/skill
 
 Draw.io 桌面版是绘制正式 Azure 架构图的首选工具。其最大优势是**内置 700+ 官方 Microsoft Azure 架构图标**。
 
-![draw.io-azure-ICON](../../asset/draw.io-azure-ICON.png)
+![draw.io-azure-ICON](../../../asset/draw.io-azure-ICON.png)
 
 **启用 Azure 图标库**：在 Draw.io 中搜索 "azure" 即可打开 Azure (Open Library)，包含约 20 个类别：
 
@@ -92,7 +92,7 @@ Draw.io 桌面版是绘制正式 Azure 架构图的首选工具。其最大优�
 
 通过 MCP Server，可以用自然语言描述架构，让 AI 自动生成 Draw.io 图形。
 
-![draw_io_mcp](../../asset/draw_io_mcp.png)
+![draw_io_mcp](../../../asset/draw_io_mcp.png)
 
 #### 方案一：simonkurtz-MSFT/drawio-mcp-server（推荐，专注 Azure）
 

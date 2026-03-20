@@ -299,7 +299,7 @@ OpenSpec 的核心思想是：**把需求存到 repo，而不是 chat**。这样
 - **审查能力**：代码质量、潜在 bug、架构一致性等
 - **自定义规则**：可通过修改 `code-reviewer.md` 的 system prompt 添加项目特定的审查规则
 
-![subagent-code-reviewer](../../asset/subagent-code-reviewer.png)
+![subagent-code-reviewer](../../../asset/subagent-code-reviewer.png)
 
 > 详细的 Agent/Subagent 架构原理参见 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
 

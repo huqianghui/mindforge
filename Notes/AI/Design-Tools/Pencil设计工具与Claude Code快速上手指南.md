@@ -60,11 +60,11 @@ Pencil 是一款面向 AI 时代的设计工具，核心理念是**让 AI Agent 
 3. 点击 **Connect** — 状态变为 ✅ **Connected via custom provider**
 4. 底部可看到提示：`Set model ID and additional variables in settings.json`
 
-![pencil-settings](../../asset/pencil-settings.png)
+![pencil-settings](../../../asset/pencil-settings.png)
 
 连接成功后，Pencil 会在右侧面板显示 Claude Code 的聊天界面，可以直接在设计画布旁与 AI 对话。
 
-![pencil-with-claude-code](../../asset/pencil-with-claude-code.png)
+![pencil-with-claude-code](../../../asset/pencil-with-claude-code.png)
 
 ### 2.3 MCP 配置
 
@@ -658,7 +658,7 @@ interface Prompt extends Entity, Size, TextStyle {
 
 **实战截图**——使用 Prompt 便签让 AI 替换指定位置的图片为水波纹纹理：
 
-![Sticky Note](../../asset/Sticky%20Note.png)
+![Sticky Note](../../../asset/Sticky%20Note.png)
 
 > 截图说明：左侧画布中可以看到 Prompt 便签（蓝色高亮），内容为「replace all 6 album cover images with water ripple/wave texture images」。右侧 Claude Code 聊天面板显示 AI 在执行过程中**反复确认每张图片的位置**（通过 `batch_get` 读取节点、`get_screenshot` 截图验证），然后逐一使用 `G()` 操作替换为水波纹纹理图片。这体现了 Prompt 便签的典型工作流：指定目标区域 → AI 定位确认 → 执行修改 → 截图验证。
 
