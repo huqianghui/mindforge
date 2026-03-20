@@ -25,6 +25,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 - [AI-Native 开发实践：从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流](Notes/AI/AI-Native-Workflow/AI-Native开发实践：从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
 - [架构师视角的 AI Harness Engineering 最佳实践](Notes/AI/AI-Native-Workflow/架构师视角的AI%20Harness%20Engineering最佳实践.md)
+- [Vibe Coding 流程框架选择指南：GSD、SpecKit、OpenSpec 与 Superpowers 的组合实践](Notes/AI/AI-Native-Workflow/Vibe%20Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
 
 ### Notes/AI/Design-Tools
 
