@@ -99,10 +99,88 @@ my-plugin/
 
 注意：插件名称采用 **kebab-case**（小写短横线风格），以确保技能前缀合法。
 
-### 2.3 运行时行为
+### 2.3 运行时行为——Plugin 是分发单元，不是运行时单元
+
+理解 Plugin 运行时机制的关键在于：**Plugin 在安装后会被"拆包"，里面的组件进入各自独立的子系统。** 运行时，model 看到的永远是一个个独立的 tool、skill、command，而不是"一个 plugin 整体"。
+
+#### 2.3.1 安装时：拆包到各子系统
+
+当用户 `/plugin install` 一个 Plugin 时，Claude Code 做的事情是：
+
+```
+Plugin 安装包
+    │
+    ├── .mcp.json       ──→  MCP 子系统：启动独立进程，tool 描述注册到 tool list
+    ├── .lsp.json       ──→  LSP 子系统：启动语言服务器进程
+    ├── hooks.json      ──→  Hook 子系统：注册到事件监听器
+    ├── skills/         ──→  Skill 子系统：短描述加入可用列表
+    ├── commands/       ──→  Command 子系统：注册为 /namespace:cmd
+    └── agents/         ──→  Agent 子系统：注册为可用 subagent 类型
+```
+
+Plugin 的 `plugin.json` 清单在安装/管理阶段使用（版本号、描述、依赖等），**运行时 model 完全不感知"Plugin"这个概念**——它只看到拆包后的各个组件。
+
+#### 2.3.2 Session 启动时：分层加载
+
+每次启动 Claude Code 会话时，各子系统按不同策略加载：
+
+| 组件类型 | 加载时机 | 加载内容 | 是否占用 context |
+|----------|----------|----------|------------------|
+| **MCP tools** | Session 启动 | MCP 进程启动，所有 tool 的 JSON Schema 描述注入 system prompt | **是**——tool 描述始终在 context 中（每轮都能看到） |
+| **LSP** | Session 启动 | 语言服务器进程启动 | **否**——作为外部进程运行，只有调用结果进入 context |
+| **Hook** | Session 启动 | 注册到事件系统 | **否**——由 harness 层执行，不占模型 context |
+| **Skill** | Session 启动 | **仅短描述**加入 system-reminder 的可用技能列表 | **极少**——只占几行描述文字 |
+| **Command** | Session 启动 | 注册为 `/namespace:cmd` | **否**——只是注册入口，不加载内容 |
+| **Agent** | Session 启动 | 注册为可用 subagent 类型 | **极少**——只是类型名 |
+
+#### 2.3.3 对话过程中：按需注入 Skill 全文
+
+这是最关键的机制——以当前这个对话为例，可以直接观察到：
+
+**你能看到的系统消息中有这样的内容：**
+
+```
+The following skills are available for use with the Skill tool:
+- obsidian: 使用 obsidian-agent 处理 Obsidian vault 操作请求
+- excalidraw-diagram: Create Excalidraw diagram JSON files...
+- frontend-design: Create distinctive, production-grade frontend interfaces...
+  ...（几十个 skill 的短描述）
+```
+
+**注意**：这里只有**短描述**（每个 skill 一两行），不是完整的 SKILL.md 内容。Model 根据这些短描述判断哪个 skill 与当前任务相关。
+
+**当 model 决定触发某个 skill 时**（手动 `/plugin:skill` 或自动判断），harness 才将该 skill 的**完整 SKILL.md 内容**注入到当前上下文——这就是"按需注入"。
+
+#### 2.3.4 完整的请求处理流程
+
+```
+用户输入 "帮我做一个前端页面"
+    │
+    ▼
+Harness 层构建 system prompt：
+    ├── 基础指令（Claude Code 核心行为规范）
+    ├── CLAUDE.md 项目规范
+    ├── MCP tool 描述（Pencil、Figma、Draw.io 等所有 tool 的 JSON Schema）  ← 始终在
+    ├── Skill 可用列表（短描述）                                            ← 始终在
+    └── 当前上下文（文件内容、对话历史等）
+    │
+    ▼
+Model 看到 tool 列表 + skill 列表，做出决策：
+    ├── 调用 MCP tool？→ 直接调 tool，结果返回到 context
+    ├── 触发 Skill？   → Harness 加载完整 SKILL.md 内容到 context
+    │                     Model 按 SKILL.md 指令执行多步工作流
+    └── 直接回复？     → 不需要额外加载
+```
+
+**所以回答你的核心问题**：
+
+1. ~~Plugin 的元数据太少，没法了解里面的内容~~ → **不是通过 plugin 元数据来了解的**。Plugin 安装后就拆包了，里面的 MCP tool 描述和 Skill 短描述各自进入模型可见的列表
+2. ~~触发 plugin 才加载组件~~ → **不存在"触发 plugin"这个动作**。Plugin 拆包后，MCP tool 描述始终可见，Skill 短描述始终可见，model 直接选择调用哪个 tool 或触发哪个 skill
+3. **真正的"按需加载"发生在 Skill 层面**：Skill 的完整指令（可能很长）只在被触发时才注入 context，平时只保留短描述
+
+#### 2.3.5 其他运行时特性
 
 - **隔离加载**：Claude Code 启用插件时会将插件内容复制到本地缓存（`~/.claude/plugins/cache`），防止不受信任的插件直接访问用户文件系统
-- **按需注入**：只有当某插件的 Skill 或工具与当前任务相关时，才会将其指令全文注入模型上下文，节省 Token
 - **命名空间**：同名的 Skill/Command 不会冲突，因为前缀了插件名
 - **自动更新**：用户安装插件后，Claude Code 自动检查市场更新，发布新版本时用户启动时收到升级提示
 
