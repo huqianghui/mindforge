@@ -56,6 +56,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 - [How AI Impacts Skill Formation — 读书笔记与质疑](paper/2026-03-18-How-AI-Impacts-Skill-Formation.md)
 - [The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](paper/2026-03-21-The-Bitter-Lesson.md)
+- [Continually Self-Improving AI 论文精读笔记](paper/2026-03-22-Continually-Self-Improving-AI论文精读笔记.md)
 
 ---
 
