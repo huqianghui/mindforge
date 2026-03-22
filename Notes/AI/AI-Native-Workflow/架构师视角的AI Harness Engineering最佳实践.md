@@ -469,10 +469,10 @@ Rich Sutton 在 [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] 中总结了 
 
 #### 参考链接
 
-- OpenAI Harness Engineering: [openai.com](https://openai.com/index/harness-engineering/)
-- Harness Engineering 深度解读: [madplay.github.io](https://madplay.github.io/en/post/harness-engineering)
-- Skill Issue — Harness Engineering for Coding Agents: [humanlayer.dev](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)
-- Reins CLI: [GitHub](https://github.com/WellDunDun/reins/tree/master/cli/reins)
-- How AI Impacts Skill Formation: [arXiv:2601.20245](https://arxiv.org/abs/2601.20245)
-- OpenSpec: [GitHub](https://github.com/obra/openspec)
-- Superpowers: [GitHub](https://github.com/obra/superpowers)
+- [Harness Engineering](https://openai.com/index/harness-engineering/) — OpenAI 原文
+- [Harness Engineering 深度解读](https://madplay.github.io/en/post/harness-engineering)
+- [Skill Issue — Harness Engineering for Coding Agents](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)
+- Reins CLI: [WellDunDun/reins](https://github.com/WellDunDun/reins/tree/master/cli/reins)
+- [How AI Impacts Skill Formation](https://arxiv.org/abs/2601.20245)
+- OpenSpec: [obra/openspec](https://github.com/obra/openspec)
+- Superpowers: [obra/superpowers](https://github.com/obra/superpowers)

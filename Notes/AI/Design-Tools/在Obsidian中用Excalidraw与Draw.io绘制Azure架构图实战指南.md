@@ -185,9 +185,9 @@ claude mcp add-json drawio '{"type":"stdio","command":"npx","args":["-y","drawio
 
 #### 相关链接
 
-- Obsidian Excalidraw Plugin: [GitHub](https://github.com/zsviczian/obsidian-excalidraw-plugin)
-- Excalidraw Diagram Skill: [GitHub](https://github.com/coleam00/excalidraw-diagram-skill)
-- Draw.io Azure MCP Server: [GitHub](https://github.com/simonkurtz-MSFT/drawio-mcp-server)
-- Draw.io MCP Server: [GitHub](https://github.com/lgazo/drawio-mcp-server)
+- Obsidian Excalidraw Plugin: [zsviczian/obsidian-excalidraw-plugin](https://github.com/zsviczian/obsidian-excalidraw-plugin)
+- Excalidraw Diagram Skill: [coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill)
+- Draw.io Azure MCP Server: [simonkurtz-MSFT/drawio-mcp-server](https://github.com/simonkurtz-MSFT/drawio-mcp-server)
+- Draw.io MCP Server: [lgazo/drawio-mcp-server](https://github.com/lgazo/drawio-mcp-server)
 - Excalidraw Libraries: [libraries.excalidraw.com](https://libraries.excalidraw.com)
 - Draw.io Azure Diagrams: [drawio.com/blog/azure-diagrams](https://www.drawio.com/blog/azure-diagrams)

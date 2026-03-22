@@ -33,7 +33,7 @@ template/日记模版.md       # Daily note template (used by Obsidian daily-not
 - Dependencies: `🆔 id` (defines ID), `⛔ id` (depends on)
 - Sub-items: tab-indented under parent task
 
-**Links**: Use `[[wikilinks]]` for internal notes, `[title](url)` for external. Task outputs use arrow notation: `→ [[Article Title]]`. Images use standard Markdown syntax `![alt](relative-path)` with relative paths from the article to `asset/` (e.g., `![desc](../asset/diagram.png)`) — this ensures both Obsidian and GitHub can render images correctly. Do NOT use `![[filename.png]]` wikilink syntax for images, as GitHub cannot render it.
+**Links**: Use `[[wikilinks]]` for internal notes, `[title](url)` for external. Task outputs use arrow notation: `→ [[Article Title]]`. Images use standard Markdown syntax `![alt](relative-path)` with relative paths from the article to `asset/` (e.g., `![desc](../asset/diagram.png)`) — this ensures both Obsidian and GitHub can render images correctly. Do NOT use `![[filename.png]]` wikilink syntax for images, as GitHub cannot render it. **External link text must use the content title** (论文标题、项目名、文章标题), NOT the website/platform name (e.g., `[Continually Self-Improving AI](https://arxiv.org/...)` not `[arxiv](...)`, `[obra/superpowers](https://github.com/...)` not `[GitHub](...)`).
 
 **Language**: Chinese for body text, English for technical terms (Claude Code, Superpowers, etc.). Use Chinese full-width parentheses `（）` and em dash `—`.
 

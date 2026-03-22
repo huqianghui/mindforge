@@ -985,4 +985,4 @@ export_nodes(
 
 - Pencil 官网: [pencil.li](https://pencil.li)
 - Pencil MCP 文档: 通过 `get_guidelines()` 工具访问
-- Claude Code MCP 集成: [docs.anthropic.com](https://docs.anthropic.com)
+- Claude Code MCP 集成: [Anthropic Documentation](https://docs.anthropic.com)

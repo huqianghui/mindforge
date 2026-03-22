@@ -363,6 +363,6 @@ OpenSpec 的核心思想是：**把需求存到 repo，而不是 chat**。这样
 - ChatGPT 对话记录：[使用superpowers与ui-ux-pro](https://chatgpt.com/share/69b60d4b-f478-8010-acaf-156e760dc411)
 - Superpowers GitHub：[obra/superpowers](https://github.com/obra/superpowers) — 完整的 AI 编码 agent 开发工作流框架
 - Superpowers 作者博客：[Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
-- OpenSpec：[intent-driven.dev](https://intent-driven.dev) — Spec-Driven Development 工具
+- OpenSpec：[OpenSpec — Spec-Driven Development](https://intent-driven.dev) — Spec-Driven Development 工具
 - UI-UX-Pro-Max Skill：Claude Code UI 设计智能插件
 - 深入解析：[[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
