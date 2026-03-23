@@ -23,6 +23,10 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [learn-claude-code——打开 Coding Agent 黑盒](Notes/AI/Claude-Code/learn-claude-code——打开Coding%20Agent黑盒.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/AI/Claude-Code/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
 
+### Notes/AI
+
+- [OpenCLI——万物皆可 CLI 的结构化革命](Notes/AI/OpenCLI——万物皆可CLI的结构化革命.md)
+
 ### Notes/AI/AI-Native-Workflow
 
 - [AI-Native 开发实践：从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流](Notes/AI/AI-Native-Workflow/AI-Native开发实践：从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
