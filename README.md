@@ -26,6 +26,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 ### Notes/AI
 
 - [OpenCLI——万物皆可 CLI 的结构化革命](Notes/AI/OpenCLI——万物皆可CLI的结构化革命.md)
+- [从 Google 五种 Skill Pattern 到 Agent Runtime——Skill、MCP 与 Agent 的统一架构](Notes/AI/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md)
 
 ### Notes/AI/AI-Native-Workflow
 
