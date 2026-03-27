@@ -14,7 +14,7 @@ tags: [AI, Agent, ReAct, Plan-and-Solve, Reflection, 认知模式, Claude-Code]
 
 在讨论范式之前，先厘清一个根本性的变化。LLM 的出现，让智能体从"确定性的规则执行者"进化为"概率性的推理决策者"：
 
-![传统智能体与LLM智能体对比](../../asset/agent-vs-llm-agent.png)
+![传统智能体与LLM智能体对比](agent-vs-llm-agent.png)
 
 传统智能体的能力源于工程师的显式编程与知识构建，行为模式确定且有边界；LLM 智能体则通过海量数据预训练获得隐式的世界模型与涌现能力，以更灵活、更通用的方式应对复杂任务。
 
@@ -22,7 +22,7 @@ tags: [AI, Agent, ReAct, Plan-and-Solve, Reflection, 认知模式, Claude-Code]
 
 无论采用哪种范式，Agent 的基本运作都遵循一个循环：
 
-![Agent核心循环](../../asset/agent-loop.png)
+![Agent核心循环](agent-loop.png)
 
 **Perception（感知）** → **Thought（思考，含 Planning 和 Tool Selection）** → **Action（行动）** → **Observation（观察环境变化）** → 回到感知。
 
