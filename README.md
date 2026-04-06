@@ -33,6 +33,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [Agent 经典范式与人类问题处理模式的映射](Notes/AI/agent/Agent经典范式与人类问题处理模式的映射.md)
 - [AutoResearch 概念澄清——与 Ralph-Loop 和 AutoML 的本质区别](Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
+- [Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API](Notes/AI/agent/Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API.md)
 
 ### Notes/AI/vibe-coding
 
@@ -81,6 +82,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [How AI Impacts Skill Formation — 读书笔记与质疑](paper/2026-03-18-How-AI-Impacts-Skill-Formation.md)
 - [The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](paper/2026-03-21-The-Bitter-Lesson.md)
 - [Continually Self-Improving AI 论文精读笔记](paper/2026-03-22-Continually-Self-Improving-AI论文精读笔记.md)
+- [Building Enterprise Realtime Voice Agents 论文精读笔记](paper/2026-04-06-Building-Enterprise-Realtime-Voice-Agents.md)
 
 ---
 
