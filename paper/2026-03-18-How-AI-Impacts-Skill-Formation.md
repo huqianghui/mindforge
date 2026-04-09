@@ -6,12 +6,12 @@ paper: "How AI Impacts Skill Formation"
 authors: [Judy Hanwen Shen, Alex Tamkin]
 source: https://arxiv.org/html/2601.20245v2
 discussion: https://notebooklm.google.com/notebook/e3ab553b-bc97-470c-8bb7-ed4149011cda
-related: "[[架构师视角的AI Harness Engineering最佳实践]]"
+related: "[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]]"
 ---
 
 # 论文阅读：How AI Impacts Skill Formation — 质疑与探索
 
-> 结合 [[架构师视角的AI Harness Engineering最佳实践]] 的实践经验，从 Vibe Coding 和 Harness Engineering 的视角，对论文核心结论的批判性思考
+> 结合 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 的实践经验，从 Vibe Coding 和 Harness Engineering 的视角，对论文核心结论的批判性思考
 
 ---
 
@@ -66,7 +66,7 @@ related: "[[架构师视角的AI Harness Engineering最佳实践]]"
 
 **我的理解**：在低门槛执行类任务中，AI 是"雪中送炭"；在高门槛决策类任务中，AI 是"放大器"——**你本身的基础能力越强，你就越能驾驭它；如果你本身缺乏核心辨别能力，AI 反而可能反噬**。
 
-这直接关联到 [[架构师视角的AI Harness Engineering最佳实践]] 中的核心主张：架构师的先验知识是不可替代的。
+这直接关联到 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中的核心主张：架构师的先验知识是不可替代的。
 
 ---
 
@@ -106,7 +106,7 @@ related: "[[架构师视角的AI Harness Engineering最佳实践]]"
 | **AI Code Review** | 半自动 | AI 互审，人类审核关键路径 |
 | **Playwright E2E** | 全自动 | 端到端行为验证 |
 
-这正是我在 [[架构师视角的AI Harness Engineering最佳实践]] 中已经实践的模式——ragflow 项目有 11 个 E2E spec，yoga-guru 有 8 个 E2E spec，CI 强制执行 lint + format + pytest + tsc + build。
+这正是我在 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中已经实践的模式——ragflow 项目有 11 个 E2E spec，yoga-guru 有 8 个 E2E spec，CI 强制执行 lint + format + pytest + tsc + build。
 
 **核心论点**：人类不需要阅读每一行代码，而需要**设计足够好的验证体系**让代码在自动化流水线中被充分检验。人类的角色从"代码阅读者"升级为"验证体系设计者"。
 
@@ -227,8 +227,8 @@ L4 人类护栏：架构审查 + 安全关键路径的人工审计
 
 #### 相关笔记
 
-- [[架构师视角的AI Harness Engineering最佳实践]]
-- [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
+- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]]
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
 
 #### 参考
 

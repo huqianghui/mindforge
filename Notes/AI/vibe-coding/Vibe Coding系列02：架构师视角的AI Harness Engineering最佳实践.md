@@ -1,10 +1,10 @@
 ---
-title: 架构师视角的 AI Harness Engineering 最佳实践
+title: Vibe Coding 系列02：架构师视角的 AI Harness Engineering 最佳实践
 created: 2026-03-17
 tags: [harness-engineering, context-engineering, AI-native, claude-code, openspec, superpowers, architecture]
 ---
 
-# 架构师视角的 AI Harness Engineering 最佳实践
+# Vibe Coding 系列02：架构师视角的 AI Harness Engineering 最佳实践
 
 > 从 ragflow-skill-orchestrator-studio 到 yoga-guru-copilot-platform 的实战经验
 
@@ -434,7 +434,7 @@ Phase B (Video/Photo):     8 tasks [all ✓]
 
 Harness Engineering 构建了优秀的文档分层和结构化 State，但在实际大项目中使用 GSD / Superpowers 执行时，会遇到一个结构性问题：**context 爆炸**。
 
-详细分析参见 [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]，这里概述核心关联。
+详细分析参见 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]，这里概述核心关联。
 
 ### 7.1 Harness = State Layer，缺的是 Selection Layer
 
@@ -503,7 +503,7 @@ Selection Layer 解决了"选什么"，但还有一个更基础的问题：**选
 [4] Execution Layer（LLM 执行）   ← Subagent / Tool Call（执行动作）
 ```
 
-社区的六种策略——Agentic Chunking（LLM 判断语义边界）、Hierarchical Chunking（多层粒度索引）、Context-Budget-Aware Sizing（单 unit ≤ context 的 30%）、Subagent Context Isolation（N × 200k 总窗口）、SRP for Specs（单一职责原则）、Adaptive Decomposition（运行时动态拆分）——详见 [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 第九节。
+社区的六种策略——Agentic Chunking（LLM 判断语义边界）、Hierarchical Chunking（多层粒度索引）、Context-Budget-Aware Sizing（单 unit ≤ context 的 30%）、Subagent Context Isolation（N × 200k 总窗口）、SRP for Specs（单一职责原则）、Adaptive Decomposition（运行时动态拆分）——详见 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 第九节。
 
 ---
 
@@ -539,12 +539,12 @@ Rich Sutton 在 [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] 中总结了 
 
 #### 相关笔记
 
-- [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
 - [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
 - [[Claude Code扩展三剑客：Command、Skill与Agent的区别与协作]]
 - [[learn-claude-code——打开Coding Agent黑盒]] — 12 层 Harness 的渐进式解构
 - [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson 读书笔记]] — 为什么元能力不会被 AI 淘汰的理论基础
-- [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Harness 的 Selection Layer 缺口与行业范式迁移
+- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Harness 的 Selection Layer 缺口与行业范式迁移
 - [[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]]
 
 #### 参考链接

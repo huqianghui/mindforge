@@ -403,4 +403,4 @@ Superpowers 的 spec-reviewer prompt 中有一段很精彩的设计：
 - Claude Code Hooks 文档：[hooks.md](https://code.claude.com/docs/en/hooks.md)
 - Superpowers GitHub：[obra/superpowers](https://github.com/obra/superpowers)
 - Superpowers subagent-driven-development Skill 源码：[SKILL.md](https://github.com/obra/superpowers/blob/main/skills/subagent-driven-development/SKILL.md)
-- 相关文章：[[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
+- 相关文章：[[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]

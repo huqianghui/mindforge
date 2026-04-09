@@ -618,7 +618,7 @@ Skill 最强大的特性是支持 **plugin 化分发**。用户可以通过 mark
 ## 相关文章
 
 - [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — Agent/Subagent 架构的深层分析
-- [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 中的实践应用
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 中的实践应用
 
 ## 参考资料
 

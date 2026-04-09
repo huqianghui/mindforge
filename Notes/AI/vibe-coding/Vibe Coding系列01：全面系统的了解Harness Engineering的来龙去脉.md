@@ -1,5 +1,5 @@
 ---
-title: 全面系统的了解 Harness Engineering 的来龙去脉
+title: Vibe Coding 系列01：全面系统的了解 Harness Engineering 的来龙去脉
 created: 2026-04-02
 tags:
   - harness-engineering
@@ -14,7 +14,7 @@ tags:
   - best-practices
 ---
 
-# 全面系统的了解 Harness Engineering 的来龙去脉
+# Vibe Coding 系列01：全面系统的了解 Harness Engineering 的来龙去脉
 
 > 从概念溯源到行业共识，从六大核心模块到开源工具生态，从最佳实践到风险警示——一篇文章读懂 AI Agent 时代最重要的工程方法论。
 
@@ -254,7 +254,7 @@ Harness Engineering 的具体实施可以拆解为六大模块：
 
 OpenAI 的公理：**"Agent 无法访问的 = 不存在的。"**
 
-在实际项目中，文档必须**索引化、分层化**——如在 [[架构师视角的AI Harness Engineering最佳实践]] 中提出的五层文档架构：
+在实际项目中，文档必须**索引化、分层化**——如在 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中提出的五层文档架构：
 
 | 文档层级 | 文件 | 职责 |
 |---------|------|------|
@@ -319,7 +319,7 @@ Google DeepMind 在 Gemini 3 中引入了 "Thought Signatures"——加密的推
 
 ## 六、开源工具在 Harness Engineering 中的地位与实践
 
-Harness Engineering 不只是理论——它需要具体的工具来落地。当前开源生态中，GSD、OpenSpec、Superpowers 三者构成了 Harness Engineering 的工具层。正如在 [[Vibe Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践]] 中总结的：**规范驱动框架（GSD / OpenSpec）解决"做什么"，方法论框架（Superpowers）解决"怎么做"，两者互补不可互替。**
+Harness Engineering 不只是理论——它需要具体的工具来落地。当前开源生态中，GSD、OpenSpec、Superpowers 三者构成了 Harness Engineering 的工具层。正如在 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] 中总结的：**规范驱动框架（GSD / OpenSpec）解决"做什么"，方法论框架（Superpowers）解决"怎么做"，两者互补不可互替。**
 
 ### 6.1 GSD（Get Stuff Done）——Phase Pipeline 型 Harness
 
@@ -334,7 +334,7 @@ Harness Engineering 不只是理论——它需要具体的工具来落地。当
 | Observability | Phase 完成度追踪 | ★★ |
 | Human-in-the-Loop | Phase 间人工审查点 | ★★ |
 
-**GSD 的核心价值**：将项目按规模分级（L1-L4），提供从快速脚本到超大规模项目的分级 Context 策略。如 [[GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] 所述：
+**GSD 的核心价值**：将项目按规模分级（L1-L4），提供从快速脚本到超大规模项目的分级 Context 策略。如 [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] 所述：
 
 | 级别 | 文件规模 | Phase 数 | Context 策略 |
 |------|---------|---------|-------------|
@@ -343,7 +343,7 @@ Harness Engineering 不只是理论——它需要具体的工具来落地。当
 | L3 复杂 | 20-100 | 8-20 | Subagent + Workstreams |
 | L4 超大 | 100+ | 20+ | Workspace + Milestone 归档 |
 
-**GSD 的 Harness 局限**：GSD 采用"全量上下文拼接"模式——所有 plan 文件一次性加载。正如 [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中指出的，这构建了优秀的 **State Layer**，但缺乏 **Selection Layer**——当 Phase 超过 20 个时，planning context 本身会触发 Context Rot。
+**GSD 的 Harness 局限**：GSD 采用"全量上下文拼接"模式——所有 plan 文件一次性加载。正如 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中指出的，这构建了优秀的 **State Layer**，但缺乏 **Selection Layer**——当 Phase 超过 20 个时，planning context 本身会触发 Context Rot。
 
 **GSD 的设计哲学**：GSD 有意不包含 Code Review 节点——它只管 "Do the Right Thing"（功能验证），不管 "Do the Thing Right"（代码质量）。Code Review 被外包给 Superpowers 的 `code-reviewer` 技能。这是职责分离的体现。
 
@@ -394,7 +394,7 @@ changes/2026-03-05-project-infrastructure/
 | `requesting-code-review` | **验证层** — 独立 Agent 评审代码质量 |
 | `dispatching-parallel-agents` | **编排层** — 并行执行无依赖任务 |
 
-**Brainstorm 是整个 AI-Native 开发流程中 ROI 最高的环节**——它强制进行系统性需求分析，避免 Agent 在模糊需求下"凭感觉编程"。如在 [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] 中论述的，Brainstorm 阶段连接了 Figma 设计和代码实现之间的鸿沟。
+**Brainstorm 是整个 AI-Native 开发流程中 ROI 最高的环节**——它强制进行系统性需求分析，避免 Agent 在模糊需求下"凭感觉编程"。如在 [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] 中论述的，Brainstorm 阶段连接了 Figma 设计和代码实现之间的鸿沟。
 
 **实战数据**（yoga-guru-copilot-platform 项目）：使用 Superpowers 的 baseline spec + delta specs + phase plans，2 天产出 40 个 commit。
 
@@ -413,7 +413,7 @@ changes/2026-03-05-project-infrastructure/
 
 ### 6.5 工具的 Harness 定位：四层架构视角
 
-从 [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中提出的四层架构来看：
+从 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中提出的四层架构来看：
 
 ```
 State Layer（状态层）       → GSD .planning/ / OpenSpec specs/ + changes/
@@ -430,7 +430,7 @@ GSD、OpenSpec、Superpowers 都构建了优秀的 State Layer，但都缺乏 Se
 
 ### 7.1 架构师角色蜕变：One Person Team
 
-如在 [[架构师视角的AI Harness Engineering最佳实践]] 中详细论述的，Harness Engineering 正在重塑架构师的角色。传统 7 人团队的角色——Senior CSA、产品设计师、前端设计、前端开发、后端开发、数据库设计、项目经理——正在被掌握 AI 编排能力的单个架构师所替代。
+如在 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中详细论述的，Harness Engineering 正在重塑架构师的角色。传统 7 人团队的角色——Senior CSA、产品设计师、前端设计、前端开发、后端开发、数据库设计、项目经理——正在被掌握 AI 编排能力的单个架构师所替代。
 
 核心技能从手动编码转向：
 
@@ -569,7 +569,7 @@ OpenAI 自己也承认："这套行为高度依赖这个特定仓库的结构和
 
 ### 10.2 Bitter Lesson 视角
 
-从 [[架构师视角的AI Harness Engineering最佳实践]] 中的分析来看，手工精调的路由终将被更强模型吸收，但三种元能力始终存活：
+从 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中的分析来看，手工精调的路由终将被更强模型吸收，但三种元能力始终存活：
 
 1. **定义问题** — 模型擅长解题，不擅长选题
 2. **设计约束** — 约束是人类判断力的编码
@@ -591,8 +591,8 @@ OpenAI 的这段话最值得记住：
 
 - [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) — OpenAI, 2026.02
 - [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps) — Anthropic, 2026.03
-- [[架构师视角的AI Harness Engineering最佳实践]] — 从两个实战项目总结的架构师方法论
-- [[Vibe Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 开源工具选型指南
-- [[GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] — GSD 四级规模分级策略
-- [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI Pipeline 工作流
-- [[Vibe-Coding大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Context 爆炸问题与四层架构
+- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — 从两个实战项目总结的架构师方法论
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 开源工具选型指南
+- [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] — GSD 四级规模分级策略
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI Pipeline 工作流
+- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Context 爆炸问题与四层架构

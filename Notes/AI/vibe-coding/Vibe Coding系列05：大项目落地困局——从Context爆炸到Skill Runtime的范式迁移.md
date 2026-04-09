@@ -1,5 +1,5 @@
 ---
-title: Vibe-Coding 大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移
+title: Vibe Coding 系列05：大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移
 created: 2026-03-22
 tags:
   - vibe-coding
@@ -12,7 +12,7 @@ tags:
   - LangGraph
 ---
 
-# Vibe-Coding 大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移
+# Vibe Coding 系列05：大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移
 
 > 本文基于一次 ChatGPT 深度讨论整理，围绕 GSD（Get Stuff Done）、Superpowers、OpenSpec 等 vibe-coding 工具在实际大项目中遇到的 context 管理困局，以及行业正在发生的范式迁移。
 
@@ -233,7 +233,7 @@ intent → graph → execution
 
 ## 八、与 Harness Engineering 的关系——State Layer 已就绪，Selection Layer 待补全
 
-[[架构师视角的AI Harness Engineering最佳实践]] 一文系统阐述了 AI Harness Engineering 的五大支柱和实践框架。将 Harness Engineering 放入本文的三层架构中审视，会发现一个关键的结构性对应关系：
+[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 一文系统阐述了 AI Harness Engineering 的五大支柱和实践框架。将 Harness Engineering 放入本文的三层架构中审视，会发现一个关键的结构性对应关系：
 
 ### Harness Engineering = 优秀的 State Layer 实践
 
@@ -349,8 +349,8 @@ Granularity Layer 的职责：确保 State Layer 中的每个 unit 都是 **cont
 
 #### 相关笔记
 
-- [[架构师视角的AI Harness Engineering最佳实践]] — State Layer 的系统实践
-- [[AI-Native开发实践：从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 的全流程
+- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — State Layer 的系统实践
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 的全流程
 - [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — Agent/Subagent 架构中的 context 传递
-- [[Vibe Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 各框架的定位与组合策略
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 各框架的定位与组合策略
 - [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] — Selection Layer 时间窗口的理论基础

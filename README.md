@@ -37,13 +37,14 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ### Notes/AI/vibe-coding
 
-- [全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/全面系统的了解Harness%20Engineering的来龙去脉.md)
-- [AI-Native 开发实践：从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流](Notes/AI/vibe-coding/AI-Native开发实践：从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
-- [架构师视角的 AI Harness Engineering 最佳实践](Notes/AI/vibe-coding/架构师视角的AI%20Harness%20Engineering最佳实践.md)
-- [Vibe Coding 流程框架选择指南：GSD、SpecKit、OpenSpec 与 Superpowers 的组合实践](Notes/AI/vibe-coding/Vibe%20Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
-- [Vibe-Coding 大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移](Notes/AI/vibe-coding/Vibe-Coding大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)
-- [GSD 项目规模分级实践——从快速脚本到超大规模的 Context 策略演进](Notes/AI/vibe-coding/GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md)
-- [Coding Agent 时代的代码复用——从架构约束到 Plugin 协作的实践指南](Notes/AI/vibe-coding/Coding-Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md)
+- [系列01：全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)
+- [系列02：架构师视角的 AI Harness Engineering 最佳实践](Notes/AI/vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md)
+- [系列03：AI-Native 开发实践——从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流](Notes/AI/vibe-coding/Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
+- [系列04：流程框架选择指南——GSD、SpecKit、OpenSpec 与 Superpowers 的组合实践](Notes/AI/vibe-coding/Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
+- [系列05：大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移](Notes/AI/vibe-coding/Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)
+- [系列06：GSD 项目规模分级实践——从快速脚本到超大规模的 Context 策略演进](Notes/AI/vibe-coding/Vibe%20Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md)
+- [系列07：Coding Agent 时代的代码复用——从架构约束到 Plugin 协作的实践指南](Notes/AI/vibe-coding/Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md)
+- [系列08：GSD + Superpowers + gstack 三层插件架构——从定位争议到组合实践](Notes/AI/vibe-coding/Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md)
 
 ### Notes/AI/RAG
 

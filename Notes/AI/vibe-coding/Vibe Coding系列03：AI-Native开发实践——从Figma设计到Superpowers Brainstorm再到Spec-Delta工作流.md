@@ -1,10 +1,10 @@
 ---
-title: AI-Native 开发实践：从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流
+title: Vibe Coding 系列03：AI-Native 开发实践——从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流
 created: 2026-03-15
 tags: [AI, workflow, openspec, superpowers, claude-code, figma, spec-driven-development]
 ---
 
-# AI-Native 开发实践：从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流
+# Vibe Coding 系列03：AI-Native 开发实践——从 Figma 设计到 Superpowers Brainstorm 再到 Spec-Delta 工作流
 
 ## 背景：Figma 画完了，然后呢？
 
