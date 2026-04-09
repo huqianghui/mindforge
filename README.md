@@ -48,6 +48,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [Claude Code 双插件最佳搭配：superpowers 当大脑，gstack 当手脚](Notes/AI/vibe-coding/references/Claude%20Code双插件最佳搭配：superpowers当大脑，gstack当手脚.md)（外部参考）
 - [深入对比 Gstack、Superpowers 和 Compound Engineering 三个最火的 AI Coding 工具](Notes/AI/vibe-coding/references/深入对比Gstack、Superpowers和Compound%20Engineering三个最火的AI%20Coding工具.md)（外部参考）
 - [系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式](Notes/AI/vibe-coding/Vibe%20Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式.md)
+- [系列10：oh-my-claude-code——Vibe Coding 的未来终极形态吗？](Notes/AI/vibe-coding/Vibe%20Coding系列10：oh-my-claude-code——Vibe%20Coding的未来终极形态吗？.md)
 
 ### Notes/AI/RAG
 
