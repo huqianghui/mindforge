@@ -43,6 +43,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [Vibe Coding 流程框架选择指南：GSD、SpecKit、OpenSpec 与 Superpowers 的组合实践](Notes/AI/vibe-coding/Vibe%20Coding流程框架选择指南：GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
 - [Vibe-Coding 大项目落地困局——从 Context 爆炸到 Skill Runtime 的范式迁移](Notes/AI/vibe-coding/Vibe-Coding大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)
 - [GSD 项目规模分级实践——从快速脚本到超大规模的 Context 策略演进](Notes/AI/vibe-coding/GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md)
+- [Coding Agent 时代的代码复用——从架构约束到 Plugin 协作的实践指南](Notes/AI/vibe-coding/Coding-Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md)
 
 ### Notes/AI/RAG
 
