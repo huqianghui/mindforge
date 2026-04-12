@@ -50,6 +50,10 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式](Notes/AI/vibe-coding/Vibe%20Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式.md)
 - [系列10：oh-my-claude-code——Vibe Coding 的未来终极形态吗？](Notes/AI/vibe-coding/Vibe%20Coding系列10：oh-my-claude-code——Vibe%20Coding的未来终极形态吗？.md)
 
+### Notes/AI/voice
+
+- [Speech 技术全景——从音频处理基础到 Turn-Taking 的深层机制](Notes/AI/voice/Speech技术全景——从音频处理基础到Turn-Taking的深层机制.md)
+
 ### Notes/AI/RAG
 
 - [qmd 与 Microsoft Foundry IQ 的 RAG 能力对比——从个人知识库到企业级检索](Notes/AI/RAG/qmd与Microsoft%20Foundry%20IQ的RAG能力对比——从个人知识库到企业级检索.md)
