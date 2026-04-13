@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with this **Obsidian vault**——一个个人笔记库，通过 LLM 辅助构建和维护个人知识库（Personal Knowledge Compiler）。
 
 ## What This Is
 
-This is an **Obsidian vault** (not a software project). It contains daily work journals, long-form notes on AI/DevOps topics, a personal knowledge wiki, and supporting templates. There is no build system, test suite, or package manager.
+This is an **Obsidian vault** containing daily work journals, long-form notes on AI/DevOps topics, and a **Personal Knowledge Wiki** (`wiki/`). The vault is not a software project — there is no build system, test suite, or package manager. Claude Code's role here is **knowledge maintainer**（知识编排与维护），not code developer.
 
 ## Vault Structure
 
