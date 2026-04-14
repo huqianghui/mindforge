@@ -23,7 +23,6 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [learn-claude-code——打开 Coding Agent 黑盒](Notes/AI/Claude-Code/learn-claude-code——打开Coding%20Agent黑盒.md)
 - [Coding Agent Plugin 生态调研——协议、最佳实践与自定义 plugin 开发](Notes/AI/Claude-Code/Coding%20Agent%20Plugin生态调研——协议、最佳实践与自定义plugin开发.md)
 - [Claude Code 记忆全景：从 Session 到 Memory 的六层持久化体系](Notes/AI/Claude-Code/Claude%20Code记忆全景：从Session到Memory的六层持久化体系.md)
-- [RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/AI/Claude-Code/RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
 
 ### Notes/AI/agent
 
