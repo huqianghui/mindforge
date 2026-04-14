@@ -74,6 +74,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践](Notes/tool/从日记到知识库：Obsidian%20×%20oh-my-claudecode%20×%20LLM%20Wiki%20的个人知识编译实践.md)
 - [个人知识编译器进化：从三层知识模型到持续迭代的知识系统](Notes/tool/个人知识编译器进化：从三层知识模型到持续迭代的知识系统.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
+- [RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
 
 ### Azure
 
