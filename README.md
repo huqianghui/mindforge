@@ -1,3 +1,4 @@
+
 # Mindforge
 
 > A personal knowledge forge — notes on AI engineering, cloud architecture, philosophy of technology, and the craft of building with modern tools.
@@ -6,7 +7,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ## Wiki Knowledge Graph
 
-[![Wiki Knowledge Graph](asset/wiki-graph-preview.png)](https://huqianghui.github.io/mindforge/wiki/)
+<img width="1707" height="995" alt="LLM-wiki" src="https://github.com/user-attachments/assets/04085aab-af1d-4436-b1ba-e1be6ef865d4" />
 
 **[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
 
