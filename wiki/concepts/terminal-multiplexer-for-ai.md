@@ -1,7 +1,7 @@
 ---
 title: "Terminal Multiplexers for AI"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -13,7 +13,9 @@ aliases:
   - "终端复用器"
   - "tmux"
   - "cmux"
-related: []
+related:
+  - "[[claude-code-memory-system]]"
+  - "[[oh-my-claude-code]]"
 ---
 
 # Terminal Multiplexers for AI
@@ -60,7 +62,8 @@ related: []
 
 ## 关联概念
 
-（待补充）
+- [[claude-code-memory-system]] — `uses` tmux 持久会话与 Claude Code 的 Session 记忆互补
+- [[oh-my-claude-code]] — `uses` tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施
 
 ## 来源日记
 

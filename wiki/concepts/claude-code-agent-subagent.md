@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Agent/Subagent Architecture"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -61,6 +61,10 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 - [[agent-loop-architecture]] — `uses` Subagent 运行独立的 Agent Loop 实例
 - [[harness-engineering]] — `part-of` Context 隔离是 Harness 设计的重要机制
+- [[claude-code-extension-system]] — `uses` Agent 是扩展体系的第三层
+- [[code-reuse-in-agent-era]] — `constrains` Subagent 上下文隔离加剧了复用困难
+- [[oh-my-claude-code]] — `uses` OMC 基于 Agent/Subagent 架构
+- [[claude-code-memory-system]] — `uses` Subagent Memory 依赖进程隔离架构
 
 ## 来源日记
 

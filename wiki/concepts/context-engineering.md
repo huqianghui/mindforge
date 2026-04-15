@@ -1,7 +1,7 @@
 ---
 title: "Context Engineering"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -69,8 +69,8 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 - **来源**：[[05 - Strategic Implications and Future Outlook]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.6
+- **最近更新**：2026-04-15
+- **置信度**：0.7
 - **状态**：active
 
 > Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。
@@ -79,8 +79,8 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 - **来源**：[[05 - Strategic Implications and Future Outlook]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
+- **最近更新**：2026-04-15
+- **置信度**：0.8
 - **状态**：active
 
 > 优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。
@@ -94,6 +94,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - [[harness-engineering]] — `part-of` Context Engineering 是 Harness Engineering 的子集
 - [[mcp-vs-cli]] — `uses` MCP 是 Context Engineering 的工具接入层
 - [[context-explosion]] — `constrains` Context 爆炸是 CE 的核心挑战
+- [[agent-search-tools]] — `uses` 搜索工具是 Context Engineering 的信息获取层
+- [[context7]] — `uses` Context7 是 Context Engineering 的文档层工具
+- [[rtk-token-compression]] — `extends` RTK 是 Context Engineering 在工具链层面的实践
 
 ## 来源日记
 

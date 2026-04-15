@@ -1,7 +1,7 @@
 ---
 title: "The Bitter Lesson"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -48,8 +48,8 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
+- **最近更新**：2026-04-15
+- **置信度**：0.8
 - **状态**：active
 
 > 是一个跨领域元原则："让计算（search + learning）替代人类知识"，不限于强化学习。

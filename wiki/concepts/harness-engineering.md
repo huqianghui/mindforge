@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -39,8 +39,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe Coding系列01]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
+- **最近更新**：2026-04-15
+- **置信度**：0.8
 - **状态**：active
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。
@@ -59,8 +59,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe Coding系列01]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
+- **最近更新**：2026-04-15
+- **置信度**：0.8
 - **状态**：active
 
 > 单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。
@@ -89,8 +89,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.6
+- **最近更新**：2026-04-15
+- **置信度**：0.7
 - **状态**：active
 
 > model 是做决策的主体，外部代码只是缰绳。
@@ -104,6 +104,15 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[agent-loop-architecture]] — `uses` Agent Loop 是 Harness 的运行时核心
 - [[context-engineering]] — `extends` Context Engineering 是 Harness Engineering 的子集
 - [[claude-code-agent-subagent]] — `uses` Claude Code 是 Harness Engineering 理念的典型实现
+- [[skill-pattern]] — `uses` Skill Pattern 是 Harness 设计的认知层
+- [[bitter-lesson]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
+- [[code-reuse-in-agent-era]] — `produces` CLAUDE.md 架构约束是代码复用四层防线的第一层
+- [[oh-my-claude-code]] — `produces` OMC 是 Harness Engineering 理念的高层封装
+- [[one-person-team]] — `produces` Harness Engineering 是实现一人团队的技术基础
+- [[rtk-token-compression]] — `uses` Token 压缩是 Harness 工程的一个环节
+- [[harness-quality-gate]] — `contrasts` 名称类似但不同概念：前者是 AI Agent 系统工程范式，后者是 DevOps 质量门禁
+- [[agent-paradigms]] — `uses` Harness 提供范式切换的系统级支撑
+- [[context-explosion]] — `constrains` Context 管理是 Harness 的关键能力
 
 ## 来源日记
 

@@ -1,7 +1,7 @@
 ---
 title: "Agent Paradigms"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -63,6 +63,7 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 
 - [[agent-loop-architecture]] — `uses` Agent Loop 是范式执行的运行时载体
 - [[harness-engineering]] — `uses` Harness 提供范式切换的系统级支撑
+- [[skill-pattern]] — `contrasts` Agent Pattern 与 Skill Pattern 正交互补
 
 ## 来源日记
 

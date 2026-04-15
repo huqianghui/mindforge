@@ -1,7 +1,7 @@
 ---
 title: "Agent Loop Architecture"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-15"
 tags:
   - wiki
   - concept
@@ -72,6 +72,9 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 - [[harness-engineering]] — `part-of` Agent Loop 是 Harness 的运行时核心
 - [[claude-code-agent-subagent]] — `uses` Subagent 运行独立的 Agent Loop 实例
+- [[agent-paradigms]] — `uses` Agent Loop 是范式执行的运行时载体
+- [[autoresearch]] — `uses` AutoResearch 的循环结构本质上是特化的 Agent Loop
+- [[openclaw-agent-gateway]] — `uses` Agent 网关的核心仍是 Agent Loop
 
 ## 来源日记
 
