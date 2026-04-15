@@ -104,7 +104,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[agent-loop-architecture]] — `uses` Agent Loop 是 Harness 的运行时核心
 - [[context-engineering]] — `extends` Context Engineering 是 Harness Engineering 的子集
 - [[claude-code-agent-subagent]] — `uses` Claude Code 是 Harness Engineering 理念的典型实现
-- [[skill-pattern]] — `uses` Skill Pattern 是 Harness 设计的认知层
+- [[skill-pattern]] — `grounds` Skill Pattern 是 Harness 设计的认知层理论基础
 - [[bitter-lesson]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
 - [[code-reuse-in-agent-era]] — `produces` CLAUDE.md 架构约束是代码复用四层防线的第一层
 - [[oh-my-claude-code]] — `produces` OMC 是 Harness Engineering 理念的高层封装

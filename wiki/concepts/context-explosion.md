@@ -35,15 +35,15 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 > document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。
 
-### Claim: GSD 本质是 AI 驱动的 checklist pipeline 而非 skill system
+### Claim: GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system
 
 - **来源**：[[Vibe Coding系列05]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-04-15
 - **置信度**：0.7
 - **状态**：active
 
-> 优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。
+> 优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的"甜蜜点"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。
 
 ### Claim: Superpowers 的核心错位是"用文本分解解决计算分解问题"
 

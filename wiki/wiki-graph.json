@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-15T14:08:42.983854+00:00",
+  "generated_at": "2026-04-15T14:42:25.554865+00:00",
   "stats": {
     "nodes": 55,
-    "links": 148,
+    "links": 173,
     "orphan_links_removed": 0,
     "claims": 186,
     "categories": 8
@@ -430,7 +430,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.77,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "通用计算方法最终胜过手工领域知识",
@@ -454,8 +454,8 @@
           "statement": "Sutton 不是在推广 RL",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "是一个跨领域元原则：\"让计算（search + learning）替代人类知识\"，不限于强化学习。"
         },
@@ -693,7 +693,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "LLM 性能限制通常是上下文问题而非模型缺陷",
@@ -735,8 +735,8 @@
           "statement": "MCP 标准化为未来 AI \"App Store\" 生态奠基",
           "source": "05 - Strategic Implications and Future Outlook",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.6,
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
           "status": "active",
           "evidence": "Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。"
         },
@@ -744,8 +744,8 @@
           "statement": "AI 的可持续竞争优势来自上下文环境而非模型本身",
           "source": "05 - Strategic Implications and Future Outlook",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。"
         }
@@ -937,7 +937,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "企业数据物理统一但语义碎片化",
@@ -961,8 +961,8 @@
           "statement": "Ontology 将数据从\"可查询\"升级为\"可理解、可推理、可行动\"",
           "source": "Microsoft Fabric IQ本体（Ontology）管理功能实操解析",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "超越传统数据仓库的真正价值主张。"
         },
@@ -979,8 +979,8 @@
           "statement": "DDD 是\"蓝图思维\"，Palantir Ontology 超越纯数据建模",
           "source": "Palantir数据本体论（Ontology）：从概念到产品的深度解析",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "DDD 告诉你如何建模，Ontology 提供运行时平台——通过 Action Types 实现行动闭环。"
         },
@@ -988,8 +988,8 @@
           "statement": "Ontology 为 AI/ML 模型提供结构化语义基础",
           "source": "Palantir数据本体论（Ontology）：从概念到产品的深度解析",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.6,
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
           "status": "active",
           "evidence": "让模型在语义明确的对象图上推理而非原始数据表，降低幻觉风险。"
         }
@@ -1077,7 +1077,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 7,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -1092,8 +1092,8 @@
           "statement": "三家公司独立演化出同一套 Harness 设计范式",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。"
         },
@@ -1110,8 +1110,8 @@
           "statement": "级联失败是 Harness Engineering 出现的核心驱动力",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。"
         },
@@ -1137,8 +1137,8 @@
           "statement": "\"Agent = Model, Not Framework\" 是一个工程立场",
           "source": "learn-claude-code",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.6,
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
           "status": "active",
           "evidence": "model 是做决策的主体，外部代码只是缰绳。"
         }
@@ -1199,14 +1199,14 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.58,
+      "avg_confidence": 0.64,
       "claims": [
         {
           "statement": "Azure 企业级 LLM Wiki 应采用 AI Search（主体）+ CosmosDB Gremlin（图数据库补充）的双层架构",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-13",
-          "confidence": 0.5,
+          "last_updated": "2026-04-15",
+          "confidence": 0.6,
           "status": "active",
           "evidence": "AI Search 承担文档/向量存储 + 混合检索（BM25 + Vector）+ 语义重排的搜索主体角色；CosmosDB Gremlin API 专注于 Entity + Relationship 的存储与多跳遍历——对应 Obsidian 的 Graph View / Backlinks / `[[wikilinks]]`。CosmosDB 不做文档/向量主存储。"
         },
@@ -1214,8 +1214,8 @@
           "statement": "OmniRAG 路由根据查询类型自动选择最优检索路径",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-12",
-          "confidence": 0.5,
+          "last_updated": "2026-04-15",
+          "confidence": 0.6,
           "status": "active",
           "evidence": "语义/关键词查询走 AI Search（主路径），关系/遍历查询走 CosmosDB Gremlin（补充路径），复合查询先 Gremlin 图遍历缩小范围再 AI Search 精排。比单一 Vector RAG 能回答更广泛的问题。"
         },
@@ -1223,8 +1223,8 @@
           "statement": "LLM Wiki 的知识复利效应优于传统 RAG",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-13",
-          "confidence": 0.5,
+          "last_updated": "2026-04-15",
+          "confidence": 0.6,
           "status": "active",
           "evidence": "传统 RAG 的 chunk 质量依赖分块策略，每次查询从原始文档重新检索碎片。LLM Wiki 的文章由 LLM 编译保证质量（已综合、交叉引用），好的回答可写回 wiki 形成自增长循环——Karpathy 所说的 \"the wiki compounds over time\"。"
         },
@@ -1628,7 +1628,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.7,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
@@ -1652,8 +1652,8 @@
           "statement": "知识碎片化问题及解法",
           "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.6,
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
           "status": "active",
           "evidence": "OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
         },
@@ -2810,6 +2810,24 @@
       "description": "Subagent 运行独立的 Agent Loop 实例"
     },
     {
+      "source": "agent-loop-architecture",
+      "target": "agent-paradigms",
+      "relation_type": "uses",
+      "description": "Agent Loop 是范式执行的运行时载体"
+    },
+    {
+      "source": "agent-loop-architecture",
+      "target": "autoresearch",
+      "relation_type": "uses",
+      "description": "AutoResearch 的循环结构本质上是特化的 Agent Loop"
+    },
+    {
+      "source": "agent-loop-architecture",
+      "target": "openclaw-agent-gateway",
+      "relation_type": "uses",
+      "description": "Agent 网关的核心仍是 Agent Loop"
+    },
+    {
       "source": "agent-paradigms",
       "target": "agent-loop-architecture",
       "relation_type": "uses",
@@ -2820,6 +2838,12 @@
       "target": "harness-engineering",
       "relation_type": "uses",
       "description": "Harness 提供范式切换的系统级支撑"
+    },
+    {
+      "source": "agent-paradigms",
+      "target": "skill-pattern",
+      "relation_type": "contrasts",
+      "description": "Agent Pattern 与 Skill Pattern 正交互补"
     },
     {
       "source": "agent-search-tools",
@@ -2912,6 +2936,30 @@
       "description": "Context 隔离是 Harness 设计的重要机制"
     },
     {
+      "source": "claude-code-agent-subagent",
+      "target": "claude-code-extension-system",
+      "relation_type": "uses",
+      "description": "Agent 是扩展体系的第三层"
+    },
+    {
+      "source": "claude-code-agent-subagent",
+      "target": "code-reuse-in-agent-era",
+      "relation_type": "constrains",
+      "description": "Subagent 上下文隔离加剧了复用困难"
+    },
+    {
+      "source": "claude-code-agent-subagent",
+      "target": "oh-my-claude-code",
+      "relation_type": "uses",
+      "description": "OMC 基于 Agent/Subagent 架构"
+    },
+    {
+      "source": "claude-code-agent-subagent",
+      "target": "claude-code-memory-system",
+      "relation_type": "uses",
+      "description": "Subagent Memory 依赖进程隔离架构"
+    },
+    {
       "source": "claude-code-extension-system",
       "target": "skill-hub-ecosystem",
       "relation_type": "extends",
@@ -2948,6 +2996,12 @@
       "description": "PKC 的 Auto Memory 和 Agent 记忆是知识编译系统的持久化基础"
     },
     {
+      "source": "claude-code-memory-system",
+      "target": "terminal-multiplexer-for-ai",
+      "relation_type": "uses",
+      "description": "tmux 持久会话与 Session 记忆互补"
+    },
+    {
       "source": "code-reuse-in-agent-era",
       "target": "harness-engineering",
       "relation_type": "part-of",
@@ -2982,6 +3036,24 @@
       "target": "context-explosion",
       "relation_type": "constrains",
       "description": "Context 爆炸是 CE 的核心挑战"
+    },
+    {
+      "source": "context-engineering",
+      "target": "agent-search-tools",
+      "relation_type": "uses",
+      "description": "搜索工具是 Context Engineering 的信息获取层"
+    },
+    {
+      "source": "context-engineering",
+      "target": "context7",
+      "relation_type": "uses",
+      "description": "Context7 是 Context Engineering 的文档层工具"
+    },
+    {
+      "source": "context-engineering",
+      "target": "rtk-token-compression",
+      "relation_type": "extends",
+      "description": "RTK 是 Context Engineering 在工具链层面的实践"
     },
     {
       "source": "context-explosion",
@@ -3080,6 +3152,60 @@
       "description": "Claude Code 是 Harness Engineering 理念的典型实现"
     },
     {
+      "source": "harness-engineering",
+      "target": "skill-pattern",
+      "relation_type": "uses",
+      "description": "Skill Pattern 是 Harness 设计的认知层"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "bitter-lesson",
+      "relation_type": "contrasts",
+      "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "code-reuse-in-agent-era",
+      "relation_type": "produces",
+      "description": "CLAUDE.md 架构约束是代码复用四层防线的第一层"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "oh-my-claude-code",
+      "relation_type": "produces",
+      "description": "OMC 是 Harness Engineering 理念的高层封装"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "one-person-team",
+      "relation_type": "produces",
+      "description": "Harness Engineering 是实现一人团队的技术基础"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "rtk-token-compression",
+      "relation_type": "uses",
+      "description": "Token 压缩是 Harness 工程的一个环节"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "harness-quality-gate",
+      "relation_type": "contrasts",
+      "description": "名称类似但不同概念：前者是 AI Agent 系统工程范式，后者是 DevOps 质量门禁"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "agent-paradigms",
+      "relation_type": "uses",
+      "description": "Harness 提供范式切换的系统级支撑"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "context-explosion",
+      "relation_type": "constrains",
+      "description": "Context 管理是 Harness 的关键能力"
+    },
+    {
       "source": "harness-quality-gate",
       "target": "testcontainers",
       "relation_type": "uses",
@@ -3156,6 +3282,12 @@
       "target": "one-person-team",
       "relation_type": "uses",
       "description": "OMC Autopilot 助力一人团队模式"
+    },
+    {
+      "source": "oh-my-claude-code",
+      "target": "terminal-multiplexer-for-ai",
+      "relation_type": "uses",
+      "description": "tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施"
     },
     {
       "source": "one-person-team",
@@ -3280,14 +3412,14 @@
     {
       "source": "skill-hub-ecosystem",
       "target": "claude-code-extension-system",
-      "relation_type": "untyped",
-      "description": ""
+      "relation_type": "part-of",
+      "description": "Skill Hub 是 Claude Code 扩展体系的社区生态"
     },
     {
       "source": "skill-hub-ecosystem",
       "target": "openclaw-agent-gateway",
-      "relation_type": "untyped",
-      "description": ""
+      "relation_type": "part-of",
+      "description": "OpenClaw 是 Skill Hub 生态的主要平台之一"
     },
     {
       "source": "skill-pattern",
@@ -3326,6 +3458,12 @@
       "description": "Claude Code 的 Skill 机制是 Skill Runtime 的实际实现"
     },
     {
+      "source": "skill-runtime",
+      "target": "skill-creator-orchestration",
+      "relation_type": "extends",
+      "description": "Skill Creator 构建的是 Skill Runtime 的编排层"
+    },
+    {
       "source": "speech-technology-stack",
       "target": "voice-live-agent",
       "relation_type": "part-of",
@@ -3336,6 +3474,18 @@
       "target": "voice-activity-detection",
       "relation_type": "extends",
       "description": "VAD 是语音技术栈的关键组件"
+    },
+    {
+      "source": "terminal-multiplexer-for-ai",
+      "target": "claude-code-memory-system",
+      "relation_type": "uses",
+      "description": "tmux 持久会话与 Claude Code 的 Session 记忆互补"
+    },
+    {
+      "source": "terminal-multiplexer-for-ai",
+      "target": "oh-my-claude-code",
+      "relation_type": "uses",
+      "description": "tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施"
     },
     {
       "source": "testcontainers",
