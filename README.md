@@ -4,6 +4,14 @@
 
 This vault captures reading notes, technical deep-dives, and reflections from an architect's perspective. Topics span AI-native development workflows, context engineering, ontology-driven data platforms, and DevOps practices.
 
+## Wiki Knowledge Graph
+
+[![Wiki Knowledge Graph](asset/wiki-graph-preview.png)](https://huqianghui.github.io/mindforge/wiki/)
+
+**[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
+
+Click any node to inspect its claims, confidence scores, and connections. Filter by node type, relation type, or search by keyword.
+
 ---
 
 ## Articles
@@ -98,24 +106,6 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 - [The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](paper/2026-03-21-The-Bitter-Lesson.md)
 - [Continually Self-Improving AI 论文精读笔记](paper/2026-03-22-Continually-Self-Improving-AI论文精读笔记.md)
 - [Building Enterprise Realtime Voice Agents 论文精读笔记](paper/2026-04-06-Building-Enterprise-Realtime-Voice-Agents.md)
-
----
-
-## Wiki Knowledge Graph
-
-Interactive visualization of the personal knowledge wiki — 42 concepts, 9 methods, 4 decisions, 186 claims, and 148 typed relations rendered as a force-directed graph.
-
-**[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)**
-
-Features:
-- Node colors by type: Concept (blue), Method (green), Decision (orange)
-- Node size scaled by claims count
-- 8 relation types with distinct edge colors
-- Click to inspect: claims list, confidence scores, relations
-- Search, filter by node type and relation type
-- Auto-updates on wiki changes via GitHub Actions
-
-Data pipeline: `wiki/scripts/export-graph.py` scans all wiki pages and generates `wiki-graph.json`, which the React app (`wiki/visualizer/`) renders. A `post-commit` git hook automatically regenerates the data when wiki content changes.
 
 ---
 
