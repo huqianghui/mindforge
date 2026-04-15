@@ -102,8 +102,8 @@ related_methods: []
 
 ## 关联概念
 
-- [[personal-knowledge-compiler]] — 此方法的概念定义页
-- [[llm-wiki]] — LLM Wiki 是此工作流的理论基础
+- [[personal-knowledge-compiler]] — `implements` 此方法的概念定义页
+- [[llm-wiki]] — `grounds` LLM Wiki 是此工作流的理论基础
 
 ## 关联方法
 

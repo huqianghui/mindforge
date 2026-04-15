@@ -70,8 +70,8 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 ## 关联概念
 
-- [[continual-self-improving-ai]] — 持续自我改进是 Bitter Lesson 的延伸
-- [[harness-engineering]] — Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
+- [[continual-self-improving-ai]] — `extends` 持续自我改进是 Bitter Lesson 的延伸
+- [[harness-engineering]] — `constrains` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
 
 ## 来源日记
 

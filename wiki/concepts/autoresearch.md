@@ -80,8 +80,8 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ## 关联概念
 
-- [[agent-loop-architecture]] — AutoResearch 的循环结构本质上是特化的 Agent Loop
-- [[bitter-lesson]] — AutoResearch 体现了 Bitter Lesson 的"计算胜过人工知识"原则
+- [[agent-loop-architecture]] — `uses` AutoResearch 的循环结构本质上是特化的 Agent Loop
+- [[bitter-lesson]] — `grounds` AutoResearch 体现了 Bitter Lesson 的"计算胜过人工知识"原则
 
 ## 来源日记
 

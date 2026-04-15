@@ -61,8 +61,8 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 
 ## 关联概念
 
-- [[agent-loop-architecture]] — Agent Loop 是范式执行的运行时载体
-- [[harness-engineering]] — Harness 提供范式切换的系统级支撑
+- [[agent-loop-architecture]] — `uses` Agent Loop 是范式执行的运行时载体
+- [[harness-engineering]] — `uses` Harness 提供范式切换的系统级支撑
 
 ## 来源日记
 

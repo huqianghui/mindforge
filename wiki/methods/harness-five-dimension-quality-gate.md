@@ -118,13 +118,13 @@ related_methods:
 
 ## 关联概念
 
-- [[harness-quality-gate]] — 此方法的概念定义页
-- [[testcontainers]] — Step 4 集成测试的核心工具
-- [[harness-engineering]] — 质量门禁是 Harness Engineering 工具链的一部分
+- [[harness-quality-gate]] — `implements` 此方法的概念定义页
+- [[testcontainers]] — `uses` Step 4 集成测试的核心工具
+- [[harness-engineering]] — `implements` 质量门禁是 Harness Engineering 工具链的一部分
 
 ## 关联方法
 
-- [[ai-native-five-layer-pipeline]] — Pipeline Step 4/5 的质量保障
+- [[ai-native-five-layer-pipeline]] — `part-of` Pipeline Step 4/5 的质量保障
 
 ## 来源
 

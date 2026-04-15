@@ -58,7 +58,7 @@ related:
 
 ## 关联概念
 
-- [[one-person-team]] — 技能形成影响与一人团队模式的张力
+- [[one-person-team]] — `contrasts` 技能形成影响与一人团队模式的张力
 
 ## 来源日记
 

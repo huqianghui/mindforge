@@ -58,7 +58,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 ## 关联概念
 
-- [[harness-quality-gate]] — Testcontainers 是 Harness 质量门禁第 4 层（CI 编译与集成测试）的核心工具
+- [[harness-quality-gate]] — `part-of` Testcontainers 是 Harness 质量门禁第 4 层（CI 编译与集成测试）的核心工具
 
 ## 来源日记
 

@@ -81,9 +81,9 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ## 关联概念
 
-- [[skill-runtime]] — Skill Pattern 是 Skill Runtime 的认知架构基础
-- [[agent-paradigms]] — Agent Pattern 与 Skill Pattern 正交互补
-- [[harness-engineering]] — Skill Pattern 是 Harness 设计的认知层
+- [[skill-runtime]] — `grounds` Skill Pattern 是 Skill Runtime 的认知架构基础
+- [[agent-paradigms]] — `contrasts` Agent Pattern 与 Skill Pattern 正交互补
+- [[harness-engineering]] — `grounds` Skill Pattern 是 Harness 设计的认知层
 
 ## 来源日记
 

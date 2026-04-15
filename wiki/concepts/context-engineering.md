@@ -91,9 +91,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ## 关联概念
 
-- [[harness-engineering]] — Context Engineering 是 Harness Engineering 的子集
-- [[mcp-vs-cli]] — MCP 是 Context Engineering 的工具接入层
-- [[context-explosion]] — Context 爆炸是 CE 的核心挑战
+- [[harness-engineering]] — `part-of` Context Engineering 是 Harness Engineering 的子集
+- [[mcp-vs-cli]] — `uses` MCP 是 Context Engineering 的工具接入层
+- [[context-explosion]] — `constrains` Context 爆炸是 CE 的核心挑战
 
 ## 来源日记
 

@@ -60,8 +60,8 @@ related:
 
 ## 关联概念
 
-- [[skill-runtime]] — Skill Creator 构建的是 Skill Runtime 的编排层
-- [[claude-code-extension-system]] — Skill 是 Claude Code 扩展体系的核心组件
+- [[skill-runtime]] — `extends` Skill Creator 构建的是 Skill Runtime 的编排层
+- [[claude-code-extension-system]] — `part-of` Skill 是 Claude Code 扩展体系的核心组件
 
 ## 来源日记
 

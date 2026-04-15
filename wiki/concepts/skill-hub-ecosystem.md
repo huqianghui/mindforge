@@ -53,7 +53,7 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 
 ## 关联概念
 
-- [[azure-copilot-ecosystem]] — Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补
+- [[azure-copilot-ecosystem]] — `contrasts` Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补
 
 ## 来源日记
 

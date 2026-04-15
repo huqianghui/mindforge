@@ -61,8 +61,8 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 
 ## 关联概念
 
-- [[context7]] — Context7 是搜索三剑客之一
-- [[context-engineering]] — 搜索工具是 Context Engineering 的信息获取层
+- [[context7]] — `part-of` Context7 是搜索三剑客之一
+- [[context-engineering]] — `part-of` 搜索工具是 Context Engineering 的信息获取层
 
 ## 来源日记
 

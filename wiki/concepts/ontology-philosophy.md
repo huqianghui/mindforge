@@ -68,7 +68,7 @@ related:
 
 ## 关联概念
 
-- [[enterprise-ontology]] — 哲学本体论在企业数据平台中的工程应用
+- [[enterprise-ontology]] — `grounds` 哲学本体论在企业数据平台中的工程应用
 
 ## 来源日记
 

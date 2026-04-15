@@ -60,8 +60,8 @@ related:
 
 ## 关联概念
 
-- [[voice-live-agent]] — 语音技术栈服务于 Voice Live Agent
-- [[voice-activity-detection]] — VAD 是语音技术栈的关键组件
+- [[voice-live-agent]] — `part-of` 语音技术栈服务于 Voice Live Agent
+- [[voice-activity-detection]] — `extends` VAD 是语音技术栈的关键组件
 
 ## 来源日记
 

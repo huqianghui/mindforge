@@ -71,8 +71,8 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ## 关联概念
 
-- [[llm-wiki]] — Azure 企业级 LLM Wiki 方案依赖 Azure AI Search
-- [[skill-hub-ecosystem]] — Azure Skills 是 Microsoft 官方的 Skill 实现
+- [[llm-wiki]] — `uses` Azure 企业级 LLM Wiki 方案依赖 Azure AI Search
+- [[skill-hub-ecosystem]] — `part-of` Azure Skills 是 Microsoft 官方的 Skill 实现
 
 ## 来源日记
 

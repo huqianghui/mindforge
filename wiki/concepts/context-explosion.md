@@ -81,9 +81,9 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ## 关联概念
 
-- [[context-engineering]] — Context Engineering 的核心挑战之一
-- [[skill-runtime]] — Skill Runtime 的按需投影是 Context 爆炸的解法方向
-- [[harness-engineering]] — Context 管理是 Harness 的关键能力
+- [[context-engineering]] — `constrains` Context Engineering 的核心挑战之一
+- [[skill-runtime]] — `produces` Skill Runtime 的按需投影是 Context 爆炸的解法方向
+- [[harness-engineering]] — `constrains` Context 管理是 Harness 的关键能力
 
 ## 来源日记
 

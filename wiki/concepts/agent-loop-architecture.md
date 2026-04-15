@@ -70,8 +70,8 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ## 关联概念
 
-- [[harness-engineering]] — Agent Loop 是 Harness 的运行时核心
-- [[claude-code-agent-subagent]] — Subagent 运行独立的 Agent Loop 实例
+- [[harness-engineering]] — `part-of` Agent Loop 是 Harness 的运行时核心
+- [[claude-code-agent-subagent]] — `uses` Subagent 运行独立的 Agent Loop 实例
 
 ## 来源日记
 

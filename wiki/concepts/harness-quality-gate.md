@@ -51,9 +51,9 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 
 ## 关联概念
 
-- [[testcontainers]] — 质量门禁第 4 层的核心集成测试工具
-- [[harness-engineering]] — 名称类似但不同概念：Harness Quality Gate 是 DevOps 质量门禁，Harness Engineering 是 AI Agent 系统工程范式
-- [[harness-five-dimension-quality-gate]] — 实施方法：五维质量门禁的详细步骤和工具链
+- [[testcontainers]] — `uses` 质量门禁第 4 层的核心集成测试工具
+- [[harness-engineering]] — `contrasts` 名称类似但不同概念：Harness Quality Gate 是 DevOps 质量门禁，Harness Engineering 是 AI Agent 系统工程范式
+- [[harness-five-dimension-quality-gate]] — `produces` 实施方法：五维质量门禁的详细步骤和工具链
 
 ## 来源日记
 

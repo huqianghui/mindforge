@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T13:57:21.174802+00:00",
+  "generated_at": "2026-04-15T14:06:53.237489+00:00",
   "stats": {
     "nodes": 55,
     "links": 148,
@@ -2800,133 +2800,133 @@
     {
       "source": "agent-loop-architecture",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Agent Loop 是 Harness 的运行时核心"
     },
     {
       "source": "agent-loop-architecture",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Subagent 运行独立的 Agent Loop 实例"
     },
     {
       "source": "agent-paradigms",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Agent Loop 是范式执行的运行时载体"
     },
     {
       "source": "agent-paradigms",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Harness 提供范式切换的系统级支撑"
     },
     {
       "source": "agent-search-tools",
       "target": "context7",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Context7 是搜索三剑客之一"
     },
     {
       "source": "agent-search-tools",
       "target": "context-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "搜索工具是 Context Engineering 的信息获取层"
     },
     {
       "source": "ai-native-design-tools",
       "target": "ai-native-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "设计工具是 AI-Native Pipeline 的第一层"
     },
     {
       "source": "ai-native-pipeline",
       "target": "framework-selection",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Pipeline 各阶段对应不同框架"
     },
     {
       "source": "ai-native-pipeline",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "Pipeline 是 Harness Engineering 的具体工作流实现"
     },
     {
       "source": "ai-native-pipeline",
       "target": "ai-native-five-layer-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：五层流水线的详细步骤和决策点"
     },
     {
       "source": "ai-skill-formation",
       "target": "one-person-team",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "技能形成影响与一人团队模式的张力"
     },
     {
       "source": "autoresearch",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "AutoResearch 的循环结构本质上是特化的 Agent Loop"
     },
     {
       "source": "autoresearch",
       "target": "bitter-lesson",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "AutoResearch 体现了 Bitter Lesson 的\"计算胜过人工知识\"原则"
     },
     {
       "source": "azure-copilot-ecosystem",
       "target": "llm-wiki",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Azure 企业级 LLM Wiki 方案依赖 Azure AI Search"
     },
     {
       "source": "azure-copilot-ecosystem",
       "target": "skill-hub-ecosystem",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现"
     },
     {
       "source": "bitter-lesson",
       "target": "continual-self-improving-ai",
-      "relation_type": "untyped",
+      "relation_type": "extends",
       "description": "持续自我改进是 Bitter Lesson 的延伸"
     },
     {
       "source": "bitter-lesson",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
     },
     {
       "source": "claude-code-agent-subagent",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Subagent 运行独立的 Agent Loop 实例"
     },
     {
       "source": "claude-code-agent-subagent",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Context 隔离是 Harness 设计的重要机制"
     },
     {
       "source": "claude-code-extension-system",
       "target": "skill-hub-ecosystem",
-      "relation_type": "untyped",
+      "relation_type": "extends",
       "description": "Plugin 生态的社区实现"
     },
     {
       "source": "claude-code-extension-system",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Agent 是扩展体系的第三层"
     },
     {
       "source": "claude-code-extension-system",
       "target": "skill-runtime",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Skill 的运行时执行模型"
     },
     {
@@ -2950,169 +2950,169 @@
     {
       "source": "code-reuse-in-agent-era",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "CLAUDE.md 架构约束是 Harness Engineering 的一部分"
     },
     {
       "source": "code-reuse-in-agent-era",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Subagent 上下文隔离加剧了复用困难"
     },
     {
       "source": "code-reuse-in-agent-era",
       "target": "code-reuse-four-layer-defense",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：四层防线的详细步骤和决策点"
     },
     {
       "source": "context-engineering",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Context Engineering 是 Harness Engineering 的子集"
     },
     {
       "source": "context-engineering",
       "target": "mcp-vs-cli",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "MCP 是 Context Engineering 的工具接入层"
     },
     {
       "source": "context-engineering",
       "target": "context-explosion",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Context 爆炸是 CE 的核心挑战"
     },
     {
       "source": "context-explosion",
       "target": "context-engineering",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Context Engineering 的核心挑战之一"
     },
     {
       "source": "context-explosion",
       "target": "skill-runtime",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "Skill Runtime 的按需投影是 Context 爆炸的解法方向"
     },
     {
       "source": "context-explosion",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Context 管理是 Harness 的关键能力"
     },
     {
       "source": "context7",
       "target": "context-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Context7 是 Context Engineering 的文档层工具"
     },
     {
       "source": "context7",
       "target": "agent-search-tools",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Context7 是 Agent 搜索三剑客之一"
     },
     {
       "source": "continual-self-improving-ai",
       "target": "bitter-lesson",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "持续自我改进体现\"计算胜过人工知识\""
     },
     {
       "source": "continual-self-improving-ai",
       "target": "rag-architecture-comparison",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "EntiGraph + RAG 互补关系"
     },
     {
       "source": "enterprise-ontology",
       "target": "ontology-philosophy",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "企业本体论的哲学根基"
     },
     {
       "source": "enterprise-ontology",
       "target": "rag-architecture-comparison",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
     },
     {
       "source": "framework-selection",
       "target": "three-layer-plugin-architecture",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "框架选型的三层架构方案"
     },
     {
       "source": "framework-selection",
       "target": "context-explosion",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Context 爆炸影响框架选型决策"
     },
     {
       "source": "framework-selection",
       "target": "ai-native-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Pipeline 各阶段需要不同框架"
     },
     {
       "source": "framework-selection",
       "target": "gsd-project-scale-selection",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：项目规模分级与工具选择决策框架"
     },
     {
       "source": "harness-engineering",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Agent Loop 是 Harness 的运行时核心"
     },
     {
       "source": "harness-engineering",
       "target": "context-engineering",
-      "relation_type": "untyped",
+      "relation_type": "extends",
       "description": "Context Engineering 是 Harness Engineering 的子集"
     },
     {
       "source": "harness-engineering",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Claude Code 是 Harness Engineering 理念的典型实现"
     },
     {
       "source": "harness-quality-gate",
       "target": "testcontainers",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "质量门禁第 4 层的核心集成测试工具"
     },
     {
       "source": "harness-quality-gate",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "名称类似但不同概念：Harness Quality Gate 是 DevOps 质量门禁，Harness Engineering 是 AI Agent 系统工程范式"
     },
     {
       "source": "harness-quality-gate",
       "target": "harness-five-dimension-quality-gate",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：五维质量门禁的详细步骤和工具链"
     },
     {
       "source": "llm-wiki",
       "target": "azure-copilot-ecosystem",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Azure 企业级实现的基础设施层"
     },
     {
       "source": "llm-wiki",
       "target": "personal-knowledge-compiler",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "PKC 是 LLM Wiki 的实践方法论"
     },
     {
       "source": "llm-wiki",
       "target": "rag-architecture-comparison",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "LLM Wiki 是\"编译式\"知识，RAG 是\"检索式\"知识"
     },
     {
@@ -3124,121 +3124,121 @@
     {
       "source": "mcp-vs-cli",
       "target": "context-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "MCP 是 Context Engineering 的工具接入层"
     },
     {
       "source": "mcp-vs-cli",
       "target": "opencli",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "OpenCLI 为 CLI 路线提供标准化接口描述"
     },
     {
       "source": "notion-as-ai-layer",
       "target": "personal-knowledge-compiler",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "Notion 与 Obsidian 在知识管理中的定位对比"
     },
     {
       "source": "oh-my-claude-code",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "OMC 基于 Claude Code 的 Agent/Subagent 架构"
     },
     {
       "source": "oh-my-claude-code",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "OMC 是 Harness Engineering 理念的高层封装"
     },
     {
       "source": "oh-my-claude-code",
       "target": "one-person-team",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "OMC Autopilot 助力一人团队模式"
     },
     {
       "source": "one-person-team",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "Harness Engineering 是实现一人团队的技术基础"
     },
     {
       "source": "one-person-team",
       "target": "oh-my-claude-code",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "OMC 的 Autopilot 模式助力一人团队"
     },
     {
       "source": "ontology-philosophy",
       "target": "enterprise-ontology",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "哲学本体论在企业数据平台中的工程应用"
     },
     {
       "source": "openclaw-agent-gateway",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Agent 网关的核心仍是 Agent Loop"
     },
     {
       "source": "openclaw-agent-gateway",
       "target": "skill-hub-ecosystem",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "OpenClaw 也是 Skill Hub 生态的一部分"
     },
     {
       "source": "openclaw-agent-gateway",
       "target": "openclaw-five-stage-gateway",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：五阶段网关建设的详细步骤"
     },
     {
       "source": "opencli",
       "target": "mcp-vs-cli",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "OpenCLI 为 CLI 路线提供标准化支撑"
     },
     {
       "source": "opencli",
       "target": "openclaw-agent-gateway",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Agent 网关的工具调用层"
     },
     {
       "source": "personal-knowledge-compiler",
       "target": "llm-wiki",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "LLM Wiki 是 PKC 的理论基础"
     },
     {
       "source": "personal-knowledge-compiler",
       "target": "notion-as-ai-layer",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "Notion 在知识管理中的替代方案"
     },
     {
       "source": "personal-knowledge-compiler",
       "target": "personal-knowledge-compiler-workflow",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：日记到知识库的编译工作流"
     },
     {
       "source": "rag-architecture-comparison",
       "target": "enterprise-ontology",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Ontology 是企业 RAG 的语义基础"
     },
     {
       "source": "rag-architecture-comparison",
       "target": "llm-wiki",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "LLM Wiki 是\"编译式\"知识而非\"检索式\"知识"
     },
     {
       "source": "rag-architecture-comparison",
       "target": "continual-self-improving-ai",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "EntiGraph + RAG 互补关系"
     },
     {
@@ -3262,19 +3262,19 @@
     {
       "source": "skill-creator-orchestration",
       "target": "skill-runtime",
-      "relation_type": "untyped",
+      "relation_type": "extends",
       "description": "Skill Creator 构建的是 Skill Runtime 的编排层"
     },
     {
       "source": "skill-creator-orchestration",
       "target": "claude-code-extension-system",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Skill 是 Claude Code 扩展体系的核心组件"
     },
     {
       "source": "skill-hub-ecosystem",
       "target": "azure-copilot-ecosystem",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补"
     },
     {
@@ -3292,109 +3292,109 @@
     {
       "source": "skill-pattern",
       "target": "skill-runtime",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "Skill Pattern 是 Skill Runtime 的认知架构基础"
     },
     {
       "source": "skill-pattern",
       "target": "agent-paradigms",
-      "relation_type": "untyped",
+      "relation_type": "contrasts",
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
     },
     {
       "source": "skill-pattern",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "Skill Pattern 是 Harness 设计的认知层"
     },
     {
       "source": "skill-runtime",
       "target": "context-explosion",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Skill Runtime 是 Context 爆炸的解法方向"
     },
     {
       "source": "skill-runtime",
       "target": "skill-pattern",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "Google 的 Skill Pattern 是 Skill Runtime 的认知架构基础"
     },
     {
       "source": "skill-runtime",
       "target": "claude-code-extension-system",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "Claude Code 的 Skill 机制是 Skill Runtime 的实际实现"
     },
     {
       "source": "speech-technology-stack",
       "target": "voice-live-agent",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "语音技术栈服务于 Voice Live Agent"
     },
     {
       "source": "speech-technology-stack",
       "target": "voice-activity-detection",
-      "relation_type": "untyped",
+      "relation_type": "extends",
       "description": "VAD 是语音技术栈的关键组件"
     },
     {
       "source": "testcontainers",
       "target": "harness-quality-gate",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Testcontainers 是 Harness 质量门禁第 4 层（CI 编译与集成测试）的核心工具"
     },
     {
       "source": "three-layer-plugin-architecture",
       "target": "framework-selection",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "三层架构是框架选型的具体方案"
     },
     {
       "source": "three-layer-plugin-architecture",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "CLAUDE.md 路由是 Harness 的一部分"
     },
     {
       "source": "three-layer-plugin-architecture",
       "target": "claude-code-extension-system",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "三层架构基于 Claude Code 扩展体系"
     },
     {
       "source": "three-layer-plugin-architecture",
       "target": "gsd-five-step-workflow",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：GSD 五步开发工作流"
     },
     {
       "source": "voice-activity-detection",
       "target": "voice-live-agent",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Voice Live Agent 依赖 VAD 实现语音交互"
     },
     {
       "source": "voice-activity-detection",
       "target": "speech-technology-stack",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "VAD 是 Speech 技术栈的基础组件"
     },
     {
       "source": "voice-live-agent",
       "target": "voice-activity-detection",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "VAD 是 Voice Agent 的关键子技术"
     },
     {
       "source": "voice-live-agent",
       "target": "speech-technology-stack",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Voice Agent 涉及完整的语音技术栈"
     },
     {
       "source": "voice-live-agent",
       "target": "voice-cascaded-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "produces",
       "description": "实施方法：级联管线架构的详细步骤和决策点"
     },
     {
@@ -3424,175 +3424,175 @@
     {
       "source": "ai-native-five-layer-pipeline",
       "target": "ai-native-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "ai-native-five-layer-pipeline",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "Pipeline 是 Harness Engineering 的具体工作流实现"
     },
     {
       "source": "ai-native-five-layer-pipeline",
       "target": "framework-selection",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Pipeline 各阶段对应不同框架选型"
     },
     {
       "source": "ai-native-five-layer-pipeline",
       "target": "gsd-five-step-workflow",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "GSD 五步工作流是 Step 3 的详细实施方法"
     },
     {
       "source": "code-reuse-four-layer-defense",
       "target": "code-reuse-in-agent-era",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "code-reuse-four-layer-defense",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "CLAUDE.md 架构约束是 Harness Engineering 的一部分"
     },
     {
       "source": "code-reuse-four-layer-defense",
       "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Subagent 上下文隔离加剧了复用困难"
     },
     {
       "source": "code-reuse-four-layer-defense",
       "target": "gsd-five-step-workflow",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "GSD workflow 中可嵌入复用检查步骤"
     },
     {
       "source": "gsd-five-step-workflow",
       "target": "three-layer-plugin-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "三层架构是此工作流的框架基础"
     },
     {
       "source": "gsd-five-step-workflow",
       "target": "framework-selection",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "框架选型决定是否使用此工作流"
     },
     {
       "source": "gsd-five-step-workflow",
       "target": "ai-native-five-layer-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "五层 Pipeline 是更宏观的流程，GSD 五步对应其 Step 3"
     },
     {
       "source": "gsd-five-step-workflow",
       "target": "gsd-project-scale-selection",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "规模分级决定是否采用 GSD 五步"
     },
     {
       "source": "gsd-five-step-workflow",
       "target": "code-reuse-four-layer-defense",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "四层防线可嵌入 Step 5 Verify 流程"
     },
     {
       "source": "gsd-project-scale-selection",
       "target": "framework-selection",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "gsd-project-scale-selection",
       "target": "context-explosion",
-      "relation_type": "untyped",
+      "relation_type": "constrains",
       "description": "Context 爆炸是 L3/L4 项目的核心挑战"
     },
     {
       "source": "gsd-project-scale-selection",
       "target": "three-layer-plugin-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "三层架构是 L3+ 项目的工具组合方案"
     },
     {
       "source": "gsd-project-scale-selection",
       "target": "ai-native-five-layer-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Pipeline 是 L2+ 项目的完整开发流程"
     },
     {
       "source": "gsd-project-scale-selection",
       "target": "gsd-five-step-workflow",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "GSD 五步是 L2 项目的具体执行方法"
     },
     {
       "source": "harness-five-dimension-quality-gate",
       "target": "harness-quality-gate",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "harness-five-dimension-quality-gate",
       "target": "testcontainers",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Step 4 集成测试的核心工具"
     },
     {
       "source": "harness-five-dimension-quality-gate",
       "target": "harness-engineering",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "质量门禁是 Harness Engineering 工具链的一部分"
     },
     {
       "source": "harness-five-dimension-quality-gate",
       "target": "ai-native-five-layer-pipeline",
-      "relation_type": "untyped",
+      "relation_type": "part-of",
       "description": "Pipeline Step 4/5 的质量保障"
     },
     {
       "source": "openclaw-five-stage-gateway",
       "target": "openclaw-agent-gateway",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "openclaw-five-stage-gateway",
       "target": "agent-loop-architecture",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "Agent Loop 是 Stage 1 的核心"
     },
     {
       "source": "personal-knowledge-compiler-workflow",
       "target": "personal-knowledge-compiler",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "personal-knowledge-compiler-workflow",
       "target": "llm-wiki",
-      "relation_type": "untyped",
+      "relation_type": "grounds",
       "description": "LLM Wiki 是此工作流的理论基础"
     },
     {
       "source": "voice-cascaded-pipeline",
       "target": "voice-live-agent",
-      "relation_type": "untyped",
+      "relation_type": "implements",
       "description": "此方法的概念定义页"
     },
     {
       "source": "voice-cascaded-pipeline",
       "target": "speech-technology-stack",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "管线各阶段对应的技术栈"
     },
     {
       "source": "voice-cascaded-pipeline",
       "target": "voice-activity-detection",
-      "relation_type": "untyped",
+      "relation_type": "uses",
       "description": "VAD 是 Step 1 的关键子技术"
     },
     {

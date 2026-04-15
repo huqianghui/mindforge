@@ -61,9 +61,9 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ## 关联概念
 
-- [[agent-loop-architecture]] — Agent 网关的核心仍是 Agent Loop
-- [[skill-hub-ecosystem]] — OpenClaw 也是 Skill Hub 生态的一部分
-- [[openclaw-five-stage-gateway]] — 实施方法：五阶段网关建设的详细步骤
+- [[agent-loop-architecture]] — `uses` Agent 网关的核心仍是 Agent Loop
+- [[skill-hub-ecosystem]] — `part-of` OpenClaw 也是 Skill Hub 生态的一部分
+- [[openclaw-five-stage-gateway]] — `produces` 实施方法：五阶段网关建设的详细步骤
 
 ## 来源日记
 

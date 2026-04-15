@@ -102,8 +102,8 @@ related_methods: []
 
 ## 关联概念
 
-- [[openclaw-agent-gateway]] — 此方法的概念定义页
-- [[agent-loop-architecture]] — Agent Loop 是 Stage 1 的核心
+- [[openclaw-agent-gateway]] — `implements` 此方法的概念定义页
+- [[agent-loop-architecture]] — `uses` Agent Loop 是 Stage 1 的核心
 
 ## 关联方法
 

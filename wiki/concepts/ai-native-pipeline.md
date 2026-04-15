@@ -61,9 +61,9 @@ AI-Native 五层开发 Pipeline 不是工具的串联而是思维模式的转换
 
 ## 关联概念
 
-- [[framework-selection]] — Pipeline 各阶段对应不同框架
-- [[harness-engineering]] — Pipeline 是 Harness Engineering 的具体工作流实现
-- [[ai-native-five-layer-pipeline]] — 实施方法：五层流水线的详细步骤和决策点
+- [[framework-selection]] — `uses` Pipeline 各阶段对应不同框架
+- [[harness-engineering]] — `implements` Pipeline 是 Harness Engineering 的具体工作流实现
+- [[ai-native-five-layer-pipeline]] — `produces` 实施方法：五层流水线的详细步骤和决策点
 
 ## 来源日记
 

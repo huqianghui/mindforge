@@ -101,9 +101,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ## 关联概念
 
-- [[agent-loop-architecture]] — Agent Loop 是 Harness 的运行时核心
-- [[context-engineering]] — Context Engineering 是 Harness Engineering 的子集
-- [[claude-code-agent-subagent]] — Claude Code 是 Harness Engineering 理念的典型实现
+- [[agent-loop-architecture]] — `uses` Agent Loop 是 Harness 的运行时核心
+- [[context-engineering]] — `extends` Context Engineering 是 Harness Engineering 的子集
+- [[claude-code-agent-subagent]] — `uses` Claude Code 是 Harness Engineering 理念的典型实现
 
 ## 来源日记
 

@@ -91,9 +91,9 @@ related_methods: []
 
 ## 关联概念
 
-- [[voice-live-agent]] — 此方法的概念定义页
-- [[speech-technology-stack]] — 管线各阶段对应的技术栈
-- [[voice-activity-detection]] — VAD 是 Step 1 的关键子技术
+- [[voice-live-agent]] — `implements` 此方法的概念定义页
+- [[speech-technology-stack]] — `uses` 管线各阶段对应的技术栈
+- [[voice-activity-detection]] — `uses` VAD 是 Step 1 的关键子技术
 
 ## 关联方法
 

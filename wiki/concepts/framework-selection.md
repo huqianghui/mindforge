@@ -81,10 +81,10 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ## 关联概念
 
-- [[three-layer-plugin-architecture]] — 框架选型的三层架构方案
-- [[context-explosion]] — Context 爆炸影响框架选型决策
-- [[ai-native-pipeline]] — Pipeline 各阶段需要不同框架
-- [[gsd-project-scale-selection]] — 实施方法：项目规模分级与工具选择决策框架
+- [[three-layer-plugin-architecture]] — `produces` 框架选型的三层架构方案
+- [[context-explosion]] — `constrains` Context 爆炸影响框架选型决策
+- [[ai-native-pipeline]] — `uses` Pipeline 各阶段需要不同框架
+- [[gsd-project-scale-selection]] — `produces` 实施方法：项目规模分级与工具选择决策框架
 
 ## 来源日记
 

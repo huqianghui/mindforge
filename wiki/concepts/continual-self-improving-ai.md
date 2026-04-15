@@ -72,8 +72,8 @@ related:
 
 ## 关联概念
 
-- [[bitter-lesson]] — 持续自我改进体现"计算胜过人工知识"
-- [[rag-architecture-comparison]] — EntiGraph + RAG 互补关系
+- [[bitter-lesson]] — `grounds` 持续自我改进体现"计算胜过人工知识"
+- [[rag-architecture-comparison]] — `uses` EntiGraph + RAG 互补关系
 
 ## 来源日记
 

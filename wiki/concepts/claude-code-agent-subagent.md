@@ -59,8 +59,8 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ## 关联概念
 
-- [[agent-loop-architecture]] — Subagent 运行独立的 Agent Loop 实例
-- [[harness-engineering]] — Context 隔离是 Harness 设计的重要机制
+- [[agent-loop-architecture]] — `uses` Subagent 运行独立的 Agent Loop 实例
+- [[harness-engineering]] — `part-of` Context 隔离是 Harness 设计的重要机制
 
 ## 来源日记
 

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"ls -la /Users/huqianghui/Documents/obsidian-daily/.github/workflows/ 2>&1\",\"description\":\"List GitHub Actions workflow directory\"}",
+  "error": "Exit code 1\nls: /Users/huqianghui/Documents/obsidian-daily/.github/workflows/: No such file or directory",
+  "timestamp": "2026-04-15T13:36:56.238Z",
+  "retry_count": 1
+}
