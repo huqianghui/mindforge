@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-15T13:32:17.627373+00:00",
+  "generated_at": "2026-04-15T13:57:21.174802+00:00",
   "stats": {
-    "nodes": 53,
-    "links": 141,
+    "nodes": 55,
+    "links": 148,
     "orphan_links_removed": 0,
-    "claims": 180,
+    "claims": 186,
     "categories": 8
   },
   "nodes": [
@@ -1627,7 +1627,7 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 6,
       "avg_confidence": 0.7,
       "claims": [
         {
@@ -1674,6 +1674,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "实践反馈闭环（方法→实践→置信度回写）、知识成熟度模型（6维度×4级别）、Why/决策层、类型化关联（8种）、跨切面查询（6种查询类型）——五项改进将 PKC 从\"提取→记录\"升级为\"提取→验证→演进→查询\"的完整知识管理循环。"
+        },
+        {
+          "statement": "知识图谱可视化让 PKC 从文本走向交互式图谱",
+          "source": "2026-04-15-周三",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从\"编译知识\"到\"可视化知识生态\"的关键一步。"
         }
       ]
     },
@@ -1731,6 +1740,54 @@
           "confidence": 0.5,
           "status": "active",
           "evidence": "基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。"
+        }
+      ]
+    },
+    {
+      "id": "rtk-token-compression",
+      "type": "concept",
+      "title": "RTK Token Compression",
+      "summary": "RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 AI Coding Agent（如 Claude Code）与底层操作系统之间插入一个透明代理层，对工具调用的输出进行 token 压缩，从而降低 LLM 上下文消耗、减少成本并提升响应速度。核心思路是\"不改 Agent、不改 LLM，只压缩中间数据流\"——通过 59 个 TOML 配置文件和 38 个 Rust 模块实现可扩展的策略引擎。",
+      "tags": [
+        "wiki",
+        "concept",
+        "token-compression",
+        "cli",
+        "rust",
+        "ai-agent"
+      ],
+      "category": "知识管理与工具",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "RTK 通过 CLI 代理实现透明 token 压缩",
+          "source": "2026-04-14-周二",
+          "first_seen": "2026-04-14",
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "RTK 在 Agent 和 OS 之间插入代理层，拦截 Bash/Read/Glob/Grep/Ls 等工具调用的输出，通过策略引擎裁剪、压缩、重组数据后返回给 Agent。Agent 无需任何修改即可获得压缩后的输出。"
+        },
+        {
+          "statement": "RTK 的策略引擎基于 TOML 配置实现可扩展压缩",
+          "source": "2026-04-15-周三",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "59 个 TOML 配置文件定义了针对不同命令（git diff、cargo test、npm install 等）的压缩策略，包括行过滤、正则替换、重复折叠、截断等操作。用户可通过 Session 数据分析实际 token 消耗，定制个性化压缩规则。"
+        },
+        {
+          "statement": "RTK 代表 Agent 工具链中\"中间件\"范式",
+          "source": "2026-04-15-周三",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "RTK 的架构启示：AI Agent 的工具调用链可以像 Web 中间件一样插入处理层。这种模式可以扩展到安全审计（拦截危险命令）、缓存（重复查询去重）、可观测性（记录所有工具调用）等场景。"
         }
       ]
     },
@@ -2251,6 +2308,44 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。"
+        }
+      ]
+    },
+    {
+      "id": "ai-adoption-six-step-evolution",
+      "type": "method",
+      "title": "AI 工具采纳六步进化",
+      "summary": "Mitchell Hashimoto（HashiCorp 联合创始人）从 AI 怀疑论者到重度用户的六步进化模型。核心洞见：AI 工具的价值不在于它能做什么，而在于你是否愿意投入足够时间去发现它的边界，然后在边界内让它为你工作。这是一个渐进式的认知迭代过程，每一步都建立在前一步的经验之上。",
+      "tags": [
+        "wiki",
+        "method",
+        "ai-adoption",
+        "workflow",
+        "developer-practice"
+      ],
+      "category": "",
+      "method_type": "pipeline",
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "AI 工具采纳是渐进认知迭代，非一步到位",
+          "source": "2026-04-15-周三",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-04-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Mitchell Hashimoto 从怀疑到重度使用经历了 6 个阶段。核心不是工具本身的能力变化，而是使用者对边界认知的深化。每一步都需要实际投入时间去\"发现边界\"。"
+        },
+        {
+          "statement": "Step 4（稳赢任务外包）不一定适合所有人",
+          "source": "2026-04-15-周三",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-04-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "实践者注意到 Step 4 与个人习惯不一致——部分开发者对代码质量有强控制欲，更倾向于自己完成后用 Agent review，而非直接委托。其余 5 步基本符合实际采纳路径。"
         }
       ]
     },
@@ -3147,6 +3242,24 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
+      "source": "rtk-token-compression",
+      "target": "context-engineering",
+      "relation_type": "extends",
+      "description": "RTK 是 Context Engineering 在工具链层面的实践——通过压缩工具输出来优化 LLM 可用上下文"
+    },
+    {
+      "source": "rtk-token-compression",
+      "target": "harness-engineering",
+      "relation_type": "part-of",
+      "description": "Token 压缩是 Harness 工程的一个环节——优化 Agent 运行环境"
+    },
+    {
+      "source": "rtk-token-compression",
+      "target": "mcp-vs-cli",
+      "relation_type": "contrasts",
+      "description": "RTK 选择 CLI 代理而非 MCP 协议，体现了两条工具集成路线的不同取舍"
+    },
+    {
       "source": "skill-creator-orchestration",
       "target": "skill-runtime",
       "relation_type": "untyped",
@@ -3283,6 +3396,30 @@
       "target": "voice-cascaded-pipeline",
       "relation_type": "untyped",
       "description": "实施方法：级联管线架构的详细步骤和决策点"
+    },
+    {
+      "source": "ai-adoption-six-step-evolution",
+      "target": "harness-engineering",
+      "relation_type": "implements",
+      "description": "约束系统（Step 5）正是 Harness Engineering 的实践"
+    },
+    {
+      "source": "ai-adoption-six-step-evolution",
+      "target": "one-person-team",
+      "relation_type": "grounds",
+      "description": "六步进化的最终状态对应 One Person Team 概念"
+    },
+    {
+      "source": "ai-adoption-six-step-evolution",
+      "target": "ai-native-pipeline",
+      "relation_type": "extends",
+      "description": "扩展了 AI-Native 开发流水线的采纳视角"
+    },
+    {
+      "source": "ai-adoption-six-step-evolution",
+      "target": "gsd-five-step-workflow",
+      "relation_type": "contrasts",
+      "description": "GSD 聚焦单次项目执行，六步进化聚焦长期工作模式转变"
     },
     {
       "source": "ai-native-five-layer-pipeline",
@@ -3636,7 +3773,8 @@
         "notion-as-ai-layer",
         "ai-native-design-tools",
         "terminal-multiplexer-for-ai",
-        "claude-code-memory-system"
+        "claude-code-memory-system",
+        "rtk-token-compression"
       ]
     }
   ]

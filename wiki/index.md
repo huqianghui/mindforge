@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-04-13
-stats: "41 concepts, 8 methods, 4 decisions, ~167 claims"
+stats: "42 concepts, 9 methods, 4 decisions, ~186 claims"
 tags:
   - wiki
   - index
@@ -128,6 +128,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[ai-native-design-tools]] — AI 原生设计工具：Pencil / Excalidraw / Draw.io
 - [[terminal-multiplexer-for-ai]] — 终端复用器：tmux / cmux 与 AI 工作流
 - [[claude-code-memory-system]] — Claude Code 六层记忆与持久化体系
+- [[rtk-token-compression]] — RTK（Rust Token Killer）：AI Coding Agent 的 Token 压缩中间件
 
 ## 方法索引
 
@@ -162,6 +163,10 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Quality Gate（质量门禁）
 
 - [[harness-five-dimension-quality-gate]] — Harness 五维质量门禁
+
+### Pipeline（顺序流程）— 补充
+
+- [[ai-adoption-six-step-evolution]] — AI 工具采纳六步进化（Mitchell Hashimoto）
 
 ### Architecture Pattern（架构模式）
 
