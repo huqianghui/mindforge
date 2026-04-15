@@ -26,7 +26,7 @@ export function useGraphData(): UseGraphDataReturn {
   );
 
   useEffect(() => {
-    fetch('/wiki-graph.json')
+    fetch(`${import.meta.env.BASE_URL}wiki-graph.json`)
       .then((res) => res.json())
       .then((data: WikiGraph) => {
         setRaw(data);
