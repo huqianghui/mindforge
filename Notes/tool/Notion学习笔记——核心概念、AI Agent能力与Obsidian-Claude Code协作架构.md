@@ -249,5 +249,5 @@ claude mcp add notion \
 
 ## 相关文章
 
-- [[Claude Code扩展三剑客：Command、Skill与Agent的区别与协作]] — Claude Code 扩展机制
+- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]] — Claude Code 扩展机制
 - [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent 架构模式

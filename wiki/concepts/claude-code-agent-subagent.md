@@ -25,7 +25,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Agent 和 Subagent 是同一个东西的两面
 
-- **来源**：[[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
+- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -35,7 +35,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Subagent Context 与主 session 完全隔离
 
-- **来源**：[[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
+- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -68,5 +68,5 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ## 来源日记
 
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — 架构解析
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — 架构解析
 - [[learn-claude-code]] — 进程隔离洞察

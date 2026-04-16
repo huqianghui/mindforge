@@ -1,10 +1,10 @@
 ---
-title: Claude Code 扩展三剑客：Command、Skill 与 Agent 的区别与协作
+title: Claude Code 系列 04：扩展三剑客——Command、Skill 与 Agent 的区别与协作
 created: 2026-03-16
 tags: [AI, claude-code, command, skill, agent, extension, architecture]
 ---
 
-# Claude Code 扩展三剑客：Command、Skill 与 Agent 的区别与协作
+# Claude Code 系列 04：扩展三剑客——Command、Skill 与 Agent 的区别与协作
 
 Claude Code 的扩展体系由三个核心概念构成：**Command**、**Skill** 和 **Agent**。它们各有不同的定位和使用场景，但又可以相互配合形成完整的工作流。本文将深入解析三者的本质区别、配置方式、触发机制、权限模型，以及它们如何协作。
 
@@ -325,7 +325,7 @@ Agent 查找优先级：
          └── 仅返回最终摘要文本 ─────────┘
 ```
 
-关于 Agent 的 Context 隔离机制，在 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] 中有更深入的分析。核心结论是：**Context 完全隔离是刻意的架构决策**，目的是保护主 session 的 context window、保证 subagent 的专注性、支持多 subagent 并行。
+关于 Agent 的 Context 隔离机制，在 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] 中有更深入的分析。核心结论是：**Context 完全隔离是刻意的架构决策**，目的是保护主 session 的 context window、保证 subagent 的专注性、支持多 subagent 并行。
 
 ---
 
@@ -404,7 +404,7 @@ Agent 查找优先级：
 
 Agent 在文件系统中定义时叫 "agent"，被 `Agent` 工具调用运行时叫 "subagent"。**这是同一个东西的两面，没有两个独立概念**。
 
-关于 Agent/Subagent 架构的完整分析，参见 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]，以下是关键要点的提炼：
+关于 Agent/Subagent 架构的完整分析，参见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]，以下是关键要点的提炼：
 
 ### 7.1 Context 完全隔离
 
@@ -449,7 +449,7 @@ memory: project              # 持久记忆（user/project/local）
 
 ### 7.4 三种经典 Subagent 角色
 
-以 Superpowers 插件为例（详见 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] 第 3 节）：
+以 Superpowers 插件为例（详见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] 第 3 节）：
 
 | 角色 | 实现方式 | 特点 |
 |---|---|---|
@@ -617,7 +617,7 @@ Skill 最强大的特性是支持 **plugin 化分发**。用户可以通过 mark
 
 ## 相关文章
 
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — Agent/Subagent 架构的深层分析
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Agent/Subagent 架构的深层分析
 - [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 中的实践应用
 
 ## 参考资料

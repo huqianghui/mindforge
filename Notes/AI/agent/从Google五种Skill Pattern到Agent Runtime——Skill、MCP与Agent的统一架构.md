@@ -362,5 +362,5 @@ Orchestrator 选择 Skill：
 - [Beyond Tool Use: Implementing Cognitive Patterns with Google Antigravity Skills](https://medium.com/google-cloud/beyond-tool-use-implementing-cognitive-patterns-with-google-antigravity-skills-c0eea90fa430)
 - [知乎：Skill 在上下文工程中的位置与作用](https://zhuanlan.zhihu.com/p/2017716306569348763)
 - [Comprehensive Analysis of Agent Cognitive Frameworks](https://boardor.com/blog/ai-agent-comprehensive-analysis-of-7-cognitive-frameworks-and-code-implementation)
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
-- [[Claude Code扩展三剑客：Command、Skill与Agent的区别与协作]]
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]

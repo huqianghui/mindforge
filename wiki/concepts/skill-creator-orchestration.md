@@ -46,7 +46,7 @@ related:
 
 ### Claim: Skill 跨平台兼容性是事实标准
 
-- **来源**：[[Coding Agent Plugin生态调研]]
+- **来源**：[[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -66,4 +66,4 @@ related:
 ## 来源日记
 
 - [[使用Skill-Creator融合多个PPT Skill]] — Skill 融合实践
-- [[Coding Agent Plugin生态调研]] — 跨平台兼容性
+- [[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]] — 跨平台兼容性

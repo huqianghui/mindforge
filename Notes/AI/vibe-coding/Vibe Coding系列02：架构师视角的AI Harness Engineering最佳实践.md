@@ -539,9 +539,9 @@ Rich Sutton 在 [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] 中总结了 
 #### 相关笔记
 
 - [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
-- [[Claude Code扩展三剑客：Command、Skill与Agent的区别与协作]]
-- [[learn-claude-code——打开Coding Agent黑盒]] — 12 层 Harness 的渐进式解构
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] — 12 层 Harness 的渐进式解构
 - [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson 读书笔记]] — 为什么元能力不会被 AI 淘汰的理论基础
 - [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Harness 的 Selection Layer 缺口与行业范式迁移
 - [[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]]

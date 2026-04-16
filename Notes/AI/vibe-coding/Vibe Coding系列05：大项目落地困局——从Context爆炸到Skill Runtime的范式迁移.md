@@ -350,6 +350,6 @@ Granularity Layer 的职责：确保 State Layer 中的每个 unit 都是 **cont
 
 - [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — State Layer 的系统实践
 - [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 的全流程
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — Agent/Subagent 架构中的 context 传递
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Agent/Subagent 架构中的 context 传递
 - [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 各框架的定位与组合策略
 - [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] — Selection Layer 时间窗口的理论基础

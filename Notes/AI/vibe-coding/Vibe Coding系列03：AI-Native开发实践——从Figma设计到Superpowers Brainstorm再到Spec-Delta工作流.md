@@ -153,7 +153,7 @@ Brainstorm 输出
 
 **本文推荐的路径：Brainstorm 做初始设计 → 转化为 OpenSpec → 后续用 Spec Delta 迭代。**
 
-路径 A 的 subagent 架构有其适用场景（并行独立任务、角色对抗式 review、混合模型降成本），但对于 Vibe Coding（一个人 + 强模型）来说往往过重。详细分析见 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]。
+路径 A 的 subagent 架构有其适用场景（并行独立任务、角色对抗式 review、混合模型降成本），但对于 Vibe Coding（一个人 + 强模型）来说往往过重。详细分析见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]。
 
 ### Superpowers 的价值分层（基于实践）
 
@@ -300,7 +300,7 @@ OpenSpec 的核心思想是：**把需求存到 repo，而不是 chat**。这样
 
 ![subagent-code-reviewer](../../../asset/subagent-code-reviewer.png)
 
-> 详细的 Agent/Subagent 架构原理参见 [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
+> 详细的 Agent/Subagent 架构原理参见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
 
 ### 下一步计划
 
@@ -364,4 +364,4 @@ OpenSpec 的核心思想是：**把需求存到 repo，而不是 chat**。这样
 - Superpowers 作者博客：[Superpowers for Claude Code](https://blog.fsck.com/2025/10/09/superpowers/)
 - OpenSpec：[OpenSpec — Spec-Driven Development](https://intent-driven.dev) — Spec-Driven Development 工具
 - UI-UX-Pro-Max Skill：Claude Code UI 设计智能插件
-- 深入解析：[[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]
+- 深入解析：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]

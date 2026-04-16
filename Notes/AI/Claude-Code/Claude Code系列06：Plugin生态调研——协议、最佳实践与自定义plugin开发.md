@@ -1,10 +1,10 @@
 ---
-title: Coding Agent Plugin 生态调研——协议、最佳实践与自定义 plugin 开发
+title: Claude Code 系列 06：Plugin 生态调研——协议、最佳实践与自定义 Plugin 开发
 created: 2026-03-21
 tags: [AI, claude-code, plugin, skill, agent, MCP, coding-agent, extension, marketplace, devtools]
 ---
 
-# Coding Agent Plugin 生态调研——协议、最佳实践与自定义 plugin 开发
+# Claude Code 系列 06：Plugin 生态调研——协议、最佳实践与自定义 Plugin 开发
 
 ## 一句话结论
 
@@ -426,9 +426,9 @@ Anthropic 的插件体系允许任何人托管自己的市场：
 
 本文是 "learn-claude-code" 系列的延伸。之前的文章从不同角度剖析了 Claude Code 的扩展体系：
 
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]]——聚焦 Agent/Subagent 的运行时架构，解释了 model 如何通过 harness 层调度子代理
-- [[Claude Code扩展三剑客：Command、Skill与Agent的区别与协作]]——详细对比了三种扩展类型的定位和使用场景
-- [[learn-claude-code——打开Coding Agent黑盒]]——从源码层面还原了 Claude Code 的 Agent Loop、Tool 系统和 Permission 设计
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]——聚焦 Agent/Subagent 的运行时架构，解释了 model 如何通过 harness 层调度子代理
+- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]——详细对比了三种扩展类型的定位和使用场景
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]]——从源码层面还原了 Claude Code 的 Agent Loop、Tool 系统和 Permission 设计
 
 **Plugin 是这些概念的"包装层"**——它不引入新的运行时机制，而是将 Command、Skill、Agent、Hook、MCP 等已有组件统一封装为可分发的模块。理解前面的文章后，Plugin 的设计逻辑就非常自然：
 
@@ -439,7 +439,7 @@ Plugin = Command + Skill + Agent + Hook + MCP + LSP
        + Marketplace 分发
 ```
 
-从 [[learn-claude-code——打开Coding Agent黑盒]] 提出的 Harness 公式来看：
+从 [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] 提出的 Harness 公式来看：
 
 ```
 Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions

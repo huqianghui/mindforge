@@ -1,5 +1,5 @@
 ---
-title: Claude Code 记忆全景：从 Session 到 Memory 的六层持久化体系
+title: Claude Code 系列 05：记忆全景——从 Session 到 Memory 的六层持久化体系
 created: 2026-04-13
 tags:
   - claude-code
@@ -9,7 +9,7 @@ tags:
   - tool
 ---
 
-# Claude Code 记忆全景：从 Session 到 Memory 的六层持久化体系
+# Claude Code 系列 05：记忆全景——从 Session 到 Memory 的六层持久化体系
 
 ## 为什么需要理解 Claude Code 的记忆机制？
 

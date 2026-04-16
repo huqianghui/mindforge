@@ -315,5 +315,5 @@ finishing-a-development-branch ← 分支收尾
 
 - [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 在 superpowers + gstack 基础上再加 GSD 外层的三层架构设计
 - [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 流程框架选择的全景对比
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — superpowers 内部的 Agent/Subagent 架构分析
-- [[Coding Agent Plugin生态调研——协议、最佳实践与自定义plugin开发]] — 更广泛的 Coding Agent 插件生态调研
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — superpowers 内部的 Agent/Subagent 架构分析
+- [[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]] — 更广泛的 Coding Agent 插件生态调研

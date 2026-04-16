@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Users/huqianghui/Documents/obsidian-daily && find . -name \\\"*.md\\\" -not -path \\\"./personal-journal/*\\\" -print0 | while IFS= read -r -d '' f; do sed -i '' \\\\\\n  -e 's/\\\\[\\\\[Claude Code的...",
+  "error": "Exit code 2\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or directory\ngsed: can't read : No such file or dir...",
+  "timestamp": "2026-04-16T11:25:18.837Z",
+  "retry_count": 2
+}

@@ -1,10 +1,10 @@
 ---
-title: Claude Code 的 Agent 与 Subagent 架构解析——以 Superpowers 为例
+title: Claude Code 系列 03：Agent、Subagent 与 Teammate 架构解析——从一次性委派到长期协作
 created: 2026-03-15
-tags: [AI, claude-code, agent, subagent, superpowers, vibe-coding, architecture]
+tags: [AI, claude-code, agent, subagent, teammate, superpowers, vibe-coding, architecture]
 ---
 
-# Claude Code 的 Agent 与 Subagent 架构解析——以 Superpowers 为例
+# Claude Code 系列 03：Agent、Subagent 与 Teammate 架构解析——从一次性委派到长期协作
 
 ## 一句话结论
 
@@ -356,7 +356,143 @@ Superpowers 的 spec-reviewer prompt 中有一段很精彩的设计：
 
 ---
 
-## 7. 总结：一张图看清全貌
+## 7. 从 Subagent 到 Teammate——长期协作的演进
+
+### 7.1 Subagent 的边界
+
+前面六节讨论的 Subagent 有一个很清晰的生命周期：
+
+```
+创建 → 执行 → 返回摘要 → 消失
+```
+
+这非常适合一次性委派（"帮我审查这个模块"、"并行修 3 个测试"）。但如果你需要：
+
+- 一个队友**反复接活**——这轮实现代码，下一轮修 review 意见，再下一轮补测试
+- 多个队友**互相通信**——coder 做完通知 tester，tester 发现问题通知 coder
+- 队友在**任务间保持身份**——不是每次都从零开始，而是"Alice 是 coder，Bob 是 tester"
+
+Subagent 的"干完就消失"模式就不够用了。系统缺的不是"再开一个模型调用"，而是**一批有身份、能长期存在、能反复协作的队友**。
+
+### 7.2 Teammate 的定义
+
+Teammate 是 Claude Code 团队系统中的核心概念——**一个拥有名字、角色、消息入口和生命周期的持久 agent**。
+
+与 Subagent 的本质区别在于三个属性：
+
+| 属性 | Subagent | Teammate |
+|------|----------|----------|
+| **身份** | 匿名，由调用参数定义 | 有名字和角色（`alice: coder`） |
+| **通信** | 只能向 parent 返回摘要 | 有独立的**收件箱（inbox）**，任何队友都可以给它发消息 |
+| **生命周期** | 单次执行后消失 | 持久存在，可以反复接收新任务 |
+
+### 7.3 三者对比：Subagent vs Runtime Task vs Teammate
+
+这是最容易混淆的三个概念（来自 [learn-claude-code s15](https://learn.shareai.run/zh/s15/)）：
+
+| 机制 | 更像什么 | 生命周期 | 关键边界 |
+|------|---------|---------|---------|
+| **Subagent** | 一次性外包助手 | 干完就消失 | 重点是"隔离一小段探索性上下文" |
+| **Runtime Task** | 后台执行槽位 | 任务完成或取消就结束 | 重点是"慢任务异步回收"，没有长期身份 |
+| **Teammate** | 长期在线队友 | 可以反复接任务 | 重点是"有名字、有邮箱、有独立循环" |
+
+用更口语的话说：Subagent 是临时工，Runtime Task 是一个正在跑的后台进程，Teammate 是你的全职同事。
+
+### 7.4 Teammate 的架构
+
+Teammate 系统由三个核心组件构成：
+
+**名册（TeamConfig）**——团队成员列表，持久化到 `.team/config.json`，系统重启后仍然知道"谁在队里、担当什么角色"：
+
+```json
+{
+  "team_name": "feature-dev",
+  "members": [
+    {"name": "alice", "role": "coder", "status": "working"},
+    {"name": "bob", "role": "tester", "status": "idle"}
+  ]
+}
+```
+
+**邮箱（Inbox）**——每个队友有独立的收件箱（JSONL 文件），消息到达后在下一轮工作前消费：
+
+```json
+{"type": "message", "from": "lead", "content": "请审查 auth 模块", "timestamp": 1710000000.0}
+```
+
+**独立循环（Agent Loop）**——每个 Teammate 运行自己的 agent loop，有自己的 `messages=[]`、自己的工具集、自己的上下文：
+
+```
+lead（主 agent）
+  │
+  ├── spawn alice (coder)
+  ├── spawn bob (tester)
+  │
+  ├── send message → alice inbox
+  └── send message → bob inbox
+
+alice                          bob
+  │                              │
+  ├── 自己的 messages             ├── 自己的 messages
+  ├── 自己的 inbox                ├── 自己的 inbox
+  └── 自己的 agent loop           └── 自己的 agent loop
+```
+
+### 7.5 Teammate 的完整生命周期
+
+```
+用户目标 / lead 判断需要长期分工
+  → spawn teammate（写入 .team/config.json）
+    → 通过 inbox 分派消息、摘要、任务线索
+      → teammate 先 drain inbox（消费未读消息）
+        → 进入自己的 agent loop 和工具调用
+          → 把结果回送给 lead，或继续等待下一轮工作
+```
+
+关键区别：Subagent 执行完就退出进程；Teammate 执行完一轮后进入 **idle 状态等待下一条消息**——它不消失，而是"在线待命"。
+
+### 7.6 在 Claude Code 中的实际使用
+
+Claude Code 已经将 Teammate 机制产品化为原生功能：
+
+- `TeamCreate` 工具——创建团队，生成 `~/.claude/teams/<name>/config.json`
+- `Agent` 工具 + `team_name` 参数——spawn 一个加入指定团队的 teammate
+- `SendMessage` 工具——向 teammate 发送消息（按名字寻址）
+- `TaskCreate / TaskUpdate`——共享任务列表，teammate 认领和更新任务状态
+
+典型使用场景：
+
+```
+主 session：
+  TeamCreate("feature-dev")
+  Agent(name="alice", subagent_type="general-purpose",
+        team_name="feature-dev", prompt="你负责实现...")
+  Agent(name="bob", subagent_type="code-reviewer",
+        team_name="feature-dev", prompt="你负责审查...")
+  
+  TaskCreate("实现登录页面")
+  TaskUpdate(taskId="1", owner="alice")
+  
+  # alice 完成后自动通知 lead
+  # lead 通过 SendMessage 让 bob 审查
+  SendMessage(to="bob", message="alice 完成了登录页面，请审查")
+```
+
+### 7.7 何时用 Subagent，何时用 Teammate
+
+| 场景 | 推荐 | 原因 |
+|------|------|------|
+| 一次性探索/调研 | **Subagent** | 不需要保持身份，干完就走 |
+| 并行修多个独立 bug | **Subagent** | 各自独立，不需要互相通信 |
+| 需要多轮迭代的 feature 开发 | **Teammate** | coder-reviewer 反复交互 |
+| 持续的代码审查流水线 | **Teammate** | reviewer 角色长期在线 |
+| 需要跨任务协作的多角色团队 | **Teammate** | 通过 inbox 互相通信 |
+
+**简单判断标准**：如果一句话能描述完任务边界，用 Subagent；如果需要"持续在线、反复协作"，用 Teammate。
+
+---
+
+## 8. 总结：一张图看清全貌
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -393,7 +529,8 @@ Superpowers 的 spec-reviewer prompt 中有一段很精彩的设计：
 4. **"大项目"的真正解法不是 subagent，而是好的需求管理**（OpenSpec delta）。
 5. **Subagent 的真正价值**：并行独立任务、角色对抗（reviewer 不信任 coder）、混合模型降成本。
 6. **Worktree 是文件隔离，Subagent 是 context 隔离**，两者正交，可组合使用。
-7. **对于强模型 + 单人的 Vibe Coding，直接用强模型 + OpenSpec delta + worktree 分支隔离，比 subagent 模式更务实。**
+7. **Teammate 是 Subagent 的持久化演进**——有名字、有邮箱、有独立循环，适合多轮迭代的长期协作场景。
+8. **选择标准**：一句话能描述完的任务用 Subagent，需要"持续在线、反复协作"的用 Teammate。
 
 ---
 
@@ -403,4 +540,5 @@ Superpowers 的 spec-reviewer prompt 中有一段很精彩的设计：
 - Claude Code Hooks 文档：[hooks.md](https://code.claude.com/docs/en/hooks.md)
 - Superpowers GitHub：[obra/superpowers](https://github.com/obra/superpowers)
 - Superpowers subagent-driven-development Skill 源码：[SKILL.md](https://github.com/obra/superpowers/blob/main/skills/subagent-driven-development/SKILL.md)
+- learn-claude-code s15 Agent 团队：[learn.shareai.run/zh/s15](https://learn.shareai.run/zh/s15/)
 - 相关文章：[[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]

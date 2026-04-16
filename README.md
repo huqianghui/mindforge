@@ -27,11 +27,12 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 ### Notes/AI/Claude-Code
 
-- [Claude Code 的 Agent 与 Subagent 架构解析——以 Superpowers 为例](Notes/AI/Claude-Code/Claude%20Code的Agent与Subagent架构解析——以Superpowers为例.md)
-- [Claude Code 扩展三剑客：Command、Skill 与 Agent 的区别与协作](Notes/AI/Claude-Code/Claude%20Code扩展三剑客：Command、Skill与Agent的区别与协作.md)
-- [learn-claude-code——打开 Coding Agent 黑盒](Notes/AI/Claude-Code/learn-claude-code——打开Coding%20Agent黑盒.md)
-- [Coding Agent Plugin 生态调研——协议、最佳实践与自定义 plugin 开发](Notes/AI/Claude-Code/Coding%20Agent%20Plugin生态调研——协议、最佳实践与自定义plugin开发.md)
-- [Claude Code 记忆全景：从 Session 到 Memory 的六层持久化体系](Notes/AI/Claude-Code/Claude%20Code记忆全景：从Session到Memory的六层持久化体系.md)
+- [Claude Code 系列 01：核心概念与设计哲学解析——从 Agent Loop 到 Harness 工程的实践地图](Notes/AI/Claude-Code/Claude%20Code系列01：核心概念与设计哲学解析.md)
+- [Claude Code 系列 02：learn-claude-code——打开 Coding Agent 黑盒](Notes/AI/Claude-Code/Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md)
+- [Claude Code 系列 03：Agent、Subagent 与 Teammate 架构解析——从一次性委派到长期协作](Notes/AI/Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)
+- [Claude Code 系列 04：扩展三剑客——Command、Skill 与 Agent 的区别与协作](Notes/AI/Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md)
+- [Claude Code 系列 05：记忆全景——从 Session 到 Memory 的六层持久化体系](Notes/AI/Claude-Code/Claude%20Code系列05：记忆全景——从Session到Memory的六层持久化体系.md)
+- [Claude Code 系列 06：Plugin 生态调研——协议、最佳实践与自定义 Plugin 开发](Notes/AI/Claude-Code/Claude%20Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发.md)
 
 ### Notes/AI/agent
 

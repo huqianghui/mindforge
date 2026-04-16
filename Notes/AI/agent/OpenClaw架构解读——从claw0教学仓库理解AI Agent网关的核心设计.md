@@ -341,4 +341,4 @@ OpenClaw 的架构设计有几个值得学习的关键决策：
 
 - [[Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线]] — 命令编排型 Agent 框架对比
 - [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent Skill 架构模式
-- [[learn-claude-code——打开Coding Agent黑盒]] — Coding Agent 内部机制
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] — Coding Agent 内部机制

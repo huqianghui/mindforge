@@ -5,7 +5,7 @@ tags: [paper-reading, bitter-lesson, reinforcement-learning, rich-sutton, AI-age
 paper: "The Bitter Lesson"
 authors: [Rich Sutton]
 source: http://www.incompleteideas.net/IncIdeas/BitterLesson.html
-related: "[[learn-claude-code——打开Coding Agent黑盒]]"
+related: "[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]]"
 ---
 
 # 论文阅读：The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示
@@ -358,9 +358,9 @@ Bitter Lesson 对 AI 和对人说的其实是同一句话：
 
 ## 相关文章
 
-- [[learn-claude-code——打开Coding Agent黑盒]] — Coding Agent 的 12 层 Harness 解构
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] — Coding Agent 的 12 层 Harness 解构
 - [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — Harness Engineering 的实践框架
-- [[Claude Code的Agent与Subagent架构解析——以Superpowers为例]] — Subagent context 隔离架构
+- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Subagent context 隔离架构
 
 ## 参考资料
 
