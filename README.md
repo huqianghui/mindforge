@@ -107,6 +107,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](paper/2026-03-21-The-Bitter-Lesson.md)
 - [Continually Self-Improving AI 论文精读笔记](paper/2026-03-22-Continually-Self-Improving-AI论文精读笔记.md)
 - [Building Enterprise Realtime Voice Agents 论文精读笔记](paper/2026-04-06-Building-Enterprise-Realtime-Voice-Agents.md)
+- [Meta-Harness 论文解读与实践思考——概念澄清、三种构建路径对比与工程落地](paper/2026-04-16-Meta-Harness论文解读与实践思考.md)
 
 ---
 

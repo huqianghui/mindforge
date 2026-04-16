@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T14:42:25.554865+00:00",
+  "generated_at": "2026-04-15T14:52:47.275777+00:00",
   "stats": {
     "nodes": 55,
     "links": 173,
@@ -779,13 +779,13 @@
           "evidence": "document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。"
         },
         {
-          "statement": "GSD 本质是 AI 驱动的 checklist pipeline 而非 skill system",
+          "statement": "GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system",
           "source": "Vibe Coding系列05",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-04-15",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。"
+          "evidence": "优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的\"甜蜜点\"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。"
         },
         {
           "statement": "Superpowers 的核心错位是\"用文本分解解决计算分解问题\"",
@@ -1443,13 +1443,13 @@
           "evidence": "核心技能从手动编码/SQL/会议协调变为 Prompt Engineering/AI Orchestration/Skill-Flow Design/Context Engineering。"
         },
         {
-          "statement": "GSD + Superpowers 是社区最推荐的个人开发者组合",
+          "statement": "GSD + Superpowers 是 L2 项目中社区最推荐的个人开发者组合",
           "source": "Vibe Coding系列04",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-04-15",
           "confidence": 0.5,
           "status": "active",
-          "evidence": "社区用户反馈使用 GSD 后 8 小时完成了相当于 2-3 天的工作量。"
+          "evidence": "社区用户反馈使用 GSD 后 8 小时完成了相当于 2-3 天的工作量。适用于 L2 规模项目（见 [[framework-selection]]），L1 项目是纯开销，L3+ 项目需要补充 Skill Runtime。"
         }
       ]
     },
@@ -2920,7 +2920,7 @@
     {
       "source": "bitter-lesson",
       "target": "harness-engineering",
-      "relation_type": "constrains",
+      "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
     },
     {
@@ -3154,8 +3154,8 @@
     {
       "source": "harness-engineering",
       "target": "skill-pattern",
-      "relation_type": "uses",
-      "description": "Skill Pattern 是 Harness 设计的认知层"
+      "relation_type": "grounds",
+      "description": "Skill Pattern 是 Harness 设计的认知层理论基础"
     },
     {
       "source": "harness-engineering",
