@@ -46,7 +46,6 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [AutoResearch 概念澄清——与 Ralph-Loop 和 AutoML 的本质区别](Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
 - [Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API](Notes/AI/agent/Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API.md)
-
 ### Notes/AI/vibe-coding
 
 - [系列01：全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)
@@ -98,6 +97,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 - [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md)
 - [西方本体论的当代转折](book/西方本体论的当代转折.md)
+- [控制论、强化学习与在线学习——三个容易混淆的 Agent 概念澄清](book/控制论、强化学习与在线学习——三个容易混淆的Agent概念澄清.md)
 - [控制论与科学方法论——从控制论到 AI Agent 设计方法论](book/控制论与科学方法论——从控制论到AI%20Agent设计方法论.md)
 
 ### product

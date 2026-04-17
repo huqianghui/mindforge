@@ -8,7 +8,9 @@ tags: [cybernetics, methodology, agent, harness-engineering, feedback, control-t
 
 > 本文基于金观涛、华国凡《控制论与科学方法论》阅读笔记，结合与 ChatGPT 讨论，探索控制论核心概念在 AI Agent 设计与 Harness Engineering 中的迁移应用。
 >
-> 相关笔记：「西方本体论的当代转折」（哲学方法论层面的互补视角，待创建）
+> 前置阅读：[[控制论、强化学习与在线学习——三个容易混淆的Agent概念澄清]]（先厘清控制论、RL、优化、在线学习四个概念的本质区别）
+>
+> 相关笔记：「西方本体论的当代转折」（哲学方法论层面的互补视角）
 
 ---
 
