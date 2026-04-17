@@ -97,7 +97,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 - [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md)
 - [西方本体论的当代转折](book/西方本体论的当代转折.md)
-- [控制论、强化学习与在线学习——三个容易混淆的 Agent 概念澄清](book/控制论、强化学习与在线学习——三个容易混淆的Agent概念澄清.md)
+- [控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习](book/控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习.md)
 - [控制论与科学方法论——从控制论到 AI Agent 设计方法论](book/控制论与科学方法论——从控制论到AI%20Agent设计方法论.md)
 
 ### product
