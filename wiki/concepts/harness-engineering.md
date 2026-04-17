@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-04-16"
+updated: "2026-04-17"
 tags:
   - wiki
   - concept
@@ -115,9 +115,30 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > Meta-Harness 将手工 Harness 迭代自动化为 Propose → Evaluate → Log → Repeat 搜索循环。消融实验证明完整执行 trace 访问（50.0%）远优于仅分数（34.6%），原始 trace 是不可替代的诊断信号。
 
+### Claim: 控制论是 Harness Engineering 的理论根基——三层控制模型
+
+- **来源**：[[控制论与科学方法论——从控制论到AI Agent设计方法论]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-04-17
+- **置信度**：0.8
+- **状态**：active
+
+> 所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，"怎么做出来"）、约束系统（L2 Planning + L1 Policy，"不能乱来"）、认知系统（L6 Eval，"从经验学到什么"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。
+
+### Claim: Claude Code 的 98.7% 代码都是 Harness
+
+- **来源**：[[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-04-17
+- **置信度**：0.9
+- **状态**：active
+
+> Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
+- 2026-04-17：控制论视角引入，将 Harness Engineering 从工程方法论上溯到控制论理论根基。三套框架（控制论五层 / 六层架构 / 三层控制模型）互补：搭系统用六层，调系统用三层，设计决策回控制论。
 
 ## 关联概念
 
@@ -134,6 +155,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[agent-paradigms]] — `uses` Harness 提供范式切换的系统级支撑
 - [[context-explosion]] — `constrains` Context 管理是 Harness 的关键能力
 - [[meta-harness]] — `produces` Meta-Harness 是 Harness Engineering 的自动化演进
+- [[cybernetics-agent-design]] — `grounds` 控制论是 Harness Engineering 的理论根基
+- [[cybernetics-harness-design-sheet]] — `produces` 控制论 Design Sheet 是 Harness 设计流程的前置检查工具
 
 ## 来源日记
 
@@ -141,3 +164,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[Vibe Coding系列02]] — OpenAI 五大支柱详解
 - [[learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
 - [[2026-04-16-周四]] — Meta-Harness 论文解读，补充精确 Harness 定义和自动化优化
+- [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 98.7% 是 Harness

@@ -125,6 +125,7 @@ related_methods:
 ## 关联方法
 
 - [[ai-native-five-layer-pipeline]] — `part-of` Pipeline Step 4/5 的质量保障
+- [[cybernetics-harness-design-sheet]] — `contrasts` 质量门禁关注运行时检查，Design Sheet 关注设计时检查
 
 ## 来源
 

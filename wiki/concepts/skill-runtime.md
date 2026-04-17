@@ -65,6 +65,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - [[skill-pattern]] — `grounds` Google 的 Skill Pattern 是 Skill Runtime 的认知架构基础
 - [[claude-code-extension-system]] — `implements` Claude Code 的 Skill 机制是 Skill Runtime 的实际实现
 - [[skill-creator-orchestration]] — `extends` Skill Creator 构建的是 Skill Runtime 的编排层
+- [[cybernetics-agent-design]] — `contrasts` 控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层
 
 ## 来源日记
 

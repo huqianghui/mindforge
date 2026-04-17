@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-16T11:46:15.369604+00:00",
+  "generated_at": "2026-04-17T12:56:19.666144+00:00",
   "stats": {
-    "nodes": 56,
-    "links": 181,
+    "nodes": 69,
+    "links": 243,
     "orphan_links_removed": 0,
-    "claims": 195,
+    "claims": 237,
     "categories": 8
   },
   "nodes": [
@@ -471,6 +471,101 @@
       ]
     },
     {
+      "id": "cascaded-pipeline",
+      "type": "concept",
+      "title": "级联流水线（Cascaded Pipeline）",
+      "summary": "级联流水线（Cascaded Pipeline）是实时语音 Agent 的经典架构模式：VAD → Turn Detection → STT → Agent/LLM → Response Planning → TTS → Audio Output。每个环节是独立可替换的模块，通过流式传输 + 流水线并行实现低延迟。\n\n与端到端（End-to-End）架构相对，级联流水线在可控性、可调试性和模块可替换性上具有优势，但面临延迟累积和错误级联的挑战。论文论证其为\"实时交互系统的本质结构\"而非过渡方案。",
+      "tags": [
+        "wiki",
+        "concept",
+        "architecture",
+        "voice-agent",
+        "speech",
+        "realtime"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "级联流水线是实时交互系统的本质结构",
+          "source": "2026-04-06-Building-Enterprise-Realtime-Voice-Agents",
+          "first_seen": "2026-04-06",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "即使 Level 1 端到端模型（如 GPT-4o Realtime），在企业场景中仍然需要级联结构——因为企业需要可审计性、模块可替换性、和对每个环节的独立监控。级联流水线不是\"过渡方案\"，而是企业实时系统的长期架构选择。"
+        },
+        {
+          "statement": "判断模块化的标准——能否单独替换",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-11",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "看到一个\"能力\"时，问自己：\"它能不能被单独替换？\" 能 → 这是一个模块（级联流水线）。不能 → 这是模型内部能力（端到端架构）。"
+        },
+        {
+          "statement": "级联失败是 Harness Engineering 出现的核心驱动力",
+          "source": "Vibe Coding系列01",
+          "first_seen": "2026-04-02",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60）。级联失败不仅是语音架构的问题，也是所有多步 Agent 系统的通用挑战。"
+        }
+      ]
+    },
+    {
+      "id": "claim-based-schema",
+      "type": "concept",
+      "title": "基于论断的知识模式（Claim-Based Schema）",
+      "summary": "Claim-Based Schema 是 Personal Knowledge Compiler 的核心数据模型——知识库\"不存事实，只存论断\"。每条 Claim 包含：论断内容、证据来源、置信度（0.0~1.0）和生命周期状态（active/conflicting/outdated/stale）。这种设计承认知识的不确定性和演进性，区别于传统的\"是/否\"知识存储。\n\n设计哲学：知识不是固定的事实集合，而是带证据的论断的演化系统。",
+      "tags": [
+        "wiki",
+        "concept",
+        "knowledge-management",
+        "schema",
+        "personal-knowledge"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "\"不存事实只存论断\"是知识系统的设计哲学",
+          "source": "PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "传统知识库存储\"X 是 Y\"（事实），Claim-Based Schema 存储\"根据来源 A，X 可能是 Y（置信度 0.8）\"（论断）。这承认了知识的不确定性——同一个问题可以有多个置信度不同的论断共存。"
+        },
+        {
+          "statement": "Claim 生命周期驱动知识自动演进",
+          "source": "PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "active → conflicting（发现矛盾证据）→ outdated（被新证据取代）→ stale（60+ 天未更新）。生命周期状态使知识库能自动标记需要关注的论断，而非被动等待人工检查。"
+        },
+        {
+          "statement": "置信度由证据数量和一致性决定",
+          "source": "PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "3+ 独立来源支持 → 置信度 +0.1；有实验/实践验证 → 置信度 0.7+；来源间矛盾 → 标记 conflicting 待人工裁决。"
+        }
+      ]
+    },
+    {
       "id": "claude-code-agent-subagent",
       "type": "concept",
       "title": "Claude Code Agent/Subagent/Teammate Architecture",
@@ -697,6 +792,54 @@
       ]
     },
     {
+      "id": "conjugate-transformation",
+      "type": "concept",
+      "title": "共轭变换（Conjugate Transformation）",
+      "summary": "共轭变换是控制论中\"最深刻的概念之一\"：把一个在原始空间中难以解决的问题，变换到另一个空间中去解决，再变换回来。在 AI Agent 设计中，共轭变换对应 Harness 的表示层（Representation Layer）设计——L 将世界编码为模型输入，L⁻¹ 将模型输出解码为世界动作。\n\n核心洞察：如果 Agent 很\"聪明\"但做不对事，90% 是共轭变换设计错了——不是推理问题，是表示问题。方法论原则：先设计 L（共轭变换），再写 prompt。",
+      "tags": [
+        "wiki",
+        "concept",
+        "cybernetics",
+        "control-theory",
+        "representation",
+        "harness-engineering"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "Agent 失败的首要原因是表示错误而非推理错误",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "如果 Agent 很\"聪明\"但做不对事，90% 是共轭变换设计错了。方法论原则：先设计 L（共轭变换），再写 prompt。\"不要问用什么 prompt，要问世界是怎么被编码的。\""
+        },
+        {
+          "statement": "四种常见变换类型对应不同任务需求",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "text（推理与规划）、JSON（工具调用）、embedding（语义搜索）、AST（代码操作）——选错变换类型会导致关键信息丢失。"
+        },
+        {
+          "statement": "共轭变换是正交设计维度而非单一层级",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "共轭变换不只存在于 L3 Skills，而是 L2 任务分解、L3 能力抽象、L4 工具调用中都有体现——它是每个模块都需要考虑的设计维度。"
+        }
+      ]
+    },
+    {
       "id": "context-engineering",
       "type": "concept",
       "title": "Context Engineering",
@@ -836,6 +979,53 @@
       ]
     },
     {
+      "id": "context-projection",
+      "type": "concept",
+      "title": "上下文投影（Context Projection）",
+      "summary": "上下文投影（Context Projection）是解决 Context 爆炸问题的核心机制。核心洞察：context ≠ state。应将完整状态持久化存储（state → 外部存储），按需将必要部分投影为模型上下文（context → 按需投影）。\n\n这一机制对应 Skill Runtime 三层架构中的 Selection Layer（选择层）：State Layer（持久状态）→ Selection Layer（检索/路由/依赖解析）→ Execution Layer（模型只吃必要上下文）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "context-engineering",
+        "skill-runtime",
+        "architecture"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "Context 不等于 State——这是所有 Context 爆炸的根因",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移",
+          "first_seen": "2026-03-22",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "所有 GSD / Superpowers / OpenSpec 系统都有一个隐含错误假设：context = state。正确做法：state → 外部存储（结构化），context → 按需投影（projection）。"
+        },
+        {
+          "statement": "Selection Layer 是当前 Harness 工具生态的最大瓶颈",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移",
+          "first_seen": "2026-03-22",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "State Layer 有成熟方案（数据库、文件系统），Execution Layer 有 LLM。但 Selection Layer（query → select → project → execute）目前没有通用工具——这是 Skill Runtime 需要解决的核心问题。"
+        },
+        {
+          "statement": "文档式加载 vs 能力式加载是范式分界线",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移",
+          "first_seen": "2026-03-22",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "GSD 是文档式加载（document-centric）：plan 越多 → prompt 越大。Skill Runtime 是能力式加载（capability-centric）：按任务需求投影必要上下文。后者是 context 管理的正确方向。"
+        }
+      ]
+    },
+    {
       "id": "context7",
       "type": "concept",
       "title": "Context7",
@@ -940,6 +1130,82 @@
       ]
     },
     {
+      "id": "cybernetics-agent-design",
+      "type": "concept",
+      "title": "控制论 Agent 设计（Cybernetics-Agent Design）",
+      "summary": "基于金观涛《控制论与科学方法论》的核心框架，提出 AI Agent 与控制系统的**结构同构**命题：Agent = 负反馈控制系统 + 共轭变换 + 随机探索。这不是类比，而是同构——控制论的三个基本机制恰好对应 Agent 设计的三个支柱。\n\n由此推导出 Harness Engineering 的五层设计维度（控制论五层）和十条方法论硬规则，并与六层工程模型、三层控制模型形成互补的三套分析框架（WHY / WHAT / HOW）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "cybernetics",
+        "agent",
+        "control-theory",
+        "harness-engineering",
+        "methodology"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "Agent 与控制系统是结构同构，不是类比",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "控制论三个基本机制——负反馈（收敛）、共轭变换（表示）、随机探索（逃逸）——恰好对应 Agent 的评估-修正循环、问题表示与拆解、多路径尝试与策略切换。"
+        },
+        {
+          "statement": "共轭变换是 Agent 失败的首要原因——表示错误 > 推理错误",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "如果 Agent 很\"聪明\"但做不对事，90% 是共轭变换设计错了——不是推理问题，是表示问题。方法论原则：先设计 L（共轭变换），再写 prompt。"
+        },
+        {
+          "statement": "控制能力公式——Agent 失败 ≠ 模型不行",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "控制能力 = 信息 × 工具 × 反馈 × 表示。Agent 失败 90% 是控制能力不够（信息不足、工具不足、反馈太弱、表示不当），不是模型不行。"
+        },
+        {
+          "statement": "控制论五层是正交维度，不是串行层级",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "六层架构和三层模型是模块/层级划分（有边界、有接口），控制论五层更像是每个模块都需要考虑的设计维度。如\"共轭变换\"不只存在于 L3 Skills，而是 L2 任务分解、L3 能力抽象、L4 工具调用中都有体现。"
+        },
+        {
+          "statement": "L5 Runtime 是控制论框架的映射缺位——状态观测器",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "六层模型的 L5 Runtime（状态追踪、上下文管理、资源隔离、检查点快照）在控制论五层中无显式对应。控制论假设\"状态是已知的\"，但工程中\"谁来维护 current_state\"恰恰是最重的基础设施。L5 Runtime 是控制系统的状态观测器（State Observer），建议增设 L0 状态观测层或将其作为正交维度。"
+        },
+        {
+          "statement": "三套框架互补——搭系统用六层，调系统用三层，设计决策回控制论",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "控制论五层（WHY，设计原理）、六层工程模型（WHAT，模块结构）、三层控制模型（HOW，运行动力学）三者回答不同问题。收敛性公式 = 约束强度 × 反馈频率 / 执行自由度，其中每个因子的来源由控制论五层解释。"
+        }
+      ]
+    },
+    {
       "id": "enterprise-ontology",
       "type": "concept",
       "title": "Enterprise Ontology",
@@ -1015,6 +1281,54 @@
       ]
     },
     {
+      "id": "feedback-loop",
+      "type": "concept",
+      "title": "反馈闭环（Feedback Loop）",
+      "summary": "反馈闭环是系统将输出结果回传为输入、驱动持续修正的结构性机制。区分\"线性工具链\"和\"控制系统\"的关键判据就是：是否有闭环。在 AI Agent 领域，反馈闭环横跨 Harness 工程（执行-评估-修正）、知识管理（实践-提取-验证-更新）和 Meta-Harness（Propose → Evaluate → Log → Repeat）三大领域。\n\n收敛性公式：收敛性 = 约束强度 × 反馈频率 / 执行自由度。没有闭环的系统只能\"跑\"，不能\"收敛\"。",
+      "tags": [
+        "wiki",
+        "concept",
+        "systems-thinking",
+        "control-theory",
+        "harness-engineering",
+        "knowledge-management"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "反馈闭环是区分线性工具链和控制系统的关键",
+          "source": "Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "\"能跑\"和\"能收敛\"是两回事。没有反馈闭环的 Agent 是线性工具链——执行完就结束；有反馈闭环的 Agent 是控制系统——能根据结果自我修正。"
+        },
+        {
+          "statement": "Meta-Harness 的四步闭环是自动化 Harness 优化的核心",
+          "source": "2026-04-16-Meta-Harness论文解读与实践思考",
+          "first_seen": "2026-04-16",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Propose → Evaluate → Log → Repeat 搜索循环将手工 Harness 迭代自动化。完整执行 trace 是不可替代的诊断信号（50.0% vs 仅分数的 34.6%）。"
+        },
+        {
+          "statement": "知识管理也需要反馈闭环——日记到 wiki 的循环",
+          "source": "PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "知识流不能是单向的（日记 → wiki）。实践反馈必须回流到知识库——应用方法后的成功/失败应更新 Claims 置信度，形成：日记 → 提取 → wiki → 应用 → 反馈 → wiki 的完整闭环。"
+        }
+      ]
+    },
+    {
       "id": "framework-selection",
       "type": "concept",
       "title": "Framework Selection",
@@ -1081,6 +1395,45 @@
       ]
     },
     {
+      "id": "generation-evaluation-separation",
+      "type": "concept",
+      "title": "生成-评估分离（Generation-Evaluation Separation）",
+      "summary": "生成-评估分离是 AI Agent 系统设计的核心架构原则：生成内容的 Agent 和评估质量的 Agent 必须分离，不能既当运动员又当裁判。OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套模式，标志着行业共识。\n\n典型实现为 Planner-Generator-Evaluator 三 Agent 架构。Meta-Harness 论文中对应 Guides（生成指导）和 Sensors（评估检测）的双重控制机制。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "harness-engineering",
+        "architecture-pattern",
+        "design-principle"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "三家公司独立演化出同一个分离原则",
+          "source": "Vibe Coding系列01",
+          "first_seen": "2026-04-02",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。"
+        },
+        {
+          "statement": "Meta-Harness 中 Guides 和 Sensors 是分离原则的工程实现",
+          "source": "2026-04-16-Meta-Harness论文解读与实践思考",
+          "first_seen": "2026-04-16",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。"
+        }
+      ]
+    },
+    {
       "id": "harness-engineering",
       "type": "concept",
       "title": "Harness Engineering",
@@ -1095,8 +1448,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.78,
+      "claims_count": 11,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -1178,6 +1531,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Meta-Harness 将手工 Harness 迭代自动化为 Propose → Evaluate → Log → Repeat 搜索循环。消融实验证明完整执行 trace 访问（50.0%）远优于仅分数（34.6%），原始 trace 是不可替代的诊断信号。"
+        },
+        {
+          "statement": "控制论是 Harness Engineering 的理论根基——三层控制模型",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，\"怎么做出来\"）、约束系统（L2 Planning + L1 Policy，\"不能乱来\"）、认知系统（L6 Eval，\"从经验学到什么\"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。"
+        },
+        {
+          "statement": "Claude Code 的 98.7% 代码都是 Harness",
+          "source": "Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
         }
       ]
     },
@@ -1404,6 +1775,63 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。"
+        }
+      ]
+    },
+    {
+      "id": "negative-feedback",
+      "type": "concept",
+      "title": "负反馈（Negative Feedback）",
+      "summary": "负反馈是控制论的核心机制，定义为系统通过比较当前状态与目标状态的偏差（error = goal - current_state）来驱动修正行为。在 AI Agent 设计中，负反馈是评估-修正循环的理论基础——没有可计算的 error function，就没有可收敛的系统。\n\n负反馈不等于\"失败后重试\"，而是一个结构化的控制机制：定义误差、量化偏差、驱动修正、逐步收敛。反馈的强度和频率直接决定系统的收敛速度和稳定性。",
+      "tags": [
+        "wiki",
+        "concept",
+        "cybernetics",
+        "control-theory",
+        "agent",
+        "harness-engineering"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.77,
+      "claims": [
+        {
+          "statement": "负反馈是 Agent 的\"灵魂\"——没有 error function 就没有系统",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "核心公式：error = goal - current_state。没有可计算的 error，就没有系统。不要追求一次成功，要允许逐步逼近。"
+        },
+        {
+          "statement": "反馈有三个等级——越结构化越稳定",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "binary（pass/fail，弱）→ scalar（score 分值，中）→ structured（多维指标，强）。越往后越稳定。"
+        },
+        {
+          "statement": "Agent 设计中正面示范优于反面约束",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "不能给太多反面例子（\"不要做 X\"），否则 Agent 变得患得患失。需要正面示范引导收敛方向，这与控制论中\"目标函数应该是正向定义的\"一致。"
+        },
+        {
+          "statement": "收敛性公式中反馈频率是关键因子",
+          "source": "Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "收敛性 = 约束强度 × 反馈频率 / 执行自由度。反馈频率不足会导致系统 drift，频率越高越容易收敛。"
         }
       ]
     },
@@ -1847,6 +2275,102 @@
       ]
     },
     {
+      "id": "react-paradigm",
+      "type": "concept",
+      "title": "ReAct 范式（ReAct Paradigm）",
+      "summary": "ReAct（Reason + Act）由 Yao 等人于 2022 年提出，是 AI Agent 最基础的运行范式。核心模式为 Thought → Action → Observation 循环——Agent 边想边做，每一步的观察结果修正下一步的思考。它对应人类\"试错迭代\"的认知模式，是理解所有 Agent Loop 架构的入口概念。\n\nReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别对应人类的试错、规划、反思三种认知策略。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "paradigm",
+        "reasoning",
+        "action"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.77,
+      "claims": [
+        {
+          "statement": "ReAct 对应人类\"试错迭代\"认知模式",
+          "source": "Agent经典范式与人类问题处理模式的映射",
+          "first_seen": "2026-03-25",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "ReAct 就是人类日常最常用的问题处理方式——\"试试看\"。如调试代码：想可能原因 → 改代码 → 看结果 → 再想下一步。不需要完整计划，靠每一步的反馈推进。"
+        },
+        {
+          "statement": "ReAct 是 Agent Loop 的最小完备形式",
+          "source": "Agent经典范式与人类问题处理模式的映射",
+          "first_seen": "2026-03-25",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Thought → Action → Observation 循环是 Agent 运行的最小完备单元。Plan-and-Solve 在前面加了 Planning 阶段，Reflection 在后面加了 Evaluation 阶段，但核心循环不变。"
+        },
+        {
+          "statement": "ReAct 的 Skill 组合可由 Google 五种 Pattern 解构",
+          "source": "从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "ReAct 的每一步 Action 可以看作一次 Skill 调用，Google 五种 Skill Pattern（Single-tool, Workflow, Router, Autonomous, Orchestrator）描述了 Action 内部的能力组合方式。"
+        }
+      ]
+    },
+    {
+      "id": "reinforcement-learning",
+      "type": "concept",
+      "title": "强化学习（Reinforcement Learning）",
+      "summary": "强化学习（Reinforcement Learning, RL）是机器学习的一个分支，核心思想是 Agent 通过与环境交互（trial-and-error）自主学习策略。Rich Sutton 是 RL 领域最重要的奠基人，其核心贡献包括 TD Learning、Policy Gradient、Dyna 架构。\n\nRL Agent 与 LLM Agent 共享\"观察 → 决策 → 行动 → 反馈 → 循环\"的基本骨架，但在学习机制、环境假设和决策方式上有本质差异。理解这种差异是理解\"Harness 本质是对缺失学习能力的工程补偿\"这一洞察的基础。",
+      "tags": [
+        "wiki",
+        "concept",
+        "ai-theory",
+        "reinforcement-learning",
+        "machine-learning",
+        "agent"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "RL 的核心贡献是 Search + Learning 的统一",
+          "source": "2026-03-21-The-Bitter-Lesson",
+          "first_seen": "2026-03-21",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Sutton 刻意把 Search 和 Learning 并列为\"两种利用算力的方法\"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。"
+        },
+        {
+          "statement": "RL Agent 与 LLM Agent 是\"同一个词，两种实体\"",
+          "source": "2026-03-21-The-Bitter-Lesson",
+          "first_seen": "2026-03-21",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。"
+        },
+        {
+          "statement": "Bitter Lesson 不是 RL 论文而是 AI 方法论论文",
+          "source": "2026-03-21-The-Bitter-Lesson",
+          "first_seen": "2026-03-21",
+          "last_updated": "2026-04-17",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
+        }
+      ]
+    },
+    {
       "id": "rtk-token-compression",
       "type": "concept",
       "title": "RTK Token Compression",
@@ -1891,6 +2415,45 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "RTK 的架构启示：AI Agent 的工具调用链可以像 Web 中间件一样插入处理层。这种模式可以扩展到安全审计（拦截危险命令）、缓存（重复查询去重）、可观测性（记录所有工具调用）等场景。"
+        }
+      ]
+    },
+    {
+      "id": "scaling-laws",
+      "type": "concept",
+      "title": "缩放定律（Scaling Laws）",
+      "summary": "Scaling Laws（缩放定律）是描述模型性能与计算资源（参数量、数据量、训练计算量）之间幂律关系的经验公式。它是 Bitter Lesson 的\"数学证明\"——量化回答了\"投入更多计算到底能换来多少性能\"这个问题。\n\nScaling Laws 与 Bitter Lesson 的关系：后者是定性方法论（\"计算终将胜出\"），前者是定量经验公式（\"性能与计算的具体关系\"）。两者互补但层次不同。",
+      "tags": [
+        "wiki",
+        "concept",
+        "ai-theory",
+        "scaling",
+        "computation",
+        "deep-learning"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "Scaling Laws 是 Bitter Lesson 的定量化证明",
+          "source": "2026-03-21-The-Bitter-Lesson",
+          "first_seen": "2026-03-21",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Bitter Lesson 是定性方法论（70 年历史归纳），Scaling Laws 是定量经验公式（性能 ∝ 计算^α 的幂律）。两者的区别：Bitter Lesson 只说\"计算终将胜出\"，Scaling Laws 具体量化\"多少计算换多少性能\"。"
+        },
+        {
+          "statement": "训练数据需求呈幂律增长",
+          "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
+          "first_seen": "2026-03-22",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "模型能力提升所需的训练数据量呈幂律增长——这是 Scaling Laws 的实际约束，也是合成数据和自我改进方法出现的驱动力。"
         }
       ]
     },
@@ -2293,6 +2856,54 @@
       ]
     },
     {
+      "id": "turn-taking",
+      "type": "concept",
+      "title": "话轮转换（Turn-Taking）",
+      "summary": "Turn-Taking（话轮转换）是语音 Agent 中\"最被低估也最关键\"的技术，决定了对话是否\"自然\"——什么时候该听、什么时候该说、什么时候该打断。它不等于端点检测（\"用户停了我就说\"），而是一个包含预测、决策和执行的复合机制。\n\n在级联流水线架构中，Turn-Taking 是独立模块（可配置）；在端到端架构（如 GPT-4o Realtime）中，Turn-Taking 融合在模型内部，成为不可替换的内部能力。",
+      "tags": [
+        "wiki",
+        "concept",
+        "speech",
+        "voice-agent",
+        "realtime",
+        "conversation"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "Turn-Taking 不等于端点检测",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-11",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "常见误解：\"用户停了 → 我说话\"。正确理解：Turn-Taking 包含预测性机制（预判用户是否说完）和反应性机制（检测到停顿后决策），二者协同工作。"
+        },
+        {
+          "statement": "Turn-Taking 是语音 Agent 的核心难题",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-11",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
+        },
+        {
+          "statement": "端到端架构将 Turn-Taking 内化为模型能力",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-11",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "级联系统中 Turn-Taking 是可替换模块；GPT-Realtime 中 Turn-Taking 融合在模型内部，无法单独替换。判断标准：\"它能不能被单独替换？能 → 模块，不能 → 模型内部能力。\""
+        }
+      ]
+    },
+    {
       "id": "voice-activity-detection",
       "type": "concept",
       "title": "Voice Activity Detection",
@@ -2526,6 +3137,45 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Superpowers、gstack、Compound Engineering 没有一个直接解决代码复用——CE 是知识复用不是代码复用。"
+        }
+      ]
+    },
+    {
+      "id": "cybernetics-harness-design-sheet",
+      "type": "method",
+      "title": "控制论 Harness Design Sheet",
+      "summary": "基于控制论五层设计维度，每次设计 Agent 时强制填写的检查表。确保设计者在写 prompt 或代码之前，先回答五个控制论核心问题：可能性空间是否定义？共轭变换是否设计？负反馈是否可计算？探索是否有逃逸机制？控制能力是否充分？",
+      "tags": [
+        "wiki",
+        "method",
+        "cybernetics",
+        "harness-engineering",
+        "agent",
+        "design-tool"
+      ],
+      "category": "",
+      "method_type": "quality-gate",
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "不建模可能性空间，不要写 Agent",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "控制论第一步不是行动而是定义可能性空间。99% 的人忽略了这一步，直接写 prompt。"
+        },
+        {
+          "statement": "先设计 L（共轭变换），再写 prompt",
+          "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-04-17",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"不要问用什么 prompt，要问世界是怎么被编码的。\" Prompt 是共轭变换的产物，不是设计的起点。"
         }
       ]
     },
@@ -2931,6 +3581,12 @@
       "description": "Agent 网关的核心仍是 Agent Loop"
     },
     {
+      "source": "agent-loop-architecture",
+      "target": "cybernetics-agent-design",
+      "relation_type": "grounds",
+      "description": "控制论视角下，Agent Loop 是负反馈机制的工程载体"
+    },
+    {
       "source": "agent-paradigms",
       "target": "agent-loop-architecture",
       "relation_type": "uses",
@@ -3025,6 +3681,48 @@
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "voice-live-agent",
+      "relation_type": "implements",
+      "description": "Voice Live Agent 基于级联流水线构建"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "speech-technology-stack",
+      "relation_type": "part-of",
+      "description": "级联流水线是 Speech 三层栈的组织形式"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "turn-taking",
+      "relation_type": "uses",
+      "description": "Turn Detection 是级联流水线的关键环节"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "级联失败驱动了 Harness Engineering 的出现"
+    },
+    {
+      "source": "claim-based-schema",
+      "target": "personal-knowledge-compiler",
+      "relation_type": "part-of",
+      "description": "Claim-Based Schema 是 PKC 的核心数据模型"
+    },
+    {
+      "source": "claim-based-schema",
+      "target": "llm-wiki",
+      "relation_type": "implements",
+      "description": "LLM Wiki 理念通过 Claim-Based Schema 落地"
+    },
+    {
+      "source": "claim-based-schema",
+      "target": "feedback-loop",
+      "relation_type": "uses",
+      "description": "实践反馈驱动 Claim 置信度更新"
     },
     {
       "source": "claude-code-agent-subagent",
@@ -3129,6 +3827,30 @@
       "description": "实施方法：四层防线的详细步骤和决策点"
     },
     {
+      "source": "conjugate-transformation",
+      "target": "cybernetics-agent-design",
+      "relation_type": "part-of",
+      "description": "共轭变换是控制论三大机制之一"
+    },
+    {
+      "source": "conjugate-transformation",
+      "target": "context-engineering",
+      "relation_type": "implements",
+      "description": "Context Engineering 的核心工作就是设计共轭变换"
+    },
+    {
+      "source": "conjugate-transformation",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "表示层设计是 Harness 工程的关键环节"
+    },
+    {
+      "source": "conjugate-transformation",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "负反馈的 error 计算依赖正确的表示（共轭变换）"
+    },
+    {
       "source": "context-engineering",
       "target": "harness-engineering",
       "relation_type": "part-of",
@@ -3165,6 +3887,12 @@
       "description": "RTK 是 Context Engineering 在工具链层面的实践"
     },
     {
+      "source": "context-engineering",
+      "target": "cybernetics-agent-design",
+      "relation_type": "grounds",
+      "description": "控制论视角下，Context 管理是共轭变换的工程实践"
+    },
+    {
       "source": "context-explosion",
       "target": "context-engineering",
       "relation_type": "constrains",
@@ -3181,6 +3909,30 @@
       "target": "harness-engineering",
       "relation_type": "constrains",
       "description": "Context 管理是 Harness 的关键能力"
+    },
+    {
+      "source": "context-projection",
+      "target": "context-explosion",
+      "relation_type": "constrains",
+      "description": "上下文投影是解决 Context 爆炸的核心机制"
+    },
+    {
+      "source": "context-projection",
+      "target": "skill-runtime",
+      "relation_type": "implements",
+      "description": "Skill Runtime 的 Selection Layer 实现上下文投影"
+    },
+    {
+      "source": "context-projection",
+      "target": "context-engineering",
+      "relation_type": "extends",
+      "description": "投影是 Context Engineering 的高级策略"
+    },
+    {
+      "source": "context-projection",
+      "target": "conjugate-transformation",
+      "relation_type": "uses",
+      "description": "投影过程本质上是一种共轭变换（选择性编码）"
     },
     {
       "source": "context7",
@@ -3207,6 +3959,42 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
+      "source": "cybernetics-agent-design",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "控制论是 Harness Engineering 的理论根基"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "meta-harness",
+      "relation_type": "extends",
+      "description": "Meta-Harness 的自动搜索循环是控制论负反馈 + 探索的工程实现"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "agent-loop-architecture",
+      "relation_type": "uses",
+      "description": "Agent Loop 是控制论负反馈机制的工程载体"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "skill-runtime",
+      "relation_type": "contrasts",
+      "description": "Skill Runtime 对应控制论中缺位的 L5 状态观测层"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "context-engineering",
+      "relation_type": "uses",
+      "description": "Context 管理是共轭变换（表示层设计）的工程实践"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "cybernetics-harness-design-sheet",
+      "relation_type": "produces",
+      "description": "控制论五层推导出 Design Sheet 检查表"
+    },
+    {
       "source": "enterprise-ontology",
       "target": "ontology-philosophy",
       "relation_type": "grounds",
@@ -3217,6 +4005,36 @@
       "target": "rag-architecture-comparison",
       "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "负反馈是反馈闭环的驱动机制"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "反馈闭环是 Harness 认知系统（L6 Eval）的核心"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "meta-harness",
+      "relation_type": "implements",
+      "description": "Meta-Harness 是反馈闭环的自动化形式"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "personal-knowledge-compiler",
+      "relation_type": "uses",
+      "description": "PKC 的知识迭代依赖实践反馈闭环"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "分离的评估环节是闭环的关键节点"
     },
     {
       "source": "framework-selection",
@@ -3241,6 +4059,30 @@
       "target": "gsd-project-scale-selection",
       "relation_type": "produces",
       "description": "实施方法：项目规模分级与工具选择决策框架"
+    },
+    {
+      "source": "generation-evaluation-separation",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "生成-评估分离是 Harness 设计的核心架构原则"
+    },
+    {
+      "source": "generation-evaluation-separation",
+      "target": "meta-harness",
+      "relation_type": "implements",
+      "description": "Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现"
+    },
+    {
+      "source": "generation-evaluation-separation",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "评估结果作为负反馈驱动生成修正"
+    },
+    {
+      "source": "generation-evaluation-separation",
+      "target": "feedback-loop",
+      "relation_type": "uses",
+      "description": "分离的评估环节构成反馈闭环的关键节点"
     },
     {
       "source": "harness-engineering",
@@ -3319,6 +4161,18 @@
       "target": "meta-harness",
       "relation_type": "produces",
       "description": "Meta-Harness 是 Harness Engineering 的自动化演进"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "cybernetics-agent-design",
+      "relation_type": "grounds",
+      "description": "控制论是 Harness Engineering 的理论根基"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "cybernetics-harness-design-sheet",
+      "relation_type": "produces",
+      "description": "控制论 Design Sheet 是 Harness 设计流程的前置检查工具"
     },
     {
       "source": "harness-quality-gate",
@@ -3409,6 +4263,36 @@
       "target": "rtk-token-compression",
       "relation_type": "contrasts",
       "description": "RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化"
+    },
+    {
+      "source": "meta-harness",
+      "target": "cybernetics-agent-design",
+      "relation_type": "grounds",
+      "description": "控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现"
+    },
+    {
+      "source": "negative-feedback",
+      "target": "cybernetics-agent-design",
+      "relation_type": "part-of",
+      "description": "负反馈是控制论三大机制之一"
+    },
+    {
+      "source": "negative-feedback",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "负反馈是 Harness 约束系统的理论基础"
+    },
+    {
+      "source": "negative-feedback",
+      "target": "feedback-loop",
+      "relation_type": "part-of",
+      "description": "负反馈是反馈闭环的核心驱动机制"
+    },
+    {
+      "source": "negative-feedback",
+      "target": "agent-loop-architecture",
+      "relation_type": "uses",
+      "description": "Agent Loop 的每次迭代都是一次负反馈修正"
     },
     {
       "source": "notion-as-ai-layer",
@@ -3525,6 +4409,60 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
+      "source": "react-paradigm",
+      "target": "agent-paradigms",
+      "relation_type": "part-of",
+      "description": "ReAct 是三种经典范式之一"
+    },
+    {
+      "source": "react-paradigm",
+      "target": "agent-loop-architecture",
+      "relation_type": "implements",
+      "description": "ReAct 的 T-A-O 循环是 Agent Loop 的最小实现"
+    },
+    {
+      "source": "react-paradigm",
+      "target": "feedback-loop",
+      "relation_type": "uses",
+      "description": "ReAct 每步 Observation 构成微观反馈闭环"
+    },
+    {
+      "source": "react-paradigm",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "每次 Observation 与预期的偏差驱动下一步 Thought"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "RL 研究是 Bitter Lesson 的经验来源"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "scaling-laws",
+      "relation_type": "uses",
+      "description": "RL 中 search + learning 的算力扩展遵循 Scaling Laws"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "continual-self-improving-ai",
+      "relation_type": "extends",
+      "description": "自我改进方法试图赋予 LLM Agent 类 RL 的学习能力"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "agent-paradigms",
+      "relation_type": "grounds",
+      "description": "RL 的 trial-and-error 是 Agent 范式的理论起点"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "harness-engineering",
+      "relation_type": "contrasts",
+      "description": "Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿"
+    },
+    {
       "source": "rtk-token-compression",
       "target": "context-engineering",
       "relation_type": "extends",
@@ -3541,6 +4479,24 @@
       "target": "mcp-vs-cli",
       "relation_type": "contrasts",
       "description": "RTK 选择 CLI 代理而非 MCP 协议，体现了两条工具集成路线的不同取舍"
+    },
+    {
+      "source": "scaling-laws",
+      "target": "bitter-lesson",
+      "relation_type": "implements",
+      "description": "Scaling Laws 是 Bitter Lesson 的定量化实现"
+    },
+    {
+      "source": "scaling-laws",
+      "target": "continual-self-improving-ai",
+      "relation_type": "constrains",
+      "description": "数据幂律增长约束驱动了自我改进方法"
+    },
+    {
+      "source": "scaling-laws",
+      "target": "reinforcement-learning",
+      "relation_type": "uses",
+      "description": "RL 中 search + learning 的算力扩展遵循类似规律"
     },
     {
       "source": "skill-creator-orchestration",
@@ -3615,6 +4571,12 @@
       "description": "Skill Creator 构建的是 Skill Runtime 的编排层"
     },
     {
+      "source": "skill-runtime",
+      "target": "cybernetics-agent-design",
+      "relation_type": "contrasts",
+      "description": "控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层"
+    },
+    {
       "source": "speech-technology-stack",
       "target": "voice-live-agent",
       "relation_type": "part-of",
@@ -3667,6 +4629,30 @@
       "target": "gsd-five-step-workflow",
       "relation_type": "produces",
       "description": "实施方法：GSD 五步开发工作流"
+    },
+    {
+      "source": "turn-taking",
+      "target": "voice-activity-detection",
+      "relation_type": "contrasts",
+      "description": "VAD 检测语音存在，Turn-Taking 决定何时切换话轮"
+    },
+    {
+      "source": "turn-taking",
+      "target": "voice-live-agent",
+      "relation_type": "uses",
+      "description": "Voice Agent 的对话自然度依赖 Turn-Taking 质量"
+    },
+    {
+      "source": "turn-taking",
+      "target": "speech-technology-stack",
+      "relation_type": "part-of",
+      "description": "Turn-Taking 是 Core Processing 层的关键组件"
+    },
+    {
+      "source": "turn-taking",
+      "target": "cascaded-pipeline",
+      "relation_type": "uses",
+      "description": "级联流水线中 Turn-Taking 是独立可配置模块"
     },
     {
       "source": "voice-activity-detection",
@@ -3747,6 +4733,12 @@
       "description": "GSD 五步工作流是 Step 3 的详细实施方法"
     },
     {
+      "source": "ai-native-five-layer-pipeline",
+      "target": "cybernetics-harness-design-sheet",
+      "relation_type": "contrasts",
+      "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
+    },
+    {
       "source": "code-reuse-four-layer-defense",
       "target": "code-reuse-in-agent-era",
       "relation_type": "implements",
@@ -3769,6 +4761,30 @@
       "target": "gsd-five-step-workflow",
       "relation_type": "uses",
       "description": "GSD workflow 中可嵌入复用检查步骤"
+    },
+    {
+      "source": "cybernetics-harness-design-sheet",
+      "target": "cybernetics-agent-design",
+      "relation_type": "implements",
+      "description": "本方法是控制论五层的实践落地工具"
+    },
+    {
+      "source": "cybernetics-harness-design-sheet",
+      "target": "harness-engineering",
+      "relation_type": "uses",
+      "description": "Harness Design Sheet 是 Harness 设计流程的前置检查"
+    },
+    {
+      "source": "cybernetics-harness-design-sheet",
+      "target": "ai-native-five-layer-pipeline",
+      "relation_type": "contrasts",
+      "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
+    },
+    {
+      "source": "cybernetics-harness-design-sheet",
+      "target": "harness-five-dimension-quality-gate",
+      "relation_type": "extends",
+      "description": "质量门禁关注运行时检查，Design Sheet 关注设计时检查"
     },
     {
       "source": "gsd-five-step-workflow",
@@ -3853,6 +4869,12 @@
       "target": "ai-native-five-layer-pipeline",
       "relation_type": "part-of",
       "description": "Pipeline Step 4/5 的质量保障"
+    },
+    {
+      "source": "harness-five-dimension-quality-gate",
+      "target": "cybernetics-harness-design-sheet",
+      "relation_type": "contrasts",
+      "description": "质量门禁关注运行时检查，Design Sheet 关注设计时检查"
     },
     {
       "source": "openclaw-five-stage-gateway",
@@ -4001,11 +5023,21 @@
         "skill-pattern",
         "autoresearch",
         "code-reuse-in-agent-era",
+        "cybernetics-agent-design",
         "meta-harness",
         "one-person-team",
         "bitter-lesson",
         "continual-self-improving-ai",
-        "ai-skill-formation"
+        "ai-skill-formation",
+        "negative-feedback",
+        "conjugate-transformation",
+        "feedback-loop",
+        "generation-evaluation-separation",
+        "react-paradigm",
+        "scaling-laws",
+        "reinforcement-learning",
+        "context-projection",
+        "claim-based-schema"
       ]
     },
     {
@@ -4045,7 +5077,9 @@
       "members": [
         "voice-live-agent",
         "voice-activity-detection",
-        "speech-technology-stack"
+        "speech-technology-stack",
+        "turn-taking",
+        "cascaded-pipeline"
       ]
     },
     {

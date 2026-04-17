@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-04-16
-stats: "43 concepts, 9 methods, 4 decisions, 195 claims"
+updated: 2026-04-17
+stats: "55 concepts, 10 methods, 4 decisions, 237 claims"
 tags:
   - wiki
   - index
@@ -75,11 +75,21 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[skill-pattern]] — Google 五种 Skill Pattern 认知架构
 - [[autoresearch]] — AutoResearch：受控搜索空间中的自动化爬坡
 - [[code-reuse-in-agent-era]] — Agent 时代的代码复用：四层防线
+- [[cybernetics-agent-design]] — 控制论 Agent 设计：负反馈 + 共轭变换 + 随机探索的结构同构
 - [[meta-harness]] — Meta-Harness：用 Harness 优化 Harness 的递归搜索架构
 - [[one-person-team]] — One Person Team：AI 重新定义技术角色边界
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
 - [[ai-skill-formation]] — AI 对技能形成的影响：放大器而非均衡器
+- [[negative-feedback]] — 负反馈：error = goal - current_state，Agent 收敛的核心机制
+- [[conjugate-transformation]] — 共轭变换：表示层设计，90% 的 Agent 失败是表示问题
+- [[feedback-loop]] — 反馈闭环：区分线性工具链和控制系统的关键判据
+- [[generation-evaluation-separation]] — 生成-评估分离：三家公司独立演化的行业共识
+- [[react-paradigm]] — ReAct 范式：Thought-Action-Observation，Agent Loop 最小完备形式
+- [[scaling-laws]] — 缩放定律：Bitter Lesson 的定量化证明
+- [[reinforcement-learning]] — 强化学习：Search + Learning 统一，Harness 是学习能力缺失的补偿
+- [[context-projection]] — 上下文投影：context ≠ state，按需投影解决 Context 爆炸
+- [[claim-based-schema]] — 基于论断的知识模式：不存事实只存论断的知识系统设计
 
 ### Claude Code 与扩展生态
 
@@ -108,6 +118,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[voice-live-agent]] — Voice Live Agent：级联管线 vs 端到端架构
 - [[voice-activity-detection]] — 语音活动检测：Server VAD vs Semantic VAD
 - [[speech-technology-stack]] — 语音技术栈：Speech In / Core Processing / Speech Out
+- [[turn-taking]] — 话轮转换：语音 Agent 最被低估也最关键的技术
+- [[cascaded-pipeline]] — 级联流水线：VAD → STT → LLM → TTS 的模块化架构
 
 ### Azure 与云平台
 
@@ -164,6 +176,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Quality Gate（质量门禁）
 
 - [[harness-five-dimension-quality-gate]] — Harness 五维质量门禁
+- [[cybernetics-harness-design-sheet]] — 控制论 Harness Design Sheet：五层设计维度检查表
 
 ### Pipeline（顺序流程）— 补充
 

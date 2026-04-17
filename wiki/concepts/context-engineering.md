@@ -97,6 +97,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - [[agent-search-tools]] — `uses` 搜索工具是 Context Engineering 的信息获取层
 - [[context7]] — `uses` Context7 是 Context Engineering 的文档层工具
 - [[rtk-token-compression]] — `extends` RTK 是 Context Engineering 在工具链层面的实践
+- [[cybernetics-agent-design]] — `grounds` 控制论视角下，Context 管理是共轭变换的工程实践
 
 ## 来源日记
 
