@@ -31,7 +31,7 @@ Core rules that apply everywhere:
 - **Links**: `[[wikilinks]]` for internal notes, `[content-title](url)` for external. External link text must use the content title, not the platform name.
 - **Images**: `![alt](relative-path)` with correct `../` depth to root `asset/`. **Never** use `![[filename.png]]` wikilink syntax (GitHub cannot render it).
 - **Language**: Chinese for body text, English for technical terms. Use `（）` and `—`.
-- **personal-journal/**: ⛔ Absolutely forbidden to read, analyze, or process under any circumstances.
+- **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Claude Code 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
 
 ## Agent Routing
 
