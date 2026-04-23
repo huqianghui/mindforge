@@ -42,6 +42,7 @@ Core rules that apply everywhere:
 | `knowledge-maintainer` | `.claude/agents/knowledge-maintainer.md` | 知识维护：更新置信度、标记 stale、生成摘要、刷新关联 |
 | `conflict-detector` | `.claude/agents/conflict-detector.md` | 冲突检测：扫描 Claims 发现矛盾（只读） |
 | `editor-agent` | `.claude/agents/editor-agent.md` | 文章编辑：质量润色、结构优化、格式统一 |
+| `cultivation-master` | `.claude/agents/cultivation-master.md` | 修行陪伴导师：性命双修指导、打卡分析、经典导读、个人日记管理 |
 
 **路由规则**：
 - 日记/任务/笔记操作 → `obsidian-agent`（via `/obsidian` 或 `/daily`）
@@ -49,6 +50,7 @@ Core rules that apply everywhere:
 - Wiki 维护 → `knowledge-maintainer`（via `/evolve-wiki`）
 - 冲突检测 → `conflict-detector`（via `/detect-conflict`）
 - 文章润色 → `editor-agent`
+- 修行/锻炼/个人日记/情绪管理 → `cultivation-master`（via `/guru`）
 
 ## Tools
 

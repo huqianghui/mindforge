@@ -1,0 +1,7 @@
+.wide-table table {
+  width: 100%;
+}
+.wide-table table td:last-child,
+.wide-table table th:last-child {
+  width: 50%;
+}

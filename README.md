@@ -60,6 +60,8 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [深入对比 Gstack、Superpowers 和 Compound Engineering 三个最火的 AI Coding 工具](Notes/AI/vibe-coding/references/深入对比Gstack、Superpowers和Compound%20Engineering三个最火的AI%20Coding工具.md)（外部参考）
 - [系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式](Notes/AI/vibe-coding/Vibe%20Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式.md)
 - [系列10：oh-my-claude-code——Vibe Coding 的未来终极形态吗？](Notes/AI/vibe-coding/Vibe%20Coding系列10：oh-my-claude-code——Vibe%20Coding的未来终极形态吗？.md)
+- [系列11：架构测试全景——从 ArchUnit 到 AI 辅助架构 Review 的工具链实践](Notes/AI/vibe-coding/Vibe%20Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践.md)
+- [系列12：测试环境即代码——从 Testcontainers 到 Ephemeral Environment 的 Harness 实践](Notes/AI/vibe-coding/Vibe%20Coding系列12：测试环境即代码——从Testcontainers到Ephemeral%20Environment的Harness实践.md)
 
 ### Notes/AI/voice
 
@@ -70,6 +72,19 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [qmd 与 Microsoft Foundry IQ 的 RAG 能力对比——从个人知识库到企业级检索](Notes/AI/RAG/qmd与Microsoft%20Foundry%20IQ的RAG能力对比——从个人知识库到企业级检索.md)
 
 ### Notes/AI/Design-Tools
+
+与现有工具的互补关系：
+
+```
+                      结构化 ←————————→ 写实/艺术
+
+    PptxGenJS    azure-diagrams    excalidraw    GPT-image-2
+    (数据图表)    (架构图)          (概念手绘)     (写实插画/场景)
+        ↑              ↑               ↑              ↑
+     纯数据         技术架构        思维概念      视觉表达/氛围
+```
+
+不重叠、纯增量——GPT-image-2 填补的是"视觉表达层"，现有工具覆盖的是"信息结构层"。
 
 - [Pencil 设计工具与 Claude Code 快速上手指南](Notes/AI/Design-Tools/Pencil设计工具与Claude%20Code快速上手指南.md)
 - [在 Obsidian 中用 Excalidraw 与 Draw.io 绘制 Azure 架构图实战指南](Notes/AI/Design-Tools/在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南.md)
