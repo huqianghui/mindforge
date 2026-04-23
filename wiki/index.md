@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-04-17
-stats: "55 concepts, 10 methods, 4 decisions, 237 claims"
+updated: 2026-04-23
+stats: "59 concepts, 12 methods, 4 decisions, 253 claims"
 tags:
   - wiki
   - index
@@ -131,12 +131,19 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[enterprise-ontology]] — 企业本体论：Fabric IQ + Palantir Ontology
 - [[ontology-philosophy]] — 本体论哲学根基：从 Parmenides 到 Aristotle
 
+### 工程质量与测试
+
+- [[architecture-testing]] — 架构测试：可执行架构约束系统（ArchUnit/dependency-cruiser/Tach）
+- [[fitness-functions]] — 架构适应度函数：将架构关注点转化为可自动执行的检查
+- [[testcontainers]] — 用真实容器替代 mock 的集成测试框架
+- [[ephemeral-environment]] — 临时环境：PR 级全栈隔离（vCluster/Signadot/Bunnyshell）
+- [[contract-testing]] — 契约测试：消费者驱动的服务间 API 验证（Pact）
+- [[harness-quality-gate]] — Harness 质量门禁体系：从五维到四层
+
 ### 知识管理与工具
 
 - [[llm-wiki]] — LLM Wiki 与 Personal Knowledge Compiler 范式
 - [[personal-knowledge-compiler]] — 个人知识编译器（PKC）：日记到知识库
-- [[testcontainers]] — 用真实容器替代 mock 的集成测试框架
-- [[harness-quality-gate]] — Harness 5 维度质量门禁体系
 - [[notion-as-ai-layer]] — Notion 在 AI Agent 生态中的定位
 - [[ai-native-design-tools]] — AI 原生设计工具：Pencil / Excalidraw / Draw.io
 - [[terminal-multiplexer-for-ai]] — 终端复用器：tmux / cmux 与 AI 工作流
@@ -172,6 +179,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Layered Strategy（分层策略）
 
 - [[code-reuse-four-layer-defense]] — Agent 时代四层代码复用防线
+- [[four-layer-architecture-quality-gate]] — 四层架构质量门禁（Lint → 约束 → 分析 → AI Review）
+- [[four-layer-test-environment-strategy]] — 四层测试环境策略（Unit → Integration → E2E → Ephemeral）
 
 ### Quality Gate（质量门禁）
 

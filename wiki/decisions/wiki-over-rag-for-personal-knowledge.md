@@ -1,7 +1,7 @@
 ---
 title: "LLM Wiki 优于 RAG：个人知识管理架构"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-04-23"
 tags:
   - wiki
   - decision
@@ -57,8 +57,8 @@ related_methods:
 ## 验证状态
 
 - **验证方式**：对比 Wiki 方式和纯 RAG 方式回答个人知识问题的质量和效率
-- **当前状态**：部分验证（40 概念 + 8 方法 + 150 Claims 已建立，但尚未做对比实验）
-- **验证证据**：知识提取和差距分析功能已运行，初步验证了"知识编译"的可行性
+- **当前状态**：部分验证（55+ 概念 + 12 方法 + 237+ Claims 已建立）
+- **验证证据**：知识提取和差距分析功能已运行，初步验证了"知识编译"的可行性。2026-04-23 进一步验证：原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（AI Search + CosmosDB Gremlin），实际使用后发现两者是不同范式——编译式知识（Wiki）与检索式知识（RAG）不适合强行合并。
 
 ## Claims
 
@@ -82,6 +82,16 @@ related_methods:
 
 > "RAG = search, LLM Wiki = writing a book"。
 
+### Claim: LLM Wiki（编译式知识）与 RAG（检索式知识）是不同范式，不适合强行合并
+
+- **来源**：[[2026-04-23-周四]]
+- **首次出现**：2026-04-23
+- **最近更新**：2026-04-23
+- **置信度**：0.7
+- **状态**：active
+
+> 原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是"编译一次持续维护"（writing a book），RAG 是"每次查询重新检索"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。
+
 ## 关联概念
 
 - [[llm-wiki]] — `grounds` 理论基础
@@ -95,3 +105,4 @@ related_methods:
 ## 来源
 
 - [[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践
+- [[2026-04-23-周四]] — 取消 RAG+Wiki 合并方案，确认两者是不同范式

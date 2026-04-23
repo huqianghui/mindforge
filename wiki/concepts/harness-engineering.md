@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-04-17"
+updated: "2026-04-23"
 tags:
   - wiki
   - concept
@@ -135,10 +135,31 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
 
+### Claim: InkOS 在 AI 小说创作领域独立发现了 Harness Engineering 的核心范式——跨领域验证
+
+- **来源**：[[InkOS深度感想——AI小说创作中的Harness Engineering范式]]
+- **首次出现**：2026-04-23
+- **最近更新**：2026-04-23
+- **置信度**：0.8
+- **状态**：active
+
+> InkOS 的 10 Agent 流水线 + 硬编码词表规则（L1 Hook）+ 7 真相文件（结构化状态持久化）+ 33 维审计检查清单（Evaluative Control）+ 审计-修订循环（反馈闭环）与 Harness Engineering 存在六个结构性同构映射。不同领域（小说 vs 编码），同一规律：AI 的可靠性不来自更强的模型，而来自更好的约束系统。
+
+### Claim: AI Agent 创作存在三种范式——纯多 Agent / Agent+微调 / Harness 驱动
+
+- **来源**：[[InkOS深度感想——AI小说创作中的Harness Engineering范式]]
+- **首次出现**：2026-04-23
+- **最近更新**：2026-04-23
+- **置信度**：0.7
+- **状态**：active
+
+> 范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
 - 2026-04-17：控制论视角引入，将 Harness Engineering 从工程方法论上溯到控制论理论根基。三套框架（控制论五层 / 六层架构 / 三层控制模型）互补：搭系统用六层，调系统用三层，设计决策回控制论。
+- 2026-04-23：InkOS 分析证实 Harness Engineering 范式具有跨领域普适性（从 Coding 扩展到小说创作），核心公式 Agent = Model + Harness 在文学领域同样成立。
 
 ## 关联概念
 
@@ -165,3 +186,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
 - [[2026-04-16-周四]] — Meta-Harness 论文解读，补充精确 Harness 定义和自动化优化
 - [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 98.7% 是 Harness
+- [[2026-04-23-周四]] — InkOS 跨领域验证：AI 小说创作中的 Harness Engineering 范式、三种 AI 创作范式总结
