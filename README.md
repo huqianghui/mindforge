@@ -46,6 +46,8 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [AutoResearch 概念澄清——与 Ralph-Loop 和 AutoML 的本质区别](Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
 - [Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API](Notes/AI/agent/Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API.md)
+- [InkOS 深度感想——AI 小说创作中的 Harness Engineering 范式](Notes/AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)
+
 ### Notes/AI/vibe-coding
 
 - [系列01：全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)
