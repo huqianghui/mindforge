@@ -8,6 +8,7 @@ tags:
 stats: "59 concepts, 12 methods, 4 decisions, 257 claims, 390 relations"
 github_trending_date: 2026-04-23
 arxiv_query_date: 2026-04-23
+huggingface_query_date: 2026-04-23
 ---
 
 # 知识库差距分析报告 — 2026-04-23
@@ -110,17 +111,6 @@ arxiv_query_date: 2026-04-23
 
 ## 三、知识成熟度分析
 
-### 成熟度计算方法
-
-| 维度 | 权重 | 计分规则 |
-|------|------|----------|
-| Claim 数量 | 20% | 1-2=1, 3-4=2, 5+=3 |
-| 平均置信度 | 25% | <0.5=1, 0.5-0.7=2, >0.7=3 |
-| 来源多样性 | 20% | 1=1, 2=2, 3+=3 |
-| 关联密度 | 15% | 0-1=1, 2-3=2, 4+=3 |
-| 方法覆盖 | 10% | 无=0, 有=3 |
-| 实践验证 | 10% | 无=0, 有=3 |
-
 ### Top 10 最成熟概念
 
 | 排名 | 概念 | 成熟度 | 等级 | 核心优势 |
@@ -169,35 +159,45 @@ arxiv_query_date: 2026-04-23
 
 ## 四、GitHub 趋势对标
 
-> 数据采集日期：2026-04-23，基于 GitHub API 近 30 天活跃仓库
+> 数据采集日期：2026-04-23 | 排序指标：**Star Velocity（⭐/天）**而非绝对 star 数
+> 方法：Signal A（90 天内新仓库 star 排行）+ Signal C（领域深度扫描 180 天内新锐）
 
-### 全局热门趋势
+### 新锐飙升榜（按 Velocity 排序 — 真正的当前趋势）
 
-| 趋势主题 | 代表仓库（stars） | wiki 覆盖 | 相关性 | 建议动作 |
-|----------|------------------|-----------|--------|----------|
-| Agent 平台/框架 | langflow-ai/langflow（147k）、langgenius/dify（138k）、langchain-ai/langchain（134k） | ❌ 缺失 | 高 | 建页：agent-platform-landscape |
-| Browser/Computer Use Agent | browser-use/browser-use（89k） | ❌ 缺失 | 高 | 建页：browser-use-agent |
-| AI Workflow Automation | n8n-io/n8n（185k） | ❌ 缺失 | 中 | 观望，偏低代码方向 |
-| Local LLM 推理 | ollama/ollama（169k） | ❌ 缺失 | 中 | 建页：local-llm-inference |
-| Agent Harness 最佳实践 | affaan-m/everything-claude-code（164k）、shanraisshan/claude-code-best-practice（47k） | ✅ harness-engineering | 高 | 补充来源 |
-| Agentic Skills 框架 | obra/superpowers（165k）、refly-ai/refly（7.2k） | 🔶 部分（three-layer-plugin） | 高 | 更新 superpowers 覆盖 |
-| MCP 生态扩展 | modelcontextprotocol/servers（84k）、registry（6.7k）、go-sdk（4.4k） | 🔶 部分（mcp-vs-cli） | 高 | 建页：mcp-ecosystem-evolution |
+| 排名 | 仓库 | Stars | 创建 | 年龄 | Velocity | 主题 | wiki 覆盖 | 重要性 |
+|------|------|-------|------|------|----------|------|-----------|--------|
+| 1 | ultraworkers/claw-code | 187k | 03-31 | 23d | **8163⭐/d** | Agent CLI 开源 | 🔶 openclaw-agent-gateway | 🔴 |
+| 2 | VoltAgent/awesome-design-md | 63k | 03-31 | 23d | **2777⭐/d** | DESIGN.md 最佳实践 | ❌ | 🟡 |
+| 3 | MemPalace/mempalace | 49k | 04-05 | 18d | **2733⭐/d** | AI Memory 系统 | ❌ | 🔴 |
+| 4 | JuliusBrussee/caveman | 44k | 04-04 | 19d | **2327⭐/d** | Token 压缩 Skill | 🔶 rtk-token-compression | 🟡 |
+| 5 | santifer/career-ops | 38k | 04-04 | 19d | **2039⭐/d** | Claude Code 应用 Skill | 🔶 skill-hub-ecosystem | 🟡 |
+| 6 | garrytan/gstack | 80k | 03-11 | 43d | **1883⭐/d** | Opinionated Claude Setup | 🔶 three-layer-plugin | 🟡 |
+| 7 | safishamsi/graphify | 33k | 04-03 | 20d | **1677⭐/d** | AI Coding Skill | 🔶 skill-hub-ecosystem | 🟡 |
+| 8 | karpathy/autoresearch | 75k | 03-06 | 48d | **1581⭐/d** | AI 自动研究 | ✅ autoresearch | 🟢 |
+| 9 | paperclipai/paperclip | 57k | 03-02 | 52d | **1115⭐/d** | Zero-human 公司编排 | ❌ | 🔴 |
+| 10 | HKUDS/CLI-Anything | 32k | 03-08 | 46d | **703⭐/d** | 所有软件 Agent-Native | 🔶 opencli | 🟡 |
+| 11 | HKUDS/OpenHarness | 11k | 04-01 | 22d | **501⭐/d** | Open Agent Harness | ✅ harness-engineering | 🟢 |
+| 12 | HKUDS/nanobot | 40k | 02-01 | 81d | **502⭐/d** | 超轻量个人 Agent | ❌ | 🟡 |
+| 13 | Gitlawb/openclaude | 23k | 04-01 | 22d | **1085⭐/d** | 多模型 Coding Agent CLI | ❌ | 🟡 |
+| 14 | garrytan/gbrain | 10k | 04-05 | 18d | **594⭐/d** | OpenClaw Agent Brain | ❌ | 🟢 |
+| 15 | openai/codex-plugin-cc | 15k | 03-30 | 24d | **655⭐/d** | Codex↔Claude Code 互操作 | ❌ | 🟡 |
 
-### 领域专项趋势
+**重要性说明**：
+- 🔴 高（建议深入）：claw-code 开源改变 Agent CLI 格局；MemPalace 是 AI Memory 新范式；paperclip 代表 zero-human 编排思想
+- 🟡 中（了解即可）：Skill 生态爆发（caveman/career-ops/graphify）是量变而非质变；DESIGN.md 是工程实践
+- 🟢 低（已覆盖/可观望）：autoresearch 和 OpenHarness 已有 wiki 覆盖
 
-| 领域 | 代表仓库（stars） | wiki 覆盖 | 建议动作 |
-|------|------------------|-----------|----------|
-| **Voice AI 框架** | TEN-framework（10.4k）、livekit/agents（10.2k） | ❌ 缺失具体框架 | 补充到 voice-live-agent |
-| **Multi-Agent Kanban** | BloopAI/vibe-kanban（25.5k） | ❌ 缺失 | 建页或补充到 oh-my-claude-code |
-| **Gemini CLI Agent** | google-gemini/gemini-cli（102k） | ❌ 缺失 | 补充到 skill-hub-ecosystem 竞品分析 |
-| **Hermes Agent** | NousResearch/hermes-agent（112k） | ❌ 缺失 | 观望，开源 Agent 新势力 |
-| **Agent Multi-Instance** | njbrake/agent-of-empires（1.6k） | ❌ 缺失 | 关注多 Agent 实例管理 |
+### 趋势主题聚合
 
-### GitHub 热度覆盖率
+| 趋势主题 | 代表仓库 | 总 Velocity | 重要性 | 建议 |
+|----------|---------|------------|--------|------|
+| **Agent CLI 开源潮** | claw-code+OpenHarness+openclaude | 9749⭐/d | 🔴 | 关注 claw-code 架构，更新 openclaw 页 |
+| **Agent Skill 生态爆发** | caveman+career-ops+graphify+nuwa | 6831⭐/d | 🟡 | 量变阶段，观察哪些 Skill 模式沉淀 |
+| **AI Memory 系统** | MemPalace | 2733⭐/d | 🔴 | 新范式——与 claude-code-memory-system 形成互补 |
+| **Zero-human 自主 Agent** | paperclip+nanobot | 1617⭐/d | 🔴 | 值得深入——代表 Agent 自主性的极端推演 |
+| **Harness 最佳实践** | gstack+karpathy-skills+OpenHarness | 3304⭐/d | 🟢 | wiki 已覆盖，补充来源即可 |
 
-- 全局 Top 30 中 wiki 已覆盖：**5/30（17%）**（openclaw、react、transformers、superpowers、everything-claude-code）
-- 领域 Top 10 中 wiki 已覆盖：**AI Agent 3/10、Voice 0/10、MCP 1/10、Vibe Coding 2/10**
-- **总体覆盖率偏低**，尤其 Voice AI 框架和 MCP 生态细节缺失
+**方法论说明**：本节仅收录 velocity > 250⭐/d 的真正趋势仓库。langflow、dify、langchain、n8n 等老牌高星仓库不纳入——它们代表存量影响力而非当前热点。
 
 ---
 
@@ -207,166 +207,144 @@ arxiv_query_date: 2026-04-23
 
 ### 论文-概念映射
 
-| 论文标题 | 发表时间 | 核心贡献 | wiki 覆盖 | 相关性 | 建议动作 |
+**Agent 安全与工具使用**：
+
+| 论文标题 | 发表时间 | 核心贡献 | wiki 覆盖 | 重要性 | 建议动作 |
 |----------|----------|----------|-----------|--------|----------|
-| **Towards Verifiably Safe Tool Use for LLM Agents** (2601.08012) | 2026-01 | 形式化验证 Agent 工具安全：信息流控制、taint-tracking、访问控制 | ❌ 缺失 | 高 | 建页：agent-tool-safety |
-| **The Evolution of Tool Use in LLM Agents** (2603.22862) | 2026-03 | 从单工具到多工具编排的演化路径 | 🔶 部分（agent-loop） | 高 | 补充来源 |
-| **Building Enterprise Realtime Voice Agents from Scratch** (2603.05413) | 2026-03 | 级联管线仍是企业级唯一可行架构；Qwen3-Omni 端到端延迟过高 | ✅ cascaded-pipeline | 高 | 补充来源+更新验证 |
-| **Benchmarking Full-Duplex Voice Agents** (2603.13686) | 2026-03 | 全双工语音 Agent 评估基准 VocalBench | ❌ 缺失 | 高 | 建页：voice-agent-evaluation |
-| **Can Coding Agents be General Agents?** (2604.13107) | 2026-04 | Coding Agent 泛化到业务任务的失败模式分析 | ❌ 缺失 | 高 | 建页：coding-agent-generalization |
-| **LLM-Based Multi-Agent Systems for Code Generation** (2604.16321) | 2026-04 | 114 篇 Multi-Agent 代码生成综述，9 类动机 + 6 类挑战 | ❌ 缺失 | 高 | 读论文→建页 |
-| **CoAct-1: Multi-Agent System with Coding Actions** (ICLR 2026) | 2026 | Orchestrator + Programmer + GUI Operator 三角色架构 | ❌ 缺失 | 高 | 建页：multi-agent-code-generation |
-| **Planner-Coder Gap in Multi-Agent Systems** (2510.10460) | 2025-10 | 规划者与编码者之间的鲁棒性差距 | ❌ 缺失 | 中 | 补充到 agent-paradigms |
-| **ClawsBench / ClawSafety** (2604.05172/01438) | 2026-04 | Agent 安全评估基准：MCP 工具评估 + workspace 注入攻击 | ❌ 缺失 | 高 | 建页：agent-safety-benchmark |
-| **AgentCgroup: OS Resources of AI Agents** (2602.09345) | 2026-02 | 用 cgroup 控制 Agent OS 资源 | ❌ 缺失 | 中 | 观望 |
-| **Toward Personalized LLM-Powered Agents** (2602.22680) | 2026-02 | 个性化 Agent 基础框架综述 | ❌ 缺失 | 中 | 读论文 |
-| **RT-RAG: Reasoning Trees for Multi-Hop QA** (2601.11255) | 2026-01 | 推理树分解多跳问题，解决错误传播 | ❌ 缺失 | 中 | 补充到 rag-architecture-comparison |
-| **AI Engineering Blueprint for On-Premises RAG** (2604.01395) | 2026-04 | 企业级本地 RAG 架构蓝图 | 🔶 部分（rag-architecture-comparison） | 中 | 补充来源 |
+| **SWE-chat: Coding Agent Interactions From Real Users** (2604.20779) | 2026-04 | 6000 真实 Coding Agent 会话分析：**Vibe-coded 代码引入安全漏洞的比率是人类的 9 倍** | 🔶 vibe-coding | 🔴 | 补充到 vibe-coding 页——关键风险数据 |
+| **Unsafer in Many Turns: MT-AgentRisk** (2602.13379) | 2026-02 | 首个多轮工具使用安全基准：恶意意图分散到多轮后 ASR 升高 16%；提出 ToolShield 防御 | ❌ | 🔴 | 读论文→建页 |
+| **Real Faults in MCP Software** (2603.05637) | 2026-03 | 首个大规模 MCP 实证研究：3282 个 GitHub issues → 5 类故障分类法 | ❌ | 🔴 | 读论文——MCP 已成学术研究对象 |
+| **Auditing MCP Servers: mcp-sec-audit** (2603.21641) | 2026-03 | MCP 安全审计工具包：静态模式匹配 + Docker/eBPF 动态沙箱模糊测试 | ❌ | 🔴 | 读论文→考虑建 mcp-security 页 |
+| **SoK: Agentic Skills** (2602.20867) | 2026-02 | Agent Skills 系统化：可组合能力分析、供应链风险、Skill 载荷注入攻击 | 🔶 skill-pattern | 🔴 | 补充 Skill 安全维度 |
+| **Towards Verifiably Safe Tool Use** (2601.08012) | 2026-01 | 形式化验证 Agent 工具安全：信息流控制、taint-tracking（ICSE NIER 2026） | ❌ | 🟡 | 读论文了解 |
+| **ClawsBench / ClawSafety** | 2026-04 | Agent 安全评估：MCP 工具评估 + workspace 注入攻击 | ❌ | 🔴 | 读论文→建页 |
 
-### 关键发现
+**Agent 架构与编排**：
 
-1. **Agent 安全是 2026 年最热的研究方向之一**——ClawsBench、ClawSafety、Verifiable Safe Tool Use 三篇高影响力论文，wiki **完全缺失**
-2. **Multi-Agent 代码生成已有 ICLR 2026 论文**（CoAct-1）和大规模综述（114 篇），wiki 缺失
-3. **Voice Agent 评估基准**（Full-Duplex Benchmarking）已发表，wiki 缺失评估维度
-4. **Enterprise Realtime Voice Agent** 论文**验证了 wiki 的决策**：cascaded pipeline 仍是唯一可行方案
+| 论文标题 | 发表时间 | 核心贡献 | wiki 覆盖 | 重要性 | 建议动作 |
+|----------|----------|----------|-----------|--------|----------|
+| **Benchmarking LLM Tool-Use in the Wild** (2604.06185) | 2026-04 | 首个真实用户对话中的工具使用基准（ICLR 2026） | ❌ | 🔴 | 读论文 |
+| **Utility-Guided Agent Orchestration** (2603.19896) | 2026-03 | 将 Agent 编排建模为效用引导决策问题：respond/retrieve/tool_call/verify/stop | ❌ | 🔴 | 新编排模式 |
+| **Can Coding Agents be General Agents?** (2604.13107) | 2026-04 | Coding Agent 泛化失败："不对称反馈"导致业务-代码边界持续过度自信 | ❌ | 🔴 | 读论文→建页 |
+| **Context Engineering: A Practitioner Methodology** (2604.04258) | 2026-04 | 正式方法论：5 角色上下文包 + 4 阶段管线；**不完整上下文导致 72% 的迭代浪费** | 🔶 context-engineering | 🔴 | 关键量化数据，补充到 wiki |
+| **LLM-Based Multi-Agent Systems for Code Generation** | 2026-04 | 114 篇综述，9 类动机 + 6 类挑战 | ❌ | 🟡 | 读综述 |
+| **CoAct-1** (ICLR 2026) | 2026 | Orchestrator+Programmer+GUI Operator 三角色架构 | ❌ | 🟡 | 关注架构模式 |
 
----
+**语音与实时交互**：
 
-## 六、缺失领域综合分析
+| 论文标题 | 发表时间 | 核心贡献 | wiki 覆盖 | 重要性 | 建议动作 |
+|----------|----------|----------|-----------|--------|----------|
+| **DuplexCascade** (2603.09180) | 2026-03 | VAD-free 全双工级联管线：长轮次→chunk-wise 微轮次 + 控制 token，SoTA turn-taking | 🔶 cascaded-pipeline | 🔴 | 补充到级联管线页——新架构模式 |
+| **VoiceAgentRAG** (2603.02206) | 2026-03 | 双 Agent 语音架构：Slow Thinker 预测检索 + Fast Talker 亚毫秒缓存查询 | ❌ | 🔴 | 新架构模式——读论文 |
+| **Building Enterprise Realtime Voice Agents** | 2026-03 | 级联管线仍是企业级唯一可行架构 | ✅ cascaded-pipeline | 🟡 | 已验证 wiki 决策 |
+| **Benchmarking Full-Duplex Voice Agents** (VocalBench) | 2026-03 | 全双工语音 Agent 评估基准 | ❌ | 🔴 | 读论文→建页 |
 
-### 优先级融合矩阵
-
-基于 GitHub 趋势（📈）和 arXiv 论文（📚）双重信号，识别以下高优先级盲区：
-
-#### 🔥 趋势+论文双重验证（最高优先级）
-
-| 缺失领域 | GitHub 信号 | arXiv 信号 | 与现有知识的桥接 | 建议动作 |
-|----------|------------|-----------|-----------------|---------|
-| **Agent 安全与评估** | ClawSafety workspace 注入 | 2601.08012 形式化验证 + 2604.05172 ClawsBench + 2604.01438 ClawSafety | harness-engineering 的安全维度 | **建 2 页**：agent-tool-safety, agent-safety-benchmark |
-| **Multi-Agent 代码生成** | vibe-kanban（25k）、langflow（147k） | CoAct-1（ICLR 2026）、2604.16321 综述 | agent-paradigms 的多 Agent 扩展 | **建 1 页**：multi-agent-code-generation |
-| **Coding Agent 泛化** | gemini-cli（102k）、hermes-agent（112k） | 2604.13107 业务任务失败模式 | agent-loop-architecture 的边界分析 | **建 1 页**：coding-agent-generalization |
-| **Voice Agent 评估** | TEN（10k）、livekit（10k） | 2603.13686 Full-Duplex Bench | voice-live-agent 的评估闭环 | **建 1 页**：voice-agent-evaluation |
-
-#### 📈 趋势驱动（工程实践优先）
-
-| 缺失领域 | GitHub 信号 | 与现有知识的桥接 | 建议动作 |
-|----------|------------|-----------------|---------|
-| **Agent 平台生态图景** | langflow、dify、langchain、n8n | agent-loop + openclaw 的上层平台 | **建 1 页**：agent-platform-landscape |
-| **MCP 生态演进** | servers（84k）、registry、multi-SDK | mcp-vs-cli 的延伸 | **更新** mcp-vs-cli 或建新页 |
-| **Browser Use Agent** | browser-use（89k） | agent-loop 的新应用场景 | **建 1 页**：browser-use-agent |
-| **Local LLM 推理** | ollama（169k） | bitter-lesson + scaling-laws | 观望，非核心方向 |
-
-#### 📚 研究驱动（前瞻性储备）
-
-| 缺失领域 | arXiv 信号 | 与现有知识的桥接 | 建议动作 |
-|----------|-----------|-----------------|---------|
-| **Multi-Hop RAG** | RT-RAG（2601.11255） | rag-architecture-comparison 的深化 | 补充来源到现有页面 |
-| **个性化 Agent** | 2602.22680 综述 | context-engineering 的用户维度 | 读论文，评估是否建页 |
-| **Agent OS 资源控制** | AgentCgroup（2602.09345） | agent-loop-architecture 的运维层 | 读论文，低优先级 |
-| **Planner-Coder 鲁棒性** | 2510.10460 | agent-paradigms Plan-and-Solve | 补充到 agent-paradigms |
-
-### 桥接概念分析
-
-基于现有知识图谱连接关系，以下"桥接概念"应该存在但缺失：
-
-| 桥接概念 | 连接的两端 | 缺失影响 |
-|----------|----------|---------|
-| **Agent Evaluation** | harness-engineering ↔ fitness-functions | Agent 系统缺少评估闭环，上次报告已指出 |
-| **Agent Memory/State** | context-engineering ↔ claude-code-memory-system | 长期记忆从 Claude Code 层到通用 Agent 层的抽象 |
-| **Prompt Engineering** | context-engineering 的前置基础 | 上次报告已指出，仍未补充 |
-| **Tool Orchestration** | agent-loop ↔ mcp-vs-cli | 单工具调用到多工具编排的中间层 |
+**重要性说明**：
+- 🔴 高：**MCP 已成学术研究对象**（3 篇论文研究故障/安全/工具发现）；**Vibe Coding 安全风险被量化**（9x 漏洞率）；**Context Engineering 正式方法论化**（72% 迭代浪费来自不完整上下文）；全双工语音新架构（DuplexCascade 微轮次 + VoiceAgentRAG 双 Agent）
+- 🟡 中：CoAct-1 架构、Multi-Agent 综述有参考价值但不急于行动
 
 ---
 
-## 七、学习路径推荐
+## 六、HuggingFace 模型近期动向
 
-### 路径 1：Agent 安全与评估闭环（🔥 最高优先级）
+> **核心原则**：wiki 缺失不等于用户不知道，但也非全知。本维度按**重要性排序**，帮用户识别真正值得关注和补充的方向——不铺基础概念，但对高影响力新发展明确提示。
+> 数据采集日期：2026-04-23 | 排序指标：**Model Velocity（❤️/天）**
 
-```
-现有基础：harness-engineering + agent-loop + fitness-functions
-  ↓
-【信号】GitHub: ClawSafety workspace 注入
-        arXiv: 2601.08012 + 2604.05172 + 2604.01438
-  ↓
-行动：
-  1. 读 ClawSafety 论文 → 建 agent-safety-benchmark 概念页
-  2. 读 Verifiable Safe Tool Use → 建 agent-tool-safety 概念页
-  3. 将 Agent 安全维度补充到 harness-quality-gate
-  ↓
-目标：Harness 安全维度闭环
-```
+### 新锐模型速报（近 60 天，按 Velocity 排序）
 
-### 路径 2：Multi-Agent 代码生成（🔥 高优先级）
+| 排名 | 模型/技术 | Velocity（❤️/天） | 创建时间 | 一句话要点 | 重要性 |
+|------|----------|-------------------|----------|-----------|--------|
+| 1 | Qwen/Qwen3.6-35B-A3B | **185.4** | 04-15 | Qwen3.6 MoE 基座模型，35B 参数仅激活 3B | 🔴 |
+| 2 | unsloth/Qwen3.6-35B-A3B-GGUF | **115.0** | 04-16 | 上述模型的 GGUF 量化版，unsloth 出品，1.28M 下载 | 🔴 |
+| 3 | zai-org/GLM-5.1 | **77.7** | 04-03 | 智谱新模型：DSA + MLA + MTP 三合一效率创新 | 🔴 |
+| 4 | openbmb/VoxCPM2 | **64.3** | 04-03 | 端到端语音合成新星，支持中断/轮转/声线个性化 | 🔴 |
+| 5 | google/gemma-4-31B-it | **54.9** | 03-11 | Google 多模态 VLM，5.1M 下载量 | 🟡 |
+| 6 | Jackrong/Qwen3.5-27B-Claude-Opus-Distilled | **51.2** | 02-27 | Claude Opus 推理→Qwen 蒸馏，推理蒸馏代表作 | 🔴 |
+| 7 | CohereLabs/cohere-transcribe | **31.1** | 03-24 | Cohere 新 ASR 模型，290K 下载/29 天 | 🔴 |
+| 8 | k2-fsa/OmniVoice | **29.7** | 03-30 | TTS 新星，1.29M 下载/23 天，高吞吐语音部署 | 🔴 |
+| 9 | Qwen/Qwen3.5-35B-A3B | **24.6** | 02-24 | Qwen3.5 MoE 基座，3.99M 下载量 | 🟡 |
+| 10 | fishaudio/s2-pro | **19.9** | 03-09 | 专业级 TTS | 🟡 |
 
-```
-现有基础：agent-paradigms + oh-my-claude-code + agent-loop
-  ↓
-【信号】GitHub: langflow(147k) + vibe-kanban(25k)
-        arXiv: CoAct-1 (ICLR 2026) + 综述(114篇)
-  ↓
-行动：
-  1. 读 2604.16321 综述 → 建 multi-agent-code-generation
-  2. 读 CoAct-1 → 提取 Orchestrator+Programmer+GUI Operator 架构
-  3. 读 Planner-Coder Gap → 补充到 agent-paradigms
-  ↓
-目标：理解多 Agent 编码的架构模式和失败模式
-```
+### HuggingFace Trending 页面实时快照（2026-04-23）
 
-### 路径 3：Voice Agent 工程化（📈 中高优先级）
+当前 HF trending 首页热门：**Qwen3.6-35B-A3B**（新 MoE）、**GLM-5.1**（智谱）、**ERNIE-Image**（百度图像）、**Kimi-K2.6**（月之暗面）、**HY-World-2.0**（腾讯）、**Lyra-2.0**（NVIDIA）、**MiniMax-M2.7**、**gemma-4-31B-it**、**VoxCPM2**
 
-```
-现有基础：voice-live-agent + cascaded-pipeline + turn-taking
-  ↓
-【信号】GitHub: TEN(10k) + livekit(10k)
-        arXiv: 2603.05413 企业级教程 + 2603.13686 评估基准
-  ↓
-行动：
-  1. 读 2603.05413 → 补充到 cascaded-pipeline（验证决策）
-  2. 读 2603.13686 → 建 voice-agent-evaluation
-  3. 调研 TEN/LiveKit 框架 → 补充到 voice-live-agent
-  ↓
-目标：语音 Agent 从理论到工程化的完整覆盖
-```
+### 领域新变化（近 1-2 个月）
 
-### 路径 4：Context 与工具分类深化（📈 中优先级）
+**LLM 基座**：Qwen3.6 系列发布——全面采用 MoE 架构（35B-A3B 即 35B 参数但激活仅 3B）。GLM-5.1 采用 DSA + MLA + MTP 三合一效率设计。中国厂商（百度/智谱/腾讯/月之暗面）密集发布新模型。**多模态已成默认**——几乎所有顶级模型都标记为 image-text-to-text 而非纯 text-generation。
 
-```
-现有基础：mcp-vs-cli + context7 + agent-search-tools + opencli
-  ↓
-【信号】GitHub: MCP servers(84k) + registry(6.7k) + multi-SDK
-  ↓
-行动：
-  1. 更新 mcp-vs-cli 加入 MCP 生态演进（registry, multi-SDK）
-  2. 为 Context 分类补充方法页（如 MCP server 开发工作流）
-  3. 建 browser-use-agent 扩展工具集成覆盖
-  ↓
-目标：Context 与工具集成成熟度从 1.61 提升到 1.9+
-```
+**语音模型**：**TTS 爆发期**——VoxCPM2（64.3❤/d）、OmniVoice（29.7❤/d，1.29M 下载）、fishaudio/s2-pro 三个新 TTS 同时崛起。ASR 新竞争者 CohereLabs/cohere-transcribe（31.1❤/d）。端侧 TTS 需求旺盛（Kokoro-82M 近 10M 下载）。
+
+**代码模型**：Qwen3-Coder-Next 领先；Agent 编码模型（DeepCoder-14B、AgentCPM）仍处早期（velocity < 5）。
+
+### 技术方法新动态
+
+| 技术动态 | 热度 | 一句话要点 | 重要性 |
+|----------|------|-----------|--------|
+| **GGUF 量化 + unsloth** | 🔥🔥 | unsloth 成为 GGUF 量化关键工具，Qwen3.6 GGUF 98.4❤/d | 🔴 |
+| **推理蒸馏** | 🔥🔥 | Claude Opus→Qwen 蒸馏成功，DeepSeek-R1-Distill 系列持续 | 🔴 |
+| **MoE 架构主流化** | 🔥 | Qwen3.6 全系列 MoE，35B-A3B = 大参数小激活 | 🟡 |
+| **Vibe Fine-tuning** | 🔥 | HF 博客推 "Vibe Fine-tuning"——用自然语言对话驱动微调（Orchestra 工具） | 🟡 |
+| **RapidFire AI 加速** | 🔥 | TRL 集成 RapidFire，chunk-based scheduling 实现 20x 加速 | 🟡 |
+| **HF Skills 训练** | 🔥 | Claude Code + HF Skills 可完成模型微调全流程 | 🔴 |
+| **Semantic Quantization** | 新 | 用语义量化解决多 Agent 协调效率问题 | 🟢 |
+| **Integer-Only 推理** | 探索 | W4A4 在 vllm-ascend 上实现，但离主流还远 | 🟢 |
+
+**重要性说明**：
+- 🔴 高：GGUF+unsloth 是本地部署核心工具链（直接影响工作方式）；推理蒸馏改变获取推理能力的路径；HF Skills 训练意味着 Coding Agent 可以端到端完成模型微调
+- 🟡 中：MoE 架构是模型设计趋势但不直接影响使用方式；Vibe Fine-tuning 有趣但需验证
+- 🟢 低：Semantic Quantization 和 Integer-Only 推理都是早期信号
+
+### 值得关注的 3-5 条新趋势（按重要性排序）
+
+1. 🔴 **HF Skills + Coding Agent = 端到端微调**：Claude Code 通过 `hf-llm-trainer` Skill 可以完成数据验证→硬件选择→训练→监控→上传的全流程，这是 Coding Agent 能力的重要扩展
+2. 🔴 **GGUF + unsloth 量化工具链成熟**：unsloth 的 GGUF 量化已成为本地推理的事实标准（Qwen3.6 GGUF 98.4❤/d），且微调+量化一体化
+3. 🔴 **推理蒸馏成为获取推理能力的主流路径**：从 Claude Opus 到 DeepSeek-R1，"大模型推理→蒸馏到小模型"已成新范式
+4. 🟡 **Vibe Fine-tuning 概念浮现**：用自然语言对话驱动模型微调，降低微调门槛——与 Vibe Coding 思路一脉相承
+5. 🟡 **TTS 领域爆发**：VoxCPM2/Kokoro/Dia 多个新 TTS 模型，端侧语音合成需求旺盛
 
 ---
 
-## 八、行动建议
+## 七、近期趋势综合
 
-### 短期（本周）
+> **核心原则**：同维度 6——按重要性筛选，帮用户识别真正值得关注和补充的方向。
 
-1. **🔥 读 ClawSafety + Verifiable Safe Tool Use**，建 `agent-tool-safety` 和 `agent-safety-benchmark` 两个概念页
-2. **🔥 读 2604.16321 Multi-Agent Code Generation 综述**，建 `multi-agent-code-generation` 概念页
-3. 补充 `cascaded-pipeline` 来源（2603.05413 企业级教程验证了级联管线仍是唯一可行方案）
-4. 为 `claim-based-schema`（成熟度 1.30，最低）补充第二来源或提升置信度
+### 多源验证趋势
 
-### 中期（本月）
+| 趋势方向 | GitHub | arXiv | HuggingFace | 重要性 | 建议动作 |
+|----------|--------|-------|-------------|--------|----------|
+| 🔥 **MCP 安全与故障** | ClawSafety workspace 注入 | 3 篇论文（故障分类/安全审计/工具发现） | — | 🔴 | **MCP 已成学术研究对象**——读 mcp-sec-audit 论文 |
+| 🔥 **Vibe Coding 安全风险** | — | SWE-chat: Vibe 代码 **9x 漏洞率** | — | 🔴 | 关键量化数据，补充到 vibe-coding wiki |
+| 🔥 **Agent 安全（多轮+工具）** | ClawSafety | MT-AgentRisk + ClawsBench + SoK Agentic Skills | — | 🔴 | 2026 最热方向，考虑建 agent-safety 页 |
+| 🔥 **Context Engineering 方法论化** | get-shit-done 56K⭐ | 2604.04258: **72% 迭代浪费来自不完整上下文** | — | 🔴 | 补充量化数据到 context-engineering 页 |
+| 🔥 **全双工语音新架构** | — | DuplexCascade 微轮次 + VoiceAgentRAG 双 Agent | VoxCPM2 64.3❤/d, OmniVoice 29.7❤/d | 🔴 | 新架构模式——补充到语音 wiki |
+| 🔥 **Agent CLI 开源化** | claw-code 8163⭐/d, openclaude 1085⭐/d | — | — | 🔴 | 关注 claw-code 架构 |
+| 🔥 **推理蒸馏 + 量化工具链** | — | — | GGUF 115❤/d + Opus-Distilled 51.2❤/d + unsloth | 🔴 | 了解 GGUF/unsloth 工具链 |
+| 🔥 **Coding Agent 边界** | paperclip 1115⭐/d | 2604.13107 泛化失败 + 2604.06185 工具使用基准 | — | 🔴 | 多源验证——能力边界是热点 |
+| 📈 **AI Memory 系统** | MemPalace 2733⭐/d, mem0 54K⭐ | — | — | 🟡 | 单源（GitHub），了解架构 |
+| 📈 **Skill 生态爆发** | caveman+career-ops 合计 6831⭐/d | SoK: Agentic Skills（供应链风险） | — | 🟡 | 量变阶段，但 Skill 安全值得关注 |
+| 📈 **HF Skills 训练范式** | — | — | HF 官方博客推广 | 🟡 | 单源（HF），关注 Agent 微调全流程 |
 
-5. 建 `voice-agent-evaluation` 概念页（Full-Duplex Benchmarking）
-6. 建 `coding-agent-generalization` 概念页（2604.13107 失败模式分析）
-7. 建 `agent-platform-landscape` 概念页（langflow/dify/langchain 生态图景）
-8. 为 Context 与工具集成分类补充方法页（成熟度从 1.61→1.9+）
-9. 将 AI Agent 分类 15 个单来源概念中的 5 个补充第二来源
+### 行动建议（按重要性排序）
 
-### 长期（持续）
+**🔴 高（建议深入了解）**：
 
-10. 每周运行 `/knowledge-gap` 跟踪差距变化趋势（含 GitHub + arXiv 外部信号）
-11. 建立"论文→提取→概念页→差距分析→下一轮论文"的知识自举循环
-12. 目标：整体成熟度从 1.92 提升到 2.2+（各分类均达到 🌳 成熟）
+1. **Vibe Coding 安全风险**：SWE-chat 发现 Vibe-coded 代码安全漏洞率是人类的 **9 倍**——这是直接影响你工作方式的关键数据，建议补充到 vibe-coding wiki 页
+2. **MCP 安全生态**：3 篇 arXiv 论文（故障分类 + 安全审计 + 工具发现）表明 MCP 已成学术研究对象——读 mcp-sec-audit，考虑建 mcp-security 页
+3. **Context Engineering 量化证据**：2604.04258 用 200 次交互实证"不完整上下文导致 72% 迭代浪费"——补充到 context-engineering 页
+4. **全双工语音新架构**：DuplexCascade（微轮次替代 VAD）+ VoiceAgentRAG（双 Agent 解耦检索与生成）——补充到语音 wiki
+5. **GGUF + unsloth 量化工具链**：本地部署事实标准（Qwen3.6 GGUF 115❤/d）
+
+**🟡 中（了解即可）**：
+
+6. **Coding Agent 泛化边界**：2604.13107 "不对称反馈"导致业务-代码边界过度自信
+7. **推理蒸馏范式**：Claude Opus→Qwen 验证路径可行性
+8. **MoE 架构**：Qwen3.6 全面 MoE 化（35B-A3B = 大参数小激活）
+
+**🟢 低（持续观望）**：
+
+9. 为 Context 与工具集成分类补充方法页（成熟度 1.61→1.9+ 目标）
+10. 为 AI Agent 分类 15 个单来源概念补充第二来源
 
 ---
 

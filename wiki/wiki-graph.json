@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-17T14:02:59.860403+00:00",
+  "generated_at": "2026-04-23T13:18:17.939038+00:00",
   "stats": {
-    "nodes": 69,
-    "links": 243,
+    "nodes": 75,
+    "links": 264,
     "orphan_links_removed": 0,
-    "claims": 237,
-    "categories": 8
+    "claims": 257,
+    "categories": 9
   },
   "nodes": [
     {
@@ -290,6 +290,62 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "Vibe Coding 是纯 prompt-and-spec 驱动编程（人类写零代码），进入 Agentic AI 自主编程领域，与论文中的 AI 辅助编程完全不同。"
+        }
+      ]
+    },
+    {
+      "id": "architecture-testing",
+      "type": "concept",
+      "title": "Architecture Testing",
+      "summary": "Architecture Testing（架构测试）是通过可执行的规则引擎对代码结构施加约束的工程实践。其代表工具 ArchUnit 本质上不是测试框架，而是**可执行的架构约束系统**——借用 JUnit 运行环境的静态分析规则引擎，更接近 ESLint 之于 JavaScript 的关系。在 AI Agent 辅助编码（Vibe Coding）时代，LLM 高速生成代码加速了架构腐蚀，架构测试成为 Harness Engineering 质量门禁中不可或缺的一环。\n\n多语言工具生态已形成：Java（ArchUnit/Taikai）、TypeScript（ArchUnitTS/dependency-cruiser/Sheriff）、Python（PyTestArch/Tach）、.NET（NetArchTest/ArchUnitNET）、跨语言（Semgrep/Baseline）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "architecture",
+        "testing",
+        "vibe-coding"
+      ],
+      "category": "工程质量与测试",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.68,
+      "claims": [
+        {
+          "statement": "ArchUnit 不是测试框架，而是借用 JUnit 运行环境的静态分析规则引擎",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "ArchUnit 读取编译后的 bytecode，构建依赖图，应用规则，返回违规结果。JUnit 只是它的\"运行壳\"——伪装成测试是为了零成本接入现有 CI 体系。其本质更接近 ESLint 之于 JavaScript。"
+        },
+        {
+          "statement": "Vibe Coding 时代架构腐蚀加速，架构约束从可选变为刚需",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "传统开发中架构腐蚀是缓慢过程，但 Coding Agent 每次生成几百行代码时，架构违规速度成倍增长。ArchUnit 类工具是 Harness Engineering 质量门禁中不可或缺的一环。"
+        },
+        {
+          "statement": "完整架构质量体系需要四层协作——从格式到约束到分析到 AI Review",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "ArchUnit 只覆盖 Layer 2（分层约束）。完整体系：Layer 1 代码格式与 Lint → Layer 2 架构约束执行 → Layer 3 模块化与复用分析 → Layer 4 AI 辅助 Review。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 正在成为最有价值的新增层。"
+        },
+        {
+          "statement": "Baseline MCP Server 是专为 Vibe Coding 时代设计的架构门禁",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "Baseline 能作为 MCP Server 运行，让 Coding Agent（Cursor、Claude Code 等）在生成代码时直接查询架构规则，实现\"生成时即遵守\"。"
         }
       ]
     },
@@ -1130,6 +1186,43 @@
       ]
     },
     {
+      "id": "contract-testing",
+      "type": "concept",
+      "title": "Contract Testing",
+      "summary": "Contract Testing（契约测试）是验证微服务间 API 接口是否一致的测试方法，与集成测试（Testcontainers）互补而非竞争。契约测试验证\"接口契约是否一致\"（快速、无真实依赖），集成测试验证\"代码与真实依赖是否正确协作\"。\n\n主流框架分为两种驱动模式：Consumer 驱动（Pact，多语言支持）和 Provider 驱动（Spring Cloud Contract，Spring Boot 深度集成）。PactFlow AI（2025）能从 OpenAPI spec 自动生成契约测试，代表 AI 辅助测试生成的前沿方向。",
+      "tags": [
+        "wiki",
+        "concept",
+        "testing",
+        "microservices"
+      ],
+      "category": "工程质量与测试",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.6,
+      "claims": [
+        {
+          "statement": "契约测试与集成测试互补——前者验证接口一致性，后者验证真实协作",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "测试金字塔从下到上：Unit（pytest/JUnit）→ Contract（Pact）→ Integration（Testcontainers）→ E2E（Playwright）。契约测试在不启动真实依赖的情况下验证服务间 API 接口，速度快、隔离好。"
+        },
+        {
+          "statement": "PactFlow AI 能从 OpenAPI spec 自动生成契约测试",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "PactFlow AI（2025）支持 MCP Server 集成 VS Code/Cursor/Claude Code，从 OpenAPI spec 自动生成契约测试。这是 AI 辅助测试生成的前沿方向。"
+        }
+      ]
+    },
+    {
       "id": "cybernetics-agent-design",
       "type": "concept",
       "title": "控制论 Agent 设计（Cybernetics-Agent Design）",
@@ -1281,6 +1374,53 @@
       ]
     },
     {
+      "id": "ephemeral-environment",
+      "type": "concept",
+      "title": "Ephemeral Environment",
+      "summary": "Ephemeral Environment（临时环境）是一种按需创建、用完销毁的全栈隔离环境方案，主要用于 PR 级别的全链路测试验证。它是测试环境隔离的最高层级——Testcontainers 解决测试函数级隔离，docker-compose 解决测试套件级隔离，而 Ephemeral Environment 解决 PR 级隔离。\n\n核心方案分两类：Kubernetes 原生（vCluster、Tilt、Skaffold、Garden）和 EaaS 平台（Signadot、Bunnyshell、Speedscale）。其中 Signadot 的 MCP Server 支持是值得关注的前沿方向——允许 AI Coding Agent 自动创建沙箱环境进行验证。",
+      "tags": [
+        "wiki",
+        "concept",
+        "testing",
+        "devops",
+        "ci-cd"
+      ],
+      "category": "工程质量与测试",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.63,
+      "claims": [
+        {
+          "statement": "测试环境隔离有三个粒度层级——Testcontainers < docker-compose < Ephemeral Environment",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "docker-compose 是\"你维护一个环境\"，Testcontainers 是\"测试自己创建环境\"，Ephemeral Environment 是\"每个 PR 拥有自己的世界\"。三者不是替代关系，而是不同粒度的环境隔离。"
+        },
+        {
+          "statement": "Signadot MCP Server 允许 AI Agent 自动创建沙箱环境",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "Signadot 的 MCP Server 允许 AI Coding Agent（Claude Code、Cursor 等）在生成代码后自动创建沙箱环境进行验证，支持 50+ 并发 Agent。这是\"AI Agent 自主测试\"的前沿方向。"
+        },
+        {
+          "statement": "测试环境即代码（Test Environment as Code）有五个核心原则",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "五原则：版本控制（环境定义与应用代码在同一 Git 仓库）、幂等创建（运行两次产生相同环境）、参数化（变量/overlay 适配不同上下文）、自动生命周期（PR 创建 → 创建环境，PR 合并 → 销毁环境）、密钥管理（永远不硬编码 secret）。"
+        }
+      ]
+    },
+    {
       "id": "feedback-loop",
       "type": "concept",
       "title": "反馈闭环（Feedback Loop）",
@@ -1325,6 +1465,44 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "知识流不能是单向的（日记 → wiki）。实践反馈必须回流到知识库——应用方法后的成功/失败应更新 Claims 置信度，形成：日记 → 提取 → wiki → 应用 → 反馈 → wiki 的完整闭环。"
+        }
+      ]
+    },
+    {
+      "id": "fitness-functions",
+      "type": "concept",
+      "title": "Fitness Functions",
+      "summary": "Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building Evolutionary Architectures》中提出的概念——用**可执行的自动化检查**持续评估架构特征。它不是一个工具，而是一种思维方式：将架构关注点（分层正确性、耦合度、重复率、性能、安全性）转化为可量化、可自动执行的检查。\n\n实际落地中，适应度函数通常是多种工具组合为 CI pipeline 的一个 stage：ArchUnit 检查分层 + dependency-cruiser 检查循环依赖 + jscpd 检查重复率 + k6 检查性能 + Semgrep 检查安全。",
+      "tags": [
+        "wiki",
+        "concept",
+        "architecture",
+        "evolutionary-architecture",
+        "testing"
+      ],
+      "category": "工程质量与测试",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "适应度函数是将架构关注点转化为可自动执行检查的思维方式",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "概念模型：架构关注点 → 适应度函数 → 工具。例：分层是否正确 → 依赖规则测试 → ArchUnit；模块是否松耦合 → 耦合度指标 < 阈值 → ArchUnitTS LCOM；有无重复代码 → 重复率 < 5% → jscpd。"
+        },
+        {
+          "statement": "ArchUnitTS 明确定位为 TypeScript 适应度函数框架",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "专用工具包括 ArchFit（通用适应度函数框架）、ArchUnitTS（TypeScript 适应度函数框架，含 LCOM 内聚度指标）。"
         }
       ]
     },
@@ -1448,8 +1626,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
-      "avg_confidence": 0.79,
+      "claims_count": 13,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -1549,6 +1727,24 @@
           "confidence": 0.9,
           "status": "active",
           "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
+        },
+        {
+          "statement": "InkOS 在 AI 小说创作领域独立发现了 Harness Engineering 的核心范式——跨领域验证",
+          "source": "InkOS深度感想——AI小说创作中的Harness Engineering范式",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "InkOS 的 10 Agent 流水线 + 硬编码词表规则（L1 Hook）+ 7 真相文件（结构化状态持久化）+ 33 维审计检查清单（Evaluative Control）+ 审计-修订循环（反馈闭环）与 Harness Engineering 存在六个结构性同构映射。不同领域（小说 vs 编码），同一规律：AI 的可靠性不来自更强的模型，而来自更好的约束系统。"
+        },
+        {
+          "statement": "AI Agent 创作存在三种范式——纯多 Agent / Agent+微调 / Harness 驱动",
+          "source": "InkOS深度感想——AI小说创作中的Harness Engineering范式",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。"
         }
       ]
     },
@@ -1565,11 +1761,11 @@
         "harness",
         "quality"
       ],
-      "category": "知识管理与工具",
+      "category": "工程质量与测试",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.65,
+      "claims_count": 3,
+      "avg_confidence": 0.67,
       "claims": [
         {
           "statement": "质量门禁应覆盖 5 个递进维度——代码格式、架构验证、代码检查、CI 编译、性能测试",
@@ -1588,6 +1784,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Java 用 ArchUnit（包依赖规则、分层架构约束、命名规范、循环依赖检测），Python 用 import-linter / pytestarch，JavaScript/TypeScript 用 dependency-cruiser / eslint-plugin-boundaries。在 Harness CI 中作为测试 step 执行，失败即阻断 pipeline。"
+        },
+        {
+          "statement": "架构质量门禁应扩展为四层体系——从 Lint 到 AI Review",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "四层门禁：Layer 1 代码格式与 Lint（Prettier/ESLint/Ruff）→ Layer 2 架构约束执行（ArchUnit/dependency-cruiser/Tach/Semgrep）→ Layer 3 模块化与复用分析（Code Maat/ArchUnitTS LCOM/jscpd）→ Layer 4 AI 辅助 Review（PR-Agent/oh-my-claudecode/Tanagram）。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 是最有价值的新增层。"
         }
       ]
     },
@@ -2763,11 +2968,11 @@
         "docker",
         "ci-cd"
       ],
-      "category": "知识管理与工具",
+      "category": "工程质量与测试",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.6,
+      "claims_count": 6,
+      "avg_confidence": 0.68,
       "claims": [
         {
           "statement": "Testcontainers 用真实容器替代 mock 是集成测试的更好方案",
@@ -2795,6 +3000,33 @@
           "confidence": 0.5,
           "status": "active",
           "evidence": "Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。"
+        },
+        {
+          "statement": "docker-compose 是静态环境，Testcontainers 是动态环境——设计目标不同",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。"
+        },
+        {
+          "statement": "Testcontainers 已被 Docker 收购（AtomicJar），支持 12 种语言，成为容器化集成测试事实标准",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。"
+        },
+        {
+          "statement": "推荐测试分层：Unit(mock) → Integration(Testcontainers) → E2E(Playwright+TC)",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Unit tests → mock（快速、无依赖）；Integration tests → Testcontainers（真实 DB/MQ/Cache）；E2E tests → Playwright + Testcontainers DB（全链路验证）。对于 Azure 云服务（AI Foundry、Speech），用 WireMock 录制/回放或 Azurite 模拟。"
         }
       ]
     },
@@ -3180,6 +3412,64 @@
       ]
     },
     {
+      "id": "four-layer-architecture-quality-gate",
+      "type": "method",
+      "title": "四层架构质量门禁",
+      "summary": "在 Vibe Coding 时代，AI Agent 高速生成代码加速了架构腐蚀。本方法将架构质量保障组织为四层递进门禁，从基础格式到 AI 语义审查逐层递进。相比原有五维线性模型，四层模型更强调层级嵌套关系和 AI 辅助层的价值。适用于使用 Harness CI pipeline 的多语言项目。",
+      "tags": [
+        "wiki",
+        "method",
+        "architecture",
+        "quality",
+        "vibe-coding"
+      ],
+      "category": "",
+      "method_type": "layered-strategy",
+      "decision_status": null,
+      "claims_count": 1,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "ArchUnit 只覆盖 Layer 2 的一部分，完整架构质量需要四层协作",
+          "source": "Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Layer 4（AI 辅助 Review）和 Baseline MCP Server（让 Agent 在生成时就遵守规则）是 Vibe Coding 时代最有价值的新增层。"
+        }
+      ]
+    },
+    {
+      "id": "four-layer-test-environment-strategy",
+      "type": "method",
+      "title": "四层测试环境策略",
+      "summary": "将测试环境按隔离粒度组织为四层递进策略，从单元测试的 mock 到 PR 级的 Ephemeral Environment 逐层升级。核心认知：docker-compose 是\"你维护一个环境\"，Testcontainers 是\"测试自己创建环境\"，Ephemeral Environment 是\"每个 PR 拥有自己的世界\"——三者不是替代关系，而是不同粒度的环境隔离。",
+      "tags": [
+        "wiki",
+        "method",
+        "testing",
+        "devops",
+        "testcontainers"
+      ],
+      "category": "",
+      "method_type": "layered-strategy",
+      "decision_status": null,
+      "claims_count": 1,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "Testcontainers 的核心价值不是\"更方便启动 Docker\"，而是让每个测试拥有自己的 infrastructure",
+          "source": "Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "三种混乱的测试环境模式（本地手工 / docker-compose 共享 / E2E 本地能跑 CI 不行）导致数据污染和 flaky test。Testcontainers 让每个测试拥有独立的 infrastructure，从根本上解决隔离问题。"
+        }
+      ]
+    },
+    {
       "id": "gsd-five-step-workflow",
       "type": "method",
       "title": "GSD 五步开发工作流",
@@ -3525,7 +3815,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 2,
+      "claims_count": 3,
       "avg_confidence": 0.7,
       "claims": [
         {
@@ -3545,6 +3835,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "\"RAG = search, LLM Wiki = writing a book\"。"
+        },
+        {
+          "statement": "LLM Wiki（编译式知识）与 RAG（检索式知识）是不同范式，不适合强行合并",
+          "source": "2026-04-23-周四",
+          "first_seen": "2026-04-23",
+          "last_updated": "2026-04-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是\"编译一次持续维护\"（writing a book），RAG 是\"每次查询重新检索\"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。"
         }
       ]
     }
@@ -3645,6 +3944,24 @@
       "target": "one-person-team",
       "relation_type": "contrasts",
       "description": "技能形成影响与一人团队模式的张力"
+    },
+    {
+      "source": "architecture-testing",
+      "target": "harness-quality-gate",
+      "relation_type": "part-of",
+      "description": "架构测试是 Harness 质量门禁第 2 维度（架构验证）"
+    },
+    {
+      "source": "architecture-testing",
+      "target": "fitness-functions",
+      "relation_type": "implements",
+      "description": "架构测试是适应度函数的具体实现手段之一"
+    },
+    {
+      "source": "architecture-testing",
+      "target": "harness-engineering",
+      "relation_type": "uses",
+      "description": "架构约束是 Harness Engineering 约束系统的重要组成"
     },
     {
       "source": "autoresearch",
@@ -3959,6 +4276,18 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
+      "source": "contract-testing",
+      "target": "testcontainers",
+      "relation_type": "contrasts",
+      "description": "契约测试验证接口契约，Testcontainers 验证真实依赖协作，两者互补"
+    },
+    {
+      "source": "contract-testing",
+      "target": "harness-quality-gate",
+      "relation_type": "part-of",
+      "description": "契约测试是质量门禁测试层的一部分"
+    },
+    {
       "source": "cybernetics-agent-design",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -4007,6 +4336,18 @@
       "description": "Ontology 是企业级 RAG 的语义基础层"
     },
     {
+      "source": "ephemeral-environment",
+      "target": "testcontainers",
+      "relation_type": "extends",
+      "description": "Ephemeral Environment 将 Testcontainers 的测试级隔离扩展到 PR 级全栈隔离"
+    },
+    {
+      "source": "ephemeral-environment",
+      "target": "harness-quality-gate",
+      "relation_type": "extends",
+      "description": "作为质量门禁的环境基础设施层"
+    },
+    {
       "source": "feedback-loop",
       "target": "negative-feedback",
       "relation_type": "uses",
@@ -4035,6 +4376,18 @@
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "分离的评估环节是闭环的关键节点"
+    },
+    {
+      "source": "fitness-functions",
+      "target": "architecture-testing",
+      "relation_type": "grounds",
+      "description": "架构测试工具是适应度函数的具体实现"
+    },
+    {
+      "source": "fitness-functions",
+      "target": "harness-quality-gate",
+      "relation_type": "extends",
+      "description": "适应度函数将质量门禁从固定检查扩展为可演化的架构评估"
     },
     {
       "source": "framework-selection",
@@ -4191,6 +4544,18 @@
       "target": "harness-five-dimension-quality-gate",
       "relation_type": "produces",
       "description": "实施方法：五维质量门禁的详细步骤和工具链"
+    },
+    {
+      "source": "harness-quality-gate",
+      "target": "architecture-testing",
+      "relation_type": "uses",
+      "description": "架构测试是质量门禁第 2 维度的核心"
+    },
+    {
+      "source": "harness-quality-gate",
+      "target": "fitness-functions",
+      "relation_type": "extends",
+      "description": "适应度函数将固定门禁扩展为可演化的架构评估"
     },
     {
       "source": "llm-wiki",
@@ -4607,6 +4972,18 @@
       "description": "Testcontainers 是 Harness 质量门禁第 4 层（CI 编译与集成测试）的核心工具"
     },
     {
+      "source": "testcontainers",
+      "target": "ephemeral-environment",
+      "relation_type": "constrains",
+      "description": "Testcontainers 解决测试级隔离，Ephemeral Environment 解决 PR 级隔离"
+    },
+    {
+      "source": "testcontainers",
+      "target": "contract-testing",
+      "relation_type": "contrasts",
+      "description": "Testcontainers 验证真实依赖协作，契约测试验证接口一致性，两者互补"
+    },
+    {
       "source": "three-layer-plugin-architecture",
       "target": "framework-selection",
       "relation_type": "implements",
@@ -4785,6 +5162,54 @@
       "target": "harness-five-dimension-quality-gate",
       "relation_type": "extends",
       "description": "质量门禁关注运行时检查，Design Sheet 关注设计时检查"
+    },
+    {
+      "source": "four-layer-architecture-quality-gate",
+      "target": "architecture-testing",
+      "relation_type": "implements",
+      "description": "本方法的 Layer 2 实施架构测试"
+    },
+    {
+      "source": "four-layer-architecture-quality-gate",
+      "target": "fitness-functions",
+      "relation_type": "implements",
+      "description": "各层的自动化检查即是适应度函数"
+    },
+    {
+      "source": "four-layer-architecture-quality-gate",
+      "target": "harness-quality-gate",
+      "relation_type": "extends",
+      "description": "将五维线性模型深化为四层递进模型"
+    },
+    {
+      "source": "four-layer-architecture-quality-gate",
+      "target": "harness-five-dimension-quality-gate",
+      "relation_type": "extends",
+      "description": "从五维线性扩展为四层递进，增加 AI Review 层"
+    },
+    {
+      "source": "four-layer-test-environment-strategy",
+      "target": "testcontainers",
+      "relation_type": "uses",
+      "description": "Layer 2-3 的核心工具"
+    },
+    {
+      "source": "four-layer-test-environment-strategy",
+      "target": "ephemeral-environment",
+      "relation_type": "uses",
+      "description": "Layer 4 的环境方案"
+    },
+    {
+      "source": "four-layer-test-environment-strategy",
+      "target": "contract-testing",
+      "relation_type": "uses",
+      "description": "Layer 1 的契约测试工具"
+    },
+    {
+      "source": "four-layer-test-environment-strategy",
+      "target": "harness-five-dimension-quality-gate",
+      "relation_type": "extends",
+      "description": "将质量门禁的测试维度从 Testcontainers 扩展为四层环境策略"
     },
     {
       "source": "gsd-five-step-workflow",
@@ -5100,12 +5525,22 @@
     },
     {
       "id": "",
+      "name": "工程质量与测试",
+      "members": [
+        "architecture-testing",
+        "fitness-functions",
+        "testcontainers",
+        "ephemeral-environment",
+        "contract-testing",
+        "harness-quality-gate"
+      ]
+    },
+    {
+      "id": "",
       "name": "知识管理与工具",
       "members": [
         "llm-wiki",
         "personal-knowledge-compiler",
-        "testcontainers",
-        "harness-quality-gate",
         "notion-as-ai-layer",
         "ai-native-design-tools",
         "terminal-multiplexer-for-ai",
