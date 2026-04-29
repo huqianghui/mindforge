@@ -188,7 +188,83 @@ $$\text{SNR}_{\text{dB}} = 10 \log_{10}\left(\frac{P_{\text{sig}}}{P_{\text{nois
 
 ---
 
-## 五、与 Vault 已有内容的关联
+## 五、Semantic VAD 与打断机制：系统级拆解
+
+> 基于与 ChatGPT 的[深度讨论](https://chatgpt.com/share/69f00061-3198-8321-ba47-45ec827c73a8)，厘清一个常见误解：**Semantic VAD ≠ 打断能力**。
+
+### 5.1 关键纠正：Semantic VAD 只做 End-of-Turn 检测
+
+在 OpenAI Realtime API 和 Azure OpenAI Realtime API 中，Semantic VAD 本质只做一件事：
+
+> **判断"用户这一轮说话什么时候结束"（end-of-turn），而不是决定"要不要打断 AI"。**
+
+| 输入示例 | Semantic VAD 行为 |
+|---------|-----------------|
+| "what is…"（停顿） | 等待——句子未完成 |
+| "what is the weather today" | 立刻结束——语义完整 |
+| "umm…" | 延迟结束——犹豫信号 |
+
+其价值在于：不会太早回复（避免抢话），也不会太晚回复（降低延迟）。
+
+### 5.2 打断的真正触发机制
+
+打断能力来自三个组件的协同，而非 Semantic VAD 单独完成：
+
+```
+打断 = VAD 事件（speech_started）+ Interrupt 机制（interrupt_response=true）+ 流式 TTS 控制
+```
+
+Realtime API 的实际流程：
+1. AI 正在说话（TTS streaming）
+2. VAD 检测到 `speech_started` 事件
+3. 根据配置 `interrupt_response = true`，立刻停止当前回复
+4. 切换到用户输入处理
+
+### 5.3 完整 Voice Agent 打断链路——6 个必要组件
+
+仅靠 Realtime API + Semantic VAD，体验是不够的。真实系统至少需要：
+
+| 组件 | 职责 | 为什么必须 |
+|------|------|-----------|
+| **Interrupt Controller** | 判断是否应该打断（问题？嗯？噪声？） | Semantic VAD 只给 signal，不给决策；需自行实现 |
+| **Streaming ASR** | 提供实时 partial transcript | 区分"嗯"与"等一下我问个问题"，只能靠实时转写 |
+| **Backchannel Filter** | 识别"嗯/ok/yeah/对"、笑声、呼吸 | 否则系统会被非打断意图的反馈信号疯狂触发 |
+| **可中断 TTS 流** | 支持 mid-stream 停止播放 | WebRTC/audio pipeline 必须能 cancel，否则一切白搭 |
+| **Turn State Machine** | 管理对话状态：IDLE→LISTENING→THINKING→SPEAKING→INTERRUPTED | 否则会出现 overlap、double response、context 错乱 |
+| **Latency 控制** | ASR 延迟、网络抖动、TTS 缓冲的综合管理 | 决定体验"像不像人"，Semantic VAD 的 `eagerness` 参数只是一环 |
+
+### 5.4 完整音频处理链路
+
+```
+Mic audio
+   ↓
+VAD (speech_started)  ←── 打断触发点
+   ↓
+Interrupt Controller（自行实现）
+   ↓
+Stop TTS streaming
+   ↓
+Streaming ASR（理解用户在说什么）
+   ↓
+Semantic VAD（判断用户说完没）
+   ↓
+LLM（生成回复）
+   ↓
+TTS（streaming output）
+```
+
+### 5.5 工程判断标准
+
+评估一个 Voice Agent 系统是否真正实现了"自然对话"，应关注以下 4 个指标，而非仅看是否使用了 Semantic VAD：
+
+1. **打断延迟**——从用户开口到 AI 停止说话，多少 ms？
+2. **Backchannel 误触发**——"嗯"会不会打断 AI？
+3. **打断后续接**——打断后能否接着上下文继续聊？
+4. **抢话频率**——AI 是否会在用户停顿时抢先回复？
+
+---
+
+## 六、与 Vault 已有内容的关联
 
 - 技术栈全景：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
 - 系统架构：[[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]
@@ -205,3 +281,4 @@ $$\text{SNR}_{\text{dB}} = 10 \log_{10}\left(\frac{P_{\text{sig}}}{P_{\text{nois
 4. Self-Attentive VAD (Jo et al., 2021)
 5. OpenAI Realtime API VAD Guide — Server VAD vs Semantic VAD
 6. Azure Cognitive Services — Semantic Endpointing
+7. [ChatGPT 讨论：Semantic VAD 与打断机制的系统级拆解](https://chatgpt.com/share/69f00061-3198-8321-ba47-45ec827c73a8)
