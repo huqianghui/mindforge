@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-04-23
-stats: "59 concepts, 12 methods, 4 decisions, 253 claims"
+updated: 2026-04-30
+stats: "62 concepts, 13 methods, 4 decisions, 280 claims"
 tags:
   - wiki
   - index
@@ -120,6 +120,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[speech-technology-stack]] — 语音技术栈：Speech In / Core Processing / Speech Out
 - [[turn-taking]] — 话轮转换：语音 Agent 最被低估也最关键的技术
 - [[cascaded-pipeline]] — 级联流水线：VAD → STT → LLM → TTS 的模块化架构
+- [[grapheme-to-phoneme]] — G2P（Grapheme-to-Phoneme）：TTS 流水线的字素到音素转换
 
 ### Azure 与云平台
 
@@ -149,6 +150,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[terminal-multiplexer-for-ai]] — 终端复用器：tmux / cmux 与 AI 工作流
 - [[claude-code-memory-system]] — Claude Code 六层记忆与持久化体系
 - [[rtk-token-compression]] — RTK（Rust Token Killer）：AI Coding Agent 的 Token 压缩中间件
+- [[caveman-token-compression]] — Caveman：Prompt Engineering 工程化的 LLM 输出 Token 压缩
+- [[brevity-constraints]] — 简洁约束：逆转大小模型性能层级的反直觉现象
 
 ## 方法索引
 
@@ -190,6 +193,10 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Pipeline（顺序流程）— 补充
 
 - [[ai-adoption-six-step-evolution]] — AI 工具采纳六步进化（Mitchell Hashimoto）
+
+### Layered Strategy（分层策略）— 补充
+
+- [[three-layer-token-optimization]] — 三层 Token 优化策略：compact / RTK / Caveman 全链路压缩
 
 ### Architecture Pattern（架构模式）
 
