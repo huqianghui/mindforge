@@ -103,6 +103,8 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [个人知识编译器进化：从三层知识模型到持续迭代的知识系统](Notes/tool/个人知识编译器进化：从三层知识模型到持续迭代的知识系统.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
 - [RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
+- [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Notes/tool/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
+- [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Notes/tool/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
 
 ### Azure
 
