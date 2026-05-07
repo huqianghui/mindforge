@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-04-30
-stats: "62 concepts, 13 methods, 4 decisions, 280 claims"
+updated: 2026-05-07
+stats: "63 concepts, 14 methods, 4 decisions, 291 claims"
 tags:
   - wiki
   - index
@@ -80,6 +80,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[one-person-team]] — One Person Team：AI 重新定义技术角色边界
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
+- [[hermes-agent]] — Hermes Agent：自我改进 Agent 框架（Skill 自动生成 + Curator 生命周期管理）
 - [[ai-skill-formation]] — AI 对技能形成的影响：放大器而非均衡器
 - [[negative-feedback]] — 负反馈：error = goal - current_state，Agent 收敛的核心机制
 - [[conjugate-transformation]] — 共轭变换：表示层设计，90% 的 Agent 失败是表示问题
@@ -201,6 +202,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Architecture Pattern（架构模式）
 
 - [[voice-cascaded-pipeline]] — 语音级联管线架构
+- [[orchestrator-pattern-multi-agent]] — Orchestrator Pattern：多 Agent 编排模式（OpenClaw sessions_spawn）
 
 ## 决策索引
 
