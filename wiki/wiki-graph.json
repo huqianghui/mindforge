@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-23T13:18:17.939038+00:00",
+  "generated_at": "2026-04-30T11:43:07.159255+00:00",
   "stats": {
-    "nodes": 75,
-    "links": 264,
+    "nodes": 79,
+    "links": 285,
     "orphan_links_removed": 0,
-    "claims": 257,
+    "claims": 280,
     "categories": 9
   },
   "nodes": [
@@ -527,6 +527,64 @@
       ]
     },
     {
+      "id": "brevity-constraints",
+      "type": "concept",
+      "title": "Brevity Constraints（简洁约束）",
+      "summary": "Brevity Constraints 指对 LLM 施加的输出长度约束（如\"回答不超过 50 词\"或\"仅给出最终答案\"）。论文 arXiv:2604.00025 揭示了一个反直觉的现象：在 inverse scaling 任务上，大模型在标准 prompt 下反而落后小模型 44.2pp，但施加简洁约束后大模型提升 +26.3pp，逆转了原有的性能层级。\n\n这一发现的核心启示是 **Scale-Aware Prompt Engineering**——不同规模的模型需要不同的 prompt 策略，标准 benchmark 系统性低估了大模型在特定任务上的能力。但需审慎看待适用范围：简洁约束仅在 inverse scaling 问题（约占 7.7%）上有显著收益，对需要深度推理的任务（竞赛数学、复杂代码）可能严重损害性能，与 CoT/DeepSeek-R1/o1 所代表的\"增加推理过程\"范式存在根本矛盾。",
+      "tags": [
+        "wiki",
+        "concept",
+        "prompt-engineering",
+        "LLM",
+        "evaluation",
+        "inverse-scaling",
+        "scale-aware"
+      ],
+      "category": "知识管理与工具",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "简洁约束可逆转大小模型的性能排序",
+          "source": "2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies",
+          "first_seen": "2026-04-29",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Control 条件下大模型准确率 40.2% vs 小模型 84.4%（落后 44.2pp）；Brief 条件下大模型 66.5% vs 小模型 81.3%（差距缩小至 14.8pp）；Direct 条件下大模型 74.5% vs 小模型 82.3%。统计显著性：paired t-test, t=7.80, p<0.0001（96 个问题）。"
+        },
+        {
+          "statement": "简洁约束仅适用于 ~7.7% 的 inverse scaling 问题",
+          "source": "2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies",
+          "first_seen": "2026-04-29",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "论文将问题分为 non-discriminative（27.1%）、normal scaling（48.1%）、inverse scaling（7.7%），准确率提升仅在 inverse scaling 问题上显著。对需要深度推理的任务，简洁约束可能严重损害性能。"
+        },
+        {
+          "statement": "简洁约束与 Reasoning Model 范式存在根本矛盾",
+          "source": "2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies",
+          "first_seen": "2026-04-29",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "简洁约束有效场景：解空间小、答案直接可达，失败模式是\"想太多\"（overthinking）。长推理有效场景：解空间大、需多步搜索，失败模式是\"想太少\"。两种范式互斥——Caveman vs CoT/DeepSeek-R1/o1。"
+        },
+        {
+          "statement": "RADAR（IRT-based Router）为 Problem-Aware Routing 提供可落地方案",
+          "source": "2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "ICLR 2026 Poster。借鉴心理测量学 Item Response Theory（IRT），给查询打\"难度分\"、给模型打\"能力分\"，实现查询级路由。难度高→大模型+深度推理，难度低→小模型+简洁快速。但距离工程落地仍有距离。"
+        }
+      ]
+    },
+    {
       "id": "cascaded-pipeline",
       "type": "concept",
       "title": "级联流水线（Cascaded Pipeline）",
@@ -571,6 +629,64 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60）。级联失败不仅是语音架构的问题，也是所有多步 Agent 系统的通用挑战。"
+        }
+      ]
+    },
+    {
+      "id": "caveman-token-compression",
+      "type": "concept",
+      "title": "Caveman Token Compression",
+      "summary": "Caveman 是一个面向 40+ AI 编程代理的对话压缩技能插件（Skill），通过精心设计的系统提示规则让 LLM 在同一次推理中直接生成简洁回复——删除冠词、填充词、客套话，仅保留技术实质内容。其本质不是后处理过滤器，而是**工程化的 Prompt Engineering 方案**：利用 LLM 自身的指令遵循能力，在零额外 API 调用的前提下实现输出 token 平均 65% 的压缩。\n\nCaveman 的创新在于三个层面：(1) \"人设 + 结构化规则\"比简单的\"请简洁回答\"效果好得多；(2) Hook 系统将 Prompt Engineering 持久化为跨会话的自动化能力；(3) caveman-compress 一次压缩记忆文件，多次受益。但其适用边界需注意：在需要深度推理的复杂任务上，简洁约束可能损害性能。",
+      "tags": [
+        "wiki",
+        "concept",
+        "token-compression",
+        "prompt-engineering",
+        "claude-code",
+        "LLM",
+        "skill"
+      ],
+      "category": "知识管理与工具",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "Caveman 输出压缩零额外 API 调用，平均节省 65% output tokens",
+          "source": "Caveman深度解析——LLM Token压缩的Prompt Engineering之道",
+          "first_seen": "2026-04-28",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Caveman 通过 SessionStart Hook 将风格约束规则注入系统提示，LLM 在同一次推理中直接生成简洁回复。官方基准：Explain React re-render bug 1180→159 tokens（-87%），Fix auth middleware 704→121（-83%），平均 1214→294 tokens（-65%）。但独立测试（Kuba Guzik）在已有简洁指令的基线下，实际节省仅 13%--21%。"
+        },
+        {
+          "statement": "Caveman 六档压缩级别覆盖从温和到极致的场景",
+          "source": "Caveman深度解析——LLM Token压缩的Prompt Engineering之道",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Lite（删填充词保冠词）/ Full（删冠词、片段句、短同义词）/ Ultra（极致缩写、箭头因果）/ Wenyan-Lite / Wenyan-Full / Wenyan-Ultra。文言文模式利用古文高信息密度进一步压缩。"
+        },
+        {
+          "statement": "Auto-Clarity 安全阀在高风险场景自动恢复详细输出",
+          "source": "Caveman深度解析——LLM Token压缩的Prompt Engineering之道",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "安全警告、不可逆操作确认、多步骤序列、用户疑惑时自动退出简化模式。但退出判断仍依赖 LLM 自身，不存在确定性触发器。"
+        },
+        {
+          "statement": "Caveman 通过三重防线解决长对话中的风格回退问题",
+          "source": "Caveman深度解析——LLM Token压缩的Prompt Engineering之道",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "第一层：规则文本持续性声明（\"ACTIVE EVERY RESPONSE\"）；第二层：UserPrompt Hook 每轮输出 per-turn reinforcement；第三层：.caveman-active 状态文件跨轮次通信。"
         }
       ]
     },
@@ -1612,6 +1728,64 @@
       ]
     },
     {
+      "id": "grapheme-to-phoneme",
+      "type": "concept",
+      "title": "Grapheme-to-Phoneme（G2P）",
+      "summary": "G2P（Grapheme-to-Phoneme）是 TTS（文本转语音）流水线中从书写符号（Grapheme，字位）到发音单元（Phoneme，音位）的映射转换。其存在的根本原因是**书写和发音之间没有一一对应关系**——英语中 `phone` 的 `ph` → `/f/`、`read` 可读 `/riːd/` 或 `/rɛd/`。\n\nG2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前，与 Lexicon（发音词典）共同负责将文本转换为 phoneme 序列。在 Realtime Voice Agent 场景中，G2P 面临流式处理 chunk 边界、延迟瓶颈、韵律上下文依赖三大挑战。工程上推荐构建独立的 Pronunciation Control Layer（Text Normalization + Lexicon Match + Phoneme Override + Fallback），而非依赖 LLM 直接输出 SSML。",
+      "tags": [
+        "wiki",
+        "concept",
+        "speech",
+        "TTS",
+        "G2P",
+        "phoneme",
+        "voice-agent"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "G2P 有三种实现方式，工程最常用 Hybrid 方案",
+          "source": "Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "显式 G2P（独立模块输出 phoneme，可控性强但增加延迟）、隐式 G2P（End-to-End TTS 内部完成，如 VITS/Tacotron，简单但发音不可控）、Hybrid（规则+字典+fallback G2P，最常见的工程选择）。"
+        },
+        {
+          "statement": "Lexicon 是 G2P 的 Override 层而非普通词典",
+          "source": "Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Custom Lexicon 在 G2P 之前介入，对命中词直接返回预定义 phoneme，跳过 G2P 推断。本质是\"接管 G2P 对特定词汇的决策权\"。SSML `<phoneme>` 标签是局部 override，Lexicon 是全局规则，G2P 是兜底推断——三者构成层级化发音控制体系。"
+        },
+        {
+          "statement": "Realtime 场景应构建 Pronunciation Control Layer 而非依赖 SSML",
+          "source": "Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "SSML + Streaming 天然冲突（XML 要完整结构，streaming 是 token 流）；LLM 不会稳定生成 SSML。正确方案：LLM 和 TTS 之间构建 Pronunciation Control Layer（Text Normalization → Lexicon Match → Phoneme Override → Fallback），80% 发音问题来自 20% 的词。"
+        },
+        {
+          "statement": "G2P 控制能力决定 Voice Agent \"做大之后会不会崩\"",
+          "source": "Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。"
+        }
+      ]
+    },
+    {
       "id": "harness-engineering",
       "type": "concept",
       "title": "Harness Engineering",
@@ -2591,8 +2765,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.73,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "RTK 通过 CLI 代理实现透明 token 压缩",
@@ -2620,6 +2794,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "RTK 的架构启示：AI Agent 的工具调用链可以像 Web 中间件一样插入处理层。这种模式可以扩展到安全审计（拦截危险命令）、缓存（重复查询去重）、可观测性（记录所有工具调用）等场景。"
+        },
+        {
+          "statement": "RTK 与 Caveman 完全互补，可同时启用覆盖全链路 token 优化",
+          "source": "Caveman与RTK对比——两种互补的LLM Token优化方案",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Caveman 压缩 output tokens（LLM 回复，-65%），RTK 压缩 input tokens（工具输出，-80%），两者作用于完全不同的数据流互不干扰。联合使用 30 分钟会话总节省 ~78%（130,900→28,586 tokens）。RTK 绝对节省量更大（命令输出占总量 ~90%），但纯对话场景仅 Caveman 有效。"
+        },
+        {
+          "statement": "RTK 四大过滤策略实现确定性压缩",
+          "source": "Caveman与RTK对比——两种互补的LLM Token优化方案",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "智能过滤（去噪音/注释/空白）、分组（按目录/类型聚合）、截断（仅保留失败用例）、去重（合并重复日志行并计数）。与 Caveman 的概率性输出压缩不同，RTK 基于确定性算法，效果稳定可预测，每命令处理开销 <10ms。"
         }
       ]
     },
@@ -2876,8 +3068,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.7,
+      "claims_count": 6,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "实时语音 Agent 涉及三层技术栈",
@@ -2905,6 +3097,33 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "用户说话时打断 Agent 语音输出。Silero VAD（2MB 模型，< 1ms per 32ms audio chunk）实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机。"
+        },
+        {
+          "statement": "Speech Out 层核心是 G2P 转换与发音控制体系",
+          "source": "Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "TTS Pipeline 内部六层：Text Normalization → Lexicon Lookup → G2P → Prosody Prediction → Acoustic Model → Vocoder。发音控制三级优先级：SSML（局部 override）> Lexicon（全局规则）> G2P（兜底推断）。"
+        },
+        {
+          "statement": "音频前处理链有严格执行顺序",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "AEC → ANS → AGC+Limiter → VAD → 干净语音帧。AEC 在最前面（自适应滤波器需原始信号幅度），AGC 在 ANS 之后（避免放大噪声）。"
+        },
+        {
+          "statement": "Semantic VAD 本质是 Turn-Taking Policy 的接口壳而非独立 VAD 模块",
+          "source": "Speech技术全景——从音频处理基础到Turn-Taking的深层机制",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。"
         }
       ]
     },
@@ -3139,7 +3358,7 @@
       "id": "voice-activity-detection",
       "type": "concept",
       "title": "Voice Activity Detection",
-      "summary": "Voice Activity Detection（VAD）是实时语音交互中判断用户是否在说话的关键技术。现代实现分为两类：传统的 Server VAD（基于静音检测）和新一代 Semantic VAD（基于语义分类器）。两者在打断灵敏度、延迟和适用场景上有明显差异。",
+      "summary": "Voice Activity Detection（VAD）是实时语音交互中判断用户是否在说话的关键技术。现代实现分为两类：传统的 Server VAD（基于静音检测）和新一代 Semantic VAD（基于语义分类器）。深度学习 VAD 进一步分化为三条路径：Personal VAD（说话人条件化，13 万参数）、CNN+Attention VAD（时频双重注意力）、NAS-VAD（神经架构搜索，151K 参数，AUC 0.982）。Semantic VAD 本质只做 end-of-turn 检测，不等于打断能力——完整的 Voice Agent 打断需要 6 个组件协同。",
       "tags": [
         "wiki",
         "concept",
@@ -3150,8 +3369,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.73,
+      "claims_count": 7,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "OpenAI 提供两种 VAD 模式——Server VAD（静音检测）和 Semantic VAD（语义分类器）",
@@ -3179,6 +3398,42 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "2MB 模型，< 1ms per 32ms audio chunk，实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机，支持 barge-in。"
+        },
+        {
+          "statement": "深度学习 VAD 分化为三条路径——Personal VAD / CNN+Attention / NAS-VAD",
+          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "first_seen": "2026-04-27",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Personal VAD（说话人条件化，约 13 万参数，三分类：非语音/目标/非目标）；CNN+Attention VAD（时频双重注意力，约 15 万参数即超越更大 CNN）；NAS-VAD（神经架构搜索，151K 参数，AUC 0.982，跨数据集泛化性强）。三者与云端 Semantic VAD 不是竞争关系而是互补的不同层次——声学 VAD 捕获语音帧，语义 VAD 调优切分时机。"
+        },
+        {
+          "statement": "Semantic VAD 只做 end-of-turn 检测，不等于打断能力",
+          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "first_seen": "2026-04-27",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Semantic VAD 本质只判断\"用户这一轮说话什么时候结束\"，不决定\"要不要打断 AI\"。打断 = VAD 事件（speech_started）+ Interrupt Controller + 流式 TTS 控制。eagerness 参数只调 end-of-turn 阈值，不控制打断行为。"
+        },
+        {
+          "statement": "完整 Voice Agent 打断需要 6 个必要组件协同",
+          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "first_seen": "2026-04-27",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "6 个组件：Interrupt Controller（判断是否应打断）、Streaming ASR（实时转写区分意图）、Backchannel Filter（过滤\"嗯/ok\"等非打断信号）、可中断 TTS 流（mid-stream 停止）、Turn State Machine（IDLE→LISTENING→THINKING→SPEAKING→INTERRUPTED）、Latency 控制（ASR+网络+TTS 缓冲综合管理）。仅靠 Realtime API + Semantic VAD 不足以实现自然对话打断。"
+        },
+        {
+          "statement": "VAD 与关键词唤醒（KWS）是互补不可替代的两种技术",
+          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "first_seen": "2026-04-27",
+          "last_updated": "2026-04-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "VAD 检测\"有无人声\"（逐帧二值），KWS 检测\"是否说了特定词\"（事件触发）。VAD 无法替代 KWS——只用 VAD 会导致任何环境对话触发系统，功耗爆炸和隐私泄露。典型语音助手流水线：KWS（超低功耗 DSP 持续监听）→ VAD + ASR（主 CPU 激活后）→ Semantic VAD（云端判断说完没）。"
         }
       ]
     },
@@ -3670,6 +3925,45 @@
       ]
     },
     {
+      "id": "three-layer-token-optimization",
+      "type": "method",
+      "title": "三层 Token 优化策略",
+      "summary": "AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、工具命令输出（input）、对话历史累积（context window）。三层 Token 优化策略通过在每一层部署专门工具——Caveman（输出层）、RTK（中间层）、/compact（输入层）——实现全链路 token 压缩，三者作用于完全不同的数据流，可同时启用互不干扰。\n\n以一次 30 分钟 Claude Code 会话估算：无优化 ~130,900 tokens → 三层联合优化 ~28,586 tokens（总节省 ~78%）。",
+      "tags": [
+        "wiki",
+        "method",
+        "token-optimization",
+        "claude-code",
+        "LLM",
+        "cost-optimization"
+      ],
+      "category": "",
+      "method_type": "layered-strategy",
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "三层优化覆盖 token 消耗全链路，联合节省 ~78%",
+          "source": "Caveman与RTK对比——两种互补的LLM Token优化方案",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "30 分钟会话估算：LLM 输出 12,000→4,200（Caveman -65%）、命令输出 118,000→23,900（RTK -80%）、记忆文件 900→486（compress -46%），总计 130,900→28,586（-78%）。RTK 绝对节省量最大（命令输出占总量 ~90%），Caveman 在纯对话场景不可替代。"
+        },
+        {
+          "statement": "RTK 的绝对节省量远大于 Caveman",
+          "source": "Caveman与RTK对比——两种互补的LLM Token优化方案",
+          "first_seen": "2026-04-30",
+          "last_updated": "2026-04-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "命令输出在总 token 中占比最大（~90%），RTK 对此压缩 ~80%。Caveman 仅压缩 LLM 回复和记忆文件，绝对量较小。但在不涉及命令执行的纯对话场景中，RTK 无效而 Caveman 是唯一手段。"
+        }
+      ]
+    },
+    {
       "id": "voice-cascaded-pipeline",
       "type": "method",
       "title": "语音级联管线架构",
@@ -4000,6 +4294,24 @@
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
     },
     {
+      "source": "brevity-constraints",
+      "target": "caveman-token-compression",
+      "relation_type": "grounds",
+      "description": "为 Caveman 的\"简洁约束提升准确率\"提供学术支撑"
+    },
+    {
+      "source": "brevity-constraints",
+      "target": "scaling-laws",
+      "relation_type": "constrains",
+      "description": "简洁约束揭示 scaling laws 的非单调性——在特定任务上大模型反而表现差"
+    },
+    {
+      "source": "brevity-constraints",
+      "target": "context-engineering",
+      "relation_type": "extends",
+      "description": "Scale-Aware Prompt Engineering 是 Context Engineering 的进阶形式"
+    },
+    {
       "source": "cascaded-pipeline",
       "target": "voice-live-agent",
       "relation_type": "implements",
@@ -4022,6 +4334,36 @@
       "target": "harness-engineering",
       "relation_type": "grounds",
       "description": "级联失败驱动了 Harness Engineering 的出现"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "rtk-token-compression",
+      "relation_type": "contrasts",
+      "description": "Caveman 压缩 output tokens（LLM 回复），RTK 压缩 input tokens（工具输出），两者互补"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "brevity-constraints",
+      "relation_type": "grounds",
+      "description": "论文 arXiv:2604.00025 为 Caveman 的\"简洁约束可提升准确率\"提供学术背书"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "context-engineering",
+      "relation_type": "implements",
+      "description": "Caveman 是 Context Engineering 在输出侧的实践"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "harness-engineering",
+      "relation_type": "part-of",
+      "description": "Token 压缩是 Harness 工程的优化环节"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "skill-pattern",
+      "relation_type": "implements",
+      "description": "Caveman 是 Skill Pattern 的典型实例——通过 SessionStart Hook 注入能力"
     },
     {
       "source": "claim-based-schema",
@@ -4438,6 +4780,30 @@
       "description": "分离的评估环节构成反馈闭环的关键节点"
     },
     {
+      "source": "grapheme-to-phoneme",
+      "target": "speech-technology-stack",
+      "relation_type": "part-of",
+      "description": "G2P 是 Speech Out 层的核心转换模块"
+    },
+    {
+      "source": "grapheme-to-phoneme",
+      "target": "turn-taking",
+      "relation_type": "contrasts",
+      "description": "Semantic VAD 决定\"什么时候说\"，G2P 决定\"怎么说\"——不同层级但存在间接耦合"
+    },
+    {
+      "source": "grapheme-to-phoneme",
+      "target": "voice-live-agent",
+      "relation_type": "uses",
+      "description": "Voice Agent 的发音准确度依赖 G2P 控制能力"
+    },
+    {
+      "source": "grapheme-to-phoneme",
+      "target": "cascaded-pipeline",
+      "relation_type": "part-of",
+      "description": "G2P 是级联 TTS 管线的内部组件"
+    },
+    {
       "source": "harness-engineering",
       "target": "agent-loop-architecture",
       "relation_type": "uses",
@@ -4829,6 +5195,12 @@
     },
     {
       "source": "rtk-token-compression",
+      "target": "caveman-token-compression",
+      "relation_type": "contrasts",
+      "description": "RTK 压缩 input tokens（工具输出），Caveman 压缩 output tokens（LLM 回复），两者互补"
+    },
+    {
+      "source": "rtk-token-compression",
       "target": "context-engineering",
       "relation_type": "extends",
       "description": "RTK 是 Context Engineering 在工具链层面的实践——通过压缩工具输出来优化 LLM 可用上下文"
@@ -4954,6 +5326,18 @@
       "description": "VAD 是语音技术栈的关键组件"
     },
     {
+      "source": "speech-technology-stack",
+      "target": "grapheme-to-phoneme",
+      "relation_type": "part-of",
+      "description": "G2P 是 Speech Out 层的核心转换模块"
+    },
+    {
+      "source": "speech-technology-stack",
+      "target": "turn-taking",
+      "relation_type": "part-of",
+      "description": "Turn-Taking 是 Core Processing 层的关键组件"
+    },
+    {
       "source": "terminal-multiplexer-for-ai",
       "target": "claude-code-memory-system",
       "relation_type": "uses",
@@ -5042,6 +5426,18 @@
       "target": "speech-technology-stack",
       "relation_type": "part-of",
       "description": "VAD 是 Speech 技术栈的基础组件"
+    },
+    {
+      "source": "voice-activity-detection",
+      "target": "turn-taking",
+      "relation_type": "extends",
+      "description": "Semantic VAD 本质是 Turn-Taking Policy 的接口，打断需要完整 Turn State Machine"
+    },
+    {
+      "source": "voice-activity-detection",
+      "target": "cascaded-pipeline",
+      "relation_type": "part-of",
+      "description": "VAD 是级联流水线的第一个模块（KWS → VAD → ASR → LLM → TTS）"
     },
     {
       "source": "voice-live-agent",
@@ -5326,6 +5722,30 @@
       "description": "LLM Wiki 是此工作流的理论基础"
     },
     {
+      "source": "three-layer-token-optimization",
+      "target": "caveman-token-compression",
+      "relation_type": "uses",
+      "description": "Layer 3 输出层优化工具"
+    },
+    {
+      "source": "three-layer-token-optimization",
+      "target": "rtk-token-compression",
+      "relation_type": "uses",
+      "description": "Layer 2 中间层优化工具"
+    },
+    {
+      "source": "three-layer-token-optimization",
+      "target": "context-engineering",
+      "relation_type": "implements",
+      "description": "三层优化是 Context Engineering 的成本控制实践"
+    },
+    {
+      "source": "three-layer-token-optimization",
+      "target": "harness-engineering",
+      "relation_type": "part-of",
+      "description": "Token 优化是 Harness 工程的效率环节"
+    },
+    {
       "source": "voice-cascaded-pipeline",
       "target": "voice-live-agent",
       "relation_type": "implements",
@@ -5504,7 +5924,8 @@
         "voice-activity-detection",
         "speech-technology-stack",
         "turn-taking",
-        "cascaded-pipeline"
+        "cascaded-pipeline",
+        "grapheme-to-phoneme"
       ]
     },
     {
@@ -5545,7 +5966,9 @@
         "ai-native-design-tools",
         "terminal-multiplexer-for-ai",
         "claude-code-memory-system",
-        "rtk-token-compression"
+        "rtk-token-compression",
+        "caveman-token-compression",
+        "brevity-constraints"
       ]
     }
   ]
