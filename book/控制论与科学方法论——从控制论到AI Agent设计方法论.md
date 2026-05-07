@@ -328,7 +328,103 @@ L5 Runtime 是控制系统的**状态观测器（State Observer）**——不是
 
 ---
 
-## 八、反思与下一步
+## 八、Ashby 必要多样性定律与二阶控制论
+
+### 8.1 必要多样性定律（Law of Requisite Variety）
+
+W. Ross Ashby 在《An Introduction to Cybernetics》中提出了控制论中最关键的定量原则：
+
+$$V_R \geq V_D$$
+
+> Regulator（调节器）的行为复杂度，必须大于或等于 Disturbance（扰动）的复杂度。否则系统无法稳定。
+
+翻译成 Harness Engineering 语言：
+
+> **Harness 的"丰富度"必须匹配 LLM 行为的"不确定性"。**
+
+这解释了一个常见的工程失败：为什么单条 system prompt 控不住复杂 Agent？因为 LLM 的行为多样性（$V_D$）远大于一条 prompt 能约束的范围（$V_R$）。必须用多层、多类型的 Regulation 机制（CLAUDE.md + Spec + Tests + Eval + Human Review）来叠加出足够的 Requisite Variety。
+
+实践判断标准：
+
+> 当 Agent 在某方面反复出错（regulation failure），问："我的 Harness 中，有没有一个 Regulator 专门对付这种扰动？"没有→加一个。有但不够→增加它的 variety。
+
+### 8.2 Regulation 作为独立目标概念
+
+在前文中，我们讨论了"负反馈"作为机制，但还需要明确一个上层概念：**Regulation**。
+
+| 概念 | 层级 | 核心问题 |
+|------|------|---------|
+| Regulation | 目标 | 维持什么稳定？ |
+| 负反馈 | 机制 | 怎么检测偏差并校正？ |
+| Harness | 实现 | 工程上怎么落地？ |
+
+Regulation 来自拉丁语 regula（尺子）/ regere（校正），本义是"把东西校准回正确轨道"。它天然包含偏差（deviation）、校正（correction）和目标状态（desired state）。
+
+**关键洞察**：设计 Harness 之前，必须先回答"我在 regulate 什么"——即定义 Regulated Variables。如果这一步没想清楚，后续所有机制都是无根之木。
+
+### 8.3 二阶控制论（Second-Order Cybernetics）
+
+控制论经历了两次重大转向：
+
+| 阶段 | 核心问题 | Agent 对应 |
+|------|---------|-----------|
+| 一阶控制论 | 观察者如何控制系统 | 人类用固定规则约束 Agent |
+| 二阶控制论 | 观察者本身也是系统的一部分 | Harness 本身需要自我演化 |
+
+在长期 Agent 项目中，你不仅在 regulate Agent 行为，你还在 **regulate 你的 regulation 机制本身**：
+
+- Spec 文档随项目演进而更新
+- 测试策略随复杂度增加而调整
+- CLAUDE.md 随实践经验而迭代
+- 架构约束随规模变化而重构
+
+```
+Meta-Regulator（人类经验 + 回顾机制）
+  └─ regulate → Regulation Mechanisms（Harness 规则/测试/约束）
+       └─ regulate → Agent Behavior（LLM 输出）
+            └─ produce → Code / UI / System
+```
+
+这与五层设计框架的关系：二阶控制论为第五层"控制能力"提供了动态演化视角——控制能力不是设计一次就固定的，而是需要持续 regulate 的。
+
+### 8.4 Meta-Harness：Meta-Regulator 的自动化落地
+
+Meta-Regulator 是二阶控制论的理论目标，而 [[2026-04-16-Meta-Harness论文解读与实践思考|Meta-Harness 论文]] 给出了一种**全自动化**的工程实现：用 Coding Agent（Proposer）自动搜索最优 Harness 配置，通过 Benchmark 驱动的评估循环迭代优化。
+
+Meta-Regulator 的三级实现路径：
+
+```
+Meta-Regulator（二阶控制论目标：regulate the regulator）
+  │
+  ├─ 手动实现（当前主流）
+  │   人类 Sprint 回顾 → 更新 CLAUDE.md / 测试策略 / 架构约束
+  │   依赖：工程师经验 + 直觉
+  │
+  ├─ 半自动实现（Steering Loop）
+  │   观察 Agent 失败 → 诊断原始 Trace → 修复 Harness → 验证
+  │   依赖：人类诊断 + 系统化记录
+  │
+  └─ 全自动实现（Meta-Harness 论文）
+      Proposer（Coding Agent）→ Evaluator（Benchmark）→ Filesystem（历史 Trace）
+      20 轮迭代、~60 候选、几小时完成
+      依赖：可复现的评估基准 + 版本化配置 + 原始执行记录
+```
+
+两者的关系：
+
+| 维度 | Meta-Regulator（理论） | Meta-Harness（实现） |
+|------|---------------------|-------------------|
+| 抽象层级 | 方法论目标 | 具体工程系统 |
+| 驱动方式 | 人工 + 自动化均可 | 全自动搜索 |
+| 优化对象 | 所有 Regulation 机制（规则、测试、流程） | 聚焦信息管道（存什么、取什么、展示什么） |
+| 反馈来源 | 经验 + 数据 + 直觉 | Benchmark 分数 + 原始 Trace |
+| Ashby 定律视角 | 增加 Regulator 的 Variety | 在结构化搜索空间中寻找最优 Variety 组合 |
+
+**关键洞察**：Meta-Harness 论文的消融实验证明——原始执行 Trace 的诊断价值远超 LLM 摘要（50.0% vs 34.9%）。这从实证角度验证了控制论的核心主张：**负反馈的质量决定系统收敛性**。信息损失（摘要压缩）直接削弱 Meta-Regulator 的调节能力。
+
+---
+
+## 九、反思与下一步
 
 ### 身份转变
 
@@ -356,3 +452,4 @@ L5 Runtime 是控制系统的**状态观测器（State Observer）**——不是
 
 - [Claude Code 系列 07：Harness 分层架构——从 50 万行源码到社区框架的控制论解读](../Notes/AI/Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md)——六层工程模型与三层控制模型的工程实践
 - [Vibe Coding 系列 01：全面系统的了解 Harness Engineering 的来龙去脉](../Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)——Harness 概念溯源与八大核心能力
+- [Vibe Coding 系列 13：控制论如何指导 Harness Engineering——用 Regulation 和 Requisite Variety 让 Vibe Coding 变得可控](../Notes/AI/vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md)——Regulation-First 设计方法在 Vibe Coding 中的具体落地
