@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-05-07
-stats: "63 concepts, 14 methods, 4 decisions, 291 claims"
+stats: "64 concepts, 14 methods, 4 decisions, 296 claims"
 tags:
   - wiki
   - index
@@ -81,6 +81,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
 - [[hermes-agent]] — Hermes Agent：自我改进 Agent 框架（Skill 自动生成 + Curator 生命周期管理）
+- [[agent-zero]] — Agent Zero：极端自主 Agent 框架，从反面论证 Harness 必要性
 - [[ai-skill-formation]] — AI 对技能形成的影响：放大器而非均衡器
 - [[negative-feedback]] — 负反馈：error = goal - current_state，Agent 收敛的核心机制
 - [[conjugate-transformation]] — 共轭变换：表示层设计，90% 的 Agent 失败是表示问题

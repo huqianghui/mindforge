@@ -87,6 +87,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - [[openclaw-agent-gateway]] — `contrasts` 单体 vs 分布式两种 Agent 架构路线
 - [[skill-hub-ecosystem]] — `part-of` Hermes 的 agentskills.io 是 Skill Hub 生态的一部分
 - [[ai-skill-formation]] — `extends` Skill 自动生成是 AI Skill Formation 的工程化落地
+- [[agent-zero]] — `contrasts` 三种 Agent 哲学光谱中的极端自主端
 
 ## 来源日记
 
