@@ -17,6 +17,10 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 ## Articles
 
+### Notes/AI
+
+- [与AI相处之道——从工具依赖到认知伙伴](Notes/AI/与AI相处之道——从工具依赖到认知伙伴.md)
+
 ### Notes/AI/Context-Engineering
 
 - [Context Engineering vs MCP — Full Series](Notes/AI/Context-Engineering/Context%20Engineering%20vs%20MCP/Context%20Engineering%20vs%20MCP%20-%20MOC.md)
