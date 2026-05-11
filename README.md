@@ -83,19 +83,6 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 ### Notes/AI/Design-Tools
 
-与现有工具的互补关系：
-
-```
-                      结构化 ←————————→ 写实/艺术
-
-    PptxGenJS    azure-diagrams    excalidraw    GPT-image-2
-    (数据图表)    (架构图)          (概念手绘)     (写实插画/场景)
-        ↑              ↑               ↑              ↑
-     纯数据         技术架构        思维概念      视觉表达/氛围
-```
-
-不重叠、纯增量——GPT-image-2 填补的是"视觉表达层"，现有工具覆盖的是"信息结构层"。
-
 - [Pencil 设计工具与 Claude Code 快速上手指南](Notes/AI/Design-Tools/Pencil设计工具与Claude%20Code快速上手指南.md)
 - [在 Obsidian 中用 Excalidraw 与 Draw.io 绘制 Azure 架构图实战指南](Notes/AI/Design-Tools/在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南.md)
 
