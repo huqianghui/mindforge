@@ -100,6 +100,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
 - [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Notes/tool/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
 - [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Notes/tool/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
+- [CodexSaver 深度解析——基于 MCP 的模型路由 Token 成本优化](Notes/tool/CodexSaver深度解析——基于MCP的模型路由Token成本优化.md)
 
 ### Azure
 
