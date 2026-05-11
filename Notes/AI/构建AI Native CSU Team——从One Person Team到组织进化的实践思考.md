@@ -169,7 +169,7 @@ Mitchell Hashimoto 的 AI 工具采纳六步进化模型给了我启发：
 
 不是专门抽时间培训，而是在实际项目交付中，鼓励大家把以下内容工程化：
 
-- **CLAUDE.md / AGENTS.md** — 将项目架构决策、编码规范写成 Agent 可读的约束文件
+- **AGENTS.md / Rules** — 将项目架构决策、编码规范写成 Agent 可读的约束文件
 - **Hooks + Rules** — 将反复犯的错误编码为自动拦截规则
 - **Skill / Flow** — 将重复性工作流封装为可复用的自动化流程
 - **Quality Gate** — 用 CI/CD + E2E 测试作为 AI 输出的最终验证
@@ -180,8 +180,8 @@ Mitchell Hashimoto 的 AI 工具采纳六步进化模型给了我启发：
 
 AI Native CSU 团队的交付物不仅是代码和架构方案，更是**一套可持续运行的 Harness 系统**：
 
-- 帮客户建立 CLAUDE.md 体系，让他们自己的团队能用 AI 持续迭代
-- 将架构约束编码为 Rules 而非文档，确保 AI Agent 自动遵守
+- 帮客户建立 Agent 约束体系（AGENTS.md + Rules），让他们自己的团队能用 AI 持续迭代
+- 将架构约束编码为机器可读的 Rules 而非文档，确保 AI Agent 自动遵守
 - 提供 Skill 模板和工作流模板，降低客户团队的 AI 工具采纳门槛
 
 **CSA 的角色从"代客户写代码"进化为"帮客户建设 AI 驾驭能力"。**
