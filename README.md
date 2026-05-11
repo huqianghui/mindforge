@@ -20,6 +20,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 ### Notes/AI
 
 - [与AI相处之道——从工具依赖到认知伙伴](Notes/AI/与AI相处之道——从工具依赖到认知伙伴.md)
+- [构建AI Native CSU Team——从One Person Team到组织进化的实践思考](Notes/AI/构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md)
 
 ### Notes/AI/Context-Engineering
 
