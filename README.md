@@ -76,6 +76,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 - [Speech 技术全景——从音频处理基础到 Turn-Taking 的深层机制](Notes/AI/voice/Speech技术全景——从音频处理基础到Turn-Taking的深层机制.md)
 - [Speech Out 深入——Grapheme、Phoneme、G2P、Lexicon 与 SSML 的工程解析](Notes/AI/voice/Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析.md)
+- [WebSocket 与 WebRTC 深度对比——从 Azure Voice Live API 看实时通信协议选型](Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 
 ### Notes/AI/RAG
 
