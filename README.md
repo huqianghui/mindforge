@@ -102,6 +102,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Notes/tool/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
 - [CodexSaver 深度解析——基于 MCP 的模型路由 Token 成本优化](Notes/tool/CodexSaver深度解析——基于MCP的模型路由Token成本优化.md)
 - [Typeless 深度解析——AI 语音输入如何超越传统 Speech-to-Text](Notes/tool/Typeless深度解析——AI语音输入如何超越传统Speech-to-Text.md)
+- [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 
 ### Azure
 
