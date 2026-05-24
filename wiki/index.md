@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-05-24
-stats: "65 concepts, 14 methods, 4 decisions, 302 claims"
+stats: "66 concepts, 14 methods, 4 decisions, 308 claims"
 tags:
   - wiki
   - index
@@ -124,6 +124,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[cascaded-pipeline]] — 级联流水线：VAD → STT → LLM → TTS 的模块化架构
 - [[grapheme-to-phoneme]] — G2P（Grapheme-to-Phoneme）：TTS 流水线的字素到音素转换
 - [[intelligent-dictation]] — 智能听写：从 Speech Recognition 到 Speech Writing 的范式转移
+- [[realtime-protocol-selection]] — 实时通信协议选型：Control Plane vs Data Plane 分离
 
 ### Azure 与云平台
 
