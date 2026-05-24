@@ -1,7 +1,7 @@
 ---
 title: "MCP vs CLI"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-05-24"
 tags:
   - wiki
   - concept
@@ -63,6 +63,16 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 > MCP 的优势是跨应用通用性和动态工具发现；CLI 的优势是成熟 Unix 生态、零协议开销、直接进程调用。选择不是二元的。
 
+### Claim: Azure Skills 是 MCP/CLI 共存互补的最佳实战案例
+
+- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **首次出现**：2026-05-14
+- **最近更新**：2026-05-24
+- **置信度**：0.8
+- **状态**：active
+
+> Azure Skills 在剧本中预编排了 MCP/CLI 分工：关键专有 API（AppLens 诊断、Resource Health）走 MCP，常见成熟命令（azd up、terraform apply、kubectl）走 CLI。选择标准：模型是否熟悉 + CLI 有无等价命令 + 操作复杂度 + 安全敏感度。MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。
+
 ## 冲突与演进
 
 （暂无）
@@ -71,7 +81,9 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - [[context-engineering]] — `part-of` MCP 是 Context Engineering 的工具接入层
 - [[opencli]] — `contrasts` OpenCLI 为 CLI 路线提供标准化接口描述
+- [[azure-copilot-ecosystem]] — `implements` Azure Skills 是 MCP/CLI 共存互补的最佳实战案例
 
 ## 来源日记
 
 - [[MCP vs CLI — 为什么开发者在重新审视 MCP]] — MCP 与 CLI 对比分析
+- [[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]] — Azure Skills 的 MCP/CLI 分工实证

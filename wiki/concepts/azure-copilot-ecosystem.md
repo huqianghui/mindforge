@@ -1,7 +1,7 @@
 ---
 title: "Azure Copilot Ecosystem"
 created: "2026-04-11"
-updated: "2026-04-13"
+updated: "2026-05-24"
 tags:
   - wiki
   - concept
@@ -65,6 +65,26 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 > AI Shell 于 2026 年 1 月归档，不再维护。目前没有基于 CLI 的 Azure Copilot 扩展。
 
+### Claim: Azure Skills 三层架构——"脑"（Skills）+"眼"（MCP）+"手"（CLI）
+
+- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **首次出现**：2026-05-14
+- **最近更新**：2026-05-24
+- **置信度**：0.8
+- **状态**：active
+
+> Azure Skills = 经验丰富的架构师（知道做什么、什么顺序、遇到问题怎么处理）。Azure MCP Server = 监控仪表盘（看到实时状态）。CLI = 操作台按钮（执行变更）。Skills 通过 plugin.json 将三层能力打包：注入 SKILL.md 剧本 + 启动 Azure MCP Server + 启动 Context7 MCP。
+
+### Claim: Azure Skills 预编排工具路由而非让 Agent 自行选择
+
+- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **首次出现**：2026-05-14
+- **最近更新**：2026-05-24
+- **置信度**：0.8
+- **状态**：active
+
+> SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是"读用 MCP、写用 CLI"，而是"关键专有 API 走 MCP，常见成熟命令走 CLI"。
+
 ## 冲突与演进
 
 （暂无）
@@ -73,9 +93,11 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 - [[llm-wiki]] — `uses` Azure 企业级 LLM Wiki 方案依赖 Azure AI Search
 - [[skill-hub-ecosystem]] — `part-of` Azure Skills 是 Microsoft 官方的 Skill 实现
+- [[mcp-vs-cli]] — `implements` Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例
 
 ## 来源日记
 
 - [[2026-04-11-周六]] — agenticInfraOps 任务中发现 Azure Copilot 限制并整理编程化路径
 - [[2026-04-12-周日]] — 追踪任务延续
 - [[2026-04-13-周一]] — 追踪任务延续；Microsoft Skills 学习任务
+- [[2026-05-14-周四]] — 深入学习 Azure Skills 三层架构和工具路由机制

@@ -1,7 +1,7 @@
 ---
 title: "Speech Technology Stack"
 created: "2026-04-13"
-updated: "2026-04-30"
+updated: "2026-05-24"
 tags:
   - wiki
   - concept
@@ -84,6 +84,16 @@ related:
 
 > eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。
 
+### Claim: 语音输入产品经历三代范式演进——从准确转录到智能听写
+
+- **来源**：[[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]]
+- **首次出现**：2026-05-20
+- **最近更新**：2026-05-24
+- **置信度**：0.8
+- **状态**：active
+
+> 第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已"够用"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。
+
 ## 冲突与演进
 
 （暂无）
@@ -94,9 +104,11 @@ related:
 - [[voice-activity-detection]] — `extends` VAD 是语音技术栈的关键组件
 - [[grapheme-to-phoneme]] — `part-of` G2P 是 Speech Out 层的核心转换模块
 - [[turn-taking]] — `part-of` Turn-Taking 是 Core Processing 层的关键组件
+- [[intelligent-dictation]] — `produces` 语音技术栈 L1 之上的产品层演进
 
 ## 来源日记
 
 - [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] — 技术全景
 - [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]] — VAD barge-in
 - [[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]] — Speech Out 层 G2P 深入分析
+- [[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]] — 语音输入三代演进与智能听写
