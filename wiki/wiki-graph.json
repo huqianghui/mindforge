@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-08T05:48:12.084044+00:00",
+  "generated_at": "2026-05-24T11:46:57.713805+00:00",
   "stats": {
-    "nodes": 82,
-    "links": 303,
+    "nodes": 83,
+    "links": 309,
     "orphan_links_removed": 0,
-    "claims": 296,
+    "claims": 306,
     "categories": 9
   },
   "nodes": [
@@ -494,8 +494,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.75,
+      "claims_count": 6,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "Azure Copilot Agents 仅限 Portal UI，无 API/SDK",
@@ -532,6 +532,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "AI Shell 于 2026 年 1 月归档，不再维护。目前没有基于 CLI 的 Azure Copilot 扩展。"
+        },
+        {
+          "statement": "Azure Skills 三层架构——\"脑\"（Skills）+\"眼\"（MCP）+\"手\"（CLI）",
+          "source": "Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践",
+          "first_seen": "2026-05-14",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Azure Skills = 经验丰富的架构师（知道做什么、什么顺序、遇到问题怎么处理）。Azure MCP Server = 监控仪表盘（看到实时状态）。CLI = 操作台按钮（执行变更）。Skills 通过 plugin.json 将三层能力打包：注入 SKILL.md 剧本 + 启动 Azure MCP Server + 启动 Context7 MCP。"
+        },
+        {
+          "statement": "Azure Skills 预编排工具路由而非让 Agent 自行选择",
+          "source": "Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践",
+          "first_seen": "2026-05-14",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是\"读用 MCP、写用 CLI\"，而是\"关键专有 API 走 MCP，常见成熟命令走 CLI\"。"
         }
       ]
     },
@@ -2101,6 +2119,63 @@
       ]
     },
     {
+      "id": "intelligent-dictation",
+      "type": "concept",
+      "title": "Intelligent Dictation",
+      "summary": "Intelligent Dictation（智能听写）是语音输入领域的第三代范式，核心转变是从\"Speech Recognition\"（记录你说了什么）到\"Speech Writing\"（写出你想表达什么）。代表产品包括 Typeless、Wispr Flow、Aqua Voice。与传统 STT 相比，智能听写在 ASR（L1）之上增加了 L2-L6 五层价值——去噪、语义重组、格式化、场景适配、个性化，通过 LLM 后处理层将语音识别的原始输出转化为 ready-to-use 文本。",
+      "tags": [
+        "wiki",
+        "concept",
+        "voice",
+        "speech-to-text",
+        "productivity",
+        "paradigm-shift"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "语音输入存在六层价值模型（L1-L6）",
+          "source": "Typeless深度解析——AI语音输入如何超越传统Speech-to-Text",
+          "first_seen": "2026-05-20",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "L1 语音识别（WER 优化）→ L2 文本清洗（去除 um/uh/重复）→ L3 语义重组（理解意图重组语序）→ L4 格式化（自动识别列表/步骤/要点）→ L5 场景适配（根据 App 切换语气）→ L6 个性化（学习用户表达风格）。传统 STT 只覆盖 L1，Typeless 等产品专攻 L2-L6。"
+        },
+        {
+          "statement": "语音输入经历三代范式演进",
+          "source": "Typeless深度解析——AI语音输入如何超越传统Speech-to-Text",
+          "first_seen": "2026-05-20",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT）→ 第二代 Smart Transcription（Whisper、AssemblyAI）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow）。本质变化：从\"忠实记录\"到\"写出想表达什么\"，加入 LLM 后处理层理解语义意图后重新组织输出。"
+        },
+        {
+          "statement": "底层 ASR 已\"够用\"，差异化在 L2-L6 上层",
+          "source": "Typeless深度解析——AI语音输入如何超越传统Speech-to-Text",
+          "first_seen": "2026-05-20",
+          "last_updated": "2026-05-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻\"最后一公里\"。产品洞察：用户要的不是\"准确的转录\"，而是\"不用打字就能产出好文本\"。"
+        },
+        {
+          "statement": "App-aware tone switching 是智能听写的关键创新",
+          "source": "Typeless深度解析——AI语音输入如何超越传统Speech-to-Text",
+          "first_seen": "2026-05-20",
+          "last_updated": "2026-05-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "根据目标应用（Slack vs Gmail vs Notion）自动调整输出语气，本质是 context injection 策略。结合 Whisper Mode（低声输入）和 Edit via voice（语音修改已有文本），形成完整的语音交互闭环。"
+        }
+      ]
+    },
+    {
       "id": "llm-wiki",
       "type": "concept",
       "title": "LLM Wiki",
@@ -2180,8 +2255,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.7,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "MCP 存在严重 context 膨胀问题",
@@ -2218,6 +2293,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "MCP 的优势是跨应用通用性和动态工具发现；CLI 的优势是成熟 Unix 生态、零协议开销、直接进程调用。选择不是二元的。"
+        },
+        {
+          "statement": "Azure Skills 是 MCP/CLI 共存互补的最佳实战案例",
+          "source": "Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践",
+          "first_seen": "2026-05-14",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Azure Skills 在剧本中预编排了 MCP/CLI 分工：关键专有 API（AppLens 诊断、Resource Health）走 MCP，常见成熟命令（azd up、terraform apply、kubectl）走 CLI。选择标准：模型是否熟悉 + CLI 有无等价命令 + 操作复杂度 + 安全敏感度。MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。"
         }
       ]
     },
@@ -3226,8 +3310,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.73,
+      "claims_count": 7,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "实时语音 Agent 涉及三层技术栈",
@@ -3282,6 +3366,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。"
+        },
+        {
+          "statement": "语音输入产品经历三代范式演进——从准确转录到智能听写",
+          "source": "Typeless深度解析——AI语音输入如何超越传统Speech-to-Text",
+          "first_seen": "2026-05-20",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已\"够用\"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。"
         }
       ]
     },
@@ -3611,8 +3704,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.75,
+      "claims_count": 8,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
@@ -3667,6 +3760,24 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。"
+        },
+        {
+          "statement": "Voice Live API 采用 WebSocket + WebRTC 双通道架构",
+          "source": "WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型",
+          "first_seen": "2026-05-22",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。"
+        },
+        {
+          "statement": "从 WebSocket-only 到双通道是产品成熟度驱动的必然升级",
+          "source": "WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型",
+          "first_seen": "2026-05-22",
+          "last_updated": "2026-05-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。"
         }
       ]
     },
@@ -4517,6 +4628,12 @@
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现"
     },
     {
+      "source": "azure-copilot-ecosystem",
+      "target": "mcp-vs-cli",
+      "relation_type": "implements",
+      "description": "Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例"
+    },
+    {
       "source": "bitter-lesson",
       "target": "continual-self-improving-ai",
       "relation_type": "extends",
@@ -5189,6 +5306,18 @@
       "description": "三种 Agent 哲学光谱中的极端自主端"
     },
     {
+      "source": "intelligent-dictation",
+      "target": "speech-technology-stack",
+      "relation_type": "extends",
+      "description": "智能听写是语音技术栈 L1 之上的产品层演进"
+    },
+    {
+      "source": "intelligent-dictation",
+      "target": "voice-live-agent",
+      "relation_type": "uses",
+      "description": "Voice Agent 输出应从\"用户说了什么\"转向\"用户想要什么\"——智能听写思路的 Agent 化延伸"
+    },
+    {
       "source": "llm-wiki",
       "target": "azure-copilot-ecosystem",
       "relation_type": "uses",
@@ -5223,6 +5352,12 @@
       "target": "opencli",
       "relation_type": "contrasts",
       "description": "OpenCLI 为 CLI 路线提供标准化接口描述"
+    },
+    {
+      "source": "mcp-vs-cli",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "implements",
+      "description": "Azure Skills 是 MCP/CLI 共存互补的最佳实战案例"
     },
     {
       "source": "meta-harness",
@@ -5627,6 +5762,12 @@
       "description": "Turn-Taking 是 Core Processing 层的关键组件"
     },
     {
+      "source": "speech-technology-stack",
+      "target": "intelligent-dictation",
+      "relation_type": "produces",
+      "description": "语音技术栈 L1 之上的产品层演进"
+    },
+    {
       "source": "terminal-multiplexer-for-ai",
       "target": "claude-code-memory-system",
       "relation_type": "uses",
@@ -5745,6 +5886,12 @@
       "target": "voice-cascaded-pipeline",
       "relation_type": "produces",
       "description": "实施方法：级联管线架构的详细步骤和决策点"
+    },
+    {
+      "source": "voice-live-agent",
+      "target": "intelligent-dictation",
+      "relation_type": "extends",
+      "description": "Voice Agent 输出可从\"记录说了什么\"升级为\"写出想表达什么\""
     },
     {
       "source": "ai-adoption-six-step-evolution",
@@ -6240,7 +6387,8 @@
         "speech-technology-stack",
         "turn-taking",
         "cascaded-pipeline",
-        "grapheme-to-phoneme"
+        "grapheme-to-phoneme",
+        "intelligent-dictation"
       ]
     },
     {
