@@ -122,6 +122,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 - [Palantir Ontology：从哲学本体论到企业操作系统的工程实践](product/Palantir%20Ontology：从哲学本体论到企业操作系统的工程实践.md)
 - [Palantir 数据本体论（Ontology）：从概念到产品的深度解析](product/Palantir数据本体论（Ontology）：从概念到产品的深度解析.md)
+- [Accio Work——阿里跨境 AI Agent 工作台与企业级 Skill Hub 设计解读](product/Accio%20Work——阿里跨境AI%20Agent工作台与企业级Skill%20Hub设计解读.md)
 
 ### paper
 
