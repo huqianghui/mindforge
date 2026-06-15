@@ -52,6 +52,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [Agent-Reach 与 OpenCLI——命令编排型 Agent 框架的两条路线](Notes/AI/agent/Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线.md)
 - [Agent 经典范式与人类问题处理模式的映射](Notes/AI/agent/Agent经典范式与人类问题处理模式的映射.md)
 - [AutoResearch 概念澄清——与 Ralph-Loop 和 AutoML 的本质区别](Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)
+- [Loop Engineering 概念澄清——内循环、外循环与 Harness Engineering 的边界](Notes/AI/agent/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
 - [Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API](Notes/AI/agent/Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API.md)
 - [InkOS 深度感想——AI 小说创作中的 Harness Engineering 范式](Notes/AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)
