@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-17T03:38:39.392275+00:00",
+  "generated_at": "2026-06-17T03:54:19.651021+00:00",
   "stats": {
     "nodes": 85,
-    "links": 324,
+    "links": 333,
     "orphan_links_removed": 0,
     "claims": 324,
     "categories": 9
@@ -32,7 +32,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "while 循环 + model 调用 + 工具执行 + 结果回灌，\"One loop & Bash is all you need\"。"
         },
         {
@@ -41,7 +41,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent loop 本身一字不改，这是 Tool Dispatch 模式的核心优势。"
         },
         {
@@ -50,7 +50,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "引入任务追踪后，model 被强制同一时间只有一个 in_progress 任务；连续 3 轮不调用 todo 工具时系统自动注入提醒。"
         },
         {
@@ -59,7 +59,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。"
         }
       ]
@@ -88,7 +88,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "ReAct = 试错迭代（\"try and see\"），Plan-and-Solve = 系统规划（\"think before act\"），Reflection = 自我批评（\"review and improve\"）。"
         },
         {
@@ -97,7 +97,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Claude Code 示例：ReAct 用于简单任务，Plan Mode 用于复杂任务，Reflection loop 用于测试失败时。选择不是非此即彼而是自适应切换。"
         },
         {
@@ -106,7 +106,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "定义循环结构（Thought-Action-Observation）、管理上下文（trajectory 累积）、处理异常（解析错误、重试、无限循环预防）。理解范式原理可以从框架\"用户\"进阶为 Agent\"创造者\"。"
         }
       ]
@@ -136,7 +136,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Exa 用于深度语义研究，Tavily 用于实时事实搜索，Context7 用于版本特定技术文档。"
         },
         {
@@ -145,7 +145,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统搜索引擎返回的\"link lists\"不适合 Agent 消费。"
         },
         {
@@ -154,7 +154,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。"
         }
       ]
@@ -249,7 +249,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Figma 用 plugin 式 AI 集成（人类设计、AI 辅助），Pencil 暴露设计画布给 Claude Code via native MCP，实现\"AI designs on canvas, human fine-tunes\"。"
         },
         {
@@ -258,7 +258,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "推荐工作流：\"sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io\"。"
         }
       ]
@@ -288,7 +288,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "根因：AI 拿到的是\"像素级信息\"，缺的是\"需求级信息\"——设计稿本身不包含足够信息让 AI 写出好代码。"
         },
         {
@@ -297,7 +297,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Figma 回答\"长什么样\"（视觉层），Brainstorm 回答\"做什么为什么做\"（需求层），Spec-Delta 回答\"这次改什么\"（变更层）。"
         },
         {
@@ -306,7 +306,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Design AI → Spec AI → Coding AI → Testing AI → Review AI，每个阶段产出的信息类型（视觉/需求/变更/测试/审查）各不相同。"
         }
       ]
@@ -335,7 +335,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "且并未显著提升任务完成速度——AI 交互时间抵消了编码速度增益。"
         },
         {
@@ -344,7 +344,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "常规知识工作\"拉高下限\"，复杂决策工作\"放大差距\"。AI 是放大器不是均衡器。"
         },
         {
@@ -353,7 +353,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "Vibe Coding 是纯 prompt-and-spec 驱动编程（人类写零代码），进入 Agentic AI 自主编程领域，与论文中的 AI 辅助编程完全不同。"
         }
       ]
@@ -438,7 +438,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是\"AI 做研究\"，而是自动化 hill-climbing，更接近 AutoML 和进化搜索。"
         },
         {
@@ -447,7 +447,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Ralph Loop 只有 done/not-done（fixed-point iteration），AutoResearch 有 score comparison + history of best + rollback（evolutionary search）。"
         },
         {
@@ -456,7 +456,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "AutoML 搜索静态人定义参数空间，AutoResearch 允许 agent 通过修改训练代码创建全新搜索维度。"
         },
         {
@@ -465,7 +465,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "单一可变面、固定评估、强制预算、diff 迭代、自动回滚——满足全部五条即可在任意领域进行安全的 autonomous agent 实验。"
         },
         {
@@ -474,7 +474,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "program.md = Skill, train.py = Tool/MCP, prepare.py = Harness, metric = Eval/Feedback, git = Memory, loop = Agent Runtime Loop。"
         }
       ]
@@ -503,7 +503,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。Azure Copilot Agents 目前处于 preview 阶段，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口。"
         },
         {
@@ -512,7 +512,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（200+ Azure 服务工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 提供 22 个专家级 Azure 工作流剧本（含 AKS 故障排查、GPU 选型）。"
         },
         {
@@ -521,7 +521,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "开源（MIT），兼容所有 MCP 客户端（Claude Code、GitHub Copilot、Cursor、Windsurf 等）——这是 AI agent 访问 Azure 的通用编程接口。"
         },
         {
@@ -530,7 +530,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "AI Shell 于 2026 年 1 月归档，不再维护。目前没有基于 CLI 的 Azure Copilot 扩展。"
         },
         {
@@ -577,7 +577,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "search + learning 最终击败所有 hand-coded human domain knowledge，跨越所有 AI 领域。"
         },
         {
@@ -586,7 +586,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "研究者精心打造的领域知识被简单暴力的\"更多计算\"碾压，70 年来反复发生。"
         },
         {
@@ -595,7 +595,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "是一个跨领域元原则：\"让计算（search + learning）替代人类知识\"，不限于强化学习。"
         },
         {
@@ -604,7 +604,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "(1) 编码人类知识 → (2) 短期有效 → (3) 长期停滞 → (4) 对立的计算扩展方法实现突破。"
         }
       ]
@@ -692,7 +692,7 @@
           "first_seen": "2026-04-06",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "即使 Level 1 端到端模型（如 GPT-4o Realtime），在企业场景中仍然需要级联结构——因为企业需要可审计性、模块可替换性、和对每个环节的独立监控。级联流水线不是\"过渡方案\"，而是企业实时系统的长期架构选择。"
         },
         {
@@ -701,7 +701,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "看到一个\"能力\"时，问自己：\"它能不能被单独替换？\" 能 → 这是一个模块（级联流水线）。不能 → 这是模型内部能力（端到端架构）。"
         },
         {
@@ -710,7 +710,7 @@
           "first_seen": "2026-04-02",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60）。级联失败不仅是语音架构的问题，也是所有多步 Agent 系统的通用挑战。"
         }
       ]
@@ -797,7 +797,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统知识库存储\"X 是 Y\"（事实），Claim-Based Schema 存储\"根据来源 A，X 可能是 Y（置信度 0.8）\"（论断）。这承认了知识的不确定性——同一个问题可以有多个置信度不同的论断共存。"
         },
         {
@@ -806,7 +806,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "active → conflicting（发现矛盾证据）→ outdated（被新证据取代）→ stale（60+ 天未更新）。生命周期状态使知识库能自动标记需要关注的论断，而非被动等待人工检查。"
         },
         {
@@ -815,7 +815,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "3+ 独立来源支持 → 置信度 +0.1；有实验/实践验证 → 置信度 0.7+；来源间矛盾 → 标记 conflicting 待人工裁决。"
         }
       ]
@@ -845,7 +845,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "在 .claude/agents/ 定义时叫 agent，被 Agent 工具调用运行时叫 subagent，没有两个独立概念。"
         },
         {
@@ -854,7 +854,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "仅传递 prompt 参数，无对话历史、无主 session 上下文，返回时中间过程全部丢弃仅返回摘要。"
         },
         {
@@ -863,7 +863,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Parent 维持持久 messages，Child 从空 messages 开始，交互极其克制。这是最关键的架构洞察。"
         },
         {
@@ -872,7 +872,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Teammate 与 Subagent 的本质区别：Subagent 是一次性委派（fire-and-forget），执行完即销毁；Teammate 有持久身份（name）、独立收件箱（JSONL inbox）和长期运行的 Agent Loop，通过 TeamConfig（`.team/config.json`）注册，通过 MessageEnvelope（type/from/content/timestamp）通信。"
         },
         {
@@ -881,7 +881,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。"
         }
       ]
@@ -911,7 +911,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Command 是 prompt 模板（快捷入口，共享主 session context），Skill 是知识注入（被动触发，AI 自动判断加载），Agent 是独立角色（独立 context window，可限制工具和模型）。"
         },
         {
@@ -920,7 +920,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "将 Skill/Command/Subagent/Hook/MCP 统一封装为可安装、可版本化的模块，类似 VS Code Extension 生态能力。"
         },
         {
@@ -929,7 +929,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "安装后被\"拆包\"，运行时 model 看到的是独立的 tool/skill/command，完全不感知\"Plugin\"概念。"
         },
         {
@@ -938,7 +938,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Command → Skill → Plugin。Anthropic 明确表示未来 Plugin 将成为标准扩展方式。"
         }
       ]
@@ -967,7 +967,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "六层架构：Settings（强制配置，客户端执行）→ CLAUDE.md + Rules（行为指导，Claude 遵循）→ Auto Memory（Claude 自主笔记，跨 Session）→ Session Transcripts（对话历史，支持续接）→ Skills/Agents/MCP（扩展能力，按需加载）→ App State（全局配置）。关键区分：Settings 机械执行，CLAUDE.md 理解遵循，Memory 按需回忆。"
         },
         {
@@ -976,7 +976,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Auto Memory 存储于 `~/.claude/projects/<project-path>/memory/`，MEMORY.md 索引文件启动时加载前 200 行/25KB，主题文件按需读取。记忆分 4 类：user（用户画像）、feedback（行为纠正/确认）、project（项目进展）、reference（外部指针）。同一 git repo 的所有 worktree 共享 memory 目录。"
         },
         {
@@ -985,7 +985,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "CLAUDE.md 每次对话完整加载占用上下文窗口。最佳实践：只保留行为规则摘要和 Agent 路由表，详细格式规范/工作流程通过 reference 指向 agent 文件和项目文档。本 vault 从 176 行精简到 98 行后效果更好。"
         },
         {
@@ -994,7 +994,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent 定义文件中配置 `memory:` 字段可获得独立记忆：`project`（提交到 git）、`local`（gitignored）、`user`（跨项目）。每个 Subagent 启动时加载自己的 MEMORY.md 前 200 行。适用于需要跨 Session 追踪状态的 Agent（如知识提取器追踪已处理的日记）。"
         }
       ]
@@ -1023,7 +1023,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "每次会话倾向于从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角——它看到的是当前会话上下文，不是架构蓝图。"
         },
         {
@@ -1032,7 +1032,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Superpowers、gstack、Compound Engineering 没有一个直接解决代码复用——CE 是知识复用不是代码复用，单人场景下 CE 与 Claude Code memory 基本等价。"
         },
         {
@@ -1041,7 +1041,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。四层：CLAUDE.md 架构约束（最关键）> FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。"
         }
       ]
@@ -1071,7 +1071,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "如果 Agent 很\"聪明\"但做不对事，90% 是共轭变换设计错了。方法论原则：先设计 L（共轭变换），再写 prompt。\"不要问用什么 prompt，要问世界是怎么被编码的。\""
         },
         {
@@ -1080,7 +1080,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "text（推理与规划）、JSON（工具调用）、embedding（语义搜索）、AST（代码操作）——选错变换类型会导致关键信息丢失。"
         },
         {
@@ -1089,7 +1089,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "共轭变换不只存在于 L3 Skills，而是 L2 任务分解、L3 能力抽象、L4 工具调用中都有体现——它是每个模块都需要考虑的设计维度。"
         }
       ]
@@ -1118,7 +1118,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "LLM performance limitations are rarely due to inherent model flaws -- they are a direct consequence of incomplete, inconsistent, or irrelevant context."
         },
         {
@@ -1127,7 +1127,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Prompt engineering 关注\"说什么\"，CE 治理\"模型知道什么\"。企业采用驱动了这一转变。"
         },
         {
@@ -1136,7 +1136,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型的整个推理工作记忆，用正确信息填充它是核心架构挑战。"
         },
         {
@@ -1145,7 +1145,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "CE 整体管理 LLM 的 context window，MCP 提供标准化外部工具/数据接口。两者互补而非竞争。"
         },
         {
@@ -1154,7 +1154,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。"
         },
         {
@@ -1163,7 +1163,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。"
         }
       ]
@@ -1192,7 +1192,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。"
         },
         {
@@ -1201,7 +1201,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的\"甜蜜点\"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。"
         },
         {
@@ -1210,7 +1210,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "subagent 的 context 在单个大功能时也会爆炸。"
         },
         {
@@ -1219,7 +1219,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "LLM 并不会真的\"只看 delta\"，delta 仍需还原语义上下文，从\"一次性爆 context\"变成\"多次局部爆 context\"。"
         },
         {
@@ -1228,7 +1228,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "正确做法应是 state 外部存储 + context 按需投影（projection）。"
         }
       ]
@@ -1257,7 +1257,7 @@
           "first_seen": "2026-03-22",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "所有 GSD / Superpowers / OpenSpec 系统都有一个隐含错误假设：context = state。正确做法：state → 外部存储（结构化），context → 按需投影（projection）。"
         },
         {
@@ -1266,7 +1266,7 @@
           "first_seen": "2026-03-22",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "State Layer 有成熟方案（数据库、文件系统），Execution Layer 有 LLM。但 Selection Layer（query → select → project → execute）目前没有通用工具——这是 Skill Runtime 需要解决的核心问题。"
         },
         {
@@ -1275,7 +1275,7 @@
           "first_seen": "2026-03-22",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "GSD 是文档式加载（document-centric）：plan 越多 → prompt 越大。Skill Runtime 是能力式加载（capability-centric）：按任务需求投影必要上下文。后者是 context 管理的正确方向。"
         }
       ]
@@ -1304,7 +1304,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "LLM 对快速演化 SDK（Azure CLI、Terraform、Bicep）生成的代码经常使用已弃用参数或过时 API 模式。Context7 在推理时注入最新官方文档。"
         },
         {
@@ -1313,7 +1313,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "resolve-library-id 和 query-docs，检索排序在服务端完成，不消耗 LLM 推理 tokens。"
         },
         {
@@ -1322,7 +1322,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不限于 Azure，支持数千个开源库文档和版本特定查询（如 /vercel/next.js@14）。"
         }
       ]
@@ -1352,7 +1352,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "静态权重（有限 context 记忆）、有限人类数据（power-law scaling 触顶）、人类设计的训练算法。"
         },
         {
@@ -1361,7 +1361,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。"
         },
         {
@@ -1370,7 +1370,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "知识内化与检索增强互补而非竞争。"
         },
         {
@@ -1379,7 +1379,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
         }
       ]
@@ -1447,7 +1447,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "控制论三个基本机制——负反馈（收敛）、共轭变换（表示）、随机探索（逃逸）——恰好对应 Agent 的评估-修正循环、问题表示与拆解、多路径尝试与策略切换。"
         },
         {
@@ -1456,7 +1456,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "如果 Agent 很\"聪明\"但做不对事，90% 是共轭变换设计错了——不是推理问题，是表示问题。方法论原则：先设计 L（共轭变换），再写 prompt。"
         },
         {
@@ -1465,7 +1465,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "控制能力 = 信息 × 工具 × 反馈 × 表示。Agent 失败 90% 是控制能力不够（信息不足、工具不足、反馈太弱、表示不当），不是模型不行。"
         },
         {
@@ -1474,7 +1474,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "六层架构和三层模型是模块/层级划分（有边界、有接口），控制论五层更像是每个模块都需要考虑的设计维度。如\"共轭变换\"不只存在于 L3 Skills，而是 L2 任务分解、L3 能力抽象、L4 工具调用中都有体现。"
         },
         {
@@ -1483,7 +1483,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "六层模型的 L5 Runtime（状态追踪、上下文管理、资源隔离、检查点快照）在控制论五层中无显式对应。控制论假设\"状态是已知的\"，但工程中\"谁来维护 current_state\"恰恰是最重的基础设施。L5 Runtime 是控制系统的状态观测器（State Observer），建议增设 L0 状态观测层或将其作为正交维度。"
         },
         {
@@ -1492,7 +1492,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "控制论五层（WHY，设计原理）、六层工程模型（WHAT，模块结构）、三层控制模型（HOW，运行动力学）三者回答不同问题。收敛性公式 = 约束强度 × 反馈频率 / 执行自由度，其中每个因子的来源由控制论五层解释。"
         }
       ]
@@ -1522,7 +1522,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不同团队对\"客户\"、\"订单\"、\"产品\"的解释不一致，导致报表错位和 AI 回答不准确。"
         },
         {
@@ -1531,7 +1531,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "首次在数据平台产品中正式使用该术语。"
         },
         {
@@ -1540,7 +1540,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "超越传统数据仓库的真正价值主张。"
         },
         {
@@ -1549,7 +1549,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不复制数据，而是编码业务逻辑。将企业数据景观从\"静态地图\"升级为\"实时导航系统\"。"
         },
         {
@@ -1558,7 +1558,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "DDD 告诉你如何建模，Ontology 提供运行时平台——通过 Action Types 实现行动闭环。"
         },
         {
@@ -1567,7 +1567,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "让模型在语义明确的对象图上推理而非原始数据表，降低幻觉风险。"
         }
       ]
@@ -1644,7 +1644,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"能跑\"和\"能收敛\"是两回事。没有反馈闭环的 Agent 是线性工具链——执行完就结束；有反馈闭环的 Agent 是控制系统——能根据结果自我修正。"
         },
         {
@@ -1653,7 +1653,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Propose → Evaluate → Log → Repeat 搜索循环将手工 Harness 迭代自动化。完整执行 trace 是不可替代的诊断信号（50.0% vs 仅分数的 34.6%）。"
         },
         {
@@ -1662,7 +1662,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "知识流不能是单向的（日记 → wiki）。实践反馈必须回流到知识库——应用方法后的成功/失败应更新 Claims 置信度，形成：日记 → 提取 → wiki → 应用 → 反馈 → wiki 的完整闭环。"
         }
       ]
@@ -1730,7 +1730,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "规范驱动（GSD/SpecKit/OpenSpec）解决\"做什么\"，方法论（Superpowers）解决\"怎么做\"。"
         },
         {
@@ -1739,7 +1739,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三者功能高度重叠（都管\"做什么\"），Superpowers 管\"怎么做\"几乎必选搭配。"
         },
         {
@@ -1748,7 +1748,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "50 行 LangGraph 编排文件可能比 500 行 CRUD 更复杂。"
         },
         {
@@ -1757,7 +1757,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "单文件/脚本级项目应跳过 GSD 直接执行。"
         },
         {
@@ -1766,7 +1766,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "项目足够复杂需要结构化，但又没复杂到触发 Context 上限。"
         }
       ]
@@ -1796,7 +1796,7 @@
           "first_seen": "2026-04-02",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。"
         },
         {
@@ -1805,7 +1805,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。"
         }
       ]
@@ -1892,7 +1892,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。"
         },
         {
@@ -1901,7 +1901,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。"
         },
         {
@@ -1910,7 +1910,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "上下文耗尽（Context Exhaustion）和提前收工（Premature Completion）不是\"让模型更努力\"能解决的，而是系统设计问题。"
         },
         {
@@ -1919,7 +1919,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。"
         },
         {
@@ -1928,7 +1928,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "仓库即系统记录、分层领域架构、Agent 可读性、黄金准则、垃圾回收。"
         },
         {
@@ -1937,7 +1937,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。"
         },
         {
@@ -1946,7 +1946,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "model 是做决策的主体，外部代码只是缰绳。"
         },
         {
@@ -1955,7 +1955,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "业界主流（LangChain）定义 Harness 为\"模型之外的一切\"，Meta-Harness 论文精确聚焦为\"the code that determines what to store, retrieve, and show to the model\"——控制模型输入输出信息流的那层代码。同时揭示实际存在两层 Harness：Platform Harness（平台内置）和 User Harness（用户定制），同一模型换 Harness 可使性能排名跳跃 28 位。"
         },
         {
@@ -1964,7 +1964,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Meta-Harness 将手工 Harness 迭代自动化为 Propose → Evaluate → Log → Repeat 搜索循环。消融实验证明完整执行 trace 访问（50.0%）远优于仅分数（34.6%），原始 trace 是不可替代的诊断信号。"
         },
         {
@@ -1973,7 +1973,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，\"怎么做出来\"）、约束系统（L2 Planning + L1 Policy，\"不能乱来\"）、认知系统（L6 Eval，\"从经验学到什么\"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。"
         },
         {
@@ -1982,7 +1982,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
         },
         {
@@ -2030,7 +2030,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-12",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "核心思路：通过 pre-commit hook + Harness CI pipeline，从 5 个维度构建质量门禁：① 代码格式检查（pre-commit hook）② 架构测试验证（ArchUnit 及同类工具）③ 代码检查器（Lint / Static Analysis）④ CI 编译与集成测试（Testcontainers）⑤ 性能测试。每个维度对应一组多语言工具链。"
         },
         {
@@ -2039,7 +2039,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Java 用 ArchUnit（包依赖规则、分层架构约束、命名规范、循环依赖检测），Python 用 import-linter / pytestarch，JavaScript/TypeScript 用 dependency-cruiser / eslint-plugin-boundaries。在 Harness CI 中作为测试 step 执行，失败即阻断 pipeline。"
         },
         {
@@ -2199,7 +2199,7 @@
           "first_seen": "2026-04-12",
           "last_updated": "2026-04-15",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "AI Search 承担文档/向量存储 + 混合检索（BM25 + Vector）+ 语义重排的搜索主体角色；CosmosDB Gremlin API 专注于 Entity + Relationship 的存储与多跳遍历——对应 Obsidian 的 Graph View / Backlinks / `[[wikilinks]]`。CosmosDB 不做文档/向量主存储。"
         },
         {
@@ -2208,7 +2208,7 @@
           "first_seen": "2026-04-12",
           "last_updated": "2026-04-15",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "语义/关键词查询走 AI Search（主路径），关系/遍历查询走 CosmosDB Gremlin（补充路径），复合查询先 Gremlin 图遍历缩小范围再 AI Search 精排。比单一 Vector RAG 能回答更广泛的问题。"
         },
         {
@@ -2217,7 +2217,7 @@
           "first_seen": "2026-04-12",
           "last_updated": "2026-04-15",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统 RAG 的 chunk 质量依赖分块策略，每次查询从原始文档重新检索碎片。LLM Wiki 的文章由 LLM 编译保证质量（已综合、交叉引用），好的回答可写回 wiki 形成自增长循环——Karpathy 所说的 \"the wiki compounds over time\"。"
         },
         {
@@ -2226,7 +2226,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "已完成文章 → 从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践。核心理念：Vault 是 Source of Truth，OMC 是编排调度层（维护者），不是记忆本身。知识以 Concept + Claims 形式结构化。"
         },
         {
@@ -2235,7 +2235,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Karpathy 的 LLM Wiki 模型将 LLM 视为知识维护者（像 Wikipedia 编辑）而非问答者。"
         }
       ]
@@ -2393,7 +2393,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "每个 MCP Server 在每次推理调用时通过 tools/list 注入所有工具定义。70+ 工具消耗 15,000-25,000 tokens，占 context window 10%+。"
         },
         {
@@ -2402,7 +2402,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "只需单个 Bash tool 定义，model 利用预训练知识理解命令行工具。"
         },
         {
@@ -2411,7 +2411,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "驱动因素：MCP 的运维复杂度（额外 server 进程、调试困难、第三方信任需求）。"
         },
         {
@@ -2420,7 +2420,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "MCP 的优势是跨应用通用性和动态工具发现；CLI 的优势是成熟 Unix 生态、零协议开销、直接进程调用。选择不是二元的。"
         },
         {
@@ -2459,7 +2459,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "业界主流（LangChain）定义 Harness 为\"模型之外的一切\"，边界过于宽泛。Meta-Harness 论文将其精确聚焦为\"the code that determines what to store, retrieve, and show to the model\"——即控制模型输入输出信息流的那层代码。这个区分在工程实践中至关重要，因为 Meta-Harness 优化的恰恰是这个信息管道。"
         },
         {
@@ -2468,7 +2468,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "内置 Harness（Platform Harness）是 Agent 平台方提供的核心能力（如 Claude Code 的 compaction、Git 集成、子 Agent 生成）；外层 Harness（User Harness）是用户定制层（CLAUDE.md、Skills、GSD/Superpowers 等）。Terminal Bench 2.0 数据证实：同一模型换一层 Harness，性能排名可跳跃 28 位。"
         },
         {
@@ -2477,7 +2477,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "消融实验：仅分数 34.6% → 分数 + LLM 摘要 34.9%（几乎无提升）→ 完整接口含原始 trace 50.0%（+15.4）。LLM 生成的摘要无法恢复丢失的因果信息。Proposer 每轮中位数读取 82 个文件、访问最高 1000 万 tokens 的诊断信息，是之前方法（OPRO/TextGrad/AlphaEvolve）的 400~5000 倍。"
         },
         {
@@ -2486,7 +2486,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "手工设计 Harness 是当前 AI 系统的主要瓶颈。HumanLayer 博客结论：\"it's not a model problem. It's a configuration problem.\" Meta-Harness 将这个手工试错过程自动化为 Propose → Evaluate → Log → Repeat 的搜索循环，约 20 轮迭代、每轮约 3 个候选、总计约 60 个 Harness 变体。"
         },
         {
@@ -2495,7 +2495,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。"
         }
       ]
@@ -2525,7 +2525,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "核心公式：error = goal - current_state。没有可计算的 error，就没有系统。不要追求一次成功，要允许逐步逼近。"
         },
         {
@@ -2534,7 +2534,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "binary（pass/fail，弱）→ scalar（score 分值，中）→ structured（多维指标，强）。越往后越稳定。"
         },
         {
@@ -2543,7 +2543,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不能给太多反面例子（\"不要做 X\"），否则 Agent 变得患得患失。需要正面示范引导收敛方向，这与控制论中\"目标函数应该是正向定义的\"一致。"
         },
         {
@@ -2552,7 +2552,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "收敛性 = 约束强度 × 反馈频率 / 执行自由度。反馈频率不足会导致系统 drift，频率越高越容易收敛。"
         }
       ]
@@ -2581,7 +2581,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "LLM + Notion API + Trigger，更像\"AI as operator\"而非\"AI as thinker\"。"
         },
         {
@@ -2590,7 +2590,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "真正的 Agent 系统在外部（Claude Code, Codex, LangGraph），Notion 只是数据/UI 层。"
         },
         {
@@ -2599,7 +2599,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "如果 MCP 成功，Notion 可成为外部 AI agent 的记忆层。"
         }
       ]
@@ -2628,7 +2628,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是让一个 Claude 扮演不同角色，而是让多个 Agent（包括不同模型）真正并行协作。"
         },
         {
@@ -2637,7 +2637,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "解决\"AI 缺的不是编码能力而是专业判断标准\"的问题，其他框架都没有系统化的领域判断注入机制。"
         },
         {
@@ -2646,7 +2646,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Superpowers 要求人类在每个阶段参与，OMC 的 autopilot 可以一句话跑完全程（全自动连续执行）。"
         },
         {
@@ -2655,7 +2655,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "Shared State 追踪、Role Routing 自动选模型、Persistent Execution Loop 反复验证、Parallel Task Distribution 多 worker 并行。"
         }
       ]
@@ -2683,7 +2683,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "一个掌握 AI 编排能力的架构师可以借助工具链独立完成之前需要 7+ 人团队协作的工作。"
         },
         {
@@ -2692,7 +2692,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "核心技能从手动编码/SQL/会议协调变为 Prompt Engineering/AI Orchestration/Skill-Flow Design/Context Engineering。"
         },
         {
@@ -2701,7 +2701,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "社区用户反馈使用 GSD 后 8 小时完成了相当于 2-3 天的工作量。适用于 L2 规模项目（见 [[framework-selection]]），L1 项目是纯开销，L3+ 项目需要补充 Skill Runtime。"
         }
       ]
@@ -2730,7 +2730,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Ontology（\"是什么\"）、Epistemology（\"为什么\"）、Praxis（\"怎么做\"）→ 你是谁、你从哪来、你到哪去。"
         },
         {
@@ -2739,7 +2739,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Primary Substance（个别事物）vs Secondary Substance（普遍种属）直接对应 instance vs class。"
         },
         {
@@ -2748,7 +2748,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是任何具体事物，而是\"存在\"本身——开启了整个西方形而上学传统。"
         },
         {
@@ -2757,7 +2757,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"唯心 vs 唯物\"二分是西方框架；中国哲学（如道家\"道\"）不完全符合这一分类。"
         }
       ]
@@ -2787,7 +2787,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型通过 stop_reason 决定何时停止，工具调用是简单 dispatch table（name-to-function mapping）。这种简洁性常被框架抽象掩盖。"
         },
         {
@@ -2796,7 +2796,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "基础循环 + 工具 → 网络层 → 智能层（8 层 prompt 组装 + 混合记忆）→ 自主层 → 生产硬化。"
         },
         {
@@ -2805,7 +2805,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "Channel = 平台（Telegram, Slack），Peer = 通信端点身份，Session = 会话状态容器。"
         },
         {
@@ -2861,7 +2861,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "接口描述层，不是框架不是 agent，让机器通过结构化 JSON/YAML schema 理解如何调用任何 CLI 工具。"
         },
         {
@@ -2870,7 +2870,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "LLM Agent 成为 CLI 调用者后，缺乏标准化参数 schema、能力发现和类型安全使稳定工具调用不可能。"
         },
         {
@@ -2879,7 +2879,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "spec 层描述 commands/arguments/types，不处理实际工具编排 pipeline。"
         },
         {
@@ -2888,7 +2888,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent-Reach 是工具编排 + scraping scaffold，OpenCLI 是标准化接口描述。Agent-Reach 的 SKILL.md 方式等价于 Google Skill Pattern 中的 Tool Wrapper。"
         }
       ]
@@ -2917,7 +2917,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "日记按时间线写但按主题消费，线性增长没有网络效应，大多笔记\"写后即沉\"。"
         },
         {
@@ -2926,7 +2926,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"RAG = search, LLM Wiki = writing a book\"。Karpathy 模型。"
         },
         {
@@ -2935,7 +2935,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
         },
         {
@@ -2944,7 +2944,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "PKC 从单一概念层演进为四层模型：Concept（What）→ Method（How）→ Decision（Why）→ Typed Relations（How connected）。每层解决不同类型的知识问题：概念页记录声明式知识，方法页记录步骤化过程知识，决策页记录选型论证，8 种类型化关联记录知识间的语义关系。当前规模：40 concepts + 8 methods + 4 decisions + ~160 claims。"
         },
         {
@@ -2953,7 +2953,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "实践反馈闭环（方法→实践→置信度回写）、知识成熟度模型（6维度×4级别）、Why/决策层、类型化关联（8种）、跨切面查询（6种查询类型）——五项改进将 PKC 从\"提取→记录\"升级为\"提取→验证→演进→查询\"的完整知识管理循环。"
         },
         {
@@ -2962,7 +2962,7 @@
           "first_seen": "2026-04-15",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从\"编译知识\"到\"可视化知识生态\"的关键一步。"
         }
       ]
@@ -2992,7 +2992,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "qmd = \"best search on your own files on your own device\"（BM25 + vector + HyDE），Foundry IQ = enterprise agentic retrieval（LLM 驱动查询分解 + 多源并行检索）。"
         },
         {
@@ -3001,7 +3001,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Fabric IQ 定义数据含义（ontology + graph），Foundry IQ 检索与合成答案。"
         },
         {
@@ -3010,7 +3010,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "qmd 缺乏知识图谱能力，Fabric IQ 提供原生 Labeled Property Graph + ISO GQL 支持。"
         },
         {
@@ -3019,7 +3019,7 @@
           "first_seen": "2026-04-12",
           "last_updated": "2026-04-12",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。"
         }
       ]
@@ -3049,7 +3049,7 @@
           "first_seen": "2026-03-25",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "ReAct 就是人类日常最常用的问题处理方式——\"试试看\"。如调试代码：想可能原因 → 改代码 → 看结果 → 再想下一步。不需要完整计划，靠每一步的反馈推进。"
         },
         {
@@ -3058,7 +3058,7 @@
           "first_seen": "2026-03-25",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Thought → Action → Observation 循环是 Agent 运行的最小完备单元。Plan-and-Solve 在前面加了 Planning 阶段，Reflection 在后面加了 Evaluation 阶段，但核心循环不变。"
         },
         {
@@ -3067,7 +3067,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "ReAct 的每一步 Action 可以看作一次 Skill 调用，Google 五种 Skill Pattern（Single-tool, Workflow, Router, Autonomous, Orchestrator）描述了 Action 内部的能力组合方式。"
         }
       ]
@@ -3173,7 +3173,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Sutton 刻意把 Search 和 Learning 并列为\"两种利用算力的方法\"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。"
         },
         {
@@ -3182,7 +3182,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。"
         },
         {
@@ -3191,7 +3191,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-04-17",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
         }
       ]
@@ -3221,7 +3221,7 @@
           "first_seen": "2026-04-14",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "RTK 在 Agent 和 OS 之间插入代理层，拦截 Bash/Read/Glob/Grep/Ls 等工具调用的输出，通过策略引擎裁剪、压缩、重组数据后返回给 Agent。Agent 无需任何修改即可获得压缩后的输出。"
         },
         {
@@ -3230,7 +3230,7 @@
           "first_seen": "2026-04-15",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "59 个 TOML 配置文件定义了针对不同命令（git diff、cargo test、npm install 等）的压缩策略，包括行过滤、正则替换、重复折叠、截断等操作。用户可通过 Session 数据分析实际 token 消耗，定制个性化压缩规则。"
         },
         {
@@ -3239,7 +3239,7 @@
           "first_seen": "2026-04-15",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "RTK 的架构启示：AI Agent 的工具调用链可以像 Web 中间件一样插入处理层。这种模式可以扩展到安全审计（拦截危险命令）、缓存（重复查询去重）、可观测性（记录所有工具调用）等场景。"
         },
         {
@@ -3287,7 +3287,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Bitter Lesson 是定性方法论（70 年历史归纳），Scaling Laws 是定量经验公式（性能 ∝ 计算^α 的幂律）。两者的区别：Bitter Lesson 只说\"计算终将胜出\"，Scaling Laws 具体量化\"多少计算换多少性能\"。"
         },
         {
@@ -3296,7 +3296,7 @@
           "first_seen": "2026-03-22",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型能力提升所需的训练数据量呈幂律增长——这是 Scaling Laws 的实际约束，也是合成数据和自我改进方法出现的驱动力。"
         }
       ]
@@ -3325,7 +3325,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不复制子 skill 代码，而是作为智能编排层通过 Decision Framework 做路由。"
         },
         {
@@ -3334,7 +3334,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "5 个 skill、38 次工具调用约 2 分钟，尤其对工具链细节（如 CJK 字体处理差异）的挖掘更全面。"
         },
         {
@@ -3343,7 +3343,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "同一份 SKILL.md 不仅能在 Claude Code 中运行，也可在 Chat API、OpenAI Codex、Gemini CLI 等其他 AI Agent 中使用。"
         }
       ]
@@ -3373,7 +3373,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenClaw / ClawHub 提供 2800+ 社区 Skill，是目前 Claude Code 生态中规模最大的 Skill 注册中心。George 提到可将 OpenClaw 的 Skill Hub 模式用于功能复用——将培训材料、培训流程、培训打分作为独立 Skill 模块化管理。"
         },
         {
@@ -3382,7 +3382,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.3,
-          "status": "active",
+          "status": "stale",
           "evidence": "GStack vs Superpowers vs Hermes 对比：三大框架在 Claude Code 插件生态中各有定位。具体差异待深入调研。参考：Firecrawl 整理的 Skill 评测、Build to Launch 的 10 个 Plugin 实测（4 个值得保留）。"
         }
       ]
@@ -3411,7 +3411,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Tool 是确定性函数，Skill 是可复用的认知模式（\"thinking + execution structure\"）。"
         },
         {
@@ -3420,7 +3420,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Level 0 = Tool Wrapper（知识获取）、Level 1 = Generator + Reviewer（输出控制）、Level 2 = Inversion（输入控制）、Level 3 = Pipeline（流程控制）。"
         },
         {
@@ -3429,7 +3429,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Skill Patterns 定义认知能力，Agent Patterns 定义运行时行为。类比：厨师技能（刀工、火候）vs 烹饪流程（备料、翻炒、摆盘）。"
         },
         {
@@ -3438,7 +3438,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "强制 Agent 先提问再行动，解决最常见的失败模式：\"wild assumption + direct generation\"。"
         },
         {
@@ -3447,7 +3447,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是让模型更聪明，而是作为动态 context loader 定位在 context window 尾部（attention 优势位置）。"
         }
       ]
@@ -3476,7 +3476,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "query 触发 intent parse -> skill match -> context projection -> execution。"
         },
         {
@@ -3485,7 +3485,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "YAML schema 定义输入/输出/依赖，而非全量拼接的文档——从 document-centric 到 capability-centric 的范式迁移。"
         },
         {
@@ -3494,7 +3494,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "谁决定用哪个 skill、context 是否全量拼接、skill 有无明确 I/O、context 是否 externalizable、execution 是否 independent。"
         }
       ]
@@ -3524,7 +3524,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Speech In（VAD、降噪、回声消除、AGC）→ Core Processing（ASR、LLM 推理、Turn-Taking）→ Speech Out（TTS、流式合成）。"
         },
         {
@@ -3533,7 +3533,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "500ms 静音触发 false end-of-turn，但用户可能只是在思考。"
         },
         {
@@ -3542,7 +3542,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "用户说话时打断 Agent 语音输出。Silero VAD（2MB 模型，< 1ms per 32ms audio chunk）实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机。"
         },
         {
@@ -3608,7 +3608,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "实现从任何设备通过 SSH 访问持久 Claude Code 会话。"
         },
         {
@@ -3617,7 +3617,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "Ghostty（终端渲染）+ tmux 式会话管理 + AI Agent 集成层。"
         },
         {
@@ -3626,7 +3626,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "CLI 只是 wrapper，Socket API 才是唯一稳定接口，外部调用时 CLI 能力降级。"
         }
       ]
@@ -3655,7 +3655,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-12",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "Testcontainers 按需启动 Docker 容器（数据库、消息队列、云服务模拟等），测试完自动销毁。常用模块：PostgreSQL、MySQL、Redis、Kafka、LocalStack（AWS 模拟）、MongoDB 等。相比传统 mock/嵌入式数据库方案，提供更接近生产环境的测试保真度。"
         },
         {
@@ -3664,7 +3664,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "多语言支持中 Java 版（testcontainers-java）最成熟，提供 JUnit 4/5 原生集成。Python 版支持 pytest，JavaScript/TypeScript 版支持 Jest/Vitest。"
         },
         {
@@ -3673,7 +3673,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。"
         },
         {
@@ -3730,7 +3730,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"Superpowers 是方法论、gstack 是工具箱\"是伪二分——两者都是 skill/tool 集合 + workflow 编排的混合体。"
         },
         {
@@ -3739,7 +3739,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "GSD 管\"做对的事情\"，Superpowers 管\"做事情的方法对\"，gstack 管\"做完能交付\"。"
         },
         {
@@ -3748,7 +3748,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "框架融合不是\"装更多插件\"，而是设计清晰的职责边界和交接协议。"
         },
         {
@@ -3757,7 +3757,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Claude Code 遇到泛指令时按路由表查表执行而非随机匹配。"
         }
       ]
@@ -3787,7 +3787,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "常见误解：\"用户停了 → 我说话\"。正确理解：Turn-Taking 包含预测性机制（预判用户是否说完）和反应性机制（检测到停顿后决策），二者协同工作。"
         },
         {
@@ -3796,7 +3796,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
         },
         {
@@ -3805,7 +3805,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "级联系统中 Turn-Taking 是可替换模块；GPT-Realtime 中 Turn-Taking 融合在模型内部，无法单独替换。判断标准：\"它能不能被单独替换？能 → 模块，不能 → 模型内部能力。\""
         }
       ]
@@ -3834,7 +3834,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-12",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI Realtime API 提供两种 VAD 模式：Server VAD 基于静音检测，可调参数包括 threshold、prefix_padding、silence_duration；Semantic VAD 使用语义分类器，通过 eagerness 参数控制打断灵敏度。参考：OpenAI Realtime VAD Guide。Azure 也有对应的 Semantic VAD vs Basic Server VAD。"
         },
         {
@@ -3843,7 +3843,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "500ms 静音触发 false end-of-turn，但用户可能只是在思考。Semantic VAD 通过语义分类器解决此问题。"
         },
         {
@@ -3852,7 +3852,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "2MB 模型，< 1ms per 32ms audio chunk，实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机，支持 barge-in。"
         },
         {
@@ -3918,7 +3918,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Cascaded Pipeline（STT + LLM + TTS）vs End-to-End Native（单一多模态模型 audio-in to audio-out）。"
         },
         {
@@ -3927,7 +3927,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。Salesforce 级联管线实现 ~755ms first-audio latency。"
         },
         {
@@ -3936,7 +3936,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "实现 < 1 秒端到端延迟需要 STT、LLM、TTS 的精密流水线协调。"
         },
         {
@@ -3945,7 +3945,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值，Level 2 Hybrid Omni 本质仍是管线。"
         },
         {
@@ -3954,7 +3954,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Voice Agent = LLM Agent + Voice I/O。推理、工具调用、状态管理才是核心难点，\"能听会说\"只是界面。"
         },
         {
@@ -3963,7 +3963,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。"
         },
         {
@@ -4010,7 +4010,7 @@
           "first_seen": "2026-04-15",
           "last_updated": "2026-04-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Mitchell Hashimoto 从怀疑到重度使用经历了 6 个阶段。核心不是工具本身的能力变化，而是使用者对边界认知的深化。每一步都需要实际投入时间去\"发现边界\"。"
         },
         {
@@ -4019,7 +4019,7 @@
           "first_seen": "2026-04-15",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "实践者注意到 Step 4 与个人习惯不一致——部分开发者对代码质量有强控制欲，更倾向于自己完成后用 Agent review，而非直接委托。其余 5 步基本符合实际采纳路径。"
         }
       ]
@@ -4049,7 +4049,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Figma 回答\"长什么样\"（视觉层），Brainstorm 回答\"做什么为什么做\"（需求层），Spec-Delta 回答\"这次改什么\"（变更层）。"
         },
         {
@@ -4058,7 +4058,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Design AI → Spec AI → Coding AI → Testing AI → Review AI，每个阶段产出的信息类型（视觉/需求/变更/测试/审查）各不相同。"
         }
       ]
@@ -4087,7 +4087,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。四层：CLAUDE.md 架构约束（最关键）> FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。"
         },
         {
@@ -4096,7 +4096,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Superpowers、gstack、Compound Engineering 没有一个直接解决代码复用——CE 是知识复用不是代码复用。"
         }
       ]
@@ -4126,7 +4126,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "控制论第一步不是行动而是定义可能性空间。99% 的人忽略了这一步，直接写 prompt。"
         },
         {
@@ -4135,7 +4135,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"不要问用什么 prompt，要问世界是怎么被编码的。\" Prompt 是共轭变换的产物，不是设计的起点。"
         }
       ]
@@ -4222,7 +4222,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "GSD 管\"做对的事情\"，Superpowers 管\"做事情的方法对\"，gstack 管\"做完能交付\"。"
         },
         {
@@ -4231,7 +4231,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Claude Code 遇到泛指令时按路由表查表执行而非随机匹配。"
         }
       ]
@@ -4260,7 +4260,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "50 行 LangGraph 编排文件可能比 500 行 CRUD 更复杂。"
         },
         {
@@ -4269,7 +4269,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "单文件/脚本级项目应跳过 GSD 直接执行。"
         },
         {
@@ -4278,7 +4278,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "项目足够复杂需要结构化，但又没复杂到触发 Context 上限。"
         }
       ]
@@ -4308,7 +4308,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-12",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "核心思路：通过 pre-commit hook + Harness CI pipeline，从 5 个维度构建质量门禁。每个维度对应一组多语言工具链。"
         },
         {
@@ -4317,7 +4317,7 @@
           "first_seen": "2026-04-11",
           "last_updated": "2026-04-11",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Java 用 ArchUnit，Python 用 import-linter / pytestarch，JS/TS 用 dependency-cruiser / eslint-plugin-boundaries。"
         }
       ]
@@ -4346,7 +4346,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型通过 stop_reason 决定何时停止，工具调用是简单 dispatch table（name-to-function mapping）。"
         },
         {
@@ -4355,7 +4355,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "基础循环 + 工具 → 网络层 → 智能层（8 层 prompt 组装 + 混合记忆）→ 自主层 → 生产硬化。"
         }
       ]
@@ -4431,7 +4431,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "日记按时间线写但按主题消费，线性增长没有网络效应，大多笔记\"写后即沉\"。"
         },
         {
@@ -4440,7 +4440,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"RAG = search, LLM Wiki = writing a book\"。Karpathy 模型。"
         }
       ]
@@ -4509,7 +4509,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。"
         },
         {
@@ -4518,7 +4518,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。"
         }
       ]
@@ -4546,7 +4546,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。"
         }
       ]
@@ -4574,7 +4574,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。"
         }
       ]
@@ -4602,7 +4602,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "规范驱动（GSD/SpecKit/OpenSpec）解决\"做什么\"，方法论（Superpowers）解决\"怎么做\"。"
         },
         {
@@ -4611,7 +4611,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三者功能高度重叠（都管\"做什么\"），Superpowers 管\"怎么做\"几乎必选搭配。"
         }
       ]
@@ -4639,7 +4639,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "日记按时间线写但按主题消费，线性增长没有网络效应。"
         },
         {
@@ -4648,7 +4648,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"RAG = search, LLM Wiki = writing a book\"。"
         },
         {
@@ -4717,6 +4717,12 @@
       "target": "skill-pattern",
       "relation_type": "contrasts",
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
+    },
+    {
+      "source": "agent-paradigms",
+      "target": "loop-engineering",
+      "relation_type": "uses",
+      "description": "cron=workflow / dynamic workflow=agent 对应 Anthropic 的 workflow/agent 二分"
     },
     {
       "source": "agent-search-tools",
@@ -4897,6 +4903,12 @@
       "target": "harness-engineering",
       "relation_type": "grounds",
       "description": "级联失败驱动了 Harness Engineering 的出现"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "realtime-protocol-selection",
+      "relation_type": "constrains",
+      "description": "级联管线的延迟目标约束协议选择"
     },
     {
       "source": "caveman-token-compression",
@@ -5229,6 +5241,12 @@
       "description": "控制论五层推导出 Design Sheet 检查表"
     },
     {
+      "source": "cybernetics-agent-design",
+      "target": "loop-engineering",
+      "relation_type": "grounds",
+      "description": "\"模型是无状态控制器、外循环补其身体\"是控制论的直接应用"
+    },
+    {
       "source": "enterprise-ontology",
       "target": "ontology-philosophy",
       "relation_type": "grounds",
@@ -5281,6 +5299,12 @@
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "分离的评估环节是闭环的关键节点"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "loop-engineering",
+      "relation_type": "grounds",
+      "description": "Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里"
     },
     {
       "source": "fitness-functions",
@@ -5341,6 +5365,12 @@
       "target": "feedback-loop",
       "relation_type": "uses",
       "description": "分离的评估环节构成反馈闭环的关键节点"
+    },
+    {
+      "source": "generation-evaluation-separation",
+      "target": "loop-engineering",
+      "relation_type": "uses",
+      "description": "外循环用 maker/checker 分离做独立验证"
     },
     {
       "source": "grapheme-to-phoneme",
@@ -5554,6 +5584,12 @@
     },
     {
       "source": "llm-wiki",
+      "target": "loop-engineering",
+      "relation_type": "constrains",
+      "description": "\"什么值得进入 wiki 永远是人的判断\"是外循环的硬闸门"
+    },
+    {
+      "source": "llm-wiki",
       "target": "harness-quality-gate",
       "relation_type": "untyped",
       "description": ""
@@ -5697,6 +5733,12 @@
       "description": "Agent Loop 的每次迭代都是一次负反馈修正"
     },
     {
+      "source": "negative-feedback",
+      "target": "loop-engineering",
+      "relation_type": "grounds",
+      "description": "verifier 上限 = 控制器上限是负反馈控制论的直接推论"
+    },
+    {
       "source": "notion-as-ai-layer",
       "target": "personal-knowledge-compiler",
       "relation_type": "contrasts",
@@ -5815,6 +5857,12 @@
       "target": "personal-knowledge-compiler-workflow",
       "relation_type": "produces",
       "description": "实施方法：日记到知识库的编译工作流"
+    },
+    {
+      "source": "personal-knowledge-compiler",
+      "target": "loop-engineering",
+      "relation_type": "produces",
+      "description": "把 PKC 改造成外循环系统是 Loop Engineering 的落地实践"
     },
     {
       "source": "rag-architecture-comparison",
@@ -6055,6 +6103,12 @@
       "target": "intelligent-dictation",
       "relation_type": "produces",
       "description": "语音技术栈 L1 之上的产品层演进"
+    },
+    {
+      "source": "speech-technology-stack",
+      "target": "realtime-protocol-selection",
+      "relation_type": "uses",
+      "description": "语音技术栈的传输层依赖协议选型"
     },
     {
       "source": "terminal-multiplexer-for-ai",
