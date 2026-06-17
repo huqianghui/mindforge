@@ -178,6 +178,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[meta-harness]] — `produces` Meta-Harness 是 Harness Engineering 的自动化演进
 - [[cybernetics-agent-design]] — `grounds` 控制论是 Harness Engineering 的理论根基
 - [[cybernetics-harness-design-sheet]] — `produces` 控制论 Design Sheet 是 Harness 设计流程的前置检查工具
+- [[loop-engineering]] — `extends` Loop Engineering 是 Harness 的时间维度切片：内循环 ⊂ L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）
 
 ## 来源日记
 
