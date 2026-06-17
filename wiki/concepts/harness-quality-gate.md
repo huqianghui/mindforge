@@ -31,7 +31,7 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-12
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > 核心思路：通过 pre-commit hook + Harness CI pipeline，从 5 个维度构建质量门禁：① 代码格式检查（pre-commit hook）② 架构测试验证（ArchUnit 及同类工具）③ 代码检查器（Lint / Static Analysis）④ CI 编译与集成测试（Testcontainers）⑤ 性能测试。每个维度对应一组多语言工具链。
 
@@ -41,7 +41,7 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Java 用 ArchUnit（包依赖规则、分层架构约束、命名规范、循环依赖检测），Python 用 import-linter / pytestarch，JavaScript/TypeScript 用 dependency-cruiser / eslint-plugin-boundaries。在 Harness CI 中作为测试 step 执行，失败即阻断 pipeline。
 

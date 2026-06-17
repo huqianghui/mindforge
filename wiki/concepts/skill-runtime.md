@@ -31,7 +31,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：active
+- **状态**：stale
 
 > query 触发 intent parse -> skill match -> context projection -> execution。
 
@@ -41,7 +41,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：active
+- **状态**：stale
 
 > YAML schema 定义输入/输出/依赖，而非全量拼接的文档——从 document-centric 到 capability-centric 的范式迁移。
 
@@ -51,7 +51,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 谁决定用哪个 skill、context 是否全量拼接、skill 有无明确 I/O、context 是否 externalizable、execution 是否 independent。
 

@@ -30,7 +30,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > while 循环 + model 调用 + 工具执行 + 结果回灌，"One loop & Bash is all you need"。
 
@@ -40,7 +40,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > agent loop 本身一字不改，这是 Tool Dispatch 模式的核心优势。
 
@@ -50,7 +50,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 引入任务追踪后，model 被强制同一时间只有一个 in_progress 任务；连续 3 轮不调用 todo 工具时系统自动注入提醒。
 
@@ -60,7 +60,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。
 

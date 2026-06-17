@@ -69,7 +69,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 规范驱动（GSD/SpecKit/OpenSpec）解决"做什么"，方法论（Superpowers）解决"怎么做"。
 
@@ -79,7 +79,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 三者功能高度重叠（都管"做什么"），Superpowers 管"怎么做"几乎必选搭配。
 

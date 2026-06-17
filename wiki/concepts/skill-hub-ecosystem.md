@@ -33,7 +33,7 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > OpenClaw / ClawHub 提供 2800+ 社区 Skill，是目前 Claude Code 生态中规模最大的 Skill 注册中心。George 提到可将 OpenClaw 的 Skill Hub 模式用于功能复用——将培训材料、培训流程、培训打分作为独立 Skill 模块化管理。
 
@@ -43,7 +43,7 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.3
-- **状态**：active
+- **状态**：stale
 
 > GStack vs Superpowers vs Hermes 对比：三大框架在 Claude Code 插件生态中各有定位。具体差异待深入调研。参考：Firecrawl 整理的 Skill 评测、Build to Launch 的 10 个 Plugin 实测（4 个值得保留）。
 

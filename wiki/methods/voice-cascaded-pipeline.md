@@ -69,7 +69,7 @@ related_methods: []
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。
 
@@ -79,7 +79,7 @@ related_methods: []
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。
 

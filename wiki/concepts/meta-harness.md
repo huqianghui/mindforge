@@ -32,7 +32,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 业界主流（LangChain）定义 Harness 为"模型之外的一切"，边界过于宽泛。Meta-Harness 论文将其精确聚焦为"the code that determines what to store, retrieve, and show to the model"——即控制模型输入输出信息流的那层代码。这个区分在工程实践中至关重要，因为 Meta-Harness 优化的恰恰是这个信息管道。
 
@@ -42,7 +42,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 内置 Harness（Platform Harness）是 Agent 平台方提供的核心能力（如 Claude Code 的 compaction、Git 集成、子 Agent 生成）；外层 Harness（User Harness）是用户定制层（CLAUDE.md、Skills、GSD/Superpowers 等）。Terminal Bench 2.0 数据证实：同一模型换一层 Harness，性能排名可跳跃 28 位。
 
@@ -52,7 +52,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > 消融实验：仅分数 34.6% → 分数 + LLM 摘要 34.9%（几乎无提升）→ 完整接口含原始 trace 50.0%（+15.4）。LLM 生成的摘要无法恢复丢失的因果信息。Proposer 每轮中位数读取 82 个文件、访问最高 1000 万 tokens 的诊断信息，是之前方法（OPRO/TextGrad/AlphaEvolve）的 400~5000 倍。
 
@@ -62,7 +62,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 手工设计 Harness 是当前 AI 系统的主要瓶颈。HumanLayer 博客结论："it's not a model problem. It's a configuration problem." Meta-Harness 将这个手工试错过程自动化为 Propose → Evaluate → Log → Repeat 的搜索循环，约 20 轮迭代、每轮约 3 个候选、总计约 60 个 Harness 变体。
 
@@ -72,7 +72,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。
 

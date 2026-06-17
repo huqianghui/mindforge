@@ -35,7 +35,7 @@ related:
 - **首次出现**：2026-04-02
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。
 
@@ -45,7 +45,7 @@ related:
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。
 
@@ -60,6 +60,7 @@ related:
 - [[meta-harness]] — `implements` Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现
 - [[negative-feedback]] — `uses` 评估结果作为负反馈驱动生成修正
 - [[feedback-loop]] — `uses` 分离的评估环节构成反馈闭环的关键节点
+- [[loop-engineering]] — `uses` 外循环用 maker/checker 分离做独立验证
 
 ## 来源日记
 

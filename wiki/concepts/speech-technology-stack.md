@@ -30,7 +30,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Speech In（VAD、降噪、回声消除、AGC）→ Core Processing（ASR、LLM 推理、Turn-Taking）→ Speech Out（TTS、流式合成）。
 
@@ -40,7 +40,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 500ms 静音触发 false end-of-turn，但用户可能只是在思考。
 
@@ -50,7 +50,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 用户说话时打断 Agent 语音输出。Silero VAD（2MB 模型，< 1ms per 32ms audio chunk）实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机。
 
@@ -105,6 +105,7 @@ related:
 - [[grapheme-to-phoneme]] — `part-of` G2P 是 Speech Out 层的核心转换模块
 - [[turn-taking]] — `part-of` Turn-Taking 是 Core Processing 层的关键组件
 - [[intelligent-dictation]] — `produces` 语音技术栈 L1 之上的产品层演进
+- [[realtime-protocol-selection]] — `uses` 语音技术栈的传输层依赖协议选型
 
 ## 来源日记
 

@@ -30,7 +30,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 不是"AI 做研究"，而是自动化 hill-climbing，更接近 AutoML 和进化搜索。
 
@@ -40,7 +40,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Ralph Loop 只有 done/not-done（fixed-point iteration），AutoResearch 有 score comparison + history of best + rollback（evolutionary search）。
 
@@ -50,7 +50,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > AutoML 搜索静态人定义参数空间，AutoResearch 允许 agent 通过修改训练代码创建全新搜索维度。
 
@@ -60,7 +60,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 单一可变面、固定评估、强制预算、diff 迭代、自动回滚——满足全部五条即可在任意领域进行安全的 autonomous agent 实验。
 
@@ -70,7 +70,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：active
+- **状态**：stale
 
 > program.md = Skill, train.py = Tool/MCP, prepare.py = Harness, metric = Eval/Feedback, git = Memory, loop = Agent Runtime Loop。
 

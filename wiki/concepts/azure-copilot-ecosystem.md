@@ -31,7 +31,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。Azure Copilot Agents 目前处于 preview 阶段，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口。
 
@@ -41,7 +41,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（200+ Azure 服务工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 提供 22 个专家级 Azure 工作流剧本（含 AKS 故障排查、GPU 选型）。
 
@@ -51,7 +51,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 开源（MIT），兼容所有 MCP 客户端（Claude Code、GitHub Copilot、Cursor、Windsurf 等）——这是 AI agent 访问 Azure 的通用编程接口。
 
@@ -61,7 +61,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > AI Shell 于 2026 年 1 月归档，不再维护。目前没有基于 CLI 的 Azure Copilot 扩展。
 

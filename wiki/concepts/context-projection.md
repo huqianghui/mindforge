@@ -34,7 +34,7 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > 所有 GSD / Superpowers / OpenSpec 系统都有一个隐含错误假设：context = state。正确做法：state → 外部存储（结构化），context → 按需投影（projection）。
 
@@ -44,7 +44,7 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > State Layer 有成熟方案（数据库、文件系统），Execution Layer 有 LLM。但 Selection Layer（query → select → project → execute）目前没有通用工具——这是 Skill Runtime 需要解决的核心问题。
 
@@ -54,7 +54,7 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > GSD 是文档式加载（document-centric）：plan 越多 → prompt 越大。Skill Runtime 是能力式加载（capability-centric）：按任务需求投影必要上下文。后者是 context 管理的正确方向。
 

@@ -31,7 +31,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。
 
@@ -41,7 +41,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的"甜蜜点"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。
 
@@ -51,7 +51,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > subagent 的 context 在单个大功能时也会爆炸。
 
@@ -61,7 +61,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > LLM 并不会真的"只看 delta"，delta 仍需还原语义上下文，从"一次性爆 context"变成"多次局部爆 context"。
 
@@ -71,7 +71,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 正确做法应是 state 外部存储 + context 按需投影（projection）。
 

@@ -30,7 +30,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 日记按时间线写但按主题消费，线性增长没有网络效应，大多笔记"写后即沉"。
 
@@ -40,7 +40,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > "RAG = search, LLM Wiki = writing a book"。Karpathy 模型。
 
@@ -50,7 +50,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。
 
@@ -60,7 +60,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > PKC 从单一概念层演进为四层模型：Concept（What）→ Method（How）→ Decision（Why）→ Typed Relations（How connected）。每层解决不同类型的知识问题：概念页记录声明式知识，方法页记录步骤化过程知识，决策页记录选型论证，8 种类型化关联记录知识间的语义关系。当前规模：40 concepts + 8 methods + 4 decisions + ~160 claims。
 
@@ -70,7 +70,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 实践反馈闭环（方法→实践→置信度回写）、知识成熟度模型（6维度×4级别）、Why/决策层、类型化关联（8种）、跨切面查询（6种查询类型）——五项改进将 PKC 从"提取→记录"升级为"提取→验证→演进→查询"的完整知识管理循环。
 
@@ -80,7 +80,7 @@ related:
 - **首次出现**：2026-04-15
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从"编译知识"到"可视化知识生态"的关键一步。
 
@@ -93,6 +93,7 @@ related:
 - [[llm-wiki]] — `grounds` LLM Wiki 是 PKC 的理论基础
 - [[notion-as-ai-layer]] — `contrasts` Notion 在知识管理中的替代方案
 - [[personal-knowledge-compiler-workflow]] — `produces` 实施方法：日记到知识库的编译工作流
+- [[loop-engineering]] — `produces` 把 PKC 改造成外循环系统是 Loop Engineering 的落地实践
 
 ## 来源日记
 

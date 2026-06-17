@@ -28,7 +28,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-12
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > Testcontainers 按需启动 Docker 容器（数据库、消息队列、云服务模拟等），测试完自动销毁。常用模块：PostgreSQL、MySQL、Redis、Kafka、LocalStack（AWS 模拟）、MongoDB 等。相比传统 mock/嵌入式数据库方案，提供更接近生产环境的测试保真度。
 
@@ -38,7 +38,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 多语言支持中 Java 版（testcontainers-java）最成熟，提供 JUnit 4/5 原生集成。Python 版支持 pytest，JavaScript/TypeScript 版支持 Jest/Vitest。
 
@@ -48,7 +48,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。
 

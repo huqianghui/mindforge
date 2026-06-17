@@ -96,7 +96,7 @@ related_methods:
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-12
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > 核心思路：通过 pre-commit hook + Harness CI pipeline，从 5 个维度构建质量门禁。每个维度对应一组多语言工具链。
 
@@ -106,7 +106,7 @@ related_methods:
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Java 用 ArchUnit，Python 用 import-linter / pytestarch，JS/TS 用 dependency-cruiser / eslint-plugin-boundaries。
 

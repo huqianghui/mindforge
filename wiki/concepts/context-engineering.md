@@ -31,7 +31,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > LLM performance limitations are rarely due to inherent model flaws -- they are a direct consequence of incomplete, inconsistent, or irrelevant context.
 
@@ -41,7 +41,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Prompt engineering 关注"说什么"，CE 治理"模型知道什么"。企业采用驱动了这一转变。
 
@@ -51,7 +51,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 模型的整个推理工作记忆，用正确信息填充它是核心架构挑战。
 
@@ -61,7 +61,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > CE 整体管理 LLM 的 context window，MCP 提供标准化外部工具/数据接口。两者互补而非竞争。
 
@@ -71,7 +71,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。
 
@@ -81,7 +81,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。
 

@@ -33,7 +33,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 模型通过 stop_reason 决定何时停止，工具调用是简单 dispatch table（name-to-function mapping）。这种简洁性常被框架抽象掩盖。
 
@@ -43,7 +43,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 基础循环 + 工具 → 网络层 → 智能层（8 层 prompt 组装 + 混合记忆）→ 自主层 → 生产硬化。
 
@@ -53,7 +53,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：active
+- **状态**：stale
 
 > Channel = 平台（Telegram, Slack），Peer = 通信端点身份，Session = 会话状态容器。
 

@@ -36,7 +36,7 @@ related:
 - **首次出现**：2026-04-17
 - **最近更新**：2026-04-17
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > "能跑"和"能收敛"是两回事。没有反馈闭环的 Agent 是线性工具链——执行完就结束；有反馈闭环的 Agent 是控制系统——能根据结果自我修正。
 
@@ -46,7 +46,7 @@ related:
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Propose → Evaluate → Log → Repeat 搜索循环将手工 Harness 迭代自动化。完整执行 trace 是不可替代的诊断信号（50.0% vs 仅分数的 34.6%）。
 
@@ -56,7 +56,7 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 知识流不能是单向的（日记 → wiki）。实践反馈必须回流到知识库——应用方法后的成功/失败应更新 Claims 置信度，形成：日记 → 提取 → wiki → 应用 → 反馈 → wiki 的完整闭环。
 
@@ -71,6 +71,7 @@ related:
 - [[meta-harness]] — `implements` Meta-Harness 是反馈闭环的自动化形式
 - [[personal-knowledge-compiler]] — `uses` PKC 的知识迭代依赖实践反馈闭环
 - [[generation-evaluation-separation]] — `uses` 分离的评估环节是闭环的关键节点
+- [[loop-engineering]] — `grounds` Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里
 
 ## 来源日记
 

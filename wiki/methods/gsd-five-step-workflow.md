@@ -83,7 +83,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > GSD 管"做对的事情"，Superpowers 管"做事情的方法对"，gstack 管"做完能交付"。
 
@@ -93,7 +93,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Claude Code 遇到泛指令时按路由表查表执行而非随机匹配。
 
