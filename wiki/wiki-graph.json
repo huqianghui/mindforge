@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-17T03:25:26.317963+00:00",
+  "generated_at": "2026-06-17T03:38:39.392275+00:00",
   "stats": {
     "nodes": 85,
-    "links": 322,
+    "links": 324,
     "orphan_links_removed": 0,
     "claims": 324,
     "categories": 9
@@ -2253,7 +2253,7 @@
         "agentic-engineering",
         "automation"
       ],
-      "category": "",
+      "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
       "claims_count": 12,
@@ -4821,6 +4821,12 @@
       "description": "AutoResearch 体现了 Bitter Lesson 的\"计算胜过人工知识\"原则"
     },
     {
+      "source": "autoresearch",
+      "target": "loop-engineering",
+      "relation_type": "contrasts",
+      "description": "AutoResearch 是 Loop Engineering 外循环里可插拔的\"单任务执行内核\"之一，区别于 Ralph Loop 在于 selection 机制"
+    },
+    {
       "source": "azure-copilot-ecosystem",
       "target": "llm-wiki",
       "relation_type": "uses",
@@ -5449,6 +5455,12 @@
       "target": "cybernetics-harness-design-sheet",
       "relation_type": "produces",
       "description": "控制论 Design Sheet 是 Harness 设计流程的前置检查工具"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "loop-engineering",
+      "relation_type": "extends",
+      "description": "Loop Engineering 是 Harness 的时间维度切片：内循环 ⊂ L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）"
     },
     {
       "source": "harness-quality-gate",
@@ -6603,6 +6615,7 @@
       "name": "AI Agent 理论与架构",
       "members": [
         "harness-engineering",
+        "loop-engineering",
         "agent-loop-architecture",
         "agent-paradigms",
         "context-engineering",
