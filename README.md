@@ -23,7 +23,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [构建AI Native CSU Team——从One Person Team到组织进化的实践思考](Notes/AI/构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md)
 - [FDE 职业进化论——AI 时代前线部署工程师的个人突围与团队重构](Notes/AI/FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构.md)
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
-- [去除AI味：从语言指纹到人机文本边界的消融](Notes/AI/2026-06-03-去除AI味：从语言指纹到人机文本边界的消融.md)
+- [去除AI味：从语言指纹到人机文本边界的消融](去除AI味：从语言指纹到人机文本边界的消融.md)
 
 ### Notes/AI/Context-Engineering
 
