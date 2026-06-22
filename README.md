@@ -95,6 +95,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [线性注意力时代的推理架构 · 之一——Transformer / Mamba / GDN 与 Hybrid 架构](Notes/AI/inference/线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md)
 - [线性注意力时代的推理架构 · 之二——为什么 Hybrid 模型难做 Prefix Caching](Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)
 - [线性注意力时代的推理架构 · 之三——vLLM 与 SGLang 支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)
+- [SGLang 与 vLLM 的基因之争——为什么 Prefix Sharing × Hybrid 这条线 SGLang 领先](Notes/AI/inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)
 
 ### Notes/AI/Design-Tools
 
