@@ -90,6 +90,12 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 
 - [qmd 与 Microsoft Foundry IQ 的 RAG 能力对比——从个人知识库到企业级检索](Notes/AI/RAG/qmd与Microsoft%20Foundry%20IQ的RAG能力对比——从个人知识库到企业级检索.md)
 
+### Notes/AI/inference
+
+- [线性注意力时代的推理架构 · 之一——Transformer / Mamba / GDN 与 Hybrid 架构](Notes/AI/inference/线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md)
+- [线性注意力时代的推理架构 · 之二——为什么 Hybrid 模型难做 Prefix Caching](Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)
+- [线性注意力时代的推理架构 · 之三——vLLM 与 SGLang 支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)
+
 ### Notes/AI/Design-Tools
 
 - [Pencil 设计工具与 Claude Code 快速上手指南](Notes/AI/Design-Tools/Pencil设计工具与Claude%20Code快速上手指南.md)
