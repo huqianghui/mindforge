@@ -596,7 +596,60 @@ algo = APO[RoomSelectionTask](
 
 ---
 
-## 五、小结与系列展望
+## 五、为什么还需要 agent-lightning：框架 vs 手搓
+
+跑完三轮会冒出一个很自然的疑问：reward（`room_selection_grader`）、批评模板（`text_gradient_strict.poml`）、改写模板（`apply_edit_strict.poml`）、seed prompt、数据集——**主要元素全是我自己定义的**，那为什么还要这个框架？自己把这几个组件串起来不行吗？
+
+这其实戳到了框架类工具的本质：**你定义的是"领域知识"，框架拥有的是"算法 + 基础设施"，这是一次控制反转（inversion of control）。**
+
+### 5.1 你提供的 vs 框架拥有的
+
+你写的那几个组件，全是**"什么算好"的静态零件**：grader 定义"什么叫选对"、gradient 模板定义"怎么批评失败的 prompt"、edit 模板定义"拿到批评后怎么改写"、seed+数据集定义"优化的起点和评测集"。但把这些静态零件变成一个**能自我迭代的优化循环**，中间那套动态的算法和执行机制，才是 agent-lightning 干的活：
+
+| 你以为简单、其实要自己写对的部分 | 框架替你做了 |
+|---|---|
+| **beam search 主循环** | 维护 `beam_width` 个候选、每轮 `branch_factor` 扩展、`beam_rounds` 迭代、跨轮剪枝选优 |
+| **history-best 簿记** | "对 beam 冠军全量重评、只在严格更高时才更新 best"——就是 §4.4 那套防虚高逻辑，自己写第一次大概率踩 max-over-noise 坑 |
+| **rollout 执行 harness** | 把 N 题并行跑、收集 (输入,输出,reward) 三元组、处理超时/重试/并发 |
+| **错误归类** | 渲染崩→reward=None（failed）vs 跑通选错→0.0（succeeded）的区分是 runner 做的 |
+| **gradient↔edit 接线** | 自动挑低分样本 → 喂 gradient 模板生成批评 → 批评喂 edit 模板改写 → 产出新候选 |
+| **POML variant 插拔** | `gradient_prompt_files`/`apply_edit_prompt_files` 传 list、`random.choice` 每次随机选一个 variant |
+| **日志/可复现** | `apo.log`、beam leader score、run 工件，跨轮可对比 |
+
+自己 DIY，这些全得手写，且容易写错。
+
+### 5.2 真正的"杀手级"理由：方法无关（method-agnostic）
+
+这才是它叫 "Lightning"（借 PyTorch Lightning 命名哲学）的意义——设计目标不是"做 APO"，而是**把"agent 执行"与"优化方法"解耦**：
+
+> 同一份 `room_selection_grader` + 同一个 agent + 同一个数据集，今天插进 **APO**（调 prompt、不动权重），明天想真的微调模型权重，**换一个 trainer 槽位**插进 **RL（GRPO/PPO）或 SFT** 即可，rollout harness 和 reward 函数**一行不用改**。
+
+手动串联的版本是**焊死的**：为 APO 写的循环，换成 RL 微调权重时 rollout/reward/数据加载全得重写。框架抽象出这一层后，**reward 和 rollout 是资产，优化算法是可插拔的策略**——这是相对"手搓脚本"最大的结构性价值。
+
+### 5.3 诚实的另一面：对简单实验，便利性是"中等"
+
+不吹它。对**一次性的、简单的 APO 实验**：beam search + 文本梯度，自己手写 ~200 行能跑通，框架省的是"写对 + 调试"的时间，不是"从不可能到可能"。
+
+更关键的是——**这个问题最难的部分，框架一点忙都帮不上**：
+- 它不会帮你设计 reward（`room_selection_grader` 的"partial + be critical"本身就是个噪声制造机）；
+- 它不会帮你降噪（29 题 SE≈0.09 是数据集的事）；
+- 它不会帮你决定数据量。
+
+**这次三轮没赢过种子，根因全在"你的组件"里（reward 设定 + 数据量），不在框架里。** 框架把循环跑得很顺，但循环优化的目标本身是歪的——它忠实地优化了一个噪声。
+
+### 5.4 结论：什么时候值得用
+
+**框架的价值不在"替你定义好坏"，而在"替你把好坏变成一个可迭代、可复现、可换方法的优化引擎"。** 值得用，如果满足任一条：
+
+1. **会切换优化方法**（APO 今天、RL/SFT 明天）——不可替代之处；
+2. 想白嫖 **RL 级别的 rollout 基础设施**（并行、重试、错误归类）；
+3. 要**可复现、可对比**的实验管理，或将来要**上规模**（几百上千题）。
+
+反之，只是一次性调个 prompt、且确定不碰权重微调——手搓 200 行脚本反而更轻、更透明，框架是杀鸡用牛刀。
+
+---
+
+## 六、小结与系列展望
 
 本篇把 APO 这条"不调权重的 prompt tuning"路线从**实践**（Azure OpenAI 接线、deployment 选型、跑通验证）到**算法**（beam search + 文本梯度、调用次数与成本），再到**两轮真实复盘**（负结果 + 调优后超基线但被噪声困住）走通了一遍。核心认知：
 
