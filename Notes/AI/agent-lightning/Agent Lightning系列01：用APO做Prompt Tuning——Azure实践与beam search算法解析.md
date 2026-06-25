@@ -669,4 +669,4 @@ algo = APO[RoomSelectionTask](
 - 系列 04：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
 - 系列 05：把框架套到自己的真实 Agent 上（换数据集 + reward 函数 + agent 逻辑）
 
-> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[Agentic-Engineering——质量与成本的一体化优化]]、[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]、[[Agentic-Engineering——质量与成本的一体化优化]]、[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]

@@ -203,7 +203,7 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 > 这纠正了 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 初版把 SFT 列为内置算法的说法。
 
-**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py:69`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是系列03 的主题。
+**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py:69`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是 [[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]] 的主题。
 
 ---
 
@@ -231,8 +231,9 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 **系列后续计划**：
 
-- 系列 03：**自定义算法与 Trainer 集成**——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 `store.enqueue_rollout` 居中、algorithm 与 runner 进程分离的写法（store/algorithm/runner 三件套）
-- 系列 04：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
-- 系列 05：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
+- 系列 03（已完成）：[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 5 个 store 动作接入契约、algo/runner 生产者消费者分工、Trainer 自带内存 store 的一键运行
+- 系列 04（已完成）：[[Agent Lightning系列04：APO源码祛魅——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
+- 系列 05：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
+- 系列 06：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
 
 > 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
