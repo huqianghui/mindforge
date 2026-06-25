@@ -12,11 +12,13 @@ tags: [agent-lightning, APO, prompt-tuning, prompt-optimization, beam-search, az
 
 ## 〇、为什么从 APO 入手
 
-[Agent Lightning](https://github.com/microsoft/agent-lightning) 是微软开源的 Agent 训练框架，主打"**几乎零代码改动**"地优化任意 Agent（兼容 LangChain、OpenAI Agent SDK、AutoGen、CrewAI、Microsoft Agent Framework，甚至无框架裸写）。它支持一组算法：
+[Agent Lightning](https://github.com/microsoft/agent-lightning) 是微软开源的 Agent 训练框架，主打"**几乎零代码改动**"地优化任意 Agent（兼容 LangChain、OpenAI Agent SDK、AutoGen、CrewAI、Microsoft Agent Framework，甚至无框架裸写）。它支持一组优化方法：
 
-- **APO（Automatic Prompt Optimization）**——只优化 prompt，不动权重
-- **VERL**——强化学习微调权重（需要 GPU + PyTorch + vLLM）
-- **SFT（Supervised Fine-tuning）**——监督微调
+- **APO（Automatic Prompt Optimization）**——只优化 prompt，不动权重（`algorithm/` 内置）
+- **VERL**——强化学习微调权重（需要 GPU + PyTorch + vLLM）（`algorithm/` 内置）
+- **SFT（Supervised Fine-tuning）**——监督微调（**非内置算法类**，走「自定义算法扩展点」实现，官方示例在 `examples/unsloth/`、`examples/azure/`）
+
+> ⚠️ 一个常见误解的澄清：`agentlightning.algorithm` 包里**只内置了 APO 和 VERL 两个一等公民算法**（`algorithm/__init__.py` 仅 export 这两个 + `Baseline`/`FastAlgorithm` 工具类）。SFT **不是**和它俩并列的内置算法，而是用「继承 `Algorithm` + 实现 `run()`」的自定义算法机制接 Unsloth/Azure 微调实现的示例。框架真正"自带"的算法是 APO（prompt）与 VERL（RL 权重）。详见 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §五。
 
 本系列从 **APO** 开始，原因很简单：它是**最轻的一条路**——纯 Python + 调 LLM API，CPU 即可跑，没有 GPU/CUDA 依赖。它和 fine-tuning 的本质区别是：
 
