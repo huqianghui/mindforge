@@ -608,15 +608,15 @@ algo = APO[RoomSelectionTask](
 
 你写的那几个组件，全是**"什么算好"的静态零件**：grader 定义"什么叫选对"、gradient 模板定义"怎么批评失败的 prompt"、edit 模板定义"拿到批评后怎么改写"、seed+数据集定义"优化的起点和评测集"。但把这些静态零件变成一个**能自我迭代的优化循环**，中间那套动态的算法和执行机制，才是 agent-lightning 干的活：
 
-| 你以为简单、其实要自己写对的部分 | 框架替你做了 |
-|---|---|
-| **beam search 主循环** | 维护 `beam_width` 个候选、每轮 `branch_factor` 扩展、`beam_rounds` 迭代、跨轮剪枝选优 |
-| **history-best 簿记** | "对 beam 冠军全量重评、只在严格更高时才更新 best"——就是 §4.4 那套防虚高逻辑，自己写第一次大概率踩 max-over-noise 坑 |
-| **rollout 执行 harness** | 把 N 题并行跑、收集 (输入,输出,reward) 三元组、处理超时/重试/并发 |
-| **错误归类** | 渲染崩→reward=None（failed）vs 跑通选错→0.0（succeeded）的区分是 runner 做的 |
-| **gradient↔edit 接线** | 自动挑低分样本 → 喂 gradient 模板生成批评 → 批评喂 edit 模板改写 → 产出新候选 |
-| **POML variant 插拔** | `gradient_prompt_files`/`apply_edit_prompt_files` 传 list、`random.choice` 每次随机选一个 variant |
-| **日志/可复现** | `apo.log`、beam leader score、run 工件，跨轮可对比 |
+| 你以为简单、其实要自己写对的部分       | 框架替你做了                                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| **beam search 主循环**    | 维护 `beam_width` 个候选、每轮 `branch_factor` 扩展、`beam_rounds` 迭代、跨轮剪枝选优                        |
+| **history-best 簿记**    | "对 beam 冠军全量重评、只在严格更高时才更新 best"——就是 §4.4 那套防虚高逻辑，自己写第一次大概率踩 max-over-noise 坑             |
+| **rollout 执行 harness** | 把 N 题并行跑、收集 (输入,输出,reward) 三元组、处理超时/重试/并发                                                |
+| **错误归类**               | 渲染崩→reward=None（failed）vs 跑通选错→0.0（succeeded）的区分是 runner 做的                              |
+| **gradient↔edit 接线**   | 自动挑低分样本 → 喂 gradient 模板生成批评 → 批评喂 edit 模板改写 → 产出新候选                                      |
+| **POML variant 插拔**    | `gradient_prompt_files`/`apply_edit_prompt_files` 传 list、`random.choice` 每次随机选一个 variant |
+| **日志/可复现**             | `apo.log`、beam leader score、run 工件，跨轮可对比                                                 |
 
 自己 DIY，这些全得手写，且容易写错。
 
@@ -662,10 +662,11 @@ algo = APO[RoomSelectionTask](
 5. **非法模板的源头是 gradient model**：批评里写的正则/JSON 会被 edit model 照抄进模板 → 必须 `gradient_prompt_files` + `apply_edit_prompt_files` **两端同时约束**
 6. **小数据集下 history best 会虚高**：对噪声取最大值天然上偏，同一 prompt 全量重评能摆动 0.2；**先降噪（扩数据/多采样）再谈优化**，否则加 rounds 只是放大噪声
 
-**系列后续计划**（待实践后补）：
+**系列后续计划**：
 
-- 系列 02：自定义算法与 Trainer 集成（`apo_custom_algorithm.py`，store/algorithm/runner 三件套）
-- 系列 03：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
-- 系列 04：把 APO 套到自己的真实 Agent 上（换数据集 + reward 函数 + agent 逻辑）
+- 系列 02：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（已完成：9 大模块 + 数据流脊柱 + method-agnostic 设计）
+- 系列 03：自定义算法与 Trainer 集成（`apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，store/algorithm/runner 三件套）
+- 系列 04：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
+- 系列 05：把框架套到自己的真实 Agent 上（换数据集 + reward 函数 + agent 逻辑）
 
-> 相关：[[Agentic-Engineering——质量与成本的一体化优化]]、[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[Agentic-Engineering——质量与成本的一体化优化]]、[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]

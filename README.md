@@ -60,6 +60,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 ### Notes/AI/agent-lightning
 
 - [Agent Lightning 系列 01：用 APO 做 Prompt Tuning——Azure 实践与 beam search 算法解析](Notes/AI/agent-lightning/Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)
+- [Agent Lightning 系列 02：框架全景与脊柱拆解——9 大模块与 method-agnostic 设计](Notes/AI/agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)
 - [Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南](Notes/AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
 
 ### Notes/AI/Loop-Engineering
