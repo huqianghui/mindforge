@@ -112,7 +112,7 @@ hf download unsloth/Qwen3-4B-Instruct-2507 --local-dir models/version_0
 ### 1.5 拿源码
 
 ```bash
-git clone https://github.com/microsoft/agent-lightning.git
+git clone https://github.com/huqianghui/agent-lightning.git
 cd agent-lightning/examples/unsloth
 ls   # 应看到 math_agent.py / sft_allinone.py / sft_algorithm.py / sft_rollout_runners.py / unsloth_helper.py / data_gsmhard.jsonl
 ```
