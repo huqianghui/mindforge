@@ -232,8 +232,9 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 **系列后续计划**：
 
 - 系列 03（已完成）：[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 5 个 store 动作接入契约、algo/runner 生产者消费者分工、Trainer 自带内存 store 的一键运行
-- 系列 04（已完成）：[[Agent Lightning系列04：APO源码祛魅——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
-- 系列 05：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
-- 系列 06：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
+- 系列 04（已完成）：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
+- 系列 05（已完成）：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]——SFT 剖析：reward 不喂答案而造标签、拒绝采样微调（RAFT/STaR）、自蒸馏 vs 强→弱蒸馏（Unsloth + LoRA，16GB 可跑）
+- 系列 06：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
+- 系列 07：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
 
 > 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
