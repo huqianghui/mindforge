@@ -64,7 +64,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [Agent Lightning 系列 03：自定义算法与 Trainer 集成——5 个 store 动作、生产者/消费者与一键运行](Notes/AI/agent-lightning/Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)
 - [Agent Lightning 系列 04：APO 源码剖析——算法 = LLM 调用 + sorted、虚拟多 agent 真相与核心使用场景](Notes/AI/agent-lightning/Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)
 - [Agent Lightning 系列 05：SFT 路线剖析——reward 不喂答案而造标签、拒绝采样微调与自蒸馏真相](Notes/AI/agent-lightning/Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)
-- [Agent Lightning SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调](Notes/AI/agent-lightning/Agent%20Lightning%20SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)
+- [Agent Lightning 系列 06：SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调](Notes/AI/agent-lightning/Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)
 - [Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南](Notes/AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 

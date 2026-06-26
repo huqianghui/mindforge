@@ -207,7 +207,48 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 ---
 
-## 六、客户 agent 接入 playbook（四步插槽）
+## 六、三级优化阶梯与使用顺序：APO → SFT → RL
+
+§五 列出了三种算法，但没回答一个更实际的问题：**手上有 agent + reward + 数据，到底先上哪个？** 答案是一条由轻到重的阶梯——**APO → SFT → RL**，每升一级更强、更贵、更难，能力上界也更高。这是把整个框架用起来的「总体顺序」。
+
+### 6.1 三级阶梯一览
+
+| 级   | 算法      | 改什么              | 需要的数据                      | 显存            | 能力上界                             | 成本/风险  |
+| --- | ------- | ---------------- | -------------------------- | ------------- | -------------------------------- | ------ |
+| 一   | **APO** | 只改 prompt，权重不动   | 一个 reward + 少量样本           | 推理级（可纯 API）   | 受限于基座已有能力，prompt 调不出新行为          | 最低     |
+| 二   | **SFT** | 微调权重（拒绝采样，只学正样本） | reward>0 的成功轨迹             | 16GB 可跑（LoRA） | 把 pass@k 压成 pass@1，固化「已能偶尔做对」的行为 | 中      |
+| 三   | **RL**  | 微调权重（正负样本 + 探索）  | reward 信号（含失败）+ 大量 rollout | 40GB+         | 能探索出基座/SFT 都没有的新策略               | 最高、最不稳 |
+
+（APO 内核见 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]，SFT 内核见 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]。）
+
+### 6.2 为什么 SFT 是必经一阶（而不是只留 APO + RL）
+
+常有的疑问：SFT 限制这么多（只学正样本、不会探索、靠 pass@k>0 才有数据），为什么不跳过它、只用 APO 和 RL？三个理由：
+
+1. **APO 改不动「能不能做对」，只改「怎么说」。** prompt 工程的天花板是基座已有的能力——再精巧的 prompt 也教不会模型一个它从没做对过的行为。当 APO 到顶（系列05 §7.1 的 Keeping-X plateau），唯一往上的路是动权重，而动权重最便宜的入口就是 SFT。
+2. **RL 几乎总要 SFT 热身。** 「只用 RL」在实践中基本不存在——标准范式是 **SFT warmup → RL**：先用 SFT 把模型拉到「能稳定产出格式正确、偶尔做对」的状态，RL 才有正样本可放大、探索才不至于在巨大动作空间里乱撞。跳过 SFT 直接 RL，冷启动期极易崩。所谓「只用 RL」，里面往往已经含着一段 SFT warmup。
+3. **当 reward 干净可验证、且 pass@k>0 时，SFT 是性价比最优解。** 这正是 demo 的场景：模型 8 次采样能蒙对几次（pass@k>0），SFT 把这份「偶尔对」拒绝采样、固化成「次次对」（pass@k→pass@1），**不必付 RL 的正负样本采集与探索成本**。能用 SFT 解决就不上 RL。
+
+> 一句话：**SFT 不是 APO 与 RL 之间可有可无的过渡，而是「微调权重」这件事最便宜、最稳的入口。** 它的「限制」（只学正样本、不探索）恰恰是它便宜又稳的来源——是 tradeoff，不是缺陷。
+
+### 6.3 method-agnostic 把阶梯变成「换槽位」而非「换框架」
+
+这条阶梯能平滑往上爬，靠的就是 §一、§2.5 反复强调的 method-agnostic：**同一份 agent（`@rollout`）+ reward + 数据集，换算法只换 algorithm 槽位，rollout / reward / store 一行不改。**
+
+- APO 到顶 → 把 algorithm 从 `APO` 换成 SFT 自定义算法，agent 代码不动；
+- SFT 到顶 → 再换成 `VERL`，agent 代码仍不动。
+
+**SFT 和 RL 还共享同一套 triplet 表示**（adapter 的 `TraceToTriplet`，§2.5）——这正是 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] §2.6 讲的「A 法逐轮记录 + reward 跨轮传播」存在的意义：同一份轨迹既喂得了 SFT，也喂得了 RL。
+
+反过来想：**如果框架里没有 SFT**，当你 APO 到顶、想微调权重时，就得退出框架、自己手搭一条 SFT 数据管道（收集轨迹 → 转 triplet → tokenize → 训练）、训完再设法接回 RL——这正是 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] 手搭那条管道的全部痛苦。把 SFT 收进框架，是为了让你**在阶梯上往上爬而不必下框架**。
+
+### 6.4 使用顺序口诀
+
+> **先 APO 探边界**（最便宜，看 prompt 能把分数压到哪）**→ APO 到顶且 pass@k>0 就上 SFT**（拒绝采样固化，16GB 可跑）**→ SFT 到顶或需要探索新策略才上 RL**（最贵，且要拿 SFT checkpoint 做 warmup）。每往上一级之前，都可以先用一次小 SFT 当「便宜探针」验证框架接线是否通畅（系列05 §〇），再决定值不值得往上爬。
+
+---
+
+## 七、客户 agent 接入 playbook（四步插槽）
 
 把脊柱的两端插上你的零件即可：
 
@@ -218,7 +259,7 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 ---
 
-## 七、小结与系列展望
+## 八、小结与系列展望
 
 本篇把 APO 单点视角升级成**整框架视角**，核心认知：
 
@@ -228,13 +269,15 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 4. grader→reward 靠「return float → 自动 emit_reward span → find_final_reward 回读」；
 5. **adapter 是 method-agnostic 的接缝**：APO 走 messages、RL/SFT 走 triplet，换方法不动 agent；
 6. 内置算法只有 **APO + VERL**，**SFT 走自定义算法扩展点**（Unsloth/Azure 示例）。
+7. **使用顺序是一条由轻到重的阶梯：APO → SFT → RL**（§六）。SFT 是「微调权重」最便宜稳的入口、也是 RL 的 warmup 必经一阶；method-agnostic 让你换算法只换槽位、不下框架。
 
 **系列后续计划**：
 
 - 系列 03（已完成）：[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 5 个 store 动作接入契约、algo/runner 生产者消费者分工、Trainer 自带内存 store 的一键运行
 - 系列 04（已完成）：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
 - 系列 05（已完成）：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]——SFT 剖析：reward 不喂答案而造标签、拒绝采样微调（RAFT/STaR）、自蒸馏 vs 强→弱蒸馏（Unsloth + LoRA，16GB 可跑）
-- 系列 06：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
-- 系列 07：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
+- 系列 06（已完成）：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]——SFT 实战：Azure GPU VM 装通 unsloth+vLLM、跑通 GSM-hard 拒绝采样自提升、数据全生命周期与终止/动态化
+- 系列 07：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
+- 系列 08：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
 
 > 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]

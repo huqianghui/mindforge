@@ -1,10 +1,10 @@
 ---
-title: Agent Lightning SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调
+title: Agent Lightning 系列 06：SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调
 created: 2026-06-26
 tags: [agent-lightning, SFT, unsloth, LoRA, hands-on, azure, gpu, cuda, vllm, qwen3, rejection-sampling, practice]
 ---
 
-# Agent Lightning SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调
+# Agent Lightning 系列 06：SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调
 
 > [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] 把 SFT 这条线的**原理**讲透了：reward 造标签、拒绝采样、A/B 拆分、自蒸馏。本篇是它的**实战配套**——真正把 `examples/unsloth/` 跑起来。从「macOS 跑不了」这个硬约束出发，开一台 Azure GPU VM，装通 unsloth + vLLM 全栈，跑通 GSM-hard 的迭代自提升训练，读懂每一轮的 loss/reward/产出，最后讲怎么换成自己的任务。
 >
@@ -307,6 +307,106 @@ python math_agent.py
 > ⏳ 实测待填（评测需自己搭 holdout，本次只跑了训练未跑评测）：v0/v1/v2 在 holdout 上的 pass@1 / pass@8 数字。
 > 但**飞轮信号已有实证**：留用样本 80→86（§3.2），是 version_1 比 version_0 答对更多的直接证据。
 
+### 3.4 一条 triplet 落库长什么样——display 字段对 tool_call 轮有损 ✅
+
+把 §2.2 里那条 `Rewards are: [None, 1.0]` 的 rollout（`ro-fa5b7bd5115a`，Gunter 数豆子题）落库的两条 triplet 摊开，能看清两个反直觉的认知点。这次 rollout 切成 **2 条**（A 法，每轮一条，系列05 §2.5）：
+
+| | Record 2（决定调工具这轮） | Record 1（拿结果收尾这轮） |
+|---|---|---|
+| `prompt` 含什么 | 只有 `[system, user]`（268 token） | `[system, user, assistant 的 tool_call, tool 返回 9099577.916666]`（359 token） |
+| `response` | tool_call（61 token，`finish_reason=tool_calls`） | `### 9099577.92 ###`（14 token，`finish_reason=stop`） |
+| `reward`（落库） | **1.0** | 1.0 |
+
+**坑一：Record 2 的 `response_raw_content` 里没有工具名。** 它只剩 `{finish_reason: "tool_calls", role: "assistant"}`，`response_text` 是残串 `"tool_calls\nassistant"`。这不是工具名丢了，是**这个人类可读字段对 tool_call 轮有损**——没把结构化的 `tool_calls`（函数名 + arguments）序列化进来。两个证据反推名字其实在：① `response_token_count=61`，远超那几个字，这 61 个 token 正是 hermes 格式的完整调用（`calculate` + 表达式 `(9926805 + (20 + 9926805/2) + 9926805*1.25)/3` + `<tool_call>` 包裹）；② 同一个 tool_call 在 Record 1 的 `prompt_raw_content` 里被逐字内联成历史。**真正进 SFT 的是 token_ids，不是 `response_text`——别用这个坏掉的 display 字段判断训了什么。**
+
+**坑二：两条 reward 都是 1.0**，而 §2.2 控制台聚合日志里是 `[None, 1.0]`（Record 2 当时没有 reward）。落库却显示 1.0，说明这份数据已经是 **`reversed()` 把最终 reward 往前轮回传之后**的结果——系列05 §2.6「reward 跨轮传播」的落地证据。
+
+> 顺带：`9099577.916666 → 9099577.92` 说明收尾轮是**重写**了被 `-100` mask 的工具输出（做了四舍五入），不是背出来的；`np.isclose(rtol=1e-5)` 下相对误差约 3.6e-10，照判 1.0。
+
+### 3.5 数据全生命周期串讲：从 jsonl 到 version_n（七个阶段）✅
+
+把前面散落的环节连成一条线——一条数据从 `data_gsmhard.jsonl` 出发，到变成 `models/version_2`，中间经过**七次形态转换**。用本次 A100 实跑的真实数字（§2.2）+ `ro-fa5b7bd5115a` 那两条记录（§3.4）当标本：
+
+```
+[1] jsonl 原始数据         {input, target} ×64
+        │  agent rollout（4 runner，vLLM serve version_n）
+        ▼
+[2] OTel spans → store     每次 LLM 调用一个 span + grader 一个 reward span
+        │  adapter: TraceToTriplet（reversed() 回传 reward）
+        ▼
+[3] 中间结构 triplet        {prompt, response, reward} ×134（iter0）
+        │  reward>0 过滤 → 80 条
+        ▼
+[4] token 化 + mask         {input_ids, labels(-100), attention_mask, reward}
+        │  SFTTrainer：6 epoch / 60 step / batch 8，只 response 段算 CE loss
+        ▼
+[5] 梯度更新（只动 LoRA 1.62%）  train_loss 0.0151
+        │  save_pretrained_merged（LoRA 合并回基座，16bit）
+        ▼
+[6] checkpoint             models/version_1
+        │  当下一轮 rollout 基座
+        ▼
+[7] 版本飞轮               version_1 →（再跑一轮，留用 80→86）→ version_2
+```
+
+**[1] 初始数据：只有「题目 + 评分钥匙」**——`data_gsmhard.jsonl` 64 条 `{input, target}`（`code` 是死字段，系列05 §2.4）。此刻**还没有任何「模型该输出什么」的标签**：SFT 要模仿的 response 这时根本不存在，靠后面 rollout 造（系列05 §一）。
+
+**[2] agent 运行 → 存储：rollout 产 span，写进 store**——4 个 runner 并发，vLLM 本地 serve 当前 `models/version_0`。每条题让模型解题（决定调 `calculate` → 拿计算器返回 → 收尾输出 `### 数字 ###`）。tracer 把**每次 LLM 调用**记成一个 OTel span；grader 用 `np.isclose(answer, target)` 判 0/1，`emit_reward` 写一个 reward span（系列02 §2.6）。全部 spans 回写 store（控制平面，系列03）。此刻数据 = 一堆扁平 span 属性，按 `rollout_id` 归组。
+
+**[3] 转中间结构：spans → triplet（§3.4 看到的就是这步产物）**——adapter（一键模式 `TracerTraceToTriplet` / 三进程模式 proxy 侧 `LlmProxyTraceToTriplet`）把一次 rollout 的 spans 还原成 `List[Triplet]`：**每次 LLM 调用 = 一个 triplet**（A 法），`ro-fa5b7bd5115a` → 2 条。`reversed()` 把最终 reward 往前轮回传（系列05 §2.6），所以 §3.4 两条 reward 都落库成 1.0 而非 `[None, 1.0]`。实测：iter0 的 64 题 → **134 triplet**（多数题「调工具+收尾」两轮）；过 `reward > 0` 门 → **留 80 条**（§3.2 阈值过滤，非固定 50%）。
+
+**[4] 转 token + mask：triplet → 训练张量**——每条 triplet 按系列05 §2.4 拼成四个字段。两条标本：
+- Record 2：`input_ids` = 268(prompt)+61(response) = 329；`labels` = `[-100]×268 ++ 61 真 token`。
+- Record 1：`input_ids` = 359+14 = 373；`labels` = `[-100]×359 ++ 14 真 token`（工具返回 `9099577.916666` 在那 359 里，被盖住）。
+
+等式 `len(input_ids) = prompt_token_count + response_token_count`；prompt 段全 `-100`、只 response 段算 loss；`attention_mask` 全 1。`reward` 字段此时已用完（筛 top-k），**不进张量、不进 loss**。
+
+**[5] epoch → loss：只在 response token 上算交叉熵**——配置（`unsloth_helper.py:63-76`）：`batch 2 × grad_accum 4 = 总 batch 8`，`max_steps=60`。实测对得上：**80 样本 × 6 epoch ÷ 8 = 60 步**（`max_steps` 是硬上限，80 条时恰好 = 6 epoch；iter1 的 86 条则约 5.6 epoch 就被 60 步截断）。每步：取 8 条前向，对每条**只在 `labels≠-100` 的 response token 上**算 `CrossEntropyLoss`（`-100`=`ignore_index`，prompt 段贡献 0）→ 求均值 → 反向 → 更新。只动 LoRA 适配器：可训 **66,060,288 / 4,088,528,384 = 1.62%**，基座冻结。`train_loss` iter0 = 0.0151（注意 §3.2.1：只表对自筛轨迹的拟合，不表解题能力）。
+
+**[6] checkpoint：LoRA 合并回基座，存 16bit**——`save_pretrained_merged(..., "merged_16bit")` 把训好的 LoRA 增量**合并回基座权重**，存成完整 16bit 模型（不是只存适配器），这样下一轮 vLLM 能直接 serve。产出 `models/version_1`。
+
+**[7] 版本飞轮：version_1 → version_2**——下一轮把 rollout 基座换成 version_1（vLLM 编译缓存命中，起得更快）。模型更强 → 答对更多 → 留用样本 **80 → 86** → 再训成 version_2（ReST 飞轮，系列05 §2.3）。`MAX_ITERATIONS=2` → 最终产物 `models/version_2`。
+
+> 七次变身收口：**jsonl 的 `{input,target}` → spans → triplet（reward 回传 + 过滤）→ token/mask 张量 → response 段 CE loss → LoRA 合并 checkpoint → version_n+1**。其中 `target` 全程只在 [2] 喂 grader、[3] 决定 reward，**从不进 [4] 的 `input_ids`/`labels`**；模型模仿的 response 是 [2] 自产、[3] 认证、[4] 才定型的——这就是系列05「reward 造标签、不喂答案」在数据流上的完整兑现。
+
+### 3.6 五个常见疑问：64→134、80→86 飞轮、终止条件、脊柱一致性、动态化 ✅
+
+**Q1：64 题为什么变 134 条？**——每次 LLM 调用 = 一个 triplet（A 法，§3.4），不是每题一条。多数题「调工具 + 收尾」两轮 → 2 条，64×2≈128；实测 134 略多，因为部分题调了不止一次计算器（多 tool_call → 多 triplet）或有重试，`134÷64≈2.09` 条/题。**134 是过滤前的全部**，过 `reward>0` 才留 80。
+
+**Q2：80→86 怎么算飞轮？**——先分清两个数是哪一轮跑的：
+
+| | 谁跑 rollout | 同 64 题 → triplet | `reward>0` 留下 |
+|---|---|---|---|
+| iter0 | `version_0`（初始） | 134 | **80** |
+| iter1 | `version_1`（被 80 条训过） | 130 | **86** |
+
+两轮跑的是**同一批 64 题、同一道门，唯一变量是「谁在跑」**。version_1 比 version_0 多留 6 条 = 把原来答错的多解对了几道。链路：`v0 跑→留 80→训出 v1→v1 更强→再跑→留 86`，即「越训越强 → 正确轨迹越多 → 可训样本越多」（ReST，系列05 §2.3）。注意总 triplet 反降（134→130，更强的模型解题更省步或采样波动），但**通过率升**（`80/134≈60%` → `86/130≈66%`）才是信号。
+
+> **诚实边界**（呼应 §3.2.1）：80→86 是在**训练用的那 64 题**上测的、且只 +6、rollout 又是 temperature>0 采样——是「方向对」的正向信号，**不是泛化证明**。严格证明要看 holdout 的 pass@1（§3.3，未做）。
+
+**Q3：终止条件是什么？**——两层，都是**写死的计数，不是质量判据**：
+
+- 内层（单轮训练停在哪）：`max_steps=60`（`unsloth_helper.py`）。80 样本 ×6 epoch ÷8 batch 恰好 = 60 步；86 样本约 5.6 epoch 就被 60 步截断。
+- 外层（飞轮转几圈）：`MAX_ITERATIONS=2`（`sft_algorithm.py:351`），固定两轮 `version_0→1→2` 就停。
+
+demo **没有任何收敛 / 质量终止**（不看留用数是否还涨、不看 holdout、无 early-stopping）。真实任务该用的信号是**飞轮到顶**——`Keeping X` 连续几轮不再上升 = 模型已稳定输出它能找到的全部正确轨迹，该停 SFT；这正是系列05 §7.1「SFT 到顶 → 升 RL」的触发点。
+
+**Q4：APO 一直强调 `litagent→runner→tracer→store→adapter→reward→algorithm` 这条脊柱，SFT 还是同一条吗？store 去哪了？**——**是同一条，store 一直在场**。SFT 讨论里少提它，只因笔墨集中在**新增的后半段**（tokenize→loss→checkpoint）；前半段和 APO 一字不差地复用了。对照 §3.5 七阶段：`[1]` 读 jsonl → `[2]` agent 跑、span 回写 **store** → `[3]` adapter 转 triplet——就是脊柱本身。store 在 demo 里两种形态：一键模式（`sft_allinone.py`）塞进同一进程、默认 `InMemoryLightningStore`；三进程模式显式 `agl store --port 4747`（§三）当控制平面。APO 与 SFT 摆在同一脊柱上**只有两处不同**：
+
+| | adapter 出口（系列02 §2.5） | algorithm 槽位内部 |
+|---|---|---|
+| APO | `TraceToMessages`（看对话） | critic/edit + `sorted`，**不改权重** |
+| SFT | `TraceToTriplet`（取训练样本） | tokenize→CE loss→LoRA merge，**改权重** |
+
+`litagent→runner→tracer→store→adapter→reward` 这一段两者完全相同——正是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §6.3 的 method-agnostic 兑现：换算法只换槽位 + adapter 出口，脊柱不动。
+
+**Q5：两轮和 60 步都写死了，能不能让飞轮「自动转」、步数随数据走？**——能，但要分清这是**两个独立的常量**（别和 Q3 混）：外层圈数 `MAX_ITERATIONS=2`（`sft_algorithm.py:351`，覆盖入口 `sft_allinone.py:99-108`），内层步数 `max_steps=60`（`unsloth_helper.py:63-76`）。后者是**硬上限步数、不是从数据算的**：total batch=8，80 样本→60 步=6 epoch，86 样本→60 步≈5.6 epoch——**数据涨了过的遍数反缩**（6→5.6），是固定 `max_steps` 的小坑。两处分别这样改：
+
+- **飞轮动态（替换固定两轮）**：把 `for i in range(MAX_ITERATIONS)` 换成 `while` + 平台检测，停条件用真实信号 `Keeping X`——连续几轮 Δ 小于阈值 = 饱和就停（即 Q3 说的「飞轮到顶 → 升 RL」），并加安全上限防空转。**更稳的是用 holdout 的 pass@1 不再涨来驱动停**（§3.3 有配方），因为 `Keeping X` 在训练题上量、80→86 的 +6 可能是采样噪声（§3.2.1 诚实边界），不宜单独当停机判据。
+- **步数随数据 scale（替换固定 60）**：在 `unsloth_helper.py:63-76` 的 SFTConfig 里设 `num_train_epochs=N` 且 `max_steps=-1`（关掉硬上限）→ 每轮过固定遍数、步数随留用数涨（80→6 epoch=60 步，86→6 epoch≈64.5 步）；或每轮算 `max_steps = ceil(kept / total_batch) * target_epochs`。固定 epoch 若数据增长多易过拟合，配 val loss 的 early-stopping 更稳。
+
+> 一句话：demo 把外层圈数和内层步数都写成**与数据无关的常量**，真实任务应分别换成「飞轮 kept 平台检测（最好 holdout 驱动）」和「按 epoch 自动算步数」。
+
 ---
 
 ## 四、改造成自己的：换数据集 / grader / agent ✅
@@ -349,17 +449,47 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 - 不想用 Agents SDK → 裸写 OpenAI 调用、LangChain、AutoGen 都行，框架只认「签名 + 返回 float」（系列02 §2.1）。
 - 关键：rollout 函数最后 `return` 你 grader 算出的 float，runner 会自动 emit 成 reward span（系列02 §2.6）。
 
-### 4.4 改造检查清单
+### 4.4 数据清洗与优化：demo 只有 `reward > 0` 一道门 ✅
+
+跑通后容易忽略的一点：**这套 SFT 的「数据清洗」只有一道——`reward > 0.0` 阈值**（§3.2 实测日志 `Keeping X with reward greater than 0.0`）。过了这道门的轨迹**全进、一次 rollout 的两条都进、不做任何 per-record 判断**——不去重、不查表达式质量、不平衡长短、不留 holdout。
+
+**为什么 demo 敢这么省**：
+
+1. **拒绝采样的立场就是「reward 即清洗」**——RAFT/STaR 的论点是好 reward 替代人工 curation，你不手动挑数据，让 reward 当唯一筛子（系列05 §一）。
+2. **整条成功轨迹一起进是 A 法的内在要求**——只留 tool_call 轮、扔掉收尾轮，会破坏 ① 轨迹连贯（学会调工具却学不会终止 / 套 `###` 格式）；② `reversed()` 的 reward 回传（per-turn triplet 是其前提，系列05 §2.6）。
+3. **GSM-hard 的 grader 零噪声**——二值精确匹配，`reward > 0` 是强过滤，过门即保证最终答案对。
+
+**但 `reward > 0` 抓不住的，正是「没优化没清洗」的代价**：
+
+| 漏掉的 | 后果 |
+|--------|------|
+| **outcome-only 假阳性**（系列05 §1.2） | 答案对、但表达式绕弯 / 凑巧对 / 补偿性错误 → 照样进训练，强化坏过程 |
+| **长短不均**（系列05 §2.6） | 每 rollout 2 条，收尾 trivial 记录占训练槽；长答案轮淹没短 tool_call 轮 |
+| **重复轨迹** | 简单题被同套解法解对多次 → 过采样，分布带偏 |
+
+**换到你自己的任务（reward 一旦变弱就必须补的清洗层）**：demo 能省全靠 grader 干净；一旦换成 LLM-judge / 主观分，`reward > 0` 远不够，假阳性会灌进来。要补：
+
+1. **更紧的阈值**——`reward == max` 或 top 分位（连续 reward 时），而非只 `> 0`。
+2. **过程 / 质量过滤**——查表达式合理性、惩罚过长、去重；要真正对齐「过程」而非只看「结果」，得上 process reward / PRM（属系列07 RL 那条线，系列05 §7.1 把「对齐过程不只结果」列为该升 RL 的触发条件）。
+3. **去重 / 多样性采样**——别让简单题过采样。
+4. **长短再平衡**——A 法天然上采样长轨迹，需要时归一。
+5. **holdout split**——别把数据全训了，否则没法评 pass@1（§3.3 的坑）。
+
+> 一句话：**框架给的是骨架（rollout 编排 + 那道 reward 门），数据治理得自己补**（呼应系列04 §四）。demo 用「reward 即清洗」演示最小闭环，它成立的全部前提是 GSM-hard 那个零噪声二值 grader；真实任务大概率没这么干净，「优化和清洗」就从可选项变成决定 SFT 成败的主战场。
+
+### 4.5 改造检查清单
 
 | 改什么 | 文件:位置 | 注意 |
 |--------|----------|------|
 | 数据结构 + 加载 | `math_agent.py` `GsmProblem` / `load_math_dataset` | input 喂模型、target 只喂 grader |
 | grader | `math_agent.py` `compute_reward` | 可验证优先；加阈值过滤 |
 | agent 逻辑 + 工具 | `math_agent.py` `math_agent` | 工具契约定稳再 SFT |
+| 数据清洗 | `sft_algorithm.py:291-295` 筛选逻辑 | demo 只有 `reward>0`；真实任务补阈值收紧 / 去重 / 过程过滤（§4.4） |
+| 评测 holdout | 自搭（§3.3） | 留出没训过的题，否则 pass@1 虚高 |
 | 基座模型 | `sft_algorithm.py:358` / `hf download` | 换成你要微调的模型 |
 | 迭代/超参 | `sft_allinone.py:99-108`、`unsloth_helper.py:63-76` | max_iterations / lr / max_steps 等 |
 
-> 这一节本质就是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §六的「四步插槽」在 SFT 上的具象，也是系列07「套到真实 Agent」的预演。
+> 这一节本质就是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §六的「四步插槽」在 SFT 上的具象，也是系列08「套到真实 Agent」的预演。
 
 ---
 
@@ -371,6 +501,7 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 4. **三种跑法**：`math_agent.py` dry-run 验证接线 → `sft_allinone.py` 一键 → `agl store` + runners + algorithm 三进程（调试/分布式）。
 5. **改造只动三零件**：数据集（input+target）、grader（reward 设计是真瓶颈，建议加阈值过滤）、agent 逻辑——框架管道一行不改。
 6. **实测要点**：A100 80GB 上一键跑通两轮自提升，约 9.5 分钟；留用样本 **80→86**（飞轮转动的直接证据）；train_loss 0.0151→0.0069 只表拟合不表能力；**最关键的实测订正**——本版 demo 的筛选是 `reward > 0` 阈值过滤（日志 `Keeping X with reward greater than 0.0`），不是早先读源码推断的「固定切 50%」。
-7. **仍待补**：v0/v1/v2 在 holdout 上的 pass@1 / pass@8（demo 无内置评测，需用 vLLM serve + math_agent 自搭，且必须用没训过的题）。
+7. **数据治理是真实任务的主战场**：落库 triplet 的 display 字段对 tool_call 轮有损（要看 token_ids，§3.4）；demo 的清洗只有 `reward>0` 一道门，能成立全靠 GSM-hard 零噪声 grader；真实任务要补阈值收紧、去重、过程过滤 / PRM、holdout split——框架给骨架，数据治理自己补（§4.4）。
+8. **仍待补**：v0/v1/v2 在 holdout 上的 pass@1 / pass@8（demo 无内置评测，需用 vLLM serve + math_agent 自搭，且必须用没训过的题）。
 
 > 相关：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]（本篇的原理底座）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（脊柱与四步插槽）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（生产者/消费者、一键 vs 三进程）、[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]、[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]

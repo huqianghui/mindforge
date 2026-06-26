@@ -34,7 +34,7 @@ tags:
 | 数据 | GSM-hard 前 64 条**已打包**进 `data_gsmhard.jsonl` | 要去 Google Drive 下 parquet 再解压 |
 | 稳定性 | 监督学习，确定性强、必收敛 | reward hacking / KL 发散 / 超参敏感 |
 
-一句话：**SFT 把所有不确定性都摁掉了**，让你能先确认"框架接没接通"，而不是被 RL 的不稳定淹没分不清"是接线错了还是 RL 没调好"。所以本系列把 SFT 提前到系列 05，VERL 顺延到系列 06。
+一句话：**SFT 把所有不确定性都摁掉了**，让你能先确认"框架接没接通"，而不是被 RL 的不稳定淹没分不清"是接线错了还是 RL 没调好"。所以本系列把 SFT 提前到系列 05，VERL 顺延到系列 07。
 
 但"容易跑"不等于"容易懂"。SFT 在 agent-lightning 里的实现藏着两个最容易拐错弯的认知点，正是本篇要讲清的。
 
@@ -191,12 +191,12 @@ version_1（更强）     → rollout → 筛 top → 训练 → version_2
 
 **最终 SFT 记录的字段**（`HuggingFaceDatasetRecord`，`:44-57`）只有四个，没一个直接来自元数据集的原始字段：
 
-| SFT 字段 | 来源 | 作用 |
-|---------|------|------|
-| `input_ids` | 元数据 `input` + 模型自产 response 的 token | 模型读到的完整序列 |
-| `labels` | 同上，但 prompt 段全填 `-100` | 只在 response 上算 loss |
-| `attention_mask` | 全 1 | 标记有效位置 |
-| `reward` | grader 用 `target` 判出的分 | 排序筛 top-k 用，**不进 loss** |
+| SFT 字段           | 来源                                  | 作用                      |
+| ---------------- | ----------------------------------- | ----------------------- |
+| `input_ids`      | 元数据 `input` + 模型自产 response 的 token | 模型读到的完整序列               |
+| `labels`         | 同上，但 prompt 段全填 `-100`              | 只在 response 上算 loss     |
+| `attention_mask` | 全 1                                 | 标记有效位置                  |
+| `reward`         | grader 用 `target` 判出的分              | 排序筛 top-k 用，**不进 loss** |
 
 > 一句话收口：**元数据集只提供「题目 + 评分钥匙」，训练用的「答案」是模型自己造、reward 认证的。** 这就是 §一 结论的具象版——SFT 需要 ground-truth 来评分（`target`），不需要 ground-truth 来模仿（response 自产）。
 
@@ -266,7 +266,7 @@ token 梯度等价，不代表训练分布等价：
 | **短轮 vs 长轮** | 两轮独立样本，短 tool_call 轮**不被稀释** | 一序列里长答案轮 token **淹没**短轮 | A 给「学会调工具」相对更高权重 |
 | **算力** | 轮2 重复编码前缀，随轮数膨胀 | 前缀只算一次 | **长 agent 轨迹下 B 明显省** |
 
-**还有一个 A/B 共有的坑**（不是拆法差异）：**跨轮 exposure bias**——纯 SFT 只见「正确前缀」，推理时若轮1 生成略偏，轮2 没被训过「从错误前缀恢复」。A、B 都有，**只有 RL（系列06）能治**（它见自己的错）。
+**还有一个 A/B 共有的坑**（不是拆法差异）：**跨轮 exposure bias**——纯 SFT 只见「正确前缀」，推理时若轮1 生成略偏，轮2 没被训过「从错误前缀恢复」。A、B 都有，**只有 RL（系列07）能治**（它见自己的错）。
 
 #### 实践结论
 
@@ -393,11 +393,11 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 |------|------------------|---------|------------------|
 | **APO**（系列 01/04） | 排序选 **prompt** | `sorted(...)[:beam_width]`（`apo.py:741`） | 否 |
 | **SFT**（系列 05） | 排序筛 **轨迹**，top-k 拿去微调 | `all_triplets.sort(..., reverse=True)`（`sft_algorithm.py:294`） | 否 |
-| **RL/VERL**（系列 06） | 当**梯度信号**直接进 policy gradient | reward 不排序，做反向传播 | 否 |
+| **RL/VERL**（系列 07） | 当**梯度信号**直接进 policy gradient | reward 不排序，做反向传播 | 否 |
 
 你写好的那个 grader（返回 float），从 APO 切到 SFT 再切到 RL **一行都不用改**——变的只是算法侧怎么用这个分。
 
-### 7.1 SFT vs RL：场景边界（系列06 的入口）
+### 7.1 SFT vs RL：场景边界（系列07 的入口）
 
 把两条权重微调路线的适用边界钉死，下一篇 VERL 就是顺着「SFT 到顶」这条线展开的。
 
@@ -423,9 +423,9 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 | **难题 0 正样本** | 模型采样 N 次全错 → SFT 一无所获（除非换强模型蒸馏，§五） | RL 的探索能逐步爬到正确轨迹 |
 | **要对齐「过程」不只「结果」** | 结果对就收，过程错也照学（§1.2 outcome-only 假阳性） | 过程奖励 / PRM 可惩罚坏过程 |
 
-**RL 的代价**（系列06 详谈）：不稳定（reward hacking / KL 发散 / 超参敏感）、高显存（40GB+）、难装（VERL）、reward 噪声会被放大。
+**RL 的代价**（系列07 详谈）：不稳定（reward hacking / KL 发散 / 超参敏感）、高显存（40GB+）、难装（VERL）、reward 噪声会被放大。
 
-> 完整升级顺序：**先 APO 调 prompt（不动权重，最便宜）→ 顶了上 SFT（拒绝采样自提升，正例，16GB）→ 再顶了上 RL（VERL，正负例 + 探索，40GB+）**。每一级都比上一级贵、强、难调。**method-agnostic 的兑现：这三级共享同一份 agent + grader + 数据集，换的只是 `algorithm/` 槽位。** 系列06 就接着把 SFT 留下的「负例信息」和「探索」这两块拼上。
+> 完整升级顺序：**先 APO 调 prompt（不动权重，最便宜）→ 顶了上 SFT（拒绝采样自提升，正例，16GB）→ 再顶了上 RL（VERL，正负例 + 探索，40GB+）**。每一级都比上一级贵、强、难调。**method-agnostic 的兑现：这三级共享同一份 agent + grader + 数据集，换的只是 `algorithm/` 槽位。** 系列07 就接着把 SFT 留下的「负例信息」和「探索」这两块拼上。
 
 ---
 
@@ -440,6 +440,6 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 7. **demo 的坑：只切比例不设阈值**（`:291-295`）——reward 全 0 也会取 top 50%，正确率 < 50% 时会用 0 分样本「凑满」污染训练集。生产应改阈值过滤（`reward > 0`）。
 8. **工具调用是 SFT 内容，但只算模型自产部分**：function_call 在 response（训练），工具返回在下轮 prompt（被 -100 盖住）。换工具 schema → 调用语法不迁移、推理模式部分迁移；**先把工具契约定稳再 SFT**。
 9. **单轮 vs 多轮记录**：agent-lightning 用 A 法（每轮一条，`:242/256/277`）。A、B 在 token 梯度上等价、不影响能不能学会；差异在训练分布权重与算力——长轨迹 B 更省更忠实，A 是为了与 RL 统一 triplet + reward 跨轮传播。拆分在 adapter 不在模型。
-10. **快速成功选 SFT**：16GB + 无需 VERL + 稳定收敛，是上手权重微调的最佳起点；顶了再上 RL（系列 06）。
+10. **快速成功选 SFT**：16GB + 无需 VERL + 稳定收敛，是上手权重微调的最佳起点；顶了再上 RL（系列 07）。
 
 > 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（脊柱 + Algorithm 接口）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（生产者/消费者、一键 vs 三进程）、[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]（算法剖析对称篇）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]、[[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
