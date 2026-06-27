@@ -435,6 +435,32 @@ HF Trainer 的规则是 **`max_steps > 0` 直接覆盖 `num_train_epochs`**，ep
 
 > 一句话：epoch 是更好的「默认单位」（自适应、整遍、曝光均匀），`max_steps` 是「固定算力 / 数据量未知 / 飞轮等长」的专用工具；日志里的小数 epoch 是 `max_steps` 倒推的进度比、不是设定值；想按 loss 早停得先有 holdout 的 val loss，train loss 不回升用不了。
 
+### 3.7 动态飞轮实验复盘：采样数才是数据增长主杠杆、holdout pass@1 才是真停止信号 ✅
+
+把 demo 改成「reward 样本数不再创新高就停」的**动态飞轮**（`should_stop_by_reward_count`：当前轮 kept 低于历史中 ≥2 个记录就停）后实测：数据**一路缓慢上涨、跑到第六轮还在 +3/+5**，而不是头一两轮就 +10/+15 再 plateau。读完源码，复盘出两个比「调学习率」重要得多的认知。
+
+**复盘一：单轮提升小，根因是 rollout 退化成 greedy pass@1，不是 LR。** 三处代码叠加锁死了「每轮只能一阶一阶爬」：
+
+| 代码事实 | 位置 | 后果 |
+|---|---|---|
+| temperature 默认 **0.0（greedy）** | `math_agent.py:140`（`sampling_parameters` 从没设 temperature，`:185`） | 每题只产**唯一确定轨迹**，零探索 |
+| 每题每轮只 **enqueue 一次** | `sft_algorithm.py:290` | 单采样，方差大、漏掉「本能做对但这次没采到」 |
+| 每轮只训**本轮数据、非累积** | `all_records` 空列表重建 `:320` | 每轮 ~80 条训 3 epoch（≈30 步）= 轻推非跃升 |
+
+greedy + 单采样 = **结构上不可能头轮大跳**：你只能收割「贪心路径自上轮翻对」的那几道题。要回到标准 RAFT/STaR 的「头轮大跳→快速到顶」曲线，**真正的杠杆是采样数（pass@k）而非 LR**：把 temperature 调>0（如 0.7~1.0）+ 每题采 k 次，「k 条里一条对就成 SFT 样本」= pass@k 收割，一次性抓住大批边界题。加大 LR 反而有 catastrophic forgetting 风险（模型被自产同质数据拽偏→下轮 rollout 变差→飞轮反转），代码注释自己都写 `Reduce to 2e-5 for long training runs`。
+
+> 天花板的代码依据：训练集**全部来自模型自己答对的轨迹**（reward 来自 `compute_reward(自答, target)` `math_agent.py:145`→`reward>0` 过滤 `sft_algorithm.py:400`），`target` 只用来打分、**从不作 label 喂训练**（系列05「reward 造标签而非喂答案」）。所以一道题进训练集 ⟺ 它 pass@k>0；模型从不会做的题永远学不到 → **天花板 = 基座 pass@k**，k 越大越能把潜在能力榨出来。
+
+**复盘二：「reward 样本数上涨」测不出过拟合，holdout pass@1 才是干净信号。** 这是这个动态飞轮最大的认知陷阱——`reward_sample_count` 是在**同一批训练题**上量的，它上涨和「模型记住了训练题」无法区分，**停止信号本身被训练集污染**。又因每轮在自产同质数据上反复训（数据小+重复度高），记忆风险实打实。唯一能分辨的办法是**训练宽松 / 验证严格的不对称评测**：
+
+- **训练（收割）**：temperature>0、每题 k 采样 → pass@k，尽量多收正确轨迹；
+- **holdout（验证）**：在**从不训练**的留出题上贪心单次 → **pass@1**，贴近部署的「一次解对没见过的题」；
+- **判据**：harvest↑ **且** holdout pass@1↑ = 真泛化；harvest↑ **但** holdout pass@1 平/降 = 过拟合 → 停（即系列05 §7.1「SFT 到顶 → 升 RL」触发点）。
+
+落地四步：① 在 `load_math_dataset` 切 train/holdout split（holdout 永不进训练）；② 训练侧加采样（temp>0、k 次）；③ 每轮训完在 holdout 上评 pass@1；④ 把停止判据从「reward 数 plateau」换成「holdout pass@1 plateau」。配套防过拟合：先提数据多样性（temp+pass@k）再谈 epoch、加 replay buffer 掺往轮好轨迹、去重近似轨迹、epoch 保持浅（1~3）、LR 别加。
+
+> 一句话复盘：**数据增长的主杠杆是「每题采样数（pass@k）」不是学习率**（当前 greedy 单采样退化成 pass@1，故慢爬）；**真停止/防过拟合信号是「holdout pass@1」不是训练题上的 reward 数**（后者被污染、测不出记忆）。训练宽松（pass@k）+ 验证严格（pass@1）是这条线的标准姿势。
+
 ---
 
 ## 四、改造成自己的：换数据集 / grader / agent ✅
