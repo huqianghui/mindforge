@@ -160,6 +160,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [VAD 技术全景——从噪声环境论文到工业级语义端点检测](paper/2026-04-27-VAD-in-Noisy-Environments.md)
 - [Brevity Constraints Reverse Performance Hierarchies in Language Models——简洁约束逆转模型性能层级](paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)
 - [AgenticRAG — Agentic Retrieval for Enterprise Knowledge Bases 论文精读笔记](paper/2026-05-28-AgenticRAG-Agentic-Retrieval-for-Enterprise-Knowledge-Bases.md)
+- [RAFT（Reward rAnked FineTuning）论文解读——拒绝采样 SFT 的理论出处，与 STaR、agent-lightning 的关联](paper/2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读.md)
 
 ---
 
