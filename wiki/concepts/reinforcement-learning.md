@@ -74,6 +74,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - [[rejection-sampling-finetuning]] — `contrasts` RAFT 用 reward 只过滤不进梯度，是"RL 的数据哲学 + SFT 的更新机制"，SFT 到顶后升级到 RL
 - [[automatic-prompt-optimization]] — `contrasts` APO 把 reward 用于离线 prompt 搜索，RL 把 reward 当梯度信号；同属 method-agnostic 阶梯
 - [[agent-lightning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup
+- [[online-learning]] — `contrasts` RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient
 
 ## 来源日记
 

@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-06-29
-stats: "72 concepts, 15 methods, 6 decisions, 360 claims"
+stats: "73 concepts, 15 methods, 6 decisions, 364 claims"
 tags:
   - wiki
   - index
@@ -91,6 +91,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[react-paradigm]] — ReAct 范式：Thought-Action-Observation，Agent Loop 最小完备形式
 - [[scaling-laws]] — 缩放定律：Bitter Lesson 的定量化证明
 - [[reinforcement-learning]] — 强化学习：Search + Learning 统一，Harness 是学习能力缺失的补偿
+- [[online-learning]] — 在线学习：双回路混合系统（改行为+改参数），自适应控制，区别 Harness 看"改没改参数"
 - [[context-projection]] — 上下文投影：context ≠ state，按需投影解决 Context 爆炸
 - [[claim-based-schema]] — 基于论断的知识模式：不存事实只存论断的知识系统设计
 

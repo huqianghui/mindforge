@@ -80,6 +80,7 @@ related:
 - [[feedback-loop]] — `part-of` 负反馈是反馈闭环的核心驱动机制
 - [[agent-loop-architecture]] — `uses` Agent Loop 的每次迭代都是一次负反馈修正
 - [[loop-engineering]] — `grounds` verifier 上限 = 控制器上限是负反馈控制论的直接推论
+- [[online-learning]] — `uses` 在线学习的快回路就是负反馈控制（error → correction，不改参数）
 
 ## 来源日记
 
