@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29T02:03:29.024065+00:00",
+  "generated_at": "2026-06-29T03:59:24.849404+00:00",
   "stats": {
-    "nodes": 95,
-    "links": 384,
+    "nodes": 99,
+    "links": 407,
     "orphan_links_removed": 0,
-    "claims": 368,
+    "claims": 388,
     "categories": 10
   },
   "nodes": [
@@ -25,8 +25,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.82,
+      "claims_count": 10,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "框架是一条 9 模块数据流脊柱 + 控制反转",
@@ -99,6 +99,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的\"多 agent 协作\"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。"
+        },
+        {
+          "statement": "对 VERL 是架构锁定而非简单依赖——Agent RL 是系统问题",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。"
+        },
+        {
+          "statement": "数据流飞轮在哲学上与 Slime 同构，反比所绑的 VERL 更近",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。"
         }
       ]
     },
@@ -1646,6 +1664,74 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "控制论五层（WHY，设计原理）、六层工程模型（WHAT，模块结构）、三层控制模型（HOW，运行动力学）三者回答不同问题。收敛性公式 = 约束强度 × 反馈频率 / 执行自由度，其中每个因子的来源由控制论五层解释。"
+        }
+      ]
+    },
+    {
+      "id": "distributed-training-parallelism",
+      "type": "concept",
+      "title": "分布式训练并行（TP/PP/DP/FSDP/Megatron）",
+      "summary": "分布式训练并行是\"当一个模型大到单卡/单机放不下时如何拆开高效训练\"的一组策略与系统实现。它是 RL infra（[[verl]] / [[slime-rl-framework]]）脚下的**训练后端层**，也是读懂\"为什么 vLLM 有 TP 还需要 Megatron\"\"为什么 PyTorch 本身分布式却还要 FSDP\"等高频困惑的钥匙。\n\n核心认知是一条垂直分层：硬件（GPU/NCCL）→ PyTorch（autograd + `torch.distributed` 基础通信原语）→ FSDP / Megatron（建在其上的分布式训练策略）→ RL 框架（VERL / Slime）。**\"分布式\"不是一个功能，而是一整套系统设计；PyTorch 只是基础，FSDP / Megatron 才是把这套系统真正跑起来的工程实现。**",
+      "tags": [
+        "wiki",
+        "concept",
+        "distributed-training",
+        "tensor-parallel",
+        "pipeline-parallel",
+        "FSDP",
+        "Megatron",
+        "PyTorch"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.84,
+      "claims": [
+        {
+          "statement": "FSDP 切的是\"存储\"，TP/PP 切的是\"计算\"——这是数据并行与模型并行的分野",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "FSDP（Fully Sharded Data Parallel）本质仍是数据并行（DP）+ 参数分片，没有 TP 也没有 PP。以 `y=xW` 为例：TP（切计算）把 W 按列切成 W1|W2，GPU0 只算 y1=xW1、GPU1 只算 y2=xW2 再拼回，每张卡只完成一半矩阵乘；FSDP（切存储）平时各存半个 W 省显存，真要算时先 all-gather 把完整 W 临时拼到每张卡、各自独立算出完整 y（喂不同数据批），算完立即释放。一句话：TP 让多卡\"合作完成一次计算\"，FSDP 让每卡\"独立完成全部计算、只是平时不囤全部参数\"。"
+        },
+        {
+          "statement": "FSDP 逐层 all-gather + 释放，故\"拼回全参数\"也不 OOM",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "FSDP 不是一次性拼回整个模型，而是逐层（layer by layer）\"拼—算—丢\"：每层 all-gather 凑齐该层完整参数→forward→立即 release 只留分片。例：60GB 模型、单层峰值 2GB、单卡 16GB——一次性拼全需 60GB 必 OOM，而 FSDP 任一时刻只拼当前层（峰值 2GB）+ 长期分片，16GB 卡能跑。本质是\"通信换显存/时间换空间\"：代价是每层多一次 all-gather，收益是单卡不必长期持有完整模型。\"每张卡做完整计算\"指在时间上顺序走完所有层，而非某瞬间攥着整个模型。"
+        },
+        {
+          "statement": "FSDP 多卡是\"提效的副本\"，TP/PP 多卡是\"否则算不了的协作\"",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "FSDP 下每卡逻辑上都能跑完整模型，多卡动机是提效（显存分片到 1/N、吞吐撑 batch 1024/2048、算力压 wall-clock 到 1/N），卡间互为副本各喂不同数据、最后同步梯度——去掉冗余卡仍能跑只是更慢。TP/PP 多卡是\"否则根本算不了\"（单卡放不下一层/一次计算），卡间协同组成一个模型缺一不可。这条区别是 FSDP 归属\"数据并行家族\"而非\"模型并行家族\"的判定依据。切换边界：只要单卡还能逐层跑完一次前向/反向 FSDP 就够用；一旦连单层都放不下，才必须上 TP/PP。"
+        },
+        {
+          "statement": "FSDP 是 PyTorch 官方内置，Megatron 是外部项目；适用规模接力而非优劣",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "FSDP 来自 `torch.distributed.fsdp`（`FSDP(model)` 即可），无独立 repo；DDP 同为 PyTorch 官方；Megatron（NVIDIA，手动 TP/PP/EP）与 DeepSpeed（ZeRO/显存优化）是外部项目。Megatron = TP + PP + DP + MoE，面向 100B+/超大 MoE/极致吞吐（DeepSeek-V3/R1、GLM、Qwen3 MoE 等都依赖 Megatron 类体系）。二者同处训练层但哲学迥异：FSDP 自动参数分片、抽象高、易用、≤70B；Megatron 手动模型并行、控制细、性能高、100B+。类比：FSDP 像 Python 标准库（官方自带开箱即用），Megatron 像高性能第三方框架。它们是适用规模的接力——FSDP 覆盖\"单卡放得下一层\"的中段，Megatron 接管\"单层都放不下\"的顶端。"
+        },
+        {
+          "statement": "同名 TP/PP 在推理与训练是两回事——推理只 forward，训练带 backward+梯度+optimizer",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "推理系统（vLLM/SGLang）的 TP/PP 不需反向传播、不同步梯度、无 optimizer，故可轻量高吞吐（推理本质 `输入→forward→输出`）；训练系统（Megatron）的 TP/PP 还要 backward 梯度、all-reduce、1F1B 交错调度、bubble 优化、activation 传递、optimizer state/梯度累积/checkpoint，是完整分布式计算系统、复杂度高一个数量级（训练本质 `forward→loss→backward→gradient→optimizer`）。由此引出常踩的坑：\"既然 vLLM 都支持 TP 是不是就不需要 Megatron 了？\"——错。vLLM 只解决\"模型怎么跑（推理）\"，Megatron 才解决\"模型怎么学（训练）\"，只用 vLLM 无法训练（没 optimizer/backward）。"
         }
       ]
     },
@@ -3566,7 +3652,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
+      "claims_count": 6,
       "avg_confidence": 0.83,
       "claims": [
         {
@@ -3595,6 +3681,33 @@
           "confidence": 0.9,
           "status": "stale",
           "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
+        },
+        {
+          "statement": "LLM RL 的四种形态——PPO/GRPO/RLHF/RLVR，最终都收敛到 rollout↔training 交替",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "大模型语境下 RL 主要四种形态：PPO（actor+critic 两套网络，RLHF 标准内核）、GRPO（组内相对优势替代独立 critic、省显存，近年主流）、RLHF（奖励来自人类偏好训练的奖励模型）、RLVR（奖励来自可自动验证规则如数学答案/代码通过测试，无需奖励模型，Agent 场景最常用）。算法层差异最终都收敛到同一工程结构：生成数据（rollout）与更新模型（training）两阶段交替。与 SFT 的本质分野：SFT 模仿正样本、便宜稳定但受限于已有能力；RL 用试错探索换更高上界，代价是最贵、最不稳。"
+        },
+        {
+          "statement": "Rollout 与 Epoch 是两个维度——数据采集 vs 优化，不是层级关系",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Rollout 属数据采集维度（Agent 实际执行了多少次任务，一条\"提问→Search→Observation→Answer\"即一条 rollout，`1000 rollouts` = 采集 1000 条轨迹）；Epoch 属优化维度（采集到的数据被反复学习几遍，`epoch 3` = 这批轨迹训练 3 次）。监督学习对应物：rollout ≈ sample/trajectory 而非 epoch。标准流程先后关系：收集 rollouts（policy_v1 产 1000 条轨迹）→ 计算 reward → 训练（这 1000 条跑 epoch1→2→3）。这也是 RL 日志刻意分 `Collect Rollouts` 与 `Optimize Epochs` 两段统计的原因，是读懂\"rollout 与 training 解耦\"的前提。"
+        },
+        {
+          "statement": "Agent 时代 RL 是分布式系统问题而非算法问题——单轮→多步轨迹的分水岭",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "传统 RLHF 假设单轮交互（`prompt→model→output→reward→update`，同步简单）；Agent 真实执行是多步轨迹（思考→调工具→观察→再决策→…→最终答案获 reward），具备四个传统 RL 不具备的特征：多轮、有状态、异步、依赖外部环境（API/DB/浏览器/代码执行器）。这四个特征使瓶颈从「算法」迁移到「基础设施」：rollout 占 80~90% 时间、需 training-rollout 解耦避免 GPU 互相空转。由此 Agent RL 的本质升维——不再是「怎么写 PPO loss」，而是「rollout 机制 + 训练推理解耦 + 分布式编排」的系统问题，框架选型（见 [[verl]]/[[slime-rl-framework]]）几乎必然建立在分布式基础设施架构之上。"
         }
       ]
     },
@@ -3989,6 +4102,55 @@
       ]
     },
     {
+      "id": "slime-rl-framework",
+      "type": "concept",
+      "title": "Slime（数据流式 RL 框架）",
+      "summary": "Slime 是一个面向大语言模型后训练的强化学习框架，由清华 THUDM（GLM 模型团队）开发，核心目标是 **RL Scaling**——让 RL 在大规模、多轮 Agent 场景下跑得又快又稳。它与 [[verl]] 同档（infra 级），可理解为 VERL 的另一种架构路线：**VERL 是\"调度系统\"，Slime 是\"数据流系统\"。**\n\nSlime 的核心哲学是一句话：**训练（training）与采样（rollout）彻底解耦，用一个 Data Buffer 把二者连接成数据流。** 其设计本质是对 VERL 这类框架\"系统化过度\"的反思——不把系统拆成 trainer + rollout service + agent framework 三套并存（易陷 glue 代码地狱），而是统一成一个数据流系统。它与 [[agent-lightning]] 的 store 飞轮哲学高度同构。",
+      "tags": [
+        "wiki",
+        "concept",
+        "slime",
+        "RL-infra",
+        "reinforcement-learning",
+        "dataflow",
+        "framework"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "核心哲学是训练与采样彻底解耦、用 Data Buffer 连成数据流闭环",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "三大组件构成闭环：Training（Megatron）→ weight update → Data Buffer（连接训练与采样的数据流中枢）→ rollout data → Rollout（SGLang）→ 回到 Training。最关键的设计理念是 **\"Agent workflow = data generation\"**：把 Agent RL 直接当作\"数据生成问题\"处理，而非像 VERL 那样建模成一套 RL workflow 编排系统。这是它出现的动机——作者认为 VERL 过于系统化/抽象，Slime 的解法是统一成单一数据流 pipeline。"
+        },
+        {
+          "statement": "技术选型 = Megatron（训练）+ SGLang（推理）+ Ray（轻量调度）",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Slime 的组件选型相当 opinionated（强约束）：训练后端只用 Megatron（支持 TP/PP/EP/MoE，超大模型能力强）；rollout 后端只选 SGLang 一个（看重高吞吐、continuous batching、prefix caching、routing）——这与 VERL 支持 vLLM/SGLang 多 backend 形成鲜明对比，是关键差异点；调度仅用 Ray 的 actor + placement group 做轻量粘合，而非重型中心调度系统。本质是**强制 server-based rollout 架构**——既是简洁来源，也是约束来源。"
+        },
+        {
+          "statement": "适合 MoE/超大模型与高吞吐 Agent RL，不适合已在 HF/vLLM 体系或需多 backend 的团队",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "适合：Agent RL（多轮）、MoE 大模型训练、高吞吐 rollout、已有 Megatron 体系的团队。不适合：已在 HF/vLLM 体系、需要多 inference backend、想做通用 RL 平台。一句话画像——Slime 是\"server-first + dataflow-first\"框架，通过将训练/rollout/agent 交互统一到一个数据流水线实现高吞吐大模型 RL；相比 VERL 牺牲部分通用性，换取更简单的系统结构与更强性能。"
+        }
+      ]
+    },
+    {
       "id": "speech-technology-stack",
       "type": "concept",
       "title": "Speech Technology Stack",
@@ -4296,6 +4458,64 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "级联系统中 Turn-Taking 是可替换模块；GPT-Realtime 中 Turn-Taking 融合在模型内部，无法单独替换。判断标准：\"它能不能被单独替换？能 → 模块，不能 → 模型内部能力。\""
+        }
+      ]
+    },
+    {
+      "id": "verl",
+      "type": "concept",
+      "title": "VERL（Volcano Engine RL）",
+      "summary": "VERL（`github.com/volcengine/verl`）是一套面向大规模 LLM 强化学习的**分布式基础设施系统**，而非训练脚本库。它由 ByteDance Seed Team 发起、以火山引擎（Volcano Engine）品牌开源，是论文 *HybridFlow: A Flexible and Efficient RLHF Framework* 的开源实现，近年成为国内外 RLHF / RL-for-LLM 社区使用最广的训练框架之一。\n\nVERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕代价是工程复杂度上升。** 它是 [[agent-lightning]] `algorithm/` 槽位里负责 RL（三级阶梯最高级）的内置算法后端——agent-lightning 选 VERL 不是偏好，而是被 Agent RL\"系统问题而非算法问题\"的本质所决定。它与 [[slime-rl-framework]] 是同档（infra 级）RL 框架的两条架构路线。",
+      "tags": [
+        "wiki",
+        "concept",
+        "VERL",
+        "RL-infra",
+        "reinforcement-learning",
+        "rollout",
+        "framework"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.84,
+      "claims": [
+        {
+          "statement": "VERL = Volcano Engine RL，ByteDance Seed Team 发起、HybridFlow 的开源实现",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
+        },
+        {
+          "statement": "三大核心特征——HybridFlow 控制器、training/rollout 解耦、Ray 集群调度",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "① HybridFlow 控制器模型：中央 Driver 全流程调度 + 多个 Worker（actor / critic / rollout）并行执行，本质是\"小型调度系统 + 一堆分布式 worker\"；② training 与 rollout 解耦（核心竞争力）——Engine mode（默认，rollout 与 training 共存同集群、权重共享）与 Server mode（rollout 独立成服务、经 RPC 调用、训练推理彻底分离便于横向扩展）双模式；③ 基于 Ray 的集群级调度（FSDP/Megatron 训练 + vLLM 推理）。此外算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，\"让算法替换成为一个配置问题\"，与 agent-lightning 上层的 method-agnostic 一脉相承。"
+        },
+        {
+          "statement": "agent-lightning 对 VERL 是架构锁定，而非简单依赖",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "agent-lightning 不是\"兼容 VERL\"，而是\"建立在 VERL 类架构的假设之上\"，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套\"rollout abstraction + reward pipeline + actor/critic/rollout/reward worker 模型 + Ray runtime\"正是 agent-lightning 的 Triplet 轨迹、reward span、store 控制平面在 RL 这一级能落地的前提。本质升维：在 Agent 时代强化学习不再是算法问题而是分布式系统问题，VERL 被选中是因为它解决\"系统级 RL\"的瓶颈。"
+        },
+        {
+          "statement": "最大瓶颈在 rollout 而非训练，理想态是 rollout/training overlap",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "经验上 rollout 占 80~90% 时间，training 次要。优化重点是 rollout 是否异步、是否批处理、是否用 vLLM serving；理想状态是\"生成第 n+1 批轨迹\"与\"训练第 n 批\"并行（VERL 强项）。三个健康指标：GPU 利用率（rollout/training 是否互相空转）、rollout 吞吐（trajectory/sec）、reward 稳定性（variance 是否发散）。两个典型坑：工具延迟（需 caching/async/mock env）与 reward 设计（Agent 场景 reward 极难设计，重要性甚至高于算法本身）。"
         }
       ]
     },
@@ -5194,6 +5414,56 @@
       ]
     },
     {
+      "id": "rl-infra-framework-selection",
+      "type": "decision",
+      "title": "Agent RL 基础设施框架选型——VERL vs Slime vs OpenRLHF vs TRL",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "reinforcement-learning",
+        "RL-infra",
+        "framework-selection",
+        "VERL",
+        "slime",
+        "agent-RL"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 3,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "三框架是抽象层谱系而非替代关系——TRL 算法工具 / OpenRLHF 工程框架 / VERL 基础设施",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "TRL（算法工具，HuggingFace Trainer，for-loop + optimizer + loss，rollout 内嵌训练循环、无调度层）→ OpenRLHF（工程化训练框架，actor/critic 弱编排 + DeepSpeed，rollout 半独立）→ VERL（分布式基础设施，HybridFlow 中央 Driver + 并行 Worker，rollout 完全解耦、Ray 集群调度）。三者站在「算法 → 工程化 → 基础设施」谱系的不同位置，并非功能替代。选型按规模：PoC/单轮 → TRL；中等规模/已有 DeepSpeed → OpenRLHF；Agent RL/大模型/数十卡以上 → VERL。"
+        },
+        {
+          "statement": "Agent RL 几乎必然选 VERL 类架构——被本质决定而非偏好",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Agent RL 的四个特征（多轮、有状态、异步、依赖外部环境）把瓶颈从算法迁到基础设施：rollout 是最重环节（占 80~90% 时间），若像 TRL 嵌在训练循环里则训练/rollout GPU 互相空转、无法 scale。必须 training-rollout 解耦（VERL 的 Server mode：rollout 独立成 worker、vLLM serving、异步批处理）。agent-lightning 对 VERL 是架构锁定——不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖 trajectory RL + async rollout + 分布式 rollout worker + 自定义 reward pipeline 四项能力。替换 VERL 等于替换一个分布式系统，替代成本远高于使用成本。"
+        },
+        {
+          "statement": "VERL→Slime 迁移取决于三个信号——规模/MoE、瓶颈定位、架构同构性",
+          "source": "Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Slime 非 drop-in replacement，迁移前需核对三项前置条件：能否接受 SGLang 唯一推理 backend、能否接受 Megatron 训练后端（从 FSDP 迁需改模型结构）、能否改造 rollout pipeline 与数据接口。三个判断信号：① 规模与 MoE——上 MoE/100B+/RL scaling 几乎一定向 Megatron 演进，此时 Slime 强绑定反成优势；70B 以下 FSDP 够用则 VERL 更省事。② 瓶颈定位——rollout 吞吐瓶颈在 VERL 内即可解（Ray/vLLM/async）或考虑 Slime 的 SGLang 强吞吐；training 能力瓶颈（大模型放不下）才考虑 Megatron。③ 架构同构性——agent-lightning 的数据流飞轮与 Slime「数据流包数据流」比 VERL「数据流包调度系统」更顺，但这是加分项而非决定项，规模与瓶颈不对齐时同构性收益不足以抵消迁移成本。"
+        }
+      ]
+    },
+    {
       "id": "spec-driven-vs-methodology-framework",
       "type": "decision",
       "title": "规范驱动 vs 方法论框架：Vibe Coding 工具选型",
@@ -5313,6 +5583,24 @@
       "target": "sft-rejection-sampling-hands-on",
       "relation_type": "produces",
       "description": "三级阶梯第二级（SFT）的动手实战流程页"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "verl",
+      "relation_type": "uses",
+      "description": "VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "slime-rl-framework",
+      "relation_type": "contrasts",
+      "description": "Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "rl-infra-framework-selection",
+      "relation_type": "produces",
+      "description": "agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象"
     },
     {
       "source": "agent-loop-architecture",
@@ -5955,6 +6243,36 @@
       "target": "online-learning",
       "relation_type": "part-of",
       "description": "在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应自适应控制"
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "verl",
+      "relation_type": "uses",
+      "description": "VERL 训练后端在 FSDP / Megatron 间二选一"
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "slime-rl-framework",
+      "relation_type": "uses",
+      "description": "Slime 强绑定 Megatron 做训练后端"
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "reinforcement-learning",
+      "relation_type": "grounds",
+      "description": "大模型 RL 必须大规模训练，并行策略是其物理前提"
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "prefix-caching",
+      "relation_type": "contrasts",
+      "description": "推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别"
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "uses",
+      "description": "MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP"
     },
     {
       "source": "enterprise-ontology",
@@ -6953,6 +7271,36 @@
       "description": "控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层"
     },
     {
+      "source": "slime-rl-framework",
+      "target": "verl",
+      "relation_type": "contrasts",
+      "description": "同档 RL 框架两条路线：Slime 数据流系统（Training-Buffer-Rollout）vs VERL 调度系统（Controller+Workers）"
+    },
+    {
+      "source": "slime-rl-framework",
+      "target": "reinforcement-learning",
+      "relation_type": "implements",
+      "description": "Slime 是面向 RL Scaling 的大模型 RL 工业实现"
+    },
+    {
+      "source": "slime-rl-framework",
+      "target": "agent-lightning",
+      "relation_type": "contrasts",
+      "description": "agent-lightning 的 store 飞轮与 Slime 的 Data Buffer 数据流哲学同构，比其实际绑定的 VERL 更近"
+    },
+    {
+      "source": "slime-rl-framework",
+      "target": "distributed-training-parallelism",
+      "relation_type": "uses",
+      "description": "强绑定 Megatron（TP/PP/EP/MoE）做训练后端"
+    },
+    {
+      "source": "slime-rl-framework",
+      "target": "prefix-caching",
+      "relation_type": "uses",
+      "description": "rollout 强绑定 SGLang，倚重其 RadixAttention 前缀复用"
+    },
+    {
       "source": "speech-technology-stack",
       "target": "voice-live-agent",
       "relation_type": "part-of",
@@ -7065,6 +7413,36 @@
       "target": "cascaded-pipeline",
       "relation_type": "uses",
       "description": "级联流水线中 Turn-Taking 是独立可配置模块"
+    },
+    {
+      "source": "verl",
+      "target": "reinforcement-learning",
+      "relation_type": "implements",
+      "description": "VERL 是 LLM RL（PPO/GRPO/RLHF/RLVR）的工业级分布式实现"
+    },
+    {
+      "source": "verl",
+      "target": "agent-lightning",
+      "relation_type": "part-of",
+      "description": "VERL 是 agent-lightning 内置算法（RL 三级阶梯最高级）的后端"
+    },
+    {
+      "source": "verl",
+      "target": "slime-rl-framework",
+      "relation_type": "contrasts",
+      "description": "同档 RL 框架两条路线：VERL 是调度系统（Controller+Workers），Slime 是数据流系统"
+    },
+    {
+      "source": "verl",
+      "target": "distributed-training-parallelism",
+      "relation_type": "uses",
+      "description": "VERL 训练后端可在 FSDP / Megatron 间二选一，推理用 vLLM / SGLang"
+    },
+    {
+      "source": "verl",
+      "target": "prefix-caching",
+      "relation_type": "uses",
+      "description": "Server mode 下 rollout 用 vLLM/SGLang serving，受益于前缀缓存"
     },
     {
       "source": "voice-activity-detection",
@@ -7529,6 +7907,36 @@
       "description": "\"是否走向权重微调（SFT/RL）\"是本决策的关键前提——若会，则 agent-lightning 的 method-agnostic 价值才兑现"
     },
     {
+      "source": "rl-infra-framework-selection",
+      "target": "verl",
+      "relation_type": "produces",
+      "description": "本决策的默认选择，Agent RL 的事实标准分布式基础设施"
+    },
+    {
+      "source": "rl-infra-framework-selection",
+      "target": "slime-rl-framework",
+      "relation_type": "produces",
+      "description": "本决策在规模/backend 对齐时的迁移目标（数据流路线）"
+    },
+    {
+      "source": "rl-infra-framework-selection",
+      "target": "reinforcement-learning",
+      "relation_type": "grounds",
+      "description": "Agent RL=系统问题而非算法问题，是本选型逻辑的理论根基"
+    },
+    {
+      "source": "rl-infra-framework-selection",
+      "target": "agent-lightning",
+      "relation_type": "constrains",
+      "description": "agent-lightning 架构锁定 VERL，约束了上层可选的 RL 后端"
+    },
+    {
+      "source": "rl-infra-framework-selection",
+      "target": "distributed-training-parallelism",
+      "relation_type": "constrains",
+      "description": "训练后端 FSDP/Megatron 的适用规模直接决定 VERL/Slime 的取舍边界"
+    },
+    {
       "source": "spec-driven-vs-methodology-framework",
       "target": "framework-selection",
       "relation_type": "grounds",
@@ -7626,7 +8034,10 @@
         "prefix-caching",
         "automatic-prompt-optimization",
         "rejection-sampling-finetuning",
-        "agent-lightning"
+        "agent-lightning",
+        "verl",
+        "slime-rl-framework",
+        "distributed-training-parallelism"
       ]
     },
     {
