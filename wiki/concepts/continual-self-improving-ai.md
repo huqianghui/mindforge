@@ -74,6 +74,7 @@ related:
 
 - [[bitter-lesson]] — `grounds` 持续自我改进体现"计算胜过人工知识"
 - [[rag-architecture-comparison]] — `uses` EntiGraph + RAG 互补关系
+- [[rejection-sampling-finetuning]] — `implements` 拒绝采样微调（STaR/RAFT/ReST）是模型自举式持续自我提升的具体训练机制
 
 ## 来源日记
 

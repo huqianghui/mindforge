@@ -71,6 +71,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - [[continual-self-improving-ai]] — `extends` 自我改进方法试图赋予 LLM Agent 类 RL 的学习能力
 - [[agent-paradigms]] — `grounds` RL 的 trial-and-error 是 Agent 范式的理论起点
 - [[harness-engineering]] — `contrasts` Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿
+- [[rejection-sampling-finetuning]] — `contrasts` RAFT 用 reward 只过滤不进梯度，是"RL 的数据哲学 + SFT 的更新机制"，SFT 到顶后升级到 RL
+- [[automatic-prompt-optimization]] — `contrasts` APO 把 reward 用于离线 prompt 搜索，RL 把 reward 当梯度信号；同属 method-agnostic 阶梯
+- [[agent-lightning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup
 
 ## 来源日记
 

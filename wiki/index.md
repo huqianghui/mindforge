@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-06-17
-stats: "67 concepts, 14 methods, 4 decisions, 324 claims"
+updated: 2026-06-29
+stats: "72 concepts, 15 methods, 6 decisions, 360 claims"
 tags:
   - wiki
   - index
@@ -94,6 +94,14 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[context-projection]] — 上下文投影：context ≠ state，按需投影解决 Context 爆炸
 - [[claim-based-schema]] — 基于论断的知识模式：不存事实只存论断的知识系统设计
 
+### LLM 推理与训练
+
+- [[hybrid-linear-attention-architecture]] — Hybrid 线性注意力架构：Transformer/Mamba/GDN/Hybrid 的"记忆怎么存"差异
+- [[prefix-caching]] — 前缀缓存：两条隐含假设，及循环状态为何让 Hybrid 命中归零
+- [[automatic-prompt-optimization]] — APO：文本梯度 + Beam Search，不动权重的 prompt 优化
+- [[rejection-sampling-finetuning]] — 拒绝采样微调（RAFT/STaR）：用 reward 造标签的自蒸馏式 SFT
+- [[agent-lightning]] — Agent Lightning：method-agnostic 训练框架，APO→SFT→RL 三级阶梯换槽位不换框架
+
 ### Claude Code 与扩展生态
 
 - [[claude-code-agent-subagent]] — Agent/Subagent 架构：进程隔离即上下文隔离
@@ -174,6 +182,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 - [[ai-native-five-layer-pipeline]] — AI-Native 五层开发流水线
 - [[openclaw-five-stage-gateway]] — OpenClaw Agent 网关五阶段建设
+- [[sft-rejection-sampling-hands-on]] — SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）
 
 ### Decision Framework（决策框架）
 
@@ -223,3 +232,5 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[architecture-constraint-over-agent-learning]] — 架构约束优于 Agent 自主学习：代码复用策略
 - [[spec-driven-vs-methodology-framework]] — 规范驱动 vs 方法论框架：Vibe Coding 工具选型
 - [[wiki-over-rag-for-personal-knowledge]] — LLM Wiki 优于 RAG：个人知识管理架构
+- [[prompt-optimization-tool-selection]] — Prompt 优化工具选型：DSPy vs agent-lightning
+- [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang

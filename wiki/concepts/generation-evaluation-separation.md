@@ -1,7 +1,7 @@
 ---
 title: "生成-评估分离（Generation-Evaluation Separation）"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-06-29"
 tags:
   - wiki
   - concept
@@ -49,10 +49,21 @@ related:
 
 > Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。
 
+### Claim: 写作去AI味的 Humanizer multi-pass 是分离原则在文本生成域的实例
+
+- **来源**：[[去除AI味：从语言指纹到人机文本边界的消融]]
+- **首次出现**：2026-06-29
+- **最近更新**：2026-06-29
+- **置信度**：0.6
+- **状态**：active
+
+> 去除"AI味"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是"避免自己改自己的盲区"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。
+
 ## 冲突与演进
 
 - 2026-04-02：从三家公司的实践中识别出共同模式。
 - 2026-04-16：Meta-Harness 论文提供了更精确的 Guides/Sensors 双重控制框架。
+- 2026-06-29：去AI味文章提供文本生成域的实例（Writer→Humanizer→Reviewer），表明该原则跨域成立。
 
 ## 关联概念
 
@@ -66,3 +77,4 @@ related:
 
 - [[Vibe Coding系列01]] — Section 四 三家公司独立演化的共同设计原则
 - [[2026-04-16-Meta-Harness论文解读与实践思考]] — Guides/Sensors 双重控制机制
+- [[去除AI味：从语言指纹到人机文本边界的消融]] — Writer→Humanizer→Reviewer 三者分离（文本生成域实例）
