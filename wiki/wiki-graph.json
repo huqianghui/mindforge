@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29T01:48:45.091736+00:00",
+  "generated_at": "2026-06-29T01:59:02.176961+00:00",
   "stats": {
-    "nodes": 93,
-    "links": 365,
+    "nodes": 94,
+    "links": 375,
     "orphan_links_removed": 0,
-    "claims": 360,
+    "claims": 364,
     "categories": 10
   },
   "nodes": [
@@ -2926,6 +2926,64 @@
       ]
     },
     {
+      "id": "online-learning",
+      "type": "concept",
+      "title": "在线学习（Online Learning）",
+      "summary": "在线学习（Online Learning）是 AI Agent 概念辨析里最容易和「控制论 / 强化学习 / 训练优化」混为一谈的一个——它的独特之处在于**同时跑两个反馈回路**：快回路改行为（控制论范畴，不动参数）、慢回路改参数（学习范畴，延迟生效）。换句话说它把外部控制器写进了模型内部，因此**不能归为 Harness**——Harness 的定义就是「外部控制器，不改模型参数」。在控制论里它有一个精确的对应概念：**自适应控制（Adaptive Control）**——系统在运行中调整自身参数。区分一个操作是 Harness 还是在线学习只需一条硬标准：**有没有改模型参数**？prompt 改写 / tool retry / memory / RAG / self-reflection 全是「不改参数 → Harness（伪在线学习）」；LoRA 热更新 / 在线 policy gradient / weight editing 才是「改参数 → 真在线学习」。当前 LLM Agent 生态绝大多数是「纯 Harness」，这不是技术落后而是工程务实——在线学习的三个致命问题（不稳定、不可控、灾难性遗忘）让行业普遍选择 `Harness-First > Offline Training > Online Learning > RL` 的优先级。",
+      "tags": [
+        "wiki",
+        "concept",
+        "online-learning",
+        "control-theory",
+        "reinforcement-learning",
+        "harness-engineering",
+        "adaptive-control"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.84,
+      "claims": [
+        {
+          "statement": "在线学习是双回路混合系统，不能归为 Harness",
+          "source": "控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "在线学习同时做两件事：①修改当前行为（控制论层，快回路，不改参数，即时纠偏）②修改模型本身（学习层，慢回路，改参数，延迟生效）。这不能简单归为 harness——harness 的定义是「外部控制器，不改模型参数」，而在线学习把控制器写进了模型内部。它在控制论中的精确对应概念是**自适应控制（Adaptive Control）**：系统可以在运行中调整自身参数。"
+        },
+        {
+          "statement": "区分 Harness 与学习的硬标准——有没有改模型参数",
+          "source": "控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-06-29",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "区分一个操作属于 harness 还是 learning 用一条非常硬的标准：**改没改模型参数**？prompt 改写、tool retry、memory/RAG、scratchpad/context injection、self-reflection 全是「❌不改参数 → harness（控制）」；LoRA 动态更新、online policy gradient、weight editing 才是「✅改参数 → learning」。由此推出 LLM Agent 里的「伪在线学习」：Memory+RAG / Scratchpad / Self-reflection 都只改输入上下文不改权重，本质是高级 harness 而非真学习。"
+        },
+        {
+          "statement": "行业选择 Harness-First，因为在线学习有三个致命问题",
+          "source": "控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "在线学习的理想是「边用边学、持续进化」，但有三个致命问题：①**不稳定**（在线更新易发散，尤其 noisy reward 下）②**不可控**（reward/loss 噪声直接传导到参数更新）③**灾难性遗忘**（新数据覆盖旧能力）。所以行业现实路线是 `Harness-First > Offline Training > Online Learning > RL`——Layer 1 控制层可控、可解释、立刻见效。当前 LLM Agent 绝大多数只工作在 Layer 1（harness），偶尔触及 Layer 3（离线训练），极少涉及 Layer 2（在线学习）。这不是技术落后而是工程务实。"
+        },
+        {
+          "statement": "真正前沿的问题是用 Harness 模拟 learning",
+          "source": "控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-06-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "比「在线学习是不是 harness」更有价值的问题是：**能不能用 harness 模拟 learning**？memory+retrieval ≈ 参数更新（把经验存外部而非权重）；self-reflection ≈ policy improvement（不改权重只改决策流程）；Meta-Harness ≈ automated harness optimization（用搜索替代梯度下降）。这些方向比直接做 RL 更现实，也更符合当前 LLM Agent 的工程约束。一个更狠的推论：RL 很可能只是「自动化 harness 的一种极端形式」。"
+        }
+      ]
+    },
+    {
       "id": "ontology-philosophy",
       "type": "concept",
       "title": "Ontology (Philosophy)",
@@ -5763,6 +5821,12 @@
       "description": "拒绝采样微调（STaR/RAFT/ReST）是模型自举式持续自我提升的具体训练机制"
     },
     {
+      "source": "continual-self-improving-ai",
+      "target": "online-learning",
+      "relation_type": "extends",
+      "description": "在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受不稳定/灾难性遗忘约束"
+    },
+    {
       "source": "contract-testing",
       "target": "testcontainers",
       "relation_type": "contrasts",
@@ -5815,6 +5879,12 @@
       "target": "loop-engineering",
       "relation_type": "grounds",
       "description": "\"模型是无状态控制器、外循环补其身体\"是控制论的直接应用"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "online-learning",
+      "relation_type": "part-of",
+      "description": "在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应自适应控制"
     },
     {
       "source": "enterprise-ontology",
@@ -6061,6 +6131,12 @@
       "target": "loop-engineering",
       "relation_type": "extends",
       "description": "Loop Engineering 是 Harness 的时间维度切片：内循环 ⊂ L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "online-learning",
+      "relation_type": "contrasts",
+      "description": "Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness"
     },
     {
       "source": "harness-quality-gate",
@@ -6321,6 +6397,12 @@
       "description": "verifier 上限 = 控制器上限是负反馈控制论的直接推论"
     },
     {
+      "source": "negative-feedback",
+      "target": "online-learning",
+      "relation_type": "uses",
+      "description": "在线学习的快回路就是负反馈控制（error → correction，不改参数）"
+    },
+    {
       "source": "notion-as-ai-layer",
       "target": "personal-knowledge-compiler",
       "relation_type": "contrasts",
@@ -6361,6 +6443,36 @@
       "target": "oh-my-claude-code",
       "relation_type": "uses",
       "description": "OMC 的 Autopilot 模式助力一人团队"
+    },
+    {
+      "source": "online-learning",
+      "target": "reinforcement-learning",
+      "relation_type": "contrasts",
+      "description": "RL 只改参数（慢回路），在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient"
+    },
+    {
+      "source": "online-learning",
+      "target": "cybernetics-agent-design",
+      "relation_type": "part-of",
+      "description": "在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应控制论中的自适应控制"
+    },
+    {
+      "source": "online-learning",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "在线学习的快回路就是负反馈控制（error → correction，不改参数）"
+    },
+    {
+      "source": "online-learning",
+      "target": "continual-self-improving-ai",
+      "relation_type": "extends",
+      "description": "在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受三个致命问题约束"
+    },
+    {
+      "source": "online-learning",
+      "target": "harness-engineering",
+      "relation_type": "contrasts",
+      "description": "Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness"
     },
     {
       "source": "ontology-philosophy",
@@ -6559,6 +6671,12 @@
       "target": "agent-lightning",
       "relation_type": "part-of",
       "description": "VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "online-learning",
+      "relation_type": "contrasts",
+      "description": "RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient"
     },
     {
       "source": "rejection-sampling-finetuning",
@@ -7383,6 +7501,7 @@
         "react-paradigm",
         "scaling-laws",
         "reinforcement-learning",
+        "online-learning",
         "context-projection",
         "claim-based-schema"
       ]
