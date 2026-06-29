@@ -277,7 +277,8 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 - 系列 04（已完成）：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
 - 系列 05（已完成）：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]——SFT 剖析：reward 不喂答案而造标签、拒绝采样微调（RAFT/STaR）、自蒸馏 vs 强→弱蒸馏（Unsloth + LoRA，16GB 可跑）
 - 系列 06（已完成）：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]——SFT 实战：Azure GPU VM 装通 unsloth+vLLM、跑通 GSM-hard 拒绝采样自提升、数据全生命周期与终止/动态化
-- 系列 07：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
-- 系列 08：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
+- 系列 07（已完成）：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]——RL 基础、VERL vs TRL vs OpenRLHF 架构对比、agent-lightning 为何绑定 VERL（系统问题非算法问题）、标准架构数据流与竞品分析
+- 系列 08：VERL 路线实战——在 GPU 环境真正跑通一次 RL 权重微调
+- 系列 09：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
 
 > 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
