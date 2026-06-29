@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29T03:59:24.849404+00:00",
+  "generated_at": "2026-06-29T05:37:37.878999+00:00",
   "stats": {
     "nodes": 99,
     "links": 407,
     "orphan_links_removed": 0,
-    "claims": 388,
+    "claims": 389,
     "categories": 10
   },
   "nodes": [
@@ -4478,7 +4478,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
+      "claims_count": 5,
       "avg_confidence": 0.84,
       "claims": [
         {
@@ -4516,6 +4516,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "经验上 rollout 占 80~90% 时间，training 次要。优化重点是 rollout 是否异步、是否批处理、是否用 vLLM serving；理想状态是\"生成第 n+1 批轨迹\"与\"训练第 n 批\"并行（VERL 强项）。三个健康指标：GPU 利用率（rollout/training 是否互相空转）、rollout 吞吐（trajectory/sec）、reward 稳定性（variance 是否发散）。两个典型坑：工具延迟（需 caching/async/mock env）与 reward 设计（Agent 场景 reward 极难设计，重要性甚至高于算法本身）。"
+        },
+        {
+          "statement": "SFT 与 RL 是两个独立入口，RL 冷启动靠配置 `model.path` 而非自动 SFT",
+          "source": "Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "VERL 的 SFT Trainer 与 RL Trainer 是平级、独立的入口（`verl.trainer.fsdp_sft_trainer` vs `verl.trainer.main_ppo`），共享下层 Model Engine（FSDP/Megatron/VeOmni）与 CheckpointEngine，但 RL 启动时**不会自动先做 SFT**。所谓\"SFT 冷启动\"不是开关而是配置：把 `actor_rollout_ref.model.path` 指向一个已 SFT/Instruct 的 checkpoint。该配置组把 actor/rollout/reference 打包共享同一 `model.path`，故 SFT 模型同时充当 actor 初始权重与 reference policy（KL 锚点）。两种来路：① 直接用现成 Instruct 模型（多数实践，如 Qwen2.5-Instruct）；② 先用 fsdp_sft_trainer 产出 checkpoint 再喂给 main_ppo（SFT→RL 两段式，checkpoint 格式天然衔接）。最佳实践：通用任务直接用 Instruct 模型冷启动；domain gap 大或复刻 R1 式推理才自做 SFT，甚至 SFT→RL→SFT→RL 多轮交替。这与 agent-lightning 跨框架解耦 SFT(unsloth)/RL(verl) 同构——VERL 内部本就把两步解耦。"
         }
       ]
     },
