@@ -89,6 +89,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 - [[oh-my-claude-code]] — `uses` OMC 基于 Agent/Subagent/Teammate 架构
 - [[claude-code-memory-system]] — `uses` Subagent Memory 依赖进程隔离架构
 - [[meta-harness]] — `uses` Meta-Harness 论文选用 Claude Code Agent 作为 Proposer
+- [[model-routing]] — `contrasts` Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制
 
 ## 来源日记
 

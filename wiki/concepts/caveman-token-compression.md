@@ -81,6 +81,7 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 - [[context-engineering]] — `implements` Caveman 是 Context Engineering 在输出侧的实践
 - [[harness-engineering]] — `part-of` Token 压缩是 Harness 工程的优化环节
 - [[skill-pattern]] — `implements` Caveman 是 Skill Pattern 的典型实例——通过 SessionStart Hook 注入能力
+- [[model-routing]] — `contrasts` Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行（降单价）
 
 ## 来源日记
 

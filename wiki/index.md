@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-06-29
-stats: "73 concepts, 15 methods, 6 decisions, 364 claims"
+stats: "74 concepts, 15 methods, 6 decisions, 368 claims"
 tags:
   - wiki
   - index
@@ -165,6 +165,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[claude-code-memory-system]] — Claude Code 六层记忆与持久化体系
 - [[rtk-token-compression]] — RTK（Rust Token Killer）：AI Coding Agent 的 Token 压缩中间件
 - [[caveman-token-compression]] — Caveman：Prompt Engineering 工程化的 LLM 输出 Token 压缩
+- [[model-routing]] — 模型路由：降 token 单价的正交优化轴（CodexSaver/MCP），昂贵模型判断+廉价模型执行
 - [[brevity-constraints]] — 简洁约束：逆转大小模型性能层级的反直觉现象
 
 ## 方法索引
