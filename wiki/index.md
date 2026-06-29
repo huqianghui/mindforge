@@ -102,6 +102,9 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[automatic-prompt-optimization]] — APO：文本梯度 + Beam Search，不动权重的 prompt 优化
 - [[rejection-sampling-finetuning]] — 拒绝采样微调（RAFT/STaR）：用 reward 造标签的自蒸馏式 SFT
 - [[agent-lightning]] — Agent Lightning：method-agnostic 训练框架，APO→SFT→RL 三级阶梯换槽位不换框架
+- [[verl]] — VERL（Volcano Engine RL）：HybridFlow 调度系统，Agent RL 事实标准基础设施
+- [[slime-rl-framework]] — Slime：数据流式 RL 框架（Training-Buffer-Rollout），Megatron+SGLang 强绑定
+- [[distributed-training-parallelism]] — 分布式训练并行：FSDP 切存储 vs TP/PP 切计算、Megatron/PyTorch 分层
 
 ### Claude Code 与扩展生态
 
@@ -236,3 +239,4 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[wiki-over-rag-for-personal-knowledge]] — LLM Wiki 优于 RAG：个人知识管理架构
 - [[prompt-optimization-tool-selection]] — Prompt 优化工具选型：DSPy vs agent-lightning
 - [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang
+- [[rl-infra-framework-selection]] — Agent RL 基础设施框架选型：VERL vs Slime vs OpenRLHF vs TRL

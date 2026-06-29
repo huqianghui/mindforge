@@ -111,9 +111,30 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 > 逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的"多 agent 协作"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。
 
+### Claim: 对 VERL 是架构锁定而非简单依赖——Agent RL 是系统问题
+
+- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **首次出现**：2026-06-29
+- **最近更新**：2026-06-29
+- **置信度**：0.8
+- **状态**：active
+
+> agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。
+
+### Claim: 数据流飞轮在哲学上与 Slime 同构，反比所绑的 VERL 更近
+
+- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **首次出现**：2026-06-29
+- **最近更新**：2026-06-29
+- **置信度**：0.75
+- **状态**：active
+
+> agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。
+
 ## 冲突与演进
 
 - 2026-06-25：系列02 纠正系列01——SFT 不是内置算法类，而是走自定义算法扩展点（继承 `Algorithm` + `run()`）。
+- 2026-06-29：从系列07 与 Slime vs VERL 对比补充——对 VERL 是架构锁定（Agent RL=系统问题）、数据流飞轮与 Slime 同构但不同层，接入 verl/slime-rl-framework 概念页。
 
 ## 关联概念
 
@@ -123,6 +144,9 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - [[generation-evaluation-separation]] — `uses` litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例
 - [[bitter-lesson]] — `grounds` method-agnostic 阶梯让优化方法可随算力/数据升级，体现"计算胜过人工设计"
 - [[sft-rejection-sampling-hands-on]] — `produces` 三级阶梯第二级（SFT）的动手实战流程页
+- [[verl]] — `uses` VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系
+- [[slime-rl-framework]] — `contrasts` Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）
+- [[rl-infra-framework-selection]] — `produces` agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象
 
 ## 来源日记
 
@@ -132,3 +156,5 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]] — 算法=LLM调用+sorted、虚拟多 agent 真相
 - [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] — SFT 内核：拒绝采样造标签、自蒸馏
 - [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] — SFT 实战：Azure GPU VM + unsloth 跑通
+- [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — RL 这一级绑定 VERL 的选型逻辑与架构锁定本质
+- [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — agent-lightning 飞轮与 Slime 数据流同构、不同层的殊途同归
