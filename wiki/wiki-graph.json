@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-29T01:59:02.176961+00:00",
+  "generated_at": "2026-06-29T02:03:29.024065+00:00",
   "stats": {
-    "nodes": 94,
-    "links": 375,
+    "nodes": 95,
+    "links": 384,
     "orphan_links_removed": 0,
-    "claims": 364,
+    "claims": 368,
     "categories": 10
   },
   "nodes": [
@@ -2716,6 +2716,64 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。"
+        }
+      ]
+    },
+    {
+      "id": "model-routing",
+      "type": "concept",
+      "title": "模型路由（Model Routing）",
+      "summary": "模型路由是 Token 成本优化里和压缩**正交**的第三条轴：压缩（RTK/Caveman）减少 token *数量*，路由降低 token 的 *单价*（$/token）——同样的 token 量花更少的钱。其核心逻辑是「昂贵模型负责判断（reasoning），廉价模型负责执行（volume），永远不混淆两者」：把架构设计/安全审查/复杂推理等高风险任务留给旗舰模型，把写测试/生成文档/代码搜索/样板填充等低风险执行类任务委派给廉价模型（DeepSeek/haiku/本地 Ollama）。CodexSaver（`fendouai/CodexSaver`）是这一范式的代表实现——一个把 OpenAI Codex 变成成本感知任务路由器的 **MCP Server**，因此平台无关（任何支持 MCP 的 Agent 都能接入）。因为路由不动 token 内容，它与压缩可叠加：压缩把总量降 ~78%、再对剩余 60% 流量路由降价，最终成本可到原始的约 12%。本质区别于 Claude Code 的 `model` 参数（Agent 级分级）——MCP 路由是 **task 级细粒度** + 完全自定义规则 + 可接任意第三方/本地模型。",
+      "tags": [
+        "wiki",
+        "concept",
+        "model-routing",
+        "token-optimization",
+        "cost-optimization",
+        "mcp",
+        "coding-agent"
+      ],
+      "category": "知识管理与工具",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "压缩与路由是两条正交的 Token 优化轴",
+          "source": "CodexSaver深度解析——基于MCP的模型路由Token成本优化",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Caveman（压缩 LLM 输出）和 RTK（压缩工具输出）是**压缩策略**——让同一个模型处理更少的 token；CodexSaver 是**路由策略**——让不同价格的模型各做擅长的事。优化对象不同：压缩降 token *数量*，路由降 token *单价*（$/token）。两者正交可叠加：压缩把总量降 ~78%、再对剩余流量路由降价，三层联合最终成本约为原始的 12%（「原本支撑一周的预算现在能用两个月」）。"
+        },
+        {
+          "statement": "昂贵模型判断、廉价模型执行——按风险分级而非按能力高低",
+          "source": "CodexSaver深度解析——基于MCP的模型路由Token成本优化",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "核心逻辑：「昂贵模型负责判断（reasoning），廉价模型负责执行（volume），永远不混淆两者」。留给旗舰模型：架构设计、安全审查、受保护域、最终审批、复杂多步推理；委派给廉价 worker：写单元测试、生成文档/注释、代码搜索与解释、样板填充、格式化。三种路由状态：`codex_takeover`（留宿主）/ `delegated_execution`（委派廉价模型）/ `preview`（仅展示决策）。DeepSeek vs OpenAI 旗舰输入 token 价差达 16x，假设 60% 是低风险执行类任务，单路由即省 ~56%。"
+        },
+        {
+          "statement": "模型路由的价值是 Pattern 而非具体 repo——MCP 让它平台无关",
+          "source": "CodexSaver深度解析——基于MCP的模型路由Token成本优化",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "CodexSaver 本质是一个 **MCP Server**，通过标准 MCP 协议暴露 `delegate_task` 工具——MCP 是开放协议，任何支持 MCP 的 Coding Agent（Claude Code/Copilot/Cursor）都能接入或自写精简版（核心逻辑约 100 行：接任务 → 规则判风险 → 低风险调廉价 API / 高风险返回 takeover）。价值不在某个 repo 实现，而在「通过 MCP 把任务分级委派给不同成本模型」这个 Pattern。区别于各平台原生分级：Claude Code 的 `model` 参数选 haiku/sonnet/opus 是 **Agent 级**分级，MCP 路由是 **task 级**细粒度 + 完全自定义规则 + 可接第三方/本地模型。"
+        },
+        {
+          "statement": "路由不损失信息但引入执行质量与延迟风险",
+          "source": "CodexSaver深度解析——基于MCP的模型路由Token成本优化",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "相对压缩的独特优势：不像 Caveman/RTK 通过压缩减少信息量，路由**保持完整上下文**、可审计（每次路由决策有可见 `interaction` 记录，解决\"哪个模型处理哪个任务\"的信任问题）、对用户透明（全局 MCP 注册零修改工作流）。代价是新风险维度：廉价模型执行质量可能不足（靠旗舰 model 最终 review 缓解）、额外延迟（~6s/任务，仅批量任务路由）、数据安全（代码发第三方，可用本地 Ollama 替代）、路由误判（保守策略+人工 review）。不适用：月 token < 千万级（工程复杂度超收益）、长链一致性推理（不宜中途切模型）、高合规（除非本地模型）。"
         }
       ]
     },
@@ -5563,6 +5621,12 @@
       "description": "Caveman 是 Skill Pattern 的典型实例——通过 SessionStart Hook 注入能力"
     },
     {
+      "source": "caveman-token-compression",
+      "target": "model-routing",
+      "relation_type": "contrasts",
+      "description": "Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行（降单价）"
+    },
+    {
       "source": "claim-based-schema",
       "target": "personal-knowledge-compiler",
       "relation_type": "part-of",
@@ -5621,6 +5685,12 @@
       "target": "meta-harness",
       "relation_type": "uses",
       "description": "Meta-Harness 论文选用 Claude Code Agent 作为 Proposer"
+    },
+    {
+      "source": "claude-code-agent-subagent",
+      "target": "model-routing",
+      "relation_type": "contrasts",
+      "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
     },
     {
       "source": "claude-code-extension-system",
@@ -6325,6 +6395,12 @@
       "description": "Azure Skills 是 MCP/CLI 共存互补的最佳实战案例"
     },
     {
+      "source": "mcp-vs-cli",
+      "target": "model-routing",
+      "relation_type": "produces",
+      "description": "CodexSaver 以 MCP Server 形态实现模型路由，是 MCP 集成路线的典型应用，因此平台无关"
+    },
+    {
       "source": "meta-harness",
       "target": "harness-engineering",
       "relation_type": "extends",
@@ -6365,6 +6441,36 @@
       "target": "cybernetics-agent-design",
       "relation_type": "grounds",
       "description": "控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现"
+    },
+    {
+      "source": "model-routing",
+      "target": "rtk-token-compression",
+      "relation_type": "contrasts",
+      "description": "RTK 压缩工具输出（减 token 数量），模型路由降 token 单价，两条正交轴可叠加"
+    },
+    {
+      "source": "model-routing",
+      "target": "caveman-token-compression",
+      "relation_type": "contrasts",
+      "description": "Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行"
+    },
+    {
+      "source": "model-routing",
+      "target": "three-layer-token-optimization",
+      "relation_type": "extends",
+      "description": "三层压缩（compact/RTK/Caveman）之外的第四正交轴；叠加路由后成本可从 ~78% 压缩进一步降到约 12%"
+    },
+    {
+      "source": "model-routing",
+      "target": "mcp-vs-cli",
+      "relation_type": "uses",
+      "description": "CodexSaver 以 MCP Server 形态实现路由，因此平台无关，是 MCP 集成路线的典型应用"
+    },
+    {
+      "source": "model-routing",
+      "target": "claude-code-agent-subagent",
+      "relation_type": "contrasts",
+      "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
     },
     {
       "source": "negative-feedback",
@@ -6743,6 +6849,12 @@
       "target": "mcp-vs-cli",
       "relation_type": "contrasts",
       "description": "RTK 选择 CLI 代理而非 MCP 协议，体现了两条工具集成路线的不同取舍"
+    },
+    {
+      "source": "rtk-token-compression",
+      "target": "model-routing",
+      "relation_type": "contrasts",
+      "description": "RTK 压缩 token 数量，模型路由降 token 单价，两条正交优化轴可叠加"
     },
     {
       "source": "scaling-laws",
@@ -7602,6 +7714,7 @@
         "claude-code-memory-system",
         "rtk-token-compression",
         "caveman-token-compression",
+        "model-routing",
         "brevity-constraints"
       ]
     }
