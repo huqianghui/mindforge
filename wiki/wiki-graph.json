@@ -1,13 +1,107 @@
 {
-  "generated_at": "2026-06-17T03:54:19.651021+00:00",
+  "generated_at": "2026-06-29T01:48:45.091736+00:00",
   "stats": {
-    "nodes": 85,
-    "links": 333,
+    "nodes": 93,
+    "links": 365,
     "orphan_links_removed": 0,
-    "claims": 324,
-    "categories": 9
+    "claims": 360,
+    "categories": 10
   },
   "nodes": [
+    {
+      "id": "agent-lightning",
+      "type": "concept",
+      "title": "Agent Lightning",
+      "summary": "Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 agent 优化训练框架**：你提供「领域零件」（agent 逻辑 + reward grader + 数据集），框架提供「基础设施 + 算法」（执行/追踪/存储/优化），通过一条单向数据流脊柱把\"什么算好\"变成\"可迭代的优化循环\"。其核心设计价值在于——**换优化方法（APO↔SFT↔RL）只换 algorithm 槽位，agent 代码与 reward 一行不改**，从而支撑「APO → SFT → RL」由轻到重的三级优化阶梯。\n\n[[automatic-prompt-optimization]]（APO）和 [[rejection-sampling-finetuning]]（SFT/RAFT）是它 `algorithm/` 槽位里的两个具体算法；[[prompt-optimization-tool-selection]] 与 [[hybrid-inference-framework-selection]] 等决策也以它为评估对象。本页是这些算法页/决策页的母概念。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent-lightning",
+        "framework",
+        "rollout",
+        "reward",
+        "method-agnostic"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 8,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "框架是一条 9 模块数据流脊柱 + 控制反转",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "litagent → runner → tracer → store → adapter → reward → algorithm 是一条单向数据流，trainer 编排、types 做契约（基于 0.3.1 源码逐模块带 `file:line` 拆解）。控制反转：你定义「什么算好」的静态零件（agent 逻辑 + reward grader + 数据集），框架拥有「把好坏变成可迭代优化循环」的动态机制。"
+        },
+        {
+          "statement": "method-agnostic 的接缝是 adapter——换算法不动 agent",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 的兑现处，也是它区别于纯 prompt 工具（DSPy）的差异化价值。"
+        },
+        {
+          "statement": "@rollout 包函数不包实例；prompt 必须抽成注入资源",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "`@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓\"零代码改动\"实质是\"包一层符合签名的函数\"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。"
+        },
+        {
+          "statement": "store 是训练的控制平面，不只是 trace 存储",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "store 自称 \"persistent control-plane that coordinates training rollouts\"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）的中枢。生产选型：负载是「高频小记录读写 + 队列状态机 + 嵌套 JSON spans」，Azure 上用 Cosmos DB for MongoDB API 最省事（协议兼容、0 代码复用现成 mongo 实现）；已有 PostgreSQL 则 pg+JSONB 自己实现接口；MySQL 不推荐（JSON 支持弱）。"
+        },
+        {
+          "statement": "三级优化阶梯 APO → SFT → RL，SFT 是微调权重最便宜稳的入口",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "由轻到重：APO（只改 prompt，推理级，受限基座已有能力）→ SFT（拒绝采样只学正样本，16GB LoRA 可跑，把 pass@k 压成 pass@1）→ RL（正负样本+探索，40GB+，能探出新策略）。SFT 不是可有可无的过渡：① APO 改不动「能不能做对」只改「怎么说」，到顶后动权重最便宜入口是 SFT；② RL 几乎总要 SFT warmup，跳过直接 RL 冷启动易崩；③ reward 干净且 pass@k>0 时 SFT 性价比最优。其「只学正样本不探索」的限制恰是它便宜稳的来源——是 tradeoff 不是缺陷。"
+        },
+        {
+          "statement": "内置算法只有 APO + VERL，SFT 走自定义算法扩展点",
+          "source": "Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "`algorithm/__init__.py` 仅 export 两个一等公民：APO（prompt）、VERL（RL 权重）。SFT **不是**内置算法类——它继承 `Algorithm` + 实现 `run()`，在 run 里用 `store.enqueue_rollout` 收集带 reward 轨迹、adapter 转 triplet、喂 Unsloth/Azure 微调（`examples/unsloth/sft_allinone.py`、`examples/azure/`）。这纠正了系列01 初版把 SFT 列为内置算法的说法。"
+        },
+        {
+          "statement": "store 居中解耦——算法与执行靠 5 个 store 动作做生产者消费者",
+          "source": "Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。algorithm 进程（消费者）与 runner 进程（生产者）通过 store 解耦，可分进程跑也可用 Trainer 自带内存 store 一键运行。这印证了 §2.4「store 是控制平面」——它不是被动存储，而是 runner↔algorithm 之间的协调中枢，是 method-agnostic 能成立的物理基础。"
+        },
+        {
+          "statement": "算法本质 = LLM 调用 + sorted，\"多 agent 协作\"是虚拟角色",
+          "source": "Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的\"多 agent 协作\"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。"
+        }
+      ]
+    },
     {
       "id": "agent-loop-architecture",
       "type": "concept",
@@ -411,6 +505,64 @@
           "confidence": 0.5,
           "status": "active",
           "evidence": "Baseline 能作为 MCP Server 运行，让 Coding Agent（Cursor、Claude Code 等）在生成代码时直接查询架构规则，实现\"生成时即遵守\"。"
+        }
+      ]
+    },
+    {
+      "id": "automatic-prompt-optimization",
+      "type": "concept",
+      "title": "自动提示优化（APO, Automatic Prompt Optimization）",
+      "summary": "APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「文本梯度（生成方向）+ beam search（搜索管理）」。它把神经网络训练的\"方向+搜索\"二分结构搬到离散不可微的 prompt 上：因为 prompt 无法求数值梯度，就让强 LLM 充当\"梯度算子\"（Critic）用自然语言诊断\"哪里错、往哪改\"，再让另一个 LLM（Editor）照批评改写——这套思路源自 ProTeGi（Pryzant et al. 2023）。beam search 只承担搜索管理（扩展→打分→剪枝 top-k），APO 选它的首要理由是评估成本：每个候选要在验证集上跑大量贵 rollout，beam_width 把指数爆炸压成线性，又比 greedy 多留缓冲对抗评估噪声。在 agent-lightning 里，APO 是 method-agnostic 阶梯的最低一档（不动权重、最便宜），与 [[rejection-sampling-finetuning]]（RAFT）、RL 共享同一份 grader/reward，只是消费方式不同——APO 用 `sorted()[:beam_width]` 排序选 prompt。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "prompt-optimization",
+        "apo",
+        "beam-search",
+        "textual-gradient"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.86,
+      "claims": [
+        {
+          "statement": "APO ≠ beam search——是「文本梯度 + beam search」的完整方法",
+          "source": "Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-25",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "把 APO 等同于 beam search 是层级错位，等于把\"梯度下降训练\"等同于\"Adam 优化器\"。APO（Automatic Prompt Optimization）是完整优化方法，含两个本质不同的子机制：① **怎么产生更好候选**——靠文本梯度（Critic 诊断 + Editor 改写），这是生成机制；② **怎么在候选里挑、管理搜索过程**——靠 beam search（维护固定大小候选集，每轮扩展、打分、剪枝），这是搜索策略。beam search 本身不知道\"prompt 怎么变好\"，只负责\"在已生成候选里按分数保留 top-k、决定下一轮从谁出发\"。一句话：APO = 文本梯度（生成方向）+ beam search（搜索管理）。"
+        },
+        {
+          "statement": "文本梯度 = Critic 写、Editor 改，因 prompt 离散不可微而借 LLM 模拟方向信号",
+          "source": "Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "一轮 APO 迭代有四个角色接力，对应神经网络训练：**Evaluator/Judge**（grader 的 model，给数值分，类比判分老师）→ **Critic/Teacher**（gradient_model，看低分轨迹写文本梯度＝自然语言诊断，类比写评语的导师）→ **Editor**（apply_edit_model，按批评改写出新候选，类比按评语改作文）→ **Beam Search**（无模型纯算法，选 top-k）。关键区分：Judge 给\"分数\"（标量）、Critic 给\"方向\"（文本），常被混为一谈。Critic 和 Editor 故意分两个模型：Critic 要强推理（诊断难，用更强模型）、Editor 只需会改写（机械，用便宜模型），分离后还能独立约束两个 prompt 注入点。文本梯度的优势是不仅说\"错了\"还说\"为什么错、具体怎么改\"——代价是每步都调强模型，比数值梯度贵几个数量级，所以才需要有预算约束的 beam search 控爆炸。"
+        },
+        {
+          "statement": "APO 选 beam search 的首要理由是评估成本，不是它最优",
+          "source": "Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比",
+          "first_seen": "2026-06-25",
+          "last_updated": "2026-06-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "搜索策略谱系都在解\"候选树里找最优节点\"，区别在每层保留几个：greedy（留 1，易陷局部最优）、BFS（全留，O(b^d) 爆炸）、DFS（深挖一条，无明确终止深度）、beam search（top-k，O(k·b) 可控）、Tree-of-Thought（带 LLM 自评估，更贵）、Self-Consistency（正交降噪，可叠加）。APO 选 beam search 的首要理由是评估太贵——每个候选要在验证集跑大量 rollout，beam_width 把 BFS 的指数爆炸压成线性；又比 greedy（beam_width=1）多留缓冲，对抗评估噪声（同 prompt 打分可摆动 0.2）的 max-over-noise。进阶方向：把\"等额评估+max 选择\"升级为 bandit（UCB / Successive Rejects）的\"自适应预算分配\"，是对症\"虚高候选\"问题的统计学解药。"
+        },
+        {
+          "statement": "真正瓶颈是 reward 设计 + 评估噪声 + 数据量，不是选哪个框架",
+          "source": "Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-06-24",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "任何 prompt 优化工具（DSPy/TextGrad/AdalFlow/agent-lightning）都成立的核心教训：真正的瓶颈不是选哪个框架。① **评估噪声**——小数据集（如 29 题）标准误 `SE ≈ sqrt(p(1−p)/N) ≈ 0.09`，会盖过任何小于 0.18 的真实增益；② **reward 设计**——reward 若设错（如让 LLM 对离散任务输出连续 partial score），框架只会\"忠实地优化一个噪声\"；③ **数据量**——要可靠确认 Δ 提升需 `SE ≤ Δ/2`，想分辨 0.05 增益需 N≈350+，或用多采样 `SE/√k` 等效放大。落地顺序：先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则只是在噪声里挑最大值。"
         }
       ]
     },
@@ -1787,8 +1939,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.8,
+      "claims_count": 3,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -1807,6 +1959,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。"
+        },
+        {
+          "statement": "写作去AI味的 Humanizer multi-pass 是分离原则在文本生成域的实例",
+          "source": "去除AI味：从语言指纹到人机文本边界的消融",
+          "first_seen": "2026-06-29",
+          "last_updated": "2026-06-29",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "去除\"AI味\"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是\"避免自己改自己的盲区\"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。"
         }
       ]
     },
@@ -2115,6 +2276,64 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Hermes 是单 AIAgent 对象包含所有模块（Prompt Builder + LLM Provider + Tool Scheduler + Memory + Skill System + Curator），通过 Gateway 对接 15+ 平台。内存存储使用 SQLite + FTS5 全文索引。OpenClaw 则解耦为 Gateway（控制面）+ Agent Node（执行面），支持多实例横向扩展。"
+        }
+      ]
+    },
+    {
+      "id": "hybrid-linear-attention-architecture",
+      "type": "concept",
+      "title": "Hybrid 线性注意力架构（Hybrid Linear-Attention Architecture）",
+      "summary": "Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移方向——从纯 Transformer 走向**线性注意力（Mamba/SSM、Gated DeltaNet）与全注意力交错堆叠**。三类架构的本质差异在\"记忆怎么存\"：Transformer 用随序列线性增长的 KV cache（精确但显存爆炸），Mamba/GDN 用固定大小的循环状态（省显存但有损压缩），Hybrid 把两者交错——大部分层用线性注意力压显存、少数层用全注意力保精确召回。代表模型是 Qwen3-Next 与 Qwen3.5（GDN : Gated Attention = 3:1）、NVIDIA Nemotron-H、Jamba、Falcon-H1 等。这一迁移有一个被低估的工程副作用：为 token 级 KV 设计的 prefix caching 机制遇到循环状态会失效（见 [[prefix-caching]]）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "inference",
+        "architecture",
+        "transformer",
+        "mamba",
+        "hybrid-attention"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.84,
+      "claims": [
+        {
+          "statement": "三类架构的本质差异在\"记忆怎么存\"",
+          "source": "线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Transformer（全注意力）= 随序列线性增长的 KV cache，每 token 留一对 (K,V)，prefill 后只读、可按 token 粒度共享；prefill O(n²)、decode 每步 O(n)。Mamba/SSM = 固定大小的循环状态矩阵 S（d_k×d_v），流式更新，prefill O(n)、decode O(1)/步，长上下文显存远低但精确召回（大海捞针）弱于全注意力。一句话：Transformer 用\"无限增长的精确记忆\"换算力，Mamba 用\"固定大小的压缩记忆\"换显存。"
+        },
+        {
+          "statement": "GDN（Gated DeltaNet）= delta rule + 指数门控，仍属线性注意力家族",
+          "source": "线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "GDN = DeltaNet（用预测误差更新状态：`S_t = g_t·S_{t-1} + k_t⊗[β_t·(v_t − (g_t·S_{t-1})ᵀk_t)]`）+ 指数门控（gating/decay 控制旧状态保留多少）。delta rule 改善\"写入什么\"、gating 改善\"遗忘多少\"，提升记忆质量。但对推理框架而言，GDN 与 Mamba 共享同一关键属性：**循环状态、原地更新、无 token 级 KV**——这正是缓存难题的根源。"
+        },
+        {
+          "statement": "Hybrid 交错堆叠——多数线性层省显存，少数全注意力层保召回",
+          "source": "线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "纯线性注意力召回差、纯全注意力长上下文显存爆炸，主流解法是交错堆叠。Qwen3-Next（2025-09，首个旗舰级 Hybrid）与 Qwen3.5（2026）都用 GDN : Gated Attention = 3:1（75% 线性 + 25% 全注意力）；NVIDIA Nemotron-H（Mamba-2 + Self-Attention + MLP，推理快至 3×）、Jamba、Falcon-H1/Zamba/Bamba 同属此类。动机：线性层把 KV cache 显存压成常数，少数全注意力层把精确召回找回来——长上下文下逼近全注意力质量却只花零头显存。Qwen3.5 还叠加 MoE（稀疏激活），是另一条正交优化轴，进一步增加缓存/状态管理难度。"
+        },
+        {
+          "statement": "Qwen3.5 缓存命中率归零是架构迁移的必然副作用，不是 bug",
+          "source": "线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到\"多模态图像在前导致无公共前缀\"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。"
         }
       ]
     },
@@ -2968,6 +3187,73 @@
       ]
     },
     {
+      "id": "prefix-caching",
+      "type": "concept",
+      "title": "前缀缓存（Prefix Caching）",
+      "summary": "前缀缓存是 LLM 推理的核心省算优化：多条请求开头若干 token 完全相同时，这段公共前缀的 KV 只算一次、供所有请求共享，省掉重复 prefill。它隐含两条假设——缓存单位是 token 粒度的 (K,V)、且 KV prefill 后只读可任意共享——纯 Transformer 完美满足。但 2025–2026 年的架构迁移把它推到了失效边缘：Hybrid 线性注意力架构（见 [[hybrid-linear-attention-architecture]]）的线性层维护的是固定大小的循环状态，三条假设全破（原地更新无法定位前缀、状态体积大一个量级、kernel 只能 chunk 边界 checkpoint）。结果是 Qwen3.5 这类 Hybrid 模型即使显式开 `--enable-prefix-caching`，命中率也长期为 0。Hybrid 还要同时管两套异构缓存，多模态\"图像在前\"再截断公共前缀，speculative decoding 与之争用同一套状态存档能力——多个杀手叠加，命中趋近于零。",
+      "tags": [
+        "wiki",
+        "concept",
+        "inference",
+        "prefix-caching",
+        "kv-cache",
+        "vllm",
+        "sglang"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.84,
+      "claims": [
+        {
+          "statement": "prefix caching 成立的两条隐含假设",
+          "source": "线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "prefix caching 的前提是多条请求开头若干 token 完全相同，这段公共前缀的 KV 只需算一次、结果供所有请求共享，省掉重复 prefill。它成立的隐含假设有两条：① 缓存单位是**按 token 粒度**的 (K,V)；② 这些 KV 块 prefill 后**只读、可任意共享**。纯 Transformer 完美满足这两条——这正是它能跨请求复用前缀的原因。"
+        },
+        {
+          "statement": "线性注意力的循环状态破坏 prefix caching 的三条假设",
+          "source": "线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "线性注意力/SSM 层维护的不是 token 级 KV，而是固定大小的循环状态，带来三个结构性障碍（参考 PyTorch 博客 Hybrid Models Meet SGLang）：①**原地更新**——`S_t = f(S_{t-1}, x_t)` 是覆盖式更新，旧值被吃掉，无法回滚到第 k 个 token 的状态，而前缀复用本质要求\"能定位到某前缀位置的状态\"；②**体积大**——缓存一个前缀要存完整的 d_k×d_v 状态矩阵而非单 token 的 (K,V) 向量，单位前缀成本高一个量级；③**全有或全无**——前向 kernel 按 chunk 计算，只能在完整 chunk 边界 checkpoint，前缀长度不对齐到 chunk 边界就一点都复用不了。"
+        },
+        {
+          "statement": "Hybrid 难点在同时管两套异构缓存，对齐策略牺牲短请求命中",
+          "source": "线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Hybrid 模型里全注意力层和线性层交错存在，做 prefix caching 必须**同时**维护两套缓存：全注意力层的 token 级 KV 块（可逐 token 共享）+ 线性层的 chunk 级状态快照（只能在对齐边界复用）。两套缓存的粒度、生命周期、淘汰策略都不同；更麻烦的是为了对齐，框架往往把 attention 的 block size 强行对齐到线性层的 chunk/page 大小——vLLM 因此把 block size 对齐到 528 tokens，**短请求直接落不到任何可复用边界、命中率归零**。这就是纯 Transformer 的 Qwen3 缓存正常、Hybrid 的 Qwen3.5 命中极低的根因：不是 bug，是架构迁移的必然代价。"
+        },
+        {
+          "statement": "多模态\"图像在前\"是独立叠加的命中率杀手",
+          "source": "线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "视觉语言模型（Qwen-VL 家族）再加一层问题：图像 token 被 `<|vision_start|>…<|vision_end|>` 包裹、按惯例置于用户消息最前。于是不同请求的图像各不相同 → 序列从图像区第一个 token 起就分叉；能共享的只剩 system prompt 那一小段文本前缀；图像之后即便文字相同也因前缀已分叉而无法复用。注意：Qwen2-VL 起采用**动态分辨率**，单图视觉 token 数不是固定 576，而是 4~16384 随分辨率变化——数字会变，但\"图像在前 + 各请求不同\"的结构事实不变。对 Qwen3.5-VL，\"图像在前\"（多模态杀手）和\"Hybrid 架构\"（架构杀手）是两个独立但叠加的杀手，两者叠加命中率自然趋近 0。此外图像 KV 不能跨请求复用——强行复用会破坏 mRoPE 位置编码导致新旧图像混淆。"
+        },
+        {
+          "statement": "speculative decoding 与 prefix caching 在 Hybrid 上争用同一套状态存档能力",
+          "source": "2026-06-22-周一",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "社区实测（Qwen3.6-27B + vLLM nightly）：**关掉 speculative decoding 后 prefix cache 命中恢复**——命中 0 时优先试这一招。冲突根源不是 prefill/decode 阶段之争，而是 Hybrid 状态管理瓶颈：① 推测解码的\"验证\"本质是 decode 期的一次小 prefill，要推进 Mamba/GDN 循环状态，碰到和 prefix caching 同一套机器；② 两者都要线性层状态的细粒度存档/回滚（prefix caching 在前缀边界存档、spec decoding 在候选被拒时回滚），而循环状态原地更新、只能 chunk 边界 checkpoint，这能力本就稀缺却被同时争用；③ 推测解码让每步推进的 token 数变长且可变，打乱 prefix-cache 块的对齐边界（叠加在 vLLM 528-token block 对齐之上）→ 任何前缀块都匹配不上 → 命中恒 0。落地顺序：查日志确认 → 显式开 `--enable-prefix-caching` → 关掉 speculative decoding → 仍不行换 SGLang（MambaRadixCache）→ 或小规模退用 llama.cpp。"
+        }
+      ]
+    },
+    {
       "id": "rag-architecture-comparison",
       "type": "concept",
       "title": "RAG Architecture Comparison",
@@ -3193,6 +3479,93 @@
           "confidence": 0.9,
           "status": "stale",
           "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
+        }
+      ]
+    },
+    {
+      "id": "rejection-sampling-finetuning",
+      "type": "concept",
+      "title": "拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）",
+      "summary": "拒绝采样微调是一种\"用 SFT 的机制做 RL 的事\"的对齐/自提升方法：模型自己生成一批 rollout → 用 reward 过滤排序留高分轨迹 → 把这批\"被验证正确的自产轨迹\"当模仿标签做 SFT → 迭代。它的本质区别于教科书 SFT——教科书 SFT 需要现成的\"标准输出序列\"当 label 直接模仿；拒绝采样微调**没有现成 label，而是用 reward 当裁判，无中生有地造出原本缺失的训练标签**。理论出处是 RAFT（Reward rAnked FineTuning, 2023）与更早的推理域版本 STaR（Self-Taught Reasoner, 2022）。它消费和 RL 同样的三元组 `(prompt, response, reward)`，但 reward 只在门口\"检票\"（选哪些样本进训练集），不进梯度——这是它区别于 PPO 的本质。在 agent-lightning 里它是 method-agnostic 阶梯的中间档（[[automatic-prompt-optimization]] → 本方法 → [[reinforcement-learning]]）。社区里它以\"rejection sampling fine-tuning（RFT）\"之名成了 DeepSeek-R1 / Llama / Qwen 后训练 pipeline 的标准一档。",
+      "tags": [
+        "wiki",
+        "concept",
+        "llm-training",
+        "sft",
+        "rejection-sampling",
+        "raft",
+        "star",
+        "self-distillation",
+        "alignment"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 7,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "不是\"喂标准答案\"，是\"用 reward 造标签\"——target 是评分键不是模仿 label",
+          "source": "Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-26",
+          "confidence": 0.9,
+          "status": "active",
+          "evidence": "最大的认知误区：以为 agent-lightning 的 SFT 是喂标准答案让模型模仿。真相是它**没有理想输出序列**——数据集只给\"最终答案\"（如 GSM-hard 的 `target = -9867630`）和一个 grader，不给\"解题过程\"。要区分两种 ground-truth：**任务的标准答案（评分键）**喂给 grader 算 reward（`math_agent.py:123` 用 `np.isclose` 精确匹配，干净无噪声）；**模型输出的标准答案（模仿 label）**则没有预先给。模型自己跑 rollout 生成 response → grader 用 target 验证为正确 → 把这些\"经认证正确\"的自产轨迹留下当 SFT 对。数据集自带的 `code` 解法字段从头到尾没被引用，是冗余死字段。一句话：**需要 ground-truth 来评分，不需要 ground-truth 来模仿。**"
+        },
+        {
+          "statement": "\"算法\"内核还是一行 sorted——与 APO 对称，区别只在下游消费",
+          "source": "Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-26",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "SFT 这条线的\"算法\"内核是 `all_triplets.sort(key=lambda x: x[\"reward\"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑**：demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT 把模型训得\"更自信地答错\"；正确做法是阈值过滤（只留 `reward > 0`）。"
+        },
+        {
+          "statement": "答对了为什么还训练——把 pass@k 压成 pass@1，把搜索成本内化进权重",
+          "source": "Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-26",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"能答对 ≠ 稳定答对\"。模型\"答对\"通常意味着 temperature>0 采样下跑 N 次碰巧有一次走到正确路径——它对正确解法只分配了一部分概率质量（如 20%）。自蒸馏不教新知识，而是把模型偶尔能找到的正确路径反复强化，让概率从 20% 提到 80%，把\"偶然对\"压成\"稳定对\"（pass@k → pass@1）。两层收益：① **best-of-N → greedy 内化**——推理本来要\"采样 16 次 + grader 挑最好\"才交对卷，自蒸馏把这能力烧进权重，单次 greedy 解码就能做到，本质是把推理期搜索成本预支到训练期；② **泛化**——强化好推理*模式*会迁移到没见过的题。诚实边界：已 pass@1 高置信答对的题训练收益接近 0；真正吃肉的是\"时对时错\"的题。为什么不能把答错的也训：SFT 数学本质是无条件最大化喂进去的东西的似然，喂错误轨迹=主动教它学错，reward 就是那道门。"
+        },
+        {
+          "statement": "自蒸馏 vs 强→弱蒸馏——区别只在 runner 配哪个模型跑 rollout",
+          "source": "Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-26",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "因为 runner 的 rollout 模型与算法侧的训练目标模型解耦（生产者/消费者分离），同一套框架支持两种形态：**rollout 模型 == 被训模型** → 自我提升、自举 = STaR/RAFT/ReST（自蒸馏，扩充\"已会题\"的稳定性）；**更强模型跑 rollout、训更弱模型** → 强→弱知识转移 = 拒绝采样蒸馏（扩覆盖率，能教会学生本来不会的题）。弱模型的死穴是有些难题采样 N 次全错（0 条正确轨迹）→ 自蒸馏一无所获；换强模型去跑能产出这些难题的正确轨迹，target 在此验证强模型轨迹确实对（避免把老师的错误也蒸馏进去）。reward 来源两条路：有 ground-truth → 精确匹配 grader（客观零噪声，首选）；没有 → 强模型当 LLM-as-judge（主观有噪声，要防 reward hacking）。"
+        },
+        {
+          "statement": "RAFT = RL 的数据哲学 + SFT 的更新机制，reward 只\"检票\"不进梯度",
+          "source": "2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读",
+          "first_seen": "2026-06-28",
+          "last_updated": "2026-06-28",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批）→ Rank/Filter（用 reward 过滤出高分子集）→ Fine-tune（在子集上 SFT）→ 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。"
+        },
+        {
+          "statement": "demo 把 RAFT 退化成 K=1 greedy 二值 reward 非累积版，丢了\"K 大→收敛快\"红利",
+          "source": "2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读",
+          "first_seen": "2026-06-28",
+          "last_updated": "2026-06-28",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "论文用 K∈{8,16,32} + 温度 λ=1.0，K 大收敛快（K=16/32 约 10~12 轮，K=8 约 15~18 轮）。但 agent-lightning demo 把 RAFT 退化成最朴素版本：① **K=1 + temperature=0（greedy）**——每题只采一次，退化成 pass@1，没有 RAFT 赖以工作的采样多样性；② **二值 reward**——`compute_reward` 返回 0/1，sort 几乎没用（留下全是 1.0），更像 STaR 而非用 reward model 的 RAFT；③ **非累积**——每轮空列表重建，不像论文可累积扩充数据集。这解释了实测的\"慢爬\"：退化成 K=1 greedy 只能一阶一阶收割\"贪心路径刚翻对\"的题。要复现论文曲线就得把 K 拧上去（temp 0.7~1.0 + 每题采 K 次）——采样数才是数据增长主杠杆。`K` 来自重复采样次数不是温度，温度只负责让这 K 次分叉。"
+        },
+        {
+          "statement": "对已后训练的强模型仍适用，但受自蒸馏天花板约束（pass@k）",
+          "source": "2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读",
+          "first_seen": "2026-06-28",
+          "last_updated": "2026-06-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "对已重度后训练的 GPT/Llama/Qwen，RAFT 从\"首次对齐\"降级为\"任务特化 + 自我提升的一道工序\"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以\"rejection sampling fine-tuning（RFT）\"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是\"便宜、稳定的第一档，上 RL 之前先榨一轮\"。"
         }
       ]
     },
@@ -4446,6 +4819,55 @@
       ]
     },
     {
+      "id": "sft-rejection-sampling-hands-on",
+      "type": "method",
+      "title": "SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）",
+      "summary": "把 [[rejection-sampling-finetuning]] 的原理落成可执行流程：在一台 Linux + NVIDIA GPU 机器上装通 unsloth + vLLM 全栈，跑 agent-lightning `examples/unsloth/` 的 GSM-hard 迭代自提升训练（version_0→1→2），并正确解读 loss/reward/留用样本数。核心是「采样自产轨迹 → reward 过滤 → LoRA 微调 → 存 checkpoint 供下一轮 serving」的自举飞轮。\n\n本方法是 [[agent-lightning]] 三级阶梯第二级（SFT）的动手配套——SFT 不是内置算法类，走自定义算法扩展点。",
+      "tags": [
+        "wiki",
+        "method",
+        "agent-lightning",
+        "sft",
+        "unsloth",
+        "rejection-sampling",
+        "azure-gpu"
+      ],
+      "category": "",
+      "method_type": "pipeline",
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "留用样本数 80→86 是自举飞轮转动的直接实证",
+          "source": "Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "同样 64 条题、同样 `reward>0` 阈值，留用样本从 iter0 的 80 涨到 iter1 的 86 = version_1 比 version_0 答对的轨迹更多。这是「模型越训越强 → 正确轨迹越多 → 可训样本越多」的 ReST 飞轮在真实数据上的直接证据，比 train_loss 下降更能反映进步。"
+        },
+        {
+          "statement": "train_loss 下降不能当「变强」的证据，只能确认没崩",
+          "source": "Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-29",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "train_loss 0.0151→0.0069 只是「模型对自己筛出的正确轨迹拟合多好」——这些本就是它分布内能复现的东西，loss 低到接近过拟合是自然的。loss 低 ≠ 没见过的题答得更对。唯一真实能力指标是 holdout 上的 pass@1/pass@8。盯 loss 只为确认训练没崩（不 NaN、不剧震）。"
+        },
+        {
+          "statement": "当前 demo 用阈值过滤 reward>0，不是固定切 50%",
+          "source": "Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调",
+          "first_seen": "2026-06-26",
+          "last_updated": "2026-06-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "实跑日志 `Keeping 80 with reward greater than 0.0` 推翻了读源码时「固定切 50%」的推断——当前版本已做阈值过滤，0 分样本不会被凑满比例带进训练集，系列05 担心的污染坑在 demo 里不存在。这是「边搭边写活文档」的价值：实跑直接纠正读码推断。"
+        }
+      ]
+    },
+    {
       "id": "three-layer-token-optimization",
       "type": "method",
       "title": "三层 Token 优化策略",
@@ -4580,6 +5002,82 @@
       ]
     },
     {
+      "id": "hybrid-inference-framework-selection",
+      "type": "decision",
+      "title": "Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "inference",
+        "framework-selection",
+        "vllm",
+        "sglang"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 2,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "框架按部署规模选型——llama.cpp/SGLang/vLLM 三档",
+          "source": "2026-06-22-周一",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "单机/个人/低并发 → llama.cpp（slot 续接够用，部署省心，但无法跨并发共享）；生产/高并发/多模态 → SGLang（MambaRadixCache 是当前唯一为 Hybrid 跨请求复用专门设计的方案）；vLLM 居中——命中率 0 时\"关掉推测解码\"救场。落地顺序：查日志 `Prefix cache hit rate:` 定基线 → vLLM 显式 `--enable-prefix-caching` + 关 MTP 推测解码再测 → 仍为 0 上 SGLang 按 cookbook 部署 → 压测并发 × 命中率/TTFT/吞吐。收益预期：只省 system prompt 的 prefill，占比 ≈ `prompt token /(prompt + 图片 token)`，prompt 越长收益越大。"
+        },
+        {
+          "statement": "SGLang 领先是设计基因（prefix-centric）而非团队速度",
+          "source": "SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先",
+          "first_seen": "2026-06-22",
+          "last_updated": "2026-06-22",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。"
+        }
+      ]
+    },
+    {
+      "id": "prompt-optimization-tool-selection",
+      "type": "decision",
+      "title": "Prompt 优化工具选型——DSPy vs agent-lightning",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "prompt-optimization",
+        "tool-selection"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 2,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "纯 prompt 调优首选 DSPy，不推荐 agent-lightning",
+          "source": "Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-06-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "如果主要目标是 prompt 调优、寻找最优 prompt 且明确不碰权重微调，首选 DSPy。agent-lightning 的差异化价值是 method-agnostic（APO↔RL↔SFT 可换）+ RL 级 rollout 基础设施——只做 prompt 优化时这两个最大卖点完全用不上，等于付出\"装一个偏 RL 训练框架\"的复杂度却拿不到值钱的部分。agent-lightning 只在一种情况值得提前押注：客户预期会从 prompt 调优走向权重微调，需要\"一套 reward / rollout 复用到多种优化方法\"。一句话：只做 prompt → DSPy；既调 prompt 又要 RL 微调 → agent-lightning。"
+        },
+        {
+          "statement": "先解决 reward + 噪声 + 数据量，框架只是引擎不是方向盘",
+          "source": "Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-06-24",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "比\"选哪个框架\"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架\"忠实地优化噪声\"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。"
+        }
+      ]
+    },
+    {
       "id": "spec-driven-vs-methodology-framework",
       "type": "decision",
       "title": "规范驱动 vs 方法论框架：Vibe Coding 工具选型",
@@ -4664,6 +5162,42 @@
     }
   ],
   "links": [
+    {
+      "source": "agent-lightning",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "part-of",
+      "description": "APO 是 agent-lightning `algorithm/` 槽位的内置算法之一（一等公民）"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "part-of",
+      "description": "SFT/RAFT 走 agent-lightning 自定义算法扩展点，是三级阶梯的第二级"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "reinforcement-learning",
+      "relation_type": "part-of",
+      "description": "VERL（RL）是 agent-lightning 内置算法，三级阶梯的最高级，需 SFT warmup"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "method-agnostic 阶梯让优化方法可随算力/数据升级，体现\"计算胜过人工设计\""
+    },
+    {
+      "source": "agent-lightning",
+      "target": "sft-rejection-sampling-hands-on",
+      "relation_type": "produces",
+      "description": "三级阶梯第二级（SFT）的动手实战流程页"
+    },
     {
       "source": "agent-loop-architecture",
       "target": "harness-engineering",
@@ -4813,6 +5347,36 @@
       "target": "harness-engineering",
       "relation_type": "uses",
       "description": "架构约束是 Harness Engineering 约束系统的重要组成"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "agent-lightning",
+      "relation_type": "part-of",
+      "description": "APO 是 agent-lightning `algorithm/` 槽位的内置算法（一等公民），三级阶梯第一级"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "contrasts",
+      "description": "同属 agent-lightning method-agnostic 阶梯，APO 用 reward 排序选 prompt（不动权重）、RAFT 用 reward 筛轨迹做微调（改权重），共享同一份 grader"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "Judge 打分与 Critic 诊断/生成分离，是生成-评估分离原则的体现"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "reinforcement-learning",
+      "relation_type": "contrasts",
+      "description": "APO 把 reward 用于离线 prompt 搜索，RL 把 reward 当梯度信号进 policy gradient"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "APO 是\"用算力换 prompt 质量\"的搜索方法，呼应算力终将胜出"
     },
     {
       "source": "autoresearch",
@@ -5193,6 +5757,12 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
+      "source": "continual-self-improving-ai",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "implements",
+      "description": "拒绝采样微调（STaR/RAFT/ReST）是模型自举式持续自我提升的具体训练机制"
+    },
+    {
       "source": "contract-testing",
       "target": "testcontainers",
       "relation_type": "contrasts",
@@ -5553,6 +6123,18 @@
       "description": "三种 Agent 哲学光谱中的极端自主端"
     },
     {
+      "source": "hybrid-linear-attention-architecture",
+      "target": "prefix-caching",
+      "relation_type": "constrains",
+      "description": "Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，导致命中率归零"
+    },
+    {
+      "source": "hybrid-linear-attention-architecture",
+      "target": "cascaded-pipeline",
+      "relation_type": "contrasts",
+      "description": "推理架构选型与级联/端到端管线选型同属\"为约束选架构\"的工程决策family"
+    },
+    {
       "source": "intelligent-dictation",
       "target": "speech-technology-stack",
       "relation_type": "extends",
@@ -5865,6 +6447,12 @@
       "description": "把 PKC 改造成外循环系统是 Loop Engineering 的落地实践"
     },
     {
+      "source": "prefix-caching",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "constrains",
+      "description": "Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，是命中归零的架构根因"
+    },
+    {
       "source": "rag-architecture-comparison",
       "target": "enterprise-ontology",
       "relation_type": "uses",
@@ -5953,6 +6541,66 @@
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "contrasts",
+      "description": "RAFT 用 reward 只过滤不进梯度，是\"RL 的数据哲学 + SFT 的更新机制\"，SFT 到顶后升级到 RL"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "contrasts",
+      "description": "APO 把 reward 用于离线 prompt 搜索，RL 把 reward 当梯度信号；同属 method-agnostic 阶梯"
+    },
+    {
+      "source": "reinforcement-learning",
+      "target": "agent-lightning",
+      "relation_type": "part-of",
+      "description": "VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "agent-lightning",
+      "relation_type": "part-of",
+      "description": "SFT/RAFT 走 agent-lightning 自定义算法扩展点，是 APO→SFT→RL 三级阶梯的第二级"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "contrasts",
+      "description": "同属 agent-lightning method-agnostic 阶梯，APO 用 reward 排序选 prompt（不动权重）、本方法用 reward 筛轨迹做微调（改权重），sorted 内核对称"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "reinforcement-learning",
+      "relation_type": "contrasts",
+      "description": "RAFT 是\"RL 的数据哲学 + SFT 的更新机制\"，reward 只过滤不进梯度；SFT 飞轮到顶/要压榨负例/reward 有程度/难题 0 正样本时该升级到 RL"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "continual-self-improving-ai",
+      "relation_type": "implements",
+      "description": "自蒸馏/ReST 是模型自举式持续自我提升的具体训练机制"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "grader（评分）与 model（生成）分离，reward 作为独立裁判筛选自产轨迹"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "sft-rejection-sampling-hands-on",
+      "relation_type": "grounds",
+      "description": "本概念的原理由该实战方法页落成可执行流程（Azure GPU VM + unsloth 跑通）"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出"
     },
     {
       "source": "rtk-token-compression",
@@ -6531,6 +7179,18 @@
       "description": "LLM Wiki 是此工作流的理论基础"
     },
     {
+      "source": "sft-rejection-sampling-hands-on",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "implements",
+      "description": "本流程是拒绝采样微调原理的可执行落地（采样→reward 过滤→LoRA 训练→存 checkpoint）"
+    },
+    {
+      "source": "sft-rejection-sampling-hands-on",
+      "target": "agent-lightning",
+      "relation_type": "part-of",
+      "description": "是 agent-lightning 三级阶梯第二级（SFT）的动手配套，走自定义算法扩展点"
+    },
+    {
       "source": "three-layer-token-optimization",
       "target": "caveman-token-compression",
       "relation_type": "uses",
@@ -6607,6 +7267,36 @@
       "target": "voice-cascaded-pipeline",
       "relation_type": "produces",
       "description": "基于此决策的实施方法"
+    },
+    {
+      "source": "hybrid-inference-framework-selection",
+      "target": "prefix-caching",
+      "relation_type": "produces",
+      "description": "本决策是 prefix caching 在 Hybrid 模型上失效后的框架应对方案"
+    },
+    {
+      "source": "hybrid-inference-framework-selection",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "constrains",
+      "description": "Hybrid 架构的循环状态是触发本选型的根因，约束了哪些框架能用"
+    },
+    {
+      "source": "prompt-optimization-tool-selection",
+      "target": "agent-lightning",
+      "relation_type": "constrains",
+      "description": "本决策的核心被评估对象——其差异化价值（method-agnostic + RL rollout）决定了它只在「将走向权重微调」时才该选"
+    },
+    {
+      "source": "prompt-optimization-tool-selection",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "uses",
+      "description": "agent-lightning 的 APO 是本决策评估的候选算法之一，但 APO 内置不构成选 agent-lightning 的理由"
+    },
+    {
+      "source": "prompt-optimization-tool-selection",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "contrasts",
+      "description": "\"是否走向权重微调（SFT/RL）\"是本决策的关键前提——若会，则 agent-lightning 的 method-agnostic 价值才兑现"
     },
     {
       "source": "spec-driven-vs-methodology-framework",
@@ -6695,6 +7385,17 @@
         "reinforcement-learning",
         "context-projection",
         "claim-based-schema"
+      ]
+    },
+    {
+      "id": "llm",
+      "name": "LLM 推理与训练",
+      "members": [
+        "hybrid-linear-attention-architecture",
+        "prefix-caching",
+        "automatic-prompt-optimization",
+        "rejection-sampling-finetuning",
+        "agent-lightning"
       ]
     },
     {
