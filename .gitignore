@@ -14,7 +14,7 @@ personal-journal/
 .mcp.json
 
 # SkillOpt self-evolution tooling (local-only, not vault content)
-SkillOpt/
+/SkillOpt/
 .skillopt-sleep/
 
 # Playwright MCP cache

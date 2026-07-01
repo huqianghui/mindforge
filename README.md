@@ -71,6 +71,11 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南](Notes/AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 
+### Notes/AI/SkillOpt
+
+- [SkillOpt 实战篇：从 AML + Azure OpenAI 到 SearchQA 跑通文本空间 skill 训练](Notes/AI/SkillOpt/SkillOpt实战篇：从AML+Azure%20OpenAI到SearchQA跑通文本空间skill训练.md)
+- [SkillOpt 源码篇：主要模块拆解与六阶段执行流剖析](Notes/AI/SkillOpt/SkillOpt源码篇：主要模块拆解与六阶段执行流剖析.md)
+
 ### Notes/AI/Loop-Engineering
 
 - [Loop Engineering 概念澄清——内循环、外循环与 Harness Engineering 的边界](Notes/AI/Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)
