@@ -62,8 +62,6 @@ related:
 
 ## 关联概念
 
-- [[claude-code-memory-system]] — `uses` tmux 持久会话与 Claude Code 的 Session 记忆互补
-- [[oh-my-claude-code]] — `uses` tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施
 
 ## 来源日记
 

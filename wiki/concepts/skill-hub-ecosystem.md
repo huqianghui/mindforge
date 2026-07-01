@@ -55,7 +55,6 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 
 - [[azure-copilot-ecosystem]] — `contrasts` Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补
 - [[claude-code-extension-system]] — `part-of` Skill Hub 是 Claude Code 扩展体系的社区生态
-- [[openclaw-agent-gateway]] — `part-of` OpenClaw 是 Skill Hub 生态的主要平台之一
 
 ## 来源日记
 

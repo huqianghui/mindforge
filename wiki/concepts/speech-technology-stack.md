@@ -102,8 +102,6 @@ related:
 
 - [[voice-live-agent]] — `part-of` 语音技术栈服务于 Voice Live Agent
 - [[voice-activity-detection]] — `extends` VAD 是语音技术栈的关键组件
-- [[grapheme-to-phoneme]] — `part-of` G2P 是 Speech Out 层的核心转换模块
-- [[turn-taking]] — `part-of` Turn-Taking 是 Core Processing 层的关键组件
 - [[intelligent-dictation]] — `produces` 语音技术栈 L1 之上的产品层演进
 - [[realtime-protocol-selection]] — `uses` 语音技术栈的传输层依赖协议选型
 

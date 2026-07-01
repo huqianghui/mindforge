@@ -156,13 +156,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 - [[harness-engineering]] — `extends` Loop Engineering 是 Harness Engineering 的时间维度切片：内循环 ⊂ Harness 的 L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）
 - [[autoresearch]] — `contrasts` AutoResearch 与 Ralph Loop 同为外循环可插拔的"单任务执行内核"，区别在 selection 机制；AutoResearch 五约束正是外循环的保障性护栏
-- [[feedback-loop]] — `grounds` 内循环就是经典 OODA / 控制论负反馈环落在 Coding Agent 语境里
-- [[negative-feedback]] — `grounds` verifier 上限 = 控制器上限是负反馈控制论的直接推论
 - [[generation-evaluation-separation]] — `uses` 外循环用 maker/checker 分离做独立验证（独立模型打分而非自评）
-- [[cybernetics-agent-design]] — `grounds` "模型是无状态控制器、外循环补其身体（传感器/执行器/记忆/触发）"是控制论的直接应用
 - [[agent-paradigms]] — `uses` cron=workflow（预定义路径）、dynamic workflow=agent（模型自主控制流），对应 Anthropic 的 workflow/agent 二分
 - [[personal-knowledge-compiler]] — `produces` 把 PKC 改造成外循环系统是 Loop Engineering 的一次落地实践
-- [[llm-wiki]] — `constrains` "什么值得进入 wiki 永远是人的判断"是外循环作用于知识库时的硬闸门
 
 ## 来源日记
 

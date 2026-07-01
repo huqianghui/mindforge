@@ -81,7 +81,6 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - [[context-engineering]] — `part-of` MCP 是 Context Engineering 的工具接入层
 - [[opencli]] — `contrasts` OpenCLI 为 CLI 路线提供标准化接口描述
-- [[azure-copilot-ecosystem]] — `implements` Azure Skills 是 MCP/CLI 共存互补的最佳实战案例
 - [[model-routing]] — `produces` CodexSaver 以 MCP Server 形态实现模型路由，是 MCP 集成路线的典型应用，因此平台无关
 
 ## 来源日记

@@ -57,7 +57,6 @@ Scaling Laws 与 Bitter Lesson 的关系：后者是定性方法论（"计算终
 
 - [[bitter-lesson]] — `implements` Scaling Laws 是 Bitter Lesson 的定量化实现
 - [[continual-self-improving-ai]] — `constrains` 数据幂律增长约束驱动了自我改进方法
-- [[reinforcement-learning]] — `uses` RL 中 search + learning 的算力扩展遵循类似规律
 
 ## 来源日记
 

@@ -70,8 +70,6 @@ related:
 - [[harness-engineering]] — `grounds` 生成-评估分离是 Harness 设计的核心架构原则
 - [[meta-harness]] — `implements` Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现
 - [[negative-feedback]] — `uses` 评估结果作为负反馈驱动生成修正
-- [[feedback-loop]] — `uses` 分离的评估环节构成反馈闭环的关键节点
-- [[loop-engineering]] — `uses` 外循环用 maker/checker 分离做独立验证
 
 ## 来源日记
 

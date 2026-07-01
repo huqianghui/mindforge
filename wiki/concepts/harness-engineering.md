@@ -166,19 +166,14 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[agent-loop-architecture]] — `uses` Agent Loop 是 Harness 的运行时核心
 - [[context-engineering]] — `extends` Context Engineering 是 Harness Engineering 的子集
 - [[claude-code-agent-subagent]] — `uses` Claude Code 是 Harness Engineering 理念的典型实现
-- [[skill-pattern]] — `grounds` Skill Pattern 是 Harness 设计的认知层理论基础
 - [[bitter-lesson]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
 - [[code-reuse-in-agent-era]] — `produces` CLAUDE.md 架构约束是代码复用四层防线的第一层
 - [[oh-my-claude-code]] — `produces` OMC 是 Harness Engineering 理念的高层封装
 - [[one-person-team]] — `produces` Harness Engineering 是实现一人团队的技术基础
 - [[rtk-token-compression]] — `uses` Token 压缩是 Harness 工程的一个环节
 - [[harness-quality-gate]] — `contrasts` 名称类似但不同概念：前者是 AI Agent 系统工程范式，后者是 DevOps 质量门禁
-- [[agent-paradigms]] — `uses` Harness 提供范式切换的系统级支撑
-- [[context-explosion]] — `constrains` Context 管理是 Harness 的关键能力
 - [[meta-harness]] — `produces` Meta-Harness 是 Harness Engineering 的自动化演进
-- [[cybernetics-agent-design]] — `grounds` 控制论是 Harness Engineering 的理论根基
 - [[cybernetics-harness-design-sheet]] — `produces` 控制论 Design Sheet 是 Harness 设计流程的前置检查工具
-- [[loop-engineering]] — `extends` Loop Engineering 是 Harness 的时间维度切片：内循环 ⊂ L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）
 - [[online-learning]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
 
 ## 来源日记

@@ -82,7 +82,6 @@ related:
 
 ## 关联概念
 
-- [[hybrid-linear-attention-architecture]] — `constrains` Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，是命中归零的架构根因
 
 ## 来源日记
 

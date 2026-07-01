@@ -103,7 +103,6 @@ related:
 - [[context-engineering]] — `uses` Context 管理是共轭变换（表示层设计）的工程实践
 - [[cybernetics-harness-design-sheet]] — `produces` 控制论五层推导出 Design Sheet 检查表
 - [[loop-engineering]] — `grounds` "模型是无状态控制器、外循环补其身体"是控制论的直接应用
-- [[online-learning]] — `part-of` 在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应自适应控制
 
 ## 来源日记
 

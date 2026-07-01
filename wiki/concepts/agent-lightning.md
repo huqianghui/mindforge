@@ -138,9 +138,6 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ## 关联概念
 
-- [[automatic-prompt-optimization]] — `part-of` APO 是 agent-lightning `algorithm/` 槽位的内置算法之一（一等公民）
-- [[rejection-sampling-finetuning]] — `part-of` SFT/RAFT 走 agent-lightning 自定义算法扩展点，是三级阶梯的第二级
-- [[reinforcement-learning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯的最高级，需 SFT warmup
 - [[generation-evaluation-separation]] — `uses` litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例
 - [[bitter-lesson]] — `grounds` method-agnostic 阶梯让优化方法可随算力/数据升级，体现"计算胜过人工设计"
 - [[sft-rejection-sampling-hands-on]] — `produces` 三级阶梯第二级（SFT）的动手实战流程页

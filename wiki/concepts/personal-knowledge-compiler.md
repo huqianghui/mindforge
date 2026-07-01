@@ -93,7 +93,6 @@ related:
 - [[llm-wiki]] — `grounds` LLM Wiki 是 PKC 的理论基础
 - [[notion-as-ai-layer]] — `contrasts` Notion 在知识管理中的替代方案
 - [[personal-knowledge-compiler-workflow]] — `produces` 实施方法：日记到知识库的编译工作流
-- [[loop-engineering]] — `produces` 把 PKC 改造成外循环系统是 Loop Engineering 的落地实践
 
 ## 来源日记
 

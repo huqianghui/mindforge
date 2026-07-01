@@ -111,7 +111,6 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 ## 关联方法
 
 - [[ai-native-five-layer-pipeline]] — `part-of` 五层 Pipeline 是更宏观的流程，GSD 五步对应其 Step 3
-- [[gsd-project-scale-selection]] — `uses` 规模分级决定是否采用 GSD 五步
 - [[code-reuse-four-layer-defense]] — `uses` 四层防线可嵌入 Step 5 Verify 流程
 
 ## 来源

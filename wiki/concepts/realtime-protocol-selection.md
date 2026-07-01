@@ -95,8 +95,6 @@ related:
 ## 关联概念
 
 - [[voice-live-agent]] — `part-of` 协议选型是 Voice Live Agent 架构的基础设施层决策
-- [[speech-technology-stack]] — `uses` 语音技术栈的传输层依赖协议选型
-- [[cascaded-pipeline]] — `constrains` 级联管线的延迟目标约束协议选择（< 300ms 必须 WebRTC）
 
 ## 来源日记
 

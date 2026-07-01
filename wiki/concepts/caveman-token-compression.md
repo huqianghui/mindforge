@@ -77,7 +77,6 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 ## 关联概念
 
 - [[rtk-token-compression]] — `contrasts` Caveman 压缩 output tokens（LLM 回复），RTK 压缩 input tokens（工具输出），两者互补
-- [[brevity-constraints]] — `grounds` 论文 arXiv:2604.00025 为 Caveman 的"简洁约束可提升准确率"提供学术背书
 - [[context-engineering]] — `implements` Caveman 是 Context Engineering 在输出侧的实践
 - [[harness-engineering]] — `part-of` Token 压缩是 Harness 工程的优化环节
 - [[skill-pattern]] — `implements` Caveman 是 Skill Pattern 的典型实例——通过 SessionStart Hook 注入能力

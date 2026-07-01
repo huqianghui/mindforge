@@ -93,7 +93,6 @@ related:
 
 ## 关联概念
 
-- [[ontology-philosophy]] — `grounds` 企业本体论的哲学根基
 - [[rag-architecture-comparison]] — `grounds` Ontology 是企业级 RAG 的语义基础层
 
 ## 来源日记

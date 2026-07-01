@@ -73,7 +73,6 @@ related:
 
 - [[enterprise-ontology]] — `uses` Ontology 是企业 RAG 的语义基础
 - [[llm-wiki]] — `contrasts` LLM Wiki 是"编译式"知识而非"检索式"知识
-- [[continual-self-improving-ai]] — `uses` EntiGraph + RAG 互补关系
 
 ## 来源日记
 

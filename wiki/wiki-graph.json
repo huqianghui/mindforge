@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-01T11:33:22.862249+00:00",
+  "generated_at": "2026-07-01T14:43:56.577114+00:00",
   "stats": {
     "nodes": 100,
-    "links": 413,
+    "links": 385,
     "orphan_links_removed": 0,
     "claims": 394,
     "categories": 10
@@ -5625,24 +5625,6 @@
   "links": [
     {
       "source": "agent-lightning",
-      "target": "automatic-prompt-optimization",
-      "relation_type": "part-of",
-      "description": "APO 是 agent-lightning `algorithm/` 槽位的内置算法之一（一等公民）"
-    },
-    {
-      "source": "agent-lightning",
-      "target": "rejection-sampling-finetuning",
-      "relation_type": "part-of",
-      "description": "SFT/RAFT 走 agent-lightning 自定义算法扩展点，是三级阶梯的第二级"
-    },
-    {
-      "source": "agent-lightning",
-      "target": "reinforcement-learning",
-      "relation_type": "part-of",
-      "description": "VERL（RL）是 agent-lightning 内置算法，三级阶梯的最高级，需 SFT warmup"
-    },
-    {
-      "source": "agent-lightning",
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例"
@@ -5678,6 +5660,24 @@
       "description": "agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象"
     },
     {
+      "source": "agent-lightning",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
+      "source": "agent-lightning",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
+      "source": "agent-lightning",
+      "target": "reinforcement-learning",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
       "source": "agent-loop-architecture",
       "target": "harness-engineering",
       "relation_type": "part-of",
@@ -5685,33 +5685,15 @@
     },
     {
       "source": "agent-loop-architecture",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "uses",
-      "description": "Subagent 运行独立的 Agent Loop 实例"
-    },
-    {
-      "source": "agent-loop-architecture",
-      "target": "agent-paradigms",
-      "relation_type": "uses",
-      "description": "Agent Loop 是范式执行的运行时载体"
-    },
-    {
-      "source": "agent-loop-architecture",
-      "target": "autoresearch",
-      "relation_type": "uses",
-      "description": "AutoResearch 的循环结构本质上是特化的 Agent Loop"
-    },
-    {
-      "source": "agent-loop-architecture",
-      "target": "openclaw-agent-gateway",
-      "relation_type": "uses",
-      "description": "Agent 网关的核心仍是 Agent Loop"
-    },
-    {
-      "source": "agent-loop-architecture",
       "target": "cybernetics-agent-design",
       "relation_type": "grounds",
       "description": "控制论视角下，Agent Loop 是负反馈机制的工程载体"
+    },
+    {
+      "source": "agent-loop-architecture",
+      "target": "claude-code-agent-subagent",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "agent-paradigms",
@@ -5732,22 +5714,16 @@
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
     },
     {
-      "source": "agent-paradigms",
-      "target": "loop-engineering",
-      "relation_type": "uses",
-      "description": "cron=workflow / dynamic workflow=agent 对应 Anthropic 的 workflow/agent 二分"
-    },
-    {
-      "source": "agent-search-tools",
-      "target": "context7",
-      "relation_type": "part-of",
-      "description": "Context7 是搜索三剑客之一"
-    },
-    {
       "source": "agent-search-tools",
       "target": "context-engineering",
       "relation_type": "part-of",
       "description": "搜索工具是 Context Engineering 的信息获取层"
+    },
+    {
+      "source": "agent-search-tools",
+      "target": "context7",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "agent-zero",
@@ -5883,12 +5859,6 @@
     },
     {
       "source": "azure-copilot-ecosystem",
-      "target": "llm-wiki",
-      "relation_type": "uses",
-      "description": "Azure 企业级 LLM Wiki 方案依赖 Azure AI Search"
-    },
-    {
-      "source": "azure-copilot-ecosystem",
       "target": "skill-hub-ecosystem",
       "relation_type": "part-of",
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现"
@@ -5898,6 +5868,12 @@
       "target": "mcp-vs-cli",
       "relation_type": "implements",
       "description": "Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例"
+    },
+    {
+      "source": "azure-copilot-ecosystem",
+      "target": "llm-wiki",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "bitter-lesson",
@@ -5967,12 +5943,6 @@
     },
     {
       "source": "caveman-token-compression",
-      "target": "brevity-constraints",
-      "relation_type": "grounds",
-      "description": "论文 arXiv:2604.00025 为 Caveman 的\"简洁约束可提升准确率\"提供学术背书"
-    },
-    {
-      "source": "caveman-token-compression",
       "target": "context-engineering",
       "relation_type": "implements",
       "description": "Caveman 是 Context Engineering 在输出侧的实践"
@@ -5994,6 +5964,12 @@
       "target": "model-routing",
       "relation_type": "contrasts",
       "description": "Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行（降单价）"
+    },
+    {
+      "source": "caveman-token-compression",
+      "target": "brevity-constraints",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "claim-based-schema",
@@ -6039,27 +6015,15 @@
     },
     {
       "source": "claude-code-agent-subagent",
-      "target": "oh-my-claude-code",
-      "relation_type": "uses",
-      "description": "OMC 基于 Agent/Subagent/Teammate 架构"
-    },
-    {
-      "source": "claude-code-agent-subagent",
-      "target": "claude-code-memory-system",
-      "relation_type": "uses",
-      "description": "Subagent Memory 依赖进程隔离架构"
+      "target": "model-routing",
+      "relation_type": "contrasts",
+      "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
     },
     {
       "source": "claude-code-agent-subagent",
       "target": "meta-harness",
-      "relation_type": "uses",
-      "description": "Meta-Harness 论文选用 Claude Code Agent 作为 Proposer"
-    },
-    {
-      "source": "claude-code-agent-subagent",
-      "target": "model-routing",
-      "relation_type": "contrasts",
-      "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "claude-code-extension-system",
@@ -6069,15 +6033,15 @@
     },
     {
       "source": "claude-code-extension-system",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "uses",
-      "description": "Agent 是扩展体系的第三层"
-    },
-    {
-      "source": "claude-code-extension-system",
       "target": "skill-runtime",
       "relation_type": "uses",
       "description": "Skill 的运行时执行模型"
+    },
+    {
+      "source": "claude-code-extension-system",
+      "target": "claude-code-agent-subagent",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "claude-code-memory-system",
@@ -6111,15 +6075,15 @@
     },
     {
       "source": "code-reuse-in-agent-era",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "constrains",
-      "description": "Subagent 上下文隔离加剧了复用困难"
-    },
-    {
-      "source": "code-reuse-in-agent-era",
       "target": "code-reuse-four-layer-defense",
       "relation_type": "produces",
       "description": "实施方法：四层防线的详细步骤和决策点"
+    },
+    {
+      "source": "code-reuse-in-agent-era",
+      "target": "claude-code-agent-subagent",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "conjugate-transformation",
@@ -6159,12 +6123,6 @@
     },
     {
       "source": "context-engineering",
-      "target": "context-explosion",
-      "relation_type": "constrains",
-      "description": "Context 爆炸是 CE 的核心挑战"
-    },
-    {
-      "source": "context-engineering",
       "target": "agent-search-tools",
       "relation_type": "uses",
       "description": "搜索工具是 Context Engineering 的信息获取层"
@@ -6177,15 +6135,15 @@
     },
     {
       "source": "context-engineering",
-      "target": "rtk-token-compression",
-      "relation_type": "extends",
-      "description": "RTK 是 Context Engineering 在工具链层面的实践"
-    },
-    {
-      "source": "context-engineering",
       "target": "cybernetics-agent-design",
       "relation_type": "grounds",
       "description": "控制论视角下，Context 管理是共轭变换的工程实践"
+    },
+    {
+      "source": "context-engineering",
+      "target": "context-explosion",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "context-explosion",
@@ -6254,18 +6212,6 @@
       "description": "EntiGraph + RAG 互补关系"
     },
     {
-      "source": "continual-self-improving-ai",
-      "target": "rejection-sampling-finetuning",
-      "relation_type": "implements",
-      "description": "拒绝采样微调（STaR/RAFT/ReST）是模型自举式持续自我提升的具体训练机制"
-    },
-    {
-      "source": "continual-self-improving-ai",
-      "target": "online-learning",
-      "relation_type": "extends",
-      "description": "在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受不稳定/灾难性遗忘约束"
-    },
-    {
       "source": "contract-testing",
       "target": "testcontainers",
       "relation_type": "contrasts",
@@ -6320,24 +6266,6 @@
       "description": "\"模型是无状态控制器、外循环补其身体\"是控制论的直接应用"
     },
     {
-      "source": "cybernetics-agent-design",
-      "target": "online-learning",
-      "relation_type": "part-of",
-      "description": "在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应自适应控制"
-    },
-    {
-      "source": "distributed-training-parallelism",
-      "target": "verl",
-      "relation_type": "uses",
-      "description": "VERL 训练后端在 FSDP / Megatron 间二选一"
-    },
-    {
-      "source": "distributed-training-parallelism",
-      "target": "slime-rl-framework",
-      "relation_type": "uses",
-      "description": "Slime 强绑定 Megatron 做训练后端"
-    },
-    {
       "source": "distributed-training-parallelism",
       "target": "reinforcement-learning",
       "relation_type": "grounds",
@@ -6356,16 +6284,28 @@
       "description": "MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP"
     },
     {
-      "source": "enterprise-ontology",
-      "target": "ontology-philosophy",
-      "relation_type": "grounds",
-      "description": "企业本体论的哲学根基"
+      "source": "distributed-training-parallelism",
+      "target": "verl",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
+      "source": "distributed-training-parallelism",
+      "target": "slime-rl-framework",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "enterprise-ontology",
       "target": "rag-architecture-comparison",
       "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
+    },
+    {
+      "source": "enterprise-ontology",
+      "target": "ontology-philosophy",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "ephemeral-environment",
@@ -6441,15 +6381,15 @@
     },
     {
       "source": "framework-selection",
-      "target": "ai-native-pipeline",
-      "relation_type": "uses",
-      "description": "Pipeline 各阶段需要不同框架"
-    },
-    {
-      "source": "framework-selection",
       "target": "gsd-project-scale-selection",
       "relation_type": "produces",
       "description": "实施方法：项目规模分级与工具选择决策框架"
+    },
+    {
+      "source": "framework-selection",
+      "target": "ai-native-pipeline",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "generation-evaluation-separation",
@@ -6468,18 +6408,6 @@
       "target": "negative-feedback",
       "relation_type": "uses",
       "description": "评估结果作为负反馈驱动生成修正"
-    },
-    {
-      "source": "generation-evaluation-separation",
-      "target": "feedback-loop",
-      "relation_type": "uses",
-      "description": "分离的评估环节构成反馈闭环的关键节点"
-    },
-    {
-      "source": "generation-evaluation-separation",
-      "target": "loop-engineering",
-      "relation_type": "uses",
-      "description": "外循环用 maker/checker 分离做独立验证"
     },
     {
       "source": "grapheme-to-phoneme",
@@ -6525,12 +6453,6 @@
     },
     {
       "source": "harness-engineering",
-      "target": "skill-pattern",
-      "relation_type": "grounds",
-      "description": "Skill Pattern 是 Harness 设计的认知层理论基础"
-    },
-    {
-      "source": "harness-engineering",
       "target": "bitter-lesson",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
@@ -6567,39 +6489,15 @@
     },
     {
       "source": "harness-engineering",
-      "target": "agent-paradigms",
-      "relation_type": "uses",
-      "description": "Harness 提供范式切换的系统级支撑"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "context-explosion",
-      "relation_type": "constrains",
-      "description": "Context 管理是 Harness 的关键能力"
-    },
-    {
-      "source": "harness-engineering",
       "target": "meta-harness",
       "relation_type": "produces",
       "description": "Meta-Harness 是 Harness Engineering 的自动化演进"
     },
     {
       "source": "harness-engineering",
-      "target": "cybernetics-agent-design",
-      "relation_type": "grounds",
-      "description": "控制论是 Harness Engineering 的理论根基"
-    },
-    {
-      "source": "harness-engineering",
       "target": "cybernetics-harness-design-sheet",
       "relation_type": "produces",
       "description": "控制论 Design Sheet 是 Harness 设计流程的前置检查工具"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "loop-engineering",
-      "relation_type": "extends",
-      "description": "Loop Engineering 是 Harness 的时间维度切片：内循环 ⊂ L6 Eval 层，外循环 ⊃ Harness（补上人退出后系统怎么自转）"
     },
     {
       "source": "harness-engineering",
@@ -6630,12 +6528,6 @@
       "target": "architecture-testing",
       "relation_type": "uses",
       "description": "架构测试是质量门禁第 2 维度的核心"
-    },
-    {
-      "source": "harness-quality-gate",
-      "target": "fitness-functions",
-      "relation_type": "extends",
-      "description": "适应度函数将固定门禁扩展为可演化的架构评估"
     },
     {
       "source": "hermes-agent",
@@ -6735,27 +6627,9 @@
     },
     {
       "source": "loop-engineering",
-      "target": "feedback-loop",
-      "relation_type": "grounds",
-      "description": "内循环就是经典 OODA / 控制论负反馈环落在 Coding Agent 语境里"
-    },
-    {
-      "source": "loop-engineering",
-      "target": "negative-feedback",
-      "relation_type": "grounds",
-      "description": "verifier 上限 = 控制器上限是负反馈控制论的直接推论"
-    },
-    {
-      "source": "loop-engineering",
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "外循环用 maker/checker 分离做独立验证（独立模型打分而非自评）"
-    },
-    {
-      "source": "loop-engineering",
-      "target": "cybernetics-agent-design",
-      "relation_type": "grounds",
-      "description": "\"模型是无状态控制器、外循环补其身体（传感器/执行器/记忆/触发）\"是控制论的直接应用"
     },
     {
       "source": "loop-engineering",
@@ -6771,9 +6645,9 @@
     },
     {
       "source": "loop-engineering",
-      "target": "llm-wiki",
-      "relation_type": "constrains",
-      "description": "\"什么值得进入 wiki 永远是人的判断\"是外循环作用于知识库时的硬闸门"
+      "target": "feedback-loop",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "mcp-vs-cli",
@@ -6786,12 +6660,6 @@
       "target": "opencli",
       "relation_type": "contrasts",
       "description": "OpenCLI 为 CLI 路线提供标准化接口描述"
-    },
-    {
-      "source": "mcp-vs-cli",
-      "target": "azure-copilot-ecosystem",
-      "relation_type": "implements",
-      "description": "Azure Skills 是 MCP/CLI 共存互补的最佳实战案例"
     },
     {
       "source": "mcp-vs-cli",
@@ -6902,12 +6770,6 @@
       "description": "verifier 上限 = 控制器上限是负反馈控制论的直接推论"
     },
     {
-      "source": "negative-feedback",
-      "target": "online-learning",
-      "relation_type": "uses",
-      "description": "在线学习的快回路就是负反馈控制（error → correction，不改参数）"
-    },
-    {
       "source": "notion-as-ai-layer",
       "target": "personal-knowledge-compiler",
       "relation_type": "contrasts",
@@ -6927,15 +6789,15 @@
     },
     {
       "source": "oh-my-claude-code",
-      "target": "one-person-team",
-      "relation_type": "uses",
-      "description": "OMC Autopilot 助力一人团队模式"
-    },
-    {
-      "source": "oh-my-claude-code",
       "target": "terminal-multiplexer-for-ai",
       "relation_type": "uses",
       "description": "tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施"
+    },
+    {
+      "source": "oh-my-claude-code",
+      "target": "one-person-team",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "one-person-team",
@@ -7058,16 +6920,10 @@
       "description": "实施方法：日记到知识库的编译工作流"
     },
     {
-      "source": "personal-knowledge-compiler",
-      "target": "loop-engineering",
-      "relation_type": "produces",
-      "description": "把 PKC 改造成外循环系统是 Loop Engineering 的落地实践"
-    },
-    {
       "source": "prefix-caching",
       "target": "hybrid-linear-attention-architecture",
-      "relation_type": "constrains",
-      "description": "Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，是命中归零的架构根因"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "rag-architecture-comparison",
@@ -7084,8 +6940,8 @@
     {
       "source": "rag-architecture-comparison",
       "target": "continual-self-improving-ai",
-      "relation_type": "uses",
-      "description": "EntiGraph + RAG 互补关系"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "react-paradigm",
@@ -7120,14 +6976,14 @@
     {
       "source": "realtime-protocol-selection",
       "target": "speech-technology-stack",
-      "relation_type": "uses",
-      "description": "语音技术栈的传输层依赖协议选型"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "realtime-protocol-selection",
       "target": "cascaded-pipeline",
-      "relation_type": "constrains",
-      "description": "级联管线的延迟目标约束协议选择（< 300ms 必须 WebRTC）"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "reinforcement-learning",
@@ -7270,8 +7126,8 @@
     {
       "source": "scaling-laws",
       "target": "reinforcement-learning",
-      "relation_type": "uses",
-      "description": "RL 中 search + learning 的算力扩展遵循类似规律"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "skill-creator-orchestration",
@@ -7300,8 +7156,8 @@
     {
       "source": "skill-hub-ecosystem",
       "target": "openclaw-agent-gateway",
-      "relation_type": "part-of",
-      "description": "OpenClaw 是 Skill Hub 生态的主要平台之一"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "skill-pattern",
@@ -7329,27 +7185,21 @@
     },
     {
       "source": "skill-runtime",
-      "target": "skill-pattern",
-      "relation_type": "grounds",
-      "description": "Google 的 Skill Pattern 是 Skill Runtime 的认知架构基础"
-    },
-    {
-      "source": "skill-runtime",
       "target": "claude-code-extension-system",
       "relation_type": "implements",
       "description": "Claude Code 的 Skill 机制是 Skill Runtime 的实际实现"
     },
     {
       "source": "skill-runtime",
-      "target": "skill-creator-orchestration",
-      "relation_type": "extends",
-      "description": "Skill Creator 构建的是 Skill Runtime 的编排层"
-    },
-    {
-      "source": "skill-runtime",
       "target": "cybernetics-agent-design",
       "relation_type": "contrasts",
       "description": "控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层"
+    },
+    {
+      "source": "skill-runtime",
+      "target": "skill-pattern",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "skillopt",
@@ -7425,18 +7275,6 @@
     },
     {
       "source": "speech-technology-stack",
-      "target": "grapheme-to-phoneme",
-      "relation_type": "part-of",
-      "description": "G2P 是 Speech Out 层的核心转换模块"
-    },
-    {
-      "source": "speech-technology-stack",
-      "target": "turn-taking",
-      "relation_type": "part-of",
-      "description": "Turn-Taking 是 Core Processing 层的关键组件"
-    },
-    {
-      "source": "speech-technology-stack",
       "target": "intelligent-dictation",
       "relation_type": "produces",
       "description": "语音技术栈 L1 之上的产品层演进"
@@ -7450,14 +7288,14 @@
     {
       "source": "terminal-multiplexer-for-ai",
       "target": "claude-code-memory-system",
-      "relation_type": "uses",
-      "description": "tmux 持久会话与 Claude Code 的 Session 记忆互补"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "terminal-multiplexer-for-ai",
       "target": "oh-my-claude-code",
-      "relation_type": "uses",
-      "description": "tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "testcontainers",
@@ -7518,12 +7356,6 @@
       "target": "speech-technology-stack",
       "relation_type": "part-of",
       "description": "Turn-Taking 是 Core Processing 层的关键组件"
-    },
-    {
-      "source": "turn-taking",
-      "target": "cascaded-pipeline",
-      "relation_type": "uses",
-      "description": "级联流水线中 Turn-Taking 是独立可配置模块"
     },
     {
       "source": "verl",
@@ -7684,8 +7516,8 @@
     {
       "source": "code-reuse-four-layer-defense",
       "target": "gsd-five-step-workflow",
-      "relation_type": "uses",
-      "description": "GSD workflow 中可嵌入复用检查步骤"
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "cybernetics-harness-design-sheet",
@@ -7779,15 +7611,15 @@
     },
     {
       "source": "gsd-five-step-workflow",
-      "target": "gsd-project-scale-selection",
-      "relation_type": "uses",
-      "description": "规模分级决定是否采用 GSD 五步"
-    },
-    {
-      "source": "gsd-five-step-workflow",
       "target": "code-reuse-four-layer-defense",
       "relation_type": "uses",
       "description": "四层防线可嵌入 Step 5 Verify 流程"
+    },
+    {
+      "source": "gsd-five-step-workflow",
+      "target": "gsd-project-scale-selection",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "gsd-project-scale-selection",

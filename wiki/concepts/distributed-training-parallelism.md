@@ -91,8 +91,6 @@ related:
 
 ## 关联概念
 
-- [[verl]] — `uses` VERL 训练后端在 FSDP / Megatron 间二选一
-- [[slime-rl-framework]] — `uses` Slime 强绑定 Megatron 做训练后端
 - [[reinforcement-learning]] — `grounds` 大模型 RL 必须大规模训练，并行策略是其物理前提
 - [[prefix-caching]] — `contrasts` 推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别
 - [[hybrid-linear-attention-architecture]] — `uses` MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP

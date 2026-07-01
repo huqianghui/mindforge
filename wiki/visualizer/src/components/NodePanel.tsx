@@ -7,7 +7,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import CloseIcon from '@mui/icons-material/Close';
 import type { GraphNode, WikiLink } from '../types';
 import { NODE_COLORS, NODE_TYPE_LABELS, RELATION_COLORS, RELATION_TYPE_LABELS } from '../theme';
@@ -127,7 +126,7 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
         {outgoing.length > 0 && (
           <>
             <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', mb: 0.5 }}>
-              出边
+              出边（本页指向别处）
             </Typography>
             <List dense disablePadding>
               {outgoing.map((l, i) => (
@@ -137,25 +136,31 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
                   sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }, pl: 1, borderRadius: 1 }}
                   onClick={() => onNavigate(l.target)}
                 >
-                  <Chip
-                    label={RELATION_TYPE_LABELS[l.relation_type] || l.relation_type}
-                    size="small"
-                    sx={{
-                      bgcolor: RELATION_COLORS[l.relation_type] || RELATION_COLORS.untyped,
-                      color: '#fff',
-                      fontSize: 10,
-                      height: 18,
-                      mr: 1,
-                    }}
-                  />
-                  <ListItemText
-                    primary={l.target}
-                    secondary={l.description}
-                    slotProps={{
-                      primary: { variant: 'body2' },
-                      secondary: { variant: 'caption', noWrap: true },
-                    }}
-                  />
+                  <Box sx={{ width: '100%', py: 0.3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                      <Chip
+                        label={RELATION_TYPE_LABELS[l.relation_type] || l.relation_type}
+                        size="small"
+                        sx={{
+                          bgcolor: RELATION_COLORS[l.relation_type] || RELATION_COLORS.untyped,
+                          color: '#fff',
+                          fontSize: 10,
+                          height: 18,
+                        }}
+                      />
+                      <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                        &rarr;
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {l.target}
+                      </Typography>
+                    </Box>
+                    {l.description && (
+                      <Typography variant="caption" noWrap sx={{ display: 'block', color: 'text.secondary' }}>
+                        {l.description}
+                      </Typography>
+                    )}
+                  </Box>
                 </ListItem>
               ))}
             </List>
@@ -165,7 +170,7 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
         {incoming.length > 0 && (
           <>
             <Typography variant="caption" sx={{ fontWeight: 600, display: 'block', mt: 1, mb: 0.5 }}>
-              入边
+              入边（别处指向本页）
             </Typography>
             <List dense disablePadding>
               {incoming.map((l, i) => (
@@ -175,25 +180,34 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
                   sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }, pl: 1, borderRadius: 1 }}
                   onClick={() => onNavigate(l.source)}
                 >
-                  <Chip
-                    label={RELATION_TYPE_LABELS[l.relation_type] || l.relation_type}
-                    size="small"
-                    sx={{
-                      bgcolor: RELATION_COLORS[l.relation_type] || RELATION_COLORS.untyped,
-                      color: '#fff',
-                      fontSize: 10,
-                      height: 18,
-                      mr: 1,
-                    }}
-                  />
-                  <ListItemText
-                    primary={l.source}
-                    secondary={l.description}
-                    slotProps={{
-                      primary: { variant: 'body2' },
-                      secondary: { variant: 'caption', noWrap: true },
-                    }}
-                  />
+                  <Box sx={{ width: '100%', py: 0.3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {l.source}
+                      </Typography>
+                      <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                        &mdash;
+                      </Typography>
+                      <Chip
+                        label={RELATION_TYPE_LABELS[l.relation_type] || l.relation_type}
+                        size="small"
+                        sx={{
+                          bgcolor: RELATION_COLORS[l.relation_type] || RELATION_COLORS.untyped,
+                          color: '#fff',
+                          fontSize: 10,
+                          height: 18,
+                        }}
+                      />
+                      <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                        &rarr;
+                      </Typography>
+                    </Box>
+                    {l.description && (
+                      <Typography variant="caption" noWrap sx={{ display: 'block', color: 'text.secondary' }}>
+                        {l.description}
+                      </Typography>
+                    )}
+                  </Box>
                 </ListItem>
               ))}
             </List>

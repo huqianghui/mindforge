@@ -64,7 +64,6 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 - [[agent-loop-architecture]] — `uses` Agent Loop 是范式执行的运行时载体
 - [[harness-engineering]] — `uses` Harness 提供范式切换的系统级支撑
 - [[skill-pattern]] — `contrasts` Agent Pattern 与 Skill Pattern 正交互补
-- [[loop-engineering]] — `uses` cron=workflow / dynamic workflow=agent 对应 Anthropic 的 workflow/agent 二分
 
 ## 来源日记
 
