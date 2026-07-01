@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-06-29
-stats: "74 concepts, 15 methods, 6 decisions, 368 claims"
+stats: "78 concepts, 15 methods, 7 decisions, 394 claims"
 tags:
   - wiki
   - index
@@ -101,6 +101,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[prefix-caching]] — 前缀缓存：两条隐含假设，及循环状态为何让 Hybrid 命中归零
 - [[automatic-prompt-optimization]] — APO：文本梯度 + Beam Search，不动权重的 prompt 优化
 - [[rejection-sampling-finetuning]] — 拒绝采样微调（RAFT/STaR）：用 reward 造标签的自蒸馏式 SFT
+- [[skillopt]] — SkillOpt：把 agent skill 当 frozen agent 的可训练外部状态，把 SGD 纪律搬进文本空间
 - [[agent-lightning]] — Agent Lightning：method-agnostic 训练框架，APO→SFT→RL 三级阶梯换槽位不换框架
 - [[verl]] — VERL（Volcano Engine RL）：HybridFlow 调度系统，Agent RL 事实标准基础设施
 - [[slime-rl-framework]] — Slime：数据流式 RL 框架（Training-Buffer-Rollout），Megatron+SGLang 强绑定
