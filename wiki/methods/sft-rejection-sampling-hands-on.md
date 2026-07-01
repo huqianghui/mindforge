@@ -137,7 +137,6 @@ related_methods: []
 ## 关联概念
 
 - [[rejection-sampling-finetuning]] — `implements` 本流程是拒绝采样微调原理的可执行落地（采样→reward 过滤→LoRA 训练→存 checkpoint）
-- [[agent-lightning]] — `part-of` 是 agent-lightning 三级阶梯第二级（SFT）的动手配套，走自定义算法扩展点
 
 ## 关联方法
 

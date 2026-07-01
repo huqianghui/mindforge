@@ -101,7 +101,6 @@ related:
 ## 关联概念
 
 - [[voice-live-agent]] — `part-of` 语音技术栈服务于 Voice Live Agent
-- [[voice-activity-detection]] — `extends` VAD 是语音技术栈的关键组件
 - [[intelligent-dictation]] — `produces` 语音技术栈 L1 之上的产品层演进
 - [[realtime-protocol-selection]] — `uses` 语音技术栈的传输层依赖协议选型
 

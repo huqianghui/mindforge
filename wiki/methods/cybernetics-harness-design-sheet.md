@@ -105,12 +105,10 @@ related_methods:
 ## 关联概念
 
 - [[cybernetics-agent-design]] — `implements` 本方法是控制论五层的实践落地工具
-- [[harness-engineering]] — `uses` Harness Design Sheet 是 Harness 设计流程的前置检查
 
 ## 关联方法
 
 - [[ai-native-five-layer-pipeline]] — `contrasts` 五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角
-- [[harness-five-dimension-quality-gate]] — `extends` 质量门禁关注运行时检查，Design Sheet 关注设计时检查
 
 ## 来源
 

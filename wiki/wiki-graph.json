@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-01T15:08:47.764120+00:00",
+  "generated_at": "2026-07-01T15:23:48.835509+00:00",
   "stats": {
     "nodes": 100,
-    "links": 356,
+    "links": 303,
     "orphan_links_removed": 0,
     "claims": 394,
     "categories": 10
@@ -5654,22 +5654,10 @@
       "description": "Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）"
     },
     {
-      "source": "agent-lightning",
-      "target": "rl-infra-framework-selection",
-      "relation_type": "produces",
-      "description": "agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象"
-    },
-    {
       "source": "agent-loop-architecture",
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "Agent Loop 是 Harness 的运行时核心"
-    },
-    {
-      "source": "agent-loop-architecture",
-      "target": "cybernetics-agent-design",
-      "relation_type": "grounds",
-      "description": "控制论视角下，Agent Loop 是负反馈机制的工程载体"
     },
     {
       "source": "agent-paradigms",
@@ -5742,12 +5730,6 @@
       "target": "harness-engineering",
       "relation_type": "implements",
       "description": "Pipeline 是 Harness Engineering 的具体工作流实现"
-    },
-    {
-      "source": "ai-native-pipeline",
-      "target": "ai-native-five-layer-pipeline",
-      "relation_type": "produces",
-      "description": "实施方法：五层流水线的详细步骤和决策点"
     },
     {
       "source": "ai-skill-formation",
@@ -5829,12 +5811,6 @@
     },
     {
       "source": "azure-copilot-ecosystem",
-      "target": "skill-hub-ecosystem",
-      "relation_type": "part-of",
-      "description": "Azure Skills 是 Microsoft 官方的 Skill 实现"
-    },
-    {
-      "source": "azure-copilot-ecosystem",
       "target": "mcp-vs-cli",
       "relation_type": "implements",
       "description": "Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例"
@@ -5842,7 +5818,7 @@
     {
       "source": "bitter-lesson",
       "target": "continual-self-improving-ai",
-      "relation_type": "extends",
+      "relation_type": "grounds",
       "description": "持续自我改进是 Bitter Lesson 的延伸"
     },
     {
@@ -5979,12 +5955,6 @@
     },
     {
       "source": "claude-code-extension-system",
-      "target": "skill-hub-ecosystem",
-      "relation_type": "extends",
-      "description": "Plugin 生态的社区实现"
-    },
-    {
-      "source": "claude-code-extension-system",
       "target": "skill-runtime",
       "relation_type": "uses",
       "description": "Skill 的运行时执行模型"
@@ -6020,12 +5990,6 @@
       "description": "CLAUDE.md 架构约束是 Harness Engineering 的一部分"
     },
     {
-      "source": "code-reuse-in-agent-era",
-      "target": "code-reuse-four-layer-defense",
-      "relation_type": "produces",
-      "description": "实施方法：四层防线的详细步骤和决策点"
-    },
-    {
       "source": "conjugate-transformation",
       "target": "cybernetics-agent-design",
       "relation_type": "part-of",
@@ -6057,27 +6021,9 @@
     },
     {
       "source": "context-engineering",
-      "target": "mcp-vs-cli",
-      "relation_type": "uses",
-      "description": "MCP 是 Context Engineering 的工具接入层"
-    },
-    {
-      "source": "context-engineering",
-      "target": "agent-search-tools",
-      "relation_type": "uses",
-      "description": "搜索工具是 Context Engineering 的信息获取层"
-    },
-    {
-      "source": "context-engineering",
       "target": "context7",
       "relation_type": "uses",
       "description": "Context7 是 Context Engineering 的文档层工具"
-    },
-    {
-      "source": "context-engineering",
-      "target": "cybernetics-agent-design",
-      "relation_type": "grounds",
-      "description": "控制论视角下，Context 管理是共轭变换的工程实践"
     },
     {
       "source": "context-explosion",
@@ -6135,21 +6081,9 @@
     },
     {
       "source": "context7",
-      "target": "context-engineering",
-      "relation_type": "part-of",
-      "description": "Context7 是 Context Engineering 的文档层工具"
-    },
-    {
-      "source": "context7",
       "target": "agent-search-tools",
       "relation_type": "part-of",
       "description": "Context7 是 Agent 搜索三剑客之一"
-    },
-    {
-      "source": "continual-self-improving-ai",
-      "target": "bitter-lesson",
-      "relation_type": "grounds",
-      "description": "持续自我改进体现\"计算胜过人工知识\""
     },
     {
       "source": "continual-self-improving-ai",
@@ -6177,14 +6111,8 @@
     },
     {
       "source": "cybernetics-agent-design",
-      "target": "meta-harness",
-      "relation_type": "extends",
-      "description": "Meta-Harness 的自动搜索循环是控制论负反馈 + 探索的工程实现"
-    },
-    {
-      "source": "cybernetics-agent-design",
       "target": "agent-loop-architecture",
-      "relation_type": "uses",
+      "relation_type": "grounds",
       "description": "Agent Loop 是控制论负反馈机制的工程载体"
     },
     {
@@ -6196,14 +6124,8 @@
     {
       "source": "cybernetics-agent-design",
       "target": "context-engineering",
-      "relation_type": "uses",
+      "relation_type": "grounds",
       "description": "Context 管理是共轭变换（表示层设计）的工程实践"
-    },
-    {
-      "source": "cybernetics-agent-design",
-      "target": "cybernetics-harness-design-sheet",
-      "relation_type": "produces",
-      "description": "控制论五层推导出 Design Sheet 检查表"
     },
     {
       "source": "cybernetics-agent-design",
@@ -6237,21 +6159,9 @@
     },
     {
       "source": "ephemeral-environment",
-      "target": "testcontainers",
-      "relation_type": "extends",
-      "description": "Ephemeral Environment 将 Testcontainers 的测试级隔离扩展到 PR 级全栈隔离"
-    },
-    {
-      "source": "ephemeral-environment",
       "target": "harness-quality-gate",
       "relation_type": "extends",
       "description": "作为质量门禁的环境基础设施层"
-    },
-    {
-      "source": "feedback-loop",
-      "target": "negative-feedback",
-      "relation_type": "uses",
-      "description": "负反馈是反馈闭环的驱动机制"
     },
     {
       "source": "feedback-loop",
@@ -6285,12 +6195,6 @@
     },
     {
       "source": "fitness-functions",
-      "target": "architecture-testing",
-      "relation_type": "grounds",
-      "description": "架构测试工具是适应度函数的具体实现"
-    },
-    {
-      "source": "fitness-functions",
       "target": "harness-quality-gate",
       "relation_type": "extends",
       "description": "适应度函数将质量门禁从固定检查扩展为可演化的架构评估"
@@ -6300,12 +6204,6 @@
       "target": "three-layer-plugin-architecture",
       "relation_type": "produces",
       "description": "框架选型的三层架构方案"
-    },
-    {
-      "source": "framework-selection",
-      "target": "gsd-project-scale-selection",
-      "relation_type": "produces",
-      "description": "实施方法：项目规模分级与工具选择决策框架"
     },
     {
       "source": "generation-evaluation-separation",
@@ -6351,39 +6249,9 @@
     },
     {
       "source": "harness-engineering",
-      "target": "agent-loop-architecture",
-      "relation_type": "uses",
-      "description": "Agent Loop 是 Harness 的运行时核心"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "context-engineering",
-      "relation_type": "extends",
-      "description": "Context Engineering 是 Harness Engineering 的子集"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "uses",
-      "description": "Claude Code 是 Harness Engineering 理念的典型实现"
-    },
-    {
-      "source": "harness-engineering",
       "target": "bitter-lesson",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "code-reuse-in-agent-era",
-      "relation_type": "produces",
-      "description": "CLAUDE.md 架构约束是代码复用四层防线的第一层"
-    },
-    {
-      "source": "harness-engineering",
-      "target": "oh-my-claude-code",
-      "relation_type": "produces",
-      "description": "OMC 是 Harness Engineering 理念的高层封装"
     },
     {
       "source": "harness-engineering",
@@ -6405,12 +6273,6 @@
     },
     {
       "source": "harness-engineering",
-      "target": "meta-harness",
-      "relation_type": "produces",
-      "description": "Meta-Harness 是 Harness Engineering 的自动化演进"
-    },
-    {
-      "source": "harness-engineering",
       "target": "cybernetics-harness-design-sheet",
       "relation_type": "produces",
       "description": "控制论 Design Sheet 是 Harness 设计流程的前置检查工具"
@@ -6423,27 +6285,9 @@
     },
     {
       "source": "harness-quality-gate",
-      "target": "testcontainers",
-      "relation_type": "uses",
-      "description": "质量门禁第 4 层的核心集成测试工具"
-    },
-    {
-      "source": "harness-quality-gate",
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "名称类似但不同概念：Harness Quality Gate 是 DevOps 质量门禁，Harness Engineering 是 AI Agent 系统工程范式"
-    },
-    {
-      "source": "harness-quality-gate",
-      "target": "harness-five-dimension-quality-gate",
-      "relation_type": "produces",
-      "description": "实施方法：五维质量门禁的详细步骤和工具链"
-    },
-    {
-      "source": "harness-quality-gate",
-      "target": "architecture-testing",
-      "relation_type": "uses",
-      "description": "架构测试是质量门禁第 2 维度的核心"
     },
     {
       "source": "hermes-agent",
@@ -6488,18 +6332,6 @@
       "description": "推理架构选型与级联/端到端管线选型同属\"为约束选架构\"的工程决策family"
     },
     {
-      "source": "intelligent-dictation",
-      "target": "speech-technology-stack",
-      "relation_type": "extends",
-      "description": "智能听写是语音技术栈 L1 之上的产品层演进"
-    },
-    {
-      "source": "intelligent-dictation",
-      "target": "voice-live-agent",
-      "relation_type": "uses",
-      "description": "Voice Agent 输出应从\"用户说了什么\"转向\"用户想要什么\"——智能听写思路的 Agent 化延伸"
-    },
-    {
       "source": "llm-wiki",
       "target": "azure-copilot-ecosystem",
       "relation_type": "uses",
@@ -6508,7 +6340,7 @@
     {
       "source": "llm-wiki",
       "target": "personal-knowledge-compiler",
-      "relation_type": "produces",
+      "relation_type": "grounds",
       "description": "PKC 是 LLM Wiki 的实践方法论"
     },
     {
@@ -6570,12 +6402,6 @@
       "target": "opencli",
       "relation_type": "contrasts",
       "description": "OpenCLI 为 CLI 路线提供标准化接口描述"
-    },
-    {
-      "source": "mcp-vs-cli",
-      "target": "model-routing",
-      "relation_type": "produces",
-      "description": "CodexSaver 以 MCP Server 形态实现模型路由，是 MCP 集成路线的典型应用，因此平台无关"
     },
     {
       "source": "meta-harness",
@@ -6705,12 +6531,6 @@
     },
     {
       "source": "one-person-team",
-      "target": "harness-engineering",
-      "relation_type": "grounds",
-      "description": "Harness Engineering 是实现一人团队的技术基础"
-    },
-    {
-      "source": "one-person-team",
       "target": "oh-my-claude-code",
       "relation_type": "uses",
       "description": "OMC 的 Autopilot 模式助力一人团队"
@@ -6776,30 +6596,6 @@
       "description": "三种 Agent 哲学光谱中的极端自主端"
     },
     {
-      "source": "openclaw-agent-gateway",
-      "target": "orchestrator-pattern-multi-agent",
-      "relation_type": "produces",
-      "description": "实施方法：Orchestrator Pattern 多 Agent 编排模式"
-    },
-    {
-      "source": "openclaw-agent-gateway",
-      "target": "openclaw-five-stage-gateway",
-      "relation_type": "produces",
-      "description": "实施方法：五阶段网关建设的详细步骤"
-    },
-    {
-      "source": "openclaw-agent-gateway",
-      "target": "orchestrator-pattern-multi-agent",
-      "relation_type": "produces",
-      "description": "多 Agent 编排的具体实施模式"
-    },
-    {
-      "source": "opencli",
-      "target": "mcp-vs-cli",
-      "relation_type": "part-of",
-      "description": "OpenCLI 为 CLI 路线提供标准化支撑"
-    },
-    {
       "source": "opencli",
       "target": "openclaw-agent-gateway",
       "relation_type": "part-of",
@@ -6807,27 +6603,9 @@
     },
     {
       "source": "personal-knowledge-compiler",
-      "target": "llm-wiki",
-      "relation_type": "grounds",
-      "description": "LLM Wiki 是 PKC 的理论基础"
-    },
-    {
-      "source": "personal-knowledge-compiler",
       "target": "notion-as-ai-layer",
       "relation_type": "contrasts",
       "description": "Notion 在知识管理中的替代方案"
-    },
-    {
-      "source": "personal-knowledge-compiler",
-      "target": "personal-knowledge-compiler-workflow",
-      "relation_type": "produces",
-      "description": "实施方法：日记到知识库的编译工作流"
-    },
-    {
-      "source": "rag-architecture-comparison",
-      "target": "enterprise-ontology",
-      "relation_type": "uses",
-      "description": "Ontology 是企业 RAG 的语义基础"
     },
     {
       "source": "rag-architecture-comparison",
@@ -6951,12 +6729,6 @@
     },
     {
       "source": "rejection-sampling-finetuning",
-      "target": "sft-rejection-sampling-hands-on",
-      "relation_type": "grounds",
-      "description": "本概念的原理由该实战方法页落成可执行流程（Azure GPU VM + unsloth 跑通）"
-    },
-    {
-      "source": "rejection-sampling-finetuning",
       "target": "bitter-lesson",
       "relation_type": "grounds",
       "description": "用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出"
@@ -6972,12 +6744,6 @@
       "target": "context-engineering",
       "relation_type": "extends",
       "description": "RTK 是 Context Engineering 在工具链层面的实践——通过压缩工具输出来优化 LLM 可用上下文"
-    },
-    {
-      "source": "rtk-token-compression",
-      "target": "harness-engineering",
-      "relation_type": "part-of",
-      "description": "Token 压缩是 Harness 工程的一个环节——优化 Agent 运行环境"
     },
     {
       "source": "rtk-token-compression",
@@ -7053,12 +6819,6 @@
     },
     {
       "source": "skill-runtime",
-      "target": "claude-code-extension-system",
-      "relation_type": "implements",
-      "description": "Claude Code 的 Skill 机制是 Skill Runtime 的实际实现"
-    },
-    {
-      "source": "skill-runtime",
       "target": "cybernetics-agent-design",
       "relation_type": "contrasts",
       "description": "控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层"
@@ -7131,12 +6891,6 @@
     },
     {
       "source": "speech-technology-stack",
-      "target": "voice-activity-detection",
-      "relation_type": "extends",
-      "description": "VAD 是语音技术栈的关键组件"
-    },
-    {
-      "source": "speech-technology-stack",
       "target": "intelligent-dictation",
       "relation_type": "produces",
       "description": "语音技术栈 L1 之上的产品层演进"
@@ -7167,12 +6921,6 @@
     },
     {
       "source": "three-layer-plugin-architecture",
-      "target": "framework-selection",
-      "relation_type": "implements",
-      "description": "三层架构是框架选型的具体方案"
-    },
-    {
-      "source": "three-layer-plugin-architecture",
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "CLAUDE.md 路由是 Harness 的一部分"
@@ -7182,18 +6930,6 @@
       "target": "claude-code-extension-system",
       "relation_type": "uses",
       "description": "三层架构基于 Claude Code 扩展体系"
-    },
-    {
-      "source": "three-layer-plugin-architecture",
-      "target": "gsd-five-step-workflow",
-      "relation_type": "produces",
-      "description": "实施方法：GSD 五步开发工作流"
-    },
-    {
-      "source": "turn-taking",
-      "target": "voice-activity-detection",
-      "relation_type": "contrasts",
-      "description": "VAD 检测语音存在，Turn-Taking 决定何时切换话轮"
     },
     {
       "source": "turn-taking",
@@ -7212,12 +6948,6 @@
       "target": "reinforcement-learning",
       "relation_type": "implements",
       "description": "VERL 是 LLM RL（PPO/GRPO/RLHF/RLVR）的工业级分布式实现"
-    },
-    {
-      "source": "verl",
-      "target": "agent-lightning",
-      "relation_type": "part-of",
-      "description": "VERL 是 agent-lightning 内置算法（RL 三级阶梯最高级）的后端"
     },
     {
       "source": "verl",
@@ -7263,33 +6993,9 @@
     },
     {
       "source": "voice-live-agent",
-      "target": "voice-activity-detection",
-      "relation_type": "uses",
-      "description": "VAD 是 Voice Agent 的关键子技术"
-    },
-    {
-      "source": "voice-live-agent",
-      "target": "speech-technology-stack",
-      "relation_type": "uses",
-      "description": "Voice Agent 涉及完整的语音技术栈"
-    },
-    {
-      "source": "voice-live-agent",
-      "target": "voice-cascaded-pipeline",
-      "relation_type": "produces",
-      "description": "实施方法：级联管线架构的详细步骤和决策点"
-    },
-    {
-      "source": "voice-live-agent",
       "target": "intelligent-dictation",
       "relation_type": "extends",
       "description": "Voice Agent 输出可从\"记录说了什么\"升级为\"写出想表达什么\""
-    },
-    {
-      "source": "voice-live-agent",
-      "target": "realtime-protocol-selection",
-      "relation_type": "uses",
-      "description": "协议选型是 Voice Agent 的基础设施层决策（WebSocket 控制面 + WebRTC 数据面）"
     },
     {
       "source": "ai-adoption-six-step-evolution",
@@ -7335,12 +7041,6 @@
     },
     {
       "source": "ai-native-five-layer-pipeline",
-      "target": "gsd-five-step-workflow",
-      "relation_type": "uses",
-      "description": "GSD 五步工作流是 Step 3 的详细实施方法"
-    },
-    {
-      "source": "ai-native-five-layer-pipeline",
       "target": "cybernetics-harness-design-sheet",
       "relation_type": "contrasts",
       "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
@@ -7371,21 +7071,9 @@
     },
     {
       "source": "cybernetics-harness-design-sheet",
-      "target": "harness-engineering",
-      "relation_type": "uses",
-      "description": "Harness Design Sheet 是 Harness 设计流程的前置检查"
-    },
-    {
-      "source": "cybernetics-harness-design-sheet",
       "target": "ai-native-five-layer-pipeline",
       "relation_type": "contrasts",
       "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
-    },
-    {
-      "source": "cybernetics-harness-design-sheet",
-      "target": "harness-five-dimension-quality-gate",
-      "relation_type": "extends",
-      "description": "质量门禁关注运行时检查，Design Sheet 关注设计时检查"
     },
     {
       "source": "four-layer-architecture-quality-gate",
@@ -7568,12 +7256,6 @@
       "description": "本流程是拒绝采样微调原理的可执行落地（采样→reward 过滤→LoRA 训练→存 checkpoint）"
     },
     {
-      "source": "sft-rejection-sampling-hands-on",
-      "target": "agent-lightning",
-      "relation_type": "part-of",
-      "description": "是 agent-lightning 三级阶梯第二级（SFT）的动手配套，走自定义算法扩展点"
-    },
-    {
       "source": "three-layer-token-optimization",
       "target": "caveman-token-compression",
       "relation_type": "uses",
@@ -7702,7 +7384,7 @@
     {
       "source": "rl-infra-framework-selection",
       "target": "agent-lightning",
-      "relation_type": "constrains",
+      "relation_type": "produces",
       "description": "agent-lightning 架构锁定 VERL，约束了上层可选的 RL 后端"
     },
     {

@@ -71,7 +71,6 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 ## 关联概念
 
 - [[harness-engineering]] — `part-of` Agent Loop 是 Harness 的运行时核心
-- [[cybernetics-agent-design]] — `grounds` 控制论视角下，Agent Loop 是负反馈机制的工程载体
 
 ## 来源日记
 

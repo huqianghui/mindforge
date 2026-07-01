@@ -52,7 +52,6 @@ Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building E
 
 ## 关联概念
 
-- [[architecture-testing]] — `grounds` 架构测试工具是适应度函数的具体实现
 - [[harness-quality-gate]] — `extends` 适应度函数将质量门禁从固定检查扩展为可演化的架构评估
 
 ## 来源日记

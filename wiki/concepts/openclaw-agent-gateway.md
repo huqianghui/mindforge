@@ -97,12 +97,9 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - [[skill-hub-ecosystem]] — `part-of` OpenClaw 也是 Skill Hub 生态的一部分
 - [[hermes-agent]] — `contrasts` 单体自主进程 vs Gateway+Node 分布式架构
 - [[agent-zero]] — `contrasts` 三种 Agent 哲学光谱中的极端自主端
-- [[orchestrator-pattern-multi-agent]] — `produces` 实施方法：Orchestrator Pattern 多 Agent 编排模式
 
 ## 关联方法
 
-- [[openclaw-five-stage-gateway]] — `produces` 实施方法：五阶段网关建设的详细步骤
-- [[orchestrator-pattern-multi-agent]] — `produces` 多 Agent 编排的具体实施模式
 
 ## 来源日记
 

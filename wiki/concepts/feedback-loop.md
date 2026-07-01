@@ -66,7 +66,6 @@ related:
 
 ## 关联概念
 
-- [[negative-feedback]] — `uses` 负反馈是反馈闭环的驱动机制
 - [[harness-engineering]] — `grounds` 反馈闭环是 Harness 认知系统（L6 Eval）的核心
 - [[meta-harness]] — `implements` Meta-Harness 是反馈闭环的自动化形式
 - [[personal-knowledge-compiler]] — `uses` PKC 的知识迭代依赖实践反馈闭环

@@ -116,7 +116,6 @@ related:
 - [[reinforcement-learning]] — `contrasts` RAFT 是"RL 的数据哲学 + SFT 的更新机制"，reward 只过滤不进梯度；SFT 飞轮到顶/要压榨负例/reward 有程度/难题 0 正样本时该升级到 RL
 - [[continual-self-improving-ai]] — `implements` 自蒸馏/ReST 是模型自举式持续自我提升的具体训练机制
 - [[generation-evaluation-separation]] — `uses` grader（评分）与 model（生成）分离，reward 作为独立裁判筛选自产轨迹
-- [[sft-rejection-sampling-hands-on]] — `grounds` 本概念的原理由该实战方法页落成可执行流程（Azure GPU VM + unsloth 跑通）
 - [[bitter-lesson]] — `grounds` 用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出
 
 ## 来源日记

@@ -97,11 +97,9 @@ related:
 ## 关联概念
 
 - [[harness-engineering]] — `grounds` 控制论是 Harness Engineering 的理论根基
-- [[meta-harness]] — `extends` Meta-Harness 的自动搜索循环是控制论负反馈 + 探索的工程实现
-- [[agent-loop-architecture]] — `uses` Agent Loop 是控制论负反馈机制的工程载体
+- [[agent-loop-architecture]] — `grounds` Agent Loop 是控制论负反馈机制的工程载体
 - [[skill-runtime]] — `contrasts` Skill Runtime 对应控制论中缺位的 L5 状态观测层
-- [[context-engineering]] — `uses` Context 管理是共轭变换（表示层设计）的工程实践
-- [[cybernetics-harness-design-sheet]] — `produces` 控制论五层推导出 Design Sheet 检查表
+- [[context-engineering]] — `grounds` Context 管理是共轭变换（表示层设计）的工程实践
 - [[loop-engineering]] — `grounds` "模型是无状态控制器、外循环补其身体"是控制论的直接应用
 
 ## 来源日记

@@ -143,7 +143,6 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - [[sft-rejection-sampling-hands-on]] — `produces` 三级阶梯第二级（SFT）的动手实战流程页
 - [[verl]] — `uses` VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系
 - [[slime-rl-framework]] — `contrasts` Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）
-- [[rl-infra-framework-selection]] — `produces` agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象
 
 ## 来源日记
 

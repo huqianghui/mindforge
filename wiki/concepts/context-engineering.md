@@ -92,10 +92,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 ## 关联概念
 
 - [[harness-engineering]] — `part-of` Context Engineering 是 Harness Engineering 的子集
-- [[mcp-vs-cli]] — `uses` MCP 是 Context Engineering 的工具接入层
-- [[agent-search-tools]] — `uses` 搜索工具是 Context Engineering 的信息获取层
 - [[context7]] — `uses` Context7 是 Context Engineering 的文档层工具
-- [[cybernetics-agent-design]] — `grounds` 控制论视角下，Context 管理是共轭变换的工程实践
 
 ## 来源日记
 

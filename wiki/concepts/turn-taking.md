@@ -65,7 +65,6 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 
 ## 关联概念
 
-- [[voice-activity-detection]] — `contrasts` VAD 检测语音存在，Turn-Taking 决定何时切换话轮
 - [[voice-live-agent]] — `uses` Voice Agent 的对话自然度依赖 Turn-Taking 质量
 - [[speech-technology-stack]] — `part-of` Turn-Taking 是 Core Processing 层的关键组件
 

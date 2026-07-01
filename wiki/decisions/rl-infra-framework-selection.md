@@ -108,7 +108,7 @@ related_methods: []
 - [[verl]] — `produces` 本决策的默认选择，Agent RL 的事实标准分布式基础设施
 - [[slime-rl-framework]] — `produces` 本决策在规模/backend 对齐时的迁移目标（数据流路线）
 - [[reinforcement-learning]] — `grounds` Agent RL=系统问题而非算法问题，是本选型逻辑的理论根基
-- [[agent-lightning]] — `constrains` agent-lightning 架构锁定 VERL，约束了上层可选的 RL 后端
+- [[agent-lightning]] — `produces` agent-lightning 架构锁定 VERL，约束了上层可选的 RL 后端
 - [[distributed-training-parallelism]] — `constrains` 训练后端 FSDP/Megatron 的适用规模直接决定 VERL/Slime 的取舍边界
 
 ## 来源
