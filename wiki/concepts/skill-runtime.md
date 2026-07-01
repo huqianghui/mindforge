@@ -61,7 +61,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 ## 关联概念
 
-- [[context-explosion]] — `constrains` Skill Runtime 是 Context 爆炸的解法方向
+- [[context-explosion]] — `addresses` Skill Runtime 是 Context 爆炸的解法方向
 - [[claude-code-extension-system]] — `implements` Claude Code 的 Skill 机制是 Skill Runtime 的实际实现
 - [[cybernetics-agent-design]] — `contrasts` 控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层
 

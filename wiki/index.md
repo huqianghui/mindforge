@@ -29,14 +29,14 @@ tags:
 
 ## 知识工作流
 
-| 命令 | 用途 | 触发频率 |
-|------|------|----------|
-| `/extract-knowledge` | 从日记/文章中提取概念、方法和论断到 wiki | 每日或按需 |
-| `/evolve-wiki` | 更新置信度、生成摘要、刷新关联 | 每周 |
-| `/detect-conflict` | 扫描 wiki 发现冲突论断 | 每周或按需 |
-| `/knowledge-gap` | 分析知识库差距，生成学习建议报告 | 每周或按需 |
-| `/wiki-query` | 跨切面查询：关系图谱、Claims 检索、决策查询 | 按需 |
-| `/weekly-review` | 每周知识回顾与统计报告 | 每周 |
+| 命令                   | 用途                        | 触发频率  |
+| -------------------- | ------------------------- | ----- |
+| `/extract-knowledge` | 从日记/文章中提取概念、方法和论断到 wiki   | 每日或按需 |
+| `/evolve-wiki`       | 更新置信度、生成摘要、刷新关联           | 每周    |
+| `/detect-conflict`   | 扫描 wiki 发现冲突论断            | 每周或按需 |
+| `/knowledge-gap`     | 分析知识库差距，生成学习建议报告          | 每周或按需 |
+| `/wiki-query`        | 跨切面查询：关系图谱、Claims 检索、决策查询 | 按需    |
+| `/weekly-review`     | 每周知识回顾与统计报告               | 每周    |
 
 ## Schema 说明
 
@@ -56,9 +56,9 @@ conflicting → active（人工裁决后）
 
 wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] — \`relation-type\` 描述`
 
-完整定义见 [[_relations]]（8 种类型 + 判断标准 + 示例 + 扩展指南）。
+完整定义见 [[_relations]]（9 种类型 + 判断标准 + 示例 + 扩展指南）。
 
-速查：`implements` / `grounds` / `extends` / `constrains` / `contrasts` / `part-of` / `uses` / `produces`
+速查：`implements` / `grounds` / `extends` / `constrains` / `contrasts` / `part-of` / `uses` / `produces` / `addresses`
 
 ## 概念索引
 

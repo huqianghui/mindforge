@@ -15,6 +15,7 @@ export const RELATION_COLORS: Record<string, string> = {
   'part-of': '#F39C12',
   uses: '#2ECC71',
   produces: '#8E44AD',
+  addresses: '#16A085',
   untyped: '#95A5A6',
 };
 
@@ -42,6 +43,7 @@ export const RELATION_TYPE_LABELS: Record<string, string> = {
   'part-of': '部分',
   uses: '使用',
   produces: '产出',
+  addresses: '解决',
   untyped: '未分类',
 };
 

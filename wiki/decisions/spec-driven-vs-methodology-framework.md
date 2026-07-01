@@ -87,7 +87,6 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 
 - [[framework-selection]] — `grounds` 此决策的概念基础
 - [[three-layer-plugin-architecture]] — `produces` 决策产物：GSD + Superpowers + gstack 三层架构
-- [[context-explosion]] — `constrains` 影响框架选型的关键约束
 
 ## 关联方法
 

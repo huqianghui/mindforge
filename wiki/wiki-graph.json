@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-01T14:43:56.577114+00:00",
+  "generated_at": "2026-07-01T15:08:47.764120+00:00",
   "stats": {
     "nodes": 100,
-    "links": 385,
+    "links": 356,
     "orphan_links_removed": 0,
     "claims": 394,
     "categories": 10
@@ -5660,24 +5660,6 @@
       "description": "agent-lightning RL 后端选型（VERL 默认、Slime 迁移信号）以它为评估对象"
     },
     {
-      "source": "agent-lightning",
-      "target": "automatic-prompt-optimization",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "agent-lightning",
-      "target": "rejection-sampling-finetuning",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "agent-lightning",
-      "target": "reinforcement-learning",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "agent-loop-architecture",
       "target": "harness-engineering",
       "relation_type": "part-of",
@@ -5688,12 +5670,6 @@
       "target": "cybernetics-agent-design",
       "relation_type": "grounds",
       "description": "控制论视角下，Agent Loop 是负反馈机制的工程载体"
-    },
-    {
-      "source": "agent-loop-architecture",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "agent-paradigms",
@@ -5718,12 +5694,6 @@
       "target": "context-engineering",
       "relation_type": "part-of",
       "description": "搜索工具是 Context Engineering 的信息获取层"
-    },
-    {
-      "source": "agent-search-tools",
-      "target": "context7",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "agent-zero",
@@ -5870,12 +5840,6 @@
       "description": "Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例"
     },
     {
-      "source": "azure-copilot-ecosystem",
-      "target": "llm-wiki",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "bitter-lesson",
       "target": "continual-self-improving-ai",
       "relation_type": "extends",
@@ -5966,12 +5930,6 @@
       "description": "Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行（降单价）"
     },
     {
-      "source": "caveman-token-compression",
-      "target": "brevity-constraints",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "claim-based-schema",
       "target": "personal-knowledge-compiler",
       "relation_type": "part-of",
@@ -6020,12 +5978,6 @@
       "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
     },
     {
-      "source": "claude-code-agent-subagent",
-      "target": "meta-harness",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "claude-code-extension-system",
       "target": "skill-hub-ecosystem",
       "relation_type": "extends",
@@ -6036,12 +5988,6 @@
       "target": "skill-runtime",
       "relation_type": "uses",
       "description": "Skill 的运行时执行模型"
-    },
-    {
-      "source": "claude-code-extension-system",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "claude-code-memory-system",
@@ -6078,12 +6024,6 @@
       "target": "code-reuse-four-layer-defense",
       "relation_type": "produces",
       "description": "实施方法：四层防线的详细步骤和决策点"
-    },
-    {
-      "source": "code-reuse-in-agent-era",
-      "target": "claude-code-agent-subagent",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "conjugate-transformation",
@@ -6140,12 +6080,6 @@
       "description": "控制论视角下，Context 管理是共轭变换的工程实践"
     },
     {
-      "source": "context-engineering",
-      "target": "context-explosion",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "context-explosion",
       "target": "context-engineering",
       "relation_type": "constrains",
@@ -6153,20 +6087,32 @@
     },
     {
       "source": "context-explosion",
-      "target": "skill-runtime",
-      "relation_type": "produces",
-      "description": "Skill Runtime 的按需投影是 Context 爆炸的解法方向"
+      "target": "harness-engineering",
+      "relation_type": "part-of",
+      "description": "Context 管理是 Harness 的关键能力"
     },
     {
       "source": "context-explosion",
-      "target": "harness-engineering",
+      "target": "framework-selection",
       "relation_type": "constrains",
-      "description": "Context 管理是 Harness 的关键能力"
+      "description": "Context 爆炸影响框架选型决策"
+    },
+    {
+      "source": "context-explosion",
+      "target": "gsd-project-scale-selection",
+      "relation_type": "constrains",
+      "description": "Context 爆炸是 L3/L4 项目的核心挑战"
+    },
+    {
+      "source": "context-explosion",
+      "target": "spec-driven-vs-methodology-framework",
+      "relation_type": "constrains",
+      "description": "Context 爆炸影响框架选型的关键约束"
     },
     {
       "source": "context-projection",
       "target": "context-explosion",
-      "relation_type": "constrains",
+      "relation_type": "addresses",
       "description": "上下文投影是解决 Context 爆炸的核心机制"
     },
     {
@@ -6284,28 +6230,10 @@
       "description": "MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP"
     },
     {
-      "source": "distributed-training-parallelism",
-      "target": "verl",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "distributed-training-parallelism",
-      "target": "slime-rl-framework",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "enterprise-ontology",
       "target": "rag-architecture-comparison",
       "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
-    },
-    {
-      "source": "enterprise-ontology",
-      "target": "ontology-philosophy",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "ephemeral-environment",
@@ -6375,21 +6303,9 @@
     },
     {
       "source": "framework-selection",
-      "target": "context-explosion",
-      "relation_type": "constrains",
-      "description": "Context 爆炸影响框架选型决策"
-    },
-    {
-      "source": "framework-selection",
       "target": "gsd-project-scale-selection",
       "relation_type": "produces",
       "description": "实施方法：项目规模分级与工具选择决策框架"
-    },
-    {
-      "source": "framework-selection",
-      "target": "ai-native-pipeline",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "generation-evaluation-separation",
@@ -6644,12 +6560,6 @@
       "description": "把 PKC 改造成外循环系统是 Loop Engineering 的一次落地实践"
     },
     {
-      "source": "loop-engineering",
-      "target": "feedback-loop",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "mcp-vs-cli",
       "target": "context-engineering",
       "relation_type": "part-of",
@@ -6794,12 +6704,6 @@
       "description": "tmux/cmux 为 OMC 多 Agent 并行提供终端基础设施"
     },
     {
-      "source": "oh-my-claude-code",
-      "target": "one-person-team",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "one-person-team",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -6920,12 +6824,6 @@
       "description": "实施方法：日记到知识库的编译工作流"
     },
     {
-      "source": "prefix-caching",
-      "target": "hybrid-linear-attention-architecture",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "rag-architecture-comparison",
       "target": "enterprise-ontology",
       "relation_type": "uses",
@@ -6936,12 +6834,6 @@
       "target": "llm-wiki",
       "relation_type": "contrasts",
       "description": "LLM Wiki 是\"编译式\"知识而非\"检索式\"知识"
-    },
-    {
-      "source": "rag-architecture-comparison",
-      "target": "continual-self-improving-ai",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "react-paradigm",
@@ -6972,18 +6864,6 @@
       "target": "voice-live-agent",
       "relation_type": "part-of",
       "description": "协议选型是 Voice Live Agent 架构的基础设施层决策"
-    },
-    {
-      "source": "realtime-protocol-selection",
-      "target": "speech-technology-stack",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "realtime-protocol-selection",
-      "target": "cascaded-pipeline",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "reinforcement-learning",
@@ -7124,12 +7004,6 @@
       "description": "数据幂律增长约束驱动了自我改进方法"
     },
     {
-      "source": "scaling-laws",
-      "target": "reinforcement-learning",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "skill-creator-orchestration",
       "target": "skill-runtime",
       "relation_type": "extends",
@@ -7154,12 +7028,6 @@
       "description": "Skill Hub 是 Claude Code 扩展体系的社区生态"
     },
     {
-      "source": "skill-hub-ecosystem",
-      "target": "openclaw-agent-gateway",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "skill-pattern",
       "target": "skill-runtime",
       "relation_type": "grounds",
@@ -7180,7 +7048,7 @@
     {
       "source": "skill-runtime",
       "target": "context-explosion",
-      "relation_type": "constrains",
+      "relation_type": "addresses",
       "description": "Skill Runtime 是 Context 爆炸的解法方向"
     },
     {
@@ -7194,12 +7062,6 @@
       "target": "cybernetics-agent-design",
       "relation_type": "contrasts",
       "description": "控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层"
-    },
-    {
-      "source": "skill-runtime",
-      "target": "skill-pattern",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "skillopt",
@@ -7286,18 +7148,6 @@
       "description": "语音技术栈的传输层依赖协议选型"
     },
     {
-      "source": "terminal-multiplexer-for-ai",
-      "target": "claude-code-memory-system",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "terminal-multiplexer-for-ai",
-      "target": "oh-my-claude-code",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "testcontainers",
       "target": "harness-quality-gate",
       "relation_type": "part-of",
@@ -7306,7 +7156,7 @@
     {
       "source": "testcontainers",
       "target": "ephemeral-environment",
-      "relation_type": "constrains",
+      "relation_type": "contrasts",
       "description": "Testcontainers 解决测试级隔离，Ephemeral Environment 解决 PR 级隔离"
     },
     {
@@ -7514,12 +7364,6 @@
       "description": "Subagent 上下文隔离加剧了复用困难"
     },
     {
-      "source": "code-reuse-four-layer-defense",
-      "target": "gsd-five-step-workflow",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "cybernetics-harness-design-sheet",
       "target": "cybernetics-agent-design",
       "relation_type": "implements",
@@ -7616,22 +7460,10 @@
       "description": "四层防线可嵌入 Step 5 Verify 流程"
     },
     {
-      "source": "gsd-five-step-workflow",
-      "target": "gsd-project-scale-selection",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "gsd-project-scale-selection",
       "target": "framework-selection",
       "relation_type": "implements",
       "description": "此方法的概念定义页"
-    },
-    {
-      "source": "gsd-project-scale-selection",
-      "target": "context-explosion",
-      "relation_type": "constrains",
-      "description": "Context 爆炸是 L3/L4 项目的核心挑战"
     },
     {
       "source": "gsd-project-scale-selection",
@@ -7822,7 +7654,7 @@
     {
       "source": "hybrid-inference-framework-selection",
       "target": "prefix-caching",
-      "relation_type": "produces",
+      "relation_type": "addresses",
       "description": "本决策是 prefix caching 在 Hybrid 模型上失效后的框架应对方案"
     },
     {
@@ -7890,12 +7722,6 @@
       "target": "three-layer-plugin-architecture",
       "relation_type": "produces",
       "description": "决策产物：GSD + Superpowers + gstack 三层架构"
-    },
-    {
-      "source": "spec-driven-vs-methodology-framework",
-      "target": "context-explosion",
-      "relation_type": "constrains",
-      "description": "影响框架选型的关键约束"
     },
     {
       "source": "spec-driven-vs-methodology-framework",

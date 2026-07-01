@@ -89,7 +89,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 ## 关联概念
 
 - [[harness-quality-gate]] — `part-of` Testcontainers 是 Harness 质量门禁第 4 层（CI 编译与集成测试）的核心工具
-- [[ephemeral-environment]] — `constrains` Testcontainers 解决测试级隔离，Ephemeral Environment 解决 PR 级隔离
+- [[ephemeral-environment]] — `contrasts` Testcontainers 解决测试级隔离，Ephemeral Environment 解决 PR 级隔离
 - [[contract-testing]] — `contrasts` Testcontainers 验证真实依赖协作，契约测试验证接口一致性，两者互补
 
 ## 来源日记

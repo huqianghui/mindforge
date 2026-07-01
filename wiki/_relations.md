@@ -28,6 +28,7 @@ tags:
 | `part-of` | 组成 | A 是 B 的组成部分 | concept → concept |
 | `uses` | 使用 | A 依赖或使用 B 作为工具/组件 | method → concept, method → tool |
 | `produces` | 产出 | A 的结论/决策产出了 B | decision → method, decision → concept |
+| `addresses` | 解决 | A 解决/缓解 B 这个问题 | concept → concept, method → concept, decision → concept |
 
 ---
 
@@ -35,9 +36,9 @@ tags:
 
 一行关联 `- [[B]] — \`type\` 描述` 表示一条**有向边** `当前页(A) → B`，A 是 source、B 是 target。
 
-**除 `contrasts` 外，其余 7 种关系都是有向的、不对称的**（"A 扩展 B" ≠ "B 扩展 A"）。因此：
+**除 `contrasts` 外，其余 8 种关系都是有向的、不对称的**（"A 扩展 B" ≠ "B 扩展 A"）。因此：
 
-1. **有向关系只在 source 侧声明一次**——按「典型方向」判定谁是 source（如 `extends` 里"更细化/派生的一方"是 source，`part-of` 里"部分"是 source，`grounds` 里"理论根基"是 source，`uses` 里"使用方"是 source）。**禁止**在 target 页再镜像声明一条同类型反向行——那会在图谱里生成两条矛盾的反向边。
+1. **有向关系只在 source 侧声明一次**——按「典型方向」判定谁是 source（如 `extends` 里"更细化/派生的一方"是 source，`part-of` 里"部分"是 source，`grounds` 里"理论根基"是 source，`uses` 里"使用方"是 source，`addresses` 里"解决方案"是 source）。**禁止**在 target 页再镜像声明一条同类型反向行——那会在图谱里生成两条矛盾的反向边。
 2. **`contrasts` 是唯一双向对称类型**，可以（也建议）在两侧各声明一次，方向无所谓。
 3. **可视化如何显示反向**：图谱前端在 target 页的「入边」区自动以 `source —[类型]→` 的形式展示这条边（来源节点在前、箭头指向本页），无需在 target 页写反向行。
 4. **需要在 target 页表达关联**时，靠入边自动展示即可；确需在 target 页正向声明，则改用语义方向正确的另一类型（如 A `uses` B，则 B 页不重复写 `uses`）。
@@ -152,11 +153,24 @@ A 的决策或流程产出了 B 作为结果。
 
 ---
 
+### `addresses` — 解决
+
+A 是针对问题 B 的解决方案或缓解手段。方向是**方案 → 问题**。
+
+```markdown
+## 关联概念（在概念页中）
+- [[context-explosion]] — `addresses` 上下文投影是解决 Context 爆炸的核心机制
+```
+
+**判断标准**：B 是一个**问题/痛点/失效**，A 的存在意义就是消解 B。注意与 `constrains` 区分——`constrains` 是"问题限制方案的选择空间"（方向 问题→方案，负向），`addresses` 是"方案化解问题"（方向 方案→问题，正向），两者方向和语义都相反。
+
+---
+
 ## 扩展指南
 
 需要新增关系类型时：
 
-1. 确认现有 8 种类型无法表达该关系
+1. 确认现有 9 种类型无法表达该关系
 2. 在本文件的「关系类型一览」表格中添加新行
 3. 在「详细说明与示例」中补充定义、示例和判断标准
 4. 更新 `.claude/agents/knowledge-extractor.md` 中的关系类型表

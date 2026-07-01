@@ -64,7 +64,7 @@ related:
 
 ## 关联概念
 
-- [[context-explosion]] — `constrains` 上下文投影是解决 Context 爆炸的核心机制
+- [[context-explosion]] — `addresses` 上下文投影是解决 Context 爆炸的核心机制
 - [[skill-runtime]] — `implements` Skill Runtime 的 Selection Layer 实现上下文投影
 - [[context-engineering]] — `extends` 投影是 Context Engineering 的高级策略
 - [[conjugate-transformation]] — `uses` 投影过程本质上是一种共轭变换（选择性编码）

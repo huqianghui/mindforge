@@ -25,7 +25,7 @@ OUTPUT_FILE = WIKI_ROOT / "wiki-graph.json"
 
 VALID_RELATION_TYPES = {
     "implements", "grounds", "extends", "constrains",
-    "contrasts", "part-of", "uses", "produces",
+    "contrasts", "part-of", "uses", "produces", "addresses",
 }
 
 # --- Regex patterns ---
@@ -289,6 +289,22 @@ def main():
                 all_links.extend(links)
             except Exception as e:
                 print(f"Warning: failed to parse {f}: {e}", file=sys.stderr)
+
+    # Suppress untyped edges when a typed edge already connects the pair (either
+    # direction). Frontmatter `related` fields and bare body links generate untyped
+    # edges; a typed relation between the same two pages supersedes them. This prevents
+    # phantom reverse/duplicate edges (typed one side + untyped mirror the other side).
+    typed_pairs = {
+        frozenset((l["source"], l["target"]))
+        for l in all_links
+        if l["relation_type"] != "untyped"
+    }
+    all_links = [
+        l
+        for l in all_links
+        if l["relation_type"] != "untyped"
+        or frozenset((l["source"], l["target"])) not in typed_pairs
+    ]
 
     # Parse categories and assign to nodes
     categories = parse_categories(INDEX_FILE)

@@ -84,7 +84,7 @@ related_methods: []
 
 ## 关联概念
 
-- [[prefix-caching]] — `produces` 本决策是 prefix caching 在 Hybrid 模型上失效后的框架应对方案
+- [[prefix-caching]] — `addresses` 本决策是 prefix caching 在 Hybrid 模型上失效后的框架应对方案
 - [[hybrid-linear-attention-architecture]] — `constrains` Hybrid 架构的循环状态是触发本选型的根因，约束了哪些框架能用
 
 ## 来源
