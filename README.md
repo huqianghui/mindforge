@@ -164,6 +164,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 - [Brevity Constraints Reverse Performance Hierarchies in Language Models——简洁约束逆转模型性能层级](paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)
 - [AgenticRAG — Agentic Retrieval for Enterprise Knowledge Bases 论文精读笔记](paper/2026-05-28-AgenticRAG-Agentic-Retrieval-for-Enterprise-Knowledge-Bases.md)
 - [RAFT（Reward rAnked FineTuning）论文解读——拒绝采样 SFT 的理论出处，与 STaR、agent-lightning 的关联](paper/2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读.md)
+- [SkillOpt 论文解读——把 agent skill 当作 frozen agent 的可训练外部状态，与 agent-lightning APO 的本质区别](paper/2026-07-01-SkillOpt.md)
 
 ---
 
