@@ -103,6 +103,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[rejection-sampling-finetuning]] — 拒绝采样微调（RAFT/STaR）：用 reward 造标签的自蒸馏式 SFT
 - [[skillopt]] — SkillOpt：把 agent skill 当 frozen agent 的可训练外部状态，把 SGD 纪律搬进文本空间
 - [[agent-lightning]] — Agent Lightning：method-agnostic 训练框架，APO→SFT→RL 三级阶梯换槽位不换框架
+- [[method-agnostic]] — 方法无关设计：换优化方法只换 algorithm 槽位、agent 与 reward 不改；store 控制平面是其物理基础
 - [[verl]] — VERL（Volcano Engine RL）：HybridFlow 调度系统，Agent RL 事实标准基础设施
 - [[slime-rl-framework]] — Slime：数据流式 RL 框架（Training-Buffer-Rollout），Megatron+SGLang 强绑定
 - [[distributed-training-parallelism]] — 分布式训练并行：FSDP 切存储 vs TP/PP 切计算、Megatron/PyTorch 分层

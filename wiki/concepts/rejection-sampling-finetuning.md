@@ -112,6 +112,7 @@ related:
 ## 关联概念
 
 - [[agent-lightning]] — `part-of` SFT/RAFT 走 agent-lightning 自定义算法扩展点，是 APO→SFT→RL 三级阶梯的第二级
+- [[method-agnostic]] — `part-of` SFT/RAFT 是 method-agnostic 三级阶梯中档（用 reward 筛轨迹做微调、改权重），与 APO 共享同一 reward
 - [[automatic-prompt-optimization]] — `contrasts` 同属 agent-lightning method-agnostic 阶梯，APO 用 reward 排序选 prompt（不动权重）、本方法用 reward 筛轨迹做微调（改权重），sorted 内核对称
 - [[reinforcement-learning]] — `contrasts` RAFT 是"RL 的数据哲学 + SFT 的更新机制"，reward 只过滤不进梯度；SFT 飞轮到顶/要压榨负例/reward 有程度/难题 0 正样本时该升级到 RL
 - [[continual-self-improving-ai]] — `implements` 自蒸馏/ReST 是模型自举式持续自我提升的具体训练机制
