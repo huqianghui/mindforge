@@ -9,7 +9,7 @@ import json
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -387,7 +387,7 @@ def main():
 
     # Build output
     output = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now().strftime("%Y-%m-%d"),
         "stats": {
             "nodes": len(all_nodes),
             "links": len(valid_links),
