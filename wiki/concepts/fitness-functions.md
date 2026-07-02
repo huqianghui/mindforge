@@ -32,7 +32,7 @@ Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building E
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 概念模型：架构关注点 → 适应度函数 → 工具。例：分层是否正确 → 依赖规则测试 → ArchUnit；模块是否松耦合 → 耦合度指标 < 阈值 → ArchUnitTS LCOM；有无重复代码 → 重复率 < 5% → jscpd。
 
@@ -42,7 +42,7 @@ Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building E
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 专用工具包括 ArchFit（通用适应度函数框架）、ArchUnitTS（TypeScript 适应度函数框架，含 LCOM 内聚度指标）。
 

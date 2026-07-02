@@ -90,6 +90,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - [[reinforcement-learning]] — `contrasts` SkillOpt 把分数当选择/门控信号（accept/reject 改文本），RL 把 reward 当梯度信号（advantage 更新权重）——离散筛选 vs 连续参数更新
 - [[skill-runtime]] — `uses` skill 是"执行前塞进 agent context 的自然语言"，SkillOpt 优化的正是这层可复用外部状态
 - [[agent-lightning]] — `contrasts` 权重级（policy/θ，需 GPU/可训练模型）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加（先 RL 练强原生能力，再用 SkillOpt 配可迁移 playbook）
+- [[method-agnostic]] — `contrasts` environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）
 
 ## 来源日记
 

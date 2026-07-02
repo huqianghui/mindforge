@@ -92,6 +92,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 ## 关联概念
 
 - [[mcp-vs-cli]] — `implements` Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例
+- [[skill-hub-ecosystem]] — `contrasts` Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补
 
 ## 来源日记
 

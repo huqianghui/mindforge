@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-02T00:28:35.609043+00:00",
+  "generated_at": "2026-07-02T02:49:15.229505+00:00",
   "stats": {
     "nodes": 101,
-    "links": 309,
+    "links": 327,
     "orphan_links_removed": 0,
     "claims": 400,
     "categories": 10
@@ -494,7 +494,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "ArchUnit 读取编译后的 bytecode，构建依赖图，应用规则，返回违规结果。JUnit 只是它的\"运行壳\"——伪装成测试是为了零成本接入现有 CI 体系。其本质更接近 ESLint 之于 JavaScript。"
         },
         {
@@ -503,7 +503,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统开发中架构腐蚀是缓慢过程，但 Coding Agent 每次生成几百行代码时，架构违规速度成倍增长。ArchUnit 类工具是 Harness Engineering 质量门禁中不可或缺的一环。"
         },
         {
@@ -512,7 +512,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "ArchUnit 只覆盖 Layer 2（分层约束）。完整体系：Layer 1 代码格式与 Lint → Layer 2 架构约束执行 → Layer 3 模块化与复用分析 → Layer 4 AI 辅助 Review。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 正在成为最有价值的新增层。"
         },
         {
@@ -521,7 +521,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "Baseline 能作为 MCP Server 运行，让 Coding Agent（Cursor、Claude Code 等）在生成代码时直接查询架构规则，实现\"生成时即遵守\"。"
         }
       ]
@@ -805,7 +805,7 @@
           "first_seen": "2026-04-29",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Control 条件下大模型准确率 40.2% vs 小模型 84.4%（落后 44.2pp）；Brief 条件下大模型 66.5% vs 小模型 81.3%（差距缩小至 14.8pp）；Direct 条件下大模型 74.5% vs 小模型 82.3%。统计显著性：paired t-test, t=7.80, p<0.0001（96 个问题）。"
         },
         {
@@ -814,7 +814,7 @@
           "first_seen": "2026-04-29",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "论文将问题分为 non-discriminative（27.1%）、normal scaling（48.1%）、inverse scaling（7.7%），准确率提升仅在 inverse scaling 问题上显著。对需要深度推理的任务，简洁约束可能严重损害性能。"
         },
         {
@@ -823,7 +823,7 @@
           "first_seen": "2026-04-29",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "简洁约束有效场景：解空间小、答案直接可达，失败模式是\"想太多\"（overthinking）。长推理有效场景：解空间大、需多步搜索，失败模式是\"想太少\"。两种范式互斥——Caveman vs CoT/DeepSeek-R1/o1。"
         },
         {
@@ -832,7 +832,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "ICLR 2026 Poster。借鉴心理测量学 Item Response Theory（IRT），给查询打\"难度分\"、给模型打\"能力分\"，实现查询级路由。难度高→大模型+深度推理，难度低→小模型+简洁快速。但距离工程落地仍有距离。"
         }
       ]
@@ -911,7 +911,7 @@
           "first_seen": "2026-04-28",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Caveman 通过 SessionStart Hook 将风格约束规则注入系统提示，LLM 在同一次推理中直接生成简洁回复。官方基准：Explain React re-render bug 1180→159 tokens（-87%），Fix auth middleware 704→121（-83%），平均 1214→294 tokens（-65%）。但独立测试（Kuba Guzik）在已有简洁指令的基线下，实际节省仅 13%--21%。"
         },
         {
@@ -920,7 +920,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Lite（删填充词保冠词）/ Full（删冠词、片段句、短同义词）/ Ultra（极致缩写、箭头因果）/ Wenyan-Lite / Wenyan-Full / Wenyan-Ultra。文言文模式利用古文高信息密度进一步压缩。"
         },
         {
@@ -929,7 +929,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "安全警告、不可逆操作确认、多步骤序列、用户疑惑时自动退出简化模式。但退出判断仍依赖 LLM 自身，不存在确定性触发器。"
         },
         {
@@ -938,7 +938,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "第一层：规则文本持续性声明（\"ACTIVE EVERY RESPONSE\"）；第二层：UserPrompt Hook 每轮输出 per-turn reinforcement；第三层：.caveman-active 状态文件跨轮次通信。"
         }
       ]
@@ -1577,7 +1577,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "测试金字塔从下到上：Unit（pytest/JUnit）→ Contract（Pact）→ Integration（Testcontainers）→ E2E（Playwright）。契约测试在不启动真实依赖的情况下验证服务间 API 接口，速度快、隔离好。"
         },
         {
@@ -1586,7 +1586,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "PactFlow AI（2025）支持 MCP Server 集成 VS Code/Cursor/Claude Code，从 OpenAPI spec 自动生成契约测试。这是 AI 辅助测试生成的前沿方向。"
         }
       ]
@@ -1834,7 +1834,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "docker-compose 是\"你维护一个环境\"，Testcontainers 是\"测试自己创建环境\"，Ephemeral Environment 是\"每个 PR 拥有自己的世界\"。三者不是替代关系，而是不同粒度的环境隔离。"
         },
         {
@@ -1843,7 +1843,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "Signadot 的 MCP Server 允许 AI Coding Agent（Claude Code、Cursor 等）在生成代码后自动创建沙箱环境进行验证，支持 50+ 并发 Agent。这是\"AI Agent 自主测试\"的前沿方向。"
         },
         {
@@ -1852,7 +1852,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "五原则：版本控制（环境定义与应用代码在同一 Git 仓库）、幂等创建（运行两次产生相同环境）、参数化（变量/overlay 适配不同上下文）、自动生命周期（PR 创建 → 创建环境，PR 合并 → 销毁环境）、密钥管理（永远不硬编码 secret）。"
         }
       ]
@@ -1929,7 +1929,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "概念模型：架构关注点 → 适应度函数 → 工具。例：分层是否正确 → 依赖规则测试 → ArchUnit；模块是否松耦合 → 耦合度指标 < 阈值 → ArchUnitTS LCOM；有无重复代码 → 重复率 < 5% → jscpd。"
         },
         {
@@ -1938,7 +1938,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "专用工具包括 ArchFit（通用适应度函数框架）、ArchUnitTS（TypeScript 适应度函数框架，含 LCOM 内聚度指标）。"
         }
       ]
@@ -2083,7 +2083,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "显式 G2P（独立模块输出 phoneme，可控性强但增加延迟）、隐式 G2P（End-to-End TTS 内部完成，如 VITS/Tacotron，简单但发音不可控）、Hybrid（规则+字典+fallback G2P，最常见的工程选择）。"
         },
         {
@@ -2092,7 +2092,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Custom Lexicon 在 G2P 之前介入，对命中词直接返回预定义 phoneme，跳过 G2P 推断。本质是\"接管 G2P 对特定词汇的决策权\"。SSML `<phoneme>` 标签是局部 override，Lexicon 是全局规则，G2P 是兜底推断——三者构成层级化发音控制体系。"
         },
         {
@@ -2101,7 +2101,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "SSML + Streaming 天然冲突（XML 要完整结构，streaming 是 token 流）；LLM 不会稳定生成 SSML。正确方案：LLM 和 TTS 之间构建 Pronunciation Control Layer（Text Normalization → Lexicon Match → Phoneme Override → Fallback），80% 发音问题来自 20% 的词。"
         },
         {
@@ -2110,7 +2110,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。"
         }
       ]
@@ -2238,7 +2238,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "InkOS 的 10 Agent 流水线 + 硬编码词表规则（L1 Hook）+ 7 真相文件（结构化状态持久化）+ 33 维审计检查清单（Evaluative Control）+ 审计-修订循环（反馈闭环）与 Harness Engineering 存在六个结构性同构映射。不同领域（小说 vs 编码），同一规律：AI 的可靠性不来自更强的模型，而来自更好的约束系统。"
         },
         {
@@ -2247,7 +2247,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。"
         }
       ]
@@ -2295,7 +2295,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "四层门禁：Layer 1 代码格式与 Lint（Prettier/ESLint/Ruff）→ Layer 2 架构约束执行（ArchUnit/dependency-cruiser/Tach/Semgrep）→ Layer 3 模块化与复用分析（Code Maat/ArchUnitTS LCOM/jscpd）→ Layer 4 AI 辅助 Review（PR-Agent/oh-my-claudecode/Tanagram）。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 是最有价值的新增层。"
         }
       ]
@@ -2316,14 +2316,14 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.76,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Hermes Skill 自动生成基于工具调用计数器（每 15 次），非 cron 定时",
           "source": "hermes-agent-vs-openclaw",
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。"
         },
@@ -3804,7 +3804,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 7,
-      "avg_confidence": 0.82,
+      "avg_confidence": 0.83,
       "claims": [
         {
           "statement": "不是\"喂标准答案\"，是\"用 reward 造标签\"——target 是评分键不是模仿 label",
@@ -3865,7 +3865,7 @@
           "source": "2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读",
           "first_seen": "2026-06-28",
           "last_updated": "2026-06-28",
-          "confidence": 0.75,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "对已重度后训练的 GPT/Llama/Qwen，RAFT 从\"首次对齐\"降级为\"任务特化 + 自我提升的一道工序\"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以\"rejection sampling fine-tuning（RFT）\"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是\"便宜、稳定的第一档，上 RL 之前先榨一轮\"。"
         }
@@ -3923,7 +3923,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Caveman 压缩 output tokens（LLM 回复，-65%），RTK 压缩 input tokens（工具输出，-80%），两者作用于完全不同的数据流互不干扰。联合使用 30 分钟会话总节省 ~78%（130,900→28,586 tokens）。RTK 绝对节省量更大（命令输出占总量 ~90%），但纯对话场景仅 Caveman 有效。"
         },
         {
@@ -3932,7 +3932,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "智能过滤（去噪音/注释/空白）、分组（按目录/类型聚合）、截断（仅保留失败用例）、去重（合并重复日志行并计数）。与 Caveman 的概率性输出压缩不同，RTK 基于确定性算法，效果稳定可预测，每命令处理开销 <10ms。"
         }
       ]
@@ -4341,7 +4341,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "TTS Pipeline 内部六层：Text Normalization → Lexicon Lookup → G2P → Prosody Prediction → Acoustic Model → Vocoder。发音控制三级优先级：SSML（局部 override）> Lexicon（全局规则）> G2P（兜底推断）。"
         },
         {
@@ -4350,7 +4350,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "AEC → ANS → AGC+Limiter → VAD → 干净语音帧。AEC 在最前面（自适应滤波器需原始信号幅度），AGC 在 ANS 之后（避免放大噪声）。"
         },
         {
@@ -4359,7 +4359,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。"
         },
         {
@@ -4472,7 +4472,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。"
         },
         {
@@ -4481,7 +4481,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。"
         },
         {
@@ -4490,7 +4490,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Unit tests → mock（快速、无依赖）；Integration tests → Testcontainers（真实 DB/MQ/Cache）；E2E tests → Playwright + Testcontainers DB（全链路验证）。对于 Azure 云服务（AI Foundry、Speech），用 WireMock 录制/回放或 Azurite 模拟。"
         }
       ]
@@ -4718,7 +4718,7 @@
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Personal VAD（说话人条件化，约 13 万参数，三分类：非语音/目标/非目标）；CNN+Attention VAD（时频双重注意力，约 15 万参数即超越更大 CNN）；NAS-VAD（神经架构搜索，151K 参数，AUC 0.982，跨数据集泛化性强）。三者与云端 Semantic VAD 不是竞争关系而是互补的不同层次——声学 VAD 捕获语音帧，语义 VAD 调优切分时机。"
         },
         {
@@ -4727,7 +4727,7 @@
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Semantic VAD 本质只判断\"用户这一轮说话什么时候结束\"，不决定\"要不要打断 AI\"。打断 = VAD 事件（speech_started）+ Interrupt Controller + 流式 TTS 控制。eagerness 参数只调 end-of-turn 阈值，不控制打断行为。"
         },
         {
@@ -4736,7 +4736,7 @@
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "6 个组件：Interrupt Controller（判断是否应打断）、Streaming ASR（实时转写区分意图）、Backchannel Filter（过滤\"嗯/ok\"等非打断信号）、可中断 TTS 流（mid-stream 停止）、Turn State Machine（IDLE→LISTENING→THINKING→SPEAKING→INTERRUPTED）、Latency 控制（ASR+网络+TTS 缓冲综合管理）。仅靠 Realtime API + Semantic VAD 不足以实现自然对话打断。"
         },
         {
@@ -4745,7 +4745,7 @@
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "VAD 检测\"有无人声\"（逐帧二值），KWS 检测\"是否说了特定词\"（事件触发）。VAD 无法替代 KWS——只用 VAD 会导致任何环境对话触发系统，功耗爆炸和隐私泄露。典型语音助手流水线：KWS（超低功耗 DSP 持续监听）→ VAD + ASR（主 CPU 激活后）→ Semantic VAD（云端判断说完没）。"
         }
       ]
@@ -5021,7 +5021,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Layer 4（AI 辅助 Review）和 Baseline MCP Server（让 Agent 在生成时就遵守规则）是 Vibe Coding 时代最有价值的新增层。"
         }
       ]
@@ -5050,7 +5050,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "三种混乱的测试环境模式（本地手工 / docker-compose 共享 / E2E 本地能跑 CI 不行）导致数据污染和 flaky test。Testcontainers 让每个测试拥有独立的 infrastructure，从根本上解决隔离问题。"
         }
       ]
@@ -5376,7 +5376,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "30 分钟会话估算：LLM 输出 12,000→4,200（Caveman -65%）、命令输出 118,000→23,900（RTK -80%）、记忆文件 900→486（compress -46%），总计 130,900→28,586（-78%）。RTK 绝对节省量最大（命令输出占总量 ~90%），Caveman 在纯对话场景不可替代。"
         },
         {
@@ -5385,7 +5385,7 @@
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "命令输出在总 token 中占比最大（~90%），RTK 对此压缩 ~80%。Caveman 仅压缩 LLM 回复和记忆文件，绝对量较小。但在不涉及命令执行的纯对话场景中，RTK 无效而 Caveman 是唯一手段。"
         }
       ]
@@ -5689,7 +5689,7 @@
           "first_seen": "2026-04-23",
           "last_updated": "2026-04-23",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是\"编译一次持续维护\"（writing a book），RAG 是\"每次查询重新检索\"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。"
         }
       ]
@@ -5725,6 +5725,12 @@
       "target": "slime-rl-framework",
       "relation_type": "contrasts",
       "description": "Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）"
+    },
+    {
+      "source": "agent-lightning",
+      "target": "skillopt",
+      "relation_type": "contrasts",
+      "description": "权重级（policy/θ，需 GPU）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加"
     },
     {
       "source": "agent-loop-architecture",
@@ -5895,6 +5901,12 @@
       "description": "Azure Skills 是 MCP 与 CLI 共存互补的最佳实战案例"
     },
     {
+      "source": "azure-copilot-ecosystem",
+      "target": "skill-hub-ecosystem",
+      "relation_type": "contrasts",
+      "description": "Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补"
+    },
+    {
       "source": "bitter-lesson",
       "target": "continual-self-improving-ai",
       "relation_type": "grounds",
@@ -5953,6 +5965,12 @@
       "target": "realtime-protocol-selection",
       "relation_type": "constrains",
       "description": "级联管线的延迟目标约束协议选择"
+    },
+    {
+      "source": "cascaded-pipeline",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "contrasts",
+      "description": "推理架构选型与级联/端到端管线选型同属\"为约束选架构\"的工程决策族"
     },
     {
       "source": "caveman-token-compression",
@@ -6243,6 +6261,12 @@
       "description": "作为质量门禁的环境基础设施层"
     },
     {
+      "source": "ephemeral-environment",
+      "target": "testcontainers",
+      "relation_type": "contrasts",
+      "description": "Testcontainers 解决测试级隔离，Ephemeral Environment 解决 PR 级隔离"
+    },
+    {
       "source": "feedback-loop",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -6363,6 +6387,12 @@
       "description": "Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness"
     },
     {
+      "source": "harness-engineering",
+      "target": "reinforcement-learning",
+      "relation_type": "contrasts",
+      "description": "Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿"
+    },
+    {
       "source": "harness-quality-gate",
       "target": "harness-engineering",
       "relation_type": "contrasts",
@@ -6397,6 +6427,12 @@
       "target": "agent-zero",
       "relation_type": "contrasts",
       "description": "三种 Agent 哲学光谱中的极端自主端"
+    },
+    {
+      "source": "hermes-agent",
+      "target": "orchestrator-pattern-multi-agent",
+      "relation_type": "contrasts",
+      "description": "Hermes 采用单体 + 子代理模式，而非 Orchestrator Pattern"
     },
     {
       "source": "hybrid-linear-attention-architecture",
@@ -6481,6 +6517,12 @@
       "target": "opencli",
       "relation_type": "contrasts",
       "description": "OpenCLI 为 CLI 路线提供标准化接口描述"
+    },
+    {
+      "source": "mcp-vs-cli",
+      "target": "rtk-token-compression",
+      "relation_type": "contrasts",
+      "description": "RTK 选择 CLI 代理而非 MCP 协议，体现两条工具集成路线的不同取舍"
     },
     {
       "source": "meta-harness",
@@ -6639,6 +6681,12 @@
       "description": "OMC 的 Autopilot 模式助力一人团队"
     },
     {
+      "source": "one-person-team",
+      "target": "ai-skill-formation",
+      "relation_type": "contrasts",
+      "description": "AI 技能形成的放大器效应与一人团队模式的张力"
+    },
+    {
       "source": "online-learning",
       "target": "reinforcement-learning",
       "relation_type": "contrasts",
@@ -6705,16 +6753,34 @@
       "description": "Agent 网关的工具调用层"
     },
     {
+      "source": "opencli",
+      "target": "mcp-vs-cli",
+      "relation_type": "contrasts",
+      "description": "OpenCLI 为 CLI 路线提供标准化接口描述，与 MCP 协议路线互为替代"
+    },
+    {
       "source": "personal-knowledge-compiler",
       "target": "notion-as-ai-layer",
       "relation_type": "contrasts",
       "description": "Notion 在知识管理中的替代方案"
     },
     {
+      "source": "prefix-caching",
+      "target": "distributed-training-parallelism",
+      "relation_type": "contrasts",
+      "description": "推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别"
+    },
+    {
       "source": "rag-architecture-comparison",
       "target": "llm-wiki",
       "relation_type": "contrasts",
       "description": "LLM Wiki 是\"编译式\"知识而非\"检索式\"知识"
+    },
+    {
+      "source": "rag-architecture-comparison",
+      "target": "wiki-over-rag-for-personal-knowledge",
+      "relation_type": "contrasts",
+      "description": "该决策从个人知识管理角度论证 Wiki 优于 RAG 的选型逻辑"
     },
     {
       "source": "react-paradigm",
@@ -6801,6 +6867,12 @@
       "description": "RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient"
     },
     {
+      "source": "reinforcement-learning",
+      "target": "skillopt",
+      "relation_type": "contrasts",
+      "description": "SkillOpt 把分数当选择/门控信号（离散筛选），RL 把 reward 当梯度信号（连续参数更新）"
+    },
+    {
       "source": "rejection-sampling-finetuning",
       "target": "agent-lightning",
       "relation_type": "part-of",
@@ -6843,6 +6915,18 @@
       "description": "用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出"
     },
     {
+      "source": "rejection-sampling-finetuning",
+      "target": "skillopt",
+      "relation_type": "contrasts",
+      "description": "同属拒绝采样谱系\"打分筛选、只留改进\"，RAFT 筛样本、SkillOpt 筛编辑"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "prompt-optimization-tool-selection",
+      "relation_type": "contrasts",
+      "description": "\"是否走向权重微调（SFT/RL）\"是该决策的关键前提"
+    },
+    {
       "source": "rtk-token-compression",
       "target": "caveman-token-compression",
       "relation_type": "contrasts",
@@ -6865,6 +6949,12 @@
       "target": "model-routing",
       "relation_type": "contrasts",
       "description": "RTK 压缩 token 数量，模型路由降 token 单价，两条正交优化轴可叠加"
+    },
+    {
+      "source": "rtk-token-compression",
+      "target": "meta-harness",
+      "relation_type": "contrasts",
+      "description": "RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化"
     },
     {
       "source": "scaling-laws",
@@ -6963,6 +7053,12 @@
       "description": "权重级（policy/θ，需 GPU/可训练模型）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加（先 RL 练强原生能力，再用 SkillOpt 配可迁移 playbook）"
     },
     {
+      "source": "skillopt",
+      "target": "method-agnostic",
+      "relation_type": "contrasts",
+      "description": "environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）"
+    },
+    {
       "source": "slime-rl-framework",
       "target": "verl",
       "relation_type": "contrasts",
@@ -7053,6 +7149,12 @@
       "description": "Turn-Taking 是 Core Processing 层的关键组件"
     },
     {
+      "source": "turn-taking",
+      "target": "grapheme-to-phoneme",
+      "relation_type": "contrasts",
+      "description": "Semantic VAD 决定\"什么时候说\"，G2P 决定\"怎么说\"——不同层级但存在间接耦合"
+    },
+    {
       "source": "verl",
       "target": "reinforcement-learning",
       "relation_type": "implements",
@@ -7075,6 +7177,12 @@
       "target": "prefix-caching",
       "relation_type": "uses",
       "description": "Server mode 下 rollout 用 vLLM/SGLang serving，受益于前缀缓存"
+    },
+    {
+      "source": "verl",
+      "target": "method-agnostic",
+      "relation_type": "contrasts",
+      "description": "VERL 在 RL 引擎内部实现\"算法可插拔\"，是 method-agnostic 同一原则在更低一层的表达"
     },
     {
       "source": "voice-activity-detection",

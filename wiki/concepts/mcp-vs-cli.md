@@ -81,6 +81,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - [[context-engineering]] — `part-of` MCP 是 Context Engineering 的工具接入层
 - [[opencli]] — `contrasts` OpenCLI 为 CLI 路线提供标准化接口描述
+- [[rtk-token-compression]] — `contrasts` RTK 选择 CLI 代理而非 MCP 协议，体现两条工具集成路线的不同取舍
 
 ## 来源日记
 

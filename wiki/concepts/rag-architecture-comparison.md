@@ -72,6 +72,7 @@ related:
 ## 关联概念
 
 - [[llm-wiki]] — `contrasts` LLM Wiki 是"编译式"知识而非"检索式"知识
+- [[wiki-over-rag-for-personal-knowledge]] — `contrasts` 该决策从个人知识管理角度论证 Wiki 优于 RAG 的选型逻辑
 
 ## 来源日记
 

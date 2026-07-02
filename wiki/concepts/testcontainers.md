@@ -58,7 +58,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。
 
@@ -68,7 +68,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。
 
@@ -78,7 +78,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Unit tests → mock（快速、无依赖）；Integration tests → Testcontainers（真实 DB/MQ/Cache）；E2E tests → Playwright + Testcontainers DB（全链路验证）。对于 Azure 云服务（AI Foundry、Speech），用 WireMock 录制/回放或 Azurite 模拟。
 

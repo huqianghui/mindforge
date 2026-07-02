@@ -99,7 +99,7 @@ related:
 - **来源**：[[2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读]]
 - **首次出现**：2026-06-28
 - **最近更新**：2026-06-28
-- **置信度**：0.75
+- **置信度**：0.8
 - **状态**：active
 
 > 对已重度后训练的 GPT/Llama/Qwen，RAFT 从"首次对齐"降级为"任务特化 + 自我提升的一道工序"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以"rejection sampling fine-tuning（RFT）"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是"便宜、稳定的第一档，上 RL 之前先榨一轮"。
@@ -118,6 +118,8 @@ related:
 - [[continual-self-improving-ai]] — `implements` 自蒸馏/ReST 是模型自举式持续自我提升的具体训练机制
 - [[generation-evaluation-separation]] — `uses` grader（评分）与 model（生成）分离，reward 作为独立裁判筛选自产轨迹
 - [[bitter-lesson]] — `grounds` 用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出
+- [[skillopt]] — `contrasts` 同属拒绝采样谱系"打分筛选、只留改进"，RAFT 筛样本、SkillOpt 筛编辑
+- [[prompt-optimization-tool-selection]] — `contrasts` "是否走向权重微调（SFT/RL）"是该决策的关键前提
 
 ## 来源日记
 

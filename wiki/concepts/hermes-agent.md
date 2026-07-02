@@ -32,7 +32,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **来源**：[[hermes-agent-vs-openclaw]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
-- **置信度**：0.7
+- **置信度**：0.8
 - **状态**：active
 
 > 每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。
@@ -88,6 +88,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - [[skill-hub-ecosystem]] — `part-of` Hermes 的 agentskills.io 是 Skill Hub 生态的一部分
 - [[ai-skill-formation]] — `extends` Skill 自动生成是 AI Skill Formation 的工程化落地
 - [[agent-zero]] — `contrasts` 三种 Agent 哲学光谱中的极端自主端
+- [[orchestrator-pattern-multi-agent]] — `contrasts` Hermes 采用单体 + 子代理模式，而非 Orchestrator Pattern
 
 ## 来源日记
 

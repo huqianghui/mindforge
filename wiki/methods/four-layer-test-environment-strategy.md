@@ -80,7 +80,7 @@ related_methods:
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 三种混乱的测试环境模式（本地手工 / docker-compose 共享 / E2E 本地能跑 CI 不行）导致数据污染和 flaky test。Testcontainers 让每个测试拥有独立的 infrastructure，从根本上解决隔离问题。
 

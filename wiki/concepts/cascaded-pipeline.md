@@ -71,6 +71,7 @@ related:
 - [[turn-taking]] — `uses` Turn Detection 是级联流水线的关键环节
 - [[harness-engineering]] — `grounds` 级联失败驱动了 Harness Engineering 的出现
 - [[realtime-protocol-selection]] — `constrains` 级联管线的延迟目标约束协议选择
+- [[hybrid-linear-attention-architecture]] — `contrasts` 推理架构选型与级联/端到端管线选型同属"为约束选架构"的工程决策族
 
 ## 来源日记
 

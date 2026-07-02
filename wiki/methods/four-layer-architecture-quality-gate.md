@@ -79,7 +79,7 @@ related_methods:
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Layer 4（AI 辅助 Review）和 Baseline MCP Server（让 Agent 在生成时就遵守规则）是 Vibe Coding 时代最有价值的新增层。
 

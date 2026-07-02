@@ -62,7 +62,7 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Caveman 压缩 output tokens（LLM 回复，-65%），RTK 压缩 input tokens（工具输出，-80%），两者作用于完全不同的数据流互不干扰。联合使用 30 分钟会话总节省 ~78%（130,900→28,586 tokens）。RTK 绝对节省量更大（命令输出占总量 ~90%），但纯对话场景仅 Caveman 有效。
 
@@ -72,7 +72,7 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 智能过滤（去噪音/注释/空白）、分组（按目录/类型聚合）、截断（仅保留失败用例）、去重（合并重复日志行并计数）。与 Caveman 的概率性输出压缩不同，RTK 基于确定性算法，效果稳定可预测，每命令处理开销 <10ms。
 
@@ -86,6 +86,7 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 - [[context-engineering]] — `extends` RTK 是 Context Engineering 在工具链层面的实践——通过压缩工具输出来优化 LLM 可用上下文
 - [[mcp-vs-cli]] — `contrasts` RTK 选择 CLI 代理而非 MCP 协议，体现了两条工具集成路线的不同取舍
 - [[model-routing]] — `contrasts` RTK 压缩 token 数量，模型路由降 token 单价，两条正交优化轴可叠加
+- [[meta-harness]] — `contrasts` RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化
 
 ## 来源日记
 

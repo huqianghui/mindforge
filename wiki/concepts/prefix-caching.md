@@ -82,6 +82,7 @@ related:
 
 ## 关联概念
 
+- [[distributed-training-parallelism]] — `contrasts` 推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别
 
 ## 来源日记
 

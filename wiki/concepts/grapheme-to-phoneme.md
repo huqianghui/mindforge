@@ -37,7 +37,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 显式 G2P（独立模块输出 phoneme，可控性强但增加延迟）、隐式 G2P（End-to-End TTS 内部完成，如 VITS/Tacotron，简单但发音不可控）、Hybrid（规则+字典+fallback G2P，最常见的工程选择）。
 
@@ -47,7 +47,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Custom Lexicon 在 G2P 之前介入，对命中词直接返回预定义 phoneme，跳过 G2P 推断。本质是"接管 G2P 对特定词汇的决策权"。SSML `<phoneme>` 标签是局部 override，Lexicon 是全局规则，G2P 是兜底推断——三者构成层级化发音控制体系。
 
@@ -57,7 +57,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > SSML + Streaming 天然冲突（XML 要完整结构，streaming 是 token 流）；LLM 不会稳定生成 SSML。正确方案：LLM 和 TTS 之间构建 Pronunciation Control Layer（Text Normalization → Lexicon Match → Phoneme Override → Fallback），80% 发音问题来自 20% 的词。
 
@@ -67,7 +67,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。
 

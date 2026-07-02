@@ -88,7 +88,7 @@ related_methods:
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是"编译一次持续维护"（writing a book），RAG 是"每次查询重新检索"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。
 

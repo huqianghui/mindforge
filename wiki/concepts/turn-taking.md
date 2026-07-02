@@ -67,6 +67,7 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 
 - [[voice-live-agent]] — `uses` Voice Agent 的对话自然度依赖 Turn-Taking 质量
 - [[speech-technology-stack]] — `part-of` Turn-Taking 是 Core Processing 层的关键组件
+- [[grapheme-to-phoneme]] — `contrasts` Semantic VAD 决定"什么时候说"，G2P 决定"怎么说"——不同层级但存在间接耦合
 
 ## 来源日记
 
