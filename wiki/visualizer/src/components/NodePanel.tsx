@@ -7,6 +7,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Tooltip from '@mui/material/Tooltip';
 import CloseIcon from '@mui/icons-material/Close';
 import type { GraphNode, WikiLink } from '../types';
 import { NODE_COLORS, NODE_TYPE_LABELS, RELATION_COLORS, RELATION_TYPE_LABELS } from '../theme';
@@ -22,6 +23,50 @@ function confidenceColor(c: number): 'success' | 'warning' | 'error' {
   if (c >= 0.7) return 'success';
   if (c >= 0.4) return 'warning';
   return 'error';
+}
+
+// 关系描述：短则完整平铺，长则夹到 3 行 + hover 显示完整。
+// 阈值按半宽单位算（中日韩/全角字符计 2），150 单位 ≈ 350px 面板下的 3 行。
+const DESC_CLAMP_UNITS = 150;
+
+function effectiveWidth(s: string): number {
+  let n = 0;
+  for (const ch of s) n += /[⺀-￿]/.test(ch) ? 2 : 1;
+  return n;
+}
+
+function RelationDescription({ text }: { text: string }) {
+  const long = effectiveWidth(text) > DESC_CLAMP_UNITS;
+  const body = (
+    <Typography
+      variant="caption"
+      sx={{
+        color: 'text.secondary',
+        whiteSpace: 'normal',
+        lineHeight: 1.45,
+        mt: 0.3,
+        wordBreak: 'break-word',
+        ...(long
+          ? {
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              cursor: 'help',
+            }
+          : { display: 'block' }),
+      }}
+    >
+      {text}
+    </Typography>
+  );
+  return long ? (
+    <Tooltip title={text} placement="left" arrow enterTouchDelay={0} leaveTouchDelay={4000}>
+      {body}
+    </Tooltip>
+  ) : (
+    body
+  );
 }
 
 export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodePanelProps) {
@@ -155,11 +200,7 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
                         {l.target}
                       </Typography>
                     </Box>
-                    {l.description && (
-                      <Typography variant="caption" noWrap sx={{ display: 'block', color: 'text.secondary' }}>
-                        {l.description}
-                      </Typography>
-                    )}
+                    {l.description && <RelationDescription text={l.description} />}
                   </Box>
                 </ListItem>
               ))}
@@ -202,11 +243,7 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
                         &rarr;
                       </Typography>
                     </Box>
-                    {l.description && (
-                      <Typography variant="caption" noWrap sx={{ display: 'block', color: 'text.secondary' }}>
-                        {l.description}
-                      </Typography>
-                    )}
+                    {l.description && <RelationDescription text={l.description} />}
                   </Box>
                 </ListItem>
               ))}
