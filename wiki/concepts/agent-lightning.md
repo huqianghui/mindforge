@@ -113,13 +113,13 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 对 VERL 是架构锁定而非简单依赖——Agent RL 是系统问题
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]、[[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.8
+- **最近更新**：2026-07-03
+- **置信度**：0.85
 - **状态**：active
 
-> agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。
+> agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。**补充（系列08 实战暴露）**：这层架构锁定不是抽象的、而是钉在具体版本上的紧耦合——agentlightning 0.3.1 按老路径 import `verl.workers.fsdp_workers`，verl 0.8.0 已删该模块，故 0.3.1 只能配 verl ≤0.7.0。跨库 import 契约会随 VERL 版本演进而破裂，"架构建立在假设之上"的代价是版本窗口很窄（详见 [[verl]] 版本锁定 Claim）。
 
 ### Claim: 数据流飞轮在哲学上与 Slime 同构，反比所绑的 VERL 更近
 
@@ -135,6 +135,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 - 2026-06-25：系列02 纠正系列01——SFT 不是内置算法类，而是走自定义算法扩展点（继承 `Algorithm` + `run()`）。
 - 2026-06-29：从系列07 与 Slime vs VERL 对比补充——对 VERL 是架构锁定（Agent RL=系统问题）、数据流飞轮与 Slime 同构但不同层，接入 verl/slime-rl-framework 概念页。
+- 2026-07-03：从系列08 实战篇细化架构锁定 Claim——加入版本窗口证据（0.3.1↔verl≤0.7.0，verl 0.8.0 删 fsdp_workers），置信度 0.8→0.85。
 
 ## 关联概念
 
@@ -155,3 +156,4 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] — SFT 实战：Azure GPU VM + unsloth 跑通
 - [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — RL 这一级绑定 VERL 的选型逻辑与架构锁定本质
 - [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — agent-lightning 飞轮与 Slime 数据流同构、不同层的殊途同归
+- [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]] — calc_x 首跑暴露架构锁定的版本窗口（0.3.1↔verl≤0.7.0）
