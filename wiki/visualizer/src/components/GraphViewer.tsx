@@ -1,8 +1,11 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
 import ForceGraph2D, { type ForceGraphMethods } from 'react-force-graph-2d';
+import { forceCollide } from 'd3-force-3d';
 import Box from '@mui/material/Box';
 import type { GraphData, GraphNode, GraphLink } from '../types';
 import { RELATION_COLORS } from '../theme';
+
+const nodeRadius = (node: GraphNode) => Math.sqrt(node.val) * 1.5;
 
 interface GraphViewerProps {
   graphData: GraphData;
@@ -34,6 +37,16 @@ export default function GraphViewer({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [panelOpen]);
+
+  // 调力学参数：加大斥力 + 拉长连线 + 防重叠，让节点散开、布局更干净
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    fg.d3Force('charge')?.strength(-260).distanceMax(600);
+    fg.d3Force('link')?.distance(90).strength(0.35);
+    fg.d3Force('collide', forceCollide<GraphNode>((n) => nodeRadius(n) + 8).iterations(2));
+    fg.d3ReheatSimulation();
+  }, [graphData]);
 
   useEffect(() => {
     if (focusNodeId && fgRef.current) {
@@ -155,6 +168,11 @@ export default function GraphViewer({
         linkDirectionalParticleSpeed={0.005}
         onNodeClick={(node) => onNodeClick(node as GraphNode)}
         onNodeHover={(node) => setHoverNode((node as GraphNode) || null)}
+        onNodeDragEnd={(node) => {
+          const n = node as GraphNode & { x?: number; y?: number; fx?: number; fy?: number };
+          n.fx = n.x;
+          n.fy = n.y;
+        }}
         cooldownTicks={100}
         d3AlphaDecay={0.02}
         d3VelocityDecay={0.3}
