@@ -1,5 +1,6 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
 import ForceGraph2D, { type ForceGraphMethods } from 'react-force-graph-2d';
+import { forceCollide } from 'd3-force-3d';
 import Box from '@mui/material/Box';
 import type { GraphData, GraphNode, GraphLink } from '../types';
 import { RELATION_COLORS } from '../theme';
@@ -50,6 +51,22 @@ export default function GraphViewer({
       onFocusHandled();
     }
   }, [focusNodeId, graphData.nodes, onNodeClick, onFocusHandled]);
+
+  // 自定义力：解决"枢纽拥挤 + 弱连接子群被甩飞"两个相反问题
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    // 斥力局部化：超出该范围的节点不再互相排斥，弱连接子群（如语音岛）不会被甩向无穷远，
+    // 靠 link 力就能拉回，同时中心枢纽区仍保持足够斥力
+    const charge = fg.d3Force('charge') as { distanceMax?: (d: number) => void } | undefined;
+    charge?.distanceMax?.(400);
+    // 防重叠：按节点半径把密集邻居隔开，枢纽区自动摊开，无需加大全局斥力再次甩飞外围
+    fg.d3Force(
+      'collide',
+      forceCollide((n: GraphNode) => Math.sqrt(n.val) * 1.5 + 6).strength(0.9)
+    );
+    fg.d3ReheatSimulation();
+  }, [graphData]);
 
   const highlightNodes = useCallback(() => {
     const set = new Set<string>();
