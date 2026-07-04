@@ -43,7 +43,7 @@ export default function GraphViewer({
     const fg = fgRef.current;
     if (!fg) return;
     fg.d3Force('charge')?.strength(-260).distanceMax(600);
-    fg.d3Force('link')?.distance(90).strength(0.35);
+    fg.d3Force('link')?.distance(90).strength(0.25);
     fg.d3Force('collide', forceCollide<GraphNode>((n) => nodeRadius(n) + 8).iterations(2));
     fg.d3ReheatSimulation();
   }, [graphData]);
@@ -174,8 +174,8 @@ export default function GraphViewer({
           n.fy = n.y;
         }}
         cooldownTicks={100}
-        d3AlphaDecay={0.02}
-        d3VelocityDecay={0.3}
+        d3AlphaDecay={0.0128}
+        d3VelocityDecay={0.18}
       />
     </Box>
   );
