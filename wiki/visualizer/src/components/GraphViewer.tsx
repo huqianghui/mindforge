@@ -27,6 +27,11 @@ export default function GraphViewer({
   const fgRef = useRef<ForceGraphMethods<GraphNode, GraphLink>>(undefined);
   const [hoverNode, setHoverNode] = useState<GraphNode | null>(null);
   const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight - 64 });
+  // 拖拽回弹用：默认摩擦保持动态；回弹阶段临时加大摩擦让节点缓慢归位
+  const [velocityDecay, setVelocityDecay] = useState(0.3);
+  const dragTimers = useRef<number[]>([]);
+
+  useEffect(() => () => dragTimers.current.forEach(clearTimeout), []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,7 +48,7 @@ export default function GraphViewer({
     const fg = fgRef.current;
     if (!fg) return;
     fg.d3Force('charge')?.strength(-260).distanceMax(600);
-    fg.d3Force('link')?.distance(90).strength(0.25);
+    fg.d3Force('link')?.distance(90).strength(0.35);
     fg.d3Force('collide', forceCollide<GraphNode>((n) => nodeRadius(n) + 8).iterations(2));
     fg.d3ReheatSimulation();
   }, [graphData]);
@@ -169,13 +174,46 @@ export default function GraphViewer({
         onNodeClick={(node) => onNodeClick(node as GraphNode)}
         onNodeHover={(node) => setHoverNode((node as GraphNode) || null)}
         onNodeDragEnd={(node) => {
-          const n = node as GraphNode & { x?: number; y?: number; fx?: number; fy?: number };
-          n.fx = n.x;
-          n.fy = n.y;
+          type PinNode = GraphNode & { x?: number; y?: number; fx?: number; fy?: number };
+          const n = node as PinNode;
+          // 收集被拖节点 + 直接相邻节点，作为一簇一起停留
+          const cluster: PinNode[] = [n];
+          graphData.links.forEach((l) => {
+            const src = typeof l.source === 'string' ? l.source : l.source.id;
+            const tgt = typeof l.target === 'string' ? l.target : l.target.id;
+            const otherId = src === n.id ? tgt : tgt === n.id ? src : null;
+            if (otherId) {
+              const nb = graphData.nodes.find((g) => g.id === otherId) as PinNode | undefined;
+              if (nb && !cluster.includes(nb)) cluster.push(nb);
+            }
+          });
+          // 冻结整簇在拉出的位置，供阅读观察
+          cluster.forEach((c) => {
+            c.fx = c.x;
+            c.fy = c.y;
+          });
+          dragTimers.current.forEach(clearTimeout);
+          dragTimers.current = [];
+          const HOLD = 2600; // 停留观察窗口
+          // 停留后：加大摩擦 → 释放钉住 → 轻加热，让整簇缓慢回弹
+          dragTimers.current.push(
+            window.setTimeout(() => {
+              setVelocityDecay(0.6);
+              cluster.forEach((c) => {
+                c.fx = undefined;
+                c.fy = undefined;
+              });
+              fgRef.current?.d3ReheatSimulation();
+            }, HOLD)
+          );
+          // 回弹结束后恢复默认动态摩擦
+          dragTimers.current.push(
+            window.setTimeout(() => setVelocityDecay(0.3), HOLD + 3000)
+          );
         }}
         cooldownTicks={100}
-        d3AlphaDecay={0.0128}
-        d3VelocityDecay={0.18}
+        d3AlphaDecay={0.02}
+        d3VelocityDecay={velocityDecay}
       />
     </Box>
   );
