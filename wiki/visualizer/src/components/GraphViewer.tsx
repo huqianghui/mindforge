@@ -82,17 +82,35 @@ export default function GraphViewer({
       ctx.fill();
 
       if (isSelected) {
-        ctx.strokeStyle = '#fff';
+        const SEL = '#FF1744'; // 高对比选中色（红粉），在浅背景与各类节点色上都醒目
+
+        // 扩散"雷达波"环：随时间从节点边缘向外扩张并淡出，循环
+        const t = (Date.now() % 1300) / 1300; // 0..1，约 1.3s 一圈
+        ctx.beginPath();
+        ctx.arc(x, y, r + 3 + t * 16, 0, 2 * Math.PI);
+        ctx.strokeStyle = SEL;
+        ctx.globalAlpha = (1 - t) * 0.55;
         ctx.lineWidth = 2;
         ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // 常驻发光描边环：粗环 + 阴影辉光，让选中节点始终突出
+        ctx.beginPath();
+        ctx.arc(x, y, r + 2.5, 0, 2 * Math.PI);
+        ctx.strokeStyle = SEL;
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = SEL;
+        ctx.shadowBlur = 14;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
       }
 
       if (globalScale > 1.5 || isHighlighted) {
         const fontSize = Math.max(10 / globalScale, 1.5);
-        ctx.font = `${fontSize}px sans-serif`;
+        ctx.font = `${isSelected ? 'bold ' : ''}${fontSize}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillStyle = '#333';
+        ctx.fillStyle = isSelected ? '#FF1744' : '#333';
         ctx.globalAlpha = isHighlighted || highlighted.size === 0 ? 1 : 0.3;
         ctx.fillText(node.title, x, y + r + 2);
       }
