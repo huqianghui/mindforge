@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-03",
+  "generated_at": "2026-07-06",
   "stats": {
     "nodes": 101,
-    "links": 327,
+    "links": 334,
     "orphan_links_removed": 0,
     "claims": 402,
     "categories": 10
@@ -739,42 +739,42 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.82,
       "claims": [
         {
           "statement": "通用计算方法最终胜过手工领域知识",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "search + learning 最终击败所有 hand-coded human domain knowledge，跨越所有 AI 领域。"
         },
         {
           "statement": "\"苦涩\"是心理层面的",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "研究者精心打造的领域知识被简单暴力的\"更多计算\"碾压，70 年来反复发生。"
         },
         {
           "statement": "Sutton 不是在推广 RL",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-15",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "是一个跨领域元原则：\"让计算（search + learning）替代人类知识\"，不限于强化学习。"
         },
         {
           "statement": "存在四阶段循环",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "(1) 编码人类知识 → (2) 短期有效 → (3) 长期停滞 → (4) 对立的计算扩展方法实现突破。"
         }
       ]
@@ -1520,36 +1520,36 @@
           "statement": "LLM 面临三个根本限制",
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "静态权重（有限 context 记忆）、有限人类数据（power-law scaling 触顶）、人类设计的训练算法。"
         },
         {
           "statement": "EntiGraph 用极小源语料实现接近 RAG 的性能",
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。"
         },
         {
           "statement": "EntiGraph + RAG 优于纯 RAG",
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "知识内化与检索增强互补而非竞争。"
         },
         {
           "statement": "SBP 用高熵训练目标提升跨文档关系建模",
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-07-06",
           "confidence": 0.6,
-          "status": "stale",
+          "status": "active",
           "evidence": "一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
         }
       ]
@@ -2026,24 +2026,24 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 3,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-02",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。"
         },
         {
           "statement": "Meta-Harness 中 Guides 和 Sensors 是分离原则的工程实现",
           "source": "2026-04-16-Meta-Harness论文解读与实践思考",
           "first_seen": "2026-04-16",
-          "last_updated": "2026-04-17",
+          "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。"
         },
         {
@@ -2131,24 +2131,24 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 13,
-      "avg_confidence": 0.78,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。"
         },
         {
           "statement": "三家公司独立演化出同一套 Harness 设计范式",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-15",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。"
         },
         {
@@ -2164,9 +2164,9 @@
           "statement": "级联失败是 Harness Engineering 出现的核心驱动力",
           "source": "Vibe Coding系列01",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-15",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。"
         },
         {
@@ -2182,9 +2182,9 @@
           "statement": "Agent 的智能来自 model，可靠性来自 harness",
           "source": "learn-claude-code",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。"
         },
         {
@@ -2218,18 +2218,18 @@
           "statement": "控制论是 Harness Engineering 的理论根基——三层控制模型",
           "source": "控制论与科学方法论——从控制论到AI Agent设计方法论",
           "first_seen": "2026-04-17",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，\"怎么做出来\"）、约束系统（L2 Planning + L1 Policy，\"不能乱来\"）、认知系统（L6 Eval，\"从经验学到什么\"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。"
         },
         {
           "statement": "Claude Code 的 98.7% 代码都是 Harness",
           "source": "Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读",
           "first_seen": "2026-04-17",
-          "last_updated": "2026-04-17",
+          "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "stale",
+          "status": "active",
           "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
         },
         {
@@ -3726,33 +3726,33 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.83,
+      "avg_confidence": 0.85,
       "claims": [
         {
           "statement": "RL 的核心贡献是 Search + Learning 的统一",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-03-21",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "Sutton 刻意把 Search 和 Learning 并列为\"两种利用算力的方法\"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。"
         },
         {
           "statement": "RL Agent 与 LLM Agent 是\"同一个词，两种实体\"",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-03-21",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。"
         },
         {
           "statement": "Bitter Lesson 不是 RL 论文而是 AI 方法论论文",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-03-21",
-          "last_updated": "2026-04-17",
+          "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "stale",
+          "status": "active",
           "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
         },
         {
@@ -3804,7 +3804,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 7,
-      "avg_confidence": 0.83,
+      "avg_confidence": 0.84,
       "claims": [
         {
           "statement": "不是\"喂标准答案\"，是\"用 reward 造标签\"——target 是评分键不是模仿 label",
@@ -3819,8 +3819,8 @@
           "statement": "\"算法\"内核还是一行 sorted——与 APO 对称，区别只在下游消费",
           "source": "Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相",
           "first_seen": "2026-06-26",
-          "last_updated": "2026-06-26",
-          "confidence": 0.85,
+          "last_updated": "2026-07-06",
+          "confidence": 0.9,
           "status": "active",
           "evidence": "SFT 这条线的\"算法\"内核是 `all_triplets.sort(key=lambda x: x[\"reward\"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑**：demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT 把模型训得\"更自信地答错\"；正确做法是阈值过滤（只留 `reward > 0`）。"
         },
@@ -3846,8 +3846,8 @@
           "statement": "RAFT = RL 的数据哲学 + SFT 的更新机制，reward 只\"检票\"不进梯度",
           "source": "2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读",
           "first_seen": "2026-06-28",
-          "last_updated": "2026-06-28",
-          "confidence": 0.85,
+          "last_updated": "2026-07-06",
+          "confidence": 0.9,
           "status": "active",
           "evidence": "RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批）→ Rank/Filter（用 reward 过滤出高分子集）→ Fine-tune（在子集上 SFT）→ 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。"
         },
@@ -3954,24 +3954,24 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 2,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.85,
       "claims": [
         {
           "statement": "Scaling Laws 是 Bitter Lesson 的定量化证明",
           "source": "2026-03-21-The-Bitter-Lesson",
           "first_seen": "2026-03-21",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "Bitter Lesson 是定性方法论（70 年历史归纳），Scaling Laws 是定量经验公式（性能 ∝ 计算^α 的幂律）。两者的区别：Bitter Lesson 只说\"计算终将胜出\"，Scaling Laws 具体量化\"多少计算换多少性能\"。"
         },
         {
           "statement": "训练数据需求呈幂律增长",
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-03-22",
-          "last_updated": "2026-04-17",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-07-06",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "模型能力提升所需的训练数据量呈幂律增长——这是 Scaling Laws 的实际约束，也是合成数据和自我改进方法出现的驱动力。"
         }
       ]
@@ -5937,6 +5937,30 @@
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
     },
     {
+      "source": "bitter-lesson",
+      "target": "reinforcement-learning",
+      "relation_type": "grounds",
+      "description": "RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）"
+    },
+    {
+      "source": "bitter-lesson",
+      "target": "scaling-laws",
+      "relation_type": "grounds",
+      "description": "Scaling Laws 是 Bitter Lesson 的定量化证明"
+    },
+    {
+      "source": "bitter-lesson",
+      "target": "method-agnostic",
+      "relation_type": "grounds",
+      "description": "method-agnostic 阶梯让优化方法可随算力升级，体现\"计算胜过人工设计\""
+    },
+    {
+      "source": "bitter-lesson",
+      "target": "agent-lightning",
+      "relation_type": "grounds",
+      "description": "三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地"
+    },
+    {
       "source": "brevity-constraints",
       "target": "caveman-token-compression",
       "relation_type": "grounds",
@@ -6205,6 +6229,18 @@
       "target": "rag-architecture-comparison",
       "relation_type": "uses",
       "description": "EntiGraph + RAG 互补关系"
+    },
+    {
+      "source": "continual-self-improving-ai",
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "自我改进是 Bitter Lesson\"用计算替代人类数据\"的延伸"
+    },
+    {
+      "source": "continual-self-improving-ai",
+      "target": "scaling-laws",
+      "relation_type": "constrains",
+      "description": "训练数据幂律增长约束是自我改进方法出现的驱动力"
     },
     {
       "source": "contract-testing",
@@ -6985,6 +7021,12 @@
       "target": "continual-self-improving-ai",
       "relation_type": "constrains",
       "description": "数据幂律增长约束驱动了自我改进方法"
+    },
+    {
+      "source": "scaling-laws",
+      "target": "reinforcement-learning",
+      "relation_type": "grounds",
+      "description": "RL 中 search + learning 的算力扩展遵循 Scaling Laws"
     },
     {
       "source": "skill-creator-orchestration",
