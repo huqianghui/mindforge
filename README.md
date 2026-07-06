@@ -228,7 +228,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [AgenticRAG — Agentic Retrieval for Enterprise Knowledge Bases 论文精读笔记](paper/2026-05-28-AgenticRAG-Agentic-Retrieval-for-Enterprise-Knowledge-Bases.md)
 - [RAFT（Reward rAnked FineTuning）论文解读——拒绝采样 SFT 的理论出处，与 STaR、agent-lightning 的关联](paper/2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读.md)
 - [SkillOpt 论文解读——把 agent skill 当作 frozen agent 的可训练外部状态，与 agent-lightning APO 的本质区别](paper/2026-07-01-SkillOpt.md)
-- [JitRL 论文解读——把「策略改进」与「参数更新」拆开的非参数 GPI，与"存储位面"判据](paper/2026-07-06-JitRL-无梯度测试时RL论文解读.md)
+- [CL-RL 四篇全景 + JitRL 深读——把「策略改进」与「参数更新」拆开的非参数 GPI，与"存储位面"判据](paper/2026-07-06-JitRL-无梯度测试时RL论文解读.md)
 
 ---
 
