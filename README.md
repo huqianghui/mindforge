@@ -7,7 +7,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ## Wiki Knowledge Graph
 
-<img width="1707" height="995" alt="LLM-wiki" src="https://github.com/user-attachments/assets/04085aab-af1d-4436-b1ba-e1be6ef865d4" />
+<img width="1707" alt="LLM-wiki" src="wiki/LLM-wiki.png" />
 
 **[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
 
@@ -74,6 +74,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [FDE 职业进化论——AI 时代前线部署工程师的个人突围与团队重构](Notes/AI/FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构.md)
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
 - [去除AI味：从语言指纹到人机文本边界的消融](去除AI味：从语言指纹到人机文本边界的消融.md)
+- [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
 
 ### Notes/AI/Context-Engineering
 
@@ -179,15 +180,21 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
 - [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
-- [从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践](Notes/tool/从日记到知识库：Obsidian%20×%20oh-my-claudecode%20×%20LLM%20Wiki%20的个人知识编译实践.md)
-- [个人知识编译器进化：从三层知识模型到持续迭代的知识系统](Notes/tool/个人知识编译器进化：从三层知识模型到持续迭代的知识系统.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
-- [RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
+- [RTK 系列 01：RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
+- [RTK 系列 02：源码深度解析——从 CLI 代理到 Token 压缩的工程实现](Notes/tool/rtk/RTK系列02：源码深度解析——从CLI代理到Token压缩的工程实现.md)
+- [RTK 系列 03：个性化优化引擎——基于 Session 数据的智能调优](Notes/tool/rtk/RTK系列03：个性化优化引擎——基于Session数据的智能调优.md)
+- [Rust 开发环境与 Cargo 构建指南](Notes/tool/rtk/Rust开发环境与Cargo构建指南.md)
 - [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Notes/tool/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
 - [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Notes/tool/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
 - [CodexSaver 深度解析——基于 MCP 的模型路由 Token 成本优化](Notes/tool/CodexSaver深度解析——基于MCP的模型路由Token成本优化.md)
 - [Typeless 深度解析——AI 语音输入如何超越传统 Speech-to-Text](Notes/tool/Typeless深度解析——AI语音输入如何超越传统Speech-to-Text.md)
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
+
+### Notes/pkc
+
+- [PKC 系列 01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践](Notes/pkc/PKC系列01：从日记到知识库——Obsidian%20×%20oh-my-claudecode%20×%20LLM%20Wiki%20的个人知识编译实践.md)
+- [PKC 系列 02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统](Notes/pkc/PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统.md)
 
 ### Azure
 
@@ -207,6 +214,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Palantir Ontology：从哲学本体论到企业操作系统的工程实践](product/Palantir%20Ontology：从哲学本体论到企业操作系统的工程实践.md)
 - [Palantir 数据本体论（Ontology）：从概念到产品的深度解析](product/Palantir数据本体论（Ontology）：从概念到产品的深度解析.md)
 - [Accio Work——阿里跨境 AI Agent 工作台与企业级 Skill Hub 设计解读](product/Accio%20Work——阿里跨境AI%20Agent工作台与企业级Skill%20Hub设计解读.md)
+- [摄像头 ReID 人物识别——证明系统随使用越来越准的评估基准与流程设计](product/摄像头ReID人物识别——证明系统随使用越来越准的评估基准与流程设计.md)
 
 ### paper
 
