@@ -1,7 +1,7 @@
 ---
 title: "Continually Self-Improving AI"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-07-06"
 tags:
   - wiki
   - concept
@@ -16,6 +16,8 @@ aliases:
 related:
   - "[[bitter-lesson]]"
   - "[[rag-architecture-comparison]]"
+  - "[[scaling-laws]]"
+  - "[[rejection-sampling-finetuning]]"
 ---
 
 # Continually Self-Improving AI
@@ -30,9 +32,9 @@ related:
 
 - **来源**：[[2026-03-22-Continually-Self-Improving-AI论文精读笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 
 > 静态权重（有限 context 记忆）、有限人类数据（power-law scaling 触顶）、人类设计的训练算法。
 
@@ -40,9 +42,9 @@ related:
 
 - **来源**：[[2026-03-22-Continually-Self-Improving-AI论文精读笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 
 > 通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。
 
@@ -50,9 +52,9 @@ related:
 
 - **来源**：[[2026-03-22-Continually-Self-Improving-AI论文精读笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 
 > 知识内化与检索增强互补而非竞争。
 
@@ -60,9 +62,9 @@ related:
 
 - **来源**：[[2026-03-22-Continually-Self-Improving-AI论文精读笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
 
 > 一个文档映射到多个相关文档，强制模型提炼共享抽象概念。
 
@@ -73,6 +75,8 @@ related:
 ## 关联概念
 
 - [[rag-architecture-comparison]] — `uses` EntiGraph + RAG 互补关系
+- [[bitter-lesson]] — `grounds` 自我改进是 Bitter Lesson"用计算替代人类数据"的延伸
+- [[scaling-laws]] — `constrains` 训练数据幂律增长约束是自我改进方法出现的驱动力
 
 ## 来源日记
 

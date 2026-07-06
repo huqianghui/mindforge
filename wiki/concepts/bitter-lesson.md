@@ -1,7 +1,7 @@
 ---
 title: "The Bitter Lesson"
 created: "2026-04-13"
-updated: "2026-04-15"
+updated: "2026-07-06"
 tags:
   - wiki
   - concept
@@ -14,6 +14,10 @@ aliases:
 related:
   - "[[continual-self-improving-ai]]"
   - "[[harness-engineering]]"
+  - "[[reinforcement-learning]]"
+  - "[[scaling-laws]]"
+  - "[[method-agnostic]]"
+  - "[[agent-lightning]]"
 ---
 
 # The Bitter Lesson
@@ -28,9 +32,9 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > search + learning 最终击败所有 hand-coded human domain knowledge，跨越所有 AI 领域。
 
@@ -38,9 +42,9 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 
 > 研究者精心打造的领域知识被简单暴力的"更多计算"碾压，70 年来反复发生。
 
@@ -48,9 +52,9 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 是一个跨领域元原则："让计算（search + learning）替代人类知识"，不限于强化学习。
 
@@ -58,9 +62,9 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-07-06
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 
 > (1) 编码人类知识 → (2) 短期有效 → (3) 长期停滞 → (4) 对立的计算扩展方法实现突破。
 
@@ -72,6 +76,10 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 - [[continual-self-improving-ai]] — `grounds` 持续自我改进是 Bitter Lesson 的延伸
 - [[harness-engineering]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
+- [[reinforcement-learning]] — `grounds` RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）
+- [[scaling-laws]] — `grounds` Scaling Laws 是 Bitter Lesson 的定量化证明
+- [[method-agnostic]] — `grounds` method-agnostic 阶梯让优化方法可随算力升级，体现"计算胜过人工设计"
+- [[agent-lightning]] — `grounds` 三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地
 
 ## 来源日记
 

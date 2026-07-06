@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-04-23"
+updated: "2026-07-06"
 tags:
   - wiki
   - concept
@@ -29,9 +29,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe Coding系列01]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。
 
@@ -39,9 +39,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe Coding系列01]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。
 
@@ -59,9 +59,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe Coding系列01]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。
 
@@ -79,9 +79,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。
 
@@ -119,9 +119,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[控制论与科学方法论——从控制论到AI Agent设计方法论]]
 - **首次出现**：2026-04-17
-- **最近更新**：2026-04-17
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，"怎么做出来"）、约束系统（L2 Planning + L1 Policy，"不能乱来"）、认知系统（L6 Eval，"从经验学到什么"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。
 
@@ -129,9 +129,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]]
 - **首次出现**：2026-04-17
-- **最近更新**：2026-04-17
+- **最近更新**：2026-07-06
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
 
 > Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
 

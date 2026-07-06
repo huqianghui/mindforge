@@ -1,7 +1,7 @@
 ---
 title: "拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-07-06"
 tags:
   - wiki
   - concept
@@ -48,8 +48,8 @@ related:
 
 - **来源**：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]
 - **首次出现**：2026-06-26
-- **最近更新**：2026-06-26
-- **置信度**：0.85
+- **最近更新**：2026-07-06
+- **置信度**：0.9
 - **状态**：active
 
 > SFT 这条线的"算法"内核是 `all_triplets.sort(key=lambda x: x["reward"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑**：demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT 把模型训得"更自信地答错"；正确做法是阈值过滤（只留 `reward > 0`）。
@@ -78,8 +78,8 @@ related:
 
 - **来源**：[[2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读]]
 - **首次出现**：2026-06-28
-- **最近更新**：2026-06-28
-- **置信度**：0.85
+- **最近更新**：2026-07-06
+- **置信度**：0.9
 - **状态**：active
 
 > RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批）→ Rank/Filter（用 reward 过滤出高分子集）→ Fine-tune（在子集上 SFT）→ 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。

@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-07-06"
 tags:
   - wiki
   - concept
@@ -18,6 +18,10 @@ related:
   - "[[scaling-laws]]"
   - "[[continual-self-improving-ai]]"
   - "[[agent-paradigms]]"
+  - "[[harness-engineering]]"
+  - "[[verl]]"
+  - "[[slime-rl-framework]]"
+  - "[[agent-lightning]]"
 ---
 
 # 强化学习（Reinforcement Learning）
@@ -34,9 +38,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-03-21
-- **最近更新**：2026-04-17
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > Sutton 刻意把 Search 和 Learning 并列为"两种利用算力的方法"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。
 
@@ -44,9 +48,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-03-21
-- **最近更新**：2026-04-17
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-07-06
+- **置信度**：0.85
+- **状态**：active
 
 > 两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。
 
@@ -54,9 +58,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 - **来源**：[[2026-03-21-The-Bitter-Lesson]]
 - **首次出现**：2026-03-21
-- **最近更新**：2026-04-17
+- **最近更新**：2026-07-06
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
 
 > Sutton 从 RL 研究出发，但发现"计算终将胜出"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。
 

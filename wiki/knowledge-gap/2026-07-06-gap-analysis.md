@@ -58,15 +58,15 @@ huggingface_query_date: 2026-07-06
 
 **近 90 天新锐（velocity 排序，节选与用户领域相关）**：
 
-| 主题 | 仓库 | Stars | 创建 | 信号 | wiki 覆盖 | 动作 |
-|------|------|-------|------|------|-----------|------|
-| **LLM Wiki 桌面产品化** | `nashsu/llm_wiki` | 13.7k | 2026-04-08 | A | 🔶 `llm-wiki` 概念 | **对标观察** |
-| Self-hosted AI workspace | `pewdiepie-archdaemon/odysseus` | 80.9k | 05-31 | A | ❌ | 观望 |
-| Vibe Design Workspace | `nexu-io/open-design` | 75.2k | 04-28 | A/C | ❌ | 🔶 观察 |
-| AI"偷懒资深"agent | `DietrichGebert/ponytail` | 74.8k | 06-12 | A | ❌ | 观望 |
-| DESIGN.md 规范 | `google-labs-code/design.md` | 25.0k | 04-10 | C | ❌ | 观察 |
-| Code Knowledge Graph | `colbymchenry/codegraph` | 57.7k | 02-19 | C | 🔶 PKC 相关 | 补充 |
-| SkillOpt（已建页）| `microsoft/SkillOpt` | 10.8k | 05-08 | C | ✅ `skillopt` | — |
+| 主题                       | 仓库                              | Stars | 创建         | 信号  | wiki 覆盖          | 动作       |
+| ------------------------ | ------------------------------- | ----- | ---------- | --- | ---------------- | -------- |
+| **LLM Wiki 桌面产品化**       | `nashsu/llm_wiki`               | 13.7k | 2026-04-08 | A   | 🔶 `llm-wiki` 概念 | **对标观察** |
+| Self-hosted AI workspace | `pewdiepie-archdaemon/odysseus` | 80.9k | 05-31      | A   | ❌                | 观望       |
+| Vibe Design Workspace    | `nexu-io/open-design`           | 75.2k | 04-28      | A/C | ❌                | 🔶 观察    |
+| AI"偷懒资深"agent            | `DietrichGebert/ponytail`       | 74.8k | 06-12      | A   | ❌                | 观望       |
+| DESIGN.md 规范             | `google-labs-code/design.md`    | 25.0k | 04-10      | C   | ❌                | 观察       |
+| Code Knowledge Graph     | `colbymchenry/codegraph`        | 57.7k | 02-19      | C   | 🔶 PKC 相关        | 补充       |
+| SkillOpt（已建页）            | `microsoft/SkillOpt`            | 10.8k | 05-08      | C   | ✅ `skillopt`     | —        |
 
 **值得注意**：
 - **`nashsu/llm_wiki`（13.7k）** —— "把文档编译成 LLM Wiki 的跨平台桌面应用"，与你的 `llm-wiki` 概念和整个 PKC 理念**几乎正面重叠**。这是你自建体系的外部产品化对照物，值得看它的 schema / 编译流程设计，验证或补强 `personal-knowledge-compiler`。
