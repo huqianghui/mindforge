@@ -2,7 +2,7 @@
   "generated_at": "2026-07-07",
   "stats": {
     "nodes": 102,
-    "links": 345,
+    "links": 340,
     "orphan_links_removed": 0,
     "claims": 414,
     "categories": 10
@@ -353,7 +353,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent Zero 本质是 prompt-defined autonomous computer operator，设计目标是最大化 agent 自由度。属于 \"AI OS / autonomous runtime\" 一派，与 Devin、Manus、Open Interpreter 同类。来源：与 ChatGPT 讨论后的归纳。"
         },
         {
@@ -362,7 +362,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三种 agent philosophy 对比： - **Agent Zero** = agent 自由演化（autonomy 极端，determinism 差） - **OpenClaw** = 稳定 runtime + multi-channel assistant（企业 agent platform） - **Hermes** = self-improving cognitive loop（更接近 cognitive architecture，与 cybernetics 方向最契合）  这不是执行范式（ReAct/Plan-and-Solve）之分，而是系统设计哲学之分。"
         },
         {
@@ -371,7 +371,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Production agent 最怕四种失败模式：context drift（上下文漂移）、endless loops（死循环）、token explosion（token 爆炸）、memory corruption（记忆损坏）。Agent Zero 的自由度设计使其难以防范这些问题。从反面论证了：harness 必须存在、feedback 必须结构化、memory 必须被 regulation。"
         },
         {
@@ -380,7 +380,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "不是学它怎么做 agent，而是学它暴露了什么问题。结论：暂不深入，作为研究型参考样本。优先级归类为第二层（研究 agent autonomy），第一层必须深挖的是 Claude Code / OpenClaw / Hermes / MCP / A2A / LangGraph。"
         },
         {
@@ -389,7 +389,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。"
         }
       ]
@@ -497,14 +497,14 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 3,
-      "avg_confidence": 0.67,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "AI 辅助编程降低约 17% 的技能形成",
           "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "stale",
           "evidence": "且并未显著提升任务完成速度——AI 交互时间抵消了编码速度增益。"
         },
@@ -513,7 +513,7 @@
           "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "stale",
           "evidence": "常规知识工作\"拉高下限\"，复杂决策工作\"放大差距\"。AI 是放大器不是均衡器。"
         },
@@ -522,7 +522,7 @@
           "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
-          "confidence": 0.6,
+          "confidence": 0.8,
           "status": "stale",
           "evidence": "Vibe Coding 是纯 prompt-and-spec 驱动编程（人类写零代码），进入 Agentic AI 自主编程领域，与论文中的 AI 辅助编程完全不同。"
         }
@@ -855,7 +855,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "简洁约束可逆转大小模型的性能排序",
@@ -889,7 +889,7 @@
           "source": "2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies",
           "first_seen": "2026-04-30",
           "last_updated": "2026-04-30",
-          "confidence": 0.5,
+          "confidence": 0.8,
           "status": "stale",
           "evidence": "ICLR 2026 Poster。借鉴心理测量学 Item Response Theory（IRT），给查询打\"难度分\"、给模型打\"能力分\"，实现查询级路由。难度高→大模型+深度推理，难度低→小模型+简洁快速。但距离工程落地仍有距离。"
         }
@@ -1574,7 +1574,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 7,
-      "avg_confidence": 0.72,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "LLM 面临三个根本限制",
@@ -1590,7 +1590,7 @@
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。"
         },
@@ -1599,7 +1599,7 @@
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "知识内化与检索增强互补而非竞争。"
         },
@@ -1608,7 +1608,7 @@
           "source": "2026-03-22-Continually-Self-Improving-AI论文精读笔记",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
-          "confidence": 0.6,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
         },
@@ -1626,7 +1626,7 @@
           "source": "2026-07-07-LifeSkill-边行动边学习的参数化路径",
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
-          "confidence": 0.75,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "LifeSkill 对 skill 生命周期的判断比它的算法更有启发：主流 skill-library/skill-injection 默认 skill 是持久外部资产（抽出→存库→检索注入 context，agent 一直依赖它）；LifeSkill 反过来主张 **skill 不该一直存在于 prompt 中，而应最终消失**。机制是 OSI（Online Skill Internalization）：用一条有效 skill 成功完成任务后，**把 skill 从输入里移除**，再用这条\"已去掉提示\"的成功轨迹训练 policy——skill 描述的本领被内化成模型自己的能力。类比人学开车：初学默念\"离合、油门、看后视镜\"（skill 在 prompt 里），熟练后消融进肌肉记忆（内化进权重）。这是它和整簇\"不改参数\"方法的分水岭：那三篇优化\"如何更好地用外部拐杖\"，LifeSkill 优化\"如何把拐杖变成腿\"。代价：不可移植、不可外科删除、有灾难性遗忘风险。"
         },
@@ -1635,7 +1635,7 @@
           "source": "2026-07-07-LifeSkill-边行动边学习的参数化路径",
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "active",
           "evidence": "非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责\"现在就变聪明\"，后台负责\"慢慢真变强\"，这是对\"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）\"这个根问题的工程回答：两者兼得。"
         }
@@ -2411,7 +2411,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。"
         },
         {
@@ -2420,7 +2420,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Curator 跟踪每个 Skill 的查看次数、使用次数、修补次数。触发条件：距上次运行 7+ 天 且 Agent 空闲 2+ 小时。会 fork 辅助 LLM 实例进行审查，提出合并建议或修补 drift。永不自动删除，最坏是归档（可恢复）。仅审查 Agent 自动创建的 Skill，不动 bundled 和 hub-installed 的。来源：Hermes 官方 Curator 文档。"
         },
         {
@@ -2429,7 +2429,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "除自动学习循环外，Skill 生成可通过多种方式手动触发：直接在 `~/.hermes/skills/` 下手写 SKILL.md、对话中告诉 Agent \"save this as a skill\"（调用 skill_manage 工具）、从 agentskills.io 安装（hermes skills install）、或在 config.yaml 中调整学习循环参数。来源：Hermes Creating Skills 官方文档。"
         },
         {
@@ -2438,7 +2438,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "当前 skill_manage 创建 Skill 时缺少自动化质量检查（Python 语法验证、YAML 格式校验等）。社区正在通过 GitHub Issue #416 推进 Skill Linting 功能。当前最佳实践是 `hermes curator run --dry-run` 预览 + 手动 pin 验证过的 Skill。"
         },
         {
@@ -2447,7 +2447,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Hermes 是单 AIAgent 对象包含所有模块（Prompt Builder + LLM Provider + Tool Scheduler + Memory + Skill System + Curator），通过 Gateway 对接 15+ 平台。内存存储使用 SQLite + FTS5 全文索引。OpenClaw 则解耦为 Gateway（控制面）+ Agent Node（执行面），支持多实例横向扩展。"
         }
       ]
@@ -2843,7 +2843,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.82,
       "claims": [
         {
           "statement": "Meta-Harness 给出了比业界主流更精确的 Harness 定义",
@@ -2886,7 +2886,7 @@
           "source": "2026-04-16-Meta-Harness论文解读与实践思考",
           "first_seen": "2026-04-16",
           "last_updated": "2026-04-16",
-          "confidence": 0.7,
+          "confidence": 0.8,
           "status": "stale",
           "evidence": "场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。"
         }
@@ -3422,7 +3422,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket API），不做任务编排。多 Agent 编排由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现分层委托。来源：OpenClaw 官方 Sub-agents 文档。"
         },
         {
@@ -3431,7 +3431,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Sub-Agent 是从 parent session 衍生的后台 worker，独立上下文和工具权限。maxSpawnDepth 默认 1（无嵌套），设为 2 即启用 Orchestrator Pattern。每 session 最多 5 个活跃子 Agent，全局并发上限 8。Sub-Agent 间逻辑隔离（独立 workspace、memory、skills、auth）。"
         },
         {
@@ -3440,7 +3440,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Persistent Agents：多个独立 Agent 绑定到不同 Channel，各自持久运行。Sub-Agents：从对话中按需 spawn 的后台 worker。两者可组合：Persistent Orchestrator + 按需 spawn Sub-Agents。"
         }
       ]
@@ -5884,12 +5884,6 @@
     },
     {
       "source": "agent-lightning",
-      "target": "bitter-lesson",
-      "relation_type": "grounds",
-      "description": "method-agnostic 阶梯让优化方法可随算力/数据升级，体现\"计算胜过人工设计\""
-    },
-    {
-      "source": "agent-lightning",
       "target": "sft-rejection-sampling-hands-on",
       "relation_type": "produces",
       "description": "三级阶梯第二级（SFT）的动手实战流程页"
@@ -6394,18 +6388,6 @@
     },
     {
       "source": "continual-self-improving-ai",
-      "target": "bitter-lesson",
-      "relation_type": "grounds",
-      "description": "自我改进是 Bitter Lesson\"用计算替代人类数据\"的延伸"
-    },
-    {
-      "source": "continual-self-improving-ai",
-      "target": "scaling-laws",
-      "relation_type": "constrains",
-      "description": "训练数据幂律增长约束是自我改进方法出现的驱动力"
-    },
-    {
-      "source": "continual-self-improving-ai",
       "target": "online-learning",
       "relation_type": "extends",
       "description": "CL-RL 四篇在\"存储位面/适应延迟\"轴上的分工，是在线学习硬标准的前沿实例"
@@ -6819,12 +6801,6 @@
       "description": "environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）"
     },
     {
-      "source": "method-agnostic",
-      "target": "bitter-lesson",
-      "relation_type": "grounds",
-      "description": "method-agnostic 阶梯让优化方法可随算力/数据升级，体现\"计算胜过人工设计\""
-    },
-    {
       "source": "model-routing",
       "target": "rtk-token-compression",
       "relation_type": "contrasts",
@@ -6940,21 +6916,9 @@
     },
     {
       "source": "online-learning",
-      "target": "continual-self-improving-ai",
-      "relation_type": "extends",
-      "description": "在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受三个致命问题约束"
-    },
-    {
-      "source": "online-learning",
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness"
-    },
-    {
-      "source": "online-learning",
-      "target": "advantage-function",
-      "relation_type": "grounds",
-      "description": "\"算不算 advantage（$Q-V$）\"是判断一个方法在做 RL 机器而非 harness 的技术命门；JitRL 不改参数却算 advantage，逼出\"存储位面\"判据"
     },
     {
       "source": "online-learning",
@@ -7057,12 +7021,6 @@
       "target": "voice-live-agent",
       "relation_type": "part-of",
       "description": "协议选型是 Voice Live Agent 架构的基础设施层决策"
-    },
-    {
-      "source": "reinforcement-learning",
-      "target": "bitter-lesson",
-      "relation_type": "grounds",
-      "description": "RL 研究是 Bitter Lesson 的经验来源"
     },
     {
       "source": "reinforcement-learning",
@@ -7171,6 +7129,12 @@
       "target": "skillopt",
       "relation_type": "contrasts",
       "description": "同属拒绝采样谱系\"打分筛选、只留改进\"，RAFT 筛样本、SkillOpt 筛编辑"
+    },
+    {
+      "source": "rejection-sampling-finetuning",
+      "target": "advantage-function",
+      "relation_type": "contrasts",
+      "description": "RAFT 的 reward 只当接受/拒绝阈值（无基线、选完即弃），在 reward 用法光谱最左；advantage 在最右（减基线进梯度）"
     },
     {
       "source": "rejection-sampling-finetuning",
@@ -7315,6 +7279,12 @@
       "target": "method-agnostic",
       "relation_type": "contrasts",
       "description": "environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）"
+    },
+    {
+      "source": "skillopt",
+      "target": "advantage-function",
+      "relation_type": "contrasts",
+      "description": "SkillOpt 把分数当离散门控信号（accept/reject），RL 把 advantage 当连续梯度信号——分数用法的两条路"
     },
     {
       "source": "slime-rl-framework",
