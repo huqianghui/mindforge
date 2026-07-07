@@ -124,7 +124,6 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 ## 关联概念
 
-- [[bitter-lesson]] — `grounds` RL 研究是 Bitter Lesson 的经验来源
 - [[scaling-laws]] — `uses` RL 中 search + learning 的算力扩展遵循 Scaling Laws
 - [[continual-self-improving-ai]] — `extends` 自我改进方法试图赋予 LLM Agent 类 RL 的学习能力
 - [[agent-paradigms]] — `grounds` RL 的 trial-and-error 是 Agent 范式的理论起点

@@ -32,7 +32,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Agent Zero 本质是 prompt-defined autonomous computer operator，设计目标是最大化 agent 自由度。属于 "AI OS / autonomous runtime" 一派，与 Devin、Manus、Open Interpreter 同类。来源：与 ChatGPT 讨论后的归纳。
 
@@ -42,7 +42,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 三种 agent philosophy 对比：
 > - **Agent Zero** = agent 自由演化（autonomy 极端，determinism 差）
@@ -57,7 +57,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Production agent 最怕四种失败模式：context drift（上下文漂移）、endless loops（死循环）、token explosion（token 爆炸）、memory corruption（记忆损坏）。Agent Zero 的自由度设计使其难以防范这些问题。从反面论证了：harness 必须存在、feedback 必须结构化、memory 必须被 regulation。
 
@@ -67,7 +67,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 不是学它怎么做 agent，而是学它暴露了什么问题。结论：暂不深入，作为研究型参考样本。优先级归类为第二层（研究 agent autonomy），第一层必须深挖的是 Claude Code / OpenClaw / Hermes / MCP / A2A / LangGraph。
 
@@ -77,7 +77,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。
 

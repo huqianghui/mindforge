@@ -1,7 +1,7 @@
 ---
 title: "Brevity Constraints（简洁约束）"
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -65,7 +65,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 - **来源**：[[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
-- **置信度**：0.5
+- **置信度**：0.8
 - **状态**：stale
 
 > ICLR 2026 Poster。借鉴心理测量学 Item Response Theory（IRT），给查询打"难度分"、给模型打"能力分"，实现查询级路由。难度高→大模型+深度推理，难度低→小模型+简洁快速。但距离工程落地仍有距离。

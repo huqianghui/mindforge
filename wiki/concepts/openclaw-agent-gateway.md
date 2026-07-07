@@ -63,7 +63,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket API），不做任务编排。多 Agent 编排由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现分层委托。来源：OpenClaw 官方 Sub-agents 文档。
 
@@ -73,7 +73,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Sub-Agent 是从 parent session 衍生的后台 worker，独立上下文和工具权限。maxSpawnDepth 默认 1（无嵌套），设为 2 即启用 Orchestrator Pattern。每 session 最多 5 个活跃子 Agent，全局并发上限 8。Sub-Agent 间逻辑隔离（独立 workspace、memory、skills、auth）。
 
@@ -83,7 +83,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Persistent Agents：多个独立 Agent 绑定到不同 Channel，各自持久运行。Sub-Agents：从对话中按需 spawn 的后台 worker。两者可组合：Persistent Orchestrator + 按需 spawn Sub-Agents。
 

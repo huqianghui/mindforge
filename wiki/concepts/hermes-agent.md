@@ -33,7 +33,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。
 
@@ -43,7 +43,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Curator 跟踪每个 Skill 的查看次数、使用次数、修补次数。触发条件：距上次运行 7+ 天 且 Agent 空闲 2+ 小时。会 fork 辅助 LLM 实例进行审查，提出合并建议或修补 drift。永不自动删除，最坏是归档（可恢复）。仅审查 Agent 自动创建的 Skill，不动 bundled 和 hub-installed 的。来源：Hermes 官方 Curator 文档。
 
@@ -53,7 +53,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 除自动学习循环外，Skill 生成可通过多种方式手动触发：直接在 `~/.hermes/skills/` 下手写 SKILL.md、对话中告诉 Agent "save this as a skill"（调用 skill_manage 工具）、从 agentskills.io 安装（hermes skills install）、或在 config.yaml 中调整学习循环参数。来源：Hermes Creating Skills 官方文档。
 
@@ -63,7 +63,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 当前 skill_manage 创建 Skill 时缺少自动化质量检查（Python 语法验证、YAML 格式校验等）。社区正在通过 GitHub Issue #416 推进 Skill Linting 功能。当前最佳实践是 `hermes curator run --dry-run` 预览 + 手动 pin 验证过的 Skill。
 
@@ -73,7 +73,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Hermes 是单 AIAgent 对象包含所有模块（Prompt Builder + LLM Provider + Tool Scheduler + Memory + Skill System + Curator），通过 Gateway 对接 15+ 平台。内存存储使用 SQLite + FTS5 全文索引。OpenClaw 则解耦为 Gateway（控制面）+ Agent Node（执行面），支持多实例横向扩展。
 

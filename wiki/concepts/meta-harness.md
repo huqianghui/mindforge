@@ -1,7 +1,7 @@
 ---
 title: "Meta-Harness"
 created: "2026-04-16"
-updated: "2026-04-16"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -71,7 +71,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
-- **置信度**：0.7
+- **置信度**：0.8
 - **状态**：stale
 
 > 场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。

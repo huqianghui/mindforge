@@ -1,7 +1,7 @@
 ---
 title: "Agent Lightning"
 created: "2026-06-29"
-updated: "2026-07-03"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -140,7 +140,6 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 ## 关联概念
 
 - [[generation-evaluation-separation]] — `uses` litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例
-- [[bitter-lesson]] — `grounds` method-agnostic 阶梯让优化方法可随算力/数据升级，体现"计算胜过人工设计"
 - [[sft-rejection-sampling-hands-on]] — `produces` 三级阶梯第二级（SFT）的动手实战流程页
 - [[verl]] — `uses` VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系
 - [[slime-rl-framework]] — `contrasts` Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）

@@ -1,7 +1,7 @@
 ---
 title: "method-agnostic（方法无关设计）"
 created: "2026-07-02"
-updated: "2026-07-02"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -97,7 +97,6 @@ related:
 - [[agent-lightning]] — `part-of` method-agnostic 是 agent-lightning 的核心设计原则，本页是该原则的归口
 - [[verl]] — `contrasts` VERL 在 RL 引擎内部实现"算法可插拔"，是同一原则在更低一层的表达
 - [[skillopt]] — `contrasts` environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）
-- [[bitter-lesson]] — `grounds` method-agnostic 阶梯让优化方法可随算力/数据升级，体现"计算胜过人工设计"
 
 > 反向入边（在对方页面声明，此处仅备注不重复建边）：[[automatic-prompt-optimization]] 与 [[rejection-sampling-finetuning]] 各以 `part-of` 指向本页（三级阶梯的两档）；[[prompt-optimization-tool-selection]] 以 method-agnostic 是否用得上作为选型关键。
 

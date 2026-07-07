@@ -111,9 +111,7 @@ related:
 - [[reinforcement-learning]] — `contrasts` RL 只改参数（慢回路），在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient
 - [[cybernetics-agent-design]] — `part-of` 在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应控制论中的自适应控制
 - [[negative-feedback]] — `uses` 在线学习的快回路就是负反馈控制（error → correction，不改参数）
-- [[continual-self-improving-ai]] — `extends` 在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受三个致命问题约束
 - [[harness-engineering]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
-- [[advantage-function]] — `grounds` "算不算 advantage（$Q-V$）"是判断一个方法在做 RL 机器而非 harness 的技术命门；JitRL 不改参数却算 advantage，逼出"存储位面"判据
 - [[continual-self-improving-ai]] — `contrasts` CL-RL 四篇（JitRL/XSkill/CURATOR/LifeSkill）在"存储位面"轴与"适应延迟"轴上的分工，是本页硬标准的前沿 stress-test 场
 
 ## 来源日记

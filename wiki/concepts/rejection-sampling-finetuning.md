@@ -1,7 +1,7 @@
 ---
 title: "拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）"
 created: "2026-06-29"
-updated: "2026-07-06"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -24,6 +24,7 @@ related:
   - "[[reinforcement-learning]]"
   - "[[continual-self-improving-ai]]"
   - "[[generation-evaluation-separation]]"
+  - "[[advantage-function]]"
 ---
 
 # 拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）
@@ -119,6 +120,7 @@ related:
 - [[generation-evaluation-separation]] — `uses` grader（评分）与 model（生成）分离，reward 作为独立裁判筛选自产轨迹
 - [[bitter-lesson]] — `grounds` 用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出
 - [[skillopt]] — `contrasts` 同属拒绝采样谱系"打分筛选、只留改进"，RAFT 筛样本、SkillOpt 筛编辑
+- [[advantage-function]] — `contrasts` RAFT 的 reward 只当接受/拒绝阈值（无基线、选完即弃），在 reward 用法光谱最左；advantage 在最右（减基线进梯度）
 - [[prompt-optimization-tool-selection]] — `contrasts` "是否走向权重微调（SFT/RL）"是该决策的关键前提
 
 ## 来源日记

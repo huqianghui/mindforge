@@ -1,7 +1,7 @@
 ---
 title: "SkillOpt（文本空间 skill 优化器）"
 created: "2026-07-01"
-updated: "2026-07-01"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -19,6 +19,7 @@ related:
   - "[[rejection-sampling-finetuning]]"
   - "[[reinforcement-learning]]"
   - "[[skill-runtime]]"
+  - "[[advantage-function]]"
 ---
 
 # SkillOpt（文本空间 skill 优化器）
@@ -91,6 +92,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - [[skill-runtime]] — `uses` skill 是"执行前塞进 agent context 的自然语言"，SkillOpt 优化的正是这层可复用外部状态
 - [[agent-lightning]] — `contrasts` 权重级（policy/θ，需 GPU/可训练模型）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加（先 RL 练强原生能力，再用 SkillOpt 配可迁移 playbook）
 - [[method-agnostic]] — `contrasts` environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）
+- [[advantage-function]] — `contrasts` SkillOpt 把分数当离散门控信号（accept/reject），RL 把 advantage 当连续梯度信号——分数用法的两条路
 
 ## 来源日记
 
