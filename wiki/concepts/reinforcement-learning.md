@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-07-06"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -22,6 +22,8 @@ related:
   - "[[verl]]"
   - "[[slime-rl-framework]]"
   - "[[agent-lightning]]"
+  - "[[advantage-function]]"
+  - "[[online-learning]]"
 ---
 
 # 强化学习（Reinforcement Learning）
@@ -94,10 +96,31 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 > 传统 RLHF 假设单轮交互（`prompt→model→output→reward→update`，同步简单）；Agent 真实执行是多步轨迹（思考→调工具→观察→再决策→…→最终答案获 reward），具备四个传统 RL 不具备的特征：多轮、有状态、异步、依赖外部环境（API/DB/浏览器/代码执行器）。这四个特征使瓶颈从「算法」迁移到「基础设施」：rollout 占 80~90% 时间、需 training-rollout 解耦避免 GPU 互相空转。由此 Agent RL 的本质升维——不再是「怎么写 PPO loss」，而是「rollout 机制 + 训练推理解耦 + 分布式编排」的系统问题，框架选型（见 [[verl]]/[[slime-rl-framework]]）几乎必然建立在分布式基础设施架构之上。
 
+### Claim: 广义策略迭代（GPI）是 RL 的中轴——策略评估 + 策略改进交替迭代
+
+- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **首次出现**：2026-07-07
+- **最近更新**：2026-07-07
+- **置信度**：0.85
+- **状态**：active
+
+> 广义策略迭代（Generalized Policy Iteration, GPI）是 Sutton & Barto 那本书的中轴：任何 RL 方法都可拆成两步交替——**策略评估**（估计当前策略的 $V/Q$）+ **策略改进**（依 $Q$ 让策略更贪心），反复迭代直到收敛。绝大多数 RL 算法都是 GPI 的某种实例，差别只在"评估怎么做、改进怎么做、在哪个空间迭代"。JitRL 就是教科书级的 GPI，只是搬到推理期、且非参数：策略评估 = memory 上 kNN 的蒙特卡洛回报平均（非参数 MC policy evaluation），策略改进 = $z'=z+\beta\hat A$（KL 正则的改进步），迭代 = memory 越攒越准策略持续改进。所以它是"以 LLM logits 作为 base-policy 先验的、非参数（近乎 tabular）的强化学习"。
+
+### Claim: 经典 RL 把「策略改进」与「参数更新」焊死，JitRL 证明二者可拆开
+
+- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **首次出现**：2026-07-07
+- **最近更新**：2026-07-07
+- **置信度**：0.85
+- **状态**：active
+
+> "一个方法自称 learning 却不改参数"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是"通过改参数来改进策略"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条"改没改参数"的硬标准只在回答轴 B（结果存哪），从不是在说"这里没有 RL 计算"。这也接上一个更细的判据：判断学习的关键不只是"改没改参数"，而是"学到的知识存在哪"（见 [[online-learning]] 的存储位面 Claim）。
+
 ## 冲突与演进
 
 - 2026-03-21：从 Bitter Lesson 角度首次系统对比 RL Agent 与 LLM Agent。
 - 2026-06-29：从 agent-lightning 系列 07 补充 LLM RL 四形态、Rollout vs Epoch 维度辨析、Agent RL=系统问题的分水岭，并关联 VERL/Slime 两大 RL infra 框架。
+- 2026-07-07：从 JitRL 论文解读补充 GPI（RL 中轴）与"策略改进 vs 参数更新可拆开"两条 Claim，接入 [[advantage-function]] 基础构造页与 [[online-learning]] 存储位面判据。
 
 ## 关联概念
 
@@ -111,6 +134,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - [[agent-lightning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup
 - [[online-learning]] — `contrasts` RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient
 - [[skillopt]] — `contrasts` SkillOpt 把分数当选择/门控信号（离散筛选），RL 把 reward 当梯度信号（连续参数更新）
+- [[advantage-function]] — `uses` 优势函数（$Q-V$，减基线的相对好坏）是 RL 策略改进的核心构造，GPI 的改进步依赖它
 
 ## 来源日记
 

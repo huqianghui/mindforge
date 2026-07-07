@@ -1,7 +1,7 @@
 ---
 title: "在线学习（Online Learning）"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-07-07"
 tags:
   - wiki
   - concept
@@ -20,6 +20,7 @@ related:
   - "[[cybernetics-agent-design]]"
   - "[[negative-feedback]]"
   - "[[continual-self-improving-ai]]"
+  - "[[advantage-function]]"
 ---
 
 # 在线学习（Online Learning）
@@ -70,9 +71,40 @@ related:
 
 > 比「在线学习是不是 harness」更有价值的问题是：**能不能用 harness 模拟 learning**？memory+retrieval ≈ 参数更新（把经验存外部而非权重）；self-reflection ≈ policy improvement（不改权重只改决策流程）；Meta-Harness ≈ automated harness optimization（用搜索替代梯度下降）。这些方向比直接做 RL 更现实，也更符合当前 LLM Agent 的工程约束。一个更狠的推论：RL 很可能只是「自动化 harness 的一种极端形式」。
 
+### Claim: 「改没改参数」硬标准只判「结果存哪」，不否认 RL 计算在发生
+
+- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **首次出现**：2026-07-07
+- **最近更新**：2026-07-07
+- **置信度**：0.85
+- **状态**：active
+
+> JitRL 自称 "Continual Learning Without Gradient Updates"，用本页那条"改没改参数"硬标准一测，会被判成"不改参数 → harness"。但这里要修正一个误读：**硬标准只回答"改进的结果存在哪"，从不是在说"这里没有 RL 计算"**。JitRL 算 $\hat Q-\hat V$（带基线的 advantage，见 [[advantage-function]]）、做 KL 正则的策略改进，是货真价实的 RL（非参数 GPI，见 [[reinforcement-learning]]）——它只是把改进存进外部 memory、在 logits 上瞬时生效，没写回权重。所以经典 RL 焊死的"策略改进"与"参数更新"被 JitRL 拆开了：硬标准判的是后者（身体），不否认前者（大脑）在运作。结论——"改没改参数"是个有用但**粗糙的投影**，够用来区分伪在线学习（harness）与真在线学习，但不够刻画"不改参数却在做 RL"这种新物种。
+
+### Claim: 更细的判据是「学到的知识存在哪」——存储位面
+
+- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **首次出现**：2026-07-07
+- **最近更新**：2026-07-07
+- **置信度**：0.8
+- **状态**：active
+
+> 比二值的"改没改参数"更有信息量的轴是「**学到的知识存哪、什么范围生效、是否持久化、跟权重耦不耦合**」。按这根"存储位面"轴排开：prompt/in-context reflection（存 context window，出窗口即丢，解耦）< RAG/长期记忆（外部向量库，持久，全局，解耦）< JitRL memory（外部 $(s,a,G)$ 库，持久，全局但只在相似 state 局部生效，解耦）< LoRA（adapter 权重，持久，全局改分布，绑 base 架构）< 全量微调/在线 policy gradient（base 权重，永久，绑死这个模型）。JitRL 那些"看起来神奇"的性质——可移植（换 base 模型 memory 照用）、可外科式删除坏经验、无灾难性遗忘（append 不 overwrite）——全都来自"知识存外部持久库、与权重解耦"这一个事实。这根轴把 JitRL / XSkill / CURATOR / LifeSkill 连成一张图：前三者在"外部库"一侧（各管存原始经验 / 双粒度技能 / 记忆治理），LifeSkill 跳到"权重"一侧（内化，故不可移植、有遗忘风险，但能内化全新能力）。
+
+### Claim: LifeSkill「理论在线、工程离线」——真在线学习的部署形态是异步/延迟
+
+- **来源**：[[2026-07-07-LifeSkill-边行动边学习的参数化路径]]
+- **首次出现**：2026-07-07
+- **最近更新**：2026-07-07
+- **置信度**：0.8
+- **状态**：active
+
+> LifeSkill 是本页定义的"真在线学习"（部署后真改权重）里少见的一个实例，但它暴露了这类方法的工程真相：**理论上满足 online learning 定义（数据 streaming、test-time 更新、逐步改参数），工程上基本不可能真在线**。它的核心循环"失败 → 生成 K 个 skill → 每个 rollout N 次 → verifier 评分 → 训 skill extractor → 再训 policy"本质是一个被 test-time 触发的小型 offline RL 训练循环，成本量级 $O(K\times N\times\text{LLM}+\text{2 次训练})$：latency 爆炸（不能让用户等 rollout+训练）、compute 不可持续、且不满足 real-time CL 三要求（更新慢、无防遗忘、依赖 batch）。准确定位是"test-time triggered offline training loop"——不是 learn *while* acting，而是 learn *after* acting, in mini-batches。所以真在线学习（改参数那一侧）现实的部署形态只能是**异步/延迟在线学习**：fast path 执行 + 异步后台训练 + 周期性热更新，即"不能 real-time CL，只能 offline CL with online data"。这给本页三个致命问题（不稳定/不可控/灾难性遗忘）补了第四个工程约束：**适应延迟**——改参数这次适应能不能塞进部署的延迟预算。这根"适应延迟"轴正好分开 JitRL（不改参数、即时在线）与 LifeSkill（改参数、只能延迟离线），也指向最优架构 hybrid：短期适应用 JitRL（前台改 logits），长期沉淀用 LifeSkill（后台改权重），JitRL 的 memory 顺便当 LifeSkill 的训练数据源。
+
 ## 冲突与演进
 
 - 2026-04-17：从控制论词源辨析角度首次厘清在线学习 = 双回路混合系统 = 自适应控制，与 Harness/RL/训练的边界。
+- 2026-07-07：从 JitRL / LifeSkill 两篇论文解读补充三条 Claim——硬标准只判"结果存哪"、更细的"存储位面"判据、LifeSkill"理论在线工程离线"与"适应延迟"判据。硬标准被 stress-test 后校准为"粗糙但有用的投影"，不再是唯一判据。
 
 ## 关联概念
 
@@ -81,6 +113,8 @@ related:
 - [[negative-feedback]] — `uses` 在线学习的快回路就是负反馈控制（error → correction，不改参数）
 - [[continual-self-improving-ai]] — `extends` 在线学习（LoRA 热更新/在线 policy gradient）是持续自我改进的理想形态，但受三个致命问题约束
 - [[harness-engineering]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
+- [[advantage-function]] — `grounds` "算不算 advantage（$Q-V$）"是判断一个方法在做 RL 机器而非 harness 的技术命门；JitRL 不改参数却算 advantage，逼出"存储位面"判据
+- [[continual-self-improving-ai]] — `contrasts` CL-RL 四篇（JitRL/XSkill/CURATOR/LifeSkill）在"存储位面"轴与"适应延迟"轴上的分工，是本页硬标准的前沿 stress-test 场
 
 ## 来源日记
 
