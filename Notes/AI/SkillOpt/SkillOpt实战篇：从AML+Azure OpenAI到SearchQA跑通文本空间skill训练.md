@@ -25,7 +25,7 @@ related: "[[2026-07-01-SkillOpt]]"
 | "训练"产物 | 权重 / LoRA adapter | 一份 `best_skill.md` 文本 |
 | 跑在哪 | Azure GPU VM | **AML CPU compute 即可** |
 | 主要成本 | GPU 机时 | **API token 费**（optimizer + target 双模型调用） |
-| 冒烟策略 | `--ci-fast` 1 step | 砍 `train_size` + `--eval_test false` |
+| 冒烟策略 | `--ci-fast` 1 step | 砍 `--limit` + `--eval_test false` |
 
 ---
 
@@ -104,12 +104,12 @@ python scripts/materialize_searchqa.py
 python scripts/train.py --config configs/searchqa/default.yaml \
   --optimizer_model gpt-5.4 \
   --target_model    gpt-5.4-nano \
-  --num_epochs 1 --batch_size 8 --limit 8 --train_size 8 \
+  --num_epochs 1 --batch_size 8 --limit 8 --train_size 400 \
   --sel_env_num 8 --eval_test false \
   --out_root outputs/searchqa_smoke
 ```
 
-> ⚠️ **省钱靠 `--limit N` + `--train_size N` 成对（本 config 硬写 `train_size=400`，两个缺一不可），不是 `--steps_per_epoch`、更没有 `--max_steps`**。step 数由源码 `trainer.py:802` 死算：`total_steps = num_epochs × ceil(train_size / (batch_size × accumulation))`。`--steps_per_epoch` 传了也白传——`trainer.py:809` 会用 auto 值无条件覆盖它；`--max_steps` 这个 knob **在代码里根本不存在**。能改 step 数的只有两条：① **`--limit N` + `--train_size N` 一起用**——`--limit N` 把每个 split 截到 N 条（`datasets/base.py:383`）让加载量变 N，`--train_size N` 覆盖 config 里硬写的 400 让校验值也变 N，两者相等才过 `_resolve_train_size`（**只加 `--limit` 会报 `400 does not match N`；只加 `--train_size` 会报 `N does not match 400`——必须同改**）→ `ceil(N/bs)` 步；② 调大 `--batch_size`（`400/bs` 步，但每步更贵）。上面 `--limit 8 --train_size 8 --batch_size 8` → `ceil(8/8)=1` 步，token 花销 ≈ 1 步 ×（8 条 rollout + 1 次反射 + 8 条 gate 验证）。注意 `--limit` 会同时截 val/test，冒烟正好省。
+> ⚠️ **`--train_size 400` 是 SearchQA 数据集的固定值——只要用这个数据集，任何命令统一传 400；省钱靠 `--limit N`，不是 `--steps_per_epoch`、更没有 `--max_steps`**。step 数由源码 `trainer.py:802` 死算：`total_steps = num_epochs × ceil(实际加载条数 / (batch_size × accumulation))`。`--steps_per_epoch` 传了也白传——`trainer.py:809` 会用 auto 值无条件覆盖它；`--max_steps` 这个 knob **在代码里根本不存在**。能改 step 数的只有两条：① **`--limit N`** 把每个 split 截到 N 条（`datasets/base.py:383`）；② 调大 `--batch_size`（`ceil(加载条数/bs)` 步，但每步更贵）。上面 `--limit 8 --batch_size 8` → `ceil(8/8)=1` 步，token 花销 ≈ 1 步 ×（8 条 rollout + 1 次反射 + 8 条 gate 验证）。注意 `--limit` 会同时截 val/test，冒烟正好省。
 
 盯日志（论文 §三 的循环）：
 ```
@@ -134,7 +134,7 @@ python scripts/eval_only.py --config configs/searchqa/default.yaml \
   --skill outputs/searchqa/<run_id>/skills/best_skill.md
 ```
 
-> ⚠️ SearchQA 数据集的命令（不带 `--limit` 截断时）**必须带 `--train_size 400`**——materialize 后 train split 实际就是 400 条，`_resolve_train_size` 校验要求 configured == 加载量，传 80 之类的值会直接报 `80 does not match 400`。
+> ⚠️ 只要用 SearchQA 数据集，**任何命令都必须带 `--train_size 400`**——materialize 后 train split 固定 400 条，`--train_size` 按数据集规模填，传 80 之类的值会直接报 `80 does not match 400`。
 
 **产物目录结构**（`outputs/<benchmark>/<run_id>/`）：
 ```
@@ -154,7 +154,7 @@ python scripts/eval_only.py --config configs/searchqa/default.yaml \
 - ✅ **Phase A 环境**：clone / venv / `pip install -e .` / `import skillopt` 跑通（AML CPU instance，azureml_py38 base env + 项目自建 `.venv`）。
 - ✅ **Phase B 认证**：`optimizer=gpt-5.4`、`target=gpt-5.4-nano`（deployment 名），endpoint `https://open-ai-hu-demo-sweden-central.openai.azure.com/`。**走 API key**，但必须显式 `AZURE_OPENAI_AUTH_MODE=api_key`（详见踩坑区②）。
 - ✅ **Phase C materialize**：数据已就位，`[SearchQADataLoader] train=400 val=200 test=1400 (from data/searchqa_split)`，与 config 预期计数一致。
-- ✅ **Phase D 冒烟（闭环跑通）**：正确的省钱命令是 `--limit 8 --train_size 8` **成对**（不是去 `--train_size`，见踩坑①订正），六段循环 `ROLLOUT → REFLECT → AGGREGATE → SELECT → UPDATE → EVALUATE` 一步不缺。两次实测（gpt-5.4 / gpt-5.4-nano）：
+- ✅ **Phase D 冒烟（闭环跑通）**：省钱靠 `--limit 8` 截断加载，`--train_size` 恒填数据集固定值 400（当时以 `--limit 8 --train_size 8` 跑通，见踩坑①再订正），六段循环 `ROLLOUT → REFLECT → AGGREGATE → SELECT → UPDATE → EVALUATE` 一步不缺。两次实测（gpt-5.4 / gpt-5.4-nano）：
   - **早前多步跑**：baseline（`D_sel` 8 条）`hard=0.3750 soft=0.5565`；STEP1 train `hard=0.625` → `failure=1+success=1` 补丁 → SELECT `2→2 (budget=4)` → UPDATE `104→1283` → **ACCEPT** `0.5000 > 0.3750`（严格改进，收），`dt≈129s`（reflect 94.6s / aggregate 27.5s / rollout 2.7s）；STEP2 train `hard=1.0` → 1 条 success → UPDATE `1283→1608` → **REJECT** `0.5000 <= 0.5000`（打平也拒），`dt≈49s`。
   - **单步干净跑（`--limit 8 --train_size 8 --num_epochs 1`，`total_steps=1`）**：baseline `hard=0.5000 soft=0.6141`；STEP1 train `hard=0.7500` → `failure=1+success=1` → AGGREGATE `1+1→2` → SELECT `2→2 (budget=4)` → UPDATE `104→1891` → EVALUATE **REJECT** `0.5000 <= 0.5000`（打平也拒）→ best 仍是 step 0 初始 skill（**候选未被接受，`best_skill.md` = 原始 104 字未改写**）。`wall=98s`（reflect **63.2s** / aggregate 28.5s / evaluate 3.9s / rollout 2.4s），**总成本 47752 tokens（prompt 42659 + completion 5093，27 calls）**。
   - **两次对比揭示的观察点**：同一初始 skill、几乎同样的编辑，一次 ACCEPT 一次 REJECT——**accept/reject 对 `D_sel` 大小极敏感**（sel 仅 8 条时分辨率 1/8=0.125 一档，微小改动跨不过 ties-rejected 门槛）。想看真 accept / 真长出规则，需放大 `--sel_env_num` + 多跑几步。
@@ -165,11 +165,11 @@ python scripts/eval_only.py --config configs/searchqa/default.yaml \
 
 ### 踩坑区（按遇到顺序）
 
-1. **⚠️ `--train_size` 不是采样上限，是一致性校验，且必须与 `--limit` 成对**：`_resolve_train_size` 里 `configured>0 且 configured != inferred(=加载后实际 split 大小)` 直接 `ValueError`。**本 SearchQA config 把 `train_size` 硬写成 400**（banner 会显示 `train_size: 400`），所以它恒 `>0`、恒参与校验——不像我先前误以为的"默认 0 不校验"。三种组合实测：`--limit 8` 单独 → 加载=8 但 configured 仍=400 → 报 `400 does not match 8`；`--train_size 8` 单独 → 加载仍=400 但 configured=8 → 报 `8 does not match 400`；**`--limit 8 --train_size 8` 成对 → 8==8 通过**。记忆法：`--limit` 管"实际加载多少"，`--train_size` 管"config 期望多少"，两个都改成 N 才相等。**别用 `--steps_per_epoch`/`--max_steps` 砍**——见踩坑⑤，前者被覆盖、后者不存在。
+1. **⚠️ `--train_size` 不是采样上限，是数据集规模声明——SearchQA 恒填 400（再订正）**：`_resolve_train_size` 里 `configured>0 且 configured != inferred` 直接 `ValueError`。**只要用 SearchQA 数据集（train split 固定 400 条），所有命令统一带 `--train_size 400`**，想省钱砍量用 `--limit N` 截断实际加载。早前版本笔记曾写"必须 `--limit N + --train_size N` 成对改成小值"（当时实测 `--limit 8 --train_size 8` 通过、单独传其一报 `does not match`），现订正：`--train_size` 按数据集固定规模填 400 即可，不随 `--limit` 改。**别用 `--steps_per_epoch`/`--max_steps` 砍**——见踩坑⑤，前者被覆盖、后者不存在。
 2. **⚠️ Azure auth 默认是 `azure_cli`，不是 api_key**：`configs/_base_/default.yaml` 里 `azure_openai_auth_mode: ""` → 空则读 `AZURE_OPENAI_AUTH_MODE` 环境变量 → **仍空则默认 `azure_cli`**。所以哪怕 `.env` 填了 `AZURE_OPENAI_API_KEY`，不显式声明也不会用，而是去找 `az login` 会话报 `AzureCliCredential ... Please run 'az login'`。**修复：`echo 'export AZURE_OPENAI_AUTH_MODE=api_key' >> .env` 后重新 source**。（云原生替代：`az login --use-device-code` 走默认 azure_cli，免 key。）
 3. **⚠️ `.env` 不会被自动加载**：SkillOpt 未用 python-dotenv，必须手动 `set -a; source .env; set +a`，且只对**当前 shell 会话**生效（换终端要重 source）。长期方案是把 export 追加进 `~/.bashrc`。
 4. **⚠️ 失败会写缓存，重试前必须清目录**：rollout 失败结果会落盘到 `--out_root`，SkillOpt 的 resume 逻辑下次读到"已存在的失败"（`rollout.py:393 _raise_on_systemic_failure(existing)`，注意是 `existing` 不是 `results`）**直接抛错、不重试**。表现为报错文本还是上一次的（如 endpoint/az login 早已修好却仍报旧错）。**修复：`rm -rf outputs/xxx` 或每次换新 `--out_root`**。判断技巧：日志有 `[rollout] x/8` = 真跑；没有直接 traceback = 读缓存。
-5. **⚠️ `--steps_per_epoch` 无效、`--max_steps` 不存在（此前写错，已订正）**：`trainer.py:809` 无条件用 auto 值 `cfg["steps_per_epoch"] = ceil(train_size/(batch_size×accumulation))` 覆盖 CLI 传入值，banner 显示 `steps/epoch=50 (auto)`，所以 `--steps_per_epoch 1` 被静默丢弃。而 `--max_steps` 我 grep 全仓 `trainer.py` 零命中——**这个 knob 从来不存在**（早前版本笔记误写为限步开关，特此纠正）。step 循环是 `for step_in_epoch in range(steps_per_epoch)`（`trainer.py:1062`），无 break。**要限步只能靠 `--limit N`**（改小 `train_size` 推断值）或调大 `--batch_size`；不然默认跑满 `ceil(400/bs)` 步（bs=8 时 50 步、~40min、50× token）。
+5. **⚠️ `--steps_per_epoch` 无效、`--max_steps` 不存在（此前写错，已订正）**：`trainer.py:809` 无条件用 auto 值 `cfg["steps_per_epoch"] = ceil(train_size/(batch_size×accumulation))` 覆盖 CLI 传入值，banner 显示 `steps/epoch=50 (auto)`，所以 `--steps_per_epoch 1` 被静默丢弃。而 `--max_steps` 我 grep 全仓 `trainer.py` 零命中——**这个 knob 从来不存在**（早前版本笔记误写为限步开关，特此纠正）。step 循环是 `for step_in_epoch in range(steps_per_epoch)`（`trainer.py:1062`），无 break。**要限步只能靠 `--limit N`**（截断实际加载量）或调大 `--batch_size`；不然默认跑满 `ceil(400/bs)` 步（bs=8 时 50 步、~40min、50× token）。
 6. **✅ `reasoning_effort=medium` 对 gpt-5.4/nano 不报错**：这两个是 reasoning-capable 模型，默认 config 不用改；若换成非 reasoning 模型（gpt-4o 等）才需处理这个字段。
 
 ---
