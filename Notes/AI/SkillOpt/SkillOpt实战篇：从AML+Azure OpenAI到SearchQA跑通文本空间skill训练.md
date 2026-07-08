@@ -124,13 +124,17 @@ python scripts/train.py --config configs/searchqa/default.yaml \
 ### Phase E — 小规模真跑 + eval + 读产物
 
 ```bash
-export OPTIMIZER_MODEL=<你的deployment>  TARGET_MODEL=<你的deployment>
-bash scripts/run_searchqa.sh --num_epochs 2 --train_size 80
+bash scripts/run_searchqa.sh --num_epochs 2 --train_size 400 \
+  --optimizer_model gpt-5.4 --target_model gpt-5.4-nano
 
 # test split 上评优化后的 skill
 python scripts/eval_only.py --config configs/searchqa/default.yaml \
+  --optimizer_model gpt-5.4 --target_model gpt-5.4-nano \
+  --train_size 400 \
   --skill outputs/searchqa/<run_id>/skills/best_skill.md
 ```
+
+> ⚠️ SearchQA 数据集的命令（不带 `--limit` 截断时）**必须带 `--train_size 400`**——materialize 后 train split 实际就是 400 条，`_resolve_train_size` 校验要求 configured == 加载量，传 80 之类的值会直接报 `80 does not match 400`。
 
 **产物目录结构**（`outputs/<benchmark>/<run_id>/`）：
 ```
