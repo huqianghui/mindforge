@@ -54,6 +54,161 @@ related: "[[2026-07-01-SkillOpt]]"
 | `evaluation.use_gate` | validation 接受门（默认 true） |
 | `evaluation.eval_test` | 结束时是否在 test split 评测（默认 true） |
 
+> 📌 **default base config 的位置：`configs/_base_/default.yaml`**——所有 benchmark config（如 `configs/searchqa/default.yaml`）通过 `_base_: default.yaml` 继承它，再被命令行 flag 逐键覆盖。查某个默认值先看这里。全文如下（折叠）：
+
+<details>
+<summary>configs/_base_/default.yaml 全文</summary>
+
+```yaml
+# SkillOpt default configuration — base for all environments.
+# Environment configs should inherit via: _base_: default.yaml
+
+model:
+  backend: azure_openai
+  optimizer: gpt-5.5
+  target: gpt-5.5
+  optimizer_backend: openai_chat
+  target_backend: openai_chat
+  reasoning_effort: medium
+  rewrite_reasoning_effort: ""
+  rewrite_max_completion_tokens: 64000
+  codex_exec_path: codex
+  codex_exec_sandbox: workspace-write
+  codex_exec_profile: ""
+  codex_exec_full_auto: false
+  codex_exec_reasoning_effort: none
+  codex_exec_use_sdk: auto
+  codex_exec_network_access: false
+  codex_exec_web_search: false
+  codex_exec_approval_policy: never
+  claude_code_exec_path: claude
+  claude_code_exec_profile: ""
+  claude_code_exec_use_sdk: auto
+  claude_code_exec_effort: medium
+  claude_code_exec_max_thinking_tokens: 16384
+  codex_trace_to_optimizer: true
+  azure_openai_endpoint: ""           # e.g. "https://your-resource.openai.azure.com/"
+  azure_openai_api_version: "2024-12-01-preview"
+  azure_openai_api_key: ""       # Fill locally if you do not export AZURE_OPENAI_API_KEY
+  azure_openai_auth_mode: ""           # empty → fall back to AZURE_OPENAI_AUTH_MODE env (default "azure_cli")
+  azure_openai_ad_scope: "https://cognitiveservices.azure.com/.default"
+  azure_openai_managed_identity_client_id: ""
+  optimizer_azure_openai_endpoint: ""   # e.g. "https://your-resource.openai.azure.com/"
+  optimizer_azure_openai_api_version: "2024-12-01-preview"
+  optimizer_azure_openai_api_key: ""
+  optimizer_azure_openai_auth_mode: ""           # empty → fall back to OPTIMIZER_AZURE_OPENAI_AUTH_MODE env, then shared
+  optimizer_azure_openai_ad_scope: "https://cognitiveservices.azure.com/.default"
+  optimizer_azure_openai_managed_identity_client_id: ""
+  target_azure_openai_endpoint: ""   # e.g. "https://your-resource.openai.azure.com/"
+  target_azure_openai_api_version: "2024-12-01-preview"
+  target_azure_openai_api_key: ""
+  target_azure_openai_auth_mode: ""           # empty → fall back to TARGET_AZURE_OPENAI_AUTH_MODE env, then shared
+  target_azure_openai_ad_scope: "https://cognitiveservices.azure.com/.default"
+  target_azure_openai_managed_identity_client_id: ""
+
+  # MiniMax backend settings (minimax_chat target)
+  minimax_base_url: ""          # https://api.minimax.io/v1 if blank
+  minimax_api_key: ""
+  minimax_model: "MiniMax-M2.7"
+  minimax_temperature: "0.7"
+  minimax_max_tokens: "8000"
+  minimax_enable_thinking: "false"
+  optimizer_minimax_base_url: ""    # per-role override
+  target_minimax_base_url: ""       # per-role override
+  optimizer_minimax_api_key: ""
+  target_minimax_api_key: ""
+
+train:
+  num_epochs: 4
+  train_size: 0          # 0 = derive from dataset split when available
+  batch_size: 40
+  accumulation: 1
+  seed: 42
+
+gradient:
+  minibatch_size: 8
+  merge_batch_size: 8
+  analyst_workers: 16
+  max_analyst_rounds: 3
+  failure_only: false
+
+optimizer:
+  learning_rate: 4          # max edits per step (edit_budget)
+  min_learning_rate: 2      # min edits for decay schedulers
+  lr_scheduler: cosine      # constant / linear / cosine / autonomous
+  lr_control_mode: fixed    # fixed / autonomous / none
+  skill_update_mode: patch  # patch / rewrite_from_suggestions / full_rewrite_minibatch
+  use_slow_update: true
+  slow_update_samples: 20
+  slow_update_gate_with_selection: false
+  longitudinal_pair_policy: mixed  # mixed / changed / unchanged
+  use_meta_skill: true
+  use_skill_aware_reflection: false  # EmbodiSkill: split failures into SKILL_DEFECT (edit body) vs EXECUTION_LAPSE (protected appendix)
+  skill_aware_appendix_source: both  # both = success+failure emit appendix notes; failure_only = only EXECUTION_LAPSE (paper-faithful)
+  skill_aware_consolidate_threshold: 0  # 0 = off; >0 = LLM-consolidate the appendix when its note count exceeds N
+
+evaluation:
+  use_gate: true
+  sel_env_num: 0
+  test_env_num: 0
+  eval_test: true
+
+env:
+  name: ""
+  skill_init: ""
+  split_mode: ratio       # ratio = build deterministic split from data_path; split_dir = use pre-split train/val/test
+  split_seed: 42
+  split_dir: ""
+  data_path: ""
+  split_output_dir: ""
+  exec_timeout: 120      # per target model/code-agent call timeout in seconds
+  out_root: ""
+```
+
+</details>
+
+> 📌 **每个 benchmark 任务对应一份自己的 config：`configs/<benchmark>/default.yaml`**（如 SearchQA → `configs/searchqa/default.yaml`），文件里第一行 `_base_: ../_base_/default.yaml` 继承上面的 base，只覆盖该任务的差异键（`train_size`、`env.name`、`skill_init`、`split_dir` 等）。SearchQA 的样例如下（折叠）——注意 `train.train_size: 400` 就是硬写在这里的：
+
+<details>
+<summary>configs/searchqa/default.yaml 全文</summary>
+
+```yaml
+_base_: ../_base_/default.yaml
+
+model:
+  reasoning_effort: medium
+
+train:
+  train_size: 400
+  batch_size: 40
+  accumulation: 1
+
+gradient:
+  minibatch_size: 8
+  merge_batch_size: 8
+
+optimizer:
+  learning_rate: 4
+
+evaluation:
+  sel_env_num: 0
+  test_env_num: 0
+
+env:
+  name: searchqa
+  skill_init: skillopt/envs/searchqa/skills/initial.md
+  split_mode: split_dir
+  split_dir: data/searchqa_split
+  data_path: ""
+  split_output_dir: ""
+  max_turns: 1
+  max_completion_tokens: 16384
+  workers: 24
+  limit: 0
+```
+
+</details>
+
 ---
 
 ## 三、上手 Runbook（Phase A–E）
