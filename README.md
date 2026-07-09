@@ -179,6 +179,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 ### Notes/tool
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
+- [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](Notes/tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)
 - [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
 - [RTK 系列 01：RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
