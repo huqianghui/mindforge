@@ -122,6 +122,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南](Notes/AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 
+### Notes/AI/ms-swift
+
+- [ms-swift 全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比](Notes/AI/ms-swift/ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比.md)
+
 ### Notes/AI/SkillOpt
 
 - [SkillOpt 实战篇：从 AML + Azure OpenAI 到 SearchQA 跑通文本空间 skill 训练](Notes/AI/SkillOpt/SkillOpt实战篇：从AML+Azure%20OpenAI到SearchQA跑通文本空间skill训练.md)
