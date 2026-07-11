@@ -20,6 +20,9 @@ personal-journal/
 # Playwright MCP cache
 .playwright-mcp/
 
+# Local training data (never commit)
+qwen_0318_swift_task.json
+
 # System files
 .DS_Store
 .trash/

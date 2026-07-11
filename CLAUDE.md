@@ -32,6 +32,7 @@ Core rules that apply everywhere:
 - **Images**: `![alt](relative-path)` with correct `../` depth to root `asset/`. **Never** use `![[filename.png]]` wikilink syntax (GitHub cannot render it).
 - **Language**: Chinese for body text, English for technical terms. Use `（）` and `—`.
 - **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Claude Code 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
+- **私人内容永远不进 git**：`daily-work-item/`（含其 `asset/`）与 `personal-journal/` 整目录**永远禁止**提交到 git/GitHub。**禁止** `git add -f` 绕过 `.gitignore`——它就是隐私边界。即使用户说"commit & push"，也只提交非私人路径，**不得**把私人目录列为提交选项。L1 三重 gate：`.git/hooks/pre-commit`（拦截暂存）+ `.git/hooks/pre-push`（扫描待推送 commit）+ `.claude/hooks/guard-private-journal.sh`（拦截 `git add -f`/`--no-verify` 及涉私人目录的 git 变更命令）。
 
 ## Agent Routing
 
