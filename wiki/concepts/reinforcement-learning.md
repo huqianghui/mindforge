@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-07-07"
+updated: "2026-07-14"
 tags:
   - wiki
   - concept
@@ -116,11 +116,22 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 > "一个方法自称 learning 却不改参数"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是"通过改参数来改进策略"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条"改没改参数"的硬标准只在回答轴 B（结果存哪），从不是在说"这里没有 RL 计算"。这也接上一个更细的判据：判断学习的关键不只是"改没改参数"，而是"学到的知识存在哪"（见 [[online-learning]] 的存储位面 Claim）。
 
+### Claim: GRPO/RLVR 数据流不变量——一条样本两个消费方，prompt 进 rollout、ground truth 只活在 reward 函数
+
+- **来源**：[[ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]]
+- **首次出现**：2026-07-14
+- **最近更新**：2026-07-14
+- **置信度**：0.8
+- **状态**：active
+
+> RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的"prompt+response 一起进 loss"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的"target 是评分键"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问"哪列进模型、哪列进 reward"即可快速定位。
+
 ## 冲突与演进
 
 - 2026-03-21：从 Bitter Lesson 角度首次系统对比 RL Agent 与 LLM Agent。
 - 2026-06-29：从 agent-lightning 系列 07 补充 LLM RL 四形态、Rollout vs Epoch 维度辨析、Agent RL=系统问题的分水岭，并关联 VERL/Slime 两大 RL infra 框架。
 - 2026-07-07：从 JitRL 论文解读补充 GPI（RL 中轴）与"策略改进 vs 参数更新可拆开"两条 Claim，接入 [[advantage-function]] 基础构造页与 [[online-learning]] 存储位面判据。
+- 2026-07-14：从 ms-swift 全景文补 GRPO/RLVR 数据流不变量 Claim——一条样本两个消费方（prompt→rollout、ground truth→reward 函数），行式对齐配对是静默错配的高危点。
 
 ## 关联概念
 
@@ -138,3 +149,4 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 ## 来源日记
 
 - [[2026-03-21-The-Bitter-Lesson]] — Section 二-三 RL 的核心贡献与 RL/LLM Agent 对比
+- [[ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — GRPO 数据格式、solution 列 kwargs 透传、行式对齐 reward 配对
