@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-07-07
-stats: "80 concepts, 15 methods, 7 decisions, 414 claims"
+updated: 2026-07-14
+stats: "81 concepts, 15 methods, 7 decisions, 426 claims"
 tags:
   - wiki
   - index
@@ -78,6 +78,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[code-reuse-in-agent-era]] — Agent 时代的代码复用：四层防线
 - [[cybernetics-agent-design]] — 控制论 Agent 设计：负反馈 + 共轭变换 + 随机探索的结构同构
 - [[meta-harness]] — Meta-Harness：用 Harness 优化 Harness 的递归搜索架构
+- [[model-harness-codesign]] — Model-Harness Codesign：第一方绑定 vs 多模型适配的路线之争
 - [[one-person-team]] — One Person Team：AI 重新定义技术角色边界
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
