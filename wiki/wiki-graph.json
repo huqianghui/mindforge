@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-11",
+  "generated_at": "2026-07-14",
   "stats": {
-    "nodes": 102,
-    "links": 340,
+    "nodes": 103,
+    "links": 344,
     "orphan_links_removed": 0,
-    "claims": 414,
+    "claims": 426,
     "categories": 10
   },
   "nodes": [
@@ -601,7 +601,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
+      "claims_count": 5,
       "avg_confidence": 0.86,
       "claims": [
         {
@@ -639,6 +639,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "任何 prompt 优化工具（DSPy/TextGrad/AdalFlow/agent-lightning）都成立的核心教训：真正的瓶颈不是选哪个框架。① **评估噪声**——小数据集（如 29 题）标准误 `SE ≈ sqrt(p(1−p)/N) ≈ 0.09`，会盖过任何小于 0.18 的真实增益；② **reward 设计**——reward 若设错（如让 LLM 对离散任务输出连续 partial score），框架只会\"忠实地优化一个噪声\"；③ **数据量**——要可靠确认 Δ 提升需 `SE ≤ Δ/2`，想分辨 0.05 增益需 N≈350+，或用多采样 `SE/√k` 等效放大。落地顺序：先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则只是在噪声里挑最大值。"
+        },
+        {
+          "statement": "APO 的 critic/editor 元提示词全部用 POML 写成——表示层与优化层正交互补",
+          "source": "POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "agent-lightning APO 的两个核心 LLM 角色的元提示词不是硬编码字符串，而是随包分发的 `.poml` 文件（`agentlightning/algorithm/apo/prompts/`）：`text_gradient_variant01~03.poml`（3 个 critic 变体）+ `apply_edit_variant01~02.poml`（2 个 editor 变体），每轮迭代 `random.choice` 抽取。POML（微软开源提示词标记语言，\"HTML+CSS\"范式）的卖点在此全部用上：`<cp for>` 循环按结构块嵌入多条 rollout 实验、`<object data>` 挂深层 JSON traces、`whiteSpace=\"pre\"` 保护被优化 prompt 的原始格式不被模板系统污染（格式本身可能就是被优化的变量——直击 format sensitivity）。另一层面：APO 优化对象 `PromptTemplate` 的 `engine` 字段把 `poml` 与 `jinja`/`f-string` 并列为一等公民（但 `format()` 尚只实现 f-string 路径，声明先行、实现跟进）。哲学上 DSPy 认为人不该写 prompt（prompt 是编译产物）、POML 认为人要像写 HTML 一样写 prompt——两条路线在 agent-lightning 里合流：被优化的 prompt 和优化器自己的 meta-prompt 都可以是 POML。**POML 是表示层（管写得好维护），APO 是优化层（管写得效果好），正交互补**。"
         }
       ]
     },
@@ -2217,8 +2226,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 13,
-      "avg_confidence": 0.8,
+      "claims_count": 15,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -2318,6 +2327,24 @@
           "confidence": 0.9,
           "status": "active",
           "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
+        },
+        {
+          "statement": "多模型 harness 必须自建三层评测体系——离线 benchmark → PR 门禁 → 生产 A/B",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "VS Code 为支撑 per-model 适配矩阵被迫建成三层评测体系：① **VSC-Bench**（离线，选候选）——容器化可复现 workspace 里真正启动 VS Code 实例跑完整 agent session，度量 resolution rate + agent effort + token 效率 + latency 四件套；数据集刻意私有（公开就重蹈 SWE-bench 污染覆辙，私有性正是质量信号的前提）；② **PR 评测门禁**（merge 时，防回归）；③ **生产 A/B**（在线，定胜负）——GPT-5.5 prompt 实验用\"10 分钟存活率 / commit 存活率\"这类只有真实用户行为能提供的指标，`PRPT_LRG` 以 p95 首次编辑延迟 -9.30%、工具调用 -8.54% 换质量微降 0.44%（p=0.0493），显式量化 trade-off 后拍板。附带发现：xhigh reasoning effort 比 high 更费 token 但解题率反而略低——存在\"有效努力甜点\"。"
+        },
+        {
+          "statement": "Agent 行为回归是传统 CI 测不出的新回归类别——今天的门禁靠作者自我申报触发",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "模型没换、代码没 bug，但改一个工具 description、动一行 system prompt，agent 就可能整体变笨——单元测试全绿、产品体验回归。判断标准不是\"改没改 prompt\"而是\"会不会改变 agent 感知到的世界\"：microsoft/vscode#312854 只修终端 shell integration 挂起 bug（加 30 秒定时器）也要过评测门禁，因为终端是 `run_in_terminal` 的行为地基。实证（GitHub API 查证，截至 2026-07）：`~requires-eval-assessment` 标签的 9 个 PR 里 8 个由作者本人手打、仅 1 个由 bot 自动打——本质是**自我申报制**，依赖资深成员的直觉与团队文化。当改 harness 的主力变成 agent，约束需分层：L1 确定性路径规则（保召回）、L2 语义指令（AGENTS.md 自评）、L3 独立 reviewer agent（never self-approve）；成本不对称（漏报=回归上线，误报=多跑一轮评测）决定默认值应是\"不确定时打标签\"。"
         },
         {
           "statement": "InkOS 在 AI 小说创作领域独立发现了 Harness Engineering 的核心范式——跨领域验证",
@@ -2842,7 +2869,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 6,
       "avg_confidence": 0.82,
       "claims": [
         {
@@ -2889,6 +2916,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。"
+        },
+        {
+          "statement": "全量评测体制溶解\"哪些改动敏感\"的判断题——门禁从守护 harness 变为驱动 harness",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "两种评测体制的经济学对比：VS Code 门禁是**选择性评测**（只评打了 `~requires-eval-assessment` 标签的 PR，核心难题是\"哪些改动敏感\"的人肉判断，漏标=回归上线）；Meta-Harness 是**全量评测**（60 个候选变体每个都评，判断题不存在，代价是评测就是主循环本体）。SkillOpt 的 gate 同构——每次 skill 更新都在 validation split 上评、ties-rejected。**评测税没有消失，只是从\"判断谁该交税\"变成\"人人都交但降低单价\"**。推演：人肉标签是\"评测昂贵\"约束下的过渡产物，成本曲线下行后门禁自然从\"标签触发\"滑向\"默认全评\"，评测套件从 merge 关卡转身为 harness 演化的 fitness function。两个前提缺一翻车：① benchmark 保真度（Goodhart 风险——消融已证信号保真度决定优化质量，在线存活率指标是离线分数之外的保真度地锚）；② 爆炸半径控制（沙箱内放任搜索，出沙箱必须 staged rollout）。"
         }
       ]
     },
@@ -2962,6 +2998,81 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "SkillOpt 的 `ReflACTTrainer.train()` 编排六阶段流水线，但不认识任何 benchmark——所有 rollout/数据加载通过 `EnvAdapter` 接口回调。接新任务不改 trainer，只写一个 adapter。这与 agent-lightning \"换算法只换槽位\"同构，区别是这里换的是 **environment** 不是 algorithm。两者共同揭示：把\"什么会变\"隔离进一个契约层，是让框架长期可扩展的通用手法。"
+        }
+      ]
+    },
+    {
+      "id": "model-harness-codesign",
+      "type": "concept",
+      "title": "Model-Harness Codesign（模型-Harness 协同设计）",
+      "summary": "当 \"Agent = Model + Harness\" 成立后，一个战略层问题随之浮现：**模型和 harness 应该由同一方在训练时缝合（第一方绑定），还是由 harness 厂商在推理时逐一适配多个模型（多模型路线）？** 前者的代表是 Claude Code + Claude、Codex/ChatGPT Work + GPT 系列、Gemini CLI + Gemini；后者的代表是 VS Code Copilot、OpenCode。VS Code 官方博客提供了多模型适配成本的第一手证据（per-model prompt × tool × 会话管理的笛卡尔积、必须自建三层评测体系），而第一方绑定的结构性优势在于**对齐发生在训练时**——harness 可作为 RL 环境进入训练分布，第三方永远只能在推理时逆向猜测。这是 Apple（垂直一体化）vs Windows/Android（水平生态）的老故事在 agent 层的重演，两者可能长期共存、各占生态位。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "harness",
+        "model-harness-codesign",
+        "product-strategy"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "Agent = Model + Harness——模型是引擎，harness 是整辆车",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-08",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "VS Code 官方博客（2026-05-15）：\"The model is the engine. The harness is the car.\"——语言模型只会产出文本，不会编辑文件、执行命令、跑测试。Harness 承担三大职责：① Context assembly（模型能看见什么完全由 harness 决定）；② Tool exposure（声明可调用的工具，工具集按请求动态变化）；③ Tool execution（校验参数、真正执行、格式化结果喂回下一轮）。内核是 turn / round / run 三层的 tool-calling 循环，与 Claude Code 的内循环结构几乎一一对应——行业在 harness 架构上已经收敛。"
+        },
+        {
+          "statement": "多模型适配成本是 per-model prompt × tool × 会话管理的笛卡尔积——\"The harness is the product\"",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-08",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "VS Code 第一手清单：Claude 系列用 `replace_string_in_file`、GPT 系列用 `apply_patch`；Gemini 需要专门提醒\"用 tool-calling 而不是口头描述\"；甚至同一家族内部（Claude Sonnet 4 / 4.5 / Opus）都拿到不同 system prompt。每接入一个新模型都要校验 tool schema、重调参数、完整重跑 agent session 评测。VS Code 团队自述 harness 才是他们花掉大部分工程时间的地方。GPT-5.5 发布后还要拉上 OpenAI 花两周、动用生产流量 A/B 才把这一个模型的 prompt 调到位——\"A model release is not the end of the tuning loop\"。"
+        },
+        {
+          "statement": "第一方绑定的结构性优势在训练时对齐——接口层差异可推理时适配，能力层差异不能",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-08",
+          "last_updated": "2026-07-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "per-model 差异分两层：**接口层**（tool 格式、prompt 偏好）harness 可以推理时适配；**能力层**（规划深度、工具选择直觉）由训练分布决定，prompt 工程只能缓解不能补齐。第一方组合的优势不在\"适配做得快\"而在\"根本不需要适配\"：① 训练分布对齐——拿自家 harness（真实工具集、system prompt、agent loop）作 RL 环境训模型；② 发布节奏同步——模型和 harness 在同一 release train 上联合调优（对照 VS Code 的乙方姿态：依赖 provider 提前给 checkpoint）；③ 零适配矩阵——省下的工程预算投入单一路径深度。\"model 厂商向下做 harness，比 harness 厂商向上做 model 容易得多\"。"
+        },
+        {
+          "statement": "ChatGPT Work 发布印证第一方 harness 泛化路线——Codex 从开发者工具变成通用工作 harness",
+          "source": "2026-07-10-周五",
+          "first_seen": "2026-07-10",
+          "last_updated": "2026-07-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "OpenAI 于 2026-07-08/09 发布 ChatGPT Work：原 Codex 桌面 app 改名 \"ChatGPT\"，顶部切换器分成 **Work**（Codex 技术 + GPT-5.6 驱动，跨 Gmail/Slack/Drive 执行通用工作任务，对标 Claude Cowork）与 **Codex**（保留开发者 agent 体验）两个模式；ChatGPT classic 保持纯对话形态（GPT-5.5）。产品含义：agent 入口和 chat 入口被拆开，Codex harness 从\"开发者工具\"泛化为\"通用工作 harness\"，模型与 harness 深度绑定作为第一方产品推出——这是\"每家 lab 都想通了同一件事\"（OpenAI/Anthropic/Google 均推第一方 harness）的最新产品级证据。"
+        },
+        {
+          "statement": "MCP 把工具异构的接入成本转换为治理成本，而治理恰是第一方占优的领域",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-08",
+          "last_updated": "2026-07-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"MCP 降低适配税\"的论点要打折扣：MCP 不是免费的，只是把成本换了形态。① Context 膨胀——每个 server 的 JSON schema + description 注入 prompt，工具异构税变成 context 税；② 描述冲突——协议只标准化了\"怎么调用\"，没有标准化\"怎么描述\"，多 server 命名撞车（`search`/`fetch`/`query`）使模型选择准确率下降；③ 治理负担转嫁用户（选装、排查、认证、控量）。第一方内置工具集可做训练时对齐 + 统一文案治理，MCP 工具在任何 harness 里都是\"客座\"待遇。"
+        },
+        {
+          "statement": "垂直一体化与水平生态将长期共存——多模型路线的生态位是选择权、路由红利与评测护城河",
+          "source": "Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争",
+          "first_seen": "2026-07-08",
+          "last_updated": "2026-07-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "反方论点至少五个：① 企业采购天然要求 BYOK 和多 provider（渠道属性决定的产品需求）；② 模型竞争红利只有多模型 harness 能兑现（按任务路由）；③ 评测税可转化为护城河（\"每个模型在真实工作流里的确切表现\"连 model 厂商自己都未必知道）；④ 头部渠道可用流量换 provider 深度合作（GPT-5.5 实验：OpenAI 出 expertise、VS Code 出 harness 数据与生产流量），信息不对称被部分对冲。类比框架：Apple vs Windows/Android 在 agent 层重演。开放问题：随着 agentic RL 把\"模型在自家 harness 里训练\"变成标配，水平生态能否维持\"体验足够接近\"——差距拉大则多模型框架被挤压到\"企业合规渠道\"单一生态位。"
         }
       ]
     },
@@ -3839,8 +3950,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.85,
+      "claims_count": 9,
+      "avg_confidence": 0.84,
       "claims": [
         {
           "statement": "RL 的核心贡献是 Search + Learning 的统一",
@@ -3913,6 +4024,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "\"一个方法自称 learning 却不改参数\"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是\"通过改参数来改进策略\"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条\"改没改参数\"的硬标准只在回答轴 B（结果存哪），从不是在说\"这里没有 RL 计算\"。这也接上一个更细的判据：判断学习的关键不只是\"改没改参数\"，而是\"学到的知识存在哪\"（见 [[online-learning]] 的存储位面 Claim）。"
+        },
+        {
+          "statement": "GRPO/RLVR 数据流不变量——一条样本两个消费方，prompt 进 rollout、ground truth 只活在 reward 函数",
+          "source": "ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的\"prompt+response 一起进 loss\"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的\"target 是评分键\"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问\"哪列进模型、哪列进 reward\"即可快速定位。"
         }
       ]
     },
@@ -4749,7 +4869,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.84,
       "claims": [
         {
@@ -4814,6 +4934,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "calc_x 跑通过程中\"第 3 步（调外部 API）通、第 4 步（进训练）报 Cannot connect\"的现象，根因是 agent-lightning + VERL 运行时存在两条物理隔离的 LLM 通路：① debug/开发态——Agent 直连外部 `OPENAI_BASE_URL`（如真实 OpenAI 或本地代理），验证 Agent 逻辑本身；② 训练态——rollout 用的是 VERL 内部拉起的 vLLM 实例，通过 store 的 `main_llm` resource 注入 Agent，Agent 此时应当读 store 提供的 endpoint 而非外部 API。两条通路的 base_url 来源不同，配置串了就表现为\"逻辑跑得通但一进训练就连不上\"。这印证了 [[method-agnostic]] 里 store 作为控制平面注入资源的物理基础——训练期的 LLM endpoint 不是 Agent 自己配的，是 store 下发的。"
+        },
+        {
+          "statement": "verl 与 ms-swift/LLaMA-Factory 是\"改权重\"的两个量级——同名 GRPO 不同赛道，按训练规模选型",
+          "source": "ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
+          "first_seen": "2026-07-14",
+          "last_updated": "2026-07-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "ms-swift（魔搭 ModelScope 官方）与 LLaMA-Factory 同属**轻量微调一站式框架**：命令式入口（`swift sft/rlhf/infer/deploy`）、内置 GRPO/DPO/PPO 等 RLHF 算法、LoRA/QLoRA 默认路径、单机可跑。verl 是**大规模 agentic RL 基础设施**：Ray 集群调度、training/rollout 解耦、多步轨迹。两边都叫 GRPO，但量级不同——ms-swift 的 GRPO 是\"单机/小集群上对静态数据集做 RLHF 微调\"，verl 的 GRPO 是\"分布式 rollout worker 采多步 Agent 轨迹\"。选型判据不是算法名而是**改权重的规模与交互形态**：静态数据集 + 单轮生成 + 资源有限 → ms-swift/LLaMA-Factory；多步工具调用轨迹 + rollout 吞吐是瓶颈 → verl。两者不是竞品而是阶梯——领域适配先用轻量框架 SFT/DPO，进入 Agent RL 才需要 verl 级 infra。"
         }
       ]
     },
@@ -6799,6 +6928,30 @@
       "target": "skillopt",
       "relation_type": "contrasts",
       "description": "environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）"
+    },
+    {
+      "source": "model-harness-codesign",
+      "target": "harness-engineering",
+      "relation_type": "extends",
+      "description": "把 harness 从工程实践议题延伸到产品战略层：引擎和车要不要同厂造"
+    },
+    {
+      "source": "model-harness-codesign",
+      "target": "agent-loop-architecture",
+      "relation_type": "uses",
+      "description": "turn/round/run 三层 tool-calling 循环是 harness 的内核结构，VS Code 与 Claude Code 已收敛"
+    },
+    {
+      "source": "model-harness-codesign",
+      "target": "meta-harness",
+      "relation_type": "contrasts",
+      "description": "选择性评测门禁（人肉标签挑敏感改动）vs 全量评测体制（每个变体都评）；门禁守护 harness vs 门禁驱动 harness"
+    },
+    {
+      "source": "model-harness-codesign",
+      "target": "reinforcement-learning",
+      "relation_type": "uses",
+      "description": "agentic RL 使\"模型在自家 harness 里训练\"（训练分布对齐）成为第一方优势的技术根基"
     },
     {
       "source": "model-routing",
