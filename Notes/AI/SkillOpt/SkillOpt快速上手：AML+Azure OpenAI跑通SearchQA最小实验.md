@@ -1,5 +1,5 @@
 ---
-title: "SkillOpt 实战篇：从 AML + Azure OpenAI 到 SearchQA 跑通文本空间 skill 训练"
+title: "SkillOpt 快速上手：AML + Azure OpenAI 跑通 SearchQA 最小实验"
 created: 2026-07-01
 tags: [skill-optimization, text-space-optimization, agent-skill, hands-on, azure-openai, aml, searchqa, prompt-optimization]
 repo: https://github.com/huqianghui/SkillOpt
@@ -7,7 +7,7 @@ paper: "SkillOpt: A Systematic Controllable Text-Space Optimizer for Agent Skill
 related: "[[2026-07-01-SkillOpt]]"
 ---
 
-# SkillOpt 实战篇：从 AML + Azure OpenAI 到 SearchQA 跑通文本空间 skill 训练
+# SkillOpt 快速上手：AML + Azure OpenAI 跑通 SearchQA 最小实验
 
 > 活文档（持续回填）。配套论文精读见 [[2026-07-01-SkillOpt]]。本篇只记**动手实践**：环境、runbook、踩坑、实测数据。状态标记：✅ 已验证 / ⏳ 待跑 / ⚠️ 踩坑。
 

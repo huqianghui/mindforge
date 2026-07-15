@@ -72,7 +72,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: 冒烟配置只验证"管路通"不验证"效果"——sel 太小时真帮到也显示打平被拒
 
-- **来源**：[[SkillOpt实战篇：从AML+Azure OpenAI到SearchQA跑通文本空间skill训练]]
+- **来源**：[[SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验]]
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.85
@@ -98,4 +98,4 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 - [[2026-07-01-SkillOpt]] — 论文精读：四大机件、三 split、快慢两层循环、选择门 vs 梯度、与竞品"缺哪块"式对比
 - [[SkillOpt源码篇：主要模块拆解与六阶段执行流剖析]] — 8 包职责、六阶段代码映射、EnvAdapter 契约、三 memory 代码落点、optimizer/target 双通道
-- [[SkillOpt实战篇：从AML+Azure OpenAI到SearchQA跑通文本空间skill训练]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
+- [[SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
