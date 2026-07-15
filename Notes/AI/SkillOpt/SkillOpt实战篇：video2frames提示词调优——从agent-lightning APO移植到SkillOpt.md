@@ -294,6 +294,7 @@ python eval.py --config configs/video2frames/default.yaml \
 5. **实战的精髓是 §八 那场配对对决**：机制分析（§一）只能告诉你"谁更稳"，无污染 held-out 上的 100 任务配对差值才能告诉你"谁更好"——本次是 APO 边缘胜出、SkillOpt 增益未泛化（gate 过拟合 val）、且任务天花板本身只有 soft ≤ +0.02。移植一个优化器的完整闭环，必须以这样一场对决收尾，否则"移植成功"只是管道意义上的成功。
 
 **关联阅读**：
+- 两段式管道与选型算账方法（本篇对决的后续） → [[APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
 - 论文精读 → [[2026-07-01-SkillOpt]]
 - 环境/runbook/踩坑（SearchQA） → [[SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验]]
 - 框架模块与六阶段执行流 → [[SkillOpt源码篇：主要模块拆解与六阶段执行流剖析]]

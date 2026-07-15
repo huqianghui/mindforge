@@ -131,6 +131,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [SkillOpt 快速上手：AML + Azure OpenAI 跑通 SearchQA 最小实验](Notes/AI/SkillOpt/SkillOpt快速上手：AML+Azure%20OpenAI跑通SearchQA最小实验.md)
 - [SkillOpt 源码篇：主要模块拆解与六阶段执行流剖析](Notes/AI/SkillOpt/SkillOpt源码篇：主要模块拆解与六阶段执行流剖析.md)
 - [SkillOpt 实战篇：video2frames 提示词调优——从 agent-lightning APO 移植到 SkillOpt](Notes/AI/SkillOpt/SkillOpt实战篇：video2frames提示词调优——从agent-lightning%20APO移植到SkillOpt.md)
+- [APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法](Notes/AI/SkillOpt/APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法.md)
 
 ### Notes/AI/Loop-Engineering
 
