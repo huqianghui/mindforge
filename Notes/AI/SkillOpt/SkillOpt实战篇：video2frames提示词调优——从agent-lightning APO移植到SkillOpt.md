@@ -10,7 +10,7 @@ related: "[[2026-07-01-SkillOpt]]"
 
 > 承接 [[SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验|快速上手]]（内置 SearchQA benchmark 冒烟）与 [[SkillOpt源码篇：主要模块拆解与六阶段执行流剖析|源码篇]]（六阶段执行流）。本篇记录**第一个真实客户任务的完整移植**：把原本跑在 agent-lightning APO 上的 video2frames 提示词调优项目，移植到 SkillOpt 的训练循环上，评分逐字节兼容、结果可直接对比。仓库：[huqianghui/video2frames-prompt-tuning-skillOpt](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt)，配套五篇设计文档在 [doc/](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt/tree/main/doc)。
 >
-> 一句话定位：**快速上手篇回答"SkillOpt 能不能跑"，本篇回答"把自己的任务接上去到底要写什么、reward 怎么设计、以及哪里会静默地坏掉"。**
+> 一句话定位：**快速上手篇回答"SkillOpt 能不能跑"，本篇回答"把自己的任务接上去到底要写什么、reward 怎么设计、以及哪里会静默地坏掉"——而实战的精髓在 §八：同一测试集上 APO vs SkillOpt 的 100 任务配对对决，机制上更稳的一方并没有赢。**
 
 ---
 
@@ -19,6 +19,25 @@ related: "[[2026-07-01-SkillOpt]]"
 任务本身来自一个快递/配送检测场景：从短视频中每 4 秒采样 N 帧（以 Azure Blob SAS URL 交付），目标模型要输出结构化 JSON 描述——`english_detail`、`brief`、`title`、`scene_type`、`is_courier_action` 五个字段。被调优的"skill"就是插在帧图片之前的那段 instruction prompt（初始版本 `video2frames_env/skills/initial.md` 与旧项目的 `baseline_prompt.txt` 逐字节相同）。
 
 移植动机在 [[automatic-prompt-optimization]] 的老问题上：客户侧 APO 摆动大。SkillOpt 的**验证门控 + 有界编辑**（validation-gated, bounded skill edits）正是针对这种不稳定的机制性回应——每次编辑必须在 val split 上不劣于当前 skill 才被 accept。移植时刻意保持**评分逐字节兼容**：epoch-0 baseline 的 soft 分数应与旧 APO 项目的 baseline reward 相同（已在共享 task ID 上验证），这样两个优化器的收敛行为可以直接对比。
+
+### APO vs SkillOpt：摆动差异来自三层机制，门控只是最后一道闸
+
+容易把两者的最大区别简化为"SkillOpt 多了门控"，但准确的拆法是**三层机制叠加**：
+
+| 层面 | agent-lightning APO | SkillOpt |
+|---|---|---|
+| **搜索结构** | beam search：每轮并行生成多个候选 prompt，整体重排、留 top-k（[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景|系列04]] 的"算法 = LLM 调用 + sorted"） | 单谱系增量演进：永远只有一个 current skill，每步在它之上打小补丁 |
+| **编辑幅度** | 候选是**自由改写**——LLM 可以整篇重写，两代 prompt 之间可以跳得很远 | **有界编辑**——每步最多 `learning_rate` 条结构化 edit，cosine 衰减，类似信任域小步长 |
+| **接受机制** | 轮内**兄弟候选相对排序**，没有"在位者保护"——本轮最好的换掉上轮最好的 | **在位者保护门控**——挑战者必须在 val 上不劣于 current（ties-rejected，打平也拒），否则回滚 |
+
+因果链要理顺：**APO 摆动的直接来源是"自由改写 + 相对重排"的组合**——整篇重写意味着两代之间没有继承性，相对排序意味着每轮冠军都是重新选的；评估噪声一抖，排名就翻，好规则被一次重写整段丢掉。而 SkillOpt 是三个机制**叠加**才压住摆动：小步长保证继承性（好的部分不会被顺带毁掉）、门控保证单调性（val 上不退步）、step buffer 保证不重复踩坑（被 reject 的编辑摘要给后续 analyst）。只看门控会低估它——没有有界编辑，门控保护的对象每次都面目全非，单调性就没意义了。
+
+两个必要的 caveat：
+
+- **两者的"梯度"部分同源**——都是 LLM 读失败案例写文字批评（textual gradient）。真正分岔的是优化器动力学：APO 更像**并行随机搜索**（探索强、方差大），SkillOpt 更像**带信任域的 SGD**（利用强、方差小，但可能陷入局部最优——所以它才需要 epoch-end 的 slow update / meta skill 慢层来补探索，见 [[SkillOpt源码篇：主要模块拆解与六阶段执行流剖析|源码篇]]）。
+- **门控不消灭噪声，只是换了噪声的表现形式**。val 太小时，`2.8×σ/√n` 以内的比较照样是抛硬币——APO 的噪声表现为"prompt 摆动"，SkillOpt 的噪声表现为"错误的 accept/reject"（详见 §七与结论第 4 条）。
+
+一句话版本：**APO 是"广撒网、每轮重选"，SkillOpt 是"单线传承、小步快跑、不进则退"——摆动差异是搜索结构、步长约束、接受机制三者共同的结果，门控是最后一道闸，不是唯一一道。**
 
 ### SkillOpt 概念 → 本项目的映射
 
@@ -195,7 +214,53 @@ n ≈ 2 × (1.96 × σ / δ)²   要检测大小为 δ 的真实差异所需的 
 
 ---
 
-## 八、Runbook 摘要
+## 八、正面对决实测：APO vs SkillOpt，100 任务配对对比（2026-07-15）
+
+机制分析（§一）说 SkillOpt 更稳，那实际调出来的 prompt 谁更好？repo 的 `doc/apo-faceoff.zh.md` 记录了一场三方对决——**结果对 SkillOpt 并不客气**，恰好是"机制上稳 ≠ 效果上赢"的一手证据。
+
+### 对比设置
+
+| 参赛者 | 来源 |
+|---|---|
+| baseline | 未调优的初始 prompt（与旧项目 `baseline_prompt.txt` 逐字节一致，`diff` 验证过） |
+| APO best | agent-lightning/APO 训练跑出的最优 prompt |
+| SkillOpt best | 本项目训练跑出的最优 skill（20 步，80 train / 100 val，optimizer=gpt-5.4） |
+
+可比性三道保障：相同打分（soft/hard 是 APO reward 的无损移植）、相同 target（`gpt-4.1-mini`）与相同 judge、**对两个优化器都无污染的测试集**——既排除本项目的 train/val，也排除旧 APO 项目的 train/val。
+
+第一轮在 30 任务测试集上跑，观察到的差距（APO +0.027 ± 0.018 SE）在噪声范围内——于是用 `prepare_data.py --grow-test 100`（追加式扩容，已有测试行前缀逐字节不变，新候选从 5,847 个源视频扣除所有已用切分后分层采样 + 逐个探测内容过滤）把测试集扩到 100。这正是 §七"竞速阶梯"的现场演练：**30 任务集的单次 eval 方差就有 ±0.01–0.02，同一 skill 重跑就会移动这么多，根本无法区分参赛者。**
+
+### 100 任务结果
+
+| Skill | hard | soft | scene_match | courier_match | judge_score |
+|---|---|---|---|---|---|
+| baseline | **0.59** | 0.7879 | 0.94 | 0.98 | 0.6732 |
+| SkillOpt best | 0.55 | 0.7846 | **0.95** | 0.98 | 0.6643 |
+| APO best | 0.57 | **0.8056** | 0.94 | **1.00** | **0.6960** |
+
+逐任务配对分析（同一任务求差再平均，n=100）：
+
+| 对比 | soft 差值 ± SE | t | 胜/负/平 |
+|---|---|---|---|
+| APO − baseline | +0.0177 ± 0.0129 | 1.37（不显著） | 43/36/21 |
+| SkillOpt − baseline | −0.0033 ± 0.0124 | −0.27（持平） | 37/42/21 |
+| APO − SkillOpt | +0.0210 ± 0.0114 | 1.84（p ≈ 0.07） | 44/36/20 |
+
+### 五条实测解读
+
+1. **SkillOpt 的增益没有泛化。**在 70 个全新任务上，其最优 skill 与 baseline 打平——旧 30 任务集上看到的 +0.008 是 **gate 对 val 集的过拟合加噪声**。门控保证的是"在 val 上不退步"，val 本身就是被反复优化的对象，它不能替代 held-out 验证。
+2. **APO 边缘领先 SkillOpt**（+0.021 soft，t=1.84，p≈0.07），但它对 baseline 的优势在更大测试集上也缩小到不显著的 +0.018。
+3. **全部差距都在 `judge_score`**：scene/courier 精确匹配分量接近饱和（0.94–1.00），三个参赛者几乎一致——可优化的空间只剩自由文本质量那 0.6 的权重。
+4. **`hard` 反而 baseline 最高**（0.59）：两个调优后的 prompt 都在略微抬升或保持平均质量的同时，把少数边缘任务压到了 0.8 阈值以下——又一个 `hard` 不适合做 gating 指标的实证。
+5. **天花板本身很低**：以 `gpt-4.1-mini` 为 target 时，此任务相对 baseline 的提升空间 soft ≤ +0.02；可靠测出它需要 ≥100 个配对测试任务，而真正拿到它需要的是**更好的优化运行，不是更好的测量**。
+
+### 回扣 §一 的机制对比
+
+这场对决给三层机制分析补上了辩证的一笔：SkillOpt 的保守机制（小步长 + 在位者保护）在**提升空间本来就小**的任务上，护住的可能只是 baseline 附近的一个小邻域——不摆动的代价是探索不足；APO 的自由改写方差大，但也正因为跳得远，才在 judge_score 上摸到了 +0.02 的天花板。另一面，courier 正例在全数据集中只有 0.2%（5,847 条里 13 个正例，各切分正例数为 0），`courier_match` 实际度量的是"避免误报"——reward 分量的可辨识性问题（§三客户六问的第 1 问）在实测里直接现形。**机制选型要以任务的可提升空间和评估噪声为前提，而不是无条件偏好"更稳"的那个。**
+
+---
+
+## 九、Runbook 摘要
 
 ```bash
 # 环境
@@ -220,12 +285,13 @@ python eval.py --config configs/video2frames/default.yaml \
 
 ---
 
-## 九、结论与关联
+## 十、结论与关联
 
 1. **移植工作量与 APO 大体相同**，因为 reward/rollout/数据接入就是业务本身。差别在胶水层形状：agent-lightning 藏进 tracer 约定，SkillOpt 摊开成显式文件——对要交付客户长期维护的项目，显式契约更划算（可测试、可调试、跨平台一致）。
 2. **评分逐字节移植是对比实验的前提**：epoch-0 baseline soft 对齐旧 APO baseline 后，才能比较 `best_skill.md` 与旧 `results/best_prompt.txt` 是否学到同样的规则。
 3. **显式契约也有暗面**：`conversation.json` 是不在接口里的隐式要求，缺失时静默退化。"接口实现完"和"数据流追通过"是两回事。
 4. **稳定性的共同地基**依然是 reward/eval 质量：门控只是把评估噪声的代价从"prompt 摆动"换成了"错误的 accept/reject"——σ 不缩小，换框架也躲不开（呼应 [[automatic-prompt-optimization]] 的摆动主因分析）。
+5. **实战的精髓是 §八 那场配对对决**：机制分析（§一）只能告诉你"谁更稳"，无污染 held-out 上的 100 任务配对差值才能告诉你"谁更好"——本次是 APO 边缘胜出、SkillOpt 增益未泛化（gate 过拟合 val）、且任务天花板本身只有 soft ≤ +0.02。移植一个优化器的完整闭环，必须以这样一场对决收尾，否则"移植成功"只是管道意义上的成功。
 
 **关联阅读**：
 - 论文精读 → [[2026-07-01-SkillOpt]]
