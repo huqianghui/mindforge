@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14",
+  "generated_at": "2026-07-15",
   "stats": {
     "nodes": 103,
     "links": 344,
@@ -4483,7 +4483,7 @@
         },
         {
           "statement": "冒烟配置只验证\"管路通\"不验证\"效果\"——sel 太小时真帮到也显示打平被拒",
-          "source": "SkillOpt实战篇：从AML+Azure OpenAI到SearchQA跑通文本空间skill训练",
+          "source": "SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验",
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
