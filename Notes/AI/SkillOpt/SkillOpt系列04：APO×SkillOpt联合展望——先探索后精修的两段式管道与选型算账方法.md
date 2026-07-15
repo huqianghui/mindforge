@@ -1,13 +1,13 @@
 ---
-title: "APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法"
+title: "SkillOpt 系列 04：APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法"
 created: 2026-07-15
 tags: [skill-optimization, prompt-optimization, apo, agent-lightning, text-space-optimization, pipeline, exploration-exploitation, statistics, decision-guide]
-related: "[[SkillOpt实战篇：video2frames提示词调优——从agent-lightning APO移植到SkillOpt]]"
+related: "[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]"
 ---
 
-# APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法
+# SkillOpt 系列 04：APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法
 
-> 承接 [[SkillOpt实战篇：video2frames提示词调优——从agent-lightning APO移植到SkillOpt|实战篇]] §八的 100 任务配对对决：机制上更稳的 SkillOpt 并没有赢，自由探索的 APO 反而摸到了任务天花板。本篇不再把两者当对手，而是回答两个自然的后续问题：**能不能串成管道——APO 大胆探索、SkillOpt 小步精修？** 以及更重要的：**开跑之前，怎么用三个数算出这条管道值不值得跑？**
+> 承接 [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt|实战篇]] §八的 100 任务配对对决：机制上更稳的 SkillOpt 并没有赢，自由探索的 APO 反而摸到了任务天花板。本篇不再把两者当对手，而是回答两个自然的后续问题：**能不能串成管道——APO 大胆探索、SkillOpt 小步精修？** 以及更重要的：**开跑之前，怎么用三个数算出这条管道值不值得跑？**
 >
 > 一句话定位：**这是一篇"先算账再开跑"的方法论——σ_d、门控分辨率、剩余空间三个数都能从已有 eval 产物里免费算出来，几分钟的算术可以省掉一次百万 token 的无效训练。video2frames 上把账走完的答案是"停"，且矛头指回 reward 权重与数据分布的先天错配（§五）。**
 
@@ -15,7 +15,7 @@ related: "[[SkillOpt实战篇：video2frames提示词调优——从agent-lightn
 
 ## 一、为什么想到联合：两者的互补性是结构性的
 
-[[SkillOpt实战篇：video2frames提示词调优——从agent-lightning APO移植到SkillOpt|实战篇]] §一拆过两者的三层机制差异，这里换个角度看——**它们的强项和弱项恰好互补**：
+[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt|实战篇]] §一拆过两者的三层机制差异，这里换个角度看——**它们的强项和弱项恰好互补**：
 
 | 维度 | agent-lightning APO | SkillOpt |
 |---|---|---|
@@ -354,9 +354,9 @@ soft_opt = 0.45 × judge_detail      # english_detail：事件覆盖 / 无幻觉
 
 ## 八、关联阅读
 
-- 100 任务配对对决与三层机制对比 → [[SkillOpt实战篇：video2frames提示词调优——从agent-lightning APO移植到SkillOpt]]
-- SkillOpt 六阶段执行流与门控实现 → [[SkillOpt源码篇：主要模块拆解与六阶段执行流剖析]]
-- 跑通 runbook 与冒烟纪律 → [[SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验]]
+- 100 任务配对对决与三层机制对比 → [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- SkillOpt 六阶段执行流与门控实现 → [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]]
+- 跑通 runbook 与冒烟纪律 → [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]
 - APO 的 beam search 本质 → [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]
 - APO 摆动与评估噪声的选型分析 → [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
 - 论文精读（SkillOpt 机制原理） → [[2026-07-01-SkillOpt]]
