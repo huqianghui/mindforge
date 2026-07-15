@@ -4474,7 +4474,7 @@
         },
         {
           "statement": "代码骨架 = environment-agnostic 的六阶段主循环，接新任务只写 EnvAdapter",
-          "source": "SkillOpt源码篇：主要模块拆解与六阶段执行流剖析",
+          "source": "SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析",
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
@@ -4483,7 +4483,7 @@
         },
         {
           "statement": "冒烟配置只验证\"管路通\"不验证\"效果\"——sel 太小时真帮到也显示打平被拒",
-          "source": "SkillOpt快速上手：AML+Azure OpenAI跑通SearchQA最小实验",
+          "source": "SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验",
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
