@@ -1,7 +1,7 @@
 ---
 title: "SkillOpt（文本空间 skill 优化器）"
 created: "2026-07-01"
-updated: "2026-07-07"
+updated: "2026-07-16"
 tags:
   - wiki
   - concept
@@ -80,9 +80,30 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 > SearchQA 单步干净冒烟跑（`--limit 8 --train_size 8 --num_epochs 1`，total_steps=1）：baseline `hard=0.5000`，STEP1 skill 从 104 字涨到 1891 字，却 EVALUATE **REJECT** `0.5000<=0.5000`（打平也拒），best 仍是初始 skill。逐条按 id 对齐 baseline 与 candidate 的 8 条 sel，发现 **8 条 hard 值全部一模一样**——1783 字新增对这批 sel 边际效果精确为零。三个叠加根因：① 编辑来自不相交的 train 8 条，泛化不到 sel 的错题；② 只跑 1 步（等于一次梯度更新）；③ sel=8 门太粗（分辨率 1/8=0.125 一档，微小改动跨不过 ties-rejected 门槛）。结论：`1 步 + 8 train + 8 sel` 三重太小，注定原地打平——它验证的是**管路通**（六段全跑/gate 严格/token 会花），不是**效果**。三味药缺一不可（更大 train + 更多 epoch/步 + 更大 sel），其中 **sel 太小最关键**——sel 不放大，就算真帮到了也照样显示打平被拒。此外印证：有界 LR（SELECT 恒 ≤budget）、接受门严格改进/ties-rejected、reflect 是耗时/token 主瓶颈（占 wall 的 60~73%）。
 
+### Claim: APO 摆动 vs SkillOpt 稳定源自三层机制叠加——门控只是最后一道闸，且门控不消灭噪声只换其表现形式
+
+- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **首次出现**：2026-07-15
+- **最近更新**：2026-07-15
+- **置信度**：0.85
+- **状态**：active
+
+> 把两者的区别简化为"SkillOpt 多了门控"会低估它，准确拆法是三层机制叠加：① **搜索结构**——APO 是 beam search 并行候选整体重排，SkillOpt 是单谱系增量演进（永远只有一个 current skill）；② **编辑幅度**——APO 候选自由改写可整篇重写，SkillOpt 每步最多 `learning_rate` 条结构化 edit（cosine 衰减，信任域小步长）；③ **接受机制**——APO 轮内兄弟候选相对排序无在位者保护，SkillOpt 挑战者必须在 val 上不劣于 current（ties-rejected）否则回滚。因果链：APO 摆动的直接来源是"自由改写 + 相对重排"的组合（无继承性 + 每轮冠军重选，噪声一抖排名就翻）；SkillOpt 靠小步长保继承性、门控保单调性、step buffer 防重复踩坑三者**叠加**才压住摆动。两个 caveat：两者的"梯度"同源（LLM 读失败案例写 textual gradient），分岔在优化器动力学——APO 像并行随机搜索（探索强方差大），SkillOpt 像带信任域的 SGD（利用强方差小，需 slow update/meta 慢层补探索）；**门控不消灭噪声，只换其表现形式**——val 太小时 `2.8×σ/√n` 以内的比较照样是抛硬币，APO 的噪声表现为"prompt 摆动"，SkillOpt 的噪声表现为"错误的 accept/reject"。
+
+### Claim: 机制稳 ≠ 效果赢——100 任务无污染配对对决：SkillOpt 增益未泛化（gate 过拟合 val）、APO 边缘胜出、任务天花板 soft ≤ +0.02
+
+- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **首次出现**：2026-07-15
+- **最近更新**：2026-07-15
+- **置信度**：0.85
+- **状态**：active
+
+> video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是"在 val 上不退步"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好"更稳"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则"移植成功"只是管道意义上的成功。**
+
 ## 冲突与演进
 
 - 2026-07-01：从 SkillOpt 论文精读 + 源码拆解 + AML 实战三条线首次建页。论文提供机制原理（四大机件/三 split/快慢循环），源码篇提供 environment-agnostic 骨架与 memory 代码落点，实战篇提供"冒烟只测管路不测效果"的关键经验教训。
+- 2026-07-16：从系列03 实战篇补充第一个真实客户任务（video2frames）的移植与实测证据——三层机制对比取代"门控唯一论"，100 任务无污染配对对决给出"机制稳 ≠ 效果赢"的一手辩证：SkillOpt 增益未泛化（gate 过拟合 val），保守机制在低天花板任务上探索不足。
 
 ## 关联概念
 
@@ -93,9 +114,12 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - [[agent-lightning]] — `contrasts` 权重级（policy/θ，需 GPU/可训练模型）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加（先 RL 练强原生能力，再用 SkillOpt 配可迁移 playbook）
 - [[method-agnostic]] — `contrasts` environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）
 - [[advantage-function]] — `contrasts` SkillOpt 把分数当离散门控信号（accept/reject），RL 把 advantage 当连续梯度信号——分数用法的两条路
+- [[environment-agnostic]] — `implements` SkillOpt 的 EnvAdapter 契约（build_train_env/build_eval_env/rollout/get_task_types）是该设计原则的实现——trainer 不认识任何 benchmark，接新任务只写 adapter
 
 ## 来源日记
 
 - [[2026-07-01-SkillOpt]] — 论文精读：四大机件、三 split、快慢两层循环、选择门 vs 梯度、与竞品"缺哪块"式对比
 - [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]] — 8 包职责、六阶段代码映射、EnvAdapter 契约、三 memory 代码落点、optimizer/target 双通道
 - [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
+- [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 三层机制对比、真实客户任务移植、reward 双指标分工、静默 skip 事故、100 任务配对对决
+- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — 探索/精修互补性、两段式管道、三个数算账判断式、reward v2 改良方案

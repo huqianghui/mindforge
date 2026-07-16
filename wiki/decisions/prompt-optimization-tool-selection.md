@@ -1,7 +1,7 @@
 ---
 title: "Prompt 优化工具选型——DSPy vs agent-lightning"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-07-16"
 tags:
   - wiki
   - decision
@@ -12,7 +12,8 @@ related_concepts:
   - "[[agent-lightning]]"
   - "[[automatic-prompt-optimization]]"
   - "[[rejection-sampling-finetuning]]"
-related_methods: []
+related_methods:
+  - "[[pre-run-three-number-accounting]]"
 ---
 
 # Prompt 优化工具选型——DSPy vs agent-lightning
@@ -51,7 +52,7 @@ related_methods: []
 ## 影响范围
 
 - **受影响的概念**：[[automatic-prompt-optimization]]（APO 只是 agent-lightning 的一个算法槽位，不构成选它的理由）。
-- **受影响的方法**：无。
+- **受影响的方法**：[[pre-run-three-number-accounting]]（"都不跑"判据由三个数判断式给出）。
 
 ## 验证状态
 
@@ -81,6 +82,16 @@ related_methods: []
 
 > 比"选哪个框架"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架"忠实地优化噪声"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。
 
+### Claim: APO vs SkillOpt 场景选型有六行决策表——含"都不跑"判据 δ_remain ≤ δ_min
+
+- **来源**：[[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
+- **首次出现**：2026-07-15
+- **最近更新**：2026-07-15
+- **置信度**：0.8
+- **状态**：active
+
+> 把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何"有效"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从"选哪个框架"到"选哪种优化器动力学、乃至要不要跑"。
+
 ## 关联概念
 
 - [[agent-lightning]] — `constrains` 本决策的核心被评估对象——其差异化价值（method-agnostic + RL rollout）决定了它只在「将走向权重微调」时才该选
@@ -90,3 +101,4 @@ related_methods: []
 ## 来源
 
 - [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]] — 决策结论、工具对比、典型场景路径、真瓶颈
+- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — APO vs SkillOpt 六行场景选型决策表、"都不跑"判据、两条通用纪律

@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-07-14
-stats: "81 concepts, 15 methods, 7 decisions, 426 claims"
+updated: 2026-07-16
+stats: "82 concepts, 17 methods, 7 decisions, 439 claims"
 tags:
   - wiki
   - index
@@ -106,6 +106,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[skillopt]] — SkillOpt：把 agent skill 当 frozen agent 的可训练外部状态，把 SGD 纪律搬进文本空间
 - [[agent-lightning]] — Agent Lightning：method-agnostic 训练框架，APO→SFT→RL 三级阶梯换槽位不换框架
 - [[method-agnostic]] — 方法无关设计：换优化方法只换 algorithm 槽位、agent 与 reward 不改；store 控制平面是其物理基础
+- [[environment-agnostic]] — 环境无关设计：任务环境隔离到 EnvAdapter 接缝之后，接新任务不改 trainer；method-agnostic 的环境侧孪生
 - [[verl]] — VERL（Volcano Engine RL）：HybridFlow 调度系统，Agent RL 事实标准基础设施
 - [[slime-rl-framework]] — Slime：数据流式 RL 框架（Training-Buffer-Rollout），Megatron+SGLang 强绑定
 - [[distributed-training-parallelism]] — 分布式训练并行：FSDP 切存储 vs TP/PP 切计算、Megatron/PyTorch 分层
@@ -196,11 +197,13 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Decision Framework（决策框架）
 
 - [[gsd-project-scale-selection]] — GSD 项目规模分级与工具选择
+- [[pre-run-three-number-accounting]] — 先算账再开跑：σ_d / δ_min / δ_remain 三个数判断式，几分钟算术省一次无效训练
 
 ### Workflow（工作流）
 
 - [[personal-knowledge-compiler-workflow]] — 日记到知识库编译流程
 - [[gsd-five-step-workflow]] — GSD 五步开发工作流
+- [[reward-design-three-inputs]] — Reward 设计三份输入与两本账分家：验收分不动、优化 reward 按信噪比设计、盲选反推权重
 
 ### Layered Strategy（分层策略）
 
