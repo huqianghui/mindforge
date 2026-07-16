@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-15",
+  "generated_at": "2026-07-16",
   "stats": {
-    "nodes": 103,
-    "links": 344,
+    "nodes": 106,
+    "links": 356,
     "orphan_links_removed": 0,
-    "claims": 426,
+    "claims": 439,
     "categories": 10
   },
   "nodes": [
@@ -601,8 +601,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.86,
+      "claims_count": 6,
+      "avg_confidence": 0.83,
       "claims": [
         {
           "statement": "APO ≠ beam search——是「文本梯度 + beam search」的完整方法",
@@ -648,6 +648,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "agent-lightning APO 的两个核心 LLM 角色的元提示词不是硬编码字符串，而是随包分发的 `.poml` 文件（`agentlightning/algorithm/apo/prompts/`）：`text_gradient_variant01~03.poml`（3 个 critic 变体）+ `apply_edit_variant01~02.poml`（2 个 editor 变体），每轮迭代 `random.choice` 抽取。POML（微软开源提示词标记语言，\"HTML+CSS\"范式）的卖点在此全部用上：`<cp for>` 循环按结构块嵌入多条 rollout 实验、`<object data>` 挂深层 JSON traces、`whiteSpace=\"pre\"` 保护被优化 prompt 的原始格式不被模板系统污染（格式本身可能就是被优化的变量——直击 format sensitivity）。另一层面：APO 优化对象 `PromptTemplate` 的 `engine` 字段把 `poml` 与 `jinja`/`f-string` 并列为一等公民（但 `format()` 尚只实现 f-string 路径，声明先行、实现跟进）。哲学上 DSPy 认为人不该写 prompt（prompt 是编译产物）、POML 认为人要像写 HTML 一样写 prompt——两条路线在 agent-lightning 里合流：被优化的 prompt 和优化器自己的 meta-prompt 都可以是 POML。**POML 是表示层（管写得好维护），APO 是优化层（管写得效果好），正交互补**。"
+        },
+        {
+          "statement": "APO 与 SkillOpt 结构性互补——先探索后精修的两段式管道，衔接接口就是一个文本文件",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "两者的强项弱项恰好互补：APO 是并行随机搜索（自由改写 + beam 重排，探索强方差大），擅长初始 prompt 离最优很远时跳出局部邻域找盆地，失败模式是摆动；SkillOpt 是带信任域的 SGD（有界编辑 + 在位者门控，利用强方差小），擅长已在好盆地内时单调精修，失败模式是探索不足。这正是优化领域的经典分工（basin hopping / 大学习率粗训 + 小学习率微调），文本空间没有理由例外。两段式管道机械上零成本：APO 的 `best_prompt.txt` 拷成 SkillOpt 的 `skills/initial.md` 一行 `cp` 完事，前提是评分逐字节兼容 + judge 不换（judge 定义分数量纲）。数据卫生的关键不是\"独立同分布\"而是**五份互斥切分**（APO train/val + SkillOpt train/val + 最终 test，全同分布但成员互斥）——SkillOpt 的 val 混入 APO 见过的任务会让在位者带虚高分数守擂，系统性错杀好编辑；数据预算约为单段的 1.5–2 倍。**开跑前必须过三个数判断式（δ_remain > 2σ_d/√n 才值得）**——video2frames 实测把账走完的答案是\"停\"（δ_remain ≤0.02 < δ_min 0.024），管道本身尚未实测，故置信度保守。"
         }
       ]
     },
@@ -1903,6 +1912,53 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "让模型在语义明确的对象图上推理而非原始数据表，降低幻觉风险。"
+        }
+      ]
+    },
+    {
+      "id": "environment-agnostic",
+      "type": "concept",
+      "title": "Environment-Agnostic（环境无关设计）",
+      "summary": "Environment-agnostic 指训练/优化框架把\"任务环境\"完全隔离到单一 adapter 接缝之后：trainer 编排全部优化流水线但**不认识任何具体 benchmark**，接新任务不改 trainer、只写一个环境适配层（数据 schema、rollout 执行、打分）。它是 [[method-agnostic]]（换优化算法只换槽位）的**环境侧孪生**——一个解耦\"用什么方法优化\"，一个解耦\"在什么任务上优化\"，同一 agnostic 原则在两个正交轴上的实例。\n\n两篇独立来源使其达建页门槛：SkillOpt 源码篇（系列01 §六）给出接口定义——`EnvAdapter` 四个 abstract 方法（`build_train_env`/`build_eval_env`/`rollout`/`get_task_types`），六阶段主循环全部通过回调消费环境；实战篇（系列03）用 video2frames 真实客户任务验证了这个契约的收益与暗面：显式契约可测试可调试，但接口之外的隐式要求会静默退化。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent-training",
+        "architecture",
+        "adapter-pattern"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "接新任务只写 EnvAdapter——trainer 零修改零 fork，所有框架要客户提供的东西本质相同：数据、执行、打分",
+          "source": "SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析",
+          "first_seen": "2026-07-01",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "trainer 是唯一\"发动机\"（编排 ROLLOUT→REFLECT→AGGREGATE→SELECT→UPDATE→EVALUATE 六阶段），但所有 rollout/reflect/数据加载通过 `EnvAdapter` 接口回调——想接新任务不改 trainer，只写 adapter。video2frames 移植实证：`train.py` 薄到只有两行有效逻辑（`_ENV_REGISTRY[\"video2frames\"] = Video2FramesAdapter` 注册 + `main()` 委托），是组合根模式（同 pytest 插件、Django app），换来上游 trainer 零修改零 fork——断点续跑、gate、token 记账全部白拿。更深一层：**两个框架（agent-lightning / SkillOpt）要客户提供的东西本质相同**——数据（任务长什么样）、执行（skill + 任务怎么变成模型输出）、打分（输出好不好），差别只在插槽的形状。按设计含金量排序：reward 设计（唯一需要\"设计\"的部分）→ 目标调用（机械）→ 数据接入（纯机械）→ 胶水（近乎模板）——前三项就是业务本身，没有框架能替你写。"
+        },
+        {
+          "statement": "环境契约有隐式/显式两种形状——取舍是上手成本 vs 可排查性，交付客户长期维护选显式",
+          "source": "SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "同一个任务在两个框架上的环境接入形态对照：**agent-lightning 契约小而隐式**——一个 rollout 函数 + tracer 标签上报 reward，上手代码最少，但 reward 悄悄没被收集到时几乎无从排查；**SkillOpt 契约大而显式**——一个文件变五个（`tasks.py`/`dataloader.py`/`rollout.py`/`evaluator.py`/`adapter.py`），但每个职责单一、纯函数为主，全部可离线单测（76 个测试零网络调用是直接收益）。对要交付客户长期维护的项目，显式契约更划算：可测试、可调试、跨平台一致（顺带的架构红利：单机纯 I/O 场景用单进程 ThreadPoolExecutor 即可，零 macOS/Linux 差异——agent-lightning 的 server-client 多进程是为跨机器 rollout/进程隔离/可杀挂死设计的，不需要那三个特性就不必付 OS 语义差异的代价）。"
+        },
+        {
+          "statement": "显式契约也有暗面——接口之外的隐式要求会静默退化，\"接口实现完\"≠\"数据流追通过\"",
+          "source": "SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "静默 skip 事故（2026-07-15）：一次完整训练（4 epochs × 5 steps，约 149 万 prompt tokens）产出的 `best_skill.md` 与初始 skill 逐字节相同——`summary.json` 显示 `total_skips: 20`、`best_origin: \"initial_skill\"`、token 记账里完全没有 analyst 调用。根因：SkillOpt 反思管线读每条 rollout 的 `conversation.json` 构造 analyst 输入，文件不存在时**静默 `continue`**；而这个要求是**隐式契约**——不在 `EnvAdapter` 抽象接口里（接口只要求返回带 id/hard/soft 的字典），只记载在内部辅助函数 docstring 里，离线测试和\"history.json 每步有记录\"的冒烟标准全验不出来。教训：实现完抽象方法只是必要条件，必须用一次真实/mock 运行把完整管线（rollout → reflect → merge → gate）**追一遍数据流**，确认每个阶段消费到了上一阶段的产物；每次训练后查 `summary.json` 五信号（accepts+rejects > 0、best_origin ≠ initial_skill、token_summary 有 analyst 条目、reflect_s 非零、patches 目录非空）。健康观：reject 不是失败，恰恰是门控在起作用——全 accept 或全 skip 才可疑。"
         }
       ]
     },
@@ -4442,8 +4498,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.87,
+      "claims_count": 7,
+      "avg_confidence": 0.86,
       "claims": [
         {
           "statement": "SkillOpt 把 SGD 四大机件搬进文本空间——有界 LR / 拒绝记忆 / 慢权重 / meta-learning",
@@ -4489,6 +4545,24 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "SearchQA 单步干净冒烟跑（`--limit 8 --train_size 8 --num_epochs 1`，total_steps=1）：baseline `hard=0.5000`，STEP1 skill 从 104 字涨到 1891 字，却 EVALUATE **REJECT** `0.5000<=0.5000`（打平也拒），best 仍是初始 skill。逐条按 id 对齐 baseline 与 candidate 的 8 条 sel，发现 **8 条 hard 值全部一模一样**——1783 字新增对这批 sel 边际效果精确为零。三个叠加根因：① 编辑来自不相交的 train 8 条，泛化不到 sel 的错题；② 只跑 1 步（等于一次梯度更新）；③ sel=8 门太粗（分辨率 1/8=0.125 一档，微小改动跨不过 ties-rejected 门槛）。结论：`1 步 + 8 train + 8 sel` 三重太小，注定原地打平——它验证的是**管路通**（六段全跑/gate 严格/token 会花），不是**效果**。三味药缺一不可（更大 train + 更多 epoch/步 + 更大 sel），其中 **sel 太小最关键**——sel 不放大，就算真帮到了也照样显示打平被拒。此外印证：有界 LR（SELECT 恒 ≤budget）、接受门严格改进/ties-rejected、reflect 是耗时/token 主瓶颈（占 wall 的 60~73%）。"
+        },
+        {
+          "statement": "APO 摆动 vs SkillOpt 稳定源自三层机制叠加——门控只是最后一道闸，且门控不消灭噪声只换其表现形式",
+          "source": "SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "把两者的区别简化为\"SkillOpt 多了门控\"会低估它，准确拆法是三层机制叠加：① **搜索结构**——APO 是 beam search 并行候选整体重排，SkillOpt 是单谱系增量演进（永远只有一个 current skill）；② **编辑幅度**——APO 候选自由改写可整篇重写，SkillOpt 每步最多 `learning_rate` 条结构化 edit（cosine 衰减，信任域小步长）；③ **接受机制**——APO 轮内兄弟候选相对排序无在位者保护，SkillOpt 挑战者必须在 val 上不劣于 current（ties-rejected）否则回滚。因果链：APO 摆动的直接来源是\"自由改写 + 相对重排\"的组合（无继承性 + 每轮冠军重选，噪声一抖排名就翻）；SkillOpt 靠小步长保继承性、门控保单调性、step buffer 防重复踩坑三者**叠加**才压住摆动。两个 caveat：两者的\"梯度\"同源（LLM 读失败案例写 textual gradient），分岔在优化器动力学——APO 像并行随机搜索（探索强方差大），SkillOpt 像带信任域的 SGD（利用强方差小，需 slow update/meta 慢层补探索）；**门控不消灭噪声，只换其表现形式**——val 太小时 `2.8×σ/√n` 以内的比较照样是抛硬币，APO 的噪声表现为\"prompt 摆动\"，SkillOpt 的噪声表现为\"错误的 accept/reject\"。"
+        },
+        {
+          "statement": "机制稳 ≠ 效果赢——100 任务无污染配对对决：SkillOpt 增益未泛化（gate 过拟合 val）、APO 边缘胜出、任务天花板 soft ≤ +0.02",
+          "source": "SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是\"在 val 上不退步\"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好\"更稳\"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则\"移植成功\"只是管道意义上的成功。**"
         }
       ]
     },
@@ -5582,6 +5656,100 @@
       ]
     },
     {
+      "id": "pre-run-three-number-accounting",
+      "type": "method",
+      "title": "先算账再开跑——三个数判断式（σ_d / δ_min / δ_remain）",
+      "summary": "在启动一轮 prompt/skill 优化（尤其是 APO→SkillOpt 两段式管道的第二段）之前，用三个数回答\"这轮训练值不值得跑\"：**σ_d**（配对差值的散布，决定评估噪声下限）、**δ_min = 2×σ_d/√n**（门控/比较在给定 val 大小下能分辨的最小真实差异）、**δ_remain**（当前候选距任务天花板的剩余提升空间，实测估计非理论推导）。判断式：`δ_remain > δ_min → 跑；δ_remain ≤ δ_min → 停（瓶颈不在 prompt）`。三个数全部从已有 eval 产物 `results.jsonl` 免费算出，时点在上一段优化结束后、下一段开跑前——几分钟的算术可以省掉一次百万 token 的无效训练。video2frames 实测把账走完的答案是\"停\"，且矛头指回 reward 结构（见 [[reward-design-three-inputs]]）。",
+      "tags": [
+        "wiki",
+        "method",
+        "prompt-optimization",
+        "evaluation",
+        "statistics"
+      ],
+      "category": "",
+      "method_type": "decision-framework",
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.83,
+      "claims": [
+        {
+          "statement": "配对比较的全部价值是把任务难度这个最大噪声源从比较中剔除——σ_d 显著小于 σ",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "难题上两个候选**都低**，逐任务相减后\"这题难\"这个共同因素被抵消，所以 σ_d（video2frames 实测 ≈0.12）显著小于 σ（≈0.20）。且 σ_d 受低分尾影响更小：两个 prompt 往往在同一个半失败任务上一起失败（难度共享），配对相减后尾巴也大幅抵消。关键事实藏在差值列里：单任务差值（±0.03~0.08）比真实平均优势（+0.02）大好几倍——看单个任务分不清是真强还是碰巧，只能靠 n 个任务取平均把不确定度按 σ_d/√n 收缩。评分或 target 模型一换，两个数都要重估。"
+        },
+        {
+          "statement": "小于 δ_min 的真实提升在门控眼里与噪声无法区分——accept/reject 退化成抛硬币",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "`δ_min ≈ 2×σ_d/√n`（95% 置信）是 gate 能\"看见\"的最小真实差异。val=100、σ_d=0.12 时 δ_min≈0.024——比 video2frames 的整个剩余空间（≤0.02）还大，训练就是在烧 token 原地踏步（实战篇 149 万 token 事故的统计学版本）。反解 `n ≈ (1.96×σ_d/δ)²`：想分辨 +0.01 需要约 550 条 val，每步 gate 评估成本完全不成比例。这与 [[automatic-prompt-optimization]] 页\"要可靠确认 Δ 需 SE ≤ Δ/2\"的教训同源，但把它前移成了**开跑前的例行判断式**而非事后复盘。"
+        },
+        {
+          "statement": "三个数全部从已有 eval 产物免费算出——\"先算账再开跑\"是几分钟算术换百万 token",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "σ_d 来自两列已有分数的对齐相减，δ_min 是一行公式，δ_remain 来自分量饱和度分解——没有任何一个数需要新训练。时点卡在\"上一段结束后、下一段开跑前\"。video2frames 把账走完：δ_remain（≤0.02）< δ_min（0.024）→ 停，且\"停\"字一半是任务天花板、另一半是 reward 结构自己造成的（0.4 死权重压缩分子、合并 judge 噪声撑大分母）——算账的价值不止于省钱，还把矛头指回了正确的瓶颈。"
+        }
+      ]
+    },
+    {
+      "id": "reward-design-three-inputs",
+      "type": "method",
+      "title": "Reward 设计三份输入与两本账分家",
+      "summary": "Reward 设计不是写规格，是做实验。这个工作流回答\"训练用的分数该怎么定\"：第一天就要凑齐**三份输入**——业务属性（问客户）、数据分布（扫标签）、基线能力（一次校准跑）；只用第一份（按业务直觉拍权重）是 video2frames 原始 reward 错配的根源。核心原则是**两本账分家**：验收分逐字节不动（历史可比、业务汇报口径），优化 reward 单独按信噪比设计（拆分 judge 降分母、饱和分量约束化还分子、确定性规则分白送零噪声信号）。业务对齐靠**盲选 A/B 反推权重**（judge 与业务盲选一致率 ≥85% 才获得代理资格），落地形态是一次一小时的共商工作坊 + 训练前锁版。改完必须重走 [[pre-run-three-number-accounting]] 三个数——判断式翻转为\"值得跑\"才开训。",
+      "tags": [
+        "wiki",
+        "method",
+        "reward-design",
+        "prompt-optimization",
+        "evaluation"
+      ],
+      "category": "",
+      "method_type": "workflow",
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.82,
+      "claims": [
+        {
+          "statement": "reward 设计不是写规格是做实验——第一天就需要三份输入，只用业务直觉拍权重是可在设计当时发现的缺陷",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "video2frames 原始 reward（0.2·scene + 0.2·courier + 0.6·judge）只用了业务属性一份输入。courier 正例 0.2%（5,847 条里 13 个）**扫一遍标签就能发现**（零训练成本），发现即可推出\"0.2 权重 + 对称匹配 = 常数分量\"；scene 饱和在 0.94 要跑了才知道，但一次 100 条校准跑只要几美元——与 149 万 token 无效训练相比可忽略。后果是信噪比双向恶化：0.4 死权重把可观测 δ 结构性打六折（信号压缩），σ_d 里剩下的几乎全是合并 judge 噪声（噪声占比升高）——\"停\"字一半是任务天花板，另一半是 reward 结构自己造成的。"
+        },
+        {
+          "statement": "两本账分家——验收分逐字节不动，优化 reward 单独按信噪比设计",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "用一个\"按业务直觉加权\"的函数同时充当验收分和训练信号是根本缺陷。分家后：验收分不动（历史可比、汇报口径、最终 faceoff 裁决）；优化 reward 只喂训练循环，四个结构决策逐一对症实测病灶——拆分 judge（0.45/0.20/0.10，噪声 1/√3 收缩）、饱和分量约束化（scene 错 ×0.5、courier 误报 ×0.3）、canary 套件、rule_compliance 0.25（正则/词数确定性打分，prompt 要求它们但 reward 从未测量它们）。预期分子放大 + 分母减半（σ_d 0.12→0.06），让 APO 排序和 SkillOpt 门控同时重新可分辨。沟通层同样分家：汇报永远用验收分和 hard 比率（\"可直接交付比例从 59% 到 X%\"），soft_opt 是工程内部量纲不出场。"
+        },
+        {
+          "statement": "盲选 A/B 反推权重——不问权重问偏好，judge 一致率 ≥85% 才获得代理业务资格",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "业务说不出\"detail 该占 0.45\"，但对着两条真实输出选 A/B 毫不含糊。judge 排序与业务盲选一致率 ≥85%，judge 才获得\"代理业务\"的资格——此后训练循环里的百万次打分都不用业务再看。落地是一次一小时共商工作坊（讲两本账 10 分钟 + 盲选 20 分钟 + 阶梯样例锚定量纲 + 落字为凭），训练前锁版；业务一小时的投入，换掉的是训练完才发现优化错方向的整轮返工——\"分数对话是全项目最便宜的保险\"的操作化版本。"
+        }
+      ]
+    },
+    {
       "id": "sft-rejection-sampling-hands-on",
       "type": "method",
       "title": "SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）",
@@ -5817,7 +5985,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 2,
+      "claims_count": 3,
       "avg_confidence": 0.82,
       "claims": [
         {
@@ -5837,6 +6005,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "比\"选哪个框架\"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架\"忠实地优化噪声\"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。"
+        },
+        {
+          "statement": "APO vs SkillOpt 场景选型有六行决策表——含\"都不跑\"判据 δ_remain ≤ δ_min",
+          "source": "SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法",
+          "first_seen": "2026-07-15",
+          "last_updated": "2026-07-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何\"有效\"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从\"选哪个框架\"到\"选哪种优化器动力学、乃至要不要跑\"。"
         }
       ]
     },
@@ -6598,6 +6775,18 @@
       "target": "rag-architecture-comparison",
       "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
+    },
+    {
+      "source": "environment-agnostic",
+      "target": "method-agnostic",
+      "relation_type": "contrasts",
+      "description": "环境侧孪生：method-agnostic 解耦\"用什么方法优化\"（换算法只换槽位），environment-agnostic 解耦\"在什么任务上优化\"（接新环境只写 adapter）——同一 agnostic 原则的两个正交轴"
+    },
+    {
+      "source": "environment-agnostic",
+      "target": "agent-lightning",
+      "relation_type": "contrasts",
+      "description": "其环境契约是隐式形态（rollout 函数 + tracer 上报），与 SkillOpt 的显式 EnvAdapter 形态构成\"小而隐式 vs 大而显式\"的取舍两端"
     },
     {
       "source": "ephemeral-environment",
@@ -7440,6 +7629,12 @@
       "description": "SkillOpt 把分数当离散门控信号（accept/reject），RL 把 advantage 当连续梯度信号——分数用法的两条路"
     },
     {
+      "source": "skillopt",
+      "target": "environment-agnostic",
+      "relation_type": "implements",
+      "description": "SkillOpt 的 EnvAdapter 契约（build_train_env/build_eval_env/rollout/get_task_types）是该设计原则的实现——trainer 不认识任何 benchmark，接新任务只写 adapter"
+    },
+    {
       "source": "slime-rl-framework",
       "target": "verl",
       "relation_type": "contrasts",
@@ -7848,6 +8043,54 @@
       "description": "LLM Wiki 是此工作流的理论基础"
     },
     {
+      "source": "pre-run-three-number-accounting",
+      "target": "skillopt",
+      "relation_type": "constrains",
+      "description": "判断式是 SkillOpt 门控开跑前的统计学前置检查——δ_remain ≤ δ_min 时 gate 抛硬币，训练不应启动"
+    },
+    {
+      "source": "pre-run-three-number-accounting",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "extends",
+      "description": "把 APO 页\"reward+噪声+数据量是真瓶颈\"的事后教训操作化为开跑前的三个数例行判断式"
+    },
+    {
+      "source": "pre-run-three-number-accounting",
+      "target": "generation-evaluation-separation",
+      "relation_type": "grounds",
+      "description": "算账依赖独立、逐任务的评估产物——评估质量决定三个数的可信度"
+    },
+    {
+      "source": "pre-run-three-number-accounting",
+      "target": "reward-design-three-inputs",
+      "relation_type": "produces",
+      "description": "判断式给出\"停\"时，矛头指回 reward 结构——两本账分家与 reward v2 是让判断式翻转为\"值得跑\"的对症改造"
+    },
+    {
+      "source": "reward-design-three-inputs",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "grounds",
+      "description": "APO 页\"真正瓶颈是 reward 设计 + 评估噪声 + 数据量\"的教训在此落为可执行工作流；reward 是 APO/SkillOpt/RL 共享的地基"
+    },
+    {
+      "source": "reward-design-three-inputs",
+      "target": "skillopt",
+      "relation_type": "constrains",
+      "description": "优化 reward 的信噪比直接决定 SkillOpt 门控是否可分辨（δ_min 减半 → gate 的 reject 重新有意义）"
+    },
+    {
+      "source": "reward-design-three-inputs",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "judge 分字段 rubric + temperature=0 + 多次取中位数是生成-评估分离在 reward 层的工程化"
+    },
+    {
+      "source": "reward-design-three-inputs",
+      "target": "pre-run-three-number-accounting",
+      "relation_type": "uses",
+      "description": "改造前用三个数定位病灶（分子/分母哪个坏了），改完必须重走三个数——判断式翻转为\"值得跑\"才锁版开训"
+    },
+    {
       "source": "sft-rejection-sampling-hands-on",
       "target": "rejection-sampling-finetuning",
       "relation_type": "implements",
@@ -7960,6 +8203,12 @@
       "target": "rejection-sampling-finetuning",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是本决策的关键前提——若会，则 agent-lightning 的 method-agnostic 价值才兑现"
+    },
+    {
+      "source": "prompt-optimization-tool-selection",
+      "target": "pre-run-three-number-accounting",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "rl-infra-framework-selection",
@@ -8088,6 +8337,7 @@
         "skillopt",
         "agent-lightning",
         "method-agnostic",
+        "environment-agnostic",
         "verl",
         "slime-rl-framework",
         "distributed-training-parallelism"
