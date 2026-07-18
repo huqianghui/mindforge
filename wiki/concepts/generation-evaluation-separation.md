@@ -53,8 +53,8 @@ related:
 
 - **来源**：[[去除AI味：从语言指纹到人机文本边界的消融]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.6
+- **最近更新**：2026-07-18
+- **置信度**：0.7（2026-07-18 由 0.6 上调——来源含消融实验验证，按经验证来源规则设为 max(当前, 0.7)）
 - **状态**：active
 
 > 去除"AI味"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是"避免自己改自己的盲区"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。
@@ -68,7 +68,6 @@ related:
 ## 关联概念
 
 - [[harness-engineering]] — `grounds` 生成-评估分离是 Harness 设计的核心架构原则
-- [[meta-harness]] — `implements` Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现
 - [[negative-feedback]] — `uses` 评估结果作为负反馈驱动生成修正
 
 ## 来源日记

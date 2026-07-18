@@ -90,6 +90,7 @@ related:
 
 ## 关联概念
 
+- [[llm-wiki]] — `implements` PKC 是 LLM Wiki 的实践方法论
 - [[notion-as-ai-layer]] — `contrasts` Notion 在知识管理中的替代方案
 
 ## 来源日记

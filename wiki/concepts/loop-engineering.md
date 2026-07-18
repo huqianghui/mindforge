@@ -17,6 +17,7 @@ related:
   - "[[autoresearch]]"
   - "[[feedback-loop]]"
   - "[[generation-evaluation-separation]]"
+  - "[[cybernetics-agent-design]]"
 ---
 
 # Loop Engineering
@@ -159,6 +160,8 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - [[generation-evaluation-separation]] — `uses` 外循环用 maker/checker 分离做独立验证（独立模型打分而非自评）
 - [[agent-paradigms]] — `uses` cron=workflow（预定义路径）、dynamic workflow=agent（模型自主控制流），对应 Anthropic 的 workflow/agent 二分
 - [[personal-knowledge-compiler]] — `produces` 把 PKC 改造成外循环系统是 Loop Engineering 的一次落地实践
+- [[feedback-loop]] — `implements` Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里
+- [[cybernetics-agent-design]] — `implements` "模型是无状态控制器、外循环补其身体"是控制论的直接应用
 
 ## 来源日记
 

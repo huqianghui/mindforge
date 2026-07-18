@@ -54,7 +54,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **置信度**：0.85
 - **状态**：active
 
-> 两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。
+> 两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。**范围限定（2026-07-18 补）**：此区分特指经典/参数化 RL；梯度更新是 RL 式策略改进的**充分而非必要条件**——见本页 JitRL Claim（"经典 RL 把策略改进与参数更新焊死，JitRL 证明二者可拆开"）：JitRL 不改参数、只在外部 memory + advantage 上做非参数策略改进，仍是货真价实的 RL（广义策略迭代 GPI 的一个实例）。判据落在"学到的知识存哪"而非"改没改参数"，参见 [[online-learning]]。
 
 ### Claim: Bitter Lesson 不是 RL 论文而是 AI 方法论论文
 
@@ -135,7 +135,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 ## 关联概念
 
-- [[scaling-laws]] — `uses` RL 中 search + learning 的算力扩展遵循 Scaling Laws
+- [[bitter-lesson]] — `grounds` RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）
 - [[continual-self-improving-ai]] — `extends` 自我改进方法试图赋予 LLM Agent 类 RL 的学习能力
 - [[agent-paradigms]] — `grounds` RL 的 trial-and-error 是 Agent 范式的理论起点
 - [[harness-engineering]] — `contrasts` Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿

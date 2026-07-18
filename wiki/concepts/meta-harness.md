@@ -16,6 +16,9 @@ related:
   - "[[harness-engineering]]"
   - "[[agent-loop-architecture]]"
   - "[[context-engineering]]"
+  - "[[feedback-loop]]"
+  - "[[generation-evaluation-separation]]"
+  - "[[cybernetics-agent-design]]"
 ---
 
 # Meta-Harness
@@ -99,7 +102,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - [[bitter-lesson]] — `implements` Meta-Harness 用搜索替代人工设计，呼应 Bitter Lesson 的核心主张
 - [[claude-code-agent-subagent]] — `uses` 论文选用 Claude Code 作为 Proposer
 - [[rtk-token-compression]] — `contrasts` RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化
-- [[cybernetics-agent-design]] — `grounds` 控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现
+- [[cybernetics-agent-design]] — `implements` 控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现
+- [[feedback-loop]] — `implements` Meta-Harness 是反馈闭环的自动化形式
+- [[generation-evaluation-separation]] — `implements` Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现
 
 ## 来源日记
 

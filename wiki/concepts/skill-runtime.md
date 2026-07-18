@@ -15,6 +15,7 @@ related:
   - "[[context-explosion]]"
   - "[[skill-pattern]]"
   - "[[claude-code-extension-system]]"
+  - "[[context-projection]]"
 ---
 
 # Skill Runtime
@@ -62,6 +63,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 ## 关联概念
 
 - [[context-explosion]] — `addresses` Skill Runtime 是 Context 爆炸的解法方向
+- [[context-projection]] — `implements` Skill Runtime 的 Selection Layer 实现上下文投影
 - [[cybernetics-agent-design]] — `contrasts` 控制论框架中 Skill Runtime 对应缺位的 L5 状态观测层
 
 ## 来源日记

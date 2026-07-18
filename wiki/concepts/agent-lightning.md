@@ -19,6 +19,7 @@ related:
   - "[[rejection-sampling-finetuning]]"
   - "[[reinforcement-learning]]"
   - "[[generation-evaluation-separation]]"
+  - "[[bitter-lesson]]"
 ---
 
 # Agent Lightning
@@ -139,6 +140,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ## 关联概念
 
+- [[bitter-lesson]] — `implements` 三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地
 - [[generation-evaluation-separation]] — `uses` litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例
 - [[sft-rejection-sampling-hands-on]] — `produces` 三级阶梯第二级（SFT）的动手实战流程页
 - [[verl]] — `uses` VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系

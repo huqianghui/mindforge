@@ -74,12 +74,7 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 ## 关联概念
 
-- [[continual-self-improving-ai]] — `grounds` 持续自我改进是 Bitter Lesson 的延伸
 - [[harness-engineering]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
-- [[reinforcement-learning]] — `grounds` RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）
-- [[scaling-laws]] — `grounds` Scaling Laws 是 Bitter Lesson 的定量化证明
-- [[method-agnostic]] — `grounds` method-agnostic 阶梯让优化方法可随算力升级，体现"计算胜过人工设计"
-- [[agent-lightning]] — `grounds` 三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地
 
 ## 来源日记
 

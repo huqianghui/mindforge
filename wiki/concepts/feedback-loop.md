@@ -67,10 +67,8 @@ related:
 ## 关联概念
 
 - [[harness-engineering]] — `grounds` 反馈闭环是 Harness 认知系统（L6 Eval）的核心
-- [[meta-harness]] — `implements` Meta-Harness 是反馈闭环的自动化形式
 - [[personal-knowledge-compiler]] — `uses` PKC 的知识迭代依赖实践反馈闭环
 - [[generation-evaluation-separation]] — `uses` 分离的评估环节是闭环的关键节点
-- [[loop-engineering]] — `grounds` Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里
 
 ## 来源日记
 

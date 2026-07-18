@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-16",
+  "generated_at": "2026-07-18",
   "stats": {
     "nodes": 106,
-    "links": 356,
+    "links": 354,
     "orphan_links_removed": 0,
-    "claims": 439,
+    "claims": 440,
     "categories": 10
   },
   "nodes": [
@@ -2178,7 +2178,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 3,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2202,8 +2202,8 @@
           "statement": "写作去AI味的 Humanizer multi-pass 是分离原则在文本生成域的实例",
           "source": "去除AI味：从语言指纹到人机文本边界的消融",
           "first_seen": "2026-06-29",
-          "last_updated": "2026-06-29",
-          "confidence": 0.6,
+          "last_updated": "2026-07-18",
+          "confidence": 0.7,
           "status": "active",
           "evidence": "去除\"AI味\"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是\"避免自己改自己的盲区\"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。"
         }
@@ -4025,7 +4025,7 @@
           "last_updated": "2026-07-06",
           "confidence": 0.85,
           "status": "active",
-          "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。"
+          "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。**范围限定（2026-07-18 补）**：此区分特指经典/参数化 RL；梯度更新是 RL 式策略改进的**充分而非必要条件**——见本页 JitRL Claim（\"经典 RL 把策略改进与参数更新焊死，JitRL 证明二者可拆开\"）：JitRL 不改参数、只在外部 memory + advantage 上做非参数策略改进，仍是货真价实的 RL（广义策略迭代 GPI 的一个实例）。判据落在\"学到的知识存哪\"而非\"改没改参数\"，参见 [[online-learning]]。"
         },
         {
           "statement": "Bitter Lesson 不是 RL 论文而是 AI 方法论论文",
@@ -4111,7 +4111,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.84,
       "claims": [
         {
@@ -4130,7 +4130,16 @@
           "last_updated": "2026-07-06",
           "confidence": 0.9,
           "status": "active",
-          "evidence": "SFT 这条线的\"算法\"内核是 `all_triplets.sort(key=lambda x: x[\"reward\"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑**：demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT 把模型训得\"更自信地答错\"；正确做法是阈值过滤（只留 `reward > 0`）。"
+          "evidence": "SFT 这条线的\"算法\"内核是 `all_triplets.sort(key=lambda x: x[\"reward\"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑（2026-07-18 标记 outdated）**：读源码时曾推断 demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT。**该子结论已被实跑证据推翻**，见下方新 Claim（引用 [[sft-rejection-sampling-hands-on]] 实跑日志）：demo 实际按 `reward > 0` 阈值过滤，不存在此坑。"
+        },
+        {
+          "statement": "demo 实际按阈值过滤（`reward > 0`），\"零阈值切比例\"的生产坑推断被实跑日志推翻",
+          "source": "sft-rejection-sampling-hands-on",
+          "first_seen": "2026-07-18",
+          "last_updated": "2026-07-18",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "读源码阶段曾推断 demo 只按比例切 top 50%、不设 reward 阈值。实跑日志给出直接反证：`Keeping 80 with reward greater than 0.0`——demo 确实先过滤 `reward > 0` 再切比例，若某轮全部 rollout 答错（reward 全 0），这些 0 分轨迹会被阈值挡在切比例之前，不会进入训练集。上一条 Claim 里的\"生产坑\"子结论因此标记为 outdated，核心结论（算法内核是一行 sorted，与 APO 对称）不受影响、仍 active。"
         },
         {
           "statement": "答对了为什么还训练——把 pass@k 压成 pass@1，把搜索成本内化进权重",
@@ -5594,7 +5603,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket），不做任何任务分解或调度决策。编排逻辑由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现。来源：OpenClaw 官方 Sub-agents 文档 + Meta Intelligence 技术分析。"
         },
         {
@@ -5603,7 +5612,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "maxSpawnDepth 范围 1-5，默认 1（不允许嵌套）。设为 2 时 Orchestrator 获得 sessions_spawn 权限可 spawn worker。Depth 2 的 leaf worker 无 session 工具，不能再 spawn。每 session 最多 5 个活跃子 Agent（maxChildrenPerAgent），全局并发上限默认 8。来源：OpenClaw 官方文档 docs.openclaw.ai/tools/subagents。"
         },
         {
@@ -5612,7 +5621,7 @@
           "first_seen": "2026-05-07",
           "last_updated": "2026-05-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "`sessions_spawn` 始终非阻塞，返回 `{ status: \"accepted\", runId, childSessionKey }`。Orchestrator 通过 sessions_list 监控和 sessions_result 收集结果。这种设计使编排者可以发出多个并行 spawn 而不必等待。"
         }
       ]
@@ -6184,6 +6193,12 @@
     },
     {
       "source": "agent-lightning",
+      "target": "bitter-lesson",
+      "relation_type": "implements",
+      "description": "三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地"
+    },
+    {
+      "source": "agent-lightning",
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "litagent（生成）与 reward grader（评估）分离正是生成-评估分离原则的框架级实例"
@@ -6217,6 +6232,12 @@
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "Agent Loop 是 Harness 的运行时核心"
+    },
+    {
+      "source": "agent-loop-architecture",
+      "target": "cybernetics-agent-design",
+      "relation_type": "implements",
+      "description": "Agent Loop 是控制论负反馈机制的工程载体"
     },
     {
       "source": "agent-paradigms",
@@ -6353,7 +6374,7 @@
     {
       "source": "automatic-prompt-optimization",
       "target": "bitter-lesson",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "APO 是\"用算力换 prompt 质量\"的搜索方法，呼应算力终将胜出"
     },
     {
@@ -6365,7 +6386,7 @@
     {
       "source": "autoresearch",
       "target": "bitter-lesson",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "AutoResearch 体现了 Bitter Lesson 的\"计算胜过人工知识\"原则"
     },
     {
@@ -6388,39 +6409,9 @@
     },
     {
       "source": "bitter-lesson",
-      "target": "continual-self-improving-ai",
-      "relation_type": "grounds",
-      "description": "持续自我改进是 Bitter Lesson 的延伸"
-    },
-    {
-      "source": "bitter-lesson",
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
-    },
-    {
-      "source": "bitter-lesson",
-      "target": "reinforcement-learning",
-      "relation_type": "grounds",
-      "description": "RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）"
-    },
-    {
-      "source": "bitter-lesson",
-      "target": "scaling-laws",
-      "relation_type": "grounds",
-      "description": "Scaling Laws 是 Bitter Lesson 的定量化证明"
-    },
-    {
-      "source": "bitter-lesson",
-      "target": "method-agnostic",
-      "relation_type": "grounds",
-      "description": "method-agnostic 阶梯让优化方法可随算力升级，体现\"计算胜过人工设计\""
-    },
-    {
-      "source": "bitter-lesson",
-      "target": "agent-lightning",
-      "relation_type": "grounds",
-      "description": "三级优化阶梯（APO→SFT→RL）由轻到重正是算力换能力的工程落地"
     },
     {
       "source": "brevity-constraints",
@@ -6627,6 +6618,12 @@
       "description": "Context7 是 Context Engineering 的文档层工具"
     },
     {
+      "source": "context-engineering",
+      "target": "cybernetics-agent-design",
+      "relation_type": "implements",
+      "description": "Context 管理是共轭变换（表示层设计）的工程实践"
+    },
+    {
       "source": "context-explosion",
       "target": "context-engineering",
       "relation_type": "constrains",
@@ -6664,12 +6661,6 @@
     },
     {
       "source": "context-projection",
-      "target": "skill-runtime",
-      "relation_type": "implements",
-      "description": "Skill Runtime 的 Selection Layer 实现上下文投影"
-    },
-    {
-      "source": "context-projection",
       "target": "context-engineering",
       "relation_type": "extends",
       "description": "投影是 Context Engineering 的高级策略"
@@ -6685,6 +6676,12 @@
       "target": "agent-search-tools",
       "relation_type": "part-of",
       "description": "Context7 是 Agent 搜索三剑客之一"
+    },
+    {
+      "source": "continual-self-improving-ai",
+      "target": "bitter-lesson",
+      "relation_type": "extends",
+      "description": "持续自我改进是 Bitter Lesson（计算胜过人工知识）向部署期学习信号的延伸"
     },
     {
       "source": "continual-self-improving-ai",
@@ -6730,27 +6727,9 @@
     },
     {
       "source": "cybernetics-agent-design",
-      "target": "agent-loop-architecture",
-      "relation_type": "grounds",
-      "description": "Agent Loop 是控制论负反馈机制的工程载体"
-    },
-    {
-      "source": "cybernetics-agent-design",
       "target": "skill-runtime",
       "relation_type": "contrasts",
       "description": "Skill Runtime 对应控制论中缺位的 L5 状态观测层"
-    },
-    {
-      "source": "cybernetics-agent-design",
-      "target": "context-engineering",
-      "relation_type": "grounds",
-      "description": "Context 管理是共轭变换（表示层设计）的工程实践"
-    },
-    {
-      "source": "cybernetics-agent-design",
-      "target": "loop-engineering",
-      "relation_type": "grounds",
-      "description": "\"模型是无状态控制器、外循环补其身体\"是控制论的直接应用"
     },
     {
       "source": "distributed-training-parallelism",
@@ -6808,12 +6787,6 @@
     },
     {
       "source": "feedback-loop",
-      "target": "meta-harness",
-      "relation_type": "implements",
-      "description": "Meta-Harness 是反馈闭环的自动化形式"
-    },
-    {
-      "source": "feedback-loop",
       "target": "personal-knowledge-compiler",
       "relation_type": "uses",
       "description": "PKC 的知识迭代依赖实践反馈闭环"
@@ -6823,12 +6796,6 @@
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "分离的评估环节是闭环的关键节点"
-    },
-    {
-      "source": "feedback-loop",
-      "target": "loop-engineering",
-      "relation_type": "grounds",
-      "description": "Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里"
     },
     {
       "source": "fitness-functions",
@@ -6847,12 +6814,6 @@
       "target": "harness-engineering",
       "relation_type": "grounds",
       "description": "生成-评估分离是 Harness 设计的核心架构原则"
-    },
-    {
-      "source": "generation-evaluation-separation",
-      "target": "meta-harness",
-      "relation_type": "implements",
-      "description": "Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现"
     },
     {
       "source": "generation-evaluation-separation",
@@ -6988,12 +6949,6 @@
     },
     {
       "source": "llm-wiki",
-      "target": "personal-knowledge-compiler",
-      "relation_type": "grounds",
-      "description": "PKC 是 LLM Wiki 的实践方法论"
-    },
-    {
-      "source": "llm-wiki",
       "target": "rag-architecture-comparison",
       "relation_type": "contrasts",
       "description": "LLM Wiki 是\"编译式\"知识，RAG 是\"检索式\"知识"
@@ -7039,6 +6994,18 @@
       "target": "personal-knowledge-compiler",
       "relation_type": "produces",
       "description": "把 PKC 改造成外循环系统是 Loop Engineering 的一次落地实践"
+    },
+    {
+      "source": "loop-engineering",
+      "target": "feedback-loop",
+      "relation_type": "implements",
+      "description": "Loop Engineering 的内循环本质就是经典反馈闭环落在 Coding Agent 语境里"
+    },
+    {
+      "source": "loop-engineering",
+      "target": "cybernetics-agent-design",
+      "relation_type": "implements",
+      "description": "\"模型是无状态控制器、外循环补其身体\"是控制论的直接应用"
     },
     {
       "source": "mcp-vs-cli",
@@ -7097,8 +7064,26 @@
     {
       "source": "meta-harness",
       "target": "cybernetics-agent-design",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现"
+    },
+    {
+      "source": "meta-harness",
+      "target": "feedback-loop",
+      "relation_type": "implements",
+      "description": "Meta-Harness 是反馈闭环的自动化形式"
+    },
+    {
+      "source": "meta-harness",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现"
+    },
+    {
+      "source": "method-agnostic",
+      "target": "bitter-lesson",
+      "relation_type": "implements",
+      "description": "method-agnostic 阶梯让优化方法可随算力升级，体现\"计算胜过人工设计\""
     },
     {
       "source": "method-agnostic",
@@ -7312,6 +7297,12 @@
     },
     {
       "source": "personal-knowledge-compiler",
+      "target": "llm-wiki",
+      "relation_type": "implements",
+      "description": "PKC 是 LLM Wiki 的实践方法论"
+    },
+    {
+      "source": "personal-knowledge-compiler",
       "target": "notion-as-ai-layer",
       "relation_type": "contrasts",
       "description": "Notion 在知识管理中的替代方案"
@@ -7366,9 +7357,9 @@
     },
     {
       "source": "reinforcement-learning",
-      "target": "scaling-laws",
-      "relation_type": "uses",
-      "description": "RL 中 search + learning 的算力扩展遵循 Scaling Laws"
+      "target": "bitter-lesson",
+      "relation_type": "grounds",
+      "description": "RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）"
     },
     {
       "source": "reinforcement-learning",
@@ -7463,7 +7454,7 @@
     {
       "source": "rejection-sampling-finetuning",
       "target": "bitter-lesson",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出"
     },
     {
@@ -7579,6 +7570,12 @@
       "target": "context-explosion",
       "relation_type": "addresses",
       "description": "Skill Runtime 是 Context 爆炸的解法方向"
+    },
+    {
+      "source": "skill-runtime",
+      "target": "context-projection",
+      "relation_type": "implements",
+      "description": "Skill Runtime 的 Selection Layer 实现上下文投影"
     },
     {
       "source": "skill-runtime",
@@ -8069,7 +8066,7 @@
     {
       "source": "reward-design-three-inputs",
       "target": "automatic-prompt-optimization",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "APO 页\"真正瓶颈是 reward 设计 + 评估噪声 + 数据量\"的教训在此落为可执行工作流；reward 是 APO/SkillOpt/RL 共享的地基"
     },
     {

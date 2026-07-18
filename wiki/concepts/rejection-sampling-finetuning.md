@@ -25,6 +25,7 @@ related:
   - "[[continual-self-improving-ai]]"
   - "[[generation-evaluation-separation]]"
   - "[[advantage-function]]"
+  - "[[sft-rejection-sampling-hands-on]]"
 ---
 
 # 拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）
@@ -53,7 +54,17 @@ related:
 - **置信度**：0.9
 - **状态**：active
 
-> SFT 这条线的"算法"内核是 `all_triplets.sort(key=lambda x: x["reward"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑**：demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT 把模型训得"更自信地答错"；正确做法是阈值过滤（只留 `reward > 0`）。
+> SFT 这条线的"算法"内核是 `all_triplets.sort(key=lambda x: x["reward"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑（2026-07-18 标记 outdated）**：读源码时曾推断 demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT。**该子结论已被实跑证据推翻**，见下方新 Claim（引用 [[sft-rejection-sampling-hands-on]] 实跑日志）：demo 实际按 `reward > 0` 阈值过滤，不存在此坑。
+
+### Claim: demo 实际按阈值过滤（`reward > 0`），"零阈值切比例"的生产坑推断被实跑日志推翻
+
+- **来源**：[[sft-rejection-sampling-hands-on]]
+- **首次出现**：2026-07-18
+- **最近更新**：2026-07-18
+- **置信度**：0.8
+- **状态**：active
+
+> 读源码阶段曾推断 demo 只按比例切 top 50%、不设 reward 阈值。实跑日志给出直接反证：`Keeping 80 with reward greater than 0.0`——demo 确实先过滤 `reward > 0` 再切比例，若某轮全部 rollout 答错（reward 全 0），这些 0 分轨迹会被阈值挡在切比例之前，不会进入训练集。上一条 Claim 里的"生产坑"子结论因此标记为 outdated，核心结论（算法内核是一行 sorted，与 APO 对称）不受影响、仍 active。
 
 ### Claim: 答对了为什么还训练——把 pass@k 压成 pass@1，把搜索成本内化进权重
 
@@ -118,7 +129,7 @@ related:
 - [[reinforcement-learning]] — `contrasts` RAFT 是"RL 的数据哲学 + SFT 的更新机制"，reward 只过滤不进梯度；SFT 飞轮到顶/要压榨负例/reward 有程度/难题 0 正样本时该升级到 RL
 - [[continual-self-improving-ai]] — `implements` 自蒸馏/ReST 是模型自举式持续自我提升的具体训练机制
 - [[generation-evaluation-separation]] — `uses` grader（评分）与 model（生成）分离，reward 作为独立裁判筛选自产轨迹
-- [[bitter-lesson]] — `grounds` 用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出
+- [[bitter-lesson]] — `implements` 用采样+算力换训练数据、自动 reward 替代人工标注，呼应算力终将胜出
 - [[skillopt]] — `contrasts` 同属拒绝采样谱系"打分筛选、只留改进"，RAFT 筛样本、SkillOpt 筛编辑
 - [[advantage-function]] — `contrasts` RAFT 的 reward 只当接受/拒绝阈值（无基线、选完即弃），在 reward 用法光谱最左；advantage 在最右（减基线进梯度）
 - [[prompt-optimization-tool-selection]] — `contrasts` "是否走向权重微调（SFT/RL）"是该决策的关键前提

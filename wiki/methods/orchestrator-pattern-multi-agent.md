@@ -84,7 +84,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket），不做任何任务分解或调度决策。编排逻辑由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现。来源：OpenClaw 官方 Sub-agents 文档 + Meta Intelligence 技术分析。
 
@@ -94,7 +94,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > maxSpawnDepth 范围 1-5，默认 1（不允许嵌套）。设为 2 时 Orchestrator 获得 sessions_spawn 权限可 spawn worker。Depth 2 的 leaf worker 无 session 工具，不能再 spawn。每 session 最多 5 个活跃子 Agent（maxChildrenPerAgent），全局并发上限默认 8。来源：OpenClaw 官方文档 docs.openclaw.ai/tools/subagents。
 
@@ -104,7 +104,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > `sessions_spawn` 始终非阻塞，返回 `{ status: "accepted", runId, childSessionKey }`。Orchestrator 通过 sessions_list 监控和 sessions_result 收集结果。这种设计使编排者可以发出多个并行 spawn 而不必等待。
 

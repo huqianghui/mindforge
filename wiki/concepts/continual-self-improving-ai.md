@@ -109,6 +109,7 @@ related:
 
 ## 关联概念
 
+- [[bitter-lesson]] — `extends` 持续自我改进是 Bitter Lesson（计算胜过人工知识）向部署期学习信号的延伸
 - [[rag-architecture-comparison]] — `uses` EntiGraph + RAG 互补关系
 - [[online-learning]] — `extends` CL-RL 四篇在"存储位面/适应延迟"轴上的分工，是在线学习硬标准的前沿实例
 - [[reinforcement-learning]] — `uses` JitRL 是非参数 GPI、LifeSkill 用 verifier 引导的 RL loop 抽 skill，两者都以 RL 机器为内核
