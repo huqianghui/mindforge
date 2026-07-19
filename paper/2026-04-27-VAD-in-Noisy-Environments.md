@@ -267,7 +267,7 @@ TTS（streaming output）
 ## 六、与 Vault 已有内容的关联
 
 - 技术栈全景：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
-- 系统架构：[[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]
+- 系统架构：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
 - Wiki 概念页：[[voice-activity-detection]]
 - 企业级实践：[[Building Enterprise Realtime Voice Agents 论文精读笔记]]
 

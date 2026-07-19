@@ -65,7 +65,7 @@ related_methods: []
 
 ### Claim: 低延迟关键在于组件重叠执行
 
-- **来源**：[[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]
+- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -101,5 +101,5 @@ related_methods: []
 
 ## 来源
 
-- [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]] — 架构全景
+- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级实践

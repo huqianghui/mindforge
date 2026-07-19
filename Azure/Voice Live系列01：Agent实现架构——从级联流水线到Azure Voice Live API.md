@@ -1,5 +1,5 @@
 ---
-title: Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API
+title: Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API
 created: 2026-04-06
 tags:
   - voice-agent
@@ -11,7 +11,7 @@ tags:
 description: 结合 Salesforce 企业级实时语音 Agent 论文与 Azure Voice Live API 实战经验，梳理 Voice Live Agent 的两种主流架构路线与核心工程挑战
 ---
 
-# Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API
+# Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API
 
 > 本文基于两个来源的学习整理：
 > - [Building Enterprise Realtime Voice Agents from Scratch: A Technical Tutorial](https://arxiv.org/html/2603.05413v2)（Salesforce AI Research）

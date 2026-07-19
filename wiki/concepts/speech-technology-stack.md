@@ -46,7 +46,7 @@ related:
 
 ### Claim: VAD barge-in 支持对自然对话体验至关重要
 
-- **来源**：[[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]
+- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -107,6 +107,6 @@ related:
 ## 来源日记
 
 - [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] — 技术全景
-- [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]] — VAD barge-in
+- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — VAD barge-in
 - [[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]] — Speech Out 层 G2P 深入分析
 - [[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]] — 语音输入三代演进与智能听写

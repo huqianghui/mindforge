@@ -104,7 +104,6 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Agent 经典范式与人类问题处理模式的映射](Notes/AI/agent/Agent经典范式与人类问题处理模式的映射.md)
 - [AutoResearch 概念澄清——与 Ralph-Loop 和 AutoML 的本质区别](Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
-- [Voice Live Agent 实现架构——从级联流水线到 Azure Voice Live API](Notes/AI/agent/Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API.md)
 - [InkOS 深度感想——AI 小说创作中的 Harness Engineering 范式](Notes/AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)
 - [Hermes Agent vs OpenClaw 深度技术对比](Notes/AI/agent/hermes-agent-vs-openclaw.md)
 
@@ -209,7 +208,8 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Microsoft Fabric IQ 与本体论（Ontology）研究](Azure/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
 - [Microsoft Fabric IQ 本体（Ontology）管理功能实操解析](Azure/Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md)
-- [Azure Voice Live API 架构演进：与 Agent Service 解耦后的合作模式与组合选型](Azure/Azure%20Voice%20Live%20API%20架构演进：与%20Agent%20Service%20解耦后的合作模式与组合选型.md)
+- [Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API](Azure/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
+- [Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型](Azure/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
 - [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
 
 ### book

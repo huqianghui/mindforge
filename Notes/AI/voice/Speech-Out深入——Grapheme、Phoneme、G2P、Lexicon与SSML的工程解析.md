@@ -16,7 +16,7 @@ description: 深入拆解实时语音 Agent 的 Speech Out 层：从 Grapheme/Ph
 
 # Speech Out 深入——Grapheme、Phoneme、G2P、Lexicon 与 SSML 的工程解析
 
-> 本文是 [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] 的姊妹篇。前文聚焦 **Speech In**（VAD、AEC、降噪等音频输入处理）和核心处理层（ASR、Turn-Taking），本文则深入 **Speech Out** 层——当 LLM 生成了回复文本之后，如何准确地"读出来"。已有的 [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]] 提供了系统架构概览，本文向下深入 TTS 前的关键环节。
+> 本文是 [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] 的姊妹篇。前文聚焦 **Speech In**（VAD、AEC、降噪等音频输入处理）和核心处理层（ASR、Turn-Taking），本文则深入 **Speech Out** 层——当 LLM 生成了回复文本之后，如何准确地"读出来"。已有的 [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] 提供了系统架构概览，本文向下深入 TTS 前的关键环节。
 
 ---
 

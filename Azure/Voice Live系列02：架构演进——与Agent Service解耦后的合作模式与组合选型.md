@@ -1,5 +1,5 @@
 ---
-title: Azure Voice Live API 架构演进：与 Agent Service 解耦后的合作模式与组合选型
+title: Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型
 created: 2026-07-19
 tags:
   - azure
@@ -11,10 +11,10 @@ tags:
 description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 Voice Live API 与 Agent Service 解耦后的三种合作模式、直连 Realtime 到全托管 Agent 的选型光谱、原生 Realtime 与级联两类模型组合的优劣、性能特征与功能组合选型
 ---
 
-# Azure Voice Live API 架构演进：与 Agent Service 解耦后的合作模式与组合选型
+# Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型
 
 > 本文源于一次实际困惑的排查讨论（[与 ChatGPT 的完整讨论](https://chatgpt.com/share/6a5c24ec-5e68-83ec-9a8d-c5ad209bd815)，2026-07-19）：Azure AI Agent 是否仍可以通过 Voice Live API 使用 gpt-realtime？为什么 Agent 创建页面选不到 gpt-realtime 了？
-> 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]。
+> 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]。
 
 ---
 
@@ -299,4 +299,4 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)
 - [Upgrade your voice agent with Azure AI Voice Live API — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/upgrade-your-voice-agent-with-azure-ai-voice-live-api/4458247)
 - [Voice Agents in Azure using Voice Live API and Foundry Agents V1 and V2 — Mark Tucker](https://www.youtube.com/watch?v=7oM8rhOKI54)
-- 相关笔记：[[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]]、[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- 相关笔记：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]、[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]

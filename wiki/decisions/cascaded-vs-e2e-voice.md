@@ -82,5 +82,5 @@ related_methods:
 
 ## 来源
 
-- [[Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API]] — 架构全景对比
+- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景对比
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级验证
