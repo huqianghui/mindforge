@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18",
+  "generated_at": "2026-07-19",
   "stats": {
     "nodes": 106,
     "links": 354,
@@ -4663,7 +4663,7 @@
         },
         {
           "statement": "VAD barge-in 支持对自然对话体验至关重要",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -5067,7 +5067,7 @@
         },
         {
           "statement": "Silero VAD 实现轻量级高效 VAD",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -5133,7 +5133,7 @@
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -5142,7 +5142,7 @@
         },
         {
           "statement": "低延迟关键在于组件重叠执行",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -5151,7 +5151,7 @@
         },
         {
           "statement": "语音不是\"界面层\"那么简单",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -5178,7 +5178,7 @@
         },
         {
           "statement": "Azure Voice Live API 走全托管端到端路线",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -5867,7 +5867,7 @@
       "claims": [
         {
           "statement": "低延迟关键在于组件重叠执行",
-          "source": "Voice-Live-Agent实现架构——从级联流水线到Azure-Voice-Live-API",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
