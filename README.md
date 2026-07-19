@@ -210,6 +210,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
 - [Microsoft Fabric IQ 本体（Ontology）管理功能实操解析](Azure/Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md)
 - [Azure Voice Live API 架构演进：与 Agent Service 解耦后的合作模式与组合选型](Azure/Azure%20Voice%20Live%20API%20架构演进：与%20Agent%20Service%20解耦后的合作模式与组合选型.md)
+- [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
 
 ### book
 
