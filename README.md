@@ -137,6 +137,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Loop Engineering 概念澄清——内循环、外循环与 Harness Engineering 的边界](Notes/AI/Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)
 - [Loop Engineering 实践——把个人知识库改造成一个外循环系统](Notes/AI/Loop-Engineering/Loop%20Engineering实践——把个人知识库改造成一个外循环系统.md)
 
+### Notes/AI/spec-kit
+
+- [Spec Kit 系列 01：初步整体认识——SDD 十命令工作流、Scope 粒度与协作扩展](Notes/AI/spec-kit/Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)
+
 ### Notes/AI/vibe-coding
 
 - [系列01：全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)
