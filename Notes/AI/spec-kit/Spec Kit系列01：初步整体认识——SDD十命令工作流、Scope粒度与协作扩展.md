@@ -11,7 +11,7 @@ tags:
 
 # Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展
 
-> 本文是 Spec Kit 系列的第一篇，目标是建立对 [github/spec-kit](https://github.com/github/spec-kit) 的整体认识：它的工作流设计、关键机制（Constitution、Active Feature）、Scope 与 Task 的粒度判断，以及面向团队协作的扩展（Worktree 并行、taskstoissues）。内容基于与 ChatGPT 的深入讨论整理，关键机制已对照 spec-kit 官方仓库源码验证。后续系列会与 GSD、OpenSpec、Superpowers 等开源框架做横向比较（框架组合选型可先参考 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]）。
+> 本文是 Spec Kit 系列的第一篇（方法论层面的 SDD/TDD/V-Model 讨论见 [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]），目标是建立对 [github/spec-kit](https://github.com/github/spec-kit) 的整体认识：它的工作流设计、关键机制（Constitution、Active Feature）、Scope 与 Task 的粒度判断，以及面向团队协作的扩展（Worktree 并行、taskstoissues）。内容基于与 ChatGPT 的深入讨论整理，关键机制已对照 spec-kit 官方仓库源码验证。后续系列会与 GSD、OpenSpec、Superpowers 等开源框架做横向比较（框架组合选型可先参考 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]）。
 
 ## 一、Spec Kit 是什么：把 AI Coding 从一句 Prompt 变成结构化流程
 
