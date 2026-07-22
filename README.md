@@ -29,12 +29,12 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 | 维度 | 数量 |
 |------|------|
 | 文章与笔记 | 124（Notes 98 / paper 12 / book 4 / product 4 / Azure 6） |
-| 日记 | 100 |
-| Wiki 页面 | 82 concepts + 17 methods + 7 decisions |
-| Claims（带证据的论断） | 440 |
-| 知识图谱 | 106 节点 / 354 关系 / 9 种关系类型 |
+| 日记 | 101 |
+| Wiki 页面 | 84 concepts + 17 methods + 8 decisions |
+| Claims（带证据的论断） | 461 |
+| 知识图谱 | 109 节点 / 359 关系 / 9 种关系类型 |
 
-> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-07-20。
+> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-07-22。
 <!-- STATS:END -->
 
 ### 1. 语义搜索（qmd）

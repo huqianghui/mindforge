@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-20",
+  "generated_at": "2026-07-22",
   "stats": {
-    "nodes": 106,
-    "links": 354,
+    "nodes": 109,
+    "links": 359,
     "orphan_links_removed": 0,
-    "claims": 440,
+    "claims": 461,
     "categories": 10
   },
   "nodes": [
@@ -2177,8 +2177,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.78,
+      "claims_count": 4,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2206,6 +2206,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "去除\"AI味\"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是\"避免自己改自己的盲区\"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。"
+        },
+        {
+          "statement": "SDD 的\"AI 起草，人类拍板，脚本验证\"是分离原则在合规/规格验证域的实例",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Spec-Driven Development 的角色分工\"AI 起草，人类拍板，脚本验证，Git 记账\"把生成（AI）与评估（人类批准 + 确定性脚本验证 Traceability）严格分开，且评估侧进一步分层：判断性评估归人类、可确定性计算的验证归脚本。这把分离原则从 Coding/文本生成域扩展到合规级规格验证域——V-Model 双轨中左轨规格（生成）与右轨测试规格（评估）的配对结构本身就是分离原则的方法论化。"
         }
       ]
     },
@@ -2282,8 +2291,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 15,
-      "avg_confidence": 0.81,
+      "claims_count": 16,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -2419,6 +2428,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。"
+        },
+        {
+          "statement": "V-Model 双轨把\"凡可确定性计算的绝不交给 LLM\"应用到合规领域",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。"
         }
       ]
     },
@@ -4625,6 +4643,143 @@
       ]
     },
     {
+      "id": "spec-driven-development",
+      "type": "concept",
+      "title": "Spec-Driven Development（SDD）",
+      "summary": "Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论：规格（Spec）成为第一等公民，代码是规格的实现产物——即\"Power Inversion\"（权力反转，代码服务于规格而非规格服务于代码）。SDD 通过模板约束 AI 生成、Constitution 固化项目原则（Test-First 不可协商）、并与 TDD/V-Model 融合形成\"规格轨 + 验证轨\"双轨演进。核心分工是\"AI 起草，人类拍板，脚本验证，Git 记账\"。",
+      "tags": [
+        "wiki",
+        "concept",
+        "methodology",
+        "ai-coding"
+      ],
+      "category": "Vibe Coding 框架与工作流",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "SDD 的核心是 Power Inversion——代码服务于规格",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "传统开发中规格是给代码打工的临时文档，写完即弃；SDD 反转权力关系：规格是持久的第一等公民，代码是从规格生成的产物，规格变更驱动代码再生成。这是 spec-driven.md 官方文档的核心论点。"
+        },
+        {
+          "statement": "模板即约束——SDD 用七种模板手法把方法论编译进 AI 工作流",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "SDD 不靠说教靠模板结构约束 AI 行为：强制章节、`[NEEDS CLARIFICATION]` 标记（禁止 AI 猜测）、检查清单门禁、宪法条款引用、阶段门（phase gate）、反过度设计条款、可执行验收标准。方法论以模板为载体被\"编译\"进每次生成。"
+        },
+        {
+          "statement": "Constitution 是项目级不可变原则，Test-First 不可协商",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Spec Kit 的 Constitution 九条中 Article III（Test-First）标注 NON-NEGOTIABLE：任何实现必须先有失败的测试。TDD 在 SDD 中不是消失而是换位——从开发者手动红绿重构，变成写进宪法由流程强制、由 AI 执行的结构性约束。"
+        },
+        {
+          "statement": "V-Model 双轨——每层规格配对测试规格，用确定性脚本验证追溯",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "spec-kit-v-model 扩展把 SDD 与 V-Model 融合：左轨规格分解（需求→架构→详设）每层配对右轨测试规格，Traceability Matrix 由确定性脚本（非 LLM）验证覆盖率。其 Compliant 模式含 8 阶段验证门，Hybrid 模式绕过验证门则不构成合规证据。金融行业（SR 11-7 / ECB TRIM / BCBS 239 / PCI DSS / SOX）的准 V-Model 要求是此扩展的现实需求来源。"
+        },
+        {
+          "statement": "SDD 的角色分工是\"AI 起草，人类拍板，脚本验证，Git 记账\"",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "四方分工：AI 负责起草规格与代码（生成），人类负责判断与批准（评估），确定性脚本负责验证追溯（凡可确定性计算的不交给 LLM），Git 负责审计追踪（每次拍板留痕）。这是 [[generation-evaluation-separation]] 在规格/合规域的实例，也符合 [[harness-engineering]] 的确定性外壳原则。"
+        },
+        {
+          "statement": "行业采用呈三层模型",
+          "source": "Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "第一层轻量 spec 提示（多数个人开发者）、第二层结构化 SDD 工作流（spec-kit 等工具用户）、第三层合规级双轨（受监管行业，V-Model 扩展）。采用深度由外部约束（监管/协作规模）而非个人偏好驱动。"
+        }
+      ]
+    },
+    {
+      "id": "spec-kit",
+      "type": "concept",
+      "title": "Spec Kit",
+      "summary": "Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个斜杠命令组成四阶段工作流（Governance / Design / Verification / Execution），把规格驱动方法论编译成 AI 编码 Agent 可执行的命令序列。核心设计包括 Constitution 项目记忆、checklist 作为\"英文的单元测试\"、Feature=Branch=Worktree=Agent Session 的隐式状态模型，以及面向多 Agent 协作的任务分发扩展。",
+      "tags": [
+        "wiki",
+        "concept",
+        "tool",
+        "ai-coding"
+      ],
+      "category": "Vibe Coding 框架与工作流",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "十命令四阶段——SDD 方法论被编译成命令序列",
+          "source": "Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。"
+        },
+        {
+          "statement": "checklist 是\"Unit tests for English\"",
+          "source": "Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "checklist 命令为规格文本生成检查清单——官方定位是\"给英文写单元测试\"：规格是用自然语言写的程序，checklist 验证其完整性/一致性/无歧义。analyze 验证文档间一致性，converge 验证代码与文档收敛，三者构成文本层的测试金字塔。"
+        },
+        {
+          "statement": "Constitution 是 Workflow 层项目记忆，与 System Prompt 层是层级错配关系",
+          "source": "Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Constitution 存放在项目仓库、由命令流程在关键节点显式引用检查，属 Workflow 层约束；这与把原则塞进 System Prompt（每次加载但无强制检查点）形成对比——与 PKC memory-promotion 的层级模型同构：需要的约束力决定存放层级，行为规则放弱提示层是层级错配。"
+        },
+        {
+          "statement": "Active Feature 是隐式状态，Feature=Branch=Worktree=Agent Session",
+          "source": "Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "spec-kit 用 `.specify/feature.json` 记录当前 active feature，所有命令隐式作用于它——单 Agent 单 Feature 假设。并行开发的官方姿势是一个 Feature 对应一个 Branch + Worktree + Agent Session，taskstoissues 把 tasks 转成 GitHub Issues 形成多 Agent Work Queue。"
+        },
+        {
+          "statement": "Scope 粒度——一个 User Value 一个 Spec，Task 约等于可独立提 PR 单元",
+          "source": "Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展",
+          "first_seen": "2026-07-20",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Spec 的粒度锚点是\"一个用户价值\"（经验值 20~80 个 tasks）；太大则 clarify/analyze 阶段失控，太小则流程开销大于收益。Task 粒度锚点是\"可独立提 PR 的单元\"，这直接决定了 taskstoissues 多 Agent 分发的可行性。"
+        }
+      ]
+    },
+    {
       "id": "speech-technology-stack",
       "type": "concept",
       "title": "Speech Technology Stack",
@@ -5128,7 +5283,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
+      "claims_count": 11,
       "avg_confidence": 0.76,
       "claims": [
         {
@@ -5202,6 +5357,33 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。"
+        },
+        {
+          "statement": "Voice Live 与 Agent Service 解耦后发生模型归属反转",
+          "source": "Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。"
+        },
+        {
+          "statement": "Voice Live 挂 Agent 是会话级绑定 + 服务端编排，不是 function call",
+          "source": "Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "绑定通过 WebSocket 连接 URL 的 query 参数（`agent_id` + `project_id`）在会话建立时完成，而非运行时把 Agent 当工具调用。证据：挂 Agent 后 session 的 `instructions` 字段被禁用（推理归 Agent），且服务端会推送 `interim_response`（TOOL/LATENCY 类型）填补 Agent 推理延迟——这是服务端编排器行为，function call 模式不会有。"
+        },
+        {
+          "statement": "选型是一条光谱，延迟瓶颈在模型和工具而非 Voice Live 这层壳",
+          "source": "Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。"
         }
       ]
     },
@@ -5927,7 +6109,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 1,
+      "claims_count": 2,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -5938,6 +6120,70 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。"
+        },
+        {
+          "statement": "Voice Live 把级联与端到端统一在同一 API 后面，切换成本降到配置级",
+          "source": "Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策\"选定一条架构路线\"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，\"分层用模型\"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。"
+        }
+      ]
+    },
+    {
+      "id": "foundry-agent-type-selection",
+      "type": "decision",
+      "title": "Foundry Agent 三类型选型：Prompt / Hosted / Workflow",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "agent",
+        "azure"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 4,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Prompt Agent 由 Foundry 跑，Hosted Agent 由你在容器里跑，Workflow Agent 是 YAML 编排壳。所有选型问题都可归结为 Runtime 归属：不需要控制 Runtime → Prompt（80% 场景）；命中 7 条 Hosted 信号（自定义推理循环、已有框架代码、多模型编排等）→ Hosted；多 Agent 固定流程 → Workflow。"
+        },
+        {
+          "statement": "治理分层——身份层三者同源，分水岭在内容层",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。\"Hosted 治理弱\"的笼统说法是错的，必须分层说。"
+        },
+        {
+          "statement": "Voice Live 与两类 Agent 的组合方向相反",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Prompt Agent 组合语音：Voice Live 在外持有语音层，通过 `agent_id` 把 Agent 挂进来（语音在外，Agent 在内）。Hosted Agent 组合语音：走 `/invocations_ws` 协议，语音处理进容器（语音在内）。用 Voice Live `agent_id` 直连 Hosted Agent 属未定义行为，官方未支持。"
+        },
+        {
+          "statement": "Hosted Agent 有一组不可忽视的硬约束",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-07-19",
+          "last_updated": "2026-07-21",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。"
         }
       ]
     },
@@ -7662,6 +7908,30 @@
       "description": "rollout 强绑定 SGLang，倚重其 RadixAttention 前缀复用"
     },
     {
+      "source": "spec-driven-development",
+      "target": "generation-evaluation-separation",
+      "relation_type": "grounds",
+      "description": "\"AI 起草，人类拍板\"的分工由生成-评估分离原则提供理论基础"
+    },
+    {
+      "source": "spec-driven-development",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "\"确定性脚本验证、不交给 LLM\"是 Harness 工程原则在方法论层的应用"
+    },
+    {
+      "source": "spec-kit",
+      "target": "spec-driven-development",
+      "relation_type": "implements",
+      "description": "Spec Kit 是 SDD 方法论的官方工具实现"
+    },
+    {
+      "source": "spec-kit",
+      "target": "harness-engineering",
+      "relation_type": "implements",
+      "description": "命令模板 + 确定性脚本门禁是 Harness 工程在开发流程上的实现"
+    },
+    {
       "source": "speech-technology-stack",
       "target": "voice-live-agent",
       "relation_type": "part-of",
@@ -8172,6 +8442,12 @@
       "description": "基于此决策的实施方法"
     },
     {
+      "source": "foundry-agent-type-selection",
+      "target": "voice-live-agent",
+      "relation_type": "grounds",
+      "description": "Voice Live 挂载机制是本决策\"组合方向\"分析的语音侧依据"
+    },
+    {
       "source": "hybrid-inference-framework-selection",
       "target": "prefix-caching",
       "relation_type": "addresses",
@@ -8358,7 +8634,9 @@
       "members": [
         "ai-native-pipeline",
         "framework-selection",
-        "three-layer-plugin-architecture"
+        "three-layer-plugin-architecture",
+        "spec-driven-development",
+        "spec-kit"
       ]
     },
     {
