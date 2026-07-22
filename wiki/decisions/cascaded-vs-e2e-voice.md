@@ -1,7 +1,7 @@
 ---
 title: "级联管线 vs 端到端：Voice Agent 架构选择"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-07-21"
 tags:
   - wiki
   - decision
@@ -70,6 +70,16 @@ related_methods:
 - **状态**：stale
 
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。
+
+### Claim: Voice Live 把级联与端到端统一在同一 API 后面，切换成本降到配置级
+
+- **来源**：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **首次出现**：2026-07-19
+- **最近更新**：2026-07-21
+- **置信度**：0.8
+- **状态**：active
+
+> Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策"选定一条架构路线"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，"分层用模型"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。
 
 ## 关联概念
 

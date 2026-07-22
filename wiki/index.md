@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-07-16
-stats: "82 concepts, 17 methods, 7 decisions, 439 claims"
+updated: 2026-07-21
+stats: "84 concepts, 17 methods, 8 decisions, 461 claims"
 tags:
   - wiki
   - index
@@ -125,6 +125,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[ai-native-pipeline]] — AI-Native 五层开发 Pipeline
 - [[framework-selection]] — Vibe Coding 框架选型：规范驱动 vs 方法论
 - [[three-layer-plugin-architecture]] — GSD + Superpowers + gstack 三层插件架构
+- [[spec-driven-development]] — SDD：Power Inversion（代码服务于规格）+ 规格/验证双轨演进
+- [[spec-kit]] — Spec Kit：十命令四阶段的 SDD 官方工具链，checklist 是"英文的单元测试"
 
 ### Context 与工具集成
 
@@ -247,3 +249,4 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[prompt-optimization-tool-selection]] — Prompt 优化工具选型：DSPy vs agent-lightning
 - [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang
 - [[rl-infra-framework-selection]] — Agent RL 基础设施框架选型：VERL vs Slime vs OpenRLHF vs TRL
+- [[foundry-agent-type-selection]] — Foundry Agent 三类型选型：Runtime 归属主线 + 治理分层
