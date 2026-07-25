@@ -202,6 +202,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Typeless 深度解析——AI 语音输入如何超越传统 Speech-to-Text](Notes/tool/Typeless深度解析——AI语音输入如何超越传统Speech-to-Text.md)
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
+- [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](Notes/tool/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 
 ### Notes/pkc
 
