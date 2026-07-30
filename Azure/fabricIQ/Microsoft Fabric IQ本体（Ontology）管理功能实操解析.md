@@ -39,127 +39,127 @@ Microsoft Fabric IQ 中的本体管理能力，能够将企业分散、异构的
 
 我们将先构建一套业务本体关系，与 OneLake 中的数据完成绑定，最终实现**本体实例查询、图引擎查询、自然语言对话**三种方式统一访问数据，让语义真正驱动数据使用。本体结构如下图所示：
 
-![本体结构图](../asset/fabric-iq-ontology-step00-structure.png)
+![本体结构图](../../asset/fabric-iq-ontology-step00-structure.png)
 
 ### 步骤 1：创建本体 RetailSalesOntology
 
-![创建本体](../asset/fabric-iq-ontology-step01-create.png)
+![创建本体](../../asset/fabric-iq-ontology-step01-create.png)
 
 ### 步骤 2：创建 Entity Type——Store
 
-![创建 Entity Type Store](../asset/fabric-iq-ontology-step02-entity-store.png)
+![创建 Entity Type Store](../../asset/fabric-iq-ontology-step02-entity-store.png)
 
-![Store Entity Type 详情](../asset/fabric-iq-ontology-step02-entity-store-detail.png)
+![Store Entity Type 详情](../../asset/fabric-iq-ontology-step02-entity-store-detail.png)
 
 ### 步骤 3：绑定数据源
 
-![绑定数据源-选择表](../asset/fabric-iq-ontology-step03-bind1.png)
+![绑定数据源-选择表](../../asset/fabric-iq-ontology-step03-bind1.png)
 
-![绑定数据源-映射列](../asset/fabric-iq-ontology-step03-bind2.png)
+![绑定数据源-映射列](../../asset/fabric-iq-ontology-step03-bind2.png)
 
-![绑定数据源-完成](../asset/fabric-iq-ontology-step03-bind3.png)
+![绑定数据源-完成](../../asset/fabric-iq-ontology-step03-bind3.png)
 
 ### 步骤 4：配置 Entity Type 的主键
 
-![配置主键-选择](../asset/fabric-iq-ontology-step04-key1.png)
+![配置主键-选择](../../asset/fabric-iq-ontology-step04-key1.png)
 
-![配置主键-确认](../asset/fabric-iq-ontology-step04-key2.png)
+![配置主键-确认](../../asset/fabric-iq-ontology-step04-key2.png)
 
 创建 3 个 Entity Type 后：
 
-![3个 Entity Type 总览](../asset/fabric-iq-ontology-step04-3entities.png)
+![3个 Entity Type 总览](../../asset/fabric-iq-ontology-step04-3entities.png)
 
 ### 步骤 5：添加关系
 
-![添加关系-创建](../asset/fabric-iq-ontology-step05-rel1.png)
+![添加关系-创建](../../asset/fabric-iq-ontology-step05-rel1.png)
 
-![添加关系-配置](../asset/fabric-iq-ontology-step05-rel2.png)
+![添加关系-配置](../../asset/fabric-iq-ontology-step05-rel2.png)
 
-![添加关系-映射](../asset/fabric-iq-ontology-step05-rel3.png)
+![添加关系-映射](../../asset/fabric-iq-ontology-step05-rel3.png)
 
 关系创建完毕：
 
-![关系总览](../asset/fabric-iq-ontology-step05-rel-done.png)
+![关系总览](../../asset/fabric-iq-ontology-step05-rel-done.png)
 
 #### 新增 Entity Type 绑定时序数据
 
 再新加一个 Entity Type，用于绑定时序数据：
 
-![新增时序 Entity Type](../asset/fabric-iq-ontology-step05-timeseries.png)
+![新增时序 Entity Type](../../asset/fabric-iq-ontology-step05-timeseries.png)
 
 增加属性：
 
-![增加属性](../asset/fabric-iq-ontology-step05-addprop.png)
+![增加属性](../../asset/fabric-iq-ontology-step05-addprop.png)
 
 设置主键：
 
-![设置主键](../asset/fabric-iq-ontology-step05-setkey.png)
+![设置主键](../../asset/fabric-iq-ontology-step05-setkey.png)
 
 绑定数据：
 
-![绑定数据-1](../asset/fabric-iq-ontology-step05-binddata.png)
+![绑定数据-1](../../asset/fabric-iq-ontology-step05-binddata.png)
 
-![绑定数据-2](../asset/fabric-iq-ontology-step05-binddata2.png)
+![绑定数据-2](../../asset/fabric-iq-ontology-step05-binddata2.png)
 
-![绑定数据-3](../asset/fabric-iq-ontology-step05-binddata3.png)
+![绑定数据-3](../../asset/fabric-iq-ontology-step05-binddata3.png)
 
-![绑定数据-4](../asset/fabric-iq-ontology-step05-binddata4.png)
+![绑定数据-4](../../asset/fabric-iq-ontology-step05-binddata4.png)
 
 增加关系：
 
-![增加关系](../asset/fabric-iq-ontology-step05-addrel.png)
+![增加关系](../../asset/fabric-iq-ontology-step05-addrel.png)
 
 至此就可以通过本体查看数据了：
 
-![查看数据-实体列表](../asset/fabric-iq-ontology-step05-viewdata1.png)
+![查看数据-实体列表](../../asset/fabric-iq-ontology-step05-viewdata1.png)
 
-![查看数据-实体详情](../asset/fabric-iq-ontology-step05-viewdata2.png)
+![查看数据-实体详情](../../asset/fabric-iq-ontology-step05-viewdata2.png)
 
-![查看数据-关系图](../asset/fabric-iq-ontology-step05-viewdata3.png)
+![查看数据-关系图](../../asset/fabric-iq-ontology-step05-viewdata3.png)
 
 ### 步骤 6：配置规则
 
-![配置规则-入口](../asset/fabric-iq-ontology-step06-rule1.png)
+![配置规则-入口](../../asset/fabric-iq-ontology-step06-rule1.png)
 
-![配置规则-选择实体](../asset/fabric-iq-ontology-step06-rule2.png)
+![配置规则-选择实体](../../asset/fabric-iq-ontology-step06-rule2.png)
 
-![配置规则-设置条件](../asset/fabric-iq-ontology-step06-rule3.png)
+![配置规则-设置条件](../../asset/fabric-iq-ontology-step06-rule3.png)
 
-![配置规则-设置动作](../asset/fabric-iq-ontology-step06-rule4.png)
+![配置规则-设置动作](../../asset/fabric-iq-ontology-step06-rule4.png)
 
-![配置规则-预览](../asset/fabric-iq-ontology-step06-rule5.png)
+![配置规则-预览](../../asset/fabric-iq-ontology-step06-rule5.png)
 
-![配置规则-测试](../asset/fabric-iq-ontology-step06-rule6.png)
+![配置规则-测试](../../asset/fabric-iq-ontology-step06-rule6.png)
 
-![配置规则-完成](../asset/fabric-iq-ontology-step06-rule7.png)
+![配置规则-完成](../../asset/fabric-iq-ontology-step06-rule7.png)
 
 ### 步骤 7：创建智能体（Data Agent）
 
-![创建 Data Agent-入口](../asset/fabric-iq-ontology-step07-agent1.png)
+![创建 Data Agent-入口](../../asset/fabric-iq-ontology-step07-agent1.png)
 
-![创建 Data Agent-选择本体](../asset/fabric-iq-ontology-step07-agent2.png)
+![创建 Data Agent-选择本体](../../asset/fabric-iq-ontology-step07-agent2.png)
 
-![创建 Data Agent-配置](../asset/fabric-iq-ontology-step07-agent3.png)
+![创建 Data Agent-配置](../../asset/fabric-iq-ontology-step07-agent3.png)
 
-![创建 Data Agent-完成](../asset/fabric-iq-ontology-step07-agent4.png)
+![创建 Data Agent-完成](../../asset/fabric-iq-ontology-step07-agent4.png)
 
 ### 步骤 8：发布智能体
 
-![发布 Agent-设置](../asset/fabric-iq-ontology-step08-publish1.png)
+![发布 Agent-设置](../../asset/fabric-iq-ontology-step08-publish1.png)
 
-![发布 Agent-确认](../asset/fabric-iq-ontology-step08-publish2.png)
+![发布 Agent-确认](../../asset/fabric-iq-ontology-step08-publish2.png)
 
-![发布 Agent-共享](../asset/fabric-iq-ontology-step08-publish3.png)
+![发布 Agent-共享](../../asset/fabric-iq-ontology-step08-publish3.png)
 
 ### 步骤 9：使用智能体
 
-![使用 Agent-对话界面](../asset/fabric-iq-ontology-step09-use1.png)
+![使用 Agent-对话界面](../../asset/fabric-iq-ontology-step09-use1.png)
 
-![使用 Agent-自然语言查询](../asset/fabric-iq-ontology-step09-use2.png)
+![使用 Agent-自然语言查询](../../asset/fabric-iq-ontology-step09-use2.png)
 
-![使用 Agent-查询结果](../asset/fabric-iq-ontology-step09-use3.png)
+![使用 Agent-查询结果](../../asset/fabric-iq-ontology-step09-use3.png)
 
-![使用 Agent-图表展示](../asset/fabric-iq-ontology-step09-use4.png)
+![使用 Agent-图表展示](../../asset/fabric-iq-ontology-step09-use4.png)
 
 ---
 

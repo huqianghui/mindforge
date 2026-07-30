@@ -69,13 +69,16 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### Notes/AI
 
-- [与AI相处之道——从工具依赖到认知伙伴](Notes/AI/与AI相处之道——从工具依赖到认知伙伴.md)
-- [与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑](Notes/AI/与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑.md)
-- [构建AI Native CSU Team——从One Person Team到组织进化的实践思考](Notes/AI/构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md)
-- [FDE 职业进化论——AI 时代前线部署工程师的个人突围与团队重构](Notes/AI/FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构.md)
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
 - [去除AI味：从语言指纹到人机文本边界的消融](Notes/AI/去除AI味：从语言指纹到人机文本边界的消融.md)
 - [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
+
+### Notes/AI/AI-coporation
+
+- [与AI相处之道——从工具依赖到认知伙伴](Notes/AI/AI-coporation/与AI相处之道——从工具依赖到认知伙伴.md)
+- [与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑](Notes/AI/AI-coporation/与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑.md)
+- [构建AI Native CSU Team——从One Person Team到组织进化的实践思考](Notes/AI/AI-coporation/构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md)
+- [FDE 职业进化论——AI 时代前线部署工程师的个人突围与团队重构](Notes/AI/AI-coporation/FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构.md)
 
 ### Notes/AI/Context-Engineering
 
@@ -213,12 +216,22 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### Azure
 
-- [Microsoft Fabric IQ 与本体论（Ontology）研究](Azure/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
-- [Microsoft Fabric IQ 本体（Ontology）管理功能实操解析](Azure/Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md)
-- [Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API](Azure/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
-- [Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型](Azure/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
-- [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
+
+#### Azure/fabricIQ
+
+- [Microsoft Fabric IQ 与本体论（Ontology）研究](Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
+- [Microsoft Fabric IQ 本体（Ontology）管理功能实操解析](Azure/fabricIQ/Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md)
+
+#### Azure/VoiceLive
+
+- [Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API](Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
+- [Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型](Azure/VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
+
+#### Azure/Foundary-Agent
+
+- [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundary-Agent/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
+- [Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权](Azure/Foundary-Agent/Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)
 
 ### book
 

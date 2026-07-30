@@ -556,5 +556,5 @@ FDE 不是老师（教完就走），不是保姆（替你做事），不是工�
 - [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — One Person Team、架构师先验知识编码
 - [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] — "用约束让 Agent 不得不复用"
 - [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] — Regulation vs Optimization、必要多样性定律
-- [The Bitter Lesson](../../paper/2026-03-21-The-Bitter-Lesson.md) — 三种不被模型吞噬的元能力
-- [How AI Impacts Skill Formation](../../paper/2026-03-18-How-AI-Impacts-Skill-Formation.md) — 复杂决策型工作中 AI 是放大器而非替代器
+- [The Bitter Lesson](../../../paper/2026-03-21-The-Bitter-Lesson.md) — 三种不被模型吞噬的元能力
+- [How AI Impacts Skill Formation](../../../paper/2026-03-18-How-AI-Impacts-Skill-Formation.md) — 复杂决策型工作中 AI 是放大器而非替代器

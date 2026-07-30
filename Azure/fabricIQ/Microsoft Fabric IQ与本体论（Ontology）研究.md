@@ -105,7 +105,7 @@ Fabric IQ 的 Graph 是一个**真正的、scale-out 的图数据库引擎**，�
 Ontology 和 Graph 是 Fabric IQ 中**紧密耦合但职责分离**的两个层次：
 
 > [!important] Fabric IQ 四层架构
-> ![Fabric IQ 四层架构](../asset/fabric-iq-ontology-architecture.png)
+> ![Fabric IQ 四层架构](../../asset/fabric-iq-ontology-architecture.png)
 > Ontology 作为语义路由层，将聚合类查询（KPI、DAX）路由到 Semantic Model，将多跳遍历和图算法查询路由到 Graph Engine——两个引擎互补，共同服务于 OneLake 数据湖底座。
 
 - **Ontology** = 语义定义层——定义"什么是客户"、"客户和订单是什么关系"、"订单金额的计算规则是什么"
@@ -142,7 +142,7 @@ Ontology 和 Graph 是 Fabric IQ 中**紧密耦合但职责分离**的两个层�
 **注意**：Graph 不会随上游数据自动刷新，需要手动触发刷新或设置定时刷新计划。当前版本不支持 Schema 演化——结构变更需要重新 ingest。
 
 > [!important] 二维表到图的转换
-> ![二维表到图的转换](../asset/fabric-iq-table-to-graph.png)
+> ![二维表到图的转换](../../asset/fabric-iq-table-to-graph.png)
 > 关系型表中的每一行成为图的一个节点（Node），表间的外键（FK）映射成为图的边（Edge）——这就是 Ontology Data Binding 的核心转换逻辑。
 
 ### 3.4 Graph 的具体作用：超越语义模型的图计算能力
