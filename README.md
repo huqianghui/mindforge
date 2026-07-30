@@ -71,7 +71,6 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
 - [去除AI味：从语言指纹到人机文本边界的消融](Notes/AI/去除AI味：从语言指纹到人机文本边界的消融.md)
-- [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
 
 ### Notes/AI/AI-coporation
 
@@ -182,6 +181,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [线性注意力时代的推理架构 · 之二——为什么 Hybrid 模型难做 Prefix Caching](Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)
 - [线性注意力时代的推理架构 · 之三——vLLM 与 SGLang 支持对比与调优](Notes/AI/inference/线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)
 - [SGLang 与 vLLM 的基因之争——为什么 Prefix Sharing × Hybrid 这条线 SGLang 领先](Notes/AI/inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)
+- [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
 
 ### Notes/AI/Design-Tools
 
