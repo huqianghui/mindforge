@@ -110,6 +110,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [OpenClaw 架构解读——从 claw0 教学仓库理解 AI Agent 网关的核心设计](Notes/AI/agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md)
 - [InkOS 深度感想——AI 小说创作中的 Harness Engineering 范式](Notes/AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)
 - [Hermes Agent vs OpenClaw 深度技术对比](Notes/AI/agent/hermes-agent-vs-openclaw.md)
+- [AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态](Notes/AI/agent/AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态.md)
 
 ### Notes/AI/agent-lightning
 
