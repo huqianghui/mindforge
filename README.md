@@ -120,6 +120,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Agent Lightning 系列 08：RL 实战篇——example 选型、calc_x 跑通 VERL 训练与 tinker 等框架](Notes/AI/agent-lightning/Agent%20Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架.md)
 - [Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层](Notes/AI/agent-lightning/Slime%20vs%20VERL%20深度架构对比——数据流哲学、组件选型与训练推理栈分层.md)
 - [Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南](Notes/AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
+- [Prompt 优化成熟度阶梯——从 vibe check、LLM-judge 到数据闭环：APO 与 SkillOpt 前置篇](Notes/AI/agent-lightning/Prompt优化成熟度阶梯——从vibe%20check、LLM-judge到数据闭环：APO与SkillOpt前置篇.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 
 ### Notes/AI/ms-swift
