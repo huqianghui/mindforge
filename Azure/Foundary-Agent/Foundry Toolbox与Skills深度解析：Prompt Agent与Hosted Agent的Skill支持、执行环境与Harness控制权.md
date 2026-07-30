@@ -1,6 +1,7 @@
 ---
 title: Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权
 created: 2026-07-30
+updated: 2026-07-31
 tags:
   - azure
   - foundry
@@ -11,7 +12,7 @@ tags:
   - prompt-agent
   - mcp
   - architecture
-description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，梳理 Foundry Skills 的本质（SKILL.md 文本而非可执行代码）、Toolbox 的不可变版本与显式发布机制、两种 skill 交付模式（toolbox MCP Resources 与直接注入）、Prompt Agent 与 Hosted Agent 在 skill 加载上的能力差异，最终落到 Agent=Model+Harness 框架下的控制权分层
+description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，梳理 Foundry Skills 的两条路线（Agents 侧 SKILL.md 纯文本注入 vs Responses API shell tool 的可执行 skill bundle）、Toolbox 的不可变版本与显式发布机制、skill 交付模式、Prompt Agent skill 支持的官方文档矛盾（overview 标 Yes 但三条绑定路径均不通）、两类 agent 的成本模型对比，最终落到 Agent=Model+Harness 框架下的控制权分层
 ---
 
 # Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权
@@ -23,9 +24,9 @@ description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，
 
 ---
 
-## 一、先修正前提：Foundry 的 Skill 是文本，不是可执行代码
+## 一、先修正前提：Agents 侧的 Skill 是文本，不是可执行代码
 
-理解后面所有问题的钥匙是这一句：**Foundry 的 skill 从头到尾都是被注入上下文的文本，平台不执行 skill 里的任何代码。**
+理解后面所有问题的钥匙是这一句：**在 Foundry Agents 的 Skills API 交付路径下，skill 从头到尾都是被注入上下文的文本，平台不执行 skill 里的任何代码。**（注意限定词——Responses API 层面另有一条 shell tool 路径，skill 里的脚本真的会在平台容器里执行，见 1.1 节。）
 
 Foundry Skills（preview）遵循 [agentskills.io](https://agentskills.io) 开放规范，一个 skill = `SKILL.md`（YAML front matter + Markdown body）+ 可选的附属资源文件（参考文档、assets）。官方文档对 body 的定义只有一句话："Becomes the skill's injected instructions"——skill 的价值在于**把行为准则（behavioral guidelines）从 agent 代码中解耦出来，中心化版本管理**：升级流程、审查清单、话术约束写一次，多个 agent 复用，改 skill 不用改 agent。
 
@@ -49,7 +50,31 @@ You're a friendly greeting assistant.
 | Code Interpreter 工具 | 平台托管的共享 Python 沙箱 | 版本与预装包由平台决定，**不可自定义依赖** |
 | 外部 MCP server / OpenAPI 服务 | 你自己的服务器 | 完全自管 |
 
-也就是说，执行环境永远是 **agent 的**，不是 skill 的。这和 Anthropic 生态里"skill 可以带 scripts/ 目录、由 harness 在本地 bash 执行"的模式不同——Foundry 当前的 Skills API 只做文本的存储、版本化和分发。
+也就是说，执行环境永远是 **agent 的**，不是 skill 的。这和 Anthropic 生态里"skill 可以带 scripts/ 目录、由 harness 在本地 bash 执行"的模式不同——Foundry Agents 侧的 Skills API 只做文本的存储、版本化和分发。
+
+### 1.1 例外路径：Responses API 的 shell tool——skill 脚本真的会执行
+
+上面的"纯文本"结论只对 **Foundry Agents 的 Skills API**（agents 路径）成立。Foundry Models 的 **Responses API** 另有一条 skills 路径（openai 路径），形态完全不同：
+
+- **Skill 是带脚本的文件包**：SKILL.md + `scripts/` + `templates/`，multipart 或 ZIP 上传后得到 `skill_id`，同样有版本管理
+- **通过 shell tool 绑定**：skill 以 `skill_reference` 挂进 shell tool 的执行环境
+- **脚本真的会跑**：`container_auto` 模式下平台自动管理容器，模型通过 shell 命令实际执行 skill 里的脚本（也可选 local shell 模式在自己机器上执行）
+
+```python
+response = openai.responses.create(
+    model="gpt-5.5",
+    tools=[{
+        "type": "shell",
+        "environment": {
+            "type": "container_auto",
+            "skills": [{"type": "skill_reference", "skill_id": "<skill_id>"}],
+        },
+    }],
+    input="Use the csv-insights skill to summarize report.csv.",
+)
+```
+
+这条路径与 Anthropic "skill 带 scripts、由 harness 执行"的模式是对齐的。但注意：**shell tool 目前不在 Foundry agent 的工具目录里**（内置工具与 MCP/OpenAPI/A2A/Toolbox 等自定义工具中均无 shell）——即这条路径当前只能从裸 Responses API 调用走通，不能挂到 prompt agent 的定义上。这是第五节矛盾的关键伏笔。
 
 ---
 
@@ -138,19 +163,44 @@ Toolbox 只支持 **12 种预定义 tool 类型**：MCP、Web Search、Code Inte
 
 ## 五、Prompt Agent vs Hosted Agent：谁能用 Skill，为什么
 
-### 5.1 能力现状
+### 5.1 能力现状：官方文档的矛盾信号
 
-| | Prompt Agent | Hosted Agent |
+先厘清一个容易混淆的分层——**skill 的管理面与消费面是两回事**：
+
+- **管理面**（创建/版本/下载）：REST API、Python/.NET/JS SDK、`azd ai skill` CLI、VS Code Foundry Toolkit 全部可用，**与 agent 类型无关**
+- **消费面**（把 skill 绑到 agent 上）：这才是 prompt/hosted 分野所在
+
+消费面上，把三条潜在绑定路径逐一核对（初核 2026-07-30；最近复核 2026-07-31，核验记录见 5.1.1）：
+
+| 路径 | Prompt Agent | Hosted Agent |
 |---|---|---|
 | 模式 A（toolbox 挂 skill） | ❌ **静默无效**——托管运行时处理 MCP tools（`tools/list`/`tools/call`），没有文档表明它会读 MCP Resources 并注入上下文 | ✔️ 自己实现 SEP-2640 client 逻辑，或直接用 Agent Framework 的 `AgentSkillsProvider` |
 | 模式 B（直接注入） | ❌ 没有可编程的启动代码，无处读 SKILL.md | ✔️ 启动时读 `skills/` 目录注入（如 Copilot SDK `skill_directories`） |
+| 路径 C（Responses API shell tool，见 1.1） | ⚠️ API 层存在（`skill_reference` 绑定 + `container_auto` 执行），且 prompt agent 底层就是 Responses API——但 **agent 工具目录里没有 shell tool**，无法从 agent 定义挂载 | ✔️ 容器代码可直接调 Responses API，天然可用 |
 | 变通 | 手动把 skill instructions 合并进 `instructions` 字段（功能等效，但失去中心化版本管理——skill 的核心价值） | 不需要变通 |
 
-官方文档的信号也一致：功能支持矩阵里"Attach skills to a toolbox"只有 Toolbox 列打勾，**压根没有 prompt agent 这一列**；文档中所有 skill 消费示例（Agent Framework sample、Copilot SDK sample）全部是 hosted agent。
+skills 操作文档的信号一致：功能支持矩阵的列是 REST API / Python / .NET / JavaScript / VS Code / Toolbox / Hosted agent，**压根没有 prompt agent 这一列**；所有 skill 消费示例（Agent Framework sample、Copilot SDK sample）全部是 hosted agent。
+
+但这里必须如实记录一个矛盾：**agents overview 的对比表给 Prompt Agent 标了 "Skill support: Yes"**（同时 "Runtime code to maintain: None"）。两份文档同日更新却互相打架。合理的解读是："Yes" 要么是超前于 skills 文档的 roadmap 表述，要么指路径 C 这个 API 层能力——无论哪种，**截至最近核验都不存在一条文档化的具体操作能把 skill 绑到 prompt agent 上**。另外 "Runtime code to maintain: None" 与 skill 支持并不矛盾——它说的是你不用维护 agent 应用代码（harness 归平台），与"平台 harness 是否实现了 skill 加载"是两个正交维度。这个矛盾哪边先收敛，值得跟踪。
+
+### 5.1.1 核验记录（持续更新，后续复查在此追加）
+
+> 每次复核官方文档后在此追加一条记录：核验日期、文档版本、结论是否变化、证据链接。矛盾收敛（任一路径落地或 overview 改标注）时更新本节并同步修订 5.1 表格与小结。
+
+**2026-07-31 复核**（skills how-to 页面版本：2026-07-24 更新）——**结论不变，仍是"宣称有、路径无"**：
+
+- [agents overview 对比表](https://learn.microsoft.com/en-us/azure/foundry/agents/overview) 仍标 `Skill support: Yes | Yes`——只有一行字，无链接、无代码、无绑定说明
+- [skills how-to](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills) 的 Feature support 矩阵列仍为 REST API / Python / .NET / JavaScript / VS Code / Toolbox / **Hosted agent**，**没有 Prompt agent 列**；交付模式原文仍只有 "Attach to a toolbox" 与 "download directly into a **Hosted or local agent** project"
+- 唯一端到端消费示例仍是 hosted agent：GitHub Copilot SDK 样例，`main.py` 用 `skill_directories` 参数从本地 `skills/` 目录读 SKILL.md——前提是自己写加载代码，prompt agent 封闭 harness 无法复刻
+- [Responses API shell tool 文档](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/skills) 与 1.1 节代码示例逐项吻合（`container_auto` + `skill_reference`、model `gpt-5.5`、input 原文一致），并确认 local shell 模式存在；shell tool 仍不在 agent 工具目录
+- **干扰项排除**：[Use the Microsoft Foundry Skill in coding agents](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/use-microsoft-foundry-skill) 表格里出现的 "Prompt agent"，是 `microsoft-foundry` 元 skill 帮 GitHub Copilot/Claude Code 等 coding agent **创建** prompt agent，不是 prompt agent **消费** skill——方向相反，不构成反例
+- 待决定性验证（区分 roadmap 超前 / 文档错误 / 未文档化路径三种解释）：portal 创建 prompt agent 看有无 skill 挂载入口；或 CreateAgent API 强行传 `skills` 字段看是否报 `invalid_payload`
+
+**2026-07-30 初核**：三条绑定路径逐一核对，均不通，详见 5.1 正文表格。
 
 ### 5.2 关键澄清：限制点不在"执行环境"，在"谁来加载"
 
-一个容易走偏的推理是："hosted agent 有容器、有 venv、能装依赖，所以能跑 skill；prompt agent 没有执行环境，所以不能。"——**这个因果链不成立**，因为第一节已经说明 skill 是纯文本，加载 skill 只需要"读文本 + 拼进 system prompt"，不需要任何执行环境。
+一个容易走偏的推理是："hosted agent 有容器、有 venv、能装依赖，所以能跑 skill；prompt agent 没有执行环境，所以不能。"——**这个因果链不成立**，因为第一节已经说明 Agents 侧的 skill 是纯文本，加载 skill 只需要"读文本 + 拼进 system prompt"，不需要任何执行环境。（Responses API 路径的 skill 确实需要执行环境，但那条路平台自己用 `container_auto` 就解决了——依然不构成 prompt agent 用不了 skill 的理由。）
 
 真正的原因是**加载协议的实现权**：skill 加载（SEP-2640 resources 消费 + progressive disclosure 注入）需要 harness 实现相应的 client 逻辑。Hosted agent 的 harness 归你所有，缺什么补什么；Prompt agent 的 harness 是平台的封闭代码，它没实现，你就没有任何注入点。
 
@@ -191,19 +241,40 @@ Claude Code、GitHub Copilot 能直接消费 Foundry toolbox 的 skills，正是
 
 ---
 
-## 七、小结
+## 七、成本模型：调用计费相同，container compute 买的是控制权
 
-1. **Skill 是文本不是代码**：SKILL.md 注入上下文，平台不执行任何 skill 内代码；"skill 的执行环境"不存在，执行环境永远是 agent 的（hosted 容器 / Code Interpreter / 外部服务）。
+overview 对比表给出的成本模型：
+
+| | Prompt Agent | Hosted Agent |
+|---|---|---|
+| Cost model | Per-call inference + tool usage | Per-call inference + tool usage **+ container compute** |
+
+两个要点：
+
+**"Per-call inference + tool usage" 两者是同一套计费。** 两类 agent 最终都打到同一个 Responses API 上：模型 token 按所选 deployment 的单价计费，工具（web search、code interpreter 等）按各自 meter 计费——同一个模型、同样的调用量，这部分账单没有差别。
+
+但"单价相同"不等于"账单相同"，差异在**消耗量的控制权**：
+
+- **Prompt agent**：每次调用注入什么、注入多少（instructions、tool schemas、对话历史裁剪策略）由平台 harness 决定，你无法优化 token 消耗模式
+- **Hosted agent**：harness 是你的代码——上下文裁剪、prompt 缓存、模型路由（简单请求走便宜模型）、按需加载 skill（progressive disclosure 本身就是 token 优化手段）全部可做
+
+**Container compute 是为 harness 控制权付的钱。** 结合第五节的控制权分层：hosted agent 多付的容器费用，买到的正是"改 harness 的权力"——skill 加载能力、token 优化空间、新协议即时跟进，全在这份权力里。scale-to-zero 让这笔钱在低流量场景接近零，但生产负载下是真实成本——选型时的判断标准应是"是否需要 harness 控制权"，而不只是"要不要多付钱"。
+
+---
+
+## 八、小结
+
+1. **Agents 侧 skill 是文本不是代码**：Skills API 交付的 SKILL.md 只注入上下文，平台不执行 skill 内代码；执行环境永远是 agent 的（hosted 容器 / Code Interpreter / 外部服务）。**例外是 Responses API 的 shell tool 路径**——skill 是带 scripts/ 的文件包，脚本在平台容器（`container_auto`）真实执行。
 2. **"加了发不了"是设计不是 bug**：toolbox 与 skill 都是不可变版本 + 显式 publish；`skill add` 只产生 draft version，必须 `azd ai toolbox publish` 才生效；发布后再添加照常 work，每次变更再 publish 一次。
-3. **Prompt Agent 用不了 skill 的真因是 harness 控制权**：加载 skill 需要 harness 实现 SEP-2640 client 逻辑；prompt agent 的 harness 是平台封闭代码且尚未实现，你没有注入点——不是它缺执行环境。变通只有手动把 skill 文本合入 instructions（失去版本管理价值）。
-4. **控制权决定能力边界**：托管 harness 用可编程性换运维省力，新能力必须等平台排期；自有 harness（hosted agent、Claude Code、GitHub Copilot）对开放协议即时跟进。skill 复用是硬需求时，用 Agent Framework 包一层薄 hosted agent 是当前最短路径。
+3. **Prompt Agent 的 skill 支持是文档级矛盾**：overview 标 "Skill support: Yes"，但三条绑定路径（toolbox 消费 / 直接注入 / shell tool）截至 2026-07-31 复核没有一条文档化可走通（核验记录见 5.1.1）——skills 文档功能矩阵没有 prompt agent 列，shell tool 不在 agent 工具目录。根因是 harness 控制权：加载 skill 需要 harness 实现相应 client 逻辑，平台封闭代码没实现你就没有注入点。变通只有手动把 skill 文本合入 instructions（失去版本管理价值）。
+4. **控制权决定能力边界，也决定成本结构**：调用侧计费（inference + tool usage）两类 agent 完全相同；hosted agent 多付的 container compute 买的是"改 harness 的权力"——skill 加载、token 优化、新协议即时跟进。skill 复用是硬需求时，用 Agent Framework 包一层薄 hosted agent 是当前最短路径。
 5. **成熟度提醒**：Skills API 与 toolbox skill 挂载均为 preview（`Foundry-Features: Skills=V1Preview`），不支持私网，生产依赖需锁版本评估。
 
 ---
 
-## 八、开放问题（待验证/后续讨论）
+## 九、开放问题（待验证/后续讨论）
 
-1. **Prompt Agent 的 skill 支持时间表**：托管运行时何时实现 SEP-2640 resources 消费；实现后 progressive disclosure 的 token 计费策略。
+1. **Prompt Agent 的 skill 支持如何收敛**：overview 已标 Yes 但无绑定路径——是托管运行时实现 SEP-2640 resources 消费，还是把 shell tool 加进 agent 工具目录（路径 C 下沉），哪条先落地；实现后 progressive disclosure 的 token 计费策略。（跟踪方式：定期复核并追加到 5.1.1 核验记录，最近复核 2026-07-31 状态未变；决定性验证靠实测 portal 挂载入口 / CreateAgent API `skills` 字段。）
 2. **Skill 依赖声明**：SKILL.md 是否会演进出"声明所需包/工具"的元数据，让平台或 harness 自动校验/准备执行环境（对齐 Anthropic skill 的 scripts 能力）。
 3. **Portal 发布体验**：portal 侧对含 skill 的 toolbox 版本发布支持是否随 preview 推进补齐；"添加 skill 后无法发布"的具体报错路径值得实测记录。
 4. **Skill 治理**：skill 内容直通 system prompt 的注入面，企业场景如何做 skill 内容审查与准入（Prompt Shield 是否覆盖 skill 注入的内容）。
@@ -213,7 +284,10 @@ Claude Code、GitHub Copilot 能直接消费 Foundry toolbox 的 skills，正是
 
 ## 参考
 
-- [Use skills with Microsoft Foundry agents (preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)（2026-07-30 更新版）
+- [Use skills with Microsoft Foundry agents (preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)（页面版本 2026-07-24；核验记录见 5.1.1）
+- [What are Microsoft Foundry agents? (overview 对比表) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)
+- [Use skills with the Responses API (shell tool) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/skills)
+- [Use the Microsoft Foundry Skill in coding agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/use-microsoft-foundry-skill)（易混淆干扰项：元 skill 创建 agent，非 agent 消费 skill）
 - [Toolbox for Microsoft Foundry agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox)
 - [Building Agents in Production with Toolbox, Skills, and Tool Search — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azuredevcommunityblog/building-agents-in-production-with-toolbox-skills-and-tool-search/4537969)
 - [Agent Skills 规范](https://agentskills.io)、[MCP Skills 扩展 SEP-2640](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2640)
