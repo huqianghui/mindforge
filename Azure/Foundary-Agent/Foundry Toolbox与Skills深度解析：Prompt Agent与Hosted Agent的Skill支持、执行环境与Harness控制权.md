@@ -263,6 +263,34 @@ Claude Code、GitHub Copilot 能直接消费 Foundry toolbox 的 skills，正是
 | **Foundry Hosted Agent** | 你自己的容器 | Dockerfile 全权 | skill 依赖预装进镜像（上表所述隐式契约的人工对齐点） |
 | **无 shell tool 的 harness**（Foundry prompt agent、Copilot Studio Chat/Standard Harness） | 无通用执行手段 | 无 | 脚本只有文本价值：作为参考实现让模型照写，或喂给 Code Interpreter（受限于平台沙箱固定预装包） |
 
+**GitHub Copilot coding agent 环境补充**：`copilot-setup-steps.yml` 就是一个**标准 GitHub Actions workflow 文件**——GitHub 没有为 coding agent 发明新的环境定义机制，直接复用了 Actions 基础设施：
+
+```yaml
+# .github/workflows/copilot-setup-steps.yml
+jobs:
+  copilot-setup-steps:          # job 名必须是这个，Copilot 靠它识别
+    runs-on: ubuntu-latest      # 换更大 runner / 自托管也在这里
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci             # 预装依赖
+```
+
+与普通 CI workflow 的四点差别：
+
+1. **触发方式不同**：不是 push/PR 触发，而是每次派任务时**先跑 setup job，跑完 Copilot 才进场**——setup 阶段归你（确定性脚本），执行阶段归 agent（模型决策）
+2. **产物是"热环境"不是镜像**：runner 是 ephemeral 的，每次任务现场重建环境、任务结束即销毁——效果等价于"每次任务前 docker build 一遍"，所以官方建议配 cache（`actions/cache`、`setup-*` 内置缓存）压时间
+3. **防火墙只管 agent 阶段**：setup steps 阶段出网不受 Copilot 防火墙限制（`npm ci`/`pip install` 正常），agent 开始干活后出网才走 allowlist——依赖必须在 setup 阶段装完的原因就在这
+4. **可当普通 workflow 调试**：改文件 push 后会自动跑一次，也可手动 trigger
+
+另注意会话硬上限 **59 分钟**，不可延长（可用 `timeout-minutes` 调短）。
+
+**易混淆：Copilot Studio 的 GitHub Copilot Harness ≠ coding agent 的环境**。Copilot Studio 新增的 GitHub Copilot Harness（2026-08-03 上线，第三种 agent 构建模式，与 Copilot Chat Harness、Standard Harness 并列）是把 GitHub Copilot 的 agentic loop 经 Copilot SDK 嵌入作引擎（SDK 官方描述："exposes the same engine behind Copilot CLI"）——**harness 同源，environment 不同**：它跑在微软托管的 Copilot Studio / Power Platform 基础设施上，`copilot-setup-steps.yml` 与仓库级防火墙是 GitHub 仓库级配置，对它**不适用**；其执行环境规格（沙箱、脚本执行能力、shell tool 等价物）截至 2026-07-31 尚无公开文档。这正是 Model → Harness → Environment 分层的活例子：**同一个 harness 可以挂在不同 environment 上，环境文档不能跨着引用**。
+
 写"环境自适应" skill 脚本的三条通用策略（按优先级）：
 
 1. **自举式脚本**：依赖解析内置于脚本本身，环境上只需有引导器——Python 用 `uv run` + PEP 723 inline metadata（脚本头部声明依赖，uv 自动建临时环境装包），Node 用 `npx -y` 免安装执行
@@ -330,6 +358,7 @@ overview 对比表给出的成本模型：
 3. **Portal 发布体验**：portal 侧对含 skill 的 toolbox 版本发布支持是否随 preview 推进补齐；"添加 skill 后无法发布"的具体报错路径值得实测记录。
 4. **Skill 治理**：skill 内容直通 system prompt 的注入面，企业场景如何做 skill 内容审查与准入（Prompt Shield 是否覆盖 skill 注入的内容）。
 5. **跨项目复用**：skill 与 toolbox 的同项目约束是否会放开；组织级 skill 目录（类似 VS Code Toolkit 预置目录）的治理模型。
+6. **Copilot Studio GitHub Copilot Harness 的执行环境**：2026-08-03 上线后核验其官方文档——托管环境规格、能否执行 skill 脚本、有无 shell tool 等价物、与 coding agent（Actions runner）环境的差异（见 6.1 易混淆提示）。
 
 ---
 
@@ -342,6 +371,8 @@ overview 对比表给出的成本模型：
 - [Skills in the OpenAI API — OpenAI Cookbook](https://developers.openai.com/cookbook/examples/skills_in_api)
 - [Customizing the development environment for Copilot coding agent — GitHub Docs](https://docs.github.com/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment)
 - [Customizing or disabling the firewall for Copilot coding agent — GitHub Docs](https://docs.github.com/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent)
+- [About GitHub Copilot cloud agent（Actions 环境、59 分钟会话上限）— GitHub Docs](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent)
+- [GitHub Copilot SDK（"the same engine behind Copilot CLI"，Copilot Studio GitHub Copilot Harness 的嵌入通道）](https://github.com/github/copilot-sdk)
 - [OpenForge RL: Train Harness-native Agents in Any Environment（harness 正式定义）— arXiv:2607.21557](https://arxiv.org/html/2607.21557v1)
 - [Use the Microsoft Foundry Skill in coding agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/use-microsoft-foundry-skill)（易混淆干扰项：元 skill 创建 agent，非 agent 消费 skill）
 - [Toolbox for Microsoft Foundry agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox)
