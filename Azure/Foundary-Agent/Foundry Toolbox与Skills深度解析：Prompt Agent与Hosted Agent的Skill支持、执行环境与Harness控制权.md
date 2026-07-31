@@ -20,7 +20,7 @@ description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，
 > 本文源于两个实际困惑的排查（2026-07-30，基于 Microsoft Learn skills/toolbox 官方文档核对）：
 > ① 给 Agent 的 toolbox 添加 skill 后为什么无法发布？发布之后再添加是否 work？
 > ② Skill 里如果包含 script，它的执行环境（python venv、依赖安装）由谁管理？Prompt Agent 为什么用不了 skill？
-> 三类 Agent 的全景对比（Memory/Planner/治理/Voice）见姊妹篇 [[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]。
+> Agent 类型的全景对比（Memory/Planner/治理/Voice）见姊妹篇 [[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]。（⚠️ 2026-07-31 加注：该文标题中的第三类 Workflow Agent 已从官方 agent 类型中移除——Workflows 定于 2026-12-01 退役，编排下沉至 Agent Framework/harness + A2A + Skills，详见该文文首更新说明。官方 agent 类型现仅剩本文讨论的 Prompt Agent 与 Hosted Agent 两类。）
 
 ---
 
