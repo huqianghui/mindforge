@@ -1,6 +1,7 @@
 ---
 title: Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型
 created: 2026-07-19
+updated: 2026-07-31
 tags:
   - azure
   - foundry
@@ -10,13 +11,25 @@ tags:
   - workflow-agent
   - governance
   - architecture
-description: 全面对比 Microsoft Foundry 中三类 Agent——Prompt Agent（Foundry 帮你运行）、Hosted Agent（你自己运行，Foundry 帮你托管）与 Workflow Agent（多 Agent 编排层）——的架构、Memory、Planner、工具、治理、可观测性、模型自由度与成熟度，给出 80/20 场景选型规则，并专节回答 Voice Live 与两类 Agent 的组合关系
+description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agent（Foundry 帮你运行）与 Hosted Agent（你自己运行，Foundry 帮你托管）——的架构、Memory、Planner、工具、治理、可观测性、模型自由度与成熟度，给出 80/20 场景选型规则，并专节回答 Voice Live 与两类 Agent 的组合关系。原第三类 Workflow Agent 已于 2026 年中从官方 Agent 类型中移除（Workflows 将于 2026-12-01 退役），相关章节保留为历史记录并加注
 ---
 
 # Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型
 
 > 本文源于一次架构选型讨论（与 ChatGPT 的讨论，2026-07-19）：在 Microsoft Foundry 里建 Agent 时，Prompt Agent、Hosted Agent、Workflow Agent 到底差在哪？什么场景该用哪个？
 > 姊妹篇（语音入口视角）：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]。
+
+> [!warning] 更新说明（2026-07-31）：Workflow Agent 已从官方 Agent 类型中移除
+> 本文写作时（2026-07-19 前后的资料），Foundry 还有 portal 可视化的 multi-agent workflows（本文称 Workflow Agent，public preview）。但据最新官方文档（[Agent Service Overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)，2026-07-09 更新）：
+>
+> 1. **Agent 类型只剩两类**——Prompt agents 与 Hosted agents。"Workflow Agent"不再作为一种 agent 类型出现在文档和 portal 中。
+> 2. **Workflows 功能本身进入退役倒计时**——官方明确 "Microsoft Foundry is retiring workflows on **December 1, 2026**"，禁止新的生产依赖；新开发指引改用 **Microsoft Agent Framework** 的 workflow orchestrations（代码级），存量 workflow 有官方迁移指南（见 [Build a workflow in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow) 的 Migration guide 节）。
+> 3. **多 Agent 编排的新承接**：原 Workflow Agent 承担的"确定性多 Agent 协作"没有消失，而是**从"托管 YAML/可视化产品"下沉回代码与 harness 层**——
+>    - **Hosted Agent 内代码编排**：任意 harness（Agent Framework / LangGraph / OpenAI Agents SDK / Anthropic Agent SDK / GitHub Copilot SDK）自带 sub-agent、handoff、并行等编排原语；
+>    - **A2A 协议（preview）**：agent 间委派的平台级标准通道（Agent A 保留 thread 控制权的 A2A tool 调用，或完整 handoff）；
+>    - **Skills 层**：overview 对比表中 Prompt Agent 与 Hosted Agent 现均标注 **Skill support: Yes**，流程性知识可以以 skill 形式复用而不必固化成编排图（详见姊妹篇 [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]）。
+>
+> 这印证了一个判断：微软放弃了把编排层做成独立托管产品的路线，把它交还给 agent framework 生态（harness 即编排）。**本文 Workflow Agent 相关内容（第一、二、五节及各对比表相应行列）保留为历史记录，均已就地加注；选型结论以两类 Agent 为准。**
 
 ---
 
@@ -26,9 +39,11 @@ description: 全面对比 Microsoft Foundry 中三类 Agent——Prompt Agent（
 |------|--------|------|
 | **Prompt Agent** | **Foundry 帮你运行 Agent**——你只提供 instruction + tools + model + knowledge 配置，运行时归微软 | Azure Functions / Copilot Studio 的技术版 |
 | **Hosted Agent**（preview） | **你自己运行 Agent，Foundry 帮你托管**——你写代码打包成容器，Foundry 只管 Hosting / Identity / Scale / Monitoring | Kubernetes（自带工作负载，平台管底座） |
-| **Workflow Agent**（public preview） | **编排多个 Agent 的确定性工作流层**——基于 Microsoft Agent Framework，可视化 + YAML 定义多 Agent 协作 | Logic Apps / Step Functions 的 Agent 版 |
+| ~~**Workflow Agent**~~（⛔ 2026-12-01 退役） | **编排多个 Agent 的确定性工作流层**——基于 Microsoft Agent Framework，可视化 + YAML 定义多 Agent 协作 | Logic Apps / Step Functions 的 Agent 版 |
 
 三者不是同一维度的竞争关系：Prompt 与 Hosted 是**单个 Agent 的两种运行时归属**，Workflow 是**它们之上的编排层**。
+
+> ⚠️ 2026-07-31 更新：Workflow Agent 已不再是官方 agent 类型（见文首更新说明）。"编排层"这个维度本身仍然存在，只是载体从托管产品换成了 Agent Framework 代码 / harness 原语 / A2A 协议。
 
 ---
 
@@ -54,9 +69,11 @@ description: 全面对比 Microsoft Foundry 中三类 Agent——Prompt Agent（
   - `/invocations` —— 任意 JSON 进出，适合 webhook 接收器、批处理、协议桥接（如 AG-UI）；
   - `/invocations_ws` —— 全双工 WebSocket，实时语音等双向流场景（见第六节）。
 
-### Workflow Agent：编排层
+### Workflow Agent：编排层（⛔ 历史记录，2026-12-01 退役）
 
-基于 Microsoft Agent Framework 的多 Agent workflows（public preview）：在 portal 可视化设计器或 VS Code AI Toolkit 里用 YAML 定义确定性、有状态的编排流程，协调多个 Agent 按序/分支/并行工作。适合"单个 Agent 装不下"的业务流程——Prompt Agent 自身的多 Agent 能力有限，复杂协作主要靠这一层（或者干脆在 Hosted Agent 里用 LangGraph 自己编排）。
+基于 Microsoft Agent Framework 的多 Agent workflows（写作时 public preview）：在 portal 可视化设计器或 VS Code AI Toolkit 里用 YAML 定义确定性、有状态的编排流程，协调多个 Agent 按序/分支/并行工作。适合"单个 Agent 装不下"的业务流程——Prompt Agent 自身的多 Agent 能力有限，复杂协作主要靠这一层（或者干脆在 Hosted Agent 里用 LangGraph 自己编排）。
+
+> ⚠️ 2026-07-31 更新：括号里那条"备选路线"最终成了正主——官方宣布 Workflows 于 2026-12-01 退役，指引新开发直接用 Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）。
 
 ---
 
@@ -71,9 +88,9 @@ description: 全面对比 Microsoft Foundry 中三类 Agent——Prompt Agent（
 | **State** | Thread 由微软维护 | 自己设计任意复杂 state；per-session sandbox 持久化 |
 | **治理** | **Strong**：RBAC、Audit、Monitoring、Prompt Shield、Content Filter、Cost Tracking 全在 portal 开箱即用 | **Medium（内容层）**：Foundry 只看得见 Input/Output/Container 边界，内容安全、prompt 防护需在代码内自接；**身份层与 Prompt 同源**（专属 Entra agent identity + 显式 RBAC），详见第四节 |
 | **可观测性** | Portal 直接看 Thread、Run、Tool Call、Token 消耗 | 协议库内置 OpenTelemetry（trace 进关联的 App Insights），但 Agent 内部推理步骤、planner 决策需自己埋点（LangSmith / Phoenix / 自定义 span） |
-| **多 Agent** | 有限（connected agents），复杂协作靠 Workflow Agent | LangGraph 任意复杂 Supervisor / 层级结构，容器内自己编排 |
+| **多 Agent** | 有限（A2A tool 委派，被调 agent 结果返回主 agent），~~复杂协作靠 Workflow Agent~~（⚠️ Workflows 退役后复杂协作统一走右列） | LangGraph 任意复杂 Supervisor / 层级结构，容器内自己编排；harness 自带 sub-agent/handoff 原语；A2A 协议（preview）跨 agent 委派 |
 | **模型** | 仅 Foundry 支持的模型（GPT-5 / GPT-4.1 / Phi 等） | 任意模型：Azure 上的 GPT-5，也可以 Claude / Gemini / DeepSeek / Qwen / Llama（第三方模型 at your own risk，出口流量与合规自负） |
-| **成熟度** | **GA**（新版 Foundry Agent Service 已 GA，唯一生产级选项） | **Preview**；multi-agent workflows 也是 public preview |
+| **成熟度** | **GA**（新版 Foundry Agent Service 已 GA，唯一生产级选项） | 写作时 **Preview**；~~multi-agent workflows 也是 public preview~~（⚠️ Workflows 已定 2026-12-01 退役，不得新建生产依赖） |
 
 一条判断主线贯穿所有维度：**是否需要自己控制 Agent Runtime**。不需要 → Prompt Agent 拿全套托管红利；需要 → Hosted Agent 拿全部自由度，代价是治理和可观测性要自己补。
 
@@ -82,6 +99,8 @@ description: 全面对比 Microsoft Foundry 中三类 Agent——Prompt Agent（
 ## 四、治理与安全：三类 Agent 的分层对比
 
 治理是选型中差距最大、也最容易被低估的维度。但"Prompt 强、Hosted 弱"的笼统说法并不准确——把治理拆成**身份、内容、审计、成本**四层看，差异的真实分布是：**三者在身份层站在同一套 Entra Agent ID 体系上，分水岭在内容层和可观测性的内层**。
+
+> ⚠️ 2026-07-31 更新：本节各表的 Workflow Agent 列保留为历史记录。其身份/内容结论（治理落在成员 Agent 上）在迁移到 Agent Framework 代码编排后依然成立——编排下沉到 Hosted Agent 容器内，治理特征即并入 Hosted Agent 列。
 
 ### 4.1 身份与访问层：三者同一套 Entra Agent ID 体系
 
@@ -130,22 +149,36 @@ Foundry 把 agent 身份统一建在 **Microsoft Entra Agent ID** 上——一�
 
 1. **强合规组织（金融/医疗/政府）**：Prompt Agent 的开箱内容安全 + 审计仍是权重最高的理由——用 Hosted 复刻同等**内容层**治理水位的工程成本常被严重低估。
 2. **但"要治理就不能用 Hosted"是误区**：身份与访问层三者同源（Entra Agent ID），Hosted 甚至因显式 RBAC 更可审计。Hosted 的治理缺口集中在内容层和内层可观测性，是**可以用工程补的**（Content Safety API + OTel 埋点），只是要把这笔工程量算进选型。
-3. **多 Agent 流程要审计**：优先 Workflow Agent 而不是 Hosted 内代码编排——"流程即 YAML"天然满足"业务流程可回溯"的合规诉求。
+3. ~~**多 Agent 流程要审计**：优先 Workflow Agent 而不是 Hosted 内代码编排——"流程即 YAML"天然满足"业务流程可回溯"的合规诉求。~~（⚠️ 2026-07-31 更新：此建议随 Workflows 退役失效。"流程即配置、可 diff 可回溯"的诉求现在靠 **Agent Framework 编排代码进版本控制** 实现——代码同样可 diff、可 code review，且比 YAML 表达力更强；平台侧流程审计靠 tracing 补齐。）
 
 ---
 
-## 五、Workflow Agent：什么时候需要编排层
+## 五、Workflow Agent：什么时候需要编排层（⛔ 历史记录 + 2026-07-31 重写）
 
-Prompt Agent 单体能力有边界：planner 黑盒、多 Agent 协作有限。当业务需要**多个职责单一的 Agent 按确定性流程协作**时，有两条路：
+> ⚠️ 本节原文写于 Workflows 尚存时，保留作历史记录；退役后的编排选型见本节末尾"更新后的编排选型"。
+
+Prompt Agent 单体能力有边界：planner 黑盒、多 Agent 协作有限。当业务需要**多个职责单一的 Agent 按确定性流程协作**时，（写作时）有两条路：
 
 | 路线 | 形态 | 适合 |
 |------|------|------|
-| **Workflow Agent**（multi-agent workflows） | portal 可视化设计器 / VS Code AI Toolkit + YAML，基于 Microsoft Agent Framework，确定性、有状态编排 | 想留在托管体系内：流程可视化、审计友好、不写编排代码 |
+| ~~**Workflow Agent**（multi-agent workflows）~~（⛔ 2026-12-01 退役） | portal 可视化设计器 / VS Code AI Toolkit + YAML，基于 Microsoft Agent Framework，确定性、有状态编排 | 想留在托管体系内：流程可视化、审计友好、不写编排代码 |
 | **Hosted Agent 内自编排** | LangGraph / Agent Framework 代码级编排，整个多 Agent 系统打包成一个容器 | 编排逻辑复杂到 YAML 表达不了：动态拓扑、复杂条件路由、跨模型调度 |
 
 两条路的分界线和第三节的主线一致：**编排逻辑是否需要代码级控制**。Workflow Agent 本质是把"多 Agent 协作"也纳入托管治理体系——流程即配置、每步可审计；Hosted 自编排则是把编排也当成自己代码的一部分。
 
-需要注意 Workflow Agent 目前是 public preview，YAML schema 与设计器能力仍在演进，生产依赖需锁版本评估。
+~~需要注意 Workflow Agent 目前是 public preview，YAML schema 与设计器能力仍在演进，生产依赖需锁版本评估。~~
+
+### 更新后的编排选型（2026-07-31）
+
+Workflows 退役后，"确定性多 Agent 协作"的答案收敛为三层机制的组合：
+
+| 机制 | 形态 | 适合 |
+|------|------|------|
+| **Hosted Agent + harness 编排** | Agent Framework workflow orchestrations（官方迁移目标）/ LangGraph / OpenAI Agents SDK / Anthropic Agent SDK / GitHub Copilot SDK，harness 自带 sub-agent、handoff、sequential/concurrent/group-chat 等原语，整个系统打包为容器 | 确定性流程、复杂拓扑、跨模型调度——原 Workflow Agent 的全部场景 |
+| **A2A 协议（preview）** | 平台级 agent 间委派通道：A2A tool 调用（主 agent 保留 thread 控制权）或完整 handoff（被调 agent 接管 thread） | 跨团队/跨项目的独立 agent 互调，不想合并进同一个容器 |
+| **Skills** | Prompt Agent 与 Hosted Agent 均支持（overview 对比表 Skill support: Yes/Yes），把流程性知识封装为可复用 skill | "多步骤流程"其实是可复用的操作知识、而非必须固化的编排图时（详见姊妹篇 [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]） |
+
+方向性解读：微软没有再造一个托管编排产品，而是把编排交还给 agent framework 生态——**harness 即编排层**。原来"YAML 可视化 vs 代码"的分界消失了，代价是失去 portal 可视化设计器，收益是编排表达力不再受 schema 限制、且与 GA 的 Agent Framework 生态（Semantic Kernel + AutoGen 合流）对齐。
 
 ---
 
@@ -218,7 +251,7 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 出现以下任何一条，Prompt Agent 就装不下了：
 
-1. **复杂 Workflow**：多步、条件分支、循环，且逻辑复杂到 Workflow Agent 的 YAML 表达不了；
+1. **复杂 Workflow**：多步、条件分支、循环的确定性流程（⚠️ 2026-07-31 更新：Workflows 退役后，此类需求不再有托管 YAML 兜底，一律走 Hosted Agent + Agent Framework/harness 编排）；
 2. **长期 Memory**：跨会话的用户级记忆（Mem0/GraphRAG），不是 Thread 能承载的；
 3. **Graph State**：需要显式状态机（LangGraph StateGraph）；
 4. **复杂 Multi-Agent**：Supervisor、层级委派、动态拓扑；
@@ -230,7 +263,7 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 - **Prompt Agent → 企业 Copilot 的标准底座**：托管治理 + 官方工具 + Voice Live 原生集成，微软会持续往这条线堆能力；
 - **Hosted Agent → 复杂 Agent 系统的运行时**：对标"把任意 Agent 框架产品化部署"，配合 Agent Framework 生态成长；
-- **Workflow Agent → 两者之间的粘合层**：让多个托管 Agent 组成业务流程而不必下沉到代码。
+- ~~**Workflow Agent → 两者之间的粘合层**：让多个托管 Agent 组成业务流程而不必下沉到代码。~~（⚠️ 2026-07-31 更新：这条预判落空——微软选择了相反方向，"粘合层"下沉回代码/harness：Agent Framework 编排 + A2A 协议 + Skills 承接，见第五节"更新后的编排选型"。）
 
 类比记忆：**Prompt Agent 之于 Hosted Agent，如 Azure Functions 之于 Kubernetes**——前者用运行时换省心，后者用运维换控制权。
 
@@ -238,10 +271,10 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 ## 八、小结
 
-1. 三者定位：**Prompt Agent = Foundry 帮你运行；Hosted Agent = 你运行、Foundry 托管；Workflow Agent = 之上的确定性编排层**。选型主线只有一条：是否需要自己控制 Agent Runtime。
-2. 治理要分层看：**身份层三者同源**——都建在 Entra Agent ID（blueprint + agent identity）上，Conditional Access/Identity Protection/audit 对 agent 身份全部适用，Hosted Agent 的专属 SP + 显式 RBAC 甚至更可审计；**真正的分水岭在内容层**（Prompt Shield/Content Filter 只有 Prompt Agent 内置）和内层可观测性（Hosted 的 planner 决策要自己埋点）；Workflow Agent 的独特优势是"流程即 YAML"的流程审计能力。
+1. 定位（2026-07-31 修订）：**Prompt Agent = Foundry 帮你运行；Hosted Agent = 你运行、Foundry 托管**——官方 agent 类型只剩这两类；~~Workflow Agent = 之上的确定性编排层~~ 已退役（2026-12-01），编排层由 **Agent Framework/harness 代码编排 + A2A 协议 + Skills** 承接。选型主线不变且更纯粹：是否需要自己控制 Agent Runtime。
+2. 治理要分层看：**身份层同源**——都建在 Entra Agent ID（blueprint + agent identity）上，Conditional Access/Identity Protection/audit 对 agent 身份全部适用，Hosted Agent 的专属 SP + 显式 RBAC 甚至更可审计；**真正的分水岭在内容层**（Prompt Shield/Content Filter 只有 Prompt Agent 内置）和内层可观测性（Hosted 的 planner 决策要自己埋点）；~~Workflow Agent 的"流程即 YAML"审计优势~~随退役改由"编排代码进版本控制 + tracing"实现。
 3. Voice Live 与两类 Agent 的组合**方向相反**：Prompt Agent 用 agent 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件）——`agent_id` 直连 Hosted Agent 无文档支持。
-4. 成熟度梯度要进决策：Prompt Agent（GA）> Hosted Agent（preview）≈ Workflow Agent（public preview）。生产系统当前的稳妥解是 Prompt Agent 打底，Hosted Agent 用于确实装不下的 20% 场景并锁版本。
+4. 成熟度梯度要进决策：Prompt Agent（GA）> Hosted Agent（写作时 preview）。生产系统当前的稳妥解是 Prompt Agent 打底，Hosted Agent 用于确实装不下的 20% 场景并锁版本；**不得再新建对 Workflows 的生产依赖**，存量按官方迁移指南迁往 Agent Framework。
 
 ---
 
@@ -249,10 +282,10 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 1. **Hosted Agent 的 SLA 与配额**：preview 阶段 sandbox 算力（2 vCPU/4GiB 上限）能否满足重管线；GA 后规格与定价。
 2. **Voice Live × Hosted Agent 的官方打通**：未来是否会支持 agent 绑定指向暴露 `/responses` 的 hosted agent（当前未定义）。
-3. **Workflow Agent 的表达力边界**：YAML 能表达的分支/循环/错误处理复杂度上限，何时必须降级到代码编排。
+3. ~~**Workflow Agent 的表达力边界**：YAML 能表达的分支/循环/错误处理复杂度上限，何时必须降级到代码编排。~~（✅ 已回答，2026-07-31：官方直接退役了 Workflows——不存在"降级"问题了，代码编排（Agent Framework）就是唯一路线。）
 4. **治理水位复刻成本**：在 Hosted Agent 里复刻 Prompt Agent 同等治理（内容安全+审计+成本追踪）的实际工程量评估。
 5. **第三方模型合规**：Hosted Agent 调 Claude/Gemini 的数据出境、合规与"at your own risk"的边界在企业场景如何落地。
-6. **多 Agent 的身份模型**：Workflow 中多个 Agent 协作时 Entra agent identity 的权限边界与最小权限实践。
+6. **多 Agent 的身份模型**：多个 Agent 协作（A2A 委派 / Hosted 容器内 sub-agent）时 Entra agent identity 的权限边界与最小权限实践——问题在 Workflows 退役后依然成立，只是载体变了。
 7. **成本对比精算**：同一场景 Prompt Agent（token 计费）vs Hosted Agent（算力+token）的真实成本曲线。
 
 ---
@@ -260,12 +293,15 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 ## 参考
 
 - 与 ChatGPT 的讨论：Prompt Agent vs Hosted Agent 十维对比（2026-07-19）
-- [Foundry Agent Service Overview — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview)
-- [What are hosted agents? — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/hosted-agents)
+- [What is Microsoft Foundry Agent Service? — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)（2026-07-09 更新版：仅两类 agent 类型，Skill support 双 Yes，2026-07-31 更新说明的主要依据）
+- [Build a workflow in Microsoft Foundry (Preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow)（含 2026-12-01 退役声明与迁移指南）
+- [Microsoft Foundry portal general availability overview — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability)（明确禁止对 Workflows 新建生产依赖）
+- [Build and run agents at scale with Microsoft Foundry at Build 2026 — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/agent-service-build2026)（"agent harness as a flex point"的官方表述）
+- [What are hosted agents? — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)
 - [Agent identity concepts in Microsoft Foundry — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)
 - [Introducing Multi-Agent Workflows in Foundry Agent Service — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/introducing-multi-agent-workflows-in-foundry-agent-service)
 - [Build a voice agent with hosted agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/build-voice-agent)
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)
 - [Public preview: Voice-native agents in Microsoft Foundry — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/public-preview-voice-native-agents-in-microsoft-foundry/4502756)
 - [Multi-agent workflows in Foundry Agent Service — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/)
-- 相关笔记：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]、[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- 相关笔记：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]、[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]、[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
