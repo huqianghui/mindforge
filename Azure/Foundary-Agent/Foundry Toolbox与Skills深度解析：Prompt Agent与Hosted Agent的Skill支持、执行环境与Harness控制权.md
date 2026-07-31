@@ -12,7 +12,7 @@ tags:
   - prompt-agent
   - mcp
   - architecture
-description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，梳理 Foundry Skills 的两条路线（Agents 侧 SKILL.md 纯文本注入 vs Responses API shell tool 的可执行 skill bundle）、Toolbox 的不可变版本与显式发布机制、skill 交付模式、Prompt Agent skill 支持的官方文档矛盾（overview 标 Yes 但三条绑定路径均不通）、两类 agent 的成本模型对比，最终落到 Agent=Model+Harness 框架下的控制权分层
+description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，梳理 Foundry Skills 的两条路线（Agents 侧 SKILL.md 纯文本注入 vs Responses API shell tool 的可执行 skill bundle 及 container_auto 环境规格）、Toolbox 的不可变版本与显式发布机制、skill 交付模式、Prompt Agent skill 支持的官方文档矛盾（overview 标 Yes 但三条绑定路径均不通）、两类 agent 的成本模型对比，最终落到 Agent=Model+Harness 框架（harness=编排脚手架，Model→Harness→Environment 分层）下的控制权分层，并给出跨 harness（Claude Code/GitHub Copilot coding agent/container_auto/hosted agent）的 skill 脚本执行环境对照与编写策略，以及 agent 定义元素（skill/MCP/instructions/subagent/hook/plugin）的跨 harness 可移植性分层
 ---
 
 # Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权
@@ -73,6 +73,12 @@ response = openai.responses.create(
     input="Use the csv-insights skill to summarize report.csv.",
 )
 ```
+
+**`container_auto` 的环境规格**（OpenAI shell tool 官方文档）：Debian 12 容器，工作目录 `/mnt/data`，预装 Python 3.11、Node.js 22.16、Java 17、Go 1.23、PHP 8.2、Ruby 3.1；无 `sudo`，不支持交互式 TTY；**默认无出站网络**——出网需组织管理员配置域名 allowlist，并在请求中显式传 `network_policy`。对 skill 作者的直接推论：**skill 里的 python/nodejs 脚本真的会执行**（bundle 整包复制进容器，模型经 shell 命令运行 `scripts/`），但要按这份预装清单写——运行时 `pip install` 默认因断网失败，第三方依赖要么随 bundle 自带（纯文件形式），要么走 network allowlist。
+
+另有 **local shell 模式**：模型只产生 `shell_call`（命令文本），由你在自己控制的运行时执行并回传 stdout/stderr/exit code——环境完全自控，skill 从本地路径挂载（此模式不支持 `skill_reference`）。
+
+**可用范围**：shell tool 是**平台实现的内置工具**，不是"支持 Responses API 就自动有"。OpenAI 平台可用；Azure 侧，Microsoft Learn 已有正式文档（2026-06 上线）给出 Azure OpenAI **v1 endpoint**（`https://<resource>.openai.azure.com/openai/v1/`）的完整用法（示例模型 gpt-5.5），但明确注明 "Skills require an Azure OpenAI API version that supports the shell tool"——依赖 API version 与模型部署支持，并非所有区域/版本无条件可用（更早的 Microsoft Q&A 曾答复 Azure OpenAI 不支持 shell tool，属 rollout 时间差）。其他兼容 Responses API 协议的推理服务（如 vLLM）不带此工具。
 
 这条路径与 Anthropic "skill 带 scripts、由 harness 执行"的模式是对齐的。但注意：**shell tool 目前不在 Foundry agent 的工具目录里**（内置工具与 MCP/OpenAPI/A2A/Toolbox 等自定义工具中均无 shell）——即这条路径当前只能从裸 Responses API 调用走通，不能挂到 prompt agent 的定义上。这是第五节矛盾的关键伏笔。
 
@@ -206,7 +212,12 @@ skills 操作文档的信号一致：功能支持矩阵的列是 REST API / Pyth
 
 ### 5.3 Agent = Model + Harness：控制权分层
 
-用 Agent=Model+Harness 框架看，这个差异一目了然。**每个 agent 都有 harness**——prompt agent 的 harness 是 Foundry 托管运行时（MCP tools 调用循环、tool approval、thread 管理、content filter、tracing 都在里面），并不弱。区别从来不是"有没有 harness"，而是 **harness 的所有权和可编程性**：
+先给 harness 一个正式定义。OpenForge RL 论文（arXiv:2607.21557）把 harness 定义为**编排脚手架（orchestration scaffold）**——包在模型外面、把"单次推理"变成"有状态多步过程"的那一层，负责多轮上下文管理、工具调用编排、控制流（subagent、planning、skills）与外部系统接入（MCP、浏览器、GUI），典型实现如 Claude Code、Codex CLI。完整分层是 **Model → Harness → Environment**：模型只生成 token，harness 把生成变成 agent 行为，environment 提供执行与反馈。两条容易混淆的概念边界：
+
+- **Harness 不是语言运行时**。语言运行时（CPython、.NET CLR）执行确定性代码指令，规范是语法标准；harness "执行"的是 LLM 的决策流（发 prompt → 解析 tool call → 调工具 → 结果回填 → 再问模型），规范是**行为契约**——system prompt 结构、工具协议（function calling schema / MCP）、消息格式、终止与人工介入策略。类比：模型 ≈ CPU，harness ≈ 操作系统/调度器，工具与环境 ≈ 外设。harness 本身用什么语言实现是对使用者不可见的细节，同一套 harness 语义可以有多语言实现（Claude Agent SDK 的 Python/TypeScript 版行为契约一致）。
+- **Harness 是可插拔的行为引擎**。同样的模型和工具接到不同 harness 上，agent 的行为语义完全不同。Copilot Studio 把这一点做成了显式产品选项——三种 harness 三选一：Copilot Chat Harness（M365 Copilot 定制 / Declarative Agents）、Standard Harness（对话式 AI 与确定性业务流程）、GitHub Copilot Harness（复杂推理、多步规划的自主 agentic loop）。选 harness 就是选 agent 的行为语义，而不是选实现语言。（注意"可插拔"是平台内部承诺，不等于配置跨 harness 可移植——agent 定义各元素的可移植性分层见 6.2。）
+
+用 Agent=Model+Harness 框架看，prompt/hosted 的差异一目了然。**每个 agent 都有 harness**——prompt agent 的 harness 是 Foundry 托管运行时（MCP tools 调用循环、tool approval、thread 管理、content filter、tracing 都在里面），并不弱。区别从来不是"有没有 harness"，而是 **harness 的所有权和可编程性**：
 
 | | Prompt Agent | Hosted Agent |
 |---|---|---|
@@ -227,17 +238,57 @@ Claude Code、GitHub Copilot 能直接消费 Foundry toolbox 的 skills，正是
 
 ---
 
-## 六、执行环境全景：三类"代码在哪跑"的对照
+## 六、执行环境全景："代码在哪跑"的对照
 
-把"skill 关联的 script 到底在哪执行"放进完整的执行环境版图：
+把"skill 关联的 script 到底在哪执行"放进完整的执行环境版图（Foundry 侧四类）：
 
 | 执行位置 | 环境定义方式 | 依赖管理 | 隔离性 | 适用 |
 |---------|------------|---------|--------|------|
 | **Hosted Agent 容器** | Dockerfile（linux/amd64，端口 8088 Responses 协议）或提交 zip 源码由 Foundry 构建 | requirements.txt 等完全自定义；本地 `azd ai agent run` 首次运行装依赖，本地 venv 开发者自理 | per-session VM 级 sandbox，持久文件系统，scale-to-zero | skill 指令中的自定义脚本、任意运行时逻辑 |
+| **Responses API shell 容器（`container_auto`）** | 平台管理的 Debian 12 容器（Python 3.11 / Node 22.16 / Java 17 / Go 1.23 等预装，规格见 1.1） | 镜像不可定制；依赖随 skill bundle 自带，或配 network allowlist 后安装 | 平台容器隔离；**默认无出站网络** | shell tool 挂载的 skill 脚本真实执行 |
 | **Code Interpreter（toolbox 工具）** | 平台托管 Python 沙箱 | 不可自定义 | 注意：hosted agent 经 toolbox 使用时**缺少用户级隔离**（文档明示的限制） | 临时计算、数据处理 |
 | **外部 MCP / OpenAPI 服务** | 你自己的基础设施 | 完全自管 | 自己负责 | 企业系统集成、重依赖的自定义工具 |
 
 一个实用推论：如果一个 skill 的指令依赖特定 Python 包（比如 pptx 生成），那么消费这个 skill 的 hosted agent 的 **Dockerfile 里就要预装这些包**——skill 与 agent 环境之间的这层隐式契约，目前完全靠人工对齐，平台不做校验。这是"skill 声明依赖 → 平台自动准备环境"这类能力的空白点，也是与 Anthropic skill（可带 scripts 且由 harness 执行）的关键差距。
+
+### 6.1 跨 harness 对照：skill 里到底能放什么脚本
+
+把视野从 Foundry 放大到主流 harness。核心判断链：**harness 有没有 shell/execution tool → shell 连的是什么环境（本地机器 / 固定容器 / 可定制容器）→ 环境里有什么引导器（python/node/uv/npx）→ 脚本按引导器规格写**。skill 里的脚本是被动文本，能不能跑、怎么跑，完全由 harness 下面的执行环境决定：
+
+| Harness | 执行环境 | 你能控制的部分 | 脚本策略 |
+|---|---|---|---|
+| **Claude Code / Copilot CLI（本地）** | 你的机器 | 一切（装包、换版本、加工具） | 什么都能放。模型靠三条途径知悉环境：SKILL.md/CLAUDE.md 显式声明、主动探测（`which`/`--version`）、报错-修复循环。声明依赖 + 自举式脚本可省掉探测轮次 |
+| **GitHub Copilot coding agent（云端）** | GitHub Actions 临时 runner（`ubuntu-latest`，自带 python/node/go 等全套工具链），任务级 ephemeral | [Customizing the development environment for Copilot coding agent](https://docs.github.com/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment)：`copilot-setup-steps.yml` 预装依赖、换更大 runner 或自托管 runner | 按 runner 规格写；依赖写进 setup-steps。[防火墙](https://docs.github.com/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent)默认启用 recommended allowlist（可加自定义 host 或关闭），被拦截的请求在 PR 里出 warning |
+| **Responses API shell tool（`container_auto`）** | 平台 Debian 12 容器（规格见 1.1） | 几乎不可定制；仅 `network_policy` 可配 | 按预装运行时清单写；第三方依赖随 bundle 自带；默认断网，`pip install` 会失败 |
+| **Foundry Hosted Agent** | 你自己的容器 | Dockerfile 全权 | skill 依赖预装进镜像（上表所述隐式契约的人工对齐点） |
+| **无 shell tool 的 harness**（Foundry prompt agent、Copilot Studio Chat/Standard Harness） | 无通用执行手段 | 无 | 脚本只有文本价值：作为参考实现让模型照写，或喂给 Code Interpreter（受限于平台沙箱固定预装包） |
+
+写"环境自适应" skill 脚本的三条通用策略（按优先级）：
+
+1. **自举式脚本**：依赖解析内置于脚本本身，环境上只需有引导器——Python 用 `uv run` + PEP 723 inline metadata（脚本头部声明依赖，uv 自动建临时环境装包），Node 用 `npx -y` 免安装执行
+2. **最低公分母**：能用 bash + 语言标准库解决的不引第三方包，零依赖脚本在任何环境都能跑
+3. **显式声明**：SKILL.md 写清 requires 与安装命令，让模型照做而非试错探测
+
+托管沙箱额外两坑：**默认断网**（依赖必须预装进镜像或随 bundle 自带，运行时安装会失败）与**无状态**（每次任务容器可能全新，不能假设上次装过的包还在）。
+
+### 6.2 "harness 可插拔"的边界：agent 定义元素的跨 harness 可移植性
+
+5.3 节说 harness 是可插拔的行为引擎，容易引出一个误读："我定义一份 agent + subagent + skill + hook 的配置，就能从 GitHub Copilot 直接换到 Claude Code 用。"——**不能整体搬**。"可插拔"的本义是**平台内部**的：Copilot Studio 的三种 harness 都是微软自己的，平台保证了 agent 定义与引擎的适配层；它不承诺配置能跨到别家 harness。
+
+用户侧的真实可移植性要按元素拆开看，差异极大——取决于该元素是"开放规范"还是"harness 内部 API 的暴露"：
+
+| 元素 | 可移植性 | 原因 |
+|---|---|---|
+| **Skill** | ✅ 高，基本直接搬 | 有开放规范 [agentskills.io](https://agentskills.io)（SKILL.md + frontmatter），Claude Code、GitHub Copilot、Foundry、OpenAI 均兼容——目前唯一真正跨 harness 的元素 |
+| **MCP server / tool** | ✅ 高 | MCP 是开放协议，server 完全可复用；仅各 harness 的注册配置文件格式略有差异 |
+| **Instructions / memory** | 🟡 内容可搬，接线要改 | `CLAUDE.md`（Claude Code）vs `AGENTS.md`（Codex/Copilot 阵营）——内容通用，文件名与加载语义各家不同 |
+| **Subagent** | 🟠 低 | 无跨 harness 规范。Claude Code 的 `.claude/agents/*.md` 是私有格式，且语义绑定 harness 能力（独立 context window、工具白名单、model 路由）——prompt 内容可复用，接线必须重写 |
+| **Hook** | ❌ 几乎为零 | Hook 挂的是 harness **内部生命周期事件**（PreToolUse、SessionStart 等），事件模型本身就是某个 harness 的实现细节，换 harness 事件就不存在了 |
+| **Plugin** | ❌ 私有分发格式 | Plugin 是上述元素的打包（skills + agents + hooks + MCP 配置），但打包格式是 harness 私有的——打包不解决内容物的可移植性 |
+
+判断准则：**离模型越近越可移植，离 harness 引擎越近越不可移植**。Skill 本质是"给模型看的文本 + 给 shell 跑的脚本"，模型和 bash 通用，所以可移植；MCP 是 harness 与外部世界之间的开放协议，双方解耦，所以可移植；subagent/hook 是对 harness **内部控制流**的编程——调用的是引擎私有 API，换引擎自然失效。类比浏览器：skill/MCP 像 HTML/HTTP（标准，处处能用），hook/subagent 像 Chrome 扩展 API（换 Firefox 就要重写）。Agent Skills 和 MCP 相当于这个领域刚形成的"Web 标准"，但只覆盖知识与工具两层；控制流（subagent、hook、plugin）仍在各家私有阶段。
+
+因此"一份 YAML 跨 harness 即插即用"目前不存在。社区的现实解法是**编译式**的：维护一份源定义，用工具生成各 harness 的私有格式（一份 agent 描述 → 分别生成 `.claude/agents/*.md` 与 Copilot custom agent 配置）——内容单源，接线各自编译。
 
 ---
 
@@ -264,7 +315,7 @@ overview 对比表给出的成本模型：
 
 ## 八、小结
 
-1. **Agents 侧 skill 是文本不是代码**：Skills API 交付的 SKILL.md 只注入上下文，平台不执行 skill 内代码；执行环境永远是 agent 的（hosted 容器 / Code Interpreter / 外部服务）。**例外是 Responses API 的 shell tool 路径**——skill 是带 scripts/ 的文件包，脚本在平台容器（`container_auto`）真实执行。
+1. **Agents 侧 skill 是文本不是代码**：Skills API 交付的 SKILL.md 只注入上下文，平台不执行 skill 内代码；执行环境永远是 agent 的（hosted 容器 / Code Interpreter / 外部服务）。**例外是 Responses API 的 shell tool 路径**——skill 是带 scripts/ 的文件包，python/nodejs 脚本在平台容器（`container_auto`：Debian 12、多语言运行时预装、默认断网）真实执行。shell tool 是平台内置工具而非 Responses API 规范自带：OpenAI 平台可用，Azure OpenAI 经 v1 endpoint 有条件可用（依赖 API version 与模型支持）。
 2. **"加了发不了"是设计不是 bug**：toolbox 与 skill 都是不可变版本 + 显式 publish；`skill add` 只产生 draft version，必须 `azd ai toolbox publish` 才生效；发布后再添加照常 work，每次变更再 publish 一次。
 3. **Prompt Agent 的 skill 支持是文档级矛盾**：overview 标 "Skill support: Yes"，但三条绑定路径（toolbox 消费 / 直接注入 / shell tool）截至 2026-07-31 复核没有一条文档化可走通（核验记录见 5.1.1）——skills 文档功能矩阵没有 prompt agent 列，shell tool 不在 agent 工具目录。根因是 harness 控制权：加载 skill 需要 harness 实现相应 client 逻辑，平台封闭代码没实现你就没有注入点。变通只有手动把 skill 文本合入 instructions（失去版本管理价值）。
 4. **控制权决定能力边界，也决定成本结构**：调用侧计费（inference + tool usage）两类 agent 完全相同；hosted agent 多付的 container compute 买的是"改 harness 的权力"——skill 加载、token 优化、新协议即时跟进。skill 复用是硬需求时，用 Agent Framework 包一层薄 hosted agent 是当前最短路径。
@@ -287,6 +338,11 @@ overview 对比表给出的成本模型：
 - [Use skills with Microsoft Foundry agents (preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)（页面版本 2026-07-24；核验记录见 5.1.1）
 - [What are Microsoft Foundry agents? (overview 对比表) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)
 - [Use skills with the Responses API (shell tool) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/skills)
+- [Shell tool guide（container_auto 环境规格与 network_policy）— OpenAI](https://developers.openai.com/api/docs/guides/tools-shell)
+- [Skills in the OpenAI API — OpenAI Cookbook](https://developers.openai.com/cookbook/examples/skills_in_api)
+- [Customizing the development environment for Copilot coding agent — GitHub Docs](https://docs.github.com/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment)
+- [Customizing or disabling the firewall for Copilot coding agent — GitHub Docs](https://docs.github.com/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent)
+- [OpenForge RL: Train Harness-native Agents in Any Environment（harness 正式定义）— arXiv:2607.21557](https://arxiv.org/html/2607.21557v1)
 - [Use the Microsoft Foundry Skill in coding agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/use-microsoft-foundry-skill)（易混淆干扰项：元 skill 创建 agent，非 agent 消费 skill）
 - [Toolbox for Microsoft Foundry agents — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox)
 - [Building Agents in Production with Toolbox, Skills, and Tool Search — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azuredevcommunityblog/building-agents-in-production-with-toolbox-skills-and-tool-search/4537969)
