@@ -126,6 +126,11 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Prompt 优化成熟度阶梯——从 vibe check、LLM-judge 到数据闭环：APO 与 SkillOpt 前置篇](Notes/AI/agent-lightning/Prompt优化成熟度阶梯——从vibe%20check、LLM-judge到数据闭环：APO与SkillOpt前置篇.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 
+### Notes/AI/evaluation
+
+- [Evaluator 概念全景——从 rubric 词源到 Judge、Strategy、Criteria 三层评估模型](Notes/AI/evaluation/Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型.md)
+- [从 Evaluator 到 Reward Function——评估信号如何变成 APO 与强化学习的训练信号](Notes/AI/evaluation/从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号.md)
+
 ### Notes/AI/ms-swift
 
 - [ms-swift 全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比](Notes/AI/ms-swift/ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比.md)
