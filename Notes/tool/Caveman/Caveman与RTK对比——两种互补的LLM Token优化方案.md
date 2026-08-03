@@ -324,7 +324,7 @@ rtk init --global
 
 ## 八、与 Brevity Constraints 论文的理论关联
 
-arXiv:2604.00025（[Brevity Constraints Reverse Performance Hierarchies in Language Models](../paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)）为 Caveman 的设计理念提供了学术背书，但同时划定了边界。
+arXiv:2604.00025（[Brevity Constraints Reverse Performance Hierarchies in Language Models](../../../paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)）为 Caveman 的设计理念提供了学术背书，但同时划定了边界。
 
 ### 8.1 学术验证
 

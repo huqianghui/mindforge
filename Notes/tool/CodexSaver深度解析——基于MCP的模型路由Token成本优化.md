@@ -13,7 +13,7 @@ tags:
 
 # CodexSaver 深度解析——基于 MCP 的模型路由 Token 成本优化
 
-> Token 优化系列第三篇。前两篇分别介绍了 [Caveman](Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)（通过 Prompt Engineering 压缩 LLM 输出）和 [RTK](rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)（通过 CLI 代理压缩工具输出）。本文介绍第三种范式——[CodexSaver](https://github.com/fendouai/CodexSaver)：不压缩 token，而是通过 MCP 将低风险任务路由到廉价模型执行，从根本上降低 token 的单价成本。
+> Token 优化系列第三篇。前两篇分别介绍了 [Caveman](Caveman/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)（通过 Prompt Engineering 压缩 LLM 输出）和 [RTK](rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)（通过 CLI 代理压缩工具输出）。本文介绍第三种范式——[CodexSaver](https://github.com/fendouai/CodexSaver)：不压缩 token，而是通过 MCP 将低风险任务路由到廉价模型执行，从根本上降低 token 的单价成本。
 
 ---
 
@@ -378,6 +378,6 @@ Token 优化不是单一维度的问题。**压缩（减少数量）和路由（
 ## 参考
 
 - [CodexSaver GitHub](https://github.com/fendouai/CodexSaver)
-- [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
+- [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Caveman/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
 - [RTK 系列 01：RTK——AI Coding Agent 的 Token 压缩利器](rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
-- [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
+- [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Caveman/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)

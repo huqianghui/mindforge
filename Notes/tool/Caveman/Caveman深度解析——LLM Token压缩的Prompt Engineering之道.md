@@ -273,7 +273,7 @@ Python 脚本安全检查
 
 ## 六、学术背书——Brevity Constraints 论文的启示与局限
 
-arXiv:2604.00025（[Brevity Constraints Reverse Performance Hierarchies in Language Models](../paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)）为 Caveman 提供了学术支撑，但同时也揭示了其适用边界。
+arXiv:2604.00025（[Brevity Constraints Reverse Performance Hierarchies in Language Models](../../../paper/2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies.md)）为 Caveman 提供了学术支撑，但同时也揭示了其适用边界。
 
 ### 6.1 核心发现
 
