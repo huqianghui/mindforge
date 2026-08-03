@@ -244,6 +244,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundary-Agent/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
 - [Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权](Azure/Foundary-Agent/Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)
+- [Entra Agent ID 双层身份模型：Agent Blueprint 与 Agent Identity 的认证授权分离设计](Azure/Foundary-Agent/Entra%20Agent%20ID双层身份模型：Agent%20Blueprint与Agent%20Identity的认证授权分离设计.md)
 
 ### book
 
