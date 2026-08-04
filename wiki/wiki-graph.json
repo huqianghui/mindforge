@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-01",
+  "generated_at": "2026-08-04",
   "stats": {
-    "nodes": 109,
-    "links": 359,
+    "nodes": 112,
+    "links": 370,
     "orphan_links_removed": 0,
-    "claims": 461,
+    "claims": 480,
     "categories": 10
   },
   "nodes": [
@@ -601,8 +601,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.83,
+      "claims_count": 7,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "APO ≠ beam search——是「文本梯度 + beam search」的完整方法",
@@ -657,6 +657,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "两者的强项弱项恰好互补：APO 是并行随机搜索（自由改写 + beam 重排，探索强方差大），擅长初始 prompt 离最优很远时跳出局部邻域找盆地，失败模式是摆动；SkillOpt 是带信任域的 SGD（有界编辑 + 在位者门控，利用强方差小），擅长已在好盆地内时单调精修，失败模式是探索不足。这正是优化领域的经典分工（basin hopping / 大学习率粗训 + 小学习率微调），文本空间没有理由例外。两段式管道机械上零成本：APO 的 `best_prompt.txt` 拷成 SkillOpt 的 `skills/initial.md` 一行 `cp` 完事，前提是评分逐字节兼容 + judge 不换（judge 定义分数量纲）。数据卫生的关键不是\"独立同分布\"而是**五份互斥切分**（APO train/val + SkillOpt train/val + 最终 test，全同分布但成员互斥）——SkillOpt 的 val 混入 APO 见过的任务会让在位者带虚高分数守擂，系统性错杀好编辑；数据预算约为单段的 1.5–2 倍。**开跑前必须过三个数判断式（δ_remain > 2σ_d/√n 才值得）**——video2frames 实测把账走完的答案是\"停\"（δ_remain ≤0.02 < δ_min 0.024），管道本身尚未实测，故置信度保守。"
+        },
+        {
+          "statement": "评估信号消费强度沿 APO→SFT→RL 阶梯逐级升高——前置评估投资越发不可省略",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "同一份评估信号在三级阶梯上的消费强度不同：APO 只用它排序候选（`sorted()[:beam_width]`，错了下轮还能纠正）；SFT/RAFT 用它筛数据造标签（错误一次性固化进权重）；RL 把它当逐步梯度信号（错误被反复放大成系统性偏移）。级别越高，评估噪声与偏差的代价越不可逆——所以\"先把 judge 做稳\"（rubric 锚点、多次采样、盲选校准）的前置投资随阶梯升级从\"划算\"变成\"必须\"。这把本页\"真正瓶颈是 reward 设计 + 评估噪声\"的教训沿阶梯做了梯度化：地基打一次，三层共用。"
         }
       ]
     },
@@ -1916,6 +1925,72 @@
       ]
     },
     {
+      "id": "entra-agent-id",
+      "type": "concept",
+      "title": "Entra Agent ID（双层身份模型）",
+      "summary": "Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核心是**认证与授权分离的双层模型**：Agent Blueprint（模板 + 凭据持有者）负责\"证明是谁来申请身份\"（Authentication），Agent Identity（特殊 service principal）代表\"最终是谁在访问资源\"（Authorization + Audit）。凭据集中在少数 Blueprint 上、权限和审计分散到每个 Agent Identity 上，从而在支撑成千上万 Agent 的同时把 secret 数量压到最少。\n\n与传统 App Registration / Service Principal 的 1:1 模型不同，Blueprint 与 Agent Identity 是 1:N 工厂模型（类比 Kubernetes Deployment/Pod）——本质是把 AI Agent 当作一种新的 **Workload Identity** 来治理，而不是一种新的 App。",
+      "tags": [
+        "wiki",
+        "concept",
+        "azure",
+        "identity",
+        "agent",
+        "security"
+      ],
+      "category": "Azure 与云平台",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "Agent Blueprint 承担四职责——模板、凭据持有者、容器、创建入口",
+          "source": "Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "官方定义 Blueprint 是创建 agent identity 的模板对象：① 模板（共享属性：description、app roles、认证协议设置）；② 凭据持有者（FIC 推荐 / Certificate / Client Secret 三种，Agent Identity 自身零凭据）；③ 容器（1:N 父子关系）；④ 创建入口（服务用 Blueprint 的 client ID + 凭据经 Microsoft Graph API 创建 agent identity）。基于 Microsoft Learn 官方文档核对。"
+        },
+        {
+          "statement": "Agent Identity 是无自有凭据的特殊 service principal——FIC-only 认证、始终单租户",
+          "source": "Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "官方明确 \"Credentials do not reside on the agent identity\"——Agent Identity 只能通过 Blueprint 签发的 FIC 认证；独立拥有 Object ID、Permissions、Sign-in/Audit Log、Owner/Sponsor 与生命周期。Agent Identity 始终单租户，而 Blueprint 可配置 multitenant（发布到其他租户后创建租户本地的 Agent Identity）。自治型 Agent 以 agent identity 获取 app token，交互型携带用户 token 走 on-behalf。"
+        },
+        {
+          "statement": "完整 Token 流程三阶段——认证走 Blueprint，中间有代表资格检查，资源授权基于 Agent Identity",
+          "source": "Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "① Blueprint Authentication：Blueprint 用自己的凭据向 Entra 认证（协议层就是 OAuth Client Credential Flow，Foundry 文档 \"Agent Service presents the blueprint's OAuth credentials\" 即指此）；② Entra 内部检查该 Blueprint 是否有资格代表目标 Agent Identity，通过才签发 Token（sub = Agent Identity）；③ 资源服务器按 Agent Identity 持有的 Permissions/Roles/Scopes 做访问授权。容易漏掉的是阶段②——\"授权\"实际有两种，通常说的\"真正授权\"指阶段③。"
+        },
+        {
+          "statement": "1:N 工厂模型的六层设计动机——本质是大规模 Agent 的 Workload Identity 治理，不是新 App",
+          "source": "Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "\"每个 Agent 一个 App Registration\"技术可行但管理模式错配，六层动机：① 规模（17,000 Agent → 3 个 Blueprint）；② 凭据爆炸（Managed Identity→Blueprint FIC→N Agent，Agent 侧 secretless）；③ 策略继承（Conditional Access 等配在 Blueprint，继承非复制）；④ 一键熔断（禁用 Blueprint 全体失效）；⑤ Agent 生命周期以分钟/小时计，Blueprint 长存 = Factory Pattern（同构于 K8s Deployment/Pod）；⑥ 一级审计身份（每个 Agent 独立 Object ID + 日志 + Owner/Sponsor）。App Registration 假设\"一个应用=一个身份\"，Agent 世界是\"一个 Runtime 动态创建上万实例各需独立身份\"——Blueprint 解决的不是认证问题，是身份治理问题。"
+        },
+        {
+          "statement": "Blueprint Authentication 属 Entra OAuth 层，与 Azure RBAC 是两套授权体系",
+          "source": "Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Azure 存在两套授权体系：Entra Authorization（OAuth Scope / Application Permission，管 Graph 与 Entra 对象 API）和 Azure RBAC（Role Assignment，管 ARM 资源）。Blueprint Authentication 完全属于认证层（Entra + OAuth），不是 RBAC；Agent Identity 拿 Token 访问 Storage/Key Vault/AKS 时才进入 RBAC 管辖，检查对象同样是 Agent Identity 而非 Blueprint。"
+        }
+      ]
+    },
+    {
       "id": "environment-agnostic",
       "type": "concept",
       "title": "Environment-Agnostic（环境无关设计）",
@@ -2177,8 +2252,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.76,
+      "claims_count": 5,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2215,6 +2290,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Spec-Driven Development 的角色分工\"AI 起草，人类拍板，脚本验证，Git 记账\"把生成（AI）与评估（人类批准 + 确定性脚本验证 Traceability）严格分开，且评估侧进一步分层：判断性评估归人类、可确定性计算的验证归脚本。这把分离原则从 Coding/文本生成域扩展到合规级规格验证域——V-Model 双轨中左轨规格（生成）与右轨测试规格（评估）的配对结构本身就是分离原则的方法论化。"
+        },
+        {
+          "statement": "rubric 时代的 reward hacking 防御与分离原则同构——训练循环域实例",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Rubric 进入 RL 训练循环后，reward hacking 的第一道防线就是 judge ≠ policy 分离——同一模型既当 policy 又当 judge，self-preference 偏差会被 RL 反复放大成系统性作弊。配套防御（确定性锚点掺入、rubric 动态演化、盲选校准 ≥85% + 锁版）都是评估侧独立性的加固手段。这把分离原则从 Coding/文本/规格验证域进一步扩展到训练循环域：评估者独立不只是质量问题，是训练信号可信性的前提（Goodhart's Law 下防御只提高 hack 难度）。"
         }
       ]
     },
@@ -2665,6 +2749,71 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "根据目标应用（Slack vs Gmail vs Notion）自动调整输出语气，本质是 context injection 策略。结合 Whisper Mode（低声输入）和 Edit via voice（语音修改已有文本），形成完整的语音交互闭环。"
+        }
+      ]
+    },
+    {
+      "id": "llm-as-a-judge",
+      "type": "concept",
+      "title": "LLM-as-a-Judge（三层正交评估模型）",
+      "summary": "LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为开放式任务评估的主流。理解 evaluator 领域的钥匙是**三层正交模型**：Layer 1 Judge（谁来评：Human/Rule/Metric/LLM）× Layer 2 Strategy（怎么评：Pointwise/Pairwise/Listwise/Reference-based/Reference-free）× Layer 3 Criteria（评什么：Accuracy/Groundedness/Safety…，[[rubric]] 是其组织形式）——三层独立组合，绝大多数概念混乱来自把三层压成一层。\n\n2025 年后研究重心从\"怎么让 LLM 打分\"转向 **Judge Reliability（打的分能不能信）**——position/verbosity/self-preference 等偏差与校准问题，直接决定评估信号能否进一步充当训练信号（reward）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "evaluation",
+        "llm-judge",
+        "reward-design"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "Evaluator 有三个正交维度——Judge（谁评）× Strategy（怎么评）× Criteria（评什么），不应压成一棵树",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "换 Judge 不换标准（GPT judge 换人工，rubric 可不变）；同一 judge 既能 pointwise 也能 pairwise；换一套 rubric，同一 judge 就从客服评估器变成医疗评估器。很多 Survey 和产品文档把三层画成同一棵分类树，是概念混乱的根源。"
+        },
+        {
+          "statement": "Judge 四种实现各有定位——Human 是校准锚点、Rule/Metric 零噪声优先、Reward Model 与 LLM Judge 边界正在收敛",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Human 是黄金标准但贵且慢，定位是校准锚点而非日常工具（所有自动 judge 的终极指标是 Agreement with Humans）；能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用 Rule/Metric（零噪声，与 [[reward-design-three-inputs]] \"确定性规则分白送零噪声信号\"一致）；专训 reward model（PairRM/Prometheus）走向 rubric 化可解释化、通用 LLM judge 走向 RL 训练强化（J1），两条线在收敛。"
+        },
+        {
+          "statement": "产品层与研究层是两套话语——Rubric Evaluator = LLM Judge + Rubric + Prompt Template + Scoring Logic",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "研究层（Survey 分类）把 Rubric-based 放在 LLM-as-a-Judge 之下（judge 的一种策略配置）；产品层（Azure AI Foundry）把 Rubric Evaluator 作为打包组件直接调用——内部就是 LLM judge 对加权维度逐维打 1~5 分并给理由，加权平均后归一化到 0~1，Foundry 把它作为 Agent 评估推荐主指标。两种画法都对，只是抽象层次不同。基于 Foundry 官方文档核对。"
+        },
+        {
+          "statement": "Judge Reliability 八类偏差是 reward 噪声 σ_noise 的具体来源——研究重心已从\"怎么打分\"转向\"分能不能信\"",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Consistency（同答案打十次漂移）、Position Bias、Verbosity Bias、Self-Preference（GPT 偏爱 GPT）、Style Bias、Prompt Sensitivity、Calibration 错位、Agreement with Humans——这张清单把 [[reward-design-three-inputs]] 里抽象的\"judge 噪声 σ_noise\"拆成可对症的病灶。评估噪声顺训练管道放大：APO 摆动第一大原因是评估噪声而非算法（见 [[automatic-prompt-optimization]]），\"把 judge 做稳\"（多次采样取均值、拆分维度、rubric 锚点）是评估和优化共同的地基。"
+        },
+        {
+          "statement": "评估策略与下游 Optimizer 有天然配对——选评估策略时就已经在选优化路线",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。"
         }
       ]
     },
@@ -4269,6 +4418,71 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "智能过滤（去噪音/注释/空白）、分组（按目录/类型聚合）、截断（仅保留失败用例）、去重（合并重复日志行并计数）。与 Caveman 的概率性输出压缩不同，RTK 基于确定性算法，效果稳定可预测，每命令处理开销 <10ms。"
+        }
+      ]
+    },
+    {
+      "id": "rubric",
+      "type": "concept",
+      "title": "Rubric（评分细则）",
+      "summary": "Rubric（评分细则）是评估体系中\"评什么、怎么给分\"的结构化定义：**维度（criteria）+ 等级（levels）+ 锚点描述（descriptors）** 三件套，把打分从自由发挥变成一致可重复的操作。词源自拉丁语 ruber（红色）——中世纪手抄本用红字标注章节标题与操作指令，引申为\"权威的规则条目\"，现代教育测量学借它指评分量规。\n\n在 [[llm-as-a-judge]] 三层模型中，rubric 属于 Layer 3 Criteria 的组织形式——它是 judge 的**配置**而非 judge 本身：同一个 GPT judge 换一套 rubric，就从客服评估器变成医疗评估器。2025 年后 \"Rubric as Reward\" 成为趋势线：rubric 从评估报表工具进入 RL 训练循环，成为 reward 的直接来源。",
+      "tags": [
+        "wiki",
+        "concept",
+        "evaluation",
+        "rubric",
+        "reward-design"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "Rubric 词源 ruber→rubrica→红字标题→评分细则——\"红字\"隐喻权威规则，读音 /ˈruː.brɪk/",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "拉丁语 ruber（红）→ rubrica（红土/红墨水）→ 中世纪手抄本红字章节标题与礼仪指令 → \"权威规则条目\" → 教育测量学的评分量规。注意读音 /ˈruː.brɪk/（\"鲁-brick\"）而非 \"rub-rick\"；组合词中作名词定语（noun adjunct），如 rubric-based evaluation、rubric reward。"
+        },
+        {
+          "statement": "Rubric ⊃ Criteria——维度+等级+锚点描述的完整体系，价值在把打分变成可执行可重复的操作",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Criteria 只回答\"评哪些维度\"（如 accuracy、groundedness）；rubric 在此之上补齐\"每个维度分几档、每档长什么样\"（等级 levels + 锚点描述 descriptors，如\"5 分=引用全部关键事实且无捏造；3 分=有遗漏但无捏造…\"）。锚点是一致性的来源——没有锚点的打分是自由发挥，人评和 LLM judge 都会漂移。"
+        },
+        {
+          "statement": "Rubric 是 judge 的配置而非 judge 本身——换 rubric 即得到不同评估器",
+          "source": "Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三层正交模型下 rubric 位于 Layer 3（评什么），与 Layer 1 Judge（谁评）独立：GPT-5 + 客服 rubric 和 GPT-5 + 医疗 rubric 是两个不同的评估器，judge 未变；反过来 GPT judge 换人工 judge，rubric 可原样复用。把 rubric 当成 judge 的一种（\"rubric evaluator 是一种 judge\"）是产品层打包话语，研究层它是配置项。"
+        },
+        {
+          "statement": "Rubric as Reward 呈三阶段趋势线——从评估报表到进入训练循环再到 rubric 本身被优化",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "阶段一：rubric 用于评估出报表（传统教育测量与 eval 平台用法）；阶段二：rubric 进 RL 训练循环充当 reward——RaR（Rubrics as Rewards, 2507.17746）、Rubric Anchors（2508.12790）、Dr Tulu（2511.19399）；阶段三：rubric 本身成为被生成/优化的对象——OpenRubrics（2510.07743）、Auto-Rubric（2510.17314）、MRRG 多角色 rubric 生成（2607.01830）。无 GT 的开放任务由此获得可扩展的 reward 路线，rubric 成为\"数据+评估资产\"的核心载体。"
+        },
+        {
+          "statement": "Rubric 进训练循环带来 reward hacking 新形态——四类防御只提高 hack 难度，不消除（Goodhart）",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Rubric 一旦成为 reward，policy 会学会\"迎合 rubric 措辞\"而非真正提升质量（关键词堆砌、格式表演、锚点边缘试探）。四类防御：① judge ≠ policy（[[generation-evaluation-separation]]，避免 self-preference 被 RL 放大）；② 确定性锚点掺入（可验证信号打底）；③ rubric 动态演化（定期改写防过拟合）；④ 盲选校准 + 锁版（与人工一致率 ≥85% 才上线，训练期锁定版本）。Goodhart's Law 决定这些手段只抬高 hack 成本，不能根除。"
         }
       ]
     },
@@ -5908,8 +6122,8 @@
       "category": "",
       "method_type": "workflow",
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.82,
+      "claims_count": 5,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "reward 设计不是写规格是做实验——第一天就需要三份输入，只用业务直觉拍权重是可在设计当时发现的缺陷",
@@ -5937,6 +6151,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "业务说不出\"detail 该占 0.45\"，但对着两条真实输出选 A/B 毫不含糊。judge 排序与业务盲选一致率 ≥85%，judge 才获得\"代理业务\"的资格——此后训练循环里的百万次打分都不用业务再看。落地是一次一小时共商工作坊（讲两本账 10 分钟 + 盲选 20 分钟 + 阶梯样例锚定量纲 + 落字为凭），训练前锁版；业务一小时的投入，换掉的是训练完才发现优化错方向的整轮返工——\"分数对话是全项目最便宜的保险\"的操作化版本。"
+        },
+        {
+          "statement": "Evaluator 与 Reward Function 的三层区别是两本账分家的理论根基",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Evaluator 与 Reward Function 有三层区别：① 职责——评价质量出报表 vs 提供训练信号驱动更新；② 输入——干净的 QA 对 vs 完整轨迹（含中间步骤、延迟、成本）；③ 输出——富结构（分维度分数 + 理由）vs 单标量（喂优化器）。两本账分家（验收分 vs 优化 reward）之所以成立，正因为两本账对应链路上两个不同节点——本就不该是同一个函数。分家不是工程折衷，是概念层的必然。"
+        },
+        {
+          "statement": "Judge Reliability 偏差清单是 σ_noise 的具体来源——降噪决策从经验对症升级为按病灶选药",
+          "source": "从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号",
+          "first_seen": "2026-08-03",
+          "last_updated": "2026-08-03",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "本方法中抽象的\"judge 噪声 σ_noise\"可拆成八类可测偏差（Consistency 漂移、Position、Verbosity、Self-Preference、Style、Prompt Sensitivity、Calibration 错位、Agreement with Humans，见 [[llm-as-a-judge]]）。降噪杠杆与病灶对应：多次采样取中位数治 Consistency；拆分字段 + rubric 锚点治 Prompt Sensitivity 与 Calibration；盲选 ≥85% 一致率直接测 Agreement。Step 1 校准跑测 σ_noise 时可按此清单分项归因，而非只拿到一个总量。"
         }
       ]
     },
@@ -7002,6 +7234,18 @@
       "description": "Ontology 是企业级 RAG 的语义基础层"
     },
     {
+      "source": "entra-agent-id",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "grounds",
+      "description": "双层身份模型是该决策\"身份层三者同源、治理分水岭在内容层\"论断的身份层机制依据"
+    },
+    {
+      "source": "entra-agent-id",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "part-of",
+      "description": "Entra Agent ID 是 Azure Agent 生态的身份治理底座"
+    },
+    {
       "source": "environment-agnostic",
       "target": "method-agnostic",
       "relation_type": "contrasts",
@@ -7186,6 +7430,30 @@
       "target": "cascaded-pipeline",
       "relation_type": "contrasts",
       "description": "推理架构选型与级联/端到端管线选型同属\"为约束选架构\"的工程决策family"
+    },
+    {
+      "source": "llm-as-a-judge",
+      "target": "rubric",
+      "relation_type": "uses",
+      "description": "rubric 是 judge 的评分配置：维度+等级+锚点让打分从自由发挥变成一致可重复"
+    },
+    {
+      "source": "llm-as-a-judge",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "judge（评估者）与被评估的生成者分离是该原则在评估层的体现；judge ≠ policy 是 reward hacking 第一道防线"
+    },
+    {
+      "source": "llm-as-a-judge",
+      "target": "reward-design-three-inputs",
+      "relation_type": "grounds",
+      "description": "Reliability 偏差清单为该方法的 σ_noise 测量与降噪决策（拆分 judge、多次取中位数、≥85% 盲选一致率）提供依据"
+    },
+    {
+      "source": "llm-as-a-judge",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "constrains",
+      "description": "judge 噪声直接决定 APO beam search 排序的可信度，是摆动的第一大原因"
     },
     {
       "source": "llm-wiki",
@@ -7750,6 +8018,24 @@
       "target": "meta-harness",
       "relation_type": "contrasts",
       "description": "RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化"
+    },
+    {
+      "source": "rubric",
+      "target": "llm-as-a-judge",
+      "relation_type": "constrains",
+      "description": "rubric 把 judge 打分从自由发挥约束成一致可重复：维度+等级+锚点是 judge 的评分配置"
+    },
+    {
+      "source": "rubric",
+      "target": "reward-design-three-inputs",
+      "relation_type": "grounds",
+      "description": "\"先修 judge rubric 再校准\"决策点的操作对象就是 rubric；锚点质量直接决定 σ_noise 下限"
+    },
+    {
+      "source": "rubric",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "rubric 进训练循环后，judge≠policy 分离是 reward hacking 的第一道防线"
     },
     {
       "source": "scaling-laws",
@@ -8353,6 +8639,12 @@
     },
     {
       "source": "reward-design-three-inputs",
+      "target": "llm-as-a-judge",
+      "relation_type": "uses",
+      "description": "Judge Reliability 八类偏差清单为 σ_noise 测量提供分项归因框架，Evaluator/Reward 三层区别为两本账分家提供理论根基"
+    },
+    {
+      "source": "reward-design-three-inputs",
       "target": "pre-run-three-number-accounting",
       "relation_type": "uses",
       "description": "改造前用三个数定位病灶（分子/分母哪个坏了），改完必须重走三个数——判断式翻转为\"值得跑\"才锁版开训"
@@ -8446,6 +8738,12 @@
       "target": "voice-live-agent",
       "relation_type": "grounds",
       "description": "Voice Live 挂载机制是本决策\"组合方向\"分析的语音侧依据"
+    },
+    {
+      "source": "foundry-agent-type-selection",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "\"身份层三者同源\"论断的身份层机制依据：三类 Agent 都走 Blueprint + Agent Identity 双层模型"
     },
     {
       "source": "hybrid-inference-framework-selection",
@@ -8613,7 +8911,9 @@
         "environment-agnostic",
         "verl",
         "slime-rl-framework",
-        "distributed-training-parallelism"
+        "distributed-training-parallelism",
+        "llm-as-a-judge",
+        "rubric"
       ]
     },
     {
@@ -8668,7 +8968,8 @@
       "name": "Azure 与云平台",
       "members": [
         "azure-copilot-ecosystem",
-        "rag-architecture-comparison"
+        "rag-architecture-comparison",
+        "entra-agent-id"
       ]
     },
     {
