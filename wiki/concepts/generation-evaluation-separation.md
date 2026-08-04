@@ -1,7 +1,7 @@
 ---
 title: "生成-评估分离（Generation-Evaluation Separation）"
 created: "2026-04-17"
-updated: "2026-07-21"
+updated: "2026-08-03"
 tags:
   - wiki
   - concept
@@ -69,12 +69,23 @@ related:
 
 > Spec-Driven Development 的角色分工"AI 起草，人类拍板，脚本验证，Git 记账"把生成（AI）与评估（人类批准 + 确定性脚本验证 Traceability）严格分开，且评估侧进一步分层：判断性评估归人类、可确定性计算的验证归脚本。这把分离原则从 Coding/文本生成域扩展到合规级规格验证域——V-Model 双轨中左轨规格（生成）与右轨测试规格（评估）的配对结构本身就是分离原则的方法论化。
 
+### Claim: rubric 时代的 reward hacking 防御与分离原则同构——训练循环域实例
+
+- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **首次出现**：2026-08-03
+- **最近更新**：2026-08-03
+- **置信度**：0.7
+- **状态**：active
+
+> Rubric 进入 RL 训练循环后，reward hacking 的第一道防线就是 judge ≠ policy 分离——同一模型既当 policy 又当 judge，self-preference 偏差会被 RL 反复放大成系统性作弊。配套防御（确定性锚点掺入、rubric 动态演化、盲选校准 ≥85% + 锁版）都是评估侧独立性的加固手段。这把分离原则从 Coding/文本/规格验证域进一步扩展到训练循环域：评估者独立不只是质量问题，是训练信号可信性的前提（Goodhart's Law 下防御只提高 hack 难度）。
+
 ## 冲突与演进
 
 - 2026-04-02：从三家公司的实践中识别出共同模式。
 - 2026-04-16：Meta-Harness 论文提供了更精确的 Guides/Sensors 双重控制框架。
 - 2026-06-29：去AI味文章提供文本生成域的实例（Writer→Humanizer→Reviewer），表明该原则跨域成立。
 - 2026-07-20：SDD/Spec Kit 提供合规/规格验证域实例（"AI 起草，人类拍板，脚本验证"），且评估侧分层出"人类判断 vs 确定性脚本"两级。
+- 2026-08-03：Evaluator→Reward 链路篇提供训练循环域实例——judge ≠ policy 是 rubric-as-reward 时代 reward hacking 的第一道防线。
 
 ## 关联概念
 
@@ -87,3 +98,4 @@ related:
 - [[2026-04-16-Meta-Harness论文解读与实践思考]] — Guides/Sensors 双重控制机制
 - [[去除AI味：从语言指纹到人机文本边界的消融]] — Writer→Humanizer→Reviewer 三者分离（文本生成域实例）
 - [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — "AI 起草，人类拍板，脚本验证"（合规/规格验证域实例）
+- [[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]] — judge ≠ policy 分离是 reward hacking 第一道防线（训练循环域实例）

@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-07-21"
+updated: "2026-08-03"
 tags:
   - wiki
   - decision
@@ -101,6 +101,7 @@ Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管�
 ## 关联概念
 
 - [[voice-live-agent]] — `grounds` Voice Live 挂载机制是本决策"组合方向"分析的语音侧依据
+- [[entra-agent-id]] — `uses` "身份层三者同源"论断的身份层机制依据：三类 Agent 都走 Blueprint + Agent Identity 双层模型
 
 ## 关联方法
 

@@ -1,7 +1,7 @@
 ---
 title: "Reward 设计三份输入与两本账分家"
 created: "2026-07-16"
-updated: "2026-07-16"
+updated: "2026-08-03"
 tags:
   - wiki
   - method
@@ -109,6 +109,26 @@ Reward 设计不是写规格，是做实验。这个工作流回答"训练用的
 
 > 业务说不出"detail 该占 0.45"，但对着两条真实输出选 A/B 毫不含糊。judge 排序与业务盲选一致率 ≥85%，judge 才获得"代理业务"的资格——此后训练循环里的百万次打分都不用业务再看。落地是一次一小时共商工作坊（讲两本账 10 分钟 + 盲选 20 分钟 + 阶梯样例锚定量纲 + 落字为凭），训练前锁版；业务一小时的投入，换掉的是训练完才发现优化错方向的整轮返工——"分数对话是全项目最便宜的保险"的操作化版本。
 
+### Claim: Evaluator 与 Reward Function 的三层区别是两本账分家的理论根基
+
+- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **首次出现**：2026-08-03
+- **最近更新**：2026-08-03
+- **置信度**：0.7
+- **状态**：active
+
+> Evaluator 与 Reward Function 有三层区别：① 职责——评价质量出报表 vs 提供训练信号驱动更新；② 输入——干净的 QA 对 vs 完整轨迹（含中间步骤、延迟、成本）；③ 输出——富结构（分维度分数 + 理由）vs 单标量（喂优化器）。两本账分家（验收分 vs 优化 reward）之所以成立，正因为两本账对应链路上两个不同节点——本就不该是同一个函数。分家不是工程折衷，是概念层的必然。
+
+### Claim: Judge Reliability 偏差清单是 σ_noise 的具体来源——降噪决策从经验对症升级为按病灶选药
+
+- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **首次出现**：2026-08-03
+- **最近更新**：2026-08-03
+- **置信度**：0.7
+- **状态**：active
+
+> 本方法中抽象的"judge 噪声 σ_noise"可拆成八类可测偏差（Consistency 漂移、Position、Verbosity、Self-Preference、Style、Prompt Sensitivity、Calibration 错位、Agreement with Humans，见 [[llm-as-a-judge]]）。降噪杠杆与病灶对应：多次采样取中位数治 Consistency；拆分字段 + rubric 锚点治 Prompt Sensitivity 与 Calibration；盲选 ≥85% 一致率直接测 Agreement。Step 1 校准跑测 σ_noise 时可按此清单分项归因，而非只拿到一个总量。
+
 ## 实践记录
 
 ### Practice: 2026-07-15 — video2frames reward v2 设计稿
@@ -124,6 +144,7 @@ Reward 设计不是写规格，是做实验。这个工作流回答"训练用的
 - [[automatic-prompt-optimization]] — `implements` APO 页"真正瓶颈是 reward 设计 + 评估噪声 + 数据量"的教训在此落为可执行工作流；reward 是 APO/SkillOpt/RL 共享的地基
 - [[skillopt]] — `constrains` 优化 reward 的信噪比直接决定 SkillOpt 门控是否可分辨（δ_min 减半 → gate 的 reject 重新有意义）
 - [[generation-evaluation-separation]] — `implements` judge 分字段 rubric + temperature=0 + 多次取中位数是生成-评估分离在 reward 层的工程化
+- [[llm-as-a-judge]] — `uses` Judge Reliability 八类偏差清单为 σ_noise 测量提供分项归因框架，Evaluator/Reward 三层区别为两本账分家提供理论根基
 
 ## 关联方法
 

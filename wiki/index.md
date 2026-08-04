@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-07-21
-stats: "84 concepts, 17 methods, 8 decisions, 461 claims"
+updated: 2026-08-03
+stats: "87 concepts, 17 methods, 8 decisions, 480 claims"
 tags:
   - wiki
   - index
@@ -110,6 +110,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[verl]] — VERL（Volcano Engine RL）：HybridFlow 调度系统，Agent RL 事实标准基础设施
 - [[slime-rl-framework]] — Slime：数据流式 RL 框架（Training-Buffer-Rollout），Megatron+SGLang 强绑定
 - [[distributed-training-parallelism]] — 分布式训练并行：FSDP 切存储 vs TP/PP 切计算、Megatron/PyTorch 分层
+- [[llm-as-a-judge]] — LLM-as-a-Judge：Judge×Strategy×Criteria 三层正交评估模型与 Judge Reliability 八偏差
+- [[rubric]] — Rubric（评分细则）：维度+等级+锚点，judge 的配置而非 judge 本身；Rubric as Reward 趋势线
 
 ### Claude Code 与扩展生态
 
@@ -150,6 +152,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 - [[azure-copilot-ecosystem]] — Azure Copilot 生态：Agents、Skills、MCP Server
 - [[rag-architecture-comparison]] — RAG 架构对比：个人级 qmd vs 企业级 Foundry IQ
+- [[entra-agent-id]] — Entra Agent ID：Blueprint 管认证、Agent Identity 管授权与审计的 1:N 双层身份模型
 
 ### 数据本体论（Ontology）
 

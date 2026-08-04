@@ -1,7 +1,7 @@
 ---
 title: "自动提示优化（APO, Automatic Prompt Optimization）"
 created: "2026-06-29"
-updated: "2026-07-16"
+updated: "2026-08-03"
 tags:
   - wiki
   - concept
@@ -90,12 +90,23 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 > 两者的强项弱项恰好互补：APO 是并行随机搜索（自由改写 + beam 重排，探索强方差大），擅长初始 prompt 离最优很远时跳出局部邻域找盆地，失败模式是摆动；SkillOpt 是带信任域的 SGD（有界编辑 + 在位者门控，利用强方差小），擅长已在好盆地内时单调精修，失败模式是探索不足。这正是优化领域的经典分工（basin hopping / 大学习率粗训 + 小学习率微调），文本空间没有理由例外。两段式管道机械上零成本：APO 的 `best_prompt.txt` 拷成 SkillOpt 的 `skills/initial.md` 一行 `cp` 完事，前提是评分逐字节兼容 + judge 不换（judge 定义分数量纲）。数据卫生的关键不是"独立同分布"而是**五份互斥切分**（APO train/val + SkillOpt train/val + 最终 test，全同分布但成员互斥）——SkillOpt 的 val 混入 APO 见过的任务会让在位者带虚高分数守擂，系统性错杀好编辑；数据预算约为单段的 1.5–2 倍。**开跑前必须过三个数判断式（δ_remain > 2σ_d/√n 才值得）**——video2frames 实测把账走完的答案是"停"（δ_remain ≤0.02 < δ_min 0.024），管道本身尚未实测，故置信度保守。
 
+### Claim: 评估信号消费强度沿 APO→SFT→RL 阶梯逐级升高——前置评估投资越发不可省略
+
+- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **首次出现**：2026-08-03
+- **最近更新**：2026-08-03
+- **置信度**：0.7
+- **状态**：active
+
+> 同一份评估信号在三级阶梯上的消费强度不同：APO 只用它排序候选（`sorted()[:beam_width]`，错了下轮还能纠正）；SFT/RAFT 用它筛数据造标签（错误一次性固化进权重）；RL 把它当逐步梯度信号（错误被反复放大成系统性偏移）。级别越高，评估噪声与偏差的代价越不可逆——所以"先把 judge 做稳"（rubric 锚点、多次采样、盲选校准）的前置投资随阶梯升级从"划算"变成"必须"。这把本页"真正瓶颈是 reward 设计 + 评估噪声"的教训沿阶梯做了梯度化：地基打一次，三层共用。
+
 ## 冲突与演进
 
 - 2026-06-24：从 Azure 实践三轮实跑提炼出"reward+噪声+数据量是真瓶颈"的工具无关教训。
 - 2026-06-25：单开算法理论篇，厘清 APO≠beam search 的层级关系、文本梯度的 Critic→Editor 机制、beam search 在搜索谱系中的成本定位。
 - 2026-07-14：从 POML 深解补充元提示词实现层证据——critic/editor 提示词全用 POML 写成，是 POML 目前最有分量的生产级落地；确立"表示层/优化层正交"的分工判断。
 - 2026-07-16：从 SkillOpt 系列04 补充"探索/精修互补"视角——APO 在 video2frames 100 任务 faceoff 中边缘胜出 SkillOpt（自由改写方差大但探索强，摸到 +0.02 任务天花板），两段式管道与三个数算账方法成形（见 [[pre-run-three-number-accounting]]）。
+- 2026-08-03：从 Evaluator→Reward 链路篇补充阶梯视角——APO 是评估信号消费强度最低一档（排序可纠正），噪声代价沿 SFT→RL 逐级不可逆。
 
 ## 关联概念
 
@@ -115,3 +126,4 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 - [[POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景]] — APO 元提示词全用 POML 写成（critic/editor 变体文件）、PromptTemplate 三引擎、表示层/优化层正交
 - [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — 探索/精修结构性互补、两段式管道衔接、五份互斥切分、三个数判断式
 - [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 100 任务配对对决 APO 边缘胜出、三层机制对比（自由改写+相对重排是摆动直接来源）
+- [[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]] — 评估信号消费强度 APO→SFT→RL 阶梯、前置评估投资逐级不可省略
