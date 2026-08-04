@@ -1,7 +1,7 @@
 ---
 title: "拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）"
 created: "2026-06-29"
-updated: "2026-07-07"
+updated: "2026-08-04"
 tags:
   - wiki
   - concept
@@ -116,10 +116,21 @@ related:
 
 > 对已重度后训练的 GPT/Llama/Qwen，RAFT 从"首次对齐"降级为"任务特化 + 自我提升的一道工序"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以"rejection sampling fine-tuning（RFT）"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是"便宜、稳定的第一档，上 RL 之前先榨一轮"。
 
+### Claim: 专家示范轨迹当 SFT 数据——犹豫、否决、改写过程本身是标签，且只留"过程和结果都好"的轨迹
+
+- **来源**：[[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]]
+- **首次出现**：2026-07-28
+- **最近更新**：2026-08-04
+- **置信度**：0.7
+- **状态**：active
+
+> 专家经验固化的第三条路线（除 pipeline 化、reward 化外）是轨迹蒸馏：把专家完整的工作过程——包括犹豫（"这个角度试了又放弃"）、否决（"这段删掉，理由是…"）、改写（改前改后对照）——记录成示范轨迹当 SFT 数据，让模型模仿的不是最终产出而是决策过程。与本页拒绝采样的衔接：筛选标准从"结果对"（ORM 级）升级为"过程和结果都好"（PRM 级，见 [[process-reward-model]]）——结果侥幸正确但中间过程不可靠的轨迹不进训练集，否则会把"碰运气"固化进权重。这把"用 reward 造标签"扩展到主观领域：没有精确匹配 grader 时，专家的步骤级判断就是造标签的 reward。
+
 ## 冲突与演进
 
 - 2026-06-26：从 agent-lightning 源码逐行剖析 SFT 路线，确立"用 reward 造标签"、自蒸馏 vs 强→弱蒸馏、与 RL 的场景边界。
 - 2026-06-28：回到 RAFT/STaR 原始 paper，确认代码骨架的理论出处，定位 reward"只检票不进梯度"是区别 PPO 的本质，诊断 demo 退化成 K=1 greedy 是慢爬根因。
+- 2026-08-04：从内容工程师篇补充主观领域延伸——专家示范轨迹（含犹豫/否决/改写）当 SFT 数据，筛选标准从 ORM 级升级为 PRM 级。
 
 ## 关联概念
 
@@ -139,3 +150,4 @@ related:
 - [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] — reward 造标签、target 是评分键、自蒸馏 vs 蒸馏、SFT vs RL 场景边界、工具调用 SFT、单轮 vs 多轮记录
 - [[2026-06-28-RAFT-Reward-rAnked-FineTuning-论文解读]] — RAFT 三步框架、reward 只检票、RAFT vs STaR、demo 退化诊断、社区现状
 - [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] — 实战跑通、动态飞轮实验、K=1 慢爬复盘
+- [[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]] — 专家示范轨迹当 SFT 数据、"过程和结果都好"的 PRM 级筛选（2026-07-28）

@@ -1,7 +1,7 @@
 ---
 title: "Reward 设计三份输入与两本账分家"
 created: "2026-07-16"
-updated: "2026-08-03"
+updated: "2026-08-04"
 tags:
   - wiki
   - method
@@ -129,6 +129,16 @@ Reward 设计不是写规格，是做实验。这个工作流回答"训练用的
 
 > 本方法中抽象的"judge 噪声 σ_noise"可拆成八类可测偏差（Consistency 漂移、Position、Verbosity、Self-Preference、Style、Prompt Sensitivity、Calibration 错位、Agreement with Humans，见 [[llm-as-a-judge]]）。降噪杠杆与病灶对应：多次采样取中位数治 Consistency；拆分字段 + rubric 锚点治 Prompt Sensitivity 与 Calibration；盲选 ≥85% 一致率直接测 Agreement。Step 1 校准跑测 σ_noise 时可按此清单分项归因，而非只拿到一个总量。
 
+### Claim: 量化语感闭环——偏好差分→BARS 锚定→kappa 检验→三层验证，把主观品味变成可用的 reward 输入
+
+- **来源**：[[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]]
+- **首次出现**：2026-07-28
+- **最近更新**：2026-08-04
+- **置信度**：0.7
+- **状态**：active
+
+> 当业务属性本身是主观品味（语感、风格）时，"三份输入"的第一份需要一条前置编译链：① 偏好差分法——不问"好文案什么样"，给同题两版（7 分 vs 10 分）问"把 B 改到 A 最少动什么"，从偏好对归纳维度；② BARS 锚定量表——每维度配分档真实样例 + 边界反例（规则是品味的有损压缩，样例保留未显式化的隐维度）；③ 维度硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果。产出接本方法的三层验证闭环：judge 与专家对齐（对应盲选 ≥85%）、盲测胜率、噪声控制。这把 Step 4 的盲选校准从"反推权重"扩展到"从零发明维度"。
+
 ## 实践记录
 
 ### Practice: 2026-07-15 — video2frames reward v2 设计稿
@@ -154,3 +164,4 @@ Reward 设计不是写规格，是做实验。这个工作流回答"训练用的
 
 - [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — §五完整方法：三份输入表、错配实测证据、reward v2 规格、盲选校准流程、共商工作坊脚本
 - [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 原始 reward 双指标分工（hard 验收/soft 优化）与"客户确认六问"的前身思考
+- [[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]] — 偏好差分/BARS/kappa/受控改写的量化语感闭环（2026-07-28）

@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-07-21"
+updated: "2026-08-04"
 tags:
   - wiki
   - concept
@@ -185,6 +185,26 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。
 
+### Claim: OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构
+
+- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **首次出现**：2026-07-30
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比"模型之外的一切"（LangChain）与"信息管道代码"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。
+
+### Claim: 选 harness 就是选行为语义——Copilot Studio 三 harness 并存；扩展机制"离模型越近越可移植"
+
+- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **首次出现**：2026-07-30
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
@@ -192,6 +212,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-04-23：InkOS 分析证实 Harness Engineering 范式具有跨领域普适性（从 Coding 扩展到小说创作），核心公式 Agent = Model + Harness 在文学领域同样成立。
 - 2026-07-14：VS Code Copilot 博客解读补充两条工程证据：三层评测体系（VSC-Bench→PR 门禁→生产 A/B）与"agent 行为回归"这一传统 CI 盲区。harness 的产品战略层议题（第一方绑定 vs 多模型适配）另建 [[model-harness-codesign]] 页。
 - 2026-07-20：SDD/V-Model 提供合规域延伸证据：确定性脚本验证追溯 + 模板门禁，Harness 范式从 Agent 系统扩展到软件开发方法论本身。
+- 2026-08-04：从 Foundry Toolbox/Skills 篇补充 OpenForge 正式定义（Model+Harness+Environment 三元）、Copilot Studio 三 harness 产品证据与"离模型越近越可移植"分层——harness 定义谱系现有三档：泛指（LangChain）> 编排脚手架（OpenForge）> 信息管道（Meta-Harness）。
 
 ## 关联概念
 
@@ -213,3 +234,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[2026-04-23-周四]] — InkOS 跨领域验证：AI 小说创作中的 Harness Engineering 范式、三种 AI 创作范式总结
 - [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — VS Code 三层评测体系、agent 行为回归门禁、`~requires-eval-assessment` 自我申报实证、L1/L2/L3 分层约束
 - [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）
+- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）

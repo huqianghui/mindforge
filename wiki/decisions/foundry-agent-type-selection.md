@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-08-03"
+updated: "2026-08-04"
 tags:
   - wiki
   - decision
@@ -98,6 +98,26 @@ Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管�
 
 > WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。
 
+### Claim: Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权
+
+- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **首次出现**：2026-07-30
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> agents overview 给 Prompt Agent 标 "Skill support: Yes"，但三条绑定路径（toolbox 挂 skill 的 MCP Resources 消费 / 直接注入 / Responses API shell tool）截至 2026-07-31 复核没有一条文档化可走通——skills 功能矩阵压根没有 prompt agent 列。根因不是执行环境（Agents 侧 skill 是纯文本，加载只需"读文本拼进 system prompt"），而是 **harness 实现权**：skill 加载（SEP-2640 + progressive disclosure）需要 harness 实现 client 逻辑，Prompt Agent 的托管 harness 是平台封闭代码，它没实现你就没有注入点；Hosted Agent 自己写或用 Agent Framework `AgentSkillsProvider`。这把本决策"Runtime 归属唯一主线"延伸到了 skill 能力域。
+
+### Claim: 成本模型——调用侧计费两类相同，container compute 买的是"改 harness 的权力"
+
+- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **首次出现**：2026-07-30
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> 两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是"是否需要 harness 控制权"，而不只是"要不要多付钱"——scale-to-zero 让低流量场景该成本接近零。
+
 ## 关联概念
 
 - [[voice-live-agent]] — `grounds` Voice Live 挂载机制是本决策"组合方向"分析的语音侧依据
@@ -110,3 +130,4 @@ Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管�
 ## 来源
 
 - [[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]] — 三类型能力、治理与场景选型全景（2026-07-19）
+- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — Skill 支持文档矛盾、harness 控制权、成本模型（2026-07-30）

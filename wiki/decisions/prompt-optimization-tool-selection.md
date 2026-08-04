@@ -1,7 +1,7 @@
 ---
 title: "Prompt 优化工具选型——DSPy vs agent-lightning"
 created: "2026-06-29"
-updated: "2026-07-16"
+updated: "2026-08-04"
 tags:
   - wiki
   - decision
@@ -14,6 +14,7 @@ related_concepts:
   - "[[rejection-sampling-finetuning]]"
 related_methods:
   - "[[pre-run-three-number-accounting]]"
+  - "[[prompt-optimization-maturity-ladder]]"
 ---
 
 # Prompt 优化工具选型——DSPy vs agent-lightning
@@ -92,6 +93,16 @@ related_methods:
 
 > 把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何"有效"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从"选哪个框架"到"选哪种优化器动力学、乃至要不要跑"。
 
+### Claim: 选型前先判成熟度层级——L1 手动工具与 L2 数据闭环工具是上下游而非竞品
+
+- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **首次出现**：2026-07-30
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> 本决策的所有选项（DSPy/TextGrad/AdalFlow/agent-lightning）都是 L2 数据闭环层工具，隐含前提是已具备可量化 reward + 足量评估数据。成熟度阶梯（见 [[prompt-optimization-maturity-ladder]]）指出更早的分叉：L1 的 prompt-optimizer 类工具（模板改写 + LLM-judge，人闭合回路）与 L2 工具不是竞品而是上下游——L1 阶段人工迭代攒下的 bad case 正是 L2 评估集的种子。数据 < 10 条或任务纯品味类 → 停在 L1，选型问题根本不成立；30~50 条可试 L2（必须降噪）。这给本决策补了一道前置门：先判层级，再谈框架。
+
 ## 关联概念
 
 - [[agent-lightning]] — `constrains` 本决策的核心被评估对象——其差异化价值（method-agnostic + RL rollout）决定了它只在「将走向权重微调」时才该选
@@ -102,3 +113,4 @@ related_methods:
 
 - [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]] — 决策结论、工具对比、典型场景路径、真瓶颈
 - [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — APO vs SkillOpt 六行场景选型决策表、"都不跑"判据、两条通用纪律
+- [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] — L0/L1/L2 前置分层、L1 与 L2 是上下游非竞品（2026-07-30）

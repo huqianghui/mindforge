@@ -1,7 +1,7 @@
 ---
 title: "Enterprise Ontology"
 created: "2026-04-13"
-updated: "2026-04-15"
+updated: "2026-08-04"
 tags:
   - wiki
   - concept
@@ -87,9 +87,19 @@ related:
 
 > 让模型在语义明确的对象图上推理而非原始数据表，降低幻觉风险。
 
+### Claim: Fabric IQ Graph 是真正的 LPG 图数据库引擎——Ontology 做语义路由层、Graph 做计算层
+
+- **来源**：[[Microsoft Fabric IQ与本体论（Ontology）研究]]
+- **首次出现**：2026-07-24
+- **最近更新**：2026-08-04
+- **置信度**：0.75
+- **状态**：active
+
+> Fabric IQ 的 Graph 与 Microsoft Graph（`graph.microsoft.com`，M365 REST API 网关）完全无关：它是原生 scale-out 图数据库引擎，实现 **Labeled Property Graph（LPG）**模型，查询语言用 ISO 标准 **GQL**（而非 Cypher/GraphQL）。与 Ontology 的分工是"语义层 + 计算层"：Ontology 作为语义路由层，把聚合类查询（KPI/DAX）路由到 Semantic Model、把多跳遍历和图算法路由到 Graph Engine。转换逻辑：关系表每行 → 节点，外键 → 带属性的边；创建 Ontology 时 Graph 作为子项目自动生成。价值边界清晰：单跳查询等价 SQL JOIN 不需要图，3 层以上关系穿越（"订单→发货→温度传感器→冷链违规"）才是 Graph 的主场。当前限制：不随上游自动刷新（需手动/定时）、不支持 Schema 演化（结构变更要重新 ingest）。
+
 ## 冲突与演进
 
-（暂无）
+- 2026-08-04：回补 Fabric IQ Graph 深潜章节——LPG 引擎、GQL、语义路由/计算层分工、表到图转换与当前限制；页面由 stale 注入新活跃证据。
 
 ## 关联概念
 

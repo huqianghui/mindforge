@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-08-03
-stats: "87 concepts, 17 methods, 8 decisions, 480 claims"
+updated: 2026-08-04
+stats: "92 concepts, 18 methods, 8 decisions, 521 claims"
 tags:
   - wiki
   - index
@@ -80,6 +80,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[meta-harness]] — Meta-Harness：用 Harness 优化 Harness 的递归搜索架构
 - [[model-harness-codesign]] — Model-Harness Codesign：第一方绑定 vs 多模型适配的路线之争
 - [[one-person-team]] — One Person Team：AI 重新定义技术角色边界
+- [[forward-deployed-engineer]] — FDE：调节器非老师、三资产乘法、2-3 人精英组 + Agent 编队
+- [[requisite-variety]] — 必要多样性定律：V_Regulator ≥ V_Disturbance，Harness 与 FDE 的存在条件
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
 - [[hermes-agent]] — Hermes Agent：自我改进 Agent 框架（Skill 自动生成 + Curator 生命周期管理）
@@ -112,6 +114,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[distributed-training-parallelism]] — 分布式训练并行：FSDP 切存储 vs TP/PP 切计算、Megatron/PyTorch 分层
 - [[llm-as-a-judge]] — LLM-as-a-Judge：Judge×Strategy×Criteria 三层正交评估模型与 Judge Reliability 八偏差
 - [[rubric]] — Rubric（评分细则）：维度+等级+锚点，judge 的配置而非 judge 本身；Rubric as Reward 趋势线
+- [[process-reward-model]] — PRM vs ORM：结果打分 vs 步骤打分，专家标注不可替代性的所在
+- [[global-workspace-llm]] — J-space：LLM 残差流中涌现的全局工作空间，J-lens 读"准备说什么"
 
 ### Claude Code 与扩展生态
 
@@ -136,6 +140,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[context7]] — Context7：实时文档 MCP Server
 - [[agent-search-tools]] — AI Agent 搜索三剑客：Exa / Tavily / Context7
 - [[opencli]] — OpenCLI：CLI 的 OpenAPI 标准化接口描述
+- [[ag-ui-protocol]] — AG-UI：Agent 三大协议的最后一环（MCP 向下、A2A 横向、AG-UI 向上连 UI）
 
 ### 语音与实时交互
 
@@ -203,6 +208,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 - [[gsd-project-scale-selection]] — GSD 项目规模分级与工具选择
 - [[pre-run-three-number-accounting]] — 先算账再开跑：σ_d / δ_min / δ_remain 三个数判断式，几分钟算术省一次无效训练
+- [[prompt-optimization-maturity-ladder]] — Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环的迁移判定
 
 ### Workflow（工作流）
 
