@@ -30,9 +30,9 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 |------|------|
 | 文章与笔记 | 133（Notes 104 / paper 13 / book 4 / product 4 / Azure 8） |
 | 日记 | 109 |
-| Wiki 页面 | 87 concepts + 17 methods + 8 decisions |
-| Claims（带证据的论断） | 480 |
-| 知识图谱 | 112 节点 / 370 关系 / 9 种关系类型 |
+| Wiki 页面 | 92 concepts + 18 methods + 8 decisions |
+| Claims（带证据的论断） | 521 |
+| 知识图谱 | 118 节点 / 403 关系 / 9 种关系类型 |
 
 > 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-08-04。
 <!-- STATS:END -->

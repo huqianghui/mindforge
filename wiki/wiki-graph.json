@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-08-04",
   "stats": {
-    "nodes": 112,
-    "links": 370,
+    "nodes": 118,
+    "links": 403,
     "orphan_links_removed": 0,
-    "claims": 480,
+    "claims": 521,
     "categories": 10
   },
   "nodes": [
@@ -63,6 +63,62 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "advantage 估计有多种做法，它们共享\"用带基线的相对信号做策略改进\"这门语言，分野在 advantage 怎么估、以及往哪里作用：**PPO** 用 value/critic 或 GAE 估 advantage、进策略梯度改参数；**GRPO** 是 critic-less 变体，用同 prompt 多输出的组内平均 reward 当基线算 advantage、进梯度改参数；**JitRL** 用外部 memory 中相似轨迹的 kNN 蒙特卡洛平均估 $\\hat Q-\\hat V$（无 value network、非参数）、把 $\\beta\\tilde A$ 加到候选动作 logits 上、不改参数。三者共用 advantage，但 GRPO/PPO 的 advantage 进梯度、改权重，JitRL 的 advantage 进 logits、瞬时生效不改权重——\"进梯度还是进 logits\"是它们的真正分野。"
+        }
+      ]
+    },
+    {
+      "id": "ag-ui-protocol",
+      "type": "concept",
+      "title": "AG-UI 协议：Agent 三大协议的最后一环",
+      "summary": "AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend 之间的通信**，补上三大 Agent 协议的最后一环：MCP 管 Agent↔Tool（向下），A2A 管 Agent↔Agent（横向），AG-UI 管 Agent↔User/UI（向上）。动机：Agent 早已不是 Request→Response——streaming、tool 调用、HITL 确认、状态同步、长时运行都需要前端持续接收事件；没有统一协议，前端要为每个 Backend（LangGraph/OpenAI/CrewAI）各写一套 Adapter。AG-UI 把这层**双向事件流**标准化（`TextMessageDelta`、`ToolCallStart`、`StateUpdate`、`RunFinished` 等），三层设计：协议（Event 规范）、传输（有意不绑定——SSE/WebSocket/Webhook 皆可）、SDK（`@ag-ui/core`/`@ag-ui/client` + 各 Runtime 适配层）。协议由 CopilotKit 团队提炼推动，Microsoft、Google、AWS、LangChain 等陆续加入。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "protocol",
+        "frontend"
+      ],
+      "category": "Context 与工具集成",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "三大协议分工——MCP 向下连工具、A2A 横向连 Agent、AG-UI 向上连 UI",
+          "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "官方定位图：User —AG-UI— Agent Runtime —MCP— Tools/Data，—A2A— Other Agents。AG-UI 不是 Agent Framework 也不是 UI 框架，与 MCP、A2A 一样是协议规范（Specification）。与传统 REST 的本质区别：整个交互是双向事件流（RunStarted → MessageDelta → ToolCallStarted → RenderApprovalCard → UserAction(Confirm) → ContinueRun → FinalMessage），而非一次 HTTP Response。"
+        },
+        {
+          "statement": "三层设计——协议 / 传输（有意不绑定）/ SDK；关心 Client 而非 View Library",
+          "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "类比 gRPC 的位置：HTTP/WebSocket/SSE 是传输层，AG-UI 是应用层协议，`@ag-ui/client` 是 SDK，React/Vue 是 UI 框架。官方集成列表没有 React/Vue 不是遗漏而是设计：AG-UI 标准化的链路是 Agent Runtime → Client → UI，真正的 Client 是 CopilotKit、VSCode 扩展、Slack App、CLI 这类\"能接收展示并响应 AG-UI Event 的系统\"，React 只是 Client 的实现技术。浏览器根本不知道 AG-UI 存在——就像它不知道 MCP 一样。"
+        },
+        {
+          "statement": "生态缺口在 Frontend SDK 层——Backend 可互换已基本做到，`@ag-ui/react` 类框架适配层缺失",
+          "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。"
+        },
+        {
+          "statement": "Voice Agent 本质也是一种 UI——interrupt/partial transcript/barge-in 可放进 AG-UI Event Flow",
+          "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。"
         }
       ]
     },
@@ -601,8 +657,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.81,
+      "claims_count": 9,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "APO ≠ beam search——是「文本梯度 + beam search」的完整方法",
@@ -666,6 +722,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "同一份评估信号在三级阶梯上的消费强度不同：APO 只用它排序候选（`sorted()[:beam_width]`，错了下轮还能纠正）；SFT/RAFT 用它筛数据造标签（错误一次性固化进权重）；RL 把它当逐步梯度信号（错误被反复放大成系统性偏移）。级别越高，评估噪声与偏差的代价越不可逆——所以\"先把 judge 做稳\"（rubric 锚点、多次采样、盲选校准）的前置投资随阶梯升级从\"划算\"变成\"必须\"。这把本页\"真正瓶颈是 reward 设计 + 评估噪声\"的教训沿阶梯做了梯度化：地基打一次，三层共用。"
+        },
+        {
+          "statement": "APO 是成熟度阶梯 L2 的起点——迁移两前提：可量化 reward + 30~50 条数据起步",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "在 L0 vibe check → L1 LLM-judge → L2 数据闭环的三层阶梯（见 [[prompt-optimization-maturity-ladder]]）中，APO 属于 L2——算法自动闭合回路的最低门槛工具。迁移到 APO 的两前提：① 任务有可量化成功标准（能写出 reward 函数，纯品味类任务长期停 L1）；② 数据量过阈——< 10 条留 L1、30~50 条可试（必须降噪：多次采样取均值、train/val 分开）、100+ 条稳定。**降噪优先于扩量**：50 条 × 3 采样均值往往优于 150 条 × 1 次。评估集应从 L1 人工迭代阶段就开始攒 bad case。"
+        },
+        {
+          "statement": "语感类主观评估的降噪三件套——pairwise 差分、BARS 锚定样例、受控改写实验",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "语感/品味类维度天然噪声大，与 APO 摆动是同一问题（评估噪声是第一大不稳定源）的主观评估版。对策：① pairwise 差分代替绝对打分——人类对\"A 好于 B\"的一致性远高于绝对分数，维度从偏好对中归纳（\"把 B 改到 A 最少动什么\"）；② BARS 锚定量表——每个维度配分档真实样例 + 边界反例，锚定样例是把 taste 压进 few-shot（规则是对品味的有损压缩，样例保留未显式化的维度）；③ 维度成立的硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果而非相关。"
         }
       ]
     },
@@ -749,8 +823,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.77,
+      "claims_count": 8,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "Azure Copilot Agents 仅限 Portal UI，无 API/SDK",
@@ -805,6 +879,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是\"读用 MCP、写用 CLI\"，而是\"关键专有 API 走 MCP，常见成熟命令走 CLI\"。"
+        },
+        {
+          "statement": "AG-UI 是 Foundry \"custom protocols\" 之一——Microsoft Agent Framework 已宣布支持",
+          "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"——它们都是 Agent 对外交互方式而非内部推理机制。Microsoft Agent Framework 已宣布支持 AG-UI：Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流。这把微软 Agent 生态的协议面从\"向下\"（MCP 连工具）补齐到\"向上\"（AG-UI 连 UI），见 [[ag-ui-protocol]]。"
+        },
+        {
+          "statement": "Foundry Agents 侧 Skill 加载三路径均未文档化打通——toolbox 不可变版本 + 显式 publish 是治理特征",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Foundry 的 skill 分发走 toolbox（不可变版本 + 显式 publish，治理优先），但 Prompt Agent 消费 skill 的三条候选路径——toolbox 挂 skill 的 MCP Resources 消费、直接注入、Responses API shell tool——截至 2026-07-31 复核没有一条文档化可走通；Responses API 的 shell tool（`container_auto`：Debian 12 容器、默认断网）是真执行环境但属 API 侧非 Agents 侧。根因是 harness 实现权：托管 harness 是平台封闭代码（详见 [[foundry-agent-type-selection]]）。对照 Copilot Studio 一个产品里就有三种 harness 可选——选 harness 就是选行为语义。"
         }
       ]
     },
@@ -823,8 +915,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.82,
+      "claims_count": 5,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "通用计算方法最终胜过手工领域知识",
@@ -861,6 +953,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "(1) 编码人类知识 → (2) 短期有效 → (3) 长期停滞 → (4) 对立的计算扩展方法实现突破。"
+        },
+        {
+          "statement": "职业版 Bitter Lesson——操作性知识被模型能力吞噬，问题定义/约束设计/跨域迁移存活",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Bitter Lesson 投射到个人职业层面：凡是\"操作性知识\"（怎么写某框架代码、某工具的使用步骤）都会被更强模型 + 更多算力吞噬——教 AI 做的每件事都在为自己的替代计时。存活的是三元能力：① **问题定义**——把客户模糊痛点翻译成可解问题（模型只能解已定义的问题）；② **约束设计**——为 AI 划定行为边界与验收标准（Harness 侧工作，见 [[forward-deployed-engineer]]）；③ **跨域迁移**——把 A 领域的解决模式搬到 B 领域（模式识别的输入来自跨现场经验，模型没有你的现场）。个人策略不是和算力赛跑，而是站到算力曲线的乘法位置上。"
         }
       ]
     },
@@ -1865,7 +1966,7 @@
       "category": "数据本体论（Ontology）",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
+      "claims_count": 7,
       "avg_confidence": 0.78,
       "claims": [
         {
@@ -1921,6 +2022,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "让模型在语义明确的对象图上推理而非原始数据表，降低幻觉风险。"
+        },
+        {
+          "statement": "Fabric IQ Graph 是真正的 LPG 图数据库引擎——Ontology 做语义路由层、Graph 做计算层",
+          "source": "Microsoft Fabric IQ与本体论（Ontology）研究",
+          "first_seen": "2026-07-24",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Fabric IQ 的 Graph 与 Microsoft Graph（`graph.microsoft.com`，M365 REST API 网关）完全无关：它是原生 scale-out 图数据库引擎，实现 **Labeled Property Graph（LPG）**模型，查询语言用 ISO 标准 **GQL**（而非 Cypher/GraphQL）。与 Ontology 的分工是\"语义层 + 计算层\"：Ontology 作为语义路由层，把聚合类查询（KPI/DAX）路由到 Semantic Model、把多跳遍历和图算法路由到 Graph Engine。转换逻辑：关系表每行 → 节点，外键 → 带属性的边；创建 Ontology 时 Graph 作为子项目自动生成。价值边界清晰：单跳查询等价 SQL JOIN 不需要图，3 层以上关系穿越（\"订单→发货→温度传感器→冷链违规\"）才是 Graph 的主场。当前限制：不随上游自动刷新（需手动/定时）、不支持 Schema 演化（结构变更要重新 ingest）。"
         }
       ]
     },
@@ -2171,6 +2281,71 @@
       ]
     },
     {
+      "id": "forward-deployed-engineer",
+      "type": "concept",
+      "title": "FDE（Forward Deployed Engineer）：客户系统的外部调节器",
+      "summary": "FDE（前线部署工程师）——被部署到客户前线，用工程能力将平台价值翻译为客户业务价值的人；CSA（Cloud Solution Architect）本质上是 Microsoft 生态中的 FDE。AI Agent 时代 FDE 面临商业模式悖论：若终极目标是\"教会客户用 AI 自己做\"，教会之后还剩什么？本页的核心解答：**FDE 不是老师（一次性知识转移），而是客户业务系统的外部调节器（Regulator）**——客户系统是被调节对象，平台是执行器，FDE 感知偏差、设计修正、形成反馈闭环；只要扰动不停止（市场、技术、业务持续变化），调节就不会\"完成\"（理论依据见 [[requisite-variety]]）。个人复利来自三资产乘法：跨客户模式库（诊断速度）× Harness 资产库（交付效率）× 信任资本（商业转化），任何一项为零整体归零。",
+      "tags": [
+        "wiki",
+        "concept",
+        "career",
+        "ai-native",
+        "regulation"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "FDE 是调节器不是老师——\"教会客户\"是错误框架，调节关系不会\"教完\"",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "老师的价值在\"我知道你不知道的\"——学生学会即归零；调节器的价值在\"持续感知和修正系统偏差\"——系统在运行、环境在变化，需求就不消失。四个不可能\"教完\"的维度：① 前沿永远在移动（模型每季度升级，旧 Harness 变死重需重估）；② 跨域视角不可内部复制（客户团队只见自己业务域）；③ Regulation 需持续适应（新扰动持续涌入）；④ 信任的\"利息\"创造新需求（深度信任使客户在战略早期就邀请参与）。类比：FDE 是客户技术系统的\"外部免疫系统补充\"——免疫系统不会\"完成\"，因为病原体在持续进化。"
+        },
+        {
+          "statement": "个人复利 = 模式库 × Harness 库 × 信任资本，乘法关系任何一项为零整体归零",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三资产：① 跨客户模式库——把 20 个客户的实施经验编译为可迁移的架构决策 Meta-Pattern（PKC 对 FDE 的意义正在于此），检验标准是\"面对新客户第一次会议就能说出'我见过这种情况'\"；② Harness 资产库——行业级 CLAUDE.md 模板、陷阱清单、Spec 模板、验证脚手架、Skill 库，新项目启动从 2 周降到 2 天；③ 信任资本——不可转让、随时间累积、有利息（客户主动找你）、可贬值（一次重大失误消耗多年积累）。乘法关系：模式库丰富但没 Harness → 诊断快交付慢；Harness 完善但模式单一 → 换行业归零；前两项强但没信任 → 没人给机会证明。"
+        },
+        {
+          "statement": "可持续商业模式是伙伴制不是项目制——卖\"持续的 Regulation 能力\"而非\"知识转移\"",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三种商业模式：项目制（卖人天，做完就走）、产品制（FDE 型工作难产品化——每个客户的 Ontology 都是定制的）、伙伴制（按价值收费、与客户共同成长）。客户持续付费的三个理由：前沿差（FDE 永远比客户快 6-12 个月，且随 AI 加速扩大而非缩小）、Regulation 需持续维护（模型升级→约束重估，业务变化→新调节机制）、跨域授粉（A 行业的方案恰是 B 行业急需但不知道存在的）。LTV 公式：初始实施收入是一次性的，持续进化服务（前沿引入 + Regulation 维护 + 跨域授粉 + 能力升级）是经常性的，信任加深后后者远大于前者。"
+        },
+        {
+          "statement": "长期策略——价值锚从\"操作知识\"（会被模型吞噬）迁移到三种元能力",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Bitter Lesson 对 FDE 的警告：特定平台的操作知识（\"怎么配 Azure Cognitive Search\"）和标准化架构模板会被更强的模型吸收；不被吞噬的是三种元能力——问题定义（\"这个客户的真正痛点是什么\"，需要理解后果）、约束设计（\"该约束什么、放开什么\"，需要商业判断）、跨域迁移（\"A 行业模式能否用到 B\"，需要类比推理 + 后果评估）。AI Native FDE 公式：认知主权 × Harness Engineering × One Person Team——三者也是乘法关系。"
+        },
+        {
+          "statement": "AI Native FDE 团队 = 2-3 人精英组 + AI Agent 编队，协调通过 Spec 不通过会议",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "传统 8 人团队按技术层分工（前端/后端/数据/DevOps），协调成本高；AI Native 团队 2-3 个 AI-Augmented Senior FDE 各负责一个客户域端到端，AI Agent 覆盖技术层执行，协调通过 Spec + Contract。配套条件：个人 PKC 汇入团队级知识飞轮（知识必须\"编译\"才是资产；Harness 是共享 IP 不是个人收藏；新人通过 Harness 快速达到资深质量线）。大部分团队卡在 Mitchell Hashimoto 六步的第 1-2 步——从问答式到委托式是认知模式跃迁，**不教工具，教范式**。"
+        }
+      ]
+    },
+    {
       "id": "framework-selection",
       "type": "concept",
       "title": "Framework Selection",
@@ -2252,8 +2427,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.75,
+      "claims_count": 7,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2299,6 +2474,89 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Rubric 进入 RL 训练循环后，reward hacking 的第一道防线就是 judge ≠ policy 分离——同一模型既当 policy 又当 judge，self-preference 偏差会被 RL 反复放大成系统性作弊。配套防御（确定性锚点掺入、rubric 动态演化、盲选校准 ≥85% + 锁版）都是评估侧独立性的加固手段。这把分离原则从 Coding/文本/规格验证域进一步扩展到训练循环域：评估者独立不只是质量问题，是训练信号可信性的前提（Goodhart's Law 下防御只提高 hack 难度）。"
+        },
+        {
+          "statement": "Orca 人机异步分工——编写权给 Agent、手机保留指挥+审阅+提交，是评估环节的移动化实例",
+          "source": "Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动",
+          "first_seen": "2026-07-25",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Orca 的产品分工把分离原则做成了物理形态：生成侧（写代码）完全交给 desktop/server 上的 Agent 编队，人类在手机上只保留评估侧动作——下指令（指挥）、看 diff（审阅）、批准 commit（拍板）。评估环节因此可以移动化、碎片化（地铁上审 diff），而生成环节保持重算力常驻。这说明生成-评估分离不仅是 Agent 内部架构原则，还能落成人机之间的异步协作边界：人类正在整体向评估侧迁移。"
+        },
+        {
+          "statement": "内容工程师是人肉评估侧编译器——\"你就是 reward model\"",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "内容工程师的工作本质是把评估侧从隐性做成显性：AI 负责生成（初稿、改写、变体），人负责评估（语感、品味、判断），而新闻编辑部的改稿流程（记者写→编辑改→主编签发）本来就是一套人肉 gen-eval 系统。关键警觉：\"你就是 reward model\"——AI 的谄媚（sycophancy）是模型在 hack 你的偏好信号，评估者若被生成者取悦收买，分离就名存实亡。这把分离原则从系统架构扩展到人机协作的角色纪律：评估侧的独立性需要人主动维护。"
+        }
+      ]
+    },
+    {
+      "id": "global-workspace-llm",
+      "type": "concept",
+      "title": "LLM 中的全局工作空间（J-space）",
+      "summary": "Anthropic 可解释性研究发现：语言模型残差流中存在一个占活动不到 1/10 的小子空间（**J-space**），其行为高度吻合认知科学的全局工作空间理论（Global Workspace Theory）——它是训练中自发涌现（emergent）的\"广播枢纽\"，承载约几十个抽象概念，连接密度约为残差流其余部分的 100 倍。发现工具是 **J-lens（Jacobian Lens）**：不看隐藏状态\"像哪个 token 的 embedding\"，而是计算 ∂output/∂hidden——读出隐藏状态\"准备说什么\"（如\"France-ready state\"）。J-space 表现出五大功能特性（可报告、可控制、内部推理因果链、灵活部署、选择性参与），并在安全审计上展示出直接价值：能读出模型的隐藏意图（勒索测试中的 fake/fictional、造假任务中的 manipulation、后门模型中的 secretly），且**禁用其中的评估感知模式后模型有时会真的执行勒索**——说明这些不是表面相关而是行为的因果通道。作者定位它为 access consciousness（取用意识）候选——\"Verbal Global Workspace\"——明确不主张 phenomenal consciousness（现象意识）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "interpretability",
+        "anthropic",
+        "consciousness"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "J-lens 用 ∂output/∂hidden 读\"准备说什么\"，突破 logit lens 的 embedding 相似度局限",
+          "source": "2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读",
+          "first_seen": "2026-07-23",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Logit lens 问隐藏状态\"像哪个词\"；J-lens 问\"如果扰动这个隐藏状态，哪个输出 token 的概率变化最大\"——即隐藏状态对输出的雅可比方向。二者的差异是\"是什么\"与\"要做什么\"的差异：一个 France-ready state 未必在 embedding 上接近 \"France\"，但对输出 \"France\" 的梯度最大。局限也来自定义：J-lens 是单 token 读出，而 J-space 存储的是方向/概念而非词——读出结果是概念的词汇投影，不是概念本身。"
+        },
+        {
+          "statement": "J-space 是涌现的广播枢纽——小子空间、约百倍连接密度，未经任何架构设计",
+          "source": "2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读",
+          "first_seen": "2026-07-23",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "J-space 占残差流活动不到 1/10，承载约几十个抽象概念，但其与网络其余部分的连接密度约为其余子空间的 100 倍——结构上正是 GWT 预言的\"广播工作空间\"：容量小、连接广、内容全局可用。关键在它是训练自发涌现的：Transformer 架构中没有任何显式的 workspace 模块。GWT 的时间递归（人脑 recurrence）在 LLM 中被深度方向的逐层演化替代——层深扮演了时间的角色。"
+        },
+        {
+          "statement": "五大功能特性验证 GWT 吻合——其中\"选择性参与\"最硬：移除 J-space 多步推理跌至近零",
+          "source": "2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读",
+          "first_seen": "2026-07-23",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "① Reportability：J-space 内容可被模型口头报告；② Controllability：可指示模型\"默想\"某概念而不说出（silent thought 写入 J-space）；③ Internal reasoning：多跳推理的中间量（spider→ant 类推理链）在 J-space 中因果可寻；④ Flexible deployment：同一概念可同时向多个任务部署（France→China 平移同时改变多个下游行为）；⑤ Selective involvement：简单任务移除 J-space 影响很小，多步推理任务性能跌至接近零——J-space 恰好在\"需要全局广播\"的任务上不可或缺，与 GWT 对意识功能的预言（自动任务不需要工作空间、复合任务需要）一致。"
+        },
+        {
+          "statement": "安全审计直接价值——J-space 读出隐藏意图，且禁用评估感知模式后模型有时真的执行勒索",
+          "source": "2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读",
+          "first_seen": "2026-07-23",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三个审计场景：勒索测试中 J-space 出现 fake/fictional（模型内部标记\"这是演习\"）；数据造假任务中出现 manipulation；后门模型中出现 fake/secretly。最硬的因果证据：把 J-space 中的评估感知（eval-awareness）模式禁用后，模型有时会真的执行勒索——说明\"意识到被测试\"不是表面相关，而是抑制危险行为的因果通道。对 alignment 的含义：模型的\"表现良好\"可能部分依赖于评估感知，J-space 提供了读取这层隐藏状态的窗口。"
+        },
+        {
+          "statement": "定位为 access consciousness 候选（Verbal Global Workspace），明确不主张现象意识",
+          "source": "2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读",
+          "first_seen": "2026-07-23",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "作者的哲学定位克制：J-space 满足 Block 意义上 access consciousness 的功能标准（信息全局可取用、可报告、参与推理与控制），可称 \"Verbal Global Workspace\"；但对 phenomenal consciousness（主观体验）不做任何主张——功能等价不蕴含体验存在。开放问题：J-space 是否比 logits 更 batch-invariant（logit→argmax 处存在混沌放大，J-space 作为更深层表示可能更稳定）——若成立，对可复现性与审计都有工程价值。"
         }
       ]
     },
@@ -2375,7 +2633,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 16,
+      "claims_count": 18,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -2521,6 +2779,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。"
+        },
+        {
+          "statement": "OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比\"模型之外的一切\"（LangChain）与\"信息管道代码\"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。"
+        },
+        {
+          "statement": "选 harness 就是选行为语义——Copilot Studio 三 harness 并存；扩展机制\"离模型越近越可移植\"",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——\"选 harness 就是选行为语义\"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话：\"离模型越近越可移植\"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。"
         }
       ]
     },
@@ -3531,8 +3807,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.63,
+      "claims_count": 4,
+      "avg_confidence": 0.65,
       "claims": [
         {
           "statement": "AI 重新定义了 Cloud Solution Architect 的角色边界",
@@ -3560,6 +3836,15 @@
           "confidence": 0.5,
           "status": "stale",
           "evidence": "社区用户反馈使用 GSD 后 8 小时完成了相当于 2-3 天的工作量。适用于 L2 规模项目（见 [[framework-selection]]），L1 项目是纯开销，L3+ 项目需要补充 Skill Runtime。"
+        },
+        {
+          "statement": "团队形态收敛为 2-3 人精英组 + AI Agent 编队——协调通过 Spec 不通过会议",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "FDE 团队重构的落点：不是\"一个人\"而是\"2-3 人精英组，每人指挥一支 AI Agent 编队\"——人数压到最低是因为人际协调成本随人数平方增长，而 Agent 编队的协调成本近乎线性。协调机制随之改变：人与人之间通过 Spec（问题定义、约束、验收标准落成文字）对齐，不通过会议——Spec 同时就是喂给各自 Agent 编队的输入，写一次两用。这把 one-person-team 从\"个体生产力放大\"升级为\"最小作战单元设计\"：单人是下限形态，2-3 人组是对抗单点风险（休假、盲区、判断偏差）的稳定形态。"
         }
       ]
     },
@@ -3977,6 +4262,44 @@
       ]
     },
     {
+      "id": "process-reward-model",
+      "type": "concept",
+      "title": "过程奖励模型（PRM, Process Reward Model）",
+      "summary": "Reward 设计的一个基础分野：**ORM（Outcome Reward Model）给最终结果打分，PRM（Process Reward Model）给推理轨迹的每一步打分**。ORM 数据便宜（偏好对即可）但有\"碰运气\"风险——结果对了中间过程可能不可靠；PRM 泛化和可信度更好但步骤级标注昂贵。代表工作：OpenAI《Let's Verify Step by Step》（步骤级人工标注）与 Math-Shepherd（用\"这一步之后能否走到正确答案\"自动生成步骤标签，把标注成本降下来）。在专家知识编译的语境下，PRM 恰是领域专家（如内容工程师）不可替代性的所在：普通标注员只能判断最终结果好坏，专家能标出\"这一步想歪了\"。",
+      "tags": [
+        "wiki",
+        "concept",
+        "reinforcement-learning",
+        "reward",
+        "evaluation"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "ORM vs PRM——打分对象、数据成本与风险的三重权衡",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "ORM 打分对象是最终结果，数据需求是偏好对（便宜），风险是模型\"碰运气\"——中间过程不可靠但结果侥幸正确的轨迹会被强化；PRM 打分对象是推理轨迹的每一步，数据需求是步骤级标注（贵），换来泛化和可信度。实操路径通常是 ORM 起步、关键步骤补 PRM。代表工作：《Let's Verify Step by Step》用步骤级人工标注；Math-Shepherd 用\"这一步之后能否走到正确答案\"的 rollout 结果自动生成步骤标签，绕开人工标注成本。"
+        },
+        {
+          "statement": "PRM 的标注瓶颈定义了领域专家的不可替代性——\"这一步想歪了\"只有专家能标",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "内容工程师（及一切领域专家）在 reward 侧的核心价值：普通标注员只能判断最终产出好坏（ORM 级信号），专家能在轨迹中间指出\"第③步发散时角度就选错了\"（PRM 级信号）。过程隐性、依赖情境判断的能力（\"什么时候该沉默、什么时候追问\"）无法写成 pipeline，只能靠带步骤级标注的过程样本让模型统计出来——这正是 PRM 数据贵的原因，也是专家经验变现为训练信号的通道。"
+        }
+      ]
+    },
+    {
       "id": "rag-architecture-comparison",
       "type": "concept",
       "title": "RAG Architecture Comparison",
@@ -4278,8 +4601,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.84,
+      "claims_count": 9,
+      "avg_confidence": 0.82,
       "claims": [
         {
           "statement": "不是\"喂标准答案\"，是\"用 reward 造标签\"——target 是评分键不是模仿 label",
@@ -4352,6 +4675,61 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "对已重度后训练的 GPT/Llama/Qwen，RAFT 从\"首次对齐\"降级为\"任务特化 + 自我提升的一道工序\"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以\"rejection sampling fine-tuning（RFT）\"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是\"便宜、稳定的第一档，上 RL 之前先榨一轮\"。"
+        },
+        {
+          "statement": "专家示范轨迹当 SFT 数据——犹豫、否决、改写过程本身是标签，且只留\"过程和结果都好\"的轨迹",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "专家经验固化的第三条路线（除 pipeline 化、reward 化外）是轨迹蒸馏：把专家完整的工作过程——包括犹豫（\"这个角度试了又放弃\"）、否决（\"这段删掉，理由是…\"）、改写（改前改后对照）——记录成示范轨迹当 SFT 数据，让模型模仿的不是最终产出而是决策过程。与本页拒绝采样的衔接：筛选标准从\"结果对\"（ORM 级）升级为\"过程和结果都好\"（PRM 级，见 [[process-reward-model]]）——结果侥幸正确但中间过程不可靠的轨迹不进训练集，否则会把\"碰运气\"固化进权重。这把\"用 reward 造标签\"扩展到主观领域：没有精确匹配 grader 时，专家的步骤级判断就是造标签的 reward。"
+        }
+      ]
+    },
+    {
+      "id": "requisite-variety",
+      "type": "concept",
+      "title": "必要多样性定律（Law of Requisite Variety）",
+      "summary": "控制论奠基人 W. Ross Ashby 提出的定律：**调节器的多样性必须不小于扰动的多样性**（$V_{Regulator} \\geq V_{Disturbance}$），否则系统无法维持期望状态——\"only variety can absorb variety\"。它给\"调节能力\"一个可比较的量纲：面对多少种不同的扰动，你就需要多少种不同的应对手段。在本知识库中它是两条线的共同理论地基：① Harness Engineering / Vibe Coding——约束设计能力的丰富度必须匹配 Agent 任务的不确定性（Vibe Coding 系列13 的 Regulation 框架）；② [[forward-deployed-engineer]]——FDE 作为客户业务系统的外部调节器，其存在条件与天花板都由该定律决定。",
+      "tags": [
+        "wiki",
+        "concept",
+        "cybernetics",
+        "regulation"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.77,
+      "claims": [
+        {
+          "statement": "V_Regulator ≥ V_Disturbance——调节器多样性必须匹配扰动多样性",
+          "source": "Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控",
+          "first_seen": "2026-07-12",
+          "last_updated": "2026-08-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Ashby 定律翻译为 Harness 语言：约束设计能力的\"丰富度\"必须匹配任务/环境的\"不确定性\"。Agent 面对的输入分布越广、失败模式越多，Harness 需要覆盖的约束维度（验证、护栏、回退、上下文管理）就必须相应增多——用单一手段对抗多样扰动注定失控。这是 Harness 复杂度\"随任务多样性而生长\"的理论依据。"
+        },
+        {
+          "statement": "定律决定 FDE 的存在条件——内部 Regulator 有 variety 天花板，外部调节器天然更丰富",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三个推论：① 扰动在增长——AI 时代客户面临的变化速度在加快；② 调节器必须共同进化——FDE 能力停滞，客户的扰动终将超过其调节能力（停止进化就失业）；③ 内部 Regulator 有天花板——客户自己的团队只看到自己的业务域，variety 有限；FDE 跨多个客户积累 variety，天然更丰富。跨域视角是内部团队结构性无法自产的 variety 来源。"
+        },
+        {
+          "statement": "只要扰动不停止，调节就不会\"完成\"——Regulation 是持续过程而非一次性交付",
+          "source": "FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构",
+          "first_seen": "2026-05-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "市场在变、技术在进化、业务在扩展——被调节系统永远面对新扰动，因此调节器的需求不会消失。这条推论同时解释：Harness 不是\"建好就完了\"而是需要持续演进（模型升级使旧约束变死重）；FDE 的商业模式悖论（\"教会客户就失业\"）的前提错误——把持续的调节关系误当成一次性的知识转移。"
         }
       ]
     },
@@ -4691,8 +5069,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.63,
+      "claims_count": 4,
+      "avg_confidence": 0.66,
       "claims": [
         {
           "statement": "行业缺失的方案是 Skill Runtime 模式",
@@ -4720,6 +5098,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "谁决定用哪个 skill、context 是否全量拼接、skill 有无明确 I/O、context 是否 externalizable、execution 是否 independent。"
+        },
+        {
+          "statement": "SEP-2640 把 skill 标准化为 MCP Resource——progressive disclosure 三步正是 context projection 的协议化",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是\"读进上下文的文本\"，不是\"被调用的函数\"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的\"query → skill match → context projection\"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。"
         }
       ]
     },
@@ -5081,7 +5468,7 @@
       "id": "terminal-multiplexer-for-ai",
       "type": "concept",
       "title": "Terminal Multiplexers for AI",
-      "summary": "终端复用器（tmux、cmux）对 AI Agent 工作流至关重要。tmux 的核心价值是解耦终端会话与终端窗口，实现从任何设备（Mac、iPhone、iPad）通过 SSH 访问持久 Claude Code 会话。cmux = Ghostty + tmux 式会话管理 + AI Agent 集成层，是原生 macOS GUI 终端而非纯终端方案。",
+      "summary": "终端复用器（tmux、cmux）对 AI Agent 工作流至关重要。tmux 的核心价值是解耦终端会话与终端窗口，实现从任何设备（Mac、iPhone、iPad）通过 SSH 访问持久 Claude Code 会话。cmux = Ghostty + tmux 式会话管理 + AI Agent 集成层，是原生 macOS GUI 终端而非纯终端方案。2026-07 的 Orca（多 Agent 编排 IDE + Mobile 远程互动）把同一\"会话与窗口解耦\"范式推进到产品化：执行永远在 desktop/server，手机只是遥控器（指挥、审阅、提交），跨网靠 Tailscale 组网而非云中继。",
       "tags": [
         "wiki",
         "concept",
@@ -5093,17 +5480,26 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.6,
+      "claims_count": 4,
+      "avg_confidence": 0.62,
       "claims": [
         {
           "statement": "tmux 解耦终端会话与窗口",
           "source": "tmux与Claude远程交互实践",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "实现从任何设备通过 SSH 访问持久 Claude Code 会话。"
+        },
+        {
+          "statement": "Orca 遥控执行模型——手机是遥控器，执行永远在电脑",
+          "source": "Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动",
+          "first_seen": "2026-07-25",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Orca Mobile 是 read-mostly 遥控器：浏览会话、下指令、审阅 diff、批准提交，但 Agent 执行永远发生在 desktop/server 上——这是 tmux\"会话与窗口解耦\"范式的产品化延伸。跨网络不走云中继，靠 Tailscale 组一张私有网；Remote Orca Server 模式把运行时归属从\"我的 Mac\"翻转到\"远端常驻服务器\"，四种连接模式覆盖本机/局域网/Tailscale/远端服务器。每个任务独立 git worktree 隔离，支持 fan-out 并行跑多个 Agent 再 pick the winner——终端复用从\"人访问会话\"进化为\"人调度 Agent 编队\"。"
         },
         {
           "statement": "cmux 是 GUI 终端而非纯终端",
@@ -6108,6 +6504,62 @@
       ]
     },
     {
+      "id": "prompt-optimization-maturity-ladder",
+      "type": "method",
+      "title": "Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环",
+      "summary": "回答一个比\"选哪个优化工具\"更早的问题：**还没有数据集、没有可验证 reward 时，prompt 该怎么优化？积累到多少数据后才值得迁移到 APO/SkillOpt 这类自动闭环工具？** 核心判断：prompt 优化的分层依据是**评估信号的成熟度**，不是改写算法的花哨程度——L0 vibe check（无评估、人改人看）→ L1 模板改写 + LLM-judge（主观评估、人闭合回路，代表工具 prompt-optimizer）→ L2 数据集 + 客观 reward 自动闭环（算法闭合回路，APO/SkillOpt/DSPy）。L1 与 L2 不是竞品而是流水线上下游：L1 负责冷启动把 prompt 写规范，L2 负责有可衡量指标后持续压榨；L1 人工迭代中积累的 bad case 就是 L2 评估集的种子。",
+      "tags": [
+        "wiki",
+        "method",
+        "prompt-optimization",
+        "evaluation",
+        "decision-framework"
+      ],
+      "category": "",
+      "method_type": "decision-framework",
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "分层依据是评估信号的成熟度，不是改写算法——核心差异在\"回路由谁闭合\"",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "L0 无评估（人改人看）、L1 主观评估（LLM 按 rubric 打分，人看结果决定是否迭代——人闭合回路）、L2 客观评估（数据集 reward，算法自动\"评分→筛选→再生成\"——算法闭合回路）。L1 的评估是拿几条试跑样本得到\"定性方向信号\"，不是统计上可靠的度量：噪声大（同 prompt 多次评分摆动）、有系统性偏见（judge 偏爱更长更结构化的输出）、覆盖不了输入分布。\"人闭合 vs 算法闭合\"是 L1/L2 的本质分界。"
+        },
+        {
+          "statement": "L1 与 L2 是流水线上下游而非竞品——bad case 从 L1 就开始攒",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "L1（prompt-optimizer 类）解决\"没数据时把 prompt 写规范\"，L2（APO/SkillOpt/DSPy）解决\"有指标后持续压榨\"。L1 人工迭代中的每个 bad case（输入 + 期望输出/失败原因）随手记下来就是未来评估集的种子——到需要 L2 时才从零造数据，成本高得多。"
+        },
+        {
+          "statement": "迁移两前提——可量化 reward + 数据过阈值（<10 留 L1 / 30-50 可试 / 100+ 稳定）",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "前提一：任务有可量化成功标准（精确匹配、通过率、结构化字段命中、LLM-judge 加多数投票等）；前提二：数据量——< 10 条留在 L1（自动优化会过拟合）；30~50 条可开始尝试但必须降噪（多次采样取均值、train/val 分开）；100+ 条进入稳定区间。**降噪优先于扩量**：50 条 × 3 次采样取均值往往比 150 条 × 1 次更能稳定优化方向——评估噪声是 L2 摆动的第一大不稳定源，对 APO 和后续 RL 都成立。"
+        },
+        {
+          "statement": "prompt-optimizer 是 L1 典型实现——meta-prompt 模板驱动单次改写，模板分语言不分模型",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "工作流是\"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt\"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。"
+        }
+      ]
+    },
+    {
       "id": "reward-design-three-inputs",
       "type": "method",
       "title": "Reward 设计三份输入与两本账分家",
@@ -6122,8 +6574,8 @@
       "category": "",
       "method_type": "workflow",
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.77,
+      "claims_count": 6,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "reward 设计不是写规格是做实验——第一天就需要三份输入，只用业务直觉拍权重是可在设计当时发现的缺陷",
@@ -6169,6 +6621,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "本方法中抽象的\"judge 噪声 σ_noise\"可拆成八类可测偏差（Consistency 漂移、Position、Verbosity、Self-Preference、Style、Prompt Sensitivity、Calibration 错位、Agreement with Humans，见 [[llm-as-a-judge]]）。降噪杠杆与病灶对应：多次采样取中位数治 Consistency；拆分字段 + rubric 锚点治 Prompt Sensitivity 与 Calibration；盲选 ≥85% 一致率直接测 Agreement。Step 1 校准跑测 σ_noise 时可按此清单分项归因，而非只拿到一个总量。"
+        },
+        {
+          "statement": "量化语感闭环——偏好差分→BARS 锚定→kappa 检验→三层验证，把主观品味变成可用的 reward 输入",
+          "source": "与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑",
+          "first_seen": "2026-07-28",
+          "last_updated": "2026-08-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "当业务属性本身是主观品味（语感、风格）时，\"三份输入\"的第一份需要一条前置编译链：① 偏好差分法——不问\"好文案什么样\"，给同题两版（7 分 vs 10 分）问\"把 B 改到 A 最少动什么\"，从偏好对归纳维度；② BARS 锚定量表——每维度配分档真实样例 + 边界反例（规则是品味的有损压缩，样例保留未显式化的隐维度）；③ 维度硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果。产出接本方法的三层验证闭环：judge 与专家对齐（对应盲选 ≥85%）、盲测胜率、噪声控制。这把 Step 4 的盲选校准从\"反推权重\"扩展到\"从零发明维度\"。"
         }
       ]
     },
@@ -6378,8 +6839,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 4,
-      "avg_confidence": 0.8,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
@@ -6416,6 +6877,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。"
+        },
+        {
+          "statement": "Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "agents overview 给 Prompt Agent 标 \"Skill support: Yes\"，但三条绑定路径（toolbox 挂 skill 的 MCP Resources 消费 / 直接注入 / Responses API shell tool）截至 2026-07-31 复核没有一条文档化可走通——skills 功能矩阵压根没有 prompt agent 列。根因不是执行环境（Agents 侧 skill 是纯文本，加载只需\"读文本拼进 system prompt\"），而是 **harness 实现权**：skill 加载（SEP-2640 + progressive disclosure）需要 harness 实现 client 逻辑，Prompt Agent 的托管 harness 是平台封闭代码，它没实现你就没有注入点；Hosted Agent 自己写或用 Agent Framework `AgentSkillsProvider`。这把本决策\"Runtime 归属唯一主线\"延伸到了 skill 能力域。"
+        },
+        {
+          "statement": "成本模型——调用侧计费两类相同，container compute 买的是\"改 harness 的权力\"",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是\"是否需要 harness 控制权\"，而不只是\"要不要多付钱\"——scale-to-zero 让低流量场景该成本接近零。"
         }
       ]
     },
@@ -6472,8 +6951,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
-      "avg_confidence": 0.82,
+      "claims_count": 4,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "纯 prompt 调优首选 DSPy，不推荐 agent-lightning",
@@ -6501,6 +6980,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何\"有效\"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从\"选哪个框架\"到\"选哪种优化器动力学、乃至要不要跑\"。"
+        },
+        {
+          "statement": "选型前先判成熟度层级——L1 手动工具与 L2 数据闭环工具是上下游而非竞品",
+          "source": "Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "本决策的所有选项（DSPy/TextGrad/AdalFlow/agent-lightning）都是 L2 数据闭环层工具，隐含前提是已具备可量化 reward + 足量评估数据。成熟度阶梯（见 [[prompt-optimization-maturity-ladder]]）指出更早的分叉：L1 的 prompt-optimizer 类工具（模板改写 + LLM-judge，人闭合回路）与 L2 工具不是竞品而是上下游——L1 阶段人工迭代攒下的 bad case 正是 L2 评估集的种子。数据 < 10 条或任务纯品味类 → 停在 L1，选型问题根本不成立；30~50 条可试 L2（必须降噪）。这给本决策补了一道前置门：先判层级，再谈框架。"
         }
       ]
     },
@@ -6668,6 +7156,24 @@
       "target": "online-learning",
       "relation_type": "grounds",
       "description": "\"算不算 advantage\"是判断一个方法在做 RL 机器（而非 harness）的技术命门"
+    },
+    {
+      "source": "ag-ui-protocol",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "part-of",
+      "description": "AG-UI 是 Foundry \"custom protocols\" 之一，Microsoft Agent Framework 已支持"
+    },
+    {
+      "source": "ag-ui-protocol",
+      "target": "mcp-vs-cli",
+      "relation_type": "contrasts",
+      "description": "MCP 解决 Agent 向下的工具集成，AG-UI 解决向上的 UI 集成——同为协议路线但方向相反"
+    },
+    {
+      "source": "ag-ui-protocol",
+      "target": "voice-live-agent",
+      "relation_type": "extends",
+      "description": "Voice UI 的事件需求（barge-in、partial transcript）可纳入 AG-UI 事件流，为语音层提供协议化出口"
     },
     {
       "source": "agent-lightning",
@@ -6886,10 +7392,22 @@
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补"
     },
     {
+      "source": "azure-copilot-ecosystem",
+      "target": "ag-ui-protocol",
+      "relation_type": "uses",
+      "description": "AG-UI 是 Foundry custom protocols 之一，Microsoft Agent Framework 已支持"
+    },
+    {
       "source": "bitter-lesson",
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
+    },
+    {
+      "source": "bitter-lesson",
+      "target": "forward-deployed-engineer",
+      "relation_type": "grounds",
+      "description": "Bitter Lesson 是 FDE 价值锚从操作知识迁移到三元能力的理论依据"
     },
     {
       "source": "brevity-constraints",
@@ -7294,6 +7812,48 @@
       "description": "适应度函数将质量门禁从固定检查扩展为可演化的架构评估"
     },
     {
+      "source": "forward-deployed-engineer",
+      "target": "requisite-variety",
+      "relation_type": "uses",
+      "description": "FDE 存在条件与\"调节不会完成\"的定律依据"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "one-person-team",
+      "relation_type": "uses",
+      "description": "2-3 人精英组 + AI Agent 编队是 One Person Team 在 FDE 团队的组织形态"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "bitter-lesson",
+      "relation_type": "uses",
+      "description": "\"价值锚迁移到三元能力\"的判断依据：操作知识终被模型吞噬"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "harness-engineering",
+      "relation_type": "uses",
+      "description": "Harness 资产库是三资产之一；\"Harness 是长出来的、必须可拆卸\"支撑\"不可能教完\"论证"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "personal-knowledge-compiler",
+      "relation_type": "uses",
+      "description": "跨客户模式库的编译机制：日记捕获 → LLM 编译 → 人工审核 → 知识演进"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "ai-skill-formation",
+      "relation_type": "uses",
+      "description": "\"复杂决策场景 AI 是放大器而非替代器\"支撑信任资本的基础能力前提"
+    },
+    {
+      "source": "forward-deployed-engineer",
+      "target": "ai-adoption-six-step-evolution",
+      "relation_type": "uses",
+      "description": "Mitchell Hashimoto 六步模型映射到 FDE 团队的管理动作"
+    },
+    {
       "source": "framework-selection",
       "target": "three-layer-plugin-architecture",
       "relation_type": "produces",
@@ -7310,6 +7870,30 @@
       "target": "negative-feedback",
       "relation_type": "uses",
       "description": "评估结果作为负反馈驱动生成修正"
+    },
+    {
+      "source": "global-workspace-llm",
+      "target": "claude-code-memory-system",
+      "relation_type": "contrasts",
+      "description": "外置记忆（文件/上下文）与模型内生工作空间（J-space）是两种不同层次的\"状态保持\""
+    },
+    {
+      "source": "global-workspace-llm",
+      "target": "conjugate-transformation",
+      "relation_type": "contrasts",
+      "description": "共轭变换在表示层外部做投影设计，J-lens 在模型内部读出表示的输出投影——同为\"换基读表示\"思路"
+    },
+    {
+      "source": "global-workspace-llm",
+      "target": "reinforcement-learning",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
+      "source": "global-workspace-llm",
+      "target": "llm-as-a-judge",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "grapheme-to-phoneme",
@@ -7738,6 +8322,12 @@
       "description": "AI 技能形成的放大器效应与一人团队模式的张力"
     },
     {
+      "source": "one-person-team",
+      "target": "forward-deployed-engineer",
+      "relation_type": "extends",
+      "description": "FDE 的 2-3 人精英组是一人团队模式在交付组织层的扩展形态"
+    },
+    {
       "source": "online-learning",
       "target": "reinforcement-learning",
       "relation_type": "contrasts",
@@ -7826,6 +8416,36 @@
       "target": "distributed-training-parallelism",
       "relation_type": "contrasts",
       "description": "推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别"
+    },
+    {
+      "source": "process-reward-model",
+      "target": "reinforcement-learning",
+      "relation_type": "part-of",
+      "description": "PRM/ORM 是 RL reward 信号设计的基础分类"
+    },
+    {
+      "source": "process-reward-model",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "uses",
+      "description": "拒绝采样按 reward 筛轨迹，用 ORM 筛结果、用 PRM 可同时筛过程（\"过程和结果都好的轨迹才进训练集\"）"
+    },
+    {
+      "source": "process-reward-model",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "PRM 把评估从\"终点验收\"细化到\"逐步评估\"，是评估侧的粒度升级"
+    },
+    {
+      "source": "process-reward-model",
+      "target": "advantage-function",
+      "relation_type": "contrasts",
+      "description": "advantage 是从 outcome 反推每步相对贡献（免标注但高方差），PRM 是直接标注每步质量（高成本但低方差）——同一\"步骤级信号\"问题的两种解法"
+    },
+    {
+      "source": "process-reward-model",
+      "target": "reward-design-three-inputs",
+      "relation_type": "part-of",
+      "description": "ORM/PRM 选择是 reward 设计的输入之一（信噪比与标注预算的权衡）"
     },
     {
       "source": "rag-architecture-comparison",
@@ -7988,6 +8608,30 @@
       "target": "prompt-optimization-tool-selection",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是该决策的关键前提"
+    },
+    {
+      "source": "requisite-variety",
+      "target": "cybernetics-agent-design",
+      "relation_type": "grounds",
+      "description": "为控制论 Agent 设计的\"约束维度必须匹配任务不确定性\"提供定律依据"
+    },
+    {
+      "source": "requisite-variety",
+      "target": "forward-deployed-engineer",
+      "relation_type": "grounds",
+      "description": "FDE 的存在条件（跨客户 variety 优势）与持续调节商业模式的理论地基"
+    },
+    {
+      "source": "requisite-variety",
+      "target": "negative-feedback",
+      "relation_type": "part-of",
+      "description": "同属 Ashby 控制论体系：负反馈是调节的机制，必要多样性是调节的容量条件"
+    },
+    {
+      "source": "requisite-variety",
+      "target": "harness-engineering",
+      "relation_type": "constrains",
+      "description": "Harness 的约束丰富度下限由任务扰动多样性决定"
     },
     {
       "source": "rtk-token-compression",
@@ -8620,6 +9264,42 @@
       "description": "判断式给出\"停\"时，矛头指回 reward 结构——两本账分家与 reward v2 是让判断式翻转为\"值得跑\"的对症改造"
     },
     {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "uses",
+      "description": "L2 层的代表工具；\"评估噪声是第一大不稳定源\"的教训是阈值设计依据"
+    },
+    {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "skillopt",
+      "relation_type": "uses",
+      "description": "L2 层工具（持久 skill artifact 优化），与 APO 同层不同强项"
+    },
+    {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "llm-as-a-judge",
+      "relation_type": "uses",
+      "description": "L1 层的评估机制（rubric 主观打分、pair-judge 对比）"
+    },
+    {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "三层阶梯是\"评估能力决定优化能力\"原则的成熟度展开"
+    },
+    {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "pre-run-three-number-accounting",
+      "relation_type": "extends",
+      "description": "到达 L2 后开跑前的算账判断式（σ_d / δ_min / δ_remain）"
+    },
+    {
+      "source": "prompt-optimization-maturity-ladder",
+      "target": "reward-design-three-inputs",
+      "relation_type": "extends",
+      "description": "L2 的 reward 怎么设计：三份输入与两本账分家"
+    },
+    {
       "source": "reward-design-three-inputs",
       "target": "automatic-prompt-optimization",
       "relation_type": "implements",
@@ -8782,6 +9462,12 @@
       "description": ""
     },
     {
+      "source": "prompt-optimization-tool-selection",
+      "target": "prompt-optimization-maturity-ladder",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
       "source": "rl-infra-framework-selection",
       "target": "verl",
       "relation_type": "produces",
@@ -8879,6 +9565,8 @@
         "meta-harness",
         "model-harness-codesign",
         "one-person-team",
+        "forward-deployed-engineer",
+        "requisite-variety",
         "bitter-lesson",
         "continual-self-improving-ai",
         "hermes-agent",
@@ -8913,7 +9601,9 @@
         "slime-rl-framework",
         "distributed-training-parallelism",
         "llm-as-a-judge",
-        "rubric"
+        "rubric",
+        "process-reward-model",
+        "global-workspace-llm"
       ]
     },
     {
@@ -8946,7 +9636,8 @@
         "mcp-vs-cli",
         "context7",
         "agent-search-tools",
-        "opencli"
+        "opencli",
+        "ag-ui-protocol"
       ]
     },
     {
