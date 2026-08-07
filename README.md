@@ -147,6 +147,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Loop Engineering 概念澄清——内循环、外循环与 Harness Engineering 的边界](Notes/AI/Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)
 - [Loop Engineering 实践——把个人知识库改造成一个外循环系统](Notes/AI/Loop-Engineering/Loop%20Engineering实践——把个人知识库改造成一个外循环系统.md)
 
+### Notes/AI/Graph-Engineering
+
+- [Graph Engineering 全景解析——编排图、循环网络与类型化知识图的三重含义](Notes/AI/Graph-Engineering/Graph%20Engineering全景解析——编排图、循环网络与类型化知识图的三重含义.md)
+
 ### Notes/AI/spec-kit
 
 - [Spec Kit 系列 00：SDD、TDD 与 V-Model 融合——从 Red-Green-Refactor 到规格与验证双轨演进](Notes/AI/spec-kit/Spec%20Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进.md)
