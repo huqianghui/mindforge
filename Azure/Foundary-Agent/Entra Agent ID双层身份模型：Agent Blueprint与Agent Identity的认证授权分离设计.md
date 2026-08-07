@@ -1,6 +1,7 @@
 ---
 title: Entra Agent ID 双层身份模型：Agent Blueprint 与 Agent Identity 的认证授权分离设计
 created: 2026-08-03
+updated: 2026-08-04
 tags:
   - azure
   - entra-id
@@ -11,7 +12,7 @@ tags:
   - authentication
   - authorization
   - security
-description: 从 Entra Portal 中 Agent blueprints 与 Agent identities 两个菜单的困惑入手，梳理 Microsoft Entra Agent ID 的双层身份模型——Blueprint 持有凭据负责认证（Authentication），Agent Identity 持有权限负责授权（Authorization）与审计；对比传统 App Registration + Service Principal 的 1:1 模型与 Blueprint 1:N 工厂模型的差异，分析微软如此设计的六层动机（规模治理、凭据爆炸、Policy 继承、Kill Switch、短生命周期、一级审计身份），并厘清 Entra 授权与 Azure RBAC 两套授权体系的边界
+description: 从 Entra Portal 中 Agent blueprints 与 Agent identities 两个菜单的困惑入手，梳理 Microsoft Entra Agent ID 的双层身份模型——Blueprint 持有凭据负责认证（Authentication），Agent Identity 持有权限负责授权（Authorization）与审计；对比传统 App Registration + Service Principal 的 1:1 模型与 Blueprint 1:N 工厂模型的差异，分析微软如此设计的六层动机（规模治理、凭据爆炸、Policy 继承、Kill Switch、短生命周期、一级审计身份），并厘清 Entra 授权与 Azure RBAC 两套授权体系的边界；新增 Foundry 实操一节——身份创建时序（项目不建/首 agent 建共享对/publish 建专属对）、实测偏差（portal New agent 即建专属 blueprint）、三个查看入口，以及"1:1 实测不推翻 1:N 模型"的辨析
 ---
 
 # Entra Agent ID 双层身份模型：Agent Blueprint 与 Agent Identity 的认证授权分离设计
@@ -124,6 +125,8 @@ Service Principal                 └── Agent Identity ...N
 
 传统模型里 Credential 和 Permission 绑在同一个对象链条上；Agent ID 模型把 Credential 上收到 Blueprint、把 Permission 下放到每个 Agent Identity。
 
+> ⚠️ **注意**：1:N 是**对象模型的上限**（Graph API 层一个 Blueprint 下最多可挂 250 个 Agent Identity），不是 Foundry 的当前行为。Foundry 实测中 blueprint:identity 总是 **1:1 成对创建**——"N"兑现在别的维度（共享身份被 N 个未发布 agent 复用、多租户分发时一个 Blueprint 投影出 N 个租户本地 Identity）。详见第六节实测分析，避免误读为"Foundry 里一个 Blueprint 会孵化多个 Identity"。
+
 ## 四、为什么这么设计？——"每个 Agent 一个 App Registration"为什么行不通
 
 技术上，"每个 Agent Identity 都注册一个 App"完全可行。微软引入 Blueprint 不是因为做不到，而是因为 **Agent 与传统 Application 的管理模式完全不同**。设计动机可以拆成六层：
@@ -177,14 +180,87 @@ Pods（独立生命周期/日志/IP）           Agent Identities（独立权限
 
 Blueprint Authentication 完全属于第一层（Entra + OAuth），**不是 RBAC**。当 Agent Identity 拿着 Token 去访问 Storage / Key Vault / AKS 时，才进入 Azure RBAC 的管辖范围——检查对象同样是 Agent Identity 而非 Blueprint。
 
-## 六、总结
+## 六、Foundry 实操：身份何时创建、在哪查看、实测与文档的偏差
+
+前五节讲的是 Entra Agent ID 的**对象模型**；这一节回答落到 Foundry Agent Service 上的四个实操问题——何时创建、在哪查看、实测行为与文档的偏差、以及"1:1 实测是否推翻 1:N 模型"。基于 2026-08-04 在真实项目（Sweden Central）上的验证与 [Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-identity)（2026-07-31 更新版）核对。
+
+### 6.1 创建时机：文档时序 vs 实测时序
+
+官方文档描述的时序：
+
+| 动作 | 文档说的身份行为 |
+|------|-----------------|
+| 创建 Foundry 项目 | **不创建**任何身份对象 |
+| 项目内创建**第一个** agent | 创建项目级**默认共享** blueprint + agent identity 一对 |
+| 创建第 2~N 个未发布 agent | 复用共享身份，**不建新对象** |
+| **Publish** 某 agent | 才自动创建该 agent 的**专属** blueprint + identity 对，绑定到 agent application 资源 |
+| 删除项目 / 删除 agent application | 分别清除共享对 / 专属对 |
+
+**实测偏差**：在 portal 里点 New agent 创建两个 agent（均未发布），Entra 中却出现了**两个以 agent 命名的专属 blueprint**（命名格式 `{project名}-{agent名}-{5位hash}-AgentIdentityBlueprint`），同时项目级共享对也存在——即租户里实际是 **1 共享 + N 专属**，专属对在**创建时**就落了，不是等到 publish。
+
+两种可能解释（尚无法从 JSON 分辨）：
+
+1. **文档滞后**——portal 的 New agent 流程已改为"创建即注册"专属身份；
+2. **提前注册、发布启用**——专属对提前落到 Entra 只为治理可见性（先有账），未发布 agent 运行时认证仍走共享身份，publish 后才切换到专属身份。验证方法是看 agent 实际调工具时 token 的 `sub` 是哪个 identity。
+
+不受偏差影响的硬事实：**publish 后 RBAC 不继承**——发布产生新的 `agentIdentityId`，共享身份上的角色分配不会带过去，必须对新 ID 重新授权。
+
+另外两个易混点：
+
+- **version ≠ identity**：agent identity 绑定在 agent application 资源上，v1/v2 版本共享同一身份（版本只是配置快照）。微软 Q&A 同时承认：文档**没有硬承诺**每次 publish/版本更新时身份一定持续不变。
+- **JSON View 里的 API version** 只是读取资源的 schema 版本，与身份无关，换哪个 version 看到的都是同一个身份对象。
+
+### 6.2 三个查看入口
+
+| 要看什么 | 入口 |
+|----------|------|
+| 共享身份（项目级） | Azure portal → Foundry **项目资源** → Overview → **JSON View** → 选最新 API version，看 `properties.agentIdentity` 块 |
+| 专属身份（已发布 agent） | Azure portal → 该 agent 的 **agent application 资源** → Overview → **JSON View** |
+| 租户级全量清单 + 治理 | [Microsoft Entra admin center](https://entra.microsoft.com) → **Entra ID → Agent ID → All agent identities**（含 Foundry、Copilot Studio 等全部来源；可配 Conditional Access、Identity Protection、治理） |
+
+项目 JSON View 中的关键字段：
+
+```jsonc
+"agentIdentity": {
+    "agentIdentityId": "...",          // 共享 agent identity——给 agent 授 RBAC 用这个 ID
+    "agentIdentityBlueprintId": "..."  // 共享 blueprint
+},
+"identity": {
+    "principalId": "...",              // ⚠️ 项目的 SystemAssigned managed identity
+    "type": "SystemAssigned"           //    ——FIC 信任链锚点，不是 agent 身份！
+}
+```
+
+最容易犯的错：把 RBAC 授给 `identity.principalId`（managed identity）。它的角色只是"blueprint 借它向 Entra 认证"（FIC 链：Blueprint --FIC信任--> Managed Identity），**真正需要资源角色的主体是 `agentIdentityId`**：
+
+```bash
+az role assignment create \
+    --assignee "<agentIdentityId>" \
+    --role "Storage Blob Data Contributor" \
+    --scope "<storage-account-scope>"
+```
+
+Foundry portal 本身目前没有专门的身份查看页面——查 ID 要绕道 Azure portal 的 JSON View，这是当前体验短板。
+
+### 6.3 1:1 实测不推翻双层模型——Blueprint 为什么省不掉
+
+看到"每个 agent 一对 blueprint+identity"，自然会问：既然 1:1，直接用 identity 不就行了？答案是不行，且第四节的六层动机大多仍然成立：
+
+1. **凭据分离不依赖 N**——Agent Identity 是**零凭据对象**，自己无法向 Entra 认证，唯一取 token 途径是 blueprint 代持凭据换发。砍掉 blueprint，identity 就必须自持 secret，退化回 App Registration + secret 蔓延的老路。认证/授权分离这个核心价值在 1:1 下一分不少。
+2. **Blueprint 之间没有继承关系**——共享 blueprint 与各专属 blueprint 是平级独立对象，各自持有 FIC、各自被 Conditional Access 独立命中。名字带项目名只是命名惯例。
+3. **"N"兑现在三个别处**——① 共享 blueprint 的那**一个** identity 被 N 个未发布 agent 复用（N:1，方向与工厂模型相反）；② 多租户分发：一个 blueprint 可投影到 N 个客户租户（每租户一个 blueprint principal + 本地 identity），ISV 卖 agent 给 100 家客户 = 1 blueprint : 100 identities；③ Graph API 上限一个 blueprint 挂 250 个 identity，为 fleet/短生命周期场景预留。
+4. **参照物**：App Registration : Service Principal 在单租户实践中也几乎总是 1:1，没人因此说两层模型无用——多租户、凭据管理、策略分离的价值在需要时才显形。Entra Agent ID 完全同构。
+
+诚实的结论：在单租户开发场景里，blueprint 的**即时**价值确实只剩"无密钥 FIC 管道 + 治理挂载点"；1:N 是为 ISV 分发和 fleet 治理预铺的架构。Foundry 每 agent 配一对，是平台替你选了最细粒度的治理单元，不是模型只能 1:1。
+
+## 七、总结
 
 | 维度 | Agent Blueprint | Agent Identity |
 |------|-----------------|----------------|
 | 本质 | Entra 中的模板对象（类 App Registration） | 特殊的 service principal |
 | 持有 | 凭据（FIC/Certificate/Secret）、共享策略、模板属性 | 权限、Consent、审计日志、Owner/Sponsor |
 | 负责 | Authentication（+ 代表资格授权） | Authorization（资源访问）+ Audit |
-| 基数 | 1 个 Blueprint | N 个 Agent Identity |
+| 基数 | 1 个 Blueprint | 模型上限 N 个（≤250）；Foundry 实测 1:1 成对 |
 | 生命周期 | 长期存在 | 动态创建/销毁 |
 | 租户 | 可 multitenant | 始终单租户 |
 | Portal 关注点 | 平台/开发管理（凭据、OAuth 配置、关联 Identity） | 运维/安全治理（权限、登录、审计、状态） |
@@ -199,3 +275,5 @@ Blueprint Authentication 完全属于第一层（Entra + OAuth），**不是 RBA
 - [Agent identities in Microsoft Entra Agent ID](https://learn.microsoft.com/entra/agent-id/identity-platform/agent-identities) — Agent Identity 无自有凭据、FIC-only 认证、单租户约束
 - [Create an agent identity blueprint](https://learn.microsoft.com/entra/agent-id/create-blueprint) — Blueprint 创建流程、Owner/Sponsor、凭据配置
 - [Microsoft Entra Agent ID documentation](https://learn.microsoft.com/entra/agent-id) — 文档中心（Conditional Access for agents、ID Governance、Inheritable permissions 等）
+- [Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/azure/foundry/agents/concepts/agent-identity) — Foundry 身份创建时序（共享/专属）、JSON View 查看入口、runtime token exchange 四阶段、RBAC 授权示例（2026-07-31 更新版）
+- [Hosted agent permissions reference](https://learn.microsoft.com/azure/foundry/agents/concepts/hosted-agent-permissions) — Hosted agent 生产部署的完整权限清单（azd 只自动授 Foundry User 到共享身份）
