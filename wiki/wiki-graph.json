@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-07",
+  "generated_at": "2026-08-10",
   "stats": {
     "nodes": 118,
-    "links": 403,
+    "links": 404,
     "orphan_links_removed": 0,
-    "claims": 523,
+    "claims": 528,
     "categories": 10
   },
   "nodes": [
@@ -2651,8 +2651,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 18,
-      "avg_confidence": 0.8,
+      "claims_count": 21,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -2815,6 +2815,33 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——\"选 harness 就是选行为语义\"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话：\"离模型越近越可移植\"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。"
+        },
+        {
+          "statement": "Agent framework 是 dev-time 概念，harness 是 run-time 实体——framework 是\"造 harness 的工具包\"",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是\"harness 提取物\"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张\"帮模型接触世界\"），framework 流行于应用开发圈（价值主张\"帮开发者抽象模型\"）——方向相反，\"Agent = Model, Not Framework\" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。"
+        },
+        {
+          "statement": "Copilot Studio 把 harness 与 runtime 打包出售——选 harness 即选 runtime，依赖管理被扩展点取代",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。"
+        },
+        {
+          "statement": "Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Agentic harness 是包在模型外、决定 Agent\"怎么思考和行动\"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为\"提前收工/上下文爆\"焦虑的是 harness 工程师，为\"生产安全/崩溃恢复/凭证下发\"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。"
         }
       ]
     },
@@ -5087,8 +5114,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.66,
+      "claims_count": 6,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "行业缺失的方案是 Skill Runtime 模式",
@@ -5125,6 +5152,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是\"读进上下文的文本\"，不是\"被调用的函数\"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的\"query → skill match → context projection\"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。"
+        },
+        {
+          "statement": "Agent Skills 规范只定义包格式不定义执行环境——scripts 层是 skill 可移植性的隐藏断层",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（GitHub Copilot harness）=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。"
+        },
+        {
+          "statement": "托管 runtime 下 skill 脚本的四条实操策略——最小公分母、降级路径、重依赖走 MCP、探针实测",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "面向跨 harness 可移植的 skill 脚本设计：① **最小公分母**——Python 标准库 only、不依赖 Node 专属脚本，重依赖以纯 Python 源码 vendor 进 skill 的 scripts/ 目录（无网也能用）；② **运行时探测 + 文字降级**——SKILL.md 写明\"优先跑脚本，环境无 Python 则按以下手动步骤\"，脚本失效时模型降级为纯推理执行，印证\"离模型越近越可移植\"；③ **重依赖改走 MCP**——需要 playwright/特定 SDK/Node 生态时不塞 skill scripts，做成 MCP server 跑在自控环境，把依赖问题从管不了的托管 sandbox 转移到管得了的自有服务器；④ **env-probe 探针 skill**——脚本打印 sys.version、pkgutil.iter_modules() 包清单、socket 出站测试、subprocess 试 node --version，上线前在目标 harness 跑一次拿真实能力清单，比等平台文档快且可重复验证。"
         }
       ]
     },
@@ -7978,6 +8023,12 @@
       "target": "reinforcement-learning",
       "relation_type": "contrasts",
       "description": "Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "skill-runtime",
+      "relation_type": "constrains",
+      "description": "harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束"
     },
     {
       "source": "harness-quality-gate",
