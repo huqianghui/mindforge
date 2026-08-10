@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-08-04"
+updated: "2026-08-10"
 tags:
   - wiki
   - concept
@@ -205,6 +205,36 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
 
+### Claim: Agent framework 是 dev-time 概念，harness 是 run-time 实体——framework 是"造 harness 的工具包"
+
+- **来源**：[[2026-08-10-周一]]
+- **首次出现**：2026-08-10
+- **最近更新**：2026-08-10
+- **置信度**：0.75
+- **状态**：active
+
+> Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是"harness 提取物"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张"帮模型接触世界"），framework 流行于应用开发圈（价值主张"帮开发者抽象模型"）——方向相反，"Agent = Model, Not Framework" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。
+
+### Claim: Copilot Studio 把 harness 与 runtime 打包出售——选 harness 即选 runtime，依赖管理被扩展点取代
+
+- **来源**：[[2026-08-10-周一]]
+- **首次出现**：2026-08-10
+- **最近更新**：2026-08-10
+- **置信度**：0.8
+- **状态**：active
+
+> 微软官方文档（Choose a harness）直接定义 "The harness **is a runtime**"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。
+
+### Claim: Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层
+
+- **来源**：[[2026-08-10-周一]]
+- **首次出现**：2026-08-10
+- **最近更新**：2026-08-10
+- **置信度**：0.75
+- **状态**：active
+
+> Agentic harness 是包在模型外、决定 Agent"怎么思考和行动"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为"提前收工/上下文爆"焦虑的是 harness 工程师，为"生产安全/崩溃恢复/凭证下发"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
@@ -213,6 +243,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-07-14：VS Code Copilot 博客解读补充两条工程证据：三层评测体系（VSC-Bench→PR 门禁→生产 A/B）与"agent 行为回归"这一传统 CI 盲区。harness 的产品战略层议题（第一方绑定 vs 多模型适配）另建 [[model-harness-codesign]] 页。
 - 2026-07-20：SDD/V-Model 提供合规域延伸证据：确定性脚本验证追溯 + 模板门禁，Harness 范式从 Agent 系统扩展到软件开发方法论本身。
 - 2026-08-04：从 Foundry Toolbox/Skills 篇补充 OpenForge 正式定义（Model+Harness+Environment 三元）、Copilot Studio 三 harness 产品证据与"离模型越近越可移植"分层——harness 定义谱系现有三档：泛指（LangChain）> 编排脚手架（OpenForge）> 信息管道（Meta-Harness）。
+- 2026-08-10：补充 harness 与 Agent Runtime 的正交辨析——harness 面向 model（同心圆内），runtime 面向 infra（承载同心圆的外侧层），给出换模型/谁在焦虑两个边界测试；与 OpenForge 三元结构兼容：runtime 大致对应托管化的 Environment + 部分平台 harness。
+- 2026-08-10：Copilot Studio 三 harness GA（2026-08-03，Copilot Chat/Standard/GitHub Copilot）提供"选 harness 即选 runtime"的产品证据，替代此前 preview 期的"经典/生成式/Copilot 运行时"三分——托管平台把 harness 与 runtime 打包出售，依赖管理被 MCP/connector/skill 扩展点取代；skill scripts 的执行环境断层另见 [[skill-runtime]]。
+- 2026-08-10：补充 framework/harness/runtime 三层链条辨析——framework 是 dev-time 的"造 harness 工具包"，运行期消融在 harness 里；"Agent = Model, Not Framework" Claim（2026-04-13）由此获得新解读：它是 harness 路线对重 framework 封装路线的立场表态。
 
 ## 关联概念
 
@@ -223,6 +256,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[cybernetics-harness-design-sheet]] — `produces` 控制论 Design Sheet 是 Harness 设计流程的前置检查工具
 - [[online-learning]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
 - [[reinforcement-learning]] — `contrasts` Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿
+- [[skill-runtime]] — `constrains` harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束
 
 ## 来源日记
 
@@ -235,3 +269,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — VS Code 三层评测体系、agent 行为回归门禁、`~requires-eval-assessment` 自我申报实证、L1/L2/L3 分层约束
 - [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）
 - [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）
+- [[2026-08-10-周一]] — Harness vs Agent Runtime 正交辨析（面向 model / 面向 infra、两个边界测试）；Copilot Studio 三 harness GA 与"选 harness 即选 runtime"（2026-08-10）
