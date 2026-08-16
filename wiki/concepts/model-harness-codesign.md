@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-07-14"
+updated: "2026-08-16"
 tags:
   - wiki
   - concept
@@ -89,11 +89,22 @@ related:
 
 > 反方论点至少五个：① 企业采购天然要求 BYOK 和多 provider（渠道属性决定的产品需求）；② 模型竞争红利只有多模型 harness 能兑现（按任务路由）；③ 评测税可转化为护城河（"每个模型在真实工作流里的确切表现"连 model 厂商自己都未必知道）；④ 头部渠道可用流量换 provider 深度合作（GPT-5.5 实验：OpenAI 出 expertise、VS Code 出 harness 数据与生产流量），信息不对称被部分对冲。类比框架：Apple vs Windows/Android 在 agent 层重演。开放问题：随着 agentic RL 把"模型在自家 harness 里训练"变成标配，水平生态能否维持"体验足够接近"——差距拉大则多模型框架被挤压到"企业合规渠道"单一生态位。
 
+### Claim: 多 agent 编排的路线对垒是"显式图 vs 隐式图"——图的运维才是护城河，历史经验站在显式一边
+
+- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **首次出现**：2026-08-07
+- **最近更新**：2026-08-16
+- **置信度**：0.8
+- **状态**：active
+
+> 两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范："给 agent 目标而非严格转移"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与"图"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从"软件资产"变成"随用随弃的中间产物"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。
+
 ## 冲突与演进
 
 - 2026-07-08：《Agent=Model+Harness》文章从 VS Code 博客的第一手证据推出"第一方绑定可能是结构性最优组合"的推论，并列出五个反方论点自我制衡。
 - 2026-07-10：ChatGPT Work 发布提供产品级印证——OpenAI 把 Codex harness 泛化为通用工作 harness 并与 GPT-5.6 深度绑定，第一方路线从推论变为可观察的行业动向。
 - 2026-07-14：建页。评测体系三层（VSC-Bench→PR 门禁→生产 A/B）的工程细节归口 [[harness-engineering]]，门禁演化（选择性→全量评测）归口 [[meta-harness]]，本页聚焦路线之争本身。
+- 2026-08-16：注入 Graph Engineering 讨论的显式图 vs 隐式图对垒（Claude workflows 可审计脚本 vs Codex V2 加密委派）——第一方绑定之外的第二条路线分歧轴："图给人看还是给机器看"。
 
 ## 关联概念
 
@@ -106,3 +117,4 @@ related:
 
 - [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — 核心来源：harness 三职责、per-model 适配成本清单、第一方绑定推论、MCP 治理成本、五个反方论点
 - [[2026-07-10-周五]] — ChatGPT Work 发布调研：Codex 并入 ChatGPT 桌面 app，Work/Codex 双模式，印证第一方绑定判断
+- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 显式图 vs 隐式图路线对垒、"图的运维才是护城河"教训、模型写图的新特征

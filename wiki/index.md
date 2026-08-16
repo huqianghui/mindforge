@@ -68,6 +68,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 - [[harness-engineering]] — Harness Engineering：Prompt < Context < Harness 同心圆范式
 - [[loop-engineering]] — Loop Engineering：Harness 的时间维度切片，内/外循环双高度 + verifier 谱系
+- [[graph-engineering]] — Graph Engineering：一词三义（编排图/循环网络/类型化知识图），模型写图 + 循环网络锚点论 + typed edges
 - [[agent-loop-architecture]] — Agent Loop 核心架构：30 行代码的 while 循环
 - [[agent-paradigms]] — Agent 经典三范式：ReAct / Plan-and-Solve / Reflection
 - [[context-engineering]] — Context Engineering：从 Prompt Engineering 的正式演进

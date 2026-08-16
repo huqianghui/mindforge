@@ -1,7 +1,7 @@
 ---
 title: "LLM Wiki 优于 RAG：个人知识管理架构"
 created: "2026-04-13"
-updated: "2026-04-23"
+updated: "2026-08-16"
 tags:
   - wiki
   - decision
@@ -92,6 +92,16 @@ related_methods:
 
 > 原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是"编译一次持续维护"（writing a book），RAG 是"每次查询重新检索"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。
 
+### Claim: 独立基准划清了图与向量各自的胜负域——图赢 multi-hop/时间推理/跨语料，简单查找不赢，混合永远赢过纯图
+
+- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **首次出现**：2026-08-07
+- **最近更新**：2026-08-16
+- **置信度**：0.8
+- **状态**：active
+
+> 独立评测数字（GraphRAG-Bench arXiv 2506.05690 等）：图赢的三样——multi-hop 推理 53.4% vs 42.9%、时间推理（Mem0 图变体 58.1 vs OpenAI memory 21.7，全领域最悬殊）、跨语料综合 64.4% vs 51.3%；图不赢的——简单事实查找纯向量 60.9% vs 最好的图方法 60.1%，图只添冗余上下文，且成本端 Microsoft GraphRAG 全局查询烧 331,375 token/query 对向量 RAG 的 880（HippoRAG 2 做到 1,008 证明高效可能）。实践共识：**按问题类型路由——查找用向量、因果链用图，混合永远赢过纯图**（HippoRAG 2 是标杆：赢 multi-hop 同时简单问题不退化）。一句话："向量检索找到听起来像你问题的东西，图找到与你答案相连的东西"——因为决策类知识活在结构里（决策记录、它取代的东西、触发它的事故，三条各自与问题不相似）。这为本决策"LLM Wiki 为主 + qmd 为辅"补上独立基准支撑：qmd（向量+BM25）管查找、wiki typed edges 管因果链，恰是路由共识的个人版。两个评测警示：LightRAG 自家基准大胜、独立评测崩到 6.6 F1（对照 HippoRAG 2 的 59.8）——永远不要相信只被作者自己评测过的系统；Mem0 自家论文里图变体在 multi-hop 反输非图变体——图是工具不是信仰。
+
 ## 关联概念
 
 - [[llm-wiki]] — `grounds` 理论基础
@@ -106,3 +116,4 @@ related_methods:
 
 - [[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践
 - [[2026-04-23-周四]] — 取消 RAG+Wiki 合并方案，确认两者是不同范式
+- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 图 vs 向量胜负域独立基准、按问题类型路由共识、LightRAG/Mem0 评测警示
