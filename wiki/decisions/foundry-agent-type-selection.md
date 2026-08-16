@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-08-04"
+updated: "2026-08-16"
 tags:
   - wiki
   - decision
@@ -16,7 +16,7 @@ related_concepts:
 
 ## 背景
 
-Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（preview，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。构建企业 Agent 时需要在三者之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
+Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（preview，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。**2026-08-16 更新**：Workflow Agent 已于 2026-12-01 退役（官方类型收窄为 Prompt / Hosted 二元），选型框架主线相应改为二元；详见下方选项 C 标注与新增 Claim。构建企业 Agent 时需要在（现二元的）Prompt 与 Hosted 之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
 
 ## 选项分析
 
@@ -34,16 +34,18 @@ Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管�
 
 ### 选项 C: Workflow Agent（public preview）
 
+> ⚠️ **superseded（2026-08-16）**：Workflow Agent 已于 **2026-12-01 退役**，官方 Agent 类型收窄为 Prompt / Hosted 二类；本选项及其"多 Agent 固定流程"适用条件不再成立，仅保留为历史记录。编排责任下沉到 Hosted Agent 内的 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills（见下方新增 Claim 与来源）。
+
 - **优势**：YAML 声明式多 Agent 编排，流程可审计
 - **劣势**：表达力受编排 DSL 限制，复杂逻辑仍需下沉到子 Agent
-- **适用条件**：多 Agent 固定流程编排场景
+- **适用条件**：多 Agent 固定流程编排场景（⛔ 已随 Workflow Agent 退役失效）
 
 ## 决策结论
 
-- **选择**：以"是否需要自己控制 Agent Runtime"为唯一主线做选型——不需要则默认 Prompt Agent，需要才上 Hosted Agent，多 Agent 固定流程加 Workflow Agent
-- **理由**：三者差异的本质不是能力多少，而是 Runtime 归属；80/20 规则下大多数场景 Prompt Agent 足够且治理最全
-- **放弃理由**：不以"功能清单对比"选型——身份层三者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Shield/Content Filter 仅 Prompt Agent 内置），逐功能对比会掩盖这条主线
-- **前提假设**：Hosted / Workflow 仍在 preview，GA 后硬约束（帧上限、连接时长、vCPU）可能放宽，届时需复核
+- **选择**（2026-08-16 修订为二元）：以"是否需要自己控制 Agent Runtime"为唯一主线做选型——不需要则默认 Prompt Agent，需要（含原 Workflow Agent 承接的多 Agent 固定流程场景）则上 Hosted Agent，多 Agent 编排靠 Hosted 内 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills 承接
+- **理由**：两者差异的本质不是能力多少，而是 Runtime 归属；80/20 规则下大多数场景 Prompt Agent 足够且治理最全
+- **放弃理由**：不以"功能清单对比"选型——身份层两者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Shield/Content Filter 仅 Prompt Agent 内置），逐功能对比会掩盖这条主线
+- **前提假设**：Hosted 仍在 preview，GA 后硬约束（帧上限、连接时长、vCPU）可能放宽，届时需复核。~~Workflow 相关前提~~已随退役失效，不再需要复核
 
 ## 影响范围
 
@@ -118,10 +120,23 @@ Azure AI Foundry 提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管�
 
 > 两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是"是否需要 harness 控制权"，而不只是"要不要多付钱"——scale-to-zero 让低流量场景该成本接近零。
 
+### Claim: Workflow Agent 已于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills
+
+- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **首次出现**：2026-07-31
+- **最近更新**：2026-08-16
+- **置信度**：0.85
+- **状态**：active
+
+> 官方明确 "Microsoft Foundry is retiring workflows on **December 1, 2026**"，禁止新的生产依赖，存量 workflow 有官方迁移指南。Workflow Agent 不再是官方 agent 类型，Foundry Agent 类型收窄为 Prompt / Hosted 二元；姊妹篇《Foundry Toolbox与Skills深度解析》同日（2026-07-31）确认这一变化。"编排层"这个维度本身没有消失，只是载体从托管产品换成了代码级机制：确定性多 Agent 协作收敛为三层组合——Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）+ A2A 协议（preview，agent 间委派的平台级标准通道）+ Skills（能力承接）。对本决策选项 C 的影响：其"多 Agent 固定流程编排"适用条件与"流程即 YAML 天然可审计"优势均失效，标 `superseded`；选型框架主线从三选一收窄为二元（Prompt vs Hosted），原 Workflow 场景并入 Hosted 判断。
+
+## 冲突与演进
+
+- **2026-08-16**：源文章《Foundry Agent 全面对比》2026-07-31 修订确认 Workflow Agent 于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元（姊妹篇《Foundry Toolbox与Skills深度解析》同日确认）。本决策页据此修订：① 选项 C 标注 `superseded`；② 选型框架主线由三选一改为二元；③ 新增 Claim 记录退役事件与编排责任下沉路径（Hosted 内 harness/Agent Framework + A2A + Skills）；④ `decision_status` 保持 `active`（决策主线本身未被推翻，仅选项集收窄）。
+
 ## 关联概念
 
-- [[voice-live-agent]] — `grounds` Voice Live 挂载机制是本决策"组合方向"分析的语音侧依据
-- [[entra-agent-id]] — `uses` "身份层三者同源"论断的身份层机制依据：三类 Agent 都走 Blueprint + Agent Identity 双层模型
+（暂无）
 
 ## 关联方法
 

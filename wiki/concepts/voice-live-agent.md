@@ -143,6 +143,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 ## 关联概念
 
 - [[intelligent-dictation]] — `extends` Voice Agent 输出可从"记录说了什么"升级为"写出想表达什么"
+- [[foundry-agent-type-selection]] — `grounds` Voice Live 组合方向为 Foundry Agent 类型选型提供依据
 
 ## 来源日记
 

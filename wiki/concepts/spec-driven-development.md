@@ -90,8 +90,8 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ## 关联概念
 
-- [[generation-evaluation-separation]] — `grounds` "AI 起草，人类拍板"的分工由生成-评估分离原则提供理论基础
-- [[harness-engineering]] — `grounds` "确定性脚本验证、不交给 LLM"是 Harness 工程原则在方法论层的应用
+- [[generation-evaluation-separation]] — `implements` "AI 起草，人类拍板"的分工是生成-评估分离原则在规格/合规域的具体实施
+- [[harness-engineering]] — `implements` "确定性脚本验证、不交给 LLM"是 Harness 工程原则在方法论层的具体实施
 
 ## 来源日记
 

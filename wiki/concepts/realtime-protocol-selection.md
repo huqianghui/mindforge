@@ -34,7 +34,7 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > WebSocket：TCP 传输层、双向消息通道、可靠但可能 delay、载荷为 JSON 事件和控制指令。WebRTC：UDP（SRTP/SCTP）、超低延迟容忍丢包、载荷为音频帧/视频帧、原生集成浏览器音频处理链（AEC/AGC/NS）。在 Voice Live 中 WebSocket 负责信令 + 会话控制，WebRTC 负责音频/视频媒体流。
 
@@ -44,7 +44,7 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > SDP（Session Description Protocol）描述媒体类型、编解码器、网络地址和传输协议。WebRTC 标准本身不定义信令通道——SDP 是"合同内容"，WebSocket 是"传递合同的快递"，RTP 是"实际交付"。类比：SDP = 怎么合作，WebSocket = 把协议送达，RTP = 真正干活。
 
@@ -54,7 +54,7 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > WebSocket（主控制面）：session control、tool calling、config 修改、错误通知、AI response lifecycle——可靠（TCP）语义控制。WebRTC DataChannel（就地控制）：VAD 事件、streaming token、fine-grained sync——低延迟与音频同链路。即使 PeerConnection 已建立，WebSocket 仍负责系统级控制。
 
@@ -64,7 +64,7 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > ① TCP 队头阻塞导致延迟抖动；② 丢包重传带来延迟尖峰；③ 无法利用浏览器 AEC/NS 音频处理链；④ 无 RTP timestamp 同步机制（无法 AV sync）；⑤ TCP 带宽和延迟不适合视频（无法支持 Avatar）。这些缺陷在 prototype 阶段可接受，进入 production + avatar + low-latency 场景时成为瓶颈。
 
@@ -74,7 +74,7 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 只用 WebSocket 的条件：prototype/内部 demo、延迟要求 > 500ms、不需浏览器音频处理、防火墙严格限 UDP、无视频。引入 WebRTC 的条件：端到端延迟 < 300ms、需浏览器 AEC/NS/AGC、需音视频同步（Avatar）、需 P2P/SFU 拓扑、生产环境高音质要求。
 
@@ -84,13 +84,13 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Voice Live API 从 WebSocket-only → WebSocket + WebRTC 的演进路径是范例：先用简单方案验证产品（WebSocket 开发简单、防火墙友好、生态成熟），再根据生产需求引入更复杂但更高效的协议。核心原则：Control Plane ≠ Data Plane；信令通道与媒体通道解耦。
 
 ## 冲突与演进
 
-（暂无）
+- **2026-08-16**：全部 6 条 Claims 证据停在 2026-05-24，距今 84 天超过 60 天线，维护标 stale，等新证据复核（复核素材已见 08-09 loop-weekly 语音三连发条目）。
 
 ## 关联概念
 

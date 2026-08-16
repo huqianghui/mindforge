@@ -73,6 +73,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 ## 冲突与演进
 
 - 2026-04-29：从论文中提取核心发现。与当前 Reasoning Model 主流趋势（CoT、extended thinking）存在范式矛盾——两者适用于不同问题类型。
+- **2026-08-16**：全部 4 条 Claims 证据停在 2026-04-30（frontmatter `updated` 07-07 但未更新证据），维护标 stale，等新证据复核。
 
 ## 关联概念
 

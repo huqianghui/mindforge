@@ -31,7 +31,7 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > L1 语音识别（WER 优化）→ L2 文本清洗（去除 um/uh/重复）→ L3 语义重组（理解意图重组语序）→ L4 格式化（自动识别列表/步骤/要点）→ L5 场景适配（根据 App 切换语气）→ L6 个性化（学习用户表达风格）。传统 STT 只覆盖 L1，Typeless 等产品专攻 L2-L6。
 
@@ -41,7 +41,7 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 第一代 Accurate Transcription（Azure Speech、Google STT）→ 第二代 Smart Transcription（Whisper、AssemblyAI）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow）。本质变化：从"忠实记录"到"写出想表达什么"，加入 LLM 后处理层理解语义意图后重新组织输出。
 
@@ -51,7 +51,7 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻"最后一公里"。产品洞察：用户要的不是"准确的转录"，而是"不用打字就能产出好文本"。
 
@@ -61,13 +61,13 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 根据目标应用（Slack vs Gmail vs Notion）自动调整输出语气，本质是 context injection 策略。结合 Whisper Mode（低声输入）和 Edit via voice（语音修改已有文本），形成完整的语音交互闭环。
 
 ## 冲突与演进
 
-（暂无）
+- **2026-08-16**：全部 4 条 Claims 证据停在 2026-05-24，距今 84 天超过 60 天线，维护标 stale，等新证据复核。
 
 ## 关联概念
 

@@ -85,7 +85,6 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ## 关联概念
 
-- [[rubric]] — `uses` rubric 是 judge 的评分配置：维度+等级+锚点让打分从自由发挥变成一致可重复
 - [[generation-evaluation-separation]] — `implements` judge（评估者）与被评估的生成者分离是该原则在评估层的体现；judge ≠ policy 是 reward hacking 第一道防线
 - [[reward-design-three-inputs]] — `grounds` Reliability 偏差清单为该方法的 σ_noise 测量与降噪决策（拆分 judge、多次取中位数、≥85% 盲选一致率）提供依据
 - [[automatic-prompt-optimization]] — `constrains` judge 噪声直接决定 APO beam search 排序的可信度，是摆动的第一大原因

@@ -114,7 +114,7 @@ related_methods:
 
 - [[skillopt]] — `constrains` 判断式是 SkillOpt 门控开跑前的统计学前置检查——δ_remain ≤ δ_min 时 gate 抛硬币，训练不应启动
 - [[automatic-prompt-optimization]] — `extends` 把 APO 页"reward+噪声+数据量是真瓶颈"的事后教训操作化为开跑前的三个数例行判断式
-- [[generation-evaluation-separation]] — `grounds` 算账依赖独立、逐任务的评估产物——评估质量决定三个数的可信度
+- [[generation-evaluation-separation]] — `implements` 算账依赖独立、逐任务的评估产物——评估质量决定三个数的可信度
 
 ## 关联方法
 
