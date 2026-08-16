@@ -2,9 +2,9 @@
   "generated_at": "2026-08-16",
   "stats": {
     "nodes": 119,
-    "links": 408,
+    "links": 404,
     "orphan_links_removed": 0,
-    "claims": 539,
+    "claims": 540,
     "categories": 10
   },
   "nodes": [
@@ -3099,7 +3099,7 @@
           "first_seen": "2026-05-20",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "L1 语音识别（WER 优化）→ L2 文本清洗（去除 um/uh/重复）→ L3 语义重组（理解意图重组语序）→ L4 格式化（自动识别列表/步骤/要点）→ L5 场景适配（根据 App 切换语气）→ L6 个性化（学习用户表达风格）。传统 STT 只覆盖 L1，Typeless 等产品专攻 L2-L6。"
         },
         {
@@ -3108,7 +3108,7 @@
           "first_seen": "2026-05-20",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT）→ 第二代 Smart Transcription（Whisper、AssemblyAI）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow）。本质变化：从\"忠实记录\"到\"写出想表达什么\"，加入 LLM 后处理层理解语义意图后重新组织输出。"
         },
         {
@@ -3117,7 +3117,7 @@
           "first_seen": "2026-05-20",
           "last_updated": "2026-05-24",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻\"最后一公里\"。产品洞察：用户要的不是\"准确的转录\"，而是\"不用打字就能产出好文本\"。"
         },
         {
@@ -3126,7 +3126,7 @@
           "first_seen": "2026-05-20",
           "last_updated": "2026-05-24",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "根据目标应用（Slack vs Gmail vs Notion）自动调整输出语气，本质是 context injection 策略。结合 Whisper Mode（低声输入）和 Edit via voice（语音修改已有文本），形成完整的语音交互闭环。"
         }
       ]
@@ -4587,7 +4587,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "WebSocket：TCP 传输层、双向消息通道、可靠但可能 delay、载荷为 JSON 事件和控制指令。WebRTC：UDP（SRTP/SCTP）、超低延迟容忍丢包、载荷为音频帧/视频帧、原生集成浏览器音频处理链（AEC/AGC/NS）。在 Voice Live 中 WebSocket 负责信令 + 会话控制，WebRTC 负责音频/视频媒体流。"
         },
         {
@@ -4596,7 +4596,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "SDP（Session Description Protocol）描述媒体类型、编解码器、网络地址和传输协议。WebRTC 标准本身不定义信令通道——SDP 是\"合同内容\"，WebSocket 是\"传递合同的快递\"，RTP 是\"实际交付\"。类比：SDP = 怎么合作，WebSocket = 把协议送达，RTP = 真正干活。"
         },
         {
@@ -4605,7 +4605,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "WebSocket（主控制面）：session control、tool calling、config 修改、错误通知、AI response lifecycle——可靠（TCP）语义控制。WebRTC DataChannel（就地控制）：VAD 事件、streaming token、fine-grained sync——低延迟与音频同链路。即使 PeerConnection 已建立，WebSocket 仍负责系统级控制。"
         },
         {
@@ -4614,7 +4614,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "① TCP 队头阻塞导致延迟抖动；② 丢包重传带来延迟尖峰；③ 无法利用浏览器 AEC/NS 音频处理链；④ 无 RTP timestamp 同步机制（无法 AV sync）；⑤ TCP 带宽和延迟不适合视频（无法支持 Avatar）。这些缺陷在 prototype 阶段可接受，进入 production + avatar + low-latency 场景时成为瓶颈。"
         },
         {
@@ -4623,7 +4623,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "只用 WebSocket 的条件：prototype/内部 demo、延迟要求 > 500ms、不需浏览器音频处理、防火墙严格限 UDP、无视频。引入 WebRTC 的条件：端到端延迟 < 300ms、需浏览器 AEC/NS/AGC、需音视频同步（Avatar）、需 P2P/SFU 拓扑、生产环境高音质要求。"
         },
         {
@@ -4632,7 +4632,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Voice Live API 从 WebSocket-only → WebSocket + WebRTC 的演进路径是范例：先用简单方案验证产品（WebSocket 开发简单、防火墙友好、生态成熟），再根据生产需求引入更复杂但更高效的协议。核心原则：Control Plane ≠ Data Plane；信令通道与媒体通道解耦。"
         }
       ]
@@ -7014,8 +7014,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 6,
-      "avg_confidence": 0.78,
+      "claims_count": 7,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
@@ -7070,6 +7070,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是\"是否需要 harness 控制权\"，而不只是\"要不要多付钱\"——scale-to-zero 让低流量场景该成本接近零。"
+        },
+        {
+          "statement": "Workflow Agent 已于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-07-31",
+          "last_updated": "2026-08-16",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "官方明确 \"Microsoft Foundry is retiring workflows on **December 1, 2026**\"，禁止新的生产依赖，存量 workflow 有官方迁移指南。Workflow Agent 不再是官方 agent 类型，Foundry Agent 类型收窄为 Prompt / Hosted 二元；姊妹篇《Foundry Toolbox与Skills深度解析》同日（2026-07-31）确认这一变化。\"编排层\"这个维度本身没有消失，只是载体从托管产品换成了代码级机制：确定性多 Agent 协作收敛为三层组合——Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）+ A2A 协议（preview，agent 间委派的平台级标准通道）+ Skills（能力承接）。对本决策选项 C 的影响：其\"多 Agent 固定流程编排\"适用条件与\"流程即 YAML 天然可审计\"优势均失效，标 `superseded`；选型框架主线从三选一收窄为二元（Prompt vs Hosted），原 Workflow 场景并入 Hosted 判断。"
         }
       ]
     },
@@ -7574,12 +7583,6 @@
       "target": "skill-hub-ecosystem",
       "relation_type": "contrasts",
       "description": "Azure Skills 是 Microsoft 官方的 Skill 实现，与社区 Skill Hub 构成互补"
-    },
-    {
-      "source": "azure-copilot-ecosystem",
-      "target": "ag-ui-protocol",
-      "relation_type": "uses",
-      "description": "AG-UI 是 Foundry custom protocols 之一，Microsoft Agent Framework 已支持"
     },
     {
       "source": "bitter-lesson",
@@ -8231,12 +8234,6 @@
     },
     {
       "source": "llm-as-a-judge",
-      "target": "rubric",
-      "relation_type": "uses",
-      "description": "rubric 是 judge 的评分配置：维度+等级+锚点让打分从自由发挥变成一致可重复"
-    },
-    {
-      "source": "llm-as-a-judge",
       "target": "generation-evaluation-separation",
       "relation_type": "implements",
       "description": "judge（评估者）与被评估的生成者分离是该原则在评估层的体现；judge ≠ policy 是 reward hacking 第一道防线"
@@ -8408,12 +8405,6 @@
       "target": "verl",
       "relation_type": "contrasts",
       "description": "VERL 在 RL 引擎内部实现\"算法可插拔\"，是同一原则在更低一层的表达"
-    },
-    {
-      "source": "method-agnostic",
-      "target": "skillopt",
-      "relation_type": "contrasts",
-      "description": "environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）"
     },
     {
       "source": "model-harness-codesign",
@@ -9054,14 +9045,14 @@
     {
       "source": "spec-driven-development",
       "target": "generation-evaluation-separation",
-      "relation_type": "grounds",
-      "description": "\"AI 起草，人类拍板\"的分工由生成-评估分离原则提供理论基础"
+      "relation_type": "implements",
+      "description": "\"AI 起草，人类拍板\"的分工是生成-评估分离原则在规格/合规域的具体实施"
     },
     {
       "source": "spec-driven-development",
       "target": "harness-engineering",
-      "relation_type": "grounds",
-      "description": "\"确定性脚本验证、不交给 LLM\"是 Harness 工程原则在方法论层的应用"
+      "relation_type": "implements",
+      "description": "\"确定性脚本验证、不交给 LLM\"是 Harness 工程原则在方法论层的具体实施"
     },
     {
       "source": "spec-kit",
@@ -9200,6 +9191,12 @@
       "target": "intelligent-dictation",
       "relation_type": "extends",
       "description": "Voice Agent 输出可从\"记录说了什么\"升级为\"写出想表达什么\""
+    },
+    {
+      "source": "voice-live-agent",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "grounds",
+      "description": "Voice Live 组合方向为 Foundry Agent 类型选型提供依据"
     },
     {
       "source": "ai-adoption-six-step-evolution",
@@ -9468,7 +9465,7 @@
     {
       "source": "pre-run-three-number-accounting",
       "target": "generation-evaluation-separation",
-      "relation_type": "grounds",
+      "relation_type": "implements",
       "description": "算账依赖独立、逐任务的评估产物——评估质量决定三个数的可信度"
     },
     {
@@ -9626,18 +9623,6 @@
       "target": "voice-cascaded-pipeline",
       "relation_type": "produces",
       "description": "基于此决策的实施方法"
-    },
-    {
-      "source": "foundry-agent-type-selection",
-      "target": "voice-live-agent",
-      "relation_type": "grounds",
-      "description": "Voice Live 挂载机制是本决策\"组合方向\"分析的语音侧依据"
-    },
-    {
-      "source": "foundry-agent-type-selection",
-      "target": "entra-agent-id",
-      "relation_type": "uses",
-      "description": "\"身份层三者同源\"论断的身份层机制依据：三类 Agent 都走 Blueprint + Agent Identity 双层模型"
     },
     {
       "source": "hybrid-inference-framework-selection",
