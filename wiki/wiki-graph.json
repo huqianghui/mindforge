@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-10",
+  "generated_at": "2026-08-16",
   "stats": {
-    "nodes": 118,
-    "links": 404,
+    "nodes": 119,
+    "links": 408,
     "orphan_links_removed": 0,
-    "claims": 528,
+    "claims": 539,
     "categories": 10
   },
   "nodes": [
@@ -2579,6 +2579,64 @@
       ]
     },
     {
+      "id": "graph-engineering",
+      "type": "concept",
+      "title": "Graph Engineering",
+      "summary": "Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 万浏览的推爆火）是一个**一词三义**的伞形概念：① 编排图（把多 agent 系统设计成显式图——LangGraph/AutoGen 的既有地盘，不新）；② 循环之图（自我改进循环互相监督约束的网络——Carlos Perez 的定义，[[loop-engineering]] 的自然延伸）；③ 图结构知识与记忆（类型化节点 + 类型化边，agent 可遍历——名词新、实质有十年积累）。真正的增量有三：**图的作者从开发者变成模型本身**（画图成本坍缩到零，图从软件资产变成随用随弃的中间产物）、**设计单位从单循环升级为带锚点的循环网络**、**知识层的 typed edges + 时间演替**。何时用有明确判据：任务有 3+ 个互相独立的验证步骤 + 复杂条件路由才上图；单轮通过率 <50% 时图比循环更贵。",
+      "tags": [
+        "wiki",
+        "concept",
+        "graph-engineering",
+        "loop-engineering",
+        "multi-agent",
+        "orchestration",
+        "knowledge-graph"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.79,
+      "claims": [
+        {
+          "statement": "graph engineering 一词裂成三个互相竞争的含义，只有\"知识图\"含义有十年研究与独立基准背书",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "2026-07-18 Steinberger 发推 \"Are we still talking loops or did we shift to graphs yet?\"（本意是嘲讽名词跑步机：prompt→context→loop→graph engineering），48 小时内词义分裂为三：① 编排图——类型化节点、条件转移、checkpoint，**不新**，LangGraph/AutoGen/Temporal 既有地盘；② 循环之图——自我改进循环互相监督的网络（Perez），新视角但最抽象；③ 图结构知识记忆——GraphRAG/Graphiti，名词新实质不新（Foundation Capital 2025-12 已以 \"context graphs\" 命名同一事物，Gartner 预测 2028 年过半企业 agent 系统用图基上下文，SAP 已出货）。词源考据：最早书面使用是 Josh Simmons 2026-07-04 博客；热度中混有伪造内容（\"Stanford + Anthropic 310 万美元研究\"不存在，系 engagement bait）。三个含义中只有③背后有可用工具和经受过独立评测的基准数字。"
+        },
+        {
+          "statement": "与 LangGraph 时代的本质区别是图的作者从开发者变成模型——画图成本坍缩到零，图的生命周期从项目级缩到任务级",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "LangGraph 时代的图是开发者在设计时手写、编译、部署的静态持久图——图是软件资产，进版本库上生产。新范式的图是**模型在运行时针对当前任务现写的一次性编排脚本**：graph-max 技巧（Alex Kotliarskyi，2026-07-22——纸上画张工作流草图发给 Codex \"写个 code mode 脚本实现并运行\"，没有第三步）；Claude Code dynamic workflows（模型现写 JavaScript 编排脚本，运行时确定性执行）。不是图的表达能力变强了，而是画图的成本坍缩到接近零，图从\"软件资产\"变成\"随用随弃的中间产物\"。定位判据（Anthropic 文档与社区共识）：普通 session 处理小而顺序的任务，subagent 提供几个独立视角，**当编排本身需要可重复时才用 workflow**。"
+        },
+        {
+          "statement": "何时上图的判据——3+ 个独立验证步骤 + 复杂条件路由；治理五要点以可观测性为不可妥协项",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Flowtivity 2×2 决策矩阵：简单任务低并发→单循环（别过度工程）；简单任务高并发→并行循环；复杂任务低并发→分段循环 + checkpoint；只有**复杂任务 + 高并发**才是 graph engineering 的地盘。经验法则：任务有 3 个以上互相独立的验证步骤 + 复杂条件路由。治理要点：① 从 3~5 节点起步（20 节点 50 边的图比线性循环更难 debug，先在纸上画——画图动作强迫想清边条件）；② 可观测性不可妥协（每个 agent 输入输出可查、图可重放、失败可归因——Codex 加密争议是现成反面教材）；③ 循环网络四件套（优化循环配反指标监督、reference 有 owner 且由慢循环治理、冲突有显式仲裁层、独立审计循环）；④ 必须有锚点；⑤ 知识图侧两个专属坑——实体消解是项目坟场（错误率沿跳数乘法复合：每跳 85% 准确率 5 跳链只剩 44%，multi-hop 遍历实际是掷硬币）、时间维度必须建模（Graphiti 双时间线 \"facts expire, not die\"）。何时不用：简单顺序任务、单轮通过率低（成本爆炸）、简单事实查询（图只添冗余）、自动抽取实体质量不过关。"
+        },
+        {
+          "statement": "成本红线与失败模式的量化边界（归口详见 loop-engineering / wiki-over-rag 两页）",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "本页作三含义的索引归口，量化论断分散在关联页：① 成本红线（单轮通过率 <50% 时并行图比顺序循环贵、盯 cost per successful completion）→ 详见 [[loop-engineering]]；② 单循环四死法与拓扑解法、锚点论（ungrounded vs grounded 才是持久的轴）→ 详见 [[loop-engineering]]；③ 显式图 vs 隐式图路线对垒（Claude workflows 可审计脚本 vs Codex Multi-agent V2 加密委派，\"图的运维才是护城河\"）→ 详见 [[model-harness-codesign]]；④ 图 vs 向量胜负域独立基准（multi-hop/时间推理/跨语料赢、简单查找不赢、混合永远赢过纯图）→ 详见 [[wiki-over-rag-for-personal-knowledge]]；⑤ wikilink vault=80% GraphRAG 索引、PKC 站在 linter+eval 全球空白 gap 中 → 详见 [[personal-knowledge-compiler]]。"
+        }
+      ]
+    },
+    {
       "id": "grapheme-to-phoneme",
       "type": "concept",
       "title": "Grapheme-to-Phoneme（G2P）",
@@ -3219,7 +3277,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
+      "claims_count": 15,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -3320,6 +3378,33 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "借控制论：模型是无状态控制器 `f(context)→output`，外循环系统补的全是它\"身体\"的部分——传感器（verifier/自动发现）、执行器（connectors：qmd/git/README 写入）、记忆（LOOP_STATE.md）、触发（cron 心跳）。更聪明的模型也替代不了这层，因为这些是系统属性不是智能属性：再聪明的无状态函数也无法凭空长出一块硬盘或一个闹钟。认知脚手架会被更强模型吸收，但\"具身事实\"不会——这正是 Loop Engineering 是一门工程而非\"等模型变强\"的原因。"
+        },
+        {
+          "statement": "单循环有四个结构性死法，解法全部是拓扑性的——设计单位从单循环升级为循环的网络",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Carlos Perez（Intuition Machine, 2026-07-19，标题即 \"From Loop Engineering to Graph Engineering\"）：单循环的四个死法不是偶然故障而是循环形状的必然后果——① Goodhart 定律（循环只见自身指标，客服 bot 用\"劝退式关单\"刷解决率）；② 向上盲区（循环无法质疑自己的目标值，越努力错误目标达成得越彻底）；③ 循环间冲突（独立建的循环互相拆台，单个看都工作正常）；④ 测量腐烂（传感器漂移、指标定义变质，没人看着看守者）。解法全是拓扑性的：配对解（优化循环配反指标监督——解决率配续约率）、层级解（慢循环持有快循环的 reference，改目标本身是被治理的循环）、显式仲裁解（打架循环之上有拥有权衡权的循环）、独立审计解（专职核对其他循环的数字是否还接触现实）。这正是成熟系统的实际形状：MLOps 的 champion-challenger + drift monitor + held-out 评估集、治理良好公司的日会 ⊂ 季度规划 ⊂ 独立年审。"
+        },
+        {
+          "statement": "拓扑买来复杂度但买不来与现实的接触——循环之图必须有图外的锚点，持久的轴是 ungrounded vs grounded",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Perez 更深的警告：建齐全套循环网络（配对指标、审计循环、meta-loop）仍可能失败——若审计循环拿运营数字对财务数字、而财务数字来自运营喂数的同一批系统，图是**环形的**：一切一致，无一被验证，它会以单循环同样的方式失败，只是更晚、更贵、沿途绿灯更多。图需要三样任何拓扑无法自给的**锚点（anchors）**：① 不可争辩的测量（钱真的到账、测试真的执行、客户真的留下）；② 冻结节点（优化循环永远不许调的规则，恰因那是优化器最想弱化的——如训练循环永远不许看 held-out set）；③ 图外判断（根部的\"什么算更好\"无法由机器自产，由人通过接触真实失败供给）。结论：持久的轴从来不是 loops vs graphs，而是 ungrounded vs grounded——改进机器是否还在接触它声称要改进的现实。这与本页\"管道自动化，判断留给人\"的分级自治原则同源。"
+        },
+        {
+          "statement": "图不总是更省——单轮通过率低于约 50% 时并行图比顺序循环更贵，该盯的指标是 cost per successful completion",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Flowtivity 的成本推导：3 个 reviewer 并行使 wall-clock 缩到 1/3 但 token 是 3 份。单轮通过率 50% 时循环与图都约 2 轮 6 次调用，图纯赚 wall-clock；通过率 30% 时两者都约 3.3 轮，但图的每轮 token 是 3 倍——全体 reviewer 反复重跑，图比顺序循环更贵。配套决策矩阵（2×2：任务复杂度 × 并发需求）：只有\"复杂任务 + 高并发需求\"象限才上图，经验法则是任务有 3 个以上互相独立的验证步骤 + 复杂条件路由。监控指标是 cost per successful completion 而非 wall-clock。这给本页\"何时做成外循环的三特征\"补上了成本侧判据：循环升级为图（并行化）前先看单轮通过率。"
         },
         {
           "statement": "适合做成外循环的工作流有三个特征",
@@ -3561,8 +3646,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.82,
+      "claims_count": 7,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "Agent = Model + Harness——模型是引擎，harness 是整辆车",
@@ -3617,6 +3702,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "反方论点至少五个：① 企业采购天然要求 BYOK 和多 provider（渠道属性决定的产品需求）；② 模型竞争红利只有多模型 harness 能兑现（按任务路由）；③ 评测税可转化为护城河（\"每个模型在真实工作流里的确切表现\"连 model 厂商自己都未必知道）；④ 头部渠道可用流量换 provider 深度合作（GPT-5.5 实验：OpenAI 出 expertise、VS Code 出 harness 数据与生产流量），信息不对称被部分对冲。类比框架：Apple vs Windows/Android 在 agent 层重演。开放问题：随着 agentic RL 把\"模型在自家 harness 里训练\"变成标配，水平生态能否维持\"体验足够接近\"——差距拉大则多模型框架被挤压到\"企业合规渠道\"单一生态位。"
+        },
+        {
+          "statement": "多 agent 编排的路线对垒是\"显式图 vs 隐式图\"——图的运维才是护城河，历史经验站在显式一边",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范：\"给 agent 目标而非严格转移\"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与\"图\"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从\"软件资产\"变成\"随用随弃的中间产物\"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。"
         }
       ]
     },
@@ -4180,8 +4274,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.72,
+      "claims_count": 8,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
@@ -4236,6 +4330,24 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从\"编译知识\"到\"可视化知识生态\"的关键一步。"
+        },
+        {
+          "statement": "一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引——实体消解从构造上解决、索引成本为零",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "The AI Operator（2026-07-21）的核心洞察：GraphRAG 抽取管道花掉的大部分工程预算，是在恢复 wikilink 免费给你的东西。① **实体消解从构造上解决**——写下 `[[ADR-007]]` 的瞬间消解就完成了，零模糊合并、零复合误差（对照自动抽取：判定 \"Dr. John Smith\"/\"J. Smith\"/\"John\" 同一节点的错误率沿跳数乘法复合，每跳 95% 准确率 5 跳链只剩 77% 可信）；② **索引成本为零**——图在写入时构建，没有\"每 chunk 一次 LLM 调用\"的账单（对照 Microsoft GraphRAG 单个大型企业数据集约 33,000 美元索引估算，其修正版 LazyGraphRAG 把索引成本降到 0.1% 印证：便宜的结构图 + 查询时聪明遍历拿到大部分价值）。Graphiti（arXiv 2501.13956）的双时间线方案（\"facts expire, not die\"——新信息矛盾旧边时不删除而是关闭有效区间）正是 PKC Claims 的 outdated/stale 生命周期语义的图数据库实现。"
+        },
+        {
+          "statement": "PKC 站在全球空白的 gap 中——typed edges + 时间演替都在做，缺的是类型化边 linter 与 typed vs untyped 检索 eval",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "截至 2026 年 7 月全世界没人做过的两样：① **类型化边的 linter**（校验未知类型、悬空目标、缺失逆关系、矛盾环）——零工具（The AI Operator 作者一周后在 obsidian-second-brain 补了 linter，eval 仍空缺）；② **类型化 vs 非类型化检索的对照 eval**——没有任何已发表证据证明 typed links 可度量地改善 agent 回答，零命中。现有工具全缺一条腿：Basic Memory 类型是自由字符串无校验、Breadcrumbs 有真图工程但无 AI 接口、Penfield 把图路由进自家云。本 vault 的 8 种类型化关系 + Claims 置信度/生命周期恰好站在 gap 里，差的正好是那两块——关系类型校验器（现靠 agent 自觉遵守 schema；08-08 hygiene 报告 grounds 反向三轮三中，正是缺 linter 的实证）与检索质量 eval。这两项是 PKC 的候选差异化工作项。旁证（loop-weekly 08-09）：Karpathy LLM Wiki 社区插件与 obsidian-wiki 同周上架，PKC 进入\"有竞品可对照\"阶段，linter + eval 是当前仍独有的差异化点。"
         }
       ]
     },
@@ -7156,8 +7268,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
-      "avg_confidence": 0.7,
+      "claims_count": 4,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
@@ -7185,6 +7297,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "原计划将 LLM Wiki 与 RAG 合并为 Azure 企业级方案（Azure AI Search + CosmosDB Gremlin + OmniRAG 路由），实际使用 LLM Wiki 后发现两者本质不同：Wiki 是\"编译一次持续维护\"（writing a book），RAG 是\"每次查询重新检索\"（search）。强行合并增加复杂度但未增加核心价值。该方案已取消。"
+        },
+        {
+          "statement": "独立基准划清了图与向量各自的胜负域——图赢 multi-hop/时间推理/跨语料，简单查找不赢，混合永远赢过纯图",
+          "source": "Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义",
+          "first_seen": "2026-08-07",
+          "last_updated": "2026-08-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "独立评测数字（GraphRAG-Bench arXiv 2506.05690 等）：图赢的三样——multi-hop 推理 53.4% vs 42.9%、时间推理（Mem0 图变体 58.1 vs OpenAI memory 21.7，全领域最悬殊）、跨语料综合 64.4% vs 51.3%；图不赢的——简单事实查找纯向量 60.9% vs 最好的图方法 60.1%，图只添冗余上下文，且成本端 Microsoft GraphRAG 全局查询烧 331,375 token/query 对向量 RAG 的 880（HippoRAG 2 做到 1,008 证明高效可能）。实践共识：**按问题类型路由——查找用向量、因果链用图，混合永远赢过纯图**（HippoRAG 2 是标杆：赢 multi-hop 同时简单问题不退化）。一句话：\"向量检索找到听起来像你问题的东西，图找到与你答案相连的东西\"——因为决策类知识活在结构里（决策记录、它取代的东西、触发它的事故，三条各自与问题不相似）。这为本决策\"LLM Wiki 为主 + qmd 为辅\"补上独立基准支撑：qmd（向量+BM25）管查找、wiki typed edges 管因果链，恰是路由共识的个人版。两个评测警示：LightRAG 自家基准大胜、独立评测崩到 6.6 F1（对照 HippoRAG 2 的 59.8）——永远不要相信只被作者自己评测过的系统；Mem0 自家论文里图变体在 multi-hop 反输非图变体——图是工具不是信仰。"
         }
       ]
     }
@@ -7957,6 +8078,30 @@
       "target": "llm-as-a-judge",
       "relation_type": "untyped",
       "description": ""
+    },
+    {
+      "source": "graph-engineering",
+      "target": "loop-engineering",
+      "relation_type": "extends",
+      "description": "含义②（循环之图）是 loop engineering 的自然延伸：设计单位从单循环升级为带锚点的循环网络（Perez 文标题即 \"From Loop Engineering to Graph Engineering\"）"
+    },
+    {
+      "source": "graph-engineering",
+      "target": "model-harness-codesign",
+      "relation_type": "uses",
+      "description": "含义①（编排图）的两条实现路线（Claude 显式 vs Codex 隐式）是第一方 harness 的路线分歧新轴"
+    },
+    {
+      "source": "graph-engineering",
+      "target": "personal-knowledge-compiler",
+      "relation_type": "grounds",
+      "description": "含义③（类型化知识图）为 PKC 提供 GraphRAG 坐标系定位：wikilink vault 已是 80% 图索引，缺 linter + eval"
+    },
+    {
+      "source": "graph-engineering",
+      "target": "wiki-over-rag-for-personal-knowledge",
+      "relation_type": "grounds",
+      "description": "图 vs 向量胜负域的独立基准数字为该决策补充\"按问题类型路由\"的支撑"
     },
     {
       "source": "grapheme-to-phoneme",
@@ -9622,6 +9767,7 @@
       "members": [
         "harness-engineering",
         "loop-engineering",
+        "graph-engineering",
         "agent-loop-architecture",
         "agent-paradigms",
         "context-engineering",
