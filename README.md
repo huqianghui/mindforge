@@ -173,6 +173,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [系列11：架构测试全景——从 ArchUnit 到 AI 辅助架构 Review 的工具链实践](Notes/AI/vibe-coding/Vibe%20Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践.md)
 - [系列12：测试环境即代码——从 Testcontainers 到 Ephemeral Environment 的 Harness 实践](Notes/AI/vibe-coding/Vibe%20Coding系列12：测试环境即代码——从Testcontainers到Ephemeral%20Environment的Harness实践.md)
 - [系列13：控制论如何指导 Harness Engineering——用 Regulation 和 Requisite Variety 让 Vibe Coding 变得可控](Notes/AI/vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md)
+- [系列14：Harness 框架的 Skill 化收敛——从 Agent、Command、Hook 全家桶到纯 Skill 的架构简化](Notes/AI/vibe-coding/Vibe%20Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化.md)
 
 ### Notes/AI/voice
 
