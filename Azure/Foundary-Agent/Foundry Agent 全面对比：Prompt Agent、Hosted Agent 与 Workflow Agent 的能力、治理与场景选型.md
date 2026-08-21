@@ -1,7 +1,7 @@
 ---
 title: Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型
 created: 2026-07-19
-updated: 2026-07-31
+updated: 2026-08-20
 tags:
   - azure
   - foundry
@@ -68,6 +68,25 @@ description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agen
   - `/responses` —— OpenAI Responses 兼容，对话式调用首选；
   - `/invocations` —— 任意 JSON 进出，适合 webhook 接收器、批处理、协议桥接（如 AG-UI）；
   - `/invocations_ws` —— 全双工 WebSocket，实时语音等双向流场景（见第六节）。
+
+#### Session 与 Conversation：双 ID 状态模型（2026-08-20 补充）
+
+Hosted Agent 用两个 ID 管理状态，绑定的是**两种生命周期完全不同的资源**——这是理解其状态模型的关键（[Hosted agents 概念文档](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)）：
+
+| | **sessionId（计算面）** | **conversationId（数据面）** |
+|---|---|---|
+| 指代什么 | 带持久化状态的逻辑会话：沙箱 `$HOME` + `/files` 上传文件 | 对话历史的持久记录：messages、tool calls、responses |
+| 存活方式 | 随计算走：idle 15 分钟回收算力、状态转持久化，同 ID 再引用时恢复；**30 天不活跃永久删除** | 存在 Foundry 存储，独立于计算状态长期保留 |
+| 消费方 | 只有绑定的计算实例 | 跨渠道读取：Playground、API、Teams 等发布渠道 |
+
+**两协议下"谁是主概念"相反**：
+
+- **Responses 协议**：`conversationId` 为主。平台自动管理对话历史，并为每个 conversation 关联一个 session、把 sessionId 返回给客户端——客户端几乎只在调 `/files` 上传文件时用到它。
+- **Invocations 协议**：`sessionId` 为主。客户端自己持有 sessionId 跨交互维持状态、用它上传文件；**没有平台托管的对话历史**，消息历史在自己代码里维护，conversationId 不存在于此协议。
+
+准确的理解方式不是"Responses 被迫另造 conversationId"，而是：**session 沙箱是底层公共设施，两个协议都建在它上面**——Invocations 是薄封装（直接交出沙箱句柄，历史自理），Responses 是厚封装（在沙箱之上叠加平台托管的对话历史层，替你维护 conversation→session 映射）。即使只有一个协议，两个概念也不会合并——"聊天记录"与"可休眠的文件系统快照"生命周期不同，**一个标识符只应指代一种生命周期的资源**（类比 K8s 的 Pod 与 PVC 分开命名）。
+
+**生命周期脱节的实际后果**：conversation 永久保留而 session 30 天不活跃即删，因此会出现"对话记录还在、当年引用的文件已消失"的状态。此时 conversation **作为对话记录仍然完备**——文件在对话中留下的全部痕迹（agent 读文件后产出的摘要、分析、执行结果）都以文本固化在历史里；但**作为可复现的工作环境不完备了**——无法让 agent 重新打开旧文件做新分析。类比会议纪要永久归档、会议室里的报表原件被清空：结论随时可查，想基于原件提新问题得重新上传。工程推论：**原始文件的源头责任在客户端**，平台只在 session 存活期内保管工作副本；对后续对话重要的文件，要么保持 30 天内活跃，要么客户端自留原件、session 失效后重新经 `/files` 上传。
 
 ### Workflow Agent：编排层（⛔ 历史记录，2026-12-01 退役）
 
@@ -226,7 +245,7 @@ Client → invocations_ws（平台透明代理，原始字节转发）→ 你的
 |------|-----|------|
 | WebSocket 帧上限 | 1 MB（超限 close 1009） | 音频分帧要小（20ms PCM@16kHz ≈ 640 字节，安全） |
 | 单连接时长 | ~30 分钟（平台滚动回收，close 1001） | 客户端必须实现带同一 `agent_session_id` 的重连；平台不重放丢失帧 |
-| Session idle | 15 分钟缩容 | 状态持久化、恢复冷启动可预期但非零 |
+| Session idle | 15 分钟缩容；**30 天不活跃永久删除** | 状态持久化、恢复冷启动可预期但非零；超 30 天 session 连同 `$HOME`/`/files` 全部清除（见第二节双 ID 状态模型） |
 | Sandbox 算力 | 最高 2 vCPU / 4 GiB（语音建议 ≥1 vCPU / 2 GiB） | 重管线（本地 VAD + 多模型）要精打细算 |
 | WebRTC | **无托管 WebRTC**（无 TURN/SFU/signaling 服务） | 要 WebRTC 得客户端+容器自己实现，`invocations_ws` 只当 signaling 通道 |
 | 电话接入 | 无原生 PSTN | 用 ACS / Twilio 把电话音频桥到 `invocations_ws` |
@@ -280,13 +299,13 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 ## 九、开放问题（待验证/后续讨论）
 
-1. **Hosted Agent 的 SLA 与配额**：preview 阶段 sandbox 算力（2 vCPU/4GiB 上限）能否满足重管线；GA 后规格与定价。
+1. **Hosted Agent 的 SLA 与配额**：preview 阶段 sandbox 算力（2 vCPU/4GiB 上限）能否满足重管线；GA 后规格与定价。（2026-08-20 补充：**冷启动无官方 benchmark**——文档仅定性承诺 "predictable cold starts"，无毫秒/秒级数字；唯一硬数字是 agent 版本创建时基础设施 provisioning 2–5 分钟，属部署时一次性开销、非 session 冷启动。首响应延迟需自己实测两条路径：新 session 首请求、idle 缩容后 resume。平台明确 **无 replica 数可配、无 warm pool**，无法用常驻换冷启动——延迟敏感场景这是选型硬信号。）
 2. **Voice Live × Hosted Agent 的官方打通**：未来是否会支持 agent 绑定指向暴露 `/responses` 的 hosted agent（当前未定义）。
 3. ~~**Workflow Agent 的表达力边界**：YAML 能表达的分支/循环/错误处理复杂度上限，何时必须降级到代码编排。~~（✅ 已回答，2026-07-31：官方直接退役了 Workflows——不存在"降级"问题了，代码编排（Agent Framework）就是唯一路线。）
 4. **治理水位复刻成本**：在 Hosted Agent 里复刻 Prompt Agent 同等治理（内容安全+审计+成本追踪）的实际工程量评估。
 5. **第三方模型合规**：Hosted Agent 调 Claude/Gemini 的数据出境、合规与"at your own risk"的边界在企业场景如何落地。
 6. **多 Agent 的身份模型**：多个 Agent 协作（A2A 委派 / Hosted 容器内 sub-agent）时 Entra agent identity 的权限边界与最小权限实践——问题在 Workflows 退役后依然成立，只是载体变了。
-7. **成本对比精算**：同一场景 Prompt Agent（token 计费）vs Hosted Agent（算力+token）的真实成本曲线。
+7. **成本对比精算**：同一场景 Prompt Agent（token 计费）vs Hosted Agent（算力+token）的真实成本曲线。（2026-08-20 补充：Hosted Agent 计费是 **serverless 容器的 per-session 版**——cpu + memory × session 活跃时长、跨所有活跃 session 累加。与 FaaS 的两个关键差异：① 计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也在计费，单条消息的用户实际计费 ≈ 处理时间 + 15 分钟尾巴；② 成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"），cpu/memory 规格是单 session 的、100 并发就是 100 份，无摊薄空间——right-sizing（App Insights 看峰值，超分配 70% 才加档）比一般 serverless 更关键。全天高频稳定流量下，per-session serverless 未必比 ACA 常驻便宜。）
 
 ---
 
@@ -297,6 +316,7 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 - [Build a workflow in Microsoft Foundry (Preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow)（含 2026-12-01 退役声明与迁移指南）
 - [Microsoft Foundry portal general availability overview — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability)（明确禁止对 Workflows 新建生产依赖）
 - [Build and run agents at scale with Microsoft Foundry at Build 2026 — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/agent-service-build2026)（"agent harness as a flex point"的官方表述）
+- [Hosted agents in Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)（Session/Conversation 双 ID 模型、session 生命周期与 30 天删除策略，2026-08-20 补充的依据）
 - [What are hosted agents? — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)
 - [Agent identity concepts in Microsoft Foundry — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)
 - [Introducing Multi-Agent Workflows in Foundry Agent Service — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/introducing-multi-agent-workflows-in-foundry-agent-service)
