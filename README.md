@@ -221,10 +221,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](Notes/tool/notes/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 
-### Notes/tool/picuture
+### Notes/tool/picture
 
-- [动态 SVG 全景——原理、元素分类、生态限制与 Lottie 等替代方案对比](Notes/tool/picuture/动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
-- [从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）](Notes/tool/picuture/从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）.md)
+- [动态 SVG 全景——原理、元素分类、生态限制与 Lottie 等替代方案对比](Notes/tool/picture/动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
+- [从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）](Notes/tool/picture/从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）.md)
 
 ### Notes/tool/rtk
 
