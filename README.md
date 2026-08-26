@@ -193,6 +193,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [SGLang 与 vLLM 的基因之争——为什么 Prefix Sharing × Hybrid 这条线 SGLang 领先](Notes/AI/inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)
 - [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
 
+### Notes/AI/hardware
+
+- [OpenAI Jalapeño 推理芯片——从 ASIC 基础到首测数据解读的 AI 推理硬件全景](Notes/AI/hardware/OpenAI%20Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景.md)
+
 ### Notes/AI/Design-Tools
 
 - [Pencil 设计工具与 Claude Code 快速上手指南](Notes/AI/Design-Tools/Pencil设计工具与Claude%20Code快速上手指南.md)

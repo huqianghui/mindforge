@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="540" viewBox="0 0 1160 540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes flowDash2 { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes pulseSoft { 0%,100% { opacity: 0.08; } 50% { opacity: 0.4; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.75; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.5s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash2 1.5s linear infinite; }
+    .halo-now  { animation: pulse 1.8s ease-in-out infinite; }
+    .halo-next { animation: pulseSoft 2.6s ease-in-out infinite; }
+    .done-node { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="540" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="538" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">Jalapeño 芯片交付流程</text>
+  <text x="290" y="48" font-size="13" fill="#475569">从架构设计到大规模量产 · 2026.08 当前进度</text>
+  <text x="1124" y="48" font-size="13" fill="#2dd4bf" text-anchor="end">样片已点亮 → 生产认证中 → 年底小批部署</text>
+
+  <!-- ============ connector track (behind nodes) ============ -->
+  <path d="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 133"
+        fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- flowing energy: completed + active portion (through 小批部署) -->
+  <path class="flow" d="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 356"
+        fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+  <path class="flow2" d="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 356"
+        fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- future portion: dim static dashes -->
+  <path d="M 356 380 H 133" fill="none" stroke="#334155" stroke-width="5"
+        stroke-dasharray="6 12" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- moving particles along the active path -->
+  <circle r="7" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="7s" repeatCount="indefinite"
+      path="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 356"/>
+  </circle>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="7s" begin="2.3s" repeatCount="indefinite"
+      path="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 356"/>
+  </circle>
+  <circle r="6" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="7s" begin="4.6s" repeatCount="indefinite"
+      path="M 133 150 H 1025 Q 1150 150 1150 265 Q 1150 380 1025 380 H 356"/>
+  </circle>
+
+  <!-- ============ Row 1: stages 1-5 (completed) ============ -->
+  <g class="done-node">
+    <rect x="43" y="118" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="133" y="146" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">① 架构设计</text>
+    <text x="133" y="168" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">2024·立项 · AI 辅助设计</text>
+  </g>
+  <g class="done-node">
+    <rect x="266" y="118" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="356" y="146" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">② RTL / 验证</text>
+    <text x="356" y="168" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">前端设计与仿真</text>
+  </g>
+  <g class="done-node">
+    <rect x="489" y="118" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="579" y="146" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">③ Tape-out</text>
+    <text x="579" y="168" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">流片</text>
+  </g>
+  <g class="done-node">
+    <rect x="712" y="118" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="802" y="146" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">④ 晶圆制造</text>
+    <text x="802" y="168" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">台积电代工</text>
+  </g>
+  <g class="done-node">
+    <rect x="935" y="118" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="1025" y="146" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑤ 封装测试</text>
+    <text x="1025" y="168" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">先进封装 + HBM</text>
+  </g>
+
+  <!-- ============ Row 2: stages 6-10 (right to left) ============ -->
+  <g class="done-node">
+    <rect x="935" y="348" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="1025" y="376" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑥ 首批样片</text>
+    <text x="1025" y="398" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">2026.06 发布 · 点亮</text>
+  </g>
+  <g class="done-node">
+    <rect x="712" y="348" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="802" y="376" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑦ 软件适配·性能验证</text>
+    <text x="802" y="398" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">2026.08 InferenceX 首测</text>
+  </g>
+
+  <!-- stage 8: current, pulsing -->
+  <rect class="halo-now" x="483" y="342" width="192" height="76" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="10" filter="url(#haloBlur)"/>
+  <g>
+    <rect x="489" y="348" width="180" height="64" rx="14" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="579" y="376" font-size="16" font-weight="700" fill="#fef3c7" text-anchor="middle">⑧ 生产认证</text>
+    <text x="579" y="398" font-size="11.5" fill="#fcd34d" text-anchor="middle">进行中 ◀ 当前阶段</text>
+  </g>
+
+  <!-- stage 9: imminent, soft pulse -->
+  <rect class="halo-next" x="260" y="342" width="192" height="76" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="8" filter="url(#haloBlur)"/>
+  <g>
+    <rect x="266" y="348" width="180" height="64" rx="14" fill="#241d0a" stroke="#fbbf24"
+          stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text x="356" y="376" font-size="16" font-weight="600" fill="#fde68a" text-anchor="middle">⑨ 小批部署</text>
+    <text x="356" y="398" font-size="11.5" fill="#d9a915" text-anchor="middle">目标 2026 年底</text>
+  </g>
+
+  <!-- stage 10: future, dimmed -->
+  <g>
+    <rect x="43" y="348" width="180" height="64" rx="14" fill="#131a2a" stroke="#334155" stroke-width="1.5"/>
+    <text x="133" y="376" font-size="16" font-weight="600" fill="#94a3b8" text-anchor="middle">⑩ 大规模量产</text>
+    <text x="133" y="398" font-size="11.5" fill="#64748b" text-anchor="middle">2027 ramp · 2028 full tilt</text>
+  </g>
+
+  <!-- ============ legend ============ -->
+  <g font-size="12.5">
+    <circle cx="46" cy="490" r="6" fill="#2dd4bf"/>
+    <text x="60" y="495" fill="#94a3b8">已完成（样片点亮 · 首测公布）</text>
+    <circle cx="330" cy="490" r="6" fill="#fbbf24"/>
+    <text x="344" y="495" fill="#94a3b8">进行中（生产认证 · 年底小批部署）</text>
+    <circle cx="640" cy="490" r="6" fill="#334155"/>
+    <text x="654" y="495" fill="#94a3b8">规划中（量产爬坡，高度不确定）</text>
+    <text x="1124" y="495" fill="#475569" text-anchor="end">数据来源：OpenAI · Broadcom · CNBC（2026.06–08）</text>
+  </g>
+</svg>

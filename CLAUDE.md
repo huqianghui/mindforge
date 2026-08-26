@@ -101,7 +101,73 @@ When adding new knowledge to the vault:
 3. **Format consistency** — follow the conventions above exactly; don't introduce new formats
 4. **Complete linkage** — when updating task status, also update related notes and references
 5. **.pen files** — use only Pencil MCP tools (never Read/Grep) to access `.pen` file contents
-6. **Diagrams** — default to Excalidraw skill; place files into root `asset/`; embed using `![alt](../asset/filename.png)`
+6. **Diagrams** — 按内容类型选工具：**流程/pipeline/时间线/阶段进度类必须用动态 SVG**（不要只写文字流程或 ASCII 箭头链）——SVG 原生 `animateMotion` 粒子 + CSS `@keyframes` 流动光带/呼吸脉冲，状态分层配色（已完成=青绿 `#2dd4bf` 流动、当前=琥珀 `#fbbf24` 脉冲、规划=灰暗 `#334155` 虚线），Obsidian/GitHub 均可渲染，参考样例 `asset/jalapeno-chip-pipeline-2026-08-26.svg` 与 `asset/jalapeno-timeline-2026-08-26.svg`；架构图/关系图 default to Excalidraw skill。所有图放入根 `asset/`，命名 `主题-YYYY-MM-DD.ext`，embed using `![alt](../asset/filename.ext)`
 7. **个性化记忆优先于默认行为** — 当 Memory 中的用户反馈与你的默认行为模式冲突时，**Memory 中的反馈优先**。具体执行：在做任何有多种方式的操作前（URL 访问、文件创建、格式选择等），先回忆 Memory 中是否有该场景的用户反馈，有则遵守，无则使用默认策略。
 
 - **记忆提权**：Memory 中的行为规则（"必须/禁止"）应提权到 CLAUDE.md 或 Rules；背景知识留在 Memory。详见 `.claude/rules/memory-promotion.md`，使用 `/memory-review` 定期审查。
+
+
+<!-- OMC:START -->
+<!-- OMC:VERSION:4.13.5 -->
+
+# oh-my-claudecode - Intelligent Multi-Agent Orchestration
+
+You are running with oh-my-claudecode (OMC), a multi-agent orchestration layer for Claude Code.
+Coordinate specialized agents, tools, and skills so work is completed accurately and efficiently.
+
+<operating_principles>
+- Delegate specialized work to the most appropriate agent.
+- Prefer evidence over assumptions: verify outcomes before final claims.
+- Choose the lightest-weight path that preserves quality.
+- Consult official docs before implementing with SDKs/frameworks/APIs.
+</operating_principles>
+
+<delegation_rules>
+Delegate for: multi-file changes, refactors, debugging, reviews, planning, research, verification.
+Work directly for: trivial ops, small clarifications, single commands.
+Route code to `executor` (use `model=opus` for complex work). Uncertain SDK usage → `document-specialist` (repo docs first; Context Hub / `chub` when available, graceful web fallback otherwise).
+</delegation_rules>
+
+<model_routing>
+`haiku` (quick lookups), `sonnet` (standard), `opus` (architecture, deep analysis).
+Direct writes OK for: `~/.claude/**`, `.omc/**`, `.claude/**`, `CLAUDE.md`, `AGENTS.md`.
+</model_routing>
+
+<skills>
+Invoke via `/oh-my-claudecode:<name>`. Trigger patterns auto-detect keywords.
+Tier-0 workflows include `autopilot`, `ultrawork`, `ralph`, `team`, and `ralplan`.
+Keyword triggers: `"autopilot"→autopilot`, `"ralph"→ralph`, `"ulw"→ultrawork`, `"ccg"→ccg`, `"ralplan"→ralplan`, `"deep interview"→deep-interview`, `"deslop"`/`"anti-slop"`→ai-slop-cleaner, `"deep-analyze"`→analysis mode, `"tdd"`→TDD mode, `"deepsearch"`→codebase search, `"ultrathink"`→deep reasoning, `"cancelomc"`→cancel.
+Team orchestration is explicit via `/team`.
+Detailed agent catalog, tools, team pipeline, commit protocol, and full skills registry live in the native `omc-reference` skill when skills are available, including reference for `explore`, `planner`, `architect`, `executor`, `designer`, and `writer`; this file remains sufficient without skill support.
+</skills>
+
+<verification>
+Verify before claiming completion. Size appropriately: small→haiku, standard→sonnet, large/security→opus.
+If verification fails, keep iterating.
+</verification>
+
+<execution_protocols>
+Broad requests: explore first, then plan. 2+ independent tasks in parallel. `run_in_background` for builds/tests.
+Keep authoring and review as separate passes: writer pass creates or revises content, reviewer/verifier pass evaluates it later in a separate lane.
+Never self-approve in the same active context; use `code-reviewer` or `verifier` for the approval pass.
+Before concluding: zero pending tasks, tests passing, verifier evidence collected.
+</execution_protocols>
+
+<hooks_and_context>
+Hooks inject `<system-reminder>` tags. Key patterns: `hook success: Success` (proceed), `[MAGIC KEYWORD: ...]` (invoke skill), `The boulder never stops` (ralph/ultrawork active).
+Persistence: `<remember>` (7 days), `<remember priority>` (permanent).
+Kill switches: `DISABLE_OMC`, `OMC_SKIP_HOOKS` (comma-separated).
+</hooks_and_context>
+
+<cancellation>
+`/oh-my-claudecode:cancel` ends execution modes. Cancel when done+verified or blocked. Don't cancel if work incomplete.
+</cancellation>
+
+<worktree_paths>
+State: `.omc/state/`, `.omc/state/sessions/{sessionId}/`, `.omc/notepad.md`, `.omc/project-memory.json`, `.omc/plans/`, `.omc/research/`, `.omc/logs/`
+</worktree_paths>
+
+## Setup
+
+Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
+<!-- OMC:END -->
