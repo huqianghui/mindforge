@@ -26,3 +26,9 @@ qwen_0318_swift_task.json
 # System files
 .DS_Store
 .trash/
+
+# Codex local config with API keys — never commit
+.codex/config.toml
+
+# Third-party skill clone (re-clone from github.com/coleam00/excalidraw-diagram-skill)
+.agents/skills/excalidraw-diagram/
