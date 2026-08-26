@@ -208,17 +208,23 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### Notes/tool
 
-- [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
 - [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](Notes/tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)
-- [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
-- [动态 SVG 全景——原理、元素分类、生态限制与 Lottie 等替代方案对比](Notes/tool/picuture/动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
-- [从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）](Notes/tool/picuture/从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
 - [CodexSaver 深度解析——基于 MCP 的模型路由 Token 成本优化](Notes/tool/CodexSaver深度解析——基于MCP的模型路由Token成本优化.md)
 - [Typeless 深度解析——AI 语音输入如何超越传统 Speech-to-Text](Notes/tool/Typeless深度解析——AI语音输入如何超越传统Speech-to-Text.md)
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
+
+### Notes/tool/notes
+
+- [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
+- [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](Notes/tool/notes/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
+
+### Notes/tool/picuture
+
+- [动态 SVG 全景——原理、元素分类、生态限制与 Lottie 等替代方案对比](Notes/tool/picuture/动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
+- [从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）](Notes/tool/picuture/从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）.md)
 
 ### Notes/tool/rtk
 
