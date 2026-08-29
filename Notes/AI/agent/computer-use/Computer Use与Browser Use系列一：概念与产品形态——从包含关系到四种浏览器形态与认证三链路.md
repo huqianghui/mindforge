@@ -13,7 +13,7 @@ tags:
 
 # Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路
 
-> 本系列基于与 Codex/ChatGPT（GPT-5.6）的深入实测与追问整理而成。系列一讲清概念与产品形态；[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)解剖 Codex 的浏览器运行时；[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)讲如何自己实现；[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)讲产品化路径；[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)记录最佳实践与日常使用习惯（实战日志，持续更新）。
+> 本系列基于与 Codex/ChatGPT（GPT-5.6）的深入实测与追问整理而成。系列一讲清概念与产品形态；[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)解剖 Codex 的浏览器运行时；[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)讲如何自己实现；[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)讲产品化路径；[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)记录最佳实践与日常使用习惯（实战日志，持续更新）；[系列六](Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)实测 Codex CLI 与 App 的能力分界与第三方生态补位。
 
 ## 引言：一个常见的误解
 

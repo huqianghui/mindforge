@@ -118,6 +118,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Computer Use 与 Browser Use 系列三：自己实现——action loop 协议、双执行器路线与跨平台 adapter 矩阵](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)
 - [Computer Use 与 Browser Use 系列四：产品化——可审计智能 RPA、Extension-Plugin-WebMCP 三层选型与安全设计](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)
 - [Computer Use 与 Browser Use 系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)
+- [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的能力分界——同一套 Skill、两条调用链与第三方生态补位](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
 
 ### Notes/AI/agent-lightning
 

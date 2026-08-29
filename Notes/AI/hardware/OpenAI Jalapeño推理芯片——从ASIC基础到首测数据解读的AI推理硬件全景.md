@@ -109,13 +109,13 @@ Jalapeño 被明确定位为推理 ASIC，而它对标的 GB300 并非"训练芯
 
 芯片的典型交付流程如下（十个阶段：架构设计 → RTL/验证 → Tape-out → 晶圆制造 → 封装测试 → 首批样片 → 软件适配/性能验证 → 生产认证 → 小批部署 → 大规模量产）：
 
-![Jalapeño 芯片交付流程与当前进度](../../../asset/jalapeno-chip-pipeline-2026-08-26.svg)
+![Jalapeño 芯片交付流程与当前进度|700](../../../asset/jalapeno-chip-pipeline-2026-08-26.svg)
 
 既然 OpenAI 已经公布了实机功耗和多模型 benchmark，说明至少完成了 Tape-out、首批晶圆、封装、样片点亮和初步软件适配——目前处于"生产认证 + 小批试部署"阶段，远不止"设计图纸"。
 
 公开时间线也支持这一判断：
 
-![Jalapeño 时间线：OpenAI 走到了哪一步](../../../asset/jalapeno-timeline-2026-08-26.svg)
+![Jalapeño 时间线：OpenAI 走到了哪一步|700](../../../asset/jalapeno-timeline-2026-08-26.svg)
 
 - **2024 年**：已有 OpenAI 与 Broadcom、台积电合作设计芯片的报道，实际立项可能更早；
 - **2025 年**：双方公布长期定制芯片合作，及 2026 年开始部署的计划；

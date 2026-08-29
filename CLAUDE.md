@@ -58,7 +58,7 @@ Core rules that apply everywhere:
 `inbox/codex/` 是 Codex 讨论内容的落盘交接区（Codex 侧按 AGENTS.md 约定写入，`status: raw`）。当用户说"从 inbox 取素材写文章"、"用 inbox 里的讨论成文"或类似指令时：
 
 1. 取 `inbox/codex/` 中 `status: raw` 的文件（用户未指定时取最新，列出候选让用户确认）
-2. 按 vault 规则成文（格式、脱敏、目录归属、README 导航、交叉引用）——素材是完整问答原文，摘要取舍在这一步做
+2. 按 vault 规则成文（格式、脱敏、目录归属、README 导航、交叉引用、**回绑当日日记任务**——见 Operating Principles #4 双向绑定）——素材是完整问答原文，摘要取舍在这一步做
 3. 成文后把源文件 frontmatter 的 `status` 改为 `processed` 并在其中补一行 `output: <成文路径>` 作溯源
 4. 该目录不进 git（原始素材可能含未脱敏个人信息），成品文章正常提交
 
@@ -110,9 +110,9 @@ When adding new knowledge to the vault:
 1. **Read before writing** — always read the target file first
 2. **Minimal edits** — use Edit tool for surgical changes, never rewrite whole files unnecessarily
 3. **Format consistency** — follow the conventions above exactly; don't introduce new formats
-4. **Complete linkage** — when updating task status, also update related notes and references
+4. **Complete linkage（双向绑定）** — when updating task status, also update related notes and references；**反向同样成立**：成文/产出物完成时，必须回绑到当日日记的对应任务（"今天主任务"或"追踪任务"下加 ✅ 行 + `[[wikilink]]`）。"文章 → README/系列导航"和"文章 → 当日任务"两个方向都要做，缺一即视为成文流程未完成
 5. **.pen files** — use only Pencil MCP tools (never Read/Grep) to access `.pen` file contents
-6. **Diagrams** — 按内容类型选工具：**流程/pipeline/时间线/阶段进度类必须用动态 SVG**（不要只写文字流程或 ASCII 箭头链）——SVG 原生 `animateMotion` 粒子 + CSS `@keyframes` 流动光带/呼吸脉冲，状态分层配色（已完成=青绿 `#2dd4bf` 流动、当前=琥珀 `#fbbf24` 脉冲、规划=灰暗 `#334155` 虚线），Obsidian/GitHub 均可渲染，参考样例 `asset/jalapeno-chip-pipeline-2026-08-26.svg` 与 `asset/jalapeno-timeline-2026-08-26.svg`；架构图/关系图 default to Excalidraw skill。所有图放入根 `asset/`，命名 `主题-YYYY-MM-DD.ext`，embed using `![alt](../asset/filename.ext)`
+6. **Diagrams** — 按内容类型选工具：**流程/pipeline/时间线/阶段进度类必须用动态 SVG**（不要只写文字流程或 ASCII 箭头链）——SVG 原生 `animateMotion` 粒子 + CSS `@keyframes` 流动光带/呼吸脉冲，状态分层配色（已完成=青绿 `#2dd4bf` 流动、当前=琥珀 `#fbbf24` 脉冲、规划=灰暗 `#334155` 虚线），Obsidian/GitHub 均可渲染，参考样例 `asset/jalapeno-chip-pipeline-2026-08-26.svg` 与 `asset/jalapeno-timeline-2026-08-26.svg`；架构图/关系图 default to Excalidraw skill。所有图放入根 `asset/`，命名 `主题-YYYY-MM-DD.ext`，embed using `![alt](../asset/filename.ext)`。**嵌入 SVG/图片必须限宽**：alt 文本加 `|宽度` 后缀（如 `![调用链对比|700](../asset/xxx.svg)`），默认 700 左右——不限宽会在 Obsidian 中占满整个页面宽度
 7. **个性化记忆优先于默认行为** — 当 Memory 中的用户反馈与你的默认行为模式冲突时，**Memory 中的反馈优先**。具体执行：在做任何有多种方式的操作前（URL 访问、文件创建、格式选择等），先回忆 Memory 中是否有该场景的用户反馈，有则遵守，无则使用默认策略。
 
 - **记忆提权**：Memory 中的行为规则（"必须/禁止"）应提权到 CLAUDE.md 或 Rules；背景知识留在 Memory。详见 `.claude/rules/memory-promotion.md`，使用 `/memory-review` 定期审查。

@@ -84,7 +84,7 @@ SVG（Scalable Vector Graphics）是一种 **XML 文本格式的矢量图**。�
 
 三个核心技巧的拆解演示（本图本身就是一个动态 SVG，源码即教程）：
 
-![动态 SVG 三个核心技巧演示](../../../asset/svg-animation-demo-2026-08-26.svg)
+![动态 SVG 三个核心技巧演示|700](../../../asset/svg-animation-demo-2026-08-26.svg)
 
 ## 三、能力边界与生态限制
 

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#475569"/>
+    </marker>
+    <style>
+      .pulse { animation: pulse 2.2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+      .dashflow { stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -14; } }
+      .planned { stroke-dasharray: 6 5; }
+    </style>
+  </defs>
+
+  <rect width="960" height="660" fill="#0f172a" rx="12"/>
+  <text x="480" y="36" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="700">Codex App 与 Codex CLI：同一套 Skill，两条 Computer Use 调用链</text>
+
+  <!-- 共享 Skill 层 -->
+  <rect x="180" y="56" width="600" height="58" rx="10" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="480" y="80" text-anchor="middle" fill="#a5b4fc" font-size="14.5" font-weight="700">Skill / Plugin 层（共享）——两端可发现同一批 bundled skills</text>
+  <text x="480" y="101" text-anchor="middle" fill="#94a3b8" font-size="12">Skill 只是"说明书"，真正执行动作的是宿主运行时注入的 Tool</text>
+
+  <!-- 分叉箭头 -->
+  <path d="M 340 114 L 250 152" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrowTeal)" class="dashflow"/>
+  <path d="M 620 114 L 710 152" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashflow"/>
+
+  <!-- App 链路（左，原生，青绿） -->
+  <text x="250" y="144" text-anchor="middle" fill="#5eead4" font-size="15" font-weight="700">Codex App（官方原生链路）</text>
+  <rect x="70" y="156" width="360" height="52" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="250" y="178" text-anchor="middle" fill="#5eead4" font-size="13.5" font-weight="700">@Computer-Use 入口（bundled plugin）</text>
+  <text x="250" y="198" text-anchor="middle" fill="#94a3b8" font-size="11.5">SKILL.md 198 行完整操作指南 + 风险确认策略</text>
+
+  <path d="M 250 208 L 250 238" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrowTeal)" class="dashflow"/>
+  <circle r="4" fill="#2dd4bf"><animateMotion path="M 250 208 L 250 238" dur="1.4s" repeatCount="indefinite"/></circle>
+
+  <rect x="70" y="242" width="360" height="56" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="250" y="265" text-anchor="middle" fill="#5eead4" font-size="13.5" font-weight="700">node_repl + @oai/sky（持久化 runtime）</text>
+  <text x="250" y="286" text-anchor="middle" fill="#94a3b8" font-size="11.5">sky.get_app_state() / click() / set_value()，JS 对象返回</text>
+
+  <path d="M 250 298 L 250 328" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrowTeal)" class="dashflow"/>
+  <circle r="4" fill="#2dd4bf"><animateMotion path="M 250 298 L 250 328" dur="1.4s" begin="0.5s" repeatCount="indefinite"/></circle>
+
+  <rect x="70" y="332" width="360" height="52" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="250" y="354" text-anchor="middle" fill="#5eead4" font-size="13.5" font-weight="700">Computer Use Helper + App 审批 UI</text>
+  <text x="250" y="374" text-anchor="middle" fill="#94a3b8" font-size="11.5">权限集中管理：屏幕录制、Accessibility、危险操作审批</text>
+
+  <!-- CLI 链路（右，第三方补位，琥珀脉冲） -->
+  <text x="710" y="144" text-anchor="middle" fill="#fcd34d" font-size="15" font-weight="700">Codex CLI（第三方生态补位）</text>
+  <rect x="530" y="156" width="360" height="52" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="710" y="178" text-anchor="middle" fill="#fcd34d" font-size="13.5" font-weight="700">computer-use skill（Orca discovery stub）</text>
+  <text x="710" y="198" text-anchor="middle" fill="#e2e8f0" font-size="11.5">75 行入口文件，真实手册由 orca skills get 动态返回</text>
+
+  <path d="M 710 208 L 710 238" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashflow"/>
+  <circle r="4" fill="#fbbf24"><animateMotion path="M 710 208 L 710 238" dur="1.4s" repeatCount="indefinite"/></circle>
+
+  <rect x="530" y="242" width="360" height="56" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="710" y="265" text-anchor="middle" fill="#fcd34d" font-size="13.5" font-weight="700">orca computer CLI（Shell 逐次调用）</text>
+  <text x="710" y="286" text-anchor="middle" fill="#e2e8f0" font-size="11.5">get-app-state / click / set-value --json，JSON + 截图路径返回</text>
+
+  <path d="M 710 298 L 710 328" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashflow"/>
+  <circle r="4" fill="#fbbf24"><animateMotion path="M 710 298 L 710 328" dur="1.4s" begin="0.5s" repeatCount="indefinite"/></circle>
+
+  <rect x="530" y="332" width="360" height="52" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="710" y="354" text-anchor="middle" fill="#fcd34d" font-size="13.5" font-weight="700">Orca Helper（第三方权限持有者）</text>
+  <text x="710" y="374" text-anchor="middle" fill="#e2e8f0" font-size="11.5">macOS 辅助功能与屏幕录制权限授予 Orca，而非 Codex</text>
+
+  <!-- 汇合到 macOS 底层 -->
+  <path d="M 250 384 L 250 424 L 400 424 L 400 448" stroke="#2dd4bf" stroke-width="2" fill="none" marker-end="url(#arrowTeal)"/>
+  <path d="M 710 384 L 710 424 L 560 424 L 560 448" stroke="#fbbf24" stroke-width="2" fill="none" marker-end="url(#arrowAmber)"/>
+  <circle r="3.5" fill="#2dd4bf"><animateMotion path="M 250 384 L 250 424 L 400 424 L 400 448" dur="1.8s" repeatCount="indefinite"/></circle>
+  <circle r="3.5" fill="#fbbf24"><animateMotion path="M 710 384 L 710 424 L 560 424 L 560 448" dur="1.8s" begin="0.9s" repeatCount="indefinite"/></circle>
+
+  <rect x="230" y="452" width="500" height="58" rx="10" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="480" y="476" text-anchor="middle" fill="#a5b4fc" font-size="14" font-weight="700">macOS 底层（相同）：Accessibility Tree + 截图 + 输入事件</text>
+  <text x="480" y="497" text-anchor="middle" fill="#94a3b8" font-size="12">观察界面 → 模型判断 → 执行动作 → 再次观察验证（同一个 action loop）</text>
+
+  <!-- 底部：browser 能力对比 -->
+  <rect x="70" y="540" width="360" height="96" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="250" y="565" text-anchor="middle" fill="#5eead4" font-size="13" font-weight="700">App 侧：@Browser / @Chrome 原生可用</text>
+  <text x="250" y="588" text-anchor="middle" fill="#94a3b8" font-size="11.5">内置浏览器 + Chrome extension 接管</text>
+  <text x="250" y="608" text-anchor="middle" fill="#94a3b8" font-size="11.5">同宿主提供 Browser runtime（见系列一、二）</text>
+
+  <rect x="530" y="540" width="360" height="96" rx="10" fill="#1e293b" stroke="#334155" stroke-width="2" class="planned"/>
+  <text x="710" y="565" text-anchor="middle" fill="#64748b" font-size="13" font-weight="700">CLI 侧：@Browser / @Chrome 不可用</text>
+  <text x="710" y="588" text-anchor="middle" fill="#64748b" font-size="11.5">Skill 可见，但 Browser runtime（node_repl）未注入</text>
+  <text x="710" y="608" text-anchor="middle" fill="#64748b" font-size="11.5">Orca 只补位了桌面 GUI，浏览器自动化需 Playwright 另起炉灶</text>
+</svg>
