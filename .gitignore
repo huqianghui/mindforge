@@ -30,5 +30,8 @@ qwen_0318_swift_task.json
 # Codex local config with API keys — never commit
 .codex/config.toml
 
+# Codex → Claude Code handoff inbox (raw discussion dumps, may contain unredacted personal info)
+inbox/
+
 # Third-party skill clone (re-clone from github.com/coleam00/excalidraw-diagram-skill)
 .agents/skills/excalidraw-diagram/

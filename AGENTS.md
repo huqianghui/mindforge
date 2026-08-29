@@ -53,6 +53,16 @@ Core rules that apply everywhere:
 - 文章润色 → `editor-agent`
 - 修行/锻炼/个人日记/情绪管理 → `cultivation-master`（via `/guru`）
 
+## Handoff to Claude Code（inbox/codex 交接协议）
+
+用户与 Codex 的讨论内容若需要后续成文（用户说"存下来"、"整理成 markdown 落盘"、"给 Claude Code 写文章用"等），**落盘到 `inbox/codex/`**，不要直接写进 `Notes/` 等正式目录：
+
+- 文件名 `YYYY-MM-DD-主题短语.md`；frontmatter 含 `title` / `created` / `source: codex-chat` / `status: raw`
+- **完整保留问答结构**（用户问题用 `> ` 或 `## Q:` 区分），不做摘要压缩；链接、代码块、表格原样保留
+- 同主题多次讨论追加到同一文件，加 `## 追加 YYYY-MM-DD` 分隔
+- 该目录不进 git；成文、脱敏、README 导航由 Claude Code 侧的编译流程负责
+- 完整约定见 `inbox/codex/README.md`
+
 ## Tools
 
 **Obsidian Plugins**: calendar, copilot, dataview, excalibrain, day-planner, icon-folder, kanban, minimal-settings, pandoc, tasks-plugin, table-editor. PDF export via pandoc plugin (system pandoc installed via brew).

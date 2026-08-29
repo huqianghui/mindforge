@@ -53,6 +53,17 @@ Core rules that apply everywhere:
 - 文章润色 → `editor-agent`
 - 修行/锻炼/个人日记/情绪管理 → `cultivation-master`（via `/guru`）
 
+## Codex Handoff（inbox/codex 取料协议）
+
+`inbox/codex/` 是 Codex 讨论内容的落盘交接区（Codex 侧按 AGENTS.md 约定写入，`status: raw`）。当用户说"从 inbox 取素材写文章"、"用 inbox 里的讨论成文"或类似指令时：
+
+1. 取 `inbox/codex/` 中 `status: raw` 的文件（用户未指定时取最新，列出候选让用户确认）
+2. 按 vault 规则成文（格式、脱敏、目录归属、README 导航、交叉引用）——素材是完整问答原文，摘要取舍在这一步做
+3. 成文后把源文件 frontmatter 的 `status` 改为 `processed` 并在其中补一行 `output: <成文路径>` 作溯源
+4. 该目录不进 git（原始素材可能含未脱敏个人信息），成品文章正常提交
+
+完整约定见 `inbox/codex/README.md`。
+
 ## Tools
 
 **Obsidian Plugins**: calendar, copilot, dataview, excalibrain, day-planner, icon-folder, kanban, minimal-settings, pandoc, tasks-plugin, table-editor. PDF export via pandoc plugin (system pandoc installed via brew).
