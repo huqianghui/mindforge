@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .pulse { animation: pulse 2.2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+      .dashflow { stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -14; } }
+    </style>
+  </defs>
+
+  <rect width="960" height="560" fill="#0f172a" rx="12"/>
+  <text x="480" y="36" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="700">Computer Use Action Loop：三层协议与双执行器路线</text>
+
+  <!-- 模型层 -->
+  <rect x="330" y="60" width="300" height="66" rx="10" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+  <text x="480" y="88" text-anchor="middle" fill="#a5b4fc" font-size="15" font-weight="700">模型（Responses API · computer 工具）</text>
+  <text x="480" y="110" text-anchor="middle" fill="#94a3b8" font-size="12">输入截图 → 输出 action JSON（不执行任何操作）</text>
+
+  <!-- action 下行 -->
+  <path d="M 420 126 L 420 176" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashflow"/>
+  <text x="408" y="156" text-anchor="end" fill="#fcd34d" font-size="12">action：click / type / scroll / drag…</text>
+  <circle r="4" fill="#fbbf24">
+    <animateMotion path="M 420 126 L 420 176" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- screenshot 上行 -->
+  <path d="M 540 176 L 540 126" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrowTeal)" class="dashflow"/>
+  <text x="552" y="156" fill="#5eead4" font-size="12">新截图 + 当前 URL（安全校验）</text>
+  <circle r="4" fill="#2dd4bf">
+    <animateMotion path="M 540 176 L 540 126" dur="1.6s" begin="0.8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- handler 层（当前层：琥珀脉冲） -->
+  <rect x="280" y="180" width="400" height="86" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="480" y="208" text-anchor="middle" fill="#fcd34d" font-size="15" font-weight="700">你写的 Action Handler（翻译层）</text>
+  <text x="480" y="230" text-anchor="middle" fill="#e2e8f0" font-size="12.5">策略检查（域名白名单 / 高风险确认）→ 动作翻译 → 执行 → 采集新状态</text>
+  <text x="480" y="252" text-anchor="middle" fill="#94a3b8" font-size="11.5">官方不提供现成执行器 —— 这一层是自己实现的核心工作量</text>
+
+  <!-- 分叉到两个执行器 -->
+  <path d="M 380 266 L 380 306 L 230 306 L 230 330" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowTeal)"/>
+  <path d="M 580 266 L 580 306 L 730 306 L 730 330" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrowTeal)"/>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion path="M 380 266 L 380 306 L 230 306 L 230 330" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion path="M 580 266 L 580 306 L 730 306 L 730 330" dur="1.8s" begin="0.9s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 执行器 A：Playwright -->
+  <g>
+    <rect x="70" y="334" width="320" height="150" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="230" y="362" text-anchor="middle" fill="#5eead4" font-size="14.5" font-weight="700">路线 A：Playwright（浏览器页面）</text>
+    <text x="88" y="390" fill="#e2e8f0" font-size="12">click → page.mouse.click(x, y, {button})</text>
+    <text x="88" y="412" fill="#e2e8f0" font-size="12">type → page.keyboard.type(text)</text>
+    <text x="88" y="434" fill="#e2e8f0" font-size="12">scroll → page.mouse.wheel(sx, sy)</text>
+    <text x="88" y="456" fill="#94a3b8" font-size="11.5">加分项：locator / getByRole 语义操作可替代坐标</text>
+    <text x="88" y="474" fill="#94a3b8" font-size="11.5">适合：网站 / SaaS 自动化（首选）</text>
+  </g>
+
+  <!-- 执行器 B：Docker + xdotool -->
+  <g>
+    <rect x="570" y="334" width="320" height="150" rx="10" fill="#1e293b" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="730" y="362" text-anchor="middle" fill="#5eead4" font-size="14.5" font-weight="700">路线 B：Docker + xdotool（Linux 桌面）</text>
+    <text x="588" y="390" fill="#e2e8f0" font-size="12">click → DISPLAY=:99 xdotool mousemove x y click 1</text>
+    <text x="588" y="412" fill="#e2e8f0" font-size="12">type → xdotool type --delay 0 "text"</text>
+    <text x="588" y="434" fill="#e2e8f0" font-size="12">keypress → xdotool key ctrl+c</text>
+    <text x="588" y="456" fill="#94a3b8" font-size="11.5">Xvfb 虚拟显示器 + x11vnc 观察，容器强隔离</text>
+    <text x="588" y="474" fill="#94a3b8" font-size="11.5">适合：整桌面 / 任意 GUI 应用 / 云端沙箱</text>
+  </g>
+
+  <!-- 循环回路提示 -->
+  <path d="M 230 484 L 230 516 L 480 516" stroke="#334155" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+  <path d="M 730 484 L 730 516 L 480 516" stroke="#334155" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+  <text x="480" y="540" text-anchor="middle" fill="#64748b" font-size="12">执行后截图回传模型 → 循环直到任务完成（loop until done）</text>
+</svg>

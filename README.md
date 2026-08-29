@@ -111,6 +111,13 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Hermes Agent vs OpenClaw 深度技术对比](Notes/AI/agent/hermes-agent-vs-openclaw.md)
 - [AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态](Notes/AI/agent/AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态.md)
 
+### Notes/AI/agent/computer-use
+
+- [Computer Use 与 Browser Use 系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路.md)
+- [Computer Use 与 Browser Use 系列二：Codex 浏览器运行时解剖——从 bundled plugin 看 Agent 浏览器控制的工程设计](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)
+- [Computer Use 与 Browser Use 系列三：自己实现——action loop 协议、双执行器路线与跨平台 adapter 矩阵](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)
+- [Computer Use 与 Browser Use 系列四：产品化——可审计智能 RPA、Extension-Plugin-WebMCP 三层选型与安全设计](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)
+
 ### Notes/AI/agent-lightning
 
 - [Agent Lightning 系列 01：用 APO 做 Prompt Tuning——Azure 实践与 beam search 算法解析](Notes/AI/agent-lightning/Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)

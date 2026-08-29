@@ -213,6 +213,7 @@ VS Code 博客最有价值的贡献是把 harness 从隐性工程变成了显性
 - [[Claude Code系列01：核心概念与设计哲学解析]]——第一方 harness 的设计哲学
 - [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]——agent loop 在更大循环体系中的位置
 - [[InkOS深度感想——AI小说创作中的Harness Engineering范式]]——harness 范式在非 coding 领域的迁移
+- [[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]——浏览器/桌面控制作为 harness 一部分的实证：OpenAI 焊进桌面应用 vs Anthropic 靠 MCP 生态自组（系列共四篇）
 - [[2026-04-16-Meta-Harness论文解读与实践思考]]——第五节 Meta-Harness 论证线的论文精读（Proposer、消融实验、三种落地路径）
 - [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]——"每次更新都过 gate"的全量评测体制实测（含 gate 的 token 成本）
 - Wiki：[[harness-engineering]] / [[agent-loop-architecture]] / [[meta-harness]]

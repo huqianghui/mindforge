@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="flowTeal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#2dd4bf" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+      <animateTransform attributeName="gradientTransform" type="translate" from="-1 0" to="1 0" dur="2.4s" repeatCount="indefinite"/>
+    </linearGradient>
+    <linearGradient id="flowAmber" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#fbbf24" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+      <animateTransform attributeName="gradientTransform" type="translate" from="-1 0" to="1 0" dur="2.4s" repeatCount="indefinite"/>
+    </linearGradient>
+    <style>
+      .pulse { animation: pulse 2.2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+      .breathe { animation: breathe 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+      @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.015); } }
+    </style>
+  </defs>
+
+  <rect width="960" height="620" fill="#0f172a" rx="12"/>
+  <text x="480" y="38" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="700">Computer Use ⊃ Browser Use：包含关系与四种浏览器形态</text>
+
+  <!-- 包含关系：嵌套盒 -->
+  <g class="breathe">
+    <rect x="60" y="62" width="840" height="150" rx="10" fill="#1e293b" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="80" y="88" fill="#a5b4fc" font-size="15" font-weight="700">Computer Use（总类目：控制 GUI 的能力 — 桌面 App + 浏览器）</text>
+    <rect x="80" y="100" width="800" height="96" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="none"/>
+    <text x="98" y="124" fill="#7dd3fc" font-size="14" font-weight="700">Chrome integration（扩展连接用户已有 Chrome）＋ Built-in Browser（内置独立 Profile）</text>
+    <rect x="98" y="134" width="764" height="48" rx="6" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="116" y="163" fill="#5eead4" font-size="14" font-weight="700">Browser Use：结构化操作网页（DOM / 无障碍树 优先，截图坐标兜底）</text>
+    <rect x="98" y="134" width="764" height="48" rx="6" fill="url(#flowTeal)" opacity="0.25"/>
+  </g>
+
+  <!-- 分叉线 -->
+  <line x1="480" y1="212" x2="480" y2="240" stroke="#475569" stroke-width="2"/>
+  <line x1="170" y1="240" x2="790" y2="240" stroke="#475569" stroke-width="2"/>
+  <line x1="170" y1="240" x2="170" y2="262" stroke="#475569" stroke-width="2"/>
+  <line x1="380" y1="240" x2="380" y2="262" stroke="#475569" stroke-width="2"/>
+  <line x1="585" y1="240" x2="585" y2="262" stroke="#475569" stroke-width="2"/>
+  <line x1="790" y1="240" x2="790" y2="262" stroke="#475569" stroke-width="2"/>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion path="M 480 212 L 480 240 L 170 240 L 170 262" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="3.5" fill="#fbbf24">
+    <animateMotion path="M 480 212 L 480 240 L 380 240 L 380 262" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="3.5" fill="#fbbf24">
+    <animateMotion path="M 480 212 L 480 240 L 585 240 L 585 262" dur="2s" begin="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion path="M 480 212 L 480 240 L 790 240 L 790 262" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 形态1：内置浏览器 -->
+  <g>
+    <rect x="72" y="262" width="196" height="230" rx="10" fill="#1e293b" stroke="#2dd4bf" stroke-width="1.5"/>
+    <rect x="72" y="262" width="196" height="40" rx="10" fill="#134e4a"/>
+    <text x="170" y="288" text-anchor="middle" fill="#5eead4" font-size="14" font-weight="700">① 内置浏览器</text>
+    <text x="86" y="324" fill="#cbd5e1" font-size="12">侧边面板，与聊天并排</text>
+    <text x="86" y="346" fill="#cbd5e1" font-size="12">独立 Profile（无登录态）</text>
+    <text x="86" y="368" fill="#cbd5e1" font-size="12">调用：@Browser</text>
+    <text x="86" y="390" fill="#cbd5e1" font-size="12">可选 Developer mode</text>
+    <text x="86" y="408" fill="#94a3b8" font-size="11">（受控 CDP）</text>
+    <text x="86" y="438" fill="#5eead4" font-size="11.5">✓ 公开网页 / 本地开发</text>
+    <text x="86" y="458" fill="#5eead4" font-size="11.5">✓ 保留结果页作交付物</text>
+    <text x="86" y="478" fill="#f87171" font-size="11.5">✗ 无你的网站登录态</text>
+  </g>
+
+  <!-- 形态2：外部 Chrome 画中画 -->
+  <g>
+    <rect x="282" y="262" width="196" height="230" rx="10" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+    <rect x="282" y="262" width="196" height="40" rx="10" fill="#453006"/>
+    <text x="380" y="288" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="700">② 外部 Chrome 接管</text>
+    <text x="296" y="324" fill="#cbd5e1" font-size="12">画中画预览（PiP）</text>
+    <text x="296" y="346" fill="#cbd5e1" font-size="12">你的真实 Chrome 会话</text>
+    <text x="296" y="368" fill="#cbd5e1" font-size="12">调用：@Chrome / @Edge…</text>
+    <text x="296" y="390" fill="#cbd5e1" font-size="12">复用已登录网站状态</text>
+    <text x="296" y="408" fill="#94a3b8" font-size="11">（非 headless / 模拟器）</text>
+    <text x="296" y="438" fill="#fcd34d" font-size="11.5">✓ 已登录 SaaS / 内部系统</text>
+    <text x="296" y="458" fill="#fcd34d" font-size="11.5">✓ 已有标签页与扩展</text>
+    <text x="296" y="478" fill="#f87171" font-size="11.5">✗ Firefox 不支持</text>
+    <rect x="282" y="262" width="196" height="40" rx="10" fill="url(#flowAmber)" opacity="0.3" class="pulse"/>
+  </g>
+
+  <!-- 形态3：Side chat -->
+  <g>
+    <rect x="492" y="262" width="186" height="230" rx="10" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+    <rect x="492" y="262" width="186" height="40" rx="10" fill="#453006"/>
+    <text x="585" y="288" text-anchor="middle" fill="#fcd34d" font-size="14" font-weight="700">③ Side chat</text>
+    <text x="506" y="324" fill="#cbd5e1" font-size="12">Chrome 内扩展侧栏</text>
+    <text x="506" y="346" fill="#cbd5e1" font-size="12">绑定当前标签页</text>
+    <text x="506" y="368" fill="#cbd5e1" font-size="12">页面/选中文本入上下文</text>
+    <text x="506" y="390" fill="#cbd5e1" font-size="12">聊天同步回桌面应用</text>
+    <text x="506" y="408" fill="#94a3b8" font-size="11">（继承桌面 provider）</text>
+    <text x="506" y="438" fill="#fcd34d" font-size="11.5">✓ 边看网页边问边做</text>
+    <text x="506" y="458" fill="#fcd34d" font-size="11.5">✓ Chrome/Edge/Brave/Vivaldi</text>
+    <text x="506" y="478" fill="#f87171" font-size="11.5">✗ Opera 不支持</text>
+  </g>
+
+  <!-- 形态4：Browser comments -->
+  <g>
+    <rect x="692" y="262" width="196" height="230" rx="10" fill="#1e293b" stroke="#2dd4bf" stroke-width="1.5"/>
+    <rect x="692" y="262" width="196" height="40" rx="10" fill="#134e4a"/>
+    <text x="790" y="288" text-anchor="middle" fill="#5eead4" font-size="14" font-weight="700">④ Browser comments</text>
+    <text x="706" y="324" fill="#cbd5e1" font-size="12">内置浏览器批注模式</text>
+    <text x="706" y="346" fill="#cbd5e1" font-size="12">点选元素 / 框选区域</text>
+    <text x="706" y="368" fill="#cbd5e1" font-size="12">批注锚定渲染后位置</text>
+    <text x="706" y="390" fill="#cbd5e1" font-size="12">Codex 据此回代码修改</text>
+    <text x="706" y="408" fill="#94a3b8" font-size="11">（含 Adjust 视觉微调）</text>
+    <text x="706" y="438" fill="#5eead4" font-size="11.5">✓ UI bug / 响应式问题</text>
+    <text x="706" y="458" fill="#5eead4" font-size="11.5">✓ 本地 Web 开发闭环</text>
+    <text x="706" y="478" fill="#f87171" font-size="11.5">✗ 不用于第三方登录站</text>
+  </g>
+
+  <!-- 底部图例 -->
+  <g font-size="12">
+    <rect x="72" y="522" width="816" height="72" rx="8" fill="#1e293b" stroke="#334155"/>
+    <circle cx="100" cy="546" r="6" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="114" y="551" fill="#94a3b8">青绿 = 内置浏览器载体（独立 Profile，无你的登录态）</text>
+    <circle cx="100" cy="574" r="6" fill="#453006" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="114" y="579" fill="#94a3b8">琥珀 = 宿主 Chrome 载体（你的 Profile 与登录态）</text>
+    <text x="520" y="551" fill="#94a3b8">决策：需要登录态 → ②③；公开网页/开发 → ①④</text>
+    <text x="520" y="579" fill="#94a3b8">呈现形态（PiP/侧栏）是 UI 细节，Profile 边界才是稳定契约</text>
+  </g>
+</svg>
