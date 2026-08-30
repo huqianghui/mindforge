@@ -186,3 +186,7 @@ brew install --cask stablyai/orca/orca
 - [Ways to run Orca — Orca Docs](https://www.onorca.dev/docs/ways-to-run)
 - [Notifications & Inbox — Orca Docs](https://www.onorca.dev/docs/notifications)
 - [stablyai/orca — GitHub](https://github.com/stablyai/orca)
+
+## 相关笔记
+
+- [[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]
