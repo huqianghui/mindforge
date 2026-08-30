@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-07-21"
+updated: "2026-08-30"
 tags:
   - wiki
   - concept
@@ -136,9 +136,19 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。
 
+### Claim: 数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器
+
+- **来源**：[[从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）]]
+- **首次出现**：2026-08-26
+- **最近更新**：2026-08-30
+- **置信度**：0.75
+- **状态**：active
+
+> Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是"计算发生在哪里"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为"语音驱动画面"，两者的计算位置相距整个光谱。
+
 ## 冲突与演进
 
-（暂无）
+- 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
 
 ## 关联概念
 

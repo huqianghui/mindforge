@@ -1,7 +1,7 @@
 ---
 title: "Personal Knowledge Compiler"
 created: "2026-04-13"
-updated: "2026-08-16"
+updated: "2026-08-30"
 tags:
   - wiki
   - concept
@@ -104,8 +104,19 @@ related:
 
 > 截至 2026 年 7 月全世界没人做过的两样：① **类型化边的 linter**（校验未知类型、悬空目标、缺失逆关系、矛盾环）——零工具（The AI Operator 作者一周后在 obsidian-second-brain 补了 linter，eval 仍空缺）；② **类型化 vs 非类型化检索的对照 eval**——没有任何已发表证据证明 typed links 可度量地改善 agent 回答，零命中。现有工具全缺一条腿：Basic Memory 类型是自由字符串无校验、Breadcrumbs 有真图工程但无 AI 接口、Penfield 把图路由进自家云。本 vault 的 8 种类型化关系 + Claims 置信度/生命周期恰好站在 gap 里，差的正好是那两块——关系类型校验器（现靠 agent 自觉遵守 schema；08-08 hygiene 报告 grounds 反向三轮三中，正是缺 linter 的实证）与检索质量 eval。这两项是 PKC 的候选差异化工作项。旁证（loop-weekly 08-09）：Karpathy LLM Wiki 社区插件与 obsidian-wiki 同周上架，PKC 进入"有竞品可对照"阶段，linter + eval 是当前仍独有的差异化点。
 
+### Claim: 获取前端与编译后端分离——Codex 管拿回来、Claude Code 管知识化，交接走落盘协议
+
+- **来源**：[[Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验]]
+- **首次出现**：2026-08-29
+- **最近更新**：2026-08-30
+- **置信度**：0.8
+- **状态**：active
+
+> PKC 管线四环（获取→落盘→编译→检索）中最痛的获取环由 Codex 原生浏览器能力承接（登录页面/字幕导出/搜索汇总），编译环留在 Claude Code（vault 规则、agent 路由、wiki schema、loop engineering 是多年 harness 资产，不随获取工具切换）。分工的工程落地是 **inbox/codex 交接协议**（commit 71025b3）：Codex 按约定落盘 `status: raw` 完整问答，Claude Code 取料成文后回写 `processed` + output 溯源——已在 Computer Use 系列六成文中首次走通全链路。这不是二选一，而是按环节用所长：不同 harness 有不同原生能力禀赋，路由到擅长的环节。
+
 ## 冲突与演进
 
+- 2026-08-30：注入获取/编译分工 Claim（Computer Use 系列五 + inbox/codex 协议实际走通）。
 - 2026-08-16：Graph Engineering 讨论把 PKC 置入 GraphRAG 坐标系——wikilink vault=80% 图索引、PKC 位于 linter+eval 全球空白 gap 中。4 月的基础 Claims 维持 stale，等 PKC 系列新文复核。
 
 ## 关联概念

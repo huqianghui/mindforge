@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-08-16"
+updated: "2026-08-30"
 tags:
   - wiki
   - concept
@@ -99,11 +99,22 @@ related:
 
 > 两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范："给 agent 目标而非严格转移"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与"图"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从"软件资产"变成"随用随弃的中间产物"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。
 
+### Claim: co-design 下沉到硅层——模型+软件栈+芯片同司联合优化；服务端工具全家桶是第一方绑定的隐性福利
+
+- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **首次出现**：2026-08-26
+- **最近更新**：2026-08-30
+- **置信度**：0.75
+- **状态**：active
+
+> 两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 "design the full system together"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品"天然自带"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走"Tavily+用户自带 key"，坐实了平台不为开放工具层垫付成本的商业逻辑。
+
 ## 冲突与演进
 
 - 2026-07-08：《Agent=Model+Harness》文章从 VS Code 博客的第一手证据推出"第一方绑定可能是结构性最优组合"的推论，并列出五个反方论点自我制衡。
 - 2026-07-10：ChatGPT Work 发布提供产品级印证——OpenAI 把 Codex harness 泛化为通用工作 harness 并与 GPT-5.6 深度绑定，第一方路线从推论变为可观察的行业动向。
 - 2026-07-14：建页。评测体系三层（VSC-Bench→PR 门禁→生产 A/B）的工程细节归口 [[harness-engineering]]，门禁演化（选择性→全量评测）归口 [[meta-harness]]，本页聚焦路线之争本身。
+- 2026-08-30：注入硅层 co-design（Jalapeño）与服务端工具全家桶（Computer Use 系列六/七）两组证据——第一方绑定的纵深与隐性福利。
 - 2026-08-16：注入 Graph Engineering 讨论的显式图 vs 隐式图对垒（Claude workflows 可审计脚本 vs Codex V2 加密委派）——第一方绑定之外的第二条路线分歧轴："图给人看还是给机器看"。
 
 ## 关联概念

@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-08-30"
 tags:
   - wiki
   - decision
@@ -81,6 +81,18 @@ related_methods: []
 - **状态**：active
 
 > vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。
+
+### Claim: benchmark 解读先辨工作点——峰值吞吐、最低 TBT、matched TBT 三读数各有语境
+
+- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **首次出现**：2026-08-26
+- **最近更新**：2026-08-30
+- **置信度**：0.75
+- **状态**：active
+
+> 推理性能选型读 benchmark 时的可复用方法论（Jalapeño vs GB300 实例）：同一对硬件/框架能同时给出 1.9× 和 104× 两套数字而不矛盾，因为它们是**吞吐—延迟曲线上不同工作点**的读数——峰值 mixed TPS/kW 描述极限产能、最低 TBT 描述单用户最快解码、matched TBT 下的吞吐描述"相同响应速度约束下的并发承载"（后者对交互式 serving 选型最相关，但绝不能读成整体性能倍数）。mixed TPS 口径含输入+输出 token 总量、除以标称功耗，非单用户输出速度。该方法同样适用于 vLLM/SGLang 等框架对比：先问测的是曲线上哪个点、功耗/并发口径是什么，再比数字。
+
+## 冲突与演进
 
 ## 关联概念
 

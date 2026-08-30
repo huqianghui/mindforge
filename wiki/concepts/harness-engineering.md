@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-08-10"
+updated: "2026-08-30"
 tags:
   - wiki
   - concept
@@ -235,6 +235,16 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > Agentic harness 是包在模型外、决定 Agent"怎么思考和行动"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为"提前收工/上下文爆"焦虑的是 harness 工程师，为"生产安全/崩溃恢复/凭证下发"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。
 
+### Claim: 外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端
+
+- **来源**：[[Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化]]
+- **首次出现**：2026-08-20
+- **最近更新**：2026-08-30
+- **置信度**：0.8
+- **状态**：active
+
+> Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**"变简单"是表象，实质是职责归位**——框架竞争维度从"机制精巧"变成"方法论文本质量"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
@@ -245,6 +255,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-08-04：从 Foundry Toolbox/Skills 篇补充 OpenForge 正式定义（Model+Harness+Environment 三元）、Copilot Studio 三 harness 产品证据与"离模型越近越可移植"分层——harness 定义谱系现有三档：泛指（LangChain）> 编排脚手架（OpenForge）> 信息管道（Meta-Harness）。
 - 2026-08-10：补充 harness 与 Agent Runtime 的正交辨析——harness 面向 model（同心圆内），runtime 面向 infra（承载同心圆的外侧层），给出换模型/谁在焦虑两个边界测试；与 OpenForge 三元结构兼容：runtime 大致对应托管化的 Environment + 部分平台 harness。
 - 2026-08-10：Copilot Studio 三 harness GA（2026-08-03，Copilot Chat/Standard/GitHub Copilot）提供"选 harness 即选 runtime"的产品证据，替代此前 preview 期的"经典/生成式/Copilot 运行时"三分——托管平台把 harness 与 runtime 打包出售，依赖管理被 MCP/connector/skill 扩展点取代；skill scripts 的执行环境断层另见 [[skill-runtime]]。
+- 2026-08-30：注入系列14 Skill 化收敛 Claim（三层分工格局/四个收敛原因/竞争维度迁移）；"离模型越近越可移植"分层判据升格独立页 [[harness-portability-spectrum]]（原始 Claim 保留本页，判据归口新页）。
 - 2026-08-10：补充 framework/harness/runtime 三层链条辨析——framework 是 dev-time 的"造 harness 工具包"，运行期消融在 harness 里；"Agent = Model, Not Framework" Claim（2026-04-13）由此获得新解读：它是 harness 路线对重 framework 封装路线的立场表态。
 
 ## 关联概念

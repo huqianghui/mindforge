@@ -70,6 +70,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[loop-engineering]] — Loop Engineering：Harness 的时间维度切片，内/外循环双高度 + verifier 谱系
 - [[graph-engineering]] — Graph Engineering：一词三义（编排图/循环网络/类型化知识图），模型写图 + 循环网络锚点论 + typed edges
 - [[agent-loop-architecture]] — Agent Loop 核心架构：30 行代码的 while 循环
+- [[computer-use]] — Computer Use ⊃ Browser Use：操作 UI 层的 agent 能力，action loop 协议 + Skill/Runtime 分离 + 执行位置决定补位形态
+- [[harness-portability-spectrum]] — Harness 可移植性分层："离模型越近越可移植"，skill/MCP 高、hook/command 低，可发现性≠可执行性
 - [[agent-paradigms]] — Agent 经典三范式：ReAct / Plan-and-Solve / Reflection
 - [[context-engineering]] — Context Engineering：从 Prompt Engineering 的正式演进
 - [[context-explosion]] — Context 爆炸：GSD/Superpowers/OpenSpec 的共同 scaling 瓶颈
@@ -153,6 +155,10 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[grapheme-to-phoneme]] — G2P（Grapheme-to-Phoneme）：TTS 流水线的字素到音素转换
 - [[intelligent-dictation]] — 智能听写：从 Speech Recognition 到 Speech Writing 的范式转移
 - [[realtime-protocol-selection]] — 实时通信协议选型：Control Plane vs Data Plane 分离
+
+### AI 硬件与推理基础设施
+
+- [[ai-inference-asic]] — AI 推理 ASIC：四层联合优化分类、benchmark 工作点读数法（1.9× 与 104× 不矛盾）、部署≠量产
 
 ### Azure 与云平台
 

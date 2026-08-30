@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-08-16"
+updated: "2026-08-30"
 tags:
   - wiki
   - decision
@@ -130,8 +130,19 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 > 官方明确 "Microsoft Foundry is retiring workflows on **December 1, 2026**"，禁止新的生产依赖，存量 workflow 有官方迁移指南。Workflow Agent 不再是官方 agent 类型，Foundry Agent 类型收窄为 Prompt / Hosted 二元；姊妹篇《Foundry Toolbox与Skills深度解析》同日（2026-07-31）确认这一变化。"编排层"这个维度本身没有消失，只是载体从托管产品换成了代码级机制：确定性多 Agent 协作收敛为三层组合——Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）+ A2A 协议（preview，agent 间委派的平台级标准通道）+ Skills（能力承接）。对本决策选项 C 的影响：其"多 Agent 固定流程编排"适用条件与"流程即 YAML 天然可审计"优势均失效，标 `superseded`；选型框架主线从三选一收窄为二元（Prompt vs Hosted），原 Workflow 场景并入 Hosted 判断。
 
+### Claim: Hosted Agent 运行时经济学——Session/Conversation 双 ID 生命周期脱节、per-session 计费无摊薄、冷启动无 benchmark
+
+- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **首次出现**：2026-08-20
+- **最近更新**：2026-08-30
+- **置信度**：0.8
+- **状态**：active
+
+> 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
+
 ## 冲突与演进
 
+- **2026-08-30**：注入 08-20 文档修订的三组 Hosted 运行时经济学硬约束（双 ID 生命周期/per-session 计费/冷启动无 benchmark），"Hosted 硬约束表"证据面扩充。
 - **2026-08-16**：源文章《Foundry Agent 全面对比》2026-07-31 修订确认 Workflow Agent 于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元（姊妹篇《Foundry Toolbox与Skills深度解析》同日确认）。本决策页据此修订：① 选项 C 标注 `superseded`；② 选型框架主线由三选一改为二元；③ 新增 Claim 记录退役事件与编排责任下沉路径（Hosted 内 harness/Agent Framework + A2A + Skills）；④ `decision_status` 保持 `active`（决策主线本身未被推翻，仅选项集收窄）。
 
 ## 关联概念
