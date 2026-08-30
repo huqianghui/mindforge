@@ -88,7 +88,17 @@ Claude Code 的 `WebSearch` 工具本身**不含任何搜索引擎**。它做的
 
 所以差异不在"App vs CLI"，而在**请求最终落在谁的服务端**。第一方产品（Claude.ai、Codex、Copilot）的用户从来不会遇到这个问题——不是因为架构更好，而是它们**根本不允许把模型请求指到别家端点**，链路永远是通的。用 Claude Code 换 base URL 是行使了第一方产品用户没有的自由，代价就是服务端工具全家桶（搜索、code execution 等）随之断供。
 
-### 3.3 Copilot 的双面演示
+### 3.3 Codex + Azure OpenAI：断供点上移到 harness 层
+
+把 Codex CLI 的 `model_provider` 指向 Azure OpenAI（比如 gpt-5.6-sol 部署）时，内置 web search 同样失效——但断供的位置与 Claude Code 换 Bedrock/Databricks **不在同一层**，值得单独解剖：
+
+- **端点层其实已经通了（阉割版）**：Azure OpenAI 的 Responses API 现在有服务端 `web_search` 工具（GA，不再只有 `web_search_preview`），但官方文档明确写着 "Live internet access isn't supported"——`external_web_access` 恒为 `false`，搜的是预建索引而非实时网页；按 tool call 单独计费，且可以在订阅级用 Azure CLI 整体禁用
+- **harness 层拒发声明**：Codex 的内置搜索是 OpenAI Responses 的 hosted tool，而 Codex **只在请求发往默认 OpenAI provider 时才附加这个工具声明**。一旦 `model_provider` 是自定义的（Azure、网关、vLLM），Codex 干脆不往请求里塞 `web_search`（openai/codex#3851）——`--search` / `web_search = "live"` 配了也无物可执行，哪怕端点侧其实长着执行器
+- **还有兼容性摩擦**：gpt-5.6-sol 等部署下，Codex 会往请求里发 Azure 不认的内部 header 与 `additional_tools` 命名空间，请求直接被拒（openai/codex#31875），需要本地代理剥离才能跑通
+
+所以判断"有没有 web search"要在**两层分别问**：端点层——请求落点的服务端有没有搜索执行器；harness 层——客户端愿不愿意为这个 provider 发工具声明。Claude Code + Databricks 是"端点无执行器"，Codex + Azure 是"端点有（阉割版）执行器、harness 拒发声明"——断供点上移了一层，结果殊途同归。补位路线也与 Claude Code 完全一致：在 `~/.codex/config.toml` 里配 MCP 搜索工具（Tavily / WebIQ / Exa，客户端执行、自付账单），或 browser use 反向补位（见第四节）。一个 TOML 实操坑顺带记下：顶层 `web_search` 键必须写在所有 `[section]` 头之前，否则它会静默绑定到前面的 table（变成 `model_providers.xxx.web_search`）而完全不生效。
+
+### 3.4 Copilot 的双面演示
 
 GitHub Copilot 恰好在同一个产品里演示了两条路线：
 
@@ -97,12 +107,12 @@ GitHub Copilot 恰好在同一个产品里演示了两条路线：
 
 这坐实了一个商业逻辑：搜索有真实成本，第一方订阅把它打包进价格；一旦进入"模型后端可替换 / 开放工具层"的世界，平台方没有理由垫付开放式搜索的钱，成本就回到用户头上。
 
-### 3.4 补位的三条路线
+### 3.5 补位的三条路线
 
 与系列六 Computer Use 的补位空间完全同构，服务端搜索断供后有三条补位路线：
 
 1. **客户端 MCP 工具**（Tavily、WebIQ、Exa）——搜索做成普通自定义工具，客户端执行、结果作为 tool result 回传。最通用，与后端提供方无关；代价是自己管 key 和账单
-2. **代理层拦截**（LiteLLM `websearch_interception`）——代理检测到请求里的原生 `web_search` 声明时拦截下来自己执行（可路由到 Perplexity 等），再按 Anthropic 响应格式回填。相当于在代理层重建缺失的服务端执行器，原生 `WebSearch` 在 Bedrock/Azure/Vertex 后端也能"假装"通了。目前只覆盖 `web_search`，`web_fetch` 的同类拦截还是 open feature request
+2. **代理层拦截**（LiteLLM `websearch_interception`）——代理检测到请求里的原生 `web_search` 声明时拦截下来自己执行（可路由到 Perplexity 等），再按 Anthropic 响应格式回填。相当于在代理层重建缺失的服务端执行器，原生 `WebSearch` 在 Bedrock/Azure/Vertex 后端也能"假装"通了。目前只覆盖 `web_search`，`web_fetch` 的同类拦截还是 open feature request。**注意这条路线的前提是声明被发出来**：它只救得了"断在端点层"的场景（harness 照发声明、落点没人执行，如 Claude Code + Bedrock）；对"断在 harness 层"的场景（Codex + 自定义 provider，见 3.3——声明根本不出门）无效，代理收到的请求里没有 `web_search`，无物可拦。断供点越靠上游，下游可补位的层就越少——客户端补位之所以最通用，正因为它在整条链路的最上游，不依赖任何下游环节配合
 3. **Browser use 反向补位**——见下一节
 
 值得注意的是执行位置的天然倾向：web search 本来就是远程 API，放服务端或客户端执行都可行，所以代理层能拦截补位；而 **browser use 没法在代理层补**——它最大的价值之一是复用真实浏览器的登录态，登录态在用户机器上，代理摸不到。
@@ -148,17 +158,23 @@ Browser use 走 Google 的每一步都在消耗模型 token：加载结果页 �
 
 这也给 Agent = Model + Harness 的路线之争补了一个观察角度：**第一方绑定的隐性福利之一就是服务端工具全家桶**（搜索、code execution、computer use runtime）——多模型适配路线省下的是绑定，付出的是每个服务端工具都要在客户端重新长一遍。Copilot 有趣在两边都占：`#web` 走第一方绑定，agent 工具层走客户端生态，在同一个产品里演示了两条路线的取舍。
 
+Microsoft Scout 则演示了第三种形态——**自己不长执行器，整体挂靠别人的闭环**。Scout 是跑在 Windows 本地的个人 agent（能读本地文件、跑 PowerShell、写代码），但它不走 M365 Copilot 许可，而是连接 GitHub Copilot、消耗 Copilot Business/Enterprise credits，模型目录也直接继承自 GitHub Copilot。它的 web research（搜索、fetch、带引用综合）开箱即用，原因不是 Scout 本地长了搜索引擎，而是整条链路（Scout → GitHub Copilot 后端 → 模型 + 服务端工具）落在同一个第一方闭环里——相当于给 Copilot 的服务端全家桶套了一个本地 harness 外壳。这与 Codex + Azure 恰好是镜像：后者把请求指出闭环、工具随之断供；前者把整个 harness 挂进闭环、工具随之继承。**能力归属跟着请求落点走，不跟着产品形态走**——这条规律在两个方向上都成立。
+
 ## 小结
 
 1. **不在同一棵树上**：web search 作用于数据层（索引），browser use 作用于 UI 层（活页面）——是两族能力，不是强弱版本；中间还有 web fetch，三者构成"发现 → 获取 → 到场"的三级梯
 2. **四问路由**：不知道在哪 → search；知道 URL 且公开静态 → fetch；要登录态/JS/页面状态 → browser use；要做事 → 只有 browser use
-3. **"自带搜索"= 第一方闭环的服务端工具**：Claude.ai / Codex / Copilot `#web` 能搜是因为模型和搜索执行器在同一个服务端；换成 Bedrock/Vertex/Databricks 代理后声明无人执行——与系列六"Skill 可见但 runtime 缺失"同构
+3. **"自带搜索"= 第一方闭环的服务端工具**：Claude.ai / Codex / Copilot `#web` 能搜是因为模型和搜索执行器在同一个服务端；换成 Bedrock/Vertex/Databricks 代理后声明无人执行——与系列六"Skill 可见但 runtime 缺失"同构。且判断要**分两层**：端点层有没有执行器、harness 层肯不肯为该 provider 发声明——Codex + Azure 是"端点有（阉割版）、harness 拒发"的新形态；Scout 挂靠 GitHub Copilot 闭环则是反方向的例证
 4. **反向补位有成本表**：browser use 开 Google 省的是搜索 API 费、花的是模型 token 费，且有风控风险——低频交互划算，程序化检索仍是搜索 API 更优。"能补"和"该用它补"之间隔着一张成本表
 5. **层选对了才是对的**：UI 层天然残缺（虚拟化）、数据层天然完整——browser use 不是万能上位替代，DOM 虚拟化的教训在信息获取场景同样成立
 
 ## 参考
 
 - 本系列：[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)（场景路由表、DOM 虚拟化教训）、[系列六](Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)（Skill ≠ 能力、补位生态）
+- [Web search with the Responses API（Microsoft Foundry 官方文档，Azure `web_search` 限制说明）](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/web-search)
+- [Codex built-in web search only attaches to default OpenAI provider（GitHub Issue #3851）](https://github.com/openai/codex/issues/3851)
+- [Codex CLI with Azure OpenAI gpt-5.6-sol fails due to internal headers（GitHub Issue #31875）](https://github.com/openai/codex/issues/31875)
+- [Microsoft Scout common questions（模型与处理链路挂靠 GitHub Copilot）](https://learn.microsoft.com/en-us/microsoft-scout/faq)
 - [LiteLLM: Claude Code WebSearch Across All Providers](https://docs.litellm.ai/docs/tutorials/claude_code_websearch)
 - [GCP Vertex WebSearch tool available but Claude Code can't see it（GitHub Issue #7806）](https://github.com/anthropics/claude-code/issues/7806)
 - [LiteLLM Feature Request: Server-side WebFetch interception](https://github.com/BerriAI/litellm/issues/25711)
