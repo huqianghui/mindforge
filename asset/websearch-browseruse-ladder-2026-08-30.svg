@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .pulse { animation: pulse 2.2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+      .dashflow { stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -14; } }
+      .dashback { stroke-dasharray: 6 5; animation: dashb 1.4s linear infinite; }
+      @keyframes dashb { to { stroke-dashoffset: 11; } }
+    </style>
+  </defs>
+
+  <rect width="960" height="640" fill="#0f172a" rx="12"/>
+  <text x="480" y="38" text-anchor="middle" fill="#e2e8f0" font-size="20" font-weight="700">信息获取三级梯：Web Search、Web Fetch 与 Browser Use 的分界</text>
+
+  <!-- 三级梯 -->
+  <!-- Level 1: Web Search -->
+  <rect x="40" y="80" width="270" height="150" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="175" y="110" text-anchor="middle" fill="#5eead4" font-size="15.5" font-weight="700">① Web Search（发现）</text>
+  <text x="58" y="138" fill="#e2e8f0" font-size="12">"哪里有关于 X 的信息？"</text>
+  <text x="58" y="160" fill="#94a3b8" font-size="11.5">查预建索引 → 标题 + URL + 摘要</text>
+  <text x="58" y="180" fill="#94a3b8" font-size="11.5">无状态、只读、便宜、秒级</text>
+  <text x="58" y="200" fill="#94a3b8" font-size="11.5">拿不到：登录墙、JS 渲染后内容</text>
+  <text x="58" y="220" fill="#5eead4" font-size="11.5">工具：Tavily / WebIQ / Exa / Bing API</text>
+
+  <!-- Level 2: Web Fetch -->
+  <rect x="345" y="80" width="270" height="150" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="480" y="110" text-anchor="middle" fill="#5eead4" font-size="15.5" font-weight="700">② Web Fetch（获取）</text>
+  <text x="363" y="138" fill="#e2e8f0" font-size="12">"这个 URL 的全文是什么？"</text>
+  <text x="363" y="160" fill="#94a3b8" font-size="11.5">抓取已知 URL → 全文（非摘要）</text>
+  <text x="363" y="180" fill="#94a3b8" font-size="11.5">仍无登录态、通常不执行 JS</text>
+  <text x="363" y="200" fill="#94a3b8" font-size="11.5">只读、不能交互</text>
+  <text x="363" y="220" fill="#5eead4" font-size="11.5">工具：WebFetch / tavily_extract</text>
+
+  <!-- Level 3: Browser Use -->
+  <rect x="650" y="80" width="270" height="150" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="785" y="110" text-anchor="middle" fill="#fcd34d" font-size="15.5" font-weight="700">③ Browser Use（到场）</text>
+  <text x="668" y="138" fill="#e2e8f0" font-size="12">"页面上有什么？我能做什么？"</text>
+  <text x="668" y="160" fill="#e2e8f0" font-size="11.5">真实浏览器：登录态、JS、活 DOM</text>
+  <text x="668" y="180" fill="#e2e8f0" font-size="11.5">读 + 写：点击、填表、提交</text>
+  <text x="668" y="200" fill="#e2e8f0" font-size="11.5">有状态、贵、慢（多轮观察-操作）</text>
+  <text x="668" y="220" fill="#fcd34d" font-size="11.5">工具：@Browser/@Chrome/Playwright/Orca</text>
+
+  <!-- 梯间箭头 -->
+  <path d="M 310 155 L 345 155" stroke="#2dd4bf" stroke-width="2" marker-end="url(#arrowTeal)" class="dashflow"/>
+  <circle r="4" fill="#2dd4bf"><animateMotion path="M 310 155 L 345 155" dur="1.2s" repeatCount="indefinite"/></circle>
+  <path d="M 615 155 L 650 155" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashflow"/>
+  <circle r="4" fill="#fbbf24"><animateMotion path="M 615 155 L 650 155" dur="1.2s" repeatCount="indefinite"/></circle>
+
+  <!-- 层带 -->
+  <rect x="40" y="252" width="575" height="44" rx="8" fill="#0d3330" stroke="#2dd4bf" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="327" y="279" text-anchor="middle" fill="#5eead4" font-size="13" font-weight="700">数据层 —— 天然是全的（索引/HTML 源），但摸不到登录态与页面状态</text>
+  <rect x="650" y="252" width="270" height="44" rx="8" fill="#3d2c06" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="785" y="279" text-anchor="middle" fill="#fcd34d" font-size="13" font-weight="700">UI 层 —— 所见即所得，但天然残缺（虚拟化）</text>
+
+  <!-- 反向补位 -->
+  <path d="M 700 320 L 200 320" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" class="dashback"/>
+  <circle r="4" fill="#fbbf24"><animateMotion path="M 700 320 L 200 320" dur="2.2s" repeatCount="indefinite"/></circle>
+  <text x="480" y="345" text-anchor="middle" fill="#fcd34d" font-size="13" font-weight="700">反向补位：Browser Use 开 Google 覆盖 Search 场景——省搜索 API 费，花模型 token 费</text>
+
+  <!-- 执行位置分界 -->
+  <text x="480" y="392" text-anchor="middle" fill="#a5b4fc" font-size="15" font-weight="700">执行位置分界：谁的服务端有执行器，决定"自带搜索"是否成立</text>
+
+  <rect x="40" y="410" width="430" height="180" rx="10" fill="#1e293b" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="255" y="437" text-anchor="middle" fill="#5eead4" font-size="13.5" font-weight="700">第一方闭环：搜索在模型服务端执行（免配置）</text>
+  <text x="58" y="464" fill="#e2e8f0" font-size="12">Claude.ai / Claude Code+官方 API → Anthropic 服务端</text>
+  <text x="58" y="486" fill="#e2e8f0" font-size="12">Codex App / CLI → OpenAI 服务端（Responses API）</text>
+  <text x="58" y="508" fill="#e2e8f0" font-size="12">Copilot @github #web → GitHub 服务端（Bing）</text>
+  <text x="58" y="534" fill="#94a3b8" font-size="11.5">共同点：模型请求无法改指别家端点，链路永远通；</text>
+  <text x="58" y="552" fill="#94a3b8" font-size="11.5">搜索成本打包进订阅费 / API 计费</text>
+  <text x="58" y="576" fill="#5eead4" font-size="11.5">开关位置在服务端账号设置——因为执行器不在本地</text>
+
+  <rect x="490" y="410" width="430" height="180" rx="10" fill="#453006" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="705" y="437" text-anchor="middle" fill="#fcd34d" font-size="13.5" font-weight="700">后端可替换：服务端工具断供 → 客户端补位（自带 key）</text>
+  <text x="508" y="464" fill="#e2e8f0" font-size="12">Claude Code + Bedrock/Vertex/Databricks 代理 → 无人执行</text>
+  <text x="508" y="486" fill="#e2e8f0" font-size="12">补位一：MCP 客户端工具（Tavily / WebIQ）+ 用户 key</text>
+  <text x="508" y="508" fill="#e2e8f0" font-size="12">补位二：代理层拦截（LiteLLM websearch_interception）</text>
+  <text x="508" y="530" fill="#e2e8f0" font-size="12">补位三：Browser Use 开 Google（token 换 API 费）</text>
+  <text x="508" y="556" fill="#fcd34d" font-size="11.5">连微软官方 "Web Search for Copilot" 扩展也走这条路：</text>
+  <text x="508" y="574" fill="#fcd34d" font-size="11.5">Tavily 驱动、用户自带 key——平台不垫付开放式搜索的钱</text>
+
+  <text x="480" y="622" text-anchor="middle" fill="#64748b" font-size="12">同一结构的第三例：Computer Use、Browser Use、Web Search——工具声明处处可见，执行 runtime 决定能力归属</text>
+</svg>
