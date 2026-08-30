@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-29",
+  "generated_at": "2026-08-30",
   "stats": {
-    "nodes": 119,
-    "links": 404,
+    "nodes": 122,
+    "links": 414,
     "orphan_links_removed": 0,
-    "claims": 540,
-    "categories": 10
+    "claims": 566,
+    "categories": 11
   },
   "nodes": [
     {
@@ -249,7 +249,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
+      "claims_count": 5,
       "avg_confidence": 0.73,
       "claims": [
         {
@@ -287,6 +287,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。"
+        },
+        {
+          "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——观察对象换成屏幕状态、动作换成 UI 事件",
+          "source": "Computer Use与Browser Use系列三：自己实现——action loop协议、双执行器路线与跨平台adapter矩阵",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是\"模型判断 + 执行 + 结果回灌\"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。\"One loop & Bash is all you need\" 在 GUI 域的对应物是 \"One loop & screenshot+click is all you need\"——loop 骨架不变，工具面变了。"
         }
       ]
     },
@@ -447,6 +456,71 @@
           "confidence": 0.5,
           "status": "stale",
           "evidence": "Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。"
+        }
+      ]
+    },
+    {
+      "id": "ai-inference-asic",
+      "type": "concept",
+      "title": "AI 推理 ASIC",
+      "summary": "AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设计的处理器，牺牲通用性换取目标任务上更高的性能、能效和成本效率——Google TPU、AWS Inferentia/Trainium、OpenAI Jalapeño 同属此类。\"推理 ASIC\"与\"训练 ASIC\"并非像 x86/ARM 那样由指令集硬性划界的两套体系，而是**设计优化目标**的差异，体现在电路（精度单元资源配比）、算子与软件（反向传播是一组系统要求而非一条指令）、系统架构与经济目标四个层次的联合优化上。\n\n以 OpenAI Jalapeño（2026-06 与 Broadcom 联合发布、08-25 公布 InferenceX 首测）为标本，本页沉淀三条可迁移的认知：多层联合优化的分类框架、benchmark 工作点读数法（1.9× 与 104× 为何不矛盾）、以及\"部署\"与\"量产\"的阶段区分。vault 硬件方向首个锚点页。",
+      "tags": [
+        "wiki",
+        "concept",
+        "hardware",
+        "asic",
+        "inference"
+      ],
+      "category": "AI 硬件与推理基础设施",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "推理芯片 vs 训练芯片不是 ISA 划界而是电路/算子/系统/经济四层联合优化目标的差异",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "硬件电路层：推理芯片把晶体管预算押注在低精度单元（MXFP4 等），训练需要高精度累加与梯度通路；算子层：反向传播不是一条指令而是一组系统要求（中间激活存储、梯度同步）；系统层与经济层：推理优化目标是单位功耗下的吞吐与延迟，训练是集群规模的扩展效率。\"理论能训练、实际不经济\"——Jalapeño 对标 GB300 比的是同一任务的推理性能，不意味着能替代其训练角色。"
+        },
+        {
+          "statement": "benchmark 工作点读数法——1.9× 与 104× 不矛盾，它们是吞吐—延迟曲线上不同工作点的读数",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "三套指标各有语境：峰值 mixed TPS/kW（1.5~1.9×）=各自开到最大吞吐的极限产能；最低 TBT（2.7~4.1×）=单用户最快解码；**matched TBT 下的吞吐（53~104×）**=把对手的最快单用户速度设为共同约束、比较仍能承载的并发量——GB300 要达到自己的最低延迟必须把并发压到极低，Jalapeño 同约束下仍可满载。餐厅类比：不是\"给单个顾客上菜快 104 倍\"，而是\"相同上菜速度约束下能服务的顾客数差 104 倍\"。104× 是有价值但非常特定的服务能力指标，绝不能读成整体性能倍数。官方 Pareto frontier 主张：现有硬件在吞吐与延迟间二选一，Jalapeño 同一架构同时拿到两者。"
+        },
+        {
+          "statement": "per-kW vs per-chip 度量口径即立场——电力成为数据中心第一约束时能效是新竞争维度",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
+        },
+        {
+          "statement": "\"begin deploying\" ≠ 大规模量产——芯片交付十阶段的位置判断",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "已公布实机功耗与多模型 benchmark，说明至少完成 Tape-out → 样片点亮 → 初步软件适配，当前处于\"生产认证 + 小批试部署\"。分层判断：年底小批量内部部署可信（Broadcom 有为 TPU 预订台积电产能的先例）；立即替代大量 NVIDIA GPU 无证据（制程/良率/首批数量未披露）；数 GW 规模取决于多年爬坡（Hock Tan 口径：2026 底原型、2027 ramp、2028 上半年 full tilt）。同理勘误：\"九个月设计周期\"指架构设计环节而非立项到样片全程；与 Sol API 降价是战略相关而非直接因果（首测公布时芯片不可能已承担 Sol 流量）。"
+        },
+        {
+          "statement": "co-design 逻辑下沉到硬件层——模型+推理软件栈+芯片同司联合优化，且 AI 开始加速芯片设计本身",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "官方原话 \"when we design the full system together\"：模型、推理软件栈（continuous batching、KV Cache 管理、prefill/decode 分离）、芯片架构由同一家公司联合优化——Agent=Model+Harness 的 co-design 路线延伸到硅层。头部模型厂商自研 ASIC 已成趋势（TPU、Trainium/Inferentia 之后），NVIDIA 通用 GPU 面对\"每个大客户都在造专用赛车\"的格局。另一个可能更重要的信号：九个月 ASIC 周期部分归功于用自家 AI 模型辅助芯片设计——芯片设计迭代速度被 AI 加速后，专用芯片\"设计慢、赌错架构就沉没\"的传统风险模型会被改写。"
         }
       ]
     },
@@ -1399,6 +1473,89 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。四层：CLAUDE.md 架构约束（最关键）> FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。"
+        }
+      ]
+    },
+    {
+      "id": "computer-use",
+      "type": "concept",
+      "title": "Computer Use",
+      "summary": "Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。它与 Browser Use 是包含关系——Browser Use 是 Computer Use 在浏览器域的子集。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把\"用户已经会用的业务界面\"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。\n\n本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "computer-use",
+        "browser-use"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 7,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
+          "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Computer Use 是广义 GUI 操作能力（桌面应用 + 浏览器），Browser Use 是其浏览器子集。Codex 侧四种浏览器形态（内置 `@Browser`、Chrome extension `@Chrome`、Playwright、Orca 内嵌 Browser）的本质差异是 **Profile 边界**——是否复用用户真实浏览器的登录态。认证三链路（桌面应用 provider / 扩展继承 / 独立会话）相互独立，Azure OpenAI provider 实测可用。"
+        },
+        {
+          "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——协议层/翻译层/执行层分离，官方只给协议不给执行器",
+          "source": "Computer Use与Browser Use系列三：自己实现——action loop协议、双执行器路线与跨平台adapter矩阵",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "循环骨架与 agent loop 同构（观察 → 模型判断 → 执行 → 回灌新状态），区别仅在实例化域：观察对象从工具返回值变成屏幕/页面状态（截图、DOM、AX 树），动作从 API 调用变成 UI 事件（click/type/scroll 坐标或元素引用）。分层上，模型返回的 action JSON 只是协议（`{type:\"click\",x,y}` 不会自己执行）；**action handler 是自己要写的翻译层**（官方仅给示例）；执行层可选 Playwright（浏览器页面）或 xdotool/系统事件（整个桌面）。\"Docker 支持这些 action\"是误读——支持 action 的是 handler，Docker/Playwright 只是执行环境。"
+        },
+        {
+          "statement": "语义操作优先、坐标操作兜底——Codex 与 Orca 两个独立实现同构收敛",
+          "source": "Computer Use与Browser Use系列二：Codex浏览器运行时解剖——从bundled plugin看Agent浏览器控制的工程设计",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Codex 运行时三套操作 API 按精度降级：playwright 语义层（locator/getByRole，页面小改版不失效）→ dom_cua 节点层 → cua 纯视觉坐标兜底；Orca 独立实现同样收敛到\"Accessibility Tree 语义元素优先、Screenshot 坐标兜底\"。跨产品同构是设计规律的强信号：**坐标一次重排就失效，语义定位才可长期维护**。推荐降级链：语义操作 → 截图+坐标 → 交人接管。"
+        },
+        {
+          "statement": "Skill 是说明书、Runtime 才是手脚——CLI/App 共享 Skill 发现机制但执行 runtime 不对等",
+          "source": "Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "实测：Codex CLI 能读到 App 的 bundled Computer Use Skill 文件（198 行完整 API 文档），但缺 `node_repl + @oai/sky` runtime，Skill 是一纸空文；本机 Orca 提供替代后端（75 行 discovery stub + 动态手册），同一任务（播放网易云音乐）经 `orca computer` 跑通。两个同名 `computer-use` Skill 并存时，路由的隐式裁决者是 **runtime 可用性排除法**而非智能路由。两条调用链在顶层 action loop 和底层 macOS Accessibility 一致，中间的执行引擎、协议、权限持有者（App 审批 UI vs Orca Helper）完全不同——信任边界随之不同。"
+        },
+        {
+          "statement": "执行位置决定能力归属——Computer Use / Browser Use / Web Search 三例同构，能力越贴近本地状态补位越只能在客户端",
+          "source": "Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移",
+          "first_seen": "2026-08-30",
+          "last_updated": "2026-08-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三个实例共享\"声明处处可见、runtime 决定归属\"结构：Computer Use（CLI 缺 `@oai/sky` → Orca 客户端补）、Browser Use（CLI 缺 Browser runtime → Orca 内嵌 Browser/Playwright 客户端补）、Web Search（换 Bedrock/Vertex/Databricks 代理后服务端执行器消失 → Tavily MCP 客户端补/LiteLLM 代理层拦截/browser use 开 Google 反向补）。规律：**web search 无本地状态，三层都能补；browser use 依赖登录态、computer use 依赖桌面与系统权限，只能客户端补**。\"自带搜索\"的产品全是第一方闭环（模型和搜索执行器同服务端）——服务端工具全家桶是第一方绑定的隐性福利。"
+        },
+        {
+          "statement": "UI 层天然残缺、数据层天然完整——DOM 虚拟化是页面性质而非工具缺陷",
+          "source": "Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "browser use 解决登录态和 JS 渲染，**不解决 DOM 虚拟化**——虚拟化页面（如 ChatGPT share）的活 DOM 只含视口附近内容，`domSnapshot()` 读到的和手写 Playwright 一样残缺，且 agent 意识不到缺。真解在换数据层（如解析 turbo-stream 数据块）。信息获取三级梯（search 发现 → fetch 获取 → browser use 到场）中，上层工具可向下兼容下层只读场景（browser use 开 Google 省搜索 API 费），但代价是模型 token、延迟与风控风险——\"能补\"和\"该用它补\"之间隔着成本表。抓取后完整性核验（数量/关键词/悬置/边界四查）责任永远在人。"
+        },
+        {
+          "statement": "产品化路线是\"可审计智能 RPA\"——模型提议、策略放行、执行器落地三权分立",
+          "source": "Computer Use与Browser Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "企业场景的核心原则：模型不应直接持有浏览器控制权限——模型只提出动作，策略层决定是否放行（域名/动作白名单、高风险确认），执行器在客户浏览器本地落地。动作设计成高层业务语义（`click(\"新建订单\")` 而非坐标），SaaS 适配从 SDK 变成流程配置。三条铁律：模型凭据不进扩展、客户 Cookie 不上后端、页面状态脱敏后才回传。安全确认按四级分类（Hand-off Required → No Confirmation），CAPTCHA/付费墙/改密码是产品硬编码的不可放行项。"
         }
       ]
     },
@@ -2709,7 +2866,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 21,
+      "claims_count": 22,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -2900,6 +3057,71 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Agentic harness 是包在模型外、决定 Agent\"怎么思考和行动\"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为\"提前收工/上下文爆\"焦虑的是 harness 工程师，为\"生产安全/崩溃恢复/凭证下发\"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。"
+        },
+        {
+          "statement": "外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端",
+          "source": "Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**\"变简单\"是表象，实质是职责归位**——框架竞争维度从\"机制精巧\"变成\"方法论文本质量\"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。"
+        }
+      ]
+    },
+    {
+      "id": "harness-portability-spectrum",
+      "type": "concept",
+      "title": "Harness 可移植性分层",
+      "summary": "跨 harness 可移植性分层描述 agent 资产在更换宿主（Claude Code / Codex / Copilot / Foundry…）时的存活能力，规律一句话：**离模型越近越可移植**。skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、command、plugin 可移植性低（深度绑定特定 harness 的事件模型与实现细节）。\n\n该分层最初作为 Claim 归口 [[harness-engineering]]（2026-08-04 HOLD），此后三处独立论证使其升格建页：① Copilot Studio 三 harness 产品证据（同一 agent 配置换 harness 跑出不同行为）；② Vibe Coding 系列14 以可移植性为主轴论证 Harness 框架的 Skill 化收敛（Superpowers 三版本目录实证）；③ Computer Use 系列六的 runtime 维度补充（Skill 跨宿主可发现≠可执行）。它是 agent 资产投资决策的基础判据：**资产应优先沉淀在可移植层**。",
+      "tags": [
+        "wiki",
+        "concept",
+        "harness",
+        "skill",
+        "portability"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "离模型越近越可移植——skill/MCP 高、prompt 中、subagent/hook/command 低",
+          "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "离模型近的资产只依赖\"模型能读文本\"这一最普适能力；离模型远的资产依赖 harness 私有机制（hook 挂的是 harness 内部生命周期事件，事件模型本身就是实现细节，换 harness 事件就不存在——hook 可移植性几乎为零）。Copilot Studio 三 harness 并存提供产品级证据：同一 agent 配置换 harness 跑出不同行为，\"选 harness 就是选行为语义\"。"
+        },
+        {
+          "statement": "skill 是唯一跨 harness 可移植的资产载体——Superpowers 多宿主 bootstrap 实证",
+          "source": "Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Superpowers 6.3.0 release notes 明确列出 Harness Support 章节（Hermes Agent、Grok Build CLI、Antigravity、Pi、Codex……），同一套 skills 通过不同 bootstrap 机制注入各家 harness；仓库同时存在 `CLAUDE.md`、`AGENTS.md`、`GEMINI.md` 三个入口文件——一份方法论、多个宿主。一旦资产押注在 skill 上，agent/command/hook 这些绑定单一宿主的机制就成了拖累跨平台发布的死重。这是 Harness 框架 Skill 化收敛的第三个（结构性）原因。Foundry 侧共振：Prompt/Hosted Agent 的 Skill support 双 Yes——skill 正在成为跨 harness 的行业通用格式。"
+        },
+        {
+          "statement": "可移植性有两个维度——文本可发现性 ≠ runtime 可执行性",
+          "source": "Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Codex CLI 与 App 共享插件目录，Skill 文件跨宿主 100% 可发现；但 bundled Computer Use Skill 依赖的 `node_repl + @oai/sky` runtime 只在 App 注入——**同一份 Skill 在 App 是完整能力、在 CLI 是一纸空文**。这给\"离模型越近越可移植\"补了精确化限定：可移植的是 skill 的**指令层**（markdown 说明书）；skill 若依赖特定执行接口（runtime tool、脚本解释器），该依赖层的可移植性立即跌至 hook 级别。与 [[skill-runtime]] 的 scripts 断层同构：规范只管包格式，不管执行环境。"
+        },
+        {
+          "statement": "纯文本资产的维护成本低一个量级——收敛到 skill 后测试从\"跑代码\"变成\"eval campaign\"",
+          "source": "Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。"
         }
       ]
     },
@@ -3432,7 +3654,7 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 6,
       "avg_confidence": 0.72,
       "claims": [
         {
@@ -3479,6 +3701,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Azure Skills 在剧本中预编排了 MCP/CLI 分工：关键专有 API（AppLens 诊断、Resource Health）走 MCP，常见成熟命令（azd up、terraform apply、kubectl）走 CLI。选择标准：模型是否熟悉 + CLI 有无等价命令 + 操作复杂度 + 安全敏感度。MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。"
+        },
+        {
+          "statement": "WebMCP 把工具集成的选型从 MCP/CLI 二元扩展为三层——自家页面场景的最优解",
+          "source": "Computer Use与Browser Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "浏览器操作产品化引入第三层：**WebMCP site tools**——页面顶层 JS 里 `document.modelContext.registerTool()` 把页面能力直接声明为 agent 工具（带 readOnlyHint/untrustedContentHint 注解），agent 不再猜 DOM、不点坐标，直接调业务语义工具。三层分工：Extension 解决\"进入用户正在看的页面\"（登录态）、Plugin+MCP 解决\"安全稳定做业务\"（页面没开也能跑）、WebMCP 解决\"当前页面告诉 agent 自己能做什么\"（工具随页面关闭失效）。选型判据从\"MCP 上下文换精度 vs CLI 内置知识换节省\"扩展为按运行位置分层：操作自家页面 → WebMCP 优先；后台任务 → MCP+API；第三方站点 → Extension/浏览器控制兜底。OpenAI 开发者文档站已实测暴露 search/lookup/navigate site tools——生产级 WebMCP 已存在。"
         }
       ]
     },
@@ -3646,7 +3877,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.81,
       "claims": [
         {
@@ -3711,6 +3942,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范：\"给 agent 目标而非严格转移\"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与\"图\"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从\"软件资产\"变成\"随用随弃的中间产物\"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。"
+        },
+        {
+          "statement": "co-design 下沉到硅层——模型+软件栈+芯片同司联合优化；服务端工具全家桶是第一方绑定的隐性福利",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 \"design the full system together\"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品\"天然自带\"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走\"Tavily+用户自带 key\"，坐实了平台不为开放工具层垫付成本的商业逻辑。"
         }
       ]
     },
@@ -4274,8 +4514,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.73,
+      "claims_count": 9,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
@@ -4348,6 +4588,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "截至 2026 年 7 月全世界没人做过的两样：① **类型化边的 linter**（校验未知类型、悬空目标、缺失逆关系、矛盾环）——零工具（The AI Operator 作者一周后在 obsidian-second-brain 补了 linter，eval 仍空缺）；② **类型化 vs 非类型化检索的对照 eval**——没有任何已发表证据证明 typed links 可度量地改善 agent 回答，零命中。现有工具全缺一条腿：Basic Memory 类型是自由字符串无校验、Breadcrumbs 有真图工程但无 AI 接口、Penfield 把图路由进自家云。本 vault 的 8 种类型化关系 + Claims 置信度/生命周期恰好站在 gap 里，差的正好是那两块——关系类型校验器（现靠 agent 自觉遵守 schema；08-08 hygiene 报告 grounds 反向三轮三中，正是缺 linter 的实证）与检索质量 eval。这两项是 PKC 的候选差异化工作项。旁证（loop-weekly 08-09）：Karpathy LLM Wiki 社区插件与 obsidian-wiki 同周上架，PKC 进入\"有竞品可对照\"阶段，linter + eval 是当前仍独有的差异化点。"
+        },
+        {
+          "statement": "获取前端与编译后端分离——Codex 管拿回来、Claude Code 管知识化，交接走落盘协议",
+          "source": "Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "PKC 管线四环（获取→落盘→编译→检索）中最痛的获取环由 Codex 原生浏览器能力承接（登录页面/字幕导出/搜索汇总），编译环留在 Claude Code（vault 规则、agent 路由、wiki schema、loop engineering 是多年 harness 资产，不随获取工具切换）。分工的工程落地是 **inbox/codex 交接协议**（commit 71025b3）：Codex 按约定落盘 `status: raw` 完整问答，Claude Code 取料成文后回写 `processed` + output 溯源——已在 Computer Use 系列六成文中首次走通全链路。这不是二选一，而是按环节用所长：不同 harness 有不同原生能力禀赋，路由到擅长的环节。"
         }
       ]
     },
@@ -4858,8 +5107,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.77,
+      "claims_count": 4,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "V_Regulator ≥ V_Disturbance——调节器多样性必须匹配扰动多样性",
@@ -4887,6 +5136,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "市场在变、技术在进化、业务在扩展——被调节系统永远面对新扰动，因此调节器的需求不会消失。这条推论同时解释：Harness 不是\"建好就完了\"而是需要持续演进（模型升级使旧约束变死重）；FDE 的商业模式悖论（\"教会客户就失业\"）的前提错误——把持续的调节关系误当成一次性的知识转移。"
+        },
+        {
+          "statement": "调节器复杂度应匹配模型不确定性——模型变强后外层调节器降复杂度，说服替代强制",
+          "source": "Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "必要多样性定律的动态推论：被调节系统（模型）的不确定性下降时，调节器（外层 harness 框架）应同步降低复杂度，否则旧约束变成死重。实证：早期框架用 command+hook 把弱模型\"锁\"在预设流程里，模型能力上来后硬编排成本收益倒挂——Superpowers 6.x 用 rationalization table（说服文本）替代强制机制，并以 eval campaign 实测文本效果（一处删减实测从 8/10 退化到 5/10 就重做）。这与\"Harness 需要持续演进\"推论同源：调节器复杂度是随被调节方差动态校准的量，不是一次性设计常数。"
         }
       ]
     },
@@ -5226,8 +5484,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.7,
+      "claims_count": 7,
+      "avg_confidence": 0.71,
       "claims": [
         {
           "statement": "行业缺失的方案是 Skill Runtime 模式",
@@ -5282,6 +5540,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "面向跨 harness 可移植的 skill 脚本设计：① **最小公分母**——Python 标准库 only、不依赖 Node 专属脚本，重依赖以纯 Python 源码 vendor 进 skill 的 scripts/ 目录（无网也能用）；② **运行时探测 + 文字降级**——SKILL.md 写明\"优先跑脚本，环境无 Python 则按以下手动步骤\"，脚本失效时模型降级为纯推理执行，印证\"离模型越近越可移植\"；③ **重依赖改走 MCP**——需要 playwright/特定 SDK/Node 生态时不塞 skill scripts，做成 MCP server 跑在自控环境，把依赖问题从管不了的托管 sandbox 转移到管得了的自有服务器；④ **env-probe 探针 skill**——脚本打印 sys.version、pkgutil.iter_modules() 包清单、socket 出站测试、subprocess 试 node --version，上线前在目标 harness 跑一次拿真实能力清单，比等平台文档快且可重复验证。"
+        },
+        {
+          "statement": "纯 skill 意味着约束力从 L1 降到 L2/L3——硬门禁场景仍需 hook 兜底",
+          "source": "Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Skill 化收敛的风险面：skill 是提示词说服（L2/L3），代码机制是强制执行（L1）。对确实需要硬门禁的场景（合规审计、不可逆操作），仍需宿主 hook 或外部流程兜底，不能全押说服。与记忆提权协议的三级约束强度（L1 Hook / L2 CLAUDE.md / L3 Memory）是同一个道理：**约束力要匹配需求强度，行为规则的载体决定它的强制力上限**。Superpowers 6.3.0 保留的唯一 SessionStart hook 承担全部\"代码性\"，正是最小可行 L1 注入点的实例。"
         }
       ]
     },
@@ -6068,7 +6335,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
+      "claims_count": 12,
       "avg_confidence": 0.76,
       "claims": [
         {
@@ -6169,6 +6436,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。"
+        },
+        {
+          "statement": "数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器",
+          "source": "从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是\"计算发生在哪里\"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为\"语音驱动画面\"，两者的计算位置相距整个光谱。"
         }
       ]
     },
@@ -7014,7 +7290,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -7079,6 +7355,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "官方明确 \"Microsoft Foundry is retiring workflows on **December 1, 2026**\"，禁止新的生产依赖，存量 workflow 有官方迁移指南。Workflow Agent 不再是官方 agent 类型，Foundry Agent 类型收窄为 Prompt / Hosted 二元；姊妹篇《Foundry Toolbox与Skills深度解析》同日（2026-07-31）确认这一变化。\"编排层\"这个维度本身没有消失，只是载体从托管产品换成了代码级机制：确定性多 Agent 协作收敛为三层组合——Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）+ A2A 协议（preview，agent 间委派的平台级标准通道）+ Skills（能力承接）。对本决策选项 C 的影响：其\"多 Agent 固定流程编排\"适用条件与\"流程即 YAML 天然可审计\"优势均失效，标 `superseded`；选型框架主线从三选一收窄为二元（Prompt vs Hosted），原 Workflow 场景并入 Hosted 判断。"
+        },
+        {
+          "statement": "Hosted Agent 运行时经济学——Session/Conversation 双 ID 生命周期脱节、per-session 计费无摊薄、冷启动无 benchmark",
+          "source": "Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型",
+          "first_seen": "2026-08-20",
+          "last_updated": "2026-08-30",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
         }
       ]
     },
@@ -7098,8 +7383,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 2,
-      "avg_confidence": 0.82,
+      "claims_count": 3,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "框架按部署规模选型——llama.cpp/SGLang/vLLM 三档",
@@ -7118,6 +7403,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。"
+        },
+        {
+          "statement": "benchmark 解读先辨工作点——峰值吞吐、最低 TBT、matched TBT 三读数各有语境",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-08-30",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "推理性能选型读 benchmark 时的可复用方法论（Jalapeño vs GB300 实例）：同一对硬件/框架能同时给出 1.9× 和 104× 两套数字而不矛盾，因为它们是**吞吐—延迟曲线上不同工作点**的读数——峰值 mixed TPS/kW 描述极限产能、最低 TBT 描述单用户最快解码、matched TBT 下的吞吐描述\"相同响应速度约束下的并发承载\"（后者对交互式 serving 选型最相关，但绝不能读成整体性能倍数）。mixed TPS 口径含输入+输出 token 总量、除以标称功耗，非单用户输出速度。该方法同样适用于 vLLM/SGLang 等框架对比：先问测的是曲线上哪个点、功耗/并发口径是什么，再比数字。"
         }
       ]
     },
@@ -7471,6 +7765,24 @@
       "description": "SKILL.md standard 可能扩展 Skill Hub 生态"
     },
     {
+      "source": "ai-inference-asic",
+      "target": "model-harness-codesign",
+      "relation_type": "extends",
+      "description": "co-design 路线从 model+harness 下沉到 model+软件栈+芯片的硬件层"
+    },
+    {
+      "source": "ai-inference-asic",
+      "target": "hybrid-inference-framework-selection",
+      "relation_type": "grounds",
+      "description": "工作点读数法（峰值/最低TBT/matched）为推理框架与硬件选型的 benchmark 解读提供方法论"
+    },
+    {
+      "source": "ai-inference-asic",
+      "target": "prefix-caching",
+      "relation_type": "uses",
+      "description": "KV Cache 管理、prefill/decode 分离是芯片-软件栈联合优化的软件侧对象"
+    },
+    {
       "source": "ai-native-design-tools",
       "target": "ai-native-pipeline",
       "relation_type": "part-of",
@@ -7763,6 +8075,30 @@
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "CLAUDE.md 架构约束是 Harness Engineering 的一部分"
+    },
+    {
+      "source": "computer-use",
+      "target": "agent-loop-architecture",
+      "relation_type": "extends",
+      "description": "action loop 是 agent loop 在 GUI 操作域的实例化：同一循环范式，观察对象换成屏幕状态、动作换成 UI 事件"
+    },
+    {
+      "source": "computer-use",
+      "target": "model-harness-codesign",
+      "relation_type": "grounds",
+      "description": "CLI 无原生 Computer Use 的产品边界推断与服务端工具全家桶现象，为第一方绑定路线提供实证"
+    },
+    {
+      "source": "computer-use",
+      "target": "skill-runtime",
+      "relation_type": "grounds",
+      "description": "\"Skill 可见但 runtime 缺失\"是 skill 声明与执行环境分离的又一实证（与 scripts 断层同构）"
+    },
+    {
+      "source": "computer-use",
+      "target": "harness-portability-spectrum",
+      "relation_type": "grounds",
+      "description": "Skill 跨 CLI/App 可发现但 runtime 不可移植，是可移植性分层的第 3 处独立论证"
     },
     {
       "source": "conjugate-transformation",
@@ -8177,6 +8513,24 @@
       "target": "skill-runtime",
       "relation_type": "constrains",
       "description": "harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束"
+    },
+    {
+      "source": "harness-portability-spectrum",
+      "target": "harness-engineering",
+      "relation_type": "part-of",
+      "description": "可移植性分层是 harness 资产投资决策的一个判据维度，原始 Claim 归口该页"
+    },
+    {
+      "source": "harness-portability-spectrum",
+      "target": "skill-runtime",
+      "relation_type": "uses",
+      "description": "scripts 断层与 runtime 依赖问题界定了 skill 可移植性的下界"
+    },
+    {
+      "source": "harness-portability-spectrum",
+      "target": "model-harness-codesign",
+      "relation_type": "constrains",
+      "description": "第一方绑定路线的服务端工具全家桶（runtime 私有接口）天然压低跨 harness 可移植性"
     },
     {
       "source": "harness-quality-gate",
@@ -9754,6 +10108,8 @@
         "loop-engineering",
         "graph-engineering",
         "agent-loop-architecture",
+        "computer-use",
+        "harness-portability-spectrum",
         "agent-paradigms",
         "context-engineering",
         "context-explosion",
@@ -9852,6 +10208,13 @@
         "grapheme-to-phoneme",
         "intelligent-dictation",
         "realtime-protocol-selection"
+      ]
+    },
+    {
+      "id": "ai",
+      "name": "AI 硬件与推理基础设施",
+      "members": [
+        "ai-inference-asic"
       ]
     },
     {
