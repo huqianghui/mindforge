@@ -203,7 +203,7 @@ stub 设计的动机很清楚：**避免静态说明与 Orca 二进制版本脱�
 1. 第三方补位链路**能用但不等价**——App 原生链路的 bundled skill 明确禁止混用 `osascript`（保证审计一致性），而 CLI 链路里 Agent 可以自由组合 Shell 工具救场。灵活性和可审计性此消彼长，正是系列四讲的产品化取舍在两条链上的现实投影
 2. 窗口焦点是桌面 GUI 自动化的经典暗坑（系列三的 adapter 矩阵里提过），任何执行后端都躲不掉
 
-另一个认知修正与 Orca 本身有关。此前的记录里（[Orca 使用笔记](../../../tool/notes/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)），Orca 的定位是 iPhone—Mac 连接器：手机远程发指令、Mac 上的 CLI Agent 执行、结果回传。这次实测确认 **Computer Use provider 是 Orca 的另一条独立能力线**：
+另一个认知修正与 Orca 本身有关。此前的记录里（[Orca 使用笔记](../../../tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)），Orca 的定位是 iPhone—Mac 连接器：手机远程发指令、Mac 上的 CLI Agent 执行、结果回传。这次实测确认 **Computer Use provider 是 Orca 的另一条独立能力线**：
 
 ```text
 Orca
@@ -305,5 +305,5 @@ orca tab list --json
 
 - 官方文档：[Codex App](https://developers.openai.com/codex/app) · [Codex CLI](https://developers.openai.com/codex/cli) · [Computer Use](https://developers.openai.com/codex/computer-use) · [Browser](https://developers.openai.com/codex/browser) · [Browser extension](https://developers.openai.com/codex/chrome-extension) · [Plugins](https://developers.openai.com/codex/plugins)
 - 本系列：[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)（browser binding 协议与 runtime 引导）、[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)（action loop 与执行后端实现）、[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)（可审计性与安全设计）、[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)（场景路由表）
-- [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](../../../tool/notes/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
+- [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](../../../tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 - [[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]
