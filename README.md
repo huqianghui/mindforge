@@ -229,6 +229,9 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
 - [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
+
+### Notes/tool/Orca
+
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](Notes/tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 - [Orca 使用笔记二——Computer Use 桌面控制与 Codex CLI 补位实践](Notes/tool/Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)
 
