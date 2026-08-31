@@ -110,6 +110,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [InkOS 深度感想——AI 小说创作中的 Harness Engineering 范式](Notes/AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)
 - [Hermes Agent vs OpenClaw 深度技术对比](Notes/AI/agent/hermes-agent-vs-openclaw.md)
 - [AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态](Notes/AI/agent/AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态.md)
+- [Agent Harness 五平台对比——DeepSeek Harness、pi、Codex、OpenHands 与 Goose 的架构哲学与场景选择](Notes/AI/agent/Agent%20Harness五平台对比——DeepSeek%20Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择.md)
 
 ### Notes/AI/agent/computer-use
 
@@ -202,6 +203,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [线性注意力时代的推理架构 · 之三——vLLM 与 SGLang 支持对比与调优](Notes/AI/inference/线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)
 - [SGLang 与 vLLM 的基因之争——为什么 Prefix Sharing × Hybrid 这条线 SGLang 领先](Notes/AI/inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)
 - [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
+- [国内大模型新一轮架构与价格优化——Qwen3.8-Flash 与 GLM-5.3-Flash 的六层降本解剖](Notes/AI/inference/国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖.md)
 
 ### Notes/AI/hardware
 

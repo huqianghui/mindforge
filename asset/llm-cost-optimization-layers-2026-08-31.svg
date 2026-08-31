@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" font-family="-apple-system, 'PingFang SC', 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .flow { stroke: #2dd4bf; stroke-width: 2; fill: none; stroke-dasharray: 6 8; animation: dash 1.6s linear infinite; opacity: .85; }
+      @keyframes dash { to { stroke-dashoffset: -14; } }
+      .pulse { animation: breathe 2.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+      @keyframes breathe { 0%,100% { opacity: .78; } 50% { opacity: 1; } }
+      .layerbox { fill: #042f2e; stroke: #2dd4bf; stroke-width: 1.8; }
+      .trainbox { fill: #1e1b4b; stroke: #818cf8; stroke-width: 1.8; }
+      .ltitle { fill: #f1f5f9; font-size: 14.5px; font-weight: 700; }
+      .lsub { fill: #94a3b8; font-size: 11px; }
+      .lane-label { fill: #64748b; font-size: 12px; font-weight: 600; letter-spacing: 2px; }
+    </style>
+  </defs>
+  <rect width="980" height="620" fill="url(#bgGrad)" rx="12"/>
+  <text x="490" y="34" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="700">六层成本优化如何传导为 API 降价空间（Qwen3.8-Flash / GLM-5.3-Flash，2026-08）</text>
+
+  <!-- lane labels -->
+  <text x="60" y="70" class="lane-label">调用成本线（每次推理的边际成本）</text>
+  <text x="60" y="420" class="lane-label">生产成本线（训练摊销）</text>
+
+  <!-- inference cost lane: 4 layers -->
+  <g>
+    <rect x="40" y="85" width="200" height="72" rx="10" class="layerbox"/>
+    <text x="140" y="112" text-anchor="middle" class="ltitle">① 稀疏激活 + 减层</text>
+    <text x="140" y="130" text-anchor="middle" class="lsub">Qwen 125B总/6B激活</text>
+    <text x="140" y="145" text-anchor="middle" class="lsub">GLM 320B总/18B激活/45层</text>
+
+    <rect x="285" y="85" width="200" height="72" rx="10" class="layerbox"/>
+    <text x="385" y="112" text-anchor="middle" class="ltitle">② 混合注意力</text>
+    <text x="385" y="130" text-anchor="middle" class="lsub">Qwen：GDN×3 + QSA×1</text>
+    <text x="385" y="145" text-anchor="middle" class="lsub">GLM：线性 + 稀疏 + IndexPool</text>
+
+    <rect x="530" y="85" width="200" height="72" rx="10" class="layerbox"/>
+    <text x="630" y="112" text-anchor="middle" class="ltitle">③ 残差信息路由</text>
+    <text x="630" y="130" text-anchor="middle" class="lsub">Qwen：四路 Gated Residual</text>
+    <text x="630" y="145" text-anchor="middle" class="lsub">GLM：mHC 多路径残差</text>
+
+    <rect x="775" y="85" width="170" height="72" rx="10" class="layerbox"/>
+    <text x="860" y="112" text-anchor="middle" class="ltitle">④ N-gram Embedding</text>
+    <text x="860" y="130" text-anchor="middle" class="lsub">51B 表放 CPU 主机内存</text>
+    <text x="860" y="145" text-anchor="middle" class="lsub">容量↑ 而 FLOPs 不同比↑</text>
+  </g>
+  <path class="flow" d="M240 121 L 285 121" marker-end="url(#arrow)"/>
+  <path class="flow" d="M485 121 L 530 121" marker-end="url(#arrow)"/>
+  <path class="flow" d="M730 121 L 775 121" marker-end="url(#arrow)"/>
+
+  <!-- effects row -->
+  <rect x="150" y="205" width="680" height="52" rx="10" fill="#134e4a" stroke="#2dd4bf" stroke-width="1.4" opacity="0.9"/>
+  <text x="490" y="227" text-anchor="middle" fill="#a7f3d0" font-size="13">单 token FLOPs ↓ · KV Cache ↓（GLM 注意力 1/3.01、Cache 1/4.44）· 长上下文成本可控</text>
+  <text x="490" y="246" text-anchor="middle" fill="#a7f3d0" font-size="13">能力靠残差路由与外置记忆保住 → 小主干不掉能力</text>
+  <path class="flow" d="M490 157 L 490 205" marker-end="url(#arrow)"/>
+
+  <!-- system layer -->
+  <g class="pulse">
+    <rect x="245" y="295" width="490" height="70" rx="10" fill="#78350f" stroke="#fbbf24" stroke-width="2"/>
+    <text x="490" y="320" text-anchor="middle" fill="#fcd34d" font-size="14.5" font-weight="700">⑥ 推理系统兑现层（理论降本 → 账单降价的最后一步）</text>
+    <text x="490" y="340" text-anchor="middle" fill="#fde68a" font-size="11.5">GLM：SGLang 专用引擎 · W8A8 · 混合 Cache 量化 · EPD 分离调度</text>
+    <text x="490" y="356" text-anchor="middle" fill="#fde68a" font-size="11.5">国产芯片集群端到端性能 ≈ 初始基线 3 倍</text>
+  </g>
+  <path class="flow" d="M490 257 L 490 295" marker-end="url(#arrow)"/>
+
+  <!-- training lane -->
+  <g>
+    <rect x="40" y="440" width="280" height="72" rx="10" class="trainbox"/>
+    <text x="180" y="467" text-anchor="middle" class="ltitle">⑤ Muon 优化器 + 训练方法</text>
+    <text x="180" y="485" text-anchor="middle" class="lsub">动量正交化 · 免 batch-size warmup</text>
+    <text x="180" y="500" text-anchor="middle" class="lsub">分参数类型混用 Muon/AdamW/Adam</text>
+
+    <rect x="365" y="440" width="280" height="72" rx="10" class="trainbox"/>
+    <text x="505" y="467" text-anchor="middle" class="ltitle">总训练 FLOPs ≈ 前代 1/9</text>
+    <text x="505" y="485" text-anchor="middle" class="lsub">激活参数 1/3 × 训练 token 1/3</text>
+    <text x="505" y="500" text-anchor="middle" class="lsub">架构与优化器共同保住能力下限</text>
+  </g>
+  <path class="flow" d="M320 476 L 365 476" marker-end="url(#arrow)"/>
+  <path class="flow" d="M645 476 C 720 476, 760 420, 770 400" marker-end="url(#arrow)"/>
+  <text x="740" y="455" fill="#818cf8" font-size="11">训练摊销进入长期定价</text>
+
+  <!-- final price node -->
+  <g class="pulse">
+    <rect x="740" y="300" width="205" height="62" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2.4"/>
+    <text x="842" y="326" text-anchor="middle" fill="#5eead4" font-size="15" font-weight="700">API 长期降价空间</text>
+    <text x="842" y="346" text-anchor="middle" fill="#99f6e4" font-size="11">限时折扣只是短期市场价</text>
+  </g>
+  <path class="flow" d="M735 330 L 740 330" marker-end="url(#arrow)"/>
+
+  <!-- caution strip -->
+  <rect x="40" y="548" width="905" height="46" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="492" y="567" text-anchor="middle" fill="#94a3b8" font-size="12.5">选型口径提醒：比的不是每百万 token 单价，而是每成功任务成本 = 尝试次数 ×（新输入+缓存输入+输出+工具调用）+ 延迟 + 人工返工</text>
+  <text x="492" y="585" text-anchor="middle" fill="#64748b" font-size="11.5">DeepSeek 缓存命中价（$0.007 空闲）仍是前缀稳定场景的最低价 —— 峰谷分时 × 缓存命中率决定真实账单</text>
+
+  <!-- moving particles -->
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M240 121 L 285 121 M485 121 L 530 121"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M490 157 L 490 205 L 490 257 L 490 295"/>
+  </circle>
+  <circle r="3.5" fill="#818cf8">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M645 476 C 720 476, 760 420, 770 400"/>
+  </circle>
+</svg>

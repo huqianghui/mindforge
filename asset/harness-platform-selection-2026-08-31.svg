@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="-apple-system, 'PingFang SC', 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <style>
+      .lane { stroke: #334155; stroke-width: 1.6; fill: none; }
+      .flow { stroke: #2dd4bf; stroke-width: 2; fill: none; stroke-dasharray: 6 8; animation: dash 1.6s linear infinite; opacity: .85; }
+      @keyframes dash { to { stroke-dashoffset: -14; } }
+      .pulse { animation: breathe 2.4s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+      @keyframes breathe { 0%,100% { opacity: .75; } 50% { opacity: 1; } }
+      .qtext { fill: #cbd5e1; font-size: 13.5px; }
+      .ptitle { fill: #f1f5f9; font-size: 15px; font-weight: 700; }
+      .psub { fill: #94a3b8; font-size: 11.5px; }
+      .root { fill: #fbbf24; font-size: 16px; font-weight: 700; }
+    </style>
+  </defs>
+  <rect width="980" height="560" fill="url(#bgGrad)" rx="12"/>
+  <text x="490" y="34" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="700">Agent Harness 五平台场景路由（2026-08）</text>
+
+  <!-- root node -->
+  <g class="pulse">
+    <rect x="40" y="250" width="150" height="64" rx="12" fill="#78350f" stroke="#fbbf24" stroke-width="2"/>
+    <text x="115" y="277" text-anchor="middle" class="root">我的诉求是？</text>
+    <text x="115" y="298" text-anchor="middle" fill="#fcd34d" font-size="11.5">先问场景，再选平台</text>
+  </g>
+
+  <!-- connectors -->
+  <path class="lane" d="M190 282 C 260 282, 270 80, 340 80"/>
+  <path class="flow" d="M190 282 C 260 282, 270 80, 340 80"/>
+  <path class="lane" d="M190 282 C 260 282, 270 185, 340 185"/>
+  <path class="flow" d="M190 282 C 260 282, 270 185, 340 185"/>
+  <path class="lane" d="M190 282 L 340 282"/>
+  <path class="flow" d="M190 282 L 340 282"/>
+  <path class="lane" d="M190 282 C 260 282, 270 385, 340 385"/>
+  <path class="flow" d="M190 282 C 260 282, 270 385, 340 385"/>
+  <path class="lane" d="M190 282 C 260 282, 270 490, 340 490"/>
+  <path class="flow" d="M190 282 C 260 282, 270 490, 340 490"/>
+
+  <!-- question boxes -->
+  <g>
+    <rect x="340" y="55" width="300" height="50" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.4"/>
+    <text x="490" y="76" text-anchor="middle" class="qtext">日常 coding 主力，深度用 GPT 订阅，</text>
+    <text x="490" y="94" text-anchor="middle" class="qtext">要 App/浏览器/移动端一体化体验</text>
+
+    <rect x="340" y="160" width="300" height="50" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.4"/>
+    <text x="490" y="181" text-anchor="middle" class="qtext">要拆开/替换 harness 内部件：换 loop、</text>
+    <text x="490" y="199" text-anchor="middle" class="qtext">挂多家 CLI 做 sub-agent、轨迹全落盘</text>
+
+    <rect x="340" y="257" width="300" height="50" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.4"/>
+    <text x="490" y="278" text-anchor="middle" class="qtext">要最小可自改内核：context engineering</text>
+    <text x="490" y="296" text-anchor="middle" class="qtext">实验、嵌入自己产品（SDK/RPC）</text>
+
+    <rect x="340" y="360" width="300" height="50" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.4"/>
+    <text x="490" y="381" text-anchor="middle" class="qtext">要云端/CI 无人值守：issue→PR、定时任务、</text>
+    <text x="490" y="399" text-anchor="middle" class="qtext">企业沙箱隔离、benchmark 评测底座</text>
+
+    <rect x="340" y="465" width="300" height="50" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.4"/>
+    <text x="490" y="486" text-anchor="middle" class="qtext">非编码自动化为主：MCP 生态直连、</text>
+    <text x="490" y="504" text-anchor="middle" class="qtext">团队共享可复跑的 Recipe 工作流</text>
+  </g>
+
+  <!-- connectors to platforms -->
+  <path class="lane" d="M640 80 L 710 80"/><path class="flow" d="M640 80 L 710 80"/>
+  <path class="lane" d="M640 185 L 710 185"/><path class="flow" d="M640 185 L 710 185"/>
+  <path class="lane" d="M640 282 L 710 282"/><path class="flow" d="M640 282 L 710 282"/>
+  <path class="lane" d="M640 385 L 710 385"/><path class="flow" d="M640 385 L 710 385"/>
+  <path class="lane" d="M640 490 L 710 490"/><path class="flow" d="M640 490 L 710 490"/>
+
+  <!-- platform boxes -->
+  <g>
+    <rect x="710" y="52" width="230" height="56" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="825" y="76" text-anchor="middle" class="ptitle">Codex</text>
+    <text x="825" y="96" text-anchor="middle" class="psub">第一方绑定 · CLI+App 双形态</text>
+
+    <rect x="710" y="157" width="230" height="56" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="825" y="181" text-anchor="middle" class="ptitle">DeepSeek Harness</text>
+    <text x="825" y="201" text-anchor="middle" class="psub">Everything is a Plugin · Cordis</text>
+
+    <rect x="710" y="254" width="230" height="56" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="825" y="278" text-anchor="middle" class="ptitle">pi</text>
+    <text x="825" y="298" text-anchor="middle" class="psub">极简可自改 · primitives not features</text>
+
+    <rect x="710" y="357" width="230" height="56" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="825" y="381" text-anchor="middle" class="ptitle">OpenHands</text>
+    <text x="825" y="401" text-anchor="middle" class="psub">Agent SDK + Cloud · agent-agnostic</text>
+
+    <rect x="710" y="462" width="230" height="56" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="825" y="486" text-anchor="middle" class="ptitle">Goose</text>
+    <text x="825" y="506" text-anchor="middle" class="psub">MCP-native · Recipe YAML</text>
+  </g>
+
+  <!-- moving particles on main branches -->
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M190 282 C 260 282, 270 80, 340 80 L 640 80 L 710 80"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" begin="0.6s" repeatCount="indefinite" path="M190 282 C 260 282, 270 185, 340 185 L 640 185 L 710 185"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" begin="1.2s" repeatCount="indefinite" path="M190 282 L 340 282 L 640 282 L 710 282"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" begin="1.8s" repeatCount="indefinite" path="M190 282 C 260 282, 270 385, 340 385 L 640 385 L 710 385"/>
+  </circle>
+  <circle r="3.5" fill="#2dd4bf">
+    <animateMotion dur="3s" begin="2.4s" repeatCount="indefinite" path="M190 282 C 260 282, 270 490, 340 490 L 640 490 L 710 490"/>
+  </circle>
+</svg>
