@@ -1,7 +1,7 @@
 ---
 title: "前缀缓存（Prefix Caching）"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -76,8 +76,19 @@ related:
 
 > 社区实测（Qwen3.6-27B + vLLM nightly）：**关掉 speculative decoding 后 prefix cache 命中恢复**——命中 0 时优先试这一招。冲突根源不是 prefill/decode 阶段之争，而是 Hybrid 状态管理瓶颈：① 推测解码的"验证"本质是 decode 期的一次小 prefill，要推进 Mamba/GDN 循环状态，碰到和 prefix caching 同一套机器；② 两者都要线性层状态的细粒度存档/回滚（prefix caching 在前缀边界存档、spec decoding 在候选被拒时回滚），而循环状态原地更新、只能 chunk 边界 checkpoint，这能力本就稀缺却被同时争用；③ 推测解码让每步推进的 token 数变长且可变，打乱 prefix-cache 块的对齐边界（叠加在 vLLM 528-token block 对齐之上）→ 任何前缀块都匹配不上 → 命中恒 0。落地顺序：查日志确认 → 显式开 `--enable-prefix-caching` → 关掉 speculative decoding → 仍不行换 SGLang（MambaRadixCache）→ 或小规模退用 llama.cpp。
 
+### Claim: 缓存经济学首次有跨厂商价格实证——缓存命中价是独立竞争维度，prompt 结构越稳定越占优
+
+- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.8
+- **状态**：active
+
+> 截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于"token 单价"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从"开不开"变成"何时命中、命中多少、什么时段"三维账。
+
 ## 冲突与演进
 
+- 2026-09-04：注入六层降本文 Claim——缓存经济学获得首个跨厂商价格实证维度（此前 Claims 聚焦命中率机制，本条补商业面）。页面脱离 stale（08-21 曾跨线）。
 - 2026-06-22：从 Qwen3.5 缓存命中归零的真实客户问题出发，理清 prefix caching 的两条隐含假设、线性注意力循环状态如何三条全破、Hybrid 双缓存难题、多模态与 speculative decoding 两个叠加杀手。
 
 ## 关联概念
@@ -89,3 +100,4 @@ related:
 - [[2026-06-22-周一]] — speculative decoding 与 prefix caching 在 Hybrid 上的冲突、客户落地分步处理
 - [[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching]] — 两条假设、三个障碍、双缓存难题、多模态杀手
 - [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]] — vLLM Hybrid KV Cache Manager 与 SGLang MambaRadixCache 框架支持对比
+- [[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]] — 跨厂商缓存命中价对比、峰谷分时计费、prompt 结构稳定性选型判据

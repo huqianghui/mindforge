@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-08-30"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -79,6 +79,26 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 > 三个实例共享"声明处处可见、runtime 决定归属"结构：Computer Use（CLI 缺 `@oai/sky` → Orca 客户端补）、Browser Use（CLI 缺 Browser runtime → Orca 内嵌 Browser/Playwright 客户端补）、Web Search（换 Bedrock/Vertex/Databricks 代理后服务端执行器消失 → Tavily MCP 客户端补/LiteLLM 代理层拦截/browser use 开 Google 反向补）。规律：**web search 无本地状态，三层都能补；browser use 依赖登录态、computer use 依赖桌面与系统权限，只能客户端补**。"自带搜索"的产品全是第一方闭环（模型和搜索执行器同服务端）——服务端工具全家桶是第一方绑定的隐性福利。
 
+### Claim: 服务端工具断供要分两层判断——端点层有无执行器 × harness 层肯不肯发声明，断供点越上游可补位层越少
+
+- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **首次出现**：2026-08-30
+- **最近更新**：2026-09-04
+- **置信度**：0.85
+- **状态**：active
+
+> Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是"端点无执行器、声明发了没人执行"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救"断在端点层"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述"当前会话没有向我暴露 web_search 工具"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。
+
+### Claim: 判定工具执行位置的五条指纹需多条交叉——弹本地权限恰证执行器在本地；管道决定能力下限、模型性格决定实际走几级梯
+
+- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.8
+- **状态**：active
+
+> VS Code 三模型对照实验（GPT-5.6 Sol / Gemini 3.7 Flash / Grok 4.6，同一问题只换模型）：三者搜索 Output schema 完全相同（`url_citation` 锚点 + `bing_searches`），证明走的是 Copilot 服务端统一管道而非某家模型厂商的 hosted search——Gemini 数据点起证伪作用（Google 自家 grounding 是另一套 `groundingMetadata` 格式）。五条判定指纹：① 工具名前缀（`mcp_` → MCP）；② Output schema（鉴别哪条管道格式化了结果，**不能**直接等同哪家执行）；③ 客户端有无对应物（没装扩展还能搜 → 服务端）；④ 换模型对照（schema 随模型变 → 挂模型；不变 → 挂管道层）；⑤ 权限弹窗位置——**弹本地权限恰恰证明执行器在本地**，这是执行位置最硬的指纹。元教训：单一指纹会误判（只看 schema 曾把统一管道误认成 OpenAI hosted），换模型对照这类控制变量实验一次就能分离管道层与模型层。真正的行为差异变量是模型性格：GPT/Gemini 信任搜索成品直接成文，Grok 自发沿三级梯下探（本地 fetch Yahoo 交叉验证触发权限弹窗）——管道决定能力下限，模型性格决定实际走几级梯。
+
 ### Claim: UI 层天然残缺、数据层天然完整——DOM 虚拟化是页面性质而非工具缺陷
 
 - **来源**：[[Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验]]
@@ -102,6 +122,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 ## 冲突与演进
 
 - 2026-08-30：建页。系列一~七 + Orca 使用笔记二共 8 篇（2026-08-29~30 成文）提供完整素材；browser-use 不单独建页（包含关系即本页第一条 Claim）；action-loop、semantic-first-coordinate-fallback 按"避免同批次碎片化"作页内 Claims 收入。
+- 2026-09-04：注入系列七 08-30/08-31 三波修订的两条新 Claim——两层判断框架（端点层×harness 层，Codex+Azure 断供解剖 + Scout 镜像）与五条执行位置判定指纹（三模型对照实验）。"执行位置决定能力归属"从单层判断细化为两层判断。
 
 ## 关联概念
 

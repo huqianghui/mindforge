@@ -1,7 +1,7 @@
 ---
 title: "Harness 可移植性分层"
 created: "2026-08-30"
-updated: "2026-08-30"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -67,9 +67,20 @@ related:
 
 > agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。
 
+### Claim: "搬家工具"成为产品类目——切换成本真实存在但正在被工程化消解，可流动的只有可移植层
+
+- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.75
+- **状态**：active
+
+> 2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——"搬家工具"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了"离模型越近越可移植"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。
+
 ## 冲突与演进
 
 - 2026-08-30：升格建页（用户裁决）。2026-08-04 HOLD 于 harness-engineering 页内 Claim；复核阈值"第 2 篇独立引用"被系列14（08-20）与 Computer Use 系列六（08-29）两次命中后解除。harness-engineering 页保留原始 Claim（Copilot Studio 证据），本页作分层判据的归口页并补 runtime 维度精确化。
+- 2026-09-04：注入首批续证——五平台横评的"搬家工具成产品类目"市场侧实证（建页后第 4 处独立来源）。
 
 ## 关联概念
 

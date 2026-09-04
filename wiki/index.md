@@ -216,6 +216,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[gsd-project-scale-selection]] — GSD 项目规模分级与工具选择
 - [[pre-run-three-number-accounting]] — 先算账再开跑：σ_d / δ_min / δ_remain 三个数判断式，几分钟算术省一次无效训练
 - [[prompt-optimization-maturity-ladder]] — Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环的迁移判定
+- [[throughput-latency-operating-point]] — 工作点读数法：解读推理 benchmark 先定位工作点、还原口径基线、区分内核级与端到端，换算到自己负载
 
 ### Workflow（工作流）
 

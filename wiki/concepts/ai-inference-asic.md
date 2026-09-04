@@ -1,7 +1,7 @@
 ---
 title: "AI 推理 ASIC"
 created: "2026-08-30"
-updated: "2026-08-30"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -77,8 +77,19 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 > 官方原话 "when we design the full system together"：模型、推理软件栈（continuous batching、KV Cache 管理、prefill/decode 分离）、芯片架构由同一家公司联合优化——Agent=Model+Harness 的 co-design 路线延伸到硅层。头部模型厂商自研 ASIC 已成趋势（TPU、Trainium/Inferentia 之后），NVIDIA 通用 GPU 面对"每个大客户都在造专用赛车"的格局。另一个可能更重要的信号：九个月 ASIC 周期部分归功于用自家 AI 模型辅助芯片设计——芯片设计迭代速度被 AI 加速后，专用芯片"设计慢、赌错架构就沉没"的传统风险模型会被改写。
 
+### Claim: 国产芯片侧的 co-design 实证——架构×硬件联合设计把国产加速器拉近 NVIDIA 水平；"3 倍端到端"与"训练 1/9"都要先还原口径
+
+- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.75
+- **状态**：active
+
+> GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①"端到端性能提升 3 倍"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②"训练开销只有前代 1/9"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。
+
 ## 冲突与演进
 
+- 2026-09-04：注入六层降本文的国产芯片 co-design 实证与两组口径澄清——建页后首批续证（"co-design 下沉硅层"Claim 获国产侧对照样本）。
 - 2026-08-30：建页（用户裁决，vault 硬件方向首篇即建锚点页；harvest 原建议挂候选等第 2 篇）。throughput-latency 工作点读数法按 harvest 建议不独立建方法页，作页内 Claim 收入并同步注入 [[hybrid-inference-framework-selection]]。
 
 ## 关联概念
@@ -90,3 +101,4 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 ## 来源日记
 
 - [[2026-08-26-周三]] — Jalapeño 文章成文（官方首测结果解读）
+- [[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]] — 国产芯片 co-design 实证、"3 倍/1-9"口径澄清

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-30",
+  "generated_at": "2026-09-04",
   "stats": {
-    "nodes": 122,
-    "links": 414,
+    "nodes": 123,
+    "links": 416,
     "orphan_links_removed": 0,
-    "claims": 566,
+    "claims": 581,
     "categories": 11
   },
   "nodes": [
@@ -139,8 +139,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
-      "avg_confidence": 0.81,
+      "claims_count": 11,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "框架是一条 9 模块数据流脊柱 + 控制反转",
@@ -231,6 +231,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。"
+        },
+        {
+          "statement": "dsh session log（单一事实源 + trajectory 视图）是真实工作负载轨迹采集的候选前端——APO→SFT→RL 阶梯最缺的一环",
+          "source": "Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "DeepSeek Harness 的 session log 是\"模型可见事实的唯一来源\"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将\"轨迹采集/可审计执行（喂 RL、合规审计）\"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh \"loop 也是 plugin\" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。"
         }
       ]
     },
@@ -474,7 +483,7 @@
       "category": "AI 硬件与推理基础设施",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 6,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -521,6 +530,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "官方原话 \"when we design the full system together\"：模型、推理软件栈（continuous batching、KV Cache 管理、prefill/decode 分离）、芯片架构由同一家公司联合优化——Agent=Model+Harness 的 co-design 路线延伸到硅层。头部模型厂商自研 ASIC 已成趋势（TPU、Trainium/Inferentia 之后），NVIDIA 通用 GPU 面对\"每个大客户都在造专用赛车\"的格局。另一个可能更重要的信号：九个月 ASIC 周期部分归功于用自家 AI 模型辅助芯片设计——芯片设计迭代速度被 AI 加速后，专用芯片\"设计慢、赌错架构就沉没\"的传统风险模型会被改写。"
+        },
+        {
+          "statement": "国产芯片侧的 co-design 实证——架构×硬件联合设计把国产加速器拉近 NVIDIA 水平；\"3 倍端到端\"与\"训练 1/9\"都要先还原口径",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①\"端到端性能提升 3 倍\"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②\"训练开销只有前代 1/9\"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。"
         }
       ]
     },
@@ -1491,8 +1509,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.74,
+      "claims_count": 9,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
@@ -1538,6 +1556,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "三个实例共享\"声明处处可见、runtime 决定归属\"结构：Computer Use（CLI 缺 `@oai/sky` → Orca 客户端补）、Browser Use（CLI 缺 Browser runtime → Orca 内嵌 Browser/Playwright 客户端补）、Web Search（换 Bedrock/Vertex/Databricks 代理后服务端执行器消失 → Tavily MCP 客户端补/LiteLLM 代理层拦截/browser use 开 Google 反向补）。规律：**web search 无本地状态，三层都能补；browser use 依赖登录态、computer use 依赖桌面与系统权限，只能客户端补**。\"自带搜索\"的产品全是第一方闭环（模型和搜索执行器同服务端）——服务端工具全家桶是第一方绑定的隐性福利。"
+        },
+        {
+          "statement": "服务端工具断供要分两层判断——端点层有无执行器 × harness 层肯不肯发声明，断供点越上游可补位层越少",
+          "source": "Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移",
+          "first_seen": "2026-08-30",
+          "last_updated": "2026-09-04",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是\"端点无执行器、声明发了没人执行\"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救\"断在端点层\"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述\"当前会话没有向我暴露 web_search 工具\"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。"
+        },
+        {
+          "statement": "判定工具执行位置的五条指纹需多条交叉——弹本地权限恰证执行器在本地；管道决定能力下限、模型性格决定实际走几级梯",
+          "source": "Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "VS Code 三模型对照实验（GPT-5.6 Sol / Gemini 3.7 Flash / Grok 4.6，同一问题只换模型）：三者搜索 Output schema 完全相同（`url_citation` 锚点 + `bing_searches`），证明走的是 Copilot 服务端统一管道而非某家模型厂商的 hosted search——Gemini 数据点起证伪作用（Google 自家 grounding 是另一套 `groundingMetadata` 格式）。五条判定指纹：① 工具名前缀（`mcp_` → MCP）；② Output schema（鉴别哪条管道格式化了结果，**不能**直接等同哪家执行）；③ 客户端有无对应物（没装扩展还能搜 → 服务端）；④ 换模型对照（schema 随模型变 → 挂模型；不变 → 挂管道层）；⑤ 权限弹窗位置——**弹本地权限恰恰证明执行器在本地**，这是执行位置最硬的指纹。元教训：单一指纹会误判（只看 schema 曾把统一管道误认成 OpenAI hosted），换模型对照这类控制变量实验一次就能分离管道层与模型层。真正的行为差异变量是模型性格：GPT/Gemini 信任搜索成品直接成文，Grok 自发沿三级梯下探（本地 fetch Yahoo 交叉验证触发权限弹窗）——管道决定能力下限，模型性格决定实际走几级梯。"
         },
         {
           "statement": "UI 层天然残缺、数据层天然完整——DOM 虚拟化是页面性质而非工具缺陷",
@@ -2866,7 +2902,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 22,
+      "claims_count": 23,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -3066,6 +3102,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**\"变简单\"是表象，实质是职责归位**——框架竞争维度从\"机制精巧\"变成\"方法论文本质量\"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。"
+        },
+        {
+          "statement": "编排接入别家 agent 的镜像两式——dsh \"loop 内挂 sub-agent\" vs OpenHands \"loop 外包住执行体\"",
+          "source": "Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像\"编排层/胶水\"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"——loop 内（能力件级）还是 loop 外（架构层级）。"
         }
       ]
     },
@@ -3084,8 +3129,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.78,
+      "claims_count": 5,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "离模型越近越可移植——skill/MCP 高、prompt 中、subagent/hook/command 低",
@@ -3122,6 +3167,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。"
+        },
+        {
+          "statement": "\"搬家工具\"成为产品类目——切换成本真实存在但正在被工程化消解，可流动的只有可移植层",
+          "source": "Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——\"搬家工具\"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了\"离模型越近越可移植\"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。"
         }
       ]
     },
@@ -3255,8 +3309,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.84,
+      "claims_count": 5,
+      "avg_confidence": 0.83,
       "claims": [
         {
           "statement": "三类架构的本质差异在\"记忆怎么存\"",
@@ -3293,6 +3347,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到\"多模态图像在前导致无公共前缀\"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。"
+        },
+        {
+          "statement": "Hybrid 路线进入商用兑现期——Qwen GDN+QSA 3:1 与 GLM 线性+稀疏+IndexPool 双实现同构；内核级读数 ≠ 端到端读数",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "2026-08-26 同日发布的两款 Flash 模型把 Hybrid 架构推进到\"降价武器\"阶段：**Qwen3.8-Flash-Next** 每四层一周期（三层 GDN + 一层 Qwen Sparse Attention——轻量索引器把历史序列压成 micro-block 四倍压缩、块级筛相关性、注意力 token 预算约 2048）；**GLM-5.3-Flash** 线性注意力管局部连续 + 稀疏注意力管全局检索 + IndexPool 加权池化压索引 key。两家独立收敛到\"多数线性层 + 少数稀疏全局层\"，续证交错堆叠主线。读数口径警示：Qwen 官方\"1M 上下文 Prefill 快 7.6×/Decode 快 4.9×\"是**注意力模块的内核级加速，不代表完整 API 请求同比例快**（还有 MoE、输出层、通信、调度）；GLM\"注意力计算量 1/3.01、KV Cache 1/4.44\"同为组件级读数，且官方承认 KV Cache 仍大于 Kimi-K3 / DeepSeek-V4-Flash。混合注意力最大的商业价值不是单次请求便宜几分钱，而是**让长时间运行的 Agent 不至于在后半程成本失控**。"
         }
       ]
     },
@@ -3877,8 +3940,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.81,
+      "claims_count": 10,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Agent = Model + Harness——模型是引擎，harness 是整辆车",
@@ -3951,6 +4014,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 \"design the full system together\"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品\"天然自带\"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走\"Tavily+用户自带 key\"，坐实了平台不为开放工具层垫付成本的商业逻辑。"
+        },
+        {
+          "statement": "搜索挂载点决定覆盖面——挂推理 API 随模型走、挂应用入口只随入口走；能力归属跟请求落点走、不跟产品形态走",
+          "source": "Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移",
+          "first_seen": "2026-08-30",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Copilot 同一产品内演示了四种搜索挂载点：`@github #web`（应用层，Bing 执行器钉死在 chat participant 服务端管道，agent 循环够不着）→ \"Web Search for Copilot\" 扩展（客户端工具层补裂缝，微软自家出品却由 Tavily 驱动、用户自带 key）→ model-native search（推理层，2026-02 起对 GPT-5.x 系启用，agent 循环天然继承）→ Azure Grounding with Bing（执行在服务端、账单在用户侧的第三计费形态）。规律：**挂载点越靠上层覆盖面越窄**，同一产品内部越容易出现\"这里有、那里没有\"的裂缝；`#web`→Tavily 扩展→model-native 的时间线就是挂载点一路下移、覆盖面扩大的过程。Microsoft Scout 提供第三形态镜像：本地 harness 整体挂靠 GitHub Copilot 闭环（烧 Copilot credits、继承模型目录），web research 开箱即用——与 Codex + Azure 把请求指出闭环、工具随之断供恰成镜像，**能力归属跟请求落点走、不跟产品形态走**在两个方向都成立。"
+        },
+        {
+          "statement": "多模型阵营内部按\"可分解程度\"再分层——插件化/自改源码/SDK 分层/协议标准化四种\"可拆\"实现",
+          "source": "Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "五平台横评给绑定光谱补了第二维：绑定 × 可分解的十字定位。Codex 绑定深 + 不可拆（体验最完整、控制权最少，loop 与 session 存储不可替换）；多模型阵营内部按可分解方式分四型——**dsh** 插件化（Cordis 内核 + capability seams，loop 也是插件，sub-agent seam 五 provider 含 Codex/Claude Code）；**pi** 极简内核可自改（primitives not features，空 system prompt + 四工具，self-modifying 一等公民）；**OpenHands** SDK 分层（agent 逻辑/远程沙箱/接口层解耦，拆的粒度是架构层而非能力件）；**Goose** 协议标准化（extension 即 MCP server，把拆解外包给 MCP/ACP 标准）。选型核心判据不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"。"
         }
       ]
     },
@@ -4617,8 +4698,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.84,
+      "claims_count": 6,
+      "avg_confidence": 0.83,
       "claims": [
         {
           "statement": "prefix caching 成立的两条隐含假设",
@@ -4664,6 +4745,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "社区实测（Qwen3.6-27B + vLLM nightly）：**关掉 speculative decoding 后 prefix cache 命中恢复**——命中 0 时优先试这一招。冲突根源不是 prefill/decode 阶段之争，而是 Hybrid 状态管理瓶颈：① 推测解码的\"验证\"本质是 decode 期的一次小 prefill，要推进 Mamba/GDN 循环状态，碰到和 prefix caching 同一套机器；② 两者都要线性层状态的细粒度存档/回滚（prefix caching 在前缀边界存档、spec decoding 在候选被拒时回滚），而循环状态原地更新、只能 chunk 边界 checkpoint，这能力本就稀缺却被同时争用；③ 推测解码让每步推进的 token 数变长且可变，打乱 prefix-cache 块的对齐边界（叠加在 vLLM 528-token block 对齐之上）→ 任何前缀块都匹配不上 → 命中恒 0。落地顺序：查日志确认 → 显式开 `--enable-prefix-caching` → 关掉 speculative decoding → 仍不行换 SGLang（MambaRadixCache）→ 或小规模退用 llama.cpp。"
+        },
+        {
+          "statement": "缓存经济学首次有跨厂商价格实证——缓存命中价是独立竞争维度，prompt 结构越稳定越占优",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于\"token 单价\"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从\"开不开\"变成\"何时命中、命中多少、什么时段\"三维账。"
         }
       ]
     },
@@ -7173,6 +7263,53 @@
       ]
     },
     {
+      "id": "throughput-latency-operating-point",
+      "type": "method",
+      "title": "工作点读数法（Throughput-Latency Operating Point）",
+      "summary": "解读任何推理性能 benchmark（芯片、框架、模型 API）时的防误读方法：厂商公布的每个数字都是**吞吐—延迟曲线上某个工作点**在**某种口径**下的读数，直接拿数字比大小必然误判。同一对硬件能同时给出 1.9× 和 104× 两套不矛盾的数字（Jalapeño vs GB300），同一个模型能同时宣称\"Prefill 快 7.6×\"和账单只降三成（内核级 vs 端到端）——方法的核心动作是：先定位工作点、再还原口径与基线、区分组件级与端到端读数，最后换算到自己的负载形状。\n\n两次独立实践验证：OpenAI Jalapeño 首测解读（2026-08-26，硬件对比场景）与 Qwen3.8/GLM-5.3-Flash 六层降本解剖（2026-08-31，架构降本与价格战场景）。2026-08-30 曾裁决 HOLD 归口 Claims，2026-09-04 因第 2 次实践命中复核阈值升格为方法页。",
+      "tags": [
+        "wiki",
+        "method",
+        "inference",
+        "benchmark",
+        "hardware"
+      ],
+      "category": "",
+      "method_type": "decision-framework",
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "同一对硬件可以同时给出 1.9× 与 104× 两套不矛盾的数字——它们是吞吐—延迟曲线上不同工作点的读数",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "峰值 mixed TPS/kW（1.5~1.9×）=极限产能；最低 TBT（2.7~4.1×）=单用户最快解码；matched TBT 下的吞吐（53~104×）=把对手最快单用户速度设为共同约束后比较仍能承载的并发量。餐厅类比：104× 不是\"上菜快 104 倍\"而是\"相同上菜速度下能服务的顾客数差 104 倍\"。详版 Claim 归口 [[ai-inference-asic]] 与 [[hybrid-inference-framework-selection]]（08-30 注入）。"
+        },
+        {
+          "statement": "内核级读数 ≠ 端到端读数；\"相对自己\"的提升 ≠ 可横比的优势——第 2 次实践把方法从硬件对比扩展到架构降本归因",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "六层降本解剖通篇是读数法的第二场景实践：QSA\"Prefill 7.6×\"是注意力内核级而非 API 端到端；GLM\"3 倍端到端\"是相对相同硬件初始基线的自我提升；\"训练 1/9 FLOPs\"是激活 1/3 × token 1/3 的乘积读法；峰谷分时计费（DeepSeek 峰谷 2× 价差）把\"何时测\"也变成口径变量。方法的适用面由此从\"芯片 benchmark\"扩展到\"架构优化的降价归因\"——两个场景共享同一套动作：定位工作点 → 还原口径 → 区分层级 → 换算自身负载。"
+        },
+        {
+          "statement": "度量口径即立场——per-kW vs per-chip、峰时 vs 谷时，读任何厂商数字前先确认分母",
+          "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-09-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "OpenAI 主张 per-kW（电力是数据中心第一约束——合理叙事，但 700W vs 1400W 的功耗口径贡献了一半账面优势）；DeepSeek 用峰谷分时把\"什么时段\"变成价格分母。口径选择既是工程叙事也是营销框架，两次实践中口径还原都改变了直接读数的结论方向。"
+        }
+      ]
+    },
+    {
       "id": "voice-cascaded-pipeline",
       "type": "method",
       "title": "语音级联管线架构",
@@ -7383,7 +7520,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
+      "claims_count": 5,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -7412,6 +7549,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "推理性能选型读 benchmark 时的可复用方法论（Jalapeño vs GB300 实例）：同一对硬件/框架能同时给出 1.9× 和 104× 两套数字而不矛盾，因为它们是**吞吐—延迟曲线上不同工作点**的读数——峰值 mixed TPS/kW 描述极限产能、最低 TBT 描述单用户最快解码、matched TBT 下的吞吐描述\"相同响应速度约束下的并发承载\"（后者对交互式 serving 选型最相关，但绝不能读成整体性能倍数）。mixed TPS 口径含输入+输出 token 总量、除以标称功耗，非单用户输出速度。该方法同样适用于 vLLM/SGLang 等框架对比：先问测的是曲线上哪个点、功耗/并发口径是什么，再比数字。"
+        },
+        {
+          "statement": "六层降本归因拆分——架构定长期价格下限、推理系统定可售吞吐、限时折扣定短期市场价；选型口径应升级为\"每成功任务成本\"",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "2026-08 价格战的正确归因拆分：**架构降本（稀疏激活/混合注意力/残差路由/N-gram/训练方法）决定长期价格下限；推理系统（量化/内核/EPD 集群）决定实际可售吞吐；限时折扣与免费额度负责短期获客；融资与份额策略决定厂商保留多少利润**——\"免费承接 DeepSeek 涨价\"的说法不准确（两家 API 都非永久免费，开源权重 ≠ 免费推理）。选型口径应从\"每百万 token 单价\"升级为**每成功任务成本**：任务成本 = 尝试次数 ×（新输入 + 缓存输入 + 输出 + 工具调用）+ 延迟成本 + 人工返工成本——便宜模型重试三次就比一次做对的贵模型更贵。监控指标：每成功任务成本、首次成功率、平均重试次数、缓存命中率、P50/P95 完成时间、工具调用成功率。降低 reasoning effort 单轮更快，但分析不足导致失败返工，总 token 反而可能增加（Qwen 官方自己提醒）。"
+        },
+        {
+          "statement": "GLM-5.3-Flash 基于 SGLang 的专用引擎 + EPD 分离架构——\"SGLang 基因领先\"获生产级强续证",
+          "source": "国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "GLM-5.3-Flash（混合线性+稀疏注意力架构）的推理栈选择正是 SGLang：基于 SGLang 构建专用引擎，叠加线性注意力与 LM Head 的节点内张量并行、ReplaySSM、W8A8 量化、INT8/FP8/BF16 混合 Cache 量化、Layer Split，以及 **EPD 分离架构**（Encode/Prefill/Decode 拆成独立工作池分别扩缩容）。头部厂商为 Hybrid 模型的生产 serving 选 SGLang 做底座，是\"Hybrid 这条线 SGLang 基因领先\"判断的最强生产级续证。理论 FLOPs 降低 ≠ 账单降价——推理系统兑现层（内存带宽、通信、批处理效率、长短请求干扰、集群调度）才把架构优势变成毛利空间。"
         }
       ]
     },
@@ -9923,6 +10078,18 @@
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "Token 优化是 Harness 工程的效率环节"
+    },
+    {
+      "source": "throughput-latency-operating-point",
+      "target": "ai-inference-asic",
+      "relation_type": "grounds",
+      "description": "方法首次成形于 Jalapeño benchmark 解读，该页保留硬件场景的详版 Claim"
+    },
+    {
+      "source": "throughput-latency-operating-point",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "grounds",
+      "description": "内核级 vs 端到端读数为混合注意力的商用数字解读提供口径框架"
     },
     {
       "source": "voice-cascaded-pipeline",

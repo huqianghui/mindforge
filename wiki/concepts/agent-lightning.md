@@ -1,7 +1,7 @@
 ---
 title: "Agent Lightning"
 created: "2026-06-29"
-updated: "2026-07-07"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -132,11 +132,22 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 > agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。
 
+### Claim: dsh session log（单一事实源 + trajectory 视图）是真实工作负载轨迹采集的候选前端——APO→SFT→RL 阶梯最缺的一环
+
+- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]、[[2026-09-02-周三]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.5
+- **状态**：active
+
+> DeepSeek Harness 的 session log 是"模型可见事实的唯一来源"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将"轨迹采集/可审计执行（喂 RL、合规审计）"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh "loop 也是 plugin" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。
+
 ## 冲突与演进
 
 - 2026-06-25：系列02 纠正系列01——SFT 不是内置算法类，而是走自定义算法扩展点（继承 `Algorithm` + `run()`）。
 - 2026-06-29：从系列07 与 Slime vs VERL 对比补充——对 VERL 是架构锁定（Agent RL=系统问题）、数据流飞轮与 Slime 同构但不同层，接入 verl/slime-rl-framework 概念页。
 - 2026-07-03：从系列08 实战篇细化架构锁定 Claim——加入版本窗口证据（0.3.1↔verl≤0.7.0，verl 0.8.0 删 fsdp_workers），置信度 0.8→0.85。
+- 2026-09-04：注入 dsh session log 轨迹采集前端 Claim（五平台横评 + 日记 DSH 深挖场景 3）——框架首次获得"真实工作负载轨迹来源"的候选拼图，置信度 0.5 待 DSH 前置验证（headless/事件钩子）后调整。
 
 ## 关联概念
 

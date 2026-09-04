@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 线性注意力架构（Hybrid Linear-Attention Architecture）"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-09-04"
 tags:
   - wiki
   - concept
@@ -67,8 +67,19 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 
 > 真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到"多模态图像在前导致无公共前缀"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。
 
+### Claim: Hybrid 路线进入商用兑现期——Qwen GDN+QSA 3:1 与 GLM 线性+稀疏+IndexPool 双实现同构；内核级读数 ≠ 端到端读数
+
+- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **首次出现**：2026-08-31
+- **最近更新**：2026-09-04
+- **置信度**：0.8
+- **状态**：active
+
+> 2026-08-26 同日发布的两款 Flash 模型把 Hybrid 架构推进到"降价武器"阶段：**Qwen3.8-Flash-Next** 每四层一周期（三层 GDN + 一层 Qwen Sparse Attention——轻量索引器把历史序列压成 micro-block 四倍压缩、块级筛相关性、注意力 token 预算约 2048）；**GLM-5.3-Flash** 线性注意力管局部连续 + 稀疏注意力管全局检索 + IndexPool 加权池化压索引 key。两家独立收敛到"多数线性层 + 少数稀疏全局层"，续证交错堆叠主线。读数口径警示：Qwen 官方"1M 上下文 Prefill 快 7.6×/Decode 快 4.9×"是**注意力模块的内核级加速，不代表完整 API 请求同比例快**（还有 MoE、输出层、通信、调度）；GLM"注意力计算量 1/3.01、KV Cache 1/4.44"同为组件级读数，且官方承认 KV Cache 仍大于 Kimi-K3 / DeepSeek-V4-Flash。混合注意力最大的商业价值不是单次请求便宜几分钱，而是**让长时间运行的 Agent 不至于在后半程成本失控**。
+
 ## 冲突与演进
 
+- 2026-09-04：注入六层降本文 Claim——Hybrid 从"架构方向"进入"商用兑现"（Qwen/GLM 双 Flash 同日发布），补内核级 vs 端到端读数口径警示。页面脱离 stale（08-21 曾跨线）。
 - 2026-06-22：从"Qwen3.5 升级后缓存命中率归零"的生产问题切入，理清 Transformer/Mamba/GDN/Hybrid 四类架构的"记忆怎么存"差异，定位缓存失效是架构迁移的必然代价。
 
 ## 关联概念
@@ -82,3 +93,4 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 - [[线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构]] — Transformer/Mamba/GDN/Hybrid 架构差异
 - [[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching]] — 循环状态为何破坏前缀缓存
 - [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]] — 框架支持对比与调优
+- [[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]] — Qwen GDN+QSA 与 GLM 线性+稀疏双实现、内核级读数口径
