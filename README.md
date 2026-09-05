@@ -229,8 +229,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### Notes/tool/codex
 
-- [Codex Desktop 接入 Azure OpenAI GPT-6——bundled CLI 版本锁定、model catalog schema 与分层排错](Notes/tool/codex/Codex%20Desktop接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)
-- [Codex Desktop 解剖：bundled 的真正含义与 Computer Use 藏身之处——ChatGPT app 壳 + bundled CLI + bundled plugins](Notes/tool/codex/Codex%20Desktop解剖：bundled的真正含义与Computer%20Use藏身之处——ChatGPT%20app壳+bundled%20CLI+bundled%20plugins.md)
+- [Codex Desktop 系列01：接入 Azure OpenAI GPT-6——bundled CLI 版本锁定、model catalog schema 与分层排错](Notes/tool/codex/Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)
+- [Codex Desktop 系列02：gpt-5.4-mini 与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Notes/tool/codex/Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)
+- [Codex Desktop 系列03：bundled 的真正含义与三版本号——Apple Bundle 概念、同源不同发行版与 com.openai.codex 血缘](Notes/tool/codex/Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)
+- [Codex Desktop 系列04：Computer Use 藏身之处——openai-bundled plugin、SkyComputerUse native helper 与分发链](Notes/tool/codex/Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)
 
 ### Notes/tool/notes
 
