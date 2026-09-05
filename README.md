@@ -227,6 +227,11 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
 
+### Notes/tool/codex
+
+- [Codex Desktop 接入 Azure OpenAI GPT-6——bundled CLI 版本锁定、model catalog schema 与分层排错](Notes/tool/codex/Codex%20Desktop接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)
+- [Codex Desktop 解剖：bundled 的真正含义与 Computer Use 藏身之处——ChatGPT app 壳 + bundled CLI + bundled plugins](Notes/tool/codex/Codex%20Desktop解剖：bundled的真正含义与Computer%20Use藏身之处——ChatGPT%20app壳+bundled%20CLI+bundled%20plugins.md)
+
 ### Notes/tool/notes
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)

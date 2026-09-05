@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="560" viewBox="0 0 1160 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes pulseSoft { 0%,100% { opacity: 0.08; } 50% { opacity: 0.4; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.75; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.5s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash 1.5s linear infinite; }
+    .halo-next { animation: pulseSoft 2.6s ease-in-out infinite; }
+    .done-node { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="560" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">Codex Desktop 接入 Azure GPT-6 排错链路</text>
+  <text x="470" y="48" font-size="13" fill="#475569">从 schema 打地鼠到版本锁定 · 2026-09-05 已打通</text>
+  <text x="1124" y="48" font-size="13" fill="#2dd4bf" text-anchor="end">catalog 加载成功 → Azure 推理返回 ✅</text>
+
+  <!-- ============ connector track (behind nodes) ============ -->
+  <path d="M 133 165 H 1025 Q 1150 165 1150 285 Q 1150 405 1025 405 H 320"
+        fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- flowing energy: completed portion (whole chain through success) -->
+  <path class="flow" d="M 133 165 H 1025 Q 1150 165 1150 285 Q 1150 405 1025 405 H 480"
+        fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+  <path class="flow2" d="M 133 165 H 1025 Q 1150 165 1150 285 Q 1150 405 1025 405 H 480"
+        fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- future portion: dim static dashes -->
+  <path d="M 480 405 H 320" fill="none" stroke="#334155" stroke-width="5"
+        stroke-dasharray="6 12" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- moving particle along completed path -->
+  <circle r="7" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="8s" repeatCount="indefinite"
+      path="M 133 165 H 1025 Q 1150 165 1150 285 Q 1150 405 1025 405 H 480"/>
+  </circle>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="8s" begin="4s" repeatCount="indefinite"
+      path="M 133 165 H 1025 Q 1150 165 1150 285 Q 1150 405 1025 405 H 480"/>
+  </circle>
+
+  <!-- ============ Row 1 nodes (left→right) ============ -->
+  <!-- node 1: 手写 catalog 打地鼠 -->
+  <g class="done-node">
+    <rect x="60" y="120" width="150" height="90" rx="12" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="135" y="148" font-size="14" font-weight="600" fill="#5eead4" text-anchor="middle">① 手写 catalog</text>
+    <text x="135" y="170" font-size="11" fill="#94a3b8" text-anchor="middle">missing field 打地鼠</text>
+    <text x="135" y="188" font-size="11" fill="#94a3b8" text-anchor="middle">priority → 补一冒一</text>
+  </g>
+
+  <!-- node 2: 认知纠偏 -->
+  <g class="done-node">
+    <rect x="280" y="120" width="160" height="90" rx="12" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="148" font-size="14" font-weight="600" fill="#5eead4" text-anchor="middle">② 认知纠偏</text>
+    <text x="360" y="170" font-size="11" fill="#94a3b8" text-anchor="middle">catalog 是整体替换</text>
+    <text x="360" y="188" font-size="11" fill="#94a3b8" text-anchor="middle">schema 内部且随版本变</text>
+  </g>
+
+  <!-- node 3: source of truth -->
+  <g class="done-node">
+    <rect x="510" y="120" width="170" height="90" rx="12" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="595" y="148" font-size="14" font-weight="600" fill="#5eead4" text-anchor="middle">③ 找 source of truth</text>
+    <text x="595" y="170" font-size="11" fill="#94a3b8" text-anchor="middle">codex-rs/models-manager/</text>
+    <text x="595" y="188" font-size="11" fill="#94a3b8" text-anchor="middle">models.json（勿用 main）</text>
+  </g>
+
+  <!-- node 4: 定位 bundled CLI 版本 -->
+  <g class="done-node">
+    <rect x="750" y="120" width="180" height="90" rx="12" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="840" y="148" font-size="14" font-weight="600" fill="#5eead4" text-anchor="middle">④ 定位 bundled CLI</text>
+    <text x="840" y="170" font-size="11" fill="#94a3b8" text-anchor="middle">app 包内 codex --version</text>
+    <text x="840" y="188" font-size="11" fill="#94a3b8" text-anchor="middle">→ codex-cli 0.153.1</text>
+  </g>
+
+  <!-- ============ Row 2 nodes (right→left) ============ -->
+  <!-- node 5: tag 锁定官方 catalog -->
+  <g class="done-node">
+    <rect x="750" y="360" width="180" height="90" rx="12" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="840" y="388" font-size="14" font-weight="600" fill="#5eead4" text-anchor="middle">⑤ tag 锁定 catalog</text>
+    <text x="840" y="410" font-size="11" fill="#94a3b8" text-anchor="middle">rust-v0.153.1/models.json</text>
+    <text x="840" y="428" font-size="11" fill="#94a3b8" text-anchor="middle">GPT-6 Astra 本就在（hide）</text>
+  </g>
+
+  <!-- node 6: jq 抽取 + 翻转 visibility → 打通 -->
+  <g class="done-node">
+    <rect x="500" y="360" width="180" height="90" rx="12" fill="#123528" stroke="#34d399" stroke-width="2" filter="url(#softGlow)"/>
+    <text x="590" y="388" font-size="14" font-weight="700" fill="#6ee7b7" text-anchor="middle">⑥ jq 抽取改 visibility</text>
+    <text x="590" y="410" font-size="11" fill="#a7f3d0" text-anchor="middle">schema 一次通过</text>
+    <text x="590" y="428" font-size="11" fill="#a7f3d0" text-anchor="middle">Azure 推理成功 ✅</text>
+  </g>
+
+  <!-- node 7 (planned): 多模型映射与日常使用 -->
+  <g>
+    <rect x="180" y="360" width="180" height="90" rx="12" fill="#141b2b" stroke="#334155" stroke-width="1.5" stroke-dasharray="7 6"/>
+    <rect class="halo-next" x="180" y="360" width="180" height="90" rx="12" fill="none" stroke="#64748b" stroke-width="4"/>
+    <text x="270" y="388" font-size="14" font-weight="600" fill="#94a3b8" text-anchor="middle">⑦ 后续（规划）</text>
+    <text x="270" y="410" font-size="11" fill="#64748b" text-anchor="middle">Sol/Terra/Luna 多部署映射</text>
+    <text x="270" y="428" font-size="11" fill="#64748b" text-anchor="middle">Computer Use 日常多用多学</text>
+  </g>
+
+  <!-- ============ legend ============ -->
+  <g font-size="12">
+    <circle cx="60" cy="520" r="6" fill="#2dd4bf"/>
+    <text x="74" y="524" fill="#94a3b8">已完成（能量流动）</text>
+    <circle cx="220" cy="520" r="6" fill="#34d399"/>
+    <text x="234" y="524" fill="#94a3b8">关键解法节点</text>
+    <circle cx="360" cy="520" r="6" fill="#334155"/>
+    <text x="374" y="524" fill="#94a3b8">规划中（虚线）</text>
+    <text x="1124" y="524" fill="#475569" text-anchor="end">教训：schema 跟 bundled CLI 版本走，不跟 main 走</text>
+  </g>
+</svg>
