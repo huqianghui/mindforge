@@ -94,7 +94,53 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 
 ### 环境细节：GUI 进程的 key 注入
 
-一个配套坑：GUI 进程不读 shell profile，重启 Codex App 前用 `launchctl setenv AZURE_OPENAI_API_KEY "..."` 设置用户级环境变量，新会话的审批与模型请求才能继承到 Azure key。
+一个配套坑：**在 `.zshrc` 里 `export AZURE_OPENAI_API_KEY=...` 对 Desktop app 完全无效**。正确做法是重启 Codex App 前用 `launchctl setenv AZURE_OPENAI_API_KEY "..."` 设置用户级环境变量，新会话的审批与模型请求才能继承到 Azure key。
+
+**为什么 `.zshrc` 没用**：macOS 里从 Finder / Dock / Launchpad 启动的 GUI app 由 `launchd` 拉起，**不经过登录 shell**，所以 `.zshrc`、`.zprofile`、`.bash_profile` 这些 shell 配置一概不加载——它们只对"从终端起的进程"生效。只有当你从终端 `open -a ChatGPT`（继承当前 shell 环境）或直接跑二进制时，app 才拿得到 shell 里 export 的变量。日常双击图标启动走的正是 `launchd` 那条路，于是 `.zshrc` 里设的 key 到不了 GUI 进程。`launchctl setenv` 恰好是把变量注入到 `launchd` 的会话环境，让后续由它拉起的 GUI app 都能继承。
+
+**`launchctl setenv` 的局限——重启/重新登录后失效**：它设置的是**当前登录会话级**（per-user launchd domain）的变量，注销、重启、切换用户后全部清空，下次得重设。若只是临时排查，`launchctl setenv` + 重启 App 足够；若要长期用 Azure key 跑 Desktop，做成 LaunchAgent 让 `launchd` 每次登录自动 setenv 一劳永逸。
+
+#### 持久化做法：LaunchAgent（实测步骤）
+
+在 `~/Library/LaunchAgents/` 放一个开机自跑 `launchctl setenv` 的 plist：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.hu.azureopenai-env</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/launchctl</string>
+        <string>setenv</string>
+        <string>AZURE_OPENAI_API_KEY</string>
+        <string>你的真实 key</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+
+`RunAtLoad` 让它在被加载（登录时或手动 bootstrap 时）立即执行一次 setenv。加载与验证：
+
+```bash
+chmod 600 ~/Library/LaunchAgents/com.hu.azureopenai-env.plist   # key 明文在内，必须只有本人可读
+plutil -lint ~/Library/LaunchAgents/com.hu.azureopenai-env.plist   # 校验 XML，应输出 OK
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.hu.azureopenai-env.plist   # 加载（后面必须带 plist 路径）
+launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
+```
+
+实测踩到的四个坑（按出现顺序）：
+
+1. **文件属主必须是本人**，不能是 root——用 `sudo` 建出来的 plist 归 root，launchd 在 `gui/<uid>` 域里会拒绝加载。修：`sudo chown ${USER}:staff <plist>`（zsh 里 `$USER:staff` 会被当参数修饰符报 `bad substitution`，必须写 `${USER}`）。
+2. **权限收到 600**：默认 644 全局可读，而 key 是明文，别的用户能读到。
+3. **plist 的 XML 标签要闭合正确**：`ProgramArguments` 的 `<array>` 漏掉 `</array>` 或错写成 `</dict>`，`plutil -lint` 会报 "Close tag ... does not match open tag dict"——先 lint 过再 bootstrap。
+4. **`bootstrap` 后面必须跟 plist 路径**；报 `already bootstrapped` 就先 `launchctl bootout gui/$(id -u) <plist>` 再重来。改了 plist 内容也走 `bootout` → `bootstrap` 这一对。
+
+最后**完全退出（⌘Q）再重开 Codex / ChatGPT app**——`launchctl setenv` 只影响此后新启动的进程，已在运行的 app 不会继承。验证只认 `launchctl getenv`，别用终端 `echo $VAR`（那读的是 shell 环境，与 launchd 域是两回事）。
 
 ## 四、验证纪律：五种不同的"成功"
 
