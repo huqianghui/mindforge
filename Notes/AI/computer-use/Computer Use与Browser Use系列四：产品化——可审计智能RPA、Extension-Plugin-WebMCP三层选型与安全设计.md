@@ -253,7 +253,7 @@ Azure OpenAI
   模型不持权、密钥不进扩展、Cookie 不出浏览器；窄场景 MVP 起步
 ```
 
-贯穿四篇的一条主线，正是 [Agent = Model + Harness](../../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的判断：**浏览器/桌面控制能力本质上是 harness 的一部分**。OpenAI 把它焊进桌面应用做成第一方体验，Anthropic 靠 MCP 生态自组，而企业自建产品的机会，在于把这层 harness 按自己的安全边界和业务语义重新实现——模型提议、策略放行、执行器落地，三权分立。
+贯穿四篇的一条主线，正是 [Agent = Model + Harness](../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的判断：**浏览器/桌面控制能力本质上是 harness 的一部分**。OpenAI 把它焊进桌面应用做成第一方体验，Anthropic 靠 MCP 生态自组，而企业自建产品的机会，在于把这层 harness 按自己的安全边界和业务语义重新实现——模型提议、策略放行、执行器落地，三权分立。
 
 ## 参考
 

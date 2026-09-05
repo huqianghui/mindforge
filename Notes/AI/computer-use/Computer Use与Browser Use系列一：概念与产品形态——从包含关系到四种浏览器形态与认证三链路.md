@@ -48,7 +48,7 @@ Computer Use（产品里的总类目：控制 GUI 的能力）
 
 在 Codex/ChatGPT 桌面应用的实际使用中，会遇到四种不同的浏览器呈现形态。它们不是四个独立产品，而是**两种浏览器载体 × 两种交互入口**的组合：
 
-![Computer Use 浏览器形态全景|684](../../../../asset/computer-use-browser-forms-2026-08-29.svg)
+![Computer Use 浏览器形态全景|684](../../../asset/computer-use-browser-forms-2026-08-29.svg)
 
 ### 形态 1：内置浏览器（Built-in Browser，侧边面板）
 
@@ -180,7 +180,7 @@ Chrome 当前网页
 
 ## 六、Claude 侧的对照
 
-同样的能力版图，Anthropic 侧的形态选择不同，正好呼应 [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](../../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的判断——**浏览器能力是 harness 的一部分，各家把它焊进 harness 的方式反映了产品路线**：
+同样的能力版图，Anthropic 侧的形态选择不同，正好呼应 [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的判断——**浏览器能力是 harness 的一部分，各家把它焊进 harness 的方式反映了产品路线**：
 
 | 能力 | OpenAI（Codex/ChatGPT） | Anthropic（Claude） |
 |---|---|---|

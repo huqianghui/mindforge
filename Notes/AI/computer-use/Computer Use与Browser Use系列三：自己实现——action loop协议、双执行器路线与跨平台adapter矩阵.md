@@ -31,7 +31,7 @@ Playwright API 或 xdotool 命令（执行层）
 
 搞清这个分层，自己实现 Computer Use 就是三个明确的工程问题：协议怎么接、执行器选哪条路线、跨平台怎么办。
 
-![Computer Use Action Loop 三层协议与双执行器|684](../../../../asset/computer-use-action-loop-2026-08-29.svg)
+![Computer Use Action Loop 三层协议与双执行器|684](../../../asset/computer-use-action-loop-2026-08-29.svg)
 
 ## 一、协议层：`computer` 工具的 action loop
 

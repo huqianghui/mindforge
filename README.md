@@ -112,15 +112,15 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态](Notes/AI/agent/AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态.md)
 - [Agent Harness 五平台对比——DeepSeek Harness、pi、Codex、OpenHands 与 Goose 的架构哲学与场景选择](Notes/AI/agent/Agent%20Harness五平台对比——DeepSeek%20Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择.md)
 
-### Notes/AI/agent/computer-use
+### Notes/AI/computer-use
 
-- [Computer Use 与 Browser Use 系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路.md)
-- [Computer Use 与 Browser Use 系列二：Codex 浏览器运行时解剖——从 bundled plugin 看 Agent 浏览器控制的工程设计](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)
-- [Computer Use 与 Browser Use 系列三：自己实现——action loop 协议、双执行器路线与跨平台 adapter 矩阵](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)
-- [Computer Use 与 Browser Use 系列四：产品化——可审计智能 RPA、Extension-Plugin-WebMCP 三层选型与安全设计](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)
-- [Computer Use 与 Browser Use 系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)
-- [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的能力分界——同一套 Skill、两条调用链与第三方生态补位](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
-- [Computer Use 与 Browser Use 系列七：Web Search 与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](Notes/AI/agent/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)
+- [Computer Use 与 Browser Use 系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路.md)
+- [Computer Use 与 Browser Use 系列二：Codex 浏览器运行时解剖——从 bundled plugin 看 Agent 浏览器控制的工程设计](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)
+- [Computer Use 与 Browser Use 系列三：自己实现——action loop 协议、双执行器路线与跨平台 adapter 矩阵](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)
+- [Computer Use 与 Browser Use 系列四：产品化——可审计智能 RPA、Extension-Plugin-WebMCP 三层选型与安全设计](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)
+- [Computer Use 与 Browser Use 系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)
+- [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的能力分界——同一套 Skill、两条调用链与第三方生态补位](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
+- [Computer Use 与 Browser Use 系列七：Web Search 与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)
 
 ### Notes/AI/agent-lightning
 

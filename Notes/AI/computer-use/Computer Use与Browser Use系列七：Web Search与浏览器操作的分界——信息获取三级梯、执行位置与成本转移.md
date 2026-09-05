@@ -45,7 +45,7 @@ tags:
 
 ## 二、信息获取三级梯
 
-![信息获取三级梯与执行位置分界|700](../../../../asset/websearch-browseruse-ladder-2026-08-30.svg)
+![信息获取三级梯与执行位置分界|700](../../../asset/websearch-browseruse-ladder-2026-08-30.svg)
 
 Search 和 browser use 之间还有一个常被混淆的第三者——**web fetch**（Claude Code 的 `WebFetch`、Tavily 的 `extract`）：给定已知 URL，抓取该页内容。它比 search 深一层（拿全文而非摘要），但比 browser use 浅一层（无登录态、通常不执行 JS、不能交互）。三者构成一个梯子：
 
@@ -225,4 +225,4 @@ Microsoft Scout 则演示了第三种形态——**自己不长执行器，整�
 - [Copilot can't access web even after changed setting（GitHub Community，#web 与 Bing 开关机制）](https://github.com/orgs/community/discussions/159884)
 - [Improved web search in Copilot on github.com（GitHub Changelog 2026-02-25，model-native web search 名单与 Bing 兜底）](https://github.blog/changelog/2026-02-25-improved-web-search-in-copilot-on-github-com)
 - [Announcing Microsoft Web IQ（Bing Search Blog 2026-06，面向外部 AI 系统的 grounding API 套件）](https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ)
-- [Exa、Tavily 与 Context7——AI Agent 搜索三剑客的定位与 MCP 配置实践](../Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md)
+- [Exa、Tavily 与 Context7——AI Agent 搜索三剑客的定位与 MCP 配置实践](Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md)
