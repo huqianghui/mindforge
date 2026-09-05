@@ -79,6 +79,49 @@ pub enum ToolMode { Direct, CodeMode, CodeModeOnly }
 
 一句话：**Code Interpreter 是"给模型一个 Python 沙箱去算数据"；node_repl 是"把工具调用本身改成写代码来发起"**（业界称 code mode / code action——用代码编排工具，比死板的 parallel function calling 更灵活）。这里用 JS 而非 Python，是因为 Codex 的工具生态（MCP、plugins、computer-use native helper）本就是 JS/TS 世界，暴露成 async JS API + Promise 批处理天然贴合其异步工具模型。旁边的 `cua_repl`（cua = Computer Use Agent）是同一 Node 运行时的 Computer Use 变体——桌面/浏览器操作也走这条 REPL（系列04 的 SkyComputerUse 调用链、以及 guardian 的 `node_repl_policy.md` 专管"computer and browser use via node_repl or cua_repl"，都落在这里）。
 
+### 为什么这么设计：code mode 的动机与两种工具哲学
+
+把 node_repl 认成"真 Node.js 运行时"之后，会立刻冒出一个更本质的问题：既然有 `exec` 这种直接跑 shell 的工具，为什么 `code_mode_only` 还要求模型**连一条 shell 命令都包进 JS 里发**？这背后是一个明确的设计取向——**用代码作为工具编排的统一接口**（业界叫 code action / code mode）。
+
+**先分清两层：编排者 vs 被编排者。** bash 和 node_repl 不是并列的两个"代码执行器"。node_repl 是模型**写代码的地方**（编排者/指挥），`exec`（`exec_command` + `write_stdin`，`core/src/tools/router.rs:166-167` 成对暴露）是被这段代码调用的一个工具（被编排者）——它底下起的才是真正的 shell。在 `code_mode` 下，"跑一条命令"长这样：
+
+```js
+const r = await functions.exec({ command: ["bash", "-lc", "git status"] });
+```
+
+一次动作里叠了两个运行时：**Node（负责编排、决定调什么、怎么串/并行）→ 底下 exec 把命令交给 bash 真正执行**。bash 还能在里面再 `node y.js`——那是把 Node 当普通程序当子进程用，与 harness 内置的 node_repl 毫无关系，只是碰巧也叫 node。三个容易混的"JS/shell"要分清：① node_repl（harness 内置的 Node 24 编排运行时，模型写 JS 的地方）；② exec/bash（通用"在机器上执行任意命令"的工具）；③ bash 里再起的 `node`/`python`（agent 把它们当子进程用）。
+
+**为什么用代码，而不是一串离散的 JSON function call？** 核心：JSON 模式只能表达"一串扁平的调用"，表达不了控制流，而真实任务几乎全是控制流。
+
+1. **控制流**：循环、条件、try/catch、把 A 的输出过滤后再喂给 B。JSON 模式下"调 A → 看结果 → 决定调不调 B"要两个 round-trip（两次模型推理）；代码里 `if (a.x) await b()` 一次完成。
+2. **round-trip 与 token 经济**：每次 JSON 工具调用都是一次完整推理，且中间结果全部塞回上下文。要调 20 个工具再汇总，就是 20 次推理 + 20 份原始结果撑爆 context；代码模式下模型写一个脚本把调用、过滤、聚合都在 node_repl 里做完，**只有最终提炼过的结果回到模型视野**——大文件内容、搜索原文可以留在 JS 变量里当引用，不进上下文。
+3. **原生并行**：`await Promise.allSettled([...])` 就是批量并行，不用另造一个 parallel-tool-call 协议——正是 astra 系统提示词那句 "Batch ... using await Promise.allSettled" 的由来。
+4. **生态贴合**：Codex 的工具生态（MCP、plugins、computer-use native helper，见系列04）本就是 JS/TS 世界，暴露成 async JS API 天然合身。
+
+学术上这叫 **CodeAct 论点**（《Executable Code Actions Elicit Better LLM Agents》）：模型训练时见过海量代码、代码自带真实控制流，所以"用代码组合动作"比"用 JSON 拼调用"更强、更省；Anthropic 2025 年的 "Code execution with MCP" 也用 token 经济这条论证过同一件事。
+
+**为什么连 shell 都要包进去？** 两个理由：
+
+- **统一性**：既然认定"工具 = JS 函数"，shell 要是留在外面当独立 top-level 工具，JS 就编排不到它——"跑个命令再把输出喂给下一步逻辑"就断链。`code_mode_only` 的字面意思就是没有例外，连 shell 也是 `await functions.exec(...)`。
+- **单一治理入口**（回扣第四节的 `node_repl_auto_review_required`）：若 shell 独立、code 又是另一条路，审批模型要盯**两个**审计面。全收进 node_repl 后只剩**一个**咽喉——所有危险操作（写文件、联网、跑命令）都表现为"一段 JS 代码"，审批模型只评估这段代码即可。这正是 `node_repl_auto_review_required: true` 注释所说"code_mode_only 下代码执行是主要入口"的设计动机：**把 shell 包进 JS，是为了让治理只有一个入口而不是多个。**
+
+**这三个值构成一条光谱**：`Direct → CodeMode → CodeModeOnly`，模型越强越往右。
+
+![ToolMode 光谱：从工具即接口到代码即接口|720](../../../asset/codex-toolmode-spectrum-2026-09-05.svg)
+
+**对比 Claude Code：光谱的另一端。** Claude Code 走的正是 `Direct` 那一端——几十个专门造的离散工具（Bash、Read、Edit、Grep、WebFetch、Task……），模型点名直调，并行 = 一条消息里发多个 tool_use，没有 JS 编排层。两端各有取舍：
+
+| 维度 | Direct（Claude Code / Codex mini） | CodeModeOnly（Codex gpt-6-astra） |
+|---|---|---|
+| 心智模型 | 几十个专用工具，点名即用，直观 | 少量原语暴露成 JS API，写代码编排 |
+| 复杂编排（循环/条件/过滤） | 多个 round-trip，中间结果进上下文 | 一段脚本一次完成，只回最终结果 |
+| 并行 | 一条消息发多个 tool_use | `await Promise.allSettled([...])` |
+| 权限 / 治理 | per-tool 天然清晰（每工具独立审批） | 集中到 node_repl 一个入口（配审批模型） |
+| 对模型的要求 | 低——会调工具即可 | 高——须会写正确 JS（故只给最强模型开 `code_mode_only`） |
+| 失败调试 | 干净的工具错误 | 一个 JS 异常，更难定位 |
+
+不是谁对谁错，是两种取向：Claude Code 赌"工具够多够专，模型直接调最省心"，代价是复杂编排费 round-trip；Codex 给最新模型赌"模型强到能写代码编排，就把工具收成一套 API 让它写脚本"，换来表达力和 token 经济，代价是"代码执行"这个更大的安全面（于是必须配审批模型 + 系列04 的 `node_repl_policy.md`）。而且不是非此即彼——Claude Code 也在往 MCP code execution 靠，Codex 也给老模型（mini）保留 `direct`。**一句话：Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」。**
+
 ### 其余工具字段
 
 | 字段 | 取值 | 作用（源码） |
@@ -190,7 +233,7 @@ pub enum MultiAgentVersion { Disabled, V1, V2 }
 ## 小结
 
 1. **`unified_exec` = `exec_command` + `write_stdin` 的持久会话执行器**，支持交互式程序与 stdin 独立审批，另有 ZshFork 模式继承用户 shell 环境；`shell_command` 等旧值已 alias 归一化——工具形态的代际演进留在了枚举的 alias 里。
-2. **`code_mode_only` 把工具调用整体搬进代码执行**：并行编排用 JS 表达，node_repl 因此成为治理重点（`node_repl_auto_review_required` 配套）。
+2. **`code_mode_only` 把工具调用整体搬进代码执行**：并行编排用 JS 表达，node_repl 因此成为治理重点（`node_repl_auto_review_required` 配套）。设计动机是"用代码作编排接口"（CodeAct）——控制流、token 经济、原生并行、单一治理入口；连 shell 都包进 JS（bash 是被 node_repl 调用的工具、非其竞争者）。`Direct → CodeMode → CodeModeOnly` 是一条光谱，与 Claude Code 的"几十个离散工具"（Direct 端）恰是两端：能力做成「更多的工具」vs 做成「一种语言」。
 3. **Ultra 不是推理档，是多 agent 委派开关**：实际档位由 `multi_agent_reasoning_effort` 决定；`Persistent` 是档位、`Custom(String)` 留前向兼容。
 4. **治理链路的两个默认审批模型名以常量形式写死在源码**：API key 认证走 `gpt-5.6-luna`、ChatGPT 登录走 `codex-auto-review`，`auto_review_model_override` 整体替换——系列02 的 404 与修复在源码层完全闭环。
 5. **`retirement_at` 是 informational**：CLI 不执行退休，自动迁移是 UI 行为——第三方 provider 清 `upgrade: null` 的依据。
