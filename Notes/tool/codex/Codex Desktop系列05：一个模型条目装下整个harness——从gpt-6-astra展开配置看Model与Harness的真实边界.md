@@ -13,7 +13,7 @@ tags:
 
 # Codex Desktop 系列05：一个模型条目装下整个 harness——从 gpt-6-astra 展开配置看 Model 与 Harness 的真实边界
 
-> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ [系列02：mini 与三条暗线](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md) ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ 本篇
+> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ [系列02：mini 与三条暗线](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md) ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ 本篇 ｜ [系列06：ModelInfo 字段值手册](Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 
 > 素材：`rust-v0.153.1` 官方 catalog 中 `gpt-6-astra` 条目的完整展开（本机 Azure catalog 快照，已含系列01/02 的修改：`visibility: "list"`、`upgrade: null`、`auto_review_model_override: "gpt-6-astra"`）。
 
@@ -59,7 +59,7 @@ tags:
 "node_repl_disabled": false
 ```
 
-关键在于这些字段**按模型不同**：gpt-6-astra 用 `unified_exec`，而系列02 里看到 mini 用的是 `shell_command`；patch 工具、web search 工具的类型也逐模型指定。这不是随意的配置自由度——**工具协议跟着模型的训练分布走**：模型在什么工具形态上训练/强化过，harness 就给它发什么形态的工具。这是 [[model-harness-codesign]] 最具体的一组证据：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
+关键在于这些字段**按模型声明**：gpt-6-astra 写的是 `unified_exec`，系列02 里 mini 写的是 `shell_command`。源码核实后要做一个精确化（详见 [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]）：0.153.1 的 `ConfigShellToolType` 枚举里 `shell_command`/`local`/`default` 都是 `UnifiedExec` 的 serde alias，运行时行为已收敛为同一个执行器——**字段值的差异记录的是模型代际（各自在什么工具形态上训练过），alias 是这段咬合史留在类型系统里的化石**。patch 工具、web search 工具的类型仍逐模型指定。这是 [[model-harness-codesign]] 最具体的一组证据：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
 
 ### ④ 系统提示词层——人格与规则是模型条目的字段
 

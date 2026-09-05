@@ -13,7 +13,7 @@ tags:
 
 # Codex Desktop 系列02：gpt-5.4-mini 与三条暗线——全局配置菜单、退休元数据与自动审批调用链
 
-> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ 本篇 ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ [系列05：模型条目装下整个 harness](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md)
+> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ 本篇 ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ [系列05：模型条目装下整个 harness](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md) ｜ [系列06：ModelInfo 字段值手册](Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 
 > 素材来源：2026-09-05 下午的第二轮排查，由 Codex 自己执行（bundled CLI 版本核对 + `app.asar` 界面代码与内嵌 catalog 的只读分析），经 `inbox/codex` 交接。**最终状态：全链路已验收**——mini 菜单可见、切换可用、Azure 请求成功、自动审批链路恢复。但过程值得完整记录：三条暗线每一条都是第一方 harness 接第三方 provider 时的通用陷阱。
 
@@ -63,7 +63,7 @@ The API deployment for this resource does not exist.
 url: https://open-ai-hu-demo-sweden-central.openai.azure.com/openai/v1/responses
 ```
 
-关键在于：这个 404 **不是主模型请求返回的，而是审批链路返回的**。界面上的 `Approve for me`（`approvals_reviewer: auto_review`）意味着由一个**审批模型**评估每个敏感操作——而这条链路的请求同样打到你配置的 Azure provider 上。对 bundled binary 的只读分析找到了直接证据：`ConfiguredModelProvider::approval_review_preferred_model` 会根据认证状态在内置名称 `codex-auto-review` 和 `gpt-5.6-luna` 之间选择默认审批模型。这些名字在用户的 Azure 资源里没有同名 deployment——于是审批请求永远 404，主模型明明工作正常，所有需要审批的操作却全部瘫痪。
+关键在于：这个 404 **不是主模型请求返回的，而是审批链路返回的**。界面上的 `Approve for me`（`approvals_reviewer: auto_review`）意味着由一个**审批模型**评估每个敏感操作——而这条链路的请求同样打到你配置的 Azure provider 上。对 bundled binary 的只读分析找到了直接证据：`ConfiguredModelProvider::approval_review_preferred_model` 按认证状态在两个内置名称间选默认审批模型——**ChatGPT 登录态取 `codex-auto-review`，API key 认证态取 `gpt-5.6-luna`**。Desktop 用的是 ChatGPT 登录态，命中的是 `codex-auto-review`——它是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，任何第三方端点上都不可能有同名 deployment。于是审批请求永远 404，主模型明明工作正常，所有需要审批的操作却全部瘫痪。
 
 ### 修复：auto_review_model_override 指向真实存在的 deployment
 
@@ -75,6 +75,10 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
   "auto_review_model_override": "gpt-6-astra"
 }
 ```
+
+### 哪个名字 404：codex-auto-review，不是 luna
+
+一个需要说清的因果修正：这个 404 发的是 `codex-auto-review`，**不是** `gpt-5.6-luna`。判据两条——① Desktop 是 ChatGPT 登录态，源码的选择逻辑此时回退到 `codex-auto-review`（`gpt-5.6-luna` 是 API key 认证态才走的分支）；② `gpt-5.6-luna` 在用户 Azure 里其实是配置好的、模型菜单里可见可选（见系列01/06 的 catalog），如果 404 发的是 luna，它本就有 deployment、不该 404，更不需要 override 才修好——**"需要 override 才修好"这件事本身，反过来证明默认命中的不是 luna**。而 `codex-auto-review` 是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，任何第三方端点上都不可能有同名 deployment，它才是必然 404 的那一支。证据边界：错误信息本身没有回传发起请求的模型名，这条归因是"源码选择逻辑 + luna 已部署仍需 override"两条证据推出来的，不是抓包直接读到的。
 
 ### 验证：三种权限模式对应三种运行态
 
@@ -125,7 +129,7 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 
 1. **模型菜单读全局配置（`cwd: null`），项目级 catalog 配置控制不了它**；`visibility: "list"` 之后 UI 还有一层过滤——必要不充分。
 2. **catalog 的退休/升级元数据是 OpenAI 第一方生命周期，不代表你的 Azure deployment 状态**：第三方 provider 场景把不适用的 `upgrade` 清为 `null`。
-3. **审批链路是第二条模型调用链**：`Approve for me` 的审批模型默认取内置名称（`codex-auto-review` / `gpt-5.6-luna`），在 Azure 上无同名 deployment 就会用 404 瘫痪一切需审批操作；修复已实测有效——条目级 `auto_review_model_override` 指向已存在的 deployment。
+3. **审批链路是第二条模型调用链**：`Approve for me` 的审批模型默认取内置名称——ChatGPT 登录态是 `codex-auto-review`（合成名，第三方端点必然无此 deployment → 404），API key 认证态才是 `gpt-5.6-luna`；本案 404 的真凶是前者，不是后者（luna 其实已部署）。修复已实测有效——条目级 `auto_review_model_override` 指向已存在的 deployment。
 4. **三种权限模式三种运行态**：Full access 和 Ask for approval 都不走审批模型，只有 Approve for me（`approvals_reviewer: auto_review`）才能验证审批链路。
 5. **验证纪律**：文件已改 ≠ 进程已加载 ≠ 菜单可选 ≠ 请求成功 ≠ 审批成功，五层分开验收；本案例最终五层全部通过，mini 菜单可见、切换可用、审批恢复。
 

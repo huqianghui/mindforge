@@ -234,6 +234,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Codex Desktop 系列03：bundled 的真正含义与三版本号——Apple Bundle 概念、同源不同发行版与 com.openai.codex 血缘](Notes/tool/codex/Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)
 - [Codex Desktop 系列04：Computer Use 藏身之处——openai-bundled plugin、SkyComputerUse native helper 与分发链](Notes/tool/codex/Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)
 - [Codex Desktop 系列05：一个模型条目装下整个 harness——从 gpt-6-astra 展开配置看 Model 与 Harness 的真实边界](Notes/tool/codex/Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md)
+- [Codex Desktop 系列06：ModelInfo 字段值手册——unified_exec、code_mode、Ultra 档与治理字段的源码级解读](Notes/tool/codex/Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 
 ### Notes/tool/notes
 
