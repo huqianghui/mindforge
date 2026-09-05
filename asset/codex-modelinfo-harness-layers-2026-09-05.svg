@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="700" viewBox="0 0 1160 700" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow { stroke-dasharray: 10 14; animation: flowDash 1.8s linear infinite; }
+    .layer { animation: shimmer 4s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="700" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="698" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">一个 ModelInfo 条目的分层解剖（gpt-6-astra @ 0.153.1）</text>
+  <text x="620" y="46" font-size="13" fill="#475569">模型层只占一小截，其余全是 harness · 2026-09-05</text>
+
+  <!-- left: JSON entry source -->
+  <g class="layer">
+    <rect x="40" y="90" width="230" height="560" rx="14" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+    <text x="155" y="122" font-size="15" font-weight="700" fill="#e2e8f0" text-anchor="middle">models.json 条目</text>
+    <text x="155" y="144" font-size="11" fill="#64748b" text-anchor="middle">"slug": "gpt-6-astra"</text>
+    <text x="60" y="180" font-size="11" fill="#94a3b8">context_window / modalities</text>
+    <text x="60" y="204" font-size="11" fill="#94a3b8">prefer_websockets / lite</text>
+    <text x="60" y="228" font-size="11" fill="#94a3b8">shell_type / tool_mode</text>
+    <text x="60" y="252" font-size="11" fill="#94a3b8">model_messages.instructions</text>
+    <text x="60" y="276" font-size="11" fill="#94a3b8">approvals / auto_review</text>
+    <text x="60" y="300" font-size="11" fill="#94a3b8">guardian_v2 / confirmation</text>
+    <text x="60" y="324" font-size="11" fill="#94a3b8">multi_agent.role.*</text>
+    <text x="60" y="348" font-size="11" fill="#94a3b8">token_budget / truncation</text>
+    <text x="60" y="372" font-size="11" fill="#94a3b8">persistent_instructions</text>
+    <text x="60" y="396" font-size="11" fill="#94a3b8">available_in_plans / tiers</text>
+    <text x="60" y="420" font-size="11" fill="#94a3b8">visibility / upgrade / priority</text>
+    <text x="155" y="620" font-size="11" fill="#475569" text-anchor="middle">≈ 数千行，一个条目</text>
+  </g>
+
+  <!-- flow from entry to layers -->
+  <path class="flow" d="M 270 370 H 330" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="2.5s" repeatCount="indefinite" path="M 270 370 H 330"/>
+  </circle>
+
+  <!-- right: 9 layers stack -->
+  <!-- Layer 1: model capability (the only true model layer) -->
+  <g class="layer">
+    <rect x="340" y="90" width="780" height="52" rx="10" fill="#123528" stroke="#34d399" stroke-width="2"/>
+    <text x="360" y="112" font-size="13" font-weight="700" fill="#6ee7b7">① 模型能力层（唯一真正属于 Model 的部分）</text>
+    <text x="360" y="132" font-size="11" fill="#a7f3d0">context_window 272k/872k ｜ input_modalities ｜ reasoning levels low→ultra ｜ parallel_tool_calls</text>
+  </g>
+
+  <!-- Layers 2-9: harness -->
+  <g class="layer">
+    <rect x="340" y="152" width="780" height="52" rx="10" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="174" font-size="13" font-weight="600" fill="#5eead4">② 协议传输层</text>
+    <text x="360" y="192" font-size="11" fill="#94a3b8">prefer_websockets ｜ use_responses_lite ｜ supported_in_api ｜ comp_hash</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="214" width="780" height="52" rx="10" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="236" font-size="13" font-weight="600" fill="#5eead4">③ 工具形态层（co-design 咬合点）</text>
+    <text x="360" y="254" font-size="11" fill="#94a3b8">shell_type: unified_exec ｜ tool_mode: code_mode_only ｜ apply_patch: freeform ｜ web_search: text_and_image</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="276" width="780" height="52" rx="10" fill="#122036" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="360" y="298" font-size="13" font-weight="600" fill="#7dd3fc">④ 系统提示词层（人格与规则随模型走）</text>
+    <text x="360" y="316" font-size="11" fill="#94a3b8">model_messages.instructions_template：许可哲学 ｜ 自主性 ｜ 人格 ｜ 写作风格（明令禁 AI 腔）｜ 双通道</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="338" width="780" height="52" rx="10" fill="#2a1e0d" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="360" y="360" font-size="13" font-weight="600" fill="#fcd34d">⑤ 治理层（系列02 的暗线全在这）</text>
+    <text x="360" y="378" font-size="11" fill="#94a3b8">approvals ｜ auto_review_model_override ｜ guardian_v2 分类器 prompt ｜ confirmation_policies 四级确认</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="400" width="780" height="52" rx="10" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="422" font-size="13" font-weight="600" fill="#5eead4">⑥ 多 Agent 编排层</text>
+    <text x="360" y="440" font-size="11" fill="#94a3b8">multi_agent_version: v2 ｜ role.root / role.subagent prompt ｜ ultra 档位 = 自动任务委派</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="462" width="780" height="52" rx="10" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="484" font-size="13" font-weight="600" fill="#5eead4">⑦ 上下文管理层</text>
+    <text x="360" y="502" font-size="11" fill="#94a3b8">truncation_policy ｜ token_budget：notes / history / new_context 的全部机制 prompt</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="524" width="780" height="52" rx="10" fill="#0f2e2a" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="360" y="546" font-size="13" font-weight="600" fill="#5eead4">⑧ 持久模式层（ChatGPT Work 的行为基础）</text>
+    <text x="360" y="564" font-size="11" fill="#94a3b8">persistent_instructions：send_user_message_async ｜ clock.sleep ｜ up_next ｜ 主动跟进边界</text>
+  </g>
+  <g class="layer">
+    <rect x="340" y="586" width="780" height="52" rx="10" fill="#1f1426" stroke="#c084fc" stroke-width="1.5"/>
+    <text x="360" y="608" font-size="13" font-weight="600" fill="#d8b4fe">⑨ 商业分发层（系列02 的退休元数据在这）</text>
+    <text x="360" y="626" font-size="11" fill="#94a3b8">available_in_plans ×22 ｜ service_tiers（Fast 1.5x）｜ visibility / priority / upgrade / minimal_client_version</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="12">
+    <circle cx="360" cy="668" r="6" fill="#34d399"/>
+    <text x="374" y="672" fill="#94a3b8">Model 层</text>
+    <circle cx="460" cy="668" r="6" fill="#2dd4bf"/>
+    <text x="474" y="672" fill="#94a3b8">Harness 行为层</text>
+    <circle cx="590" cy="668" r="6" fill="#fbbf24"/>
+    <text x="604" y="672" fill="#94a3b8">治理层</text>
+    <circle cx="680" cy="668" r="6" fill="#c084fc"/>
+    <text x="694" y="672" fill="#94a3b8">商业层</text>
+    <text x="1104" y="672" fill="#475569" text-anchor="end">"模型条目"实为 harness 的按模型切片</text>
+  </g>
+</svg>

@@ -13,7 +13,7 @@ tags:
 
 # Codex Desktop 系列02：gpt-5.4-mini 与三条暗线——全局配置菜单、退休元数据与自动审批调用链
 
-> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ 本篇 ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)
+> 系列导航：[系列01：接入 Azure GPT-6](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) ｜ 本篇 ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ [系列05：模型条目装下整个 harness](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md)
 
 > 素材来源：2026-09-05 下午的第二轮排查，由 Codex 自己执行（bundled CLI 版本核对 + `app.asar` 界面代码与内嵌 catalog 的只读分析），经 `inbox/codex` 交接。**最终状态：全链路已验收**——mini 菜单可见、切换可用、Azure 请求成功、自动审批链路恢复。但过程值得完整记录：三条暗线每一条都是第一方 harness 接第三方 provider 时的通用陷阱。
 
