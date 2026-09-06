@@ -37,7 +37,7 @@ related:
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > 四个量要分清：reward $r_t$（环境/evaluator 给的原始标量，**绝对**——"这一步多好"）；return $G_t=\sum\gamma^{u-t}r_u$（从这步往后的累计折扣回报，**绝对**——"这动作之后总共流入多少 reward"）；value $V(s)$（状态期望回报，**基线**——"这个 state 平均能拿多少"）；advantage $A(s,a)=Q(s,a)-V(s)$（**相对**——"这动作比这个 state 的平均动作好多少"）。关键区别：reward/return 是绝对好坏，advantage 是减掉基线后的相对好坏。而 advantage 依赖一个 value 基线，value 基线正是 RL 的核心构造（Bellman/价值函数）——这就是为什么在 RL 之前的 harness 世界里根本没有"advantage 估计"这回事。
 
@@ -47,7 +47,7 @@ related:
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > $Q(s,a)$ 里混了两样东西：① 这个 state 整体有多好（对该 state 下所有动作都一样，故"公共"，与动作好坏无关，故"偏置"）；② 这个动作在这个 state 里比别的动作强多少。减掉 ① 才剩下真正要的 ②。用班级平均分类比：raw $Q$ 是绝对分（普通班考 80、尖子班考 30），$V(s)$ 是班级平均，advantage 是相对本班平均高/低多少——普通班的 80 可能垫底、尖子班的 30 可能第一，判断"选得好不好"要看相对本班平均而非绝对分。因为基线对所有动作公共，减掉它不改变改进方向的期望（**无偏**）却大幅**降方差**——这就是 variance reduction。对把 $\beta\hat A$ 直接加到 logits 的 JitRL 尤其要命：若用 raw $Q$，困难 state 里最该选的动作会被整体压得比简单 state 里最不该选的还低，策略被 state 难易带偏而非被动作好坏引导。
 
@@ -57,7 +57,7 @@ related:
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Harness（memory/RAG/reflection）只用 reward/结果——绝对信号、不减基线（"这条轨迹成功了，记下来"）；RL（PPO/GRPO）用 advantage——减基线，只推高"比局部平均更好"的动作。把方法排进"reward 怎么用"的光谱正好看清位置：**RAFT（reward 只当接受/拒绝的过滤阈值，无基线，选完即弃）< RWR（reward 当软权重）< JitRL / PPO / GRPO（用带基线的 advantage）**——越往右 reward 越走进决策/梯度核心。判断一个方法"是不是在做 RL 机器"的一个技术命门就是看它算不算 $Q-V$：算 advantage 的站 PPO 那边，只用 reward 结果的站 harness 这边。
 
@@ -67,7 +67,7 @@ related:
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > advantage 估计有多种做法，它们共享"用带基线的相对信号做策略改进"这门语言，分野在 advantage 怎么估、以及往哪里作用：**PPO** 用 value/critic 或 GAE 估 advantage、进策略梯度改参数；**GRPO** 是 critic-less 变体，用同 prompt 多输出的组内平均 reward 当基线算 advantage、进梯度改参数；**JitRL** 用外部 memory 中相似轨迹的 kNN 蒙特卡洛平均估 $\hat Q-\hat V$（无 value network、非参数）、把 $\beta\tilde A$ 加到候选动作 logits 上、不改参数。三者共用 advantage，但 GRPO/PPO 的 advantage 进梯度、改权重，JitRL 的 advantage 进 logits、瞬时生效不改权重——"进梯度还是进 logits"是它们的真正分野。
 

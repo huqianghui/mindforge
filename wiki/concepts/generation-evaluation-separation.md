@@ -31,11 +31,11 @@ related:
 
 ### Claim: 三家公司独立演化出同一个分离原则
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-02
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。
 
@@ -45,7 +45,7 @@ related:
 - **首次出现**：2026-04-16
 - **最近更新**：2026-07-06
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。
 
@@ -115,7 +115,7 @@ related:
 
 ## 来源日记
 
-- [[Vibe Coding系列01]] — Section 四 三家公司独立演化的共同设计原则
+- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]] — Section 四 三家公司独立演化的共同设计原则
 - [[2026-04-16-Meta-Harness论文解读与实践思考]] — Guides/Sensors 双重控制机制
 - [[去除AI味：从语言指纹到人机文本边界的消融]] — Writer→Humanizer→Reviewer 三者分离（文本生成域实例）
 - [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — "AI 起草，人类拍板，脚本验证"（合规/规格验证域实例）

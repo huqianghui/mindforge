@@ -79,7 +79,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 
 ### Claim: 三层定位——GSD/Superpowers/gstack
 
-- **来源**：[[Vibe Coding系列08]]
+- **来源**：[[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -89,7 +89,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 
 ### Claim: 必须用 CLAUDE.md 声明式路由消除 skill 匹配歧义
 
-- **来源**：[[Vibe Coding系列09]]
+- **来源**：[[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -115,5 +115,5 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 
 ## 来源
 
-- [[Vibe Coding系列04]] — GSD + Superpowers 组合实践
-- [[Vibe Coding系列08]] — 三层架构与定位分析
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]] — GSD + Superpowers 组合实践
+- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]] — 三层架构与定位分析

@@ -79,7 +79,7 @@ related_methods: []
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > TRL（算法工具，HuggingFace Trainer，for-loop + optimizer + loss，rollout 内嵌训练循环、无调度层）→ OpenRLHF（工程化训练框架，actor/critic 弱编排 + DeepSpeed，rollout 半独立）→ VERL（分布式基础设施，HybridFlow 中央 Driver + 并行 Worker，rollout 完全解耦、Ray 集群调度）。三者站在「算法 → 工程化 → 基础设施」谱系的不同位置，并非功能替代。选型按规模：PoC/单轮 → TRL；中等规模/已有 DeepSpeed → OpenRLHF；Agent RL/大模型/数十卡以上 → VERL。
 
@@ -89,7 +89,7 @@ related_methods: []
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Agent RL 的四个特征（多轮、有状态、异步、依赖外部环境）把瓶颈从算法迁到基础设施：rollout 是最重环节（占 80~90% 时间），若像 TRL 嵌在训练循环里则训练/rollout GPU 互相空转、无法 scale。必须 training-rollout 解耦（VERL 的 Server mode：rollout 独立成 worker、vLLM serving、异步批处理）。agent-lightning 对 VERL 是架构锁定——不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖 trajectory RL + async rollout + 分布式 rollout worker + 自定义 reward pipeline 四项能力。替换 VERL 等于替换一个分布式系统，替代成本远高于使用成本。
 
@@ -99,7 +99,7 @@ related_methods: []
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Slime 非 drop-in replacement，迁移前需核对三项前置条件：能否接受 SGLang 唯一推理 backend、能否接受 Megatron 训练后端（从 FSDP 迁需改模型结构）、能否改造 rollout pipeline 与数据接口。三个判断信号：① 规模与 MoE——上 MoE/100B+/RL scaling 几乎一定向 Megatron 演进，此时 Slime 强绑定反成优势；70B 以下 FSDP 够用则 VERL 更省事。② 瓶颈定位——rollout 吞吐瓶颈在 VERL 内即可解（Ray/vLLM/async）或考虑 Slime 的 SGLang 强吞吐；training 能力瓶颈（大模型放不下）才考虑 Megatron。③ 架构同构性——agent-lightning 的数据流飞轮与 Slime「数据流包数据流」比 VERL「数据流包调度系统」更顺，但这是加分项而非决定项，规模与瓶颈不对齐时同构性收益不足以抵消迁移成本。
 

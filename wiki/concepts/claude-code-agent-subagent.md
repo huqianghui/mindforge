@@ -48,7 +48,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: "Process isolation gives context isolation for free"
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -91,5 +91,5 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 ## 来源日记
 
 - [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — 架构解析（含 Teammate 详解）
-- [[learn-claude-code]] — 进程隔离洞察
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — 进程隔离洞察
 - [[2026-04-16-周四]] — 再次学习 Claude Code 原理，Teammate 概念补充

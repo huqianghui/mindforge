@@ -27,7 +27,7 @@ GSD + Superpowers + gstack 构成三层插件架构，各有明确定位：GSD �
 
 ### Claim: Superpowers 是 workflow-first，gstack 是 tool-first
 
-- **来源**：[[Vibe Coding系列08]]
+- **来源**：[[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -37,7 +37,7 @@ GSD + Superpowers + gstack 构成三层插件架构，各有明确定位：GSD �
 
 ### Claim: 三层定位——GSD/Superpowers/gstack
 
-- **来源**：[[Vibe Coding系列08]]
+- **来源**：[[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -47,7 +47,7 @@ GSD + Superpowers + gstack 构成三层插件架构，各有明确定位：GSD �
 
 ### Claim: 没有一个框架能独立覆盖全链路
 
-- **来源**：[[Vibe Coding系列09]]
+- **来源**：[[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -57,7 +57,7 @@ GSD + Superpowers + gstack 构成三层插件架构，各有明确定位：GSD �
 
 ### Claim: 必须用 CLAUDE.md 声明式路由消除 skill 匹配歧义
 
-- **来源**：[[Vibe Coding系列09]]
+- **来源**：[[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -76,5 +76,5 @@ GSD + Superpowers + gstack 构成三层插件架构，各有明确定位：GSD �
 
 ## 来源日记
 
-- [[Vibe Coding系列08]] — GSD + Superpowers + gstack 三层分析
-- [[Vibe Coding系列09]] — 框架融合与路由
+- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]] — GSD + Superpowers + gstack 三层分析
+- [[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09]] — 框架融合与路由

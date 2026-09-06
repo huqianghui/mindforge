@@ -71,7 +71,7 @@ LLM Wiki 是 Karpathy 提出的知识管理范式：用 LLM 将原始资料"编�
 
 ### Claim: LLM Wiki 模型——"RAG = search, LLM Wiki = writing a book"
 
-- **来源**：[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7

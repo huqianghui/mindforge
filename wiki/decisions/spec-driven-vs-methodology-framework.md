@@ -65,7 +65,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 
 ### Claim: 规范驱动与方法论框架互补不可互替
 
-- **来源**：[[Vibe Coding系列04]]
+- **来源**：[[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -75,7 +75,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 
 ### Claim: GSD/SpecKit/OpenSpec 只能三选一
 
-- **来源**：[[Vibe Coding系列04]]
+- **来源**：[[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -95,6 +95,6 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 
 ## 来源
 
-- [[Vibe Coding系列04]] — 框架选型分析
-- [[Vibe Coding系列08]] — 三层架构定位
-- [[Vibe Coding系列09]] — 框架融合与路由
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]] — 框架选型分析
+- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08]] — 三层架构定位
+- [[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09]] — 框架融合与路由

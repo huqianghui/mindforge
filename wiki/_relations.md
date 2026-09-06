@@ -1,7 +1,7 @@
 ---
 title: "Wiki 关系类型定义"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-09-06"
 tags:
   - wiki
   - meta
@@ -44,6 +44,8 @@ tags:
 4. **需要在 target 页表达关联**时，靠入边自动展示即可；确需在 target 页正向声明，则改用语义方向正确的另一类型（如 A `uses` B，则 B 页不重复写 `uses`）。
 
 判断 source 的速记：读「典型方向」列，箭头**起点**那一侧就是应当声明该行的页面。
+
+**关于「典型方向」列的补充说明（2026-09-06，对齐实际用例）**：「关系类型一览」表格的「典型方向」列列出的是各类型最初命名时设想的代表性场景（如 `implements`/`uses` 写成 method → concept），但全库实际统计显示**每种类型 concept → concept 都是最常见甚至占多数的方向**（例：`uses` 61 例 concept-sourced vs 18 例 method-sourced；`implements` 37 例 concept-sourced vs 22 例 method-sourced）——这符合预期，因为概念页数量远超方法/决策页，多数知识演进本就发生在概念之间。判断 source 时**不要被「典型方向」列字面的 method/decision 措辞限制**，只需按各类型的判断标准（如 `grounds` 看谁是"理论根基"、`uses` 看谁是"使用方"、`extends` 看谁是"更细化/派生的一方"）确定谁是 source，两侧页面类型不限（concept/method/decision 任意组合）。
 
 ---
 

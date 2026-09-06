@@ -76,7 +76,7 @@ related_methods: []
 
 ### Claim: 日记存在写入与消费的结构错配
 
-- **来源**：[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -86,7 +86,7 @@ related_methods: []
 
 ### Claim: LLM Wiki 模型——LLM 是维护者不是问答者
 
-- **来源**：[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -111,4 +111,4 @@ related_methods: []
 
 ## 来源
 
-- [[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践文章
+- [[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践文章

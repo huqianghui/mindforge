@@ -69,7 +69,7 @@ related_methods:
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 如果主要目标是 prompt 调优、寻找最优 prompt 且明确不碰权重微调，首选 DSPy。agent-lightning 的差异化价值是 method-agnostic（APO↔RL↔SFT 可换）+ RL 级 rollout 基础设施——只做 prompt 优化时这两个最大卖点完全用不上，等于付出"装一个偏 RL 训练框架"的复杂度却拿不到值钱的部分。agent-lightning 只在一种情况值得提前押注：客户预期会从 prompt 调优走向权重微调，需要"一套 reward / rollout 复用到多种优化方法"。一句话：只做 prompt → DSPy；既调 prompt 又要 RL 微调 → agent-lightning。
 
@@ -79,7 +79,7 @@ related_methods:
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 比"选哪个框架"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架"忠实地优化噪声"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。
 

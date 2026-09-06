@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-08-04
-stats: "92 concepts, 18 methods, 8 decisions, 523 claims"
+updated: 2026-09-06
+stats: "96 concepts, 19 methods, 8 decisions, 586 claims"
 tags:
   - wiki
   - index

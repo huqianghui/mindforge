@@ -26,7 +26,7 @@ related:
 
 ### Claim: 融合 Skill 的正确架构是编排层而非合并层
 
-- **来源**：[[使用Skill-Creator融合多个PPT Skill]]
+- **来源**：[[使用Skill-Creator融合多个PPT Skill打造CSA专属演示工具|使用Skill-Creator融合多个PPT Skill]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -36,7 +36,7 @@ related:
 
 ### Claim: Explore Agent 自动分析比人手动对比更全面
 
-- **来源**：[[使用Skill-Creator融合多个PPT Skill]]
+- **来源**：[[使用Skill-Creator融合多个PPT Skill打造CSA专属演示工具|使用Skill-Creator融合多个PPT Skill]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -65,5 +65,5 @@ related:
 
 ## 来源日记
 
-- [[使用Skill-Creator融合多个PPT Skill]] — Skill 融合实践
+- [[使用Skill-Creator融合多个PPT Skill打造CSA专属演示工具|使用Skill-Creator融合多个PPT Skill]] — Skill 融合实践
 - [[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]] — 跨平台兼容性

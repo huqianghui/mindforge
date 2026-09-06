@@ -27,7 +27,7 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 ### Claim: OMC 的核心命题是多 Agent 真正并行协作
 
-- **来源**：[[Vibe Coding系列10]]
+- **来源**：[[Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -37,7 +37,7 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 ### Claim: Domain 车道是 OMC 最独特的设计
 
-- **来源**：[[Vibe Coding系列10]]
+- **来源**：[[Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -47,7 +47,7 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 ### Claim: OMC Autopilot 与 Superpowers 的核心体验差异
 
-- **来源**：[[Vibe Coding系列10]]
+- **来源**：[[Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 ### Claim: Autopilot 运行时动态决策四大能力
 
-- **来源**：[[Vibe Coding系列10]]
+- **来源**：[[Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -77,4 +77,4 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 ## 来源日记
 
-- [[Vibe Coding系列10]] — OMC 多 Agent 编排深度分析
+- [[Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10]] — OMC 多 Agent 编排深度分析

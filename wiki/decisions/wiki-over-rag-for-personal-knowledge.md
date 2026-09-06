@@ -64,7 +64,7 @@ related_methods:
 
 ### Claim: 日记存在写入与消费的结构错配
 
-- **来源**：[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -74,7 +74,7 @@ related_methods:
 
 ### Claim: LLM Wiki 模型——LLM 是维护者不是问答者
 
-- **来源**：[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -114,6 +114,6 @@ related_methods:
 
 ## 来源
 
-- [[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践
+- [[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践
 - [[2026-04-23-周四]] — 取消 RAG+Wiki 合并方案，确认两者是不同范式
 - [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 图 vs 向量胜负域独立基准、按问题类型路由共识、LightRAG/Mem0 评测警示

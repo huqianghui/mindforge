@@ -345,7 +345,7 @@ oh-my-claudecode 内置的 `/wiki` skill 实现了 LLM Wiki 的基础版——�
 
 ### 三个判断标准的回答
 
-在[[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]的结尾，我列出了知识系统的三个判断标准：
+在[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]的结尾，我列出了知识系统的三个判断标准：
 
 1. **是否会自动总结？** ——是。`/extract-knowledge` 自动从日记提取概念和论断，`/evolve-wiki` 自动生成概念摘要。
 2. **是否会自动连接知识？** ——是。提取时自动匹配已有概念/方法/决策，类型化关联提供 8 种语义关系。
@@ -366,7 +366,7 @@ oh-my-claudecode 内置的 `/wiki` skill 实现了 LLM Wiki 的基础版——�
 
 ## 参考资料
 
-- [[从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — 前篇：初始设计与问题分析
+- [[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — 前篇：初始设计与问题分析
 - [Karpathy LLM Wiki Gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) — LLM Wiki 原始架构
 - [oh-my-claudecode](https://github.com/nicobailey/oh-my-claudecode) — Multi-Agent Orchestration Layer
 - [Decoding the Configuration of AI Coding Agents](https://arxiv.org/html/2511.09268v1) — CLAUDE.md 配置研究

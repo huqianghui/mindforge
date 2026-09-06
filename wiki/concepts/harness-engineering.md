@@ -27,27 +27,27 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。
 
 ### Claim: 三家公司独立演化出同一套 Harness 设计范式
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。
 
 ### Claim: Agent 的两种典型失败模式是系统设计问题而非模型能力问题
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -57,17 +57,17 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 级联失败是 Harness Engineering 出现的核心驱动力
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。
 
 ### Claim: OpenAI 的 Harness Engineering 五大支柱
 
-- **来源**：[[Vibe Coding系列02]]
+- **来源**：[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -77,17 +77,17 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Agent 的智能来自 model，可靠性来自 harness
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。
 
 ### Claim: "Agent = Model, Not Framework" 是一个工程立场
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -121,7 +121,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-17
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，"怎么做出来"）、约束系统（L2 Planning + L1 Policy，"不能乱来"）、认知系统（L6 Eval，"从经验学到什么"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。
 
@@ -131,7 +131,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-17
 - **最近更新**：2026-07-06
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
 
@@ -282,9 +282,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ## 来源日记
 
-- [[Vibe Coding系列01]] — Harness Engineering 概念首次系统阐述
-- [[Vibe Coding系列02]] — OpenAI 五大支柱详解
-- [[learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
+- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]] — Harness Engineering 概念首次系统阐述
+- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]] — OpenAI 五大支柱详解
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
 - [[2026-04-16-周四]] — Meta-Harness 论文解读，补充精确 Harness 定义和自动化优化
 - [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 98.7% 是 Harness
 - [[2026-04-23-周四]] — InkOS 跨领域验证：AI 小说创作中的 Harness Engineering 范式、三种 AI 创作范式总结

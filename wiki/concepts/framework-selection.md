@@ -27,7 +27,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ### Claim: 规范驱动与方法论框架互补不可互替
 
-- **来源**：[[Vibe Coding系列04]]
+- **来源**：[[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ### Claim: GSD/SpecKit/OpenSpec 只能三选一
 
-- **来源**：[[Vibe Coding系列04]]
+- **来源**：[[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -47,7 +47,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ### Claim: 项目复杂度应按 Context 信息量而非代码行数定级
 
-- **来源**：[[Vibe Coding系列06]]
+- **来源**：[[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ### Claim: L1 项目不存在 Context Rot，GSD 是纯开销
 
-- **来源**：[[Vibe Coding系列06]]
+- **来源**：[[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -67,7 +67,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ### Claim: L2 项目是 GSD 的"甜蜜点"
 
-- **来源**：[[Vibe Coding系列06]]
+- **来源**：[[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -85,5 +85,5 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 ## 来源日记
 
-- [[Vibe Coding系列04]] — 框架选型分析
-- [[Vibe Coding系列06]] — 项目复杂度分级
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]] — 框架选型分析
+- [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06]] — 项目复杂度分级

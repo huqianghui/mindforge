@@ -42,7 +42,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > Sutton 刻意把 Search 和 Learning 并列为"两种利用算力的方法"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。
 
@@ -52,7 +52,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。**范围限定（2026-07-18 补）**：此区分特指经典/参数化 RL；梯度更新是 RL 式策略改进的**充分而非必要条件**——见本页 JitRL Claim（"经典 RL 把策略改进与参数更新焊死，JitRL 证明二者可拆开"）：JitRL 不改参数、只在外部 memory + advantage 上做非参数策略改进，仍是货真价实的 RL（广义策略迭代 GPI 的一个实例）。判据落在"学到的知识存哪"而非"改没改参数"，参见 [[online-learning]]。
 
@@ -62,7 +62,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > Sutton 从 RL 研究出发，但发现"计算终将胜出"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。
 
@@ -72,7 +72,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 大模型语境下 RL 主要四种形态：PPO（actor+critic 两套网络，RLHF 标准内核）、GRPO（组内相对优势替代独立 critic、省显存，近年主流）、RLHF（奖励来自人类偏好训练的奖励模型）、RLVR（奖励来自可自动验证规则如数学答案/代码通过测试，无需奖励模型，Agent 场景最常用）。算法层差异最终都收敛到同一工程结构：生成数据（rollout）与更新模型（training）两阶段交替。与 SFT 的本质分野：SFT 模仿正样本、便宜稳定但受限于已有能力；RL 用试错探索换更高上界，代价是最贵、最不稳。
 
@@ -82,7 +82,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > Rollout 属数据采集维度（Agent 实际执行了多少次任务，一条"提问→Search→Observation→Answer"即一条 rollout，`1000 rollouts` = 采集 1000 条轨迹）；Epoch 属优化维度（采集到的数据被反复学习几遍，`epoch 3` = 这批轨迹训练 3 次）。监督学习对应物：rollout ≈ sample/trajectory 而非 epoch。标准流程先后关系：收集 rollouts（policy_v1 产 1000 条轨迹）→ 计算 reward → 训练（这 1000 条跑 epoch1→2→3）。这也是 RL 日志刻意分 `Collect Rollouts` 与 `Optimize Epochs` 两段统计的原因，是读懂"rollout 与 training 解耦"的前提。
 
@@ -92,7 +92,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 传统 RLHF 假设单轮交互（`prompt→model→output→reward→update`，同步简单）；Agent 真实执行是多步轨迹（思考→调工具→观察→再决策→…→最终答案获 reward），具备四个传统 RL 不具备的特征：多轮、有状态、异步、依赖外部环境（API/DB/浏览器/代码执行器）。这四个特征使瓶颈从「算法」迁移到「基础设施」：rollout 占 80~90% 时间、需 training-rollout 解耦避免 GPU 互相空转。由此 Agent RL 的本质升维——不再是「怎么写 PPO loss」，而是「rollout 机制 + 训练推理解耦 + 分布式编排」的系统问题，框架选型（见 [[verl]]/[[slime-rl-framework]]）几乎必然建立在分布式基础设施架构之上。
 
@@ -102,7 +102,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 广义策略迭代（Generalized Policy Iteration, GPI）是 Sutton & Barto 那本书的中轴：任何 RL 方法都可拆成两步交替——**策略评估**（估计当前策略的 $V/Q$）+ **策略改进**（依 $Q$ 让策略更贪心），反复迭代直到收敛。绝大多数 RL 算法都是 GPI 的某种实例，差别只在"评估怎么做、改进怎么做、在哪个空间迭代"。JitRL 就是教科书级的 GPI，只是搬到推理期、且非参数：策略评估 = memory 上 kNN 的蒙特卡洛回报平均（非参数 MC policy evaluation），策略改进 = $z'=z+\beta\hat A$（KL 正则的改进步），迭代 = memory 越攒越准策略持续改进。所以它是"以 LLM logits 作为 base-policy 先验的、非参数（近乎 tabular）的强化学习"。
 
@@ -112,13 +112,13 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > "一个方法自称 learning 却不改参数"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是"通过改参数来改进策略"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条"改没改参数"的硬标准只在回答轴 B（结果存哪），从不是在说"这里没有 RL 计算"。这也接上一个更细的判据：判断学习的关键不只是"改没改参数"，而是"学到的知识存在哪"（见 [[online-learning]] 的存储位面 Claim）。
 
 ### Claim: GRPO/RLVR 数据流不变量——一条样本两个消费方，prompt 进 rollout、ground truth 只活在 reward 函数
 
-- **来源**：[[ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]]
+- **来源**：[[ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
@@ -132,6 +132,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - 2026-06-29：从 agent-lightning 系列 07 补充 LLM RL 四形态、Rollout vs Epoch 维度辨析、Agent RL=系统问题的分水岭，并关联 VERL/Slime 两大 RL infra 框架。
 - 2026-07-07：从 JitRL 论文解读补充 GPI（RL 中轴）与"策略改进 vs 参数更新可拆开"两条 Claim，接入 [[advantage-function]] 基础构造页与 [[online-learning]] 存储位面判据。
 - 2026-07-14：从 ms-swift 全景文补 GRPO/RLVR 数据流不变量 Claim——一条样本两个消费方（prompt→rollout、ground truth→reward 函数），行式对齐配对是静默错配的高危点。
+- 2026-09-06：镜像冗余边清理——删除本页指向 [[advantage-function]] 的 `uses` 行（对方页已声明 `part-of`，有向关系单侧保留）。
 
 ## 关联概念
 
@@ -144,9 +145,8 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - [[agent-lightning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup
 - [[online-learning]] — `contrasts` RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient
 - [[skillopt]] — `contrasts` SkillOpt 把分数当选择/门控信号（离散筛选），RL 把 reward 当梯度信号（连续参数更新）
-- [[advantage-function]] — `uses` 优势函数（$Q-V$，减基线的相对好坏）是 RL 策略改进的核心构造，GPI 的改进步依赖它
 
 ## 来源日记
 
 - [[2026-03-21-The-Bitter-Lesson]] — Section 二-三 RL 的核心贡献与 RL/LLM Agent 对比
-- [[ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — GRPO 数据格式、solution 列 kwargs 透传、行式对齐 reward 配对
+- [[ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — GRPO 数据格式、solution 列 kwargs 透传、行式对齐 reward 配对

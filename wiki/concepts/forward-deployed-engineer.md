@@ -80,12 +80,10 @@ FDE（前线部署工程师）——被部署到客户前线，用工程能力�
 ## 冲突与演进
 
 - 2026-08-04：建页。单来源（05-30 长文）但为职业/组织复合概念枢纽，与 requisite-variety / one-person-team / bitter-lesson 多页互证。伙伴制商业模式 Claim 属推演性论断（未经商业实践验证），置信度保守 0.7。
+- 2026-09-06：镜像冗余边清理——删除本页指向 [[one-person-team]]、[[bitter-lesson]]、[[requisite-variety]] 的 `uses` 行（三个对方页均已声明有向反向边：extends/grounds/grounds，有向关系单侧保留）。
 
 ## 关联概念
 
-- [[requisite-variety]] — `uses` FDE 存在条件与"调节不会完成"的定律依据
-- [[one-person-team]] — `uses` 2-3 人精英组 + AI Agent 编队是 One Person Team 在 FDE 团队的组织形态
-- [[bitter-lesson]] — `uses` "价值锚迁移到三元能力"的判断依据：操作知识终被模型吞噬
 - [[harness-engineering]] — `uses` Harness 资产库是三资产之一；"Harness 是长出来的、必须可拆卸"支撑"不可能教完"论证
 - [[personal-knowledge-compiler]] — `uses` 跨客户模式库的编译机制：日记捕获 → LLM 编译 → 人工审核 → 知识演进
 - [[ai-skill-formation]] — `uses` "复杂决策场景 AI 是放大器而非替代器"支撑信任资本的基础能力前提

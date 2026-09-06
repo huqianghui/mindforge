@@ -92,7 +92,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。
 
@@ -102,7 +102,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。
 

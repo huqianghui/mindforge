@@ -71,7 +71,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-05-14
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Azure Skills = 经验丰富的架构师（知道做什么、什么顺序、遇到问题怎么处理）。Azure MCP Server = 监控仪表盘（看到实时状态）。CLI = 操作台按钮（执行变更）。Skills 通过 plugin.json 将三层能力打包：注入 SKILL.md 剧本 + 启动 Azure MCP Server + 启动 Context7 MCP。
 
@@ -81,7 +81,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **首次出现**：2026-05-14
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是"读用 MCP、写用 CLI"，而是"关键专有 API 走 MCP，常见成熟命令走 CLI"。
 

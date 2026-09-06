@@ -27,7 +27,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: Agent Loop 核心只需 30 行 Python
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: Tool Dispatch 模式——添加新工具只需往 dispatch map 加一行
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -47,7 +47,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: TodoWrite 是 harness "行为纠偏"能力的首次展现
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: learn-claude-code 的 12 session 分三梯队
 
-- **来源**：[[learn-claude-code]]
+- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -86,4 +86,4 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ## 来源日记
 
-- [[learn-claude-code]] — Agent Loop 架构完整拆解
+- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — Agent Loop 架构完整拆解

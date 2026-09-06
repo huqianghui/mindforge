@@ -57,7 +57,7 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ### Claim: 四层防线是代码复用的真正解法
 
-- **来源**：[[Vibe Coding系列07]]
+- **来源**：[[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -76,4 +76,4 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ## 来源
 
-- [[Vibe Coding系列07]] — 代码复用问题深度分析
+- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]] — 代码复用问题深度分析

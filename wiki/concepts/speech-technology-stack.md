@@ -90,7 +90,7 @@ related:
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已"够用"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。
 

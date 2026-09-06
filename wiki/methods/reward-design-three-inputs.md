@@ -154,11 +154,6 @@ Reward 设计不是写规格，是做实验。这个工作流回答"训练用的
 - [[automatic-prompt-optimization]] — `implements` APO 页"真正瓶颈是 reward 设计 + 评估噪声 + 数据量"的教训在此落为可执行工作流；reward 是 APO/SkillOpt/RL 共享的地基
 - [[skillopt]] — `constrains` 优化 reward 的信噪比直接决定 SkillOpt 门控是否可分辨（δ_min 减半 → gate 的 reject 重新有意义）
 - [[generation-evaluation-separation]] — `implements` judge 分字段 rubric + temperature=0 + 多次取中位数是生成-评估分离在 reward 层的工程化
-- [[llm-as-a-judge]] — `uses` Judge Reliability 八类偏差清单为 σ_noise 测量提供分项归因框架，Evaluator/Reward 三层区别为两本账分家提供理论根基
-
-## 关联方法
-
-- [[pre-run-three-number-accounting]] — `uses` 改造前用三个数定位病灶（分子/分母哪个坏了），改完必须重走三个数——判断式翻转为"值得跑"才锁版开训
 
 ## 来源
 

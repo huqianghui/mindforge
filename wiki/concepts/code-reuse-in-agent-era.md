@@ -25,7 +25,7 @@ Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能�
 
 ### Claim: Coding Agent 有结构性代码复用缺陷
 
-- **来源**：[[Vibe Coding系列07]]
+- **来源**：[[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -35,7 +35,7 @@ Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能�
 
 ### Claim: 现有框架均未直接解决代码复用
 
-- **来源**：[[Vibe Coding系列07]]
+- **来源**：[[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -45,7 +45,7 @@ Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能�
 
 ### Claim: 四层防线是代码复用的真正解法
 
-- **来源**：[[Vibe Coding系列07]]
+- **来源**：[[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -63,4 +63,4 @@ Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能�
 
 ## 来源日记
 
-- [[Vibe Coding系列07]] — Coding Agent 代码复用问题分析与解法
+- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]] — Coding Agent 代码复用问题分析与解法

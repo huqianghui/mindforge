@@ -27,7 +27,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ### Claim: GSD 采用全量上下文拼接模式
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ### Claim: GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -47,7 +47,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ### Claim: Superpowers 的核心错位是"用文本分解解决计算分解问题"
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ### Claim: OpenSpec Delta 模式只是改变了爆炸时间分布
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -67,7 +67,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ### Claim: 所有框架共享错误假设 context = state
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -89,4 +89,4 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 
 ## 来源日记
 
-- [[Vibe Coding系列05]] — Context 爆炸问题的系统分析
+- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]] — Context 爆炸问题的系统分析

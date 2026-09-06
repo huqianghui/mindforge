@@ -25,7 +25,7 @@ AI 正在重新定义技术角色的能力边界，一个掌握 AI 编排能力�
 
 ### Claim: AI 重新定义了 Cloud Solution Architect 的角色边界
 
-- **来源**：[[Vibe Coding系列02]]
+- **来源**：[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -35,7 +35,7 @@ AI 正在重新定义技术角色的能力边界，一个掌握 AI 编排能力�
 
 ### Claim: 架构师核心价值从"亲自写代码"转变为"驾驭 AI 的能力"
 
-- **来源**：[[Vibe Coding系列02]]
+- **来源**：[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -45,7 +45,7 @@ AI 正在重新定义技术角色的能力边界，一个掌握 AI 编排能力�
 
 ### Claim: GSD + Superpowers 是 L2 项目中社区最推荐的个人开发者组合
 
-- **来源**：[[Vibe Coding系列04]]
+- **来源**：[[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.5
@@ -75,6 +75,6 @@ AI 正在重新定义技术角色的能力边界，一个掌握 AI 编排能力�
 
 ## 来源日记
 
-- [[Vibe Coding系列02]] — 架构师角色转变
-- [[Vibe Coding系列04]] — 框架组合实践
+- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]] — 架构师角色转变
+- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04]] — 框架组合实践
 - [[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]] — 2-3 人精英组 + Agent 编队、Spec 代替会议（2026-05-30）

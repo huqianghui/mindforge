@@ -137,7 +137,7 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 
 ## 四、所谓"算法"：难度迁移到了哪里
 
-既然核心循环平凡，那 APO 难在哪？**难度从"算法"迁移到了三个框架帮不上忙的地方。** 这不是 APO 的特例，是 AI 算法的普遍真相——梯度下降是"算导数减一下"，Transformer 是"matmul + softmax"，beam search 是"排序砍 top-k"。[[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]] 讲的正是：能 scale 的方法内核往往简单到尴尬。**核心循环简单是特性，不是缺陷。**
+既然核心循环平凡，那 APO 难在哪？**难度从"算法"迁移到了三个框架帮不上忙的地方。** 这不是 APO 的特例，是 AI 算法的普遍真相——梯度下降是"算导数减一下"，Transformer 是"matmul + softmax"，beam search 是"排序砍 top-k"。[[2026-03-21-The-Bitter-Lesson|The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]] 讲的正是：能 scale 的方法内核往往简单到尴尬。**核心循环简单是特性，不是缺陷。**
 
 真正的难点：
 
@@ -197,4 +197,4 @@ agent-lightning 干的就一件事：**自动优化一个已有 agent，而不�
 5. **难度迁移**：算法平凡，真难点在 POML 批评模板、reward 设计、评估噪声治理——三件框架帮不上的事（呼应 Bitter Lesson）。
 6. **核心使用场景**：有 agent + reward + 数据、想自动迭代 / 想换优化方法 / 要大规模跑 rollout → 该用；一次性任务 / 没好 reward / 数据太小 / 要线上 serving → 别用。**选它是为了管道和方法可换，不是为了算法聪明。**
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]（实践 + 噪声复盘）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（框架脊柱）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（接入契约）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]（算法理论）、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]、[[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]]
+> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]（实践 + 噪声复盘）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（框架脊柱）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（接入契约）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]（算法理论）、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]、[[2026-03-21-The-Bitter-Lesson|The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]]

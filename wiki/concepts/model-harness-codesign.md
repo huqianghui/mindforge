@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-09-04"
+updated: "2026-09-06"
 tags:
   - wiki
   - concept
@@ -129,6 +129,26 @@ related:
 
 > 五平台横评给绑定光谱补了第二维：绑定 × 可分解的十字定位。Codex 绑定深 + 不可拆（体验最完整、控制权最少，loop 与 session 存储不可替换）；多模型阵营内部按可分解方式分四型——**dsh** 插件化（Cordis 内核 + capability seams，loop 也是插件，sub-agent seam 五 provider 含 Codex/Claude Code）；**pi** 极简内核可自改（primitives not features，空 system prompt + 四工具，self-modifying 一等公民）；**OpenHands** SDK 分层（agent 逻辑/远程沙箱/接口层解耦，拆的粒度是架构层而非能力件）；**Goose** 协议标准化（extension 即 MCP server，把拆解外包给 MCP/ACP 标准）。选型核心判据不是功能清单，而是"你要对 harness 拥有多大控制权、控制发生在哪一层"。
 
+### Claim: Codex 的 harness 是按模型条目实例化的——Model/Harness 边界不是一条线而是一张按模型索引的表，co-design 证据从论断层升级到字段层
+
+- **来源**：[[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **首次出现**：2026-09-05
+- **最近更新**：2026-09-06
+- **置信度**：0.85（rust-v0.153.1 源码逐字段核实 + 本机 Azure catalog 实测）
+- **状态**：active
+
+> `gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex"每个模型自带一套 harness 切片"vs Claude Code"一套全局 harness 配多个模型"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档而是**多 agent 委派开关**（实际推理档由 `multi_agent_reasoning_effort` 决定，client.rs:188-200）。源码核实带一处修正：`shell_type` 的 `shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias，运行时行为已归一化——co-design 的证据不是"两个模型用两种 shell 工具"，而是**枚举里留着 alias，说明工具形态跟着模型代际演进过（alias 是咬合史留在类型系统里的化石）**。这也回答了"为什么第三方模型接进第一方 harness 总差口气"：接上的只是推理端点，接不上的是九层里剩下的八层。
+
+### Claim: 工具调用形态是一条 Direct → CodeMode → CodeModeOnly 光谱——能力做成「更多的工具」vs 做成「一种语言」
+
+- **来源**：[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **首次出现**：2026-09-05
+- **最近更新**：2026-09-06
+- **置信度**：0.8
+- **状态**：active
+
+> Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成"调 A→过滤→喂 B"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为"一段代码"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。
+
 ## 冲突与演进
 
 - 2026-07-08：《Agent=Model+Harness》文章从 VS Code 博客的第一手证据推出"第一方绑定可能是结构性最优组合"的推论，并列出五个反方论点自我制衡。
@@ -137,6 +157,7 @@ related:
 - 2026-08-30：注入硅层 co-design（Jalapeño）与服务端工具全家桶（Computer Use 系列六/七）两组证据——第一方绑定的纵深与隐性福利。
 - 2026-08-16：注入 Graph Engineering 讨论的显式图 vs 隐式图对垒（Claude workflows 可审计脚本 vs Codex V2 加密委派）——第一方绑定之外的第二条路线分歧轴："图给人看还是给机器看"。
 - 2026-09-04：注入两条新维度——搜索挂载点决定覆盖面（系列七 Copilot 四挂载点 + Scout 挂靠闭环镜像，"服务端工具全家桶"Claim 的机制细化）与绑定×可分解十字定位（五平台横评，多模型阵营内部的第二维分层）。
+- 2026-09-06：注入 Codex Desktop 系列05/06 的最强续证——per-model harness 实例化（九层解剖 + schema 校验语义 + Ultra 委派开关 + shell_type alias 化石修正）与 tool_mode 光谱（Direct↔CodeModeOnly、CodeAct 动机、单一治理入口）。co-design 证据首次达到源码字段级（rust-v0.153.1 逐字段核实），"每模型自带 harness 切片 vs 全局 harness 配多模型"成为本页第一方绑定路线在数据结构层的核心表述。
 
 ## 关联概念
 
@@ -150,3 +171,5 @@ related:
 - [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — 核心来源：harness 三职责、per-model 适配成本清单、第一方绑定推论、MCP 治理成本、五个反方论点
 - [[2026-07-10-周五]] — ChatGPT Work 发布调研：Codex 并入 ChatGPT 桌面 app，Work/Codex 双模式，印证第一方绑定判断
 - [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 显式图 vs 隐式图路线对垒、"图的运维才是护城河"教训、模型写图的新特征
+- [[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]] — gpt-6-astra 条目九层解剖：per-model harness 实例化的直接证据
+- [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — rust-v0.153.1 源码逐字段核实：alias 化石、tool_mode 光谱、Ultra 语义、审批模型常量

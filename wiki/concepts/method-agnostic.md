@@ -33,7 +33,7 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > Agent Lightning 是一个 method-agnostic 的 agent 优化训练框架：换优化方法（APO↔SFT↔RL）只换 `algorithm` 槽位，agent 代码与 reward grader 一行不改。这把「升级优化能力」从"换框架/重写"降级为"换槽位"，是 method-agnostic 的核心承诺。
 
@@ -43,7 +43,7 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.9
-- **状态**：active
+- **状态**：stale
 
 > 同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 从"口号"变成"接缝"的具体位置。
 
@@ -53,7 +53,7 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。store 不是被动存储，而是 runner↔algorithm 之间的协调中枢——正因为有这个居中的控制平面，生产者与消费者才能各自替换而互不影响。没有 store，method-agnostic 只是愿望；有了 store，它才有物理支点。
 
@@ -63,7 +63,7 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > method-agnostic 阶梯由轻到重：APO（不动权重，`sorted()[:beam_width]` 用 reward 排序选 prompt）→ SFT/RAFT（用 reward 筛轨迹做微调，改权重）→ RL（用 reward 当梯度信号）。三者共享同一份 grader/reward，差异只在"如何消费 reward"。这证明 method-agnostic 不是三个独立系统的拼接，而是一份 reward 的三种读法。
 
@@ -73,7 +73,7 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > VERL 的算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，"让算法替换成为一个配置问题"，与 agent-lightning 上层的 method-agnostic 一脉相承。区别是层次：agent-lightning 在 RL infra 之上做"换优化方法"，VERL 在 RL 引擎内部做"换 RL 算法"。同一个"解耦+插槽"形状在不同抽象层各出现一次。
 
@@ -83,7 +83,7 @@ related:
 - **首次出现**：2026-07
 - **最近更新**：2026-07-02
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > SkillOpt 的 `ReflACTTrainer.train()` 编排六阶段流水线，但不认识任何 benchmark——所有 rollout/数据加载通过 `EnvAdapter` 接口回调。接新任务不改 trainer，只写一个 adapter。这与 agent-lightning "换算法只换槽位"同构，区别是这里换的是 **environment** 不是 algorithm。两者共同揭示：把"什么会变"隔离进一个契约层，是让框架长期可扩展的通用手法。
 

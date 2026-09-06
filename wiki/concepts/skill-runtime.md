@@ -28,7 +28,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 ### Claim: 行业缺失的方案是 Skill Runtime 模式
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -38,7 +38,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 ### Claim: Skill Runtime 的 context 是声明式的
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -48,7 +48,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 ### Claim: 评估 Agent system 能否 scale 的 5 个自检问题
 
-- **来源**：[[Vibe Coding系列05]]
+- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -110,6 +110,6 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 ## 来源日记
 
-- [[Vibe Coding系列05]] — Skill Runtime 范式提出
+- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05]] — Skill Runtime 范式提出
 - [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — SEP-2640、skill=MCP Resource、progressive disclosure 三步（2026-07-30）
 - [[2026-08-10-周一]] — skill scripts 可移植性断层、各托管 runtime 环境差异实测、四条实操策略（2026-08-10）

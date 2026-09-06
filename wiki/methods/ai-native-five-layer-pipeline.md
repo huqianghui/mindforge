@@ -79,7 +79,7 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 
 ### Claim: 五层 Pipeline 是思维模式的转换
 
-- **来源**：[[Vibe Coding系列03]]
+- **来源**：[[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -89,7 +89,7 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 
 ### Claim: 每阶段输出的 context 类型完全不同
 
-- **来源**：[[Vibe Coding系列03]]
+- **来源**：[[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -115,4 +115,4 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 
 ## 来源
 
-- [[Vibe Coding系列03]] — AI-Native 开发实践：从 Figma 到 Spec-Delta 工作流
+- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03]] — AI-Native 开发实践：从 Figma 到 Spec-Delta 工作流

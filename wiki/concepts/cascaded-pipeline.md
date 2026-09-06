@@ -51,7 +51,7 @@ related:
 
 ### Claim: 级联失败是 Harness Engineering 出现的核心驱动力
 
-- **来源**：[[Vibe Coding系列01]]
+- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-02
 - **最近更新**：2026-04-17
 - **置信度**：0.8
