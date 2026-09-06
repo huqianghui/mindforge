@@ -100,6 +100,43 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 
 **`launchctl setenv` 的局限——重启/重新登录后失效**：它设置的是**当前登录会话级**（per-user launchd domain）的变量，注销、重启、切换用户后全部清空，下次得重设。若只是临时排查，`launchctl setenv` + 重启 App 足够；若要长期用 Azure key 跑 Desktop，做成 LaunchAgent 让 `launchd` 每次登录自动 setenv 一劳永逸。
 
+#### 名词背景：plist 是什么标准、LaunchAgents 里的 Agent 指什么
+
+下面的持久化步骤会同时碰到这两个名词，值得先讲清来历。
+
+**plist（Property List）是 Apple 自家的结构化数据序列化标准**——不是任何国际标准组织的规范，它的"标准"就是每个 XML plist 头部声明的那份 DTD（`http://www.apple.com/DTDs/PropertyList-1.0.dtd`）。血统比 macOS 还老：源自 1980 年代末的 NeXTSTEP（当时是一种类 JSON 的文本格式，而 JSON 尚未诞生），Apple 收购 NeXT 后随整个系统架构带入 Mac OS X，改以 XML 为主要表示。它本质是**8 种类型 + 三种编码**：
+
+| 层面 | 内容 |
+|---|---|
+| 类型系统 | 仅 8 种：`dict`、`array`、`string`、`integer`、`real`、`boolean`（`<true/>`/`<false/>`）、`date`（ISO 8601）、`data`（Base64 二进制） |
+| XML 编码 | 人类可读，手写 LaunchAgent 用的就是它 |
+| 二进制编码（bplist） | `defaults` 偏好设置的实际存储格式，解析快——launchd 开机要读几百个 plist，启动路径上这点性能有意义 |
+| OpenStep 文本编码 | NeXTSTEP 遗留，现只能读不能写 |
+
+类型系统与 JSON 几乎同构（`plutil -convert json` 可直接互转，仅 `date`/`data` 无 JSON 原生对应），但比 JSON 早十几年出现。Apple 把它定为系统级统一配置格式——launchd 任务定义、`.app` 包内的 `Info.plist`、`defaults` 偏好、entitlements 全是它，对应的系统 API 是 Core Foundation 的 `CFPropertyList`。统一格式换来统一工具链：`plutil`（校验/格式转换）、`defaults`（读写偏好）、`/usr/libexec/PlistBuddy`（精确修改嵌套键）对所有 plist 通用——下面第 3 个坑靠 `plutil -lint` 提前拦截，吃的就是这份红利。
+
+**`LaunchAgents` 里的 Agent 与 AI Agent 无关**——是 launchd 术语"代理"的本义：**代表某个登录用户**在后台干活的进程（同样是 NeXTSTEP 一脉的老命名，比 AI 圈用这个词早二十多年）。launchd（macOS 的 1 号进程，角色类比 Linux 的 systemd）把后台任务分两类：
+
+| | Daemon（守护进程） | Agent（代理） |
+|---|---|---|
+| 运行身份 | root 或指定系统用户 | **当前登录用户** |
+| 启动时机 | 开机即起，无需任何人登录 | **用户登录后** |
+| 访问 GUI/用户会话 | ❌（无窗口服务器连接） | ✅（可弹通知、访问用户 Keychain） |
+| 实例数 | 全系统一份 | 每个登录用户各跑一份 |
+| plist 目录 | `LaunchDaemons/` | `LaunchAgents/` |
+
+目录按"谁装的、给谁用"分五层：
+
+```text
+~/Library/LaunchAgents/          # 用户自装，仅对本用户生效 ← 本文用这层
+/Library/LaunchAgents/           # 管理员/第三方装，所有用户登录后各跑一份
+/Library/LaunchDaemons/          # 第三方系统级守护进程，开机即跑（root）
+/System/Library/LaunchAgents/    # Apple 系统自带（SIP 保护，不可改）
+/System/Library/LaunchDaemons/   # Apple 系统自带（SIP 保护，不可改）
+```
+
+本场景必须用 Agent 而非 Daemon：要注入环境变量的是**当前用户的登录会话**（GUI app 全挂在用户会话下），Agent 在用户登录时由 launchd 自动加载执行，时机先于所有 GUI app 启动，`setenv` 才来得及生效；放 `~/Library` 下也无需 sudo——这反过来解释了下面第 1 个坑：root 属主的 plist 在 `gui/<uid>` 域反而会被拒绝加载。
+
 #### 持久化做法：LaunchAgent（实测步骤）
 
 在 `~/Library/LaunchAgents/` 放一个开机自跑 `launchctl setenv` 的 plist：
