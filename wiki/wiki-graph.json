@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-05",
+  "generated_at": "2026-09-06",
   "stats": {
     "nodes": 123,
-    "links": 416,
+    "links": 408,
     "orphan_links_removed": 0,
-    "claims": 581,
+    "claims": 586,
     "categories": 11
   },
   "nodes": [
@@ -34,7 +34,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "四个量要分清：reward $r_t$（环境/evaluator 给的原始标量，**绝对**——\"这一步多好\"）；return $G_t=\\sum\\gamma^{u-t}r_u$（从这步往后的累计折扣回报，**绝对**——\"这动作之后总共流入多少 reward\"）；value $V(s)$（状态期望回报，**基线**——\"这个 state 平均能拿多少\"）；advantage $A(s,a)=Q(s,a)-V(s)$（**相对**——\"这动作比这个 state 的平均动作好多少\"）。关键区别：reward/return 是绝对好坏，advantage 是减掉基线后的相对好坏。而 advantage 依赖一个 value 基线，value 基线正是 RL 的核心构造（Bellman/价值函数）——这就是为什么在 RL 之前的 harness 世界里根本没有\"advantage 估计\"这回事。"
         },
         {
@@ -43,7 +43,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "$Q(s,a)$ 里混了两样东西：① 这个 state 整体有多好（对该 state 下所有动作都一样，故\"公共\"，与动作好坏无关，故\"偏置\"）；② 这个动作在这个 state 里比别的动作强多少。减掉 ① 才剩下真正要的 ②。用班级平均分类比：raw $Q$ 是绝对分（普通班考 80、尖子班考 30），$V(s)$ 是班级平均，advantage 是相对本班平均高/低多少——普通班的 80 可能垫底、尖子班的 30 可能第一，判断\"选得好不好\"要看相对本班平均而非绝对分。因为基线对所有动作公共，减掉它不改变改进方向的期望（**无偏**）却大幅**降方差**——这就是 variance reduction。对把 $\\beta\\hat A$ 直接加到 logits 的 JitRL 尤其要命：若用 raw $Q$，困难 state 里最该选的动作会被整体压得比简单 state 里最不该选的还低，策略被 state 难易带偏而非被动作好坏引导。"
         },
         {
@@ -52,7 +52,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Harness（memory/RAG/reflection）只用 reward/结果——绝对信号、不减基线（\"这条轨迹成功了，记下来\"）；RL（PPO/GRPO）用 advantage——减基线，只推高\"比局部平均更好\"的动作。把方法排进\"reward 怎么用\"的光谱正好看清位置：**RAFT（reward 只当接受/拒绝的过滤阈值，无基线，选完即弃）< RWR（reward 当软权重）< JitRL / PPO / GRPO（用带基线的 advantage）**——越往右 reward 越走进决策/梯度核心。判断一个方法\"是不是在做 RL 机器\"的一个技术命门就是看它算不算 $Q-V$：算 advantage 的站 PPO 那边，只用 reward 结果的站 harness 这边。"
         },
         {
@@ -61,7 +61,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "advantage 估计有多种做法，它们共享\"用带基线的相对信号做策略改进\"这门语言，分野在 advantage 怎么估、以及往哪里作用：**PPO** 用 value/critic 或 GAE 估 advantage、进策略梯度改参数；**GRPO** 是 critic-less 变体，用同 prompt 多输出的组内平均 reward 当基线算 advantage、进梯度改参数；**JitRL** 用外部 memory 中相似轨迹的 kNN 蒙特卡洛平均估 $\\hat Q-\\hat V$（无 value network、非参数）、把 $\\beta\\tilde A$ 加到候选动作 logits 上、不改参数。三者共用 advantage，但 GRPO/PPO 的 advantage 进梯度、改权重，JitRL 的 advantage 进 logits、瞬时生效不改权重——\"进梯度还是进 logits\"是它们的真正分野。"
         }
       ]
@@ -148,7 +148,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "litagent → runner → tracer → store → adapter → reward → algorithm 是一条单向数据流，trainer 编排、types 做契约（基于 0.3.1 源码逐模块带 `file:line` 拆解）。控制反转：你定义「什么算好」的静态零件（agent 逻辑 + reward grader + 数据集），框架拥有「把好坏变成可迭代优化循环」的动态机制。"
         },
         {
@@ -157,7 +157,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 的兑现处，也是它区别于纯 prompt 工具（DSPy）的差异化价值。"
         },
         {
@@ -166,7 +166,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "`@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓\"零代码改动\"实质是\"包一层符合签名的函数\"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。"
         },
         {
@@ -175,7 +175,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "store 自称 \"persistent control-plane that coordinates training rollouts\"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）的中枢。生产选型：负载是「高频小记录读写 + 队列状态机 + 嵌套 JSON spans」，Azure 上用 Cosmos DB for MongoDB API 最省事（协议兼容、0 代码复用现成 mongo 实现）；已有 PostgreSQL 则 pg+JSONB 自己实现接口；MySQL 不推荐（JSON 支持弱）。"
         },
         {
@@ -184,7 +184,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "由轻到重：APO（只改 prompt，推理级，受限基座已有能力）→ SFT（拒绝采样只学正样本，16GB LoRA 可跑，把 pass@k 压成 pass@1）→ RL（正负样本+探索，40GB+，能探出新策略）。SFT 不是可有可无的过渡：① APO 改不动「能不能做对」只改「怎么说」，到顶后动权重最便宜入口是 SFT；② RL 几乎总要 SFT warmup，跳过直接 RL 冷启动易崩；③ reward 干净且 pass@k>0 时 SFT 性价比最优。其「只学正样本不探索」的限制恰是它便宜稳的来源——是 tradeoff 不是缺陷。"
         },
         {
@@ -193,7 +193,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "`algorithm/__init__.py` 仅 export 两个一等公民：APO（prompt）、VERL（RL 权重）。SFT **不是**内置算法类——它继承 `Algorithm` + 实现 `run()`，在 run 里用 `store.enqueue_rollout` 收集带 reward 轨迹、adapter 转 triplet、喂 Unsloth/Azure 微调（`examples/unsloth/sft_allinone.py`、`examples/azure/`）。这纠正了系列01 初版把 SFT 列为内置算法的说法。"
         },
         {
@@ -202,7 +202,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。algorithm 进程（消费者）与 runner 进程（生产者）通过 store 解耦，可分进程跑也可用 Trainer 自带内存 store 一键运行。这印证了 §2.4「store 是控制平面」——它不是被动存储，而是 runner↔algorithm 之间的协调中枢，是 method-agnostic 能成立的物理基础。"
         },
         {
@@ -211,7 +211,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的\"多 agent 协作\"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。"
         },
         {
@@ -220,7 +220,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-07-03",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。**补充（系列08 实战暴露）**：这层架构锁定不是抽象的、而是钉在具体版本上的紧耦合——agentlightning 0.3.1 按老路径 import `verl.workers.fsdp_workers`，verl 0.8.0 已删该模块，故 0.3.1 只能配 verl ≤0.7.0。跨库 import 契约会随 VERL 版本演进而破裂，\"架构建立在假设之上\"的代价是版本窗口很窄（详见 [[verl]] 版本锁定 Claim）。"
         },
         {
@@ -229,7 +229,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。"
         },
         {
@@ -263,7 +263,7 @@
       "claims": [
         {
           "statement": "Agent Loop 核心只需 30 行 Python",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -272,7 +272,7 @@
         },
         {
           "statement": "Tool Dispatch 模式——添加新工具只需往 dispatch map 加一行",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -281,7 +281,7 @@
         },
         {
           "statement": "TodoWrite 是 harness \"行为纠偏\"能力的首次展现",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -290,7 +290,7 @@
         },
         {
           "statement": "learn-claude-code 的 12 session 分三梯队",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -602,7 +602,7 @@
       "claims": [
         {
           "statement": "从 Figma 直接让 AI 写代码效果差",
-          "source": "Vibe Coding系列03",
+          "source": "Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -611,7 +611,7 @@
         },
         {
           "statement": "五层 Pipeline 是思维模式的转换",
-          "source": "Vibe Coding系列03",
+          "source": "Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -620,7 +620,7 @@
         },
         {
           "statement": "每阶段输出的 context 类型完全不同",
-          "source": "Vibe Coding系列03",
+          "source": "Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -758,7 +758,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-25",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "把 APO 等同于 beam search 是层级错位，等于把\"梯度下降训练\"等同于\"Adam 优化器\"。APO（Automatic Prompt Optimization）是完整优化方法，含两个本质不同的子机制：① **怎么产生更好候选**——靠文本梯度（Critic 诊断 + Editor 改写），这是生成机制；② **怎么在候选里挑、管理搜索过程**——靠 beam search（维护固定大小候选集，每轮扩展、打分、剪枝），这是搜索策略。beam search 本身不知道\"prompt 怎么变好\"，只负责\"在已生成候选里按分数保留 top-k、决定下一轮从谁出发\"。一句话：APO = 文本梯度（生成方向）+ beam search（搜索管理）。"
         },
         {
@@ -767,7 +767,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-25",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "一轮 APO 迭代有四个角色接力，对应神经网络训练：**Evaluator/Judge**（grader 的 model，给数值分，类比判分老师）→ **Critic/Teacher**（gradient_model，看低分轨迹写文本梯度＝自然语言诊断，类比写评语的导师）→ **Editor**（apply_edit_model，按批评改写出新候选，类比按评语改作文）→ **Beam Search**（无模型纯算法，选 top-k）。关键区分：Judge 给\"分数\"（标量）、Critic 给\"方向\"（文本），常被混为一谈。Critic 和 Editor 故意分两个模型：Critic 要强推理（诊断难，用更强模型）、Editor 只需会改写（机械，用便宜模型），分离后还能独立约束两个 prompt 注入点。文本梯度的优势是不仅说\"错了\"还说\"为什么错、具体怎么改\"——代价是每步都调强模型，比数值梯度贵几个数量级，所以才需要有预算约束的 beam search 控爆炸。"
         },
         {
@@ -776,7 +776,7 @@
           "first_seen": "2026-06-25",
           "last_updated": "2026-06-25",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "搜索策略谱系都在解\"候选树里找最优节点\"，区别在每层保留几个：greedy（留 1，易陷局部最优）、BFS（全留，O(b^d) 爆炸）、DFS（深挖一条，无明确终止深度）、beam search（top-k，O(k·b) 可控）、Tree-of-Thought（带 LLM 自评估，更贵）、Self-Consistency（正交降噪，可叠加）。APO 选 beam search 的首要理由是评估太贵——每个候选要在验证集跑大量 rollout，beam_width 把 BFS 的指数爆炸压成线性；又比 greedy（beam_width=1）多留缓冲，对抗评估噪声（同 prompt 打分可摆动 0.2）的 max-over-noise。进阶方向：把\"等额评估+max 选择\"升级为 bandit（UCB / Successive Rejects）的\"自适应预算分配\"，是对症\"虚高候选\"问题的统计学解药。"
         },
         {
@@ -785,7 +785,7 @@
           "first_seen": "2026-06-24",
           "last_updated": "2026-06-24",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "任何 prompt 优化工具（DSPy/TextGrad/AdalFlow/agent-lightning）都成立的核心教训：真正的瓶颈不是选哪个框架。① **评估噪声**——小数据集（如 29 题）标准误 `SE ≈ sqrt(p(1−p)/N) ≈ 0.09`，会盖过任何小于 0.18 的真实增益；② **reward 设计**——reward 若设错（如让 LLM 对离散任务输出连续 partial score），框架只会\"忠实地优化一个噪声\"；③ **数据量**——要可靠确认 Δ 提升需 `SE ≤ Δ/2`，想分辨 0.05 增益需 N≈350+，或用多采样 `SE/√k` 等效放大。落地顺序：先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则只是在噪声里挑最大值。"
         },
         {
@@ -960,7 +960,7 @@
           "first_seen": "2026-05-14",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Azure Skills = 经验丰富的架构师（知道做什么、什么顺序、遇到问题怎么处理）。Azure MCP Server = 监控仪表盘（看到实时状态）。CLI = 操作台按钮（执行变更）。Skills 通过 plugin.json 将三层能力打包：注入 SKILL.md 剧本 + 启动 Azure MCP Server + 启动 Context7 MCP。"
         },
         {
@@ -969,7 +969,7 @@
           "first_seen": "2026-05-14",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是\"读用 MCP、写用 CLI\"，而是\"关键专有 API 走 MCP，常见成熟命令走 CLI\"。"
         },
         {
@@ -1016,7 +1016,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "search + learning 最终击败所有 hand-coded human domain knowledge，跨越所有 AI 领域。"
         },
         {
@@ -1025,7 +1025,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "研究者精心打造的领域知识被简单暴力的\"更多计算\"碾压，70 年来反复发生。"
         },
         {
@@ -1034,7 +1034,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "是一个跨领域元原则：\"让计算（search + learning）替代人类知识\"，不限于强化学习。"
         },
         {
@@ -1043,7 +1043,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "(1) 编码人类知识 → (2) 短期有效 → (3) 长期停滞 → (4) 对立的计算扩展方法实现突破。"
         },
         {
@@ -1154,7 +1154,7 @@
         },
         {
           "statement": "级联失败是 Harness Engineering 出现的核心驱动力",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-02",
           "last_updated": "2026-04-17",
           "confidence": 0.8,
@@ -1307,7 +1307,7 @@
         },
         {
           "statement": "\"Process isolation gives context isolation for free\"",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -1467,7 +1467,7 @@
       "claims": [
         {
           "statement": "Coding Agent 有结构性代码复用缺陷",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -1476,7 +1476,7 @@
         },
         {
           "statement": "现有框架均未直接解决代码复用",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -1485,7 +1485,7 @@
         },
         {
           "statement": "四层防线是代码复用的真正解法",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -1509,8 +1509,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.76,
+      "claims_count": 11,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
@@ -1592,6 +1592,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "企业场景的核心原则：模型不应直接持有浏览器控制权限——模型只提出动作，策略层决定是否放行（域名/动作白名单、高风险确认），执行器在客户浏览器本地落地。动作设计成高层业务语义（`click(\"新建订单\")` 而非坐标），SaaS 适配从 SDK 变成流程配置。三条铁律：模型凭据不进扩展、客户 Cookie 不上后端、页面状态脱敏后才回传。安全确认按四级分类（Hand-off Required → No Confirmation），CAPTCHA/付费墙/改密码是产品硬编码的不可放行项。"
+        },
+        {
+          "statement": "断供框架的第三层是治理层——harness 的隐藏模型调用跟 provider 走，接第三方要盘点全部模型调用而非只主模型",
+          "source": "Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链",
+          "first_seen": "2026-09-05",
+          "last_updated": "2026-09-06",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "在\"端点层 × harness 层\"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。"
+        },
+        {
+          "statement": "Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树不可拆",
+          "source": "Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链",
+          "first_seen": "2026-09-05",
+          "last_updated": "2026-09-06",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "系列六\"runtime 不对等\"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——\"Computer Use 在哪\"有两个答案：**分发态在 App bundle，运行态在用户目录**。三个边界证据：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③ SkyComputerUseClient 离开 Codex.app 进程树会因 code signature / launch context 失败——**App Bundle + native helper + 签名 + macOS TCC 权限 + 进程树是不可拆的整体**，standalone 与 bundled CLI 即使版本号相同能力也不同（\"同源不同发行版\"在能力层的表现）。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。"
         }
       ]
     },
@@ -1737,7 +1755,7 @@
       "claims": [
         {
           "statement": "GSD 采用全量上下文拼接模式",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -1746,7 +1764,7 @@
         },
         {
           "statement": "GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
@@ -1755,7 +1773,7 @@
         },
         {
           "statement": "Superpowers 的核心错位是\"用文本分解解决计算分解问题\"",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -1764,7 +1782,7 @@
         },
         {
           "statement": "OpenSpec Delta 模式只是改变了爆炸时间分布",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -1773,7 +1791,7 @@
         },
         {
           "statement": "所有框架共享错误假设 context = state",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -1903,7 +1921,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "静态权重（有限 context 记忆）、有限人类数据（power-law scaling 触顶）、人类设计的训练算法。"
         },
         {
@@ -1912,7 +1930,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。"
         },
         {
@@ -1921,7 +1939,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "知识内化与检索增强互补而非竞争。"
         },
         {
@@ -1930,7 +1948,7 @@
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
         },
         {
@@ -1939,7 +1957,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "「持续学习 × LLM Agent」的一批 arXiv 前沿论文共享一个动机：**离线训完的模型部署后不再进化，浪费了部署期海量真实交互的学习信号**。差别全在\"怎么把信号用起来\"，最锋利的一刀切在**改不改 base 模型参数**。四篇里只有 LifeSkill 真动权重：JitRL（2601.18510，外部 $(s,a,G)$ 经验库 → kNN advantage 重排 logits，不改参数）、XSkill（2603.12056，经验流+技能流双库，不改参数）、CURATOR（2606.25115，预算受限记忆治理+抗投毒，不改参数）都把学到的东西存外部持久记忆；LifeSkill（2606.04815，verifier 引导 + 在线内化，**refines the policy model's parameters**）内化回权重。摆到二维平面看：X 轴=改不改参数、Y 轴=何时适应，\"部署后+改参数\"这个历来空着的象限被 LifeSkill 独占，\"部署后+不改参数\"象限则由前三者证明远不止朴素 memory/RAG（还能做 RL-style 策略改进）。（详见 [[online-learning]] 的\"存储位面\"与\"适应延迟\"两条判据 Claim。）"
         },
         {
@@ -1948,7 +1966,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "LifeSkill 对 skill 生命周期的判断比它的算法更有启发：主流 skill-library/skill-injection 默认 skill 是持久外部资产（抽出→存库→检索注入 context，agent 一直依赖它）；LifeSkill 反过来主张 **skill 不该一直存在于 prompt 中，而应最终消失**。机制是 OSI（Online Skill Internalization）：用一条有效 skill 成功完成任务后，**把 skill 从输入里移除**，再用这条\"已去掉提示\"的成功轨迹训练 policy——skill 描述的本领被内化成模型自己的能力。类比人学开车：初学默念\"离合、油门、看后视镜\"（skill 在 prompt 里），熟练后消融进肌肉记忆（内化进权重）。这是它和整簇\"不改参数\"方法的分水岭：那三篇优化\"如何更好地用外部拐杖\"，LifeSkill 优化\"如何把拐杖变成腿\"。代价：不可移植、不可外科删除、有灾难性遗忘风险。"
         },
         {
@@ -1957,7 +1975,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责\"现在就变聪明\"，后台负责\"慢慢真变强\"，这是对\"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）\"这个根问题的工程回答：两者兼得。"
         }
       ]
@@ -2102,7 +2120,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "FSDP（Fully Sharded Data Parallel）本质仍是数据并行（DP）+ 参数分片，没有 TP 也没有 PP。以 `y=xW` 为例：TP（切计算）把 W 按列切成 W1|W2，GPU0 只算 y1=xW1、GPU1 只算 y2=xW2 再拼回，每张卡只完成一半矩阵乘；FSDP（切存储）平时各存半个 W 省显存，真要算时先 all-gather 把完整 W 临时拼到每张卡、各自独立算出完整 y（喂不同数据批），算完立即释放。一句话：TP 让多卡\"合作完成一次计算\"，FSDP 让每卡\"独立完成全部计算、只是平时不囤全部参数\"。"
         },
         {
@@ -2111,7 +2129,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "FSDP 不是一次性拼回整个模型，而是逐层（layer by layer）\"拼—算—丢\"：每层 all-gather 凑齐该层完整参数→forward→立即 release 只留分片。例：60GB 模型、单层峰值 2GB、单卡 16GB——一次性拼全需 60GB 必 OOM，而 FSDP 任一时刻只拼当前层（峰值 2GB）+ 长期分片，16GB 卡能跑。本质是\"通信换显存/时间换空间\"：代价是每层多一次 all-gather，收益是单卡不必长期持有完整模型。\"每张卡做完整计算\"指在时间上顺序走完所有层，而非某瞬间攥着整个模型。"
         },
         {
@@ -2120,7 +2138,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "FSDP 下每卡逻辑上都能跑完整模型，多卡动机是提效（显存分片到 1/N、吞吐撑 batch 1024/2048、算力压 wall-clock 到 1/N），卡间互为副本各喂不同数据、最后同步梯度——去掉冗余卡仍能跑只是更慢。TP/PP 多卡是\"否则根本算不了\"（单卡放不下一层/一次计算），卡间协同组成一个模型缺一不可。这条区别是 FSDP 归属\"数据并行家族\"而非\"模型并行家族\"的判定依据。切换边界：只要单卡还能逐层跑完一次前向/反向 FSDP 就够用；一旦连单层都放不下，才必须上 TP/PP。"
         },
         {
@@ -2129,7 +2147,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "FSDP 来自 `torch.distributed.fsdp`（`FSDP(model)` 即可），无独立 repo；DDP 同为 PyTorch 官方；Megatron（NVIDIA，手动 TP/PP/EP）与 DeepSpeed（ZeRO/显存优化）是外部项目。Megatron = TP + PP + DP + MoE，面向 100B+/超大 MoE/极致吞吐（DeepSeek-V3/R1、GLM、Qwen3 MoE 等都依赖 Megatron 类体系）。二者同处训练层但哲学迥异：FSDP 自动参数分片、抽象高、易用、≤70B；Megatron 手动模型并行、控制细、性能高、100B+。类比：FSDP 像 Python 标准库（官方自带开箱即用），Megatron 像高性能第三方框架。它们是适用规模的接力——FSDP 覆盖\"单卡放得下一层\"的中段，Megatron 接管\"单层都放不下\"的顶端。"
         },
         {
@@ -2138,7 +2156,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "推理系统（vLLM/SGLang）的 TP/PP 不需反向传播、不同步梯度、无 optimizer，故可轻量高吞吐（推理本质 `输入→forward→输出`）；训练系统（Megatron）的 TP/PP 还要 backward 梯度、all-reduce、1F1B 交错调度、bubble 优化、activation 传递、optimizer state/梯度累积/checkpoint，是完整分布式计算系统、复杂度高一个数量级（训练本质 `forward→loss→backward→gradient→optimizer`）。由此引出常踩的坑：\"既然 vLLM 都支持 TP 是不是就不需要 Megatron 了？\"——错。vLLM 只解决\"模型怎么跑（推理）\"，Megatron 才解决\"模型怎么学（训练）\"，只用 vLLM 无法训练（没 optimizer/backward）。"
         }
       ]
@@ -2577,7 +2595,7 @@
       "claims": [
         {
           "statement": "规范驱动与方法论框架互补不可互替",
-          "source": "Vibe Coding系列04",
+          "source": "Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -2586,7 +2604,7 @@
         },
         {
           "statement": "GSD/SpecKit/OpenSpec 只能三选一",
-          "source": "Vibe Coding系列04",
+          "source": "Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -2595,7 +2613,7 @@
         },
         {
           "statement": "项目复杂度应按 Context 信息量而非代码行数定级",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -2604,7 +2622,7 @@
         },
         {
           "statement": "L1 项目不存在 Context Rot，GSD 是纯开销",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -2613,7 +2631,7 @@
         },
         {
           "statement": "L2 项目是 GSD 的\"甜蜜点\"",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -2643,11 +2661,11 @@
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-02",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。"
         },
         {
@@ -2656,7 +2674,7 @@
           "first_seen": "2026-04-16",
           "last_updated": "2026-07-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。"
         },
         {
@@ -2907,25 +2925,25 @@
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。"
         },
         {
           "statement": "三家公司独立演化出同一套 Harness 设计范式",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。"
         },
         {
           "statement": "Agent 的两种典型失败模式是系统设计问题而非模型能力问题",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -2934,16 +2952,16 @@
         },
         {
           "statement": "级联失败是 Harness Engineering 出现的核心驱动力",
-          "source": "Vibe Coding系列01",
+          "source": "Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。"
         },
         {
           "statement": "OpenAI 的 Harness Engineering 五大支柱",
-          "source": "Vibe Coding系列02",
+          "source": "Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -2952,16 +2970,16 @@
         },
         {
           "statement": "Agent 的智能来自 model，可靠性来自 harness",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。"
         },
         {
           "statement": "\"Agent = Model, Not Framework\" 是一个工程立场",
-          "source": "learn-claude-code",
+          "source": "Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
@@ -2992,7 +3010,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，\"怎么做出来\"）、约束系统（L2 Planning + L1 Policy，\"不能乱来\"）、认知系统（L6 Eval，\"从经验学到什么\"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。"
         },
         {
@@ -3001,7 +3019,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。"
         },
         {
@@ -3318,7 +3336,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Transformer（全注意力）= 随序列线性增长的 KV cache，每 token 留一对 (K,V)，prefill 后只读、可按 token 粒度共享；prefill O(n²)、decode 每步 O(n)。Mamba/SSM = 固定大小的循环状态矩阵 S（d_k×d_v），流式更新，prefill O(n)、decode O(1)/步，长上下文显存远低但精确召回（大海捞针）弱于全注意力。一句话：Transformer 用\"无限增长的精确记忆\"换算力，Mamba 用\"固定大小的压缩记忆\"换显存。"
         },
         {
@@ -3327,7 +3345,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "GDN = DeltaNet（用预测误差更新状态：`S_t = g_t·S_{t-1} + k_t⊗[β_t·(v_t − (g_t·S_{t-1})ᵀk_t)]`）+ 指数门控（gating/decay 控制旧状态保留多少）。delta rule 改善\"写入什么\"、gating 改善\"遗忘多少\"，提升记忆质量。但对推理框架而言，GDN 与 Mamba 共享同一关键属性：**循环状态、原地更新、无 token 级 KV**——这正是缓存难题的根源。"
         },
         {
@@ -3336,7 +3354,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "纯线性注意力召回差、纯全注意力长上下文显存爆炸，主流解法是交错堆叠。Qwen3-Next（2025-09，首个旗舰级 Hybrid）与 Qwen3.5（2026）都用 GDN : Gated Attention = 3:1（75% 线性 + 25% 全注意力）；NVIDIA Nemotron-H（Mamba-2 + Self-Attention + MLP，推理快至 3×）、Jamba、Falcon-H1/Zamba/Bamba 同属此类。动机：线性层把 KV cache 显存压成常数，少数全注意力层把精确召回找回来——长上下文下逼近全注意力质量却只花零头显存。Qwen3.5 还叠加 MoE（稀疏激活），是另一条正交优化轴，进一步增加缓存/状态管理难度。"
         },
         {
@@ -3345,7 +3363,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到\"多模态图像在前导致无公共前缀\"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。"
         },
         {
@@ -3537,7 +3555,7 @@
         },
         {
           "statement": "LLM Wiki 模型——\"RAG = search, LLM Wiki = writing a book\"",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -3571,7 +3589,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "内循环（Kilo 定义）的循环单元是单个 Agent 在单任务上的迭代（Intent→Context→Action→Observation→Adjustment）；外循环（Addy Osmani 定义）的循环单元是跨多任务、按 cadence 自动运行的编排系统。两者不是竞争定义，而是同一棵树的两层：外循环编排多个内循环。用户感到\"说不清和 Harness 的区别\"，正因为这两个高度被同一个词缝在一起。"
         },
         {
@@ -3580,7 +3598,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "自动发现（auto-discovery）+ workflow + 重复（cadence）+ 跨轮记忆（state）= 外循环，四个零件缺一不可。其中自动发现是真正的分水岭——它决定\"任务从哪来\"，也就是\"那个不断 prompt 的人\"到底有没有被替换掉。任务靠人喂进来的（普通 Harness / Ralph）不是外循环；系统自己 triage 发现的（人退到设计者位置）才是。"
         },
         {
@@ -3589,7 +3607,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Kilo 的 5 种内循环本质是一条按 verifier 强度排序的谱系：Compiler-Driven > Test-Driven > Runtime Debugging > Product Iteration > Review-Driven（强←确定性/即时/可自动，弱←噪声/慢/要人）。两条硬规律：① verifier 越接近确定性 ground truth，循环越能跑得紧、越能无人值守；② 验证应尽量左移——把设计约束编码成 test、把 review comment 沉淀成 lint rule，把循环从右侧（要人）推向左侧（可自动）。这是控制论\"控制器只能调到传感器测得准的程度\"的直接推论：Agent 产出质量的上限 = verifier 质量的上限。"
         },
         {
@@ -3598,7 +3616,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Loop Engineering 不是 Harness 的同义词，也不是干净的子集或超集，而是从\"反馈\"视角横切了 Harness 的内部与上层：内循环 ⊂ Harness（六层架构的 L6 Eval 反馈层就是内循环实现，这部分是 Harness 的复述）；外循环 ⊃ Harness（把\"多个单 Agent + 各自的 Harness\"编排成自治系统，这一层在传统 Harness 叙事里缺位——Harness 默认有人在轮次之间盯着，外循环把这个人也抽掉了）。"
         },
         {
@@ -3607,7 +3625,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Ralph Loop 与外循环是被包含关系，不在一个层面。Ralph Loop 不发现新工作（任务人喂进去，只管磨到 done/not done），外循环的第一步就是自己发现该干什么。Ralph Loop、AutoResearch、Kilo 的 5 种内循环是同一层——都是\"单任务怎么收敛\"的不同策略，区别在 verifier 强度和有没有 selection 机制（Ralph 无 selection，AutoResearch 有）。外循环高它们一层，只管怎么发现任务、隔离派发、独立验证、跨轮记忆。"
         },
         {
@@ -3616,7 +3634,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "cron job 管 WHEN（何时触发，触发/调度轴，人预先写死的确定性调度，对应 Anthropic 的 workflow 分类）；dynamic workflow 管 HOW（如何决策执行，控制流轴，模型运行时决定，对应 agent 分类）。一句话：cron 决定\"什么时候醒\"，dynamic workflow 决定\"醒了之后怎么干\"。外循环两者都需要——光有 cron 没 workflow，醒了不知道干嘛；光有 workflow 没 cron，没人按开始。cron + dynamic workflow 就是一个最小可用外循环（MVP），框架（Conductor/Gas Town）省的只是 worktree 隔离、state 持久化、并行调度、diff 审查这几件脏活。"
         },
         {
@@ -3625,7 +3643,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Osmani 的点题是\"把自己——那个不断 prompt agent 的人——替换掉\"（You design the system that does it instead）。杠杆点从 prompting 移到了 loop design，但责任没有转移——\"Build the loop. But build it like someone who intends to stay the engineer, not just the person who presses go.\" 自治不等于免责，三个代价：验证仍是人工的（done 是声明不是证明）、理解债（Comprehension Debt）累积、认知投降（Cognitive Surrender）的诱惑被循环放大。"
         },
         {
@@ -3634,7 +3652,7 @@
           "first_seen": "2026-06-15",
           "last_updated": "2026-06-15",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI、Anthropic、Geoffrey Huntley、Horthy、Vasilopoulos 五个独立团队收敛到同一发现。三层框架栈：单任务自治内核（Ralph / Codex `/goal` / Claude Code headless）、并行编排器（Conductor/Crystal/Claude Squad，worktree 隔离）、高吞吐 swarm 引擎（Gas Town + Beads）。四根支柱：Context 架构（分层渐进披露）、Agent 专精（scoped + maker/checker 分离）、持久记忆（文件系统而非对话历史）、结构化执行（research→plan→execute→verify）。Cobus Greyling 的 7 个 playbook（PR Babysitter、Daily Triage、CI Sweeper 等）是窄范围外循环——窄不等于矮，它们仍替换掉了那个手动盯 PR/扫依赖的人。"
         },
         {
@@ -3643,7 +3661,7 @@
           "first_seen": "2026-06-16",
           "last_updated": "2026-06-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "按验证信号分两类：确定性管道（README 失同步、索引过期、坏图、死链、Claim 年龄——有 ground truth 可程序判定）→ L2 自动执行；语义判断（该提取哪些概念、Claim 对不对、冲突怎么解、该学什么——无 ground truth）→ L1 只提议。铁律：循环替我跑腿，但\"什么值得进入 wiki\"永远是我的判断——wiki 是认知模型，自动污染它等于污染自己。验证信号弱的循环，约束必须写得更死（如热点雷达：wiki 缺失 ≠ 我不知道，只报近 30 天新名词，绝不铺基础概念）。"
         },
         {
@@ -3652,7 +3670,7 @@
           "first_seen": "2026-06-16",
           "last_updated": "2026-06-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "触发器（cron 只是闹钟，真正的循环体是每次那一发 `claude -p`，起一个全新无记忆会话跑完即销毁）、记忆（LOOP_STATE.md，待办快照会被覆盖更新，因为每发都失忆，\"模型会忘，仓库不会忘\"，也是人工审阅的唯一入口）、trace（loop-run-log.md，只追加不覆盖的事件流，记每轮耗时/退出码）。STATE 是\"现在的待办快照\"，run-log 是\"历史的事件流\"。把三件拆开，每层能单独看、单独换，比混在一起的\"自动化脚本\"易审计。"
         },
         {
@@ -3661,7 +3679,7 @@
           "first_seen": "2026-06-16",
           "last_updated": "2026-06-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "借控制论：模型是无状态控制器 `f(context)→output`，外循环系统补的全是它\"身体\"的部分——传感器（verifier/自动发现）、执行器（connectors：qmd/git/README 写入）、记忆（LOOP_STATE.md）、触发（cron 心跳）。更聪明的模型也替代不了这层，因为这些是系统属性不是智能属性：再聪明的无状态函数也无法凭空长出一块硬盘或一个闹钟。认知脚手架会被更强模型吸收，但\"具身事实\"不会——这正是 Loop Engineering 是一门工程而非\"等模型变强\"的原因。"
         },
         {
@@ -3697,7 +3715,7 @@
           "first_seen": "2026-06-16",
           "last_updated": "2026-06-16",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "① 重复且有节奏（每天/每周固定要做，否则自动化收益盖不过维护成本）；② 大部分步骤有 ground truth（能交给确定性管道的越多越敢放手）；③ 判断点能干净隔离（把\"需要品味\"的环节收敛成 STATE 里几条待审，人只在这几个点花注意力）。最终留下的不是\"全自动的知识库\"，而是一个帮你跑腿、把判断浓缩到一处等你拍板的系统。分阶段信任：先手动空跑验证管道安全 + 语义层守得住边界，再挂 cron。"
         }
       ]
@@ -3717,8 +3735,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.72,
+      "claims_count": 7,
+      "avg_confidence": 0.71,
       "claims": [
         {
           "statement": "MCP 存在严重 context 膨胀问题",
@@ -3762,7 +3780,7 @@
           "first_seen": "2026-05-14",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Azure Skills 在剧本中预编排了 MCP/CLI 分工：关键专有 API（AppLens 诊断、Resource Health）走 MCP，常见成熟命令（azd up、terraform apply、kubectl）走 CLI。选择标准：模型是否熟悉 + CLI 有无等价命令 + 操作复杂度 + 安全敏感度。MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。"
         },
         {
@@ -3773,6 +3791,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "浏览器操作产品化引入第三层：**WebMCP site tools**——页面顶层 JS 里 `document.modelContext.registerTool()` 把页面能力直接声明为 agent 工具（带 readOnlyHint/untrustedContentHint 注解），agent 不再猜 DOM、不点坐标，直接调业务语义工具。三层分工：Extension 解决\"进入用户正在看的页面\"（登录态）、Plugin+MCP 解决\"安全稳定做业务\"（页面没开也能跑）、WebMCP 解决\"当前页面告诉 agent 自己能做什么\"（工具随页面关闭失效）。选型判据从\"MCP 上下文换精度 vs CLI 内置知识换节省\"扩展为按运行位置分层：操作自家页面 → WebMCP 优先；后台任务 → MCP+API；第三方站点 → Extension/浏览器控制兜底。OpenAI 开发者文档站已实测暴露 search/lookup/navigate site tools——生产级 WebMCP 已存在。"
+        },
+        {
+          "statement": "MCP 的非典型用法——同一产品内部 CLI↔native helper 的解耦协议",
+          "source": "Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链",
+          "first_seen": "2026-09-05",
+          "last_updated": "2026-09-06",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是\"跨应用接第三方工具\"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在\"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层\"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。"
         }
       ]
     },
@@ -3874,7 +3901,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent Lightning 是一个 method-agnostic 的 agent 优化训练框架：换优化方法（APO↔SFT↔RL）只换 `algorithm` 槽位，agent 代码与 reward grader 一行不改。这把「升级优化能力」从\"换框架/重写\"降级为\"换槽位\"，是 method-agnostic 的核心承诺。"
         },
         {
@@ -3883,7 +3910,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 从\"口号\"变成\"接缝\"的具体位置。"
         },
         {
@@ -3892,7 +3919,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。store 不是被动存储，而是 runner↔algorithm 之间的协调中枢——正因为有这个居中的控制平面，生产者与消费者才能各自替换而互不影响。没有 store，method-agnostic 只是愿望；有了 store，它才有物理支点。"
         },
         {
@@ -3901,7 +3928,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "method-agnostic 阶梯由轻到重：APO（不动权重，`sorted()[:beam_width]` 用 reward 排序选 prompt）→ SFT/RAFT（用 reward 筛轨迹做微调，改权重）→ RL（用 reward 当梯度信号）。三者共享同一份 grader/reward，差异只在\"如何消费 reward\"。这证明 method-agnostic 不是三个独立系统的拼接，而是一份 reward 的三种读法。"
         },
         {
@@ -3910,7 +3937,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "VERL 的算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，\"让算法替换成为一个配置问题\"，与 agent-lightning 上层的 method-agnostic 一脉相承。区别是层次：agent-lightning 在 RL infra 之上做\"换优化方法\"，VERL 在 RL 引擎内部做\"换 RL 算法\"。同一个\"解耦+插槽\"形状在不同抽象层各出现一次。"
         },
         {
@@ -3919,7 +3946,7 @@
           "first_seen": "",
           "last_updated": "2026-07-02",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "SkillOpt 的 `ReflACTTrainer.train()` 编排六阶段流水线，但不认识任何 benchmark——所有 rollout/数据加载通过 `EnvAdapter` 接口回调。接新任务不改 trainer，只写一个 adapter。这与 agent-lightning \"换算法只换槽位\"同构，区别是这里换的是 **environment** 不是 algorithm。两者共同揭示：把\"什么会变\"隔离进一个契约层，是让框架长期可扩展的通用手法。"
         }
       ]
@@ -3940,7 +3967,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
+      "claims_count": 12,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -4032,6 +4059,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "五平台横评给绑定光谱补了第二维：绑定 × 可分解的十字定位。Codex 绑定深 + 不可拆（体验最完整、控制权最少，loop 与 session 存储不可替换）；多模型阵营内部按可分解方式分四型——**dsh** 插件化（Cordis 内核 + capability seams，loop 也是插件，sub-agent seam 五 provider 含 Codex/Claude Code）；**pi** 极简内核可自改（primitives not features，空 system prompt + 四工具，self-modifying 一等公民）；**OpenHands** SDK 分层（agent 逻辑/远程沙箱/接口层解耦，拆的粒度是架构层而非能力件）；**Goose** 协议标准化（extension 即 MCP server，把拆解外包给 MCP/ACP 标准）。选型核心判据不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"。"
+        },
+        {
+          "statement": "Codex 的 harness 是按模型条目实例化的——Model/Harness 边界不是一条线而是一张按模型索引的表，co-design 证据从论断层升级到字段层",
+          "source": "Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界",
+          "first_seen": "2026-09-05",
+          "last_updated": "2026-09-06",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "`gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex\"每个模型自带一套 harness 切片\"vs Claude Code\"一套全局 harness 配多个模型\"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档而是**多 agent 委派开关**（实际推理档由 `multi_agent_reasoning_effort` 决定，client.rs:188-200）。源码核实带一处修正：`shell_type` 的 `shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias，运行时行为已归一化——co-design 的证据不是\"两个模型用两种 shell 工具\"，而是**枚举里留着 alias，说明工具形态跟着模型代际演进过（alias 是咬合史留在类型系统里的化石）**。这也回答了\"为什么第三方模型接进第一方 harness 总差口气\"：接上的只是推理端点，接不上的是九层里剩下的八层。"
+        },
+        {
+          "statement": "工具调用形态是一条 Direct → CodeMode → CodeModeOnly 光谱——能力做成「更多的工具」vs 做成「一种语言」",
+          "source": "Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读",
+          "first_seen": "2026-09-05",
+          "last_updated": "2026-09-06",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成\"调 A→过滤→喂 B\"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为\"一段代码\"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。"
         }
       ]
     },
@@ -4061,7 +4106,7 @@
           "first_seen": "2026-05-11",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Caveman（压缩 LLM 输出）和 RTK（压缩工具输出）是**压缩策略**——让同一个模型处理更少的 token；CodexSaver 是**路由策略**——让不同价格的模型各做擅长的事。优化对象不同：压缩降 token *数量*，路由降 token *单价*（$/token）。两者正交可叠加：压缩把总量降 ~78%、再对剩余流量路由降价，三层联合最终成本约为原始的 12%（「原本支撑一周的预算现在能用两个月」）。"
         },
         {
@@ -4070,7 +4115,7 @@
           "first_seen": "2026-05-11",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "核心逻辑：「昂贵模型负责判断（reasoning），廉价模型负责执行（volume），永远不混淆两者」。留给旗舰模型：架构设计、安全审查、受保护域、最终审批、复杂多步推理；委派给廉价 worker：写单元测试、生成文档/注释、代码搜索与解释、样板填充、格式化。三种路由状态：`codex_takeover`（留宿主）/ `delegated_execution`（委派廉价模型）/ `preview`（仅展示决策）。DeepSeek vs OpenAI 旗舰输入 token 价差达 16x，假设 60% 是低风险执行类任务，单路由即省 ~56%。"
         },
         {
@@ -4079,7 +4124,7 @@
           "first_seen": "2026-05-11",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "CodexSaver 本质是一个 **MCP Server**，通过标准 MCP 协议暴露 `delegate_task` 工具——MCP 是开放协议，任何支持 MCP 的 Coding Agent（Claude Code/Copilot/Cursor）都能接入或自写精简版（核心逻辑约 100 行：接任务 → 规则判风险 → 低风险调廉价 API / 高风险返回 takeover）。价值不在某个 repo 实现，而在「通过 MCP 把任务分级委派给不同成本模型」这个 Pattern。区别于各平台原生分级：Claude Code 的 `model` 参数选 haiku/sonnet/opus 是 **Agent 级**分级，MCP 路由是 **task 级**细粒度 + 完全自定义规则 + 可接第三方/本地模型。"
         },
         {
@@ -4088,7 +4133,7 @@
           "first_seen": "2026-05-11",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "相对压缩的独特优势：不像 Caveman/RTK 通过压缩减少信息量，路由**保持完整上下文**、可审计（每次路由决策有可见 `interaction` 记录，解决\"哪个模型处理哪个任务\"的信任问题）、对用户透明（全局 MCP 注册零修改工作流）。代价是新风险维度：廉价模型执行质量可能不足（靠旗舰 model 最终 review 缓解）、额外延迟（~6s/任务，仅批量任务路由）、数据安全（代码发第三方，可用本地 Ollama 替代）、路由误判（保守策略+人工 review）。不适用：月 token < 千万级（工程复杂度超收益）、长链一致性推理（不宜中途切模型）、高合规（除非本地模型）。"
         }
       ]
@@ -4217,7 +4262,7 @@
       "claims": [
         {
           "statement": "OMC 的核心命题是多 Agent 真正并行协作",
-          "source": "Vibe Coding系列10",
+          "source": "Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4226,7 +4271,7 @@
         },
         {
           "statement": "Domain 车道是 OMC 最独特的设计",
-          "source": "Vibe Coding系列10",
+          "source": "Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -4235,7 +4280,7 @@
         },
         {
           "statement": "OMC Autopilot 与 Superpowers 的核心体验差异",
-          "source": "Vibe Coding系列10",
+          "source": "Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4244,7 +4289,7 @@
         },
         {
           "statement": "Autopilot 运行时动态决策四大能力",
-          "source": "Vibe Coding系列10",
+          "source": "Vibe Coding系列10：oh-my-claude-code——Vibe Coding的未来终极形态吗？|Vibe Coding系列10",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -4272,7 +4317,7 @@
       "claims": [
         {
           "statement": "AI 重新定义了 Cloud Solution Architect 的角色边界",
-          "source": "Vibe Coding系列02",
+          "source": "Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4281,7 +4326,7 @@
         },
         {
           "statement": "架构师核心价值从\"亲自写代码\"转变为\"驾驭 AI 的能力\"",
-          "source": "Vibe Coding系列02",
+          "source": "Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4290,7 +4335,7 @@
         },
         {
           "statement": "GSD + Superpowers 是 L2 项目中社区最推荐的个人开发者组合",
-          "source": "Vibe Coding系列04",
+          "source": "Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.5,
@@ -4334,7 +4379,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "在线学习同时做两件事：①修改当前行为（控制论层，快回路，不改参数，即时纠偏）②修改模型本身（学习层，慢回路，改参数，延迟生效）。这不能简单归为 harness——harness 的定义是「外部控制器，不改模型参数」，而在线学习把控制器写进了模型内部。它在控制论中的精确对应概念是**自适应控制（Adaptive Control）**：系统可以在运行中调整自身参数。"
         },
         {
@@ -4343,7 +4388,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-06-29",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "区分一个操作属于 harness 还是 learning 用一条非常硬的标准：**改没改模型参数**？prompt 改写、tool retry、memory/RAG、scratchpad/context injection、self-reflection 全是「❌不改参数 → harness（控制）」；LoRA 动态更新、online policy gradient、weight editing 才是「✅改参数 → learning」。由此推出 LLM Agent 里的「伪在线学习」：Memory+RAG / Scratchpad / Self-reflection 都只改输入上下文不改权重，本质是高级 harness 而非真学习。"
         },
         {
@@ -4352,7 +4397,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "在线学习的理想是「边用边学、持续进化」，但有三个致命问题：①**不稳定**（在线更新易发散，尤其 noisy reward 下）②**不可控**（reward/loss 噪声直接传导到参数更新）③**灾难性遗忘**（新数据覆盖旧能力）。所以行业现实路线是 `Harness-First > Offline Training > Online Learning > RL`——Layer 1 控制层可控、可解释、立刻见效。当前 LLM Agent 绝大多数只工作在 Layer 1（harness），偶尔触及 Layer 3（离线训练），极少涉及 Layer 2（在线学习）。这不是技术落后而是工程务实。"
         },
         {
@@ -4361,7 +4406,7 @@
           "first_seen": "2026-04-17",
           "last_updated": "2026-06-29",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "比「在线学习是不是 harness」更有价值的问题是：**能不能用 harness 模拟 learning**？memory+retrieval ≈ 参数更新（把经验存外部而非权重）；self-reflection ≈ policy improvement（不改权重只改决策流程）；Meta-Harness ≈ automated harness optimization（用搜索替代梯度下降）。这些方向比直接做 RL 更现实，也更符合当前 LLM Agent 的工程约束。一个更狠的推论：RL 很可能只是「自动化 harness 的一种极端形式」。"
         },
         {
@@ -4370,7 +4415,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "JitRL 自称 \"Continual Learning Without Gradient Updates\"，用本页那条\"改没改参数\"硬标准一测，会被判成\"不改参数 → harness\"。但这里要修正一个误读：**硬标准只回答\"改进的结果存在哪\"，从不是在说\"这里没有 RL 计算\"**。JitRL 算 $\\hat Q-\\hat V$（带基线的 advantage，见 [[advantage-function]]）、做 KL 正则的策略改进，是货真价实的 RL（非参数 GPI，见 [[reinforcement-learning]]）——它只是把改进存进外部 memory、在 logits 上瞬时生效，没写回权重。所以经典 RL 焊死的\"策略改进\"与\"参数更新\"被 JitRL 拆开了：硬标准判的是后者（身体），不否认前者（大脑）在运作。结论——\"改没改参数\"是个有用但**粗糙的投影**，够用来区分伪在线学习（harness）与真在线学习，但不够刻画\"不改参数却在做 RL\"这种新物种。"
         },
         {
@@ -4379,7 +4424,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "比二值的\"改没改参数\"更有信息量的轴是「**学到的知识存哪、什么范围生效、是否持久化、跟权重耦不耦合**」。按这根\"存储位面\"轴排开：prompt/in-context reflection（存 context window，出窗口即丢，解耦）< RAG/长期记忆（外部向量库，持久，全局，解耦）< JitRL memory（外部 $(s,a,G)$ 库，持久，全局但只在相似 state 局部生效，解耦）< LoRA（adapter 权重，持久，全局改分布，绑 base 架构）< 全量微调/在线 policy gradient（base 权重，永久，绑死这个模型）。JitRL 那些\"看起来神奇\"的性质——可移植（换 base 模型 memory 照用）、可外科式删除坏经验、无灾难性遗忘（append 不 overwrite）——全都来自\"知识存外部持久库、与权重解耦\"这一个事实。这根轴把 JitRL / XSkill / CURATOR / LifeSkill 连成一张图：前三者在\"外部库\"一侧（各管存原始经验 / 双粒度技能 / 记忆治理），LifeSkill 跳到\"权重\"一侧（内化，故不可移植、有遗忘风险，但能内化全新能力）。"
         },
         {
@@ -4388,7 +4433,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "LifeSkill 是本页定义的\"真在线学习\"（部署后真改权重）里少见的一个实例，但它暴露了这类方法的工程真相：**理论上满足 online learning 定义（数据 streaming、test-time 更新、逐步改参数），工程上基本不可能真在线**。它的核心循环\"失败 → 生成 K 个 skill → 每个 rollout N 次 → verifier 评分 → 训 skill extractor → 再训 policy\"本质是一个被 test-time 触发的小型 offline RL 训练循环，成本量级 $O(K\\times N\\times\\text{LLM}+\\text{2 次训练})$：latency 爆炸（不能让用户等 rollout+训练）、compute 不可持续、且不满足 real-time CL 三要求（更新慢、无防遗忘、依赖 batch）。准确定位是\"test-time triggered offline training loop\"——不是 learn *while* acting，而是 learn *after* acting, in mini-batches。所以真在线学习（改参数那一侧）现实的部署形态只能是**异步/延迟在线学习**：fast path 执行 + 异步后台训练 + 周期性热更新，即\"不能 real-time CL，只能 offline CL with online data\"。这给本页三个致命问题（不稳定/不可控/灾难性遗忘）补了第四个工程约束：**适应延迟**——改参数这次适应能不能塞进部署的延迟预算。这根\"适应延迟\"轴正好分开 JitRL（不改参数、即时在线）与 LifeSkill（改参数、只能延迟离线），也指向最优架构 hybrid：短期适应用 JitRL（前台改 logits），长期沉淀用 LifeSkill（后台改权重），JitRL 的 memory 顺便当 LifeSkill 的训练数据源。"
         }
       ]
@@ -4600,7 +4645,7 @@
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4609,7 +4654,7 @@
         },
         {
           "statement": "LLM Wiki 模型——LLM 是维护者不是问答者",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -4618,7 +4663,7 @@
         },
         {
           "statement": "知识碎片化问题及解法",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-15",
           "confidence": 0.7,
@@ -4707,7 +4752,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "prefix caching 的前提是多条请求开头若干 token 完全相同，这段公共前缀的 KV 只需算一次、结果供所有请求共享，省掉重复 prefill。它成立的隐含假设有两条：① 缓存单位是**按 token 粒度**的 (K,V)；② 这些 KV 块 prefill 后**只读、可任意共享**。纯 Transformer 完美满足这两条——这正是它能跨请求复用前缀的原因。"
         },
         {
@@ -4716,7 +4761,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "线性注意力/SSM 层维护的不是 token 级 KV，而是固定大小的循环状态，带来三个结构性障碍（参考 PyTorch 博客 Hybrid Models Meet SGLang）：①**原地更新**——`S_t = f(S_{t-1}, x_t)` 是覆盖式更新，旧值被吃掉，无法回滚到第 k 个 token 的状态，而前缀复用本质要求\"能定位到某前缀位置的状态\"；②**体积大**——缓存一个前缀要存完整的 d_k×d_v 状态矩阵而非单 token 的 (K,V) 向量，单位前缀成本高一个量级；③**全有或全无**——前向 kernel 按 chunk 计算，只能在完整 chunk 边界 checkpoint，前缀长度不对齐到 chunk 边界就一点都复用不了。"
         },
         {
@@ -4725,7 +4770,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Hybrid 模型里全注意力层和线性层交错存在，做 prefix caching 必须**同时**维护两套缓存：全注意力层的 token 级 KV 块（可逐 token 共享）+ 线性层的 chunk 级状态快照（只能在对齐边界复用）。两套缓存的粒度、生命周期、淘汰策略都不同；更麻烦的是为了对齐，框架往往把 attention 的 block size 强行对齐到线性层的 chunk/page 大小——vLLM 因此把 block size 对齐到 528 tokens，**短请求直接落不到任何可复用边界、命中率归零**。这就是纯 Transformer 的 Qwen3 缓存正常、Hybrid 的 Qwen3.5 命中极低的根因：不是 bug，是架构迁移的必然代价。"
         },
         {
@@ -4734,7 +4779,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "视觉语言模型（Qwen-VL 家族）再加一层问题：图像 token 被 `<|vision_start|>…<|vision_end|>` 包裹、按惯例置于用户消息最前。于是不同请求的图像各不相同 → 序列从图像区第一个 token 起就分叉；能共享的只剩 system prompt 那一小段文本前缀；图像之后即便文字相同也因前缀已分叉而无法复用。注意：Qwen2-VL 起采用**动态分辨率**，单图视觉 token 数不是固定 576，而是 4~16384 随分辨率变化——数字会变，但\"图像在前 + 各请求不同\"的结构事实不变。对 Qwen3.5-VL，\"图像在前\"（多模态杀手）和\"Hybrid 架构\"（架构杀手）是两个独立但叠加的杀手，两者叠加命中率自然趋近 0。此外图像 KV 不能跨请求复用——强行复用会破坏 mRoPE 位置编码导致新旧图像混淆。"
         },
         {
@@ -4743,7 +4788,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "社区实测（Qwen3.6-27B + vLLM nightly）：**关掉 speculative decoding 后 prefix cache 命中恢复**——命中 0 时优先试这一招。冲突根源不是 prefill/decode 阶段之争，而是 Hybrid 状态管理瓶颈：① 推测解码的\"验证\"本质是 decode 期的一次小 prefill，要推进 Mamba/GDN 循环状态，碰到和 prefix caching 同一套机器；② 两者都要线性层状态的细粒度存档/回滚（prefix caching 在前缀边界存档、spec decoding 在候选被拒时回滚），而循环状态原地更新、只能 chunk 边界 checkpoint，这能力本就稀缺却被同时争用；③ 推测解码让每步推进的 token 数变长且可变，打乱 prefix-cache 块的对齐边界（叠加在 vLLM 528-token block 对齐之上）→ 任何前缀块都匹配不上 → 命中恒 0。落地顺序：查日志确认 → 显式开 `--enable-prefix-caching` → 关掉 speculative decoding → 仍不行换 SGLang（MambaRadixCache）→ 或小规模退用 llama.cpp。"
         },
         {
@@ -5001,7 +5046,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Sutton 刻意把 Search 和 Learning 并列为\"两种利用算力的方法\"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。"
         },
         {
@@ -5010,7 +5055,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。**范围限定（2026-07-18 补）**：此区分特指经典/参数化 RL；梯度更新是 RL 式策略改进的**充分而非必要条件**——见本页 JitRL Claim（\"经典 RL 把策略改进与参数更新焊死，JitRL 证明二者可拆开\"）：JitRL 不改参数、只在外部 memory + advantage 上做非参数策略改进，仍是货真价实的 RL（广义策略迭代 GPI 的一个实例）。判据落在\"学到的知识存哪\"而非\"改没改参数\"，参见 [[online-learning]]。"
         },
         {
@@ -5019,7 +5064,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "Sutton 从 RL 研究出发，但发现\"计算终将胜出\"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。"
         },
         {
@@ -5028,7 +5073,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "大模型语境下 RL 主要四种形态：PPO（actor+critic 两套网络，RLHF 标准内核）、GRPO（组内相对优势替代独立 critic、省显存，近年主流）、RLHF（奖励来自人类偏好训练的奖励模型）、RLVR（奖励来自可自动验证规则如数学答案/代码通过测试，无需奖励模型，Agent 场景最常用）。算法层差异最终都收敛到同一工程结构：生成数据（rollout）与更新模型（training）两阶段交替。与 SFT 的本质分野：SFT 模仿正样本、便宜稳定但受限于已有能力；RL 用试错探索换更高上界，代价是最贵、最不稳。"
         },
         {
@@ -5037,7 +5082,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Rollout 属数据采集维度（Agent 实际执行了多少次任务，一条\"提问→Search→Observation→Answer\"即一条 rollout，`1000 rollouts` = 采集 1000 条轨迹）；Epoch 属优化维度（采集到的数据被反复学习几遍，`epoch 3` = 这批轨迹训练 3 次）。监督学习对应物：rollout ≈ sample/trajectory 而非 epoch。标准流程先后关系：收集 rollouts（policy_v1 产 1000 条轨迹）→ 计算 reward → 训练（这 1000 条跑 epoch1→2→3）。这也是 RL 日志刻意分 `Collect Rollouts` 与 `Optimize Epochs` 两段统计的原因，是读懂\"rollout 与 training 解耦\"的前提。"
         },
         {
@@ -5046,7 +5091,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统 RLHF 假设单轮交互（`prompt→model→output→reward→update`，同步简单）；Agent 真实执行是多步轨迹（思考→调工具→观察→再决策→…→最终答案获 reward），具备四个传统 RL 不具备的特征：多轮、有状态、异步、依赖外部环境（API/DB/浏览器/代码执行器）。这四个特征使瓶颈从「算法」迁移到「基础设施」：rollout 占 80~90% 时间、需 training-rollout 解耦避免 GPU 互相空转。由此 Agent RL 的本质升维——不再是「怎么写 PPO loss」，而是「rollout 机制 + 训练推理解耦 + 分布式编排」的系统问题，框架选型（见 [[verl]]/[[slime-rl-framework]]）几乎必然建立在分布式基础设施架构之上。"
         },
         {
@@ -5055,7 +5100,7 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "广义策略迭代（Generalized Policy Iteration, GPI）是 Sutton & Barto 那本书的中轴：任何 RL 方法都可拆成两步交替——**策略评估**（估计当前策略的 $V/Q$）+ **策略改进**（依 $Q$ 让策略更贪心），反复迭代直到收敛。绝大多数 RL 算法都是 GPI 的某种实例，差别只在\"评估怎么做、改进怎么做、在哪个空间迭代\"。JitRL 就是教科书级的 GPI，只是搬到推理期、且非参数：策略评估 = memory 上 kNN 的蒙特卡洛回报平均（非参数 MC policy evaluation），策略改进 = $z'=z+\\beta\\hat A$（KL 正则的改进步），迭代 = memory 越攒越准策略持续改进。所以它是\"以 LLM logits 作为 base-policy 先验的、非参数（近乎 tabular）的强化学习\"。"
         },
         {
@@ -5064,12 +5109,12 @@
           "first_seen": "2026-07-07",
           "last_updated": "2026-07-07",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"一个方法自称 learning 却不改参数\"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是\"通过改参数来改进策略\"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条\"改没改参数\"的硬标准只在回答轴 B（结果存哪），从不是在说\"这里没有 RL 计算\"。这也接上一个更细的判据：判断学习的关键不只是\"改没改参数\"，而是\"学到的知识存在哪\"（见 [[online-learning]] 的存储位面 Claim）。"
         },
         {
           "statement": "GRPO/RLVR 数据流不变量——一条样本两个消费方，prompt 进 rollout、ground truth 只活在 reward 函数",
-          "source": "ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
+          "source": "ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
@@ -5106,7 +5151,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-26",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "最大的认知误区：以为 agent-lightning 的 SFT 是喂标准答案让模型模仿。真相是它**没有理想输出序列**——数据集只给\"最终答案\"（如 GSM-hard 的 `target = -9867630`）和一个 grader，不给\"解题过程\"。要区分两种 ground-truth：**任务的标准答案（评分键）**喂给 grader 算 reward（`math_agent.py:123` 用 `np.isclose` 精确匹配，干净无噪声）；**模型输出的标准答案（模仿 label）**则没有预先给。模型自己跑 rollout 生成 response → grader 用 target 验证为正确 → 把这些\"经认证正确\"的自产轨迹留下当 SFT 对。数据集自带的 `code` 解法字段从头到尾没被引用，是冗余死字段。一句话：**需要 ground-truth 来评分，不需要 ground-truth 来模仿。**"
         },
         {
@@ -5115,7 +5160,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "SFT 这条线的\"算法\"内核是 `all_triplets.sort(key=lambda x: x[\"reward\"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑（2026-07-18 标记 outdated）**：读源码时曾推断 demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT。**该子结论已被实跑证据推翻**，见下方新 Claim（引用 [[sft-rejection-sampling-hands-on]] 实跑日志）：demo 实际按 `reward > 0` 阈值过滤，不存在此坑。"
         },
         {
@@ -5133,7 +5178,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-26",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"能答对 ≠ 稳定答对\"。模型\"答对\"通常意味着 temperature>0 采样下跑 N 次碰巧有一次走到正确路径——它对正确解法只分配了一部分概率质量（如 20%）。自蒸馏不教新知识，而是把模型偶尔能找到的正确路径反复强化，让概率从 20% 提到 80%，把\"偶然对\"压成\"稳定对\"（pass@k → pass@1）。两层收益：① **best-of-N → greedy 内化**——推理本来要\"采样 16 次 + grader 挑最好\"才交对卷，自蒸馏把这能力烧进权重，单次 greedy 解码就能做到，本质是把推理期搜索成本预支到训练期；② **泛化**——强化好推理*模式*会迁移到没见过的题。诚实边界：已 pass@1 高置信答对的题训练收益接近 0；真正吃肉的是\"时对时错\"的题。为什么不能把答错的也训：SFT 数学本质是无条件最大化喂进去的东西的似然，喂错误轨迹=主动教它学错，reward 就是那道门。"
         },
         {
@@ -5142,7 +5187,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-26",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "因为 runner 的 rollout 模型与算法侧的训练目标模型解耦（生产者/消费者分离），同一套框架支持两种形态：**rollout 模型 == 被训模型** → 自我提升、自举 = STaR/RAFT/ReST（自蒸馏，扩充\"已会题\"的稳定性）；**更强模型跑 rollout、训更弱模型** → 强→弱知识转移 = 拒绝采样蒸馏（扩覆盖率，能教会学生本来不会的题）。弱模型的死穴是有些难题采样 N 次全错（0 条正确轨迹）→ 自蒸馏一无所获；换强模型去跑能产出这些难题的正确轨迹，target 在此验证强模型轨迹确实对（避免把老师的错误也蒸馏进去）。reward 来源两条路：有 ground-truth → 精确匹配 grader（客观零噪声，首选）；没有 → 强模型当 LLM-as-judge（主观有噪声，要防 reward hacking）。"
         },
         {
@@ -5151,7 +5196,7 @@
           "first_seen": "2026-06-28",
           "last_updated": "2026-07-06",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批）→ Rank/Filter（用 reward 过滤出高分子集）→ Fine-tune（在子集上 SFT）→ 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。"
         },
         {
@@ -5160,7 +5205,7 @@
           "first_seen": "2026-06-28",
           "last_updated": "2026-06-28",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "论文用 K∈{8,16,32} + 温度 λ=1.0，K 大收敛快（K=16/32 约 10~12 轮，K=8 约 15~18 轮）。但 agent-lightning demo 把 RAFT 退化成最朴素版本：① **K=1 + temperature=0（greedy）**——每题只采一次，退化成 pass@1，没有 RAFT 赖以工作的采样多样性；② **二值 reward**——`compute_reward` 返回 0/1，sort 几乎没用（留下全是 1.0），更像 STaR 而非用 reward model 的 RAFT；③ **非累积**——每轮空列表重建，不像论文可累积扩充数据集。这解释了实测的\"慢爬\"：退化成 K=1 greedy 只能一阶一阶收割\"贪心路径刚翻对\"的题。要复现论文曲线就得把 K 拧上去（temp 0.7~1.0 + 每题采 K 次）——采样数才是数据增长主杠杆。`K` 来自重复采样次数不是温度，温度只负责让这 K 次分叉。"
         },
         {
@@ -5169,7 +5214,7 @@
           "first_seen": "2026-06-28",
           "last_updated": "2026-06-28",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "对已重度后训练的 GPT/Llama/Qwen，RAFT 从\"首次对齐\"降级为\"任务特化 + 自我提升的一道工序\"。唯一硬条件是 **pass@k>0**（模型得偶尔做对），强模型 pass@k 更高 → 可收割的正确轨迹更多。天花板 = 基座 pass@k：训练数据全来自模型自产正确轨迹，只能放大已会的、教不会全新能力，模型越强 headroom 越小；同时要警惕在自产同质数据上反复训导致的**多样性塌缩**（RAFT 论文专门盯 distinct/unique/msttr 多样性指标）。社区现状：以\"rejection sampling fine-tuning（RFT）\"之名成了现代后训练标准组件——Llama 2/3 RLHF 含这一步、DeepSeek-R1 在 RL 训完后专门加一道 rejection sampling 自我精炼、Qwen3 多阶段后训练也用。定位是\"便宜、稳定的第一档，上 RL 之前先榨一轮\"。"
         },
         {
@@ -5394,7 +5439,7 @@
           "first_seen": "2026-03-21",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Bitter Lesson 是定性方法论（70 年历史归纳），Scaling Laws 是定量经验公式（性能 ∝ 计算^α 的幂律）。两者的区别：Bitter Lesson 只说\"计算终将胜出\"，Scaling Laws 具体量化\"多少计算换多少性能\"。"
         },
         {
@@ -5403,7 +5448,7 @@
           "first_seen": "2026-03-22",
           "last_updated": "2026-07-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型能力提升所需的训练数据量呈幂律增长——这是 Scaling Laws 的实际约束，也是合成数据和自我改进方法出现的驱动力。"
         }
       ]
@@ -5428,7 +5473,7 @@
       "claims": [
         {
           "statement": "融合 Skill 的正确架构是编排层而非合并层",
-          "source": "使用Skill-Creator融合多个PPT Skill",
+          "source": "使用Skill-Creator融合多个PPT Skill打造CSA专属演示工具|使用Skill-Creator融合多个PPT Skill",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -5437,7 +5482,7 @@
         },
         {
           "statement": "Explore Agent 自动分析比人手动对比更全面",
-          "source": "使用Skill-Creator融合多个PPT Skill",
+          "source": "使用Skill-Creator融合多个PPT Skill打造CSA专属演示工具|使用Skill-Creator融合多个PPT Skill",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -5579,7 +5624,7 @@
       "claims": [
         {
           "statement": "行业缺失的方案是 Skill Runtime 模式",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -5588,7 +5633,7 @@
         },
         {
           "statement": "Skill Runtime 的 context 是声明式的",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.6,
@@ -5597,7 +5642,7 @@
         },
         {
           "statement": "评估 Agent system 能否 scale 的 5 个自检问题",
-          "source": "Vibe Coding系列05",
+          "source": "Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|Vibe Coding系列05",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -5667,7 +5712,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "四大机件逐一对标深度学习优化器：① **textual learning rate `L_t`**＝每步最多几条编辑（离散代理步长，不是 token 数/edit distance/语义距离），默认 4、cosine 衰减到 2；消融显示\"有界 vs 无界\"才是分水岭（有界预算 85~87，无界改写掉到 84.6），\"要有界且界得适中\"而非\"越紧越好\"。② **rejected-edit buffer**＝负样本记忆/动量，候选没过门则把被拒编辑追加进 buffer 供同 epoch 后续反射避坑，**epoch 末清空**（短命）。③ **slow-update field**＝慢权重/双时间尺度，epoch 末做纵向 diff 写进 skill 文档里 markup 围栏的受保护区，step 级快编辑改不动它，随成品出厂。④ **meta skill `m_meta`**＝learning-to-optimize，summarize\"编辑模式本身\"（哪类改法有效），prepend 到未来 optimizer prompt，**不出厂**。`m_meta` 改的是 optimizer 的 context 不是权重——optimizer 本身也冻结。"
         },
         {
@@ -5676,7 +5721,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "SkillOpt 是一快一慢两层嵌套循环。**快层（step）**：每步 propose ≤`L_t` 条编辑 → 在 held-out `D_sel` 过接受门 → 收/退。**慢层（epoch 末）**：在 `D_tr` 重采样上对比\"上一版 skill vs 当前版 skill\"做四分类纵向诊断（improvements/regressions/persistent failures/stable successes）→ 写 slow-field / meta → **该候选仍要过 `D_sel` 接受门**才落地。两个关键澄清：① 慢层读的是\"快层的净结果\"（新旧 skill 行为差），不是\"快层的编辑过程\"；② gate 在两层都有，慢层不是\"绕过验证的特权写入\"，而是\"换个信息源再 propose 一次，纪律照旧\"。三个 split：`D_tr`（跑 rollout/反射提编辑）、`D_sel`（held-out 接受门）、`D_test`（最终评测不参与优化）。"
         },
         {
@@ -5685,7 +5730,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "常见误解是\"SkillOpt 用 ground truth、RL 用 reward\"——但 verifier↔judge 是评分手段的正交选择，不构成框架级分野（agent-lightning 的 calc_x 恰用 ground-truth 可验证 reward，SkillOpt 也把 reward-free/preference-driven gate 列为未来工作）。**真正的区别在\"分数拿去干什么\"**：SkillOpt 把分数当**选择/门控信号**（bundle 级比较是否严格超过当前，ties rejected，accept/reject 一份候选 skill），类比 model selection / early stopping；RL 把 reward 当**梯度信号**（算 advantage → PPO/GRPO 更新权重），类比反向传播。前者离散 accept/reject 改文本，后者连续参数更新——这才是两条路。这条也把 SkillOpt 归入**拒绝采样谱系**：与 [[rejection-sampling-finetuning]]（RAFT）同源\"打分筛选、只留改进\"，区别只是 RAFT 筛**样本**、SkillOpt 筛**编辑**；而\"打分做梯度\"的 RL 是另一族。"
         },
         {
@@ -5694,7 +5739,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "`engine/trainer.py:ReflACTTrainer.train()` 是唯一\"发动机\"，编排六阶段流水线（ROLLOUT→REFLECT→AGGREGATE→SELECT→UPDATE→EVALUATE），但**不认识任何 benchmark**——所有 rollout/reflect/数据加载通过 `EnvAdapter` 接口回调。想接新任务不改 trainer，只写一个 adapter（`build_train_env`/`build_eval_env`/`rollout`/`get_task_types` 四个 abstract 方法）。这与 agent-lightning \"method-agnostic + 换算法只换槽位\"同构，区别是这里换的是 **environment** 不是 algorithm。两类模型两条独立后端通道：`chat_optimizer()`（REFLECT/AGGREGATE/SELECT/SLOW_UPDATE/META/REWRITE）走 optimizer_model；`chat_target()`（ROLLOUT/EVALUATE 的 sel-rollout）走 target_model。三大 memory 代码落点各异：rejected-buffer 活在内存变量、slow-update 嵌入 skill 文档围栏、meta_skill 存独立 JSON。⚠️ force-accept 模式下 slow_update 只改 `current_skill` 不改 `best_skill`，所以最终产物可能不含 slow_update 内容——除非经 gated 验证真涨了分。"
         },
         {
@@ -5703,7 +5748,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-01",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "SearchQA 单步干净冒烟跑（`--limit 8 --train_size 8 --num_epochs 1`，total_steps=1）：baseline `hard=0.5000`，STEP1 skill 从 104 字涨到 1891 字，却 EVALUATE **REJECT** `0.5000<=0.5000`（打平也拒），best 仍是初始 skill。逐条按 id 对齐 baseline 与 candidate 的 8 条 sel，发现 **8 条 hard 值全部一模一样**——1783 字新增对这批 sel 边际效果精确为零。三个叠加根因：① 编辑来自不相交的 train 8 条，泛化不到 sel 的错题；② 只跑 1 步（等于一次梯度更新）；③ sel=8 门太粗（分辨率 1/8=0.125 一档，微小改动跨不过 ties-rejected 门槛）。结论：`1 步 + 8 train + 8 sel` 三重太小，注定原地打平——它验证的是**管路通**（六段全跑/gate 严格/token 会花），不是**效果**。三味药缺一不可（更大 train + 更多 epoch/步 + 更大 sel），其中 **sel 太小最关键**——sel 不放大，就算真帮到了也照样显示打平被拒。此外印证：有界 LR（SELECT 恒 ≤budget）、接受门严格改进/ties-rejected、reflect 是耗时/token 主瓶颈（占 wall 的 60~73%）。"
         },
         {
@@ -5752,7 +5797,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "三大组件构成闭环：Training（Megatron）→ weight update → Data Buffer（连接训练与采样的数据流中枢）→ rollout data → Rollout（SGLang）→ 回到 Training。最关键的设计理念是 **\"Agent workflow = data generation\"**：把 Agent RL 直接当作\"数据生成问题\"处理，而非像 VERL 那样建模成一套 RL workflow 编排系统。这是它出现的动机——作者认为 VERL 过于系统化/抽象，Slime 的解法是统一成单一数据流 pipeline。"
         },
         {
@@ -5761,7 +5806,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Slime 的组件选型相当 opinionated（强约束）：训练后端只用 Megatron（支持 TP/PP/EP/MoE，超大模型能力强）；rollout 后端只选 SGLang 一个（看重高吞吐、continuous batching、prefix caching、routing）——这与 VERL 支持 vLLM/SGLang 多 backend 形成鲜明对比，是关键差异点；调度仅用 Ray 的 actor + placement group 做轻量粘合，而非重型中心调度系统。本质是**强制 server-based rollout 架构**——既是简洁来源，也是约束来源。"
         },
         {
@@ -5770,7 +5815,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "适合：Agent RL（多轮）、MoE 大模型训练、高吞吐 rollout、已有 Megatron 体系的团队。不适合：已在 HF/vLLM 体系、需要多 inference backend、想做通用 RL 平台。一句话画像——Slime 是\"server-first + dataflow-first\"框架，通过将训练/rollout/agent 交互统一到一个数据流水线实现高吞吐大模型 RL；相比 VERL 牺牲部分通用性，换取更简单的系统结构与更强性能。"
         }
       ]
@@ -5991,7 +6036,7 @@
           "first_seen": "2026-05-20",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已\"够用\"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。"
         }
       ]
@@ -6148,7 +6193,7 @@
       "claims": [
         {
           "statement": "Superpowers 是 workflow-first，gstack 是 tool-first",
-          "source": "Vibe Coding系列08",
+          "source": "Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6157,7 +6202,7 @@
         },
         {
           "statement": "三层定位——GSD/Superpowers/gstack",
-          "source": "Vibe Coding系列08",
+          "source": "Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -6166,7 +6211,7 @@
         },
         {
           "statement": "没有一个框架能独立覆盖全链路",
-          "source": "Vibe Coding系列09",
+          "source": "Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -6175,7 +6220,7 @@
         },
         {
           "statement": "必须用 CLAUDE.md 声明式路由消除 skill 匹配歧义",
-          "source": "Vibe Coding系列09",
+          "source": "Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6258,7 +6303,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
         },
         {
@@ -6267,7 +6312,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "① HybridFlow 控制器模型：中央 Driver 全流程调度 + 多个 Worker（actor / critic / rollout）并行执行，本质是\"小型调度系统 + 一堆分布式 worker\"；② training 与 rollout 解耦（核心竞争力）——Engine mode（默认，rollout 与 training 共存同集群、权重共享）与 Server mode（rollout 独立成服务、经 RPC 调用、训练推理彻底分离便于横向扩展）双模式；③ 基于 Ray 的集群级调度（FSDP/Megatron 训练 + vLLM 推理）。此外算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，\"让算法替换成为一个配置问题\"，与 agent-lightning 上层的 method-agnostic 一脉相承。"
         },
         {
@@ -6276,7 +6321,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent-lightning 不是\"兼容 VERL\"，而是\"建立在 VERL 类架构的假设之上\"，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套\"rollout abstraction + reward pipeline + actor/critic/rollout/reward worker 模型 + Ray runtime\"正是 agent-lightning 的 Triplet 轨迹、reward span、store 控制平面在 RL 这一级能落地的前提。本质升维：在 Agent 时代强化学习不再是算法问题而是分布式系统问题，VERL 被选中是因为它解决\"系统级 RL\"的瓶颈。"
         },
         {
@@ -6285,7 +6330,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "经验上 rollout 占 80~90% 时间，training 次要。优化重点是 rollout 是否异步、是否批处理、是否用 vLLM serving；理想状态是\"生成第 n+1 批轨迹\"与\"训练第 n 批\"并行（VERL 强项）。三个健康指标：GPU 利用率（rollout/training 是否互相空转）、rollout 吞吐（trajectory/sec）、reward 稳定性（variance 是否发散）。两个典型坑：工具延迟（需 caching/async/mock env）与 reward 设计（Agent 场景 reward 极难设计，重要性甚至高于算法本身）。"
         },
         {
@@ -6294,7 +6339,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "VERL 的 SFT Trainer 与 RL Trainer 是平级、独立的入口（`verl.trainer.fsdp_sft_trainer` vs `verl.trainer.main_ppo`），共享下层 Model Engine（FSDP/Megatron/VeOmni）与 CheckpointEngine，但 RL 启动时**不会自动先做 SFT**。所谓\"SFT 冷启动\"不是开关而是配置：把 `actor_rollout_ref.model.path` 指向一个已 SFT/Instruct 的 checkpoint。该配置组把 actor/rollout/reference 打包共享同一 `model.path`，故 SFT 模型同时充当 actor 初始权重与 reference policy（KL 锚点）。两种来路：① 直接用现成 Instruct 模型（多数实践，如 Qwen2.5-Instruct）；② 先用 fsdp_sft_trainer 产出 checkpoint 再喂给 main_ppo（SFT→RL 两段式，checkpoint 格式天然衔接）。最佳实践：通用任务直接用 Instruct 模型冷启动；domain gap 大或复刻 R1 式推理才自做 SFT，甚至 SFT→RL→SFT→RL 多轮交替。这与 agent-lightning 跨框架解耦 SFT(unsloth)/RL(verl) 同构——VERL 内部本就把两步解耦。"
         },
         {
@@ -6303,7 +6348,7 @@
           "first_seen": "2026-07-03",
           "last_updated": "2026-07-03",
           "confidence": 0.9,
-          "status": "active",
+          "status": "stale",
           "evidence": "实跑 calc_x 训练时 agentlightning 0.3.1 报 `ModuleNotFoundError: No module named 'verl.workers.fsdp_workers'`：verl 0.8.0 已把该文件删除/重构，而 agentlightning 0.3.1 仍按老路径 import。逐版核验——verl 0.5.0/0.6.0/0.7.0 都有此文件，0.8.0 起 404。修复是把 verl 钉到 0.7.0，同时保住稳定栈（torch 2.8.0 / vllm 0.11.0 / flash-attn 2.8.3.post1）。关键教训：`uv sync --frozen` 只保证\"每个包按 lockfile 精确安装\"，**不保证这套组合在运行时相互兼容**——CI 装得上（无 GPU、从不真正跑 VERL 训练循环）不等于训练能跑通，跨库 import 契约的破裂只有真实 GPU 跑一遍才暴露。这是\"install 成功 ≠ runnable\"在 RL infra 上的具体案例，也说明 agent-lightning 对 VERL 的架构锁定（见上文）是有版本窗口的紧耦合。"
         },
         {
@@ -6312,12 +6357,12 @@
           "first_seen": "2026-07-03",
           "last_updated": "2026-07-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "calc_x 跑通过程中\"第 3 步（调外部 API）通、第 4 步（进训练）报 Cannot connect\"的现象，根因是 agent-lightning + VERL 运行时存在两条物理隔离的 LLM 通路：① debug/开发态——Agent 直连外部 `OPENAI_BASE_URL`（如真实 OpenAI 或本地代理），验证 Agent 逻辑本身；② 训练态——rollout 用的是 VERL 内部拉起的 vLLM 实例，通过 store 的 `main_llm` resource 注入 Agent，Agent 此时应当读 store 提供的 endpoint 而非外部 API。两条通路的 base_url 来源不同，配置串了就表现为\"逻辑跑得通但一进训练就连不上\"。这印证了 [[method-agnostic]] 里 store 作为控制平面注入资源的物理基础——训练期的 LLM endpoint 不是 Agent 自己配的，是 store 下发的。"
         },
         {
           "statement": "verl 与 ms-swift/LLaMA-Factory 是\"改权重\"的两个量级——同名 GRPO 不同赛道，按训练规模选型",
-          "source": "ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
+          "source": "ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比",
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
@@ -6373,7 +6418,7 @@
         },
         {
           "statement": "深度学习 VAD 分化为三条路径——Personal VAD / CNN+Attention / NAS-VAD",
-          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "source": "2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测",
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
@@ -6382,7 +6427,7 @@
         },
         {
           "statement": "Semantic VAD 只做 end-of-turn 检测，不等于打断能力",
-          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "source": "2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测",
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
@@ -6391,7 +6436,7 @@
         },
         {
           "statement": "完整 Voice Agent 打断需要 6 个必要组件协同",
-          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "source": "2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测",
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
@@ -6400,7 +6445,7 @@
         },
         {
           "statement": "VAD 与关键词唤醒（KWS）是互补不可替代的两种技术",
-          "source": "VAD 技术全景——从噪声环境论文到工业级语义端点检测",
+          "source": "2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测",
           "first_seen": "2026-04-27",
           "last_updated": "2026-04-30",
           "confidence": 0.8,
@@ -6488,7 +6533,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。"
         },
         {
@@ -6497,7 +6542,7 @@
           "first_seen": "2026-05-22",
           "last_updated": "2026-05-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。"
         },
         {
@@ -6597,7 +6642,7 @@
       "claims": [
         {
           "statement": "五层 Pipeline 是思维模式的转换",
-          "source": "Vibe Coding系列03",
+          "source": "Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -6606,7 +6651,7 @@
         },
         {
           "statement": "每阶段输出的 context 类型完全不同",
-          "source": "Vibe Coding系列03",
+          "source": "Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流|Vibe Coding系列03",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6635,7 +6680,7 @@
       "claims": [
         {
           "statement": "四层防线是代码复用的真正解法",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -6644,7 +6689,7 @@
         },
         {
           "statement": "现有框架均未直接解决代码复用",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6770,7 +6815,7 @@
       "claims": [
         {
           "statement": "三层定位——GSD/Superpowers/gstack",
-          "source": "Vibe Coding系列08",
+          "source": "Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|Vibe Coding系列08",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -6779,7 +6824,7 @@
         },
         {
           "statement": "必须用 CLAUDE.md 声明式路由消除 skill 匹配歧义",
-          "source": "Vibe Coding系列09",
+          "source": "Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式|Vibe Coding系列09",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6808,7 +6853,7 @@
       "claims": [
         {
           "statement": "项目复杂度应按 Context 信息量而非代码行数定级",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6817,7 +6862,7 @@
         },
         {
           "statement": "L1 项目不存在 Context Rot，GSD 是纯开销",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6826,7 +6871,7 @@
         },
         {
           "statement": "L2 项目是 GSD 的\"甜蜜点\"",
-          "source": "Vibe Coding系列06",
+          "source": "Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进|Vibe Coding系列06",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6979,7 +7024,7 @@
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -6988,7 +7033,7 @@
         },
         {
           "statement": "LLM Wiki 模型——LLM 是维护者不是问答者",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -7200,7 +7245,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "同样 64 条题、同样 `reward>0` 阈值，留用样本从 iter0 的 80 涨到 iter1 的 86 = version_1 比 version_0 答对的轨迹更多。这是「模型越训越强 → 正确轨迹越多 → 可训样本越多」的 ReST 飞轮在真实数据上的直接证据，比 train_loss 下降更能反映进步。"
         },
         {
@@ -7209,7 +7254,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "train_loss 0.0151→0.0069 只是「模型对自己筛出的正确轨迹拟合多好」——这些本就是它分布内能复现的东西，loss 低到接近过拟合是自然的。loss 低 ≠ 没见过的题答得更对。唯一真实能力指标是 holdout 上的 pass@1/pass@8。盯 loss 只为确认训练没崩（不 NaN、不剧震）。"
         },
         {
@@ -7218,7 +7263,7 @@
           "first_seen": "2026-06-26",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "实跑日志 `Keeping 80 with reward greater than 0.0` 推翻了读源码时「固定切 50%」的推断——当前版本已做阈值过滤，0 分样本不会被凑满比例带进训练集，系列05 担心的污染坑在 demo 里不存在。这是「边搭边写活文档」的价值：实跑直接纠正读码推断。"
         }
       ]
@@ -7367,7 +7412,7 @@
       "claims": [
         {
           "statement": "四层防线是代码复用的真正解法",
-          "source": "Vibe Coding系列07",
+          "source": "Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -7529,7 +7574,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "单机/个人/低并发 → llama.cpp（slot 续接够用，部署省心，但无法跨并发共享）；生产/高并发/多模态 → SGLang（MambaRadixCache 是当前唯一为 Hybrid 跨请求复用专门设计的方案）；vLLM 居中——命中率 0 时\"关掉推测解码\"救场。落地顺序：查日志 `Prefix cache hit rate:` 定基线 → vLLM 显式 `--enable-prefix-caching` + 关 MTP 推测解码再测 → 仍为 0 上 SGLang 按 cookbook 部署 → 压测并发 × 命中率/TTFT/吞吐。收益预期：只省 system prompt 的 prefill，占比 ≈ `prompt token /(prompt + 图片 token)`，prompt 越长收益越大。"
         },
         {
@@ -7538,7 +7583,7 @@
           "first_seen": "2026-06-22",
           "last_updated": "2026-06-22",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。"
         },
         {
@@ -7593,7 +7638,7 @@
           "first_seen": "2026-06-24",
           "last_updated": "2026-06-24",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "如果主要目标是 prompt 调优、寻找最优 prompt 且明确不碰权重微调，首选 DSPy。agent-lightning 的差异化价值是 method-agnostic（APO↔RL↔SFT 可换）+ RL 级 rollout 基础设施——只做 prompt 优化时这两个最大卖点完全用不上，等于付出\"装一个偏 RL 训练框架\"的复杂度却拿不到值钱的部分。agent-lightning 只在一种情况值得提前押注：客户预期会从 prompt 调优走向权重微调，需要\"一套 reward / rollout 复用到多种优化方法\"。一句话：只做 prompt → DSPy；既调 prompt 又要 RL 微调 → agent-lightning。"
         },
         {
@@ -7602,7 +7647,7 @@
           "first_seen": "2026-06-24",
           "last_updated": "2026-06-24",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "比\"选哪个框架\"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架\"忠实地优化噪声\"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。"
         },
         {
@@ -7652,7 +7697,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "TRL（算法工具，HuggingFace Trainer，for-loop + optimizer + loss，rollout 内嵌训练循环、无调度层）→ OpenRLHF（工程化训练框架，actor/critic 弱编排 + DeepSpeed，rollout 半独立）→ VERL（分布式基础设施，HybridFlow 中央 Driver + 并行 Worker，rollout 完全解耦、Ray 集群调度）。三者站在「算法 → 工程化 → 基础设施」谱系的不同位置，并非功能替代。选型按规模：PoC/单轮 → TRL；中等规模/已有 DeepSpeed → OpenRLHF；Agent RL/大模型/数十卡以上 → VERL。"
         },
         {
@@ -7661,7 +7706,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent RL 的四个特征（多轮、有状态、异步、依赖外部环境）把瓶颈从算法迁到基础设施：rollout 是最重环节（占 80~90% 时间），若像 TRL 嵌在训练循环里则训练/rollout GPU 互相空转、无法 scale。必须 training-rollout 解耦（VERL 的 Server mode：rollout 独立成 worker、vLLM serving、异步批处理）。agent-lightning 对 VERL 是架构锁定——不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖 trajectory RL + async rollout + 分布式 rollout worker + 自定义 reward pipeline 四项能力。替换 VERL 等于替换一个分布式系统，替代成本远高于使用成本。"
         },
         {
@@ -7670,7 +7715,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-06-29",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Slime 非 drop-in replacement，迁移前需核对三项前置条件：能否接受 SGLang 唯一推理 backend、能否接受 Megatron 训练后端（从 FSDP 迁需改模型结构）、能否改造 rollout pipeline 与数据接口。三个判断信号：① 规模与 MoE——上 MoE/100B+/RL scaling 几乎一定向 Megatron 演进，此时 Slime 强绑定反成优势；70B 以下 FSDP 够用则 VERL 更省事。② 瓶颈定位——rollout 吞吐瓶颈在 VERL 内即可解（Ray/vLLM/async）或考虑 Slime 的 SGLang 强吞吐；training 能力瓶颈（大模型放不下）才考虑 Megatron。③ 架构同构性——agent-lightning 的数据流飞轮与 Slime「数据流包数据流」比 VERL「数据流包调度系统」更顺，但这是加分项而非决定项，规模与瓶颈不对齐时同构性收益不足以抵消迁移成本。"
         }
       ]
@@ -7694,7 +7739,7 @@
       "claims": [
         {
           "statement": "规范驱动与方法论框架互补不可互替",
-          "source": "Vibe Coding系列04",
+          "source": "Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.8,
@@ -7703,7 +7748,7 @@
         },
         {
           "statement": "GSD/SpecKit/OpenSpec 只能三选一",
-          "source": "Vibe Coding系列04",
+          "source": "Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践|Vibe Coding系列04",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -7731,7 +7776,7 @@
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -7740,7 +7785,7 @@
         },
         {
           "statement": "LLM Wiki 模型——LLM 是维护者不是问答者",
-          "source": "从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
+          "source": "PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
           "last_updated": "2026-04-13",
           "confidence": 0.7,
@@ -8371,12 +8416,6 @@
     },
     {
       "source": "continual-self-improving-ai",
-      "target": "reinforcement-learning",
-      "relation_type": "uses",
-      "description": "JitRL 是非参数 GPI、LifeSkill 用 verifier 引导的 RL loop 抽 skill，两者都以 RL 机器为内核"
-    },
-    {
-      "source": "continual-self-improving-ai",
       "target": "advantage-function",
       "relation_type": "uses",
       "description": "JitRL 用非参数 kNN 估 advantage 做 test-time 策略改进"
@@ -8488,24 +8527,6 @@
       "target": "harness-quality-gate",
       "relation_type": "extends",
       "description": "适应度函数将质量门禁从固定检查扩展为可演化的架构评估"
-    },
-    {
-      "source": "forward-deployed-engineer",
-      "target": "requisite-variety",
-      "relation_type": "uses",
-      "description": "FDE 存在条件与\"调节不会完成\"的定律依据"
-    },
-    {
-      "source": "forward-deployed-engineer",
-      "target": "one-person-team",
-      "relation_type": "uses",
-      "description": "2-3 人精英组 + AI Agent 编队是 One Person Team 在 FDE 团队的组织形态"
-    },
-    {
-      "source": "forward-deployed-engineer",
-      "target": "bitter-lesson",
-      "relation_type": "uses",
-      "description": "\"价值锚迁移到三元能力\"的判断依据：操作知识终被模型吞噬"
     },
     {
       "source": "forward-deployed-engineer",
@@ -9066,12 +9087,6 @@
       "description": "Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness"
     },
     {
-      "source": "online-learning",
-      "target": "continual-self-improving-ai",
-      "relation_type": "contrasts",
-      "description": "CL-RL 四篇（JitRL/XSkill/CURATOR/LifeSkill）在\"存储位面\"轴与\"适应延迟\"轴上的分工，是本页硬标准的前沿 stress-test 场"
-    },
-    {
       "source": "ontology-philosophy",
       "target": "enterprise-ontology",
       "relation_type": "grounds",
@@ -9256,12 +9271,6 @@
       "target": "skillopt",
       "relation_type": "contrasts",
       "description": "SkillOpt 把分数当选择/门控信号（离散筛选），RL 把 reward 当梯度信号（连续参数更新）"
-    },
-    {
-      "source": "reinforcement-learning",
-      "target": "advantage-function",
-      "relation_type": "uses",
-      "description": "优势函数（$Q-V$，减基线的相对好坏）是 RL 策略改进的核心构造，GPI 的改进步依赖它"
     },
     {
       "source": "rejection-sampling-finetuning",
@@ -10036,18 +10045,6 @@
       "target": "generation-evaluation-separation",
       "relation_type": "implements",
       "description": "judge 分字段 rubric + temperature=0 + 多次取中位数是生成-评估分离在 reward 层的工程化"
-    },
-    {
-      "source": "reward-design-three-inputs",
-      "target": "llm-as-a-judge",
-      "relation_type": "uses",
-      "description": "Judge Reliability 八类偏差清单为 σ_noise 测量提供分项归因框架，Evaluator/Reward 三层区别为两本账分家提供理论根基"
-    },
-    {
-      "source": "reward-design-three-inputs",
-      "target": "pre-run-three-number-accounting",
-      "relation_type": "uses",
-      "description": "改造前用三个数定位病灶（分子/分母哪个坏了），改完必须重走三个数——判断式翻转为\"值得跑\"才锁版开训"
     },
     {
       "source": "sft-rejection-sampling-hands-on",
