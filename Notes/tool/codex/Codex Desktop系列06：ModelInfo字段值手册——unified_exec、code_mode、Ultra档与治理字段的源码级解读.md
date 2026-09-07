@@ -42,7 +42,7 @@ pub enum ConfigShellToolType {
 | `unified_exec` | 模型获得 `exec_command` + `write_stdin` 两个工具组成的**持久 shell 会话**能力 |
 | `disabled` | 模型完全没有 shell 工具 |
 
-**`unified_exec` 到底是什么**：它不是"一次调用跑一条命令"的旧式 shell 工具，而是一个会话式执行器——`exec_command` 启动/复用一个带 session 的进程，`write_stdin` 可以向运行中的进程继续写输入（`core/src/tools/router.rs:166-167` 证实这两个工具名成对暴露；`core/tests/suite/unified_exec_stdin_approval.rs` 等测试覆盖 stdin 写入的独立审批）。这让模型能操作交互式程序（REPL、向导式 CLI、需要确认的安装脚本），而不是每条命令开一个新 shell。它还有两种运行模式（`tools/src/tool_config.rs:29`）：`Direct`（直接起进程）和 `ZshFork`（满足一组 feature flag 且用户 shell 是 zsh 时，fork 用户的 zsh 环境执行——继承用户的 PATH/alias/函数，行为更接近"用户自己敲的命令"）。
+**`unified_exec` 到底是什么**：它不是"一次调用跑一条命令"的旧式 shell 工具，而是一个会话式执行器——`exec_command` 启动/复用一个带 session 的进程，`write_stdin` 可以向运行中的进程继续写输入（`core/src/tools/router.rs:166-167` 证实这两个工具名成对暴露；`core/tests/suite/unified_exec_stdin_approval.rs` 等测试覆盖 stdin 写入的独立审批）。这让模型能操作交互式程序（REPL、向导式 CLI、需要确认的安装脚本），而不是每条命令开一个新 shell。它还有两种运行模式（`tools/src/tool_config.rs:29`）：`Direct`（直接起进程）和 `ZshFork`（满足一组 feature flag 且用户 shell 是 zsh 时，以用户真实 zsh fork 执行——预期继承其 PATH/alias/函数，行为更接近"用户自己敲的命令"）。
 
 **alias 是历史化石**：`shell_command`、`local`、`default` 这些旧值全部被 serde alias 归一化为 `UnifiedExec`。所以 mini 条目里的 `"shell_type": "shell_command"` 在 0.153.1 运行时与 astra 的 `unified_exec` 行为相同——字段值的差异记录的是"该模型当年在什么工具形态上训练"，而运行时行为已收敛。这修正了系列05 的一处表述：co-design 的证据不是"两个模型用两种 shell 工具"，而是"枚举里留着 alias，说明工具形态跟着模型代际演进过"。
 
@@ -127,7 +127,7 @@ const r = await functions.exec({ command: ["bash", "-lc", "git status"] });
 | 字段 | 取值 | 作用（源码） |
 |---|---|---|
 | `apply_patch_tool_type` | `freeform` / null | 文件修改工具的协议形态。0.153.1 枚举只剩 `Freeform`（patch 以自由文本语法而非 JSON 结构提交，`openai_models.rs:310`）；null = 该模型不用专用 patch 工具 |
-| `web_search_tool_type` | `text`（默认）/ `text_and_image` | `core/src/tools/hosted_spec.rs:22-29`：决定搜索工具声明的 `search_content_types`——`text_and_image` 允许搜索结果带图。同一函数实现 Cached/Indexed/Live 三档 `external_web_access`（系列七 3.3 的服务端阉割逻辑就在这） |
+| `web_search_tool_type` | `text`（默认）/ `text_and_image` | `core/src/tools/hosted_spec.rs:22-29`：决定搜索工具声明的 `search_content_types`——`text_and_image` 允许搜索结果带图。同一函数实现 Cached/Indexed/Live 三档 `external_web_access`（服务端按档位阉割 external_web_access 的逻辑计划在后续篇展开） |
 | `experimental_supported_tools` | 字符串白名单 | `core/src/tools/spec_plan.rs:1162-1200`：逐个名字开实验工具——astra 声明的 `send_user_message_async`（干活中途给用户发消息）和 `clock`（clock.sleep 等待），正是 persistent mode 的两块基石 |
 | `node_repl_disabled` | bool | `core/src/mcp_tool_call.rs:1256`：写进 turn metadata 随请求上行，服务端据此关闭 node_repl |
 | `supports_parallel_tool_calls` | bool | MCP 侧并行工具调用开关（`codex-mcp/src/runtime.rs`） |
@@ -147,7 +147,7 @@ pub enum ReasoningEffort {
 }
 ```
 
-三个值得注意的成员：**`Ultra` 不是更深的推理档**——`core/src/client.rs:188-200` 写得很清楚：用户选 Ultra 时，实际推理档从 `multi_agent_reasoning_effort` 解析（astra 配的是 `xhigh`，且代码校验它必须是该模型支持的非 Ultra 档）。Ultra 的真实语义是"进入多 agent 委派模式 + 子工作用指定档位"。**`Persistent` 是一个推理档**——持久模式在类型系统里与 low/high 平级。**`Custom(String)` 是前向兼容口**——服务端可以发客户端还不认识的档位名而不炸 schema。
+三个值得注意的成员：**`Ultra` 不是更深的推理档**——`core/src/client.rs:188-200` 写得很清楚：用户选 Ultra 时，实际推理档从 `multi_agent_reasoning_effort` 解析（astra 配的是 `xhigh`，且代码校验它必须是该模型支持的非 Ultra 档）。**Ultra 本身只改变发给 API 的实际推理档**（回退到 `multi_agent_reasoning_effort`）；只有当模型 `multi_agent_version=V2` 时，选 Ultra 才把委派策略从"仅显式请求"（`ExplicitRequestOnly`）切到"主动委派"（`Proactive`）——`core/src/session/multi_agents.rs` 的 `effective_multi_agent_mode()` 首行即 `if turn_context.multi_agent_version != MultiAgentVersion::V2 { return None; }`，委派工具是否存在完全由 `multi_agent_version` 决定，**委派能力的开关是 `multi_agent_version`，Ultra 是（V2 之下的）策略切换器**。**`Persistent` 是一个推理档**——持久模式在类型系统里与 low/high 平级。**`Custom(String)` 是前向兼容口**——服务端可以发客户端还不认识的档位名而不炸 schema。
 
 `supported_reasoning_levels` 是"这个模型的菜单上放哪几档"，`default_reasoning_level` 是默认选中项。系列02 的档位坑在这里有了准确解释：mini 菜单最高 `xhigh`，全局配置的 `ultra` 不在其列表里，继承过去就是非法值。
 
@@ -168,7 +168,7 @@ pub enum ReasoningEffort {
 | `effective_context_window_percent` | `usable_context_window()`：窗口 × 百分比 = 真正可用于输入的额度（扣系统提示词/工具开销/输出预留） |
 | `auto_compact_token_limit` | `auto_compact_token_limit()`：缺省取窗口的 90% 作为自动压缩触发线；显式给值也会被钳到 90% 以内——**压缩线写死不超过窗口九成** |
 | `comp_hash` | 随 turn 上报的压缩兼容指纹（`core/src/session/turn_context.rs:597`）——标识哪些配置的 compaction 状态可互相衔接 |
-| `truncation_policy` | `{mode: bytes 或 tokens, limit: N}`（`openai_models.rs:324`）——**工具输出**的截断策略。astra 是 `tokens/10000`：单个工具结果超一万 token 截断；旧模型用 `bytes` 按字节截。这是防单条 `cat` 大文件撑爆上下文的闸门 |
+| `truncation_policy` | `{mode: bytes 或 tokens, limit: N}`（`openai_models.rs:327,352`，327 为 `TruncationMode` 枚举、352 为 `TruncationPolicyConfig` 结构体）——**工具输出**的截断策略。astra 是 `tokens/10000`：单个工具结果超一万 token 截断；旧模型用 `bytes` 按字节截。这是防单条 `cat` 大文件撑爆上下文的闸门 |
 
 ## 四、治理字段：系列02 的源码收尾
 
@@ -179,7 +179,7 @@ pub const DEFAULT_APPROVAL_REVIEW_PREFERRED_MODEL: &str = "codex-auto-review";
 const API_KEY_APPROVAL_REVIEW_PREFERRED_MODEL: &str = "gpt-5.6-luna";
 ```
 
-选择逻辑（:368-377）：**API key 认证 → `gpt-5.6-luna`；ChatGPT 登录 → `codex-auto-review`**。Desktop 是 ChatGPT 登录态，命中的是 `codex-auto-review`——这是 Codex 内部的合成审批模型名，不对应任何真实模型，第三方端点上不可能有同名 deployment，所以系列02 的 404 发的是它，而**不是** `gpt-5.6-luna`（后者在用户 Azure 里其实已部署、菜单可见——"需要 override 才修好"恰恰证明默认命中的不是这个已存在的 deployment）。覆盖点在 `core/src/guardian/review.rs:897-898`：
+选择逻辑（:368-377）：**API key 认证 → `gpt-5.6-luna`；ChatGPT 登录（严格说是所有非 API-key 认证路径） → `codex-auto-review`**。Desktop 是 ChatGPT 登录态，命中的是 `codex-auto-review`——这是 Codex 内部的合成审批模型名，不对应任何真实模型，第三方端点上不可能有同名 deployment，所以系列02 的 404 发的是它，而**不是** `gpt-5.6-luna`（后者在用户 Azure 里其实已部署、菜单可见——"需要 override 才修好"恰恰证明默认命中的不是这个已存在的 deployment）。覆盖点在 `core/src/guardian/review.rs:897-898`：
 
 ```rust
 let model_override = turn.model_info().auto_review_model_override.as_deref();
@@ -201,11 +201,11 @@ let review_model_id = model_override.unwrap_or(default_review_model_id);
 pub enum MultiAgentVersion { Disabled, V1, V2 }
 ```
 
-| 值 | 差异（`core/src/tools/spec_plan.rs:644-675`） |
+| 值 | 差异（`core/src/tools/spec_plan.rs:644-675`，spawn 注册见 `spec_plan.rs:~1283-1298` 的 `add_collaboration_tools`） |
 |---|---|
 | `disabled` | 无多 agent 工具 |
 | `v1` | 旧版线程派生，带 spawn 深度限制检查 |
-| `v2` | 新版 `spawn_agent` / `followup_task` / `send_message` 工具集，配套系列05 看到的 root/subagent 角色 prompt |
+| `v2` | 新版 `spawn_agent` / `send_message` / `followup_task` / `interrupt_agent` / `list_agents` 工具集，配套系列05 看到的 root/subagent 角色 prompt |
 
 `multi_agent_reasoning_effort`（astra: `xhigh`）：Ultra 档触发委派后，子 agent 工作的推理档位——见第二节 Ultra 的语义。
 
@@ -213,7 +213,7 @@ pub enum MultiAgentVersion { Disabled, V1, V2 }
 
 | 字段 | 取值 | 作用 |
 |---|---|---|
-| `visibility` | `list` / `hide` / `none` | `app-server/src/models.rs:22`：`include_hidden \|\| preset.show_in_picker`——`hide` 只是不进默认 picker，`model/list` 带 `includeHidden: true` 仍会返回（系列02 的"必要不充分"）；`none` 连隐藏列表也不进 |
+| `visibility` | `list` / `hide` / `none` | `app-server/src/models.rs:22`：`include_hidden \|\| preset.show_in_picker`——`hide` 只是不进默认 picker，`model/list` 带 `includeHidden: true` 仍会返回（系列02 的"必要不充分"）；`hide` 与 `none` 在 ModelPreset 转换时（`openai_models.rs:880`）被压成同一个布尔值 `show_in_picker`，Rust 层观察不到两者行为差异；若有区分应在 Desktop TS/服务端层，未验证 |
 | `priority` | 整数 | 模型菜单排序权重 |
 | `upgrade` | `{model, migration_markdown, retirement_at}` / null | `ModelInfoUpgrade`（`openai_models.rs:712`）。**源码注释明确 `retirement_at` 是 "Informational"**——CLI 不会因时间过期禁用模型；自动切换是 Desktop UI 层行为（受 ChatGPT 认证状态条件）。第三方 provider 场景清 null 的依据就在这：它只是信息，不适用就删 |
 | `availability_nux` | 对象 / null | 新模型的引导弹窗（New User Experience）配置 |
@@ -234,7 +234,7 @@ pub enum MultiAgentVersion { Disabled, V1, V2 }
 
 1. **`unified_exec` = `exec_command` + `write_stdin` 的持久会话执行器**，支持交互式程序与 stdin 独立审批，另有 ZshFork 模式继承用户 shell 环境；`shell_command` 等旧值已 alias 归一化——工具形态的代际演进留在了枚举的 alias 里。
 2. **`code_mode_only` 把工具调用整体搬进代码执行**：并行编排用 JS 表达，node_repl 因此成为治理重点（`node_repl_auto_review_required` 配套）。设计动机是"用代码作编排接口"（CodeAct）——控制流、token 经济、原生并行、单一治理入口；连 shell 都包进 JS（bash 是被 node_repl 调用的工具、非其竞争者）。`Direct → CodeMode → CodeModeOnly` 是一条光谱，与 Claude Code 的"几十个离散工具"（Direct 端）恰是两端：能力做成「更多的工具」vs 做成「一种语言」。
-3. **Ultra 不是推理档，是多 agent 委派开关**：实际档位由 `multi_agent_reasoning_effort` 决定；`Persistent` 是档位、`Custom(String)` 留前向兼容。
+3. **Ultra 不是纯推理档，而是 effort 回退 + （V2 下）委派策略切换**：实际档位由 `multi_agent_reasoning_effort` 决定，委派策略切换仅在 `multi_agent_version=V2` 时生效——委派开关是 `multi_agent_version`；`Persistent` 是档位、`Custom(String)` 留前向兼容。
 4. **治理链路的两个默认审批模型名以常量形式写死在源码**：API key 认证走 `gpt-5.6-luna`、ChatGPT 登录走 `codex-auto-review`，`auto_review_model_override` 整体替换——系列02 的 404 与修复在源码层完全闭环。
 5. **`retirement_at` 是 informational**：CLI 不执行退休，自动迁移是 UI 行为——第三方 provider 清 `upgrade: null` 的依据。
 6. **改 catalog 前先分清字段归属**：Rust 结构体外的字段（plans/websockets/最低版本）CLI 一概忽略；结构体内的字段注意三态语义（null=默认、空串=关闭、有值=覆盖）。

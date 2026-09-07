@@ -49,7 +49,7 @@ mini 条目里带着一个系列01 没注意的字段：
 }
 ```
 
-这是 **OpenAI 第一方世界的模型生命周期信息**：mini 在 OpenAI 侧已于 8 月底退休、迁移到 Luna。但接的是 Azure——**目录里的退休/升级/隐藏元数据，与你自己 Azure 资源里的 deployment 是否可用，是两回事**。界面代码中确实存在依据退休信息自动切换模型的逻辑（受 ChatGPT 认证状态条件控制），所以第三方 provider 场景下的正确做法是把不适用的迁移信息清掉：整个 `upgrade` 对象改为 `null`，其余能力字段保留。
+这是 **OpenAI 第一方世界的模型生命周期信息**：mini 在 OpenAI 侧已于 8 月底退休、迁移到 Luna。但接的是 Azure——**目录里的退休/升级/隐藏元数据，与你自己 Azure 资源里的 deployment 是否可用，是两回事**。界面代码中从代码行为推测存在依据退休信息自动切换模型的逻辑（受 ChatGPT 认证状态条件控制；未定位到具体函数，与下文审批模型选择逻辑的源码级引用不同档），所以第三方 provider 场景下的正确做法是把不适用的迁移信息清掉：整个 `upgrade` 对象改为 `null`，其余能力字段保留。
 
 两个配套注意点：App 内嵌目录里的 mini 是 `visibility: "hide"`（与 GPT-6 Astra 同一模式——官方定义齐全、默认藏起）；mini 支持的推理档位最高 `xhigh`，而全局配置是 `ultra`，切换时要显式选受支持的档位，避免意外继承。
 
@@ -63,7 +63,7 @@ The API deployment for this resource does not exist.
 url: https://open-ai-hu-demo-sweden-central.openai.azure.com/openai/v1/responses
 ```
 
-关键在于：这个 404 **不是主模型请求返回的，而是审批链路返回的**。界面上的 `Approve for me`（`approvals_reviewer: auto_review`）意味着由一个**审批模型**评估每个敏感操作——而这条链路的请求同样打到你配置的 Azure provider 上。对 bundled binary 的只读分析找到了直接证据：`ConfiguredModelProvider::approval_review_preferred_model` 按认证状态在两个内置名称间选默认审批模型——**ChatGPT 登录态取 `codex-auto-review`，API key 认证态取 `gpt-5.6-luna`**。Desktop 用的是 ChatGPT 登录态，命中的是 `codex-auto-review`——它是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，任何第三方端点上都不可能有同名 deployment。于是审批请求永远 404，主模型明明工作正常，所有需要审批的操作却全部瘫痪。
+关键在于：这个 404 **不是主模型请求返回的，而是审批链路返回的**。界面上的 `Approve for me`（`approvals_reviewer: auto_review`）意味着由一个**审批模型**评估每个敏感操作——而这条链路的请求同样打到你配置的 Azure provider 上。对 bundled binary 的只读分析找到了直接证据：`ConfiguredModelProvider::approval_review_preferred_model` 按认证状态在两个内置名称间选默认审批模型——**ChatGPT 登录态取 `codex-auto-review`，API key 认证态取 `gpt-5.6-luna`**。Desktop 用的是 ChatGPT 登录态，命中的是 `codex-auto-review`——它是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，按命名惯例，第三方端点上通常不会有同名 deployment。于是审批请求永远 404，主模型明明工作正常，几乎所有需要审批的操作都瘫痪。
 
 ### 修复：auto_review_model_override 指向真实存在的 deployment
 
@@ -78,7 +78,7 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 
 ### 哪个名字 404：codex-auto-review，不是 luna
 
-一个需要说清的因果修正：这个 404 发的是 `codex-auto-review`，**不是** `gpt-5.6-luna`。判据两条——① Desktop 是 ChatGPT 登录态，源码的选择逻辑此时回退到 `codex-auto-review`（`gpt-5.6-luna` 是 API key 认证态才走的分支）；② `gpt-5.6-luna` 在用户 Azure 里其实是配置好的、模型菜单里可见可选（见系列01/06 的 catalog），如果 404 发的是 luna，它本就有 deployment、不该 404，更不需要 override 才修好——**"需要 override 才修好"这件事本身，反过来证明默认命中的不是 luna**。而 `codex-auto-review` 是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，任何第三方端点上都不可能有同名 deployment，它才是必然 404 的那一支。证据边界：错误信息本身没有回传发起请求的模型名，这条归因是"源码选择逻辑 + luna 已部署仍需 override"两条证据推出来的，不是抓包直接读到的。
+一个需要说清的因果修正：这个 404 发的是 `codex-auto-review`，**不是** `gpt-5.6-luna`。判据两条——① Desktop 是 ChatGPT 登录态，源码的选择逻辑此时回退到 `codex-auto-review`（`gpt-5.6-luna` 是 API key 认证态才走的分支）；② `gpt-5.6-luna` 在用户 Azure 里其实是配置好的、模型菜单里可见可选（见系列01/06 的 catalog），如果 404 发的是 luna，它本就有 deployment、不该 404，更不需要 override 才修好——**"需要 override 才修好"这件事本身，反过来证明默认命中的不是 luna**。而 `codex-auto-review` 是 Codex 内部的合成审批模型名，不对应任何真实 OpenAI 模型，按命名惯例，第三方端点上通常不会有同名 deployment，它才是必然 404 的那一支。证据边界：错误信息本身没有回传发起请求的模型名，这条归因是"源码选择逻辑 + luna 已部署仍需 override"两条证据推出来的，不是抓包直接读到的。
 
 ### 验证：三种权限模式对应三种运行态
 
@@ -94,11 +94,16 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 
 ### 环境细节：GUI 进程的 key 注入
 
-一个配套坑：**在 `.zshrc` 里 `export AZURE_OPENAI_API_KEY=...` 对 Desktop app 完全无效**。正确做法是重启 Codex App 前用 `launchctl setenv AZURE_OPENAI_API_KEY "..."` 设置用户级环境变量，新会话的审批与模型请求才能继承到 Azure key。
+一个配套坑：**在 `.zshrc` 里 `export AZURE_OPENAI_API_KEY=...` 对 Desktop app 基本靠不住**。可靠做法是重启 Codex App 前用 `launchctl setenv AZURE_OPENAI_API_KEY "..."` 设置用户级环境变量，新会话的审批与模型请求才能继承到 Azure key。
 
-**为什么 `.zshrc` 没用**：macOS 里从 Finder / Dock / Launchpad 启动的 GUI app 由 `launchd` 拉起，**不经过登录 shell**，所以 `.zshrc`、`.zprofile`、`.bash_profile` 这些 shell 配置一概不加载——它们只对"从终端起的进程"生效。只有当你从终端 `open -a ChatGPT`（继承当前 shell 环境）或直接跑二进制时，app 才拿得到 shell 里 export 的变量。日常双击图标启动走的正是 `launchd` 那条路，于是 `.zshrc` 里设的 key 到不了 GUI 进程。`launchctl setenv` 恰好是把变量注入到 `launchd` 的会话环境，让后续由它拉起的 GUI app 都能继承。
+**为什么 `.zshrc` 靠不住**——这里要拆成两层，系统层和 App 层是两回事：
 
-**`launchctl setenv` 的局限——重启/重新登录后失效**：它设置的是**当前登录会话级**（per-user launchd domain）的变量，注销、重启、切换用户后全部清空，下次得重设。若只是临时排查，`launchctl setenv` + 重启 App 足够；若要长期用 Azure key 跑 Desktop，做成 LaunchAgent 让 `launchd` 每次登录自动 setenv 一劳永逸。
+- **系统层不加载**：macOS 里从 Finder / Dock / Launchpad 启动的 GUI app 由 `launchd` 拉起，**不经过登录 shell**，所以 `.zshrc`、`.zprofile`、`.bash_profile` 这些 shell 配置一概不加载——它们只对"从终端起的进程"生效。只有当你从终端 `open -a ChatGPT`（继承当前 shell 环境）或直接跑二进制时，app 才拿得到 shell 里 export 的变量。
+- **App 层有一条自带的补充路径，但不可靠**：当前 Codex Desktop 启动时会**主动 spawn 一个登录 shell 来解析用户环境**（与 VS Code 的 "resolving shell environment" 同款机制），这条路径下 `.zshrc` 里的 export **有可能**被导入——但它可能成功，也可能因 shell 启动慢而超时放弃（实测见过启动时等待 shell 环境的日志，2026-09-07），且属于 App 的实现细节，版本升级随时可能变。
+
+所以结论不是".zshrc 完全无效"，而是"**不能依赖**"：拿它当唯一注入手段，成败取决于一条有超时的隐式路径。`launchctl setenv` 则是把变量注入到 `launchd` 的会话环境，后续由它拉起的 GUI app 确定性继承，不吃这条运气路径。
+
+**`launchctl setenv` 的局限——重启/重新登录后失效**：它设置的是**当前登录会话级**（per-user launchd domain）的变量，注销、重启、切换用户后全部清空，下次得重设。若只是临时排查，`launchctl setenv` + 重启 App 足够；若要长期用 Azure key 跑 Desktop，做成 LaunchAgent 让 `launchd` 每次登录自动 setenv——但注意这只解决"每次登录要手动重设"，**不保证执行时机**（见下）。
 
 #### 名词背景：plist 是什么标准、LaunchAgents 里的 Agent 指什么
 
@@ -135,7 +140,9 @@ catalog 条目级有一个对应的覆盖字段：`auto_review_model_override`�
 /System/Library/LaunchDaemons/   # Apple 系统自带（SIP 保护，不可改）
 ```
 
-本场景必须用 Agent 而非 Daemon：要注入环境变量的是**当前用户的登录会话**（GUI app 全挂在用户会话下），Agent 在用户登录时由 launchd 自动加载执行，时机先于所有 GUI app 启动，`setenv` 才来得及生效；放 `~/Library` 下也无需 sudo——这反过来解释了下面第 1 个坑：root 属主的 plist 在 `gui/<uid>` 域反而会被拒绝加载。
+本场景必须用 Agent 而非 Daemon：要注入环境变量的是**当前用户的登录会话**（GUI app 全挂在用户会话下），Agent 在用户登录时由 launchd 自动加载执行；放 `~/Library` 下也无需 sudo——这反过来解释了下面第 1 个坑：root 属主的 plist 在 `gui/<uid>` 域反而会被拒绝加载。
+
+⚠️ 但**不要把"登录时自动执行"读成"先于所有 GUI app 执行"**：launchd 对同一登录会话内的加载顺序**没有先后承诺**——`RunAtLoad` 只表示"任务被加载后执行一次"，它与登录项、崩溃恢复/"重新打开窗口"机制拉起的 GUI app 之间**不存在依赖关系**。如果 Codex 作为登录项或被会话恢复先拉起来，它启动时 setenv 还没跑，照样拿不到变量（实测踩过：登录后 App 等待启动、变量缺失，2026-09-07）。所以 LaunchAgent 解决的是"变量在会话里持久存在"，**不解决"App 首次启动就能拿到"**——保险做法仍是登录后对 Codex ⌘Q 完全退出再重开一次。
 
 #### 持久化做法：LaunchAgent（实测步骤）
 
@@ -177,7 +184,15 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 3. **plist 的 XML 标签要闭合正确**：`ProgramArguments` 的 `<array>` 漏掉 `</array>` 或错写成 `</dict>`，`plutil -lint` 会报 "Close tag ... does not match open tag dict"——先 lint 过再 bootstrap。
 4. **`bootstrap` 后面必须跟 plist 路径**；报 `already bootstrapped` 就先 `launchctl bootout gui/$(id -u) <plist>` 再重来。改了 plist 内容也走 `bootout` → `bootstrap` 这一对。
 
-最后**完全退出（⌘Q）再重开 Codex / ChatGPT app**——`launchctl setenv` 只影响此后新启动的进程，已在运行的 app 不会继承。验证只认 `launchctl getenv`，别用终端 `echo $VAR`（那读的是 shell 环境，与 launchd 域是两回事）。
+最后**完全退出（⌘Q）再重开 Codex / ChatGPT app**——`launchctl setenv` 只影响此后新启动的进程，已在运行的 app 不会继承。
+
+验证要**逐层确认**，不能只看一层（与第四节的验证纪律同款）：
+
+1. **launchd 域里有变量**：`launchctl getenv AZURE_OPENAI_API_KEY` 能打印出 key。别用终端 `echo $VAR` 代替——那读的是 shell 环境，与 launchd 域是两回事。
+2. **App 进程真的继承到**：第 1 层通过不等于第 2 层成立——App 若在 setenv 之前启动（见上面的时机警告）就继承不到。用 App 日志或实际行为确认，别靠推断。
+3. **实际请求成功**：新会话里跑一次真实的 Azure 模型调用/审批链路。这才是最终验收。
+
+实测的问题恰好出在第 2 层：`getenv` 有值、App 却没拿到——只验第 1 层会把这种情况误判为"已就绪"。
 
 ## 四、验证纪律：五种不同的"成功"
 
@@ -189,12 +204,12 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 
 每层都有独立的确认手段（文件读回 ≠ `config/read` 运行时对照；`codex debug models --bundled` 只输出内置目录、**忽略自定义目录**，不能用来验证自定义 catalog 是否被加载）。最终验收清单——**全部通过**：
 
-- [x] 项目与全局 `requires_openai_auth = false` 统一；全局 `model_catalog_json` 写入
+- [x] 项目与全局 `requires_openai_auth = false` 统一；全局 `model_catalog_json` 写入（沿用系列01 已确认状态，本轮未重新验证）
 - [x] mini 的 `upgrade: null` 清理并经运行时模型列表核查
 - [x] 重启后新任务中 mini 可选、不被自动迁移到 Luna
 - [x] Azure 侧存在与 slug 同名的 mini deployment；实际切换 mini 用于对话成功
-- [x] `auto_review_model_override` 指向 `gpt-6-astra`，真实 `auto_review` 提权操作通过、404 未复现
-- [x] `launchctl setenv` 注入 Azure key + 重启 App，GUI 进程环境就绪
+- [x] `auto_review_model_override` 指向 `gpt-6-astra`，真实 `auto_review` 提权操作通过、404 未复现（推断确认——配置意图 + 症状消失，非抓包实测，见上文证据边界）
+- [x] `launchctl setenv` 注入 Azure key + 重启 App，且经"launchd 域 → App 进程 → 实际请求"三层逐层确认（单靠 `launchctl getenv` 不算验收）
 
 顺带一个活例：这轮实测同机存在 bundled `0.153.1` 与 Homebrew `0.153.4`——正是 [[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]] 里"同源不同发行版"的实证。
 
@@ -204,7 +219,7 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 
 - **工具层**：web_search 声明不发（harness 检测到自定义 provider 后不给模型暴露工具）
 - **目录层**：catalog schema 版本锁定（系列01）
-- **治理层**（本篇新增）：harness 里所有**隐藏的模型调用**——审批、review、总结等——都跟 provider 走，任何一个内置模型名在你的端点上不存在，链路就会在意想不到的地方断掉
+- **治理层**（本篇新增）：harness 里隐藏的模型调用——审批、review（本篇验证的是审批链）——都跟 provider 走，任何一个内置模型名在你的端点上不存在，链路就会在意想不到的地方断掉；"总结"类其他隐藏调用推测同理，尚未验证
 
 治理层断供最阴险的地方在于错误归因困难：主模型工作正常，404 却出现在审批环节，报错既不说明是哪个模型发起的请求，也不提示这是审批链路而非主链路。**接第三方 provider 时，要盘点的不只是主模型，而是 harness 会发起的全部模型调用。**
 
@@ -212,7 +227,7 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 
 1. **模型菜单读全局配置（`cwd: null`），项目级 catalog 配置控制不了它**；`visibility: "list"` 之后 UI 还有一层过滤——必要不充分。
 2. **catalog 的退休/升级元数据是 OpenAI 第一方生命周期，不代表你的 Azure deployment 状态**：第三方 provider 场景把不适用的 `upgrade` 清为 `null`。
-3. **审批链路是第二条模型调用链**：`Approve for me` 的审批模型默认取内置名称——ChatGPT 登录态是 `codex-auto-review`（合成名，第三方端点必然无此 deployment → 404），API key 认证态才是 `gpt-5.6-luna`；本案 404 的真凶是前者，不是后者（luna 其实已部署）。修复已实测有效——条目级 `auto_review_model_override` 指向已存在的 deployment。
+3. **审批链路是第二条模型调用链**：`Approve for me` 的审批模型默认取内置名称——ChatGPT 登录态是 `codex-auto-review`（合成名，第三方端点通常无此 deployment → 404），API key 认证态才是 `gpt-5.6-luna`；本案 404 的真凶是前者，不是后者（luna 其实已部署）。修复已实测有效——条目级 `auto_review_model_override` 指向已存在的 deployment。
 4. **三种权限模式三种运行态**：Full access 和 Ask for approval 都不走审批模型，只有 Approve for me（`approvals_reviewer: auto_review`）才能验证审批链路。
 5. **验证纪律**：文件已改 ≠ 进程已加载 ≠ 菜单可选 ≠ 请求成功 ≠ 审批成功，五层分开验收；本案例最终五层全部通过，mini 菜单可见、切换可用、审批恢复。
 

@@ -21,13 +21,13 @@ tags:
 
 系列01 到系列04 一路碰到的几个关键字段——审批模型的 `auto_review_model_override`、退休迁移的 `upgrade`/`retirement_at`、工具形态的 `shell_type`——其实都来自同一个地方：catalog 里那**一个模型条目**。当时是排错需要，每次只看一两个字段。这次把 `gpt-6-astra` 的条目完整展开读一遍，发现一件值得单独成文的事：
 
-**这个"模型条目"里，真正描述模型的字段只占一小截；其余的全部是 harness 行为定义**——完整的系统提示词、审批与安全政策、多 agent 编排的角色 prompt、上下文窗口管理机制、甚至商业计划矩阵。按 [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的框架来读，这份 JSON 给出了一个此前没有的观察角度：**Codex 的 harness 不是一个固定的壳，而是按模型条目逐个实例化的**。
+**这个"模型条目"里，真正描述模型的字段只占一小截；其余的要么是 harness 行为定义，要么是围绕 harness 分发/接入的配置元数据**——完整的系统提示词、审批与安全政策、多 agent 编排的角色 prompt、上下文窗口管理机制、甚至商业计划矩阵。按 [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的框架来读，这份 JSON 给出了一个此前没有的观察角度：**Codex 的 harness 不是一个固定的壳，而是按模型条目逐个实例化的**。
 
 ![一个 ModelInfo 条目的分层解剖|700](../../../asset/codex-modelinfo-harness-layers-2026-09-05.svg)
 
 ## 一、九层解剖：一个条目里各层住着谁
 
-把条目的全部字段按职责归类，能分出九层。逐层过一遍，Model 与 Harness 的边界自己会浮现。
+把条目的全部字段按职责归类，能分出九层。逐层过一遍，Model 与 Harness 的边界自己会浮现。④⑥⑧层及⑤层的大部分字段实际嵌套在条目的 `model_messages` 字段之下，①②③⑨才是条目直接的顶层字段——为可读性下文按语义分层展示，不代表 JSON 顶层结构。
 
 ### ① 模型能力层——唯一真正属于 Model 的部分
 
@@ -39,17 +39,17 @@ tags:
 "supported_reasoning_levels": ["low", "medium", "high", "xhigh", "max", "ultra"]
 ```
 
-这些是模型训练出来的客观能力边界。值得停一下的是 reasoning levels 的最高档：
+这些是模型训练出来的客观能力边界（其中 `context_window` 在 `max_context_window` 范围内可被 harness config 覆盖，见系列06——"客观边界"指训练决定的上限，不是任何情况下不可改的数字）。值得停一下的是 reasoning levels 的最高档：
 
 > `"effort": "ultra"` — "Maximum reasoning with automatic task delegation"
 
-**推理档位直接挂钩多 agent 委派**——选 ultra 不只是"想得更深"，而是允许模型自动把任务拆给子 agent。模型能力层的最后一格，已经踩进了编排层的地界。
+**推理档位直接挂钩多 agent 委派**——选 ultra 不只是"想得更深"，而是允许模型自动把任务拆给子 agent（此处从 UI 文案推断；源码层验证见系列06——且系列06 显示委派能力的真正开关是 `multi_agent_version`，Ultra 只影响委派策略与 effort 回退）。模型能力层的最后一格，已经踩进了编排层的地界。
 
 ### ② 协议传输层
 
 `prefer_websockets`、`use_responses_lite`、`supported_in_api`、`comp_hash`。系列01 的分层排错原则里"API 兼容层"对应的就是这几个字段——它们决定请求以什么形态发出，跟第三方端点组合时是潜在断点（#31882 的 400 来源）。
 
-### ③ 工具形态层——model-harness co-design 的直接证据
+### ③ 工具形态层——一个待核实来源的 model-harness co-design 例证
 
 ```json
 "shell_type": "unified_exec",
@@ -59,7 +59,7 @@ tags:
 "node_repl_disabled": false
 ```
 
-关键在于这些字段**按模型声明**：gpt-6-astra 写的是 `unified_exec`，系列02 里 mini 写的是 `shell_command`。源码核实后要做一个精确化（详见 [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]）：0.153.1 的 `ConfigShellToolType` 枚举里 `shell_command`/`local`/`default` 都是 `UnifiedExec` 的 serde alias，运行时行为已收敛为同一个执行器——**字段值的差异记录的是模型代际（各自在什么工具形态上训练过），alias 是这段咬合史留在类型系统里的化石**。patch 工具、web search 工具的类型仍逐模型指定。这是 [[model-harness-codesign]] 最具体的一组证据：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
+关键在于这些字段**按模型声明**：gpt-6-astra 写的是 `unified_exec`，本机 catalog 快照（`azure-models.json`）里 mini 写的是 `shell_command`。注意官方 repo `rust-v0.153.1` 的 models.json 里 mini 的 shell_type 是 `unified_exec`，与本机快照不一致——本机快照的取值来源（Desktop 内嵌 catalog 或历史版本）待考，这个差异本身值得留意。源码核实后要做一个精确化（详见 [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]）：0.153.1 的 `ConfigShellToolType` 枚举里 `shell_command`/`local`/`default` 都是 `UnifiedExec` 的 serde alias，运行时行为已收敛为同一个执行器——**字段值的差异可能记录着模型代际差异（各自在什么工具形态上训练过，推测，无源码注释/文档直接证实），alias 是这段咬合史留在类型系统里的化石**。patch 工具、web search 工具的类型仍逐模型指定。这是 [[model-harness-codesign]] 一个待核实来源的例证：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
 
 ### ④ 系统提示词层——人格与规则是模型条目的字段
 
@@ -121,13 +121,13 @@ root 与 subagent 的角色 prompt（`spawn_agent` / `followup_task` / `send_mes
 
 把九层放回 Agent = Model + Harness 的框架里，能得出几条超出单纯排错的判断：
 
-**1. Model 与 Harness 的边界不是一条线，是一张按模型索引的表。** 讨论"harness 提供什么"在 Codex 里没有全局答案——系统提示词、工具形态、治理政策、编排协议、上下文机制都随模型条目变。同一个 Codex binary 加载不同条目，得到的是行为不同的 agent。与 Claude Code 对比很鲜明：Claude Code 的系统提示词、权限模式、hooks 是 harness 全局资产，模型只是可替换的 `model` 参数；Codex 把几乎所有 harness 行为下沉为 per-model 数据。**一个是"一套 harness 配多个模型"，一个是"每个模型自带一套 harness 切片"**——第一方绑定路线走到深处的自然形态。
+**1. Model 与 Harness 的边界不是一条线，是一张按模型索引的表。** 讨论"harness 提供什么"在 Codex 里没有全局答案——治理、工具形态经两模型对比证实随模型条目变；系统提示词、编排协议、上下文机制为单模型（astra）深挖，推断同样随条目变（mini 的 `model_messages` 子字段与 astra 确有不同，但本文未展示逐字段对比）。同一个 Codex binary 加载不同条目，得到的是行为不同的 agent。与 Claude Code 对比很鲜明：Claude Code 的系统提示词、权限模式、hooks 是 harness 全局资产，模型只是可替换的 `model` 参数；Codex 把几乎所有 harness 行为下沉为 per-model 数据。**一个是"一套 harness 配多个模型"，一个是"每个模型自带一套 harness 切片"**——第一方绑定路线走到深处的自然形态。
 
 **2. schema 版本锁定的严格性有了根本解释（回收系列01）。** 条目不是描述性元数据，是**行为定义**：缺一个字段不是"少了条信息"，而是"这个 agent 的某层行为未定义"。serde 拒绝加载不完整条目，本质是拒绝启动一个行为未定义的 agent。schema 随版本演进，因为 harness 行为本身在随版本演进。
 
 **3. 治理断供的面比系列02 看到的更宽（回收系列02）。** 系列02 定位了审批模型这一个断点；展开条目后可见治理层是四件套，guardian 分类器、确认政策同样可能在特定形态下发起模型调用或依赖环境。接第三方 provider 的完整检查清单应该是：**逐层过一遍这九层，问每一层"它需要什么模型/端点/环境，我的组合里有没有"**。
 
-**4. co-design 的证据从"论断"变成了"字段"。** [[model-harness-codesign]] 此前的证据多来自产品行为观察；这份条目给出了字段级证据：`shell_type` 按模型选、ultra 档绑定委派、`multi_agent_reasoning_effort` 指定子 agent 档位、写作风格逐模型定制。模型与 harness 不是组装关系，是接口逐个咬合的共生关系——这也回答了"为什么第三方模型接进第一方 harness 总是差口气"：**接上的只是推理端点，接不上的是这九层里剩下的八层**。
+**4. co-design 的证据从"论断"变成了"字段"。** [[model-harness-codesign]] 此前的证据多来自产品行为观察；这份条目给出了字段级证据：`shell_type` 的 alias 化石现象（枚举演进痕迹，非当前行为差异）、ultra 档绑定委派、`multi_agent_reasoning_effort` 指定子 agent 档位、写作风格逐模型定制。模型与 harness 不是组装关系，是接口逐个咬合的共生关系——这也回答了"为什么第三方模型接进第一方 harness 常常差口气"：**接上的只是推理端点，接不上的是这九层里剩下的八层**。
 
 ## 小结
 

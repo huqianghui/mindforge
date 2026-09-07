@@ -122,11 +122,13 @@ curl -L \
 jq '{
   models: [
     .models[]
-    | select(.slug == "gpt-6-astra" or .slug == "gpt-5.6-sol" or .slug == "gpt-5.6-luna")
+    | select(.slug == "gpt-6-astra" or .slug == "gpt-5.6-sol" or .slug == "gpt-5.6-terra" or .slug == "gpt-5.6-luna")
     | .visibility = "list"
   ]
 }' /tmp/codex-0.153.1-models.json > ~/.codex/model-catalogs/azure-models.json
 ```
+
+上面这条命令是打通链路当时的最小集；本机 `~/.codex/model-catalogs/azure-models.json` 后续已扩充到 10 个条目（含 `gpt-daybreak-blue-latest`、`gpt-daybreak-red-latest`、`gpt-5.5`、`gpt-5.4`、`gpt-5.4-mini`、`gpt-5.2`），全量替换的结论不变——菜单里出现的就是 catalog 里写进去的，一一对应。
 
 `config.toml` 侧：
 
@@ -155,7 +157,7 @@ catalog schema 通过 → Codex 成功加载 → 发出 Azure 请求 → 再处�
 
 ### Azure 侧的两个边界
 
-- **deployment name ≠ model slug**。catalog 里的 `slug` 就是最终请求体里的 `"model"` 字段，Codex 不做任何映射。Azure Portal 上的 deployment 必须与 slug 同名（本例中 deployment 直接以 `gpt-6-astra` 命名，问题不存在；若 deployment 叫 `my-gpt6-prod` 则这一层还要另行处理）。
+- **deployment name 与 model slug 的关系**。catalog 里的 `slug` 就是最终请求体里的 `"model"` 字段。本例中 Azure Portal 上的 deployment 直接以 `gpt-6-astra` 命名，与 slug 同名即可直接跑通，未观察到 Codex 有做映射；deployment 名与 slug 不同的场景没有实测过，是否有配置可以做映射不知道。
 - **endpoint 先独立验证**。`/openai/v1/responses` 端点事先用 curl 单独验证过可用，把"endpoint/key/API 版本"类问题预先排除在 catalog 排错之外——同样是分层思路。
 
 ## 五、汇入主线：焊点被撬开说明了什么

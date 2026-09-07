@@ -76,7 +76,7 @@ ChatGPT / Codex Desktop
                 （/opt/homebrew/bin/codex 等）
 ```
 
-三者互不等价（表中两个 CLI 版本为 2026-09-05 本机实测值）。Desktop 真正启动的是 bundle 内那个二进制，所以系列01 的 `model_catalog_json` schema 兼容性要看 **bundled CLI** 的版本——终端里 `codex --version` 的结果可能比它新几个 patch，照着它去拿 schema 就会错位。这也是为什么 openai/codex 的 issue 模板要求同时报告 `Codex App: 26.xxx` 和 `Bundled CLI: 0.xxx` 两个字段（如 [openai/codex#38934](https://github.com/openai/codex/issues/38934) 的案例）。
+三者互不等价（表中两个 CLI 版本为 2026-09-05 本机实测值）。Desktop 真正启动的是 bundle 内那个二进制，所以系列01 的 `model_catalog_json` schema 兼容性要看 **bundled CLI** 的版本——终端里 `codex --version` 的结果可能比它新几个 patch，照着它去拿 schema 就会错位。openai/codex 仓库全部 6 个 `.github/ISSUE_TEMPLATE/*.yml` 逐一核实过：每个模板只要求**单一**版本字段（App 模板只要 About 对话框里的版本，CLI 模板只要 `codex --version`），并不强制同时报告两个版本。[openai/codex#38934](https://github.com/openai/codex/issues/38934) 里报告者同时列出 `Codex App: 26.xxx` 和 `Bundled CLI: 0.xxx`，是自发补充的 free-text——反而说明社区已经意识到这两个版本号不能混为一谈。
 
 排查任何 Desktop 行为时的第一习惯：**版本问 bundle 内的二进制**——
 
@@ -88,7 +88,7 @@ ChatGPT / Codex Desktop
 
 一个自然的追问：除了版本独立，bundled CLI 和独立安装的 CLI 源码、功能是不是完全一样？答案要分两层：**源码层面基本是同一个 [openai/codex](https://github.com/openai/codex) 开源项目；运行时/发行版层面不能视为等同**。
 
-Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**——OpenAI maintainer 的公开说法是 "Desktop app contains a bundled version of the CLI that has been tested specifically with that version of the app"，让 Desktop 换用其他 CLI binary 官方明确不推荐。公开 issue 里同一台机器出现过 standalone `0.147.0` 与 bundled `0.147.0-alpha.6.5` 并存的案例——同一个源码项目、两条发行通道、两个 build。
+Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**——OpenAI maintainer 的公开说法是 "Desktop app contains a bundled version of the CLI that has been tested specifically with that version of the app"（凭记忆转述，未找回原始链接），让 Desktop 换用其他 CLI binary 官方明确不推荐。公开 issue 里同一台机器出现过 standalone `0.147.0` 与 bundled `0.147.0-alpha.6.5` 并存的案例——同一个源码项目、两条发行通道、两个 build。
 
 功能上也不能说 100% 一样。CLI binary 的核心 agent 能力高度重合，但 Desktop 在 binary 之外额外提供了 App integration、bundled plugins、native helpers、Desktop IPC 这一层。把"相同程度"按层拆开：
 
@@ -100,7 +100,7 @@ Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**—
 | bundled plugins / Computer Use runtime | ❌ Desktop 专属 |
 | Desktop IPC / 签名 / entitlement / 进程树 | ❌ 不一样 |
 
-有一个公开 issue 把这条边界钉死了：**同一份 computer-use plugin cache，Homebrew standalone CLI 下不可用，App-bundled CLI 可以工作**——差异出在 macOS process authentication / Apple Events 这类 App 环境层，而不是 CLI 代码本身（展开见 [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]）。所以不要把 `Contents/Resources/codex` 理解成"另一个 Codex"：它就是 Codex CLI 的一个特定配套 build，被当作 dependency bundled 进 App；Desktop 的额外能力长在 build 之外的那一层。
+有一个公开 issue 把这条边界钉死了（凭记忆转述，未找回原始链接）：**同一份 computer-use plugin cache，Homebrew standalone CLI 下不可用，App-bundled CLI 可以工作**——差异出在 macOS process authentication / Apple Events 这类 App 环境层，而不是 CLI 代码本身（推测；系列04 从 code signature / launch context 角度给过另一种推测，两者尚未实证裁决，展开见 [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]）。所以不要把 `Contents/Resources/codex` 理解成"另一个 Codex"：它就是 Codex CLI 的一个特定配套 build，被当作 dependency bundled 进 App；Desktop 的额外能力长在 build 之外的那一层。
 
 ## 三、血缘与开源边界：ChatGPT.app 是 Codex Desktop 演化来的
 
@@ -108,7 +108,7 @@ Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**—
 
 答案先说结论：**不是一个东西，且血缘方向和名字暗示的相反——新 ChatGPT.app 不是 Classic 加了个 Codex，而是 Codex Desktop 演化/扩展出来的统一 Desktop Shell**。
 
-- **产品关系**：OpenAI 官方口径是 ChatGPT Classic = 上一代 ChatGPT 桌面客户端（继续独立维护、有自己的更新与 Enterprise 能力），新 ChatGPT.app = Chat + Work + Codex 的统一应用；原 Codex App 用户升级后直接变成 ChatGPT.app，Codex chats/projects 全部保留，且 "new agent features may be available only in the new app"。
+- **产品关系**：OpenAI 官方口径是 ChatGPT Classic = 上一代 ChatGPT 桌面客户端（继续独立维护、有自己的更新与 Enterprise 能力），新 ChatGPT.app = Chat + Work + Codex 的统一应用；原 Codex App 用户升级后直接变成 ChatGPT.app，官方表述是 Codex chats/projects "should remain"（应会保留），但 OpenAI 社区论坛上有用户反馈迁移后丢失了 project 访问的个案；另有 "new agent features may be available only in the new app"。
 - **血缘证据**：`codesign -dv --verbose=4 /Applications/ChatGPT.app` 可以看到，这个名叫 ChatGPT 的 app，bundle identifier 仍然是 **`com.openai.codex`**——软件工程血缘上它就是原 Codex Desktop 的延续，改名合并了 Chat/Work 形态，而不是把两个 `.app` 拼起来。
 - **开源边界**：整个 bundle 里只有 Codex CLI 这一元对应开源仓库 openai/codex；ChatGPT/Work 客户端部分和 SkyComputerUse native helper 都是 proprietary，没有 `openai/chatgpt` 这样的公开 repo 可对源码。
 
@@ -124,7 +124,7 @@ ChatGPT.app            ← 新一代 proprietary Desktop Shell（主线）
 codex CLI（独立安装）   ← openai/codex 开源项目的 standalone 发行版
 ```
 
-这一层也让组合公式更精确：三元组合里，**开源的只有中间那一元（CLI），且只是它的一个特定 build；壳与能力 payload 都是专有的**。所谓"Codex Desktop"在文件系统里根本没有以自己名字存在——它是 `com.openai.codex` 这个 bundle 顶着 ChatGPT 的名字活着。
+这一层也让组合公式更精确：三元组合里，**开源的只有中间那一元（CLI），且只是它的一个特定 build；壳与能力 payload 都是专有的**。所谓"Codex Desktop"在文件系统里没有独立血缘的 bundle——它是 `com.openai.codex` 这个 bundle 顶着 ChatGPT 的名字活着；不过 OpenAI 官方 troubleshooting 文档也提到保留了一个 `/Applications/Codex.app` 兼容路径，[openai/codex#31944](https://github.com/openai/codex/issues/31944) 证实这个 Codex.app 与 ChatGPT.app 是近乎相同的 bundle（同 identifier、同 SHA-256）——它是同一血脉的兼容化身，而不是另一条独立血缘。
 
 ## 小结
 
