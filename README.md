@@ -227,6 +227,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
 
+### Notes/tool/3D-blender
+
+- [Blender 系列01：为什么是 Blender——GPT-6-astra 发布演示的 3D 工具选型与 Unreal Engine 对比](Notes/tool/3D-blender/Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal%20Engine对比.md)
+- [Blender 系列02：三种操作入口与官方 MCP 安装——三组件架构、本地进程原理与 SDK 版本兼容实录](Notes/tool/3D-blender/Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录.md)
+- [Blender 系列03：虎式坦克实战——从一句话需求到 8 秒开火动画的完整链路与工程解剖](Notes/tool/3D-blender/Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖.md)
+
 ### Notes/tool/codex
 
 - [Codex Desktop 系列01：接入 Azure OpenAI GPT-6——bundled CLI 版本锁定、model catalog schema 与分层排错](Notes/tool/codex/Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)

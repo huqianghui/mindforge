@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="410" viewBox="0 0 1000 410" role="img" aria-labelledby="title description">
+  <title id="title">虎 I 坦克动画：从用户创意到 MP4 的已完成流程</title>
+  <desc id="description">用户提出创意，Codex 中的 GPT 输出 Python 脚本，Blender 创建并保存 blend 场景、渲染 192 张 PNG，FFmpeg 编码成 8 秒、24 fps、960×540 的 MP4。参考照片仅用于外形参考，未作为贴图。青绿色表示各步骤均已完成。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#2dd4bf"/></marker>
+  </defs>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .card { fill: #112f35; stroke: #2dd4bf; stroke-width: 1.4; }
+    .label { fill: #effcf9; font-size: 20px; font-weight: 600; text-anchor: middle; }
+    .detail { fill: #b8d7d5; font-size: 15px; text-anchor: middle; }
+    .done { fill: #2dd4bf; font-size: 13px; text-anchor: middle; }
+    .pulse { fill: #2dd4bf; animation: breathe 3s ease-in-out infinite; }
+    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; marker-end: url(#arrow); }
+    .particle { fill: #e0fff8; }
+    @keyframes breathe { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } .particle { display: none; } }
+  </style>
+  <rect width="1000" height="410" rx="22" fill="#0b1727"/>
+  <text x="40" y="48" fill="#f1f7fc" font-size="27" font-weight="650">虎 I 坦克动画：从创意到视频</text>
+  <circle class="pulse" cx="46" cy="80" r="5"/>
+  <text x="60" y="85" fill="#2dd4bf" font-size="15">全流程已完成</text>
+  <text x="960" y="84" text-anchor="end" fill="#c1d4e4" font-size="16">8 秒 / 24 fps / 960×540</text>
+  <path id="flow1" class="flow" d="M202 173 H226"/>
+  <path id="flow2" class="flow" d="M392 173 H416"/>
+  <path id="flow3" class="flow" d="M582 173 H606"/>
+  <path id="flow4" class="flow" d="M772 173 H796"/>
+  <circle class="particle" cx="211" cy="173" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="401" cy="173" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="591" cy="173" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="781" cy="173" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.9s" repeatCount="indefinite"/></circle>
+  <rect class="card" x="40" y="114" width="160" height="124" rx="13"/>
+  <text class="done" x="120" y="141">01 · 已完成</text>
+  <text class="label" x="120" y="178">用户创意</text>
+  <text class="detail" x="120" y="207">角色与动画要求</text>
+  <rect class="card" x="230" y="114" width="160" height="124" rx="13"/>
+  <text class="done" x="310" y="141">02 · 已完成</text>
+  <text class="label" x="310" y="178">Codex</text>
+  <text class="detail" x="310" y="207">编写 Python 脚本</text>
+  <rect class="card" x="420" y="114" width="160" height="124" rx="13"/>
+  <text class="done" x="500" y="141">03 · 已完成</text>
+  <text class="label" x="500" y="178">Blender 场景</text>
+  <text class="detail" x="500" y="207">保存 .blend 工程</text>
+  <rect class="card" x="610" y="114" width="160" height="124" rx="13"/>
+  <text class="done" x="690" y="141">04 · 已完成</text>
+  <text class="label" x="690" y="178">Blender 渲染</text>
+  <text class="detail" x="690" y="207">192 张 PNG</text>
+  <rect class="card" x="800" y="114" width="160" height="124" rx="13"/>
+  <text class="done" x="880" y="141">05 · 已完成</text>
+  <text class="label" x="880" y="178">FFmpeg 编码</text>
+  <text class="detail" x="880" y="207">输出 MP4 视频</text>
+  <rect x="40" y="268" width="920" height="105" rx="12" fill="#122238"/>
+  <text x="60" y="296" fill="#f0f7fc" font-size="16" font-weight="600">各工具的实际分工</text>
+  <text x="60" y="324" fill="#c1d4e4" font-size="16">GPT 输出脚本；Blender 执行场景逻辑并渲染像素；FFmpeg 将帧序列编码为视频。</text>
+  <text x="60" y="352" fill="#c1d4e4" font-size="16">参考照片仅用于外形参考，未作为贴图。动态粒子表示数据流向；静态显示时流程仍完整可读。</text>
+</svg>

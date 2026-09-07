@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title description">
+  <title id="title">Blender 官方 MCP 的完整调用链与两段通信</title>
+  <desc id="description">用户向 Codex 提出要求，Codex 调用模型决策后通过 STDIO 与本机 Python MCP Server 通信，MCP Server 再通过本机 TCP 端口 9876 连接 Blender 内部的 Add-on，由 Add-on 调用 Blender Python API 读写场景，结果原路返回。图中标注了 MCP/STDIO 与 TCP socket 两段不同的通信。</desc>
+  <defs>
+    <marker id="arrowT" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#2dd4bf"/></marker>
+    <marker id="arrowB" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#7dd3fc"/></marker>
+  </defs>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .card { fill: #112f35; stroke: #2dd4bf; stroke-width: 1.4; }
+    .cardBlender { fill: #10233a; stroke: #7dd3fc; stroke-width: 1.4; }
+    .label { fill: #effcf9; font-size: 19px; font-weight: 600; text-anchor: middle; }
+    .detail { fill: #b8d7d5; font-size: 14px; text-anchor: middle; }
+    .role { fill: #2dd4bf; font-size: 13px; text-anchor: middle; }
+    .roleB { fill: #7dd3fc; font-size: 13px; text-anchor: middle; }
+    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; marker-end: url(#arrowT); }
+    .flowBack { fill: none; stroke: #7dd3fc; stroke-width: 1.6; stroke-dasharray: 5 5; marker-end: url(#arrowB); animation: dashmove 1.6s linear infinite; }
+    .particle { fill: #e0fff8; }
+    .pulse { animation: breathe 3s ease-in-out infinite; }
+    @keyframes breathe { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @keyframes dashmove { to { stroke-dashoffset: -20; } }
+    @media (prefers-reduced-motion: reduce) { .pulse, .flowBack { animation: none; } .particle { display: none; } }
+  </style>
+  <rect width="1000" height="470" rx="22" fill="#0b1727"/>
+  <text x="40" y="48" fill="#f1f7fc" font-size="26" font-weight="650">Blender 官方 MCP：一条调用链，两段通信</text>
+  <text x="40" y="80" fill="#c1d4e4" font-size="15">实线 = 请求方向 ｜ 蓝色虚线 = 结果原路返回</text>
+
+  <rect x="330" y="104" width="640" height="44" rx="10" fill="#122238"/>
+  <text x="650" y="132" fill="#c1d4e4" font-size="14" text-anchor="middle">以下三个组件全部运行在本机 —— 手册所说「三个外部工具」中的两个由此承担（LLM Client 由 Codex 兼任）</text>
+
+  <path class="flow" d="M196 236 H222"/>
+  <path class="flow" d="M406 236 H432"/>
+  <path class="flow" d="M646 236 H672"/>
+  <path class="flow" d="M856 236 H882"/>
+  <circle class="particle" cx="206" cy="236" r="3"><animateMotion path="M-9 0 H16" dur="1.5s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="416" cy="236" r="3"><animateMotion path="M-9 0 H16" dur="1.5s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="656" cy="236" r="3"><animateMotion path="M-9 0 H16" dur="1.5s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="866" cy="236" r="3"><animateMotion path="M-9 0 H16" dur="1.5s" begin="0.9s" repeatCount="indefinite"/></circle>
+
+  <rect class="card" x="40" y="178" width="156" height="120" rx="13"/>
+  <text class="role" x="118" y="205">发起方</text>
+  <text class="label" x="118" y="238">用户</text>
+  <text class="detail" x="118" y="265">自然语言要求</text>
+
+  <rect class="card" x="222" y="178" width="184" height="120" rx="13"/>
+  <text class="role" x="314" y="205">LLM Client</text>
+  <text class="label" x="314" y="238">Codex ＋ 模型</text>
+  <text class="detail" x="314" y="265">决策调用哪个工具</text>
+
+  <rect class="card" x="432" y="178" width="214" height="120" rx="13"/>
+  <text class="role" x="539" y="205">MCP Server（本机进程）</text>
+  <text class="label" x="539" y="238">blender-mcp</text>
+  <text class="detail" x="539" y="265">Python · uv 启动 · 26 工具</text>
+
+  <rect class="cardBlender" x="672" y="178" width="184" height="120" rx="13"/>
+  <text class="roleB" x="764" y="205">Add-on（扩展）</text>
+  <text class="label" x="764" y="238">MCP 扩展 1.0.0</text>
+  <text class="detail" x="764" y="265">运行在 Blender 内部</text>
+
+  <rect class="cardBlender" x="882" y="178" width="88" height="120" rx="13"/>
+  <text class="roleB" x="926" y="205">目标</text>
+  <text class="label" x="926" y="238" font-size="17">Blender</text>
+  <text class="detail" x="926" y="265">场景数据</text>
+
+  <path class="flowBack" d="M926 298 V336 H118 V304"/>
+  <text x="522" y="328" fill="#7dd3fc" font-size="14" text-anchor="middle">工具执行结果 → JSON → 原路返回给模型，再由 Codex 呈现给用户</text>
+
+  <rect x="256" y="366" width="316" height="76" rx="12" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1"/>
+  <text x="414" y="396" fill="#2dd4bf" font-size="15" text-anchor="middle" font-weight="600">通信段 ①：MCP 协议 / STDIO</text>
+  <text x="414" y="422" fill="#b8d7d5" font-size="14" text-anchor="middle">Codex 启动子进程，经标准输入输出交换 JSON-RPC</text>
+
+  <rect x="606" y="366" width="330" height="76" rx="12" fill="#10233a" stroke="#7dd3fc" stroke-width="1"/>
+  <text x="771" y="396" fill="#7dd3fc" font-size="15" text-anchor="middle" font-weight="600">通信段 ②：本机 TCP socket</text>
+  <text x="771" y="422" fill="#b8d7d5" font-size="14" text-anchor="middle">127.0.0.1:9876 —— 扩展桥接端口，不是 HTTP MCP 地址</text>
+
+  <circle class="pulse" cx="46" cy="404" r="5" fill="#2dd4bf"/>
+  <text x="60" y="399" fill="#c1d4e4" font-size="14">两段通信衔接处</text>
+  <text x="60" y="420" fill="#c1d4e4" font-size="14">最容易被误解</text>
+</svg>

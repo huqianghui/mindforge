@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="440" viewBox="0 0 1000 440" role="img" aria-labelledby="title description">
+  <title id="title">AI 驱动 Blender 生成视频的自动化闭环</title>
+  <desc id="description">用户描述需求，模型编写脚本，Blender 建立场景并渲染低分辨率预览，模型检查构图、比例和光照后回到脚本继续修改；确认合格后渲染整段动画并由 FFmpeg 编码为视频。检查回路是这条流程的核心。</desc>
+  <defs>
+    <marker id="arrowTeal" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#2dd4bf"/></marker>
+    <marker id="arrowAmber" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#fbbf24"/></marker>
+  </defs>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .card { fill: #112f35; stroke: #2dd4bf; stroke-width: 1.4; }
+    .cardLoop { fill: #2b2410; stroke: #fbbf24; stroke-width: 1.4; }
+    .label { fill: #effcf9; font-size: 19px; font-weight: 600; text-anchor: middle; }
+    .detail { fill: #b8d7d5; font-size: 14px; text-anchor: middle; }
+    .step { fill: #2dd4bf; font-size: 13px; text-anchor: middle; }
+    .stepLoop { fill: #fbbf24; font-size: 13px; text-anchor: middle; }
+    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; marker-end: url(#arrowTeal); }
+    .loopFlow { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrowAmber); animation: dashmove 1.4s linear infinite; }
+    .particle { fill: #e0fff8; }
+    .pulse { animation: breathe 3s ease-in-out infinite; }
+    @keyframes breathe { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @keyframes dashmove { to { stroke-dashoffset: -24; } }
+    @media (prefers-reduced-motion: reduce) { .pulse, .loopFlow { animation: none; } .particle { display: none; } }
+  </style>
+  <rect width="1000" height="440" rx="22" fill="#0b1727"/>
+  <text x="40" y="48" fill="#f1f7fc" font-size="26" font-weight="650">AI × Blender：从想法到视频的自动化闭环</text>
+  <circle class="pulse" cx="46" cy="80" r="5" fill="#fbbf24"/>
+  <text x="60" y="85" fill="#fbbf24" font-size="15">琥珀色虚线 = 检查修改回路（决定 AI 能否交付的关键）</text>
+
+  <path class="flow" d="M212 190 H236"/>
+  <path class="flow" d="M402 190 H426"/>
+  <path class="flow" d="M592 190 H616"/>
+  <path class="flow" d="M782 190 H806"/>
+  <circle class="particle" cx="221" cy="190" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="411" cy="190" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="601" cy="190" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.6s" repeatCount="indefinite"/></circle>
+  <circle class="particle" cx="791" cy="190" r="3"><animateMotion path="M-9 0 H15" dur="1.6s" begin="0.9s" repeatCount="indefinite"/></circle>
+
+  <rect class="card" x="42" y="132" width="170" height="118" rx="13"/>
+  <text class="step" x="127" y="159">01</text>
+  <text class="label" x="127" y="192">用户需求</text>
+  <text class="detail" x="127" y="219">自然语言描述场景</text>
+
+  <rect class="card" x="236" y="132" width="166" height="118" rx="13"/>
+  <text class="step" x="319" y="159">02</text>
+  <text class="label" x="319" y="192">模型写脚本</text>
+  <text class="detail" x="319" y="219">Python / bpy API</text>
+
+  <rect class="card" x="426" y="132" width="166" height="118" rx="13"/>
+  <text class="step" x="509" y="159">03</text>
+  <text class="label" x="509" y="192">Blender 执行</text>
+  <text class="detail" x="509" y="219">建模·材质·动画</text>
+
+  <rect class="cardLoop" x="616" y="132" width="166" height="118" rx="13"/>
+  <text class="stepLoop" x="699" y="159">04 · 回路</text>
+  <text class="label" x="699" y="192">低清预览</text>
+  <text class="detail" x="699" y="219">渲染单帧快照</text>
+
+  <rect class="cardLoop" x="806" y="132" width="154" height="118" rx="13"/>
+  <text class="stepLoop" x="883" y="159">05 · 回路</text>
+  <text class="label" x="883" y="192">模型检查</text>
+  <text class="detail" x="883" y="219">构图·比例·光照</text>
+
+  <path class="loopFlow" d="M883 250 V300 H319 V254"/>
+  <text x="600" y="292" fill="#fbbf24" font-size="14" text-anchor="middle">不合格 → 回到脚本继续修改，循环直到画面达标</text>
+
+  <path class="flow" d="M509 250 V352 H560"/>
+  <rect class="card" x="560" y="322" width="190" height="60" rx="12"/>
+  <text class="label" x="655" y="348" font-size="16">渲染整段动画</text>
+  <text class="detail" x="655" y="370">逐帧 PNG 序列</text>
+  <path class="flow" d="M750 352 H796"/>
+  <circle class="particle" cx="770" cy="352" r="3"><animateMotion path="M-14 0 H26" dur="1.6s" begin="1.2s" repeatCount="indefinite"/></circle>
+  <rect class="card" x="796" y="322" width="164" height="60" rx="12"/>
+  <text class="label" x="878" y="348" font-size="16">FFmpeg 编码</text>
+  <text class="detail" x="878" y="370">输出 MP4 成片</text>
+  <text x="42" y="360" fill="#c1d4e4" font-size="14">像素由渲染器输出，</text>
+  <text x="42" y="382" fill="#c1d4e4" font-size="14">模型负责规划、操作和修正。</text>
+</svg>
