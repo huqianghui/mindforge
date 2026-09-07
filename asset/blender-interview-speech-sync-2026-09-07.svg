@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">面试动画的声音与嘴型同步：实际实现和后续方案</title>
+  <desc id="desc">上排为本次已完成的本地配音、音量包络和单一嘴部开合；下排为文档核对后的待接入方案，使用同一次合成的音频与视素时间，再驱动多组面部形变。所有动作和字幕使用同一条音频时间轴。</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101e30"/><stop offset="1" stop-color="#172a38"/></linearGradient>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0 6 3.5 0 7" fill="none" stroke="#2dd4bf" stroke-width="1.5"/></marker>
+    <marker id="planArrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0 6 3.5 0 7" fill="none" stroke="#64748b" stroke-width="1.5"/></marker>
+    <path id="completedPath" d="M132 258 H1068"/>
+    <path id="clockPath" d="M170 587 H1030"/>
+    <style>
+      text{font-family:"PingFang SC","Noto Sans CJK SC","Arial Unicode MS",sans-serif}
+      .title{font-size:29px;font-weight:650;fill:#f1f5f9}
+      .sub{font-size:16px;fill:#acbfcd}
+      .label{font-size:19px;font-weight:600;fill:#f1f5f9}
+      .detail{font-size:14px;fill:#b5c5d0}
+      .small{font-size:13px;fill:#91a8b8}
+      .done{fill:#153a40;stroke:#2dd4bf;stroke-width:1.5}
+      .plan{fill:#172635;stroke:#475569;stroke-width:1.5;stroke-dasharray:6 5}
+      .flow{fill:none;stroke:#2dd4bf;stroke-width:2;stroke-dasharray:7 5;animation:flow 1.6s linear infinite}
+      .pulse{animation:pulse 2.8s ease-in-out infinite}
+      @keyframes flow{to{stroke-dashoffset:-24}}
+      @keyframes pulse{0%,100%{opacity:.58}50%{opacity:1}}
+      @media(prefers-reduced-motion:reduce){.flow,.pulse{animation:none}}
+    </style>
+  </defs>
+  <rect width="1200" height="680" rx="20" fill="url(#bg)"/>
+  <text class="title" x="44" y="59">声音决定时间，人物按时间表演</text>
+  <text class="sub" x="44" y="88">《校园面试》制作记录 · 24 fps 画面 · 48 kHz 成片音轨 · 2026-09-07</text>
+  <rect x="904" y="34" width="248" height="47" rx="10" fill="#24363d" stroke="#fbbf24" class="pulse"/>
+  <text x="1028" y="63" text-anchor="middle" font-size="16" fill="#fde68a">当前：方案核验与归档</text>
+  <circle cx="51" cy="145" r="5" fill="#2dd4bf"/>
+  <text x="66" y="151" font-size="18" font-weight="600" fill="#5eead4">本次已完成：声音强弱驱动开合</text>
+  <g>
+    <rect class="done" x="44" y="179" width="178" height="115" rx="13"/>
+    <text class="label" x="133" y="213" text-anchor="middle">10 句对白</text>
+    <text class="detail" x="133" y="240" text-anchor="middle">四个角色 · 分句配音</text>
+    <text class="small" x="133" y="275" text-anchor="middle">台词与时间窗</text>
+    <rect class="done" x="278" y="179" width="178" height="115" rx="13"/>
+    <text class="label" x="367" y="213" text-anchor="middle">macOS TTS</text>
+    <text class="detail" x="367" y="240" text-anchor="middle">say · 本机普通话声音</text>
+    <text class="small" x="367" y="275" text-anchor="middle">WAV 与句子时间</text>
+    <rect class="done" x="512" y="179" width="178" height="115" rx="13"/>
+    <text class="label" x="601" y="213" text-anchor="middle">60 Hz 音量包络</text>
+    <text class="detail" x="601" y="240" text-anchor="middle">强弱与停顿</text>
+    <text class="small" x="601" y="275" text-anchor="middle">没有逐音素分类</text>
+    <rect class="done" x="746" y="179" width="178" height="115" rx="13"/>
+    <text class="label" x="835" y="213" text-anchor="middle">Speak 形变</text>
+    <text class="detail" x="835" y="240" text-anchor="middle">单一嘴型开合</text>
+    <text class="small" x="835" y="275" text-anchor="middle">按 24 fps 写关键帧</text>
+    <rect class="done" x="980" y="179" width="178" height="115" rx="13"/>
+    <text class="label" x="1069" y="213" text-anchor="middle">64 秒成片</text>
+    <text class="detail" x="1069" y="240" text-anchor="middle">Blender + 音轨 + 字幕</text>
+    <text class="small" x="1069" y="275" text-anchor="middle">1536 帧 · 已验证</text>
+  </g>
+  <g class="flow" marker-end="url(#arrow)"><path d="M227 233 H267"/><path d="M461 233 H501"/><path d="M695 233 H735"/><path d="M929 233 H969"/></g>
+  <circle r="3.5" fill="#99f6e4" opacity=".85"><animateMotion dur="8s" repeatCount="indefinite"><mpath xlink:href="#completedPath"/></animateMotion></circle>
+  <circle cx="51" cy="340" r="5" fill="#64748b"/>
+  <text x="66" y="346" font-size="18" font-weight="600" fill="#cbd5e1">后续待接入：同一次合成的音频与嘴型数据</text>
+  <g>
+    <rect class="plan" x="44" y="372" width="178" height="115" rx="13"/>
+    <text class="label" x="133" y="406" text-anchor="middle">发音与表演要求</text>
+    <text class="detail" x="133" y="433" text-anchor="middle">提示词 / SSML</text>
+    <text class="small" x="133" y="468" text-anchor="middle">音调 · 停顿 · 语速</text>
+    <rect class="plan" x="278" y="372" width="178" height="115" rx="13"/>
+    <text class="label" x="367" y="406" text-anchor="middle">语音 API</text>
+    <text class="detail" x="367" y="433" text-anchor="middle">WAV + viseme 事件</text>
+    <text class="small" x="367" y="468" text-anchor="middle">逐声音检查功能支持</text>
+    <rect class="plan" x="512" y="372" width="178" height="115" rx="13"/>
+    <text class="label" x="601" y="406" text-anchor="middle">音频内时间戳</text>
+    <text class="detail" x="601" y="433" text-anchor="middle">offset / FrameIndex</text>
+    <text class="small" x="601" y="468" text-anchor="middle">不使用网络到达时间</text>
+    <rect class="plan" x="746" y="372" width="178" height="115" rx="13"/>
+    <text class="label" x="835" y="406" text-anchor="middle">多组面部形变</text>
+    <text class="detail" x="835" y="433" text-anchor="middle">闭唇 · 圆唇 · 展唇</text>
+    <text class="small" x="835" y="468" text-anchor="middle">重采样与共发音过渡</text>
+    <rect class="plan" x="980" y="372" width="178" height="115" rx="13"/>
+    <text class="label" x="1069" y="406" text-anchor="middle">画面与声音验收</text>
+    <text class="detail" x="1069" y="433" text-anchor="middle">试听 + 特写逐帧核对</text>
+    <text class="small" x="1069" y="468" text-anchor="middle">未在本片实测</text>
+  </g>
+  <g fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#planArrow)"><path d="M227 426 H267"/><path d="M461 426 H501"/><path d="M695 426 H735"/><path d="M929 426 H969"/></g>
+  <rect x="44" y="532" width="1114" height="115" rx="13" fill="#0d1c2a" stroke="#355467"/>
+  <text x="72" y="563" font-size="18" font-weight="600" fill="#e2e8f0">共同基准：最终采用的音频文件</text>
+  <path d="M170 587 H1030" stroke="#2dd4bf" opacity=".65" stroke-width="2"/>
+  <g stroke="#6d8fa1"><path d="M170 581 V593"/><path d="M385 581 V593"/><path d="M600 581 V593"/><path d="M815 581 V593"/><path d="M1030 581 V593"/></g>
+  <circle r="4" fill="#5eead4"><animateMotion dur="7s" repeatCount="indefinite"><mpath xlink:href="#clockPath"/></animateMotion></circle>
+  <text x="600" y="622" text-anchor="middle" font-size="16" fill="#b7cbd7">全片时间 = 该句开始时间 + 音频内偏移　　Blender 帧 = 1 + round(全片时间 × 24)</text>
+</svg>

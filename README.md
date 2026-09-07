@@ -232,6 +232,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Blender 系列01：为什么是 Blender——GPT-6-astra 发布演示的 3D 工具选型与 Unreal Engine 对比](Notes/tool/3D-blender/Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal%20Engine对比.md)
 - [Blender 系列02：三种操作入口与官方 MCP 安装——三组件架构、本地进程原理与 SDK 版本兼容实录](Notes/tool/3D-blender/Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录.md)
 - [Blender 系列03：虎式坦克实战——从一句话需求到 8 秒开火动画的完整链路与工程解剖](Notes/tool/3D-blender/Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖.md)
+- [Blender 系列04：人物面试动画实战——47 骨骼程序化表演、TTS 配音与音量包络口型同步](Notes/tool/3D-blender/Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步.md)
 
 ### Notes/tool/codex
 

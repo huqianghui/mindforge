@@ -13,7 +13,7 @@ tags:
 
 # Blender 系列02：三种操作入口与官方 MCP 安装——三组件架构、本地进程原理与 SDK 版本兼容实录
 
-> 系列导航：[系列01：为什么是 Blender](Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal%20Engine对比.md) ｜ 本篇 ｜ [系列03：虎式坦克实战](Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖.md)
+> 系列导航：[系列01：为什么是 Blender](Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal%20Engine对比.md) ｜ 本篇 ｜ [系列03：虎式坦克实战](Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖.md) ｜ [系列04：人物面试动画实战](Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步.md)
 >
 > 素材来源：按 [Blender 官方 MCP 手册](https://www.blender.org/lab/mcp-server/) 在本机完成的一次真实安装与验证（2026-09-07，macOS + Blender 5.2.1 LTS + Codex），含全部踩坑记录。
 
