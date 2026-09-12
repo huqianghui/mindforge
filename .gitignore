@@ -35,3 +35,7 @@ inbox/
 
 # Third-party skill clone (re-clone from github.com/coleam00/excalidraw-diagram-skill)
 .agents/skills/excalidraw-diagram/
+
+# oh-my-claudecode runtime state (tool uninstalled 2026-09; never track)
+.omc/
+**/.omc/
