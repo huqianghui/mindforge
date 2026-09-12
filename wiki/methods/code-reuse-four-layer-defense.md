@@ -13,8 +13,7 @@ related_concepts:
   - "[[code-reuse-in-agent-era]]"
   - "[[harness-engineering]]"
   - "[[claude-code-agent-subagent]]"
-related_methods:
-  - "[[gsd-five-step-workflow]]"
+related_methods: []
 ---
 
 # Agent 时代四层代码复用防线

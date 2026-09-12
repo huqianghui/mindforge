@@ -16,8 +16,7 @@ aliases:
   - "控制论与 Agent 设计"
 related:
   - "[[harness-engineering]]"
-  - "[[meta-harness]]"
-  - "[[agent-loop-architecture]]"
+  - "[[skill-runtime]]"
 ---
 
 # 控制论 Agent 设计（Cybernetics-Agent Design）

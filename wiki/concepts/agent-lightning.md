@@ -15,11 +15,12 @@ aliases:
   - "agent-lightning"
   - "method-agnostic 训练框架"
 related:
-  - "[[automatic-prompt-optimization]]"
-  - "[[rejection-sampling-finetuning]]"
-  - "[[reinforcement-learning]]"
-  - "[[generation-evaluation-separation]]"
   - "[[bitter-lesson]]"
+  - "[[generation-evaluation-separation]]"
+  - "[[sft-rejection-sampling-hands-on]]"
+  - "[[skillopt]]"
+  - "[[slime-rl-framework]]"
+  - "[[verl]]"
 ---
 
 # Agent Lightning

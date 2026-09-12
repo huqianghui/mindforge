@@ -13,8 +13,8 @@ aliases:
   - "跨 harness 可移植性"
 related:
   - "[[harness-engineering]]"
+  - "[[model-harness-codesign]]"
   - "[[skill-runtime]]"
-  - "[[computer-use]]"
 ---
 
 # Harness 可移植性分层

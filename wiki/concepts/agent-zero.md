@@ -12,10 +12,11 @@ aliases:
   - "agent0"
   - "Agent Zero Framework"
 related:
+  - "[[cybernetics-agent-design]]"
   - "[[harness-engineering]]"
   - "[[hermes-agent]]"
   - "[[openclaw-agent-gateway]]"
-  - "[[cybernetics-agent-design]]"
+  - "[[skill-hub-ecosystem]]"
 ---
 
 # Agent Zero

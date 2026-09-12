@@ -13,11 +13,13 @@ aliases:
   - "Loop Engineering"
   - "循环工程"
 related:
-  - "[[harness-engineering]]"
+  - "[[agent-paradigms]]"
   - "[[autoresearch]]"
+  - "[[cybernetics-agent-design]]"
   - "[[feedback-loop]]"
   - "[[generation-evaluation-separation]]"
-  - "[[cybernetics-agent-design]]"
+  - "[[harness-engineering]]"
+  - "[[personal-knowledge-compiler]]"
 ---
 
 # Loop Engineering

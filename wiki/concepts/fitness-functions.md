@@ -12,7 +12,6 @@ aliases:
   - "架构适应度函数"
   - "适应度函数"
 related:
-  - "[[architecture-testing]]"
   - "[[harness-quality-gate]]"
 ---
 

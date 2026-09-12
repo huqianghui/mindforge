@@ -15,7 +15,7 @@ related_concepts:
   - "[[harness-engineering]]"
   - "[[framework-selection]]"
 related_methods:
-  - "[[gsd-five-step-workflow]]"
+  - "[[cybernetics-harness-design-sheet]]"
 ---
 
 # AI-Native 五层开发流水线

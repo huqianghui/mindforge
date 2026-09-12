@@ -12,9 +12,14 @@ aliases:
   - "驾驭工程"
   - "Harness Engineering"
 related:
-  - "[[agent-loop-architecture]]"
-  - "[[context-engineering]]"
-  - "[[claude-code-agent-subagent]]"
+  - "[[bitter-lesson]]"
+  - "[[cybernetics-harness-design-sheet]]"
+  - "[[harness-quality-gate]]"
+  - "[[one-person-team]]"
+  - "[[online-learning]]"
+  - "[[reinforcement-learning]]"
+  - "[[rtk-token-compression]]"
+  - "[[skill-runtime]]"
 ---
 
 # Harness Engineering
@@ -189,8 +194,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
-- **置信度**：0.75
+- **最近更新**：2026-09-12
+- **置信度**：0.8
 - **状态**：active
 
 > OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比"模型之外的一切"（LangChain）与"信息管道代码"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。
@@ -262,6 +267,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-04-23：InkOS 分析证实 Harness Engineering 范式具有跨领域普适性（从 Coding 扩展到小说创作），核心公式 Agent = Model + Harness 在文学领域同样成立。
 - 2026-07-14：VS Code Copilot 博客解读补充两条工程证据：三层评测体系（VSC-Bench→PR 门禁→生产 A/B）与"agent 行为回归"这一传统 CI 盲区。harness 的产品战略层议题（第一方绑定 vs 多模型适配）另建 [[model-harness-codesign]] 页。
 - 2026-07-20：SDD/V-Model 提供合规域延伸证据：确定性脚本验证追溯 + 模板门禁，Harness 范式从 Agent 系统扩展到软件开发方法论本身。
+- 2026-09-12：evolve-wiki 例行复核——"OpenForge 给出 harness 的正式学术定义"Claim 有 arXiv 论文原文支撑，按官方文档/论文置信度下限规则 0.75→0.8。
 - 2026-08-04：从 Foundry Toolbox/Skills 篇补充 OpenForge 正式定义（Model+Harness+Environment 三元）、Copilot Studio 三 harness 产品证据与"离模型越近越可移植"分层——harness 定义谱系现有三档：泛指（LangChain）> 编排脚手架（OpenForge）> 信息管道（Meta-Harness）。
 - 2026-08-10：补充 harness 与 Agent Runtime 的正交辨析——harness 面向 model（同心圆内），runtime 面向 infra（承载同心圆的外侧层），给出换模型/谁在焦虑两个边界测试；与 OpenForge 三元结构兼容：runtime 大致对应托管化的 Environment + 部分平台 harness。
 - 2026-08-10：Copilot Studio 三 harness GA（2026-08-03，Copilot Chat/Standard/GitHub Copilot）提供"选 harness 即选 runtime"的产品证据，替代此前 preview 期的"经典/生成式/Copilot 运行时"三分——托管平台把 harness 与 runtime 打包出售，依赖管理被 MCP/connector/skill 扩展点取代；skill scripts 的执行环境断层另见 [[skill-runtime]]。

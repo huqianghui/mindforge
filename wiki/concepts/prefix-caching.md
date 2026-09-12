@@ -15,7 +15,7 @@ aliases:
   - "Prefix Caching"
   - "Prefix Cache"
 related:
-  - "[[hybrid-linear-attention-architecture]]"
+  - "[[distributed-training-parallelism]]"
 ---
 
 # 前缀缓存（Prefix Caching）

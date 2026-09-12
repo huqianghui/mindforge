@@ -13,6 +13,7 @@ aliases:
 related:
   - "[[context-engineering]]"
   - "[[opencli]]"
+  - "[[rtk-token-compression]]"
 ---
 
 # MCP vs CLI

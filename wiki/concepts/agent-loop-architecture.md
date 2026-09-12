@@ -12,9 +12,8 @@ aliases:
   - "Agent Loop"
   - "Agent 循环架构"
 related:
-  - "[[harness-engineering]]"
-  - "[[claude-code-agent-subagent]]"
   - "[[cybernetics-agent-design]]"
+  - "[[harness-engineering]]"
 ---
 
 # Agent Loop Architecture

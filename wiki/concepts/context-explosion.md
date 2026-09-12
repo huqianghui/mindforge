@@ -13,8 +13,10 @@ aliases:
   - "上下文爆炸"
 related:
   - "[[context-engineering]]"
-  - "[[skill-runtime]]"
+  - "[[framework-selection]]"
+  - "[[gsd-project-scale-selection]]"
   - "[[harness-engineering]]"
+  - "[[spec-driven-vs-methodology-framework]]"
 ---
 
 # Context Explosion

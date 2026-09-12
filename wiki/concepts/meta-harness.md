@@ -13,12 +13,15 @@ aliases:
   - "Meta-Harness"
   - "元驾驭工程"
 related:
-  - "[[harness-engineering]]"
   - "[[agent-loop-architecture]]"
+  - "[[bitter-lesson]]"
+  - "[[claude-code-agent-subagent]]"
   - "[[context-engineering]]"
+  - "[[cybernetics-agent-design]]"
   - "[[feedback-loop]]"
   - "[[generation-evaluation-separation]]"
-  - "[[cybernetics-agent-design]]"
+  - "[[harness-engineering]]"
+  - "[[rtk-token-compression]]"
 ---
 
 # Meta-Harness

@@ -11,10 +11,12 @@ tags:
 method_type: "decision-framework"
 related_concepts:
   - "[[automatic-prompt-optimization]]"
-  - "[[skillopt]]"
+  - "[[generation-evaluation-separation]]"
   - "[[llm-as-a-judge]]"
+  - "[[skillopt]]"
 related_methods:
   - "[[pre-run-three-number-accounting]]"
+  - "[[reward-design-three-inputs]]"
 ---
 
 # Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环

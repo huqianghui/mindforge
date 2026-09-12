@@ -12,9 +12,8 @@ tags:
 aliases:
   - "GSD + Superpowers + gstack 三层架构"
 related:
-  - "[[framework-selection]]"
-  - "[[harness-engineering]]"
   - "[[claude-code-extension-system]]"
+  - "[[harness-engineering]]"
 ---
 
 # Three-Layer Plugin Architecture

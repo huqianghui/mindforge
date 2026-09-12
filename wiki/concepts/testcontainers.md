@@ -11,6 +11,8 @@ tags:
 aliases:
   - "Testcontainers"
 related:
+  - "[[contract-testing]]"
+  - "[[ephemeral-environment]]"
   - "[[harness-quality-gate]]"
 ---
 

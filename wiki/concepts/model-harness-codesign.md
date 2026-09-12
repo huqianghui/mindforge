@@ -103,8 +103,8 @@ related:
 
 - **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
 - **首次出现**：2026-08-26
-- **最近更新**：2026-08-30
-- **置信度**：0.75
+- **最近更新**：2026-09-12
+- **置信度**：0.8
 - **状态**：active
 
 > 两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 "design the full system together"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品"天然自带"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走"Tavily+用户自带 key"，坐实了平台不为开放工具层垫付成本的商业逻辑。
@@ -156,6 +156,7 @@ related:
 - 2026-07-14：建页。评测体系三层（VSC-Bench→PR 门禁→生产 A/B）的工程细节归口 [[harness-engineering]]，门禁演化（选择性→全量评测）归口 [[meta-harness]]，本页聚焦路线之争本身。
 - 2026-08-30：注入硅层 co-design（Jalapeño）与服务端工具全家桶（Computer Use 系列六/七）两组证据——第一方绑定的纵深与隐性福利。
 - 2026-08-16：注入 Graph Engineering 讨论的显式图 vs 隐式图对垒（Claude workflows 可审计脚本 vs Codex V2 加密委派）——第一方绑定之外的第二条路线分歧轴："图给人看还是给机器看"。
+- 2026-09-12：evolve-wiki 例行复核——"co-design 下沉到硅层"Claim 含 OpenAI 官方原话（"design the full system together"），按官方文档置信度下限规则 0.75→0.8。
 - 2026-09-04：注入两条新维度——搜索挂载点决定覆盖面（系列七 Copilot 四挂载点 + Scout 挂靠闭环镜像，"服务端工具全家桶"Claim 的机制细化）与绑定×可分解十字定位（五平台横评，多模型阵营内部的第二维分层）。
 - 2026-09-06：注入 Codex Desktop 系列05/06 的最强续证——per-model harness 实例化（九层解剖 + schema 校验语义 + Ultra 委派开关 + shell_type alias 化石修正）与 tool_mode 光谱（Direct↔CodeModeOnly、CodeAct 动机、单一治理入口）。co-design 证据首次达到源码字段级（rust-v0.153.1 逐字段核实），"每模型自带 harness 切片 vs 全局 harness 配多模型"成为本页第一方绑定路线在数据结构层的核心表述。
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正 per-model 实例化 Claim 两处——① Ultra 语义修正：委派能力的开关实为 `multi_agent_version`，Ultra 是 effort 回退（取 `multi_agent_reasoning_effort`）+ 仅 V2 下的委派策略切换器，此前"Ultra=多 agent 委派开关"表述不准确；② alias 化石归因降级：mini shell_type 例证出自本机快照且与官方 models.json 不一致，"代际化石"历史归因标注为推测，Claim 置信度 0.85→0.8。

@@ -13,7 +13,6 @@ aliases:
   - "Harness 质量门禁"
   - "Quality Gate"
 related:
-  - "[[testcontainers]]"
   - "[[harness-engineering]]"
 ---
 

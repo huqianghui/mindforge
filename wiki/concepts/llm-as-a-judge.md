@@ -13,10 +13,9 @@ aliases:
   - "Evaluator"
   - "评估器"
 related:
-  - "[[rubric]]"
-  - "[[reward-design-three-inputs]]"
-  - "[[generation-evaluation-separation]]"
   - "[[automatic-prompt-optimization]]"
+  - "[[generation-evaluation-separation]]"
+  - "[[reward-design-three-inputs]]"
 ---
 
 # LLM-as-a-Judge（三层正交评估模型）

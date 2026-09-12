@@ -12,10 +12,9 @@ aliases:
   - "Context Engineering"
   - "上下文工程"
 related:
-  - "[[harness-engineering]]"
-  - "[[mcp-vs-cli]]"
-  - "[[context-explosion]]"
+  - "[[context7]]"
   - "[[cybernetics-agent-design]]"
+  - "[[harness-engineering]]"
 ---
 
 # Context Engineering

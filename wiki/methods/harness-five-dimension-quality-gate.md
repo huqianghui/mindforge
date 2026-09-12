@@ -16,6 +16,7 @@ related_concepts:
   - "[[harness-engineering]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
+  - "[[cybernetics-harness-design-sheet]]"
 ---
 
 # Harness 五维质量门禁

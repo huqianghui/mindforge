@@ -16,11 +16,10 @@ aliases:
   - "自适应控制"
   - "Adaptive Control"
 related:
-  - "[[reinforcement-learning]]"
   - "[[cybernetics-agent-design]]"
+  - "[[harness-engineering]]"
   - "[[negative-feedback]]"
-  - "[[continual-self-improving-ai]]"
-  - "[[advantage-function]]"
+  - "[[reinforcement-learning]]"
 ---
 
 # 在线学习（Online Learning）

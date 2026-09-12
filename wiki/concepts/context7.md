@@ -11,7 +11,6 @@ tags:
 aliases:
   - "Context7"
 related:
-  - "[[context-engineering]]"
   - "[[agent-search-tools]]"
 ---
 

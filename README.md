@@ -32,7 +32,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 | 日记 | 137 |
 | Wiki 页面 | 98 concepts + 19 methods + 8 decisions |
 | Claims（带证据的论断） | 598 |
-| 知识图谱 | 125 节点 / 414 关系 / 9 种关系类型 |
+| 知识图谱 | 125 节点 / 409 关系 / 9 种关系类型 |
 
 > 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-09-12。
 <!-- STATS:END -->

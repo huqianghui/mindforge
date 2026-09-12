@@ -12,9 +12,10 @@ aliases:
   - "Claude Code 记忆系统"
   - "Claude Code 六层持久化"
 related:
-  - "[[claude-code-extension-system]]"
   - "[[claude-code-agent-subagent]]"
+  - "[[claude-code-extension-system]]"
   - "[[personal-knowledge-compiler]]"
+  - "[[terminal-multiplexer-for-ai]]"
 ---
 
 # Claude Code Memory System

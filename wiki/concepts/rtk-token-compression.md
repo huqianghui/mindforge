@@ -13,9 +13,11 @@ aliases:
   - "RTK"
   - "Rust Token Killer"
 related:
+  - "[[caveman-token-compression]]"
   - "[[context-engineering]]"
-  - "[[harness-engineering]]"
   - "[[mcp-vs-cli]]"
+  - "[[meta-harness]]"
+  - "[[model-routing]]"
 ---
 
 # RTK Token Compression

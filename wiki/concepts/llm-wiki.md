@@ -14,8 +14,7 @@ aliases:
   - "PKC"
 related:
   - "[[azure-copilot-ecosystem]]"
-  - "[[harness-quality-gate]]"
-  - "[[personal-knowledge-compiler]]"
+  - "[[loop-engineering]]"
   - "[[rag-architecture-comparison]]"
 ---
 

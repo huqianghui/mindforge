@@ -70,6 +70,7 @@ related_methods: []
 - **验证方式**：在数十卡 GPU 集群上分别按 VERL / Slime 跑通一次 Agent RL 权重微调，对比 rollout 吞吐（trajectory/sec）、GPU 利用率（rollout/training overlap）、reward 稳定性、迁移工程量。
 - **当前状态**：未验证——结论基于架构分析与社区共识（VERL 是 Agent RL 事实标准、Slime 是 server-first + Megatron 一体化路线），实测对比待系列 08 VERL 实战补齐。
 - **验证证据**：VERL 官方定位（ByteDance Seed Team 发起、HybridFlow 实现）、Slime 强绑定 Megatron+SGLang 的 opinionated 选型、agent-lightning 仅内置 VERL 一条 RL 路径。
+- **复核提醒**：截至 2026-09-12 证据全部过线（stale，最近证据停 2026-06-29）、待用户复核；decision_status 是否调整由用户裁决，本次维护未变更。Agent Lightning v1.0 论文（arXiv:2608.17528，proxy 架构被 verl Uni-Agent/AReaL 2.0/slime/Polar 四家采纳）是本决策复核的高杠杆待消化素材，建议合并处理。
 
 ## Claims
 

@@ -12,8 +12,9 @@ tags:
 method_type: "layered-strategy"
 related_concepts:
   - "[[caveman-token-compression]]"
-  - "[[rtk-token-compression]]"
   - "[[context-engineering]]"
+  - "[[harness-engineering]]"
+  - "[[rtk-token-compression]]"
 related_methods: []
 ---
 

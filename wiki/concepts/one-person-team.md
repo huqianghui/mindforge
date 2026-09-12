@@ -11,7 +11,8 @@ aliases:
   - "一人团队"
   - "One Person Team"
 related:
-  - "[[harness-engineering]]"
+  - "[[ai-skill-formation]]"
+  - "[[forward-deployed-engineer]]"
   - "[[oh-my-claude-code]]"
 ---
 

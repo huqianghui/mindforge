@@ -16,13 +16,10 @@ aliases:
   - "EntiGraph"
   - "SBP"
 related:
-  - "[[bitter-lesson]]"
-  - "[[rag-architecture-comparison]]"
-  - "[[scaling-laws]]"
-  - "[[rejection-sampling-finetuning]]"
-  - "[[online-learning]]"
-  - "[[reinforcement-learning]]"
   - "[[advantage-function]]"
+  - "[[bitter-lesson]]"
+  - "[[online-learning]]"
+  - "[[rag-architecture-comparison]]"
 ---
 
 # Continually Self-Improving AI

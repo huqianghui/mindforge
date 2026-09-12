@@ -12,10 +12,8 @@ tags:
 method_type: "quality-gate"
 related_concepts:
   - "[[cybernetics-agent-design]]"
-  - "[[harness-engineering]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
-  - "[[harness-five-dimension-quality-gate]]"
 ---
 
 # 控制论 Harness Design Sheet

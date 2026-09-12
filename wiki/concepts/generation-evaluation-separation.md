@@ -15,7 +15,6 @@ aliases:
   - "Planner-Generator-Evaluator"
 related:
   - "[[harness-engineering]]"
-  - "[[meta-harness]]"
   - "[[negative-feedback]]"
 ---
 

@@ -15,6 +15,7 @@ aliases:
 related:
   - "[[agent-loop-architecture]]"
   - "[[harness-engineering]]"
+  - "[[skill-pattern]]"
 ---
 
 # Agent Paradigms

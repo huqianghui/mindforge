@@ -13,9 +13,7 @@ aliases:
   - "终端复用器"
   - "tmux"
   - "cmux"
-related:
-  - "[[claude-code-memory-system]]"
-  - "[[oh-my-claude-code]]"
+related: []
 ---
 
 # Terminal Multiplexers for AI

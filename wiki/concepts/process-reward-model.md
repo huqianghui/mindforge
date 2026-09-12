@@ -14,9 +14,10 @@ aliases:
   - "过程奖励"
   - "ORM vs PRM"
 related:
-  - "[[reward-design-three-inputs]]"
-  - "[[rejection-sampling-finetuning]]"
+  - "[[advantage-function]]"
+  - "[[generation-evaluation-separation]]"
   - "[[reinforcement-learning]]"
+  - "[[rejection-sampling-finetuning]]"
 ---
 
 # 过程奖励模型（PRM, Process Reward Model）

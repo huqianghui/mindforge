@@ -14,16 +14,15 @@ aliases:
   - "Reinforcement Learning"
   - "RL"
 related:
-  - "[[bitter-lesson]]"
-  - "[[scaling-laws]]"
-  - "[[continual-self-improving-ai]]"
-  - "[[agent-paradigms]]"
-  - "[[harness-engineering]]"
-  - "[[verl]]"
-  - "[[slime-rl-framework]]"
   - "[[agent-lightning]]"
-  - "[[advantage-function]]"
+  - "[[agent-paradigms]]"
+  - "[[automatic-prompt-optimization]]"
+  - "[[bitter-lesson]]"
+  - "[[continual-self-improving-ai]]"
+  - "[[harness-engineering]]"
   - "[[online-learning]]"
+  - "[[rejection-sampling-finetuning]]"
+  - "[[skillopt]]"
 ---
 
 # 强化学习（Reinforcement Learning）

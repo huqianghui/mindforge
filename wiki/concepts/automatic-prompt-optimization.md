@@ -17,9 +17,13 @@ aliases:
   - "文本梯度"
   - "Textual Gradient"
 related:
-  - "[[rejection-sampling-finetuning]]"
+  - "[[agent-lightning]]"
+  - "[[bitter-lesson]]"
   - "[[generation-evaluation-separation]]"
+  - "[[method-agnostic]]"
   - "[[reinforcement-learning]]"
+  - "[[rejection-sampling-finetuning]]"
+  - "[[skillopt]]"
 ---
 
 # 自动提示优化（APO, Automatic Prompt Optimization）

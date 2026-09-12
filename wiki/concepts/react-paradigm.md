@@ -15,9 +15,10 @@ aliases:
   - "ReAct"
   - "Reason + Act"
 related:
-  - "[[agent-paradigms]]"
   - "[[agent-loop-architecture]]"
+  - "[[agent-paradigms]]"
   - "[[feedback-loop]]"
+  - "[[negative-feedback]]"
 ---
 
 # ReAct 范式（ReAct Paradigm）

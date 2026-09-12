@@ -16,7 +16,6 @@ aliases:
 related:
   - "[[azure-copilot-ecosystem]]"
   - "[[claude-code-extension-system]]"
-  - "[[openclaw-agent-gateway]]"
 ---
 
 # Skill Hub Ecosystem

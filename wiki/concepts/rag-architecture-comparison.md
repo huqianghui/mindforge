@@ -12,9 +12,8 @@ tags:
 aliases:
   - "RAG 架构对比"
 related:
-  - "[[enterprise-ontology]]"
   - "[[llm-wiki]]"
-  - "[[continual-self-improving-ai]]"
+  - "[[wiki-over-rag-for-personal-knowledge]]"
 ---
 
 # RAG Architecture Comparison

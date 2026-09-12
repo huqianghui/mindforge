@@ -13,9 +13,8 @@ aliases:
   - "Skill 运行时"
 related:
   - "[[context-explosion]]"
-  - "[[skill-pattern]]"
-  - "[[claude-code-extension-system]]"
   - "[[context-projection]]"
+  - "[[cybernetics-agent-design]]"
 ---
 
 # Skill Runtime

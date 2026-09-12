@@ -15,7 +15,6 @@ aliases:
   - "Fabric IQ"
   - "Palantir Ontology"
 related:
-  - "[[ontology-philosophy]]"
   - "[[rag-architecture-comparison]]"
 ---
 

@@ -13,9 +13,9 @@ aliases:
   - "Context Projection"
   - "按需投影"
 related:
-  - "[[context-explosion]]"
-  - "[[skill-runtime]]"
+  - "[[conjugate-transformation]]"
   - "[[context-engineering]]"
+  - "[[context-explosion]]"
 ---
 
 # 上下文投影（Context Projection）

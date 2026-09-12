@@ -13,8 +13,9 @@ aliases:
   - "推理芯片"
   - "Jalapeño"
 related:
-  - "[[model-harness-codesign]]"
   - "[[hybrid-inference-framework-selection]]"
+  - "[[model-harness-codesign]]"
+  - "[[prefix-caching]]"
 ---
 
 # AI 推理 ASIC
@@ -71,8 +72,8 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 - **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
 - **首次出现**：2026-08-26
-- **最近更新**：2026-08-30
-- **置信度**：0.7
+- **最近更新**：2026-09-12
+- **置信度**：0.8
 - **状态**：active
 
 > 官方原话 "when we design the full system together"：模型、推理软件栈（continuous batching、KV Cache 管理、prefill/decode 分离）、芯片架构由同一家公司联合优化——Agent=Model+Harness 的 co-design 路线延伸到硅层。头部模型厂商自研 ASIC 已成趋势（TPU、Trainium/Inferentia 之后），NVIDIA 通用 GPU 面对"每个大客户都在造专用赛车"的格局。另一个可能更重要的信号：九个月 ASIC 周期部分归功于用自家 AI 模型辅助芯片设计——芯片设计迭代速度被 AI 加速后，专用芯片"设计慢、赌错架构就沉没"的传统风险模型会被改写。
@@ -90,6 +91,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 ## 冲突与演进
 
 - 2026-09-04：注入六层降本文的国产芯片 co-design 实证与两组口径澄清——建页后首批续证（"co-design 下沉硅层"Claim 获国产侧对照样本）。
+- 2026-09-12：evolve-wiki 例行复核——"co-design 逻辑下沉到硬件层"Claim 含 OpenAI 官方原话（"design the full system together"），按官方文档置信度下限规则 0.7→0.8。
 - 2026-08-30：建页（用户裁决，vault 硬件方向首篇即建锚点页；harvest 原建议挂候选等第 2 篇）。throughput-latency 工作点读数法按 harvest 建议不独立建方法页，作页内 Claim 收入并同步注入 [[hybrid-inference-framework-selection]]。
 
 ## 关联概念

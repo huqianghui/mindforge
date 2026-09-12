@@ -14,8 +14,8 @@ aliases:
   - "语音实时 Agent"
   - "Realtime Voice Agent"
 related:
-  - "[[voice-activity-detection]]"
-  - "[[speech-technology-stack]]"
+  - "[[foundry-agent-type-selection]]"
+  - "[[intelligent-dictation]]"
 ---
 
 # Voice Live Agent

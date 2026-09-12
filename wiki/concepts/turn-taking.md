@@ -14,9 +14,9 @@ aliases:
   - "Turn-Taking"
   - "话轮管理"
 related:
-  - "[[voice-activity-detection]]"
-  - "[[voice-live-agent]]"
+  - "[[grapheme-to-phoneme]]"
   - "[[speech-technology-stack]]"
+  - "[[voice-live-agent]]"
 ---
 
 # 话轮转换（Turn-Taking）

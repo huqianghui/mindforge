@@ -13,10 +13,9 @@ aliases:
   - "Forward Deployed Engineer"
   - "前线部署工程师"
 related:
-  - "[[requisite-variety]]"
-  - "[[one-person-team]]"
-  - "[[bitter-lesson]]"
+  - "[[ai-skill-formation]]"
   - "[[harness-engineering]]"
+  - "[[personal-knowledge-compiler]]"
 ---
 
 # FDE（Forward Deployed Engineer）：客户系统的外部调节器

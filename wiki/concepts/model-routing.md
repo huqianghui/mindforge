@@ -16,10 +16,11 @@ aliases:
   - "任务分级路由"
   - "CodexSaver"
 related:
-  - "[[rtk-token-compression]]"
   - "[[caveman-token-compression]]"
-  - "[[three-layer-token-optimization]]"
+  - "[[claude-code-agent-subagent]]"
   - "[[mcp-vs-cli]]"
+  - "[[rtk-token-compression]]"
+  - "[[three-layer-token-optimization]]"
 ---
 
 # 模型路由（Model Routing）

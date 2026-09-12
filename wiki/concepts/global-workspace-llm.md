@@ -14,8 +14,8 @@ aliases:
   - "Jacobian Lens"
   - "J-lens"
 related:
-  - "[[reinforcement-learning]]"
-  - "[[llm-as-a-judge]]"
+  - "[[claude-code-memory-system]]"
+  - "[[conjugate-transformation]]"
 ---
 
 # LLM 中的全局工作空间（J-space）

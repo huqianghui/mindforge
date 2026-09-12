@@ -11,7 +11,6 @@ tags:
 method_type: "decision-framework"
 related_concepts:
   - "[[framework-selection]]"
-  - "[[context-explosion]]"
   - "[[three-layer-plugin-architecture]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"

@@ -14,9 +14,10 @@ aliases:
   - "Conjugate Transformation"
   - "Conjugate Transform"
 related:
-  - "[[cybernetics-agent-design]]"
   - "[[context-engineering]]"
+  - "[[cybernetics-agent-design]]"
   - "[[harness-engineering]]"
+  - "[[negative-feedback]]"
 ---
 
 # 共轭变换（Conjugate Transformation）

@@ -2,7 +2,7 @@
   "generated_at": "2026-09-12",
   "stats": {
     "nodes": 125,
-    "links": 414,
+    "links": 409,
     "orphan_links_removed": 0,
     "claims": 598,
     "categories": 11
@@ -82,7 +82,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "三大协议分工——MCP 向下连工具、A2A 横向连 Agent、AG-UI 向上连 UI",
@@ -115,8 +115,8 @@
           "statement": "Voice Agent 本质也是一种 UI——interrupt/partial transcript/barge-in 可放进 AG-UI Event Flow",
           "source": "AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
-          "confidence": 0.7,
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。"
         }
@@ -484,7 +484,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.74,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "推理芯片 vs 训练芯片不是 ISA 划界而是电路/算子/系统/经济四层联合优化目标的差异",
@@ -526,8 +526,8 @@
           "statement": "co-design 逻辑下沉到硬件层——模型+推理软件栈+芯片同司联合优化，且 AI 开始加速芯片设计本身",
           "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
           "first_seen": "2026-08-26",
-          "last_updated": "2026-08-30",
-          "confidence": 0.7,
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "官方原话 \"when we design the full system together\"：模型、推理软件栈（continuous batching、KV Cache 管理、prefill/decode 分离）、芯片架构由同一家公司联合优化——Agent=Model+Harness 的 co-design 路线延伸到硅层。头部模型厂商自研 ASIC 已成趋势（TPU、Trainium/Inferentia 之后），NVIDIA 通用 GPU 面对\"每个大客户都在造专用赛车\"的格局。另一个可能更重要的信号：九个月 ASIC 周期部分归功于用自家 AI 模型辅助芯片设计——芯片设计迭代速度被 AI 加速后，专用芯片\"设计慢、赌错架构就沉没\"的传统风险模型会被改写。"
         },
@@ -3195,8 +3195,8 @@
           "statement": "OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构",
           "source": "Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
-          "confidence": 0.75,
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比\"模型之外的一切\"（LangChain）与\"信息管道代码\"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。"
         },
@@ -4170,8 +4170,8 @@
           "statement": "co-design 下沉到硅层——模型+软件栈+芯片同司联合优化；服务端工具全家桶是第一方绑定的隐性福利",
           "source": "OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景",
           "first_seen": "2026-08-26",
-          "last_updated": "2026-08-30",
-          "confidence": 0.75,
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
           "status": "active",
           "evidence": "两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 \"design the full system together\"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品\"天然自带\"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走\"Tavily+用户自带 key\"，坐实了平台不为开放工具层垫付成本的商业逻辑。"
         },
@@ -8770,18 +8770,6 @@
       "description": "共轭变换在表示层外部做投影设计，J-lens 在模型内部读出表示的输出投影——同为\"换基读表示\"思路"
     },
     {
-      "source": "global-workspace-llm",
-      "target": "reinforcement-learning",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "global-workspace-llm",
-      "target": "llm-as-a-judge",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "graph-engineering",
       "target": "loop-engineering",
       "relation_type": "extends",
@@ -8984,12 +8972,6 @@
       "target": "loop-engineering",
       "relation_type": "constrains",
       "description": "\"什么值得进入 wiki 永远是人的判断\"是外循环的硬闸门"
-    },
-    {
-      "source": "llm-wiki",
-      "target": "harness-quality-gate",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "loop-engineering",
@@ -10358,18 +10340,6 @@
       "target": "rejection-sampling-finetuning",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是本决策的关键前提——若会，则 agent-lightning 的 method-agnostic 价值才兑现"
-    },
-    {
-      "source": "prompt-optimization-tool-selection",
-      "target": "pre-run-three-number-accounting",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
-      "source": "prompt-optimization-tool-selection",
-      "target": "prompt-optimization-maturity-ladder",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "rl-infra-framework-selection",

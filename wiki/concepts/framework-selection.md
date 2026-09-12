@@ -13,8 +13,6 @@ aliases:
   - "Vibe Coding 框架选型"
 related:
   - "[[three-layer-plugin-architecture]]"
-  - "[[context-explosion]]"
-  - "[[ai-native-pipeline]]"
 ---
 
 # Framework Selection

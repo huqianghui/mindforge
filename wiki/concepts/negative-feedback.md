@@ -14,9 +14,11 @@ aliases:
   - "Negative Feedback"
   - "反馈控制"
 related:
+  - "[[agent-loop-architecture]]"
   - "[[cybernetics-agent-design]]"
-  - "[[harness-engineering]]"
   - "[[feedback-loop]]"
+  - "[[harness-engineering]]"
+  - "[[loop-engineering]]"
 ---
 
 # 负反馈（Negative Feedback）

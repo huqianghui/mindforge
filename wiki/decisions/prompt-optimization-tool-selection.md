@@ -12,9 +12,7 @@ related_concepts:
   - "[[agent-lightning]]"
   - "[[automatic-prompt-optimization]]"
   - "[[rejection-sampling-finetuning]]"
-related_methods:
-  - "[[pre-run-three-number-accounting]]"
-  - "[[prompt-optimization-maturity-ladder]]"
+related_methods: []
 ---
 
 # Prompt 优化工具选型——DSPy vs agent-lightning

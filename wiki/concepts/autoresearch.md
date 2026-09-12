@@ -14,6 +14,7 @@ aliases:
 related:
   - "[[agent-loop-architecture]]"
   - "[[bitter-lesson]]"
+  - "[[loop-engineering]]"
 ---
 
 # AutoResearch

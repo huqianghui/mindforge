@@ -12,8 +12,10 @@ aliases:
   - "VAD"
   - "语音活动检测"
 related:
-  - "[[voice-live-agent]]"
+  - "[[cascaded-pipeline]]"
   - "[[speech-technology-stack]]"
+  - "[[turn-taking]]"
+  - "[[voice-live-agent]]"
 ---
 
 # Voice Activity Detection

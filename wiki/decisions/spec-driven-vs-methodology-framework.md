@@ -11,7 +11,6 @@ decision_status: "active"
 related_concepts:
   - "[[framework-selection]]"
   - "[[three-layer-plugin-architecture]]"
-  - "[[context-explosion]]"
 related_methods:
   - "[[gsd-project-scale-selection]]"
   - "[[gsd-five-step-workflow]]"
@@ -60,6 +59,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 - **验证方式**：在 L2 级项目中使用 GSD + Superpowers 组合，对比单独使用的效果
 - **当前状态**：部分验证（Vibe Coding 系列文章中有分析，个人实践有限）
 - **验证证据**：Vibe Coding 系列 04/08/09 的分析支持此决策
+- **复核提醒**：截至 2026-09-12 证据全部过线（stale，最近证据停 2026-04-13）、待用户复核；decision_status 是否调整由用户裁决，本次维护未变更。另有 2026-08-08 观察项遗留未处理：本页与 [[spec-driven-development]] / [[spec-kit]] 深度页零关联，建议下轮补关联评估（本轮未直接改动，留待裁决）。
 
 ## Claims
 

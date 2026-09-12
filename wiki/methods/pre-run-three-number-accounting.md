@@ -10,8 +10,9 @@ tags:
   - statistics
 method_type: "decision-framework"
 related_concepts:
-  - "[[skillopt]]"
   - "[[automatic-prompt-optimization]]"
+  - "[[generation-evaluation-separation]]"
+  - "[[skillopt]]"
 related_methods:
   - "[[reward-design-three-inputs]]"
 ---

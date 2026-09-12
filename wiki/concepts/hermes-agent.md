@@ -13,10 +13,12 @@ aliases:
   - "Nous Research Agent"
   - "Skill Curator"
 related:
+  - "[[agent-zero]]"
+  - "[[ai-skill-formation]]"
   - "[[continual-self-improving-ai]]"
   - "[[openclaw-agent-gateway]]"
+  - "[[orchestrator-pattern-multi-agent]]"
   - "[[skill-hub-ecosystem]]"
-  - "[[ai-skill-formation]]"
 ---
 
 # Hermes Agent

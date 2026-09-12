@@ -13,8 +13,6 @@ aliases:
   - "Claude Code 扩展体系"
   - "Command / Skill / Agent / Plugin"
 related:
-  - "[[skill-hub-ecosystem]]"
-  - "[[claude-code-agent-subagent]]"
   - "[[skill-runtime]]"
 ---
 

@@ -14,8 +14,10 @@ aliases:
   - "Teammate 架构"
 related:
   - "[[agent-loop-architecture]]"
+  - "[[claude-code-extension-system]]"
+  - "[[code-reuse-in-agent-era]]"
   - "[[harness-engineering]]"
-  - "[[meta-harness]]"
+  - "[[model-routing]]"
 ---
 
 # Claude Code Agent/Subagent/Teammate Architecture

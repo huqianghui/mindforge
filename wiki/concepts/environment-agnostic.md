@@ -13,9 +13,8 @@ aliases:
   - "环境无关"
   - "EnvAdapter 契约"
 related:
-  - "[[method-agnostic]]"
-  - "[[skillopt]]"
   - "[[agent-lightning]]"
+  - "[[method-agnostic]]"
 ---
 
 # Environment-Agnostic（环境无关设计）

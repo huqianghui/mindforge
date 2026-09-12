@@ -59,8 +59,8 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 - **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
-- **置信度**：0.7
+- **最近更新**：2026-09-12
+- **置信度**：0.8
 - **状态**：active
 
 > Foundry 文档把 AG-UI 与 voice、webhook 并列为 "custom protocols"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。
@@ -68,6 +68,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 ## 冲突与演进
 
 - 2026-08-04：建页。单来源专文但内容完整（定位/分层/生态），且用户明确"为后续 AG-UI 开发做准备"——工程准备型页面。置信度 0.7~0.75（基于官方文档 + ChatGPT 讨论整理，未经自建项目验证）。
+- 2026-09-12：evolve-wiki 例行复核——"Voice Agent 本质也是一种 UI"Claim 直接引用 Foundry 官方文档原话，按官方文档置信度下限规则 0.7→0.8。
 
 ## 关联概念
 

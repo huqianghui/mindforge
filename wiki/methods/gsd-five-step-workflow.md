@@ -14,7 +14,6 @@ related_concepts:
   - "[[framework-selection]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
-  - "[[gsd-project-scale-selection]]"
   - "[[code-reuse-four-layer-defense]]"
 ---
 

@@ -20,12 +20,16 @@ aliases:
   - "RFT"
   - "ReST"
 related:
+  - "[[advantage-function]]"
+  - "[[agent-lightning]]"
   - "[[automatic-prompt-optimization]]"
-  - "[[reinforcement-learning]]"
+  - "[[bitter-lesson]]"
   - "[[continual-self-improving-ai]]"
   - "[[generation-evaluation-separation]]"
-  - "[[advantage-function]]"
-  - "[[sft-rejection-sampling-hands-on]]"
+  - "[[method-agnostic]]"
+  - "[[prompt-optimization-tool-selection]]"
+  - "[[reinforcement-learning]]"
+  - "[[skillopt]]"
 ---
 
 # 拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）

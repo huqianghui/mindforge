@@ -14,10 +14,11 @@ aliases:
   - "Caveman"
   - "Caveman Skill"
 related:
-  - "[[rtk-token-compression]]"
   - "[[context-engineering]]"
   - "[[harness-engineering]]"
-  - "[[brevity-constraints]]"
+  - "[[model-routing]]"
+  - "[[rtk-token-compression]]"
+  - "[[skill-pattern]]"
 ---
 
 # Caveman Token Compression

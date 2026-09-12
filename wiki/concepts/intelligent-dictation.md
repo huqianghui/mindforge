@@ -12,9 +12,7 @@ tags:
 aliases:
   - "智能听写"
   - "Speech Writing"
-related:
-  - "[[speech-technology-stack]]"
-  - "[[voice-live-agent]]"
+related: []
 ---
 
 # Intelligent Dictation

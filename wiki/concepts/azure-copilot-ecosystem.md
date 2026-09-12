@@ -13,7 +13,7 @@ aliases:
   - "Azure Skills"
   - "Azure MCP Server"
 related:
-  - "[[llm-wiki]]"
+  - "[[mcp-vs-cli]]"
   - "[[skill-hub-ecosystem]]"
 ---
 

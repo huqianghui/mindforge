@@ -13,7 +13,6 @@ tags:
 method_type: "pipeline"
 related_concepts:
   - "[[rejection-sampling-finetuning]]"
-  - "[[agent-lightning]]"
 related_methods: []
 ---
 

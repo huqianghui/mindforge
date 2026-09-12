@@ -11,7 +11,6 @@ aliases:
   - "SDD"
   - "规格驱动开发"
 related:
-  - "[[spec-kit]]"
   - "[[generation-evaluation-separation]]"
   - "[[harness-engineering]]"
 ---

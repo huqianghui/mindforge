@@ -14,9 +14,8 @@ aliases:
   - "Feedback Loop"
   - "闭环控制"
 related:
-  - "[[negative-feedback]]"
+  - "[[generation-evaluation-separation]]"
   - "[[harness-engineering]]"
-  - "[[meta-harness]]"
   - "[[personal-knowledge-compiler]]"
 ---
 

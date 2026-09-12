@@ -15,10 +15,11 @@ aliases:
   - "slime"
   - "数据流 RL 框架"
 related:
-  - "[[verl]]"
-  - "[[reinforcement-learning]]"
   - "[[agent-lightning]]"
   - "[[distributed-training-parallelism]]"
+  - "[[prefix-caching]]"
+  - "[[reinforcement-learning]]"
+  - "[[verl]]"
 ---
 
 # Slime（数据流式 RL 框架）

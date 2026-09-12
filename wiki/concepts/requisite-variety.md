@@ -14,8 +14,9 @@ aliases:
   - "Ashby's Law"
 related:
   - "[[cybernetics-agent-design]]"
-  - "[[negative-feedback]]"
   - "[[forward-deployed-engineer]]"
+  - "[[harness-engineering]]"
+  - "[[negative-feedback]]"
 ---
 
 # 必要多样性定律（Law of Requisite Variety）

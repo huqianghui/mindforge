@@ -12,8 +12,9 @@ tags:
 aliases:
   - "语音技术栈"
 related:
+  - "[[intelligent-dictation]]"
+  - "[[realtime-protocol-selection]]"
   - "[[voice-live-agent]]"
-  - "[[voice-activity-detection]]"
 ---
 
 # Speech Technology Stack

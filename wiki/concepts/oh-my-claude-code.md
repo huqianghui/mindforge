@@ -14,7 +14,7 @@ aliases:
 related:
   - "[[claude-code-agent-subagent]]"
   - "[[harness-engineering]]"
-  - "[[one-person-team]]"
+  - "[[terminal-multiplexer-for-ai]]"
 ---
 
 # oh-my-claude-code (OMC)

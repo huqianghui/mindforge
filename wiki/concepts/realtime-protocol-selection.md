@@ -16,8 +16,6 @@ aliases:
   - "Control Plane vs Data Plane"
 related:
   - "[[voice-live-agent]]"
-  - "[[speech-technology-stack]]"
-  - "[[cascaded-pipeline]]"
 ---
 
 # Realtime Protocol Selection

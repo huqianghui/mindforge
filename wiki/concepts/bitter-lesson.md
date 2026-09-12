@@ -12,12 +12,8 @@ aliases:
   - "Bitter Lesson"
   - "苦涩的教训"
 related:
-  - "[[continual-self-improving-ai]]"
+  - "[[forward-deployed-engineer]]"
   - "[[harness-engineering]]"
-  - "[[reinforcement-learning]]"
-  - "[[scaling-laws]]"
-  - "[[method-agnostic]]"
-  - "[[agent-lightning]]"
 ---
 
 # The Bitter Lesson

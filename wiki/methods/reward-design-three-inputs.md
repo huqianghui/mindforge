@@ -13,8 +13,7 @@ related_concepts:
   - "[[automatic-prompt-optimization]]"
   - "[[skillopt]]"
   - "[[generation-evaluation-separation]]"
-related_methods:
-  - "[[pre-run-three-number-accounting]]"
+related_methods: []
 ---
 
 # Reward 设计三份输入与两本账分家

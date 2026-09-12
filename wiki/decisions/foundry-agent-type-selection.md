@@ -8,8 +8,8 @@ tags:
   - agent
   - azure
 decision_status: "active"
-related_concepts:
-  - "[[voice-live-agent]]"
+related_concepts: []
+related_methods: []
 ---
 
 # Foundry Agent 三类型选型：Prompt / Hosted / Workflow

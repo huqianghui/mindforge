@@ -19,10 +19,9 @@ aliases:
   - "Tensor Parallelism"
   - "Pipeline Parallelism"
 related:
-  - "[[verl]]"
-  - "[[slime-rl-framework]]"
-  - "[[prefix-caching]]"
   - "[[hybrid-linear-attention-architecture]]"
+  - "[[prefix-caching]]"
+  - "[[reinforcement-learning]]"
 ---
 
 # 分布式训练并行（TP/PP/DP/FSDP/Megatron）

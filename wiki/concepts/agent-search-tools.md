@@ -13,7 +13,6 @@ aliases:
   - "AI Agent 搜索三剑客"
   - "Exa / Tavily / Context7"
 related:
-  - "[[context7]]"
   - "[[context-engineering]]"
 ---
 

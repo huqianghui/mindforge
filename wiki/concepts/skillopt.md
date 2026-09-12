@@ -15,11 +15,14 @@ aliases:
   - "Text-Space Optimizer"
   - "skill 训练"
 related:
-  - "[[automatic-prompt-optimization]]"
-  - "[[rejection-sampling-finetuning]]"
-  - "[[reinforcement-learning]]"
-  - "[[skill-runtime]]"
   - "[[advantage-function]]"
+  - "[[agent-lightning]]"
+  - "[[automatic-prompt-optimization]]"
+  - "[[environment-agnostic]]"
+  - "[[method-agnostic]]"
+  - "[[reinforcement-learning]]"
+  - "[[rejection-sampling-finetuning]]"
+  - "[[skill-runtime]]"
 ---
 
 # SkillOpt（文本空间 skill 优化器）
