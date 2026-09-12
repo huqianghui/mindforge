@@ -1,7 +1,7 @@
 ---
 title: "Speech Technology Stack"
 created: "2026-04-13"
-updated: "2026-05-24"
+updated: "2026-09-12"
 tags:
   - wiki
   - concept
@@ -94,9 +94,19 @@ related:
 
 > 第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已"够用"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。
 
+### Claim: 音量包络驱动是"简化口型同步"与"精细口型同步"的分界——只认音量不认发音
+
+- **来源**：[[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]]
+- **首次出现**：2026-09-07
+- **最近更新**：2026-09-12
+- **置信度**：0.75（实测实现 + 局限逐项分析）
+- **状态**：active
+
+> 简化口型同步的可复用实现：对每句音频按 60 Hz 计算音量包络（48 kHz 采样、每窗 800 采样求 RMS），用**第 88 百分位做自适应参考值**（不同声音音量不同，不能用固定阈值），减底噪门限归一到 0–1，再做 `**0.75` 幂次压缩（让小音量也有可见开口）；渲染端在每个视频帧对 60 Hz 包络线性插值驱动嘴部形态键（60 Hz → 24 fps）。效果与局限都清晰：说话张合、停顿回落、各角色各随自己的台词——但**只认音量不认发音**，"b/p/m"的闭唇、"哦"的圆唇它都不知道，强音不一定张大嘴。这就是分界线：精细口型必须走 viseme/面部系数路线（与最终音频对齐的时间轴数据），且渲染端要有对应控制面——只有三个形态键的角色接 55 项 BlendShapes 不叫精细同步。工程验收口径：24 fps 一帧约 41.7 毫秒，先把关键闭唇与可听辅音的偏移控制在 1–2 帧内（这是验收目标，不是人类感知阈值，也不是 API 精度保证）。
+
 ## 冲突与演进
 
-（暂无）
+- 2026-09-12：注入音量包络口型同步 Claim（Blender 系列04 实测）——Speech Out 层新增"音频信号直接驱动动画"的实现档与简化/精细分界判据，页面 active 证据回填。
 
 ## 关联概念
 
@@ -110,3 +120,4 @@ related:
 - [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — VAD barge-in
 - [[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]] — Speech Out 层 G2P 深入分析
 - [[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]] — 语音输入三代演进与智能听写
+- [[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]] — 音量包络口型同步实现与简化/精细分界

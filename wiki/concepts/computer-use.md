@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-09-06"
+updated: "2026-09-12"
 tags:
   - wiki
   - concept
@@ -123,27 +123,38 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
 - **首次出现**：2026-09-05
-- **最近更新**：2026-09-06
-- **置信度**：0.85（二进制逆向 + 源码常量实锤 + 实测修复闭环）
+- **最近更新**：2026-09-12
+- **置信度**：0.85（二进制逆向 + 源码常量实锤 + 修复推断确认——"配置意图 + 404 消失"而非抓包实测；404 归因于 codex-auto-review 系"源码选择逻辑 + luna 已部署仍需 override"两条证据推出，错误信息本身不回传模型名）
 - **状态**：active
 
 > 在"端点层 × harness 层"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。
 
-### Claim: Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树不可拆
+### Claim: Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树疑似紧耦合（推测）
 
 - **来源**：[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]、[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]
 - **首次出现**：2026-09-05
-- **最近更新**：2026-09-06
-- **置信度**：0.8（本机路径验证 + 三个公开 issue 佐证）
+- **最近更新**：2026-09-12
+- **置信度**：0.75（①② 本机路径验证 + 公开 issue 佐证；③ 为推测未直接验证——2026-09-12 按系列04 事实性修订软化）
 - **状态**：active
 
-> 系列六"runtime 不对等"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——"Computer Use 在哪"有两个答案：**分发态在 App bundle，运行态在用户目录**。三个边界证据：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③ SkyComputerUseClient 离开 Codex.app 进程树会因 code signature / launch context 失败——**App Bundle + native helper + 签名 + macOS TCC 权限 + 进程树是不可拆的整体**，standalone 与 bundled CLI 即使版本号相同能力也不同（"同源不同发行版"在能力层的表现）。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。
+> 系列六"runtime 不对等"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——"Computer Use 在哪"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是"不可拆整体"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（"同源不同发行版"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。
+
+### Claim: DCC 域实证——Computer Use 适合做"眼睛"不适合做"手"，批量制作交给应用 API
+
+- **来源**：[[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]]、[[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]]
+- **首次出现**：2026-09-07
+- **最近更新**：2026-09-12
+- **置信度**：0.75（实测三故障 + 后台路径独立验证）
+- **状态**：active
+
+> Blender 实战给"UI 层天然残缺"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做"眼睛"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到"正在打开的场景"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域"能点不等于应该点"、"DOM 虚拟化真解在数据层"同构。
 
 ## 冲突与演进
 
 - 2026-08-30：建页。系列一~七 + Orca 使用笔记二共 8 篇（2026-08-29~30 成文）提供完整素材；browser-use 不单独建页（包含关系即本页第一条 Claim）；action-loop、semantic-first-coordinate-fallback 按"避免同批次碎片化"作页内 Claims 收入。
 - 2026-09-04：注入系列七 08-30/08-31 三波修订的两条新 Claim——两层判断框架（端点层×harness 层，Codex+Azure 断供解剖 + Scout 镜像）与五条执行位置判定指纹（三模型对照实验）。"执行位置决定能力归属"从单层判断细化为两层判断。
 - 2026-09-06：注入 Codex Desktop 系列02/03/04/06 两条新 Claim——治理层断供（审批链路是第二条隐藏模型调用链，断供框架从两层扩展为工具层/目录层/治理层序列，源码常量实锤 + 实测修复闭环）与分发链解剖（分发态 App bundle / 运行态用户目录、feature flag ≠ payload、签名权限进程树不可拆整体）。confirmation_policies 源码原文为"四级确认分类"Claim（系列四）提供第一方源码印证。
+- 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正两处——分发链 Claim 的"签名/TCC/进程树不可拆整体"软化为"疑似紧耦合（推测，未直接验证）"并降置信度 0.8→0.75；治理层 Claim 补证据边界（修复为推断确认非抓包、404 归因为两证据推理）。同日注入 Blender DCC 域实证 Claim（三入口分工、Computer Use 三故障、"眼睛不做手"）。
 
 ## 关联概念
 
@@ -159,3 +170,5 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - [[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]] — 审批链路 404 排查与 override 修复实测、三种权限模式验证纪律
 - [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — 分发链解剖：plugin payload 路径、reconciliation 机制、三个边界证据
 - [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 审批模型常量与 override 代码路径、治理四件套字段、retirement_at Informational
+- [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — 三入口分工表、Computer Use 三故障实录
+- [[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]] — "眼睛不做手"结论的来源实操

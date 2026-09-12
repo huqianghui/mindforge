@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-09-06
-stats: "97 concepts, 19 methods, 8 decisions, 589 claims"
+stats: "98 concepts, 19 methods, 8 decisions, 598 claims"
 tags:
   - wiki
   - index
@@ -156,6 +156,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[grapheme-to-phoneme]] — G2P（Grapheme-to-Phoneme）：TTS 流水线的字素到音素转换
 - [[intelligent-dictation]] — 智能听写：从 Speech Recognition 到 Speech Writing 的范式转移
 - [[realtime-protocol-selection]] — 实时通信协议选型：Control Plane vs Data Plane 分离
+- [[compute-locus-spectrum]] — 计算位置光谱：内容复杂度 × 实时性来源决定画面计算发生在哪里（文档内 → 本地 JS/GPU → 云端 GPU 推流）
 
 ### AI 硬件与推理基础设施
 

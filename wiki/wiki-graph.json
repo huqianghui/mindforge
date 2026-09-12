@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-06",
+  "generated_at": "2026-09-12",
   "stats": {
-    "nodes": 124,
-    "links": 412,
+    "nodes": 125,
+    "links": 414,
     "orphan_links_removed": 0,
-    "claims": 589,
+    "claims": 598,
     "categories": 11
   },
   "nodes": [
@@ -1544,6 +1544,63 @@
       ]
     },
     {
+      "id": "compute-locus-spectrum",
+      "type": "concept",
+      "title": "Compute Locus Spectrum（计算位置光谱）",
+      "summary": "计算位置光谱回答一个选型问题：**一段动态画面的计算应该发生在哪里？** 判据是\"内容复杂度 × 实时性来源\"两个维度，答案落在一条四层光谱上：文档内（SVG，动画预先写死）→ 本地 JS 改文档（D3/ECharts，离散数据更新）→ 本地 JS/GPU 涂像素（Canvas/WebGL，本地实时数据流）→ 云端 GPU 渲染推流（数字人视频流，浏览器退化为显示器）。复杂度每上一个台阶，内容就离\"文件\"更远一步——SVG 是乐谱、Canvas 是舞台、云端推流是转播。\n\n该框架于 2026-08-26 动态SVG上下篇首次成形（Foundry Voice Live 页面 Inspector 实探），2026-09-07 Blender 系列在独立批次中补齐了光谱的\"本地重计算端\"（本地 DCC 渲染 1536 帧成片）与跨位面组合形态（云端 viseme 事件驱动本地渲染载体），复核阈值命中后升格建页。与 [[online-learning]] 页内的 storage-locus 判据（学到的知识存哪）同属\"位面判据\"家族：一个问计算在哪发生，一个问状态在哪持久化。",
+      "tags": [
+        "wiki",
+        "concept",
+        "rendering",
+        "frontend",
+        "avatar",
+        "dcc"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "内容复杂度 × 实时性来源决定画面计算发生在哪里——四层光谱各配\"内容存在哪/谁计算/实时性来源\"判据",
+          "source": "从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "同一个产品页面（Foundry Voice Live Playground）Inspector 实探挖出的三种动态元素，加上上篇的动态 SVG，构成完整谱系：① **文档自带动画**（动态 SVG）——内容在文件里（几何描述 + 动画声明），浏览器渲染引擎计算，无实时性（动画预排练）；② **本地 JS 改文档**（D3/ECharts）——内容在 DOM 里，JS 改描述浏览器画，实时性来自离散数据更新；③ **本地 JS 涂像素**（音波球、粒子、游戏，Canvas 2D/WebGL）——内容在像素缓冲区每帧重画，JS/GPU 自己当渲染器，实时性来自本地实时数据流（音频振幅、手势）；④ **云端渲染推流**（数字人，WebRTC + `<video>`）——内容根本不在本地、是一路视频，云端 GPU 集群（神经网络）计算，本地只解码。选型口诀：动画能提前写死 → SVG（单文件、可 git diff、LLM 可生成）；图形由数据生成、更新离散 → SVG + JS（只活在网页里）；每帧全画面重绘、本地实时数据驱动 → Canvas/WebGL（保存分发即降级为位图）；照片级、生成式内容 → 云端渲染 + 视频流（浏览器只是显示器）。"
+        },
+        {
+          "statement": "复杂度每上一个台阶，内容离\"文件\"更远一步——乐谱/舞台/转播三隐喻",
+          "source": "从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "SVG 是乐谱——内容即文档，谁拿到都能演奏；Canvas 是舞台——文档只搭台，演出全靠 JS 当场表演，散场不留痕（保存\"网页\"可复演，保存\"图\"即定格）；数字人连舞台都不要了，直接转播一场云端的演出。这条隐喻链解释了各层的可移植性与可归档性差异：越靠光谱左端，内容越接近\"可分发的文件\"（可嵌入、可 diff、可离线）；越靠右端，内容越绑定\"活的运行时\"（会话、算力、网络）。数字人三路线（云端视频合成 / 客户端 3D blendshape / Live2D 纸片人）是第 ④ 层内部的再分层——后两条路线的渲染载体又回到 `<canvas>`（WebGL），与音波球同一原理，只是画的内容从波浪线换成带骨骼的人物模型。"
+        },
+        {
+          "statement": "本地 DCC 渲染是光谱的\"本地重计算端\"实例——像素由渲染器输出、模型负责规划操作修正",
+          "source": "Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal Engine对比",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Blender 系列提供了浏览器之外的独立印证：AI 生成视频的工作流里像素不是模型直接输出的——**像素由渲染器输出，模型负责规划、操作和修正**（用户描述 → AI 写脚本/操作软件 → 布置资产 → 动画镜头 → 渲染 → 检查修改 → 输出）。虎式坦克 192 帧、面试动画 1536 帧全部在本地 EEVEE 渲染（分别约 2 分 39 秒 / 11 分 50 秒），与云端数字人推流恰构成\"AI 驱动画面\"的光谱两端：前者计算在本地 DCC、产物是可编辑工程 + 可分发视频文件；后者计算在云端 GPU、产物是一路只能观看的实时流。`.blend` 的\"可移植播放\"原则（动画烘焙成普通关键帧、播放不依赖脚本或 GPT）正是\"内容靠近文件端\"的收益——同一判据在浏览器域和 DCC 域给出一致的解释。"
+        },
+        {
+          "statement": "跨位面组合形态——云端语音 API 的 viseme 事件流驱动本地渲染载体，时间轴是两个位面的耦合接口",
+          "source": "Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "光谱不只有\"纯本地\"和\"纯云端\"两类：Azure Speech 的 viseme 路线是**声音在云端合成、画面在本地渲染**的跨位面组合——55 项面部系数按 60 FPS 从云端事件流输出，驱动本地渲染载体（three.js blendshape、Live2D 部件、或 Blender 形态键 60FPS→24fps 时间换算）。耦合接口是时间轴：事件时间用 100 纳秒 tick、必须与最终音频同一时间映射，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。这类组合的判据仍是同一条：哪部分内容复杂度高、实时性来自哪里，哪部分计算就落在对应位面——语音合成（生成式、重算力）留云端，形变渲染（结构已知、轻计算）留本地。"
+        }
+      ]
+    },
+    {
       "id": "computer-use",
       "type": "concept",
       "title": "Computer Use",
@@ -1558,7 +1615,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
+      "claims_count": 12,
       "avg_confidence": 0.77,
       "claims": [
         {
@@ -1646,19 +1703,28 @@
           "statement": "断供框架的第三层是治理层——harness 的隐藏模型调用跟 provider 走，接第三方要盘点全部模型调用而非只主模型",
           "source": "Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链",
           "first_seen": "2026-09-05",
-          "last_updated": "2026-09-06",
+          "last_updated": "2026-09-12",
           "confidence": 0.85,
           "status": "active",
           "evidence": "在\"端点层 × harness 层\"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。"
         },
         {
-          "statement": "Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树不可拆",
+          "statement": "Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树疑似紧耦合（推测）",
           "source": "Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链",
           "first_seen": "2026-09-05",
-          "last_updated": "2026-09-06",
-          "confidence": 0.8,
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
           "status": "active",
-          "evidence": "系列六\"runtime 不对等\"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——\"Computer Use 在哪\"有两个答案：**分发态在 App bundle，运行态在用户目录**。三个边界证据：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③ SkyComputerUseClient 离开 Codex.app 进程树会因 code signature / launch context 失败——**App Bundle + native helper + 签名 + macOS TCC 权限 + 进程树是不可拆的整体**，standalone 与 bundled CLI 即使版本号相同能力也不同（\"同源不同发行版\"在能力层的表现）。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。"
+          "evidence": "系列六\"runtime 不对等\"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——\"Computer Use 在哪\"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是\"不可拆整体\"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（\"同源不同发行版\"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。"
+        },
+        {
+          "statement": "DCC 域实证——Computer Use 适合做\"眼睛\"不适合做\"手\"，批量制作交给应用 API",
+          "source": "Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Blender 实战给\"UI 层天然残缺\"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做\"眼睛\"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到\"正在打开的场景\"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域\"能点不等于应该点\"、\"DOM 虚拟化真解在数据层\"同构。"
         }
       ]
     },
@@ -2705,8 +2771,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.74,
+      "claims_count": 8,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2770,6 +2836,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "内容工程师的工作本质是把评估侧从隐性做成显性：AI 负责生成（初稿、改写、变体），人负责评估（语感、品味、判断），而新闻编辑部的改稿流程（记者写→编辑改→主编签发）本来就是一套人肉 gen-eval 系统。关键警觉：\"你就是 reward model\"——AI 的谄媚（sycophancy）是模型在 hack 你的偏好信号，评估者若被生成者取悦收买，分离就名存实亡。这把分离原则从系统架构扩展到人机协作的角色纪律：评估侧的独立性需要人主动维护。"
+        },
+        {
+          "statement": "验证报告的两条陈述纪律——\"有能力执行\"与\"本次确实执行\"分开陈述、每个数字绑定它的测量对象",
+          "source": "Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "评估侧输出（验证报告）本身也有纪律，Blender 实战给出三个可复用样本：① 音频脚本保留了 `atempo` 变速分支，但本次所有片段实际压缩率都是 1.0——**\"代码有能力执行\"与\"本次确实执行了\"要分开陈述**；② 验证报告的 `bow_angle_degrees = 41.7` 测的是头部骨骼相对竖直方向的倾角，不能当成髋关节鞠躬角度写进结论——**数字要和它的测量对象绑定**；③ MCP 安装验证中\"协议握手成功 + 工具枚举成功 + 后台场景读取成功\"加起来仍不等于\"端到端可用\"——**每个\"已完成\"绑定它的验证范围**。这三条是分离原则在评估侧的输出规范：评估环节的价值不只在\"做了验证\"，还在验证结论的陈述精度——范围不明的\"已验证\"和对象错绑的数字，会让评估信号在下游被放大成错误结论。"
         }
       ]
     },
@@ -3784,8 +3859,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.71,
+      "claims_count": 8,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "MCP 存在严重 context 膨胀问题",
@@ -3849,6 +3924,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是\"跨应用接第三方工具\"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在\"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层\"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。"
+        },
+        {
+          "statement": "MCP 不贡献效率只贡献连接——效率来自它背后的应用 API；运行方式与分发方式是两个层面",
+          "source": "Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Blender 官方 MCP 安装实录给\"MCP=连接层\"的角色定位提供了 DCC 域强实证。**\"MCP 比 Computer Use 高效\"这个说法成立，但效率来自它背后能直接调用的 Blender API**（一次提交批量操作、读取对象数据、接收错误信息——纯界面操作做不到），MCP 本身只是连接协议；接入 MCP 也不会缩短渲染或模拟时间（那由应用设置与硬件决定）。MCP 的真实增量是把 API 路径接到\"正在打开的场景\"上——保留选中对象和编辑状态的对话式连续修改，这是一次性后台脚本给不了的。配套厘清两个常混层面：**\"本地进程\"说的是运行方式、\"npm 包\"说的是分发与安装方式**——npm 装的 MCP Server 启动后通常也是本地进程；MCP 只规定客户端与服务端如何通信，不规定实现语言与包仓库（官方 Blender MCP 是 Python 项目 + uv 启动）。且一条链路可以是两段不同通信：Codex↔MCP Server 走 MCP/STDIO，MCP Server↔Blender Add-on 走本机 TCP（端口 9876 是扩展桥接端口，不是供客户端填写的 HTTP MCP 地址）。与\"同产品内解耦协议\"Claim 同族——都是把 MCP 从\"能力来源\"还原为\"连接协议\"的角色澄清。"
         }
       ]
     },
@@ -4113,10 +4197,10 @@
           "statement": "Codex 的 harness 是按模型条目实例化的——Model/Harness 边界不是一条线而是一张按模型索引的表，co-design 证据从论断层升级到字段层",
           "source": "Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界",
           "first_seen": "2026-09-05",
-          "last_updated": "2026-09-06",
-          "confidence": 0.85,
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
           "status": "active",
-          "evidence": "`gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex\"每个模型自带一套 harness 切片\"vs Claude Code\"一套全局 harness 配多个模型\"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档而是**多 agent 委派开关**（实际推理档由 `multi_agent_reasoning_effort` 决定，client.rs:188-200）。源码核实带一处修正：`shell_type` 的 `shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias，运行时行为已归一化——co-design 的证据不是\"两个模型用两种 shell 工具\"，而是**枚举里留着 alias，说明工具形态跟着模型代际演进过（alias 是咬合史留在类型系统里的化石）**。这也回答了\"为什么第三方模型接进第一方 harness 总差口气\"：接上的只是推理端点，接不上的是九层里剩下的八层。"
+          "evidence": "`gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex\"每个模型自带一套 harness 切片\"vs Claude Code\"一套全局 harness 配多个模型\"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档，也不是委派开关——选 Ultra 时实际推理档回退到 `multi_agent_reasoning_effort`（client.rs:188-200，astra 配 `xhigh`），且仅当模型 `multi_agent_version=V2` 时才把委派策略从 ExplicitRequestOnly 切到 Proactive（multi_agents.rs `effective_multi_agent_mode()` 首行判 V2）——**委派能力的开关是 `multi_agent_version`，Ultra 是 V2 之下的 effort 回退 + 策略切换器**。关于 `shell_type`：`shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias、运行时行为已归一化（源码事实）——co-design 的证据不是\"两个模型用两种 shell 工具\"；但两点证据边界要守住：mini `shell_command` 的例证出自本机 Azure catalog 快照，官方 rust-v0.153.1 models.json 中 mini 已是 `unified_exec`（快照取值来源待考）；\"字段值差异记录各模型当年训练的工具形态、alias 是咬合史化石\"是**推测**，无源码注释或文档直接证实。这也回答了\"为什么第三方模型接进第一方 harness 总差口气\"：接上的只是推理端点，接不上的是九层里剩下的八层。"
         },
         {
           "statement": "工具调用形态是一条 Direct → CodeMode → CodeModeOnly 光谱——能力做成「更多的工具」vs 做成「一种语言」",
@@ -6022,7 +6106,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -6087,6 +6171,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已\"够用\"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。"
+        },
+        {
+          "statement": "音量包络驱动是\"简化口型同步\"与\"精细口型同步\"的分界——只认音量不认发音",
+          "source": "Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "简化口型同步的可复用实现：对每句音频按 60 Hz 计算音量包络（48 kHz 采样、每窗 800 采样求 RMS），用**第 88 百分位做自适应参考值**（不同声音音量不同，不能用固定阈值），减底噪门限归一到 0–1，再做 `**0.75` 幂次压缩（让小音量也有可见开口）；渲染端在每个视频帧对 60 Hz 包络线性插值驱动嘴部形态键（60 Hz → 24 fps）。效果与局限都清晰：说话张合、停顿回落、各角色各随自己的台词——但**只认音量不认发音**，\"b/p/m\"的闭唇、\"哦\"的圆唇它都不知道，强音不一定张大嘴。这就是分界线：精细口型必须走 viseme/面部系数路线（与最终音频对齐的时间轴数据），且渲染端要有对应控制面——只有三个形态键的角色接 55 项 BlendShapes 不叫精细同步。工程验收口径：24 fps 一帧约 41.7 毫秒，先把关键闭唇与可听辅音的偏移控制在 1–2 帧内（这是验收目标，不是人类感知阈值，也不是 API 精度保证）。"
         }
       ]
     },
@@ -6519,8 +6612,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
-      "avg_confidence": 0.76,
+      "claims_count": 13,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
@@ -6629,6 +6722,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是\"计算发生在哪里\"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为\"语音驱动画面\"，两者的计算位置相距整个光谱。"
+        },
+        {
+          "statement": "四种语音要求各有专属控制面——提示词表达表演意图、语音接口生成声音、声音自带的时间数据驱动嘴型",
+          "source": "Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步",
+          "first_seen": "2026-09-07",
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "语音驱动动画时四种容易混淆的要求各有专属控制面：**发音正确**（人名/多音字）靠发音词典、phoneme/say-as/sub；**声调正确**靠音素/拼音声调标记（Azure SAPI 记法如 `lin 2 yue 4`）；**韵律自然**靠声音选择、自然语言 instructions 或 SSML prosody/style/break；**口型对应**靠与最终音频对应的 viseme/面部系数或强制对齐——**\"请让嘴型同步\"这句提示词本身不会产生毫秒级时间表**，提高整句 pitch 也不会纠正读错的声调。两条 API 路线的分界：OpenAI Speech（`gpt-4o-mini-tts`）用自然语言 instructions 控制口音情绪语速，但只返回音频、无 phoneme/viseme 时间轴字段；Azure Speech `zh-CN` 支持 Viseme ID + **55 项面部系数按 60 FPS 输出**（进 24 fps 渲染端要做时间换算），事件时间用 100 纳秒 tick，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。配套六条同步工程规则：一次合成是一个完整版本（台词/参数/WAV/事件/音频 SHA-256 一起存档）、锁定声音之后再定嘴型、音频剪辑与事件用同一时间映射、区分片段起点和发声起点、统一视频时间基准、最终合成后再查偏移。这是\"数字人=viseme 时间轴\"Claim 的直接工程续证——viseme 不只驱动云端视频合成，同样可驱动本地渲染载体（Blender 形态键、three.js blendshape），前提是渲染端有对应控制面（\"把 55 项数值塞进 3 个形态键不叫精细同步\"）。"
         }
       ]
     },
@@ -8348,6 +8450,18 @@
       "target": "harness-portability-spectrum",
       "relation_type": "grounds",
       "description": "bundled payload 随第一方 App 分发 = 可移植性光谱\"不可移植端\"的实证"
+    },
+    {
+      "source": "compute-locus-spectrum",
+      "target": "voice-live-agent",
+      "relation_type": "grounds",
+      "description": "数字人三条技术路线的选型判据（计算发生在哪里）由本光谱提供"
+    },
+    {
+      "source": "compute-locus-spectrum",
+      "target": "online-learning",
+      "relation_type": "contrasts",
+      "description": "storage-locus（学到的知识存哪）与 compute-locus（画面在哪算）是\"位面判据\"家族在不同域的应用：一个问持久化位置、一个问计算位置"
     },
     {
       "source": "computer-use",
@@ -10445,7 +10559,8 @@
         "cascaded-pipeline",
         "grapheme-to-phoneme",
         "intelligent-dictation",
-        "realtime-protocol-selection"
+        "realtime-protocol-selection",
+        "compute-locus-spectrum"
       ]
     },
     {

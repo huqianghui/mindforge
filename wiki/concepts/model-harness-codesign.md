@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-09-06"
+updated: "2026-09-12"
 tags:
   - wiki
   - concept
@@ -133,11 +133,11 @@ related:
 
 - **来源**：[[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
 - **首次出现**：2026-09-05
-- **最近更新**：2026-09-06
-- **置信度**：0.85（rust-v0.153.1 源码逐字段核实 + 本机 Azure catalog 实测）
+- **最近更新**：2026-09-12
+- **置信度**：0.8（九层解剖与 alias 归一化为 rust-v0.153.1 源码逐字段核实；alias"化石"的历史归因为推测、shell_type 例证与官方源存在快照不一致——2026-09-12 按系列05/06 事实性修订降级）
 - **状态**：active
 
-> `gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex"每个模型自带一套 harness 切片"vs Claude Code"一套全局 harness 配多个模型"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档而是**多 agent 委派开关**（实际推理档由 `multi_agent_reasoning_effort` 决定，client.rs:188-200）。源码核实带一处修正：`shell_type` 的 `shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias，运行时行为已归一化——co-design 的证据不是"两个模型用两种 shell 工具"，而是**枚举里留着 alias，说明工具形态跟着模型代际演进过（alias 是咬合史留在类型系统里的化石）**。这也回答了"为什么第三方模型接进第一方 harness 总差口气"：接上的只是推理端点，接不上的是九层里剩下的八层。
+> `gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex"每个模型自带一套 harness 切片"vs Claude Code"一套全局 harness 配多个模型"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档，也不是委派开关——选 Ultra 时实际推理档回退到 `multi_agent_reasoning_effort`（client.rs:188-200，astra 配 `xhigh`），且仅当模型 `multi_agent_version=V2` 时才把委派策略从 ExplicitRequestOnly 切到 Proactive（multi_agents.rs `effective_multi_agent_mode()` 首行判 V2）——**委派能力的开关是 `multi_agent_version`，Ultra 是 V2 之下的 effort 回退 + 策略切换器**。关于 `shell_type`：`shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias、运行时行为已归一化（源码事实）——co-design 的证据不是"两个模型用两种 shell 工具"；但两点证据边界要守住：mini `shell_command` 的例证出自本机 Azure catalog 快照，官方 rust-v0.153.1 models.json 中 mini 已是 `unified_exec`（快照取值来源待考）；"字段值差异记录各模型当年训练的工具形态、alias 是咬合史化石"是**推测**，无源码注释或文档直接证实。这也回答了"为什么第三方模型接进第一方 harness 总差口气"：接上的只是推理端点，接不上的是九层里剩下的八层。
 
 ### Claim: 工具调用形态是一条 Direct → CodeMode → CodeModeOnly 光谱——能力做成「更多的工具」vs 做成「一种语言」
 
@@ -158,6 +158,7 @@ related:
 - 2026-08-16：注入 Graph Engineering 讨论的显式图 vs 隐式图对垒（Claude workflows 可审计脚本 vs Codex V2 加密委派）——第一方绑定之外的第二条路线分歧轴："图给人看还是给机器看"。
 - 2026-09-04：注入两条新维度——搜索挂载点决定覆盖面（系列七 Copilot 四挂载点 + Scout 挂靠闭环镜像，"服务端工具全家桶"Claim 的机制细化）与绑定×可分解十字定位（五平台横评，多模型阵营内部的第二维分层）。
 - 2026-09-06：注入 Codex Desktop 系列05/06 的最强续证——per-model harness 实例化（九层解剖 + schema 校验语义 + Ultra 委派开关 + shell_type alias 化石修正）与 tool_mode 光谱（Direct↔CodeModeOnly、CodeAct 动机、单一治理入口）。co-design 证据首次达到源码字段级（rust-v0.153.1 逐字段核实），"每模型自带 harness 切片 vs 全局 harness 配多模型"成为本页第一方绑定路线在数据结构层的核心表述。
+- 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正 per-model 实例化 Claim 两处——① Ultra 语义修正：委派能力的开关实为 `multi_agent_version`，Ultra 是 effort 回退（取 `multi_agent_reasoning_effort`）+ 仅 V2 下的委派策略切换器，此前"Ultra=多 agent 委派开关"表述不准确；② alias 化石归因降级：mini shell_type 例证出自本机快照且与官方 models.json 不一致，"代际化石"历史归因标注为推测，Claim 置信度 0.85→0.8。
 
 ## 关联概念
 

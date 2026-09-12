@@ -1,7 +1,7 @@
 ---
 title: "MCP vs CLI"
 created: "2026-04-13"
-updated: "2026-09-06"
+updated: "2026-09-12"
 tags:
   - wiki
   - concept
@@ -93,10 +93,21 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 > Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是"跨应用接第三方工具"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。
 
+### Claim: MCP 不贡献效率只贡献连接——效率来自它背后的应用 API；运行方式与分发方式是两个层面
+
+- **来源**：[[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]]
+- **首次出现**：2026-09-07
+- **最近更新**：2026-09-12
+- **置信度**：0.75（本机安装实录 + 官方手册核对）
+- **状态**：active
+
+> Blender 官方 MCP 安装实录给"MCP=连接层"的角色定位提供了 DCC 域强实证。**"MCP 比 Computer Use 高效"这个说法成立，但效率来自它背后能直接调用的 Blender API**（一次提交批量操作、读取对象数据、接收错误信息——纯界面操作做不到），MCP 本身只是连接协议；接入 MCP 也不会缩短渲染或模拟时间（那由应用设置与硬件决定）。MCP 的真实增量是把 API 路径接到"正在打开的场景"上——保留选中对象和编辑状态的对话式连续修改，这是一次性后台脚本给不了的。配套厘清两个常混层面：**"本地进程"说的是运行方式、"npm 包"说的是分发与安装方式**——npm 装的 MCP Server 启动后通常也是本地进程；MCP 只规定客户端与服务端如何通信，不规定实现语言与包仓库（官方 Blender MCP 是 Python 项目 + uv 启动）。且一条链路可以是两段不同通信：Codex↔MCP Server 走 MCP/STDIO，MCP Server↔Blender Add-on 走本机 TCP（端口 9876 是扩展桥接端口，不是供客户端填写的 HTTP MCP 地址）。与"同产品内解耦协议"Claim 同族——都是把 MCP 从"能力来源"还原为"连接协议"的角色澄清。
+
 ## 冲突与演进
 
 - 2026-08-30：注入 WebMCP 三层选型 Claim（Computer Use 系列四），页面由全 stale 注入 active 新证据；4 月的 MCP/CLI 二元对比 Claims 维持 stale，其结论被三层框架包含而非推翻。
 - 2026-09-06：注入"MCP 作同产品内解耦协议"Claim（Codex Desktop 系列04）——MCP 角色谱系从"外部工具接入"扩展出"产品内部组件分层"一档。
+- 2026-09-12：注入"MCP 不贡献效率只贡献连接"Claim（Blender 系列02）——效率归因与运行/分发两层面辨析，DCC 域回填。
 
 ## 关联概念
 
@@ -109,3 +120,4 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - [[MCP vs CLI — 为什么开发者在重新审视 MCP]] — MCP 与 CLI 对比分析
 - [[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]] — Azure Skills 的 MCP/CLI 分工实证
 - [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — MCP 作同产品内 CLI↔native helper 解耦协议的非典型用法
+- [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — MCP 效率归因辨析与运行/分发两层面

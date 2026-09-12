@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-08-30"
+updated: "2026-09-12"
 tags:
   - wiki
   - concept
@@ -146,9 +146,20 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是"计算发生在哪里"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为"语音驱动画面"，两者的计算位置相距整个光谱。
 
+### Claim: 四种语音要求各有专属控制面——提示词表达表演意图、语音接口生成声音、声音自带的时间数据驱动嘴型
+
+- **来源**：[[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]]
+- **首次出现**：2026-09-07
+- **最近更新**：2026-09-12
+- **置信度**：0.8（OpenAI/Azure Speech 官方文档核对，方案未实跑接入）
+- **状态**：active
+
+> 语音驱动动画时四种容易混淆的要求各有专属控制面：**发音正确**（人名/多音字）靠发音词典、phoneme/say-as/sub；**声调正确**靠音素/拼音声调标记（Azure SAPI 记法如 `lin 2 yue 4`）；**韵律自然**靠声音选择、自然语言 instructions 或 SSML prosody/style/break；**口型对应**靠与最终音频对应的 viseme/面部系数或强制对齐——**"请让嘴型同步"这句提示词本身不会产生毫秒级时间表**，提高整句 pitch 也不会纠正读错的声调。两条 API 路线的分界：OpenAI Speech（`gpt-4o-mini-tts`）用自然语言 instructions 控制口音情绪语速，但只返回音频、无 phoneme/viseme 时间轴字段；Azure Speech `zh-CN` 支持 Viseme ID + **55 项面部系数按 60 FPS 输出**（进 24 fps 渲染端要做时间换算），事件时间用 100 纳秒 tick，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。配套六条同步工程规则：一次合成是一个完整版本（台词/参数/WAV/事件/音频 SHA-256 一起存档）、锁定声音之后再定嘴型、音频剪辑与事件用同一时间映射、区分片段起点和发声起点、统一视频时间基准、最终合成后再查偏移。这是"数字人=viseme 时间轴"Claim 的直接工程续证——viseme 不只驱动云端视频合成，同样可驱动本地渲染载体（Blender 形态键、three.js blendshape），前提是渲染端有对应控制面（"把 55 项数值塞进 3 个形态键不叫精细同步"）。
+
 ## 冲突与演进
 
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
+- 2026-09-12：注入四种语音要求分层 + viseme 工程细节 Claim（Blender 系列04，官方文档核对）——"viseme 时间轴"Claim 获得跨域（DCC 渲染端）工程续证；计算位置判据归口新页 [[compute-locus-spectrum]]。
 
 ## 关联概念
 
@@ -161,3 +172,4 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级实践
 - [[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]] — WebRTC 双通道架构
 - [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 解耦后三种合作模式与选型光谱
+- [[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]] — 四种语音要求分层、两条 API 路线与 viseme 同步工程规则
