@@ -39,6 +39,6 @@ For technical leaders and practitioners aiming to build durable, high-performanc
 * **For Technical Product Leaders:** Frame the development of new AI features and products in terms of the "context supply chain." The strategic process should begin by identifying the critical data sources, tools, and knowledge required for the AI to perform its function at a high level. Prioritize the adoption of existing MCP servers or the in-house creation of new ones for core business systems (e.g., CRM, ERP, internal databases). Recognize that in the long run, the sustainable competitive advantage in AI will not be derived from access to a particular foundation model, but from the superior, proprietary, and context-rich environment that is engineered around it.12
 
 ---
-Prev ← [[04 - A Comparative Framework]]  
-Next → [[98 - Conclusion]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [04 - A Comparative Framework](04%20-%20A%20Comparative%20Framework.md)  
+Next → [98 - Conclusion](98%20-%20Conclusion.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

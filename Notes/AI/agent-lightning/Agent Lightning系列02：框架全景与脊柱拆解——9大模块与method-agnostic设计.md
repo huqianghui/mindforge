@@ -12,7 +12,7 @@ tags: [agent-lightning, architecture, framework, rollout, reward, tracer, store,
 
 ## 〇、为什么需要这一篇
 
-[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 把 **APO 单点**吃透了（实践接线 + beam search 内核 + 三轮噪声复盘）。但 APO 只是 `algorithm/` 槽位里的一个算法。要回答两个更上层的问题——
+[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 把 **APO 单点**吃透了（实践接线 + beam search 内核 + 三轮噪声复盘）。但 APO 只是 `algorithm/` 槽位里的一个算法。要回答两个更上层的问题——
 
 1. **客户已有一份 agent 代码，怎么快速接入框架？**
 2. **今天调 prompt（APO），明天想 RL/SFT 微调权重，能不能不重写？**
@@ -49,7 +49,7 @@ tags: [agent-lightning, architecture, framework, rollout, reward, tracer, store,
         └───────────────────────────────────────────────┘
 ```
 
-**控制反转（inversion of control）**：你定义的是「什么算好」的静态零件（agent 逻辑 + reward + 数据集），框架拥有的是「把好坏变成可迭代优化循环」的动态机制。这点 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] §五已经论证过，系列02 把它落到每个模块上。
+**控制反转（inversion of control）**：你定义的是「什么算好」的静态零件（agent 逻辑 + reward + 数据集），框架拥有的是「把好坏变成可迭代优化循环」的动态机制。这点 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) §五已经论证过，系列02 把它落到每个模块上。
 
 ---
 
@@ -201,9 +201,9 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
   - `examples/unsloth/sft_allinone.py`（Unsloth + LoRA + `trl.SFTTrainer`）；
   - `examples/azure/`（Azure OpenAI fine-tuning job，把成功 checkpoint 部署成新 deployment）。
 
-> 这纠正了 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 初版把 SFT 列为内置算法的说法。
+> 这纠正了 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 初版把 SFT 列为内置算法的说法。
 
-**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py:69`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是 [[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]] 的主题。
+**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py:69`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是 [Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md) 的主题。
 
 ---
 
@@ -219,7 +219,7 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 | 二   | **SFT** | 微调权重（拒绝采样，只学正样本） | reward>0 的成功轨迹             | 16GB 可跑（LoRA） | 把 pass@k 压成 pass@1，固化「已能偶尔做对」的行为 | 中      |
 | 三   | **RL**  | 微调权重（正负样本 + 探索）  | reward 信号（含失败）+ 大量 rollout | 40GB+         | 能探索出基座/SFT 都没有的新策略               | 最高、最不稳 |
 
-（APO 内核见 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]，SFT 内核见 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]。）
+（APO 内核见 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)，SFT 内核见 [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)。）
 
 ### 6.2 为什么 SFT 是必经一阶（而不是只留 APO + RL）
 
@@ -238,9 +238,9 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 - APO 到顶 → 把 algorithm 从 `APO` 换成 SFT 自定义算法，agent 代码不动；
 - SFT 到顶 → 再换成 `VERL`，agent 代码仍不动。
 
-**SFT 和 RL 还共享同一套 triplet 表示**（adapter 的 `TraceToTriplet`，§2.5）——这正是 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] §2.6 讲的「A 法逐轮记录 + reward 跨轮传播」存在的意义：同一份轨迹既喂得了 SFT，也喂得了 RL。
+**SFT 和 RL 还共享同一套 triplet 表示**（adapter 的 `TraceToTriplet`，§2.5）——这正是 [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) §2.6 讲的「A 法逐轮记录 + reward 跨轮传播」存在的意义：同一份轨迹既喂得了 SFT，也喂得了 RL。
 
-反过来想：**如果框架里没有 SFT**，当你 APO 到顶、想微调权重时，就得退出框架、自己手搭一条 SFT 数据管道（收集轨迹 → 转 triplet → tokenize → 训练）、训完再设法接回 RL——这正是 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] 手搭那条管道的全部痛苦。把 SFT 收进框架，是为了让你**在阶梯上往上爬而不必下框架**。
+反过来想：**如果框架里没有 SFT**，当你 APO 到顶、想微调权重时，就得退出框架、自己手搭一条 SFT 数据管道（收集轨迹 → 转 triplet → tokenize → 训练）、训完再设法接回 RL——这正是 [Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md) 手搭那条管道的全部痛苦。把 SFT 收进框架，是为了让你**在阶梯上往上爬而不必下框架**。
 
 ### 6.4 使用顺序口诀
 
@@ -273,12 +273,12 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 **系列后续计划**：
 
-- 系列 03（已完成）：[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 5 个 store 动作接入契约、algo/runner 生产者消费者分工、Trainer 自带内存 store 的一键运行
-- 系列 04（已完成）：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
-- 系列 05（已完成）：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]——SFT 剖析：reward 不喂答案而造标签、拒绝采样微调（RAFT/STaR）、自蒸馏 vs 强→弱蒸馏（Unsloth + LoRA，16GB 可跑）
-- 系列 06（已完成）：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]——SFT 实战：Azure GPU VM 装通 unsloth+vLLM、跑通 GSM-hard 拒绝采样自提升、数据全生命周期与终止/动态化
-- 系列 07（已完成）：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]——RL 基础、VERL vs TRL vs OpenRLHF 架构对比、agent-lightning 为何绑定 VERL（系统问题非算法问题）、标准架构数据流与竞品分析
+- 系列 03（已完成）：[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)——拆 `apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，讲清 5 个 store 动作接入契约、algo/runner 生产者消费者分工、Trainer 自带内存 store 的一键运行
+- 系列 04（已完成）：[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)——逐行打开 `apo.py`，戳破"算法=LLM调用+sorted"、"多 agent 协作是虚拟角色"，讲清难度迁移与核心使用场景
+- 系列 05（已完成）：[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)——SFT 剖析：reward 不喂答案而造标签、拒绝采样微调（RAFT/STaR）、自蒸馏 vs 强→弱蒸馏（Unsloth + LoRA，16GB 可跑）
+- 系列 06（已完成）：[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)——SFT 实战：Azure GPU VM 装通 unsloth+vLLM、跑通 GSM-hard 拒绝采样自提升、数据全生命周期与终止/动态化
+- 系列 07（已完成）：[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md)——RL 基础、VERL vs TRL vs OpenRLHF 架构对比、agent-lightning 为何绑定 VERL（系统问题非算法问题）、标准架构数据流与竞品分析
 - 系列 08：VERL 路线实战——在 GPU 环境真正跑通一次 RL 权重微调
 - 系列 09：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑）
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+> 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)

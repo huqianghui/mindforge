@@ -11,9 +11,9 @@ tags:
 
 # Evaluator 概念全景——从 rubric 词源到 Judge、Strategy、Criteria 三层评估模型
 
-> 本篇是 Evaluation 系列的**概念篇**，把 LLM/Agent 评估领域最容易混淆的一组术语——rubric、evaluator、judge、metric、criteria——梳理成一张正交的三层模型。姊妹篇 [[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]] 讨论评估信号如何进入训练闭环。
+> 本篇是 Evaluation 系列的**概念篇**，把 LLM/Agent 评估领域最容易混淆的一组术语——rubric、evaluator、judge、metric、criteria——梳理成一张正交的三层模型。姊妹篇 [从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号](从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号.md) 讨论评估信号如何进入训练闭环。
 >
-> 配套阅读：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]（L1 层的 LLM-judge rubric 打分正是本篇讨论的对象）。
+> 配套阅读：[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇](../agent-lightning/Prompt优化成熟度阶梯——从vibe%20check、LLM-judge到数据闭环：APO与SkillOpt前置篇.md)（L1 层的 LLM-judge rubric 打分正是本篇讨论的对象）。
 
 ## 一、先给结论：三层正交模型
 
@@ -122,7 +122,7 @@ Evaluator
 几个要点：
 
 - **Human 是校准锚点而非日常工具**——所有自动 judge 的终极指标都是 Agreement with Humans（与人工评估的一致率）。
-- **Rule 和 Metric 零噪声但覆盖窄**——能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用规则，这与 [[reward-design-three-inputs]] 中"确定性规则分白送零噪声信号"的原则一致。
+- **Rule 和 Metric 零噪声但覆盖窄**——能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用规则，这与 [reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md) 中"确定性规则分白送零噪声信号"的原则一致。
 - **LLM-as-a-Judge 是 2024 年后的主流方向**——通用 LLM 加一段评估 prompt 即可覆盖开放式任务，代表工作见第六节论文地图。
 - **Reward Model 与 LLM Judge 的边界正在模糊**——专训 reward model 走向 rubric 化、可解释化，通用 LLM judge 走向 RL 训练强化（如 J1），两条线在收敛。
 
@@ -217,7 +217,7 @@ Rubric Evaluator = LLM Judge + Rubric + Prompt Template + Scoring Logic
 | Explanation | 分数 + 理由 | 可解释性、审计、textual gradient 的原料 |
 | Structured JSON | `{"accuracy":5,"groundedness":4,"reason":"..."}` | 生产环境首选，可程序化消费 |
 
-值得注意：**Explanation 不只是给人看的**——在 APO 的文本梯度机制里，judge 给出的批评文字本身就是优化信号（见 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]）。
+值得注意：**Explanation 不只是给人看的**——在 APO 的文本梯度机制里，judge 给出的批评文字本身就是优化信号（见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](../agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)）。
 
 ## 七、Judge Reliability：2025 年后研究重心的转移
 
@@ -234,7 +234,7 @@ Rubric Evaluator = LLM Judge + Rubric + Prompt Template + Scoring Logic
 | Calibration | 该打 90 的打 70——分数与真实质量错位 |
 | Agreement with Humans | 与人工评估的一致率——所有 judge 的最终裁决指标 |
 
-工程含义：这些偏差就是 [[reward-design-three-inputs]] 里说的 judge 噪声 σ_noise 的具体来源。评估噪声会顺着训练管道放大——APO 摆动的第一大原因是评估噪声而非算法本身（见 [[automatic-prompt-optimization]]），所以"把 judge 做稳"（多次采样取均值、拆分维度降噪、rubric 锚点约束）是评估和优化共同的地基。
+工程含义：这些偏差就是 [reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md) 里说的 judge 噪声 σ_noise 的具体来源。评估噪声会顺着训练管道放大——APO 摆动的第一大原因是评估噪声而非算法本身（见 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md)），所以"把 judge 做稳"（多次采样取均值、拆分维度降噪、rubric 锚点约束）是评估和优化共同的地基。
 
 ## 八、论文地图
 
@@ -253,4 +253,4 @@ Rubric Evaluator = LLM Judge + Rubric + Prompt Template + Scoring Logic
 1. **三层正交**：Judge（谁评）× Strategy（怎么评）× Criteria（评什么）互相独立组合，绝大多数概念混乱来自把三层压成一层。
 2. **rubric 是 Layer 3 的组织形式**：维度 + 等级 + 打分说明的结构化评分细则；它是 judge 的配置而非 judge 本身——换 rubric 不换 judge，就得到新的评估器。
 3. **产品术语 ≈ 研究方法的打包**：Rubric Evaluator（Azure Foundry 等）= LLM Judge + Rubric + Prompt Template + Scoring Logic。
-4. **可靠性是当前主战场**：position/verbosity/self-preference 等偏差与校准问题，决定评估信号能否进一步充当训练信号——这正是姊妹篇 [[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]] 的主题。
+4. **可靠性是当前主战场**：position/verbosity/self-preference 等偏差与校准问题，决定评估信号能否进一步充当训练信号——这正是姊妹篇 [从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号](从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号.md) 的主题。

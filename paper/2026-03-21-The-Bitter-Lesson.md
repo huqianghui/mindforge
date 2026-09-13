@@ -5,7 +5,7 @@ tags: [paper-reading, bitter-lesson, reinforcement-learning, rich-sutton, AI-age
 paper: "The Bitter Lesson"
 authors: [Rich Sutton]
 source: http://www.incompleteideas.net/IncIdeas/BitterLesson.html
-related: "[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]]"
+related: "[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒](../Notes/AI/Claude-Code/Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md)"
 ---
 
 # 论文阅读：The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示
@@ -331,7 +331,7 @@ Bitter Lesson 对 AI 和对人说的其实是同一句话：
 
 **Sutton 自己就是最好的例子**——他不是靠某个具体算法不被淘汰的（TD Learning 已经 38 年了），而是靠**从具体经验中提炼元规律的能力**。The Bitter Lesson 本身就是元方法的产物：观察 70 年历史 → 提炼跨领域规律 → 指导未来决策。这个能力，AI 目前还不具备。
 
-这三种元能力在 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中有对应的实践路径：
+这三种元能力在 [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../Notes/AI/vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) 中有对应的实践路径：
 
 | 元能力 | Bitter Lesson 理论 | Harness Engineering 实践 |
 |---|---|---|
@@ -358,9 +358,9 @@ Bitter Lesson 对 AI 和对人说的其实是同一句话：
 
 ## 相关文章
 
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] — Coding Agent 的 12 层 Harness 解构
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — Harness Engineering 的实践框架
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Subagent context 隔离架构
+- [Claude Code系列02：learn-claude-code——打开Coding Agent黑盒](../Notes/AI/Claude-Code/Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md) — Coding Agent 的 12 层 Harness 解构
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../Notes/AI/vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) — Harness Engineering 的实践框架
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Notes/AI/Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) — Subagent context 隔离架构
 
 ## 参考资料
 

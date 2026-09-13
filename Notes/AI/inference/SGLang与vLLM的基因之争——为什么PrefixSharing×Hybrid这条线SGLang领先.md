@@ -6,7 +6,7 @@ tags: [inference, sglang, vllm, radixattention, pagedattention, mamba-radix-cach
 
 # SGLang 与 vLLM 的基因之争——为什么 Prefix Sharing × Hybrid 这条线 SGLang 领先
 
-> 承接 [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]] 的框架对比，把一个更本质的问题讲透：**为什么在"共享前缀 + Hybrid（Attention + Mamba/线性）"这条线上，SGLang 比 vLLM 领先一步？** 这不是巧合，而是两套框架**设计基因**的差异在 Hybrid 时代被放大。
+> 承接 [线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md) 的框架对比，把一个更本质的问题讲透：**为什么在"共享前缀 + Hybrid（Attention + Mamba/线性）"这条线上，SGLang 比 vLLM 领先一步？** 这不是巧合，而是两套框架**设计基因**的差异在 Hybrid 时代被放大。
 ---
 
 ## 1. 一个尖锐的问题
@@ -122,4 +122,4 @@ RadixAttention 从第一天就是为"多请求前缀重叠"设计的，而 Qwen3
 - [SGLang Issue #10438: support prefix caching for qwen 3 next](https://github.com/sgl-project/sglang/issues/10438)
 - [SGLang Qwen3.5 Cookbook](https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.5)
 - [阿里云 Tair × SGLang: Hybrid Model Support 方案解析](https://www.alibabacloud.com/blog/hybrid-model-support-%7C-sglangs-support-scheme-for-hybrid-architecture-models-like-mamba-transformer_602857)
-- 系列文章：[[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]]
+- 系列文章：[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)

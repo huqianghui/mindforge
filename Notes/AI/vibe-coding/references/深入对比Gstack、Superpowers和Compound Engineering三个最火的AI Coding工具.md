@@ -10,7 +10,7 @@ author: 十方精舍
 
 > 原文来源：[十方精舍](https://mp.weixin.qq.com/s/_hqzV6vGuBf2-95DfQyR2w)
 >
-> 本文作为外部参考案例存档，从 Anthropic「长效智能体」博客的四层职责框架出发，对比 gstack、Superpowers、CE 三个工具的定位差异，并给出组合使用的最佳实践。与 [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] 和 [[Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚]] 形成互补视角。
+> 本文作为外部参考案例存档，从 Anthropic「长效智能体」博客的四层职责框架出发，对比 gstack、Superpowers、CE 三个工具的定位差异，并给出组合使用的最佳实践。与 [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](../Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) 和 [Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚](Claude%20Code双插件最佳搭配：superpowers当大脑，gstack当手脚.md) 形成互补视角。
 
 ---
 
@@ -153,7 +153,7 @@ CE 的 `/ce:compound` 机制非常值得借鉴。在企业级落地中，如果�
 
 ## 相关文章
 
-- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 在两层基础上加 GSD 外层的三层架构设计，含 CE 正交分析
-- [[Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚]] — superpowers + gstack 双插件搭配的具体实操
-- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] — CE 知识复利与 Claude Code Memory 的重叠分析
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 更多流程框架的选择与组合
+- [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](../Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) — 在两层基础上加 GSD 外层的三层架构设计，含 CE 正交分析
+- [Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚](Claude%20Code双插件最佳搭配：superpowers当大脑，gstack当手脚.md) — superpowers + gstack 双插件搭配的具体实操
+- [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](../Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) — CE 知识复利与 Claude Code Memory 的重叠分析
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) — 更多流程框架的选择与组合

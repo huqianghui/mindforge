@@ -232,7 +232,7 @@ intent → graph → execution
 
 ## 八、与 Harness Engineering 的关系——State Layer 已就绪，Selection Layer 待补全
 
-[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 一文系统阐述了 AI Harness Engineering 的五大支柱和实践框架。将 Harness Engineering 放入本文的三层架构中审视，会发现一个关键的结构性对应关系：
+[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) 一文系统阐述了 AI Harness Engineering 的五大支柱和实践框架。将 Harness Engineering 放入本文的三层架构中审视，会发现一个关键的结构性对应关系：
 
 ### Harness Engineering = 优秀的 State Layer 实践
 
@@ -348,8 +348,8 @@ Granularity Layer 的职责：确保 State Layer 中的每个 unit 都是 **cont
 
 #### 相关笔记
 
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — State Layer 的系统实践
-- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 的全流程
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Agent/Subagent 架构中的 context 传递
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 各框架的定位与组合策略
-- [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] — Selection Layer 时间窗口的理论基础
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) — State Layer 的系统实践
+- [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md) — 五层 AI pipeline 的全流程
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) — Agent/Subagent 架构中的 context 传递
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) — 各框架的定位与组合策略
+- [The Bitter Lesson](../../../paper/2026-03-21-The-Bitter-Lesson.md) — Selection Layer 时间窗口的理论基础

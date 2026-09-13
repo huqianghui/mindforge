@@ -58,6 +58,6 @@ An autonomous agent typically operates on a continuous loop of observing its env
 3. However, a standardized interface to the world is not sufficient for intelligent behavior. The agent still requires a robust internal process to "Orient" itself (by analyzing the observed state in the context of its goals and memory) and to "Decide" on the next best action. This is precisely the role of the Context Engineering system. It takes the structured inputs provided by the MCP interface, combines them with its internal memory and high-level instructions, and assembles the final context payload that enables the LLM to make the next reasoned decision. MCP provides the standardized inputs and outputs, while Context Engineering provides the cognitive processing in between.
 
 ---
-Prev ← [[02 - Context Engineering]]  
-Next → [[04 - A Comparative Framework]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [02 - Context Engineering](02%20-%20Context%20Engineering.md)  
+Next → [04 - A Comparative Framework](04%20-%20A%20Comparative%20Framework.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

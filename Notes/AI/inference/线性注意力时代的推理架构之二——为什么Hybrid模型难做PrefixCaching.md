@@ -6,9 +6,9 @@ tags: [inference, prefix-caching, kv-cache, ssm-state, mamba, gated-deltanet, hy
 
 # 线性注意力时代的推理架构 · 之二——为什么 Hybrid 模型难做 Prefix Caching
 
-> 系列第二篇。承接 [[线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构]] 的架构差异，回答核心问题：**为什么 Qwen3.5 这类 Hybrid 模型的 prefix cache 会命中率归零？**
+> 系列第二篇。承接 [线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构](线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md) 的架构差异，回答核心问题：**为什么 Qwen3.5 这类 Hybrid 模型的 prefix cache 会命中率归零？**
 >
-> 框架层面如何应对见 [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]]。系列持续更新。
+> 框架层面如何应对见 [线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)。系列持续更新。
 
 ---
 
@@ -86,7 +86,7 @@ SSM / 线性注意力的前向 kernel 按 **chunk** 计算，只能在**完整 c
 - Hybrid 模型要同时管两套异构缓存，且对齐策略会牺牲短请求命中率。
 - 多模态再把公共前缀截断到图像之前，与架构问题叠加。
 
-下一篇 [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]]：看 vLLM 的 Hybrid KV Cache Manager 与 SGLang 的 MambaRadixCache 各自做到哪一步，以及实战调优与压测计划。
+下一篇 [线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)：看 vLLM 的 Hybrid KV Cache Manager 与 SGLang 的 MambaRadixCache 各自做到哪一步，以及实战调优与压测计划。
 
 ---
 

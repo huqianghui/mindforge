@@ -18,7 +18,7 @@ tags:
 
 ## 引言：一个老疑问的物理答案
 
-[[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]] 实测过一个现象：**standalone Codex CLI 没有 Computer Use，而 Codex Desktop 有**。当时的结论是"runtime 不对等"——本篇把这个"不对等"的物理位置找到了：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里。这正是系列03 组合公式（ChatGPT 壳 + bundled CLI + bundled plugins）第三元的具体解剖。
+[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位](../../AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md) 实测过一个现象：**standalone Codex CLI 没有 Computer Use，而 Codex Desktop 有**。当时的结论是"runtime 不对等"——本篇把这个"不对等"的物理位置找到了：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里。这正是系列03 组合公式（ChatGPT 壳 + bundled CLI + bundled plugins）第三元的具体解剖。
 
 ## 一、藏身目录（本机已验证）
 
@@ -129,11 +129,11 @@ reconcile 是否落地会因机器/渠道而异：[openai/codex#26451](https://g
                                                   macOS
 ```
 
-**App Bundle 本身就是一个 runtime distribution**：UI 壳、agent 引擎、能力 payload 三者版本独立、能力独立，只是被 Apple 的 Bundle 机制捆成一个"文件"分发（三版本号的完整论证见 [[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]）。这个视角下，系列各篇的结论可以统一起来：
+**App Bundle 本身就是一个 runtime distribution**：UI 壳、agent 引擎、能力 payload 三者版本独立、能力独立，只是被 Apple 的 Bundle 机制捆成一个"文件"分发（三版本号的完整论证见 [Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)）。这个视角下，系列各篇的结论可以统一起来：
 
 - 系列01 的 **schema 版本锁定**——锁的是三元组合里 bundled CLI 那一元的版本；
 - 系列六（Computer Use与Browser Use）的 **CLI 与 App 能力分界**——分界线就是 bundled plugins 这一元在不在场；
-- [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的路线之争——Codex 把 harness 的能力扩展做成了 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发，这是第一方绑定在**分发层**的形态（模型层、工具声明层、治理层之外的又一层）。
+- [Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的路线之争——Codex 把 harness 的能力扩展做成了 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发，这是第一方绑定在**分发层**的形态（模型层、工具声明层、治理层之外的又一层）。
 
 ## 小结
 
@@ -142,7 +142,7 @@ reconcile 是否落地会因机器/渠道而异：[openai/codex#26451](https://g
 3. **签名/权限/进程树可能是耦合的（推测，未直接验证）**：推测 native helper 离开 App 进程树可能起不来——若成立，能力绑定在 App 环境而非 CLI 版本；三个引用 issue 与本机实测都未直接验证这个故障模式。
 4. **`Contents/PlugIns/` 与 `Contents/Resources/plugins/` 是两套机制**：前者是 macOS 系统 plugin，后者才是 Codex agent plugin marketplace。
 
-下一步可挖的方向：把 computer-use plugin 从 `plugin.json` → `.mcp.json` → `skills/` → `SkyComputerUseClient` 完整逆向一遍，画出 Codex Computer Use 的内部架构图——与 Orca 补位方案（[[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]）做同层对比。
+下一步可挖的方向：把 computer-use plugin 从 `plugin.json` → `.mcp.json` → `skills/` → `SkyComputerUseClient` 完整逆向一遍，画出 Codex Computer Use 的内部架构图——与 Orca 补位方案（[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践](../Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)）做同层对比。
 
 ## 参考
 
@@ -150,4 +150,4 @@ reconcile 是否落地会因机器/渠道而异：[openai/codex#26451](https://g
 - [openai/codex#18258 — App bundle 内 openai-bundled/computer-use plugin 目录报告](https://github.com/openai/codex/issues/18258)
 - [openai/codex#26451 — computer-use plugin 内部结构与 bundled marketplace reconciliation 日志](https://github.com/openai/codex/issues/26451)
 - [openai/codex#31160 — Intel x64 与 Apple Silicon 构建的 Computer Use payload 差异](https://github.com/openai/codex/issues/31160)
-- 相关笔记：[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]｜[[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]]｜[[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]
+- 相关笔记：[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)｜[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位](../../AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)｜[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践](../Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)

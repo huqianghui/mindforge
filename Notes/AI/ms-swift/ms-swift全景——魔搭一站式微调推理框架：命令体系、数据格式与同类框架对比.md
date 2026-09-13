@@ -37,7 +37,7 @@ ms-swift 是魔搭社区官方的**大模型与多模态大模型一站式微调
 - 量化：GPTQ、AWQ、BNB、FP8
 - 零代码：提供 Web-UI 完成训练/推理/评测/量化全流程
 
-**架构本质**：ms-swift 自己不造轮子，训练底层封装 transformers/PEFT/DeepSpeed/Megatron，推理底层封装 vLLM/SGLang/LMDeploy，自身只做**统一的参数接口、模型注册和 chat template 适配**。这与 [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑|verl]] 的思路一致——框架做编排，推理交给专业引擎。
+**架构本质**：ms-swift 自己不造轮子，训练底层封装 transformers/PEFT/DeepSpeed/Megatron，推理底层封装 vLLM/SGLang/LMDeploy，自身只做**统一的参数接口、模型注册和 chat template 适配**。这与 [verl](../agent-lightning/Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md) 的思路一致——框架做编排，推理交给专业引擎。
 
 ## 3. 命令体系
 
@@ -195,9 +195,9 @@ swift rlhf --rlhf_type grpo \
 **与 verl 不是一个赛道**：[verl](https://github.com/volcengine/verl)（22.4k）是 RL 训练系统（rollout-reward-update 循环、训推分离、HybridFlow 编排），而 ms-swift/LLaMA-Factory 虽有 GRPO/DPO 支持，核心定位仍是 SFT/LoRA 微调工具箱——ms-swift 的 GRPO rollout 可以挂外部 vLLM server，但规模和灵活性与 verl 不在一个量级。选型直觉：
 
 - 轻量微调 + 顺带跑个 GRPO → ms-swift / LLaMA-Factory
-- 认真做 agentic RL、大规模 RLVR → verl（详见 [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]）
+- 认真做 agentic RL、大规模 RLVR → verl（详见 [Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层](../agent-lightning/Slime%20vs%20VERL%20深度架构对比——数据流哲学、组件选型与训练推理栈分层.md)）
 
-**与 prompt 优化也不是一个赛道**：如果目标是优化 prompt 而非权重（APO/DSPy/TextGrad 路线），数据准备方向正好相反——prompt 模板要**从样本中剥离**出来作为优化对象，jsonl 每行只留变量输入 + ground truth，由 agent 代码运行时组装。而 ms-swift 的格式要求模板**渲染进** user content。详见 [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]。
+**与 prompt 优化也不是一个赛道**：如果目标是优化 prompt 而非权重（APO/DSPy/TextGrad 路线），数据准备方向正好相反——prompt 模板要**从样本中剥离**出来作为优化对象，jsonl 每行只留变量输入 + ground truth，由 agent 代码运行时组装。而 ms-swift 的格式要求模板**渲染进** user content。详见 [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](../agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)。
 
 ## 6. 小结
 
@@ -211,4 +211,4 @@ swift rlhf --rlhf_type grpo \
 - [modelscope/ms-swift](https://github.com/modelscope/ms-swift)
 - [ms-swift 官方文档](https://swift.readthedocs.io/)
 - [MS-SWIFT — Qwen 官方训练文档](https://qwen.readthedocs.io/en/latest/training/ms_swift.html)
-- 关联文章：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]、[[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]
+- 关联文章：[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](../agent-lightning/Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md)、[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架](../agent-lightning/Agent%20Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架.md)

@@ -56,6 +56,6 @@ The adoption of systematic Context Engineering has moved beyond theory to delive
   **Cintas** are using this approach to build internal knowledge centers that provide a single, reliable source of truth for their sales and customer service teams.15 By retrieving and synthesizing context from multiple internal systems, these AI-powered assistants ensure that both employees and customers receive consistent, accurate, and high-quality responses, leading to faster issue resolution and improved operational efficiency.14
 
 ---
-Prev ← [[01 - Defining the Modern AI Interaction Paradigm]]  
-Next → [[03 - Model Context Protocol (MCP)]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [01 - Defining the Modern AI Interaction Paradigm](01%20-%20Defining%20the%20Modern%20AI%20Interaction%20Paradigm.md)  
+Next → [03 - Model Context Protocol (MCP)](03%20-%20Model%20Context%20Protocol%20%28MCP%29.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

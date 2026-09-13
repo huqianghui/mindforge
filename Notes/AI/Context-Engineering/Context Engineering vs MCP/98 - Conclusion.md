@@ -15,6 +15,6 @@ Context Engineering and the Model Context Protocol are not competing concepts bu
 The disciplined practice of Context Engineering provides the cognitive architecture, while the widespread adoption of MCP provides the standardized nervous system. Their combined evolution is the critical catalyst that will unlock the true potential of agentic AI, enabling the transition from isolated, knowledgeable language models to interconnected, intelligent systems capable of performing complex, meaningful work in the digital world. For organizations and practitioners, mastering both the discipline and the protocol is not just a technical advantage—it is a strategic necessity for building the future of intelligent applications.
 
 ---
-Prev ← [[05 - Strategic Implications and Future Outlook]]  
-Next → [[99 - Works Cited]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [05 - Strategic Implications and Future Outlook](05%20-%20Strategic%20Implications%20and%20Future%20Outlook.md)  
+Next → [99 - Works Cited](99%20-%20Works%20Cited.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

@@ -285,6 +285,6 @@ Salesforce 论文的核心结论仍然成立——在自托管端到端音频生
 
 ## 相关文章
 
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent 架构设计
-- [[Agent经典范式与人类问题处理模式的映射]] — Agent 范式分类
-- [[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]] — Azure AI 生态
+- [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](../../Notes/AI/agent/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) — Agent 架构设计
+- [Agent经典范式与人类问题处理模式的映射](../../Notes/AI/agent/Agent经典范式与人类问题处理模式的映射.md) — Agent 范式分类
+- [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](../Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) — Azure AI 生态

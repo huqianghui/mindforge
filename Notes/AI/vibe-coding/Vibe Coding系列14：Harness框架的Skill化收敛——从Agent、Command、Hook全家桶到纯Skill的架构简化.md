@@ -17,7 +17,7 @@ tags:
 # Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化
 
 > 本文源于 2026-08-20 对 SDLC framework 更新的调查讨论：重新翻看 Superpowers、GSD、gstack 等框架的最新版本时，发现一个共同趋势——**它们都变简单了**。早期插件动辄自带 agent 定义、command 编排、hook 链、workflow，现在几乎只剩一样东西：一系列 skill。这不是偶然的巧合，而是外层 Harness 生态的一次结构性收敛。
-> 前置阅读：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移|系列05（Skill Runtime 范式迁移）]]、[[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|系列08（三层插件架构）]]、[[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读|Claude Code 系列07（内层/外层 Harness 分层）]]。
+> 前置阅读：[系列05（Skill Runtime 范式迁移）](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)、[系列08（三层插件架构）](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md)、[Claude Code 系列07（内层/外层 Harness 分层）](../Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md)。
 
 ---
 
@@ -50,7 +50,7 @@ Skill 数量一个没少，但 agent、command 目录整体消失，hook 收敛�
 | hook 链实现流程门禁 | **原生 hooks 体系 + 权限系统 + 沙箱** |
 | 自建状态文件追踪进度 | **Session 持久化、memory 体系** |
 
-插件再自带一套，就是在 50 万行的内层 Harness 上重复建设（见 [[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读|系列07]] 的 6400 vs 500000 分析）。于是 Superpowers 的 `subagent-driven-development`、`dispatching-parallel-agents` 这些 skill 的做法变成了：**用 markdown 教模型怎么用宿主的原生能力**，而不是自己实现一套。6.3.0 的 release notes 里能看到这种寄生式演进的细节——"Subagent waits are event-driven instead of poll-heavy, spawns pin model and reasoning effort explicitly"——skill 文本在跟随宿主 API 的演进而调整措辞，而不是维护自己的执行代码。
+插件再自带一套，就是在 50 万行的内层 Harness 上重复建设（见 [系列07](../Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md) 的 6400 vs 500000 分析）。于是 Superpowers 的 `subagent-driven-development`、`dispatching-parallel-agents` 这些 skill 的做法变成了：**用 markdown 教模型怎么用宿主的原生能力**，而不是自己实现一套。6.3.0 的 release notes 里能看到这种寄生式演进的细节——"Subagent waits are event-driven instead of poll-heavy, spawns pin model and reasoning effort explicitly"——skill 文本在跟随宿主 API 的演进而调整措辞，而不是维护自己的执行代码。
 
 一句话：**基础设施归宿主，方法论归插件，分层终于清楚了。**
 
@@ -62,11 +62,11 @@ Skill 数量一个没少，但 agent、command 目录整体消失，hook 收敛�
 - **提示词教育比状态机管用**。Superpowers 6.x 的演进方向很说明问题：release notes 里大量篇幅在打磨 skill 文本的"rationalization table"（预判模型会用什么借口跳过 TDD，逐条反驳）——用**说服**替代**强制**，并且是拿 eval campaign 实测过的（删掉 TDD 的"Why Order Matters"反驳段后，test-first 行为从 8/10 掉到 5/10，于是改为折叠进表格而不是删除）；
 - **强制留给真正不可逆的操作**。6.3.0 把"controller 遇到 plan 冲突就停下等人"改成"记录裁决继续干活，只有破坏性/不可逆操作才停"——一次捐赠的 session 曾因一个 controller 本可自决的问题空等九小时。门禁在收窄到真正需要人类的地方。
 
-这正是 [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控|系列13]] 的控制论判断：调节器的复杂度要匹配被调节系统的不确定性——模型的不确定性下降了，外层调节器自然该降复杂度。
+这正是 [系列13](Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) 的控制论判断：调节器的复杂度要匹配被调节系统的不确定性——模型的不确定性下降了，外层调节器自然该降复杂度。
 
 ## 3. 第三个原因：Skill 是唯一跨 harness 可移植的载体
 
-Agent 定义、command 协议、hook 事件模型都是**某个 harness 的实现细节**——换个宿主就全部作废（[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权|Foundry Skills 一文]]的结论：hook 的可移植性几乎为零）。而 skill 只是"给模型看的 markdown"，是可移植性最高的资产形态。
+Agent 定义、command 协议、hook 事件模型都是**某个 harness 的实现细节**——换个宿主就全部作废（[Foundry Skills 一文](../../../Azure/Foundary-Agent/Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)的结论：hook 的可移植性几乎为零）。而 skill 只是"给模型看的 markdown"，是可移植性最高的资产形态。
 
 Superpowers 6.3.0 的 release notes 明确列出了 Harness Support 章节：Hermes Agent、Grok Build CLI、Antigravity、Pi、Codex……同一套 skills 通过不同的 bootstrap 机制注入到各家 harness。仓库里同时存在 `CLAUDE.md`、`AGENTS.md`、`GEMINI.md` 三个入口文件也是同一信号——**一份方法论，多个宿主**。一旦把资产押注在 skill 上，agent/command/hook 这些绑定单一宿主的机制就成了拖累跨平台发布的死重。
 
@@ -99,7 +99,7 @@ Agent/hook/command 是代码，有兼容性矩阵、有平台差异、有 bug。
 └─────────────────────────────────────────────┘
 ```
 
-对照 [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践|系列08]] 当时的"三层插件架构"：那时三个框架各自还带着机制层的私货，组合时要处理 hook 冲突、command 命名空间打架；现在它们都退到纯方法论层，组合成本大幅下降——skill 天然可叠加，冲突至多是"两份文档观点不一致"，而不是"两个 hook 抢同一个事件"。
+对照 [系列08](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) 当时的"三层插件架构"：那时三个框架各自还带着机制层的私货，组合时要处理 hook 冲突、command 命名空间打架；现在它们都退到纯方法论层，组合成本大幅下降——skill 天然可叠加，冲突至多是"两份文档观点不一致"，而不是"两个 hook 抢同一个事件"。
 
 这也意味着框架之间的竞争维度变了：**不再比谁的机制更精巧，而是比谁的方法论文本更能改变模型行为**——Superpowers 用 eval campaign 微测试每一段文字的存废，就是这个新竞争维度下的打法。方法论质量成了唯一护城河。
 
@@ -198,8 +198,8 @@ Main Agent（主会话本身，天然存在的顶层执行体，不在 .claude/a
 
 - 本地插件缓存实证：`~/.claude/plugins/cache/claude-plugins-official/superpowers/`（5.0.2 / 5.0.7 / 6.3.0 三版本目录对比）
 - Superpowers 6.3.0 RELEASE-NOTES.md（controller 自决、批量 dispatch、rationalization table 微测试、Windows hook 修复、多 harness 支持）
-- [[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]] — 内层/外层 Harness 分层框架
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Skill Runtime 范式的先导判断
-- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 收敛前的三框架组合形态
-- [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] — 调节器复杂度匹配论
-- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — skill 可移植性与 hook 归零结论
+- [Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读](../Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md) — 内层/外层 Harness 分层框架
+- [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) — Skill Runtime 范式的先导判断
+- [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) — 收敛前的三框架组合形态
+- [Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控](Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) — 调节器复杂度匹配论
+- [Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权](../../../Azure/Foundary-Agent/Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md) — skill 可移植性与 hook 归零结论

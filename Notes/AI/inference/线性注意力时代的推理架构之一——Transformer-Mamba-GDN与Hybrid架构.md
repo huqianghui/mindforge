@@ -8,7 +8,7 @@ tags: [inference, architecture, transformer, mamba, ssm, gated-deltanet, hybrid-
 
 > 系列开篇。从一个"升级后缓存命中率归零"的生产问题切入，理清 LLM 架构正在发生的范式迁移：从纯 Transformer 走向 **Hybrid（线性注意力 + 全注意力）**。
 >
-> 本篇聚焦**架构本身**；缓存机制为何失效见 [[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching]]，框架支持对比见 [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]]。
+> 本篇聚焦**架构本身**；缓存机制为何失效见 [线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching](线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)，框架支持对比见 [线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)。
 >
 > 系列持续更新。
 
@@ -89,7 +89,7 @@ S_t = g_t · S_{t-1} + k_t ⊗ [ β_t · (v_t − (g_t · S_{t-1})ᵀ k_t) ]
 - 三类架构的本质差异在**"记忆怎么存"**：Transformer = 增长的 KV cache；Mamba/GDN = 固定大小循环状态；Hybrid = 两者交错。
 - Qwen3 → Qwen3.5 的"缓存归零"不是 bug，而是架构从纯 Transformer 迁到 Hybrid 的**必然副作用**——prefix caching 这套为 token 级 KV 设计的机制，遇到循环状态就失效了。
 
-下一篇 [[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching]] 展开三个根本障碍，以及多模态如何再叠加一层命中率杀手。
+下一篇 [线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching](线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md) 展开三个根本障碍，以及多模态如何再叠加一层命中率杀手。
 
 ---
 

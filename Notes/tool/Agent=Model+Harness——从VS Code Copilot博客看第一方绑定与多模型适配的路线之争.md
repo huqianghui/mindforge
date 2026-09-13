@@ -32,7 +32,7 @@ tags: [agent, harness, harness-engineering, claude-code, vscode, github-copilot,
 
 循环受 loop-control 约束：tool-call 上限、round 间取消检查、stop hooks（扩展点，可以检查 agent 状态后放行结束或推它继续干）。**prompt 每轮重建**——模型永远看到 workspace 的最新状态；历史太长时 harness 负责把早期 round 压缩成 summary（conversation summarization），避免撞 context window 上限。
 
-这一套与 [[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]] 里拆解的 Claude Code 内循环结构几乎一一对应——行业在 harness 架构上已经收敛。
+这一套与 [Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读](../AI/Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md) 里拆解的 Claude Code 内循环结构几乎一一对应——行业在 harness 架构上已经收敛。
 
 ---
 
@@ -138,7 +138,7 @@ Claude Code + Claude 系列的优势不在"适配做得快"，而在**根本不�
 
 一个可用的类比框架：这是 **Apple（垂直一体化）vs Windows/Android（水平生态）** 的老故事在 agent 层的重演。垂直一体化在体验的绝对上限上赢，水平生态在覆盖面、选择权和生态多样性上赢。历史的答案是两者长期共存，各占不同的用户群——没有理由认为 coding agent 会例外。
 
-真正的开放问题是：**随着 agentic RL 把"模型在自家 harness 里训练"变成标配（训练分布优势持续加宽），水平生态还能不能维持"体验足够接近"？** 如果第一方与第三方的体验差距拉大到不可忽略，多模型框架就会被挤压到"企业合规渠道"这个单一生态位里。这一点与 [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]] 里"训练环境=运行环境"的思路是同一条线索。
+真正的开放问题是：**随着 agentic RL 把"模型在自家 harness 里训练"变成标配（训练分布优势持续加宽），水平生态还能不能维持"体验足够接近"？** 如果第一方与第三方的体验差距拉大到不可忽略，多模型框架就会被挤压到"企业合规渠道"这个单一生态位里。这一点与 [Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架](../AI/agent-lightning/Agent%20Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架.md) 里"训练环境=运行环境"的思路是同一条线索。
 
 ---
 
@@ -174,7 +174,7 @@ Claude Code + Claude 系列的优势不在"适配做得快"，而在**根本不�
 
 ### 5.3 Meta-Harness：把"哪些改动敏感"这个问题整个溶解掉
 
-但还有一条更激进的路线，来自 [[meta-harness]]（arxiv 2603.28052）：**让 agent 修改 harness 不是需要防范的风险，而是被设计出来的核心机制**。Meta-Harness 用 Coding Agent 作 Proposer，跑 Propose → Evaluate → Log → Repeat 的搜索循环，自动探索最优 harness 配置——约 20 轮 × 每轮 3 个候选 ≈ 60 个 harness 变体，**每一个变体都全量过评测**。
+但还有一条更激进的路线，来自 [meta-harness](../../wiki/concepts/meta-harness.md)（arxiv 2603.28052）：**让 agent 修改 harness 不是需要防范的风险，而是被设计出来的核心机制**。Meta-Harness 用 Coding Agent 作 Proposer，跑 Propose → Evaluate → Log → Repeat 的搜索循环，自动探索最优 harness 配置——约 20 轮 × 每轮 3 个候选 ≈ 60 个 harness 变体，**每一个变体都全量过评测**。
 
 注意它对 5.1/5.2 纠结的那个判断题的解法：Meta-Harness **根本不问"这个改动敏感吗"**。它的回答是评测覆盖率 100%——既然每个候选都要被评，"挑出哪些改动需要评"这个判断题就不存在了。对比一下两种体制的经济学：
 
@@ -186,7 +186,7 @@ Claude Code + Claude 系列的优势不在"适配做得快"，而在**根本不�
 | 判断错误的后果 | 漏标 = 回归上线 | 不存在漏标 |
 | 适用前提 | 评测昂贵、PR 流量大 | 评测足够便宜/自动化 |
 
-同一逻辑在 [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]] 里也出现过：SkillOpt 的 gate 对**每一次** skill 更新都在 validation split 上评一遍、ties-rejected（打平也拒）——它也不判断"这次编辑敏感吗"，而是全量评。代价同样直观：gate 验证就是 token 成本的大头之一，所以实践里要靠 `--limit 8` 砍冒烟成本。**评测税没有消失，只是从"判断谁该交税"变成了"人人都交但降低单价"**。
+同一逻辑在 [SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验](../AI/SkillOpt/SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md) 里也出现过：SkillOpt 的 gate 对**每一次** skill 更新都在 validation split 上评一遍、ties-rejected（打平也拒）——它也不判断"这次编辑敏感吗"，而是全量评。代价同样直观：gate 验证就是 token 成本的大头之一，所以实践里要靠 `--limit 8` 砍冒烟成本。**评测税没有消失，只是从"判断谁该交税"变成了"人人都交但降低单价"**。
 
 ### 5.4 推演：打标签是评测昂贵时代的过渡产物
 
@@ -209,11 +209,11 @@ VS Code 博客最有价值的贡献是把 harness 从隐性工程变成了显性
 
 ## 相关
 
-- [[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]]——Claude Code 侧的 harness 分层拆解
-- [[Claude Code系列01：核心概念与设计哲学解析]]——第一方 harness 的设计哲学
-- [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]——agent loop 在更大循环体系中的位置
-- [[InkOS深度感想——AI小说创作中的Harness Engineering范式]]——harness 范式在非 coding 领域的迁移
-- [[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]——浏览器/桌面控制作为 harness 一部分的实证：OpenAI 焊进桌面应用 vs Anthropic 靠 MCP 生态自组（系列共四篇）
-- [[2026-04-16-Meta-Harness论文解读与实践思考]]——第五节 Meta-Harness 论证线的论文精读（Proposer、消融实验、三种落地路径）
-- [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]——"每次更新都过 gate"的全量评测体制实测（含 gate 的 token 成本）
-- Wiki：[[harness-engineering]] / [[agent-loop-architecture]] / [[meta-harness]]
+- [Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读](../AI/Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md)——Claude Code 侧的 harness 分层拆解
+- [Claude Code系列01：核心概念与设计哲学解析](../AI/Claude-Code/Claude%20Code系列01：核心概念与设计哲学解析.md)——第一方 harness 的设计哲学
+- [Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界](../AI/Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)——agent loop 在更大循环体系中的位置
+- [InkOS深度感想——AI小说创作中的Harness Engineering范式](../AI/agent/InkOS深度感想——AI小说创作中的Harness%20Engineering范式.md)——harness 范式在非 coding 领域的迁移
+- [Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路](../AI/computer-use/Computer%20Use与Browser%20Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路.md)——浏览器/桌面控制作为 harness 一部分的实证：OpenAI 焊进桌面应用 vs Anthropic 靠 MCP 生态自组（系列共四篇）
+- [2026-04-16-Meta-Harness论文解读与实践思考](../../paper/2026-04-16-Meta-Harness论文解读与实践思考.md)——第五节 Meta-Harness 论证线的论文精读（Proposer、消融实验、三种落地路径）
+- [SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验](../AI/SkillOpt/SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)——"每次更新都过 gate"的全量评测体制实测（含 gate 的 token 成本）
+- Wiki：[harness-engineering](../../wiki/concepts/harness-engineering.md) / [agent-loop-architecture](../../wiki/concepts/agent-loop-architecture.md) / [meta-harness](../../wiki/concepts/meta-harness.md)

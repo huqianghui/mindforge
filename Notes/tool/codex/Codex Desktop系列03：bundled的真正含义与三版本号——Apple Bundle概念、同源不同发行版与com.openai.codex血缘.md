@@ -27,7 +27,7 @@ Codex Desktop App
   + bundled plugins（browser / chrome / computer-use 等 runtime payload）
 ```
 
-三个部分各有自己的版本与能力边界，装在同一个 `.app` bundle 里一起分发。系列01 的 model catalog schema 要看 bundled CLI 版本、[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] 里 Computer Use 只在 App 里有，都是这个公式的推论。而要真正看懂这个公式，先要看懂 `bundle` 这个词在 Apple 体系里的分量。
+三个部分各有自己的版本与能力边界，装在同一个 `.app` bundle 里一起分发。系列01 的 model catalog schema 要看 bundled CLI 版本、[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) 里 Computer Use 只在 App 里有，都是这个公式的推论。而要真正看懂这个公式，先要看懂 `bundle` 这个词在 Apple 体系里的分量。
 
 ## 一、Bundle 不是随口的"打包"，是 Apple 的正式架构概念
 
@@ -100,7 +100,7 @@ Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**—
 | bundled plugins / Computer Use runtime | ❌ Desktop 专属 |
 | Desktop IPC / 签名 / entitlement / 进程树 | ❌ 不一样 |
 
-有一个公开 issue 把这条边界钉死了（凭记忆转述，未找回原始链接）：**同一份 computer-use plugin cache，Homebrew standalone CLI 下不可用，App-bundled CLI 可以工作**——差异出在 macOS process authentication / Apple Events 这类 App 环境层，而不是 CLI 代码本身（推测；系列04 从 code signature / launch context 角度给过另一种推测，两者尚未实证裁决，展开见 [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]）。所以不要把 `Contents/Resources/codex` 理解成"另一个 Codex"：它就是 Codex CLI 的一个特定配套 build，被当作 dependency bundled 进 App；Desktop 的额外能力长在 build 之外的那一层。
+有一个公开 issue 把这条边界钉死了（凭记忆转述，未找回原始链接）：**同一份 computer-use plugin cache，Homebrew standalone CLI 下不可用，App-bundled CLI 可以工作**——差异出在 macOS process authentication / Apple Events 这类 App 环境层，而不是 CLI 代码本身（推测；系列04 从 code signature / launch context 角度给过另一种推测，两者尚未实证裁决，展开见 [Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)）。所以不要把 `Contents/Resources/codex` 理解成"另一个 Codex"：它就是 Codex CLI 的一个特定配套 build，被当作 dependency bundled 进 App；Desktop 的额外能力长在 build 之外的那一层。
 
 ## 三、血缘与开源边界：ChatGPT.app 是 Codex Desktop 演化来的
 
@@ -133,7 +133,7 @@ codex CLI（独立安装）   ← openai/codex 开源项目的 standalone 发行
 3. **bundled CLI 与 standalone CLI 同源不同发行版**：同一个 openai/codex 项目、两条发行通道、配套测试的不同 build；能力差异出在 build 之外的 App 环境层（签名/Apple Events/进程树）。
 4. **ChatGPT.app 的血缘是 Codex Desktop**：bundle identifier 仍为 `com.openai.codex`，新 app 是 Codex Desktop 演化出的统一壳（Chat + Work + Codex）；三元组合里只有 CLI 一元开源，壳与 Computer Use payload 均为 proprietary。
 
-组合公式的第三元——bundled plugins——里藏着最值得解剖的一块：Computer Use 到底在哪、怎么被调起来，见 [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]。
+组合公式的第三元——bundled plugins——里藏着最值得解剖的一块：Computer Use 到底在哪、怎么被调起来，见 [Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)。
 
 ## 参考
 
@@ -141,4 +141,4 @@ codex CLI（独立安装）   ← openai/codex 开源项目的 standalone 发行
 - [Apple Developer 文档：Bundles and packages](https://developer.apple.com/documentation/foundation/bundles_and_packages)
 - [openai/codex 仓库](https://github.com/openai/codex)
 - [openai/codex#38934 — App version 与 Bundled CLI version 的区分](https://github.com/openai/codex/issues/38934)
-- 相关笔记：[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]]｜[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]｜[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- 相关笔记：[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)｜[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)｜[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)

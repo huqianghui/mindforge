@@ -6,7 +6,7 @@ tags: [agent, harness, harness-engineering, deepseek-harness, pi, codex, openhan
 
 # Agent Harness 五平台对比——DeepSeek Harness、pi、Codex、OpenHands 与 Goose 的架构哲学与场景选择
 
-> 2026 年 8 月的 agent harness 市场已经明显分化：不是"谁更强"，而是五种**架构哲学**各自锚定了不同的场景。本文把 DeepSeek Harness（dsh）、pi、Codex、OpenHands、Goose 放在同一张桌面上，先讲每家的架构立场，再给出"先问场景、再选平台"的路由表。分析框架沿用 [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的核心命题：**模型是引擎，harness 是整辆车**——五个平台本质上是造车的五种方式。
+> 2026 年 8 月的 agent harness 市场已经明显分化：不是"谁更强"，而是五种**架构哲学**各自锚定了不同的场景。本文把 DeepSeek Harness（dsh）、pi、Codex、OpenHands、Goose 放在同一张桌面上，先讲每家的架构立场，再给出"先问场景、再选平台"的路由表。分析框架沿用 [Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的核心命题：**模型是引擎，harness 是整辆车**——五个平台本质上是造车的五种方式。
 
 ![Agent Harness 五平台场景路由|760](../../../asset/harness-platform-selection-2026-08-31.svg)
 
@@ -22,7 +22,7 @@ tags: [agent, harness, harness-engineering, deepseek-harness, pi, codex, openhan
 | **OpenHands** | SDK + 云平台：agent 逻辑与执行沙箱分离，agent-agnostic | OpenHands（原 OpenDevin 社区），MIT + 商业云 | SDK / CLI / GUI / Cloud / Desktop |
 | **Goose** | MCP-native：extension 即 MCP server，工作流即 Recipe | Block（Square），Apache 2.0 | Desktop + CLI |
 
-五家在 [[model-harness-codesign]]（第一方绑定 vs 多模型适配）光谱上的位置很清晰：Codex 在最左端（绑定最深），dsh / pi / OpenHands / Goose 都在多模型一侧，但**多模型内部又按"可分解程度"再次分层**——这是本文想补充的第二个维度。
+五家在 [model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md)（第一方绑定 vs 多模型适配）光谱上的位置很清晰：Codex 在最左端（绑定最深），dsh / pi / OpenHands / Goose 都在多模型一侧，但**多模型内部又按"可分解程度"再次分层**——这是本文想补充的第二个维度。
 
 ## 二、逐家解剖
 
@@ -31,7 +31,7 @@ tags: [agent, harness, harness-engineering, deepseek-harness, pi, codex, openhan
 Codex 是五家中唯一的第一方绑定平台，也是对比的基准线：
 
 - **形态**：Rust 单体 CLI（开源，91K+ stars）+ ChatGPT Work/Codex 桌面 App + Cloud 沙箱执行 + Chrome Extension 浏览器接管 + 移动端。2026 上半年补齐了持久 Goals（token 预算）、thread 级 sub-agent 委派、plugin marketplace、实验性 Hooks（与 Claude Code 同构的 5 生命周期事件）、Claude Code 配置一键导入。
-- **架构特征**：模型（GPT-5.5/5.6 系列）与 harness 协同调优，OS 级沙箱是强项。但 CLI 与 App 两个入口 **runtime 不对等**——Computer Use / `@Browser` runtime 只在 App 侧原生存在，Skill 跨端可见但不可执行（"Skill 是说明书，Runtime 才是手脚"），细节见 [[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]]。
+- **架构特征**：模型（GPT-5.5/5.6 系列）与 harness 协同调优，OS 级沙箱是强项。但 CLI 与 App 两个入口 **runtime 不对等**——Computer Use / `@Browser` runtime 只在 App 侧原生存在，Skill 跨端可见但不可执行（"Skill 是说明书，Runtime 才是手脚"），细节见 [Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位](../computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)。
 - **没有的东西**：Skill 格式官方不支持（截至 2026-08 的横评口径）；harness 内部件不可替换——你不能换掉它的 loop 或 session 存储。
 
 ### 2.2 DeepSeek Harness：把"不可替换"翻转成卖点
@@ -94,7 +94,7 @@ Goose 的立场是**协议优先**：不发明私有扩展机制，直接把 MCP
 
 ## 四、放回既有框架：两个维度的十字定位
 
-用 [[model-harness-codesign]]（绑定维度）× 可分解程度（控制权维度）交叉，五家各占一格：
+用 [model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md)（绑定维度）× 可分解程度（控制权维度）交叉，五家各占一格：
 
 - **绑定深 + 不可拆**：Codex——体验最完整，控制权最少；
 - **不绑定 + 完全可拆**：dsh——loop 都能换，代价是 preview 的不稳定；
@@ -102,7 +102,7 @@ Goose 的立场是**协议优先**：不发明私有扩展机制，直接把 MCP
 - **不绑定 + SDK 分层可拆**：OpenHands——拆的粒度是架构层（agent/沙箱/接口）而非能力件；
 - **不绑定 + 协议标准化**：Goose——不自己定义扩展点，把拆解外包给 MCP 标准。
 
-与 [[harness-portability-spectrum]]（离模型越近越可移植）合看还有一个推论：**skill/MCP 资产在五家间基本可流动**（dsh-movein、Codex 的 Claude 配置导入、Goose 的 MCP 直连都是证据——2026 年"搬家工具"本身成了产品类目，说明切换成本真实存在但正在被工程化消解），而 hook/plugin/subagent 配置仍然锁死在各自 harness。资产沉淀策略不变：**优先投资可移植层**。
+与 [harness-portability-spectrum](../../../wiki/concepts/harness-portability-spectrum.md)（离模型越近越可移植）合看还有一个推论：**skill/MCP 资产在五家间基本可流动**（dsh-movein、Codex 的 Claude 配置导入、Goose 的 MCP 直连都是证据——2026 年"搬家工具"本身成了产品类目，说明切换成本真实存在但正在被工程化消解），而 hook/plugin/subagent 配置仍然锁死在各自 harness。资产沉淀策略不变：**优先投资可移植层**。
 
 ## 参考
 

@@ -12,7 +12,7 @@ tags: [agent-lightning, custom-algorithm, store, producer-consumer, trainer, APO
 
 ## 〇、为什么单开这一篇
 
-[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] 在结尾预告过：要真正理解框架的「控制反转」，光看内置 APO 不够，得看一个**自定义算法**怎么接进去。官方 `examples/apo/` 下正好给了一对文件：
+[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 在结尾预告过：要真正理解框架的「控制反转」，光看内置 APO 不够，得看一个**自定义算法**怎么接进去。官方 `examples/apo/` 下正好给了一对文件：
 
 - `apo_custom_algorithm.py`——算法与 runner **进程分离**的写法（配合 `agl store` 三件套）；
 - `apo_custom_algorithm_trainer.py`——把三件套**塌缩成一条命令**的 Trainer 写法。
@@ -43,7 +43,7 @@ prompt_candidates = [
 
 三个**写死的** prompt，挨个跑一遍、各打一次分，最后 `max` 选最高分（`:98`）。**这里没有文本梯度、没有 Critic/Editor、没有 beam search、没有任何迭代生成**——它连"优化"都算不上，本质是个**穷举三选一**。
 
-> 所以你的直觉完全正确：这个例子**没有修改 APO，也没有修改 beam search**。真正的 APO 内核（`algorithm/apo/apo.py` 里的文本梯度 + `_evaluate_and_select_beam` 的 top-k 剪枝，见 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]）在这个文件里**根本没被引用**。作者是**故意**把 APO 这个复杂优化器整个替换成一个三行的占位 stub。
+> 所以你的直觉完全正确：这个例子**没有修改 APO，也没有修改 beam search**。真正的 APO 内核（`algorithm/apo/apo.py` 里的文本梯度 + `_evaluate_and_select_beam` 的 top-k 剪枝，见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)）在这个文件里**根本没被引用**。作者是**故意**把 APO 这个复杂优化器整个替换成一个三行的占位 stub。
 
 ### 1.2 为什么要用假算法
 
@@ -69,7 +69,7 @@ prompt_candidates = [
 
 拿到 reward 后，算法自己决定怎么用——这个例子是 `prompt_and_rewards.append(...)`（`:95`）攒起来，最后 `max` 选优（`:98`）。**"怎么选"是算法的自由，框架不管**。
 
-> 关键认知：这 5 个动作就是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] 讲的 **store-centric 控制平面**的全部 API 面。算法只通过 store 和外界打交道，**完全不知道 runner 是谁、在哪、用什么模型**。这就是 method-agnostic 的工程基础——换算法（APO→RL→SFT）只是换这 5 个动作之间的逻辑，runner 和 agent 代码一字不动。
+> 关键认知：这 5 个动作就是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 讲的 **store-centric 控制平面**的全部 API 面。算法只通过 store 和外界打交道，**完全不知道 runner 是谁、在哪、用什么模型**。这就是 method-agnostic 的工程基础——换算法（APO→RL→SFT）只是换这 5 个动作之间的逻辑，runner 和 agent 代码一字不动。
 
 ---
 
@@ -160,7 +160,7 @@ trainer.fit(apo_rollout)
 
 ⚠️ **不要混用**：如果你已经开着 `agl store`，再跑 trainer，trainer 会**无视外部 store、自己另起内存 store**（除非显式配 `ClientServerExecutionStrategy` 把 store 暴露成服务，`:299/:319`）。外部那个不会报错，但白开了，还容易让你对"结果在哪看"产生混乱。**跑 trainer 前先把三进程那套关掉。**
 
-> 进阶：`_make_store`（`:293`）的第二个分支显示——只有当 `strategy` 是 `ClientServerExecutionStrategy`（`:299`）时，store 才会是线程安全/可被外部连接的版本。也就是说，**单机用内存 store（默认），分布式才升级成 client/server**。这与 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] §1 讲的部署形态一脉相承。
+> 进阶：`_make_store`（`:293`）的第二个分支显示——只有当 `strategy` 是 `ClientServerExecutionStrategy`（`:299`）时，store 才会是线程安全/可被外部连接的版本。也就是说，**单机用内存 store（默认），分布式才升级成 client/server**。这与 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) §1 讲的部署形态一脉相承。
 
 ---
 
@@ -227,9 +227,9 @@ for round in range(beam_rounds):
     beam = top_k(所有候选, key=reward)    # beam search 剪枝
 ```
 
-对比看得很清楚：**变的只是"怎么产生候选、怎么选候选"（算法的脑子），不变的是"怎么让候选跑起来拿到分"（框架的手脚）**。这正是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] 反复强调的控制反转——你只负责领域逻辑，执行/追踪/存储交给框架。
+对比看得很清楚：**变的只是"怎么产生候选、怎么选候选"（算法的脑子），不变的是"怎么让候选跑起来拿到分"（框架的手脚）**。这正是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 反复强调的控制反转——你只负责领域逻辑，执行/追踪/存储交给框架。
 
-> 也正因如此，例子叫 `apo_custom_algorithm` 是一种"反话"：它**不是** APO，而是"如果你想写自己的算法（包括但不限于 APO），接口长这样"的脚手架。理解了这一点，再回头看真 APO（[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]），就知道它无非是把这个 for 循环换成了"文本梯度 + beam search"。
+> 也正因如此，例子叫 `apo_custom_algorithm` 是一种"反话"：它**不是** APO，而是"如果你想写自己的算法（包括但不限于 APO），接口长这样"的脚手架。理解了这一点，再回头看真 APO（[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)），就知道它无非是把这个 for 循环换成了"文本梯度 + beam search"。
 
 ---
 
@@ -242,4 +242,4 @@ for round in range(beam_rounds):
 5. **三进程 vs Trainer 一键**：手动三进程要 `agl store`（靠 4747 通信）；Trainer **自带内存 store**（`trainer/trainer.py:300`），一条命令搞定，**不用单独起 store**。两者别混用。
 6. **从玩具到真 APO**：只换 for 循环里的"产生+选择候选"逻辑，框架那 5 个动作不动——这就是 method-agnostic 的落地证明。
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]（实践接线 + beam search 内核）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（数据流脊柱 + 控制反转）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]（APO 算法本体）、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+> 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)（实践接线 + beam search 内核）、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（数据流脊柱 + 控制反转）、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)（APO 算法本体）、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)

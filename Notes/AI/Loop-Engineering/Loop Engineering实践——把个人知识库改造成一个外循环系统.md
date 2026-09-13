@@ -11,7 +11,7 @@ tags:
 
 # Loop Engineering实践——把个人知识库改造成一个外循环系统
 
-> 上一篇 [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界|把概念辨清了]]：外循环的最小内核是「自动发现 + workflow + 重复(cadence) + 跨轮记忆(state)」。这一篇是把它真的装到自己的知识库上——记录设计取舍、踩到的边界、首跑结果，以及一个比代码更重要的判断：**哪些事该让循环自动做，哪些事永远不能。**
+> 上一篇 [把概念辨清了](Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)：外循环的最小内核是「自动发现 + workflow + 重复(cadence) + 跨轮记忆(state)」。这一篇是把它真的装到自己的知识库上——记录设计取舍、踩到的边界、首跑结果，以及一个比代码更重要的判断：**哪些事该让循环自动做，哪些事永远不能。**
 
 ## 一、起点：一个已经在转、但靠手推的循环
 
@@ -182,6 +182,6 @@ rm    .claude/loops/.loop-disabled   # 恢复
 
 ## 参考
 
-- [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]] —— 本文的概念基础（内/外循环之分、最小内核、verifier 谱系）
-- [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]] —— 另一种外循环形态（自我改进 + 严格约束）
+- [Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界](Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md) —— 本文的概念基础（内/外循环之分、最小内核、verifier 谱系）
+- [AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别](../agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md) —— 另一种外循环形态（自我改进 + 严格约束）
 - [Loop Engineering](https://cobusgreyling.github.io/loop-engineering/)（Cobus Greyling）—— 7 个可抄的外循环 playbook 与 loop-audit / loop-cost 工具

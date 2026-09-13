@@ -8,7 +8,7 @@ tags: [ontology, palantir, foundry, digital-twin, data-platform, AIP, knowledge-
 
 > 本文梳理 Palantir 公司如何将哲学层面的"本体论"概念落地为数据平台的核心抽象层，涵盖 Foundry 平台中 Ontology 的核心概念、技术架构、OSDK、AIP 中的角色、相比传统方案的优势、高管公开言论以及实际应用案例。
 >
-> 相关笔记：[[本体论（Ontology）：从哲学根基到计算机科学的概念迁移]]、[[Microsoft Fabric IQ与本体论（Ontology）研究]]
+> 相关笔记：[本体论（Ontology）：从哲学根基到计算机科学的概念迁移](../book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md)、[Microsoft Fabric IQ与本体论（Ontology）研究](../Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
 
 ---
 
@@ -163,7 +163,7 @@ Palantir 的口号："Activate full spectrum AI in days, and drive enterprise op
 
 Ontology 将来自多个来源的实时信息整合为一个语义化的业务模型。当 LLM 生成回答时，它不是在"自由联想"，而是**被锚定在 Ontology 定义的实体、属性和关系上**。这从根本上减少了幻觉（hallucination），提升了决策置信度。
 
-这与 [[Microsoft Fabric IQ与本体论（Ontology）研究]] 中 IQ Ontology 为 Copilot 和 Agent 提供"企业语言锚定"的思路高度一致。
+这与 [Microsoft Fabric IQ与本体论（Ontology）研究](../Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md) 中 IQ Ontology 为 Copilot 和 Agent 提供"企业语言锚定"的思路高度一致。
 
 #### （2）逻辑绑定——连接已有业务流程
 
@@ -343,7 +343,7 @@ Palantir 的国防业务横跨美国陆军、空军与太空军、海军与海�
 
 ### 8.1 哲学本体论与 Palantir Ontology 的映射
 
-回顾 [[本体论（Ontology）：从哲学根基到计算机科学的概念迁移]] 中讨论的本体论核心问题，Palantir 的 Ontology 可以这样理解：
+回顾 [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](../book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md) 中讨论的本体论核心问题，Palantir 的 Ontology 可以这样理解：
 
 | 哲学本体论问题 | Palantir 工程实践 |
 |----------------|-------------------|

@@ -6,7 +6,7 @@ tags: [agent-lightning, SFT, unsloth, LoRA, hands-on, azure, gpu, cuda, vllm, qw
 
 # Agent Lightning 系列 06：SFT 实战篇——从 Azure GPU VM 到跑通 unsloth 拒绝采样微调
 
-> [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] 把 SFT 这条线的**原理**讲透了：reward 造标签、拒绝采样、A/B 拆分、自蒸馏。本篇是它的**实战配套**——真正把 `examples/unsloth/` 跑起来。从「macOS 跑不了」这个硬约束出发，开一台 Azure GPU VM，装通 unsloth + vLLM 全栈，跑通 GSM-hard 的迭代自提升训练，读懂每一轮的 loss/reward/产出，最后讲怎么换成自己的任务。
+> [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) 把 SFT 这条线的**原理**讲透了：reward 造标签、拒绝采样、A/B 拆分、自蒸馏。本篇是它的**实战配套**——真正把 `examples/unsloth/` 跑起来。从「macOS 跑不了」这个硬约束出发，开一台 Azure GPU VM，装通 unsloth + vLLM 全栈，跑通 GSM-hard 的迭代自提升训练，读懂每一轮的 loss/reward/产出，最后讲怎么换成自己的任务。
 >
 > **本篇是「边搭边写」的活文档**：标 ⏳ 的小节是等真实运行结果回填的占位，标 ✅ 的是已验证可执行的内容。
 
@@ -398,7 +398,7 @@ demo **没有任何收敛 / 质量终止**（不看留用数是否还涨、不�
 | APO | `TraceToMessages`（看对话） | critic/edit + `sorted`，**不改权重** |
 | SFT | `TraceToTriplet`（取训练样本） | tokenize→CE loss→LoRA merge，**改权重** |
 
-`litagent→runner→tracer→store→adapter→reward` 这一段两者完全相同——正是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §6.3 的 method-agnostic 兑现：换算法只换槽位 + adapter 出口，脊柱不动。
+`litagent→runner→tracer→store→adapter→reward` 这一段两者完全相同——正是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §6.3 的 method-agnostic 兑现：换算法只换槽位 + adapter 出口，脊柱不动。
 
 **Q5：两轮和 60 步都写死了，能不能让飞轮「自动转」、步数随数据走？**——能，但要分清这是**两个独立的常量**（别和 Q3 混）：外层圈数 `MAX_ITERATIONS=2`（`sft_algorithm.py:351`，覆盖入口 `sft_allinone.py:99-108`），内层步数 `max_steps=60`（`unsloth_helper.py:63-76`）。后者是**硬上限步数、不是从数据算的**：total batch=8，80 样本→60 步=6 epoch，86 样本→60 步≈5.6 epoch——**数据涨了过的遍数反缩**（6→5.6），是固定 `max_steps` 的小坑。两处分别这样改：
 
@@ -491,7 +491,7 @@ selected_prompts = sorted_prompts[:self.beam_width]                       # :742
 
 ## 四、改造成自己的：换数据集 / grader / agent ✅
 
-跑通 demo 只是第一步。要把这条 SFT 线套到自己的任务上，按系列 05 的拆解，只需动**三个领域零件**，框架管道一行不改（呼应 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] 的 method-agnostic）。
+跑通 demo 只是第一步。要把这条 SFT 线套到自己的任务上，按系列 05 的拆解，只需动**三个领域零件**，框架管道一行不改（呼应 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 的 method-agnostic）。
 
 ### 4.1 换数据集：你只需提供「题目 + 评分钥匙」
 
@@ -569,7 +569,7 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 | 基座模型 | `sft_algorithm.py:358` / `hf download` | 换成你要微调的模型 |
 | 迭代/超参 | `sft_allinone.py:99-108`、`unsloth_helper.py:63-76` | max_iterations / lr / max_steps 等 |
 
-> 这一节本质就是 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §六的「四步插槽」在 SFT 上的具象，也是系列08「套到真实 Agent」的预演。
+> 这一节本质就是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §六的「四步插槽」在 SFT 上的具象，也是系列08「套到真实 Agent」的预演。
 
 ---
 
@@ -584,4 +584,4 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 7. **数据治理是真实任务的主战场**：落库 triplet 的 display 字段对 tool_call 轮有损（要看 token_ids，§3.4）；demo 的清洗只有 `reward>0` 一道门，能成立全靠 GSM-hard 零噪声 grader；真实任务要补阈值收紧、去重、过程过滤 / PRM、holdout split——框架给骨架，数据治理自己补（§4.4）。
 8. **仍待补**：v0/v1/v2 在 holdout 上的 pass@1 / pass@8（demo 无内置评测，需用 vLLM serve + math_agent 自搭，且必须用没训过的题）。
 
-> 相关：[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]（本篇的原理底座）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（脊柱与四步插槽）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（生产者/消费者、一键 vs 三进程）、[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]、[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]
+> 相关：[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)（本篇的原理底座）、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（脊柱与四步插槽）、[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)（生产者/消费者、一键 vs 三进程）、[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)、[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)

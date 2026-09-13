@@ -79,7 +79,7 @@ Codex App 版本 → bundled codex-cli x.y.z → rust-vx.y.z tag → models.json
 
 独立 Codex.app 则对应 `/Applications/Codex.app/Contents/Resources/codex`。拿到 `0.153.1`，schema 的坐标就唯一确定了：[rust-v0.153.1 的官方 models.json](https://raw.githubusercontent.com/openai/codex/rust-v0.153.1/codex-rs/models-manager/models.json)。
 
-（bundled CLI 与终端里独立安装的 CLI 是什么关系、为什么版本号会不一样，展开见 [[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]。）
+（bundled CLI 与终端里独立安装的 CLI 是什么关系、为什么版本号会不一样，展开见 [Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)。）
 
 ## 三、意外发现：GPT-6 Astra 本来就在 catalog 里
 
@@ -164,12 +164,12 @@ catalog schema 通过 → Codex 成功加载 → 发出 Azure 请求 → 再处�
 
 这次实操和已有的几条线索拼在一起，能看出 Codex harness 对第三方 provider 的态度是一种**分层的"默认绑定 + 可撬"**：
 
-- [[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]] 3.3 节解剖过同一条链路的**断供面**：`model_provider` 指向 Azure 后，Codex harness 拒绝为自定义 provider 发 `web_search` 工具声明（openai/codex#3851），配置写了也无物可执行。
+- [Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](../../AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md) 3.3 节解剖过同一条链路的**断供面**：`model_provider` 指向 Azure 后，Codex harness 拒绝为自定义 provider 发 `web_search` 工具声明（openai/codex#3851），配置写了也无物可执行。
 - 本文是同一链路的**接入面**：模型目录这一层留了 `model_catalog_json` 替换口，而且官方 catalog 里第三方场景需要的模型定义是齐全的（GPT-6 Astra 定义完整、只是 hide）——撬开焊点只需要版本锁定 + 翻 visibility，harness 并没有在这一层设卡。
-- 对照 [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的框架：第一方绑定不是铁板一块，而是逐层不同——模型目录层可替换（本文）、服务端工具层不可补（web_search 声明不出门）、协议层看端点兼容性（#31882/#31875 的 header 与参数摩擦）。评估"某 harness 能不能接自家模型端点"时，应该按层给出答案而不是一个总体是否。
-- 版本锁定 schema 本身也是 harness 焊接的一种形态：schema 不对外文档化、随版本演进、serde 严格校验，事实上让"跟着官方源码 tag 走"成为唯一可持续的第三方接入姿势——这与 [[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]] 观察到的"App 是 CLI 的壳"在同一个方向上：**理解 Codex Desktop 的正确心智模型是理解它包内那个 CLI**。
+- 对照 [Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的框架：第一方绑定不是铁板一块，而是逐层不同——模型目录层可替换（本文）、服务端工具层不可补（web_search 声明不出门）、协议层看端点兼容性（#31882/#31875 的 header 与参数摩擦）。评估"某 harness 能不能接自家模型端点"时，应该按层给出答案而不是一个总体是否。
+- 版本锁定 schema 本身也是 harness 焊接的一种形态：schema 不对外文档化、随版本演进、serde 严格校验，事实上让"跟着官方源码 tag 走"成为唯一可持续的第三方接入姿势——这与 [Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位](../../AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md) 观察到的"App 是 CLI 的壳"在同一个方向上：**理解 Codex Desktop 的正确心智模型是理解它包内那个 CLI**。
 
-动机层面：Codex Desktop 的 Computer Use 能力（系列六实测过 CLI 与 App 的分界，其实现解剖见 [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]）一直做得不错，现在主力模型可以换成 Azure 侧的 GPT-6，后续把 Sol/Terra/Luna 分别映射到不同 Azure deployment，就是一套可在选择器里直接切换的多模型日常环境——多用多学的基础设施已就位。
+动机层面：Codex Desktop 的 Computer Use 能力（系列六实测过 CLI 与 App 的分界，其实现解剖见 [Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md)）一直做得不错，现在主力模型可以换成 Azure 侧的 GPT-6，后续把 Sol/Terra/Luna 分别映射到不同 Azure deployment，就是一套可在选择器里直接切换的多模型日常环境——多用多学的基础设施已就位。
 
 ## 小结
 
@@ -178,7 +178,7 @@ catalog schema 通过 → Codex 成功加载 → 发出 Azure 请求 → 再处�
 3. **官方 catalog 里往往已有你要的模型**：先 `jq select` 看一眼再决定造不造轮子——GPT-6 Astra 只是被 `visibility: "hide"` 藏了。
 4. **分层排错**：schema 层（catalog 能否加载）→ provider 层（请求能否发出）→ API 兼容层（Azure 是否接受参数），一次只动一层，事前担心的兼容性问题可能根本不触发。
 
-GPT-6 打通之后的第二轮战役——让 `gpt-5.4-mini` 也显示并可用——牵出了三条本篇没碰到的暗线（全局配置菜单、退休元数据、自动审批调用链），见 [[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]。
+GPT-6 打通之后的第二轮战役——让 `gpt-5.4-mini` 也显示并可用——牵出了三条本篇没碰到的暗线（全局配置菜单、退休元数据、自动审批调用链），见 [Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)。
 
 ## 参考
 
@@ -187,4 +187,4 @@ GPT-6 打通之后的第二轮战役——让 `gpt-5.4-mini` 也显示并可用�
 - [Codex rust-v0.153.1 官方 models.json](https://raw.githubusercontent.com/openai/codex/rust-v0.153.1/codex-rs/models-manager/models.json)
 - [openai/codex#38934 — model_catalog_json schema 必须匹配 bundled CLI 版本](https://github.com/openai/codex/issues/38934)
 - [openai/codex#31882 — GPT-5.6 Sol/Terra/Luna 走 Azure 的参数兼容性问题与 workaround](https://github.com/openai/codex/issues/31882)
-- 相关笔记：[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]｜[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]｜[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]｜[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]｜[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]
+- 相关笔记：[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)｜[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)｜[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](../../AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)｜[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)｜[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择](../../AI/agent/Agent%20Harness五平台对比——DeepSeek%20Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择.md)

@@ -12,7 +12,7 @@ tags: [agent-lightning, reinforcement-learning, VERL, TRL, OpenRLHF, RL-infra, r
 
 ## 〇、为什么需要这一篇
 
-[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §六给出了一条由轻到重的优化阶梯：**APO → SFT → RL**。前六篇已经把前两级吃透——APO 路线见系列 01～04，SFT 路线见 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] 与 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]。阶梯的最高级——真正用 RL 微调权重——在 agent-lightning 里只有一条内置路径：`algorithm` 槽位里的 **VERL**。
+[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §六给出了一条由轻到重的优化阶梯：**APO → SFT → RL**。前六篇已经把前两级吃透——APO 路线见系列 01～04，SFT 路线见 [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) 与 [Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)。阶梯的最高级——真正用 RL 微调权重——在 agent-lightning 里只有一条内置路径：`algorithm` 槽位里的 **VERL**。
 
 这就带出一个绕不开的问题：RL 框架并非只有 VERL 一家，社区里 TRL、OpenRLHF 同样流行，为什么 agent-lightning 偏偏选了工程门槛最高的 VERL？要回答它，需要先建立两层认知：
 
@@ -55,7 +55,7 @@ tags: [agent-lightning, reinforcement-learning, VERL, TRL, OpenRLHF, RL-infra, r
 | 能力上界 | 受限于训练数据已有的行为 | 可探索出数据中从未出现的新策略 |
 | 稳定性 | 高 | 低，对超参与奖励设计敏感 |
 
-[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] 已论证：SFT 的"限制"（只学正样本、不探索）恰恰是它便宜又稳的来源；而 RL 用探索换上界，代价是成本最高、最不稳。两者在 agent-lightning 里共享同一套 `Triplet` 轨迹表示（见系列 02 §2.5），因此换算法只换槽位、不动 agent 代码。
+[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) 已论证：SFT 的"限制"（只学正样本、不探索）恰恰是它便宜又稳的来源；而 RL 用探索换上界，代价是成本最高、最不稳。两者在 agent-lightning 里共享同一套 `Triplet` 轨迹表示（见系列 02 §2.5），因此换算法只换槽位、不动 agent 代码。
 
 ### 1.3 LLM 场景下的 RL：从 RLHF 到 RLVR
 
@@ -375,7 +375,7 @@ Step 6  模型回流            new policy → rollout workers → 回到 Step 2
 
 ### 6.1 真正能替代（但需改架构）
 
-**Slime（server-first 架构）。** 可视为 VERL 的"架构对立版本"：rollout 完全服务化（RPC）、training 与 rollout 强解耦、偏向 agent 多轮任务，更云原生、rollout 可独立扩展。代价是 RPC 带来更高延迟、infra 复杂度更高、社区成熟度低于 VERL。若要在 agent-lightning 上替换，需改动 rollout 路径、serving 模式与 reward pipeline。（Slime 与 VERL 的系统哲学差异、组件选型，以及二者脚下 Megatron/FSDP/Ray/vLLM/SGLang 的训练推理栈分层，详见 [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]。）
+**Slime（server-first 架构）。** 可视为 VERL 的"架构对立版本"：rollout 完全服务化（RPC）、training 与 rollout 强解耦、偏向 agent 多轮任务，更云原生、rollout 可独立扩展。代价是 RPC 带来更高延迟、infra 复杂度更高、社区成熟度低于 VERL。若要在 agent-lightning 上替换，需改动 rollout 路径、serving 模式与 reward pipeline。（Slime 与 VERL 的系统哲学差异、组件选型，以及二者脚下 Megatron/FSDP/Ray/vLLM/SGLang 的训练推理栈分层，详见 [Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层](Slime%20vs%20VERL%20深度架构对比——数据流哲学、组件选型与训练推理栈分层.md)。）
 
 **自研 Ray-based RL 系统。** 本质上 VERL ≈ Ray + PPO + rollout orchestration，因此完全可以用 Ray + vLLM + PyTorch 自建 rollout/training/reward worker。优势是完全可控、强适配 agent；代价极高——开发成本与 debug 成本巨大，需要专门的 infra 团队。现实中很多"声称不用 VERL"的团队，最后造出来的其实是一个 VERL-lite。
 
@@ -415,4 +415,4 @@ Step 6  模型回流            new policy → rollout workers → 回到 Step 2
 - 系列 08：VERL 路线实战——在 GPU 环境真正跑通一次 RL 权重微调（rollout pipeline 拆解、reward 设计、actor/critic 资源放置）；
 - 系列 09：把框架套到自己的真实 Agent 上（换数据集 + reward + agent 逻辑），打通 APO → SFT → RL 完整阶梯。
 
-> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]、[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]、[[控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习]]、[[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]]
+> 相关：[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)、[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)、[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)、[控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习](../../../book/控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习.md)、[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](../inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)

@@ -455,6 +455,6 @@ Fabric IQ 的出现意味着 **Ontology 正在从学术概念和小众实践走�
 
 ## 相关文章
 
-- [[Microsoft Fabric IQ本体（Ontology）管理功能实操解析]] — Fabric IQ 本体管理实操
-- [[本体论（Ontology）：从哲学根基到计算机科学的概念迁移]] — 本体论理论基础
-- [[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]] — Azure Copilot 生态
+- [Microsoft Fabric IQ本体（Ontology）管理功能实操解析](Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md) — Fabric IQ 本体管理实操
+- [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](../../book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md) — 本体论理论基础
+- [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](../Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) — Azure Copilot 生态

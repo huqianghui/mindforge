@@ -12,7 +12,7 @@ tags:
 
 # Prompt 优化工具选型——DSPy、TextGrad、AdalFlow 与 agent-lightning 的决策指南
 
-> 配套实践复盘见 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]。本篇专注**选型决策**：当目标是"为 agent 找最优 prompt"时，该用哪个工具，以及为什么。
+> 配套实践复盘见 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)。本篇专注**选型决策**：当目标是"为 agent 找最优 prompt"时，该用哪个工具，以及为什么。
 
 ## 一、先给结论（决策优先）
 
@@ -47,7 +47,7 @@ agent-lightning 只在一种情况下值得提前押注：**客户预期会从 p
 
 ## 四、比"选哪个框架"更重要的事
 
-我们在 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 三轮实跑里得到的核心教训，对**任何**工具都成立：
+我们在 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 三轮实跑里得到的核心教训，对**任何**工具都成立：
 
 > **真正的瓶颈是 reward 设计 + 评估噪声 + 数据量，不是选哪个框架。**
 
@@ -62,4 +62,4 @@ agent-lightning 只在一种情况下值得提前押注：**客户预期会从 p
 > **只做 prompt 调优 → DSPy；既调 prompt 又要 RL 微调 → agent-lightning。**
 > 但无论选哪个，**先解决 reward + 噪声 + 数据量**，框架只是引擎，不是方向盘。
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]、[[Agentic-Engineering——质量与成本的一体化优化]]
+> 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)、[Agentic-Engineering——质量与成本的一体化优化](../Agentic-Engineering——质量与成本的一体化优化.md)

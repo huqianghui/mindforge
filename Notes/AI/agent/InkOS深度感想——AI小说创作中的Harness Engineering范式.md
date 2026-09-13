@@ -51,7 +51,7 @@ InkOS 的 10 个 Agent 流水线完全符合这个公式。模型本身（GPT-4 
 
 > **对 AI 的约束不能只靠提示词（Prompt），必须硬编码为可执行的规则。**
 
-在 [记忆提权协议](../../.claude/rules/memory-promotion.md) 中，我们将约束分为三级：L1 Hook（100%）、L2 CLAUDE.md（~90%）、L3 Memory（~60%）。InkOS 的词表检测就是 L1 级别——完全不依赖 LLM 判断，纯规则执行，确定性 100%。而其 33 维审计检查清单是 L2 级别——通过结构化 prompt 让 LLM 按清单逐项检查，约束力高但仍依赖模型理解。
+在记忆提权协议（本 vault 的 `.claude/rules/memory-promotion.md`，本地配置不入库）中，我们将约束分为三级：L1 Hook（100%）、L2 CLAUDE.md（~90%）、L3 Memory（~60%）。InkOS 的词表检测就是 L1 级别——完全不依赖 LLM 判断，纯规则执行，确定性 100%。而其 33 维审计检查清单是 L2 级别——通过结构化 prompt 让 LLM 按清单逐项检查，约束力高但仍依赖模型理解。
 
 **启发**：写作领域的"AI 腔"检测（套话密度、转折词频次）本质上就是 Coding 领域的 Linter。InkOS 证明了 Linter 思维不仅适用于代码，也适用于文学创作。
 

@@ -19,7 +19,7 @@ tags:
 
 ## 引言：visibility 已经是 list，为什么还看不见
 
-[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]] 把 GPT-6 Astra 接进 Codex Desktop 之后，自然的下一步是让同一份 Azure catalog 里的 `gpt-5.4-mini` 也显示并可用。它的条目已经是 `visibility: "list"`，但模型菜单里只有 Default / 6 Astra / 5.6 Sol / Terra / Luna / 5.5 / 5.2——mini 不在：
+[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md) 把 GPT-6 Astra 接进 Codex Desktop 之后，自然的下一步是让同一份 Azure catalog 里的 `gpt-5.4-mini` 也显示并可用。它的条目已经是 `visibility: "list"`，但模型菜单里只有 Default / 6 Astra / 5.6 Sol / Terra / Luna / 5.5 / 5.2——mini 不在：
 
 ![Codex Desktop 模型菜单没有 gpt-5.4-mini|700](../../../asset/codex-azure-gpt54mini-model-menu-2026-09-05.png)
 
@@ -211,11 +211,11 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 - [x] `auto_review_model_override` 指向 `gpt-6-astra`，真实 `auto_review` 提权操作通过、404 未复现（推断确认——配置意图 + 症状消失，非抓包实测，见上文证据边界）
 - [x] `launchctl setenv` 注入 Azure key + 重启 App，且经"launchd 域 → App 进程 → 实际请求"三层逐层确认（单靠 `launchctl getenv` 不算验收）
 
-顺带一个活例：这轮实测同机存在 bundled `0.153.1` 与 Homebrew `0.153.4`——正是 [[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]] 里"同源不同发行版"的实证。
+顺带一个活例：这轮实测同机存在 bundled `0.153.1` 与 Homebrew `0.153.4`——正是 [Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) 里"同源不同发行版"的实证。
 
 ## 五、汇入主线：断供的第三层——治理层
 
-把暗线三放进断供层级的框架里（见 [[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]] 3.3 节）：
+把暗线三放进断供层级的框架里（见 [Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](../../AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md) 3.3 节）：
 
 - **工具层**：web_search 声明不发（harness 检测到自定义 provider 后不给模型暴露工具）
 - **目录层**：catalog schema 版本锁定（系列01）
@@ -235,4 +235,4 @@ launchctl getenv AZURE_OPENAI_API_KEY   # 能打印出 key = 生效
 
 - 素材：同日 Codex 会话的排查记录（bundled CLI 版本核对、`app.asar` 界面代码与内嵌 catalog 分析、审批链路 404 证据与闭环验证），经 `inbox/codex` 交接
 - [openai/codex 仓库](https://github.com/openai/codex)
-- 相关笔记：[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]]｜[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]｜[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]｜[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- 相关笔记：[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)｜[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md)｜[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](../../AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)｜[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)

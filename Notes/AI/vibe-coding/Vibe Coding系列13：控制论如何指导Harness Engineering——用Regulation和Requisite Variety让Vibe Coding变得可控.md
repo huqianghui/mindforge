@@ -430,5 +430,5 @@ Meta-Regulator（人类 + 经验积累）
 
 ## 系列导航
 
-- 上一篇：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
-- 系列索引：[[README#Vibe Coding 系列]]
+- 上一篇：[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践](Vibe%20Coding系列12：测试环境即代码——从Testcontainers到Ephemeral%20Environment的Harness实践.md)
+- 系列索引：[README#Vibe Coding 系列](../../../README.md)

@@ -45,7 +45,7 @@ Microsoft 的 RAG 能力由两个互补的"IQ"系统构成：
   - 提供 **Ontology（本体论）** 定义：实体类型、属性、关系
   - 提供 **Graph Engine**：ISO 标准 GQL 查询、1-8 跳图遍历
   - 提供 **Data Agent**：通过 MCP / RESTful API 暴露自然语言查询接口
-  - 详见 [[Microsoft Fabric IQ与本体论（Ontology）研究]]
+  - 详见 [Microsoft Fabric IQ与本体论（Ontology）研究](../../../Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
 
 - **Foundry IQ**——Agentic 检索引擎
   - 基于 Azure AI Search 的下一代 RAG 系统
@@ -428,4 +428,4 @@ qmd 没有利用 Obsidian 图数据，本质上是 **通用性 vs 专用性** �
 - [Fabric IQ Overview — Microsoft Learn](https://learn.microsoft.com/en-us/fabric/iq/overview)
 - [Agentic Retrieval Overview — Azure AI Search](https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-overview)
 - [Building RAG with Microsoft Fabric — Fabric Blog](https://blog.fabric.microsoft.com/en-US/blog/building-custom-ai-applications-with-microsoft-fabric-implementing-retrieval-augmented-generation-for-enhanced-language-models/)
-- [[Microsoft Fabric IQ与本体论（Ontology）研究]]
+- [Microsoft Fabric IQ与本体论（Ontology）研究](../../../Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)

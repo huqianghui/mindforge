@@ -137,7 +137,7 @@ Parent                          Child (Subagent)
          │         （中间过程全部丢弃）
 ```
 
-更精妙的是**工具分层**：child 只能用基础工具（bash / read / write / edit），不能调用 `task` 工具——这防止了 subagent 递归生成 subagent 的失控行为。这和 Claude Code 的实际设计完全一致（参见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]）。
+更精妙的是**工具分层**：child 只能用基础工具（bash / read / write / edit），不能调用 `task` 工具——这防止了 subagent 递归生成 subagent 的失控行为。这和 Claude Code 的实际设计完全一致（参见 [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)）。
 
 **S05 Skill Loading** 实现了**两层按需加载**——system prompt 中只放简短的 skill 摘要（~100 tokens/skill），完整内容通过 `load_skill()` 工具在需要时才加载（~2000 tokens）。这是 Context Engineering 的经典模式：**不要预加载所有知识，让 model 自己决定什么时候需要什么知识。**
 
@@ -180,7 +180,7 @@ Parent                          Child (Subagent)
 
 这张表的启示是：**harness 的每个维度在教学版中都有最简实现，生产版只是在同一框架上做了深度增强。** 架构是一样的，差别在于工程深度。
 
-这也印证了 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中提出的观点：Harness Engineering 的核心不是发明新概念，而是在五个已知维度上做到足够深——Tool 要安全、Knowledge 要按需、Observation 要压缩、Interface 要结构化、Permission 要分层。
+这也印证了 [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) 中提出的观点：Harness Engineering 的核心不是发明新概念，而是在五个已知维度上做到足够深——Tool 要安全、Knowledge 要按需、Observation 要压缩、Interface 要结构化、Permission 要分层。
 
 ---
 
@@ -353,10 +353,10 @@ Claude Code 的实际设计也遵循这一原则：subagent 之间零共享，�
 
 ## 相关文章
 
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Subagent 的 context 隔离架构深度解析
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]] — Command / Skill / Agent 三层扩展体系
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — Harness Engineering 的实践框架与五大支柱
-- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] — 五层 AI pipeline 全景
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) — Subagent 的 context 隔离架构深度解析
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md) — Command / Skill / Agent 三层扩展体系
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) — Harness Engineering 的实践框架与五大支柱
+- [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](../vibe-coding/Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md) — 五层 AI pipeline 全景
 
 ## 参考资料
 

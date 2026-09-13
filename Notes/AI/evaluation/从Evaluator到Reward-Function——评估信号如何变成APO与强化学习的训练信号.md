@@ -13,9 +13,9 @@ tags:
 
 # 从 Evaluator 到 Reward Function——评估信号如何变成 APO 与强化学习的训练信号
 
-> 本篇是 Evaluation 系列的**链路篇**，回答一个连接两个领域的问题：**Evaluation（评估）和 Optimization（训练/优化）原本是分开的两套体系，评估器打出的分数如何变成 APO 的排序依据、变成 RL 的奖励函数？** 概念辨析见姊妹篇 [[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]。
+> 本篇是 Evaluation 系列的**链路篇**，回答一个连接两个领域的问题：**Evaluation（评估）和 Optimization（训练/优化）原本是分开的两套体系，评估器打出的分数如何变成 APO 的排序依据、变成 RL 的奖励函数？** 概念辨析见姊妹篇 [Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型](Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型.md)。
 >
-> 配套阅读：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]（APO 如何消费 reward）、[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]（RL 如何消费 reward）。
+> 配套阅读：[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](../agent-lightning/Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)（APO 如何消费 reward）、[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](../agent-lightning/Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md)（RL 如何消费 reward）。
 
 ## 一、先给结论：一条统一链路
 
@@ -67,7 +67,7 @@ Model / Prompt Update
 | 所属领域 | Evaluation（评价） | Optimization（训练） |
 | 产出去向 | 报表、监控、人的决策 | 训练循环（排序、梯度、策略更新） |
 
-这个分工正是 [[reward-design-three-inputs]] 中"两本账分家"的理论根基：**验收分（evaluation 口径）逐字节不动保历史可比，优化 reward 单独按信噪比设计**——两本账对应链路上两个不同的节点，本来就不该是同一个函数。
+这个分工正是 [reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md) 中"两本账分家"的理论根基：**验收分（evaluation 口径）逐字节不动保历史可比，优化 reward 单独按信噪比设计**——两本账对应链路上两个不同的节点，本来就不该是同一个函数。
 
 ### 2.2 输入不同
 
@@ -95,7 +95,7 @@ reward = f(
 
 ## 三、agent-lightning 视角：reward 从哪来，框架不管
 
-[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] 讲过 agent-lightning 的 method-agnostic 设计，落到 reward 上就一句话：**框架只要求 `reward: float`，从哪来完全不限制**。
+[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](../agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 讲过 agent-lightning 的 method-agnostic 设计，落到 reward 上就一句话：**框架只要求 `reward: float`，从哪来完全不限制**。
 
 APO 的循环：
 
@@ -105,7 +105,7 @@ Prompt → Agent Rollout → Reward Function → reward: float
    └── New Prompt ← Textual Gradient ←──────────┘
 ```
 
-APO 拿到 reward 只做一件事：`sorted()[:beam_width]`（见 [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]）。所以 reward 可以来自：
+APO 拿到 reward 只做一件事：`sorted()[:beam_width]`（见 [Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](../agent-lightning/Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)）。所以 reward 可以来自：
 
 - Exact Match / 通过率（可验证，零噪声）
 - Metric（F1、结构化字段命中）
@@ -121,7 +121,7 @@ LLM Judge 逐维打分：5 / 4 / 4 / 5（1~5 分制）
 加权归一化 → reward = 0.92 → 喂给 APO / RL
 ```
 
-**同一份 reward 沿 APO → SFT（拒绝采样）→ RL 阶梯复用**，只是消费方式不同：APO 用它排序 prompt 候选，RAFT 用它筛样本造标签（[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]），RL 用它算 advantage 更新权重。这是 agent-lightning 阶梯"资产可沿用"的根本原因——**评估资产（evaluator/rubric）是三种优化方法共享的地基**。
+**同一份 reward 沿 APO → SFT（拒绝采样）→ RL 阶梯复用**，只是消费方式不同：APO 用它排序 prompt 候选，RAFT 用它筛样本造标签（[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](../agent-lightning/Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)），RL 用它算 advantage 更新权重。这是 agent-lightning 阶梯"资产可沿用"的根本原因——**评估资产（evaluator/rubric）是三种优化方法共享的地基**。
 
 ## 四、按 Optimizer 看 reward 的消费方式
 
@@ -136,7 +136,7 @@ LLM Judge 逐维打分：5 / 4 / 4 / 5（1~5 分制）
 两个工程要点：
 
 1. **评估策略（Layer 2）和 optimizer 有天然配对**——Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对；Reference-based ↔ RLVR。选评估策略时就已经在选下游优化路线。
-2. **噪声在不同 optimizer 里的放大系数不同**——APO 的 beam search 每轮基于噪声排序剪枝，错杀好候选无法挽回；GRPO 组内相对比较能抵消一部分系统性偏差（如 verbosity bias 对组内所有 rollout 同向作用）；但没有任何 optimizer 能靠算法层面免疫低质量 reward。地基还是那句话：**先把 reward/eval 做稳，再谈优化**（扩大评估集、同 prompt 多次采样取均值、拆分 judge 降噪——见 [[reward-design-three-inputs]]）。
+2. **噪声在不同 optimizer 里的放大系数不同**——APO 的 beam search 每轮基于噪声排序剪枝，错杀好候选无法挽回；GRPO 组内相对比较能抵消一部分系统性偏差（如 verbosity bias 对组内所有 rollout 同向作用）；但没有任何 optimizer 能靠算法层面免疫低质量 reward。地基还是那句话：**先把 reward/eval 做稳，再谈优化**（扩大评估集、同 prompt 多次采样取均值、拆分 judge 降噪——见 [reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md)）。
 
 ## 五、Rubric as Reward：2025~2026 的研究趋势线
 
@@ -161,7 +161,7 @@ LLM Judge 逐维打分：5 / 4 / 4 / 5（1~5 分制）
 第三阶段：rubric 自动生成 + 动态演化（rubric 本身成为被优化的对象）
 ```
 
-演进逻辑与 [[automatic-prompt-optimization]] 的"评估信号成熟度决定优化档位"一脉相承：**训练方法在阶梯上走多远，取决于 reward 质量能撑多远；而 rubric 是提升 LLM-judge 型 reward 信噪比的最有效结构化手段**——它把"凭感觉打分"变成"逐维、有锚点、可解释的打分"，正对应 [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] 里 L1→L2 的关键跃迁。
+演进逻辑与 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md) 的"评估信号成熟度决定优化档位"一脉相承：**训练方法在阶梯上走多远，取决于 reward 质量能撑多远；而 rubric 是提升 LLM-judge 型 reward 信噪比的最有效结构化手段**——它把"凭感觉打分"变成"逐维、有锚点、可解释的打分"，正对应 [Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇](../agent-lightning/Prompt优化成熟度阶梯——从vibe%20check、LLM-judge到数据闭环：APO与SkillOpt前置篇.md) 里 L1→L2 的关键跃迁。
 
 ## 六、Reward Hacking：rubric 进训练循环后的新风险
 
@@ -171,12 +171,12 @@ Rubric 只做评估时，打分偏差顶多误导报表；进了训练循环，p
 - rubric 有 "引用依据" 维度 → 模型学会伪造看似合理的引用格式；
 - rubric 等级锚点写得含糊 → judge 打分被答案的自信语气带偏。
 
-这是 [Rubric Anchors](https://arxiv.org/abs/2508.12790) 和 [Dr Tulu](https://arxiv.org/abs/2511.19399) 重点处理的问题，防御手段与 [[generation-evaluation-separation]] 的原则同构：
+这是 [Rubric Anchors](https://arxiv.org/abs/2508.12790) 和 [Dr Tulu](https://arxiv.org/abs/2511.19399) 重点处理的问题，防御手段与 [generation-evaluation-separation](../../../wiki/concepts/generation-evaluation-separation.md) 的原则同构：
 
 1. **评估者与被优化者分离**——judge 模型 ≠ policy 模型，避免 self-preference 被 RL 放大；
 2. **确定性锚点混入**——rubric 分数与规则分（格式、可验证子项）混合，规则分 hack 不动；
 3. **rubric 动态演化**——静态 rubric 会被摸透，训练过程中更新 rubric（Dr Tulu 路线）；
-4. **人工盲选校准**——judge 与业务盲选一致率达标才获得代理资格（[[reward-design-three-inputs]] 的 ≥85% 门槛），且训练前锁版。
+4. **人工盲选校准**——judge 与业务盲选一致率达标才获得代理资格（[reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md) 的 ≥85% 门槛），且训练前锁版。
 
 本质上，rubric 时代的 reward hacking 是控制论老问题的重演：**任何被度量的指标一旦成为优化目标，就不再是好的度量**（Goodhart's Law）。rubric 缓解但不消除它——rubric 把"模糊的单一分数"拆成"逐维、有锚点的结构化分数"，提高了 hack 的难度，但也只是提高难度而已。
 
@@ -191,10 +191,10 @@ Rubric 只做评估时，打分偏差顶多误导报表；进了训练循环，p
 | **RAG** | Faithfulness / Groundedness / Context Precision & Recall 是唯一能回答"检索到底有没有用"的手段 | 调 chunk size、调 top-k、换 embedding 全是盲调——改了不知道好没好 |
 | **Agent** | Task Success、Tool Correctness、Planning Quality 定位失败环节；τ-Voice 基准发现语音 Agent 79~90% 失败源于 Agent 行为而非 ASR/TTS——这种归因结论只能靠评估体系产出 | harness 迭代失去方向，只能靠 demo 印象判断改进 |
 | **APO** | reward 直接决定 beam search 的排序剪枝 | 摆动、错杀好候选（APO 摆动第一大原因就是评估噪声） |
-| **SFT（拒绝采样）** | **评估器就是数据工厂**——RAFT 用 reward 从 rollout 中筛出高分样本当训练标签，数据质量 = 评估质量（[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]） | 筛不出可信标签，微调喂进去的就是噪声 |
+| **SFT（拒绝采样）** | **评估器就是数据工厂**——RAFT 用 reward 从 rollout 中筛出高分样本当训练标签，数据质量 = 评估质量（[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](../agent-lightning/Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)） | 筛不出可信标签，微调喂进去的就是噪声 |
 | **RL** | reward 是训练信号本身，评估质量直接是模型能力上限 | reward hacking、训崩、收敛到错误行为 |
 
-注意一个贯穿性的结构：**沿 APO → SFT → RL 阶梯，评估信号的"消费强度"逐级升高**——APO 只用它排序（错了下轮还能纠正），SFT 用它造数据（错误固化进权重一次），RL 用它逐步更新策略（错误被反复放大）。所以越往阶梯上方走，前置的评估投资越不可省略。这也是为什么 [[reward-design-three-inputs]] 强调 reward 是 APO/SFT/RL 三者**共享的地基**：地基打一次，三层楼共用；地基歪一寸，越高的楼歪得越厉害。
+注意一个贯穿性的结构：**沿 APO → SFT → RL 阶梯，评估信号的"消费强度"逐级升高**——APO 只用它排序（错了下轮还能纠正），SFT 用它造数据（错误固化进权重一次），RL 用它逐步更新策略（错误被反复放大）。所以越往阶梯上方走，前置的评估投资越不可省略。这也是为什么 [reward-design-three-inputs](../../../wiki/methods/reward-design-three-inputs.md) 强调 reward 是 APO/SFT/RL 三者**共享的地基**：地基打一次，三层楼共用；地基歪一寸，越高的楼歪得越厉害。
 
 数据和评估之间还有一个飞轮关系，值得单独点出：
 

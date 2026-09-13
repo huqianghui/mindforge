@@ -15,7 +15,7 @@ tags:
 
 > 在 AI Agent 工程中，"控制论"、"强化学习"、"在线学习"、"Harness"经常被混为一谈。本文基于与 ChatGPT 的两次深度讨论（[概念辨析](https://chatgpt.com/share/69e238d8-280c-839c-8d07-735b95eb5c79) · [词根溯源](https://chatgpt.com/share/69e23c28-1c74-8321-b1d1-819597e74381)），从词源到工程实践，系统澄清这些概念的本质区别与联系。
 >
-> 后续阅读：[[控制论与科学方法论——从控制论到AI Agent设计方法论]]（在本文基础上，深入控制论五层设计框架与 Agent 的结构同构映射）
+> 后续阅读：[控制论与科学方法论——从控制论到AI Agent设计方法论](控制论与科学方法论——从控制论到AI%20Agent设计方法论.md)（在本文基础上，深入控制论五层设计框架与 Agent 的结构同构映射）
 
 ---
 
@@ -422,7 +422,7 @@ Harness-First > Offline Training > Online Learning > RL
 
 ## 延伸阅读
 
-- [[控制论与科学方法论——从控制论到AI Agent设计方法论]] — 控制论在 Agent 设计中的完整映射（同构命题 + 五层设计框架 + Ashby 必要多样性定律）
-- [[Vibe Coding系列01]] — Harness Engineering 的来龙去脉，三家公司的行业共识
+- [控制论与科学方法论——从控制论到AI Agent设计方法论](控制论与科学方法论——从控制论到AI%20Agent设计方法论.md) — 控制论在 Agent 设计中的完整映射（同构命题 + 五层设计框架 + Ashby 必要多样性定律）
+- [Vibe Coding系列01](../Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) — Harness Engineering 的来龙去脉，三家公司的行业共识
 - [Vibe Coding 系列 13：控制论如何指导 Harness Engineering](../Notes/AI/vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) — Regulation-First 设计方法在 Vibe Coding 中的具体落地
-- [[2026-03-21-The-Bitter-Lesson]] — Rich Sutton 的 RL 背景与 Bitter Lesson 对 Agent 工程的启示
+- [2026-03-21-The-Bitter-Lesson](../paper/2026-03-21-The-Bitter-Lesson.md) — Rich Sutton 的 RL 背景与 Bitter Lesson 对 Agent 工程的启示

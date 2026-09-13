@@ -71,7 +71,7 @@ POML（Prompt Orchestration Markup Language）是微软开源的一种**提示�
 
 ## 四、使用场景实例：agent-lightning APO 中的 POML
 
-agent-lightning 的 APO（Automatic Prompt Optimization，文本梯度 + beam search，详见 [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 与 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]）中，POML 出现在**两个不同的层面**：
+agent-lightning 的 APO（Automatic Prompt Optimization，文本梯度 + beam search，详见 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](../AI/agent-lightning/Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 与 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](../AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)）中，POML 出现在**两个不同的层面**：
 
 ### 角色一：被优化对象的模板引擎选项
 
@@ -141,12 +141,12 @@ APO 元提示词的三个需求，恰好是纯文本模板的三个弱项：
 
 - **生态尚小**：相比 Jinja2 这种通用标准，POML 是新语言，团队协作需要额外学习成本；目前主要采纳方还是微软自家项目（agent-lightning 等）
 - **集成深度不均**：如上所述，agent-lightning 的 `PromptTemplate.format()` 尚不支持 poml 引擎，一等公民地位是"声明先行、实现跟进"
-- **不解决优化问题**：POML 管"写得好维护"，不管"写得效果好"——后者仍需 APO/DSPy 这类优化器（参见 [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]）。两者是正交互补的：POML 是**表示层**，APO 是**优化层**，agent-lightning 中两者的组合就是证明
+- **不解决优化问题**：POML 管"写得好维护"，不管"写得效果好"——后者仍需 APO/DSPy 这类优化器（参见 [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](../AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)）。两者是正交互补的：POML 是**表示层**，APO 是**优化层**，agent-lightning 中两者的组合就是证明
 - **适用判断**：短提示词、纯文本插值场景用 f-string/Jinja2 足够；当提示词出现"嵌结构化数据 + 多消息角色 + 需要格式实验"三者之一时，POML 的收益才开始显现
 
 ## 相关笔记
 
-- [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]
-- [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]
-- [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]
-- [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+- [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](../AI/agent-lightning/Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)
+- [Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](../AI/agent-lightning/Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)
+- [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](../AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
+- [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](../AI/agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)

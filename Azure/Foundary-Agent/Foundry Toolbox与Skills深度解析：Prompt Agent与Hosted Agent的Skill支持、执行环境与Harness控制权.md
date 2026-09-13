@@ -20,7 +20,7 @@ description: 从"给 Agent 添加 skill 后无法发布"的实际困惑入手，
 > 本文源于两个实际困惑的排查（2026-07-30，基于 Microsoft Learn skills/toolbox 官方文档核对）：
 > ① 给 Agent 的 toolbox 添加 skill 后为什么无法发布？发布之后再添加是否 work？
 > ② Skill 里如果包含 script，它的执行环境（python venv、依赖安装）由谁管理？Prompt Agent 为什么用不了 skill？
-> Agent 类型的全景对比（Memory/Planner/治理/Voice）见姊妹篇 [[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]。（⚠️ 2026-07-31 加注：该文标题中的第三类 Workflow Agent 已从官方 agent 类型中移除——Workflows 定于 2026-12-01 退役，编排下沉至 Agent Framework/harness + A2A + Skills，详见该文文首更新说明。官方 agent 类型现仅剩本文讨论的 Prompt Agent 与 Hosted Agent 两类。）
+> Agent 类型的全景对比（Memory/Planner/治理/Voice）见姊妹篇 [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)。（⚠️ 2026-07-31 加注：该文标题中的第三类 Workflow Agent 已从官方 agent 类型中移除——Workflows 定于 2026-12-01 退役，编排下沉至 Agent Framework/harness + A2A + Skills，详见该文文首更新说明。官方 agent 类型现仅剩本文讨论的 Prompt Agent 与 Hosted Agent 两类。）
 
 ---
 
@@ -380,4 +380,4 @@ overview 对比表给出的成本模型：
 - [Agent Skills 规范](https://agentskills.io)、[MCP Skills 扩展 SEP-2640](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2640)
 - [Skills in Toolbox C# sample（Agent Framework + AgentSkillsProvider）](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/csharp/hosted-agents/agent-framework/foundry-toolbox-mcp-skills)
 - [GitHub Copilot SDK skill_directories sample](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/bring-your-own/invocations/github-copilot)
-- 相关笔记：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]、[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- 相关笔记：[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)、[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](../Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)

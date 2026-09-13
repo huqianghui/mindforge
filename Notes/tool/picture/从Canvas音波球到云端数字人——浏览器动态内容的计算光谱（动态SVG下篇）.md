@@ -11,7 +11,7 @@ tags:
 
 # 从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）
 
-上篇 [[动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比]] 讲清了 SVG 动画的能力与边界：动画预先写死在文档里，浏览器照"谱"演奏。但打开一个真实的语音 Agent 产品页面（Microsoft Foundry 的 Voice Live Playground），用 Inspector 逐层审查，会发现两个明显超出 SVG 边界的动态元素：跟随语音起伏的音波球，和会说话的数字人。这两个案例恰好把"浏览器里的动态内容"补成一条完整光谱——**画面的计算发生在哪里，由内容复杂度与实时性来源决定**。
+上篇 [动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比](动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md) 讲清了 SVG 动画的能力与边界：动画预先写死在文档里，浏览器照"谱"演奏。但打开一个真实的语音 Agent 产品页面（Microsoft Foundry 的 Voice Live Playground），用 Inspector 逐层审查，会发现两个明显超出 SVG 边界的动态元素：跟随语音起伏的音波球，和会说话的数字人。这两个案例恰好把"浏览器里的动态内容"补成一条完整光谱——**画面的计算发生在哪里，由内容复杂度与实时性来源决定**。
 
 ## 一、音波球：一个空标签里的秘密
 
@@ -133,7 +133,7 @@ SVG 的独特之处正是**双重身份兼得**：既是可直接打开的文档
 - 照片级、生成式内容 → **云端渲染 + 视频流**，浏览器只是显示器。
 
 **关联阅读**：
-- 上篇：[[动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比]]
+- 上篇：[动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比](动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
 - [MDN Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 - [MDN Web Audio API：Visualizations](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API)（音波可视化官方教程）
 - [Azure AI Speech：Text to speech avatar](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech-avatar/what-is-text-to-speech-avatar)（云端数字人架构）

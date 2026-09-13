@@ -541,4 +541,4 @@ Claude Code 已经将 Teammate 机制产品化为原生功能：
 - Superpowers GitHub：[obra/superpowers](https://github.com/obra/superpowers)
 - Superpowers subagent-driven-development Skill 源码：[SKILL.md](https://github.com/obra/superpowers/blob/main/skills/subagent-driven-development/SKILL.md)
 - learn-claude-code s15 Agent 团队：[learn.shareai.run/zh/s15](https://learn.shareai.run/zh/s15/)
-- 相关文章：[[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
+- 相关文章：[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](../vibe-coding/Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)

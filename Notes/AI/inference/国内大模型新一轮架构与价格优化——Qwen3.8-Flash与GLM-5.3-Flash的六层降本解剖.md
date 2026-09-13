@@ -8,7 +8,7 @@ tags: [inference, architecture, moe, sparse-attention, gated-deltanet, hybrid-at
 
 > 2026 年 8 月，DeepSeek 上调 V4 系列 API 价格并改用峰谷分时计费；8 月 26 日，Qwen3.8-Flash 与 GLM-5.3-Flash 同日发布，以更低单价切入 Agent 市场。表面是又一轮价格战，实质是"生产智能"的成本结构被重新设计——**厂商不再只降 token 售价，而是在减少完成任务所需的有效计算、缓存、时间和重试**。
 >
-> 本文按"六层降本"拆解两款 Flash 模型的架构优化如何传导为降价空间，并给出比"每百万 token 单价"更准确的选型口径：**每成功任务成本**。架构地基（GDN、Hybrid 注意力、prefix caching 失效问题）见 [[线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构]] 及其系列；GLM 推理栈基于 SGLang 的背景见 [[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]]。
+> 本文按"六层降本"拆解两款 Flash 模型的架构优化如何传导为降价空间，并给出比"每百万 token 单价"更准确的选型口径：**每成功任务成本**。架构地基（GDN、Hybrid 注意力、prefix caching 失效问题）见 [线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构](线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md) 及其系列；GLM 推理栈基于 SGLang 的背景见 [SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)。
 >
 > 素材来源：Codex 侧对 YouTube 视频《DeepSeek竟然也遭遇斩杀线》NotebookLM 转写稿的分析，关键数字已对照 Qwen / 智谱 / DeepSeek 官方技术报告与价格页核验。厂商基准不等于实际业务环境结果。
 
@@ -37,7 +37,7 @@ MoE 模型的在线推理成本核心数字是**激活参数量**，不是标称
 
 Qwen3.8-Flash-Next 每四层一个周期：三层 Gated DeltaNet + 一层 **Qwen Sparse Attention**（QSA，不是转写稿里的"Quick Sparse Attention"）：
 
-- **GDN**：把历史上下文压缩成固定大小的递归状态，解码时 KV Cache 不随上下文无限增长——机制细节见 [[线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构]]（Qwen3.5 已用同路线）；
+- **GDN**：把历史上下文压缩成固定大小的递归状态，解码时 KV Cache 不随上下文无限增长——机制细节见 [线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构](线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md)（Qwen3.5 已用同路线）；
 - **QSA**：轻量索引器把历史序列压成 micro-block（四倍序列压缩），块级判断相关性后只对少量重要块做核心注意力，注意力 token 预算约 2048。官方内核级数据：1M token 上下文下 Prefill 快 7.6×、Decode 快 4.9×——**这是注意力模块的内核级加速，不代表完整 API 请求同比例快**（还有 MoE、输出层、通信、调度成本）。
 
 ### GLM：线性 + 稀疏 + IndexPool
@@ -75,7 +75,7 @@ Muon 常被误解为推理加速技术，实际作用于训练阶段：对权重
 
 论文里省了 FLOPs，线上还要过内存带宽、芯片间通信、批处理效率、长短请求干扰、集群调度这些关。GLM-5.3-Flash 这轮最值得关注的就是把优化延伸到整个推理系统：
 
-- 基于 **SGLang** 的专用推理引擎（呼应 [[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]] 中"Hybrid 模型这条线 SGLang 领先"的判断）；
+- 基于 **SGLang** 的专用推理引擎（呼应 [SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md) 中"Hybrid 模型这条线 SGLang 领先"的判断）；
 - 线性注意力与 LM Head 的节点内张量并行、ReplaySSM、W8A8 量化、INT8/FP8/BF16 混合 Cache 量化、Layer Split；
 - **EPD 分离架构**：Encode（多模态编码）/ Prefill（长上下文输入）/ Decode（逐 token 生成）拆成独立工作池分别扩缩容。
 

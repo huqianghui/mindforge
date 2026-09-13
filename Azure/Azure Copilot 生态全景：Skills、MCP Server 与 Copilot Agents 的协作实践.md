@@ -590,5 +590,5 @@ Azure Skills 的设计逻辑是：**只在值得"付出上下文代价"的地方
 
 ## 相关文章
 
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent Skill 模式分类
-- [[Microsoft Fabric IQ与本体论（Ontology）研究]] — Azure 生态中的 Fabric IQ
+- [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](../Notes/AI/agent/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) — Agent Skill 模式分类
+- [Microsoft Fabric IQ与本体论（Ontology）研究](fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md) — Azure 生态中的 Fabric IQ

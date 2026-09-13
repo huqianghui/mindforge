@@ -15,7 +15,7 @@ tags:
 
 > 本篇是 APO / SkillOpt 系列的**前置篇**，回答一个更早的问题：**当你还没有数据集、没有可验证 reward 时，prompt 该怎么优化？以及积累到多少数据后，才值得迁移到 APO / SkillOpt 这类自动闭环工具？**
 >
-> 配套阅读：[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]（有数据后的工具选型）、[[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]（两段式管道）。
+> 配套阅读：[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)（有数据后的工具选型）、[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法](../SkillOpt/SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法.md)（两段式管道）。
 
 ## 一、先给结论：三层成熟度阶梯
 
@@ -91,7 +91,7 @@ prompt-optimizer 并非没有评估——它内置 `evaluation` 模板族（单�
 
 ### 3.2 数据量参考阈值
 
-结合 APO/SkillOpt 实践经验（APO 摆动的第一大来源就是评估噪声，见 [[automatic-prompt-optimization]]）：
+结合 APO/SkillOpt 实践经验（APO 摆动的第一大来源就是评估噪声，见 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md)）：
 
 | 数据量 | 建议 |
 |---|---|
@@ -131,8 +131,8 @@ prompt-optimizer 并非没有评估——它内置 `evaluation` 模板族（单�
 ## 相关链接
 
 - [prompt-optimizer GitHub](https://github.com/linshenkx/prompt-optimizer) ｜ [在线优化站](https://prompt.always200.com/#/basic/system) ｜ [Prompt Garden](https://garden.always200.com/#all)
-- [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
-- [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]
-- [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]
-- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
-- Wiki：[[automatic-prompt-optimization]]、[[generation-evaluation-separation]]
+- [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
+- [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)
+- [Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)
+- [SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法](../SkillOpt/SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法.md)
+- Wiki：[automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md)、[generation-evaluation-separation](../../../wiki/concepts/generation-evaluation-separation.md)

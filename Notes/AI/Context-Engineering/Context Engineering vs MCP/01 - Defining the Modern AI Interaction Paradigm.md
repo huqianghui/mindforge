@@ -45,5 +45,5 @@ These high-stakes environments demand a level of engineering rigor that is antit
 This fundamental need to manage complexity, mitigate risk, and ensure enterprise-grade performance is the force that professionalizes the art of prompting into the formal discipline of Context Engineering. It necessitates the creation of structured, version-controlled context templates, automated evaluation pipelines, and robust security frameworks—hallmarks of a mature engineering practice.7
 
 ---
-Next → [[02 - Context Engineering]]  
-Back to MOC: [[Context Engineering vs. Model Context Protocol]]
+Next → [02 - Context Engineering](02%20-%20Context%20Engineering.md)  
+Back to MOC: [Context Engineering vs. Model Context Protocol](../A%20Survey%20of%20Context%20Engineering%20for%20Large%20Language%20Models/Context%20Engineering%20vs.%20Model%20Context%20Protocol.md)

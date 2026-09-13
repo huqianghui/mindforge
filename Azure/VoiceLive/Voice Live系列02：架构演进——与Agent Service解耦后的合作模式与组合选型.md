@@ -14,7 +14,7 @@ description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 
 # Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型
 
 > 本文源于一次实际困惑的排查讨论（[与 ChatGPT 的完整讨论](https://chatgpt.com/share/6a5c24ec-5e68-83ec-9a8d-c5ad209bd815)，2026-07-19）：Azure AI Agent 是否仍可以通过 Voice Live API 使用 gpt-realtime？为什么 Agent 创建页面选不到 gpt-realtime 了？
-> 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]。
+> 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)。
 
 ---
 
@@ -220,7 +220,7 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 | Noise suppression | 噪声抑制 | 呼叫中心、户外/嘈杂环境必开 |
 | Azure TTS voices + Custom voice | 数百个标准音色 + 品牌定制音色 | 级联模型的输出端；Realtime 模型也可选择叠加 |
 | Avatar（数字人） | 音视频同步的虚拟形象输出 | 需要视觉在场感的场景（导览、数字员工前台） |
-| WebSocket / WebRTC | 服务端集成用 WebSocket；客户端实时音频推荐 WebRTC | 协议选型详见 [[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]] |
+| WebSocket / WebRTC | 服务端集成用 WebSocket；客户端实时音频推荐 WebRTC | 协议选型详见 [WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md) |
 
 与裸用 GPT Realtime API 相比（后者只提供模型 + WebRTC/SIP/WebSocket 传输），Voice Live 把 STT/TTS/VAD/降噪/Avatar 打包成了平台能力——这正是"用 Voice Live 而不是自己拼 STT + LLM + TTS 管线"的核心理由。
 
@@ -299,4 +299,4 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)
 - [Upgrade your voice agent with Azure AI Voice Live API — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/upgrade-your-voice-agent-with-azure-ai-voice-live-api/4458247)
 - [Voice Agents in Azure using Voice Live API and Foundry Agents V1 and V2 — Mark Tucker](https://www.youtube.com/watch?v=7oM8rhOKI54)
-- 相关笔记：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]、[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- 相关笔记：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)

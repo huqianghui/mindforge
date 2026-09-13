@@ -58,7 +58,7 @@ Cuban 的判断清晰直接：
 
 Cuban 的观点在宏观层面完全正确，但缺少一个具体问题的回答：**怎么用 AI 学习才能真正沉淀为持久优势？**
 
-这正是我构建 [[personal-knowledge-compiler|Personal Knowledge Compiler（PKC）]] 的出发点。PKC 基于 Karpathy 的 [[llm-wiki|LLM Wiki]] 模型：
+这正是我构建 [Personal Knowledge Compiler（PKC）](../../../wiki/concepts/personal-knowledge-compiler.md) 的出发点。PKC 基于 Karpathy 的 [LLM Wiki](../../../wiki/concepts/llm-wiki.md) 模型：
 
 > "RAG = search, LLM Wiki = writing a book."
 
@@ -162,5 +162,5 @@ Mark Cuban 说得对：**好奇心 + 批判性思维 + AI 工具 = 永远不失�
 
 - [Mark Cuban: AI Hype vs. Reality — Big Technology Podcast](https://www.youtube.com/watch?v=CEz9RRg0FfI)
 - [Mark Cuban warns the biggest career mistake right now is letting AI do your thinking for you](https://tech.yahoo.com/ai/articles/mark-cuban-warns-biggest-career-105944285.html)（Business Insider）
-- [[personal-knowledge-compiler]] — 个人知识编译器概念页
-- [[llm-wiki]] — Karpathy LLM Wiki 模型
+- [personal-knowledge-compiler](../../../wiki/concepts/personal-knowledge-compiler.md) — 个人知识编译器概念页
+- [llm-wiki](../../../wiki/concepts/llm-wiki.md) — Karpathy LLM Wiki 模型

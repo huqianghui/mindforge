@@ -17,7 +17,7 @@ description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agen
 # Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型
 
 > 本文源于一次架构选型讨论（与 ChatGPT 的讨论，2026-07-19）：在 Microsoft Foundry 里建 Agent 时，Prompt Agent、Hosted Agent、Workflow Agent 到底差在哪？什么场景该用哪个？
-> 姊妹篇（语音入口视角）：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]。
+> 姊妹篇（语音入口视角）：[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](../VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)。
 
 > [!warning] 更新说明（2026-07-31）：Workflow Agent 已从官方 Agent 类型中移除
 > 本文写作时（2026-07-19 前后的资料），Foundry 还有 portal 可视化的 multi-agent workflows（本文称 Workflow Agent，public preview）。但据最新官方文档（[Agent Service Overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)，2026-07-09 更新）：
@@ -27,7 +27,7 @@ description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agen
 > 3. **多 Agent 编排的新承接**：原 Workflow Agent 承担的"确定性多 Agent 协作"没有消失，而是**从"托管 YAML/可视化产品"下沉回代码与 harness 层**——
 >    - **Hosted Agent 内代码编排**：任意 harness（Agent Framework / LangGraph / OpenAI Agents SDK / Anthropic Agent SDK / GitHub Copilot SDK）自带 sub-agent、handoff、并行等编排原语；
 >    - **A2A 协议（preview）**：agent 间委派的平台级标准通道（Agent A 保留 thread 控制权的 A2A tool 调用，或完整 handoff）；
->    - **Skills 层**：overview 对比表中 Prompt Agent 与 Hosted Agent 现均标注 **Skill support: Yes**，流程性知识可以以 skill 形式复用而不必固化成编排图（详见姊妹篇 [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]）。
+>    - **Skills 层**：overview 对比表中 Prompt Agent 与 Hosted Agent 现均标注 **Skill support: Yes**，流程性知识可以以 skill 形式复用而不必固化成编排图（详见姊妹篇 [Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权](Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)）。
 >
 > 这印证了一个判断：微软放弃了把编排层做成独立托管产品的路线，把它交还给 agent framework 生态（harness 即编排）。**本文 Workflow Agent 相关内容（第一、二、五节及各对比表相应行列）保留为历史记录，均已就地加注；选型结论以两类 Agent 为准。**
 
@@ -195,7 +195,7 @@ Workflows 退役后，"确定性多 Agent 协作"的答案收敛为三层机制�
 |------|------|------|
 | **Hosted Agent + harness 编排** | Agent Framework workflow orchestrations（官方迁移目标）/ LangGraph / OpenAI Agents SDK / Anthropic Agent SDK / GitHub Copilot SDK，harness 自带 sub-agent、handoff、sequential/concurrent/group-chat 等原语，整个系统打包为容器 | 确定性流程、复杂拓扑、跨模型调度——原 Workflow Agent 的全部场景 |
 | **A2A 协议（preview）** | 平台级 agent 间委派通道：A2A tool 调用（主 agent 保留 thread 控制权）或完整 handoff（被调 agent 接管 thread） | 跨团队/跨项目的独立 agent 互调，不想合并进同一个容器 |
-| **Skills** | Prompt Agent 与 Hosted Agent 均支持（overview 对比表 Skill support: Yes/Yes），把流程性知识封装为可复用 skill | "多步骤流程"其实是可复用的操作知识、而非必须固化的编排图时（详见姊妹篇 [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]） |
+| **Skills** | Prompt Agent 与 Hosted Agent 均支持（overview 对比表 Skill support: Yes/Yes），把流程性知识封装为可复用 skill | "多步骤流程"其实是可复用的操作知识、而非必须固化的编排图时（详见姊妹篇 [Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权](Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)） |
 
 方向性解读：微软没有再造一个托管编排产品，而是把编排交还给 agent framework 生态——**harness 即编排层**。原来"YAML 可视化 vs 代码"的分界消失了，代价是失去 portal 可视化设计器，收益是编排表达力不再受 schema 限制、且与 GA 的 Agent Framework 生态（Semantic Kernel + AutoGen 合流）对齐。
 
@@ -203,7 +203,7 @@ Workflows 退役后，"确定性多 Agent 协作"的答案收敛为三层机制�
 
 ## 六、Voice Live 与两类 Agent 的组合：方向相反的两条路径
 
-姊妹篇[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型|Voice Live 文章]]讲了 Voice Live 挂 Agent 的模式三。一个自然的追问：**这个 `agent_id` 绑定对 Hosted Agent 也有效吗？**
+姊妹篇[Voice Live 文章](../VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)讲了 Voice Live 挂 Agent 的模式三。一个自然的追问：**这个 `agent_id` 绑定对 Hosted Agent 也有效吗？**
 
 结论：**无效——Voice Live 的 agent 绑定是 Prompt Agent 专属路径；Hosted Agent 的语音方案是反向组合。**
 
@@ -324,4 +324,4 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)
 - [Public preview: Voice-native agents in Microsoft Foundry — Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/public-preview-voice-native-agents-in-microsoft-foundry/4502756)
 - [Multi-agent workflows in Foundry Agent Service — Microsoft DevBlogs](https://devblogs.microsoft.com/foundry/)
-- 相关笔记：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]、[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]、[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- 相关笔记：[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权](Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](../VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)、[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)

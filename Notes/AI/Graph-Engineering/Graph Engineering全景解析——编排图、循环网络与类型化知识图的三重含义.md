@@ -30,7 +30,7 @@ tags:
 
 几个考据事实值得记录：
 
-- 词源上最早的书面使用是 Josh Simmons 7 月 4 日的博客《We are entering the graph engineering phase》；Steinberger 的推本意是**嘲讽名词跑步机**（2023 prompt engineering → 2025 context engineering → 2026-06 [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界|loop engineering]] → 2026-07 graph engineering），结果反而点燃了它。
+- 词源上最早的书面使用是 Josh Simmons 7 月 4 日的博客《We are entering the graph engineering phase》；Steinberger 的推本意是**嘲讽名词跑步机**（2023 prompt engineering → 2025 context engineering → 2026-06 [loop engineering](../Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md) → 2026-07 graph engineering），结果反而点燃了它。
 - 热度中混有伪造内容：广泛传播的"Stanford + Anthropic 310 万美元研究"**不存在**，是 engagement bait（The AI Operator 作者 Eugeniu Ghelbur 查证）。
 - 三个含义中，只有含义③背后有十年研究、可用工具和经受过独立评测的基准数字；Foundation Capital 在 2025 年 12 月就以 "context graphs" 命名同一事物，Gartner 预测 2028 年过半企业 agent 系统会使用图基上下文，SAP 已把知识图谱作为 agent context 层出货。**名词是新的，实质不是。**
 
@@ -53,7 +53,7 @@ LangGraph 时代的图，是开发者在**设计时**手写、编译、部署的
 
 ### 2.2 含义②：设计单位从"一个循环"升级到"循环的网络"
 
-Carlos Perez 的文章（Intuition Machine，7 月 19 日）与 [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界|loop engineering]] 直接衔接。他的论证结构：
+Carlos Perez 的文章（Intuition Machine，7 月 19 日）与 [loop engineering](../Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md) 直接衔接。他的论证结构：
 
 **单循环有四个结构性死法**，且都不是偶然故障，而是循环这个形状的必然后果：
 
@@ -174,7 +174,7 @@ Flowtivity 提出的 2×2（简洁好用）：
 
 **执行图**：把重复出现的多步任务沉淀为 workflow 脚本（可 git 提交、可重跑），一次性任务继续用普通 session / subagent。判据就是那句话——**当编排本身需要可重复时才用 workflow**。适合的任务形状：codebase 级 bug 扫描、跨文件迁移、多角度架构审查、需要交叉验证的研究。
 
-**知识图**：The AI Operator 的核心洞察对 PKC（[[personal-knowledge-compiler]]）实践者最有价值——**一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引**：
+**知识图**：The AI Operator 的核心洞察对 PKC（[personal-knowledge-compiler](../../../wiki/concepts/personal-knowledge-compiler.md)）实践者最有价值——**一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引**：
 
 - 实体消解由 wikilink **从构造上解决**——写下 `[[ADR-007]]` 的瞬间，消解就完成了，零模糊合并、零复合误差。抽取管道花掉的大部分工程预算，就是在恢复一个 wikilink 免费给你的东西；
 - 索引成本为零——图在写入时构建，没有"每 chunk 一次 LLM 调用"的账单（对照 Microsoft GraphRAG 单个大型企业数据集约 33,000 美元的索引估算，及其修正版 LazyGraphRAG 把索引成本降到 0.1% 的教训：**不需要预计算图的意义，便宜的结构图 + 查询时的聪明遍历拿到大部分价值**）。
@@ -209,6 +209,6 @@ Graph engineering 不是 AutoGen / LangGraph 的重新发明——编排图早�
 - [An open-source spec for Codex orchestration: Symphony](https://openai.com/index/open-source-codex-orchestration-symphony)（OpenAI）
 - [OpenAI hides Codex agent instructions behind encryption, leaving developers in the dark](https://www.theregister.com/ai-and-ml/2026/07/15/openai-hides-codex-agent-instructions-behind-encryption-leaving-developers-in-the-dark/5271484)（The Register, 2026-07-15——Multi-agent V2 协议与加密争议）
 - [HippoRAG 2 (arXiv 2502.14802)](https://arxiv.org/abs/2502.14802)、[GraphRAG-Bench (arXiv 2506.05690)](https://arxiv.org/abs/2506.05690)、[Zep/Graphiti (arXiv 2501.13956)](https://arxiv.org/abs/2501.13956)
-- 相关笔记：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]、[[Loop Engineering实践——把个人知识库改造成一个外循环系统]]、[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- 相关笔记：[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界](../Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)、[Loop Engineering实践——把个人知识库改造成一个外循环系统](../Loop-Engineering/Loop%20Engineering实践——把个人知识库改造成一个外循环系统.md)、[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)
 
 > 注：原始参考中另有一篇 X 上 towards_AI 的文章（x.com/towards_AI/article/2078892237287801283），因 X 登录墙无法抓取，未纳入本文素材。

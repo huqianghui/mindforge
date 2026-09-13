@@ -74,7 +74,7 @@ Mark Cuban 在 2026 年 5 月的一次访谈中把 AI 用户分成了两类：
 
 **2. 知识编译而非信息消费（Knowledge Compilation）**
 
-用 AI 学到的东西如果不沉淀，就只是信息消费。我的实践是 [[personal-knowledge-compiler|Personal Knowledge Compiler（PKC）]]——用 AI 作为知识编译管道：日记捕获 → LLM 提取 → 人类审核 → 持久化进 wiki。
+用 AI 学到的东西如果不沉淀，就只是信息消费。我的实践是 [Personal Knowledge Compiler（PKC）](../../../wiki/concepts/personal-knowledge-compiler.md)——用 AI 作为知识编译管道：日记捕获 → LLM 提取 → 人类审核 → 持久化进 wiki。
 
 核心原则：**AI 是编译器（维护者），不是大脑（决策者）。方向盘始终在我手里。**
 
@@ -277,5 +277,5 @@ One Person Team（组织层）
 
 - [AI Native不是一种技术选型，它是一种商业模式](https://mp.weixin.qq.com/s/RcrNLuewB0prUlgLo0maWw) — AI Native 组织的四个结构性条件与毛利率决定论
 - [与AI相处之道——从工具依赖到认知伙伴](https://github.com/huqianghui/mindforge/blob/main/Notes/AI/%E4%B8%8EAI%E7%9B%B8%E5%A4%84%E4%B9%8B%E9%81%93%E2%80%94%E2%80%94%E4%BB%8E%E5%B7%A5%E5%85%B7%E4%BE%9D%E8%B5%96%E5%88%B0%E8%AE%A4%E7%9F%A5%E4%BC%99%E4%BC%B4.md) — AI Native Person 的认知模式：用 AI 学习而非偷懒
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — One Person Team 与 Harness Engineering 首次系统阐述
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) — One Person Team 与 Harness Engineering 首次系统阐述
 - [Mitchell Hashimoto: My AI Adoption Journey](https://mitchellh.com/writing/my-ai-adoption-journey) — AI 工具采纳六步进化模型

@@ -194,7 +194,7 @@ Workstreams 为每条工作流创建独立的 `.planning/` 命名空间，避免
 
 **核心原则**：L4 是 GSD 的能力边界。GSD 采用"全量 Context 拼接"（Full Context Concatenation）——所有 PLAN、CONTEXT、RESEARCH 文件在 Review/Planning 时被完整加载到一个 Context 中。当 Phase 数超过 20、文件数超过 100 时，Planning Context 本身就会触发 Context Rot。
 
-**GSD 的 L4 局限性**（来自[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]的分析）：
+**GSD 的 L4 局限性**（来自[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)的分析）：
 
 | 问题 | 表现 |
 |------|------|
@@ -574,6 +574,6 @@ L1 ─── /gsd:new-project ──→ L2 ─── map-codebase + fine ──�
 
 ## 七、关联阅读
 
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]——四层架构与 Granularity Layer
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]]——State Layer 与 Harness Engineering
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]——GSD 与其他框架的组合实践
+- [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)——四层架构与 Granularity Layer
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md)——State Layer 与 Harness Engineering
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)——GSD 与其他框架的组合实践

@@ -6,9 +6,9 @@ tags: [agent-lightning, reinforcement-learning, VERL, calc_x, GRPO, hands-on, az
 
 # Agent Lightning 系列 08：RL 实战篇——example 选型、calc_x 跑通 VERL 训练与 tinker 等框架
 
-> [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] 把 RL 这一级的**理论与选型逻辑**讲透了：RL 与 SFT 的本质差异、VERL 是什么、为什么 agent-lightning 绑定 VERL。本篇是它的**实战配套**——真正在 GPU 上把仓库里的 RL 例子跑起来。
+> [Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md) 把 RL 这一级的**理论与选型逻辑**讲透了：RL 与 SFT 的本质差异、VERL 是什么、为什么 agent-lightning 绑定 VERL。本篇是它的**实战配套**——真正在 GPU 上把仓库里的 RL 例子跑起来。
 >
-> 阶梯 APO → SFT → RL 走到最后一级：APO 见系列 01～04，SFT 实战见 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]，本篇接 RL 实战。
+> 阶梯 APO → SFT → RL 走到最后一级：APO 见系列 01～04，SFT 实战见 [Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)，本篇接 RL 实战。
 >
 > **本篇是「边跑边写」的活文档**：✅ 标记已验证可执行的内容，⏳ 标记等真实运行结果回填的占位。后续对不同 example 的选择与对比、新训练框架（如 tinker）的实践，都持续并入本文。
 
@@ -469,4 +469,4 @@ LangGraph，多步自我修正（observe → extract → calculate → check →
 4. **runbook**：venv → VERL 依赖 → 数据集 + MCP → debug agent → `--ci-fast` 冒烟 → 完整训练，分阶段验证；
 5. **配置印证理论**：calc_x 默认 GRPO + 组内 n=4 + FSDP offload + hermes tool parser，正好把系列 07 的「GRPO 省显存」「rollout 是瓶颈」「工具调用解析」落到可观测的实测上。
 
-> 相关：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]（本篇的理论底座）、[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]（SFT 实战，本篇的承接对象）、[[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]]、[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+> 相关：[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md)（本篇的理论底座）、[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)（SFT 实战，本篇的承接对象）、[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md)、[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层](Slime%20vs%20VERL%20深度架构对比——数据流哲学、组件选型与训练推理栈分层.md)、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)

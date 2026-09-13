@@ -179,9 +179,9 @@ claude mcp add-json drawio '{"type":"stdio","command":"npx","args":["-y","drawio
 
 #### 相关笔记
 
-- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]
+- [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](../vibe-coding/Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](../Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md)
 
 #### 相关链接
 

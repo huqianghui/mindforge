@@ -19,7 +19,7 @@ AI Agent 的核心循环是：感知 → 推理 → 行动。"行动"这一步�
 - **MCP 路线**：通过 Model Context Protocol 连接远程服务（如 Exa、Tavily），获取搜索结果和结构化数据
 - **CLI 路线**：调用本地或远程的命令行工具（如 `yt-dlp`、`gh`、`az`），直接操作系统和抓取数据
 
-> 关于 MCP 搜索服务的详细对比，见 [[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]]
+> 关于 MCP 搜索服务的详细对比，见 [Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践](Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md)
 
 本文聚焦的是 CLI 路线中的两个代表性框架：
 
@@ -77,7 +77,7 @@ Agent-Reach 的一个关键设计是使用 `SKILL.md` 文件定义每个平台�
 - 输出: 视频文件 / 字幕文本
 ```
 
-这种"技能定义"思路与 [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] 中的 Tool Wrapper 模式异曲同工——把工具调用封装为 Agent 可理解的技能描述。
+这种"技能定义"思路与 [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) 中的 Tool Wrapper 模式异曲同工——把工具调用封装为 Agent 可理解的技能描述。
 
 ### 2.5 核心特征
 
@@ -97,7 +97,7 @@ Agent-Reach 的一个关键设计是使用 `SKILL.md` 文件定义每个平台�
 
 ## 三、OpenCLI——CLI 的结构化描述标准
 
-> 详细介绍见 [[OpenCLI——万物皆可CLI的结构化革命]]
+> 详细介绍见 [OpenCLI——万物皆可CLI的结构化革命](OpenCLI——万物皆可CLI的结构化革命.md)
 
 ### 3.1 本质
 
@@ -261,7 +261,7 @@ OpenCLI 提供的标准化描述，可以让 Agent-Reach 这类编排框架**不
 
 在选择工具调用路线时，有一组实测数据值得参考：
 
-> 详细基准测试分析见 [[OpenCLI——万物皆可CLI的结构化革命]] 中的 CLI vs MCP 章节
+> 详细基准测试分析见 [OpenCLI——万物皆可CLI的结构化革命](OpenCLI——万物皆可CLI的结构化革命.md) 中的 CLI vs MCP 章节
 
 | 指标 | CLI | MCP | 差距 |
 |------|-----|-----|------|
@@ -301,14 +301,14 @@ OpenCLI 提供的标准化描述，可以让 Agent-Reach 这类编排框架**不
 
 ## 九、与已有知识体系的关联
 
-本文讨论的工具调用框架，在 Agent 架构中属于 **MCP / Tool Layer（执行层）** 和 **CLI Layer（本地执行层）**——参见 [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] 中的三层架构模型。
+本文讨论的工具调用框架，在 Agent 架构中属于 **MCP / Tool Layer（执行层）** 和 **CLI Layer（本地执行层）**——参见 [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) 中的三层架构模型。
 
 | 概念 | 对应层级 | 对应文章 |
 |------|---------|---------|
-| Exa / Tavily / Context7 | MCP / Tool Layer（远程检索） | [[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]] |
+| Exa / Tavily / Context7 | MCP / Tool Layer（远程检索） | [Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践](Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md) |
 | Agent-Reach | Access Layer（数据访问） | 本文 |
-| OpenCLI | Specification Layer（接口描述） | [[OpenCLI——万物皆可CLI的结构化革命]] |
-| CLI vs MCP | 执行路线选择 | [[MCP vs CLI — 为什么开发者在重新审视 MCP]] |
+| OpenCLI | Specification Layer（接口描述） | [OpenCLI——万物皆可CLI的结构化革命](OpenCLI——万物皆可CLI的结构化革命.md) |
+| CLI vs MCP | 执行路线选择 | [MCP vs CLI — 为什么开发者在重新审视 MCP](../Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md) |
 
 ---
 

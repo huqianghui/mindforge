@@ -10,7 +10,7 @@ author: 飞哥（刷屏AI）
 
 > 原文来源：[飞哥 / 刷屏AI](https://mp.weixin.qq.com/s/ShJ6ogkcI-6qZtFY--XcTA)
 >
-> 本文作为外部最佳实践案例存档，展示了通过 Claude Code 融合 superpowers + gstack 两个框架的完整实践。与 [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] 形成互补参考。
+> 本文作为外部最佳实践案例存档，展示了通过 Claude Code 融合 superpowers + gstack 两个框架的完整实践。与 [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](../Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) 形成互补参考。
 
 ---
 
@@ -313,7 +313,7 @@ finishing-a-development-branch ← 分支收尾
 
 ## 相关文章
 
-- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 在 superpowers + gstack 基础上再加 GSD 外层的三层架构设计
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 流程框架选择的全景对比
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — superpowers 内部的 Agent/Subagent 架构分析
-- [[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]] — 更广泛的 Coding Agent 插件生态调研
+- [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](../Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) — 在 superpowers + gstack 基础上再加 GSD 外层的三层架构设计
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) — 流程框架选择的全景对比
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) — superpowers 内部的 Agent/Subagent 架构分析
+- [Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发](../../Claude-Code/Claude%20Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发.md) — 更广泛的 Coding Agent 插件生态调研

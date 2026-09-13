@@ -45,7 +45,7 @@ tags: [gsd, superpowers, gstack, compound-engineering, claude-code, plugin-archi
 
 那篇文章只讨论 Superpowers + gstack 的二元组合，但在我的实践中，GSD（Get Stuff Done）才是外层骨架——它管 spec、phase、state、context isolation，Superpowers 和 gstack 都嵌套在 GSD 的执行阶段内部。
 
-在 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] 中，我们已经论证了这个分层关系：
+在 [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) 中，我们已经论证了这个分层关系：
 
 > **规范框架管"做对的事情"，Superpowers 保证"做事情的方法对"。**
 
@@ -84,7 +84,7 @@ gstack 要加进来，就是第三层——**确保"做完的事情能交付"**�
 
 ### 2.2 映射到四层架构
 
-在 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 和 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中，我们提出了四层扩展架构。三个插件的映射关系：
+在 [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) 和 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 中，我们提出了四层扩展架构。三个插件的映射关系：
 
 ```
 State Layer        ← GSD（.planning/ 目录、phase 状态、spec 文件）
@@ -181,7 +181,7 @@ GSD、Superpowers、gstack 三者有五个功能重叠区域，如果不处理�
 | GSD `/gsd:do-work` | 按 spec 执行当前 phase |
 | Superpowers `/sp:executing-plans` + `/sp:tdd` | TDD 驱动实现 |
 
-**解决**：**Superpowers 嵌套在 GSD 内部**。在 [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] 中已经论证：
+**解决**：**Superpowers 嵌套在 GSD 内部**。在 [Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进](Vibe%20Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md) 中已经论证：
 
 > GSD 管"Do the Right Thing"（功能正确性），Superpowers 管"Do the Thing Right"（代码质量）。
 
@@ -205,7 +205,7 @@ gstack /qa → 真实浏览器验证（动态）
 GSD verify-work → Spec 符合性验证（功能完整性）
 ```
 
-在 [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] 中，我们将此称为 **Generation-Evaluation Separation**——生成和评估必须分离，且评估应该多层递进。
+在 [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) 中，我们将此称为 **Generation-Evaluation Separation**——生成和评估必须分离，且评估应该多层递进。
 
 ### 冲突 5：并行派发
 
@@ -307,19 +307,19 @@ gstack 的安全设计暴露了 GSD 和 Superpowers 的一个盲区：**它们�
 
 **验证 1：分离关注点原则**
 
-那篇文章的核心观点——Superpowers 管思考、gstack 管执行——与我们在 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] 中的结论一致：
+那篇文章的核心观点——Superpowers 管思考、gstack 管执行——与我们在 [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) 中的结论一致：
 
 > 规范框架和方法论框架**互补不互斥**。
 
 **验证 2：Independent Reviewer**
 
-文章推荐使用 Superpowers 的 code-review 开新上下文做 reviewer。这正是 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] 中 Generation-Evaluation Separation 的实践：
+文章推荐使用 Superpowers 的 code-review 开新上下文做 reviewer。这正是 [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) 中 Generation-Evaluation Separation 的实践：
 
 > 生成者和评估者必须用不同的上下文，避免自我确认偏差。
 
 **验证 3：Evidence-First**
 
-文章强调"先看证据再行动"（gstack `/browse` 验证）。这与 [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] 中 Verification Mechanisms 模块的思路一致。
+文章强调"先看证据再行动"（gstack `/browse` 验证）。这与 [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) 中 Verification Mechanisms 模块的思路一致。
 
 **验证 4：gstack 填补 Ops 空白**
 
@@ -333,7 +333,7 @@ gstack 的 `/ship`、`/land-and-deploy`、`/canary` 确实填补了 GSD 和 Supe
 
 **修正 2：缺乏 Context 管理视角**
 
-文章没有讨论 context 预算问题。在 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中我们已经论证：
+文章没有讨论 context 预算问题。在 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 中我们已经论证：
 
 > 所有当前框架的结构性缺陷是 **context = state**，大项目必然爆炸。
 
@@ -341,7 +341,7 @@ gstack 的 `/ship`、`/land-and-deploy`、`/canary` 确实填补了 GSD 和 Supe
 
 **修正 3：删除策略过于激进**
 
-文章建议"删掉不需要的代码比维护更好"。这在小项目没问题，但在大项目中，代码删除的 blast radius 需要评估。在 [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] 中我们强调的 FEATURE.md 边界声明，恰恰是为了防止 agent 随意删除被其他模块依赖的代码。
+文章建议"删掉不需要的代码比维护更好"。这在小项目没问题，但在大项目中，代码删除的 blast radius 需要评估。在 [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) 中我们强调的 FEATURE.md 边界声明，恰恰是为了防止 agent 随意删除被其他模块依赖的代码。
 
 **修正 4：过度信任 Superpowers 的 Review**
 
@@ -360,7 +360,7 @@ Review 必须是多层的，不能只靠一个插件。
 
 CE 的核心机制 `/ce:compound` 会启动 6 个 subagent，从完成的工作中提取经验，生成 `docs/solutions/*.md`。这是**知识/经验复用**，不是**代码组件复用**。
 
-详细分析见 [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]]。
+详细分析见 [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md)。
 
 ### 6.2 CE 与 Claude Code Memory 的重叠
 
@@ -387,7 +387,7 @@ CE 不在三层的任何一层——它是**正交的知识层**，在所有层�
 
 ## 七、规模适配——不同项目怎么选
 
-在 [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] 中，我们定义了 L1-L4 四级规模。三层插件在不同规模下的配置：
+在 [Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进](Vibe%20Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md) 中，我们定义了 L1-L4 四级规模。三层插件在不同规模下的配置：
 
 | 规模 | GSD | Superpowers | gstack | CE |
 |------|-----|------------|--------|-----|
@@ -396,7 +396,7 @@ CE 不在三层的任何一层——它是**正交的知识层**，在所有层�
 | **L3（20-100文件）** | Workstream + 细粒度 spec | 完整流程 + TDD + parallel-dispatch | `/qa` + `/ship` + `/careful` | 推荐 |
 | **L4（100+文件）** | Milestone + Thread + 外部 Selection | 完整流程 | 完整工具链 | 强烈推荐 |
 
-**关键原则**：规模越小，层数越少。L1 不需要三层架构，直接用 Superpowers 甚至裸 Claude Code 就够了。过度工程化是反模式——在 [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] 中我们已经警告过：
+**关键原则**：规模越小，层数越少。L1 不需要三层架构，直接用 Superpowers 甚至裸 Claude Code 就够了。过度工程化是反模式——在 [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) 中我们已经警告过：
 
 > Harness 必须是可撕掉的。过度工程化的 harness 在模型升级后变成死重。
 
@@ -437,13 +437,13 @@ CE 不在三层的任何一层——它是**正交的知识层**，在所有层�
 
 | # | 篇目 | 核心问题 | 核心答案 |
 |---|------|---------|---------|
-| 1 | [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] | Harness Engineering 是什么？ | 设计 AI 运行机制，而非教 AI 如何回答 |
-| 2 | [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] | 架构师怎么做？ | 五层文档 + 四层架构 + Bitter Lesson |
-| 3 | [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] | 端到端怎么串？ | 五层 AI Pipeline：Design → Spec → Coding → Testing → Review |
-| 4 | [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] | 选哪个框架？ | GSD + Superpowers 是默认组合 |
-| 5 | [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] | 大项目为什么崩？ | Context = State 是结构性缺陷，需要 Selection Layer |
-| 6 | [[Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进]] | 不同规模怎么调？ | L1-L4 四级分类 + 动态迁移策略 |
-| 7 | [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] | Agent 造轮子怎么办？ | 四层防线：CLAUDE.md + FEATURE.md + Review + Skill |
+| 1 | [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) | Harness Engineering 是什么？ | 设计 AI 运行机制，而非教 AI 如何回答 |
+| 2 | [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) | 架构师怎么做？ | 五层文档 + 四层架构 + Bitter Lesson |
+| 3 | [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md) | 端到端怎么串？ | 五层 AI Pipeline：Design → Spec → Coding → Testing → Review |
+| 4 | [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) | 选哪个框架？ | GSD + Superpowers 是默认组合 |
+| 5 | [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) | 大项目为什么崩？ | Context = State 是结构性缺陷，需要 Selection Layer |
+| 6 | [Vibe Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进](Vibe%20Coding系列06：GSD项目规模分级实践——从快速脚本到超大规模的Context策略演进.md) | 不同规模怎么调？ | L1-L4 四级分类 + 动态迁移策略 |
+| 7 | [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) | Agent 造轮子怎么办？ | 四层防线：CLAUDE.md + FEATURE.md + Review + Skill |
 | 8 | **本文** | 三个插件怎么组合？ | 三层嵌套 + 安全护栏：GSD → Superpowers → gstack |
 
 **一句话总结**：

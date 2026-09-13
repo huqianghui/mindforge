@@ -13,17 +13,17 @@ status: hub
 
 This note has been reorganized for Obsidian. Use the MOC to navigate the split sections, or open the embedded full article.
 
-• Open the Map of Content → [[Notes/AI/Context-Engineering/Context Engineering vs MCP/Context Engineering vs MCP - MOC]]  
-• Read as one page → [[Notes/AI/Context-Engineering/Context Engineering vs MCP/00 - Full Article]]
+• Open the Map of Content → [Notes/AI/Context-Engineering/Context Engineering vs MCP/Context Engineering vs MCP - MOC](../Context%20Engineering%20vs%20MCP/Context%20Engineering%20vs%20MCP%20-%20MOC.md)  
+• Read as one page → [Notes/AI/Context-Engineering/Context Engineering vs MCP/00 - Full Article](../Context%20Engineering%20vs%20MCP/00%20-%20Full%20Article.md)
 
 Quick links:
-1. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/01 - Defining the Modern AI Interaction Paradigm]]
-2. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/02 - Context Engineering]]
-3. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/03 - Model Context Protocol (MCP)]]
-4. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/04 - A Comparative Framework]]
-5. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/05 - Strategic Implications and Future Outlook]]
-6. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/98 - Conclusion]]
-7. [[Notes/AI/Context-Engineering/Context Engineering vs MCP/99 - Works Cited]]
+1. [Notes/AI/Context-Engineering/Context Engineering vs MCP/01 - Defining the Modern AI Interaction Paradigm](../Context%20Engineering%20vs%20MCP/01%20-%20Defining%20the%20Modern%20AI%20Interaction%20Paradigm.md)
+2. [Notes/AI/Context-Engineering/Context Engineering vs MCP/02 - Context Engineering](../Context%20Engineering%20vs%20MCP/02%20-%20Context%20Engineering.md)
+3. [Notes/AI/Context-Engineering/Context Engineering vs MCP/03 - Model Context Protocol (MCP)](../Context%20Engineering%20vs%20MCP/03%20-%20Model%20Context%20Protocol%20%28MCP%29.md)
+4. [Notes/AI/Context-Engineering/Context Engineering vs MCP/04 - A Comparative Framework](../Context%20Engineering%20vs%20MCP/04%20-%20A%20Comparative%20Framework.md)
+5. [Notes/AI/Context-Engineering/Context Engineering vs MCP/05 - Strategic Implications and Future Outlook](../Context%20Engineering%20vs%20MCP/05%20-%20Strategic%20Implications%20and%20Future%20Outlook.md)
+6. [Notes/AI/Context-Engineering/Context Engineering vs MCP/98 - Conclusion](../Context%20Engineering%20vs%20MCP/98%20-%20Conclusion.md)
+7. [Notes/AI/Context-Engineering/Context Engineering vs MCP/99 - Works Cited](../Context%20Engineering%20vs%20MCP/99%20-%20Works%20Cited.md)
 
 ---
 

@@ -110,7 +110,7 @@ download xiaohongshu URL
 
 ## CLI vs MCP：AI Agent 的两条路线
 
-关于 CLI 和 MCP 的深入对比，之前已经写过专题文章 → [[MCP vs CLI — 为什么开发者在重新审视 MCP]]。这里聚焦最新的基准测试数据来补充。
+关于 CLI 和 MCP 的深入对比，之前已经写过专题文章 → [MCP vs CLI — 为什么开发者在重新审视 MCP](../Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md)。这里聚焦最新的基准测试数据来补充。
 
 2025 年以来，AI Agent 生态中出现了两条主要的工具调用路线：MCP（Model Context Protocol）和 CLI。理解它们的区别，是理解 OpenCLI 价值的关键。
 

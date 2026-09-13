@@ -140,5 +140,5 @@ class AIResearchEnv:
 
 ## 相关文章
 
-- [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]] — 自动研究与自我改进概念辨析
-- [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] — AI 发展哲学启示
+- [AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别](../Notes/AI/agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md) — 自动研究与自我改进概念辨析
+- [The Bitter Lesson](2026-03-21-The-Bitter-Lesson.md) — AI 发展哲学启示

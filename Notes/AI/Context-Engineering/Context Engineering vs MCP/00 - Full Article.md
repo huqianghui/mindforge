@@ -263,4 +263,4 @@ The disciplined practice of Context Engineering provides the cognitive architect
 39. What is the Model Context Protocol (MCP)? \- Cloudflare, accessed August 16, 2025, https://www.cloudflare.com/learning/ai/what-is-model-context-protocol-mcp/
 
 ---
-Open the MOC → [[Context Engineering vs MCP - MOC]]
+Open the MOC → [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

@@ -8,7 +8,7 @@ tags: [cybernetics, methodology, agent, harness-engineering, feedback, control-t
 
 > 本文基于金观涛、华国凡《控制论与科学方法论》阅读笔记，结合与 ChatGPT 讨论，探索控制论核心概念在 AI Agent 设计与 Harness Engineering 中的迁移应用。
 >
-> 前置阅读：[[控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习]]（先厘清控制论、RL、优化、在线学习四个概念的本质区别）
+> 前置阅读：[控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习](控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习.md)（先厘清控制论、RL、优化、在线学习四个概念的本质区别）
 >
 > 相关笔记：「西方本体论的当代转折」（哲学方法论层面的互补视角）
 
@@ -389,7 +389,7 @@ Meta-Regulator（人类经验 + 回顾机制）
 
 ### 8.4 Meta-Harness：Meta-Regulator 的自动化落地
 
-Meta-Regulator 是二阶控制论的理论目标，而 [[2026-04-16-Meta-Harness论文解读与实践思考|Meta-Harness 论文]] 给出了一种**全自动化**的工程实现：用 Coding Agent（Proposer）自动搜索最优 Harness 配置，通过 Benchmark 驱动的评估循环迭代优化。
+Meta-Regulator 是二阶控制论的理论目标，而 [Meta-Harness 论文](../paper/2026-04-16-Meta-Harness论文解读与实践思考.md) 给出了一种**全自动化**的工程实现：用 Coding Agent（Proposer）自动搜索最优 Harness 配置，通过 Benchmark 驱动的评估循环迭代优化。
 
 Meta-Regulator 的三级实现路径：
 
@@ -439,7 +439,7 @@ Meta-Regulator（二阶控制论目标：regulate the regulator）
 
 - 拿一个正在做的 Agent（如 yoga-guru-copilot-platform 中的某个模块），用 Harness Design Sheet 完整拆解一次
 - 对照五层框架，找出当前设计中缺失的层（反馈？共轭？探索？）
-- 将控制论视角融入 [[meta-harness]] wiki 概念页
+- 将控制论视角融入 [meta-harness](../wiki/concepts/meta-harness.md) wiki 概念页
 
 ---
 

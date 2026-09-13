@@ -4,12 +4,12 @@ created: 2026-07-01
 tags: [skill-optimization, text-space-optimization, agent-skill, hands-on, azure-openai, aml, searchqa, prompt-optimization]
 repo: https://github.com/huqianghui/SkillOpt
 paper: "SkillOpt: A Systematic Controllable Text-Space Optimizer for Agent Skills"
-related: "[[2026-07-01-SkillOpt]]"
+related: "[2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)"
 ---
 
 # SkillOpt 系列 02：快速上手——AML + Azure OpenAI 跑通 SearchQA 最小实验
 
-> 活文档（持续回填）。配套论文精读见 [[2026-07-01-SkillOpt]]。本篇只记**动手实践**：环境、runbook、踩坑、实测数据。状态标记：✅ 已验证 / ⏳ 待跑 / ⚠️ 踩坑。
+> 活文档（持续回填）。配套论文精读见 [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)。本篇只记**动手实践**：环境、runbook、踩坑、实测数据。状态标记：✅ 已验证 / ⏳ 待跑 / ⚠️ 踩坑。
 
 ---
 
@@ -17,7 +17,7 @@ related: "[[2026-07-01-SkillOpt]]"
 
 跑的是自己 fork 的 [microsoft/SkillOpt](https://github.com/huqianghui/SkillOpt)。目标是把论文里那套"像训权重一样训 skill"的循环（`rollout → reflect → aggregate → select(≤lr) → gate → update`）在真实 benchmark 上跑通，产出一份 `best_skill.md`。
 
-和 [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]] 的实践对比——**最大区别是不用 GPU**：
+和 [Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架](../agent-lightning/Agent%20Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架.md) 的实践对比——**最大区别是不用 GPU**：
 
 | 维度 | agent-lightning RL（calc_x） | SkillOpt |
 |---|---|---|
@@ -331,6 +331,6 @@ python scripts/eval_only.py --config configs/searchqa/default.yaml \
 
 ## 五、与 vault 的关联
 
-- **论文精读**：机制原理（四大机件、三 split、快慢两层循环）见 [[2026-07-01-SkillOpt]]
-- **对照实践**：GPU 权重训练那条线见 [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]——两者是"权重级 vs 文本级"的互补实验
+- **论文精读**：机制原理（四大机件、三 split、快慢两层循环）见 [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)
+- **对照实践**：GPU 权重训练那条线见 [Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架](../agent-lightning/Agent%20Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架.md)——两者是"权重级 vs 文本级"的互补实验
 - **今日任务**：本篇服务于"学习和掌握 SkillOpt，形成 ppt"（见当日日记）

@@ -19,7 +19,7 @@ tags:
 
 # Agent Lightning 系列 05：SFT 路线——reward 不喂答案而造标签、拒绝采样微调与自蒸馏真相
 
-> [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]] 把 APO 拆解成「LLM 调用 + 一个 `sorted()`」。本篇对 SFT 做一次对称的拆解：**agent-lightning 的 SFT 不是"喂标准答案让模型模仿"，而是"用 reward 当裁判，把模型自己写的、被验证正确的解题过程，造成原本不存在的模仿标签"。** 我们从两个反直觉问题切入——「模型都答对了还训练什么」「有全量数据和 ground truth 为什么只挑高分的练」——逐行打开 `examples/unsloth/` 源码，讲清拒绝采样微调（rejection sampling / RAFT / STaR）的真相、自蒸馏与强→弱蒸馏的边界，以及为什么它是上手权重微调最该先跑的一条线。
+> [Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md) 把 APO 拆解成「LLM 调用 + 一个 `sorted()`」。本篇对 SFT 做一次对称的拆解：**agent-lightning 的 SFT 不是"喂标准答案让模型模仿"，而是"用 reward 当裁判，把模型自己写的、被验证正确的解题过程，造成原本不存在的模仿标签"。** 我们从两个反直觉问题切入——「模型都答对了还训练什么」「有全量数据和 ground truth 为什么只挑高分的练」——逐行打开 `examples/unsloth/` 源码，讲清拒绝采样微调（rejection sampling / RAFT / STaR）的真相、自蒸馏与强→弱蒸馏的边界，以及为什么它是上手权重微调最该先跑的一条线。
 
 ---
 
@@ -442,4 +442,4 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 9. **单轮 vs 多轮记录**：agent-lightning 用 A 法（每轮一条，`:242/256/277`）。A、B 在 token 梯度上等价、不影响能不能学会；差异在训练分布权重与算力——长轨迹 B 更省更忠实，A 是为了与 RL 统一 triplet + reward 跨轮传播。拆分在 adapter 不在模型。
 10. **快速成功选 SFT**：16GB + 无需 VERL + 稳定收敛，是上手权重微调的最佳起点；顶了再上 RL（系列 07）。
 
-> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（脊柱 + Algorithm 接口）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（生产者/消费者、一键 vs 三进程）、[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]（算法剖析对称篇）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]、[[2026-03-21-The-Bitter-Lesson|The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]]、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+> 相关：[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（脊柱 + Algorithm 接口）、[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)（生产者/消费者、一键 vs 三进程）、[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)（算法剖析对称篇）、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)、[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](../../../paper/2026-03-21-The-Bitter-Lesson.md)、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)

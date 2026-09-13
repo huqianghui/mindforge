@@ -51,5 +51,5 @@ status: draft
 39. What is the Model Context Protocol (MCP)? - Cloudflare, accessed August 16, 2025, https://www.cloudflare.com/learning/ai/what-is-model-context-protocol-mcp/
 
 ---
-Prev ← [[98 - Conclusion]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [98 - Conclusion](98%20-%20Conclusion.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

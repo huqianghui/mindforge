@@ -13,7 +13,7 @@ tags:
 
 # Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进
 
-> 本文是 Spec Kit 系列的第 00 篇——在进入工具细节（[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]）之前，先把方法论层面的问题讨论清楚：SDD 到底革了什么命？TDD 在 Coding Agent 时代去哪了？两者如何在 V-Model 中融合？内容基于三个来源：与 ChatGPT 的讨论、Spec Kit 官方方法论文章 [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)，以及社区扩展 [spec-kit-v-model](https://github.com/leocamello/spec-kit-v-model)（后两者已通读原文核对）。
+> 本文是 Spec Kit 系列的第 00 篇——在进入工具细节（[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展](Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)）之前，先把方法论层面的问题讨论清楚：SDD 到底革了什么命？TDD 在 Coding Agent 时代去哪了？两者如何在 V-Model 中融合？内容基于三个来源：与 ChatGPT 的讨论、Spec Kit 官方方法论文章 [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)，以及社区扩展 [spec-kit-v-model](https://github.com/leocamello/spec-kit-v-model)（后两者已通读原文核对）。
 
 ## 一、SDD 的核心主张：Power Inversion（权力反转）
 
@@ -91,7 +91,7 @@ Requirement → Acceptance Test → Deploy → Browser Agent → Bug Report → 
 两个有意思的分支：
 
 - **测试驱动 Prompt 生成**：Prompt 不再手写，而是 `Behavior Spec → Generate Tests → Generate Prompt → Run Tests → Repair Prompt`——Prompt 成了被编译的对象，测试驱动的是 Prompt 而不是代码；
-- **相关测试选择**：Agent 改完代码后不是 Run All Tests，而是 `AST → Dependency Graph → Relevant Tests → Regression Detection`。这一支还有个反直觉的发现：单纯告诉 Agent "Follow TDD" 效果反而不好，真正有效的是给它足够的上下文（哪些测试受影响）——**Context 比 Procedure 更重要**。这与 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中"上下文工程优先于流程规训"的判断一致。
+- **相关测试选择**：Agent 改完代码后不是 Run All Tests，而是 `AST → Dependency Graph → Relevant Tests → Regression Detection`。这一支还有个反直觉的发现：单纯告诉 Agent "Follow TDD" 效果反而不好，真正有效的是给它足够的上下文（哪些测试受影响）——**Context 比 Procedure 更重要**。这与 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](../vibe-coding/Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 中"上下文工程优先于流程规训"的判断一致。
 
 ### 第三类：BDD + Agent
 
@@ -99,7 +99,7 @@ OpenSpec 社区在实验的组合：Gherkin（Given/When/Then）自动生成 Acc
 
 ### 第四类：Superpowers——不是 TDD 框架
 
-容易误解的一类。Superpowers 是 **Workflow Orchestrator**（工作流编排器）而非 TDD 方法论：`draft-build-plan → milestones → increments → implementation → quality gates`，quality gates 里跑 lint / unit test / e2e / architecture check。社区常见的组合是 Superpowers + Spec Kit 或 Superpowers + OpenSpec——编排器与规格方法论各管一层（框架组合选型见 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]）。
+容易误解的一类。Superpowers 是 **Workflow Orchestrator**（工作流编排器）而非 TDD 方法论：`draft-build-plan → milestones → increments → implementation → quality gates`，quality gates 里跑 lint / unit test / e2e / architecture check。社区常见的组合是 Superpowers + Spec Kit 或 Superpowers + OpenSpec——编排器与规格方法论各管一层（框架组合选型见 [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../vibe-coding/Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)）。
 
 综合四类方向，可以看到一个逐渐收敛的主流范式：
 
@@ -179,7 +179,7 @@ README 里最凝练的一句话：
 | 质量评价 | LLM-as-judge（仅咨询性） |
 | 审计追踪 | Git（密码学哈希） |
 
-这个分工与 [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] 的思路同构：**凡是可确定性计算的绝不交给 LLM**——LLM 负责创造性翻译（规格→结构化需求与测试场景），脚本负责一切可判定的检查。这是把 Harness 工程原则应用到合规领域的样板。
+这个分工与 [Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控](../vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) 的思路同构：**凡是可确定性计算的绝不交给 LLM**——LLM 负责创造性翻译（规格→结构化需求与测试场景），脚本负责一切可判定的检查。这是把 Harness 工程原则应用到合规领域的样板。
 
 值得注意的还有它的**双模式设计**：Compliant mode 走完整 V-Model 桥接（`v-model.plan → v-model.tasks → v-model.implement`），每步跑 8 阶段验证门（`run-v-model-gate.sh`）、`Implements` 指令幻觉防护和 trace 后置钩子，工件必须带 `**Status**: Approved`；Hybrid mode 允许把 V-Model 产的 tasks.md 喂给核心 `/speckit.implement`——但这**绕过了所有验证门**，README 明确警告：这样的构建**不构成 V-Model 合规证据**，"确定性验证门没有留下记录，因为它们根本没有被调用"。合规不是文档长得像就行，而是验证过程本身留痕。
 
@@ -238,13 +238,13 @@ V-Model 扩展官方给出三大受监管行业的配置（`v-model-config.yml` 
 3. **V-Model 是双轨融合**：每层规格与测试规格成对生成、确定性脚本验证追踪矩阵——"AI 起草，人类拍板，脚本验证，Git 记账"；
 4. **适用性分层**：Safety-Critical 行业必须用，金融行业强烈建议用（卖点是审计证据链），普通互联网可选。
 
-下一篇（[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]）进入工具本身：十命令四阶段工作流、Constitution 与 Active Feature 机制、Scope 粒度判断与协作扩展。
+下一篇（[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展](Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)）进入工具本身：十命令四阶段工作流、Constitution 与 Active Feature 机制、Scope 粒度判断与协作扩展。
 
 ## 参考
 
 - [Specification-Driven Development (spec-driven.md)](https://github.com/github/spec-kit/blob/main/spec-driven.md)
 - [spec-kit-v-model：V-Model Extension Pack for Spec Kit](https://github.com/leocamello/spec-kit-v-model)
 - [github/spec-kit 官方仓库](https://github.com/github/spec-kit)
-- [[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]
-- [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]]
+- [Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展](Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../vibe-coding/Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
+- [Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控](../vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md)

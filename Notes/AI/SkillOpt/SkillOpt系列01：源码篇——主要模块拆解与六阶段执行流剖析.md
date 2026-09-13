@@ -4,12 +4,12 @@ created: 2026-07-01
 tags: [skill-optimization, text-space-optimization, agent-skill, source-code, architecture, module-breakdown, envadapter, optimizer, azure-openai]
 repo: https://github.com/huqianghui/SkillOpt
 paper: "SkillOpt: A Systematic Controllable Text-Space Optimizer for Agent Skills"
-related: "[[2026-07-01-SkillOpt]]"
+related: "[2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)"
 ---
 
 # SkillOpt 系列 01：源码篇——主要模块拆解与六阶段执行流剖析
 
-> 承接 [[2026-07-01-SkillOpt]]（论文精读）与 [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验|快速上手]]（跑通 runbook）。本篇对标 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计|agent-lightning 系列 02]] 的"框架全景 + 脊柱拆解"，把 SkillOpt 仓库的**主要模块、核心函数、执行数据流**逐一读通。所有论断均对 `github.com/huqianghui/SkillOpt` 实际源码逐行核对，标注 `file:function`。
+> 承接 [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)（论文精读）与 [快速上手](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)（跑通 runbook）。本篇对标 [agent-lightning 系列 02](../agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 的"框架全景 + 脊柱拆解"，把 SkillOpt 仓库的**主要模块、核心函数、执行数据流**逐一读通。所有论断均对 `github.com/huqianghui/SkillOpt` 实际源码逐行核对，标注 `file:function`。
 >
 > 一句话定位：**SkillOpt 的代码骨架 = 一个 environment-agnostic 的 `ReflACTTrainer.train()` 主循环，把六阶段流水线（rollout→reflect→aggregate→select→update→evaluate）编排起来，具体任务逻辑全部下沉到 `EnvAdapter`。** 这与 agent-lightning "method-agnostic + 换算法只换槽位"是同构的设计哲学，只是这里换的是 **environment**，不是 algorithm。
 
@@ -261,8 +261,8 @@ def train(self):
 
 ## 九、与 vault 的关联
 
-- **论文机制**：四大机件、三 split、快慢两层循环的原理 → [[2026-07-01-SkillOpt]]
-- **动手跑通**：环境/runbook/踩坑/实测数据 → [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]
-- **真实任务移植**：video2frames 从 APO 移植到 SkillOpt 的 env 适配、reward 设计与静默 skip 事故 → [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
-- **骨架对照**：method-agnostic vs environment-agnostic 的同构设计 → [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **论文机制**：四大机件、三 split、快慢两层循环的原理 → [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)
+- **动手跑通**：环境/runbook/踩坑/实测数据 → [SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)
+- **真实任务移植**：video2frames 从 APO 移植到 SkillOpt 的 env 适配、reward 设计与静默 skip 事故 → [SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt](SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning%20APO移植到SkillOpt.md)
+- **骨架对照**：method-agnostic vs environment-agnostic 的同构设计 → [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](../agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)
 - **今日任务**：本篇服务于"学习和掌握 SkillOpt，形成 ppt"——源码篇提供"主要模块/主要函数"这一层给 ppt 的技术纵深

@@ -12,7 +12,7 @@ tags: [agent-lightning, APO, source-code, beam-search, multi-agent, bitter-lesso
 
 ## 〇、一个"反高潮"的开场
 
-前三篇（[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] / [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] / [[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]）一路从实践、框架到自定义算法，但都停在"算法之外"。这一篇真正钻进 `agentlightning/algorithm/apo/apo.py`，把 APO 和 beam search 的实现彻底摊开。
+前三篇（[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) / [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) / [Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)）一路从实践、框架到自定义算法，但都停在"算法之外"。这一篇真正钻进 `agentlightning/algorithm/apo/apo.py`，把 APO 和 beam search 的实现彻底摊开。
 
 钻进去之后，一个让人略感失望的事实是：
 
@@ -90,7 +90,7 @@ sorted_prompts = sorted(candidates, key=lambda x: x.score, reverse=True)  # :741
 selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = beam search 剪枝
 ```
 
-**`sorted(...)[:beam_width]`（`:741-742`）这一行，就是 beam search 区别于穷举（BFS）的全部秘密**：无论生成多少候选，只留分数最高的 `beam_width` 个，把指数爆炸压成线性（详见 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]] §4）。
+**`sorted(...)[:beam_width]`（`:741-742`）这一行，就是 beam search 区别于穷举（BFS）的全部秘密**：无论生成多少候选，只留分数最高的 `beam_width` 个，把指数爆炸压成线性（详见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4）。
 
 所以这个判断是准确的：**APO 算法 = 多次 `chat.completions.create()`（try 的 rollout、critic、edit）+ 一个 `sorted()`。** 仅此而已。
 
@@ -108,7 +108,7 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 | **execute**（执行） | runner 跑 rollout | `evaluate_prompt_on_batch` `:430`（推给 runner 进程） |
 | **verify**（验证、保留） | score + beam 剪枝 | `_evaluate_and_select_beam` `:689` |
 
-这个映射是成立的，参见 [[Agent经典范式与人类问题处理模式的映射]]。
+这个映射是成立的，参见 [Agent经典范式与人类问题处理模式的映射](../agent/Agent经典范式与人类问题处理模式的映射.md)。
 
 ### 3.2 但"Critic agent / Editor agent"是虚拟的
 
@@ -131,24 +131,24 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 | 谁决定流程 | orchestrator / graph / agent 自主 | 写死的 `for` 循环（`:637`） |
 | 运行形态 | 多进程 / 多对话上下文 | 单进程、单线程顺序 await |
 
-> **结论**：APO 是"用 prompt 扮演角色"，不是"用对象封装 agent"。它比真多 agent 框架**轻得多**——没有编排开销、没有 agent 间通信、流程完全确定。这是优点（简单、可控、便宜），也是局限（不能让角色自主回溯、不能动态增减角色，对比 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]] §4.2 里 ToT 那种"带自评估的搜索"——APO 故意不做，因为评估太贵）。
+> **结论**：APO 是"用 prompt 扮演角色"，不是"用对象封装 agent"。它比真多 agent 框架**轻得多**——没有编排开销、没有 agent 间通信、流程完全确定。这是优点（简单、可控、便宜），也是局限（不能让角色自主回溯、不能动态增减角色，对比 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4.2 里 ToT 那种"带自评估的搜索"——APO 故意不做，因为评估太贵）。
 
 ---
 
 ## 四、所谓"算法"：难度迁移到了哪里
 
-既然核心循环平凡，那 APO 难在哪？**难度从"算法"迁移到了三个框架帮不上忙的地方。** 这不是 APO 的特例，是 AI 算法的普遍真相——梯度下降是"算导数减一下"，Transformer 是"matmul + softmax"，beam search 是"排序砍 top-k"。[[2026-03-21-The-Bitter-Lesson|The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]] 讲的正是：能 scale 的方法内核往往简单到尴尬。**核心循环简单是特性，不是缺陷。**
+既然核心循环平凡，那 APO 难在哪？**难度从"算法"迁移到了三个框架帮不上忙的地方。** 这不是 APO 的特例，是 AI 算法的普遍真相——梯度下降是"算导数减一下"，Transformer 是"matmul + softmax"，beam search 是"排序砍 top-k"。[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](../../../paper/2026-03-21-The-Bitter-Lesson.md) 讲的正是：能 scale 的方法内核往往简单到尴尬。**核心循环简单是特性，不是缺陷。**
 
 真正的难点：
 
 | 看似一行的代码 | 真正难的部分 | 证据 |
 |---------------|------------|------|
 | `compute_textual_gradient` 一次 LLM 调用（`:310`） | **批评模板（POML）怎么写**——让 Critic 产出"有用且不带毒"的批评 | `text_gradient_*.poml`（`:69-73`）；系列01 §4.5：批评里写了正则 `{4}`/JSON，Editor 照抄进模板直接渲染崩 |
-| `sorted()[:beam_width]` 排个序（`:741`） | **排的是带噪声的分**——同 prompt 摆动 0.2，"sort + 取 max"在统计上系统性上偏（max-over-noise bias） | 系列01 §4.4；解药是 [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]] §4.3 的 bandit / UCB |
+| `sorted()[:beam_width]` 排个序（`:741`） | **排的是带噪声的分**——同 prompt 摆动 0.2，"sort + 取 max"在统计上系统性上偏（max-over-noise bias） | 系列01 §4.4；解药是 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4.3 的 bandit / UCB |
 | `evaluate_prompt_on_batch` 调一下（`:430`） | **reward / grader 怎么设计**——reward 是垃圾，优化越狠越垃圾 | grader 函数；系列01 §4.4"越优化越啰嗦反而掉分" |
 | `enqueue_rollout` 推个任务（`:473`） | **让这堆 LLM 调用真能并发、跨机、容错地大规模跑** | store + async 编排 + `TraceToMessages` adapter（`:414`）+ timeout（`:476`） |
 
-> **一句话钉死**：APO 的"智能"不在 for 循环里，在那几个 `.poml` 模板里；APO 的"可靠性"不在 sorted 里，在 store 那套管道里。算法骨架几十行就能手写，但把它变成**能稳定提升 prompt 的东西**，卡点是三件事——**写对批评模板、设计对 reward、压住评估噪声**。这正是 [[Agentic-Engineering——质量与成本的一体化优化]] 强调的：工程价值在"质量与成本的治理"，不在算法炫技。
+> **一句话钉死**：APO 的"智能"不在 for 循环里，在那几个 `.poml` 模板里；APO 的"可靠性"不在 sorted 里，在 store 那套管道里。算法骨架几十行就能手写，但把它变成**能稳定提升 prompt 的东西**，卡点是三件事——**写对批评模板、设计对 reward、压住评估噪声**。这正是 [Agentic-Engineering——质量与成本的一体化优化](../Agentic-Engineering——质量与成本的一体化优化.md) 强调的：工程价值在"质量与成本的治理"，不在算法炫技。
 
 ---
 
@@ -158,12 +158,12 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 
 ### 5.1 框架的唯一核心职责
 
-agent-lightning 干的就一件事：**自动优化一个已有 agent，而不重写它。** 它提供三条共享同一套 harness 的优化路线（[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §五）：
+agent-lightning 干的就一件事：**自动优化一个已有 agent，而不重写它。** 它提供三条共享同一套 harness 的优化路线（[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §五）：
 
 | 路线 | 改什么 | 本系列 |
 |------|--------|--------|
 | **APO** | 调 prompt，不动权重 | 系列 01/03/04（本系列主线） |
-| **SFT** | 监督微调权重（拒绝采样自提升） | [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] |
+| **SFT** | 监督微调权重（拒绝采样自提升） | [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) |
 | **VERL** | RL 调模型权重 | 系列 07（GPU 环境） |
 
 核心卖点是 method-agnostic：**同一份 agent 代码 + reward + 数据集，今天插 APO 调 prompt，明天换 VERL 调权重，rollout 和 reward 一行不改。**
@@ -180,11 +180,11 @@ agent-lightning 干的就一件事：**自动优化一个已有 agent，而不�
 1. **一次性、简单任务**——手调 prompt 几分钟搞定，框架接线 + 调试反而更慢（系列01 §5：框架省的是"写对+调试"，不是"从不可能到可能"）。
 2. **没有好的 reward**——reward 设计是真瓶颈，框架完全帮不上。reward 含糊（如系列01 的"be critical + partial score"本身就是噪声制造机），优化越狠越跑偏。
 3. **数据太小、噪声压过信号**——`sorted()` 排的是带噪分，小数据集上 max-over-noise 让"虚高候选"胜出，APO 反而不如 baseline（系列01 §4.4 实测）。
-4. **你要的是线上推理 serving**——用途错配。agent-lightning 是优化器/训练器，不是推理网关（那是 [[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]] 那类东西的活）。
+4. **你要的是线上推理 serving**——用途错配。agent-lightning 是优化器/训练器，不是推理网关（那是 [OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计](../agent/OpenClaw架构解读——从claw0教学仓库理解AI%20Agent网关的核心设计.md) 那类东西的活）。
 
 ### 5.4 选型决策一句话
 
-> **如果你的瓶颈是"算法不够聪明"——agent-lightning 帮不了你（它的算法也就是 LLM 调用 + sorted）。如果你的瓶颈是"有 reward 和数据，但缺一套能自动迭代、可换方法、能扩展跑的优化管道"——这正是它的主场。** 横向参考 [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]：纯调 prompt 且不需要 RL/SFT，DSPy/TextGrad 可能更轻；要在 prompt↔权重之间自由切换、要 agent 级 rollout 编排，才轮到 agent-lightning。
+> **如果你的瓶颈是"算法不够聪明"——agent-lightning 帮不了你（它的算法也就是 LLM 调用 + sorted）。如果你的瓶颈是"有 reward 和数据，但缺一套能自动迭代、可换方法、能扩展跑的优化管道"——这正是它的主场。** 横向参考 [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)：纯调 prompt 且不需要 RL/SFT，DSPy/TextGrad 可能更轻；要在 prompt↔权重之间自由切换、要 agent 级 rollout 编排，才轮到 agent-lightning。
 
 ---
 
@@ -197,4 +197,4 @@ agent-lightning 干的就一件事：**自动优化一个已有 agent，而不�
 5. **难度迁移**：算法平凡，真难点在 POML 批评模板、reward 设计、评估噪声治理——三件框架帮不上的事（呼应 Bitter Lesson）。
 6. **核心使用场景**：有 agent + reward + 数据、想自动迭代 / 想换优化方法 / 要大规模跑 rollout → 该用；一次性任务 / 没好 reward / 数据太小 / 要线上 serving → 别用。**选它是为了管道和方法可换，不是为了算法聪明。**
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]（实践 + 噪声复盘）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（框架脊柱）、[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]（接入契约）、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]（算法理论）、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]、[[2026-03-21-The-Bitter-Lesson|The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示]]
+> 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)（实践 + 噪声复盘）、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（框架脊柱）、[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)（接入契约）、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)（算法理论）、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)、[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](../../../paper/2026-03-21-The-Bitter-Lesson.md)

@@ -16,7 +16,7 @@ tags:
 
 ## 一、这项能力解决什么问题
 
-Orca 除了 [[Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动|多 Agent、worktree 与 Mobile 编排能力]]，还提供一套独立的 **Computer Use provider**。它让终端里的 Agent 可以通过 `orca computer` 检查和操作本机桌面应用：
+Orca 除了 [多 Agent、worktree 与 Mobile 编排能力](Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)，还提供一套独立的 **Computer Use provider**。它让终端里的 Agent 可以通过 `orca computer` 检查和操作本机桌面应用：
 
 - 枚举正在运行的应用和窗口
 - 获取 Accessibility Tree 与窗口截图
@@ -444,7 +444,7 @@ Orca 和 OpenAI bundled Computer Use 顶层都遵循 action loop，底层都依�
 
 ## 参考与相关笔记
 
-- [[Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动]]
-- [[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]]
+- [Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动](Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
+- [Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位](../../AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
 - Orca 动态手册：`orca skills get computer-use`
 - Orca CLI 动态手册：`orca skills get orca-cli`

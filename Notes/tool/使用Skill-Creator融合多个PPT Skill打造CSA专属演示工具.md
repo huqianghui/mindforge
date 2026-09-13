@@ -439,5 +439,5 @@ csa-ppt 会自动完成：分析请求 → 初始化 workspace → 选择工具�
 
 ## 相关文章
 
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]] — Skill 扩展机制详解
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — Superpowers Agent 架构
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](../AI/Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md) — Skill 扩展机制详解
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../AI/Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) — Superpowers Agent 架构

@@ -15,7 +15,7 @@ description: 系统梳理实时语音 Agent 涉及的核心 Speech 技术：音�
 
 # Speech 技术全景——从音频处理基础到 Turn-Taking 的深层机制
 
-> 本文是对实时语音 Agent 涉及的 Speech 技术体系的全面梳理。已有的 [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] 聚焦于系统架构与工程实践，本文则向下深入，理清每一层技术的核心概念、实现原理和它们之间的真实关系。
+> 本文是对实时语音 Agent 涉及的 Speech 技术体系的全面梳理。已有的 [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../../../Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 聚焦于系统架构与工程实践，本文则向下深入，理清每一层技术的核心概念、实现原理和它们之间的真实关系。
 
 ---
 
@@ -424,9 +424,9 @@ LLM token 流 → [Sentence Buffer] → 完整句子 → TTS 流式合成 → �
 
 ## 相关文章
 
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 两种架构的工程实践与对比
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent 架构设计
-- [[Agent经典范式与人类问题处理模式的映射]] — Agent 范式分类
+- [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../../../Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) — 两种架构的工程实践与对比
+- [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](../agent/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) — Agent 架构设计
+- [Agent经典范式与人类问题处理模式的映射](../agent/Agent经典范式与人类问题处理模式的映射.md) — Agent 范式分类
 
 ## 参考资料
 

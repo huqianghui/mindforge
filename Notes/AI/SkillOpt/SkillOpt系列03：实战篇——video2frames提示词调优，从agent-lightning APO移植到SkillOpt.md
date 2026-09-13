@@ -3,12 +3,12 @@ title: "SkillOpt 系列 03：实战篇——video2frames 提示词调优，从 a
 created: 2026-07-15
 tags: [skill-optimization, text-space-optimization, prompt-optimization, apo, agent-lightning, azure-openai, multimodal, reward-design, hands-on]
 repo: https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt
-related: "[[2026-07-01-SkillOpt]]"
+related: "[2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)"
 ---
 
 # SkillOpt 系列 03：实战篇——video2frames 提示词调优，从 agent-lightning APO 移植到 SkillOpt
 
-> 承接 [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验|快速上手]]（内置 SearchQA benchmark 冒烟）与 [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析|源码篇]]（六阶段执行流）。本篇记录**第一个真实客户任务的完整移植**：把原本跑在 agent-lightning APO 上的 video2frames 提示词调优项目，移植到 SkillOpt 的训练循环上，评分逐字节兼容、结果可直接对比。仓库：[huqianghui/video2frames-prompt-tuning-skillOpt](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt)，配套五篇设计文档在 [doc/](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt/tree/main/doc)。
+> 承接 [快速上手](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)（内置 SearchQA benchmark 冒烟）与 [源码篇](SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析.md)（六阶段执行流）。本篇记录**第一个真实客户任务的完整移植**：把原本跑在 agent-lightning APO 上的 video2frames 提示词调优项目，移植到 SkillOpt 的训练循环上，评分逐字节兼容、结果可直接对比。仓库：[huqianghui/video2frames-prompt-tuning-skillOpt](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt)，配套五篇设计文档在 [doc/](https://github.com/huqianghui/video2frames-prompt-tuning-skillOpt/tree/main/doc)。
 >
 > 一句话定位：**快速上手篇回答"SkillOpt 能不能跑"，本篇回答"把自己的任务接上去到底要写什么、reward 怎么设计、以及哪里会静默地坏掉"——而实战的精髓在 §八：同一测试集上 APO vs SkillOpt 的 100 任务配对对决，机制上更稳的一方并没有赢。**
 
@@ -18,7 +18,7 @@ related: "[[2026-07-01-SkillOpt]]"
 
 任务本身来自一个快递/配送检测场景：从短视频中每 4 秒采样 N 帧（以 Azure Blob SAS URL 交付），目标模型要输出结构化 JSON 描述——`english_detail`、`brief`、`title`、`scene_type`、`is_courier_action` 五个字段。被调优的"skill"就是插在帧图片之前的那段 instruction prompt（初始版本 `video2frames_env/skills/initial.md` 与旧项目的 `baseline_prompt.txt` 逐字节相同）。
 
-移植动机在 [[automatic-prompt-optimization]] 的老问题上：客户侧 APO 摆动大。SkillOpt 的**验证门控 + 有界编辑**（validation-gated, bounded skill edits）正是针对这种不稳定的机制性回应——每次编辑必须在 val split 上不劣于当前 skill 才被 accept。移植时刻意保持**评分逐字节兼容**：epoch-0 baseline 的 soft 分数应与旧 APO 项目的 baseline reward 相同（已在共享 task ID 上验证），这样两个优化器的收敛行为可以直接对比。
+移植动机在 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md) 的老问题上：客户侧 APO 摆动大。SkillOpt 的**验证门控 + 有界编辑**（validation-gated, bounded skill edits）正是针对这种不稳定的机制性回应——每次编辑必须在 val split 上不劣于当前 skill 才被 accept。移植时刻意保持**评分逐字节兼容**：epoch-0 baseline 的 soft 分数应与旧 APO 项目的 baseline reward 相同（已在共享 task ID 上验证），这样两个优化器的收敛行为可以直接对比。
 
 ### APO vs SkillOpt：摆动差异来自三层机制，门控只是最后一道闸
 
@@ -26,7 +26,7 @@ related: "[[2026-07-01-SkillOpt]]"
 
 | 层面 | agent-lightning APO | SkillOpt |
 |---|---|---|
-| **搜索结构** | beam search：每轮并行生成多个候选 prompt，整体重排、留 top-k（[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景|系列04]] 的"算法 = LLM 调用 + sorted"） | 单谱系增量演进：永远只有一个 current skill，每步在它之上打小补丁 |
+| **搜索结构** | beam search：每轮并行生成多个候选 prompt，整体重排、留 top-k（[系列04](../agent-lightning/Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md) 的"算法 = LLM 调用 + sorted"） | 单谱系增量演进：永远只有一个 current skill，每步在它之上打小补丁 |
 | **编辑幅度** | 候选是**自由改写**——LLM 可以整篇重写，两代 prompt 之间可以跳得很远 | **有界编辑**——每步最多 `learning_rate` 条结构化 edit，cosine 衰减，类似信任域小步长 |
 | **接受机制** | 轮内**兄弟候选相对排序**，没有"在位者保护"——本轮最好的换掉上轮最好的 | **在位者保护门控**——挑战者必须在 val 上不劣于 current（ties-rejected，打平也拒），否则回滚 |
 
@@ -34,7 +34,7 @@ related: "[[2026-07-01-SkillOpt]]"
 
 两个必要的 caveat：
 
-- **两者的"梯度"部分同源**——都是 LLM 读失败案例写文字批评（textual gradient）。真正分岔的是优化器动力学：APO 更像**并行随机搜索**（探索强、方差大），SkillOpt 更像**带信任域的 SGD**（利用强、方差小，但可能陷入局部最优——所以它才需要 epoch-end 的 slow update / meta skill 慢层来补探索，见 [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析|源码篇]]）。
+- **两者的"梯度"部分同源**——都是 LLM 读失败案例写文字批评（textual gradient）。真正分岔的是优化器动力学：APO 更像**并行随机搜索**（探索强、方差大），SkillOpt 更像**带信任域的 SGD**（利用强、方差小，但可能陷入局部最优——所以它才需要 epoch-end 的 slow update / meta skill 慢层来补探索，见 [源码篇](SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析.md)）。
 - **门控不消灭噪声，只是换了噪声的表现形式**。val 太小时，`2.8×σ/√n` 以内的比较照样是抛硬币——APO 的噪声表现为"prompt 摆动"，SkillOpt 的噪声表现为"错误的 accept/reject"（详见 §七与结论第 4 条）。
 
 一句话版本：**APO 是"广撒网、每轮重选"，SkillOpt 是"单线传承、小步快跑、不进则退"——摆动差异是搜索结构、步长约束、接受机制三者共同的结果，门控是最后一道闸，不是唯一一道。**
@@ -102,7 +102,7 @@ hard = 1 if soft >= 0.8 else 0    （env.hard_threshold，静态配置，不自�
 
 ### 与 RL 的逐项类比
 
-repo 文档里这张表把"文本空间 RL"讲得很清楚（与 [[2026-07-01-SkillOpt]] 论文精读呼应）：
+repo 文档里这张表把"文本空间 RL"讲得很清楚（与 [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md) 论文精读呼应）：
 
 | RL 概念 | SkillOpt 对应物 |
 |---|---|
@@ -170,7 +170,7 @@ optimizer 不是"只是个编辑器"：它每步读整个 minibatch 的完整轨
 
 顺带一条健康观：**reject 不是失败，恰恰是门控在起作用**——健康的训练是 accept 和 reject 混合出现；全 accept 或全 skip 才可疑。
 
-**给后续移植的教训**：实现完 `EnvAdapter` 抽象方法只是必要条件。必须用一次真实/mock 运行把完整管线（rollout → reflect → merge → gate）**追一遍数据流**，确认每个阶段消费到了上一阶段的产物。这与 [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验|快速上手]] 里"冒烟只测管路"的教训同源，但更进一步：管路通了 ≠ 数据在流。
+**给后续移植的教训**：实现完 `EnvAdapter` 抽象方法只是必要条件。必须用一次真实/mock 运行把完整管线（rollout → reflect → merge → gate）**追一遍数据流**，确认每个阶段消费到了上一阶段的产物。这与 [快速上手](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md) 里"冒烟只测管路"的教训同源，但更进一步：管路通了 ≠ 数据在流。
 
 ---
 
@@ -178,7 +178,7 @@ optimizer 不是"只是个编辑器"：它每步读整个 minibatch 的完整轨
 
 旧 APO 项目在 agent-lightning 上的并发行为 macOS/Linux 不一致——不是 bug，是其 server-client 多进程架构的必然：它必须把 rollout 与 GPU 训练器解耦（worker 跨机器 HTTP 拉任务）、运行任意用户 agent 代码（进程隔离）、能杀掉挂死的 rollout（线程杀不掉）。代价是 OS 相关语义（Linux fork vs macOS spawn、fd 上限差异）。
 
-本项目三个特性都不需要：单机、代码路径固定（纯 I/O 等待，GIL 无关紧要）、挂死已被超时+重试兜住。所以全部用**单进程 `ThreadPoolExecutor`**——零跨平台差异。这是 [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验|快速上手]] 对比表里"完全不用 GPU"之外的第二个架构红利。
+本项目三个特性都不需要：单机、代码路径固定（纯 I/O 等待，GIL 无关紧要）、挂死已被超时+重试兜住。所以全部用**单进程 `ThreadPoolExecutor`**——零跨平台差异。这是 [快速上手](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md) 对比表里"完全不用 GPU"之外的第二个架构红利。
 
 配置项只有三个：`env.workers`（batch 内 rollout 并行，当前 12）、`gradient.analyst_workers`（analyst minibatch 调用，4 已饱和）、`--probe-workers`（数据准备探测，8）。流水线各阶段**顺序执行**，峰值并发 ≈ `max(workers, analyst_workers)` 而非乘积。
 
@@ -290,13 +290,13 @@ python eval.py --config configs/video2frames/default.yaml \
 1. **移植工作量与 APO 大体相同**，因为 reward/rollout/数据接入就是业务本身。差别在胶水层形状：agent-lightning 藏进 tracer 约定，SkillOpt 摊开成显式文件——对要交付客户长期维护的项目，显式契约更划算（可测试、可调试、跨平台一致）。
 2. **评分逐字节移植是对比实验的前提**：epoch-0 baseline soft 对齐旧 APO baseline 后，才能比较 `best_skill.md` 与旧 `results/best_prompt.txt` 是否学到同样的规则。
 3. **显式契约也有暗面**：`conversation.json` 是不在接口里的隐式要求，缺失时静默退化。"接口实现完"和"数据流追通过"是两回事。
-4. **稳定性的共同地基**依然是 reward/eval 质量：门控只是把评估噪声的代价从"prompt 摆动"换成了"错误的 accept/reject"——σ 不缩小，换框架也躲不开（呼应 [[automatic-prompt-optimization]] 的摆动主因分析）。
+4. **稳定性的共同地基**依然是 reward/eval 质量：门控只是把评估噪声的代价从"prompt 摆动"换成了"错误的 accept/reject"——σ 不缩小，换框架也躲不开（呼应 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md) 的摆动主因分析）。
 5. **实战的精髓是 §八 那场配对对决**：机制分析（§一）只能告诉你"谁更稳"，无污染 held-out 上的 100 任务配对差值才能告诉你"谁更好"——本次是 APO 边缘胜出、SkillOpt 增益未泛化（gate 过拟合 val）、且任务天花板本身只有 soft ≤ +0.02。移植一个优化器的完整闭环，必须以这样一场对决收尾，否则"移植成功"只是管道意义上的成功。
 
 **关联阅读**：
-- 两段式管道与选型算账方法（本篇对决的后续） → [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
-- 论文精读 → [[2026-07-01-SkillOpt]]
-- 环境/runbook/踩坑（SearchQA） → [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]
-- 框架模块与六阶段执行流 → [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]]
-- APO 摆动与评估噪声 → [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
-- agent-lightning 框架对照 → [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- 两段式管道与选型算账方法（本篇对决的后续） → [SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法](SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法.md)
+- 论文精读 → [2026-07-01-SkillOpt](../../../paper/2026-07-01-SkillOpt.md)
+- 环境/runbook/踩坑（SearchQA） → [SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验](SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)
+- 框架模块与六阶段执行流 → [SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析](SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析.md)
+- APO 摆动与评估噪声 → [Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](../agent-lightning/Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
+- agent-lightning 框架对照 → [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](../agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)

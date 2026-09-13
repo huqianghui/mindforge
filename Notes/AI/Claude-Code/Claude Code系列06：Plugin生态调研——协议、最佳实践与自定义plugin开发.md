@@ -426,9 +426,9 @@ Anthropic 的插件体系允许任何人托管自己的市场：
 
 本文是 "learn-claude-code" 系列的延伸。之前的文章从不同角度剖析了 Claude Code 的扩展体系：
 
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]——聚焦 Agent/Subagent 的运行时架构，解释了 model 如何通过 harness 层调度子代理
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]——详细对比了三种扩展类型的定位和使用场景
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]]——从源码层面还原了 Claude Code 的 Agent Loop、Tool 系统和 Permission 设计
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)——聚焦 Agent/Subagent 的运行时架构，解释了 model 如何通过 harness 层调度子代理
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md)——详细对比了三种扩展类型的定位和使用场景
+- [Claude Code系列02：learn-claude-code——打开Coding Agent黑盒](Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md)——从源码层面还原了 Claude Code 的 Agent Loop、Tool 系统和 Permission 设计
 
 **Plugin 是这些概念的"包装层"**——它不引入新的运行时机制，而是将 Command、Skill、Agent、Hook、MCP 等已有组件统一封装为可分发的模块。理解前面的文章后，Plugin 的设计逻辑就非常自然：
 
@@ -439,7 +439,7 @@ Plugin = Command + Skill + Agent + Hook + MCP + LSP
        + Marketplace 分发
 ```
 
-从 [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] 提出的 Harness 公式来看：
+从 [Claude Code系列02：learn-claude-code——打开Coding Agent黑盒](Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md) 提出的 Harness 公式来看：
 
 ```
 Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions

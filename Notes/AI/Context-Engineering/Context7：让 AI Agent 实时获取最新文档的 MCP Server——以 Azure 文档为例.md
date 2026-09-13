@@ -258,7 +258,7 @@ module aks 'br/public:avm/res/container-service/managed-cluster:0.5.3' = {
 
 ## 六、Azure Skills 中的两级检索策略
 
-在 [Azure Copilot 生态全景](../../Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) 一文中，我们介绍了 Azure Skills 通过 `/plugin` 命令同时安装 Azure MCP Server 和 Context7：
+在 [Azure Copilot 生态全景](../../../Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) 一文中，我们介绍了 Azure Skills 通过 `/plugin` 命令同时安装 Azure MCP Server 和 Context7：
 
 ```json
 // Azure Skills 的 .mcp.json
@@ -650,7 +650,7 @@ Context7 Enterprise 确实提供**自托管部署**（Docker/K8s/On-Premise）�
 - [Context7 Without Context Bloat（架构博客）](https://upstash.com/blog/new-context7) — 性能优化细节
 - [Context7 Quality and Safety（质量与安全博客）](https://upstash.com/blog/context7-quality-and-safety) — Trust Score 计算方法
 - [Azure Skills GitHub (microsoft/azure-skills)](https://github.com/microsoft/azure-skills) — 22 个 Azure 专家剧本
-- [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](../../Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) — Azure Skills 完整分析
+- [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](../../../Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md) — Azure Skills 完整分析
 - [MCP vs CLI — 为什么开发者在重新审视 MCP](MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md) — MCP 的上下文工程视角
 - [RAGFlow](https://github.com/infiniflow/ragflow) — 开源 RAG 引擎，原生 MCP 支持
 - [Docling](https://github.com/docling-project/docling) — IBM 开源文档解析工具
@@ -660,5 +660,5 @@ Context7 Enterprise 确实提供**自托管部署**（Docker/K8s/On-Premise）�
 
 ## 相关文章
 
-- [[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]] — 三种 AI 搜索工具对比
-- [[MCP vs CLI — 为什么开发者在重新审视 MCP]] — MCP 的反思与替代方案
+- [Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践](../agent/Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md) — 三种 AI 搜索工具对比
+- [MCP vs CLI — 为什么开发者在重新审视 MCP](MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md) — MCP 的反思与替代方案

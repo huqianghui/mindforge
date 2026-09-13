@@ -18,7 +18,7 @@ tags: [agent-lightning, APO, prompt-tuning, prompt-optimization, beam-search, az
 - **VERL**——强化学习微调权重（需要 GPU + PyTorch + vLLM）（`algorithm/` 内置）
 - **SFT（Supervised Fine-tuning）**——监督微调（**非内置算法类**，走「自定义算法扩展点」实现，官方示例在 `examples/unsloth/`、`examples/azure/`）
 
-> ⚠️ 一个常见误解的澄清：`agentlightning.algorithm` 包里**只内置了 APO 和 VERL 两个一等公民算法**（`algorithm/__init__.py` 仅 export 这两个 + `Baseline`/`FastAlgorithm` 工具类）。SFT **不是**和它俩并列的内置算法，而是用「继承 `Algorithm` + 实现 `run()`」的自定义算法机制接 Unsloth/Azure 微调实现的示例。框架真正"自带"的算法是 APO（prompt）与 VERL（RL 权重）。详见 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §五。
+> ⚠️ 一个常见误解的澄清：`agentlightning.algorithm` 包里**只内置了 APO 和 VERL 两个一等公民算法**（`algorithm/__init__.py` 仅 export 这两个 + `Baseline`/`FastAlgorithm` 工具类）。SFT **不是**和它俩并列的内置算法，而是用「继承 `Algorithm` + 实现 `run()`」的自定义算法机制接 Unsloth/Azure 微调实现的示例。框架真正"自带"的算法是 APO（prompt）与 VERL（RL 权重）。详见 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §五。
 
 本系列从 **APO** 开始，原因很简单：它是**最轻的一条路**——纯 Python + 调 LLM API，CPU 即可跑，没有 GPU/CUDA 依赖。它和 fine-tuning 的本质区别是：
 
@@ -664,9 +664,9 @@ algo = APO[RoomSelectionTask](
 
 **系列后续计划**：
 
-- 系列 02：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（已完成：9 大模块 + 数据流脊柱 + method-agnostic 设计）
+- 系列 02：[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（已完成：9 大模块 + 数据流脊柱 + method-agnostic 设计）
 - 系列 03：自定义算法与 Trainer 集成（`apo_custom_algorithm.py` / `apo_custom_algorithm_trainer.py`，store/algorithm/runner 三件套）
 - 系列 04：VERL 路线——真正微调权重的 RL 训练（GPU 环境）
 - 系列 05：把框架套到自己的真实 Agent 上（换数据集 + reward 函数 + agent 逻辑）
 
-> 相关：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]、[[Agentic-Engineering——质量与成本的一体化优化]]、[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+> 相关：[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)、[Agentic-Engineering——质量与成本的一体化优化](../Agentic-Engineering——质量与成本的一体化优化.md)、[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](../agent/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md)

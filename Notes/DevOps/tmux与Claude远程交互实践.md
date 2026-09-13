@@ -436,10 +436,10 @@ tmux 在 Claude Code 远程交互场景中扮演着不可替代的角色：
 
 ## 相关链接
 
-- [[tmux 官方文档]]
-- [[Mosh 移动终端]]
-- [[Claude Code CLI 使用指南]]
-- [[Tailscale 组网方案]]
+- tmux 官方文档
+- Mosh 移动终端
+- Claude Code CLI 使用指南
+- Tailscale 组网方案
 
 ---
 

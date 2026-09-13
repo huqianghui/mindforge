@@ -27,7 +27,7 @@ Orca 是 Stably AI 开源的**桌面 IDE，用于并排运行多个 AI coding ag
 
 ## 二、Mobile Companion：手机上能做什么
 
-Mobile 是 Orca 区别于同类工具（如 cmux，见 [[cmux使用笔记——从Ghostty增强到AI Agent终端的实践]]）最突出的能力。iOS（App Store / TestFlight）和 Android（APK）双端，与桌面 Orca **配对**后使用。
+Mobile 是 Orca 区别于同类工具（如 cmux，见 [cmux使用笔记——从Ghostty增强到AI Agent终端的实践](../notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)）最突出的能力。iOS（App Store / TestFlight）和 Android（APK）双端，与桌面 Orca **配对**后使用。
 
 官方对 mobile 的定位很克制：**"read-mostly + 手机上真正需要的那几个控制"，它是桌面的遥控器（remote control），刻意不做完整编辑器**。具体能做的事：
 
@@ -174,9 +174,9 @@ brew install --cask stablyai/orca/orca
 
 几点个人判断：
 
-1. **Mobile 的价值在"人机异步"**：agent 跑长任务时人不必守在电脑前——推送告诉你 agent 完成或卡住，手机上读 scrollback、回一句 `continue`、口述新指令、甚至直接 commit。这与 [[tmux与Claude远程交互实践]] 手工搭建的"远程遥控 Claude"是同一诉求，但 Orca 给出的是产品化答案（状态感知 + 结构化操作，而非裸终端）。
+1. **Mobile 的价值在"人机异步"**：agent 跑长任务时人不必守在电脑前——推送告诉你 agent 完成或卡住，手机上读 scrollback、回一句 `continue`、口述新指令、甚至直接 commit。这与 [tmux与Claude远程交互实践](../../DevOps/tmux与Claude远程交互实践.md) 手工搭建的"远程遥控 Claude"是同一诉求，但 Orca 给出的是产品化答案（状态感知 + 结构化操作，而非裸终端）。
 2. **无云中继是双刃剑**：隐私和数据主权干净（没有第三方服务器经手代码与会话），代价是跨网互动必须自建 Tailscale/WireGuard 层——对个人是十分钟配置，对团队则要管理 tailnet ACL。
-3. **与 cmux 的分工**：cmux 强在本机终端体验，Orca 强在编排模型（worktree 隔离 + 多 agent 对比 + 远程/移动接入）。"fan out 同一任务给多个 agent 择优"的工作流与 [[generation-evaluation-separation]] 的生成-评估分离思想一致——生成交给多个 agent，评估（diff review、批注、合并决策）留给人，而 mobile 端恰好把评估环节从书桌上解放出来。
+3. **与 cmux 的分工**：cmux 强在本机终端体验，Orca 强在编排模型（worktree 隔离 + 多 agent 对比 + 远程/移动接入）。"fan out 同一任务给多个 agent 择优"的工作流与 [generation-evaluation-separation](../../../wiki/concepts/generation-evaluation-separation.md) 的生成-评估分离思想一致——生成交给多个 agent，评估（diff review、批注、合并决策）留给人，而 mobile 端恰好把评估环节从书桌上解放出来。
 
 ## 参考
 
@@ -189,4 +189,4 @@ brew install --cask stablyai/orca/orca
 
 ## 相关笔记
 
-- [[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]
+- [Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践](Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)

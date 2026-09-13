@@ -18,7 +18,7 @@ tags:
 
 ## 引言：从"字段住在哪层"到"每个值是什么"
 
-[[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]] 把 `gpt-6-astra` 条目按职责分了九层；本篇下探一级：**每个字段在源码里被谁消费、有哪些合法取值、值与值之间差在哪**。这是给自己维护 Azure catalog 用的手册——改任何字段之前，先在这里查它真正控制什么。
+[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md) 把 `gpt-6-astra` 条目按职责分了九层；本篇下探一级：**每个字段在源码里被谁消费、有哪些合法取值、值与值之间差在哪**。这是给自己维护 Azure catalog 用的手册——改任何字段之前，先在这里查它真正控制什么。
 
 先记一个总原则：**字段分两类**。一类在 Rust `ModelInfo` 结构体里，由 CLI/core 消费；另一类不在结构体里（`prefer_websockets`、`available_in_plans`、`requires_sandboxed_review`），由后端 `/models` 接口和 Desktop TS 层消费——CLI 的 serde 会忽略未知字段，所以这类字段写在自定义 catalog 里不影响 CLI 加载，但也别指望 CLI 对它们有任何行为。
 
@@ -243,4 +243,4 @@ pub enum MultiAgentVersion { Disabled, V1, V2 }
 
 - [openai/codex 仓库](https://github.com/openai/codex)（本文基于 `rust-v0.153.1` tag 源码：`codex-rs/protocol/src/openai_models.rs`、`core/src/client.rs`、`core/src/guardian/review.rs`、`core/src/tools/`、`model-provider/src/provider.rs`、`app-server/src/models.rs`）
 - [Codex rust-v0.153.1 官方 models.json](https://raw.githubusercontent.com/openai/codex/rust-v0.153.1/codex-rs/models-manager/models.json)
-- 相关笔记：[[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]]｜[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]｜[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]]｜wiki 概念：[[model-harness-codesign]]
+- 相关笔记：[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md)｜[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)｜[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)｜wiki 概念：[model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md)

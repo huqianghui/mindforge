@@ -6,13 +6,13 @@ tags: [agent-lightning, slime, VERL, RL-infra, Megatron, FSDP, Ray, vLLM, SGLang
 
 # Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层
 
-> [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] §六把 Slime 列为 VERL 的主要替代品，但只点到为止。本篇把这一对比讲透：Slime 与 VERL 的本质差异不在功能而在系统哲学（数据流 vs 调度系统）；同时借这次对比，自上而下厘清整个 RL 训练推理栈的分层——Ray、Megatron、FSDP、vLLM、SGLang、PyTorch 各自站在哪一层、各负责什么。核心认知一句话：**强化学习框架（VERL / Slime）≠ 训练体系（Megatron / FSDP）≠ 分布式底座（Ray）≠ 计算引擎（PyTorch），它们是垂直分层、各司其职的关系。**
+> [Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md) §六把 Slime 列为 VERL 的主要替代品，但只点到为止。本篇把这一对比讲透：Slime 与 VERL 的本质差异不在功能而在系统哲学（数据流 vs 调度系统）；同时借这次对比，自上而下厘清整个 RL 训练推理栈的分层——Ray、Megatron、FSDP、vLLM、SGLang、PyTorch 各自站在哪一层、各负责什么。核心认知一句话：**强化学习框架（VERL / Slime）≠ 训练体系（Megatron / FSDP）≠ 分布式底座（Ray）≠ 计算引擎（PyTorch），它们是垂直分层、各司其职的关系。**
 
 ---
 
 ## 〇、为什么需要这一篇
 
-[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] 回答了"agent-lightning 为何绑定 VERL"，并在 §六提到 Slime、自研 Ray 系统等替代方案。但要真正判断"要不要从 VERL 迁到 Slime"，仅知道"Slime 是 server-first 架构"远远不够，必须回答两层问题：
+[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md) 回答了"agent-lightning 为何绑定 VERL"，并在 §六提到 Slime、自研 Ray 系统等替代方案。但要真正判断"要不要从 VERL 迁到 Slime"，仅知道"Slime 是 server-first 架构"远远不够，必须回答两层问题：
 
 1. **框架层**：Slime 与 VERL 的系统哲学差在哪？组件选型（训练后端、推理后端、调度）各有什么取舍？
 2. **栈层**：两个框架之下的训练与推理体系——Megatron、FSDP、Ray、vLLM、SGLang、PyTorch——到底谁负责什么？为什么 vLLM 有了 TP/PP 还需要 Megatron？为什么 PyTorch 本身就分布式、却还要 FSDP？
@@ -359,7 +359,7 @@ VERL / Slime（RL 系统）
 
 ### 5.1 脊柱即飞轮：agent-lightning 与 Slime 的结构同构
 
-agent-lightning 的核心数据流（见 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §一）是 `runner → store → algorithm` 的生产者/消费者闭环；Slime 的核心是 `Rollout → Data Buffer → Training` 的数据流闭环。两者几乎逐项对应：
+agent-lightning 的核心数据流（见 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §一）是 `runner → store → algorithm` 的生产者/消费者闭环；Slime 的核心是 `Rollout → Data Buffer → Training` 的数据流闭环。两者几乎逐项对应：
 
 | agent-lightning | Slime | 共同角色 |
 | --- | --- | --- |
@@ -398,7 +398,7 @@ VERL / Slime         ← RL Infra 层（真正做权重更新的引擎）
 
 ## 六、迁移决策：Agent-lightning + VERL 要不要转 Slime
 
-回到最实际的问题。当前栈是 `agent-lightning + VERL`，Slime 能否替代？结论与 [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] §六一致：**可以，但不是 drop-in replacement，切换成本取决于几项前置条件。**
+回到最实际的问题。当前栈是 `agent-lightning + VERL`，Slime 能否替代？结论与 [Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md) §六一致：**可以，但不是 drop-in replacement，切换成本取决于几项前置条件。**
 
 迁移前需要逐条核对的 checklist：
 
@@ -426,4 +426,4 @@ VERL / Slime         ← RL Infra 层（真正做权重更新的引擎）
 4. **agent-lightning 与 Slime 数据流同构**：agent-lightning 的 `runner→store→algorithm` 飞轮在哲学上与 Slime 的 `Rollout→Data Buffer→Training` 同构（method-agnostic ≈ "Agent workflow = data generation"），反而比它实际绑定的 VERL「Controller + Workers」更近；但二者不同层（agent-lightning 在 RL infra 之上），"更吻合"指"换 Slime 会更统一"，绑 VERL 是工程选型而非哲学错配——本质是 Agent RL 逼出的"数据流"形状在不同层的殊途同归；
 5. **迁移决策取决于规模与瓶颈**：上 MoE / 100B+ / RL scaling 向 Megatron 演进时，Slime 的强绑定成优势；70B 以下、FSDP 够用、需要多 backend 时，VERL 的通用性更省事；架构同构性是加分项而非决定项。Slime 非 drop-in replacement。
 
-> 相关：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]、[[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]]、[[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]]
+> 相关：[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑](Agent%20Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑.md)、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)、[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](../inference/SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)、[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优](../inference/线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优.md)

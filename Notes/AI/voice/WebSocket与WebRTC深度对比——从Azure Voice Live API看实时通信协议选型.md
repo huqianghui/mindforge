@@ -247,5 +247,5 @@ Voice Live API 的演进路径（WebSocket-only → WebSocket + WebRTC）是一�
 ## 参考
 
 - [Azure Voice Live API - WebRTC](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-webrtc)
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
-- [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../../../Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
+- [Speech技术全景——从音频处理基础到Turn-Taking的深层机制](Speech技术全景——从音频处理基础到Turn-Taking的深层机制.md)

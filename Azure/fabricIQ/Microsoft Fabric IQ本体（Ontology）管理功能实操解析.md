@@ -7,7 +7,7 @@ source: https://mp.weixin.qq.com/s/OeqokKC0loVGKou59yNhlg
 
 # Microsoft Fabric IQ 本体（Ontology）管理功能实操解析
 
-> 本文基于微信公众号文章整理，聚焦 Fabric IQ 中本体的实操流程，去除了与 Fabric IQ 无关的内容。理论部分可参考 [[Microsoft Fabric IQ与本体论（Ontology）研究]]。
+> 本文基于微信公众号文章整理，聚焦 Fabric IQ 中本体的实操流程，去除了与 Fabric IQ 无关的内容。理论部分可参考 [Microsoft Fabric IQ与本体论（Ontology）研究](Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)。
 
 ## 一、Fabric IQ Ontology 的核心价值
 
@@ -176,6 +176,6 @@ Microsoft Fabric IQ 中的本体管理能力，能够将企业分散、异构的
 ## 参考资料
 
 - [微软本体（Ontology）管理功能深度解析（原文）](https://mp.weixin.qq.com/s/OeqokKC0loVGKou59yNhlg)
-- [[Microsoft Fabric IQ与本体论（Ontology）研究]]（理论篇）
+- [Microsoft Fabric IQ与本体论（Ontology）研究](Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)（理论篇）
 - [What is ontology (preview)? — Microsoft Learn](https://learn.microsoft.com/en-us/fabric/iq/ontology/overview)
 - [What is Fabric IQ (preview)? — Microsoft Learn](https://learn.microsoft.com/en-us/fabric/iq/overview)

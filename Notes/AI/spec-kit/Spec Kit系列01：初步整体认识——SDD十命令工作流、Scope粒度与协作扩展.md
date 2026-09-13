@@ -11,7 +11,7 @@ tags:
 
 # Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展
 
-> 本文是 Spec Kit 系列的第一篇（方法论层面的 SDD/TDD/V-Model 讨论见 [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]），目标是建立对 [github/spec-kit](https://github.com/github/spec-kit) 的整体认识：它的工作流设计、关键机制（Constitution、Active Feature）、Scope 与 Task 的粒度判断，以及面向团队协作的扩展（Worktree 并行、taskstoissues）。内容基于与 ChatGPT 的深入讨论整理，关键机制已对照 spec-kit 官方仓库源码验证。后续系列会与 GSD、OpenSpec、Superpowers 等开源框架做横向比较（框架组合选型可先参考 [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]）。
+> 本文是 Spec Kit 系列的第一篇（方法论层面的 SDD/TDD/V-Model 讨论见 [Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进](Spec%20Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进.md)），目标是建立对 [github/spec-kit](https://github.com/github/spec-kit) 的整体认识：它的工作流设计、关键机制（Constitution、Active Feature）、Scope 与 Task 的粒度判断，以及面向团队协作的扩展（Worktree 并行、taskstoissues）。内容基于与 ChatGPT 的深入讨论整理，关键机制已对照 spec-kit 官方仓库源码验证。后续系列会与 GSD、OpenSpec、Superpowers 等开源框架做横向比较（框架组合选型可先参考 [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../vibe-coding/Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)）。
 
 ## 一、Spec Kit 是什么：把 AI Coding 从一句 Prompt 变成结构化流程
 
@@ -21,7 +21,7 @@ Spec Kit 是 GitHub 官方的 **Spec-Driven Development（SDD，规格驱动开�
 Idea → specify（需求）→ plan（设计）→ tasks（拆解）→ implement（编码）→ converge（收敛）
 ```
 
-它的价值不在于更强的代码生成能力，而在于**将 Agent 的工作流程结构化**——先明确需求，再设计方案，再拆解任务，最后实现并验证。这种分阶段流程能减少上下文混乱、降低需求漂移，本质上是一种 Harness 工程实践（参见 [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]]）。
+它的价值不在于更强的代码生成能力，而在于**将 Agent 的工作流程结构化**——先明确需求，再设计方案，再拆解任务，最后实现并验证。这种分阶段流程能减少上下文混乱、降低需求漂移，本质上是一种 Harness 工程实践（参见 [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](../vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)）。
 
 Spec Kit 是 **Agent 无关（agent-agnostic）** 的：同一套 `/speckit.*` 命令可以在 Claude Code、Cursor、Codex、Gemini CLI 等不同 Agent 中使用，所有状态都落在项目目录的 `.specify/` 和 `specs/` 中，不绑定任何一家的记忆机制。
 
@@ -152,7 +152,7 @@ git worktree add ../agent-memory feature/002-memory
 git worktree add ../agent-rag feature/003-rag
 ```
 
-每个 Worktree 有独立的 Git Branch、独立的 Agent Session、独立的 Active Feature；Terminal A 里的 Agent 只看 `002-memory`，Terminal B 只看 `003-rag`，互不干扰。对 Agent Coding 来说，这直接提高成功率——Agent 最怕的就是 Memory、RAG、Chat 三个任务的上下文混在同一个会话里（参见 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 中的 Context 爆炸问题）。
+每个 Worktree 有独立的 Git Branch、独立的 Agent Session、独立的 Active Feature；Terminal A 里的 Agent 只看 `002-memory`，Terminal B 只看 `003-rag`，互不干扰。对 Agent Coding 来说，这直接提高成功率——Agent 最怕的就是 Memory、RAG、Chat 三个任务的上下文混在同一个会话里（参见 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](../vibe-coding/Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 中的 Context 爆炸问题）。
 
 一个关键纪律：**Spec 是共享设计资产，Code 是 Feature Branch 资产**。正确流程是 Spec 相关阶段（specify → clarify → plan → tasks）在主干完成并 commit，然后才创建 Branch + Worktree 进入 implement；如果让 Spec 和 Code 一起在多个 Worktree 里各自演化，最终 Spec 与实现会不一致，`specs/` 目录也会合并冲突。
 
@@ -202,5 +202,5 @@ Spec Kit 的整体认识可以压缩成四句话：
 
 - [github/spec-kit 官方仓库](https://github.com/github/spec-kit)
 - [taskstoissues 命令模板](https://github.com/github/spec-kit/blob/main/templates/commands/taskstoissues.md)
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]]
-- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]]
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](../vibe-coding/Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md)
+- [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](../vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)

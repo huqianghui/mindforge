@@ -95,5 +95,5 @@ $$\left(th_t,a_t\right)=\pi\left(q,(a_1,o_1),\ldots,(a_{t-1},o_{t-1})\right)$$
 
 ## 相关文章
 
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Agent 技能模式分类
-- [[Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线]] — Agent 框架实践路线
+- [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) — Agent 技能模式分类
+- [Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线](Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线.md) — Agent 框架实践路线

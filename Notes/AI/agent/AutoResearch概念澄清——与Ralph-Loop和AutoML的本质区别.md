@@ -191,5 +191,5 @@ AutoResearch 的真正价值不在于它做出了什么研究成果，而在于�
 
 ## 相关文章
 
-- [[Agent经典范式与人类问题处理模式的映射]] — Agent 范式与人类认知模式
-- [[2026-03-22-Continually-Self-Improving-AI论文精读笔记]] — 持续自我改进 AI 相关论文
+- [Agent经典范式与人类问题处理模式的映射](Agent经典范式与人类问题处理模式的映射.md) — Agent 范式与人类认知模式
+- [2026-03-22-Continually-Self-Improving-AI论文精读笔记](../../../paper/2026-03-22-Continually-Self-Improving-AI论文精读笔记.md) — 持续自我改进 AI 相关论文

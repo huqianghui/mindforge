@@ -4,18 +4,18 @@ created: 2026-07-07
 tags: [paper-reading, LifeSkill, JitRL, continual-learning, test-time-adaptation, online-learning, co-evolution, skill-internalization, VGSL, OSI, verifier, LoRA, LifelongAgentBench, parametric-learning, agent-lightning]
 paper: "Learning While Acting: A Skill-Enhanced Test-Time Co-Evolution Framework for Online Lifelong Learning Agents"
 source: https://arxiv.org/abs/2606.04815
-related: "[[2026-07-06-JitRL-无梯度测试时RL论文解读]]"
+related: "[2026-07-06-JitRL-无梯度测试时RL论文解读](2026-07-06-JitRL-无梯度测试时RL论文解读.md)"
 ---
 
 # 论文阅读：LifeSkill——「边行动边学习」的参数化路径，兼论它「理论在线、工程离线」的真相
 
-> 这是 [[2026-07-06-JitRL-无梯度测试时RL论文解读|昨天那篇]]结尾预告的「下一篇深读」。在 CL-RL 四篇全景里（JitRL / LifeSkill / XSkill / CURATOR），**LifeSkill 是唯一真改参数的一篇**，独占「部署后 + 改参数」这个历来空着的象限，也因此最接近 [[online-learning]] 里定义的「真在线学习」——慢回路真的动了权重。JitRL 那篇把「不改参数」一侧讲透了；这篇要问的是另一侧：**当你选择把学到的东西写回参数，会换来什么、又会付出什么？**
+> 这是 [昨天那篇](2026-07-06-JitRL-无梯度测试时RL论文解读.md)结尾预告的「下一篇深读」。在 CL-RL 四篇全景里（JitRL / LifeSkill / XSkill / CURATOR），**LifeSkill 是唯一真改参数的一篇**，独占「部署后 + 改参数」这个历来空着的象限，也因此最接近 [online-learning](../wiki/concepts/online-learning.md) 里定义的「真在线学习」——慢回路真的动了权重。JitRL 那篇把「不改参数」一侧讲透了；这篇要问的是另一侧：**当你选择把学到的东西写回参数，会换来什么、又会付出什么？**
 >
 > 核心结论分两层。**第一层（论文层）**：LifeSkill 和 JitRL 是「边行动边学习」的两条对偶路径——JitRL 问「如何在不更新参数的情况下表现得像学过」，LifeSkill 问「如何把技能真正学进参数、并让技能用完即消失」。它最漂亮的想法是 **skill 不该一直待在 prompt 里，而应最终被内化进权重然后消失**——Agent 不该「依赖技能」，而该「成为技能」。**第二层（工程层，也是本文重点）**：顺着「它真能在线学习吗」这个追问往下压，结论比论文的自我定位冷静得多——**LifeSkill 理论上满足 online learning 的定义，工程上基本不可能真在线**。它的核心循环「失败 → 生成多个候选 skill → 每个 rollout N 次 → verifier 评分 → 训练 skill extractor → 再训练 policy」本质是**一个被 test-time 触发的小型 offline RL 训练循环**。所以它更准确的名字不是 "Learning While Acting"，而是 **"learning *after* acting, in mini-batches"**。真正把 LifeSkill 和 JitRL 分开的判据，也不再是 JitRL 那篇辨明的「知识存哪」，而是往前一步的「**这次适应能不能在部署的延迟预算内完成**」——这根「适应延迟」轴，才是理解这对路径分工的关键。
 
 ## 一、定位：四篇里唯一改参数的那篇
 
-先把坐标接回昨天。[[2026-07-06-JitRL-无梯度测试时RL论文解读|JitRL 那篇]]用两根轴摆开了四篇 CL-RL：X 轴 = 改不改参数（harness 风 ↔ learning 风），Y 轴 = 何时适应（离线 ↔ 部署后）。逐篇核对 abstract 后，四篇里只有 LifeSkill 的原话写着 "Online Skill Internalization ... **refines the policy model's parameters**"——它是唯一在部署后真改权重的。
+先把坐标接回昨天。[JitRL 那篇](2026-07-06-JitRL-无梯度测试时RL论文解读.md)用两根轴摆开了四篇 CL-RL：X 轴 = 改不改参数（harness 风 ↔ learning 风），Y 轴 = 何时适应（离线 ↔ 部署后）。逐篇核对 abstract 后，四篇里只有 LifeSkill 的原话写着 "Online Skill Internalization ... **refines the policy model's parameters**"——它是唯一在部署后真改权重的。
 
 用 JitRL 那篇提出的「存储位面」轴看得更清楚：JitRL / XSkill / CURATOR 都把学到的东西存进**外部持久记忆库**（与权重解耦），而 **LifeSkill 跳到了轴的另一侧——把学到的东西内化回 base 权重**。这一跳换来的性质和那三篇正好相反：
 
@@ -93,7 +93,7 @@ LifeSkill 反过来主张：**skill 不该一直存在于 prompt 中，而应最
 
 ## 四、参数化 vs 非参数化：一张对偶表
 
-把 LifeSkill 和 JitRL 并排，两条路径的对偶关系就清楚了（JitRL 的细节见[[2026-07-06-JitRL-无梯度测试时RL论文解读|昨天那篇]]，这里只做对照，不重复展开）：
+把 LifeSkill 和 JitRL 并排，两条路径的对偶关系就清楚了（JitRL 的细节见[昨天那篇](2026-07-06-JitRL-无梯度测试时RL论文解读.md)，这里只做对照，不重复展开）：
 
 | 维度 | LifeSkill | JitRL |
 |---|---|---|
@@ -131,7 +131,7 @@ LifeSkill 满足 online / continual learning 的定义条件：
 - 更新发生在 **test-time**（部署期间，不是一次性预训练）；
 - 模型是**逐步被更新**的（不是训完就冻）。
 
-按 [[online-learning]] 里那条硬标准（**区分 harness 与 learning 只看有没有改参数**），LifeSkill 改参数，所以它落在「真在线学习」一侧——它的慢回路（改权重）确实动了。从 ML 定义看，它是货真价实的 online / continual learning framework。
+按 [online-learning](../wiki/concepts/online-learning.md) 里那条硬标准（**区分 harness 与 learning 只看有没有改参数**），LifeSkill 改参数，所以它落在「真在线学习」一侧——它的慢回路（改权重）确实动了。从 ML 定义看，它是货真价实的 online / continual learning framework。
 
 ### 为什么「工程上不成立」——这个直觉是对的
 
@@ -261,7 +261,7 @@ LifeSkill 在 **LifelongAgentBench** 上评测——这个 benchmark 的特点�
 
 ## 十、小结
 
-- **LifeSkill 是 CL-RL 四篇里唯一真改参数的一篇**，占住「部署后 + 改参数」这个历来空着的象限，也是最接近 [[online-learning]] 定义的「真在线学习」的一篇。它在「存储位面」轴上跳到权重一侧，换来了 JitRL 那三篇拿不到的东西——**能内化 base 模型根本不会的全新能力**（代价是不可移植、不可外科删除、有遗忘风险）。
+- **LifeSkill 是 CL-RL 四篇里唯一真改参数的一篇**，占住「部署后 + 改参数」这个历来空着的象限，也是最接近 [online-learning](../wiki/concepts/online-learning.md) 定义的「真在线学习」的一篇。它在「存储位面」轴上跳到权重一侧，换来了 JitRL 那三篇拿不到的东西——**能内化 base 模型根本不会的全新能力**（代价是不可移植、不可外科删除、有遗忘风险）。
 - **机制 = co-evolution 双模型（Policy + Skill Extractor）+ VGSL（verifier 引导从失败中抽 skill）+ OSI（去掉 skill 提示、用成功轨迹把技能内化进权重）**。最漂亮的想法是 **skill 应「用完即消失」——Agent 不该依赖技能，而该成为技能**。
 - **和 JitRL 是一对对偶路径**：JitRL「把记忆变成动作偏置」（让模型看起来更强），LifeSkill「把交互变成技能并内化」（让模型真正变强）；一个 non-parametric、即时、低成本，一个 parametric、延迟、高成本。
 - **最重要的判断（工程层）——LifeSkill 理论在线、工程离线**。它的核心循环是「被 test-time 触发的 offline training loop」，latency 爆炸、compute 不可持续、也不满足 real-time CL 的三条要求（更新慢、无防遗忘、依赖 batch）。它不是 "learn while acting"，而是 **"learn *after* acting, in mini-batches"**。
@@ -274,7 +274,7 @@ LifeSkill 在 **LifelongAgentBench** 上评测——这个 benchmark 的特点�
 
 - [Learning While Acting: A Skill-Enhanced Test-Time Co-Evolution Framework for Online Lifelong Learning Agents](https://arxiv.org/abs/2606.04815)（arXiv:2606.04815，本文主角，CL-RL 四篇里唯一改参数）
 - [LifelongAgentBench](https://github.com/caixd-220529/LifelongAgentBench)（LifeSkill 的评测 benchmark，Dataset 在 HuggingFace）
-- [[2026-07-06-JitRL-无梯度测试时RL论文解读]] — CL-RL 四篇全景 + JitRL 深读，本文的对偶篇（「不改参数」一侧）与「存储位面」判据的来源
-- [[online-learning]] — 控制论视角下 harness / learning / 在线学习 / RL 的边界辨析（本文第五节「理论在线、工程离线」判断的判据来源）
-- [[continual-self-improving-ai]] — 持续自改进 AI 的概念骨架
-- [[2026-07-06-gap-analysis]] — 今天主任务方向一「Agent 持续学习 / test-time 自进化」的来源报告
+- [2026-07-06-JitRL-无梯度测试时RL论文解读](2026-07-06-JitRL-无梯度测试时RL论文解读.md) — CL-RL 四篇全景 + JitRL 深读，本文的对偶篇（「不改参数」一侧）与「存储位面」判据的来源
+- [online-learning](../wiki/concepts/online-learning.md) — 控制论视角下 harness / learning / 在线学习 / RL 的边界辨析（本文第五节「理论在线、工程离线」判断的判据来源）
+- [continual-self-improving-ai](../wiki/concepts/continual-self-improving-ai.md) — 持续自改进 AI 的概念骨架
+- [2026-07-06-gap-analysis](../wiki/knowledge-gap/2026-07-06-gap-analysis.md) — 今天主任务方向一「Agent 持续学习 / test-time 自进化」的来源报告

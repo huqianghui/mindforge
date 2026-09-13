@@ -128,7 +128,7 @@ Tavily 是一个**为 Agent 和 RAG 流水线设计的一站式搜索服务**，
 
 Context7 与 Exa / Tavily 完全不同——它**不做通用网络搜索**，而是专注于**技术文档、API 说明、库使用示例**等开发者资源的索引和检索。
 
-> 详细介绍见 [[Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例]]
+> 详细介绍见 [Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例](../Context-Engineering/Context7：让%20AI%20Agent%20实时获取最新文档的%20MCP%20Server——以%20Azure%20文档为例.md)
 
 ### 5.2 核心定位
 
@@ -257,7 +257,7 @@ retrieval layer =
 
 ## 八、与已有知识体系的关联
 
-本文介绍的搜索框架，在 Agent 架构中属于**MCP / Tool Layer（执行层）**——参见 [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] 中的三层架构模型：
+本文介绍的搜索框架，在 Agent 架构中属于**MCP / Tool Layer（执行层）**——参见 [从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构](从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md) 中的三层架构模型：
 
 ```
 Agent Loop Controller（运行模式层）

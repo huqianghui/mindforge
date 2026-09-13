@@ -23,7 +23,7 @@ Claude Code 生态中 skill/agent/workflow/tool 爆发式增长，带来一个�
 ## 二、案例一：superpowers + gstack 双插件搭配
 
 > 来源：[飞哥 / 刷屏AI — Claude Code 双插件最佳搭配：superpowers 当大脑，gstack 当手脚](https://mp.weixin.qq.com/s/ShJ6ogkcI-6qZtFY--XcTA)
-> 完整存档：[[Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚]]
+> 完整存档：[Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚](references/Claude%20Code双插件最佳搭配：superpowers当大脑，gstack当手脚.md)
 
 ### 2.1 核心理念
 
@@ -82,7 +82,7 @@ brainstorming → writing-plans → [plan review]
 ## 三、案例二：gstack + Superpowers + CE 三工具对比与组合
 
 > 来源：[十方精舍 — 深入对比 Gstack、Superpowers 和 Compound Engineering（CE）三个最火的 AI Coding 工具](https://mp.weixin.qq.com/s/_hqzV6vGuBf2-95DfQyR2w)
-> 完整存档：[[深入对比Gstack、Superpowers和Compound Engineering三个最火的AI Coding工具]]
+> 完整存档：[深入对比Gstack、Superpowers和Compound Engineering三个最火的AI Coding工具](references/深入对比Gstack、Superpowers和Compound%20Engineering三个最火的AI%20Coding工具.md)
 
 ### 3.1 核心理念：四层职责框架
 
@@ -202,10 +202,10 @@ brainstorming → writing-plans → [plan review]
 |------|------|------|
 | 外部视角：双插件 | superpowers + gstack 实操 | 飞哥案例（本文案例一） |
 | 外部视角：三工具 | gstack + SP + CE 对比 | 十方精舍案例（本文案例二） |
-| 自研分析：三层架构 | GSD + SP + gstack 嵌套设计 | [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] |
+| 自研分析：三层架构 | GSD + SP + gstack 嵌套设计 | [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) |
 | 自研分析：安全维度 | gstack 安全设计的独特性 | 系列08 第四节 |
-| 自研分析：CE 定位 | CE 与 Claude Memory 重叠 | 系列08 第六节 + [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] |
-| 自研基础：框架选型 | GSD/SpecKit/OpenSpec/SP | [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] |
+| 自研分析：CE 定位 | CE 与 Claude Memory 重叠 | 系列08 第六节 + [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) |
+| 自研基础：框架选型 | GSD/SpecKit/OpenSpec/SP | [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) |
 
 关键差异：
 - 外部案例聚焦 **"哪些框架搭配用"**
@@ -241,7 +241,7 @@ brainstorming → writing-plans → [plan review]
 
 - 用 GSD 的 phase 机制做外层状态管理
 - 每个 phase 内部调用不同框架的 skill
-- 参考 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 的 Skill Runtime 思路
+- 参考 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 的 Skill Runtime 思路
 - 适合：大型项目、多人协作
 
 **路径 D：团队级知识复利**（CE 启发）
@@ -285,9 +285,9 @@ brainstorming → writing-plans → [plan review]
 
 ## 相关文章
 
-- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 三层嵌套架构设计与冲突解决
-- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] — 四层防线体系与 CE 知识复利分析
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Skill Runtime 编排思路
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 框架选型全景
-- [[Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚]] — 案例一完整存档
-- [[深入对比Gstack、Superpowers和Compound Engineering三个最火的AI Coding工具]] — 案例二完整存档
+- [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) — 三层嵌套架构设计与冲突解决
+- [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) — 四层防线体系与 CE 知识复利分析
+- [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) — Skill Runtime 编排思路
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) — 框架选型全景
+- [Claude Code双插件最佳搭配：superpowers当大脑，gstack当手脚](references/Claude%20Code双插件最佳搭配：superpowers当大脑，gstack当手脚.md) — 案例一完整存档
+- [深入对比Gstack、Superpowers和Compound Engineering三个最火的AI Coding工具](references/深入对比Gstack、Superpowers和Compound%20Engineering三个最火的AI%20Coding工具.md) — 案例二完整存档

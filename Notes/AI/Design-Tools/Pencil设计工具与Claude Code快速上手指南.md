@@ -976,10 +976,10 @@ export_nodes(
 
 #### 相关笔记
 
-- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]
-- [[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]]
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]]
+- [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](../vibe-coding/Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](../Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md)
+- [在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南](在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南.md)
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md)
 
 #### 参考链接
 

@@ -21,7 +21,7 @@ tags:
 
 系列01 到系列04 一路碰到的几个关键字段——审批模型的 `auto_review_model_override`、退休迁移的 `upgrade`/`retirement_at`、工具形态的 `shell_type`——其实都来自同一个地方：catalog 里那**一个模型条目**。当时是排错需要，每次只看一两个字段。这次把 `gpt-6-astra` 的条目完整展开读一遍，发现一件值得单独成文的事：
 
-**这个"模型条目"里，真正描述模型的字段只占一小截；其余的要么是 harness 行为定义，要么是围绕 harness 分发/接入的配置元数据**——完整的系统提示词、审批与安全政策、多 agent 编排的角色 prompt、上下文窗口管理机制、甚至商业计划矩阵。按 [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] 的框架来读，这份 JSON 给出了一个此前没有的观察角度：**Codex 的 harness 不是一个固定的壳，而是按模型条目逐个实例化的**。
+**这个"模型条目"里，真正描述模型的字段只占一小截；其余的要么是 harness 行为定义，要么是围绕 harness 分发/接入的配置元数据**——完整的系统提示词、审批与安全政策、多 agent 编排的角色 prompt、上下文窗口管理机制、甚至商业计划矩阵。按 [Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的框架来读，这份 JSON 给出了一个此前没有的观察角度：**Codex 的 harness 不是一个固定的壳，而是按模型条目逐个实例化的**。
 
 ![一个 ModelInfo 条目的分层解剖|700](../../../asset/codex-modelinfo-harness-layers-2026-09-05.svg)
 
@@ -59,7 +59,7 @@ tags:
 "node_repl_disabled": false
 ```
 
-关键在于这些字段**按模型声明**：gpt-6-astra 写的是 `unified_exec`，本机 catalog 快照（`azure-models.json`）里 mini 写的是 `shell_command`。注意官方 repo `rust-v0.153.1` 的 models.json 里 mini 的 shell_type 是 `unified_exec`，与本机快照不一致——本机快照的取值来源（Desktop 内嵌 catalog 或历史版本）待考，这个差异本身值得留意。源码核实后要做一个精确化（详见 [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]）：0.153.1 的 `ConfigShellToolType` 枚举里 `shell_command`/`local`/`default` 都是 `UnifiedExec` 的 serde alias，运行时行为已收敛为同一个执行器——**字段值的差异可能记录着模型代际差异（各自在什么工具形态上训练过，推测，无源码注释/文档直接证实），alias 是这段咬合史留在类型系统里的化石**。patch 工具、web search 工具的类型仍逐模型指定。这是 [[model-harness-codesign]] 一个待核实来源的例证：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
+关键在于这些字段**按模型声明**：gpt-6-astra 写的是 `unified_exec`，本机 catalog 快照（`azure-models.json`）里 mini 写的是 `shell_command`。注意官方 repo `rust-v0.153.1` 的 models.json 里 mini 的 shell_type 是 `unified_exec`，与本机快照不一致——本机快照的取值来源（Desktop 内嵌 catalog 或历史版本）待考，这个差异本身值得留意。源码核实后要做一个精确化（详见 [Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读](Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)）：0.153.1 的 `ConfigShellToolType` 枚举里 `shell_command`/`local`/`default` 都是 `UnifiedExec` 的 serde alias，运行时行为已收敛为同一个执行器——**字段值的差异可能记录着模型代际差异（各自在什么工具形态上训练过，推测，无源码注释/文档直接证实），alias 是这段咬合史留在类型系统里的化石**。patch 工具、web search 工具的类型仍逐模型指定。这是 [model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md) 一个待核实来源的例证：工具不是 harness 单方面提供的，是模型与 harness 在训练时就咬合好的接口。
 
 ### ④ 系统提示词层——人格与规则是模型条目的字段
 
@@ -127,7 +127,7 @@ root 与 subagent 的角色 prompt（`spawn_agent` / `followup_task` / `send_mes
 
 **3. 治理断供的面比系列02 看到的更宽（回收系列02）。** 系列02 定位了审批模型这一个断点；展开条目后可见治理层是四件套，guardian 分类器、确认政策同样可能在特定形态下发起模型调用或依赖环境。接第三方 provider 的完整检查清单应该是：**逐层过一遍这九层，问每一层"它需要什么模型/端点/环境，我的组合里有没有"**。
 
-**4. co-design 的证据从"论断"变成了"字段"。** [[model-harness-codesign]] 此前的证据多来自产品行为观察；这份条目给出了字段级证据：`shell_type` 的 alias 化石现象（枚举演进痕迹，非当前行为差异）、ultra 档绑定委派、`multi_agent_reasoning_effort` 指定子 agent 档位、写作风格逐模型定制。模型与 harness 不是组装关系，是接口逐个咬合的共生关系——这也回答了"为什么第三方模型接进第一方 harness 常常差口气"：**接上的只是推理端点，接不上的是这九层里剩下的八层**。
+**4. co-design 的证据从"论断"变成了"字段"。** [model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md) 此前的证据多来自产品行为观察；这份条目给出了字段级证据：`shell_type` 的 alias 化石现象（枚举演进痕迹，非当前行为差异）、ultra 档绑定委派、`multi_agent_reasoning_effort` 指定子 agent 档位、写作风格逐模型定制。模型与 harness 不是组装关系，是接口逐个咬合的共生关系——这也回答了"为什么第三方模型接进第一方 harness 常常差口气"：**接上的只是推理端点，接不上的是这九层里剩下的八层**。
 
 ## 小结
 
@@ -135,11 +135,11 @@ root 与 subagent 的角色 prompt（`spawn_agent` / `followup_task` / `send_mes
 2. **Codex 的 harness 是 per-model 实例化的**，与 Claude Code"全局 harness + 可换模型"是两种架构哲学；这是第一方绑定在数据结构层的形态。
 3. **schema 严格校验 = 拒绝启动行为未定义的 agent**——系列01 版本锁定的根本原因。
 4. **接第三方 provider 的完整功课是逐层核对九层**，而不只是主模型调用——系列02 的治理层断供只是其中一层的一个字段。
-5. **co-design 有了字段级证据**：工具协议、推理档位、编排能力在条目里逐个与模型咬合，可回填 [[model-harness-codesign]]。
+5. **co-design 有了字段级证据**：工具协议、推理档位、编排能力在条目里逐个与模型咬合，可回填 [model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md)。
 
 ## 参考
 
 - 素材：`rust-v0.153.1` catalog 中 `gpt-6-astra` 条目完整展开（本机 Azure catalog 快照，含系列01/02 修改）
 - [Codex rust-v0.153.1 官方 models.json](https://raw.githubusercontent.com/openai/codex/rust-v0.153.1/codex-rs/models-manager/models.json)
 - [openai/codex 仓库](https://github.com/openai/codex)
-- 相关笔记：[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]]｜[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]｜[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]｜wiki 概念：[[model-harness-codesign]]
+- 相关笔记：[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错](Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)｜[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)｜[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争](../Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)｜wiki 概念：[model-harness-codesign](../../../wiki/concepts/model-harness-codesign.md)

@@ -15,7 +15,7 @@ tags:
 
 ## 一、问题：Loop Engineering 是 Harness Engineering 的复述吗？
 
-2026 年，"Loop Engineering（循环工程）"作为新词同时出现在多篇博客和 Coding Agent 产品文案里。但凡熟悉 [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Harness Engineering]] 的人，第一反应几乎都是同一个疑问：
+2026 年，"Loop Engineering（循环工程）"作为新词同时出现在多篇博客和 Coding Agent 产品文案里。但凡熟悉 [Harness Engineering](../vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) 的人，第一反应几乎都是同一个疑问：
 
 > 我们早就在讲治理、控制、验证的反馈循环了。Loop Engineering 是把这些再强调一遍，还是只是给 Codex 的 `/goal`、Claude Code 的 agentic loop 起了个新名字？
 
@@ -73,7 +73,7 @@ Intent（定义目标）
 
 ### 外循环 vs Ralph Loop：编排系统 vs 单任务内核
 
-很容易把外循环和 [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别|Ralph Loop]] 混为一谈——两者都"让 AI 自动跑"。但它们根本不在一个层面：**Ralph Loop 是外循环里"单任务执行"那一格的一种实现，外循环是把多个这样的格子编排起来的上层系统**，是被包含关系。
+很容易把外循环和 [Ralph Loop](../agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md) 混为一谈——两者都"让 AI 自动跑"。但它们根本不在一个层面：**Ralph Loop 是外循环里"单任务执行"那一格的一种实现，外循环是把多个这样的格子编排起来的上层系统**，是被包含关系。
 
 | 维度 | Ralph Loop | Osmani 外循环 |
 |------|-----------|--------------|
@@ -98,7 +98,7 @@ Intent（定义目标）
 
 ## 三、对比：Loop Engineering 在概念栈里的位置
 
-把 Loop Engineering 放进 [[Agentic-Engineering——质量与成本的一体化优化|Agentic Engineering 的三层递进]]（Prompt ⊂ Context ⊂ Harness）里，关系就清楚了：
+把 Loop Engineering 放进 [Agentic Engineering 的三层递进](../Agentic-Engineering——质量与成本的一体化优化.md)（Prompt ⊂ Context ⊂ Harness）里，关系就清楚了：
 
 | 层级 | 操作对象 | 维度 | 核心问题 |
 |------|---------|------|---------|
@@ -111,7 +111,7 @@ Intent（定义目标）
 
 这是回答"它和 Harness 到底什么关系"的核心。Loop Engineering 不是 Harness 的同义词，也不是它干净的子集或超集，而是**从"反馈"这个视角横切了 Harness 的内部与上层**：
 
-- **内循环 ⊂ Harness**：[[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读|Harness 六层架构]]里的 L6 Eval（评估反馈层）就是内循环的实现。这部分确实是 Harness 的复述，没有新东西。
+- **内循环 ⊂ Harness**：[Harness 六层架构](../Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md)里的 L6 Eval（评估反馈层）就是内循环的实现。这部分确实是 Harness 的复述，没有新东西。
 - **外循环 ⊃ Harness**：外循环把"多个单 Agent + 各自的 Harness"编排成自治系统。这一层在传统 Harness 叙事里是缺位的——Harness 默认有个人在轮次之间盯着，外循环把这个人也抽掉了。
 
 所以诚实的结论是：**Loop Engineering 的一半是 Harness 的反馈子系统（旧），另一半是 Harness 之上的自治编排（新）**。用一句话回答用户的疑问——它既"把治理/控制/验证再强调了一遍"（内循环部分），又"补上了人退出循环后系统怎么自转"（外循环部分）。
@@ -140,7 +140,7 @@ Compiler  >  Test  >  Runtime  >  Product  >  Review
 1. **verifier 越接近确定性 ground truth，循环就能跑得越紧、越能无人值守。** Compiler loop 可以全自动狂跑；Review loop 永远卡在人的速度上。
 2. **验证应尽量"左移"。** 把设计约束编码成 test，把 review comment 沉淀成 lint rule，把"人类审美判断"转成"可执行的检查"——目的就是把循环从右侧（要人）推向左侧（可自动），从而缩小外循环里"必须人在环"的瓶颈。
 
-更深一层，这其实是 [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控|控制论]]的直接推论：
+更深一层，这其实是 [控制论](../vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md)的直接推论：
 
 > **Agent 产出质量的上限 = 它的 verifier 质量的上限。** 控制器（循环）只能调节到它的传感器（verifier）能测准的程度。一个 verifier 噪声大的循环，无论迭代多少次都收敛不到正确解——这就是为什么 Osmani 说"done 是一个声明，不是证明"。
 
@@ -159,7 +159,7 @@ Compiler  >  Test  >  Runtime  >  Product  >  Review
 | **UI / Polish** | Product Iteration | 设计约束/可访问性 | 低-中 | 中（需先把约束编码） | Review |
 | **Review / Merge** | Review-Driven | 人类评论 | 低 | 低 | **Own**：人最终签核 |
 
-（Delegate / Review / Own 三档对应 [[Agentic-Engineering——质量与成本的一体化优化|Agentic Engineering]] 的工作框架。）
+（Delegate / Review / Own 三档对应 [Agentic Engineering](../Agentic-Engineering——质量与成本的一体化优化.md) 的工作框架。）
 
 **核心洞察**：一个产品的生命周期，本质是**一串内循环的切换**，切换依据就是"此刻哪种 verifier 最便宜+最高保真"。两端（Plan 与 Review）verifier 弱、必须人主导；中段（Design→Build→Integration）verifier 强、可大幅自治。所以 Loop Engineering 作为技能，一半是**为每个阶段造对的 verifier**，一半是**判断现在该切到哪个 loop**。
 
@@ -215,7 +215,7 @@ Osmani 给的是方法论，但 2026 年社区已经把它补成了**成熟的�
 
 ### 最佳实践：五团队收敛的四根支柱
 
-1. **Context 架构**：分层、渐进式披露（对应 [[Agentic-Engineering——质量与成本的一体化优化|Skill 分层加载 L0–L3]]）
+1. **Context 架构**：分层、渐进式披露（对应 [Skill 分层加载 L0–L3](../Agentic-Engineering——质量与成本的一体化优化.md)）
 2. **Agent 专精**：scoped prompt + 受限工具集（maker/checker 分离）
 3. **持久记忆**：文件系统支撑，不靠对话历史——"模型会忘，仓库不会忘"
 4. **结构化执行**：research → plan → execute → verify
@@ -305,7 +305,7 @@ cron（每日触发）
 
 ### 保障性：五条约束是唯一的护栏
 
-外循环的保障性**完全由 verifier 强度封顶**——这是第四节那条控制论铁律的直接推论（控制器只能调到传感器测得准的程度）。而具体保障手段，恰好就是 [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别|AutoResearch 五条约束]]：
+外循环的保障性**完全由 verifier 强度封顶**——这是第四节那条控制论铁律的直接推论（控制器只能调到传感器测得准的程度）。而具体保障手段，恰好就是 [AutoResearch 五条约束](../agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md)：
 
 | 保障机制 | 作用 |
 |---------|------|
@@ -373,8 +373,8 @@ Osmani 全文最清醒的部分，是对自治外循环的三个警告——它�
 
 ## 相关笔记
 
-- [[Agentic-Engineering——质量与成本的一体化优化]] — 概念栈母体：Prompt ⊂ Context ⊂ Harness、SDLC 七阶段、Delegate/Review/Own
-- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] — Harness Engineering 总览
-- [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] — verifier 上限 = 控制器上限的控制论依据
-- [[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]] — 六层架构与 L6 Eval 反馈层
-- [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]] — 另一篇循环类概念辨析
+- [Agentic-Engineering——质量与成本的一体化优化](../Agentic-Engineering——质量与成本的一体化优化.md) — 概念栈母体：Prompt ⊂ Context ⊂ Harness、SDLC 七阶段、Delegate/Review/Own
+- [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](../vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) — Harness Engineering 总览
+- [Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控](../vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) — verifier 上限 = 控制器上限的控制论依据
+- [Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读](../Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md) — 六层架构与 L6 Eval 反馈层
+- [AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别](../agent/AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别.md) — 另一篇循环类概念辨析

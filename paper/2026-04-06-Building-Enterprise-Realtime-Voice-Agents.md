@@ -19,7 +19,7 @@ tags:
 > 论文：[Building Enterprise Realtime Voice Agents from Scratch: A Technical Tutorial](https://arxiv.org/html/2603.05413v2)
 > 作者：Jielin Qiu, Zixiang Chen, Liangwei Yang 等（Salesforce AI Research）
 > 发表时间：2026 年 3 月
-> 相关文章：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+> 相关文章：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
 
 ---
 

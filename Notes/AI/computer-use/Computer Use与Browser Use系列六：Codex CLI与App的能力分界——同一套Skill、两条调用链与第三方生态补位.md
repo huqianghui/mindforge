@@ -306,4 +306,4 @@ orca tab list --json
 - 官方文档：[Codex App](https://developers.openai.com/codex/app) · [Codex CLI](https://developers.openai.com/codex/cli) · [Computer Use](https://developers.openai.com/codex/computer-use) · [Browser](https://developers.openai.com/codex/browser) · [Browser extension](https://developers.openai.com/codex/chrome-extension) · [Plugins](https://developers.openai.com/codex/plugins)
 - 本系列：[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)（browser binding 协议与 runtime 引导）、[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)（action loop 与执行后端实现）、[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)（可审计性与安全设计）、[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)（场景路由表）
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](../../tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
-- [[Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践]]
+- [Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践](../../tool/Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)

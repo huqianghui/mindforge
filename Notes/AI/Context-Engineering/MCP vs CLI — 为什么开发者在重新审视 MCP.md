@@ -589,6 +589,6 @@ graph TD
 
 ## 相关文章
 
-- [[OpenCLI——万物皆可CLI的结构化革命]] — CLI 作为 Agent 交互替代方案
-- [[Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线]] — 命令编排型框架路线
-- [[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]] — MCP 工具生态实践
+- [OpenCLI——万物皆可CLI的结构化革命](../agent/OpenCLI——万物皆可CLI的结构化革命.md) — CLI 作为 Agent 交互替代方案
+- [Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线](../agent/Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线.md) — 命令编排型框架路线
+- [Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践](../agent/Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md) — MCP 工具生态实践

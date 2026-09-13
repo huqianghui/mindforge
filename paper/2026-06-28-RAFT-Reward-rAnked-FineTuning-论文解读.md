@@ -5,16 +5,16 @@ tags: [paper-reading, RAFT, STaR, rejection-sampling, SFT, RLHF, agent-lightning
 paper: "RAFT: Reward rAnked FineTuning for Generative Foundation Model Alignment"
 authors: [Hanze Dong, Wei Xiong, 等（LMFlow 团队）]
 source: https://arxiv.org/html/2304.06767v4
-related: "[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]"
+related: "[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](../Notes/AI/agent-lightning/Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)"
 ---
 
 # 论文阅读：RAFT（Reward rAnked FineTuning）——拒绝采样 SFT 的理论出处
 
-> 接 [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] 与 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]：跑通 demo 后发现那段 SFT 代码（`reward>0` 过滤 + reward 排序 + while 迭代）骨架眼熟，本篇回到原始 paper，弄清这套「拒绝采样 SFT」的理论出处——RAFT（2023）与它的推理域前身 STaR（2022）。
+> 接 [Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相](../Notes/AI/agent-lightning/Agent%20Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相.md) 与 [Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](../Notes/AI/agent-lightning/Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md)：跑通 demo 后发现那段 SFT 代码（`reward>0` 过滤 + reward 排序 + while 迭代）骨架眼熟，本篇回到原始 paper，弄清这套「拒绝采样 SFT」的理论出处——RAFT（2023）与它的推理域前身 STaR（2022）。
 
 ## 〇、为什么读这篇
 
-[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] §3.7 复盘动态飞轮实验时，反复撞到一个判断：agent-lightning 那条 SFT 线**不是普通监督微调，而是拒绝采样自训练**。它的三件套——采样、按 reward 过滤排序、在留下的样本上做 SFT 然后迭代——和某个有名字的方法高度同构。这个名字就是 **RAFT**，更早的推理域版本叫 **STaR**。读原始 paper 的目的有三：
+[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](../Notes/AI/agent-lightning/Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md) §3.7 复盘动态飞轮实验时，反复撞到一个判断：agent-lightning 那条 SFT 线**不是普通监督微调，而是拒绝采样自训练**。它的三件套——采样、按 reward 过滤排序、在留下的样本上做 SFT 然后迭代——和某个有名字的方法高度同构。这个名字就是 **RAFT**，更早的推理域版本叫 **STaR**。读原始 paper 的目的有三：
 
 1. 确认 agent-lightning 的代码骨架确实 = RAFT/STaR，不是巧合；
 2. 弄清这套方法相对 PPO/RLHF 的**定位**（为什么是「SFT 机制 + RL 数据」）；
@@ -112,7 +112,7 @@ STaR 在 CommonsenseQA 上做到与 **30× 大模型** 可比，核心贡献是�
 
 ## 五、呼应 agent-lightning 代码：骨架完全对得上，但退化了
 
-把 RAFT 三步映射到 [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] 剖析过的 `sft_algorithm.py`：
+把 RAFT 三步映射到 [Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调](../Notes/AI/agent-lightning/Agent%20Lightning系列06：SFT实战篇——从Azure%20GPU%20VM到跑通unsloth拒绝采样微调.md) 剖析过的 `sft_algorithm.py`：
 
 | RAFT 步骤 | agent-lightning 代码 | 备注 |
 |---|---|---|

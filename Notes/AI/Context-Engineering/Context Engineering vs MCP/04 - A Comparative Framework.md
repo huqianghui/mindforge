@@ -45,6 +45,6 @@ In essence, MCP handles the "how" of tool communication, allowing context engine
 | **Functional Relationship** | MCP is a standard *implemented within* a Context Engineering system to handle tool integration in a robust, scalable, and interoperable manner. | MCP is a protocol that *enables and professionalizes* one critical aspect of Context Engineering, freeing developers to focus on higher-level orchestration. |
 
 ---
-Prev ← [[03 - Model Context Protocol (MCP)]]  
-Next → [[05 - Strategic Implications and Future Outlook]]  
-Back to MOC: [[Context Engineering vs MCP - MOC]]
+Prev ← [03 - Model Context Protocol (MCP)](03%20-%20Model%20Context%20Protocol%20%28MCP%29.md)  
+Next → [05 - Strategic Implications and Future Outlook](05%20-%20Strategic%20Implications%20and%20Future%20Outlook.md)  
+Back to MOC: [Context Engineering vs MCP - MOC](Context%20Engineering%20vs%20MCP%20-%20MOC.md)

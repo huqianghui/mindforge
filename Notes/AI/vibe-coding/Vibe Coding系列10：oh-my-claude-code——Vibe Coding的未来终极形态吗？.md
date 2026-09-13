@@ -463,14 +463,14 @@ OMC 的编排引擎（how to coordinate）
 
 | 层次               | 内容                        | 文章                                                                  |
 | ---------------- | ------------------------- | ------------------------------------------------------------------- |
-| 基础：框架选型          | GSD/SpecKit/OpenSpec/SP   | [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] |
-| 进阶：三层架构          | GSD + SP + gstack 嵌套      | [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]]        |
-| 进阶：框架融合          | 开源社区双插件/三工具案例             | [[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式]]                  |
+| 基础：框架选型          | GSD/SpecKit/OpenSpec/SP   | [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) |
+| 进阶：三层架构          | GSD + SP + gstack 嵌套      | [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md)        |
+| 进阶：框架融合          | 开源社区双插件/三工具案例             | [Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式](Vibe%20Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式.md)                  |
 | 探索：Agent 编排      | OMC 多 Agent 编排            | 本文                                                                  |
 | 对比：Persona Library | Agency Agents 角色人设库       | 本文（第九节）                                                              |
 | 对比：Harness 规范     | Everything Claude Code 行为规范 | 本文（第九节）                                                              |
-| 背景：Skill Runtime | Context 爆炸与 Skill Runtime | [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]          |
-| 背景：代码复用          | 四层防线 + Plugin 协作          | [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]]        |
+| 背景：Skill Runtime | Context 爆炸与 Skill Runtime | [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)          |
+| 背景：代码复用          | 四层防线 + Plugin 协作          | [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md)        |
 
 系列09 提出的"从使用框架到编排框架"的方向，在本文得到了具体的实现案例——OMC 就是目前最完整的"编排框架"尝试。但如系列08 分析的那样，编排的复杂度必须被需求逼出来，而不是预先设计出来。
 
@@ -503,8 +503,8 @@ OMC 的编排引擎（how to coordinate）
 
 ## 相关文章
 
-- [[Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式]] — 框架融合案例与模式
-- [[Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践]] — 三层嵌套架构设计
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Skill Runtime 编排思路
-- [[Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践]] — 框架选型全景
-- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] — 四层防线与 Plugin 协作
+- [Vibe Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式](Vibe%20Coding系列09：开源社区框架融合实践——从双插件搭配到多工具编排的案例与模式.md) — 框架融合案例与模式
+- [Vibe Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践](Vibe%20Coding系列08：GSD+Superpowers+gstack三层插件架构——从定位争议到组合实践.md) — 三层嵌套架构设计
+- [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) — Skill Runtime 编排思路
+- [Vibe Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践](Vibe%20Coding系列04：流程框架选择指南——GSD、SpecKit、OpenSpec与Superpowers的组合实践.md) — 框架选型全景
+- [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) — 四层防线与 Plugin 协作

@@ -17,7 +17,7 @@ Vibe Coding（凭感觉编程）让 AI 快速产出代码，但随着项目复�
 
 **核心区分**：规范驱动框架（GSD / SpecKit / OpenSpec）解决"做什么"，方法论框架（Superpowers）解决"怎么做"。两者互补，不可互替。
 
-> 本文聚焦于框架选型和组合策略。关于 Superpowers Brainstorm + OpenSpec Spec-Delta 的具体工作流，详见 [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]；关于 Harness Engineering 和 One Person Team 的方法论，详见 [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]]。
+> 本文聚焦于框架选型和组合策略。关于 Superpowers Brainstorm + OpenSpec Spec-Delta 的具体工作流，详见 [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)；关于 Harness Engineering 和 One Person Team 的方法论，详见 [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md)。
 
 ---
 
@@ -66,7 +66,7 @@ GSD + Superpowers 是目前社区最推荐的个人开发者组合——GSD 提�
 
 ### 上下文隔离机制
 
-GSD 的核心优势在于**上下文管理**：每个子任务在独立的 200K token 上下文窗口中执行，避免长对话导致的 AI"遗忘"。这与 Claude Code 的 Agent/Subagent 架构天然契合——详见 [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]。
+GSD 的核心优势在于**上下文管理**：每个子任务在独立的 200K token 上下文窗口中执行，避免长对话导致的 AI"遗忘"。这与 Claude Code 的 Agent/Subagent 架构天然契合——详见 [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)。
 
 > **效率参考**：社区用户反馈，使用 GSD 后 8 小时完成了相当于 2-3 天的工作量。但 GSD 的上下文开销约为实际编码内容的 4 倍，建议使用高配额的 AI 服务。
 
@@ -217,10 +217,10 @@ GSD、SpecKit、OpenSpec **功能高度重叠**（都生成规范和任务计划
 | 层级 | 关注点 | 对应文章 |
 |------|--------|---------|
 | 流程协议框架 | 选哪个框架、怎么组合 | 本文 |
-| Harness Engineering | 人类驾驭、AI 执行的方法论 | [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] |
-| Design→Spec→Code | Figma 到代码的三阶段转换 | [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]] |
-| Agent 执行架构 | Claude Code 如何调度子代理 | [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] |
-| 扩展机制 | Command / Skill / Agent 的区别 | [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]] |
+| Harness Engineering | 人类驾驭、AI 执行的方法论 | [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) |
+| Design→Spec→Code | Figma 到代码的三阶段转换 | [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md) |
+| Agent 执行架构 | Claude Code 如何调度子代理 | [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md) |
+| 扩展机制 | Command / Skill / Agent 的区别 | [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](../Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md) |
 
 ### 实际整合示例：GSD + Superpowers + 已有工作流
 

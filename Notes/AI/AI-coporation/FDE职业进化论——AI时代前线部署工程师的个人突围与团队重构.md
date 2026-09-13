@@ -552,9 +552,9 @@ FDE 不是老师（教完就走），不是保姆（替你做事），不是工�
 
 - [构建 AI Native CSU Team——从 One Person Team 到组织进化的实践思考](构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md) — 四层递进框架、四个结构性条件
 - [与 AI 相处之道——从工具依赖到认知伙伴](与AI相处之道——从工具依赖到认知伙伴.md) — 认知主权、PKC、两种用 AI 的人
-- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉]] — Harness "长出来而非设计出来"、Harness 必须可拆卸
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践]] — One Person Team、架构师先验知识编码
-- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南]] — "用约束让 Agent 不得不复用"
-- [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] — Regulation vs Optimization、必要多样性定律
+- [Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉](../vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md) — Harness "长出来而非设计出来"、Harness 必须可拆卸
+- [Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践](../vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md) — One Person Team、架构师先验知识编码
+- [Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南](../vibe-coding/Vibe%20Coding系列07：Coding%20Agent时代的代码复用——从架构约束到Plugin协作的实践指南.md) — "用约束让 Agent 不得不复用"
+- [Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控](../vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md) — Regulation vs Optimization、必要多样性定律
 - [The Bitter Lesson](../../../paper/2026-03-21-The-Bitter-Lesson.md) — 三种不被模型吞噬的元能力
 - [How AI Impacts Skill Formation](../../../paper/2026-03-18-How-AI-Impacts-Skill-Formation.md) — 复杂决策型工作中 AI 是放大器而非替代器

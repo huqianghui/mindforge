@@ -433,7 +433,7 @@ Phase B (Video/Photo):     8 tasks [all ✓]
 
 Harness Engineering 构建了优秀的文档分层和结构化 State，但在实际大项目中使用 GSD / Superpowers 执行时，会遇到一个结构性问题：**context 爆炸**。
 
-详细分析参见 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]，这里概述核心关联。
+详细分析参见 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md)，这里概述核心关联。
 
 ### 7.1 Harness = State Layer，缺的是 Selection Layer
 
@@ -502,7 +502,7 @@ Selection Layer 解决了"选什么"，但还有一个更基础的问题：**选
 [4] Execution Layer（LLM 执行）   ← Subagent / Tool Call（执行动作）
 ```
 
-社区的六种策略——Agentic Chunking（LLM 判断语义边界）、Hierarchical Chunking（多层粒度索引）、Context-Budget-Aware Sizing（单 unit ≤ context 的 30%）、Subagent Context Isolation（N × 200k 总窗口）、SRP for Specs（单一职责原则）、Adaptive Decomposition（运行时动态拆分）——详见 [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] 第九节。
+社区的六种策略——Agentic Chunking（LLM 判断语义边界）、Hierarchical Chunking（多层粒度索引）、Context-Budget-Aware Sizing（单 unit ≤ context 的 30%）、Subagent Context Isolation（N × 200k 总窗口）、SRP for Specs（单一职责原则）、Adaptive Decomposition（运行时动态拆分）——详见 [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) 第九节。
 
 ---
 
@@ -524,7 +524,7 @@ AI Harness Engineering 不是简单的"让 AI 写代码"，而是一种**系统�
 
 ### Bitter Lesson 视角的补充
 
-Rich Sutton 在 [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] 中总结了 AI 70 年的教训：利用算力扩展的通用方法（search + learning）终将胜过人类编码的领域知识。这对架构师意味着：**手工编写的 routing 逻辑、硬编码的 workflow、人为设计的 multi-agent 角色分工，终将被更强的模型吞噬。**
+Rich Sutton 在 [The Bitter Lesson](../../../paper/2026-03-21-The-Bitter-Lesson.md) 中总结了 AI 70 年的教训：利用算力扩展的通用方法（search + learning）终将胜过人类编码的领域知识。这对架构师意味着：**手工编写的 routing 逻辑、硬编码的 workflow、人为设计的 multi-agent 角色分工，终将被更强的模型吞噬。**
 
 但 Harness Engineering 中有三类工作不在 Bitter Lesson 的淘汰范围内——它们恰恰是架构师应该持续深耕的元能力：
 
@@ -538,13 +538,13 @@ Rich Sutton 在 [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson]] 中总结了 
 
 #### 相关笔记
 
-- [[Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流]]
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒]] — 12 层 Harness 的渐进式解构
-- [[2026-03-21-The-Bitter-Lesson|The Bitter Lesson 读书笔记]] — 为什么元能力不会被 AI 淘汰的理论基础
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Harness 的 Selection Layer 缺口与行业范式迁移
-- [[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]]
+- [Vibe Coding系列03：AI-Native开发实践——从Figma设计到Superpowers Brainstorm再到Spec-Delta工作流](Vibe%20Coding系列03：AI-Native开发实践——从Figma设计到Superpowers%20Brainstorm再到Spec-Delta工作流.md)
+- [Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作](../Claude-Code/Claude%20Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作.md)
+- [Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作](../Claude-Code/Claude%20Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作.md)
+- [Claude Code系列02：learn-claude-code——打开Coding Agent黑盒](../Claude-Code/Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md) — 12 层 Harness 的渐进式解构
+- [The Bitter Lesson 读书笔记](../../../paper/2026-03-21-The-Bitter-Lesson.md) — 为什么元能力不会被 AI 淘汰的理论基础
+- [Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移](Vibe%20Coding系列05：大项目落地困局——从Context爆炸到Skill%20Runtime的范式迁移.md) — Harness 的 Selection Layer 缺口与行业范式迁移
+- [在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南](../Design-Tools/在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南.md)
 
 #### 参考链接
 

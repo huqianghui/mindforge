@@ -12,7 +12,7 @@ tags: [agent-lightning, APO, beam-search, textual-gradient, prompt-optimization,
 
 ## 〇、为什么单开这一篇
 
-[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] 已经把 APO 的 **beam search 内核**（三参数、三阶段、调用次数）和**实践踩坑**讲透了。但有两个更深的算法问题没展开，而它们恰恰是理解 APO 本质、以及向客户解释"为什么是 beam search 而不是别的"的关键：
+[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 已经把 APO 的 **beam search 内核**（三参数、三阶段、调用次数）和**实践踩坑**讲透了。但有两个更深的算法问题没展开，而它们恰恰是理解 APO 本质、以及向客户解释"为什么是 beam search 而不是别的"的关键：
 
 1. **APO 和 beam search 到底是什么关系？** 很多人把两者画等号，其实是层级错位。
 2. **beam search 在搜索算法谱系里处于什么位置？** 为什么 APO 选它，而不选 greedy / DFS / Tree-of-Thought？
@@ -107,7 +107,7 @@ APO 一轮迭代里，有四个清晰的角色在流水线上接力。**注意 J
                               └────────────────┘
 ```
 
-> 一个常被忽略的接缝：Critic 看的不是原始字符串，而是 **`TraceToMessages` adapter 把 rollout 的 OpenTelemetry spans 还原成的对话 messages**（系列01 §2.2 已点出）。这就是 method-agnostic 的体现——同一份 trace，APO 走 messages 喂 Critic，RL/SFT 走 triplet 喂训练（详见 [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] §2.5）。
+> 一个常被忽略的接缝：Critic 看的不是原始字符串，而是 **`TraceToMessages` adapter 把 rollout 的 OpenTelemetry spans 还原成的对话 messages**（系列01 §2.2 已点出）。这就是 method-agnostic 的体现——同一份 trace，APO 走 messages 喂 Critic，RL/SFT 走 triplet 喂训练（详见 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §2.5）。
 
 ### 2.3 为什么 Critic 和 Editor 要分成两个模型
 
@@ -212,4 +212,4 @@ beam search 的"打分排序取 top-k"是最朴素的选择方式。当评估带
 5. **谱系定位**：greedy（留 1）/ BFS（全留）/ DFS（深挖）/ beam（top-k）/ ToT（带自评估，更贵）/ self-consistency（正交降噪，可叠加）。
 6. **进阶方向**：把 beam 的"等额评估 + max 选择"升级为 bandit（UCB / Successive Rejects）的"自适应预算分配"，是对症系列01「虚高」问题的统计学解药。
 
-> 相关：[[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]]（实践 + beam search 内核 + 噪声复盘）、[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]（adapter 接缝 + method-agnostic）、[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+> 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)（实践 + beam search 内核 + 噪声复盘）、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（adapter 接缝 + method-agnostic）、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)

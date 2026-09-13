@@ -12,7 +12,7 @@ tags:
 
 # 与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑
 
-> 系列前作：[[与AI相处之道——从工具依赖到认知伙伴]]——上一篇讨论"用 AI 学习一切还是用 AI 逃避学习"的分岔；本篇沿同一条线往深处走：当品味可以被编译、过程可以被固化，人与 AI 相处的核心命题变成**如何把自己的判断力喂给 AI，同时不让它萎缩**。
+> 系列前作：[与AI相处之道——从工具依赖到认知伙伴](与AI相处之道——从工具依赖到认知伙伴.md)——上一篇讨论"用 AI 学习一切还是用 AI 逃避学习"的分岔；本篇沿同一条线往深处走：当品味可以被编译、过程可以被固化，人与 AI 相处的核心命题变成**如何把自己的判断力喂给 AI，同时不让它萎缩**。
 >
 > 素材来源：硅谷101播客 [E245｜藏在大模型背后的新闻人：GPT们的回复是这样写出来的](https://www.youtube.com/watch?v=ifyzclKzVOA)
 > 讨论主题：对于不可衡量的文科题目，GPT 们是如何实现最大共识的——通过让新闻媒体人来做 content engineering，而不仅仅是点单式的 RLHF（点赞/踩），把思路和判断一步步喂给大模型。
@@ -55,9 +55,9 @@ tags:
 
 ### 有效性验证：三层闭环
 
-1. **Judge 层——对齐人类偏好**：把 rubric 交给 LLM-as-judge，在 held-out 人类偏好对上测 pairwise accuracy；rubric 改版后 accuracy 提升才算改进——评估器本身是可评估的。对应 [[generation-evaluation-separation]] 与 MRRG（多角色 rubric 生成 reward）。
+1. **Judge 层——对齐人类偏好**：把 rubric 交给 LLM-as-judge，在 held-out 人类偏好对上测 pairwise accuracy；rubric 改版后 accuracy 提升才算改进——评估器本身是可评估的。对应 [generation-evaluation-separation](../../../wiki/concepts/generation-evaluation-separation.md) 与 MRRG（多角色 rubric 生成 reward）。
 2. **优化层——能否驱动改进**：维度进 reward（RLHF/APO 评分函数）后，优化出的模型在**盲测**中胜率是否提升。关键陷阱是 reward hacking（模型机械讨好显式维度），需留**未告知模型的 held-out 维度** + 人工抽检兜底。
-3. **噪声层——压住主观方差**：语感类维度天然噪声大，与 [[automatic-prompt-optimization]] 中 APO 摆动是同一问题（评估噪声是第一大不稳定源）。对策：扩大评估集、同 prompt 多次采样取均值、pairwise 代替绝对分、锚定样例压标注方差。
+3. **噪声层——压住主观方差**：语感类维度天然噪声大，与 [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md) 中 APO 摆动是同一问题（评估噪声是第一大不稳定源）。对策：扩大评估集、同 prompt 多次采样取均值、pairwise 代替绝对分、锚定样例压标注方差。
 
 ### 隔离变量 = 受控改写实验
 
@@ -97,7 +97,7 @@ PRM 代表工作：OpenAI《Let's Verify Step by Step》（步骤级人工标注
 
 ### 中间路线：过程 → 示范轨迹
 
-把**完整过程记录**（含犹豫、否决、改写）当 few-shot / SFT 数据，让模型模仿过程而非只模仿结果。播客实录有效正因为保留了追问、停顿、转向——这些就是过程数据。工程化版本是 SFT on trajectories（轨迹蒸馏），再进一步是拒绝采样：只保留过程和结果都好的轨迹进训练集（关联 [[rejection-sampling-finetuning]]）。
+把**完整过程记录**（含犹豫、否决、改写）当 few-shot / SFT 数据，让模型模仿过程而非只模仿结果。播客实录有效正因为保留了追问、停顿、转向——这些就是过程数据。工程化版本是 SFT on trajectories（轨迹蒸馏），再进一步是拒绝采样：只保留过程和结果都好的轨迹进训练集（关联 [rejection-sampling-finetuning](../../../wiki/concepts/rejection-sampling-finetuning.md)）。
 
 ### 三条路线是一条演进阶梯
 
@@ -142,7 +142,7 @@ Prompt、context engineering、harness 搭建、agent 编排。重度用户已�
 
 ## 相关阅读
 
-- [[与AI相处之道——从工具依赖到认知伙伴]] — 系列一：工具依赖与认知伙伴的分岔
-- [[generation-evaluation-separation]] — 生成与评估分离：内容工程师是人肉评估侧
-- [[automatic-prompt-optimization]] — APO 摆动与评估噪声：语感量化的噪声层同题
-- [[rejection-sampling-finetuning]] — 轨迹筛选进训练集：过程固化的中间路线
+- [与AI相处之道——从工具依赖到认知伙伴](与AI相处之道——从工具依赖到认知伙伴.md) — 系列一：工具依赖与认知伙伴的分岔
+- [generation-evaluation-separation](../../../wiki/concepts/generation-evaluation-separation.md) — 生成与评估分离：内容工程师是人肉评估侧
+- [automatic-prompt-optimization](../../../wiki/concepts/automatic-prompt-optimization.md) — APO 摆动与评估噪声：语感量化的噪声层同题
+- [rejection-sampling-finetuning](../../../wiki/concepts/rejection-sampling-finetuning.md) — 轨迹筛选进训练集：过程固化的中间路线
