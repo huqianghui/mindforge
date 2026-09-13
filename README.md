@@ -29,7 +29,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 | 维度 | 数量 |
 |------|------|
 | 文章与笔记 | 158（Notes 129 / paper 13 / book 4 / product 4 / Azure 8） |
-| 日记 | 137 |
+| 日记 | 138 |
 | Wiki 页面 | 98 concepts + 19 methods + 8 decisions |
 | Claims（带证据的论断） | 598 |
 | 知识图谱 | 125 节点 / 409 关系 / 9 种关系类型 |
@@ -278,6 +278,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 ### Azure
 
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
+
+#### Azure/AzureOpenAI
+
+- [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Azure/AzureOpenAI/Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md)
+- [Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具](Azure/AzureOpenAI/Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)
+- [Prompt Cache 系列 03：Luna 图文实测——1899 次请求的 Benchmark 与 Chat API 零读取异常](Azure/AzureOpenAI/Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
 
 #### Azure/fabricIQ
 

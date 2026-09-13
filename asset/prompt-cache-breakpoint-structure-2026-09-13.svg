@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glow2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTeal2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashL { to { stroke-dashoffset: 60; } }
+    @keyframes bpPulse { 0%,100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+    @keyframes shimmer2 { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .lookup { stroke-dasharray: 10 16; animation: flowDashL 1.6s linear infinite; }
+    .bp { animation: bpPulse 2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .seg { animation: shimmer2 4s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="500" rx="18" fill="url(#bg2)"/>
+  <rect x="1" y="1" width="1158" height="498" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">GPT-5.6+ 请求渲染结构与缓存断点槽位</text>
+  <text x="36" y="70" font-size="13" fill="#64748b">每个请求最多 4 个 cache write 槽位 · implicit 断点占 1 个，剩 3 个可用于 explicit 断点</text>
+
+  <!-- ===== rendered prompt bar ===== -->
+  <!-- hidden system -->
+  <g class="seg">
+    <rect x="40" y="130" width="150" height="72" rx="10" fill="#131a2b" stroke="#334155" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <text x="115" y="160" font-size="13.5" font-weight="600" fill="#94a3b8" text-anchor="middle">Hidden system</text>
+    <text x="115" y="180" font-size="11" fill="#64748b" text-anchor="middle">OpenAI 隐藏内容</text>
+  </g>
+  <text x="115" y="226" font-size="11" fill="#64748b" text-anchor="middle">不计入 1,024 门槛</text>
+  <text x="115" y="243" font-size="11" fill="#64748b" text-anchor="middle">路由 hash 从其后开始</text>
+
+  <!-- tools + stable developer -->
+  <g class="seg">
+    <rect x="198" y="130" width="240" height="72" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="318" y="156" font-size="13.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">Tools 定义 ＋ 稳定 developer 指令</text>
+    <text x="318" y="176" font-size="11" fill="#5eead4" text-anchor="middle">规则、few-shot、参考材料</text>
+    <text x="318" y="193" font-size="11" fill="#5eead4" text-anchor="middle">（保持逐字节稳定）</text>
+  </g>
+  <!-- explicit bp1 -->
+  <g class="bp"><path d="M 438 118 l 9 -14 h -18 z" fill="#2dd4bf" filter="url(#glow2)" transform="rotate(180 438 111)"/></g>
+  <text x="438" y="92" font-size="11.5" font-weight="600" fill="#2dd4bf" text-anchor="middle">▼ explicit 断点 1</text>
+
+  <!-- conversation history -->
+  <g class="seg">
+    <rect x="446" y="130" width="300" height="72" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="596" y="156" font-size="13.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">会话历史（append-only）</text>
+    <text x="596" y="176" font-size="11" fill="#5eead4" text-anchor="middle">user / assistant / tool call 与结果</text>
+    <text x="596" y="193" font-size="11" fill="#5eead4" text-anchor="middle">文本与多模态内容（图片、文档、音频）</text>
+  </g>
+  <!-- explicit bp2 -->
+  <g class="bp"><path d="M 746 118 l 9 -14 h -18 z" fill="#2dd4bf" filter="url(#glow2)" transform="rotate(180 746 111)"/></g>
+  <text x="746" y="92" font-size="11.5" font-weight="600" fill="#2dd4bf" text-anchor="middle">▼ explicit 断点 2</text>
+
+  <!-- latest eligible message -->
+  <g class="seg">
+    <rect x="754" y="130" width="190" height="72" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="849" y="160" font-size="13.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">最新 eligible 消息</text>
+    <text x="849" y="180" font-size="11" fill="#5eead4" text-anchor="middle">user／最后一条 tool 结果</text>
+  </g>
+  <!-- implicit bp -->
+  <g class="bp"><path d="M 944 118 l 9 -14 h -18 z" fill="#fbbf24" filter="url(#glow2)" transform="rotate(180 944 111)"/></g>
+  <text x="944" y="92" font-size="11.5" font-weight="600" fill="#fbbf24" text-anchor="middle">▼ implicit 断点</text>
+
+  <!-- dynamic tail -->
+  <g>
+    <rect x="952" y="130" width="168" height="72" rx="10" fill="#131a2b" stroke="#334155" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <text x="1036" y="156" font-size="13.5" font-weight="600" fill="#94a3b8" text-anchor="middle">本次动态内容</text>
+    <text x="1036" y="176" font-size="11" fill="#64748b" text-anchor="middle">新图片、时间戳、当前问题</text>
+    <text x="1036" y="193" font-size="11" fill="#64748b" text-anchor="middle">explicit-only 下不写入缓存</text>
+  </g>
+
+  <!-- ===== lookup direction ===== -->
+  <path class="lookup" d="M 1060 280 H 240" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+  <path d="M 252 280 l 18 -9 v 18 z" fill="#22d3ee" filter="url(#glow2)"/>
+  <circle r="6" fill="url(#pTeal2)" filter="url(#glow2)">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M 1060 280 H 252"/>
+  </circle>
+  <text x="650" y="308" font-size="13" fill="#67e8f9" text-anchor="middle">前缀匹配：只在 cache lookup boundary 上，从最长前缀向最短逐个回退查找</text>
+
+  <!-- ===== lookup boundary rules ===== -->
+  <rect x="40" y="340" width="530" height="130" rx="12" fill="#0f172a" stroke="#1e293b"/>
+  <text x="58" y="368" font-size="13.5" font-weight="700" fill="#e2e8f0">explicit-only 模式的 lookup 边界</text>
+  <text x="58" y="392" font-size="12" fill="#cbd5e1">· 最早 2 个 ＋ 最近 50 个 explicit 断点</text>
+  <text x="58" y="414" font-size="12" fill="#cbd5e1">· 不放任何 explicit 断点 = 本请求不缓存、不产生写入</text>
+  <text x="58" y="436" font-size="12" fill="#cbd5e1">· 最后一个断点之后的内容按普通输入 1× 计费，无写入费</text>
+  <text x="58" y="458" font-size="11" fill="#64748b">注：存档的 API reference 曾写 latest 80，与指南 50 存在表述差异</text>
+
+  <rect x="590" y="340" width="530" height="130" rx="12" fill="#0f172a" stroke="#1e293b"/>
+  <text x="608" y="368" font-size="13.5" font-weight="700" fill="#e2e8f0">implicit 模式额外增加的 lookup 边界</text>
+  <text x="608" y="392" font-size="12" fill="#cbd5e1">· implicit 断点（最新 eligible 消息末尾）</text>
+  <text x="608" y="414" font-size="12" fill="#cbd5e1">· 最多 20 个更早 eligible 消息的末尾</text>
+  <text x="608" y="436" font-size="12" fill="#cbd5e1">· 最初连续 developer 消息块的末尾</text>
+  <text x="608" y="458" font-size="11" fill="#64748b">eligible：user 消息／连续 tool 结果的最后一条／初始连续 developer 块的最后一条</text>
+</svg>

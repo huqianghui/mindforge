@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="560" viewBox="0 0 1160 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTeal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.85; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 12 18; animation: flowDash 1.4s linear infinite; }
+    .flowSlow { stroke-dasharray: 12 18; animation: flowDash 2.2s linear infinite; }
+    .cacheHalo { animation: pulse 2.2s ease-in-out infinite; }
+    .card { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="560" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">Prompt Cache 写入与读取的因果链（GPT-5.6+）</text>
+  <text x="36" y="70" font-size="13" fill="#64748b">先建立缓存状态，后才能读取 · 写入 1.25× / 读取 0.1× / 普通输入 1× · 三类互斥，不叠加</text>
+
+  <!-- ===== center cache entry ===== -->
+  <ellipse class="cacheHalo" cx="580" cy="300" rx="150" ry="80" fill="#fbbf24" opacity="0.15"/>
+  <rect x="450" y="240" width="260" height="120" rx="16" fill="#1c2438" stroke="#fbbf24" stroke-width="2"/>
+  <text x="580" y="272" font-size="16" font-weight="700" fill="#fde68a" text-anchor="middle">缓存条目（KV tensors）</text>
+  <text x="580" y="296" font-size="12.5" fill="#cbd5e1" text-anchor="middle">保存固定前缀的 KV 计算状态</text>
+  <text x="580" y="318" font-size="12.5" fill="#94a3b8" text-anchor="middle">位于单台机器 · GPU-local storage</text>
+  <text x="580" y="342" font-size="12.5" fill="#fbbf24" text-anchor="middle">TTL ≥ 30 分钟 · 每次复用自动续期（免费）</text>
+
+  <!-- ===== request 1: write ===== -->
+  <g class="card">
+    <rect x="40" y="120" width="280" height="96" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="180" y="150" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">请求 ①：长文字前缀 ＋ 图片 A</text>
+    <text x="180" y="174" font-size="12" fill="#5eead4" text-anchor="middle">没有可读缓存 → 建立缓存状态</text>
+    <text x="180" y="196" font-size="12.5" font-weight="600" fill="#fbbf24" text-anchor="middle">cached_tokens=0 · cache_write=5,676</text>
+  </g>
+  <path class="flow" d="M 320 168 Q 430 168 490 240" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <circle r="6" fill="url(#pAmber)" filter="url(#softGlow)">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M 320 168 Q 430 168 490 240"/>
+  </circle>
+  <text x="410" y="150" font-size="12.5" font-weight="600" fill="#fbbf24">写入 1.25×</text>
+
+  <!-- ===== request 2: read ===== -->
+  <g class="card">
+    <rect x="840" y="120" width="280" height="96" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="980" y="150" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">请求 ②：同一前缀 ＋ 新图片 B</text>
+    <text x="980" y="174" font-size="12" fill="#5eead4" text-anchor="middle">命中固定前缀 → 本次无需再写入</text>
+    <text x="980" y="196" font-size="12.5" font-weight="600" fill="#2dd4bf" text-anchor="middle">cached_tokens=5,676 · cache_write=0</text>
+  </g>
+  <path class="flow" d="M 670 240 Q 730 168 840 168" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <circle r="6" fill="url(#pTeal)" filter="url(#softGlow)">
+    <animateMotion dur="2s" repeatCount="indefinite" path="M 670 240 Q 730 168 840 168"/>
+  </circle>
+  <text x="700" y="150" font-size="12.5" font-weight="600" fill="#2dd4bf">读取 0.1×</text>
+
+  <!-- ===== request 3: read + delta write ===== -->
+  <g class="card">
+    <rect x="840" y="420" width="280" height="104" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="980" y="450" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">请求 ③：旧前缀 ＋ 追加新内容</text>
+    <text x="980" y="474" font-size="12" fill="#5eead4" text-anchor="middle">读旧前缀 ＋ 只为增量部分写入（delta）</text>
+    <text x="980" y="496" font-size="12.5" font-weight="600" fill="#fde68a" text-anchor="middle">cached=4,797 · write=63～71（仅新增段）</text>
+    <text x="980" y="514" font-size="11" fill="#64748b" text-anchor="middle">同一请求可同时出现读取与写入</text>
+  </g>
+  <path class="flowSlow" d="M 670 340 Q 730 420 840 448" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <circle r="5" fill="url(#pTeal)" filter="url(#softGlow)">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M 670 340 Q 730 420 840 448"/>
+  </circle>
+  <path class="flowSlow" d="M 860 500 Q 700 520 620 360" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+  <circle r="5" fill="url(#pAmber)" filter="url(#softGlow)">
+    <animateMotion dur="2.8s" repeatCount="indefinite" path="M 860 500 Q 700 520 620 360"/>
+  </circle>
+  <text x="695" y="415" font-size="12.5" font-weight="600" fill="#2dd4bf">读取旧前缀</text>
+  <text x="660" y="505" font-size="12.5" font-weight="600" fill="#fbbf24">增量写入</text>
+
+  <!-- ===== old model note ===== -->
+  <rect x="40" y="420" width="330" height="104" rx="14" fill="#131a2b" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <text x="205" y="450" font-size="14" font-weight="600" fill="#94a3b8" text-anchor="middle">旧模型（GPT-5.6 之前）对照</text>
+  <text x="205" y="474" font-size="12" fill="#64748b" text-anchor="middle">in_memory / 24h：同样先实际写入才能读取</text>
+  <text x="205" y="494" font-size="12" fill="#64748b" text-anchor="middle">区别在写入不单独计费、也不可控</text>
+  <text x="205" y="514" font-size="12" fill="#64748b" text-anchor="middle">cached_tokens 按 128 的倍数向下取整报告</text>
+
+  <!-- billing legend -->
+  <rect x="40" y="252" width="330" height="96" rx="12" fill="#0f172a" stroke="#1e293b"/>
+  <text x="58" y="280" font-size="13" font-weight="700" fill="#e2e8f0">输入 token 三类费率（互斥）</text>
+  <text x="58" y="304" font-size="12.5" fill="#cbd5e1">普通输入 1×　·　缓存写入 1.25×　·　缓存读取 0.1×</text>
+  <text x="58" y="326" font-size="12" fill="#64748b">写一次＋完整读一次 = 1.35×（对比两次普通处理 2×）</text>
+  <text x="58" y="344" font-size="12" fill="#64748b">写一次＋读九次 = 2.15×（对比十次普通处理 10×）</text>
+</svg>

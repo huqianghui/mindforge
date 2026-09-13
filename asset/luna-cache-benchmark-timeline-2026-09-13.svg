@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="520" viewBox="0 0 1160 520" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glow3" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTeal3" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash3 { to { stroke-dashoffset: -76; } }
+    @keyframes pulse3 { 0%,100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+    @keyframes shimmer3 { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow3  { stroke-dasharray: 18 20; animation: flowDash3 1.5s linear infinite; }
+    .halo3  { animation: pulse3 1.8s ease-in-out infinite; }
+    .done3  { animation: shimmer3 3.5s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="520" rx="18" fill="url(#bg3)"/>
+  <rect x="1" y="1" width="1158" height="518" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">Luna Prompt Cache 实测时间线</text>
+  <text x="36" y="70" font-size="13" fill="#64748b">gpt-5.6-luna · Azure OpenAI · 2026-09-09 ～ 09-13 · 主报告 1,899 条实验请求 ＋ 160 条校准</text>
+  <text x="1124" y="46" font-size="13" fill="#2dd4bf" text-anchor="end">五轮实测已完成 → 待厂商根因确认</text>
+
+  <!-- track -->
+  <path d="M 140 190 H 1010 Q 1120 190 1120 285 Q 1120 380 1010 380 H 320" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flow3" d="M 140 190 H 1010 Q 1120 190 1120 285 Q 1120 380 1010 380 H 560" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+  <path d="M 560 380 H 320" fill="none" stroke="#334155" stroke-width="5" stroke-dasharray="6 12" stroke-linecap="round" opacity="0.8"/>
+  <circle r="7" fill="url(#pTeal3)" filter="url(#glow3)">
+    <animateMotion dur="7s" repeatCount="indefinite" path="M 140 190 H 1010 Q 1120 190 1120 285 Q 1120 380 1010 380 H 560"/>
+  </circle>
+  <circle r="5" fill="url(#pTeal3)" filter="url(#glow3)">
+    <animateMotion dur="7s" begin="3.5s" repeatCount="indefinite" path="M 140 190 H 1010 Q 1120 190 1120 285 Q 1120 380 1010 380 H 560"/>
+  </circle>
+
+  <!-- Row 1 -->
+  <g class="done3">
+    <rect x="50" y="150" width="180" height="80" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="140" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">① 9/9 基础对照</text>
+    <text x="140" y="199" font-size="11" fill="#5eead4" text-anchor="middle">同图／换图／门槛以下</text>
+    <text x="140" y="217" font-size="11" fill="#5eead4" text-anchor="middle">232 次调用 · 全组合 24 组</text>
+  </g>
+  <g class="done3">
+    <rect x="290" y="150" width="190" height="80" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="385" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">② 9/9 v3 新图矩阵</text>
+    <text x="385" y="199" font-size="11" fill="#5eead4" text-anchor="middle">角色×marker×mode×key</text>
+    <text x="385" y="217" font-size="11" fill="#5eead4" text-anchor="middle">72 组 × 12 次 = 864 尝试</text>
+  </g>
+  <g class="done3">
+    <rect x="540" y="150" width="190" height="80" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="635" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">③ 9/10 Chat 串行 15s</text>
+    <text x="635" y="199" font-size="11" fill="#5eead4" text-anchor="middle">并发 1 · 完整返回后等 15 秒</text>
+    <text x="635" y="217" font-size="11" fill="#5eead4" text-anchor="middle">147 次图文 · 新图仍零读取</text>
+  </g>
+  <g class="done3">
+    <rect x="790" y="150" width="190" height="80" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="885" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">④ 9/10 纯文字两轮</text>
+    <text x="885" y="199" font-size="11" fill="#5eead4" text-anchor="middle">4 配置 × 6 组 × 2 轮 = 48 次</text>
+    <text x="885" y="217" font-size="11" fill="#5eead4" text-anchor="middle">第二轮 24/24 命中</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g class="done3">
+    <rect x="700" y="340" width="220" height="80" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="810" y="368" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑤ 9/13 文档复查＋诊断实测</text>
+    <text x="810" y="389" font-size="11" fill="#5eead4" text-anchor="middle">重新抓取官方指南与诊断正文</text>
+    <text x="810" y="407" font-size="11" fill="#5eead4" text-anchor="middle">Azure 诊断 10 次调用 · 6/6 无诊断字段</text>
+  </g>
+  <ellipse class="halo3" cx="440" cy="380" rx="130" ry="58" fill="#fbbf24"/>
+  <g>
+    <rect x="330" y="340" width="220" height="80" rx="14" fill="#2b2413" stroke="#fbbf24" stroke-width="2"/>
+    <text x="440" y="368" font-size="15" font-weight="600" fill="#fde68a" text-anchor="middle">⑥ 当前：异常未定性</text>
+    <text x="440" y="389" font-size="11" fill="#fcd34d" text-anchor="middle">Chat 图文新图零读取待厂商确认</text>
+    <text x="440" y="407" font-size="11" fill="#fcd34d" text-anchor="middle">最小复现包已备好 · 可提交工单</text>
+  </g>
+  <g>
+    <rect x="60" y="340" width="200" height="80" rx="14" fill="#131a2b" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="160" y="368" font-size="15" font-weight="600" fill="#94a3b8" text-anchor="middle">⑦ 规划：复测与修订</text>
+    <text x="160" y="389" font-size="11" fill="#64748b" text-anchor="middle">诊断能力开放后复测</text>
+    <text x="160" y="407" font-size="11" fill="#64748b" text-anchor="middle">key 语义／账单核验补充</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="11.5">
+    <rect x="36" y="465" width="12" height="12" rx="3" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="56" y="475" fill="#94a3b8">已完成（流动光带）</text>
+    <rect x="196" y="465" width="12" height="12" rx="3" fill="#2b2413" stroke="#fbbf24"/>
+    <text x="216" y="475" fill="#94a3b8">当前状态（脉冲）</text>
+    <rect x="346" y="465" width="12" height="12" rx="3" fill="#131a2b" stroke="#334155" stroke-dasharray="4 4"/>
+    <text x="366" y="475" fill="#94a3b8">规划中（虚线）</text>
+    <text x="1124" y="475" fill="#475569" text-anchor="end">失败请求单列不计入分母 · 命中 = usage 返回 cached_tokens &gt; 0</text>
+  </g>
+</svg>
