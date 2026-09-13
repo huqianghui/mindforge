@@ -6,7 +6,7 @@ tags: [Azure-OpenAI, prompt-cache, KV-cache, LLM计费, 推理优化]
 
 # Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异
 
-> **系列导航**：**01 两代框架（本篇）** → [[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|02 GPT-5.6 新机制详解]] → [[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常|03 Luna 图文实测与异常分析]]
+> **系列导航**：**01 两代框架（本篇）** → [02 GPT-5.6 新机制详解](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md) → [03 Luna 图文实测与异常分析](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
 >
 > 本系列依据 2026-09-13 直接抓取的 OpenAI 官方正文（[Prompt caching 指南](https://developers.openai.com/api/docs/guides/prompt-caching)、[Prompt cache diagnostics 说明](https://developers.openai.com/api/docs/guides/prompt-caching/diagnostics)）与 2026-09-09～13 在 Azure OpenAI gpt-5.6-luna 部署上的实测数据写成。日期均为查阅/实测日期，不是功能发布日期。
 
@@ -22,7 +22,7 @@ GPT-5.6 把 prompt caching 从一个"透明的后台优化"变成了**可控制�
 
 官方明确缓存覆盖**完整渲染上下文（full rendered context）**：OpenAI 隐藏指令（hidden system content）、developer 消息、工具定义（tool definitions）、会话历史（含文本、图片、文档和受支持的音频）。复用要求**整个渲染前缀逐字节匹配**——断点之前任何内容或相关设置变化，都会使之后的前缀无法匹配既有条目。
 
-这与推理引擎层的 prefix caching 是同一件事的服务化封装，概念背景见 [[prefix-caching]]；为什么 Hybrid 注意力架构做这件事更难，见[[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching|线性注意力时代的推理架构之二]]。
+这与推理引擎层的 prefix caching 是同一件事的服务化封装，概念背景见 [prefix-caching](../../wiki/concepts/prefix-caching.md)；为什么 Hybrid 注意力架构做这件事更难，见[线性注意力时代的推理架构之二](../../Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)。
 
 ## 两代框架总对照
 
@@ -45,7 +45,7 @@ GPT-5.6 把 prompt caching 从一个"透明的后台优化"变成了**可控制�
 
 旧模型只有隐式缓存。服务从 hidden system message 起点开始，按模型相关的固定间隔（GPT-5.5 是 2,048 tokens）自动放置断点；只有位于最低可缓存长度之上的断点才有资格参与匹配。三个关键特征：
 
-1. **写入不单独收费**。第一次处理长前缀时服务自动保存 KV 状态，账单上只有普通输入费。注意：**不收费不等于没有写入动作**——`in_memory` 描述的是保留策略，不是"免写入就能读取"的模式。读取缓存的因果前提永远是此前有过一次实际的状态保存（这一点在[[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|系列02]]展开）。
+1. **写入不单独收费**。第一次处理长前缀时服务自动保存 KV 状态，账单上只有普通输入费。注意：**不收费不等于没有写入动作**——`in_memory` 描述的是保留策略，不是"免写入就能读取"的模式。读取缓存的因果前提永远是此前有过一次实际的状态保存（这一点在[系列02](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)展开）。
 2. **cached_tokens 按 128 向下取整报告**。报告值 = 最后匹配断点位置 − hidden system tokens，再向下取整到 128 的倍数。所以旧模型上看到 5,888（46×128）、6,144（48×128）这类数字是报告粒度造成的，**不能反推图片或文本的真实 token 数是 128 的倍数**。还要注意放置与报告是两回事：**固定间隔是断点放置规则，128N 是报告口径**。固定间隔数到哪就断到哪、完全不看消息结构——缓存边界可以落在一条消息的中间。
 3. **`prompt_cache_key` 是路由提示**。共享前缀的请求用稳定 key 帮助路由到同一台机器；单个 key 的流量建议控制在约 15 requests/min，更高流量按确定性映射拆分到多个 key。key 影响路由，但不锁定机器、不保证命中。
 
@@ -65,7 +65,7 @@ GPT-5.6 及以后的变化可以概括为"三个换轨"：
 
 `prompt_cache_key` 的语义也随之改变：GPT-5.6+ 的缓存路由由服务自动处理，**key 不再是优化命中的手段**，其用途变为按客户/用户/workspace 维护独立的缓存计量（也能防止跨用户的 cache-hit probing——通过提交候选 prompt 观察命中来探测别人缓存过什么）。诊断文档还明确：**key 变化可能让 usage 报告 miss，而物理上并没有 cache miss**。因此旧时代"按流量拆 key"的最佳实践不能原样搬到新模型上。
 
-断点语法、槽位规则、lookup 边界和计费公式的完整细节在[[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|系列02]]。
+断点语法、槽位规则、lookup 边界和计费公式的完整细节在[系列02](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)。
 
 ## 缓存位置与路由：为什么命中从来不是确定性的
 
@@ -83,7 +83,7 @@ GPT-5.6 及以后的变化可以概括为"三个换轨"：
 
 1. **数据形态和体积**。缓存的是 KV 张量不是文本。粗略量级：几千 token 的前缀在大模型上对应的 KV 状态可达 GB 级（每 token × 每层 × 2（K/V）× hidden 维度 × 精度字节数）。这不是 Redis 典型的 KB～MB 级对象。
 2. **带宽和延迟**。KV 状态要在 prefill 阶段以显存带宽量级供给 GPU。官方明确存储介质是"encrypted key/value tensors in **GPU-local storage**"——本机存储还能接受，跨网络搬运 GB 级张量的时间很容易吃掉缓存节省的计算时间。所以工程上的选择是"把请求路由到数据所在的机器"，而不是"把数据搬到请求所在的机器"。
-3. **不是做不到，是权衡**。业界确实存在分布式 KV cache 方案——NVIDIA Dynamo 的 KV-aware routing 和多级 KV offload（显存→内存→SSD→对象存储）就是代表，参见 [[Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure|Scaling Agentic AI with NVIDIA Dynamo on Azure]]。OpenAI 选择"单机缓存＋智能路由"更可能是规模化服务下的成本/复杂度权衡。
+3. **不是做不到，是权衡**。业界确实存在分布式 KV cache 方案——NVIDIA Dynamo 的 KV-aware routing 和多级 KV offload（显存→内存→SSD→对象存储）就是代表，参见 [Scaling Agentic AI with NVIDIA Dynamo on Azure](../../Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)。OpenAI 选择"单机缓存＋智能路由"更可能是规模化服务下的成本/复杂度权衡。
 4. **隐私不是主要原因**。文档对隐私的处理是加密存储、组织隔离、区域边界这些策略层手段；没有证据表明"不用分布式缓存"是隐私驱动的决策。
 
 ### 15 requests/min 是硬性指标吗？
@@ -106,12 +106,12 @@ GPT-5.6 及以后的变化可以概括为"三个换轨"：
 6. 后缀内容不值得缓存时用 `prompt_cache_options.mode: "explicit"`；
 7. 迁移前后对比 `cached_tokens`、`cache_write_tokens`、延迟和总成本。
 
-其中第 5、6 条对应迁移中最典型的坑（"共享前缀 ≠ 缓存前缀"），在[[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|系列02]]的 Gotchas 一节详解；我们在 Azure gpt-5.6-luna 部署上对这些规则的实测验证（以及一个尚未定性的 Chat API 图文异常）见[[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常|系列03]]。
+其中第 5、6 条对应迁移中最典型的坑（"共享前缀 ≠ 缓存前缀"），在[系列02](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)的 Gotchas 一节详解；我们在 Azure gpt-5.6-luna 部署上对这些规则的实测验证（以及一个尚未定性的 Chat API 图文异常）见[系列03](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)。
 
 ## 关联阅读
 
-- [[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具]] — 断点槽位、计费公式、prompt 渲染顺序与诊断工具
-- [[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常]] — 实测方法学与异常分析
-- [[prefix-caching]] — 推理引擎层的 prefix caching 概念
-- [[线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching]] — 架构层视角
-- [[Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure]] — 分布式 KV cache 的业界方案对照
+- [Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md) — 断点槽位、计费公式、prompt 渲染顺序与诊断工具
+- [Prompt Cache 系列 03：Luna 图文实测——1899 次请求的 Benchmark 与 Chat API 零读取异常](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md) — 实测方法学与异常分析
+- [prefix-caching](../../wiki/concepts/prefix-caching.md) — 推理引擎层的 prefix caching 概念
+- [线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching](../../Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md) — 架构层视角
+- [Scaling Agentic AI with NVIDIA Dynamo on Azure](../../Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md) — 分布式 KV cache 的业界方案对照

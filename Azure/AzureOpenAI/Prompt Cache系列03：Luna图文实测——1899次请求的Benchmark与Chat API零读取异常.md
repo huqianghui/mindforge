@@ -6,13 +6,13 @@ tags: [Azure-OpenAI, prompt-cache, gpt-5.6-luna, benchmark, 多模态, 异常排
 
 # Prompt Cache 系列 03：Luna 图文实测——1,899 次请求的 Benchmark 与 Chat API 零读取异常
 
-> **系列导航**：[[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异|01 两代框架]] → [[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|02 GPT-5.6 新机制详解]] → **03 Luna 图文实测与异常分析（本篇）**
+> **系列导航**：[01 两代框架](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md) → [02 GPT-5.6 新机制详解](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md) → **03 Luna 图文实测与异常分析（本篇）**
 >
 > 实验发生于 2026-09-09～10，官方文档复查与诊断补测发生于 2026-09-13，对象为一个 Azure OpenAI 资源上的 gpt-5.6-luna 部署（Chat Completions 与 Responses 两个 API）。所有"命中"均指有效响应的 usage 返回 `cached_tokens > 0`——这是 API 报告的缓存读取，不是对物理执行路径的直接观测。
 
 ## 背景：一个客户投诉引出的完整测量
 
-起因是一个真实的客户问题：怀疑 gpt-5.6-luna 在多模态（图片）场景下，用 Chat API 时 prompt cache 一直无法命中。客户的调用模式是**固定的长文字 prompt 在前＋每次一张不同的图片在后**，单次独立请求、无多轮历史。按[[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|系列02]]讲的机制，只要文字前缀超过 1,024 token 门槛且有合法断点可查，换图后文字部分应该可以复用。实测结果比预期复杂得多——最终演变成 2,000 多次调用的系统性 benchmark，和一个至今未定性的异常。
+起因是一个真实的客户问题：怀疑 gpt-5.6-luna 在多模态（图片）场景下，用 Chat API 时 prompt cache 一直无法命中。客户的调用模式是**固定的长文字 prompt 在前＋每次一张不同的图片在后**，单次独立请求、无多轮历史。按[系列02](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)讲的机制，只要文字前缀超过 1,024 token 门槛且有合法断点可查，换图后文字部分应该可以复用。实测结果比预期复杂得多——最终演变成 2,000 多次调用的系统性 benchmark，和一个至今未定性的异常。
 
 ![Luna Prompt Cache 实测时间线|760](../../asset/luna-cache-benchmark-timeline-2026-09-13.svg)
 
@@ -66,7 +66,7 @@ tags: [Azure-OpenAI, prompt-cache, gpt-5.6-luna, benchmark, 多模态, 异常排
 | developer 默认（无 marker、无 key） | 11/12 | 正读取 5,678 |
 | system 默认（无 marker、无 key） | 10/12 | 正读取 5,677 |
 
-两个不能写成结论的表述要避免：不能说"只有 Responses＋显式断点才能命中"（developer/system 默认结构也观察到读取——对应官方 implicit 模式"初始连续 developer 块末尾是 lookup 边界"的规则）；也不能说"放到 developer/system 就保证命中"（10～11/12 不是 12/12，命中始终是概率事件，见[[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异|系列01]]的路由一节）。
+两个不能写成结论的表述要避免：不能说"只有 Responses＋显式断点才能命中"（developer/system 默认结构也观察到读取——对应官方 implicit 模式"初始连续 developer 块末尾是 lookup 边界"的规则）；也不能说"放到 developer/system 就保证命中"（10～11/12 不是 12/12，命中始终是概率事件，见[系列01](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md)的路由一节）。
 
 **对 user 位置的固定文字，显式断点把命中率从 0/69 拉到 62/68**——这是官方 Gotcha #1（"共享前缀 ≠ 缓存前缀"）在真实数据上的完美复刻。
 
@@ -107,11 +107,11 @@ tags: [Azure-OpenAI, prompt-cache, gpt-5.6-luna, benchmark, 多模态, 异常排
 
 ### 一个有趣的旁证：routing.serving_pipereplica
 
-本次 Chat 响应 JSON 里额外返回了 `routing.serving_pipereplica` 字段（**110/110 返回**；Responses 为 **0/122 返回**——两个 API 的明确差异，但仅限本资源本批次，不是接口承诺）。同图组曾观察到：replica 标识从 r5 变为 r6 的首次请求 miss，随后同标识下恢复命中——与"新副本需要预热"的解释一致，与[[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异|系列01]]"缓存在单台机器上"的模型吻合。但该字段属于未承诺的元数据：值变化不能直接确定物理拓扑，缺失也不能证明没有路由或没有缓存。排查时**命中判断永远用 usage 的 cached_tokens，replica 字段只作补充线索**，同时保留 `x-request-id`/`apim-request-id` 供服务方追踪。
+本次 Chat 响应 JSON 里额外返回了 `routing.serving_pipereplica` 字段（**110/110 返回**；Responses 为 **0/122 返回**——两个 API 的明确差异，但仅限本资源本批次，不是接口承诺）。同图组曾观察到：replica 标识从 r5 变为 r6 的首次请求 miss，随后同标识下恢复命中——与"新副本需要预热"的解释一致，与[系列01](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md)"缓存在单台机器上"的模型吻合。但该字段属于未承诺的元数据：值变化不能直接确定物理拓扑，缺失也不能证明没有路由或没有缓存。排查时**命中判断永远用 usage 的 cached_tokens，replica 字段只作补充线索**，同时保留 `x-request-id`/`apim-request-id` 供服务方追踪。
 
 ## 2026-09-13 补测：诊断工具在本资源上字段缺失
 
-按[[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具|系列02]]的设想，`prompt_cache_diagnostics` 本该是给这个异常定性的官方工具。9/13 在同一 Azure 资源的 `/openai/v1/responses` 上实测（10 次成功调用，全部 HTTP 200、usage 正常，store=false、非流式、并发 1、间隔 ≥15 秒）：
+按[系列02](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)的设想，`prompt_cache_diagnostics` 本该是给这个异常定性的官方工具。9/13 在同一 Azure 资源的 `/openai/v1/responses` 上实测（10 次成功调用，全部 HTTP 200、usage 正常，store=false、非流式、并发 1、间隔 ≥15 秒）：
 
 | 配置/请求 | input | cached | write | 诊断字段 |
 |---|---:|---:|---:|---|
@@ -149,6 +149,6 @@ tags: [Azure-OpenAI, prompt-cache, gpt-5.6-luna, benchmark, 多模态, 异常排
 
 ## 关联阅读
 
-- [[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异]] — 机制背景：缓存位置、路由与命中的概率本质
-- [[Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具]] — 断点、计费与诊断工具的完整规则
-- [[prefix-caching]] — 概念页
+- [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md) — 机制背景：缓存位置、路由与命中的概率本质
+- [Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具](Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md) — 断点、计费与诊断工具的完整规则
+- [prefix-caching](../../wiki/concepts/prefix-caching.md) — 概念页

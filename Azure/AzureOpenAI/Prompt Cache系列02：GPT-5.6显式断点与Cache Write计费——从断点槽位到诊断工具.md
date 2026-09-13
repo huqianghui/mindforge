@@ -6,7 +6,7 @@ tags: [Azure-OpenAI, prompt-cache, cache-write, Responses-API, prompt-cache-diag
 
 # Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具
 
-> **系列导航**：[[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异|01 两代框架]] → **02 GPT-5.6 新机制详解（本篇）** → [[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常|03 Luna 图文实测与异常分析]]
+> **系列导航**：[01 两代框架](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md) → **02 GPT-5.6 新机制详解（本篇）** → [03 Luna 图文实测与异常分析](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
 >
 > 依据 2026-09-13 抓取的官方正文（[Prompt caching 指南](https://developers.openai.com/api/docs/guides/prompt-caching)、[诊断说明](https://developers.openai.com/api/docs/guides/prompt-caching/diagnostics)）；实测数字来自 Azure gpt-5.6-luna 部署（详见系列03），仅作机制示例，不代表账单核验。
 
@@ -181,7 +181,7 @@ Azure 实测的两个直接证据（2026-09-10/13，gpt-5.6-luna）：
 
 ### Azure OpenAI 上可用吗？
 
-官方文档说明该功能属于 Responses API + GPT-5.6 及以后模型，**没有单独描述 Azure 的支持状态**。我们 2026-09-13 在一个 Azure gpt-5.6-luna 资源（`/openai/v1/responses`）上实测：10 次成功调用中 6 次明确携带 `comparison_response_id`，全部 HTTP 200、有正常 usage，但 **6/6 均未返回 `prompt_cache_diagnostics` 字段**——没有返回任何一种 type，是字段整体缺失。结论边界：该资源当前未验证诊断功能可用，属于**需要服务方确认的能力差异**；不能据此推广到所有 Azure 部署，也不能反过来说 OpenAI 文档有误。完整实测记录见[[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常|系列03]]。
+官方文档说明该功能属于 Responses API + GPT-5.6 及以后模型，**没有单独描述 Azure 的支持状态**。我们 2026-09-13 在一个 Azure gpt-5.6-luna 资源（`/openai/v1/responses`）上实测：10 次成功调用中 6 次明确携带 `comparison_response_id`，全部 HTTP 200、有正常 usage，但 **6/6 均未返回 `prompt_cache_diagnostics` 字段**——没有返回任何一种 type，是字段整体缺失。结论边界：该资源当前未验证诊断功能可用，属于**需要服务方确认的能力差异**；不能据此推广到所有 Azure 部署，也不能反过来说 OpenAI 文档有误。完整实测记录见[系列03](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)。
 
 ## 两个官方参考架构
 
@@ -193,6 +193,6 @@ Azure 实测的两个直接证据（2026-09-10/13，gpt-5.6-luna）：
 
 ## 关联阅读
 
-- [[Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异]] — 两代框架总对照与缓存位置/路由
-- [[Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常]] — 本篇机制在 Azure Luna 部署上的实测验证与异常
-- [[prefix-caching]] — 概念页
+- [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md) — 两代框架总对照与缓存位置/路由
+- [Prompt Cache 系列 03：Luna 图文实测——1899 次请求的 Benchmark 与 Chat API 零读取异常](Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md) — 本篇机制在 Azure Luna 部署上的实测验证与异常
+- [prefix-caching](../../wiki/concepts/prefix-caching.md) — 概念页
