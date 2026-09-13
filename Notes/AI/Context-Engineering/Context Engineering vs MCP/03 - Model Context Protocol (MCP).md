@@ -1,7 +1,7 @@
 ---
-title: Model Context Protocol (MCP): The Standard for Interoperable AI Tooling
+title: "Model Context Protocol (MCP): The Standard for Interoperable AI Tooling"
 aliases:
-  - Section 3: Model Context Protocol (MCP)
+  - "Section 3: Model Context Protocol (MCP)"
   - MCP Overview
 tags: [ai, mcp, interoperability, tools, protocol]
 created: 2025-08-17

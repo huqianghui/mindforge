@@ -1,5 +1,5 @@
 ---
-title: Conclusion: CE × MCP
+title: "Conclusion: CE × MCP"
 aliases:
   - Conclusion
   - CE and MCP Conclusion

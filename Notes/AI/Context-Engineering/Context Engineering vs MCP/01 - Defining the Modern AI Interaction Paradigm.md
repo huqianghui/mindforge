@@ -1,7 +1,7 @@
 ---
-title: Defining the Modern AI Interaction Paradigm: The Primacy of Context
+title: "Defining the Modern AI Interaction Paradigm: The Primacy of Context"
 aliases:
-  - Section 1: Defining the Modern AI Interaction Paradigm
+  - "Section 1: Defining the Modern AI Interaction Paradigm"
 tags: [ai, context-engineering, paradigm, agents]
 created: 2025-08-17
 status: draft

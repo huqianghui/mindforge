@@ -1,7 +1,7 @@
 ---
-title: Context Engineering: The Discipline of Orchestrating an LLM's Worldview
+title: "Context Engineering: The Discipline of Orchestrating an LLM's Worldview"
 aliases:
-  - Section 2: Context Engineering
+  - "Section 2: Context Engineering"
   - Context Engineering (Discipline)
 tags: [ai, context-engineering, rag, memory, security]
 created: 2025-08-17

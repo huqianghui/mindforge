@@ -1,7 +1,7 @@
 ---
-title: A Comparative Framework: Context Engineering vs. Model Context Protocol
+title: "A Comparative Framework: Context Engineering vs. Model Context Protocol"
 aliases:
-  - Section 4: A Comparative Framework
+  - "Section 4: A Comparative Framework"
   - Context Engineering vs MCP (Comparison)
 tags: [ai, comparison, context-engineering, mcp]
 created: 2025-08-17
