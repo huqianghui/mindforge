@@ -28,7 +28,7 @@ README.md                 # Article navigation index (single source of truth for
 **Formatting details** (daily note structure, task syntax, link conventions) → see `.Codex/agents/obsidian-agent.md`
 
 Core rules that apply everywhere:
-- **Links**: `[[wikilinks]]` for internal notes, `[content-title](url)` for external. External link text must use the content title, not the platform name.
+- **Links**: 分场景——**进 git 的文章**（`Notes/` `Azure/` `paper/` `book/` `product/`、README）内部链接**必须**用相对路径 markdown 链接（空格编码 `%20`，如 `[标题](../../wiki/concepts/xxx.md)`），**禁止** `[[wikilink]]`（GitHub 不渲染）；`[[wikilinks]]` 仅用于不进 git 的内容（日记、personal-journal、inbox）和 `wiki/`（知识图谱脚本依赖 `[[]]` 语法解析关系，勿转换）。External links 用 `[content-title](url)`，链接文本必须用内容标题而非平台名。
 - **Images**: `![alt](relative-path)` with correct `../` depth to root `asset/`. **Never** use `![[filename.png]]` wikilink syntax (GitHub cannot render it).
 - **Language**: Chinese for body text, English for technical terms. Use `（）` and `—`.
 - **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Codex 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
@@ -100,7 +100,7 @@ When adding new knowledge to the vault:
 
 1. **Collect** — save raw source into the appropriate directory
 2. **Create note** — write Markdown with proper frontmatter (`title`, `created`, `tags`)
-3. **Cross-reference** — add `[[wikilinks]]` to related articles; check `README.md` for related topics
+3. **Cross-reference** — add cross-links to related articles（进 git 的文章用相对路径 markdown 链接；非 git 内容才用 `[[wikilinks]]`）; check `README.md` for related topics
 4. **Update README** — add article link under the correct section
 5. **Refresh search** — run `qmd embed` to update the search index
 
