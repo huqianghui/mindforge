@@ -280,7 +280,7 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 以下问题本文尚未覆盖，做 solution 设计时需要逐项确认：
 
 1. **成本精算**：audio token vs 文本 token + STT/TTS 的具体单价对比，按"分钟通话成本"折算各组合的真实差距（含 interim response、avatar 的额外计费）。
-2. **实测延迟数据**：三条路线在同 region 下的 P50/P95/P99 端到端延迟实测（目前文中只有量级判断，无实测数字）。
+2. **实测延迟数据**：三条路线在同 region 下的 P50/P95/P99 端到端延迟实测（目前文中只有量级判断，无实测数字）。→ 数字人出场链路的延迟分解实测（含同区域部署对照）已在 [Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 补上一块。
 3. **Region 与合规**：Voice Live 各模型的 region 覆盖差异、数据驻留与 GDPR 要求（如 Sweden Central 的组合可用性）；中国区可用性。
 4. **电话接入**：与 Azure Communication Services（PSTN/SIP）的集成路径——呼叫中心场景 Voice Live 如何接电话线，直连 Realtime 的 SIP 是否更成熟。
 5. **Agent V2 演进风险**：新 Foundry portal 的 Agent V2 与 Voice Live 的接入方式仍在变化（api-version 敏感），生产选型前需锁定版本组合。

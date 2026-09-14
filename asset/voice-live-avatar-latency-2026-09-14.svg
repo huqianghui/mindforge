@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="560" viewBox="0 0 1160 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="avbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="avparticle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="avglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes iceBadPulse { 0%,100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+    @keyframes iceFlow { to { stroke-dashoffset: -48; } }
+    @keyframes calloutPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+    .ice-bad     { animation: iceBadPulse 1.8s ease-in-out infinite; }
+    .ice-flow    { stroke-dasharray: 10 14; animation: iceFlow 1.2s linear infinite; }
+    .callout-hot { animation: calloutPulse 1.8s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="560" rx="18" fill="url(#avbg)"/>
+  <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="42" font-size="21" font-weight="700" fill="#e2e8f0">数字人出场延迟分解：点「开始面试」→ 数字人出画面</text>
+  <text x="1124" y="42" font-size="13" fill="#475569" text-anchor="end">最坏情况操作（不停留、直接点过说明页）</text>
+
+  <!-- legend -->
+  <g font-size="12" fill="#94a3b8">
+    <rect x="36" y="68" width="12" height="12" rx="2" fill="#6366f1"/>
+    <text x="54" y="78">面试创建（外部网关）</text>
+    <rect x="196" y="68" width="12" height="12" rx="2" fill="#0ea5e9"/>
+    <text x="214" y="78">Voice Live 会话建立</text>
+    <rect x="360" y="68" width="12" height="12" rx="2" fill="#475569"/>
+    <text x="378" y="78">session.updated</text>
+    <rect x="496" y="68" width="12" height="12" rx="2" fill="#ef4444"/>
+    <rect x="510" y="68" width="12" height="12" rx="2" fill="#2dd4bf"/>
+    <text x="528" y="78">ICE 收集 → offer（本文主角：修复前 / 后）</text>
+    <rect x="790" y="68" width="12" height="12" rx="2" fill="#a855f7"/>
+    <text x="808" y="78">建流 → 视频首帧</text>
+  </g>
+
+  <!-- time grid: 0..16s, 56 px/s, x0=150 -->
+  <g stroke="#1e293b" stroke-width="1">
+    <line x1="150" y1="108" x2="150" y2="498"/>
+    <line x1="262" y1="108" x2="262" y2="498"/>
+    <line x1="374" y1="108" x2="374" y2="498"/>
+    <line x1="486" y1="108" x2="486" y2="498"/>
+    <line x1="598" y1="108" x2="598" y2="498"/>
+    <line x1="710" y1="108" x2="710" y2="498"/>
+    <line x1="822" y1="108" x2="822" y2="498"/>
+    <line x1="934" y1="108" x2="934" y2="498"/>
+    <line x1="1046" y1="108" x2="1046" y2="498"/>
+  </g>
+  <g font-size="11" fill="#475569" text-anchor="middle">
+    <text x="150" y="514">0s</text>
+    <text x="262" y="514">2s</text>
+    <text x="374" y="514">4s</text>
+    <text x="486" y="514">6s</text>
+    <text x="598" y="514">8s</text>
+    <text x="710" y="514">10s</text>
+    <text x="822" y="514">12s</text>
+    <text x="934" y="514">14s</text>
+    <text x="1046" y="514">16s</text>
+  </g>
+
+  <!-- ============ row 1: before fix (single worst-case run, local) ============ -->
+  <text x="36" y="150" font-size="13" font-weight="600" fill="#e2e8f0">修复前</text>
+  <text x="36" y="168" font-size="11" fill="#64748b">v0.37.4.1 本地·单次</text>
+  <g>
+    <rect x="150" y="140" width="154.6" height="36" fill="#6366f1"/>
+    <rect x="304.6" y="140" width="141.1" height="36" fill="#0ea5e9"/>
+    <rect x="445.7" y="140" width="16.8" height="36" fill="#475569"/>
+    <rect class="ice-bad" x="462.5" y="140" width="447.4" height="36" fill="#ef4444"/>
+    <line class="ice-flow" x1="466" y1="158" x2="906" y2="158" stroke="#fca5a5" stroke-width="4" opacity="0.7"/>
+    <rect x="909.9" y="140" width="134.4" height="36" fill="#a855f7"/>
+  </g>
+  <g font-size="12" fill="#f8fafc" text-anchor="middle">
+    <text x="227" y="162">2.76s</text>
+    <text x="375" y="162">2.52s</text>
+    <text x="686" y="163" font-size="14" font-weight="700">ICE 卡满 8s 兜底超时（7.99s）</text>
+    <text x="977" y="162">2.40s</text>
+  </g>
+  <text x="1054" y="164" font-size="16" font-weight="700" fill="#f87171">15.98s</text>
+  <text class="callout-hot" x="686" y="128" font-size="12" font-weight="600" fill="#fbbf24" text-anchor="middle">complete 永不到达 → 每次硬等兜底</text>
+  <circle r="5" fill="url(#avparticle)" filter="url(#avglow)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 150 158 H 1044"/>
+  </circle>
+
+  <!-- annotation between rows -->
+  <g text-anchor="middle">
+    <text x="597" y="232" font-size="14" font-weight="700" fill="#2dd4bf">ICE 门控修复（PR #95）：等「全量集」改为等「够用集」—— 8.0s → 0.38s，省 ~7.6s</text>
+    <line x1="686" y1="184" x2="597" y2="216" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5"/>
+    <line x1="561" y1="246" x2="551" y2="282" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- ============ row 2: after fix (single worst-case run, local) ============ -->
+  <text x="36" y="300" font-size="13" font-weight="600" fill="#e2e8f0">修复后</text>
+  <text x="36" y="318" font-size="11" fill="#64748b">v0.37.4.2 本地·单次</text>
+  <g>
+    <rect x="150" y="290" width="224" height="36" fill="#6366f1"/>
+    <rect x="374" y="290" width="149.5" height="36" fill="#0ea5e9"/>
+    <rect x="523.5" y="290" width="16.8" height="36" fill="#475569"/>
+    <rect x="540.3" y="290" width="21.3" height="36" fill="#2dd4bf"/>
+    <rect x="561.6" y="290" width="217.3" height="36" fill="#a855f7"/>
+  </g>
+  <g font-size="12" fill="#f8fafc" text-anchor="middle">
+    <text x="262" y="312">4.00s</text>
+    <text x="448" y="312">2.67s</text>
+    <text x="670" y="312">3.88s</text>
+  </g>
+  <text x="551" y="278" font-size="12" font-weight="700" fill="#2dd4bf" text-anchor="middle">ICE 0.38s</text>
+  <text x="789" y="314" font-size="16" font-weight="700" fill="#2dd4bf">11.25s</text>
+  <circle r="5" fill="url(#avparticle)" filter="url(#avglow)">
+    <animateMotion dur="3.8s" repeatCount="indefinite" path="M 150 308 H 779"/>
+  </circle>
+
+  <!-- ============ row 3: production, per-stage medians over 9 runs ============ -->
+  <text x="36" y="450" font-size="13" font-weight="600" fill="#e2e8f0">生产环境</text>
+  <text x="36" y="468" font-size="11" fill="#64748b">swedencentral·n=9 中位数</text>
+  <g>
+    <rect x="150" y="440" width="263.2" height="36" fill="#6366f1"/>
+    <rect x="413.2" y="440" width="49.8" height="36" fill="#0ea5e9"/>
+    <rect x="463.0" y="440" width="3.4" height="36" fill="#475569"/>
+    <rect x="466.4" y="440" width="30.2" height="36" fill="#2dd4bf"/>
+    <rect x="496.6" y="440" width="132.2" height="36" fill="#a855f7"/>
+  </g>
+  <g font-size="12" fill="#f8fafc" text-anchor="middle">
+    <text x="281" y="462">4.70s</text>
+    <text x="438" y="462">0.89s</text>
+    <text x="562" y="462">2.36s</text>
+  </g>
+  <g text-anchor="middle">
+    <text x="330" y="404" font-size="11" fill="#38bdf8">同区域部署：会话建立 2.5s+ → 0.89s</text>
+    <line x1="438" y1="410" x2="438" y2="436" stroke="#38bdf8" stroke-width="1.5" opacity="0.5"/>
+    <text x="560" y="428" font-size="11" font-weight="700" fill="#2dd4bf">ICE 0.54s（9/9 走快路径，无一轮打满兜底）</text>
+    <line x1="481" y1="432" x2="481" y2="436" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5"/>
+  </g>
+  <text x="640" y="464" font-size="16" font-weight="700" fill="#2dd4bf">8.61s</text>
+  <circle r="5" fill="url(#avparticle)" filter="url(#avglow)">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M 150 458 H 629"/>
+  </circle>
+
+  <!-- footnote -->
+  <text x="36" y="536" font-size="11.5" fill="#475569">修复前/后两行为本地开发机单次最坏情况实测；生产行为 Playwright 自动化 11 轮（9 轮成功）的分段中位数，总时长中位 8.61s（min 7.93 / max 9.78，另有 1 轮 session.updated 17s 长尾异常）。</text>
+  <text x="36" y="552" font-size="11.5" fill="#475569">生产后端 Container Apps 与 Voice Live 同在 swedencentral；数字人媒体流为浏览器直连 Azure TURN relay，不经过后端。配合说明页预热与截帧占位，用户体感等待远小于图中技术等待。</text>
+</svg>
