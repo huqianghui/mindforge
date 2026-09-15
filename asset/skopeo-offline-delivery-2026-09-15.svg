@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="430" viewBox="0 0 1180 430" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.65; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.5s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash 1.5s linear infinite; }
+    .halo-amber { animation: pulse 1.8s ease-in-out infinite; }
+    .node { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1180" height="430" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1178" height="428" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">笔者的离线交付链路：CI 构建 → ACR → 无 Docker 的 Mac → 客户</text>
+  <text x="700" y="48" font-size="13" fill="#475569">本地 macOS（Apple Silicon）· 未安装 Docker</text>
+
+  <!-- ============ main pipeline track ============ -->
+  <path d="M 127 190 H 1035" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flow" d="M 127 190 H 1035" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flow2" d="M 127 190 H 1035" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- moving particles -->
+  <circle r="7" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 127 190 H 1035"/>
+  </circle>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" begin="2s" repeatCount="indefinite" path="M 127 190 H 1035"/>
+  </circle>
+  <circle r="6" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" begin="4s" repeatCount="indefinite" path="M 127 190 H 1035"/>
+  </circle>
+
+  <!-- ============ nodes ============ -->
+  <g class="node">
+    <rect x="35" y="158" width="185" height="64" rx="14" fill="#0f2a33" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="127" y="184" font-size="16" font-weight="600" fill="#cffafe" text-anchor="middle">GitHub Actions</text>
+    <text x="127" y="206" font-size="12" fill="#67e8f9" opacity="0.85" text-anchor="middle">CI 构建 linux/amd64 镜像</text>
+  </g>
+  <g class="node">
+    <rect x="262" y="158" width="185" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="354" y="184" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">ACR</text>
+    <text x="354" y="206" font-size="12" fill="#5eead4" opacity="0.85" text-anchor="middle">Azure Container Registry</text>
+  </g>
+  <!-- Skopeo：主角，琥珀高亮 -->
+  <g>
+    <rect class="halo-amber" x="481" y="150" width="201" height="80" rx="18" fill="none" stroke="#fbbf24" stroke-width="8" opacity="0.3"/>
+    <rect x="489" y="158" width="185" height="64" rx="14" fill="#3a2d10" stroke="#fbbf24" stroke-width="2"/>
+    <text x="581" y="184" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="middle">skopeo copy</text>
+    <text x="581" y="206" font-size="12" fill="#fcd34d" text-anchor="middle">Mac ARM · 无 Docker daemon</text>
+    <text x="581" y="252" font-size="11.5" fill="#f59e0b" text-anchor="middle">--override-os linux --override-arch amd64</text>
+    <text x="581" y="270" font-size="11.5" fill="#f59e0b" opacity="0.85" text-anchor="middle">docker:// → docker-archive:</text>
+  </g>
+  <g class="node">
+    <rect x="716" y="158" width="185" height="64" rx="14" fill="#132036" stroke="#64748b" stroke-width="1.5"/>
+    <text x="808" y="184" font-size="16" font-weight="600" fill="#e2e8f0" text-anchor="middle">app.tar.gz</text>
+    <text x="808" y="206" font-size="12" fill="#94a3b8" text-anchor="middle">gzip 压缩 · 离线交付件</text>
+  </g>
+  <g class="node">
+    <rect x="943" y="158" width="185" height="64" rx="14" fill="#0f2a33" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="1035" y="184" font-size="16" font-weight="600" fill="#cffafe" text-anchor="middle">客户 ACR</text>
+    <text x="1035" y="206" font-size="12" fill="#67e8f9" opacity="0.85" text-anchor="middle">skopeo copy 导入 → 部署</text>
+  </g>
+
+  <!-- ============ step labels above ============ -->
+  <text x="240" y="130" font-size="12.5" fill="#64748b" text-anchor="middle">docker push（CI 侧）</text>
+  <text x="468" y="130" font-size="12.5" fill="#fbbf24" text-anchor="middle">拉取测试通过的版本</text>
+  <text x="694" y="130" font-size="12.5" fill="#64748b" text-anchor="middle">不落 daemon · 直接成档</text>
+  <text x="922" y="130" font-size="12.5" fill="#64748b" text-anchor="middle">物理/网盘传输</text>
+
+  <!-- footer -->
+  <rect x="36" y="330" width="1108" height="64" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="590" y="356" font-size="13.5" fill="#94a3b8" text-anchor="middle">全链路两端都不需要 Docker：构建在 CI、存储在 ACR、两侧搬运都靠 <tspan fill="#fbbf24" font-weight="700">Skopeo</tspan>（brew 安装约几十 MB）、部署走客户自己的 ACR</text>
+  <text x="590" y="378" font-size="12.5" fill="#64748b" text-anchor="middle">架构要点：CI 产物是 linux/amd64，Apple Silicon 默认按本机 arm64 选架构，必须显式 --override-arch 指定</text>
+</svg>

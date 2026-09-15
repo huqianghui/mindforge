@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="600" viewBox="0 0 1180 600" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="particleAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.65; } }
+    @keyframes pulseSoft { 0%,100% { opacity: 0.25; } 50% { opacity: 0.8; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.5s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash 1.5s linear infinite; }
+    .halo-amber { animation: pulse 1.8s ease-in-out infinite; }
+    .sat-link { stroke-dasharray: 5 9; animation: pulseSoft 2.6s ease-in-out infinite; }
+    .node { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1180" height="600" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1178" height="598" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">OCI Image 工具链全景：造 → 搬 → 跑</text>
+  <text x="420" y="48" font-size="13" fill="#475569">Skopeo 的位置与周边工具补位 · 全程不依赖 Docker daemon</text>
+
+  <!-- ============ main pipeline track ============ -->
+  <path d="M 127 170 H 1035" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flow" d="M 127 170 H 1035" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flow2" d="M 127 170 H 1035" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- moving particles along main path -->
+  <circle r="7" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 127 170 H 1035"/>
+  </circle>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" begin="2s" repeatCount="indefinite" path="M 127 170 H 1035"/>
+  </circle>
+  <circle r="6" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="6s" begin="4s" repeatCount="indefinite" path="M 127 170 H 1035"/>
+  </circle>
+
+  <!-- ============ main nodes ============ -->
+  <g class="node">
+    <rect x="35" y="138" width="185" height="64" rx="14" fill="#0f2a33" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="127" y="164" font-size="16" font-weight="600" fill="#cffafe" text-anchor="middle">Buildah / docker build</text>
+    <text x="127" y="186" font-size="12" fill="#67e8f9" opacity="0.85" text-anchor="middle">造 · 构建 Image</text>
+  </g>
+  <g class="node">
+    <rect x="262" y="138" width="185" height="64" rx="14" fill="#132036" stroke="#64748b" stroke-width="1.5"/>
+    <text x="354" y="164" font-size="16" font-weight="600" fill="#e2e8f0" text-anchor="middle">OCI Image</text>
+    <text x="354" y="186" font-size="12" fill="#94a3b8" text-anchor="middle">Manifest + Layers + Config</text>
+  </g>
+  <!-- Skopeo：主角，琥珀高亮 -->
+  <g>
+    <rect class="halo-amber" x="481" y="130" width="201" height="80" rx="18" fill="none" stroke="#fbbf24" stroke-width="8" opacity="0.3"/>
+    <rect x="489" y="138" width="185" height="64" rx="14" fill="#3a2d10" stroke="#fbbf24" stroke-width="2"/>
+    <text x="581" y="164" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="middle">Skopeo</text>
+    <text x="581" y="186" font-size="12" fill="#fcd34d" text-anchor="middle">搬 · copy / inspect / sync</text>
+    <text x="581" y="228" font-size="11.5" fill="#f59e0b" text-anchor="middle">daemonless · Registry ↔ Registry 直连</text>
+  </g>
+  <g class="node">
+    <rect x="716" y="138" width="185" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="808" y="164" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">Registry</text>
+    <text x="808" y="186" font-size="12" fill="#5eead4" opacity="0.85" text-anchor="middle">ACR / Harbor / GHCR / NGC</text>
+  </g>
+  <g class="node">
+    <rect x="943" y="138" width="185" height="64" rx="14" fill="#0f2a33" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="1035" y="164" font-size="16" font-weight="600" fill="#cffafe" text-anchor="middle">Podman / Docker / K8s</text>
+    <text x="1035" y="186" font-size="12" fill="#67e8f9" opacity="0.85" text-anchor="middle">跑 · 运行 Container</text>
+  </g>
+
+  <!-- ============ satellite links to Registry ============ -->
+  <path class="sat-link" d="M 455 400 C 455 330, 700 280, 780 206" fill="none" stroke="#818cf8" stroke-width="2.5"/>
+  <path class="sat-link" d="M 740 400 C 740 330, 790 280, 806 206" fill="none" stroke="#818cf8" stroke-width="2.5"/>
+  <path class="sat-link" d="M 1025 400 C 1025 330, 880 280, 836 206" fill="none" stroke="#818cf8" stroke-width="2.5"/>
+  <circle r="4" fill="url(#particleAmber)" filter="url(#softGlow)">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M 455 400 C 455 330, 700 280, 780 206"/>
+  </circle>
+  <circle r="4" fill="url(#particleAmber)" filter="url(#softGlow)">
+    <animateMotion dur="3.5s" begin="1.2s" repeatCount="indefinite" path="M 740 400 C 740 330, 790 280, 806 206"/>
+  </circle>
+  <circle r="4" fill="url(#particleAmber)" filter="url(#softGlow)">
+    <animateMotion dur="3.5s" begin="2.4s" repeatCount="indefinite" path="M 1025 400 C 1025 330, 880 280, 836 206"/>
+  </circle>
+
+  <!-- ============ satellite nodes ============ -->
+  <g class="node">
+    <rect x="330" y="400" width="250" height="76" rx="14" fill="#1b1d3a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="455" y="428" font-size="15" font-weight="600" fill="#e0e7ff" text-anchor="middle">crane / regctl</text>
+    <text x="455" y="448" font-size="11.5" fill="#a5b4fc" text-anchor="middle">管 · 远程 tag / digest / manifest</text>
+    <text x="455" y="465" font-size="11.5" fill="#a5b4fc" opacity="0.8" text-anchor="middle">Registry 精细操作与调试</text>
+  </g>
+  <g class="node">
+    <rect x="615" y="400" width="250" height="76" rx="14" fill="#1b1d3a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="740" y="428" font-size="15" font-weight="600" fill="#e0e7ff" text-anchor="middle">ORAS</text>
+    <text x="740" y="448" font-size="11.5" fill="#a5b4fc" text-anchor="middle">放 · Registry 存任意 OCI Artifact</text>
+    <text x="740" y="465" font-size="11.5" fill="#a5b4fc" opacity="0.8" text-anchor="middle">Model / SBOM / Helm Chart / WASM</text>
+  </g>
+  <g class="node">
+    <rect x="900" y="400" width="250" height="76" rx="14" fill="#1b1d3a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="1025" y="428" font-size="15" font-weight="600" fill="#e0e7ff" text-anchor="middle">Cosign</text>
+    <text x="1025" y="448" font-size="11.5" fill="#a5b4fc" text-anchor="middle">盖章 · 签名与验证</text>
+    <text x="1025" y="465" font-size="11.5" fill="#a5b4fc" opacity="0.8" text-anchor="middle">Supply Chain 身份与完整性</text>
+  </g>
+
+  <!-- left label for satellite band -->
+  <text x="36" y="432" font-size="14" font-weight="600" fill="#64748b">围绕 Registry 的</text>
+  <text x="36" y="452" font-size="14" font-weight="600" fill="#64748b">供应链工具补位</text>
+
+  <!-- ============ memory footer ============ -->
+  <rect x="36" y="518" width="1108" height="52" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="590" y="550" font-size="14" fill="#94a3b8" text-anchor="middle">记忆法：Buildah = 造 ｜ <tspan fill="#fbbf24" font-weight="700">Skopeo = 搬</tspan> ｜ Podman / Docker = 跑 ｜ crane / regctl = 管 Registry ｜ ORAS = 放 Artifact ｜ Cosign = 盖章</text>
+</svg>

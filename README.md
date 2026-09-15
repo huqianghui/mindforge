@@ -243,6 +243,11 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Codex Desktop 系列05：一个模型条目装下整个 harness——从 gpt-6-astra 展开配置看 Model 与 Harness 的真实边界](Notes/tool/codex/Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md)
 - [Codex Desktop 系列06：ModelInfo 字段值手册——unified_exec、code_mode、Ultra 档与治理字段的源码级解读](Notes/tool/codex/Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 
+### Notes/tool/image&container
+
+- [Skopeo 实战——不装 Docker 的镜像搬运：定位、核心能力与 Mac ARM 离线分发场景](Notes/tool/image&container/Skopeo实战——不装Docker的镜像搬运：定位、核心能力与Mac%20ARM离线分发场景.md)
+- [OCI 镜像工具生态——crane、regctl、ORAS、Cosign 的分工补位与镜像供应链全景](Notes/tool/image&container/OCI镜像工具生态——crane、regctl、ORAS、Cosign的分工补位与镜像供应链全景.md)
+
 ### Notes/tool/notes
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
