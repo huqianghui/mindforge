@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="840" viewBox="0 0 1160 840" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="jbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="jparticle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="jglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="jhatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#16202f"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#334155" stroke-width="3"/>
+    </pattern>
+  </defs>
+
+  <style>
+    @keyframes jPulse { 0%,100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+    @keyframes jFlow { to { stroke-dashoffset: -48; } }
+    @keyframes jBreathe { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    .j-hot   { animation: jPulse 1.9s ease-in-out infinite; }
+    .j-flow  { stroke-dasharray: 8 12; animation: jFlow 1.3s linear infinite; }
+    .j-soft  { animation: jBreathe 2.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="840" rx="18" fill="url(#jbg)"/>
+  <rect x="1" y="1" width="1158" height="838" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="40" font-size="20" font-weight="700" fill="#e2e8f0">端到端延迟全景：从「开始面试」到多轮问答——时间在哪、怎么优化、期望多少</text>
+  <text x="1124" y="40" font-size="12.5" fill="#475569" text-anchor="end">生产实测中位数 · 2026-09-15 · 单并发</text>
+
+  <!-- legend -->
+  <g font-size="11.5" fill="#94a3b8">
+    <rect x="36" y="62" width="12" height="12" rx="2" fill="#ef4444"/>
+    <text x="54" y="72">外部网关 / 外部请求（P0 待优化）</text>
+    <rect x="268" y="62" width="12" height="12" rx="2" fill="#38bdf8"/>
+    <text x="286" y="72">连接 / VAD 判停</text>
+    <rect x="398" y="62" width="12" height="12" rx="2" fill="#2dd4bf"/>
+    <text x="416" y="72">转写（STT）/ ✓已完成优化</text>
+    <rect x="592" y="62" width="12" height="12" rx="2" fill="#a855f7"/>
+    <text x="610" y="72">数字人建流</text>
+    <rect x="700" y="62" width="12" height="12" rx="2" fill="#fbbf24"/>
+    <text x="718" y="72">语音合成（语音返回）</text>
+    <rect x="874" y="62" width="12" height="12" rx="2" fill="url(#jhatch)" stroke="#334155" stroke-width="0.5"/>
+    <text x="892" y="72">说话中（时长不计延迟）</text>
+  </g>
+
+  <!-- flow connector down the phases -->
+  <line x1="225" y1="150" x2="225" y2="400" stroke="#22d3ee" stroke-width="1.5" opacity="0.4" class="j-flow"/>
+
+  <!-- ① 出场链路 (scale 95px/s, x0=240) -->
+  <text x="36" y="112" font-size="14" font-weight="700" fill="#e2e8f0">① 出场链路（每场一次）：点「开始」→ 出画面 8.6s</text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="730" y="115" text-anchor="middle">会话建立 <tspan font-weight="700">0.95s</tspan></text>
+    <text x="801" y="99" text-anchor="middle">ICE 握手 <tspan font-weight="700">0.54s</tspan></text>
+  </g>
+  <line x1="801" y1="103" x2="801" y2="120" stroke="#64748b" stroke-width="1"/>
+
+  <rect x="240" y="122" width="444.5" height="26" rx="3" fill="#ef4444" opacity="0.9"/>
+  <rect x="686.5" y="122" width="88.3" height="26" fill="#38bdf8"/>
+  <rect x="776.8" y="122" width="49.3" height="26" fill="#2dd4bf"/>
+  <rect x="828.1" y="122" width="224.2" height="26" rx="3" fill="#a855f7"/>
+  <text x="462" y="139" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">外部请求：面试创建 · 网关取首题 4.7s</text>
+  <text x="940" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第一帧返回 2.36s</text>
+  <text x="1058" y="139" font-size="12" font-weight="700" fill="#2dd4bf">出画面 8.6s</text>
+
+  <g font-size="11">
+    <text x="240" y="168" fill="#fca5a5">▲ 与每轮问答是同一个网关成本——P0 同域部署同步受益（4.7s → ~1s）</text>
+    <text x="776" y="168" fill="#2dd4bf">✓ ICE 门控已修复（8s→0.54s）</text>
+    <text x="828" y="184" fill="#94a3b8">✓ 预热 + 截帧占位，体感 ≈0</text>
+  </g>
+
+  <!-- ② 读第一题 (scale 80px/s) -->
+  <text x="36" y="216" font-size="14" font-weight="700" fill="#e2e8f0">② 数字人读第一题</text>
+  <rect x="240" y="226" width="50.4" height="26" rx="3" fill="#fbbf24"/>
+  <rect x="292.4" y="226" width="300" height="26" rx="3" fill="url(#jhatch)" stroke="#334155" stroke-width="1"/>
+  <text x="442" y="243" text-anchor="middle" font-size="12" fill="#94a3b8">数字人朗读题目（朗读时长不计延迟）</text>
+  <text x="265" y="270" text-anchor="middle" font-size="11.5" fill="#fbbf24">语音返回 <tspan font-weight="700">0.63s</tspan></text>
+  <text x="612" y="243" font-size="11.5" fill="#64748b">出画面 → 开口读题 &lt;1s</text>
+
+  <!-- ③ 第 1 轮 (delay chain x0=390, 80px/s) -->
+  <text x="36" y="302" font-size="14" font-weight="700" fill="#e2e8f0">③ 第 1 轮问答：候选人说完 → 数字人开口 <tspan fill="#fbbf24">5.1s</tspan></text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="420" y="308" text-anchor="middle">VAD <tspan font-weight="700">0.77s</tspan></text>
+    <text x="462" y="292" text-anchor="middle">转文本 <tspan font-weight="700">+0.25s</tspan></text>
+    <text x="770" y="308" text-anchor="middle">语音返回 <tspan font-weight="700">0.63s</tspan></text>
+  </g>
+  <line x1="462" y1="296" x2="462" y2="312" stroke="#64748b" stroke-width="1"/>
+
+  <rect x="240" y="314" width="148" height="26" rx="3" fill="url(#jhatch)" stroke="#334155" stroke-width="1"/>
+  <text x="314" y="331" text-anchor="middle" font-size="11.5" fill="#94a3b8">候选人回答中…</text>
+  <rect x="390" y="314" width="59.6" height="26" fill="#38bdf8"/>
+  <rect x="451.6" y="314" width="18" height="26" fill="#2dd4bf"/>
+  <rect x="471.6" y="314" width="271.6" height="26" fill="#ef4444" class="j-hot"/>
+  <rect x="745.2" y="314" width="48.4" height="26" fill="#fbbf24"/>
+  <rect x="795.6" y="314" width="150" height="26" rx="3" fill="url(#jhatch)" stroke="#334155" stroke-width="1"/>
+  <text x="607" y="331" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">调后端 · 网关取下一题（文本返回）3.42s</text>
+  <text x="870.6" y="331" text-anchor="middle" font-size="11.5" fill="#94a3b8">数字人说下一题…</text>
+  <circle r="5" fill="url(#jparticle)" filter="url(#jglow)">
+    <animateMotion dur="2.8s" repeatCount="indefinite" path="M 390 327 L 794 327"/>
+  </circle>
+
+  <!-- ④ 第 2 轮 -->
+  <text x="36" y="386" font-size="14" font-weight="700" fill="#e2e8f0">④ 第 2 轮问答：<tspan fill="#fbbf24">5.8s</tspan>（网关 4.11s——每轮唯一的波动源）</text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="424" y="392" text-anchor="middle">VAD <tspan font-weight="700">0.87s</tspan></text>
+    <text x="466" y="376" text-anchor="middle">转文本 <tspan font-weight="700">+0.19s</tspan></text>
+    <text x="828" y="392" text-anchor="middle">语音返回 <tspan font-weight="700">0.63s</tspan></text>
+  </g>
+  <line x1="466" y1="380" x2="466" y2="396" stroke="#64748b" stroke-width="1"/>
+
+  <rect x="240" y="398" width="148" height="26" rx="3" fill="url(#jhatch)" stroke="#334155" stroke-width="1"/>
+  <text x="314" y="415" text-anchor="middle" font-size="11.5" fill="#94a3b8">候选人回答中…</text>
+  <rect x="390" y="398" width="67.6" height="26" fill="#38bdf8"/>
+  <rect x="459.6" y="398" width="13.2" height="26" fill="#2dd4bf"/>
+  <rect x="474.8" y="398" width="326.8" height="26" fill="#ef4444" class="j-hot"/>
+  <rect x="803.6" y="398" width="48.4" height="26" fill="#fbbf24"/>
+  <rect x="854" y="398" width="130" height="26" rx="3" fill="url(#jhatch)" stroke="#334155" stroke-width="1"/>
+  <text x="638" y="415" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">外部网关 4.11s</text>
+  <text x="919" y="415" text-anchor="middle" font-size="11.5" fill="#94a3b8">数字人说下一题…</text>
+
+  <text x="36" y="454" font-size="12" fill="#94a3b8">第 3、4 轮同构：网关 3.48s / 3.89s，其余段稳定不变（5 场 × 4 轮共 20 轮无一失败）——<tspan fill="#fca5a5" font-weight="700">外部网关是每一轮唯一的大头与波动源（2.9~5.0s，占 70%）</tspan></text>
+
+  <!-- ⑤ 优化点 -->
+  <text x="36" y="494" font-size="14" font-weight="700" fill="#e2e8f0">⑤ 优化点与期望（按收益排序）</text>
+
+  <g class="j-soft">
+    <rect x="36" y="506" width="356" height="88" rx="10" fill="#12203a" stroke="#ef4444" stroke-width="1.2"/>
+  </g>
+  <text x="52" y="528" font-size="13" font-weight="700" fill="#fca5a5">P0 · 缩短外部网关往返（结构性）</text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="52" y="548">同域/内网部署，或网关侧出题与评分解耦（先返题、评分异步）</text>
+    <text x="52" y="566">期望：每轮网关 3.9s → ~0.8s，<tspan font-weight="700" fill="#e2e8f0">每轮 5.6s → ≈2.5s</tspan></text>
+    <text x="52" y="584">附带：出场的「面试创建 4.7s」同步缩短</text>
+  </g>
+
+  <rect x="404" y="506" width="356" height="88" rx="10" fill="#12203a" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="420" y="528" font-size="13" font-weight="700" fill="#fbbf24">P1 · 思考过渡语遮蔽（体验）</text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="420" y="548">等网关的 3.9s 里，数字人先自然开口（「好的，我想想」）</text>
+    <text x="420" y="566">期望：<tspan font-weight="700" fill="#e2e8f0">体感等待 ≈0</tspan>，实际耗时不变</text>
+    <text x="420" y="584">成本低、可先行——与出场「预热+截帧」同一思路</text>
+  </g>
+
+  <rect x="772" y="506" width="352" height="88" rx="10" fill="#12203a" stroke="#475569" stroke-width="1.2"/>
+  <text x="788" y="528" font-size="13" font-weight="700" fill="#94a3b8">P2 · VAD 判停窗收紧（参数）</text>
+  <g font-size="11.5" fill="#cbd5e1">
+    <text x="788" y="548">0.86s → ~0.5s，需 A/B 验证防「停顿误判为说完」</text>
+    <text x="788" y="566">期望：<tspan font-weight="700" fill="#e2e8f0">每轮再省 0.2~0.4s</tspan></text>
+    <text x="788" y="584">P3：region 按最终用户就近部署（边际 ≤0.3s）</text>
+  </g>
+
+  <!-- 期望对比 (scale 80px/s, x0=260) -->
+  <text x="36" y="632" font-size="13" font-weight="700" fill="#e2e8f0">每轮延迟期望（候选人说完 → 数字人开口）</text>
+
+  <text x="250" y="659" font-size="12" fill="#94a3b8" text-anchor="end">当前实测</text>
+  <rect x="260" y="644" width="66.8" height="20" rx="2" fill="#38bdf8"/>
+  <rect x="328.8" y="644" width="13.2" height="20" fill="#2dd4bf"/>
+  <rect x="344" y="644" width="310" height="20" fill="#ef4444"/>
+  <rect x="656" y="644" width="48.4" height="20" rx="2" fill="#fbbf24"/>
+  <text x="714" y="659" font-size="13" font-weight="700" fill="#e2e8f0">5.6s</text>
+
+  <text x="250" y="691" font-size="12" fill="#94a3b8" text-anchor="end">P0 同域部署后</text>
+  <rect x="260" y="676" width="66.8" height="20" rx="2" fill="#38bdf8"/>
+  <rect x="328.8" y="676" width="13.2" height="20" fill="#2dd4bf"/>
+  <rect x="344" y="676" width="62" height="20" fill="#ef4444" opacity="0.75"/>
+  <rect x="408" y="676" width="48.4" height="20" rx="2" fill="#fbbf24"/>
+  <text x="466" y="691" font-size="13" font-weight="700" fill="#2dd4bf">≈2.5s</text>
+  <text x="510" y="691" font-size="11" fill="#64748b">（网关按内网 ~0.8s 估，−3.1s）</text>
+
+  <text x="250" y="723" font-size="12" fill="#94a3b8" text-anchor="end">再叠加 P1 过渡语</text>
+  <rect x="260" y="708" width="78" height="20" rx="2" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="5 4" class="j-soft"/>
+  <text x="348" y="723" font-size="13" font-weight="700" fill="#2dd4bf">体感 ≤1s</text>
+  <text x="428" y="723" font-size="11" fill="#64748b">（说完即有回应，等待感知消失）</text>
+
+  <!-- footnotes -->
+  <g font-size="11" fill="#475569">
+    <text x="36" y="768">数据：出场链路 n=9（浏览器实测中位）；对话链路 15 个语音轮 + 9 个直连对照轮 + 20 个网关轮，全部成功（2026-09-15，生产环境 Azure Sweden Central，单并发）</text>
+    <text x="36" y="788">灰色斜纹段（人/数字人说话中）时长取决于内容，不计入延迟；「语音返回 0.63s」取自同区域直连对照；数字人口型相对语音首块的增量未单测（连接全程复用，无每轮重建成本）</text>
+    <text x="36" y="808">测试客户端跨洲接入、含公网 RTT，客户内网用户固定网络成本更低；VAD 0.86s 为 semantic VAD 静音判定窗（可调参数）</text>
+  </g>
+</svg>
