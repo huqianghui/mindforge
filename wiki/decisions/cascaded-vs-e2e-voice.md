@@ -1,7 +1,7 @@
 ---
 title: "级联管线 vs 端到端：Voice Agent 架构选择"
 created: "2026-04-13"
-updated: "2026-07-21"
+updated: "2026-09-16"
 tags:
   - wiki
   - decision
@@ -56,8 +56,8 @@ related_methods:
 ## 验证状态
 
 - **验证方式**：在企业项目中实际部署级联管线并测量延迟、稳定性
-- **当前状态**：部分验证（Salesforce 验证 ~755ms，自身尚未实践）
-- **验证证据**：论文和行业报告支持，个人实践待补充
+- **当前状态**：部分验证（Salesforce 验证 ~755ms；2026-09 自有 AI 面试项目在 Voice Live 上生产实测补充——级联配置下管线净成本 ~0.5s、语音轮"说完→回复"≈1.5s、24 轮零失败）
+- **验证证据**：论文和行业报告支持；[[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] 提供自有生产实测
 
 ## Claims
 
@@ -81,6 +81,16 @@ related_methods:
 
 > Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策"选定一条架构路线"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，"分层用模型"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。
 
+### Claim: 模型配置的真分水岭是 region 可用性而非模型类型——"两类都支持"获部署实测直接续证
+
+- **来源**：[[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]]
+- **首次出现**：2026-09-14
+- **最近更新**：2026-09-16
+- **置信度**：0.8（生产部署对照测试中实际踩坑并修复）
+- **状态**：active
+
+> 生产对照测试发现并修复的配置坑直接续证上一条 Claim：Voice Live 对模型类型没有"只能语音专用模型"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）**两类都支持**，级联 vs 端到端确实已降级为配置项。真正的部署分水岭是**同一模型在不同 region 对 Voice Live 的可用性**：配了当前 region 不可用的模型，症状是"永远停在 text、控制台报 Model X is not supported in this region"（本次即 gpt-5.4-mini 在该 region 不可用，换该 region 可用的 gpt-4o / gpt-4.1-mini 即恢复）。落地含义：部署检查清单要加一条硬检查项——`VOICE_LIVE_DEFAULT_MODEL`（bicep 参数）必须在部署 region 对 Voice Live 可用；"架构决策降级为配置项"的另一面是**配置项的坑也升级为架构级症状**（表现为整条语音链路不通，而非清晰的配置错误提示）。
+
 ## 关联概念
 
 - [[voice-live-agent]] — `grounds` 此决策的上下文概念
@@ -94,3 +104,4 @@ related_methods:
 
 - [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景对比
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级验证
+- [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — region 可用性分水岭与自有生产实测
