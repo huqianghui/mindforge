@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-12",
+  "generated_at": "2026-09-16",
   "stats": {
     "nodes": 125,
     "links": 409,
     "orphan_links_removed": 0,
-    "claims": 598,
+    "claims": 609,
     "categories": 11
   },
   "nodes": [
@@ -1559,8 +1559,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.73,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "内容复杂度 × 实时性来源决定画面计算发生在哪里——四层光谱各配\"内容存在哪/谁计算/实时性来源\"判据",
@@ -1597,6 +1597,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "光谱不只有\"纯本地\"和\"纯云端\"两类：Azure Speech 的 viseme 路线是**声音在云端合成、画面在本地渲染**的跨位面组合——55 项面部系数按 60 FPS 从云端事件流输出，驱动本地渲染载体（three.js blendshape、Live2D 部件、或 Blender 形态键 60FPS→24fps 时间换算）。耦合接口是时间轴：事件时间用 100 纳秒 tick、必须与最终音频同一时间映射，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。这类组合的判据仍是同一条：哪部分内容复杂度高、实时性来自哪里，哪部分计算就落在对应位面——语音合成（生成式、重算力）留云端，形变渲染（结构已知、轻计算）留本地。"
+        },
+        {
+          "statement": "云端渲染推流层的延迟成本首批实测量化——首帧固有成本=握手 RTT+渲染冷启动，媒体流直连不经后端、每场只付一次",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-14",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "光谱第 ④ 层（云端 GPU 渲染推流）的\"延迟与 GPU 成本最高\"此前是定性判断，本文给出首批量化：数字人媒体流是**浏览器直连 Azure TURN relay、不经过应用后端**（只有 offer/answer 信令走 WS proxy），首帧固有成本由两部分组成——① **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS），与浏览器↔Azure 区域的 RTT 成正比，唯一优化手段是选离最终用户近的区域；② **Azure 侧渲染管线冷启动**（数字人合成器启动 + H.264 编码器出首个关键帧），纯服务端成本，客户端与部署拓扑都无法改变。生产实测首帧典型值 **≈2.4s**（n=9 中位 2.36s，2.10~2.43s 极稳）；后端与 Voice Live 同区域部署把信令腿压短、会话建立段省 1.6~1.7s。关键缓解因素：**每场会话只付一次**（会话全程保持、换题不重连），叠加预热+截帧占位两层体验优化后体感可归零——第 ④ 层的延迟成本是真实但可管理的一次性成本，不构成弃用云端路线的理由。"
         }
       ]
     },
@@ -2771,8 +2780,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.73,
+      "claims_count": 10,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "三家公司独立演化出同一个分离原则",
@@ -2845,6 +2854,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "评估侧输出（验证报告）本身也有纪律，Blender 实战给出三个可复用样本：① 音频脚本保留了 `atempo` 变速分支，但本次所有片段实际压缩率都是 1.0——**\"代码有能力执行\"与\"本次确实执行了\"要分开陈述**；② 验证报告的 `bow_angle_degrees = 41.7` 测的是头部骨骼相对竖直方向的倾角，不能当成髋关节鞠躬角度写进结论——**数字要和它的测量对象绑定**；③ MCP 安装验证中\"协议握手成功 + 工具枚举成功 + 后台场景读取成功\"加起来仍不等于\"端到端可用\"——**每个\"已完成\"绑定它的验证范围**。这三条是分离原则在评估侧的输出规范：评估环节的价值不只在\"做了验证\"，还在验证结论的陈述精度——范围不明的\"已验证\"和对象错绑的数字，会让评估信号在下游被放大成错误结论。"
+        },
+        {
+          "statement": "缓存 benchmark 测量纪律——只认 usage、失败不算 miss、缺失不补 0、\"机制预期 vs 真异常\"两层剥离（缓存域续证）",
+          "source": "Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常",
+          "first_seen": "2026-09-13",
+          "last_updated": "2026-09-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "1,899 次请求 benchmark 的可信度来自贯穿全程的测量纪律，是\"验证陈述纪律\"Claim 的缓存域实例：**只认 usage 不认延迟**（已命中的请求也可能耗时偏长，响应快慢不能作为命中依据）；**失败不算 miss**（HTTP 超时/500/503 单独分类，不进命中率分母）；**字段缺失记\"未返回\"不补 0**（Chat 未返回 cache write 字段 ≠ 写入为 0）；**图片 token 用\"去图校准\"差值测**（API 不单独返回 image_tokens，Δ = 带图 input − 去图校准 input ≈ 922~923）；**负对照刻意保留**（explicit 模式不标 marker 的组合按机制就不该命中，用来验证机制而非凑命中率）。异常定性的措辞纪律同样是评估侧输出规范：\"按官方机制修复后仍不命中\"才叫异常（先剥离机制预期层——隐式断点在图片之后导致的零命中是 Gotcha #1 预期行为），且限定\"本资源持续复现、疑似实现或部署差异、待厂商确认\"；n=2 的 128N 旁证明确标注\"纯推测，撑不起结论\"。"
+        },
+        {
+          "statement": "延迟排查的分解测量方法学——确定性常数与随机变量分开对账；测量口径受架构限制时构造对照组（延迟域续证）",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-14",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "延迟优化的评估侧四条纪律：① **先实测分解再定位，不猜**——\"数字人慢\"候选嫌疑五六个，console 计时器一跑，8/16 秒落在 ICE 段一目了然；② **确定性常数与随机变量分开对账**——修复消灭的是确定性常数（8s 兜底每次打满、方差为零），其余各段是随机变量，单次总量对比会把确定性收益和采样噪声混在一起（总量只降 4.73s ≠ 修复只值这么多；按典型值折算期望差恰是 ~7.6s）——**分段数字才是修复效果的干净证据**；③ **多轮实测把典型值从单样本变统计事实**——n=11 Playwright 自动化把首帧从单次样本 3.5s 修正为中位 2.4s，还暴露了单次测量永远看不到的长尾异常（session.updated 17s），\"主信号缺席 + 超时告警\"与\"兜底被打满即主信号失效、值得报警\"同源；④ **测量口径受架构限制时构造对照组**——avatar 模式下回复音频只走 WebRTC 轨、WS 上没有 `response.audio.delta`，「语音返回」只能在同区域同配置的无 avatar 直连对照组测到。与缓存域纪律（上一条）同族：评估的第一步是把\"机制上必然如此\"与\"真正待解释的变量\"分开。"
         }
       ]
     },
@@ -4863,7 +4890,7 @@
       "id": "prefix-caching",
       "type": "concept",
       "title": "前缀缓存（Prefix Caching）",
-      "summary": "前缀缓存是 LLM 推理的核心省算优化：多条请求开头若干 token 完全相同时，这段公共前缀的 KV 只算一次、供所有请求共享，省掉重复 prefill。它隐含两条假设——缓存单位是 token 粒度的 (K,V)、且 KV prefill 后只读可任意共享——纯 Transformer 完美满足。但 2025–2026 年的架构迁移把它推到了失效边缘：Hybrid 线性注意力架构（见 [[hybrid-linear-attention-architecture]]）的线性层维护的是固定大小的循环状态，三条假设全破（原地更新无法定位前缀、状态体积大一个量级、kernel 只能 chunk 边界 checkpoint）。结果是 Qwen3.5 这类 Hybrid 模型即使显式开 `--enable-prefix-caching`，命中率也长期为 0。Hybrid 还要同时管两套异构缓存，多模态\"图像在前\"再截断公共前缀，speculative decoding 与之争用同一套状态存档能力——多个杀手叠加，命中趋近于零。",
+      "summary": "前缀缓存是 LLM 推理的核心省算优化：多条请求开头若干 token 完全相同时，这段公共前缀的 KV 只算一次、供所有请求共享，省掉重复 prefill。它隐含两条假设——缓存单位是 token 粒度的 (K,V)、且 KV prefill 后只读可任意共享——纯 Transformer 完美满足。但 2025–2026 年的架构迁移把它推到了失效边缘：Hybrid 线性注意力架构（见 [[hybrid-linear-attention-architecture]]）的线性层维护的是固定大小的循环状态，三条假设全破（原地更新无法定位前缀、状态体积大一个量级、kernel 只能 chunk 边界 checkpoint）。结果是 Qwen3.5 这类 Hybrid 模型即使显式开 `--enable-prefix-caching`，命中率也长期为 0。Hybrid 还要同时管两套异构缓存，多模态\"图像在前\"再截断公共前缀，speculative decoding 与之争用同一套状态存档能力——多个杀手叠加，命中趋近于零。\n\n在服务化封装层（OpenAI/Azure OpenAI 的 prompt caching），同一机制于 GPT-5.6 起从透明后台优化变为**可控制、可计量、单独计费的一等机制**：断点可显式指定、写入按 1.25× 计费、命中按精确边界报告、缓存驻留单机靠智能路由命中——命中本质是概率事件，缓存经济学进入\"在哪断、写多少、复用几次\"的精算维度。",
       "tags": [
         "wiki",
         "concept",
@@ -4876,8 +4903,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.83,
+      "claims_count": 10,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "prefix caching 成立的两条隐含假设",
@@ -4932,6 +4959,42 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于\"token 单价\"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从\"开不开\"变成\"何时命中、命中多少、什么时段\"三维账。"
+        },
+        {
+          "statement": "GPT-5.6 把 prompt caching 变为一等机制——控制权/计费/报告三换轨，128N 是报告取整口径而非放置规则",
+          "source": "Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异",
+          "first_seen": "2026-09-13",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "服务化封装层的两代框架分野（GPT-5.6 前后）体现为三个换轨：**控制权**——从服务按固定间隔（GPT-5.5 为 2,048 tokens）自动放断点，变为开发者可用 `prompt_cache_breakpoint` 显式指定（每请求最多 4 个写入槽位，implicit 断点占其一）或 implicit 模式在最新 eligible 消息末尾放断点；**计费**——写入从免费变为 1.25× 单独计费、读取 0.1×；**报告**——`cached_tokens` 从向下取整 128 倍数变为精确 eligible 边界。旧\"128N\"规律是**报告取整口径**，不是断点放置规则、更不是图片计量规则——GPT-5.6+ 上隐式缓存同样非 128N（实测读取值 5,677/5,678/4,797 无一是 128 倍数）。两代的本质差别是切分依据：旧框架**按 token 计数切**（结构无关，边界可落消息中间），新框架**按内容结构切**（eligible 消息末尾或显式 content block 边界）——代价是结构敏感：原地扩写一条旧消息会让缓存端点从\"消息末尾\"变\"消息中间\"而失效，这在旧框架反而不是问题。混用两代经验是实际排错中最常见的坑。"
+        },
+        {
+          "statement": "写入计费经济学——三类费率互斥非附加费、写入是增量 delta、explicit-only 免掉永不复用尾部的写入费",
+          "source": "Prompt Cache系列02：GPT-5.6显式断点与Cache Write计费——从断点槽位到诊断工具",
+          "first_seen": "2026-09-13",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "每个输入 token 按且仅按三类之一计费：普通 1× / 写入 1.25× / 读取 0.1×，官方明确 \"not an additive fee\"。写入是**增量（delta）**不是整套重写——同一请求可同时 `cached_tokens>0` 且 `cache_write_tokens>0`（实测：固定长文首次写 5,676，换新图后读 5,676 写 0；纯文字第二轮读 4,797 只为新增段写 63~71）。经济性：前缀只用一次写入是净亏（1.25× vs 1×）、用两次回本（1.35× vs 2×）、用十次 2.15×（vs 10×），复用免费刷新 TTL；前缀不足 1,024 可见 token 门槛时\"扩到门槛\"的 break-even 原始长度 = 102.4 + 1177.6/N。**explicit-only 模式让最后一个显式断点之后的动态尾部（如每次一张新图）不产生写入**——\"固定前缀+永不复用尾部\"负载下隐式兜底是反向优化（每次为尾部付 1.25× 纯浪费），实测 explicit 配置第二轮写入为 0。另一个易反的方向性：槽位是上限不是配额——explicit-only 把隐式断点整体关掉，不标断点=该请求不用缓存，绝不会自动补隐式断点。因果三层也要分清：读取以此前实际保存过状态为前提（旧模型 in_memory 同样有写入动作、只是不收费）；当前命中≠当前写入；写过也不保证命中。字段缺失≠0：Chat API 未返回 cache write 字段时不能认定写入量或费用为 0，计费口径待厂商澄清。"
+        },
+        {
+          "statement": "单机缓存+智能路由是规模化服务的工程选择——命中本质是概率事件，15 RPM 是溢出经验阈值非硬限",
+          "source": "Prompt Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异",
+          "first_seen": "2026-09-13",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "官方原文：缓存状态（encrypted KV tensors）存放在 **GPU-local storage 的单台机器**上，请求只有被路由到\"恰好持有未过期匹配条目\"的机器才能命中；单一前缀流量超过 15 requests/min 可能触发 overflow routing——不是配额、不报错不拒绝，代价是命中率下降，且官方未给出随 GPU/显存/模型/context 变化的参数化公式，不要自行外推。为什么不用 Redis 类分布式缓存（**推断，非官方结论**）：① 缓存对象是 KV 张量，几千 token 前缀可达 GB 级，非 Redis 典型 KB~MB 对象；② prefill 需以显存带宽量级供给 GPU，跨网搬运 GB 张量的时间会吃掉计算节省——工程选择是\"把请求路由到数据所在机器\"而非搬数据；③ 不是做不到是权衡——业界存在分布式方案（NVIDIA Dynamo KV-aware routing + 显存→内存→SSD→对象存储多级 offload）；④ 隐私不是主因（加密/组织隔离/区域边界是策略层手段）。推论：任何\"配置对了就保证命中\"的说法都不成立——实测同图偶发 miss、新副本首次 miss 后续命中（`routing.serving_pipereplica` 字段旁证预热模型）。GPT-5.6+ 后 `prompt_cache_key` 语义从优化路由变为**计量隔离**（key 变化可能让 usage 报 miss 而物理上没 miss），旧时代\"按流量拆 key\"的最佳实践不能原样搬。"
+        },
+        {
+          "statement": "隐式断点的结构敏感性与 API 层分叉——\"共享前缀≠缓存前缀\"的多模态实测复刻，API 是缓存能力差异的独立变量",
+          "source": "Prompt Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat API零读取异常",
+          "first_seen": "2026-09-13",
+          "last_updated": "2026-09-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "客户\"固定长文字+每次新图\"零命中要分两层剥离。**第一层是机制预期非 bug**：一条 user 消息内「文字块+图片块」结构下，唯一的隐式断点在消息末尾（图片之后），文字/图片交界处没有 lookup 边界——请求写入的是「文字+图A」整体，换图即在分叉点之前查无可查，这是官方 Gotcha #1（共享前缀≠缓存前缀）的多模态版本。修复实证：user 位置固定文字打显式断点把命中从 **0/69 拉到 62/68**；或把固定文字放进 developer/system 消息（初始连续 developer 块末尾是天然 lookup 边界，10~11/12 命中）。**第二层才是异常**：施加同样修复后 Responses API 行为与机制预测严丝合缝，而 **Chat API 在本资源全部修复配置下依然全零**（新图 0/421；串行 15s 复测 0/144 且 explicit 组连写入都为 0），同资源纯文字两轮 Chat 正常（44/48）、同图重复正常——**API 层是缓存能力差异的独立变量**：官方 GPT-5.6+ 断点/诊断文档通篇围绕 Responses 写，Chat 对图文消息断点语义是否完整实现文档未明说。定性措辞纪律：只能说\"本资源/本部署持续复现、疑似实现或部署差异、待厂商确认\"，不能推广为\"Chat 缓存不可用\"或\"所有 Azure 部署都有此问题\"。配套排查工具 `prompt_cache_diagnostics`（九种 miss 原因枚举）在本资源实测 6/6 字段整体缺失，能力差异同样待服务方确认。"
         }
       ]
     },
@@ -5095,8 +5158,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.82,
+      "claims_count": 7,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "WebSocket 是控制总线，WebRTC 是实时传输通道",
@@ -5151,6 +5214,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "Voice Live API 从 WebSocket-only → WebSocket + WebRTC 的演进路径是范例：先用简单方案验证产品（WebSocket 开发简单、防火墙友好、生态成熟），再根据生产需求引入更复杂但更高效的协议。核心原则：Control Plane ≠ Data Plane；信令通道与媒体通道解耦。"
+        },
+        {
+          "statement": "ICE 门控快路径——等待目标从\"全量集\"收窄到\"够用集\"：对服务端行为有确定性知识时，等待条件可以收窄（兜底保留）",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-14",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "WebRTC 传候选有 Trickle ICE（增量补发，RFC 8838）与 Vanilla ICE（offer 一次性带全候选）两种模式。Azure 数字人信令是一次性的（offer 以 base64 blob 经 `session.avatar.connect` 只发一次，无补发通道），所以\"发前收集齐候选\"是本信令通道下的标准做法——但 `complete` 信号的语义是\"**所有**网络接口都了结\"，被最慢最坏的接口绑架：VPN 虚拟网卡对 STUN/TURN 的 UDP 请求石沉大海（无响应也无错误）、mDNS 混淆地址解析、IPv6/代理路由黑洞，都让它在多网卡环境永远不来——每次连接硬等满 8s 兜底超时（开发者/企业办公电脑必现，\"干净\"家庭网络测不出）。修复的关键是**场景特化知识**：Azure 数字人 relay-only（下发的 `ice_servers` 只有一个带凭据 relay，无 STUN、无 P2P），胜出候选已知——SDP 里有第一个 relay candidate（+300ms 收敛窗收同批）就是\"够用集\"，后续 host 候选永远不会被选中，正确性零损失而 ICE 段 **8s→0.38s**（生产 n=9 全部走快路径、中位 0.54s，无一打满兜底）。可推广原则：**很多\"标准做法\"的等待，等的是通用假设下的最坏情况；对服务端行为有确定性知识时，等待条件就可以收窄**——前提是兜底全部保留（null candidate / `complete` / 超时三信号仍在，正常网络行为不变）。配套判据：兜底超时每次被打满即主信号失效，值得显式标记 + 报警。"
         }
       ]
     },
@@ -6387,7 +6459,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
+      "claims_count": 4,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -6416,6 +6488,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "级联系统中 Turn-Taking 是可替换模块；GPT-Realtime 中 Turn-Taking 融合在模型内部，无法单独替换。判断标准：\"它能不能被单独替换？能 → 模块，不能 → 模型内部能力。\""
+        },
+        {
+          "statement": "对话轮次延迟的首个生产实测分解——VAD 静音判定窗是每轮最大单项，话轮判停是决策参数而非技术延迟",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-15",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Azure Voice Live 生产实测把\"说完话→听到回复\"切成分段中位：**semantic VAD 判停 ~0.86s + 转写终稿 ~0.2s + LLM 首 token ~0.2s + TTS 首块音频 ~0.2s ≈ 1.5s**（直连对照 1.39~1.59s）。最大单项是 VAD 的静音判定窗——它**不是技术延迟而是话轮决策参数**：可调收紧换响应速度，代价是把用户停顿误判为\"说完\"的风险上升。这正是\"Turn-Taking≠端点检测\"的生产实证：对话节奏的第一杠杆在话轮判停策略层，不在 STT/LLM/TTS 管线层——文本轮（跳过 VAD+STT）首文本 0.51s/首音频 0.63s 是管线净成本下界，语音轮与文本轮的差值几乎全部是话轮判停+转写成本。多轮稳定性：同 session 轮 1/2/3 各阶段中位几乎重合（上下文增长不影响首 token）、两组 24 个语音轮零失败方差极小——话轮管线本身相当稳定，与出场链路的长尾异常形成对照。"
         }
       ]
     },
@@ -6612,7 +6693,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 13,
+      "claims_count": 14,
       "avg_confidence": 0.77,
       "claims": [
         {
@@ -6731,6 +6812,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "语音驱动动画时四种容易混淆的要求各有专属控制面：**发音正确**（人名/多音字）靠发音词典、phoneme/say-as/sub；**声调正确**靠音素/拼音声调标记（Azure SAPI 记法如 `lin 2 yue 4`）；**韵律自然**靠声音选择、自然语言 instructions 或 SSML prosody/style/break；**口型对应**靠与最终音频对应的 viseme/面部系数或强制对齐——**\"请让嘴型同步\"这句提示词本身不会产生毫秒级时间表**，提高整句 pitch 也不会纠正读错的声调。两条 API 路线的分界：OpenAI Speech（`gpt-4o-mini-tts`）用自然语言 instructions 控制口音情绪语速，但只返回音频、无 phoneme/viseme 时间轴字段；Azure Speech `zh-CN` 支持 Viseme ID + **55 项面部系数按 60 FPS 输出**（进 24 fps 渲染端要做时间换算），事件时间用 100 纳秒 tick，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。配套六条同步工程规则：一次合成是一个完整版本（台词/参数/WAV/事件/音频 SHA-256 一起存档）、锁定声音之后再定嘴型、音频剪辑与事件用同一时间映射、区分片段起点和发声起点、统一视频时间基准、最终合成后再查偏移。这是\"数字人=viseme 时间轴\"Claim 的直接工程续证——viseme 不只驱动云端视频合成，同样可驱动本地渲染载体（Blender 形态键、three.js blendshape），前提是渲染端有对应控制面（\"把 55 项数值塞进 3 个形态键不叫精细同步\"）。"
+        },
+        {
+          "statement": "延迟工程的治本/治体感二分——技术等待与感知等待分离；对话面端到端每轮 ≈5.6s、外部网关占 70%",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-14",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "数字人出场链路的三层优化各治一段，构成\"技术等待 vs 感知等待\"的分离范式：**ICE 门控消灭确定性等待**（治本，8s→0.38s）、**说明页预热把连接藏进阅读时间**（重叠——预热时机 = 能拿到会话的最早时刻，阅读 ≥7s 即零等待）、**上次会话截帧占位让人物形象秒出**（治体感，体感 ≈0）——\"用户感知的等待可以远小于技术上的等待\"。出场合计：16s→11.25s（本地最坏情况）→9.99s（同区域生产单测）→中位 8.61s（生产 n=9）。对话面合成端到端：说完话→数字人开口说下一题 ≈ 0.86s（VAD 判停）+ 0.19s（转写尾）+ **3.90s（外部面试网关 RTT，n=20 中位，2.87~5.04s）**+ 0.63s（读题→首块音频）≈ **5.6s——网关一段占 70% 且波动最大**，与出场链路最大头（面试创建中位 4.7s）是同一项成本，是对话面唯一的结构性优化点：**同域部署/网关提速治本，思考过渡语遮蔽治体感**。反面印证：同区域后端 proxy 中转几乎免费（`response.create`→首 token 生产与直连都 ~0.5s），瓶颈在浏览器到区域的公网 RTT 与外部依赖，不在语音层这层壳——与既有\"延迟瓶颈在模型和工具而非 Voice Live 这层壳\"Claim 互证。"
         }
       ]
     },
@@ -7586,7 +7676,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 2,
+      "claims_count": 3,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -7606,6 +7696,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策\"选定一条架构路线\"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，\"分层用模型\"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。"
+        },
+        {
+          "statement": "模型配置的真分水岭是 region 可用性而非模型类型——\"两类都支持\"获部署实测直接续证",
+          "source": "Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略",
+          "first_seen": "2026-09-14",
+          "last_updated": "2026-09-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "生产对照测试发现并修复的配置坑直接续证上一条 Claim：Voice Live 对模型类型没有\"只能语音专用模型\"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）**两类都支持**，级联 vs 端到端确实已降级为配置项。真正的部署分水岭是**同一模型在不同 region 对 Voice Live 的可用性**：配了当前 region 不可用的模型，症状是\"永远停在 text、控制台报 Model X is not supported in this region\"（本次即 gpt-5.4-mini 在该 region 不可用，换该 region 可用的 gpt-4o / gpt-4.1-mini 即恢复）。落地含义：部署检查清单要加一条硬检查项——`VOICE_LIVE_DEFAULT_MODEL`（bicep 参数）必须在部署 region 对 Voice Live 可用；\"架构决策降级为配置项\"的另一面是**配置项的坑也升级为架构级症状**（表现为整条语音链路不通，而非清晰的配置错误提示）。"
         }
       ]
     },
