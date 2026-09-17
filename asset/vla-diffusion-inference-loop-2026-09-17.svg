@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="540" viewBox="0 0 1160 540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <radialGradient id="pTeal2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmber2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashB { to { stroke-dashoffset: -76; } }
+    @keyframes pulseB { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes shimmerB { 0%,100% { opacity: 0.78; } 50% { opacity: 1; } }
+    @keyframes denoise { 0% { opacity: 0.15; } 45% { opacity: 0.95; } 100% { opacity: 0.15; } }
+    .flowB  { stroke-dasharray: 18 20; animation: flowDashB 1.6s linear infinite; }
+    .flowB2 { stroke-dasharray: 4 34;  animation: flowDashB 1.6s linear infinite; }
+    .haloB  { animation: pulseB 1.8s ease-in-out infinite; }
+    .nodeB  { animation: shimmerB 3.5s ease-in-out infinite; }
+    .dn1 { animation: denoise 2.4s ease-in-out infinite; }
+    .dn2 { animation: denoise 2.4s ease-in-out 0.4s infinite; }
+    .dn3 { animation: denoise 2.4s ease-in-out 0.8s infinite; }
+    .dn4 { animation: denoise 2.4s ease-in-out 1.2s infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="540" rx="18" fill="url(#bg2)"/>
+  <rect x="1" y="1" width="1158" height="538" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">VLA 推理闭环：一次编码 → 并行去噪 → 部分执行 → 重新观测</text>
+  <text x="1124" y="46" font-size="13" fill="#475569" text-anchor="end">块内并行（双向注意力）· 块间闭环（receding horizon）</text>
+
+  <!-- connector track: top row + return loop -->
+  <path d="M 110 180 H 1050 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"
+        fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- forward flow (teal): 观测→骨干→动作专家→动作块→执行 -->
+  <path class="flowB" d="M 110 180 H 1050"
+        fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flowB2" d="M 110 180 H 1050"
+        fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- return flow (amber): 执行→重新观测 -->
+  <path class="flowB" d="M 1050 180 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"
+        fill="none" stroke="#d97706" stroke-width="6" stroke-linecap="round" opacity="0.45"/>
+  <path class="flowB2" d="M 1050 180 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"
+        fill="none" stroke="#fcd34d" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- particles -->
+  <circle r="7" fill="url(#pTeal2)" filter="url(#softGlow2)">
+    <animateMotion dur="8s" repeatCount="indefinite"
+      path="M 110 180 H 1050 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"/>
+  </circle>
+  <circle r="5" fill="url(#pAmber2)" filter="url(#softGlow2)">
+    <animateMotion dur="8s" begin="2.7s" repeatCount="indefinite"
+      path="M 110 180 H 1050 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"/>
+  </circle>
+  <circle r="6" fill="url(#pTeal2)" filter="url(#softGlow2)">
+    <animateMotion dur="8s" begin="5.4s" repeatCount="indefinite"
+      path="M 110 180 H 1050 Q 1132 180 1132 295 Q 1132 410 1050 410 H 192 Q 110 410 110 295 L 110 180"/>
+  </circle>
+
+  <!-- ============ top row nodes ============ -->
+  <g class="nodeB">
+    <rect x="20" y="148" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="110" y="172" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">① 观测</text>
+    <text x="110" y="192" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">相机帧 + 语言指令</text>
+  </g>
+  <g class="nodeB">
+    <rect x="252" y="148" width="196" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="350" y="172" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">② VLM 骨干（数十亿参数）</text>
+    <text x="350" y="192" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">一次 prefill 编码 · 不生成 token</text>
+  </g>
+
+  <!-- 动作专家: the protagonist, amber pulsing -->
+  <rect class="haloB" x="494" y="140" width="232" height="80" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="10" filter="url(#haloBlur2)"/>
+  <g>
+    <rect x="500" y="146" width="220" height="68" rx="14" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="610" y="170" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">③ 动作专家（几亿参数）</text>
+    <text x="610" y="190" font-size="11" fill="#fcd34d" text-anchor="middle">扩散 / flow matching · 约 10 步去噪</text>
+    <text x="610" y="206" font-size="10.5" fill="#d9a915" text-anchor="middle">50 步动作块整块并行修正 · 双向注意力</text>
+  </g>
+
+  <g class="nodeB">
+    <rect x="772" y="148" width="180" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="862" y="172" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">④ 动作块（50 步）</text>
+    <text x="862" y="192" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">连续轨迹 · 整体自洽</text>
+  </g>
+  <g class="nodeB">
+    <rect x="978" y="148" width="164" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="1060" y="172" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑤ 执行前 20–25 步</text>
+    <text x="1060" y="192" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">低层控制 10–50 Hz</text>
+  </g>
+
+  <!-- denoising strip inside/below action expert: iterative convergence -->
+  <g>
+    <text x="610" y="262" font-size="12" fill="#94a3b8" text-anchor="middle">去噪迭代：噪声 → 轮廓 → 精修（每步都是一次整块并行前向）</text>
+    <g class="dn1"><path d="M 380 300 q 20 -34 40 6 q 20 38 40 -12 q 20 -30 40 14 q 20 26 40 -18" fill="none" stroke="#64748b" stroke-width="2.5"/></g>
+    <g class="dn2"><path d="M 560 300 q 25 -22 50 -2 q 25 16 50 -10 q 25 -14 60 4" fill="none" stroke="#93c5fd" stroke-width="2.5"/></g>
+    <g class="dn3"><path d="M 740 300 q 30 -16 60 -4 q 30 8 60 -6" fill="none" stroke="#fcd34d" stroke-width="2.5"/></g>
+    <g class="dn4"><path d="M 380 300 q 20 -34 40 6 q 20 38 40 -12 q 20 -30 40 14 q 20 26 40 -18" fill="none" stroke="#0000" stroke-width="0"/></g>
+    <text x="400" y="330" font-size="11" fill="#64748b">t=10：纯噪声</text>
+    <text x="585" y="330" font-size="11" fill="#93c5fd">t=5：转弯/停止位置显形</text>
+    <text x="770" y="330" font-size="11" fill="#fcd34d">t=0：平滑可执行轨迹</text>
+  </g>
+
+  <!-- return path label -->
+  <g class="nodeB">
+    <rect x="452" y="378" width="316" height="64" rx="14" fill="#241d0a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="610" y="402" font-size="15" font-weight="600" fill="#fde68a" text-anchor="middle">⑥ 重新观测 → 生成下一块</text>
+    <text x="610" y="424" font-size="11" fill="#d9a915" text-anchor="middle">receding horizon 闭环重规划 · 1–2 Hz · 响应环境变化</text>
+  </g>
+  <text x="1148" y="298" font-size="11.5" fill="#fbbf24" opacity="0.75" text-anchor="middle" transform="rotate(90 1148 298)">对外因果：顺序 · 闭环</text>
+
+  <!-- legend -->
+  <g font-size="12.5">
+    <circle cx="46" cy="502" r="6" fill="#2dd4bf"/>
+    <text x="60" y="507" fill="#94a3b8">前向数据流（一次编码，KV 缓存复用）</text>
+    <circle cx="360" cy="502" r="6" fill="#fbbf24"/>
+    <text x="374" y="507" fill="#94a3b8">动作生成与闭环（块内并行去噪 · 块间顺序重规划）</text>
+    <text x="1124" y="507" fill="#475569" text-anchor="end">参考：π0（flow matching + action chunking）· Rho-alpha</text>
+  </g>
+</svg>
