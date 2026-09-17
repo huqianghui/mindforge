@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="520" viewBox="0 0 1160 520" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <radialGradient id="particleTeal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="particleAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.78; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash 1.6s linear infinite; }
+    .halo  { animation: pulse 2s ease-in-out infinite; }
+    .node  { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="520" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="518" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">具身智能闭环：感知 → 理解 → 规划 → 行动 → 反馈学习</text>
+  <text x="1124" y="46" font-size="13" fill="#475569" text-anchor="end">空间智能 = 认知段 · 具身智能 = 补全执行段</text>
+
+  <!-- segment annotations -->
+  <text x="480" y="110" font-size="13" fill="#5eead4" text-anchor="middle">空间智能的核心区——世界模型 / 3D 语义地图（"看到就能理解"）</text>
+  <path d="M 60 122 H 900" stroke="#134e4a" stroke-width="2" stroke-dasharray="2 6"/>
+  <text x="580" y="490" font-size="13" fill="#fcd34d" text-anchor="middle">具身智能补全的一段——连续控制 + 数据飞轮（"交互中学习"）</text>
+  <path d="M 160 468 H 1000" stroke="#78350f" stroke-width="2" stroke-dasharray="2 6"/>
+
+  <!-- connector track (behind nodes): closed loop -->
+  <path d="M 133 178 H 1021 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"
+        fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- cognitive segment flow (teal): 感知→理解→规划→行动 -->
+  <path class="flow" d="M 133 178 H 1021"
+        fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flow2" d="M 133 178 H 1021"
+        fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- action/feedback return segment flow (amber): 行动→反馈→回到感知 -->
+  <path class="flow" d="M 1021 178 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"
+        fill="none" stroke="#d97706" stroke-width="6" stroke-linecap="round" opacity="0.45"/>
+  <path class="flow2" d="M 1021 178 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"
+        fill="none" stroke="#fcd34d" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+
+  <!-- moving particles along the full loop -->
+  <circle r="7" fill="url(#particleTeal)" filter="url(#softGlow)">
+    <animateMotion dur="9s" repeatCount="indefinite"
+      path="M 133 178 H 1021 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"/>
+  </circle>
+  <circle r="5" fill="url(#particleAmber)" filter="url(#softGlow)">
+    <animateMotion dur="9s" begin="3s" repeatCount="indefinite"
+      path="M 133 178 H 1021 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"/>
+  </circle>
+  <circle r="6" fill="url(#particleTeal)" filter="url(#softGlow)">
+    <animateMotion dur="9s" begin="6s" repeatCount="indefinite"
+      path="M 133 178 H 1021 Q 1128 178 1128 293 Q 1128 408 1021 408 H 133 Q 38 408 38 293 Q 38 178 133 178"/>
+  </circle>
+
+  <!-- ============ top row: cognitive nodes (teal) ============ -->
+  <g class="node">
+    <rect x="33" y="146" width="200" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="133" y="174" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">① 感知</text>
+    <text x="133" y="196" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">相机 / 激光雷达 / 触觉 / 力</text>
+  </g>
+  <g class="node">
+    <rect x="329" y="146" width="200" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="429" y="174" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">② 理解</text>
+    <text x="429" y="196" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">语义分割 / 空间表征 / 场景记忆</text>
+  </g>
+  <g class="node">
+    <rect x="625" y="146" width="200" height="64" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="725" y="174" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">③ 规划</text>
+    <text x="725" y="196" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">VLM 任务分解 / 子目标生成</text>
+  </g>
+
+  <!-- 行动 node: amber, pulsing (the segment embodied AI adds) -->
+  <rect class="halo" x="915" y="140" width="212" height="76" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="10" filter="url(#haloBlur)"/>
+  <g>
+    <rect x="921" y="146" width="200" height="64" rx="14" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1021" y="174" font-size="16" font-weight="700" fill="#fef3c7" text-anchor="middle">④ 行动</text>
+    <text x="1021" y="196" font-size="11.5" fill="#fcd34d" text-anchor="middle">VLA 连续控制 · 10–50 Hz</text>
+  </g>
+
+  <!-- ============ bottom: feedback node (amber) ============ -->
+  <g class="node">
+    <rect x="477" y="376" width="206" height="64" rx="14" fill="#241d0a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="580" y="404" font-size="16" font-weight="600" fill="#fde68a" text-anchor="middle">⑤ 反馈 · 学习</text>
+    <text x="580" y="426" font-size="11.5" fill="#d9a915" text-anchor="middle">遥操作纠正 / 真机数据回流</text>
+  </g>
+
+  <!-- side captions on return path -->
+  <text x="1146" y="298" font-size="11.5" fill="#fbbf24" opacity="0.75" text-anchor="middle" transform="rotate(90 1146 298)">物理后果 · 不可 Ctrl+Z</text>
+  <text x="20" y="298" font-size="11.5" fill="#fbbf24" opacity="0.75" text-anchor="middle" transform="rotate(-90 20 298)">环境被改变 → 重新感知</text>
+
+  <!-- legend -->
+  <g font-size="12.5">
+    <circle cx="46" cy="510" r="0"/>
+  </g>
+</svg>
