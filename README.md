@@ -218,6 +218,18 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [tmux 与 Claude 远程交互实践](Notes/DevOps/tmux与Claude远程交互实践.md)
 
+### Notes/Embodied AI
+
+- [具身智能系列 01：全景与技术路线——从 LLM、Agent、RAG 到物理世界闭环](Notes/Embodied%20AI/具身智能系列01：全景与技术路线——从LLM、Agent、RAG到物理世界闭环.md)
+- [具身智能系列 02：VLA 输出架构演进——从动作 token 到扩散动作头](Notes/Embodied%20AI/具身智能系列02：VLA输出架构演进——从动作token到扩散动作头.md)
+- [具身智能系列 03：扩散与 Transformer 在 VLA 中的分工——动作块并行去噪与闭环重规划](Notes/Embodied%20AI/具身智能系列03：扩散与Transformer在VLA中的分工——动作块并行去噪与闭环重规划.md)
+- [具身智能系列 04：世界模型不是一种架构——像素、潜空间、显式 3D 与物理方程四条实现路线](Notes/Embodied%20AI/具身智能系列04：世界模型不是一种架构——像素、潜空间、显式3D与物理方程四条实现路线.md)
+- [具身智能系列 05：世界模型与 LLM 的分野——动作条件化、空间持久记忆与中间件角色](Notes/Embodied%20AI/具身智能系列05：世界模型与LLM的分野——动作条件化、空间持久记忆与中间件角色.md)
+- [具身智能系列 06：3D 感知重建与世界模型的关系——状态与状态转移的空间智能分层栈](Notes/Embodied%20AI/具身智能系列06：3D感知重建与世界模型的关系——状态与状态转移的空间智能分层栈.md)
+- [具身智能系列 07：3D 内容生产的两条路线——Agent 操作 Blender 与神经 3D 生成的分工](Notes/Embodied%20AI/具身智能系列07：3D内容生产的两条路线——Agent操作Blender与神经3D生成的分工.md)
+- [具身智能系列 08：数据飞轮与 VITRA——把人类视频变成机器人的互联网语料](Notes/Embodied%20AI/具身智能系列08：数据飞轮与VITRA——把人类视频变成机器人的互联网语料.md)
+- [具身智能系列 09：硬件形态与生态地图——从 AGV 到人形的五层拆解](Notes/Embodied%20AI/具身智能系列09：硬件形态与生态地图——从AGV到人形的五层拆解.md)
+
 ### Notes/tool
 
 - [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](Notes/tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)
