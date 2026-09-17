@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow3" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur3" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <radialGradient id="pTeal3" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmber3" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashC { to { stroke-dashoffset: -76; } }
+    @keyframes pulseC { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes shimmerC { 0%,100% { opacity: 0.78; } 50% { opacity: 1; } }
+    @keyframes denoiseC { 0% { opacity: 0.1; } 50% { opacity: 0.95; } 100% { opacity: 0.1; } }
+    .flowC  { stroke-dasharray: 18 20; animation: flowDashC 1.6s linear infinite; }
+    .flowC2 { stroke-dasharray: 4 34;  animation: flowDashC 1.6s linear infinite; }
+    .haloC  { animation: pulseC 1.8s ease-in-out infinite; }
+    .nodeC  { animation: shimmerC 3.5s ease-in-out infinite; }
+    .dnA { animation: denoiseC 2.2s ease-in-out infinite; }
+    .dnB { animation: denoiseC 2.2s ease-in-out 0.55s infinite; }
+    .dnC { animation: denoiseC 2.2s ease-in-out 1.1s infinite; }
+  </style>
+
+  <rect width="1160" height="500" rx="18" fill="url(#bg3)"/>
+  <rect x="1" y="1" width="1158" height="498" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">视频世界模型：跨时间自回归 · 帧（段）内扩散</text>
+  <text x="1124" y="46" font-size="13" fill="#475569" text-anchor="end">时间维严格因果：a(t) 未发生就不能生成 t+1</text>
+
+  <!-- time axis -->
+  <path d="M 60 100 H 1100" stroke="#334155" stroke-width="2"/>
+  <path d="M 1100 100 l -12 -6 v 12 z" fill="#334155"/>
+  <text x="1085" y="88" font-size="12" fill="#64748b" text-anchor="end">时间 t（自回归方向）</text>
+
+  <!-- track between frames -->
+  <path d="M 190 210 H 950" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flowC" d="M 190 210 H 660" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flowC2" d="M 190 210 H 660" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+  <path d="M 660 210 H 950" fill="none" stroke="#334155" stroke-width="5" stroke-dasharray="6 12" stroke-linecap="round" opacity="0.8"/>
+
+  <circle r="6" fill="url(#pTeal3)" filter="url(#softGlow3)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 190 210 H 660"/>
+  </circle>
+  <circle r="5" fill="url(#pTeal3)" filter="url(#softGlow3)">
+    <animateMotion dur="5s" begin="2.5s" repeatCount="indefinite" path="M 190 210 H 660"/>
+  </circle>
+
+  <!-- frame t-1 (done) -->
+  <g class="nodeC">
+    <rect x="80" y="150" width="220" height="120" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="190" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">帧块 t−1（已生成）</text>
+    <path d="M 110 215 q 20 -14 40 -4 q 20 10 40 -6 q 20 -10 40 2" fill="none" stroke="#5eead4" stroke-width="2.5" opacity="0.9"/>
+    <text x="190" y="252" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">进入上下文（KV / 记忆）</text>
+  </g>
+
+  <!-- frame t (done) -->
+  <g class="nodeC">
+    <rect x="350" y="150" width="220" height="120" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="460" y="178" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">帧块 t（已生成）</text>
+    <path d="M 380 215 q 20 -12 40 -2 q 20 8 40 -8 q 20 -8 40 4" fill="none" stroke="#5eead4" stroke-width="2.5" opacity="0.9"/>
+    <text x="460" y="252" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">条件：之前所有帧块 + 动作</text>
+  </g>
+
+  <!-- frame t+1 (current, amber pulse, denoising inside) -->
+  <rect class="haloC" x="614" y="144" width="232" height="132" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="10" filter="url(#haloBlur3)"/>
+  <g>
+    <rect x="620" y="150" width="220" height="120" rx="14" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="730" y="178" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">帧块 t+1（正在生成）</text>
+    <g class="dnA"><path d="M 650 218 q 15 -26 30 4 q 15 30 30 -10 q 15 -22 30 8 q 15 20 30 -14" fill="none" stroke="#64748b" stroke-width="2.2"/></g>
+    <g class="dnB"><path d="M 650 218 q 18 -16 36 -4 q 18 10 36 -8 q 18 -10 48 6" fill="none" stroke="#93c5fd" stroke-width="2.2"/></g>
+    <g class="dnC"><path d="M 650 218 q 25 -12 50 -3 q 25 6 50 -5 q 25 -5 50 2" fill="none" stroke="#fcd34d" stroke-width="2.4"/></g>
+    <text x="730" y="252" font-size="11" fill="#fcd34d" text-anchor="middle">段内所有潜变量并行去噪（DiT）</text>
+  </g>
+
+  <!-- frame t+2 (future) -->
+  <g>
+    <rect x="890" y="150" width="220" height="120" rx="14" fill="#131a2a" stroke="#334155" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <text x="1000" y="178" font-size="15" font-weight="600" fill="#94a3b8" text-anchor="middle">帧块 t+2（未来）</text>
+    <text x="1000" y="215" font-size="11.5" fill="#64748b" text-anchor="middle">必须等 a(t+1) 发生后才能生成</text>
+    <text x="1000" y="252" font-size="11" fill="#64748b" text-anchor="middle">不能偷看未来动作</text>
+  </g>
+
+  <!-- agent / action injection -->
+  <g class="nodeC">
+    <rect x="330" y="368" width="500" height="60" rx="14" fill="#241d0a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="580" y="393" font-size="15" font-weight="600" fill="#fde68a" text-anchor="middle">Agent / 策略：观察帧块 → 决定动作 a(t)</text>
+    <text x="580" y="414" font-size="11" fill="#d9a915" text-anchor="middle">动作作为条件注入下一帧块的生成——世界模型的定义性输入</text>
+  </g>
+
+  <!-- action arrows -->
+  <path class="flowC2" d="M 460 285 L 460 360" fill="none" stroke="#5eead4" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <path d="M 460 360 l -6 -12 h 12 z" fill="#5eead4"/>
+  <text x="448" y="330" font-size="11" fill="#5eead4" text-anchor="end">观测</text>
+  <path class="flowC2" d="M 700 428 Q 700 460 730 460 Q 760 460 760 300 L 745 285" fill="none" stroke="#fcd34d" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+  <path d="M 745 285 l 2 14 l 10 -8 z" fill="#fcd34d"/>
+  <text x="800" y="330" font-size="11" fill="#fcd34d">动作 a(t) 条件注入</text>
+
+  <circle r="5" fill="url(#pAmber3)" filter="url(#softGlow3)">
+    <animateMotion dur="3.5s" repeatCount="indefinite" path="M 700 428 Q 700 460 730 460 Q 760 460 760 300 L 745 285"/>
+  </circle>
+
+  <!-- legend -->
+  <g font-size="12.5">
+    <circle cx="46" cy="472" r="6" fill="#2dd4bf"/>
+    <text x="60" y="477" fill="#94a3b8">已生成帧块（进入上下文，跨时间自回归）</text>
+    <circle cx="380" cy="472" r="6" fill="#fbbf24"/>
+    <text x="394" y="477" fill="#94a3b8">当前帧块（段内并行去噪）+ 动作条件</text>
+    <circle cx="700" cy="472" r="6" fill="#334155"/>
+    <text x="714" y="477" fill="#94a3b8">未来帧块（依赖尚未发生的动作）</text>
+    <text x="1124" y="477" fill="#475569" text-anchor="end">参考：Genie / Cosmos / RTFM</text>
+  </g>
+</svg>
