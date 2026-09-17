@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="460" viewBox="0 0 1160 460" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg7" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <linearGradient id="axis7" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="0.55" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#64748b"/>
+    </linearGradient>
+    <filter id="softGlow7" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur7" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <radialGradient id="pWhite7" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="0.5" stop-color="#94a3b8"/>
+      <stop offset="1" stop-color="#94a3b8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes pulseG { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes shimmerG { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .haloG { animation: pulseG 2s ease-in-out infinite; }
+    .nodeG { animation: shimmerG 3.5s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="460" rx="18" fill="url(#bg7)"/>
+  <rect x="1" y="1" width="1158" height="458" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">机器人形态成熟度光谱：从 AGV 到人形</text>
+  <text x="1124" y="44" font-size="13" fill="#475569" text-anchor="end">越靠左越"无聊"但越赚钱 · 越靠右越吸睛但越远</text>
+
+  <!-- zone labels -->
+  <text x="250" y="92" font-size="13" fill="#5eead4" text-anchor="middle">已规模商用</text>
+  <text x="700" y="92" font-size="13" fill="#fcd34d" text-anchor="middle">落地爬坡中</text>
+  <text x="1010" y="92" font-size="13" fill="#94a3b8" text-anchor="middle">研究前沿</text>
+  <path d="M 90 102 H 480" stroke="#134e4a" stroke-width="2" stroke-dasharray="2 6"/>
+  <path d="M 520 102 H 880" stroke="#78350f" stroke-width="2" stroke-dasharray="2 6"/>
+  <path d="M 920 102 H 1090" stroke="#334155" stroke-width="2" stroke-dasharray="2 6"/>
+
+  <!-- axis -->
+  <path d="M 80 240 H 1090" fill="none" stroke="url(#axis7)" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+  <circle r="7" fill="url(#pWhite7)" filter="url(#softGlow7)">
+    <animateMotion dur="8s" repeatCount="indefinite" path="M 80 240 H 1090"/>
+  </circle>
+  <circle r="5" fill="url(#pWhite7)" filter="url(#softGlow7)">
+    <animateMotion dur="8s" begin="4s" repeatCount="indefinite" path="M 80 240 H 1090"/>
+  </circle>
+
+  <!-- nodes: alternating above/below -->
+  <!-- AGV -->
+  <g class="nodeG">
+    <circle cx="140" cy="240" r="10" fill="#0d9488" stroke="#5eead4" stroke-width="2"/>
+    <path d="M 140 228 V 176" stroke="#134e4a" stroke-width="1.5"/>
+    <text x="140" y="160" font-size="14.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">AGV 自动导引车</text>
+    <text x="140" y="140" font-size="10.5" fill="#5eead4" text-anchor="middle">1950s 起 · 磁条/二维码导引 · 规模最大</text>
+  </g>
+  <!-- 工业机械臂 -->
+  <g class="nodeG">
+    <circle cx="255" cy="240" r="10" fill="#0d9488" stroke="#5eead4" stroke-width="2"/>
+    <path d="M 255 252 V 300" stroke="#134e4a" stroke-width="1.5"/>
+    <text x="255" y="322" font-size="14.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">工业机械臂</text>
+    <text x="255" y="342" font-size="10.5" fill="#5eead4" text-anchor="middle">四大家族 · 结构化环境最成熟</text>
+  </g>
+  <!-- AMR / 扫地机 -->
+  <g class="nodeG">
+    <circle cx="380" cy="240" r="10" fill="#0d9488" stroke="#5eead4" stroke-width="2"/>
+    <path d="M 380 228 V 176" stroke="#134e4a" stroke-width="1.5"/>
+    <text x="380" y="160" font-size="14.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">AMR · 扫地机</text>
+    <text x="380" y="140" font-size="10.5" fill="#5eead4" text-anchor="middle">SLAM 自主导航 · 消费级已商品化</text>
+  </g>
+  <!-- 协作臂 -->
+  <g class="nodeG">
+    <circle cx="500" cy="240" r="10" fill="#0d9488" stroke="#5eead4" stroke-width="2"/>
+    <path d="M 500 252 V 300" stroke="#134e4a" stroke-width="1.5"/>
+    <text x="500" y="322" font-size="14.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">协作臂</text>
+    <text x="500" y="342" font-size="10.5" fill="#5eead4" text-anchor="middle">UR·Franka·节卡 · 轻工业与研究主力</text>
+  </g>
+  <!-- 轮式双臂: current frontier of deployment, amber pulse -->
+  <rect class="haloG" x="586" y="196" width="128" height="88" rx="16" fill="none" stroke="#fbbf24" stroke-width="8" filter="url(#haloBlur7)"/>
+  <g>
+    <circle cx="650" cy="240" r="11" fill="#b45309" stroke="#fcd34d" stroke-width="2.5"/>
+    <path d="M 650 228 V 176" stroke="#78350f" stroke-width="1.5"/>
+    <text x="650" y="160" font-size="14.5" font-weight="700" fill="#fef3c7" text-anchor="middle">轮式双臂</text>
+    <text x="650" y="140" font-size="10.5" fill="#fcd34d" text-anchor="middle">底盘+双臂不做腿 · 当前工业落地最务实形态</text>
+  </g>
+  <!-- 四足 -->
+  <g class="nodeG">
+    <circle cx="775" cy="240" r="10" fill="#b45309" stroke="#fcd34d" stroke-width="2"/>
+    <path d="M 775 252 V 300" stroke="#78350f" stroke-width="1.5"/>
+    <text x="775" y="322" font-size="14.5" font-weight="600" fill="#fde68a" text-anchor="middle">四足</text>
+    <text x="775" y="342" font-size="10.5" fill="#d9a915" text-anchor="middle">宇树 Go2 · Spot · 巡检场景起量</text>
+  </g>
+  <!-- 灵巧手 -->
+  <g class="nodeG">
+    <circle cx="895" cy="240" r="10" fill="#b45309" stroke="#fcd34d" stroke-width="2"/>
+    <path d="M 895 228 V 176" stroke="#78350f" stroke-width="1.5"/>
+    <text x="895" y="160" font-size="14.5" font-weight="600" fill="#fde68a" text-anchor="middle">灵巧手</text>
+    <text x="895" y="140" font-size="10.5" fill="#d9a915" text-anchor="middle">"手感"（触觉+力控）是瓶颈部件</text>
+  </g>
+  <!-- 人形 -->
+  <g class="nodeG">
+    <circle cx="1020" cy="240" r="10" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+    <path d="M 1020 252 V 300" stroke="#334155" stroke-width="1.5"/>
+    <text x="1020" y="322" font-size="14.5" font-weight="600" fill="#cbd5e1" text-anchor="middle">人形</text>
+    <text x="1020" y="342" font-size="10.5" fill="#64748b" text-anchor="middle">关注度最高 · 行业务实派认为被高估</text>
+  </g>
+
+  <!-- AGV vs AMR callout -->
+  <g>
+    <rect x="80" y="380" width="700" height="46" rx="12" fill="#131a2a" stroke="#334155" stroke-width="1.2"/>
+    <text x="98" y="399" font-size="12.5" fill="#94a3b8">AGV vs AMR：<tspan fill="#5eead4">AGV 沿轨道走</tspan>（地面磁条/二维码/反光板导引，遇障停下等）→ <tspan fill="#5eead4">AMR 自己找路走</tspan>（激光雷达+视觉 SLAM，自主规划绕障）</text>
+    <text x="98" y="417" font-size="12.5" fill="#94a3b8">行业正从 AGV 向 AMR 演进；<tspan fill="#fcd34d">扫地机器人在技术上就是一台消费级 AMR</tspan>——同一套技术栈，尺寸更小、成本更低、任务单一</text>
+  </g>
+  <text x="1090" y="403" font-size="12" fill="#475569" text-anchor="end">形态越往右，动作空间越复杂，</text>
+  <text x="1090" y="421" font-size="12" fill="#475569" text-anchor="end">数据越贵、迁移成本越高</text>
+</svg>

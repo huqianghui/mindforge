@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="680" viewBox="0 0 1160 680" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow6" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur6" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <radialGradient id="pTeal6" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashF { to { stroke-dashoffset: -76; } }
+    @keyframes pulseF { 0%,100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+    @keyframes shimmerF { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flowF  { stroke-dasharray: 18 20; animation: flowDashF 1.6s linear infinite; }
+    .flowF2 { stroke-dasharray: 4 34;  animation: flowDashF 1.6s linear infinite; }
+    .haloF  { animation: pulseF 2s ease-in-out infinite; }
+    .bandF  { animation: shimmerF 4s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="680" rx="18" fill="url(#bg6)"/>
+  <rect x="1" y="1" width="1158" height="678" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">具身智能硬件生态五层地图（2026 年中）</text>
+  <text x="1124" y="44" font-size="13" fill="#475569" text-anchor="end">颜色 = 三套生态：工业/研究 · 消费 · 开源/社区</text>
+
+  <!-- upward capability flow on the left -->
+  <path d="M 90 600 V 96" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flowF" d="M 90 600 V 96" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flowF2" d="M 90 600 V 96" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+  <circle r="6" fill="url(#pTeal6)" filter="url(#softGlow6)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 90 600 V 96"/>
+  </circle>
+  <circle r="5" fill="url(#pTeal6)" filter="url(#softGlow6)">
+    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M 90 600 V 96"/>
+  </circle>
+  <text x="74" y="350" font-size="11.5" fill="#5eead4" opacity="0.8" text-anchor="middle" transform="rotate(-90 74 350)">下层支撑上层 · 地基决定上限</text>
+
+  <!-- ============ ⑤ 本体层 (top) ============ -->
+  <g class="bandF">
+    <rect x="120" y="72" width="1004" height="116" rx="14" fill="#0f1a2e" stroke="#334155" stroke-width="1.2"/>
+    <text x="140" y="98" font-size="15" font-weight="700" fill="#e2e8f0">⑤ 本体层</text>
+    <text x="140" y="116" font-size="10.5" fill="#64748b">形态即数据边界</text>
+  </g>
+  <!-- row 1 -->
+  <g font-size="11">
+    <rect x="255" y="84" width="326" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="418" y="103" fill="#ccfbf1" text-anchor="middle">机械臂：FANUC·ABB·KUKA·安川 ｜ 协作臂 UR·Franka·节卡·遨博</text>
+    <rect x="591" y="84" width="240" height="30" rx="8" fill="#16233f" stroke="#60a5fa"/>
+    <text x="711" y="103" fill="#bfdbfe" text-anchor="middle">低成本研究臂：松灵 Piper·xArm·SO-100</text>
+    <rect x="841" y="84" width="270" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="976" y="103" fill="#ccfbf1" text-anchor="middle">灵巧手：Shadow·因时·傲意·帕西尼（瓶颈件）</text>
+  </g>
+  <!-- row 2 -->
+  <g font-size="11">
+    <rect x="255" y="122" width="262" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="386" y="141" fill="#ccfbf1" text-anchor="middle">AGV/AMR：极智嘉·海康·快仓·MiR·Locus</text>
+    <rect x="527" y="122" width="250" height="30" rx="8" fill="#33270a" stroke="#fbbf24"/>
+    <text x="652" y="141" fill="#fde68a" text-anchor="middle">扫地机（消费级 AMR）：石头·科沃斯·追觅·云鲸</text>
+    <rect x="787" y="122" width="130" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="852" y="141" fill="#ccfbf1" text-anchor="middle">四足：宇树 Go2·Spot</text>
+    <rect x="927" y="122" width="184" height="30" rx="8" fill="#1f1530" stroke="#a78bfa"/>
+    <text x="1019" y="141" fill="#ddd6fe" text-anchor="middle">人形/轮式双臂：Figure·宇树·智元</text>
+  </g>
+
+  <!-- ============ ④ 感知层 ============ -->
+  <g class="bandF">
+    <rect x="120" y="200" width="1004" height="78" rx="14" fill="#0f1a2e" stroke="#334155" stroke-width="1.2"/>
+    <text x="140" y="226" font-size="15" font-weight="700" fill="#e2e8f0">④ 感知层</text>
+    <text x="140" y="244" font-size="10.5" fill="#64748b">机器人的眼与手感</text>
+  </g>
+  <g font-size="11">
+    <rect x="255" y="224" width="250" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="380" y="243" fill="#ccfbf1" text-anchor="middle">激光雷达：禾赛·速腾·Livox·Ouster</text>
+    <rect x="515" y="224" width="140" height="30" rx="8" fill="#33270a" stroke="#fbbf24"/>
+    <text x="585" y="243" fill="#fde68a" text-anchor="middle">单线 LDS（扫地机）</text>
+    <rect x="665" y="224" width="230" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="780" y="243" fill="#ccfbf1" text-anchor="middle">深度相机：RealSense·奥比中光·ZED</text>
+    <rect x="905" y="224" width="206" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="1008" y="243" fill="#ccfbf1" text-anchor="middle">触觉：GelSight·帕西尼·Xela</text>
+  </g>
+
+  <!-- ============ ③ 算力层 ============ -->
+  <g class="bandF">
+    <rect x="120" y="290" width="1004" height="78" rx="14" fill="#0f1a2e" stroke="#334155" stroke-width="1.2"/>
+    <text x="140" y="316" font-size="15" font-weight="700" fill="#e2e8f0">③ 算力层</text>
+    <text x="140" y="334" font-size="10.5" fill="#64748b">边缘推理</text>
+  </g>
+  <g font-size="11">
+    <rect x="255" y="314" width="330" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="420" y="333" fill="#ccfbf1" text-anchor="middle">NVIDIA Jetson Orin / Thor——机器人边缘算力事实标准</text>
+    <rect x="595" y="314" width="220" height="30" rx="8" fill="#33270a" stroke="#fbbf24"/>
+    <text x="705" y="333" fill="#fde68a" text-anchor="middle">瑞芯微 RK3588——扫地机主力芯片</text>
+    <rect x="825" y="314" width="286" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="968" y="333" fill="#ccfbf1" text-anchor="middle">地平线 · 高通 RB 系列</text>
+  </g>
+
+  <!-- ============ ② 软件层 ============ -->
+  <g class="bandF">
+    <rect x="120" y="380" width="1004" height="106" rx="14" fill="#0f1a2e" stroke="#334155" stroke-width="1.2"/>
+    <text x="140" y="406" font-size="15" font-weight="700" fill="#e2e8f0">② 软件层</text>
+    <text x="140" y="424" font-size="10.5" fill="#64748b">中间件·仿真·模型</text>
+  </g>
+  <g font-size="11">
+    <rect x="255" y="394" width="240" height="30" rx="8" fill="#16233f" stroke="#60a5fa"/>
+    <text x="375" y="413" fill="#bfdbfe" text-anchor="middle">ROS 2——中间件事实标准</text>
+    <rect x="505" y="394" width="330" height="30" rx="8" fill="#16233f" stroke="#60a5fa"/>
+    <text x="670" y="413" fill="#bfdbfe" text-anchor="middle">仿真：Isaac Sim/Lab·MuJoCo·Genesis·SAPIEN</text>
+    <rect x="845" y="394" width="266" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="978" y="413" fill="#ccfbf1" text-anchor="middle">商业模型：GR00T N1·Rho-alpha（Foundry）</text>
+    <rect x="255" y="432" width="340" height="30" rx="8" fill="#16233f" stroke="#60a5fa"/>
+    <text x="425" y="451" fill="#bfdbfe" text-anchor="middle">开源模型与框架：LeRobot·OpenVLA·π0 开源版</text>
+  </g>
+
+  <!-- ============ ① 数据层 (bottom) ============ -->
+  <g class="bandF">
+    <rect x="120" y="498" width="1004" height="78" rx="14" fill="#0f1a2e" stroke="#334155" stroke-width="1.2"/>
+    <text x="140" y="524" font-size="15" font-weight="700" fill="#e2e8f0">① 数据层</text>
+    <text x="140" y="542" font-size="10.5" fill="#64748b">最深的护城河</text>
+  </g>
+  <g font-size="11">
+    <rect x="255" y="522" width="240" height="30" rx="8" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="375" y="541" fill="#ccfbf1" text-anchor="middle">遥操作：ALOHA·Gello·VR 手柄</text>
+    <rect x="505" y="522" width="310" height="30" rx="8" fill="#16233f" stroke="#60a5fa"/>
+    <text x="660" y="541" fill="#bfdbfe" text-anchor="middle">数据集：OXE·DROID·AgiBot World·EgoDex</text>
+    <rect class="haloF" x="821" y="518" width="298" height="38" rx="11" fill="none" stroke="#fbbf24" stroke-width="7" filter="url(#haloBlur6)"/>
+    <rect x="825" y="522" width="290" height="30" rx="8" fill="#33270a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="970" y="541" fill="#fde68a" text-anchor="middle">人类视频转化：VITRA——尚未开采的新矿</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="12.5">
+    <rect x="120" y="608" width="14" height="14" rx="4" fill="#10312e" stroke="#2dd4bf"/>
+    <text x="142" y="620" fill="#94a3b8">工业 / 研究生态（NVIDIA + ROS 2 + 协作臂）</text>
+    <rect x="440" y="608" width="14" height="14" rx="4" fill="#33270a" stroke="#fbbf24"/>
+    <text x="462" y="620" fill="#94a3b8">消费生态（成本与可靠性优先）</text>
+    <rect x="700" y="608" width="14" height="14" rx="4" fill="#16233f" stroke="#60a5fa"/>
+    <text x="722" y="620" fill="#94a3b8">开源 / 社区</text>
+    <rect x="840" y="608" width="14" height="14" rx="4" fill="#1f1530" stroke="#a78bfa"/>
+    <text x="862" y="620" fill="#94a3b8">前沿形态</text>
+    <text x="120" y="650" font-size="12" fill="#64748b">注意：消费与工业/研究几乎是两套独立生态——跨生态借技术、在消费成本约束下落地，是家庭多品类机器人的核心工程挑战</text>
+  </g>
+</svg>
