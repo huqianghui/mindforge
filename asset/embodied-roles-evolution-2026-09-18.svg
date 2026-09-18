@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="580" viewBox="0 0 1160 580" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTeal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+    @keyframes breathe { 0%,100% { opacity: 0.5; } 50% { opacity: 0.95; } }
+    .flowT { stroke-dasharray: 12 14; animation: flowDash 1.4s linear infinite; }
+    .flowA { stroke-dasharray: 12 14; animation: flowDash 1.0s linear infinite; }
+    .pulseA { animation: pulse 1.8s ease-in-out infinite; }
+    .breatheS { animation: breathe 2.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="580" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="578" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="20" font-weight="700" fill="#e2e8f0">扫地机器人 → 具身智能：同一组角色，逐个替换实现</text>
+  <text x="1124" y="30" font-size="12" fill="#2dd4bf" text-anchor="end">■ 青绿流动 = 实现保留</text>
+  <text x="1124" y="48" font-size="12" fill="#fbbf24" text-anchor="end">■ 琥珀脉冲 = 正在替换/增强</text>
+  <text x="1124" y="66" font-size="12" fill="#64748b" text-anchor="end">▢ 灰虚线 = 全新补位的角色</text>
+
+  <!-- column headers -->
+  <text x="325" y="86" font-size="14.5" font-weight="600" fill="#94a3b8" text-anchor="middle">传统栈（今天的扫地机 / AGV）</text>
+  <text x="800" y="86" font-size="14.5" font-weight="600" fill="#94a3b8" text-anchor="middle">具身智能栈（角色不变，实现升级）</text>
+
+  <!-- ===== row 1: 感知/建图 (替换中) ===== -->
+  <text x="40" y="133" font-size="14" font-weight="700" fill="#cbd5e1">感知 / 建图</text>
+  <rect x="185" y="102" width="280" height="52" rx="10" fill="#111a2e" stroke="#475569" stroke-width="1.4"/>
+  <text x="325" y="124" font-size="13" fill="#cbd5e1" text-anchor="middle">激光 SLAM</text>
+  <text x="325" y="142" font-size="11" fill="#64748b" text-anchor="middle">几何户型图——知道哪有障碍，不知道那是什么</text>
+  <path class="flowA" d="M 475 128 H 645" stroke="#fbbf24" stroke-width="3.5" opacity="0.8"/>
+  <path d="M 645 128 l -10 -6 v 12 z" fill="#fbbf24"/>
+  <circle r="5" fill="url(#pAmber)" filter="url(#softGlow)"><animateMotion dur="1.6s" repeatCount="indefinite" path="M 475 128 H 645"/></circle>
+  <text x="560" y="114" font-size="11" fill="#fcd34d" text-anchor="middle">增强</text>
+  <g class="pulseA">
+    <rect x="655" y="102" width="290" height="52" rx="10" fill="#2a2108" stroke="#fbbf24" stroke-width="1.6"/>
+  </g>
+  <text x="800" y="124" font-size="13" fill="#fef3c7" text-anchor="middle">SLAM + 视觉语义 → 3D 语义地图</text>
+  <text x="800" y="142" font-size="11" fill="#fcd34d" text-anchor="middle">空间智能：几何之上叠语义</text>
+
+  <!-- ===== row 2: 世界模型 (新增) ===== -->
+  <text x="40" y="218" font-size="14" font-weight="700" fill="#cbd5e1">世界模型</text>
+  <rect x="185" y="187" width="280" height="52" rx="10" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <text x="325" y="209" font-size="13" fill="#475569" text-anchor="middle">缺位</text>
+  <text x="325" y="227" font-size="11" fill="#334155" text-anchor="middle">没有"先在脑子里演一遍"的能力</text>
+  <path d="M 475 213 H 645" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6 6" opacity="0.7"/>
+  <path d="M 645 213 l -10 -6 v 12 z" fill="#64748b"/>
+  <text x="560" y="199" font-size="11" fill="#94a3b8" text-anchor="middle">补位（全新角色）</text>
+  <g class="breatheS">
+    <rect x="655" y="187" width="290" height="52" rx="10" fill="#141d33" stroke="#64748b" stroke-width="1.6" stroke-dasharray="7 5"/>
+  </g>
+  <text x="800" y="209" font-size="13" fill="#cbd5e1" text-anchor="middle">RSSM / 视频世界模型</text>
+  <text x="800" y="227" font-size="11" fill="#64748b" text-anchor="middle">学出状态转移：p(下一状态 | 状态, 动作)</text>
+
+  <!-- ===== row 3: 规划/策略 (替换中) ===== -->
+  <text x="40" y="303" font-size="14" font-weight="700" fill="#cbd5e1">规划 / 策略</text>
+  <rect x="185" y="272" width="280" height="52" rx="10" fill="#111a2e" stroke="#475569" stroke-width="1.4"/>
+  <text x="325" y="294" font-size="13" fill="#cbd5e1" text-anchor="middle">手写规则 + 简单搜索</text>
+  <text x="325" y="312" font-size="11" fill="#64748b" text-anchor="middle">弓字形路径、避障重规划都是人设计的</text>
+  <path class="flowA" d="M 475 298 H 645" stroke="#fbbf24" stroke-width="3.5" opacity="0.8"/>
+  <path d="M 645 298 l -10 -6 v 12 z" fill="#fbbf24"/>
+  <circle r="5" fill="url(#pAmber)" filter="url(#softGlow)"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M 475 298 H 645"/></circle>
+  <text x="560" y="284" font-size="11" fill="#fcd34d" text-anchor="middle">替换</text>
+  <g class="pulseA">
+    <rect x="655" y="272" width="290" height="52" rx="10" fill="#2a2108" stroke="#fbbf24" stroke-width="1.6"/>
+  </g>
+  <text x="800" y="294" font-size="13" fill="#fef3c7" text-anchor="middle">MPC 规划 / VLA 策略</text>
+  <text x="800" y="312" font-size="11" fill="#fcd34d" text-anchor="middle">从"人写的逻辑"换成"学出来的映射"</text>
+
+  <!-- ===== row 4: 控制 (保留) ===== -->
+  <text x="40" y="388" font-size="14" font-weight="700" fill="#cbd5e1">控制</text>
+  <rect x="185" y="357" width="280" height="52" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="325" y="379" font-size="13" fill="#ccfbf1" text-anchor="middle">PID（100–1000 Hz）</text>
+  <text x="325" y="397" font-size="11" fill="#5eead4" text-anchor="middle">目标位姿 → 电机力矩</text>
+  <path class="flowT" d="M 475 383 H 645" stroke="#2dd4bf" stroke-width="3.5" opacity="0.8"/>
+  <path d="M 645 383 l -10 -6 v 12 z" fill="#2dd4bf"/>
+  <circle r="5" fill="url(#pTeal)" filter="url(#softGlow)"><animateMotion dur="2s" repeatCount="indefinite" path="M 475 383 H 645"/></circle>
+  <text x="560" y="369" font-size="11" fill="#5eead4" text-anchor="middle">基本保留</text>
+  <rect x="655" y="357" width="290" height="52" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="800" y="379" font-size="13" fill="#ccfbf1" text-anchor="middle">PID（不变）</text>
+  <text x="800" y="397" font-size="11" fill="#5eead4" text-anchor="middle">毫秒级周期塞不进神经网络，也不需要</text>
+
+  <!-- ===== row 5: 安全 (保留) ===== -->
+  <text x="40" y="473" font-size="14" font-weight="700" fill="#cbd5e1">安全</text>
+  <rect x="185" y="442" width="280" height="52" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="325" y="464" font-size="13" fill="#ccfbf1" text-anchor="middle">硬件限位 / 碰撞开关</text>
+  <text x="325" y="482" font-size="11" fill="#5eead4" text-anchor="middle">确定性实现</text>
+  <path class="flowT" d="M 475 468 H 645" stroke="#2dd4bf" stroke-width="3.5" opacity="0.8"/>
+  <path d="M 645 468 l -10 -6 v 12 z" fill="#2dd4bf"/>
+  <circle r="5" fill="url(#pTeal)" filter="url(#softGlow)"><animateMotion dur="2s" begin="1s" repeatCount="indefinite" path="M 475 468 H 645"/></circle>
+  <text x="560" y="454" font-size="11" fill="#5eead4" text-anchor="middle">永远独立</text>
+  <rect x="655" y="442" width="290" height="52" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="800" y="464" font-size="13" fill="#ccfbf1" text-anchor="middle">仍独立于学习模型</text>
+  <text x="800" y="482" font-size="11" fill="#5eead4" text-anchor="middle">这个角色要求确定性，学习模型实现不了</text>
+
+  <!-- footer -->
+  <text x="580" y="532" font-size="13" fill="#94a3b8" text-anchor="middle">演进不是推倒重来——同一组角色，逐个把实现从"手工设计"换成"学习得到"</text>
+  <text x="580" y="554" font-size="12" fill="#64748b" text-anchor="middle">控制与安全两层最稳定；世界模型是唯一全新补位的角色</text>
+</svg>
