@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgDf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowDf" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealDf" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmberDf" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashDf { to { stroke-dashoffset: -76; } }
+    @keyframes pulseDf { 0%,100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+    @keyframes shimmerDf { 0%,100% { opacity: 0.75; } 50% { opacity: 1; } }
+    @keyframes jitter1 { 0%,100% { transform: translate(0,0); } 25% { transform: translate(2.5px,-2px); } 50% { transform: translate(-2px,2.5px); } 75% { transform: translate(1.5px,1.5px); } }
+    @keyframes jitter2 { 0%,100% { transform: translate(0,0); } 30% { transform: translate(-2px,-1.5px); } 60% { transform: translate(2px,2px); } }
+    @keyframes settle { 0% { opacity: 0.1; } 55% { opacity: 0.95; } 100% { opacity: 0.1; } }
+    @keyframes dropL { 0% { opacity: 0; transform: translate(0,-46px); } 30% { opacity: 1; } 70% { opacity: 1; transform: translate(-52px,0); } 100% { opacity: 0; transform: translate(-52px,0); } }
+    @keyframes dropR { 0% { opacity: 0; transform: translate(0,-46px); } 30% { opacity: 1; } 70% { opacity: 1; transform: translate(52px,0); } 100% { opacity: 0; transform: translate(52px,0); } }
+    @keyframes warnBlink { 0%,100% { opacity: 0.35; } 50% { opacity: 0.95; } }
+    .flowDf  { stroke-dasharray: 18 20; animation: flowDashDf 1.6s linear infinite; }
+    .flowDf2 { stroke-dasharray: 4 34;  animation: flowDashDf 1.6s linear infinite; }
+    .haloDf  { animation: pulseDf 1.8s ease-in-out infinite; }
+    .nodeDf  { animation: shimmerDf 3.5s ease-in-out infinite; }
+    .jit1 { animation: jitter1 0.9s steps(4) infinite; }
+    .jit2 { animation: jitter2 1.1s steps(3) infinite; }
+    .st1 { animation: settle 3s ease-in-out infinite; }
+    .st2 { animation: settle 3s ease-in-out 0.5s infinite; }
+    .st3 { animation: settle 3s ease-in-out 1s infinite; }
+    .dl { animation: dropL 3.6s ease-in-out infinite; }
+    .dr { animation: dropR 3.6s ease-in-out 1.8s infinite; }
+    .warn { animation: warnBlink 1.6s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="640" rx="18" fill="url(#bgDf)"/>
+  <rect x="1" y="1" width="1158" height="638" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ============ 上半：去噪由粗到细 ============ -->
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">扩散生成：把一次生成拆成多次小修正（由粗到细）</text>
+  <text x="1124" y="46" font-size="13" fill="#475569" text-anchor="end">同一机制服务两处：世界模型的画面 · VLA 的动作块</text>
+
+  <!-- flow track -->
+  <path d="M 150 200 H 1030" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flowDf" d="M 150 200 H 1030" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flowDf2" d="M 150 200 H 1030" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+  <circle r="5" fill="url(#pTealDf)" filter="url(#glowDf)">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M 150 200 H 1030"/>
+  </circle>
+
+  <!-- stage 1: 纯噪声 -->
+  <g>
+    <rect class="haloDf" x="86" y="122" width="180" height="156" rx="14" fill="#22d3ee" opacity="0.18"/>
+    <rect class="nodeDf" x="92" y="128" width="168" height="144" rx="12" fill="#0f1a2e" stroke="#334155" stroke-width="1.5"/>
+    <g class="jit1" fill="#64748b">
+      <circle cx="120" cy="160" r="3"/><circle cx="150" cy="185" r="3"/><circle cx="185" cy="150" r="3"/>
+      <circle cx="215" cy="200" r="3"/><circle cx="135" cy="225" r="3"/><circle cx="200" cy="235" r="3"/>
+      <circle cx="170" cy="210" r="3"/><circle cx="230" cy="170" r="3"/><circle cx="110" cy="200" r="3"/>
+    </g>
+    <g class="jit2" fill="#475569">
+      <circle cx="140" cy="145" r="2.5"/><circle cx="205" cy="185" r="2.5"/><circle cx="160" cy="250" r="2.5"/>
+      <circle cx="235" cy="220" r="2.5"/><circle cx="120" cy="245" r="2.5"/>
+    </g>
+    <text x="176" y="300" font-size="14" fill="#94a3b8" text-anchor="middle">t=T 纯高斯噪声</text>
+    <text x="176" y="320" font-size="12" fill="#64748b" text-anchor="middle">起点随机 → 每次采样不同</text>
+  </g>
+
+  <!-- stage 2: 粗结构 -->
+  <g>
+    <rect class="nodeDf" x="372" y="128" width="168" height="144" rx="12" fill="#0f1a2e" stroke="#334155" stroke-width="1.5"/>
+    <path class="st1" d="M 396 250 Q 430 240 450 205 Q 470 170 516 158" fill="none" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round" opacity="0.45"/>
+    <g class="jit2" fill="#475569">
+      <circle cx="420" cy="170" r="2.5"/><circle cx="500" cy="230" r="2.5"/><circle cx="460" cy="250" r="2.5"/>
+    </g>
+    <text x="456" y="300" font-size="14" fill="#94a3b8" text-anchor="middle">大噪声段：定全局结构</text>
+    <text x="456" y="320" font-size="12" fill="#64748b" text-anchor="middle">左绕还是右绕，此刻已定</text>
+  </g>
+
+  <!-- iteration label -->
+  <g>
+    <rect x="580" y="150" width="130" height="46" rx="23" fill="#1c1608" stroke="#b45309" stroke-width="1.5"/>
+    <text x="645" y="179" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">迭代 ×10~50 步</text>
+    <circle class="haloDf" cx="645" cy="173" r="34" fill="#fbbf24" opacity="0.12"/>
+  </g>
+
+  <!-- stage 3: 精修 -->
+  <g>
+    <rect class="nodeDf" x="742" y="128" width="168" height="144" rx="12" fill="#0f1a2e" stroke="#334155" stroke-width="1.5"/>
+    <path class="st2" d="M 766 250 Q 800 240 820 205 Q 840 170 886 158" fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+    <text x="826" y="300" font-size="14" fill="#94a3b8" text-anchor="middle">小噪声段：精修细节</text>
+    <text x="826" y="320" font-size="12" fill="#64748b" text-anchor="middle">抹平相邻步的不连续</text>
+  </g>
+
+  <!-- stage 4: 成品 -->
+  <g>
+    <rect class="haloDf" x="956" y="122" width="180" height="156" rx="14" fill="#2dd4bf" opacity="0.16"/>
+    <rect class="nodeDf" x="962" y="128" width="168" height="144" rx="12" fill="#0f1a2e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <path class="st3" d="M 986 250 Q 1020 240 1040 205 Q 1060 170 1106 158" fill="none" stroke="#5eead4" stroke-width="4" stroke-linecap="round" filter="url(#glowDf)"/>
+    <text x="1046" y="300" font-size="14" fill="#5eead4" text-anchor="middle">落在某个真实峰上的样本</text>
+    <text x="1046" y="320" font-size="12" fill="#64748b" text-anchor="middle">动作块 / 未来帧潜变量</text>
+  </g>
+
+  <!-- condition input -->
+  <text x="176" y="105" font-size="13" fill="#fbbf24">条件（观测 / 指令 / 历史帧+动作）每一步都参与修正 ↓</text>
+
+  <!-- ============ 下半：多峰分布 ============ -->
+  <line x1="36" y1="360" x2="1124" y2="360" stroke="#1e293b" stroke-width="1"/>
+  <text x="36" y="398" font-size="18" font-weight="700" fill="#e2e8f0">为什么不用回归：多峰分布里，均值是概率最低的地方</text>
+  <text x="1124" y="398" font-size="13" fill="#475569" text-anchor="end">一维例子：绕过杯子的 Δy 分布 p(Δy | 观测)</text>
+
+  <!-- axis -->
+  <line x1="180" y1="580" x2="980" y2="580" stroke="#334155" stroke-width="2"/>
+  <text x="330" y="604" font-size="13" fill="#94a3b8" text-anchor="middle">Δy = −5 cm（左绕）</text>
+  <text x="580" y="604" font-size="13" fill="#94a3b8" text-anchor="middle">0</text>
+  <text x="830" y="604" font-size="13" fill="#94a3b8" text-anchor="middle">Δy = +5 cm（右绕）</text>
+
+  <!-- bimodal curve -->
+  <path d="M 190 578 Q 260 578 300 500 Q 330 445 360 500 Q 400 578 470 578 L 690 578 Q 760 578 800 500 Q 830 445 860 500 Q 900 578 970 578"
+        fill="none" stroke="#2dd4bf" stroke-width="3.5" filter="url(#glowDf)" opacity="0.9"/>
+  <path d="M 190 578 Q 260 578 300 500 Q 330 445 360 500 Q 400 578 470 578 L 690 578 Q 760 578 800 500 Q 830 445 860 500 Q 900 578 970 578 Z"
+        fill="#2dd4bf" opacity="0.08"/>
+
+  <!-- peak labels -->
+  <text x="330" y="432" font-size="13" fill="#5eead4" text-anchor="middle">峰 1：左绕的示范</text>
+  <text x="830" y="432" font-size="13" fill="#5eead4" text-anchor="middle">峰 2：右绕的示范</text>
+
+  <!-- mean warning -->
+  <line class="warn" x1="580" y1="440" x2="580" y2="578" stroke="#f87171" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <g class="warn">
+    <line x1="568" y1="548" x2="592" y2="572" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="592" y1="548" x2="568" y2="572" stroke="#f87171" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <text x="580" y="470" font-size="13.5" font-weight="700" fill="#f87171" text-anchor="middle">MSE 回归输出均值 = 0</text>
+  <text x="580" y="490" font-size="12.5" fill="#fca5a5" text-anchor="middle">两个正确答案的平均 → 直接撞杯子</text>
+
+  <!-- diffusion samples dropping into peaks -->
+  <g class="dl">
+    <circle cx="382" cy="500" r="7" fill="url(#pTealDf)" filter="url(#glowDf)"/>
+  </g>
+  <g class="dr">
+    <circle cx="778" cy="500" r="7" fill="url(#pTealDf)" filter="url(#glowDf)"/>
+  </g>
+  <text x="580" y="530" font-size="12.5" fill="#94a3b8" text-anchor="middle">扩散采样：每次随机落入其中一个峰，</text>
+  <text x="580" y="547" font-size="12.5" fill="#94a3b8" text-anchor="middle">绝不会停在峰与峰之间</text>
+</svg>
