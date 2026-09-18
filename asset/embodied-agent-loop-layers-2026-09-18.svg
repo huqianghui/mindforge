@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="540" viewBox="0 0 1160 540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTeal" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pViolet" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ddd6fe"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.85; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.82; } 50% { opacity: 1; } }
+    .flow1 { stroke-dasharray: 16 22; animation: flowDash 3.2s linear infinite; }
+    .flow2 { stroke-dasharray: 16 22; animation: flowDash 1.4s linear infinite; }
+    .flow3 { stroke-dasharray: 16 22; animation: flowDash 0.55s linear infinite; }
+    .halo  { animation: pulse 1.6s ease-in-out infinite; }
+    .node  { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="540" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="538" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">具身智能的三层控制回路：同一个 Agent Loop，被物理时间拆成三种频率</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">粒子转速 ≈ 各层真实频率比例</text>
+
+  <!-- ============ 任务层 ============ -->
+  <text x="70" y="86" font-size="14" font-weight="600" fill="#5eead4">任务层 · 0.1–1 Hz（秒级 / 事件驱动）——每周期容得下一次 LLM 推理</text>
+  <path d="M 98 112 H 852 Q 880 112 880 147 Q 880 182 852 182 H 98 Q 70 182 70 147 Q 70 112 98 112"
+        fill="none" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flow1" d="M 98 112 H 852 Q 880 112 880 147 Q 880 182 852 182 H 98 Q 70 182 70 147 Q 70 112 98 112"
+        fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+  <circle r="7" fill="url(#pTeal)" filter="url(#softGlow)">
+    <animateMotion dur="10s" repeatCount="indefinite"
+      path="M 98 112 H 852 Q 880 112 880 147 Q 880 182 852 182 H 98 Q 70 182 70 147 Q 70 112 98 112"/>
+  </circle>
+  <g class="node">
+    <rect x="112" y="92" width="158" height="40" rx="9" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="191" y="117" font-size="13.5" fill="#ccfbf1" text-anchor="middle">LLM/VLM 规划器</text>
+    <rect x="312" y="92" width="158" height="40" rx="9" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="391" y="117" font-size="13.5" fill="#ccfbf1" text-anchor="middle">分解子任务 · 选技能</text>
+    <rect x="512" y="92" width="158" height="40" rx="9" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="591" y="117" font-size="13.5" fill="#ccfbf1" text-anchor="middle">技能执行（概率性）</text>
+    <rect x="700" y="92" width="164" height="40" rx="9" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="782" y="112" font-size="13" fill="#ccfbf1" text-anchor="middle">感知验证器判完成</text>
+    <text x="782" y="127" font-size="10.5" fill="#5eead4" text-anchor="middle">结束由感知判定，不由模型宣布</text>
+  </g>
+  <text x="475" y="174" font-size="11.5" fill="#134e4a" text-anchor="middle">失败 → replan（把失败信息塞回上下文，等价于 tool result）</text>
+
+  <!-- gap arrows 任务层 ↔ 策略层 -->
+  <path d="M 330 186 V 234" stroke="#64748b" stroke-width="2" marker-end="none"/>
+  <path d="M 330 234 l -5 -9 h 10 z" fill="#64748b"/>
+  <text x="340" y="214" font-size="11.5" fill="#94a3b8">下发子任务/目标</text>
+  <path d="M 620 234 V 186" stroke="#64748b" stroke-width="2"/>
+  <path d="M 620 186 l -5 9 h 10 z" fill="#64748b"/>
+  <text x="630" y="214" font-size="11.5" fill="#94a3b8">回报成功/失败</text>
+
+  <!-- ============ 策略层 ============ -->
+  <text x="70" y="222" font-size="14" font-weight="600" fill="#fcd34d">技能/策略层 · 10–50 Hz（几十毫秒）——一次视觉策略模型推理的节奏</text>
+  <path d="M 98 248 H 852 Q 880 248 880 283 Q 880 318 852 318 H 98 Q 70 318 70 283 Q 70 248 98 248"
+        fill="none" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flow2" d="M 98 248 H 852 Q 880 248 880 283 Q 880 318 852 318 H 98 Q 70 318 70 283 Q 70 248 98 248"
+        fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <circle r="6" fill="url(#pAmber)" filter="url(#softGlow)">
+    <animateMotion dur="3s" repeatCount="indefinite"
+      path="M 98 248 H 852 Q 880 248 880 283 Q 880 318 852 318 H 98 Q 70 318 70 283 Q 70 248 98 248"/>
+  </circle>
+  <circle r="5" fill="url(#pAmber)" filter="url(#softGlow)">
+    <animateMotion dur="3s" begin="1.5s" repeatCount="indefinite"
+      path="M 98 248 H 852 Q 880 248 880 283 Q 880 318 852 318 H 98 Q 70 318 70 283 Q 70 248 98 248"/>
+  </circle>
+  <g class="node">
+    <rect x="112" y="228" width="158" height="40" rx="9" fill="#2a2108" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="191" y="253" font-size="13.5" fill="#fef3c7" text-anchor="middle">传感器观测</text>
+    <rect x="312" y="228" width="158" height="40" rx="9" fill="#2a2108" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="391" y="253" font-size="13.5" fill="#fef3c7" text-anchor="middle">VLA / 扩散策略</text>
+    <rect x="512" y="228" width="158" height="40" rx="9" fill="#2a2108" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="591" y="253" font-size="13.5" fill="#fef3c7" text-anchor="middle">输出动作块（chunk）</text>
+    <rect x="700" y="228" width="164" height="40" rx="9" fill="#2a2108" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="782" y="248" font-size="13" fill="#fef3c7" text-anchor="middle">只执行前 k 步</text>
+    <text x="782" y="263" font-size="10.5" fill="#fcd34d" text-anchor="middle">再重新观测（闭环重规划）</text>
+  </g>
+
+  <!-- gap arrows 策略层 ↔ 控制层 -->
+  <path d="M 330 322 V 370" stroke="#64748b" stroke-width="2"/>
+  <path d="M 330 370 l -5 -9 h 10 z" fill="#64748b"/>
+  <text x="340" y="350" font-size="11.5" fill="#94a3b8">下发目标位姿/轨迹点</text>
+  <path d="M 620 370 V 322" stroke="#64748b" stroke-width="2"/>
+  <path d="M 620 322 l -5 9 h 10 z" fill="#64748b"/>
+  <text x="630" y="350" font-size="11.5" fill="#94a3b8">上报关节状态</text>
+
+  <!-- ============ 控制层 ============ -->
+  <text x="70" y="358" font-size="14" font-weight="600" fill="#c4b5fd">控制层 · 100–1000 Hz（毫秒）——每周期只够几十次乘加，塞不进任何神经网络</text>
+  <path d="M 98 384 H 852 Q 880 384 880 419 Q 880 454 852 454 H 98 Q 70 454 70 419 Q 70 384 98 384"
+        fill="none" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flow3" d="M 98 384 H 852 Q 880 384 880 419 Q 880 454 852 454 H 98 Q 70 454 70 419 Q 70 384 98 384"
+        fill="none" stroke="#a78bfa" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+  <circle r="6" fill="url(#pViolet)" filter="url(#softGlow)">
+    <animateMotion dur="1s" repeatCount="indefinite"
+      path="M 98 384 H 852 Q 880 384 880 419 Q 880 454 852 454 H 98 Q 70 454 70 419 Q 70 384 98 384"/>
+  </circle>
+  <circle r="5" fill="url(#pViolet)" filter="url(#softGlow)">
+    <animateMotion dur="1s" begin="0.5s" repeatCount="indefinite"
+      path="M 98 384 H 852 Q 880 384 880 419 Q 880 454 852 454 H 98 Q 70 454 70 419 Q 70 384 98 384"/>
+  </circle>
+  <g class="node">
+    <rect x="112" y="364" width="158" height="40" rx="9" fill="#1e1836" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="191" y="389" font-size="13.5" fill="#ede9fe" text-anchor="middle">目标位姿</text>
+    <rect x="312" y="364" width="158" height="40" rx="9" fill="#1e1836" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="391" y="389" font-size="13.5" fill="#ede9fe" text-anchor="middle">PID / 力矩计算</text>
+    <rect x="512" y="364" width="158" height="40" rx="9" fill="#1e1836" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="591" y="389" font-size="13.5" fill="#ede9fe" text-anchor="middle">电机执行</text>
+    <rect x="700" y="364" width="164" height="40" rx="9" fill="#1e1836" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="782" y="389" font-size="13.5" fill="#ede9fe" text-anchor="middle">关节状态回读</text>
+  </g>
+
+  <!-- ============ 安全监视器 ============ -->
+  <rect x="916" y="76" width="208" height="378" rx="12" fill="#2a0f12" stroke="#f87171" stroke-width="1.6" stroke-dasharray="7 5"/>
+  <rect class="halo" x="922" y="82" width="196" height="366" rx="9" fill="#f87171" opacity="0.08"/>
+  <text x="1020" y="106" font-size="14.5" font-weight="700" fill="#fca5a5" text-anchor="middle">安全监视器（并行常驻）</text>
+  <text x="1020" y="140" font-size="12.5" fill="#fecaca" text-anchor="middle">碰撞距离检测</text>
+  <text x="1020" y="164" font-size="12.5" fill="#fecaca" text-anchor="middle">速度 / 力矩上限</text>
+  <text x="1020" y="188" font-size="12.5" fill="#fecaca" text-anchor="middle">急停（E-Stop）</text>
+  <text x="1020" y="236" font-size="11.5" fill="#f87171" text-anchor="middle">确定性代码甚至硬件实现</text>
+  <text x="1020" y="256" font-size="11.5" fill="#f87171" text-anchor="middle">绕开学习模型 · 模型无权越过</text>
+  <text x="1020" y="276" font-size="11.5" fill="#f87171" text-anchor="middle">不参与决策 · 可打断所有层</text>
+  <!-- interrupt arrows into each band -->
+  <g class="halo">
+    <path d="M 916 147 H 892" stroke="#f87171" stroke-width="2.5"/>
+    <path d="M 892 147 l 9 -5 v 10 z" fill="#f87171"/>
+    <path d="M 916 283 H 892" stroke="#f87171" stroke-width="2.5"/>
+    <path d="M 892 283 l 9 -5 v 10 z" fill="#f87171"/>
+    <path d="M 916 419 H 892" stroke="#f87171" stroke-width="2.5"/>
+    <path d="M 892 419 l 9 -5 v 10 z" fill="#f87171"/>
+  </g>
+  <text x="1020" y="330" font-size="11.5" fill="#fca5a5" text-anchor="middle">软件 Agent：权限审批在 loop 里</text>
+  <text x="1020" y="350" font-size="11.5" fill="#fca5a5" text-anchor="middle">机器人：安全层在 loop 外</text>
+  <text x="1020" y="370" font-size="11.5" fill="#fca5a5" text-anchor="middle">（bounded autonomy 的工程落点）</text>
+
+  <!-- footer -->
+  <text x="580" y="492" font-size="13" fill="#94a3b8" text-anchor="middle">相邻两层频率差约 10 倍——时间尺度分离：外层把内层当作"立刻到位的理想执行器"</text>
+  <text x="580" y="514" font-size="12" fill="#64748b" text-anchor="middle">差距太小 → 两层互相打架产生振荡；差距太大 → 中间时间尺度的变化没人管</text>
+</svg>
