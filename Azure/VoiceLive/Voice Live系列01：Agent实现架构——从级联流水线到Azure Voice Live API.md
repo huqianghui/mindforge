@@ -165,6 +165,8 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 
 **WebSocket** 是地基——所有控制和数据都走这条路。**WebRTC** 是可选的上层建筑——只有启用数字人时才需要，且浏览器直连 Azure Avatar 服务（后端不参与媒体传输）。
 
+> **一个常见误读**："只有视频走 WebRTC、音频都走 WebSocket"——不对。Avatar 模式下，**数字人的整个输出（音频 + 视频）都在 WebRTC 同一条流里**：口型同步依赖音画同流做 AV sync，如果声音走 WS、画面走 RTC，两条路径的延迟抖动各自独立，嘴型必然对不上。WebSocket 上承载的音频只有**上行麦克风**（以及非 Avatar 模式的下行音频）。
+
 ### 4.3 为什么 WebRTC 不走后端代理？
 
 这不是优化选择，而是 **技术限制**：
@@ -174,6 +176,19 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 - **延迟不可接受**：加 TCP proxy ≈ +100-300ms，口型同步完全错位
 
 安全性通过 **临时 TURN 凭据** 保障——Azure 为每个 session 动态生成有效期仅几分钟的凭据，通过已认证的 WebSocket 传递给浏览器。API Key 始终留在后端内存中。
+
+#### 媒体面与控制面：backend 的真实角色
+
+"音频走 WebRTC 是不是就绕开后端了？"——把两个平面拆开就不再纠结：
+
+| 平面 | 承载 | 路径 |
+|------|------|------|
+| **媒体面** | 数字人音视频（以及未来 WebRTC 化的上行音频） | 浏览器 ↔ Azure 直连（STUN/TURN），后端永不经手 |
+| **控制面** | 鉴权/token 签发、session 配置、SDP 信令、事件与转写、业务逻辑 | 必经后端 |
+
+Voice Live 的接口层也支持把**上行音频**走 WebRTC（接口列表：SDK / WebSocket / WebRTC / SIP）。若把上行麦克风从 WebSocket 挪到 WebRTC，变化只是最后一段仍经后端的媒体字节也直连了——后端从"控制 + 中转部分媒体"收缩为**纯控制面**，而不是被绕开：WebRTC 的 SDP 交换本身就通过 WebSocket 会话完成（`session.avatar.connect`，先有 WS 才有 RTC）；API Key/token 签发、外部系统对接、转写落库都离不开后端。
+
+值不值得改，用 [系列03 的实测](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)判断：同区域后端 proxy 中转几乎免费（`response.create` → 首 token，经 proxy 与直连均 ~0.5s），延迟大头在外部网关与公网 RTT。所以上行音频 WebRTC 化赢的不是平均延迟，而是**弱网表现**——UDP 没有 TCP 队头阻塞、丢包不重传，卡顿退化为瞬间失真而非延迟尖峰（协议层完整分析见 [WebSocket与WebRTC深度对比](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)）。内网/办公网等网络良好的场景，WS 上行没有实际痛点。
 
 ### 4.4 连接建立时序
 
