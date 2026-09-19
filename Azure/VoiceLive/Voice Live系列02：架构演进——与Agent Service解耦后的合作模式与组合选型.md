@@ -15,6 +15,7 @@ description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 
 
 > 本文源于一次实际困惑的排查讨论（[与 ChatGPT 的完整讨论](https://chatgpt.com/share/6a5c24ec-5e68-83ec-9a8d-c5ad209bd815)，2026-07-19）：Azure AI Agent 是否仍可以通过 Voice Live API 使用 gpt-realtime？为什么 Agent 创建页面选不到 gpt-realtime 了？
 > 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)。
+> **2026-09-19 更新**：本文最初"Agent 选不到 gpt-realtime 是解耦设计"的因果解读已由 Speech 产品组更正——该现象是 **bug 且已修复**（见第一节更新框与第八节小结第 1 条）；全双工模型 gpt-live-1 的相关新信息见第九节开放问题 10/11，完整影响评估见 [Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)。
 
 ---
 
@@ -24,9 +25,13 @@ description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 
 
 先说结论：**这不代表 Azure 不再支持 GPT-Realtime，而是 Voice Live API 与 Agent Service 已经解耦**。gpt-realtime 不再作为 Agent 的 Foundation Model 暴露；如果目标是做语音 Agent，应该从 Voice Live API 发起会话，在会话中连接 Agent——而不是期望在 Agent 页面直接选择 gpt-realtime。
 
-### 为什么要把 Realtime 从 Agent Model Picker 移除
+> **更新（2026-09-19，与 Speech 产品组直接确认）**：上面这段因果解读需要修正——产品组确认 **Agent 无法选择/使用 gpt-realtime 是一个 bug，且已经修复**，并非有意的产品设计。本文其余的架构梳理不受影响：Voice Live 与 Agent Service 的解耦、三种合作模式、选型光谱均来自官方文档与 API 行为本身，依然成立；变化在于"Agent 直接搭配 gpt-realtime"这条路并没有被有意关闭。下一小节对"移除动机"的推演，相应降级为 Realtime 与 Agent Runtime 职责分离的架构背景解读，而非对"选不到"这个现象的解释。
 
-根本原因是**两者的生命周期和职责完全不同**：
+### Realtime 与 Agent Runtime 的职责分离（架构背景）
+
+> 本小节原标题为"为什么要把 Realtime 从 Agent Model Picker 移除"——随 2026-09-19 的 bug 更正改写：下面的职责分离分析依然成立，但它解释的是**为什么语音 Agent 的推荐入口是 Voice Live**，而不是"为什么页面上选不到 gpt-realtime"（后者是 bug）。
+
+两者的生命周期和职责完全不同：
 
 | | Realtime Model | Agent Runtime |
 |---|---|---|
@@ -34,9 +39,9 @@ description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 
 | 核心关注 | latency（<300ms）、interruption、turn detection、audio token | Tool execution、Planning、Memory、长上下文 |
 | 生命周期 | 一次实时会话（秒级往返） | 跨轮次的任务执行（可异步、可长时间运行） |
 
-Realtime Model 为低延迟双工语音而生，不适合承担 Agent 的规划与工具编排职责；Agent Runtime 需要的长上下文、Async Tool、Thread 管理也不是 Realtime 的设计目标。Microsoft 因此把两者职责分离。
+Realtime Model 为低延迟双工语音而生，不适合承担 Agent 的规划与工具编排职责；Agent Runtime 需要的长上下文、Async Tool、Thread 管理也不是 Realtime 的设计目标。这层职责分离是 Voice Live 独立成服务、Agent 作为可选挂载项这一架构方向的真实逻辑——但它并没有"关闭 Agent 搭配 gpt-realtime"这条路（此前选不到是 bug）。
 
-还有一个更大的背景：**Foundry 正在统一到 Responses API 架构**。Voice、Responses、Agent 都在逐步围绕 Responses API 重组，而不是沿用旧的 Assistants API 思路——Agent UI 和模型选择的变化正是这次架构调整的表层现象。
+还有一个更大的背景：**Foundry 正在统一到 Responses API 架构**。Voice、Responses、Agent 都在逐步围绕 Responses API 重组，而不是沿用旧的 Assistants API 思路。~~Agent UI 和模型选择的变化正是这次架构调整的表层现象~~（2026-09-19 撤回此句——模型选择的异常是 bug，不是架构调整的表层现象）。
 
 ---
 
@@ -80,7 +85,7 @@ Realtime Model                        ├── Echo cancellation
 
 ### 模式一：传统 Agent（不带语音）
 
-在 Agent 页面选择 GPT-5 / GPT-4.1 / GPT-4o / Phi 等文本模型创建 Agent，走 Responses API。适合纯文本/多模态但非实时语音的场景。**这条路线上已经没有 gpt-realtime**。
+在 Agent 页面选择 GPT-5 / GPT-4.1 / GPT-4o / Phi 等文本模型创建 Agent，走 Responses API。适合纯文本/多模态但非实时语音的场景。~~这条路线上已经没有 gpt-realtime~~（2026-09-19 更正：此前选不到 gpt-realtime 系 bug 且已修复，Agent 可正常搭配 gpt-realtime 使用）。
 
 ### 模式二：Voice Live 独立会话（不挂 Agent）
 
@@ -267,7 +272,7 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 
 ## 八、小结
 
-1. **"Agent 页面选不到 gpt-realtime"是解耦的结果，不是能力回退**——语音 Agent 的正确入口从 Agent 页面转移到了 Voice Live API。
+1. **"Agent 页面选不到 gpt-realtime"最终确认是 bug，已修复**（2026-09-19 产品组确认，修正本文最初"解耦设计"的解读）——但语音 Agent 的推荐入口依然是 Voice Live API：解耦架构、会话绑定挂 Agent 的机制均不受此更正影响。
 2. 调用链的持有关系反转：从 Agent 持有 Realtime，变为 Voice Live 统一持有模型层（直连 realtime/文本模型，或通过会话绑定挂 Agent）。Voice Live 与 Agent 的衔接是**连接层的会话绑定 + 服务端编排**，不是 realtime 模型 function call 调用 Agent；语音能力下沉到 Voice Live，Agent 专注逻辑与工具。
 3. 选型是一条光谱：**直连 Realtime API（控制力/PTU 尾延迟）↔ Voice Live 模式二（托管语音层）↔ 模式三（+ Agent）**。延迟瓶颈在模型和工具，不在 Voice Live 这层壳，直连只是压完模型与工具之后的最后一段收益。
 4. 模型组合的本质是**端到端自然度与级联智能程度的取舍**，Voice Live 用统一 API + fully managed 模型把两条路线的切换成本降到了配置级。
@@ -288,6 +293,8 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 7. **可观测性与评测**：Voice Live 的 conversation log / 系统日志如何接入现有监控；语音 Agent 的自动化评测方案（可结合 τ-Voice 一类全双工基准的失败分类）。
 8. **故障降级**：Voice Live 服务不可用时能否降级到直连 Realtime 或级联管线；多 region 容灾设计。
 9. **内容安全**：语音输入/输出的 content filter 行为与文本链路的差异，以及对延迟的影响。
+10. **gpt-live-1（全双工）接入 Voice Live 的路线评估**：OpenAI 已于 2026-09-10 发布全双工模型 gpt-live-1（边说边听 + 推理委派后端）。产品组信息（2026-09-18）：gpt-live-1 尚未在 Voice Live 上线，数字人方案当前继续用 gpt-realtime 1.5/2.1；OpenAI 侧没有视觉生成产品，数字人整合要看 Voice Live/Speech 层的方案；"prompt agent + gpt-live-1"走 Voice Live 的组合是可行方向。完整评估见 [Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)。
+11. **中文轮次检测对比实测**：产品组提示 gpt-live-1 的中文能力（含轮次判断）不见得强于 Voice Live 的 smart turn detection（semantic VAD）——中文场景选型前需要实测对比两者的判停/打断表现。
 
 ---
 
