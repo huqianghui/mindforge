@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="660" viewBox="0 0 1160 660" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowTeal" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.65; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flow-slow { stroke-dasharray: 8 14; animation: flowDash 2.2s linear infinite; }
+    .halo-amber { animation: pulse 1.9s ease-in-out infinite; }
+    .live { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="660" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="658" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">Azure Voice Live API — 四条语音路线与数字人闸门</text>
+  <text x="620" y="44" font-size="13" fill="#475569">级联 → 混合 → 语音到语音 → 全双工 · 2026.09</text>
+  <!-- legend -->
+  <line x1="36" y1="66" x2="66" y2="66" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round"/>
+  <text x="72" y="70" font-size="12" fill="#94a3b8">GA 可用</text>
+  <line x1="146" y1="66" x2="176" y2="66" stroke="#fbbf24" stroke-width="4" stroke-dasharray="7 5" stroke-linecap="round"/>
+  <text x="182" y="70" font-size="12" fill="#94a3b8">即将上线</text>
+  <line x1="266" y1="66" x2="296" y2="66" stroke="#475569" stroke-width="3" stroke-dasharray="4 5" stroke-linecap="round"/>
+  <text x="302" y="70" font-size="12" fill="#94a3b8">待验证路径</text>
+  <text x="400" y="70" font-size="12" fill="#2dd4bf">viseme ✓ = 数字人 avatar 的准入闸门（口型时间轴）</text>
+
+  <!-- ============ Row 1: 全双工 (coming soon) ============ -->
+  <text x="36" y="142" font-size="15" font-weight="700" fill="#fbbf24">① 全双工</text>
+  <text x="36" y="161" font-size="11" fill="#64748b">Full-duplex</text>
+  <rect class="halo-amber" x="164" y="117" width="592" height="66" rx="14" fill="#fbbf24" opacity="0.2" filter="url(#softGlow)"/>
+  <rect x="170" y="123" width="580" height="54" rx="10" fill="#1c1a10" stroke="#fbbf24" stroke-width="1.6" stroke-dasharray="8 5"/>
+  <text x="186" y="146" font-size="14" font-weight="600" fill="#fde68a">GPT-Live-1 · 全双工 Speech-to-Speech</text>
+  <text x="186" y="166" font-size="11.5" fill="#94a3b8">边说边听 · 打断/附和原生 · 对话不停，推理与工具委派后端</text>
+  <text x="744" y="146" font-size="11" fill="#fbbf24" text-anchor="end">Voice Live 即将上线</text>
+
+  <!-- ============ Row 2: 语音到语音 ============ -->
+  <text x="36" y="242" font-size="15" font-weight="700" fill="#e2e8f0">② 语音到语音</text>
+  <text x="36" y="261" font-size="11" fill="#64748b">Speech-to-Speech</text>
+  <rect class="live" x="170" y="223" width="580" height="54" rx="10" fill="#0b1e2c" stroke="#155e75" stroke-width="1.4"/>
+  <text x="186" y="246" font-size="14" font-weight="600" fill="#a5f3fc">GPT Realtime / Azure Realtime（端到端 S2S）</text>
+  <text x="186" y="266" font-size="11.5" fill="#94a3b8">音频进 · 音频出（voice 用 openai 原生音色）· 半双工：轮流说话，靠 VAD 判停</text>
+
+  <!-- voice-config note: row2 → row3 -->
+  <path d="M 460 277 Q 460 310 440 330" fill="none" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrowAmber)" opacity="0.85"/>
+  <text x="478" y="312" font-size="12" fill="#fbbf24">把 voice 配成 Azure 音色 ⇒ 会话滑入混合式（获得 viseme，可挂数字人）</text>
+
+  <!-- ============ Row 3: 混合式 ============ -->
+  <text x="36" y="357" font-size="15" font-weight="700" fill="#e2e8f0">③ 混合式</text>
+  <text x="36" y="376" font-size="11" fill="#64748b">Hybrid</text>
+  <rect class="live" x="170" y="338" width="185" height="54" rx="10" fill="#0b1e2c" stroke="#155e75" stroke-width="1.4"/>
+  <text x="186" y="361" font-size="13.5" font-weight="600" fill="#a5f3fc">智能轮次检测</text>
+  <text x="186" y="380" font-size="11" fill="#94a3b8">Semantic VAD · EoU</text>
+  <path class="flow" d="M 355 365 H 378" stroke="#2dd4bf" stroke-width="3" fill="none" marker-end="url(#arrowTeal)"/>
+  <rect class="live" x="383" y="338" width="225" height="54" rx="10" fill="#0b1e2c" stroke="#155e75" stroke-width="1.4"/>
+  <text x="398" y="361" font-size="13.5" font-weight="600" fill="#a5f3fc">GPT Realtime 2.1 / 1.5</text>
+  <text x="398" y="380" font-size="11" fill="#94a3b8">Speech-LLM：音频进 · 文本出</text>
+  <path class="flow" d="M 608 365 H 631" stroke="#2dd4bf" stroke-width="3" fill="none" marker-end="url(#arrowTeal)"/>
+  <rect class="live" x="636" y="338" width="180" height="54" rx="10" fill="#0f2027" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="651" y="361" font-size="13.5" font-weight="600" fill="#5eead4">Azure Speech TTS</text>
+  <text x="651" y="380" font-size="11" fill="#94a3b8">HD/Custom 音色 · viseme ✓</text>
+
+  <!-- ============ Row 4: 级联式 ============ -->
+  <text x="36" y="457" font-size="15" font-weight="700" fill="#e2e8f0">④ 级联式</text>
+  <text x="36" y="476" font-size="11" fill="#64748b">Cascaded</text>
+  <rect class="live" x="170" y="438" width="140" height="54" rx="10" fill="#0b1e2c" stroke="#155e75" stroke-width="1.4"/>
+  <text x="186" y="461" font-size="13.5" font-weight="600" fill="#a5f3fc">Azure STT</text>
+  <text x="186" y="480" font-size="11" fill="#94a3b8">语音 → 文本</text>
+  <path class="flow" d="M 310 465 H 333" stroke="#2dd4bf" stroke-width="3" fill="none" marker-end="url(#arrowTeal)"/>
+  <rect class="live" x="338" y="438" width="270" height="54" rx="10" fill="#0b1e2c" stroke="#155e75" stroke-width="1.4"/>
+  <text x="353" y="461" font-size="13.5" font-weight="600" fill="#a5f3fc">任意 LLM</text>
+  <text x="353" y="480" font-size="11" fill="#94a3b8">GPT · Claude · Gemini · OSS · BYO</text>
+  <path class="flow" d="M 608 465 H 631" stroke="#2dd4bf" stroke-width="3" fill="none" marker-end="url(#arrowTeal)"/>
+  <rect class="live" x="636" y="438" width="180" height="54" rx="10" fill="#0f2027" stroke="#2dd4bf" stroke-width="1.4"/>
+  <text x="651" y="461" font-size="13.5" font-weight="600" fill="#5eead4">Azure Speech TTS</text>
+  <text x="651" y="480" font-size="11" fill="#94a3b8">viseme ✓</text>
+
+  <!-- ============ Output boxes (right) ============ -->
+  <!-- 纯语音 -->
+  <rect x="915" y="165" width="220" height="80" rx="12" fill="#0b1e2c" stroke="#334155" stroke-width="1.4"/>
+  <text x="933" y="193" font-size="14" font-weight="600" fill="#e2e8f0">纯语音输出</text>
+  <text x="933" y="213" font-size="11" fill="#94a3b8">电话 / 联络中心 / 音频助手</text>
+  <text x="933" y="231" font-size="11" fill="#64748b">模型原生音频，无 viseme</text>
+  <!-- Avatar -->
+  <rect x="915" y="378" width="220" height="96" rx="12" fill="#0f2027" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text x="933" y="406" font-size="14" font-weight="600" fill="#5eead4">数字人 Avatar</text>
+  <text x="933" y="426" font-size="11" fill="#94a3b8">需 viseme 时间轴驱动口型</text>
+  <text x="933" y="444" font-size="11" fill="#94a3b8">云端神经视频合成 + WebRTC</text>
+  <text x="933" y="462" font-size="11" fill="#64748b">只有 ③④ 两条路线可达</text>
+
+  <!-- connectors: routes → outputs -->
+  <!-- Row1 → 纯语音 (amber dashed) -->
+  <path class="flow-slow" d="M 750 150 Q 850 150 908 190" fill="none" stroke="#fbbf24" stroke-width="2.4" marker-end="url(#arrowAmber)" opacity="0.8"/>
+  <!-- Row1 → Avatar (gray dashed, open question) -->
+  <path d="M 820 150 Q 1080 170 1030 372" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="5 6" marker-end="url(#arrowGray)"/>
+  <text x="1064" y="300" font-size="12" font-weight="600" fill="#94a3b8">?</text>
+  <text x="880" y="330" font-size="11" fill="#64748b">音频流无 viseme，</text>
+  <text x="880" y="346" font-size="11" fill="#64748b">待 Voice Live 层方案</text>
+  <!-- Row2 → 纯语音 -->
+  <path class="flow" d="M 750 250 Q 840 250 908 225" fill="none" stroke="#2dd4bf" stroke-width="2.6" marker-end="url(#arrowTeal)" opacity="0.85"/>
+  <!-- Row3 TTS → Avatar -->
+  <path class="flow" d="M 816 365 Q 880 365 908 408" fill="none" stroke="#2dd4bf" stroke-width="2.6" marker-end="url(#arrowTeal)" opacity="0.85"/>
+  <!-- Row4 TTS → Avatar -->
+  <path class="flow" d="M 816 465 Q 880 465 908 442" fill="none" stroke="#2dd4bf" stroke-width="2.6" marker-end="url(#arrowTeal)" opacity="0.85"/>
+
+  <!-- ============ Delegation bar ============ -->
+  <rect x="170" y="545" width="646" height="64" rx="12" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="7 5"/>
+  <text x="190" y="572" font-size="13.5" font-weight="600" fill="#cbd5e1">任务委派（四条路线通用）</text>
+  <text x="190" y="594" font-size="11.5" fill="#94a3b8">推理与工具外包：Foundry Agent · GPT / Claude / Gemini · OSS · 自带后端——语音层管「听与说」，后端管「想与做」</text>
+  <!-- delegation connectors up -->
+  <path d="M 493 545 V 500" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="4 5"/>
+  <rect x="915" y="545" width="220" height="64" rx="12" fill="none" stroke="#334155" stroke-width="1"/>
+  <text x="933" y="572" font-size="12" fill="#64748b">共享平台层：降噪 · 回声消除</text>
+  <text x="933" y="592" font-size="12" fill="#64748b">打断 · 函数调用 · 中间响应</text>
+
+  <text x="36" y="640" font-size="11" fill="#475569">图源结构参照 Azure Voice Live 培训架构页（2026-09），viseme 闸门与 voice 配置滑动为本文补充标注</text>
+</svg>

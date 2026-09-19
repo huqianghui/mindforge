@@ -315,6 +315,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API](Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
 - [Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型](Azure/VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
 - [Voice Live 系列 03：数字人出场延迟优化——ICE 门控根因、实测分解与预热占位策略](Azure/VoiceLive/Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)
+- [Voice Live 系列 04：四条路线与全双工——GPT-Live-1 对数字人方案的影响评估](Azure/VoiceLive/Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)
 
 #### Azure/Foundary-Agent
 
