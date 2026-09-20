@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="560" viewBox="0 0 1160 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgS15" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowS15" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particleS15" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="particleAmb" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrS15" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrBack" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDashS { to { stroke-dashoffset: -72; } }
+    @keyframes pulseS { 0%,100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+    @keyframes shimmerS { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    @keyframes backDash { to { stroke-dashoffset: -40; } }
+    .flowS  { stroke-dasharray: 14 16; animation: flowDashS 1.6s linear infinite; }
+    .flowS2 { stroke-dasharray: 3 27; animation: flowDashS 1.6s linear infinite; }
+    .haloAmb { animation: pulseS 1.8s ease-in-out infinite; }
+    .nodeDone { animation: shimmerS 3.6s ease-in-out infinite; }
+    .backFlow { stroke-dasharray: 8 12; animation: backDash 2.2s linear infinite; }
+  </style>
+
+  <rect width="1160" height="560" rx="18" fill="url(#bgS15)"/>
+  <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">开源 Physical AI 栈：分层选型与数据闭环</text>
+  <text x="470" y="46" font-size="13" fill="#475569">每层独立选型，数据在层间闭环流动</text>
+  <text x="1124" y="46" font-size="13" fill="#fbbf24" text-anchor="end">琥珀 = 本篇核心决策点（VLA 选型）</text>
+
+  <!-- ===== main pipeline row (y center 150) ===== -->
+  <!-- connectors -->
+  <path d="M 216 150 H 262" fill="none" stroke="#0f2b2b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowS" d="M 216 150 H 262" fill="none" stroke="#14b8a6" stroke-width="5" opacity="0.6"/>
+  <path d="M 442 150 H 488" fill="none" stroke="#0f2b2b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowS" d="M 442 150 H 488" fill="none" stroke="#14b8a6" stroke-width="5" opacity="0.6"/>
+  <path d="M 668 150 H 714" fill="none" stroke="#0f2b2b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowS" d="M 668 150 H 714" fill="none" stroke="#14b8a6" stroke-width="5" opacity="0.6"/>
+  <path d="M 894 150 H 940" fill="none" stroke="#0f2b2b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowS" d="M 894 150 H 940" fill="none" stroke="#14b8a6" stroke-width="5" opacity="0.6"/>
+  <path d="M 216 150 H 940" fill="none" stroke="#5eead4" stroke-width="0.001"/>
+
+  <!-- arrows on connectors -->
+  <path d="M 252 150 h 1" stroke="#2dd4bf" stroke-width="4" marker-end="url(#arrS15)"/>
+  <path d="M 478 150 h 1" stroke="#2dd4bf" stroke-width="4" marker-end="url(#arrS15)"/>
+  <path d="M 704 150 h 1" stroke="#2dd4bf" stroke-width="4" marker-end="url(#arrS15)"/>
+  <path d="M 930 150 h 1" stroke="#2dd4bf" stroke-width="4" marker-end="url(#arrS15)"/>
+
+  <!-- particles along whole pipeline -->
+  <circle r="5" fill="url(#particleS15)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 216 150 H 940"/>
+  </circle>
+  <circle r="4" fill="url(#particleS15)">
+    <animateMotion dur="6s" begin="2s" repeatCount="indefinite" path="M 216 150 H 940"/>
+  </circle>
+  <circle r="4" fill="url(#particleS15)">
+    <animateMotion dur="6s" begin="4s" repeatCount="indefinite" path="M 216 150 H 940"/>
+  </circle>
+
+  <!-- Node 1: Cosmos world model -->
+  <g class="nodeDone">
+    <rect x="40" y="102" width="176" height="96" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.6" filter="url(#glowS15)"/>
+    <text x="128" y="130" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">世界模型层</text>
+    <text x="128" y="152" font-size="13" fill="#ccfbf1" text-anchor="middle">Cosmos 3</text>
+    <text x="128" y="172" font-size="11" fill="#7dd3c8" text-anchor="middle">Edge 4B / Nano 16B / Super 65B</text>
+    <text x="128" y="189" font-size="11" fill="#64748b" text-anchor="middle">理解世界 · 预测未来</text>
+  </g>
+  <text x="239" y="136" font-size="11" fill="#5eead4" text-anchor="middle">合成</text>
+  <text x="239" y="150" font-size="11" fill="#5eead4" text-anchor="middle">数据</text>
+
+  <!-- Node 2: LeRobot -->
+  <g class="nodeDone">
+    <rect x="266" y="102" width="176" height="96" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.6" filter="url(#glowS15)"/>
+    <text x="354" y="130" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">数据与训练层</text>
+    <text x="354" y="152" font-size="13" fill="#ccfbf1" text-anchor="middle">LeRobot</text>
+    <text x="354" y="172" font-size="11" fill="#7dd3c8" text-anchor="middle">标准 Dataset · Train · Eval</text>
+    <text x="354" y="189" font-size="11" fill="#64748b" text-anchor="middle">机器人界的 Transformers</text>
+  </g>
+  <text x="465" y="136" font-size="11" fill="#5eead4" text-anchor="middle">训练</text>
+  <text x="465" y="150" font-size="11" fill="#5eead4" text-anchor="middle">策略</text>
+
+  <!-- Node 3: VLA — amber decision point -->
+  <rect x="484" y="94" width="192" height="112" rx="14" fill="#fbbf24" opacity="0.14" class="haloAmb"/>
+  <g>
+    <rect x="492" y="102" width="176" height="96" rx="12" fill="#2b230f" stroke="#fbbf24" stroke-width="2" filter="url(#glowS15)"/>
+    <text x="580" y="128" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">VLA 层（选型点）</text>
+    <text x="580" y="150" font-size="12.5" fill="#fde68a" text-anchor="middle">GR00T N1.7 3B</text>
+    <text x="580" y="169" font-size="12" fill="#fde68a" text-anchor="middle">π0 4B · OpenVLA 7B</text>
+    <text x="580" y="188" font-size="11" fill="#a8905a" text-anchor="middle">机器人该怎么行动</text>
+  </g>
+  <text x="691" y="136" font-size="11" fill="#5eead4" text-anchor="middle">动作</text>
+  <text x="691" y="150" font-size="11" fill="#5eead4" text-anchor="middle">策略</text>
+
+  <!-- Node 4: Isaac Sim -->
+  <g class="nodeDone">
+    <rect x="718" y="102" width="176" height="96" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.6" filter="url(#glowS15)"/>
+    <text x="806" y="130" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">仿真层</text>
+    <text x="806" y="152" font-size="13" fill="#ccfbf1" text-anchor="middle">Isaac Sim + Isaac Lab</text>
+    <text x="806" y="172" font-size="11" fill="#7dd3c8" text-anchor="middle">物理仿真 · RL/IL 训练场</text>
+    <text x="806" y="189" font-size="11" fill="#64748b" text-anchor="middle">先虚拟，后真机</text>
+  </g>
+  <text x="917" y="136" font-size="11" fill="#5eead4" text-anchor="middle">验证</text>
+  <text x="917" y="150" font-size="11" fill="#5eead4" text-anchor="middle">部署</text>
+
+  <!-- Node 5: Real Robot -->
+  <g class="nodeDone">
+    <rect x="944" y="102" width="176" height="96" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.6" filter="url(#glowS15)"/>
+    <text x="1032" y="130" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">真机层</text>
+    <text x="1032" y="152" font-size="13" fill="#ccfbf1" text-anchor="middle">Real Robot</text>
+    <text x="1032" y="172" font-size="11" fill="#7dd3c8" text-anchor="middle">Policy Server + ZMQ</text>
+    <text x="1032" y="189" font-size="11" fill="#64748b" text-anchor="middle">Isaac ROS 接真机</text>
+  </g>
+
+  <!-- ===== return path: new data flows back ===== -->
+  <path class="backFlow" d="M 1032 198 V 252 H 128 V 198" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrBack)" opacity="0.85"/>
+  <circle r="4" fill="url(#particleS15)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 1032 198 V 252 H 128 V 198"/>
+  </circle>
+  <text x="580" y="244" font-size="12" fill="#94a3b8" text-anchor="middle">真机新数据回流 → 世界模型增强 → 再生成合成数据（数据飞轮）</text>
+
+  <!-- ===== bottom: spatial intelligence support layer ===== -->
+  <text x="36" y="308" font-size="16" font-weight="700" fill="#e2e8f0">空间智能支撑层（案例决策：按用途拆成两条线，不是选一个模型）</text>
+
+  <!-- left branch: perception -->
+  <g class="nodeDone">
+    <rect x="40" y="330" width="500" height="120" rx="12" fill="#111a2e" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="290" y="358" font-size="14" font-weight="700" fill="#7dd3fc" text-anchor="middle">感知线：3D 重建 / 空间理解（给机器人用）</text>
+    <text x="290" y="382" font-size="12.5" fill="#bae6fd" text-anchor="middle">VGGT · 3DGS（Gaussian Splatting）</text>
+    <text x="290" y="406" font-size="11.5" fill="#64748b" text-anchor="middle">Camera → 3D Scene → 空间理解 → Planning</text>
+    <text x="290" y="428" font-size="11.5" fill="#64748b" text-anchor="middle">供给状态层：机器人「现在的世界是什么样」</text>
+  </g>
+
+  <!-- right branch: asset generation -->
+  <g class="nodeDone">
+    <rect x="620" y="330" width="500" height="120" rx="12" fill="#111a2e" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="870" y="358" font-size="14" font-weight="700" fill="#c4b5fd" text-anchor="middle">生产线：3D 资产 / 场景生成（给仿真用）</text>
+    <text x="870" y="382" font-size="12.5" fill="#ddd6fe" text-anchor="middle">Hunyuan3D · TRELLIS</text>
+    <text x="870" y="406" font-size="11.5" fill="#64748b" text-anchor="middle">Text / Image → 3D Asset → Blender / USD → Isaac Sim</text>
+    <text x="870" y="428" font-size="11.5" fill="#64748b" text-anchor="middle">供给仿真层：造出可以练习的虚拟世界</text>
+  </g>
+
+  <!-- feed arrows from spatial layer up -->
+  <path class="flowS2" d="M 290 330 V 290 Q 290 270 320 270 H 545 Q 570 270 574 232 L 580 206" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.75" marker-end="url(#arrS15)"/>
+  <path class="flowS2" d="M 870 330 V 290 Q 870 270 850 270 H 830 Q 806 270 806 240 V 206" fill="none" stroke="#a78bfa" stroke-width="2.5" opacity="0.75" marker-end="url(#arrS15)"/>
+  <text x="418" y="290" font-size="11" fill="#38bdf8">喂给 VLA / Planning</text>
+  <text x="900" y="290" font-size="11" fill="#a78bfa">喂给 Isaac Sim</text>
+
+  <!-- footer legend -->
+  <text x="36" y="510" font-size="12" fill="#475569">青绿流动 = 数据主链路 · 琥珀脉冲 = 核心选型决策点 · 灰色虚线 = 数据回流 · 蓝/紫 = 空间智能两条支线</text>
+  <text x="36" y="532" font-size="12" fill="#475569">Azure 定位：GPU VM / AKS / ML / Storage 做基础设施层，模型层全部使用 open-weight Physical AI 栈</text>
+</svg>

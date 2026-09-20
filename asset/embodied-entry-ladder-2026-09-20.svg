@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="380" viewBox="0 0 1160 380" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgL15" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowL15" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pL15" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashL { to { stroke-dashoffset: -68; } }
+    @keyframes pulseL { 0%,100% { opacity: 0.15; } 50% { opacity: 0.65; } }
+    @keyframes shimmerL { 0%,100% { opacity: 0.82; } 50% { opacity: 1; } }
+    .flowL { stroke-dasharray: 14 16; animation: flowDashL 1.6s linear infinite; }
+    .haloL { animation: pulseL 1.8s ease-in-out infinite; }
+    .nodeL { animation: shimmerL 3.8s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="380" rx="18" fill="url(#bgL15)"/>
+  <rect x="1" y="1" width="1158" height="378" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">能力级别决定入场点：不要一开始就上 VLA</text>
+  <text x="500" y="46" font-size="13" fill="#475569">按任务复杂度与数据量逐级进入，每级都能独立交付价值</text>
+
+  <!-- track -->
+  <path d="M 100 170 H 1080" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flowL" d="M 100 170 H 1080" fill="none" stroke="#14b8a6" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+  <circle r="5" fill="url(#pL15)">
+    <animateMotion dur="7s" repeatCount="indefinite" path="M 100 170 H 1080"/>
+  </circle>
+  <circle r="4" fill="url(#pL15)">
+    <animateMotion dur="7s" begin="3.5s" repeatCount="indefinite" path="M 100 170 H 1080"/>
+  </circle>
+
+  <!-- Level 0 -->
+  <g class="nodeL">
+    <rect x="60" y="110" width="220" height="120" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.5" filter="url(#glowL15)"/>
+    <text x="170" y="140" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">Level 0 · 传统机器人</text>
+    <text x="170" y="164" font-size="12" fill="#ccfbf1" text-anchor="middle">检测 + 位姿估计 + 运动规划</text>
+    <text x="170" y="186" font-size="11.5" fill="#7dd3c8" text-anchor="middle">数据门槛：无学习数据</text>
+    <text x="170" y="207" font-size="11.5" fill="#64748b" text-anchor="middle">固定场景、结构化任务够用</text>
+  </g>
+
+  <!-- Level 1 — amber recommended entry -->
+  <rect x="326" y="100" width="236" height="140" rx="14" fill="#fbbf24" opacity="0.13" class="haloL"/>
+  <g>
+    <rect x="334" y="110" width="220" height="120" rx="12" fill="#2b230f" stroke="#fbbf24" stroke-width="2" filter="url(#glowL15)"/>
+    <text x="444" y="140" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">Level 1 · 模仿学习</text>
+    <text x="444" y="164" font-size="12" fill="#fde68a" text-anchor="middle">ACT（约 80M 参数）</text>
+    <text x="444" y="186" font-size="11.5" fill="#fde68a" text-anchor="middle">数据门槛：几十条 demonstration</text>
+    <text x="444" y="207" font-size="11.5" fill="#a8905a" text-anchor="middle">多数客户的正确起步点</text>
+  </g>
+
+  <!-- Level 2 -->
+  <g class="nodeL">
+    <rect x="608" y="110" width="220" height="120" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.5" filter="url(#glowL15)"/>
+    <text x="718" y="140" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">Level 2 · VLA</text>
+    <text x="718" y="164" font-size="12" fill="#ccfbf1" text-anchor="middle">GR00T N1.7 / π0 / OpenVLA</text>
+    <text x="718" y="186" font-size="11.5" fill="#7dd3c8" text-anchor="middle">数据门槛：规模化轨迹 + 微调</text>
+    <text x="718" y="207" font-size="11.5" fill="#64748b" text-anchor="middle">需要语言指令与任务泛化时进入</text>
+  </g>
+
+  <!-- Level 3 -->
+  <g class="nodeL">
+    <rect x="882" y="110" width="220" height="120" rx="12" fill="#0f2b2b" stroke="#2dd4bf" stroke-width="1.5" filter="url(#glowL15)"/>
+    <text x="992" y="140" font-size="15" font-weight="700" fill="#5eead4" text-anchor="middle">Level 3 · 世界模型</text>
+    <text x="992" y="164" font-size="12" fill="#ccfbf1" text-anchor="middle">Cosmos 3</text>
+    <text x="992" y="186" font-size="11.5" fill="#7dd3c8" text-anchor="middle">价值：预测未来 + 合成数据</text>
+    <text x="992" y="207" font-size="11.5" fill="#64748b" text-anchor="middle">数据不够、场景长尾时才真正需要</text>
+  </g>
+
+  <!-- bottom hints -->
+  <text x="170" y="290" font-size="12" fill="#475569" text-anchor="middle">「把 A 点物体搬到 B 点」</text>
+  <text x="444" y="290" font-size="12" fill="#475569" text-anchor="middle">「模仿人类演示完成固定操作」</text>
+  <text x="718" y="290" font-size="12" fill="#475569" text-anchor="middle">「听懂指令，泛化到新物体」</text>
+  <text x="992" y="290" font-size="12" fill="#475569" text-anchor="middle">「预演动作后果，长尾数据合成」</text>
+
+  <text x="36" y="340" font-size="12" fill="#475569">决策原则：每一级先榨干价值再升级——升级的触发条件是「任务泛化需求」与「数据量」，不是模型新旧</text>
+</svg>
