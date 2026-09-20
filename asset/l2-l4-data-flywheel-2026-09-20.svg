@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="620" viewBox="0 0 1160 620" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="particleAmber" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.78; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; }
+    .flow2 { stroke-dasharray: 4 34;  animation: flowDash 1.6s linear infinite; }
+    .node  { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="620" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="618" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">L2 → L4 数据飞轮</text>
+  <text x="240" y="48" font-size="13" fill="#475569">量产车队做数据采集网络，世界模型做脑内练习场，L4 运营数据反哺回流</text>
+  <text x="1124" y="48" font-size="13" fill="#2dd4bf" text-anchor="end">Momenta「一个飞轮、两条腿」</text>
+
+  <!-- ============ loop track (behind nodes) ============ -->
+  <path d="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"
+        fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- flowing energy: full loop, clockwise -->
+  <path class="flow" d="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"
+        fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path class="flow2" d="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"
+        fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- moving particles along the loop -->
+  <circle r="7" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="9s" repeatCount="indefinite"
+      path="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"/>
+  </circle>
+  <circle r="5" fill="url(#particle)" filter="url(#softGlow)">
+    <animateMotion dur="9s" begin="3s" repeatCount="indefinite"
+      path="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"/>
+  </circle>
+  <circle r="6" fill="url(#particleAmber)" filter="url(#softGlow)">
+    <animateMotion dur="9s" begin="6s" repeatCount="indefinite"
+      path="M 240 190 H 920 Q 1090 190 1090 305 Q 1090 430 920 430 H 240 Q 70 430 70 305 Q 70 190 240 190 Z"/>
+  </circle>
+
+  <!-- ============ Row 1: ①②③ (left to right) ============ -->
+  <g class="node">
+    <rect x="140" y="152" width="200" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="240" y="182" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">① L2 量产车队</text>
+    <text x="240" y="204" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">百万辆 × 每天 × 数年</text>
+    <text x="240" y="220" font-size="11.5" fill="#5eead4" opacity="0.7" text-anchor="middle">廉价、持续的真实世界采集网络</text>
+  </g>
+  <g class="node">
+    <rect x="480" y="152" width="200" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="580" y="182" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">② 数据引擎</text>
+    <text x="580" y="204" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">挖掘 · 筛选 · 自动标注</text>
+    <text x="580" y="220" font-size="11.5" fill="#5eead4" opacity="0.7" text-anchor="middle">干预事件 / corner case / 长尾场景</text>
+  </g>
+  <g class="node">
+    <rect x="820" y="152" width="200" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="920" y="182" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">③ 学习世界</text>
+    <text x="920" y="204" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Perception · Prediction</text>
+    <text x="920" y="220" font-size="11.5" fill="#5eead4" opacity="0.7" text-anchor="middle">World Model：P(s′ | s, a)</text>
+  </g>
+
+  <!-- ============ Row 2: ④⑤⑥ (right to left, clockwise continuation) ============ -->
+  <g class="node">
+    <rect x="820" y="392" width="200" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="920" y="422" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">④ Simulation + RL</text>
+    <text x="920" y="444" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">在「脑内世界」里低成本试错</text>
+    <text x="920" y="460" font-size="11.5" fill="#5eead4" opacity="0.7" text-anchor="middle">想象百万次，真实执行一次</text>
+  </g>
+  <g class="node">
+    <rect x="480" y="392" width="200" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="580" y="422" font-size="16" font-weight="600" fill="#ccfbf1" text-anchor="middle">⑤ L4 Robotaxi</text>
+    <text x="580" y="444" font-size="11.5" fill="#5eead4" opacity="0.85" text-anchor="middle">限定 ODD 内系统负责兜底</text>
+    <text x="580" y="460" font-size="11.5" fill="#5eead4" opacity="0.7" text-anchor="middle">fallback / minimal risk maneuver</text>
+  </g>
+  <g class="node">
+    <rect x="140" y="392" width="200" height="76" rx="14" fill="#0f2a38" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="240" y="422" font-size="16" font-weight="600" fill="#e0f2fe" text-anchor="middle">⑥ 高价值数据回流</text>
+    <text x="240" y="444" font-size="11.5" fill="#7dd3fc" opacity="0.9" text-anchor="middle">无人驾驶运营数据反哺世界模型</text>
+    <text x="240" y="460" font-size="11.5" fill="#7dd3fc" opacity="0.7" text-anchor="middle">L4 技术再反哺 L2 产品</text>
+  </g>
+
+  <!-- ============ bottom caveat ============ -->
+  <rect x="140" y="516" width="880" height="66" rx="12" fill="#1c1917" stroke="#78350f" stroke-width="1.2"/>
+  <text x="580" y="543" font-size="13.5" font-weight="600" fill="#fbbf24" text-anchor="middle">⚠ 陷阱：L2 数据 ≠ L4 数据</text>
+  <text x="580" y="566" font-size="12.5" fill="#d6d3d1" text-anchor="middle">L2 数据学到的是 human driving distribution（「人类通常怎么开」），不是「我负责驾驶时该怎么开」——所以中间必须插入 World Model + Simulation + RL 这一环</text>
+</svg>

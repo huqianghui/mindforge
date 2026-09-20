@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="400" viewBox="0 0 1160 400" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloBlur2" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+    <radialGradient id="particle2" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashG { to { stroke-dashoffset: -76; } }
+    @keyframes pulseG { 0%,100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+    @keyframes shimmerG { 0%,100% { opacity: 0.78; } 50% { opacity: 1; } }
+    .flowG  { stroke-dasharray: 18 20; animation: flowDashG 1.5s linear infinite; }
+    .flowG2 { stroke-dasharray: 4 34;  animation: flowDashG 1.5s linear infinite; }
+    .halo-nowG { animation: pulseG 1.8s ease-in-out infinite; }
+    .done-nodeG { animation: shimmerG 3.5s ease-in-out infinite; }
+  </style>
+
+  <!-- background -->
+  <rect width="1160" height="400" rx="18" fill="url(#bg2)"/>
+  <rect x="1" y="1" width="1158" height="398" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- header -->
+  <text x="36" y="48" font-size="21" font-weight="700" fill="#e2e8f0">从驾驶模型到通用物理智能：五代演进</text>
+  <text x="440" y="48" font-size="13" fill="#475569">从「会开车」到「换一个身体也能快速学会行动」</text>
+  <text x="1124" y="48" font-size="13" fill="#fbbf24" text-anchor="end">当前推进：World Foundation Model</text>
+
+  <!-- ============ connector track ============ -->
+  <path d="M 128 190 H 1032" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- flowing energy through gen 3 (current) -->
+  <path class="flowG" d="M 128 190 H 580" fill="none" stroke="#14b8a6" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+  <path class="flowG2" d="M 128 190 H 580" fill="none" stroke="#5eead4" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <!-- future portion: dim static dashes -->
+  <path d="M 580 190 H 1032" fill="none" stroke="#334155" stroke-width="5" stroke-dasharray="6 12" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- moving particles along active path -->
+  <circle r="7" fill="url(#particle2)" filter="url(#softGlow2)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 128 190 H 580"/>
+  </circle>
+  <circle r="5" fill="url(#particle2)" filter="url(#softGlow2)">
+    <animateMotion dur="5s" begin="2.5s" repeatCount="indefinite" path="M 128 190 H 580"/>
+  </circle>
+
+  <!-- ============ Gen 1 (done) ============ -->
+  <g class="done-nodeG">
+    <rect x="46" y="152" width="164" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="128" y="180" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">第一代</text>
+    <text x="128" y="200" font-size="13" fill="#ccfbf1" text-anchor="middle">Driving Model</text>
+    <text x="128" y="219" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">「我会开车」· policy</text>
+  </g>
+  <text x="128" y="266" font-size="11.5" fill="#475569" text-anchor="middle">image → steering</text>
+  <text x="128" y="284" font-size="11.5" fill="#475569" text-anchor="middle">早期端到端驾驶</text>
+
+  <!-- ============ Gen 2 (done) ============ -->
+  <g class="done-nodeG">
+    <rect x="272" y="152" width="164" height="76" rx="14" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="354" y="180" font-size="15" font-weight="600" fill="#ccfbf1" text-anchor="middle">第二代</text>
+    <text x="354" y="200" font-size="13" fill="#ccfbf1" text-anchor="middle">Driving World Model</text>
+    <text x="354" y="219" font-size="11" fill="#5eead4" opacity="0.85" text-anchor="middle">「我理解汽车周围的世界」</text>
+  </g>
+  <text x="354" y="266" font-size="11.5" fill="#475569" text-anchor="middle">BEV / occupancy / 驾驶动力学</text>
+  <text x="354" y="284" font-size="11.5" fill="#475569" text-anchor="middle">量产体系正在落地</text>
+
+  <!-- ============ Gen 3 (current, pulsing) ============ -->
+  <rect class="halo-nowG" x="490" y="146" width="180" height="88" rx="18" fill="none"
+        stroke="#fbbf24" stroke-width="10" filter="url(#haloBlur2)"/>
+  <g>
+    <rect x="498" y="152" width="164" height="76" rx="14" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="580" y="180" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">第三代</text>
+    <text x="580" y="200" font-size="13" font-weight="600" fill="#fef3c7" text-anchor="middle">Physical World Model</text>
+    <text x="580" y="219" font-size="11" fill="#fcd34d" text-anchor="middle">「我理解物理世界如何变化」</text>
+  </g>
+  <text x="580" y="266" font-size="11.5" fill="#b45309" text-anchor="middle">NVIDIA Cosmos 等 WFM ◀ 当前</text>
+  <text x="580" y="284" font-size="11.5" fill="#78716c" text-anchor="middle">pretrain → post-train → embodiment</text>
+
+  <!-- ============ Gen 4 (planned) ============ -->
+  <g>
+    <rect x="724" y="152" width="164" height="76" rx="14" fill="#151d2e" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="806" y="180" font-size="15" font-weight="600" fill="#94a3b8" text-anchor="middle">第四代</text>
+    <text x="806" y="200" font-size="12.5" fill="#94a3b8" text-anchor="middle">WM + Policy + RL</text>
+    <text x="806" y="219" font-size="11" fill="#64748b" text-anchor="middle">「我能预测自己行动的后果」</text>
+  </g>
+  <text x="806" y="266" font-size="11.5" fill="#334155" text-anchor="middle">脑内反事实推演 + 策略学习</text>
+  <text x="806" y="284" font-size="11.5" fill="#334155" text-anchor="middle">闭环 Physical AI</text>
+
+  <!-- ============ Gen 5 (planned) ============ -->
+  <g>
+    <rect x="950" y="152" width="164" height="76" rx="14" fill="#151d2e" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="1032" y="180" font-size="15" font-weight="600" fill="#94a3b8" text-anchor="middle">第五代</text>
+    <text x="1032" y="197" font-size="11.5" fill="#94a3b8" text-anchor="middle">General Physical</text>
+    <text x="1032" y="212" font-size="11.5" fill="#94a3b8" text-anchor="middle">Intelligence</text>
+    <text x="1032" y="226" font-size="10.5" fill="#64748b" text-anchor="middle">「换个身体也能快速学会」</text>
+  </g>
+  <text x="1032" y="266" font-size="11.5" fill="#334155" text-anchor="middle">embodiment adapter</text>
+  <text x="1032" y="284" font-size="11.5" fill="#334155" text-anchor="middle">跨 Car / Robot / Drone 迁移</text>
+
+  <!-- ============ legend ============ -->
+  <g font-size="12">
+    <circle cx="330" cy="345" r="6" fill="#2dd4bf"/>
+    <text x="344" y="349" fill="#94a3b8">已成熟/量产中</text>
+    <circle cx="470" cy="345" r="6" fill="#fbbf24"/>
+    <text x="484" y="349" fill="#94a3b8">当前推进（WFM）</text>
+    <circle cx="630" cy="345" r="6" fill="#334155"/>
+    <text x="644" y="349" fill="#94a3b8">研究/规划中</text>
+    <text x="780" y="349" fill="#475569">World Model 负责理解，Policy 负责行动，RL 负责学习</text>
+  </g>
+</svg>
