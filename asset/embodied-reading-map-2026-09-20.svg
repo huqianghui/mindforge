@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="620" viewBox="0 0 1160 620" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgRM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowRM" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloRM" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <radialGradient id="pSlateRM" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e2e8f0"/>
+      <stop offset="0.5" stop-color="#94a3b8"/>
+      <stop offset="1" stop-color="#94a3b8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashRM { to { stroke-dashoffset: -48; } }
+    @keyframes pulseRM { 0%,100% { opacity: 0.10; } 50% { opacity: 0.5; } }
+    @keyframes shimmerRM { 0%,100% { opacity: 0.82; } 50% { opacity: 1; } }
+    .flowRM { stroke-dasharray: 10 12; animation: flowDashRM 1.6s linear infinite; }
+    .haloRM { animation: pulseRM 2.4s ease-in-out infinite; }
+    .nodeRM { animation: shimmerRM 3.8s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="620" rx="18" fill="url(#bgRM)"/>
+  <rect x="1" y="1" width="1158" height="618" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="21" font-weight="700" fill="#e2e8f0">具身智能系列阅读地图：一篇导读 · 五条主线</text>
+  <text x="1124" y="42" font-size="12.5" fill="#475569" text-anchor="end">线内自上而下 = 推荐阅读顺序 · 虚线 = 线间依赖</text>
+
+  <!-- panorama node -->
+  <g class="nodeRM">
+    <rect x="440" y="62" width="280" height="50" rx="12" fill="#152238" stroke="#94a3b8" stroke-width="1.8"/>
+    <text x="580" y="84" font-size="15" font-weight="700" fill="#e2e8f0" text-anchor="middle">具身智能全景（总导读）</text>
+    <text x="580" y="103" font-size="10.5" fill="#94a3b8" text-anchor="middle">概念映射 · 五条技术主线 · 行业瓶颈</text>
+  </g>
+
+  <!-- fan-out connectors to five columns -->
+  <path class="flowRM" d="M 500 112 C 320 130, 160 140, 130 168" fill="none" stroke="#2dd4bf" stroke-width="3" opacity="0.55"/>
+  <path class="flowRM" d="M 540 112 C 450 132, 380 142, 355 168" fill="none" stroke="#fbbf24" stroke-width="3" opacity="0.55"/>
+  <path class="flowRM" d="M 580 112 V 168" fill="none" stroke="#a78bfa" stroke-width="3" opacity="0.55"/>
+  <path class="flowRM" d="M 620 112 C 710 132, 780 142, 805 168" fill="none" stroke="#38bdf8" stroke-width="3" opacity="0.55"/>
+  <path class="flowRM" d="M 660 112 C 900 130, 1000 140, 1030 168" fill="none" stroke="#34d399" stroke-width="3" opacity="0.55"/>
+  <circle r="5" fill="url(#pSlateRM)" filter="url(#glowRM)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 500 112 C 320 130, 160 140, 130 168"/>
+  </circle>
+  <circle r="5" fill="url(#pSlateRM)" filter="url(#glowRM)">
+    <animateMotion dur="5s" begin="2.5s" repeatCount="indefinite" path="M 660 112 C 900 130, 1000 140, 1030 168"/>
+  </circle>
+
+  <!-- column headers -->
+  <text x="130" y="188" font-size="14" font-weight="700" fill="#5eead4" text-anchor="middle">VLA系列 · 行动层</text>
+  <text x="355" y="188" font-size="14" font-weight="700" fill="#fcd34d" text-anchor="middle">世界模型系列 · 认知层</text>
+  <text x="580" y="188" font-size="14" font-weight="700" fill="#c4b5fd" text-anchor="middle">空间智能系列 · 空间层</text>
+  <text x="805" y="188" font-size="14" font-weight="700" fill="#7dd3fc" text-anchor="middle">机器人系统系列 · 系统层</text>
+  <text x="1030" y="188" font-size="14" font-weight="700" fill="#6ee7b7" text-anchor="middle">落地实践系列 · 落地层</text>
+
+  <!-- VLA column (teal) -->
+  <g class="nodeRM">
+    <rect x="30" y="200" width="200" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="130" y="223" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">01 VLA输出架构演进</text>
+    <text x="130" y="242" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">动作token → 扩散动作头</text>
+    <rect x="30" y="272" width="200" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="130" y="295" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">02 扩散与Transformer分工</text>
+    <text x="130" y="314" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">动作块并行去噪 · 闭环重规划</text>
+    <rect x="30" y="344" width="200" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="130" y="367" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">03 扩散模型基础</text>
+    <text x="130" y="386" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">两条线共同的方法论地基</text>
+  </g>
+
+  <!-- World model column (amber) -->
+  <g class="nodeRM">
+    <rect x="255" y="200" width="200" height="56" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="355" y="223" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">01 四条实现路线</text>
+    <text x="355" y="242" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">像素 / 潜空间 / 显式3D / 方程</text>
+    <rect x="255" y="272" width="200" height="56" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="355" y="295" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">02 与LLM的分野</text>
+    <text x="355" y="314" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">动作条件化 · 空间持久记忆</text>
+    <rect x="255" y="344" width="200" height="56" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="355" y="367" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">03 与RL的边界</text>
+    <text x="355" y="386" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">判别三要素 · 脑内模拟器</text>
+  </g>
+
+  <!-- Spatial column (violet) -->
+  <g class="nodeRM">
+    <rect x="480" y="200" width="200" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="580" y="223" font-size="12.5" font-weight="600" fill="#ede9fe" text-anchor="middle">01 3D重建与分层栈</text>
+    <text x="580" y="242" font-size="10" fill="#c4b5fd" opacity="0.8" text-anchor="middle">状态 vs 状态转移</text>
+    <rect x="480" y="272" width="200" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="580" y="295" font-size="12.5" font-weight="600" fill="#ede9fe" text-anchor="middle">02 显式与隐式空间表达</text>
+    <text x="580" y="314" font-size="10" fill="#c4b5fd" opacity="0.8" text-anchor="middle">VGGT / 3DGS → 空间记忆</text>
+    <rect x="480" y="344" width="200" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="580" y="367" font-size="12.5" font-weight="600" fill="#ede9fe" text-anchor="middle">03 3D内容生产两条路线</text>
+    <text x="580" y="386" font-size="10" fill="#c4b5fd" opacity="0.8" text-anchor="middle">Agent+Blender vs 神经生成</text>
+  </g>
+
+  <!-- Robot system column (sky) -->
+  <g class="nodeRM">
+    <rect x="705" y="200" width="200" height="56" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="805" y="223" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">01 硬件形态与生态地图</text>
+    <text x="805" y="242" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">AGV 到人形的五层拆解</text>
+    <rect x="705" y="272" width="200" height="56" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="805" y="295" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">02 Agent循环的物理形态</text>
+    <text x="805" y="314" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">分层多频率控制回路</text>
+    <rect x="705" y="344" width="200" height="56" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="805" y="367" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">03 角色与实现的分离</text>
+    <text x="805" y="386" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">七个功能角色 · 全系列枢纽</text>
+  </g>
+
+  <!-- Practice column (emerald), capstone pulses -->
+  <g class="nodeRM">
+    <rect x="930" y="200" width="200" height="56" rx="10" fill="#0f3a2e" stroke="#34d399" stroke-width="1.4"/>
+    <text x="1030" y="223" font-size="12.5" font-weight="600" fill="#d1fae5" text-anchor="middle">01 数据飞轮与VITRA</text>
+    <text x="1030" y="242" font-size="10" fill="#6ee7b7" opacity="0.8" text-anchor="middle">人类视频 → 机器人语料</text>
+    <rect x="930" y="272" width="200" height="56" rx="10" fill="#0f3a2e" stroke="#34d399" stroke-width="1.4"/>
+    <text x="1030" y="295" font-size="12.5" font-weight="600" fill="#d1fae5" text-anchor="middle">02 自动驾驶与世界模型</text>
+    <text x="1030" y="314" font-size="10" fill="#6ee7b7" opacity="0.8" text-anchor="middle">传感器之争 · 数据飞轮</text>
+  </g>
+  <rect class="haloRM" x="924" y="338" width="212" height="68" rx="14" fill="none" stroke="#34d399" stroke-width="9" filter="url(#haloRM)"/>
+  <g>
+    <rect x="930" y="344" width="200" height="56" rx="10" fill="#0f3a2e" stroke="#34d399" stroke-width="2"/>
+    <text x="1030" y="367" font-size="12.5" font-weight="700" fill="#d1fae5" text-anchor="middle">03 分层选型决策</text>
+    <text x="1030" y="386" font-size="10" fill="#6ee7b7" opacity="0.85" text-anchor="middle">全系列 capstone · 选型直接进</text>
+  </g>
+
+  <!-- cross-line dependency arrows (dashed) -->
+  <path class="flowRM" d="M 230 372 C 250 372, 240 250, 255 232" fill="none" stroke="#fbbf24" stroke-width="2.2" opacity="0.7"/>
+  <text x="238" y="290" font-size="10" fill="#fcd34d" opacity="0.85" text-anchor="middle" transform="rotate(-90 238 290)">扩散头概念是前置</text>
+  <path class="flowRM" d="M 455 228 H 480" fill="none" stroke="#a78bfa" stroke-width="2.2" opacity="0.7"/>
+  <text x="467" y="216" font-size="10" fill="#c4b5fd" opacity="0.85" text-anchor="middle">感知侧展开</text>
+
+  <!-- reading paths legend -->
+  <rect x="30" y="440" width="1100" height="150" rx="14" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="56" y="472" font-size="14" font-weight="700" fill="#e2e8f0">三条推荐路径</text>
+  <text x="56" y="502" font-size="12.5" fill="#fcd34d">① 概念纵深：</text>
+  <text x="160" y="502" font-size="12.5" fill="#cbd5e1">全景 → 世界模型 01→02→03 → 机器人系统 03（角色与实现的分离）</text>
+  <text x="56" y="530" font-size="12.5" fill="#c4b5fd">② 空间智能：</text>
+  <text x="160" y="530" font-size="12.5" fill="#cbd5e1">世界模型 01 → 空间智能 01→02→03</text>
+  <text x="56" y="558" font-size="12.5" fill="#6ee7b7">③ 工程落地：</text>
+  <text x="160" y="558" font-size="12.5" fill="#cbd5e1">全景 → 落地实践 03（分层选型决策），再按需回查各线；VLA 03（扩散模型基础）随时插读</text>
+</svg>

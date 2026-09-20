@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgDT" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowDT" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealDT" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashDT { to { stroke-dashoffset: -52; } }
+    @keyframes shimmerDT { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+    .flowDT { stroke-dasharray: 12 14; animation: flowDashDT 1.5s linear infinite; }
+    .qDT { animation: shimmerDT 3.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="640" rx="18" fill="url(#bgDT)"/>
+  <rect x="1" y="1" width="1158" height="638" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">要不要显式 3D？一条从任务出发的决策链</text>
+  <text x="1124" y="44" font-size="13" fill="#475569" text-anchor="end">每往下一层 = 空间需求更"硬"一档 · 出口越靠下，显式程度越高</text>
+
+  <!-- main descending chain (questions on left, exits on right) -->
+  <!-- spine -->
+  <path d="M 250 128 V 560" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path class="flowDT" d="M 250 128 V 560" fill="none" stroke="#2dd4bf" stroke-width="5" stroke-linecap="round" opacity="0.55"/>
+  <circle r="6" fill="url(#pTealDT)" filter="url(#glowDT)">
+    <animateMotion dur="7s" repeatCount="indefinite" path="M 250 128 V 560"/>
+  </circle>
+  <circle r="5" fill="url(#pTealDT)" filter="url(#glowDT)">
+    <animateMotion dur="7s" begin="3.5s" repeatCount="indefinite" path="M 250 128 V 560"/>
+  </circle>
+  <text x="232" y="345" font-size="11.5" fill="#5eead4" opacity="0.8" text-anchor="middle" transform="rotate(-90 232 345)">没命中右侧出口就继续往下追问 → 空间需求逐层升级</text>
+
+  <!-- Q1 -->
+  <g class="qDT">
+    <rect x="290" y="86" width="380" height="58" rx="12" fill="#152238" stroke="#64748b" stroke-width="1.5"/>
+    <text x="480" y="110" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">Q1 只需要理解画面内容？</text>
+    <text x="480" y="130" font-size="10.5" fill="#94a3b8" text-anchor="middle">"前面是不是有人""这是什么东西"</text>
+  </g>
+  <path d="M 670 115 H 790" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="700" y="106" font-size="11" fill="#94a3b8">是</text>
+  <rect x="790" y="92" width="300" height="46" rx="10" fill="#1a2436" stroke="#475569" stroke-width="1.5"/>
+  <text x="940" y="120" font-size="13.5" font-weight="600" fill="#cbd5e1" text-anchor="middle">VLM 就够，不需要任何 3D</text>
+
+  <!-- Q2 -->
+  <g class="qDT">
+    <rect x="290" y="176" width="380" height="58" rx="12" fill="#221a3a" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="480" y="200" font-size="14" font-weight="600" fill="#ede9fe" text-anchor="middle">Q2 需要预测"接下来会发生什么"？</text>
+    <text x="480" y="220" font-size="10.5" fill="#c4b5fd" text-anchor="middle">未来画面 · 物体运动 · 动作后果推演</text>
+  </g>
+  <path d="M 670 205 H 790" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="700" y="196" font-size="11" fill="#c4b5fd">是</text>
+  <rect x="790" y="182" width="300" height="46" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="940" y="204" font-size="13.5" font-weight="600" fill="#ede9fe" text-anchor="middle">World Model（Cosmos 类）</text>
+  <text x="940" y="221" font-size="10.5" fill="#c4b5fd" text-anchor="middle">直接吃 video，不必先建显式 3D</text>
+
+  <!-- Q3 -->
+  <g class="qDT">
+    <rect x="290" y="266" width="380" height="58" rx="12" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="480" y="290" font-size="14" font-weight="600" fill="#ccfbf1" text-anchor="middle">Q3 需要厘米级精确 3D / 测距？</text>
+    <text x="480" y="310" font-size="10.5" fill="#5eead4" text-anchor="middle">"机器人离墙还有 35cm 吗"——metric accuracy</text>
+  </g>
+  <path d="M 670 295 H 790" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="700" y="286" font-size="11" fill="#94a3b8">否</text>
+  <rect x="790" y="272" width="300" height="46" rx="10" fill="#1a2436" stroke="#475569" stroke-width="1.5"/>
+  <text x="940" y="300" font-size="13.5" font-weight="600" fill="#cbd5e1" text-anchor="middle">VLM / Agent 组合即可</text>
+
+  <!-- Q4 -->
+  <g class="qDT">
+    <rect x="290" y="356" width="380" height="58" rx="12" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="480" y="380" font-size="14" font-weight="600" fill="#ccfbf1" text-anchor="middle">Q4 需要持久可查询的地图 / 空间记忆？</text>
+    <text x="480" y="400" font-size="10.5" fill="#5eead4" text-anchor="middle">导航 · 多相机统一坐标 · "路由器上次在哪"</text>
+  </g>
+  <path d="M 670 385 H 790" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="700" y="376" font-size="11" fill="#94a3b8">否</text>
+  <rect x="790" y="362" width="300" height="46" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="940" y="384" font-size="13.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">VGGT 的 Depth / Pose 就够</text>
+  <text x="940" y="401" font-size="10.5" fill="#5eead4" text-anchor="middle">一次性几何恢复，不必维护地图</text>
+
+  <!-- Q5 -->
+  <g class="qDT">
+    <rect x="290" y="446" width="380" height="58" rx="12" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="480" y="470" font-size="14" font-weight="600" fill="#ccfbf1" text-anchor="middle">Q5 需要高保真自由视角渲染？</text>
+    <text x="480" y="490" font-size="10.5" fill="#5eead4" text-anchor="middle">Digital Twin · VR/AR 浏览 · 虚拟相机漫游</text>
+  </g>
+  <path d="M 670 475 H 790" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="700" y="466" font-size="11" fill="#94a3b8">否</text>
+  <rect x="790" y="452" width="300" height="46" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="940" y="474" font-size="13.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">Semantic Map + SLAM / Occupancy</text>
+  <text x="940" y="491" font-size="10.5" fill="#5eead4" text-anchor="middle">扫地机器人 2D 栅格图就在这一档</text>
+
+  <!-- final exit: 3DGS -->
+  <path d="M 250 560 H 340" fill="none" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowDT" d="M 250 560 H 340" fill="none" stroke="#2dd4bf" stroke-width="4.5" stroke-linecap="round" opacity="0.6"/>
+  <rect x="340" y="532" width="470" height="56" rx="12" fill="#0f3a2e" stroke="#34d399" stroke-width="2"/>
+  <text x="575" y="556" font-size="14.5" font-weight="700" fill="#d1fae5" text-anchor="middle">是 → VGGT 初始化 + 3DGS 优化：完整显式 3D 管线</text>
+  <text x="575" y="577" font-size="10.5" fill="#6ee7b7" text-anchor="middle">高保真可渲染场景是 3DGS 独有价值——不是"让机器人变聪明"的必需品</text>
+
+  <text x="36" y="620" font-size="11.5" fill="#475569">读法：从 Q1 往下走，命中右侧出口条件（Q1/Q2 为"是"，Q3–Q5 为"否"）就离开；一路走到底，才需要完整的 VGGT → 3DGS 显式管线。</text>
+</svg>
