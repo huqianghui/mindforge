@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="470" viewBox="0 0 1160 470" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgCD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowCD" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealCD" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pVioletCD" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ede9fe"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrTealCD" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#2dd4bf" stroke-width="1.6"/>
+    </marker>
+    <marker id="arrVioletCD" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#a78bfa" stroke-width="1.6"/>
+    </marker>
+    <marker id="arrSlateCD" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDashCD { to { stroke-dashoffset: -44; } }
+    @keyframes shimmerCD { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flowCD { stroke-dasharray: 8 10; animation: flowDashCD 1.5s linear infinite; }
+    .nodeCD { animation: shimmerCD 3.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="470" rx="18" fill="url(#bgCD)"/>
+  <rect x="1" y="1" width="1158" height="468" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">Cosmos 1.0 双轨 WFM：tokenizer 是分岔点</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">同一份数据、同一个角色，两种生成范式的对照实验</text>
+
+  <!-- shared input -->
+  <g class="nodeCD">
+    <rect x="36" y="180" width="150" height="110" rx="12" fill="#152238" stroke="#94a3b8" stroke-width="1.6"/>
+    <text x="111" y="212" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">同一数据管线</text>
+    <text x="111" y="234" font-size="10.5" fill="#94a3b8" text-anchor="middle">约 2000 万小时视频</text>
+    <text x="111" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">→ 约 1 亿 curated clips</text>
+    <text x="111" y="270" font-size="10.5" fill="#94a3b8" text-anchor="middle">切分/过滤/VLM标注/去重</text>
+  </g>
+
+  <!-- fork paths -->
+  <path class="flowCD" d="M 186 210 C 230 190, 250 150, 282 138" fill="none" stroke="#2dd4bf" stroke-width="2.4" marker-end="url(#arrTealCD)"/>
+  <path class="flowCD" d="M 186 262 C 230 282, 250 322, 282 334" fill="none" stroke="#a78bfa" stroke-width="2.4" marker-end="url(#arrVioletCD)"/>
+
+  <!-- ═══ Diffusion track (teal, top) ═══ -->
+  <rect x="270" y="66" width="860" height="150" rx="14" fill="#07130f" stroke="#134036" stroke-width="1"/>
+  <text x="292" y="92" font-size="13.5" font-weight="700" fill="#5eead4">扩散轨 · 连续潜变量</text>
+
+  <g class="nodeCD">
+    <rect x="292" y="106" width="180" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="382" y="128" font-size="12" font-weight="600" fill="#ccfbf1" text-anchor="middle">Tokenizer CV8x8x8</text>
+    <text x="382" y="146" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">连续潜变量 · 时间8x 空间8x8 压缩</text>
+
+    <rect x="522" y="106" width="200" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="622" y="128" font-size="12" font-weight="600" fill="#ccfbf1" text-anchor="middle">Diffusion WFM 7B / 14B</text>
+    <text x="622" y="146" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">Text2World → Video2World</text>
+
+    <rect x="772" y="106" width="160" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="852" y="128" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">未来视频</text>
+    <text x="852" y="146" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">画质上限更高</text>
+
+    <rect x="962" y="106" width="152" height="56" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="1038" y="124" font-size="10.5" font-weight="600" fill="#5eead4" text-anchor="middle">Enhancer</text>
+    <text x="1038" y="140" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">PromptUpsampler-12B</text>
+    <text x="1038" y="155" font-size="9.5" fill="#5eead4" opacity="0.7" text-anchor="middle">把短 prompt 扩写成细节描述</text>
+  </g>
+  <path class="flowCD" d="M 472 134 H 514" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealCD)"/>
+  <path class="flowCD" d="M 722 134 H 764" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealCD)"/>
+  <path class="flowCD" d="M 1038 106 C 1030 80, 680 76, 626 104" fill="none" stroke="#2dd4bf" stroke-width="1.6" opacity="0.6" marker-end="url(#arrTealCD)"/>
+  <circle r="5" fill="url(#pTealCD)" filter="url(#glowCD)">
+    <animateMotion dur="3.6s" repeatCount="indefinite" path="M 292 134 H 764"/>
+  </circle>
+
+  <!-- ═══ AR track (violet, bottom) ═══ -->
+  <rect x="270" y="262" width="860" height="150" rx="14" fill="#120e20" stroke="#2e2452" stroke-width="1"/>
+  <text x="292" y="288" font-size="13.5" font-weight="700" fill="#c4b5fd">自回归轨 · 离散 token（把视频当"外语"）</text>
+
+  <g class="nodeCD">
+    <rect x="292" y="302" width="180" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="382" y="324" font-size="12" font-weight="600" fill="#ede9fe" text-anchor="middle">Tokenizer DV8x16x16</text>
+    <text x="382" y="342" font-size="9.5" fill="#c4b5fd" opacity="0.8" text-anchor="middle">FSQ 离散 token · 压缩率更高</text>
+
+    <rect x="522" y="302" width="200" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4"/>
+    <text x="622" y="324" font-size="12" font-weight="600" fill="#ede9fe" text-anchor="middle">AR WFM 4B/12B → 5B/13B</text>
+    <text x="622" y="342" font-size="9.5" fill="#c4b5fd" opacity="0.8" text-anchor="middle">LLM 式 next-token · +文本交叉注意力</text>
+
+    <rect x="772" y="302" width="160" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="4 4"/>
+    <text x="852" y="320" font-size="10.5" font-weight="600" fill="#c4b5fd" text-anchor="middle">Enhancer</text>
+    <text x="852" y="336" font-size="9.5" fill="#c4b5fd" opacity="0.85" text-anchor="middle">Diffusion-7B-Decoder</text>
+    <text x="852" y="351" font-size="9.5" fill="#c4b5fd" opacity="0.7" text-anchor="middle">DV8x16x16 → CV8x8x8 修伪影</text>
+
+    <rect x="962" y="302" width="152" height="56" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="2"/>
+    <text x="1038" y="324" font-size="12" font-weight="700" fill="#ede9fe" text-anchor="middle">未来视频</text>
+    <text x="1038" y="342" font-size="9.5" fill="#c4b5fd" opacity="0.8" text-anchor="middle">延迟低 · 天然逐帧交互</text>
+  </g>
+  <path class="flowCD" d="M 472 330 H 514" fill="none" stroke="#a78bfa" stroke-width="2.2" marker-end="url(#arrVioletCD)"/>
+  <path class="flowCD" d="M 722 330 H 764" fill="none" stroke="#a78bfa" stroke-width="2.2" marker-end="url(#arrVioletCD)"/>
+  <path class="flowCD" d="M 932 330 H 954" fill="none" stroke="#a78bfa" stroke-width="2.2" marker-end="url(#arrVioletCD)"/>
+  <circle r="5" fill="url(#pVioletCD)" filter="url(#glowCD)">
+    <animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M 292 330 H 954"/>
+  </circle>
+
+  <text x="580" y="448" font-size="11" fill="#475569" text-anchor="middle">连续潜变量 → 扩散去噪｜离散 token → 自回归 next-token —— 生成范式由 tokenizer 的表示形式决定，两轨共享数据与"世界模型"角色</text>
+</svg>

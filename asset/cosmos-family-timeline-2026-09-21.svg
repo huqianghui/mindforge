@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="430" viewBox="0 0 1160 430" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgCT" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowCT" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="haloCT" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <radialGradient id="pTealCT" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashCT { to { stroke-dashoffset: -48; } }
+    @keyframes pulseCT { 0%,100% { opacity: 0.12; } 50% { opacity: 0.55; } }
+    @keyframes shimmerCT { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flowCT { stroke-dasharray: 10 12; animation: flowDashCT 1.7s linear infinite; }
+    .haloCT { animation: pulseCT 2.4s ease-in-out infinite; }
+    .nodeCT { animation: shimmerCT 3.8s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="430" rx="18" fill="url(#bgCT)"/>
+  <rect x="1" y="1" width="1158" height="428" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">Cosmos 家族演进：双轨对照 → 三线分工 → flow 统一 → 全模态</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">青绿 = 已发布迭代 · 琥珀脉冲 = 当前一代</text>
+
+  <!-- axis -->
+  <line x1="60" y1="210" x2="1100" y2="210" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <path class="flowCT" d="M 60 210 H 1100" fill="none" stroke="#2dd4bf" stroke-width="2.4" opacity="0.7"/>
+  <circle r="5.5" fill="url(#pTealCT)" filter="url(#glowCT)">
+    <animateMotion dur="7s" repeatCount="indefinite" path="M 60 210 H 1100"/>
+  </circle>
+
+  <!-- ═ node 1: 1.0 (above) ═ -->
+  <circle cx="130" cy="210" r="8" fill="#2dd4bf" filter="url(#glowCT)"/>
+  <g class="nodeCT">
+    <rect x="46" y="86" width="180" height="92" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="136" y="110" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">Cosmos 1.0 平台</text>
+    <text x="136" y="128" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">扩散 + 自回归双轨 WFM</text>
+    <text x="136" y="144" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Tokenizer / Enhancer / Guardrails</text>
+    <text x="136" y="160" font-size="9.5" fill="#5eead4" opacity="0.7" text-anchor="middle">开放权重 + 数据管线</text>
+  </g>
+  <line x1="130" y1="178" x2="130" y2="202" stroke="#2dd4bf" stroke-width="1.5" opacity="0.6"/>
+  <text x="130" y="238" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">2025.01 CES</text>
+
+  <!-- ═ node 2: GTC three lines (below) ═ -->
+  <circle cx="310" cy="210" r="8" fill="#2dd4bf" filter="url(#glowCT)"/>
+  <g class="nodeCT">
+    <rect x="226" y="252" width="180" height="92" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="316" y="276" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">三条产品线成型</text>
+    <text x="316" y="294" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Predict1 预测未来</text>
+    <text x="316" y="310" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Transfer1 空间控制/Sim2Real</text>
+    <text x="316" y="326" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Reason1 物理常识 VLM</text>
+  </g>
+  <line x1="310" y1="218" x2="310" y2="252" stroke="#2dd4bf" stroke-width="1.5" opacity="0.6"/>
+  <text x="310" y="192" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">2025.03 GTC</text>
+
+  <!-- ═ node 3: Predict2 (above) ═ -->
+  <circle cx="480" cy="210" r="8" fill="#2dd4bf" filter="url(#glowCT)"/>
+  <g class="nodeCT">
+    <rect x="404" y="102" width="152" height="76" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="480" y="126" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">Predict2</text>
+    <text x="480" y="144" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">2B / 14B</text>
+    <text x="480" y="160" font-size="9.5" fill="#5eead4" opacity="0.7" text-anchor="middle">画质与一致性升级</text>
+  </g>
+  <line x1="480" y1="178" x2="480" y2="202" stroke="#2dd4bf" stroke-width="1.5" opacity="0.6"/>
+  <text x="480" y="238" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">2025 年中</text>
+
+  <!-- ═ node 4: 2.5 (below) ═ -->
+  <circle cx="650" cy="210" r="8" fill="#2dd4bf" filter="url(#glowCT)"/>
+  <g class="nodeCT">
+    <rect x="558" y="252" width="184" height="92" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="650" y="276" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">Predict2.5 / Transfer2.5</text>
+    <text x="650" y="294" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">flow-based · 一个模型统一</text>
+    <text x="650" y="310" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">Text/Image/Video2World</text>
+    <text x="650" y="326" font-size="9.5" fill="#5eead4" opacity="0.7" text-anchor="middle">Reason1 充当 text encoder</text>
+  </g>
+  <line x1="650" y1="218" x2="650" y2="252" stroke="#2dd4bf" stroke-width="1.5" opacity="0.6"/>
+  <text x="650" y="192" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">2025.10</text>
+
+  <!-- ═ node 5: distill (above) ═ -->
+  <circle cx="820" cy="210" r="8" fill="#2dd4bf" filter="url(#glowCT)"/>
+  <g class="nodeCT">
+    <rect x="736" y="94" width="168" height="84" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="820" y="118" font-size="12" font-weight="700" fill="#ccfbf1" text-anchor="middle">蒸馏与机器人落地</text>
+    <text x="820" y="136" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">2B 蒸馏版 · Edge 低延迟版</text>
+    <text x="820" y="152" font-size="9.5" fill="#5eead4" opacity="0.85" text-anchor="middle">动作条件蒸馏 + Policy 模型</text>
+    <text x="820" y="168" font-size="9.5" fill="#5eead4" opacity="0.7" text-anchor="middle">RoboCasa / Libero 配方</text>
+  </g>
+  <line x1="820" y1="178" x2="820" y2="202" stroke="#2dd4bf" stroke-width="1.5" opacity="0.6"/>
+  <text x="820" y="238" font-size="11" font-weight="600" fill="#94a3b8" text-anchor="middle">2025.12–2026.02</text>
+
+  <!-- ═ node 6: Cosmos 3 (below, current, amber halo) ═ -->
+  <circle cx="1010" cy="210" r="9" fill="#fbbf24" filter="url(#glowCT)"/>
+  <rect class="haloCT" x="906" y="246" width="212" height="104" rx="14" fill="none" stroke="#fbbf24" stroke-width="9" filter="url(#haloCT)"/>
+  <g>
+    <rect x="912" y="252" width="200" height="92" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1012" y="276" font-size="12.5" font-weight="700" fill="#fef3c7" text-anchor="middle">Cosmos 3 · 全模态</text>
+    <text x="1012" y="294" font-size="9.5" fill="#fcd34d" opacity="0.9" text-anchor="middle">mixture-of-transformers 统一</text>
+    <text x="1012" y="310" font-size="9.5" fill="#fcd34d" opacity="0.9" text-anchor="middle">语言/图像/视频/音频/动作</text>
+    <text x="1012" y="326" font-size="9.5" fill="#fcd34d" opacity="0.75" text-anchor="middle">理解·生成·预测·输出动作一体</text>
+  </g>
+  <line x1="1010" y1="219" x2="1010" y2="246" stroke="#fbbf24" stroke-width="1.5" opacity="0.7"/>
+  <text x="1010" y="192" font-size="11" font-weight="600" fill="#fcd34d" text-anchor="middle">2026.06 GTC Taipei</text>
+
+  <text x="580" y="408" font-size="11" fill="#475569" text-anchor="middle">主线：生成范式从"双轨对照"收敛到 flow 统一；能力从"视频世界模型"扩展到吃进动作输出的全模态世界模型</text>
+</svg>
