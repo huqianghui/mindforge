@@ -229,6 +229,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [空间智能系列 01：3D 感知重建与世界模型的关系——状态与状态转移的空间智能分层栈](Notes/Embodied%20AI/空间智能系列01：3D感知重建与世界模型的关系——状态与状态转移的空间智能分层栈.md)
 - [空间智能系列 02：显式与隐式空间表达——VGGT、3DGS 到空间记忆的五层抽象与选用边界](Notes/Embodied%20AI/空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界.md)
 - [空间智能系列 03：3D 内容生产的两条路线——Agent 操作 Blender 与神经 3D 生成的分工](Notes/Embodied%20AI/空间智能系列03：3D内容生产的两条路线——Agent操作Blender与神经3D生成的分工.md)
+- [空间智能系列 04：神经 3D 生成的开源版图——HY-World 2.0 可探索世界、TRELLIS.2 高保真资产与 Marble 对照](Notes/Embodied%20AI/空间智能系列04：神经3D生成的开源版图——HY-World%202.0可探索世界、TRELLIS.2高保真资产与Marble对照.md)
 
 **世界模型系列（认知层）**
 
@@ -247,6 +248,8 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [VLA 系列 01：VLA 输出架构演进——从动作 token 到扩散动作头](Notes/Embodied%20AI/VLA系列01：VLA输出架构演进——从动作token到扩散动作头.md)
 - [VLA 系列 02：扩散与 Transformer 在 VLA 中的分工——动作块并行去噪与闭环重规划](Notes/Embodied%20AI/VLA系列02：扩散与Transformer在VLA中的分工——动作块并行去噪与闭环重规划.md)
 - [VLA 系列 03：扩散模型基础——从去噪机制到高维、连续、多峰的选型逻辑](Notes/Embodied%20AI/VLA系列03：扩散模型基础——从去噪机制到高维连续多峰的选型逻辑.md)
+- [VLA 系列 04：π0、FAST 与 Hi Robot——流匹配动作专家、频域动作分词与分层交互](Notes/Embodied%20AI/VLA系列04：π0、FAST与Hi%20Robot——流匹配动作专家、频域动作分词与分层交互.md)
+- [VLA 系列 05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行](Notes/Embodied%20AI/VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行.md)
 
 **落地实践系列（落地层）**
 

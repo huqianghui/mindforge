@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="470" viewBox="0 0 1160 470" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgHW" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowHW" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealHW" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pSkyHW" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="0.5" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashHW { to { stroke-dashoffset: -44; } }
+    @keyframes shimmerHW { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flowHW { stroke-dasharray: 9 11; animation: flowDashHW 1.5s linear infinite; }
+    .nodeHW { animation: shimmerHW 3.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="470" rx="18" fill="url(#bgHW)"/>
+  <rect x="1" y="1" width="1158" height="468" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">HY-World 2.0：世界生成四模块 pipeline 与重建捷径</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">耗时为官方技术报告表10（NVIDIA H20，单个世界）</text>
+
+  <!-- ================= Generation row ================= -->
+  <text x="36" y="86" font-size="13.5" font-weight="700" fill="#fcd34d">World Generation（文字/单图 → 可漫游世界）</text>
+
+  <!-- input node -->
+  <g class="nodeHW">
+    <rect x="30" y="104" width="140" height="70" rx="10" fill="#152238" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="100" y="132" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">输入</text>
+    <text x="100" y="152" font-size="10.5" fill="#94a3b8" text-anchor="middle">文字 / 单张图片</text>
+  </g>
+
+  <!-- HY-Pano -->
+  <g class="nodeHW">
+    <rect x="212" y="104" width="168" height="70" rx="10" fill="#221a3a" stroke="#a78bfa" stroke-width="1.6"/>
+    <text x="296" y="128" font-size="13" font-weight="700" fill="#ede9fe" text-anchor="middle">HY-Pano 2.0</text>
+    <text x="296" y="146" font-size="10.5" fill="#c4b5fd" text-anchor="middle">全景初始化（二维球面图）</text>
+    <text x="296" y="163" font-size="10" fill="#a78bfa" text-anchor="middle">全景生成 15s</text>
+  </g>
+
+  <!-- WorldNav -->
+  <g class="nodeHW">
+    <rect x="422" y="104" width="168" height="70" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.6"/>
+    <text x="506" y="128" font-size="13" font-weight="700" fill="#e0f2fe" text-anchor="middle">WorldNav</text>
+    <text x="506" y="146" font-size="10.5" fill="#7dd3fc" text-anchor="middle">VLM 场景理解 + NavMesh</text>
+    <text x="506" y="163" font-size="10" fill="#38bdf8" text-anchor="middle">轨迹规划 182s</text>
+  </g>
+
+  <!-- WorldStereo -->
+  <g class="nodeHW">
+    <rect x="632" y="104" width="176" height="70" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.6"/>
+    <text x="720" y="128" font-size="13" font-weight="700" fill="#fef3c7" text-anchor="middle">WorldStereo 2.0</text>
+    <text x="720" y="146" font-size="10.5" fill="#fcd34d" text-anchor="middle">相机可控关键帧扩展视野</text>
+    <text x="720" y="163" font-size="10" fill="#fbbf24" text-anchor="middle">世界扩展 286s</text>
+  </g>
+
+  <!-- WorldMirror + Composition -->
+  <g class="nodeHW">
+    <rect x="850" y="104" width="184" height="70" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.8"/>
+    <text x="942" y="126" font-size="13" font-weight="700" fill="#ccfbf1" text-anchor="middle">WorldMirror 2.0</text>
+    <text x="942" y="143" font-size="10.5" fill="#5eead4" text-anchor="middle">+ World Composition</text>
+    <text x="942" y="163" font-size="10" fill="#2dd4bf" text-anchor="middle">重建对齐 102s · 3DGS 127s</text>
+  </g>
+
+  <!-- Output -->
+  <g class="nodeHW">
+    <rect x="1000" y="234" width="130" height="96" rx="10" fill="#0f3a2e" stroke="#34d399" stroke-width="1.8"/>
+    <text x="1065" y="260" font-size="12.5" font-weight="700" fill="#d1fae5" text-anchor="middle">三维资产</text>
+    <text x="1065" y="280" font-size="10.5" fill="#6ee7b7" text-anchor="middle">3DGS（.ply/.spz）</text>
+    <text x="1065" y="297" font-size="10.5" fill="#6ee7b7" text-anchor="middle">mesh · 点云</text>
+    <text x="1065" y="316" font-size="10" fill="#34d399" text-anchor="middle">→ Unity / UE / Blender</text>
+  </g>
+
+  <!-- generation connectors -->
+  <path class="flowHW" d="M 170 139 H 212" fill="none" stroke="#a78bfa" stroke-width="2.6" opacity="0.7"/>
+  <path class="flowHW" d="M 380 139 H 422" fill="none" stroke="#38bdf8" stroke-width="2.6" opacity="0.7"/>
+  <path class="flowHW" d="M 590 139 H 632" fill="none" stroke="#fbbf24" stroke-width="2.6" opacity="0.7"/>
+  <path class="flowHW" d="M 808 139 H 850" fill="none" stroke="#2dd4bf" stroke-width="2.6" opacity="0.7"/>
+  <path class="flowHW" d="M 1000 174 C 1050 192, 1065 206, 1065 234" fill="none" stroke="#34d399" stroke-width="2.6" opacity="0.7"/>
+
+  <circle r="4.5" fill="url(#pTealHW)" filter="url(#glowHW)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 170 139 H 850"/>
+  </circle>
+  <circle r="4.5" fill="url(#pTealHW)" filter="url(#glowHW)">
+    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M 170 139 H 850"/>
+  </circle>
+
+  <!-- middle note -->
+  <text x="520" y="212" font-size="11" fill="#94a3b8" text-anchor="middle">中间环节使用视频/关键帧生成——最终产物是三维资产，不是视频</text>
+
+  <!-- ================= Reconstruction row ================= -->
+  <text x="36" y="286" font-size="13.5" font-weight="700" fill="#7dd3fc">World Reconstruction（多视角观测 → 三维表示）</text>
+
+  <g class="nodeHW">
+    <rect x="30" y="304" width="160" height="70" rx="10" fill="#152238" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="110" y="332" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">输入</text>
+    <text x="110" y="352" font-size="10.5" fill="#94a3b8" text-anchor="middle">多视角图片 / 视频</text>
+  </g>
+
+  <g class="nodeHW">
+    <rect x="420" y="304" width="330" height="70" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.6"/>
+    <text x="585" y="330" font-size="13" font-weight="700" fill="#ccfbf1" text-anchor="middle">WorldMirror 2.0 单次前向</text>
+    <text x="585" y="350" font-size="10.5" fill="#5eead4" text-anchor="middle">深度 · 法线 · 相机参数 · 点云 · 3DGS 属性</text>
+  </g>
+
+  <path class="flowHW" d="M 190 339 H 420" fill="none" stroke="#38bdf8" stroke-width="2.6" opacity="0.7"/>
+  <path class="flowHW" d="M 750 339 C 860 339, 930 320, 942 178" fill="none" stroke="#2dd4bf" stroke-width="2" opacity="0.45"/>
+  <path class="flowHW" d="M 750 339 C 850 339, 930 300, 1000 282" fill="none" stroke="#34d399" stroke-width="2.6" opacity="0.7"/>
+  <circle r="4.5" fill="url(#pSkyHW)" filter="url(#glowHW)">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M 190 339 H 750"/>
+  </circle>
+  <text x="875" y="368" font-size="10" fill="#5eead4" opacity="0.85" text-anchor="middle">同一重建模型也承担生成链路末段</text>
+
+  <!-- footer -->
+  <rect x="30" y="400" width="1100" height="48" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="52" y="429" font-size="12" fill="#cbd5e1">生成合计 <tspan fill="#fcd34d" font-weight="700">712s（约 11.9 分钟，H20）</tspan>；官方 worldgen 推荐至少 4 张 GPU（测试 8×H20），轨迹规划另需 vLLM 服务运行 VLM。生成场景中"看不到的区域"由模型补全，非真实测量。</text>
+</svg>
