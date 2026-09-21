@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgDR" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowDR" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealDR" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmberDR" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrTealDR" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#2dd4bf" stroke-width="1.6"/>
+    </marker>
+    <marker id="arrAmberDR" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#fbbf24" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDashDR { to { stroke-dashoffset: -44; } }
+    @keyframes shimmerDR { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes pulseDR { 0%,100% { opacity: 0.30; } 50% { opacity: 0.9; } }
+    .flowDR { stroke-dasharray: 8 10; animation: flowDashDR 1.5s linear infinite; }
+    .nodeDR { animation: shimmerDR 3.6s ease-in-out infinite; }
+    .dreamDR { animation: pulseDR 2.8s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="500" rx="18" fill="url(#bgDR)"/>
+  <rect x="1" y="1" width="1158" height="498" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">Dream-RSI 三阶段循环：探索 → 历史变仿真器 → 做梦选策略</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">coding agent / 模型 / 评估器全程不变，只有 exploration policy 代码在换代</text>
+
+  <!-- ① Online Explore -->
+  <rect x="36" y="80" width="330" height="180" rx="14" fill="#07130f" stroke="#134036" stroke-width="1"/>
+  <text x="58" y="108" font-size="13.5" font-weight="700" fill="#5eead4">① Online Explore（真实执行，贵）</text>
+  <g class="nodeDR">
+    <rect x="58" y="122" width="130" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.6"/>
+    <text x="123" y="144" font-size="12" font-weight="600" fill="#ccfbf1" text-anchor="middle">当前策略 πₙ</text>
+    <text x="123" y="162" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">可执行的调度代码</text>
+
+    <rect x="222" y="122" width="122" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="283" y="144" font-size="12" font-weight="600" fill="#ccfbf1" text-anchor="middle">Coding Agent</text>
+    <text x="283" y="162" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">提案→执行→benchmark</text>
+
+    <rect x="130" y="192" width="150" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="205" y="214" font-size="12" font-weight="600" fill="#ccfbf1" text-anchor="middle">Discovery Tree</text>
+    <text x="205" y="232" font-size="9.5" fill="#5eead4" opacity="0.8" text-anchor="middle">每个分支的真实结果已记录</text>
+  </g>
+  <path class="flowDR" d="M 188 148 H 214" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealDR)"/>
+  <path class="flowDR" d="M 283 174 C 280 186, 260 194, 248 198" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealDR)"/>
+
+  <!-- ② Replay Simulator -->
+  <rect x="416" y="80" width="290" height="180" rx="14" fill="#161207" stroke="#3b2f0e" stroke-width="1"/>
+  <text x="438" y="108" font-size="13.5" font-weight="700" fill="#fcd34d">② 历史变仿真器（免费）</text>
+  <g class="nodeDR">
+    <rect x="438" y="128" width="246" height="108" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.6"/>
+    <text x="561" y="154" font-size="12.5" font-weight="700" fill="#fef3c7" text-anchor="middle">Replay Simulator 池</text>
+    <text x="561" y="176" font-size="10" fill="#fcd34d" opacity="0.85" text-anchor="middle">"走这个分支会发生什么"已经发生过</text>
+    <text x="561" y="194" font-size="10" fill="#fcd34d" opacity="0.85" text-anchor="middle">评估 = 翻已存的结果，不重跑代码</text>
+    <text x="561" y="216" font-size="10" fill="#fcd34d" opacity="0.7" text-anchor="middle">精确回放，不是 learned world model</text>
+  </g>
+  <path class="flowDR" d="M 366 218 C 396 218, 406 200, 430 182" fill="none" stroke="#2dd4bf" stroke-width="2.4" marker-end="url(#arrTealDR)"/>
+  <circle r="5" fill="url(#pTealDR)" filter="url(#glowDR)">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M 123 174 C 123 200, 150 210, 200 216 C 300 228, 380 224, 430 184"/>
+  </circle>
+
+  <!-- ③ Dreaming -->
+  <rect x="756" y="80" width="368" height="330" rx="14" fill="#161207" stroke="#3b2f0e" stroke-width="1"/>
+  <text x="778" y="108" font-size="13.5" font-weight="700" fill="#fcd34d">③ Dreaming：离线换代（便宜、可大规模并行）</text>
+  <g class="nodeDR">
+    <rect x="778" y="124" width="200" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="878" y="146" font-size="12" font-weight="600" fill="#fef3c7" text-anchor="middle">Policy Developer Agent</text>
+    <text x="878" y="164" font-size="9.5" fill="#fcd34d" opacity="0.8" text-anchor="middle">读历史 + 诊断，改写策略代码</text>
+  </g>
+  <g class="dreamDR">
+    <rect x="778" y="196" width="96" height="44" rx="9" fill="#33270a" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="826" y="222" font-size="11" fill="#fef3c7" text-anchor="middle">π′₁</text>
+    <rect x="886" y="196" width="96" height="44" rx="9" fill="#33270a" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="934" y="222" font-size="11" fill="#fef3c7" text-anchor="middle">π′₂ …</text>
+    <rect x="994" y="196" width="106" height="44" rx="9" fill="#33270a" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="1047" y="222" font-size="11" fill="#fef3c7" text-anchor="middle">π′ₖ（成百上千）</text>
+  </g>
+  <g class="nodeDR">
+    <rect x="778" y="264" width="322" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="939" y="286" font-size="12" font-weight="600" fill="#fef3c7" text-anchor="middle">在 Replay Simulator 上离线打分</text>
+    <text x="939" y="304" font-size="9.5" fill="#fcd34d" opacity="0.8" text-anchor="middle">不同策略走出不同轨迹，翻已存结果即得分数</text>
+  </g>
+  <g class="nodeDR">
+    <rect x="778" y="340" width="322" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="939" y="362" font-size="12.5" font-weight="700" fill="#fef3c7" text-anchor="middle">胜出者 → πₙ₊₁</text>
+    <text x="939" y="380" font-size="9.5" fill="#fcd34d" opacity="0.8" text-anchor="middle">部署回真实世界，开始下一轮探索</text>
+  </g>
+  <path class="flowDR" d="M 706 170 C 730 170, 740 156, 770 150" fill="none" stroke="#fbbf24" stroke-width="2.4" marker-end="url(#arrAmberDR)"/>
+  <path class="flowDR" d="M 878 176 V 190" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrAmberDR)"/>
+  <path class="flowDR" d="M 939 240 V 258" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrAmberDR)"/>
+  <path class="flowDR" d="M 939 316 V 334" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrAmberDR)"/>
+  <circle r="5" fill="url(#pAmberDR)" filter="url(#glowDR)">
+    <animateMotion dur="3.4s" begin="1s" repeatCount="indefinite" path="M 878 176 V 218 M 939 240 V 366"/>
+  </circle>
+
+  <!-- loop back -->
+  <path class="flowDR" d="M 776 372 C 480 440, 220 400, 123 262 C 118 240, 118 200, 123 178" fill="none" stroke="#2dd4bf" stroke-width="2.6" opacity="0.75" marker-end="url(#arrTealDR)"/>
+  <text x="430" y="452" font-size="11.5" font-weight="600" fill="#5eead4" text-anchor="middle">πₙ₊₁ 上线 → 新一轮真实探索 → Discovery Tree 变大 → 仿真器池扩张 → 递归自我改进</text>
+  <circle r="5.5" fill="url(#pTealDR)" filter="url(#glowDR)">
+    <animateMotion dur="4.5s" begin="2s" repeatCount="indefinite" path="M 776 372 C 480 440, 220 400, 123 262"/>
+  </circle>
+
+  <text x="580" y="486" font-size="11" fill="#475569" text-anchor="middle">一次昂贵的真实探索，反复摊销给成百上千个候选策略的离线评估——这是 Dream-RSI 对"探索太贵"的回答</text>
+</svg>
