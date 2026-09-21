@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="500" viewBox="0 0 1160 500" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgRC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowRC" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealRC" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashRC { to { stroke-dashoffset: -40; } }
+    @keyframes pulseRC { 0%,100% { opacity: 0.35; } 50% { opacity: 0.95; } }
+    @keyframes shimmerRC { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flowRC { stroke-dasharray: 8 10; animation: flowDashRC 1.4s linear infinite; }
+    .pauseRC { animation: pulseRC 1.8s ease-in-out infinite; }
+    .nodeRC { animation: shimmerRC 3.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="500" rx="18" fill="url(#bgRC)"/>
+  <rect x="1" y="1" width="1158" height="498" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">同步分块执行 vs RTC 实时分块——推理延迟去哪儿了</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">时间轴向右 · 数值为示意</text>
+
+  <!-- ============ Lane A: synchronous ============ -->
+  <text x="36" y="92" font-size="14" font-weight="700" fill="#fca5a5">A · 同步「思考-执行」：块边界必然停顿</text>
+
+  <!-- inference row A -->
+  <text x="118" y="122" font-size="11" fill="#94a3b8" text-anchor="end">模型推理</text>
+  <g class="nodeRC">
+    <rect x="130" y="106" width="90" height="22" rx="5" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="175" y="121" font-size="10" fill="#cbd5e1" text-anchor="middle">生成块 1</text>
+    <rect x="430" y="106" width="90" height="22" rx="5" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="475" y="121" font-size="10" fill="#cbd5e1" text-anchor="middle">生成块 2</text>
+    <rect x="730" y="106" width="90" height="22" rx="5" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="775" y="121" font-size="10" fill="#cbd5e1" text-anchor="middle">生成块 3</text>
+  </g>
+
+  <!-- execution row A -->
+  <text x="118" y="158" font-size="11" fill="#94a3b8" text-anchor="end">机器人执行</text>
+  <g class="nodeRC">
+    <rect x="220" y="142" width="210" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="325" y="159" font-size="11" fill="#ccfbf1" text-anchor="middle">执行动作块 1</text>
+    <rect x="520" y="142" width="210" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="625" y="159" font-size="11" fill="#ccfbf1" text-anchor="middle">执行动作块 2</text>
+    <rect x="820" y="142" width="210" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="925" y="159" font-size="11" fill="#ccfbf1" text-anchor="middle">执行动作块 3</text>
+  </g>
+  <!-- pause gaps -->
+  <g class="pauseRC">
+    <rect x="430" y="142" width="90" height="26" rx="6" fill="#3b1a1a" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="475" y="159" font-size="10.5" font-weight="700" fill="#fca5a5" text-anchor="middle">停顿</text>
+    <rect x="730" y="142" width="90" height="26" rx="6" fill="#3b1a1a" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="775" y="159" font-size="10.5" font-weight="700" fill="#fca5a5" text-anchor="middle">停顿</text>
+  </g>
+  <text x="475" y="196" font-size="10.5" fill="#fca5a5" text-anchor="middle">执行完才开始生成下一块</text>
+  <text x="475" y="211" font-size="10.5" fill="#f87171" opacity="0.85" text-anchor="middle">停止-重启带来动力学突变，延迟越大退化越快</text>
+
+  <!-- ============ Lane B: RTC ============ -->
+  <text x="36" y="262" font-size="14" font-weight="700" fill="#5eead4">B · RTC 异步：执行旧块的同时生成新块</text>
+
+  <!-- inference row B: overlapping -->
+  <text x="118" y="292" font-size="11" fill="#94a3b8" text-anchor="end">模型推理</text>
+  <g class="nodeRC">
+    <rect x="130" y="276" width="90" height="22" rx="5" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="175" y="291" font-size="10" fill="#cbd5e1" text-anchor="middle">生成块 1</text>
+    <rect x="330" y="276" width="90" height="22" rx="5" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="375" y="291" font-size="10" fill="#7dd3fc" text-anchor="middle">生成块 2</text>
+    <rect x="540" y="276" width="90" height="22" rx="5" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="585" y="291" font-size="10" fill="#7dd3fc" text-anchor="middle">生成块 3</text>
+    <rect x="750" y="276" width="90" height="22" rx="5" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="795" y="291" font-size="10" fill="#7dd3fc" text-anchor="middle">生成块 4</text>
+  </g>
+  <text x="960" y="291" font-size="10.5" fill="#7dd3fc" opacity="0.9">与执行并行，不再挤占执行时间</text>
+
+  <!-- execution row B: continuous -->
+  <text x="118" y="328" font-size="11" fill="#94a3b8" text-anchor="end">机器人执行</text>
+  <g class="nodeRC">
+    <rect x="220" y="312" width="210" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="325" y="329" font-size="11" fill="#ccfbf1" text-anchor="middle">执行动作块 1</text>
+    <!-- chunk 2 = frozen prefix + inpainted rest -->
+    <rect x="430" y="312" width="60" height="26" rx="6" fill="#1c2f4a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="460" y="329" font-size="9.5" fill="#c7d2fe" text-anchor="middle">冻结前缀</text>
+    <rect x="490" y="312" width="150" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="565" y="329" font-size="11" fill="#ccfbf1" text-anchor="middle">块 2 补全部分</text>
+    <rect x="640" y="312" width="60" height="26" rx="6" fill="#1c2f4a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="670" y="329" font-size="9.5" fill="#c7d2fe" text-anchor="middle">冻结前缀</text>
+    <rect x="700" y="312" width="150" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="775" y="329" font-size="11" fill="#ccfbf1" text-anchor="middle">块 3 补全部分</text>
+    <rect x="850" y="312" width="60" height="26" rx="6" fill="#1c2f4a" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="880" y="329" font-size="9.5" fill="#c7d2fe" text-anchor="middle">冻结前缀</text>
+    <rect x="910" y="312" width="120" height="26" rx="6" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="970" y="329" font-size="11" fill="#ccfbf1" text-anchor="middle">块 4 …</text>
+  </g>
+  <!-- continuous flow line under execution -->
+  <line class="flowRC" x1="220" y1="352" x2="1030" y2="352" stroke="#2dd4bf" stroke-width="3" opacity="0.7"/>
+  <circle r="4.5" fill="url(#pTealRC)" filter="url(#glowRC)">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 220 352 H 1030"/>
+  </circle>
+  <text x="1042" y="356" font-size="10.5" fill="#5eead4">执行不间断</text>
+
+  <!-- mechanism annotation -->
+  <path class="flowRC" d="M 420 298 C 435 304, 450 306, 458 310" fill="none" stroke="#818cf8" stroke-width="1.6" opacity="0.8"/>
+  <text x="460" y="372" font-size="10.5" fill="#c7d2fe">新块起始段 = 旧块中已承诺执行的动作（推理期间已流逝），直接冻结</text>
+  <text x="460" y="388" font-size="10.5" fill="#a5b4fc" opacity="0.9">其余部分按 inpainting 方式条件补全，重叠区约束逐渐减弱——衔接与响应兼顾</text>
+
+  <!-- bottom note -->
+  <rect x="30" y="410" width="1100" height="66" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="56" y="437" font-size="12" fill="#cbd5e1">RTC（推理时版本）适用于扩散 / flow matching 类 VLA（π0、π0.5），<tspan fill="#5eead4">无需重训</tspan>；代价是 inpainting 引导带来额外推理开销</text>
+  <text x="56" y="460" font-size="12" fill="#cbd5e1">实测（所测 6 任务）：完成速度较同步推理提升约 20%；人为注入 +100/+200ms 延迟时性能保持稳定，而同步模式与时间集成（TE）明显退化</text>
+</svg>

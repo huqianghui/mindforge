@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="440" viewBox="0 0 1160 440" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgPT" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowPT" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pTealPT" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pAmberPT" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDashPT { to { stroke-dashoffset: -44; } }
+    @keyframes shimmerPT { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes pulsePT { 0%,100% { opacity: 0.15; } 50% { opacity: 0.55; } }
+    .flowPT { stroke-dasharray: 9 11; animation: flowDashPT 1.5s linear infinite; }
+    .nodePT { animation: shimmerPT 3.6s ease-in-out infinite; }
+    .haloPT { animation: pulsePT 2.4s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="440" rx="18" fill="url(#bgPT)"/>
+  <rect x="1" y="1" width="1158" height="438" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="20" font-weight="700" fill="#e2e8f0">Physical Intelligence π 系列演进时间线（2024-10 → 2026-04）</text>
+  <text x="1124" y="42" font-size="12" fill="#475569" text-anchor="end">日期按官方发布页记录</text>
+
+  <!-- phase labels -->
+  <text x="230" y="74" font-size="13" font-weight="700" fill="#5eead4" text-anchor="middle">地基期：动作表示与分层</text>
+  <text x="590" y="74" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">泛化与工程化</text>
+  <text x="950" y="74" font-size="13" font-weight="700" fill="#fcd34d" text-anchor="middle">经验学习与组合泛化</text>
+
+  <!-- axis: base + colored flowing phase segments -->
+  <line x1="50" y1="230" x2="1110" y2="230" stroke="#334155" stroke-width="2"/>
+  <line class="flowPT" x1="60" y1="230" x2="410" y2="230" stroke="#2dd4bf" stroke-width="4" opacity="0.75"/>
+  <line class="flowPT" x1="410" y1="230" x2="770" y2="230" stroke="#38bdf8" stroke-width="4" opacity="0.75"/>
+  <line class="flowPT" x1="770" y1="230" x2="1110" y2="230" stroke="#fbbf24" stroke-width="4" opacity="0.75"/>
+  <circle r="5" fill="url(#pTealPT)" filter="url(#glowPT)">
+    <animateMotion dur="7s" repeatCount="indefinite" path="M 60 230 H 1110"/>
+  </circle>
+  <circle r="5" fill="url(#pAmberPT)" filter="url(#glowPT)">
+    <animateMotion dur="7s" begin="3.5s" repeatCount="indefinite" path="M 60 230 H 1110"/>
+  </circle>
+
+  <!-- ============ nodes above axis (odd) ============ -->
+  <!-- 1. pi0 -->
+  <g class="nodePT">
+    <rect x="45" y="118" width="140" height="62" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="115" y="141" font-size="13.5" font-weight="700" fill="#ccfbf1" text-anchor="middle">π0</text>
+    <text x="115" y="159" font-size="10" fill="#5eead4" text-anchor="middle">流匹配动作专家</text>
+    <text x="115" y="173" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">VLM+动作专家双权重</text>
+    <line x1="115" y1="180" x2="115" y2="224" stroke="#2dd4bf" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="115" cy="230" r="6" fill="#10312e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="115" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">2024-10</text>
+  </g>
+  <!-- 3. Hi Robot -->
+  <g class="nodePT">
+    <rect x="285" y="118" width="140" height="62" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="355" y="141" font-size="13.5" font-weight="700" fill="#ccfbf1" text-anchor="middle">Hi Robot</text>
+    <text x="355" y="159" font-size="10" fill="#5eead4" text-anchor="middle">系统1/系统2 分层</text>
+    <text x="355" y="173" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">复杂指令+实时反馈</text>
+    <line x1="355" y1="180" x2="355" y2="224" stroke="#2dd4bf" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="355" cy="230" r="6" fill="#10312e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="355" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-02</text>
+  </g>
+  <!-- 5. KI -->
+  <g class="nodePT">
+    <rect x="525" y="118" width="140" height="62" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="595" y="141" font-size="13.5" font-weight="700" fill="#e0f2fe" text-anchor="middle">Knowledge Insulation</text>
+    <text x="595" y="159" font-size="10" fill="#7dd3fc" text-anchor="middle">阻断动作专家梯度回传</text>
+    <text x="595" y="173" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">离散+连续双目标训练</text>
+    <line x1="595" y1="180" x2="595" y2="224" stroke="#38bdf8" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="595" cy="230" r="6" fill="#0c2a3d" stroke="#38bdf8" stroke-width="2"/>
+    <text x="595" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-05</text>
+  </g>
+  <!-- 7. pi0.6 -->
+  <g class="nodePT">
+    <rect x="765" y="118" width="140" height="62" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="835" y="141" font-size="13.5" font-weight="700" fill="#fef3c7" text-anchor="middle">π0.6 / π*0.6</text>
+    <text x="835" y="159" font-size="10" fill="#fcd34d" text-anchor="middle">RECAP：示范+纠正</text>
+    <text x="835" y="173" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">+自主经验强化学习</text>
+    <line x1="835" y1="180" x2="835" y2="224" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="835" cy="230" r="6" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="835" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-11</text>
+  </g>
+  <!-- 9. pi0.7 (latest, halo) -->
+  <rect class="haloPT" x="999" y="112" width="152" height="74" rx="13" fill="none" stroke="#fbbf24" stroke-width="8" opacity="0.3"/>
+  <g class="nodePT">
+    <rect x="1005" y="118" width="140" height="62" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1075" y="141" font-size="13.5" font-weight="700" fill="#fef3c7" text-anchor="middle">π0.7</text>
+    <text x="1075" y="159" font-size="10" fill="#fcd34d" text-anchor="middle">多条件组织异构数据</text>
+    <text x="1075" y="173" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">组合泛化·跨本体迁移</text>
+    <line x1="1075" y1="180" x2="1075" y2="224" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+    <circle cx="1075" cy="230" r="6" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1075" y="252" font-size="10.5" fill="#94a3b8" text-anchor="middle">2026-04</text>
+  </g>
+
+  <!-- ============ nodes below axis (even) ============ -->
+  <!-- 2. FAST -->
+  <g class="nodePT">
+    <circle cx="235" cy="230" r="6" fill="#10312e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="235" y="214" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-01</text>
+    <line x1="235" y1="236" x2="235" y2="280" stroke="#2dd4bf" stroke-width="1.2" opacity="0.6"/>
+    <rect x="165" y="280" width="140" height="62" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.5"/>
+    <text x="235" y="303" font-size="13.5" font-weight="700" fill="#ccfbf1" text-anchor="middle">FAST / π0-FAST</text>
+    <text x="235" y="321" font-size="10" fill="#5eead4" text-anchor="middle">DCT+BPE 动作分词</text>
+    <text x="235" y="335" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">自回归离散路线</text>
+  </g>
+  <!-- 4. pi0.5 -->
+  <g class="nodePT">
+    <circle cx="475" cy="230" r="6" fill="#0c2a3d" stroke="#38bdf8" stroke-width="2"/>
+    <text x="475" y="214" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-04</text>
+    <line x1="475" y1="236" x2="475" y2="280" stroke="#38bdf8" stroke-width="1.2" opacity="0.6"/>
+    <rect x="405" y="280" width="140" height="62" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="475" y="303" font-size="13.5" font-weight="700" fill="#e0f2fe" text-anchor="middle">π0.5</text>
+    <text x="475" y="321" font-size="10" fill="#7dd3fc" text-anchor="middle">多源异构协同训练</text>
+    <text x="475" y="335" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">未见住宅环境泛化</text>
+  </g>
+  <!-- 6. RTC -->
+  <g class="nodePT">
+    <circle cx="715" cy="230" r="6" fill="#0c2a3d" stroke="#38bdf8" stroke-width="2"/>
+    <text x="715" y="214" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-06</text>
+    <line x1="715" y1="236" x2="715" y2="280" stroke="#38bdf8" stroke-width="1.2" opacity="0.6"/>
+    <rect x="645" y="280" width="140" height="62" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="715" y="303" font-size="13.5" font-weight="700" fill="#e0f2fe" text-anchor="middle">RTC 实时分块</text>
+    <text x="715" y="321" font-size="10" fill="#7dd3fc" text-anchor="middle">冻结前缀+inpainting</text>
+    <text x="715" y="335" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">异步执行无需重训</text>
+  </g>
+  <!-- 8. training-time RTC + ego data -->
+  <g class="nodePT">
+    <circle cx="955" cy="230" r="6" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="955" y="214" font-size="10.5" fill="#94a3b8" text-anchor="middle">2025-12</text>
+    <line x1="955" y1="236" x2="955" y2="280" stroke="#fbbf24" stroke-width="1.2" opacity="0.6"/>
+    <rect x="885" y="280" width="140" height="62" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="955" y="303" font-size="13.5" font-weight="700" fill="#fef3c7" text-anchor="middle">训练时 RTC · Ego 数据</text>
+    <text x="955" y="321" font-size="10" fill="#fcd34d" text-anchor="middle">动作前缀条件训练</text>
+    <text x="955" y="335" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">人类第一视角迁移</text>
+  </g>
+
+  <!-- bottom note -->
+  <rect x="30" y="372" width="1100" height="48" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="56" y="401" font-size="12" fill="#cbd5e1">两条主线交替推进：<tspan fill="#5eead4">动作表示（连续 flow matching ↔ 离散 FAST token）</tspan> 与 <tspan fill="#7dd3fc">系统工程（分层推理 · 知识保护 · 实时执行）</tspan>，2025-11 起转向 <tspan fill="#fcd34d">真机经验的强化学习闭环</tspan></text>
+</svg>
