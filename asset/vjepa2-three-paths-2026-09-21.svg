@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="600" viewBox="0 0 1160 600" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgTP" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="glowTP" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="pAmberTP" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pSkyTP" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="0.5" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pTealTP" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrAmberTP" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#fbbf24" stroke-width="1.6"/>
+    </marker>
+    <marker id="arrSkyTP" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#38bdf8" stroke-width="1.6"/>
+    </marker>
+    <marker id="arrTealTP" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#2dd4bf" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDashTP { to { stroke-dashoffset: -44; } }
+    @keyframes shimmerTP { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes pulseTP { 0%,100% { opacity: 0.25; } 50% { opacity: 0.85; } }
+    .flowTP { stroke-dasharray: 8 10; animation: flowDashTP 1.5s linear infinite; }
+    .nodeTP { animation: shimmerTP 3.6s ease-in-out infinite; }
+    .loopTP { stroke-dasharray: 5 7; animation: flowDashTP 2.2s linear infinite; opacity: 0.7; }
+    .actTP { animation: pulseTP 2.6s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="600" rx="18" fill="url(#bgTP)"/>
+  <rect x="1" y="1" width="1158" height="598" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="20" font-weight="700" fill="#e2e8f0">同一段视频，三条计算通路：V-JEPA 2 · Qwen3-VL · VLA</text>
+  <text x="1124" y="44" font-size="12" fill="#475569" text-anchor="end">区别不在"谁更强"，在预测被放进哪个训练目标</text>
+
+  <!-- ═══ Lane 1: V-JEPA 2 (amber) ═══ -->
+  <rect x="30" y="66" width="1100" height="170" rx="14" fill="#161207" stroke="#3b2f0e" stroke-width="1"/>
+  <text x="52" y="94" font-size="14" font-weight="700" fill="#fcd34d">V-JEPA 2 / 2-AC · 潜空间世界模型</text>
+  <text x="1108" y="94" font-size="11.5" fill="#fcd34d" opacity="0.8" text-anchor="end">回答："如果这么做，世界状态会变成什么"</text>
+
+  <g class="nodeTP">
+    <rect x="52" y="116" width="120" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="112" y="138" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">Video</text>
+    <text x="112" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">64 帧 RGB</text>
+
+    <rect x="222" y="116" width="140" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="292" y="138" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">Encoder（ViT）</text>
+    <text x="292" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">时空 patch → tokens</text>
+
+    <rect x="412" y="116" width="130" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="477" y="138" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">潜状态 zₜ</text>
+    <text x="477" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">当前世界的表征</text>
+
+    <rect x="592" y="116" width="140" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="662" y="138" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">Predictor</text>
+    <text x="662" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">Transformer 预测器</text>
+
+    <rect x="782" y="116" width="150" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="1.4"/>
+    <text x="857" y="138" font-size="12.5" font-weight="600" fill="#fef3c7" text-anchor="middle">未来潜状态 ẑₜ₊₁</text>
+    <text x="857" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">不渲染像素、不生成文字</text>
+
+    <rect x="982" y="116" width="126" height="52" rx="10" fill="#33270a" stroke="#fbbf24" stroke-width="2"/>
+    <text x="1045" y="138" font-size="12.5" font-weight="700" fill="#fef3c7" text-anchor="middle">MPC 规划</text>
+    <text x="1045" y="156" font-size="10" fill="#fcd34d" opacity="0.8" text-anchor="middle">比较候选动作后果</text>
+  </g>
+
+  <!-- action input (AC) -->
+  <g class="actTP">
+    <rect x="597" y="192" width="130" height="32" rx="8" fill="#33270a" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <text x="662" y="213" font-size="11" font-weight="600" fill="#fcd34d" text-anchor="middle">动作 aₜ（2-AC）</text>
+  </g>
+  <path class="flowTP" d="M 662 192 V 168" fill="none" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrAmberTP)"/>
+
+  <path class="flowTP" d="M 172 142 H 214" fill="none" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrAmberTP)"/>
+  <path class="flowTP" d="M 362 142 H 404" fill="none" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrAmberTP)"/>
+  <path class="flowTP" d="M 542 142 H 584" fill="none" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrAmberTP)"/>
+  <path class="flowTP" d="M 732 142 H 774" fill="none" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrAmberTP)"/>
+  <path class="flowTP" d="M 932 142 H 974" fill="none" stroke="#fbbf24" stroke-width="2.2" marker-end="url(#arrAmberTP)"/>
+  <!-- rollout loop -->
+  <path class="loopTP" d="M 857 116 C 830 88, 520 88, 480 114" fill="none" stroke="#fbbf24" stroke-width="1.6" marker-end="url(#arrAmberTP)"/>
+  <text x="668" y="104" font-size="10" fill="#fcd34d" opacity="0.85" text-anchor="middle">rollout：ẑₜ₊₁ 作为下一步的 zₜ 滚动预测</text>
+  <circle r="5" fill="url(#pAmberTP)" filter="url(#glowTP)">
+    <animateMotion dur="4.2s" repeatCount="indefinite" path="M 172 142 H 974"/>
+  </circle>
+
+  <!-- ═══ Lane 2: Qwen3-VL (sky) ═══ -->
+  <rect x="30" y="252" width="1100" height="150" rx="14" fill="#08131c" stroke="#123047" stroke-width="1"/>
+  <text x="52" y="280" font-size="14" font-weight="700" fill="#7dd3fc">Qwen3-VL · 多模态 LLM</text>
+  <text x="1108" y="280" font-size="11.5" fill="#7dd3fc" opacity="0.8" text-anchor="end">回答："发生了什么、意味着什么、该怎么做"（用语言）</text>
+
+  <g class="nodeTP">
+    <rect x="52" y="302" width="160" height="52" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="132" y="324" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">Video + 图片 + 文本</text>
+    <text x="132" y="342" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">问题 / 指令一起进</text>
+
+    <rect x="282" y="302" width="170" height="52" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="367" y="324" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">多模态 tokens</text>
+    <text x="367" y="342" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">视觉编码 → 进 LLM 上下文</text>
+
+    <rect x="522" y="302" width="190" height="52" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="1.4"/>
+    <text x="617" y="324" font-size="12.5" font-weight="600" fill="#e0f2fe" text-anchor="middle">LLM 自回归推理</text>
+    <text x="617" y="342" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">视觉 + 语言 + 世界知识 + 常识</text>
+
+    <rect x="782" y="302" width="326" height="52" rx="10" fill="#0c2a3d" stroke="#38bdf8" stroke-width="2"/>
+    <text x="945" y="324" font-size="12.5" font-weight="700" fill="#e0f2fe" text-anchor="middle">文本回答 / 推理 / Agent 操作</text>
+    <text x="945" y="342" font-size="10" fill="#7dd3fc" opacity="0.8" text-anchor="middle">预测未来 = "我认为接下来会……"（next token）</text>
+  </g>
+
+  <path class="flowTP" d="M 212 328 H 274" fill="none" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrSkyTP)"/>
+  <path class="flowTP" d="M 452 328 H 514" fill="none" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrSkyTP)"/>
+  <path class="flowTP" d="M 712 328 H 774" fill="none" stroke="#38bdf8" stroke-width="2.2" marker-end="url(#arrSkyTP)"/>
+  <circle r="5" fill="url(#pSkyTP)" filter="url(#glowTP)">
+    <animateMotion dur="4.2s" begin="1.2s" repeatCount="indefinite" path="M 212 328 H 774"/>
+  </circle>
+
+  <!-- ═══ Lane 3: VLA (teal) ═══ -->
+  <rect x="30" y="418" width="1100" height="150" rx="14" fill="#07130f" stroke="#134036" stroke-width="1"/>
+  <text x="52" y="446" font-size="14" font-weight="700" fill="#5eead4">VLA · 策略</text>
+  <text x="1108" y="446" font-size="11.5" fill="#5eead4" opacity="0.8" text-anchor="end">回答："为完成这个任务，现在该执行什么动作"</text>
+
+  <g class="nodeTP">
+    <rect x="52" y="468" width="180" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="142" y="490" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">观测 + 语言指令</text>
+    <text x="142" y="508" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">条件里带着任务目标</text>
+
+    <rect x="322" y="468" width="170" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="407" y="490" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">VLA 模型</text>
+    <text x="407" y="508" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">VLM 骨干 + 动作头</text>
+
+    <rect x="582" y="468" width="160" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="1.4"/>
+    <text x="662" y="490" font-size="12.5" font-weight="600" fill="#ccfbf1" text-anchor="middle">动作块</text>
+    <text x="662" y="508" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">连续控制序列</text>
+
+    <rect x="832" y="468" width="276" height="52" rx="10" fill="#10312e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="970" y="490" font-size="12.5" font-weight="700" fill="#ccfbf1" text-anchor="middle">机器人执行</text>
+    <text x="970" y="508" font-size="10" fill="#5eead4" opacity="0.8" text-anchor="middle">直接产生动作——世界模型消费动作，它产生动作</text>
+  </g>
+
+  <path class="flowTP" d="M 232 494 H 314" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealTP)"/>
+  <path class="flowTP" d="M 492 494 H 574" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealTP)"/>
+  <path class="flowTP" d="M 742 494 H 824" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#arrTealTP)"/>
+  <circle r="5" fill="url(#pTealTP)" filter="url(#glowTP)">
+    <animateMotion dur="4.2s" begin="2.4s" repeatCount="indefinite" path="M 232 494 H 824"/>
+  </circle>
+
+  <text x="580" y="588" font-size="11" fill="#475569" text-anchor="middle">输出接口：V-JEPA 2 → latent（给规划器反复调用）｜Qwen3-VL → text（给人或 Agent）｜VLA → action（给电机）</text>
+</svg>
