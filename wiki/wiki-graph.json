@@ -1,13 +1,59 @@
 {
-  "generated_at": "2026-09-19",
+  "generated_at": "2026-09-25",
   "stats": {
-    "nodes": 125,
-    "links": 409,
+    "nodes": 133,
+    "links": 441,
     "orphan_links_removed": 0,
-    "claims": 609,
-    "categories": 11
+    "claims": 683,
+    "categories": 12
   },
   "nodes": [
+    {
+      "id": "action-chunking",
+      "type": "concept",
+      "title": "Action Chunking（动作块）",
+      "summary": "动作块（action chunking）：VLA 策略**一次预测未来几十步连续动作序列**（如 π0 的 H=50，50 步 × 7 自由度 = 350 维联合分布），而非逐步出动作——与神经科学的 motor chunking（人类把连招固化成一个运动单元）类比。它回答了\"动作明明有先后因果怎么还能并行生成\"：**块内**双向注意力+迭代去噪并行收敛（真正的因果依赖不在块内），**块间**闭环重规划（receding horizon）承担因果——拿新观测进下一轮。这与软件 Agent loop 的\"一次生成完整工具调用计划 + 拿 observation 进下一轮\"同构，区别只在频率与代价。",
+      "tags": [
+        "wiki",
+        "concept",
+        "embodied-ai",
+        "vla"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "块内并行去噪 + 块间闭环重规划的分工——因果依赖由重规划承担，不由生成顺序承担",
+          "source": "VLA系列02：扩散与Transformer在VLA中的分工——动作块并行去噪与闭环重规划",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "动作块内部用双向注意力+迭代收敛（图像扩散同理：像素间有约束但并行去噪；NLP 旁证：BERT），控制论视角下\"这本来就是规划的正确形状\"——规划天然是对一段未来的联合优化。真正的因果依赖在块间：执行部分动作后拿新观测重新规划（receding horizon）。策略层内部的这个结构，是分层多频率控制回路里\"策略层内部再做一次时间尺度分离\"。"
+        },
+        {
+          "statement": "RTC 把动作块边界的执行停顿转化为 inpainting——延迟约束下闭环重规划的工程形态",
+          "source": "VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "同步执行的块边界必然停顿，且\"停止-重启\"引发模型未见过的动力学突变。RTC（Real-Time Chunking）把新旧块衔接转化为 inpainting：重叠段冻结为已承诺动作、之后约束渐弱——推理时版无需重训（vs 训练时版需改训练），只适用扩散/流匹配策略。实验：延迟 >300ms（占预测时域 30%+）仍稳定、整体快约 20%。与软件 Agent 的流式工具调用/speculative execution 同构：\"边执行边生成\"。"
+        },
+        {
+          "statement": "三个频率口径必须分开——块生成延迟 ≠ 串行推理调用速率 ≠ 控制执行频率 ≠ 重规划频率",
+          "source": "VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "π0 附录 D 一手数字：动作块生成延迟本机约 73ms（14+32+27），换算的\"10Hz\"只是最大串行推理调用速率；控制执行频率是 50Hz 级（块内动作逐步执行）；重规划频率是实验设置（20Hz 平台 16 步重规划 ≈1.25Hz），\"实验设置非架构上限\"。对照：π0 整块 flow matching 联合生成（10 步积分）vs π0-FAST 串行解码 30–60 token——生成方式决定延迟结构。"
+        }
+      ]
+    },
     {
       "id": "advantage-function",
       "type": "concept",
@@ -258,8 +304,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.73,
+      "claims_count": 7,
+      "avg_confidence": 0.71,
       "claims": [
         {
           "statement": "Agent Loop 核心只需 30 行 Python",
@@ -305,6 +351,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是\"模型判断 + 执行 + 结果回灌\"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。\"One loop & Bash is all you need\" 在 GUI 域的对应物是 \"One loop & screenshot+click is all you need\"——loop 骨架不变，工具面变了。"
+        },
+        {
+          "statement": "agent loop 的物理域实例化——分层多频率控制回路：三档频率来自时间尺度分离，五个本质分野",
+          "source": "机器人系统系列02：Agent循环的物理形态——分层多频率控制回路与五个本质分野",
+          "first_seen": "2026-09-18",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "软件 Agent 的单个 while 循环在具身系统里被物理时间拆成三层嵌套：任务层 0.1–1Hz（最像软件 loop）/策略层 10–50Hz（VLA/扩散策略）/控制层 100–1000Hz（经典控制器，通常没有模型），外加绕开模型的独立安全监视器。频率由该层对付的物理过程时间尺度决定、允许计算量与频率成反比、相邻层约 10 倍 time-scale separation。五个本质分野：**结束信号来源**（软件 loop 模型自宣告结束 vs 外部验证）、时间角色（回合制 vs 实时异步）、工具性质（确定性 vs 概率性技能）、观测性质、安全边界位置（安全层独立于模型）——\"软件 Agent 的 loop 是模型驱动、回合制、确定性工具、自宣告结束；具身的 loop 是分层多频率、实时异步、概率性技能、外部验证结束、安全层独立于模型\"。部署侧数据点：GR00T Policy Server TensorRT 加速 H100 11.7→35.9Hz 恰落策略层窗口；π0 三个频率口径分解（块生成延迟 73ms ≠ 调用速率 ≠ 控制频率 50Hz ≠ 重规划 1.25Hz）；Hi Robot 系统 2 约 1s 或语言反馈触发/系统 1 高频出块——实时语言反馈成一等输入（物理域 barge-in）。VLA\"块内一次联合生成+块间拿 observation 重规划\"与软件 loop 同构，区别只在频率与代价；RTC\"边执行边生成\"与流式工具调用/speculative execution 同构。这是继 Computer Use action loop（08-30）后第二个跨域实例化。"
+        },
+        {
+          "statement": "agent loop 不是什么——exploration policy/搜索编排不在现有 coding agent 的 harness 里",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "给\"agent loop 是什么\"补边界：Claude Code/OpenCode 的 harness 是**单轨执行器**——提供 loop、session、context 压缩、记忆、权限、沙箱，不含并行候选、分支比较、预算分配；探索决策隐式混在 LLM 的\"下一步做什么\"里；plan mode 是权限门不是搜索。Dream-RSI 的 exploration policy 是在 coding agent 之外新加的编排层（两层结构：Policy Developer Agent 改 Discovery Agent 的\"指挥方式\"），使探索 explicit and programmable；日常对应物是 fan-out + pick-the-winner 的分发脚本。（论文初读，置信度留低）"
         }
       ]
     },
@@ -1559,7 +1623,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 7,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -1606,6 +1670,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "光谱第 ④ 层（云端 GPU 渲染推流）的\"延迟与 GPU 成本最高\"此前是定性判断，本文给出首批量化：数字人媒体流是**浏览器直连 Azure TURN relay、不经过应用后端**（只有 offer/answer 信令走 WS proxy），首帧固有成本由两部分组成——① **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS），与浏览器↔Azure 区域的 RTT 成正比，唯一优化手段是选离最终用户近的区域；② **Azure 侧渲染管线冷启动**（数字人合成器启动 + H.264 编码器出首个关键帧），纯服务端成本，客户端与部署拓扑都无法改变。生产实测首帧典型值 **≈2.4s**（n=9 中位 2.36s，2.10~2.43s 极稳）；后端与 Voice Live 同区域部署把信令腿压短、会话建立段省 1.6~1.7s。关键缓解因素：**每场会话只付一次**（会话全程保持、换题不重连），叠加预热+截帧占位两层体验优化后体感可归零——第 ④ 层的延迟成本是真实但可管理的一次性成本，不构成弃用云端路线的理由。"
+        },
+        {
+          "statement": "云端渲染推流层内部再分两条合成路线——素材回放+局部神经渲染 vs 单图逐帧生成；并发单位成本与资产结构是层内判据",
+          "source": "Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "第④层（云端 GPU 渲染推流）对客户端同为 H.264/同一 WebRTC，但内部分两条合成路线：video 头像=实拍素材回放+viseme 驱动嘴部神经渲染（重资产：训练 $600–1,440/个 + endpoint hosting ≈$432/月/个）；photo 头像=单张 512×512 照片+VASA-1 从音频逐帧生成整头（一次性 creation 费无 hosting，换形象边际成本≈0）；会话计费两类同表（$0.50/$0.60 每分钟）。并发单位成本判据：VASA-1 运动潜空间路线单卡 40fps/170ms 实时 vs 像素扩散（EMO/OmniHuman）分钟级离线——\"生成运动而非生成内容\"换来的三个结构性优势（实时硬约束/单卡并发/身份锁定架构保证）是领域专用动力学先验对泛化视频模型的护城河。"
+        },
+        {
+          "statement": "3D 内容生产为光谱补\"离线生产端\"实例——神经 3D 生成可端侧实时 vs Agent+Blender 云端高延迟；可参数化编辑的工程资产仍归传统工具路线",
+          "source": "空间智能系列03：3D内容生产的两条路线——Agent操作Blender与神经3D生成的分工",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "两条 3D 生产路线的\"运行位置\"行：神经 3D 生成（TRELLIS 类）单次前向可端侧/近实时；Agent 操作 Blender/UE5 是云端编排+本地 DCC 渲染的高延迟离线生产——离线生产 vs 运行时感知的分工。边界：TRELLIS.2 附录自认不编码部件级语义，\"可参数化编辑的工程资产\"仍归 Agent+传统工具路线。与既有\"本地 DCC 渲染补光谱左端\"Claim 构成 3D 域的完整光谱覆盖。"
         }
       ]
     },
@@ -1624,8 +1706,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
-      "avg_confidence": 0.77,
+      "claims_count": 13,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
@@ -1734,6 +1816,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Blender 实战给\"UI 层天然残缺\"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做\"眼睛\"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到\"正在打开的场景\"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域\"能点不等于应该点\"、\"DOM 虚拟化真解在数据层\"同构。"
+        },
+        {
+          "statement": "structured output 的收益模型在物理控制域翻转——格式合法性收益不成立、物理合法性才是诉求；FAST 修正：离散可行但代价在推理侧；同一权衡三次跨尺度重现",
+          "source": "VLA系列01：VLA输出架构演进——从动作token到扩散动作头",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Computer use 的 structured output + 确定性执行器组合，其收益前提（离散决策、答案唯一、可重试、像素级容错）在机器人控制域全部翻转：连续高频控制信号本身就是执行、多峰分布、毫米级偏差即失败、不可撤销——离散化在精度/延迟/多峰分布/维度耦合四处冲突，物理合法性才是真诉求。FAST（2026-09-21 续证）修正论断强度：瓶颈在分词而非离散本身——DCT+BPE 频域压缩后自回归精度与流匹配相当、训练快 5 倍，但推理慢 7 倍：**离散/连续是分工不是替代，离散可行但代价在推理侧**。同一对权衡的跨尺度重现：① 动作输出（token vs 扩散头）；② 3D 内容生产（Astra+Blender 离散符号+确定性执行 vs 神经 3D 连续分布一次前向——\"更高层放大版\"）；③ 工程资产边界（TRELLIS.2 自认不编码部件级语义，可参数化编辑仍归 Agent+传统工具）——第三次重现划出神经生成路线的当前边界。"
         }
       ]
     },
@@ -1874,8 +1965,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.72,
+      "claims_count": 6,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "GSD 采用全量上下文拼接模式",
@@ -1921,6 +2012,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "正确做法应是 state 外部存储 + context 按需投影（projection）。"
+        },
+        {
+          "statement": "CoT 软回溯是推理模型烧 token 与\"陷在错误框架出不来\"的机制根源",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "推理模型的思维链只能软回溯：说\"等等，前面不对\"之后，错误 token 仍留在 context 里继续作为条件分布的一部分，只能靠注意力压低权重、无法像真搜索那样硬回溯（把状态弹出、换分支重来）——搜索状态存在 context window 而非外部结构。这是 CoT 越长越烧 token、且容易陷在错误框架里出不来的机制解释；\"CoT 把网络深度换成序列长度\"——上下文膨胀在推理模型上的新形态。（论文初读，置信度留低）"
         }
       ]
     },
@@ -2036,8 +2136,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.8,
+      "claims_count": 8,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "LLM 面临三个根本限制",
@@ -2101,6 +2201,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责\"现在就变聪明\"，后台负责\"慢慢真变强\"，这是对\"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）\"这个根问题的工程回答：两者兼得。"
+        },
+        {
+          "statement": "RSI 不必动权重——三层学习位置 × 三层搜索位置的正交坐标，Dream-RSI 是\"在搜索的第三层上做学习的第三层\"",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "递归自我改进（RSI）的成立条件被放宽：不必动权重、甚至不训任何网络——**能改自己的探索策略代码、且能可靠评价改动**即成立。三层学习位置：Model 权重（fine-tuning）/ Skill 技能（SkillOpt）/ Search 搜索策略（Dream-RSI）；三层搜索位置：训练时 RL 真搜索 ✅ / 推理时单轨 CoT 非搜索（是摊销搜索——AlphaZero 类比：训练时 MCTS 搜、推理时策略网络一次前向是摊销产物；软回溯 vs 硬回溯、错误 token 留在 context 继续污染条件分布）/ 推理时外层显式编排 ✅（best-of-N→ToT→Dream-RSI）。这个正交坐标把本页既有的 CL-RL 四篇全景与 LifeSkill hybrid 架构放进更大定位图：技能层用完即消失的问题、参数化路径的成本，都是\"学习位置\"选择的后果。（论文初读，置信度留低）"
         }
       ]
     },
@@ -2158,8 +2267,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.78,
+      "claims_count": 7,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "Agent 与控制系统是结构同构，不是类比",
@@ -2214,6 +2323,70 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "控制论五层（WHY，设计原理）、六层工程模型（WHAT，模块结构）、三层控制模型（HOW，运行动力学）三者回答不同问题。收敛性公式 = 约束强度 × 反馈频率 / 执行自由度，其中每个因子的来源由控制论五层解释。"
+        },
+        {
+          "statement": "bounded autonomy 与 ODD 安全退出是调节器框架的物理域实例；MPC receding horizon 是\"规划一长段、执行一小段\"的控制论正形",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "物理世界落地形态普遍是 bounded autonomy（信息理解→人工审核→边界内自动执行），与软件 Agent 权限模型（read-only→approval→auto-accept）完全同构；L4 自动驾驶把\"知道自己不知道\"工程化——perception confidence 低于阈值即主动降级/fallback/Minimal Risk Maneuver，ODD 边界安全退出比\"开得更好\"更难也更关键（负反馈的边界条件设计）。MPC（Model Predictive Control）\"规划一长段、执行一小段、再重规划\"是 receding horizon 闭环——2026-09-17 裁决不为其单独建页、归口控制论概念族的第二次证据来源；机器人系统的七角色分解中，控制与安全两个角色是\"实现从手工设计换成学习得到\"这场替换里最稳定的锚。"
+        }
+      ]
+    },
+    {
+      "id": "diffusion-model",
+      "type": "concept",
+      "title": "Diffusion Model（扩散模型 / Flow Matching）",
+      "summary": "先正名：**扩散是一种\"生成方法\"（训练目标+生成过程），不是一种网络结构**——对网络结构无要求，训出来的网络才叫扩散模型。底层机制：训练学的不是均值而是**修正方向场（score）**；生成 = 从纯噪声出发的多步小修正，由粗到细。它把\"一步生成一个复杂分布的样本\"这个难题拆成很多个简单问题。\n\n选型判据一句话：**要生成的对象落在\"高维、连续、多峰\"这个问题形状里时，扩散是目前综合最优的生成方法**——这解释了为什么世界模型（未来帧）和 VLA（动作块）两处都用它：不是被\"加入\"的组件，而是输出对象恰好共享三属性。反之，离散决策、低维确定性输出、毫秒级延迟且单峰分布的场景不该用它。",
+      "tags": [
+        "wiki",
+        "concept",
+        "diffusion",
+        "generative-methods"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.69,
+      "claims": [
+        {
+          "statement": "高维/连续/多峰三属性是扩散的选型判据——三属性的精确含义须与 LLM 逐一对照",
+          "source": "VLA系列03：扩散模型基础——从去噪机制到高维连续多峰的选型逻辑",
+          "first_seen": "2026-09-18",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "\"高维\"指被生成对象的维度（动作块 350 维=50 步×7 自由度联合分布、一帧图像百万像素），不是模型内部表示维度；\"连续\"说的是取值类型，与自回归还是双向无关；\"多峰\"是概率分布的形状（同一情境多个正确答案：绕左绕右都对），不是数组多一维。MSE 损失为何不输出均值：条件里有带噪样本本身，位置暗示了所属的峰。主要代价：多步推理（压步数手段：flow matching/蒸馏/潜空间）、随机性、要求数据多样。"
+        },
+        {
+          "statement": "扩散与 flow matching 是同一框架的两种参数化——谱系 DDPM → score-based SDE → flow matching，直线路径换来步数优势与确定性复现",
+          "source": "VLA系列03：扩散模型基础——从去噪机制到高维连续多峰的选型逻辑",
+          "first_seen": "2026-09-18",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三步谱系在 probability flow ODE/DDIM 处汇合；对照维度：路径（曲线 vs 直线）、预测目标（噪声/score vs 速度场）、采样（随机 vs 确定性）。直线路径步数少（π0 十步积分、SD3/Flux 用 rectified flow），确定性采样带来复现优势。"
+        },
+        {
+          "statement": "flow matching 已成具身域跨线路共同底座；Cosmos 双轨是\"表示连续还是离散决定生成机制\"的受控对照",
+          "source": "世界模型系列05：像素路线与Cosmos——扩散与自回归双轨WFM、预训练到后训练的场景分工及全模态Cosmos 3",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "跨线路实例：π0 动作专家（10 步积分、300M 刻意做小）、Cosmos Predict 2.5 改用 flow 统一三任务、TRELLIS.2 4B flow-matching 生成器。Cosmos 1.0 双轨：tokenizer 是分岔点——CV8x8x8 连续潜变量→扩散（画质上限）、DV8x16x16 FSQ 离散→自回归（低延迟、天然继承 LLM 全套基建 KV cache/投机解码），Enhancer 互补、自回归轨最终借扩散之手交付，2.5 收敛到 flow 统一。扩散 vs 自回归权衡的三个实例：动作（π0 vs FAST）、视频（Cosmos 双轨）、训练-部署（KI/π0.5\"训练吃自回归的快、部署吃流匹配的快\"）。"
+        },
+        {
+          "statement": "视频世界模型渲染\"后果\"的机制——片段内部后果是\"联合浮现\"，跨片段才是自回归；两种\"因果\"要分清",
+          "source": "VLA系列03：扩散模型基础——从去噪机制到高维连续多峰的选型逻辑",
+          "first_seen": "2026-09-18",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "\"向左走会掉坑\"的机制检验：片段内部不是先画\"走\"再推\"掉\"——整段视频在多步去噪中作为联合分布一起浮现，物理后果是训练数据统计规律的体现；跨片段才有时间自回归。模型\"知道\"会掉，是分布拟合而非因果推理——与\"统计规律不等于因果理解\"（世界模型反事实推演要求）呼应。"
         }
       ]
     },
@@ -2282,6 +2455,134 @@
           "confidence": 0.85,
           "status": "stale",
           "evidence": "推理系统（vLLM/SGLang）的 TP/PP 不需反向传播、不同步梯度、无 optimizer，故可轻量高吞吐（推理本质 `输入→forward→输出`）；训练系统（Megatron）的 TP/PP 还要 backward 梯度、all-reduce、1F1B 交错调度、bubble 优化、activation 传递、optimizer state/梯度累积/checkpoint，是完整分布式计算系统、复杂度高一个数量级（训练本质 `forward→loss→backward→gradient→optimizer`）。由此引出常踩的坑：\"既然 vLLM 都支持 TP 是不是就不需要 Megatron 了？\"——错。vLLM 只解决\"模型怎么跑（推理）\"，Megatron 才解决\"模型怎么学（训练）\"，只用 vLLM 无法训练（没 optimizer/backward）。"
+        }
+      ]
+    },
+    {
+      "id": "embodied-ai",
+      "type": "concept",
+      "title": "Embodied AI（具身智能）",
+      "summary": "具身智能 = **让 Agent 拥有\"身体\"，在物理世界里完成 感知 → 理解 → 规划 → 行动 → 反馈学习 的闭环**。它与软件 Agent 是同一套逻辑——只是\"工具\"从 API 变成电机、\"环境\"从文件系统变成真实空间；所有工程分化的共同根源是：**物理世界不可回滚、连续、有噪声、代价高**。行业的核心判断：AI 能力分水岭不在\"会不会说\"而在\"能不能做\"——从建议层进入执行回路是跃迁而非线性改善，软件 Agent 已在数字世界完成这次跃迁，具身智能是同一逻辑在物理世界的延伸。\n\n本页是具身智能域的锚点页，镜像《具身智能全景》总导读的五条主线结构：**空间层**（[[spatial-intelligence]]）→ **认知层**（[[world-model]]）→ **系统层**（分层控制回路与角色分解）→ **行动层**（[[vision-language-action-model]]，含 [[action-chunking]]、[[diffusion-model]] 方法地基）→ **落地层**（数据飞轮、自动驾驶交汇、分层选型）。源头是 2026-09-17 起与 AI 的多轮讨论沉淀成的 21 篇系列文章（Notes/Embodied AI/）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "embodied-ai",
+        "robotics"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "具身智能的大部分工程问题在软件 Agent 里都有同构版本，差异全部指向\"物理世界不可回滚、连续、有噪声、代价高\"这一个根源",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "概念映射表逐行对应：LLM↔VLA（动作作为一种模态，但连续、高频、错了不能 Ctrl+Z）；Function calling↔技能原语（\"工具\"成功率不是 100%，需闭环纠错）；RAG 知识库↔3D 语义地图/世界模型（知识是空间的、动态的）；Planner+Executor↔高层任务规划+低层动作策略（executor 从确定性代码换成概率性控制模型）；Eval 沙箱↔仿真/视频世界模型（sim-to-real gap）；RLHF↔遥操作纠正后的持续学习（反馈来自物理世界，采集贵）；预训练语料↔人类第一视角视频/遥操作轨迹（真机数据是行业最大瓶颈）；Guardrails↔bounded autonomy。行业共同瓶颈五条：真机数据贵、长链条错误累积（0.95^20≈36%，异常检测与恢复比单点成功率更重要）、实验室泛化≠现场泛化、安全与责任边界、经济性（工业先于家庭跑通的原因）。"
+        },
+        {
+          "statement": "空间智能是具身智能的认知底座，具身智能是空间智能最重要的落地载体",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "闭环五段中，感知、理解、规划三段的核心能力正是空间智能（李飞飞 2024 提出，强调\"看到就能理解\"）；行动与反馈学习一段是具身智能补上的（强调有身体、\"交互中学习\"）。李飞飞在 World Labs 收购机器人仿真公司 SceniX 后明确表达：机器人是空间智能的最佳物理载体。"
+        },
+        {
+          "statement": "数据策略本身就是技术路线——遥操作/仿真合成/人类视频转化三条数据来源与 LLM 的\"人工标注/合成数据/网络爬取\"三角同构，必须组合使用",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "机器人领域没有互联网文本那样的现成语料：遥操作质量最高成本也最高；仿真合成规模大但有 sim-to-real gap；人类视频转化（VITRA：把人手当作一种机器人末端执行器，百万级 episode 转成 VLA 预训练语料，未见物体约 70% 零样本成功率）是\"互联网语料\"路线。VITRA 的准确定位是一套可复用的数据工程方法而非模型。"
+        },
+        {
+          "statement": "物理世界的落地形态普遍是 bounded autonomy，与软件 Agent 权限模型（read-only → approval → auto-accept）完全同构；L4 自动驾驶的\"知道自己不知道\"是其工程化极致",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "物理世界里\"模型幻觉\"的代价是碰撞和损坏，所以落地顺序普遍是：先信息理解与分析建议 → 保留人工审核 → 明确边界内自动执行。自动驾驶侧的对应物：L4 真正难的不是\"开得好\"而是 ODD 边界上的安全退出——perception confidence 低于阈值时主动降级/fallback/Minimal Risk Maneuver；SAE 分级是责任坐标系而非智能坐标系（L2→L3 跳变是责任转移）。"
+        },
+        {
+          "statement": "入场点由能力级别决定而非模型新旧——Level 0 传统方案 → L1 模仿学习（ACT，几十条 demo）→ L2 VLA → L3 世界模型，升级触发条件是任务泛化需求与数据量",
+          "source": "落地实践系列03：分层选型决策——世界模型、VLA与空间智能的技术栈选择指南",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "具身智能是分层栈不是单一模型：World Model（Cosmos 3）、VLA（GR00T/π0/OpenVLA）、Robot Learning（LeRobot——\"最容易被低估的一环\"，LeRobotDataset 标准化 episode 格式=数据资产化，VLA 最核心资产是 robot trajectory data 而非模型）、3D/Spatial、Simulation（Isaac）各答各的问题，选型按层进行。任何\"给机器人加 X 能力\"的需求都可套用\"定层 → 拆线 → 接栈\"三步决策模板。注意：单篇咨询讨论成文、无自身 POC 实践验证。"
+        },
+        {
+          "statement": "开放权重 ≠ 随便用——许可条款是具身仿真训练的硬门槛",
+          "source": "空间智能系列04：神经3D生成的开源版图——HY-World 2.0可探索世界、TRELLIS.2高保真资产与Marble对照",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "HY-World 2.0 的 Tencent Community License 三条硬约束：地域排除欧盟/英国/韩国；月活超 1 亿需另行授权；**不得用该模型及其输出改进其他 AI 模型**——\"用它批量生成仿真环境训练机器人策略\"是否落入禁区，上生产前必须逐字对照条款确认。对照 TRELLIS.2 模型与代码 MIT 无障碍。开源阵营补上的是\"拿得到权重、进得了自己的 pipeline\"，不自动等于\"随便商用、随便训练\"（基于许可全文核对，未实际部署验证）。"
+        }
+      ]
+    },
+    {
+      "id": "end-of-turn-detection",
+      "type": "concept",
+      "title": "End-of-Turn Detection（话轮结束检测 / EOU）",
+      "summary": "End-of-Turn / End-of-Utterance（EOU）检测回答\"**这句话说完了没**\"——它是语音 Agent 栈里介于 VAD（声学层\"声音停了没\"）与 turn-taking（轮次协调层\"该不该接话\"）之间的独立一层。VAD 只能在\"手快\"和\"迟钝\"之间选（想词的停顿和说完无法区分），EOU 引入语言/声学完整性判断：VAD 发现静音后不立刻判停，先让 EOU 模型对累计转写打\"这句话完整了\"的概率，过阈值立刻判停、没过最多再等 `timeout_ms`——**延迟只加在\"看起来没说完\"的停顿上**。\n\n三代方法谱系：① 静音阈值（`silence_duration_ms`，所有基础 VAD）→ ② 文本语义（Azure `end_of_utterance_detection` semantic_detection_v1(_multilingual)；LiveKit 2024 文本 turn-detector，已弃用）→ ③ 音频原生（语义+语调/音高/节奏：Voice Live 2026-06-01-preview `smart_end_of_turn_detection`、LiveKit Turn Detector v1.0、Pipecat Smart Turn）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "voice",
+        "turn-taking"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "文本语义 EOU 有天花板但没有退役——音频原生是新增不是替换",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "文本天花板三条（LiveKit 弃用自家文本模型的理由）：模型只能好到转写的程度、转写本身加延迟、转成文字丢掉时序和声学信号——\"pizza.\" 和 \"pizza, and…\" 在停顿那一刻转写完全相同。但 GA 版 API 2026-04-10 三种 VAD 类型都保留 `end_of_utterance_detection` 字段，preview 是在旁边新增音频模型选项；Azure 与 LiveKit 的演进路线一致：先文本后音频，两代并存。外部谱系数据点：LiveKit Turn Detector v1.0 在 eot-bench 300ms 预算下误截断率 9.9%。"
+        },
+        {
+          "statement": "azure_semantic_vad ≠ EOU——同名\"semantic VAD\"两家语义不同，起止检测与完整性判断是两个可选项",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Azure `azure_semantic_vad` 的官方定义是\"用语义语音模型判断用户开始与停止说话，在噪音环境下更稳健\"——解决的是**起止检测的噪音鲁棒性**；\"这句话完整了没\"是另配的子对象 `end_of_utterance_detection`。只开 `azure_semantic_vad` 不配 EOU 块，停顿仍按 `silence_duration_ms` 一刀切。对照 OpenAI `semantic_vad`（模型内置、仅 gpt-realtime、`eagerness` 参数）——名似层异。另：API 默认不开 EOU 而官方 Agent quickstart 开着（`azure_semantic_vad` + `semantic_detection_v1_multilingual`）——\"推荐配置≠默认值\"；默认不开的三条推断理由（与 Realtime API 默认一致/语言覆盖有限/短指令场景 timeout 不利）系文章自标推断（置信度 0.6）。"
+        },
+        {
+          "statement": "EOU 只决定\"何时触发判停\"，不决定\"是否放行开轮\"——挡得住句中想词，挡不住完整句后想下一要点，也挡不住客户端补发",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "`speech_stopped` 一旦发出，`create_response=true` 就照常开轮。句子完整了，EOU 不知道这道题有几个要点——那是 LLM judge 的事（知道任务、几百 ms~1s、不该放在 Speech 层实时路径上；正确叠法：EOU 洗干净 `speech_stopped` 触发，judge 决定接下来干什么）。空转写（噪音、回声）没有完整性可判，多半等到 `timeout_ms` 后照发。输出应当是概率而非布尔值，阈值由应用定——这是两段式提交（T1 试探/T2 确认）的前提。"
+        },
+        {
+          "statement": "配置与验证细节——嵌在 turn_detection 内、字段名随版本变过、生效核验看 session.updated 回显与误判完成率",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "EOU 不是独立 session 字段，三种 VAD 类型都能挂。`threshold_level`：low/medium/high/default（default=medium；官方原话 \"With a lower setting the probability the sentence is complete will be higher\"——low 手快、high 保守）；`model` 二选一：`semantic_detection_v1` 仅英语、multilingual 十种语言，其他语言被忽略等于没配。字段名坑：早期 preview（2025-05-01）写 `threshold: 0.01`/`timeout: 2`（浮点/秒），GA 2026-04-10 是 `threshold_level`/`timeout_ms`——配错服务端可能静默忽略，按 api-version 对照 API Reference。Agent 模式可预置于 metadata `microsoft.voice-live.configuration`。生效核验：`session.updated` 回显 EOU 子对象 + `speech_stopped`→下一次 `speech_started` <3s 比例（误判完成率）下降。（官方 API Reference 原文核对）"
         }
       ]
     },
@@ -2780,7 +3081,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
+      "claims_count": 12,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -2872,6 +3173,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "延迟优化的评估侧四条纪律：① **先实测分解再定位，不猜**——\"数字人慢\"候选嫌疑五六个，console 计时器一跑，8/16 秒落在 ICE 段一目了然；② **确定性常数与随机变量分开对账**——修复消灭的是确定性常数（8s 兜底每次打满、方差为零），其余各段是随机变量，单次总量对比会把确定性收益和采样噪声混在一起（总量只降 4.73s ≠ 修复只值这么多；按典型值折算期望差恰是 ~7.6s）——**分段数字才是修复效果的干净证据**；③ **多轮实测把典型值从单样本变统计事实**——n=11 Playwright 自动化把首帧从单次样本 3.5s 修正为中位 2.4s，还暴露了单次测量永远看不到的长尾异常（session.updated 17s），\"主信号缺席 + 超时告警\"与\"兜底被打满即主信号失效、值得报警\"同源；④ **测量口径受架构限制时构造对照组**——avatar 模式下回复音频只走 WebRTC 轨、WS 上没有 `response.audio.delta`，「语音返回」只能在同区域同配置的无 avatar 直连对照组测到。与缓存域纪律（上一条）同族：评估的第一步是把\"机制上必然如此\"与\"真正待解释的变量\"分开。"
+        },
+        {
+          "statement": "验证陈述纪律家族的表征域/合成数据域/自我改进域三实例——潜空间验证五步法（探针要弱）、生成与判官分立、\"改了之后敢不敢信\"",
+          "source": "世界模型系列04：潜空间路线与V-JEPA 2——预测表征而非像素、与Qwen3-VL的分野及潜空间验证五步法",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "① 表征域：潜空间验证五步法（linear probe 有无 → controlled contrast 是否分离 → latent intervention 因果 → counterfactual rollout 符合物理 → closed-loop planning 能否指导行动；弱解释①②/强解释③④⑤分级），两条纪律——**探针必须弱**（frozen encoder + 最弱可用探针，否则分不清是模型学会还是探针推理）、**latent 误差≠物理误差**（须同时报告位置/速度误差随步长曲线）；\"离理解物理世界还有多远要靠实验逐项回答，不靠 benchmark 分数宣告\"。② 合成数据域：WFM 生成训练视频必须配物理常识质检员（Cosmos Reason 当判官：生成→过滤→再入库）——生成器与评判器分立两个模型，\"否则是用幻觉污染训练集\"。③ 自我改进域：自我改进的瓶颈是\"改了之后敢不敢信\"——SkillOpt 用 held-out validation gate 换可靠性、Dream-RSI 用 replay simulator 换可靠性，同一命题两种解法：评估侧可靠性是自我改进循环的成立条件。附闭环旁证：Astra 用\"写代码→渲染→看图→修正\"闭环绕过大模型原生 3D 空间理解短板（BenchCAD 95.9%，\"LLM 不会算数但会调计算器\"同构）——外部验证器补模型短板的又一实例。"
+        },
+        {
+          "statement": "judge 与 speaker 分离的第四域实例——语音轮次：判断与说出在同一 response 内则无人能否决",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "训练循环、延迟测量、验证纪律之后的第四域：`create_response=true` 时\"答完了没\"的判断与\"接下来说什么\"的生成发生在同一个 response 里、无人能否决——这是提示词约束追问行为失效的结构原因。拆成独立 judge 调用（输出结构化 JSON）后，追问从模型自由行为变成应用显式触发的 `response.create`——生成/评估分离原则在实时语音链路的落地形态。"
         }
       ]
     },
@@ -2890,8 +3209,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.7,
+      "claims_count": 6,
+      "avg_confidence": 0.69,
       "claims": [
         {
           "statement": "J-lens 用 ∂output/∂hidden 读\"准备说什么\"，突破 logit lens 的 embedding 相似度局限",
@@ -2937,6 +3256,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "作者的哲学定位克制：J-space 满足 Block 意义上 access consciousness 的功能标准（信息全局可取用、可报告、参与推理与控制），可称 \"Verbal Global Workspace\"；但对 phenomenal consciousness（主观体验）不做任何主张——功能等价不蕴含体验存在。开放问题：J-space 是否比 logits 更 batch-invariant（logit→argmax 处存在混沌放大，J-space 作为更深层表示可能更稳定）——若成立，对可复现性与审计都有工程价值。"
+        },
+        {
+          "statement": "弱探针原则——latent 读出方法学的跨域同族续证",
+          "source": "世界模型系列04：潜空间路线与V-JEPA 2——预测表征而非像素、与Qwen3-VL的分野及潜空间验证五步法",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "潜空间验证五步法的第一条纪律与 J-lens 读出方法同族：**探针必须弱**——frozen encoder + 最弱可用探针（linear probe），否则分不清\"模型学会了\"还是\"探针自己推理出来了\"；且 latent 误差≠物理误差，须把读出结果对回物理量（位置/速度误差随步长曲线）。可解释性读出的方法学纪律在视频表征域独立重现。"
         }
       ]
     },
@@ -3071,8 +3399,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 23,
-      "avg_confidence": 0.79,
+      "claims_count": 24,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -3280,6 +3608,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像\"编排层/胶水\"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"——loop 内（能力件级）还是 loop 外（架构层级）。"
+        },
+        {
+          "statement": "harness 的职责边界——单轨执行器不含搜索编排：并行候选、分支比较、预算分配在 harness 之外",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——\"控制权在哪一层\"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）"
         }
       ]
     },
@@ -3600,8 +3937,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.72,
+      "claims_count": 6,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "Evaluator 有三个正交维度——Judge（谁评）× Strategy（怎么评）× Criteria（评什么），不应压成一棵树",
@@ -3647,6 +3984,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。"
+        },
+        {
+          "statement": "judge 的时延与知识边界决定其在实时链路中的位置——EOU 洗触发、judge 做决策；视频域新实例：物理合理性判官",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "语音轮次场景给 judge 定位补上时延/知识两条边界：LLM 做 end-of-turn 判断是错位（每次停顿都等一次几百 ms 往返、且读不到语调）；EOU 小模型做任务完成判断不可能（不知道题目）——正确叠法是 EOU 洗干净 `speech_stopped` 触发、LLM judge 决定接下来干什么：**judge 不该放在 Speech 层实时路径上**。judge 输出结构化 JSON（complete/partial/off-topic）并与 speaker 分离，是追问可控的结构前提。另一域新实例：Cosmos Reason 在 WFM 合成数据管线里当物理合理性判官（生成→过滤→再入库，\"否则是用幻觉污染训练集\"）——视频域的 Rule/Metric 之外首个物理常识 judge 样本。"
         }
       ]
     },
@@ -4530,8 +4876,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.83,
+      "claims_count": 8,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "在线学习是双回路混合系统，不能归为 Harness",
@@ -4595,6 +4941,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "LifeSkill 是本页定义的\"真在线学习\"（部署后真改权重）里少见的一个实例，但它暴露了这类方法的工程真相：**理论上满足 online learning 定义（数据 streaming、test-time 更新、逐步改参数），工程上基本不可能真在线**。它的核心循环\"失败 → 生成 K 个 skill → 每个 rollout N 次 → verifier 评分 → 训 skill extractor → 再训 policy\"本质是一个被 test-time 触发的小型 offline RL 训练循环，成本量级 $O(K\\times N\\times\\text{LLM}+\\text{2 次训练})$：latency 爆炸（不能让用户等 rollout+训练）、compute 不可持续、且不满足 real-time CL 三要求（更新慢、无防遗忘、依赖 batch）。准确定位是\"test-time triggered offline training loop\"——不是 learn *while* acting，而是 learn *after* acting, in mini-batches。所以真在线学习（改参数那一侧）现实的部署形态只能是**异步/延迟在线学习**：fast path 执行 + 异步后台训练 + 周期性热更新，即\"不能 real-time CL，只能 offline CL with online data\"。这给本页三个致命问题（不稳定/不可控/灾难性遗忘）补了第四个工程约束：**适应延迟**——改参数这次适应能不能塞进部署的延迟预算。这根\"适应延迟\"轴正好分开 JitRL（不改参数、即时在线）与 LifeSkill（改参数、只能延迟离线），也指向最优架构 hybrid：短期适应用 JitRL（前台改 logits），长期沉淀用 LifeSkill（后台改权重），JitRL 的 memory 顺便当 LifeSkill 的训练数据源。"
+        },
+        {
+          "statement": "真机遥操作纠正的持续学习对应 RLHF，但反馈信号来自物理世界、采集成本差量级",
+          "source": "具身智能全景：从LLM、Agent、RAG到物理世界闭环",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "概念映射表的持续学习行：软件侧 RLHF/用户反馈 ↔ 具身侧真机反馈、遥操作纠正后的持续学习（Rho-alpha 宣称支持部署中从人类遥操作反馈持续学习）。关键差异：反馈信号来自物理世界，采集成本高一个量级——这决定了具身域的\"在线\"多为准在线（收集-离线迭代-再部署），与本页\"工程在线=理论在线+适应延迟\"判据一致。"
         }
       ]
     },
@@ -4800,8 +5155,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.74,
+      "claims_count": 10,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "日记存在写入与消费的结构错配",
@@ -4883,6 +5238,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "PKC 管线四环（获取→落盘→编译→检索）中最痛的获取环由 Codex 原生浏览器能力承接（登录页面/字幕导出/搜索汇总），编译环留在 Claude Code（vault 规则、agent 路由、wiki schema、loop engineering 是多年 harness 资产，不随获取工具切换）。分工的工程落地是 **inbox/codex 交接协议**（commit 71025b3）：Codex 按约定落盘 `status: raw` 完整问答，Claude Code 取料成文后回写 `processed` + output 溯源——已在 Computer Use 系列六成文中首次走通全链路。这不是二选一，而是按环节用所长：不同 harness 有不同原生能力禀赋，路由到擅长的环节。"
+        },
+        {
+          "statement": "Spatial Memory 的数据库式消费与\"编译一次、持续查询\"同构——知识编译原则的空间域实例",
+          "source": "空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Spatial Memory（3D+语义+时间的可查询数据库）的消费方式：Agent 发空间查询 `objects where class=camera` 直接出答案，而不是让 VLM 把 500 张历史图像重看一遍——与 PKC\"知识编译一次保持最新、不在每次查询时重新推导\"是同一原则：把昂贵的一次性构建（重建/提取）与廉价的高频查询分离。跨域旁证：编译式知识管理的适用条件是查询频率 ≫ 更新频率，空间域（机器人持续查地图）与知识域（wiki 持续被检索）都满足。"
         }
       ]
     },
@@ -4903,8 +5267,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
-      "avg_confidence": 0.81,
+      "claims_count": 11,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "prefix caching 成立的两条隐含假设",
@@ -4995,6 +5359,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "客户\"固定长文字+每次新图\"零命中要分两层剥离。**第一层是机制预期非 bug**：一条 user 消息内「文字块+图片块」结构下，唯一的隐式断点在消息末尾（图片之后），文字/图片交界处没有 lookup 边界——请求写入的是「文字+图A」整体，换图即在分叉点之前查无可查，这是官方 Gotcha #1（共享前缀≠缓存前缀）的多模态版本。修复实证：user 位置固定文字打显式断点把命中从 **0/69 拉到 62/68**；或把固定文字放进 developer/system 消息（初始连续 developer 块末尾是天然 lookup 边界，10~11/12 命中）。**第二层才是异常**：施加同样修复后 Responses API 行为与机制预测严丝合缝，而 **Chat API 在本资源全部修复配置下依然全零**（新图 0/421；串行 15s 复测 0/144 且 explicit 组连写入都为 0），同资源纯文字两轮 Chat 正常（44/48）、同图重复正常——**API 层是缓存能力差异的独立变量**：官方 GPT-5.6+ 断点/诊断文档通篇围绕 Responses 写，Chat 对图文消息断点语义是否完整实现文档未明说。定性措辞纪律：只能说\"本资源/本部署持续复现、疑似实现或部署差异、待厂商确认\"，不能推广为\"Chat 缓存不可用\"或\"所有 Azure 部署都有此问题\"。配套排查工具 `prompt_cache_diagnostics`（九种 miss 原因枚举）在本资源实测 6/6 字段整体缺失，能力差异同样待服务方确认。"
+        },
+        {
+          "statement": "推理基建判据跨域成立——VLA 的 prefill/decode 类比与视频 token 自回归的 KV cache 继承",
+          "source": "VLA系列02：扩散与Transformer在VLA中的分工——动作块并行去噪与闭环重规划",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "VLA 架构里 VLM 骨干只做一次 prefill 当编码器（一次编码+十步去噪），\"decode 慢\"的根源同为显存带宽——与 speculative decoding 的加速动机一致；Cosmos 双轨的离散 token 自回归轨天然继承 LLM 全套推理基建（KV cache、投机解码），这正是 tokenizer 选离散的核心收益之一（连续潜变量扩散轨则拿画质上限）。缓存与解码经济学的判据在动作、视频两个新模态域复现。"
         }
       ]
     },
@@ -5158,7 +5531,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.81,
       "claims": [
         {
@@ -5223,6 +5596,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "WebRTC 传候选有 Trickle ICE（增量补发，RFC 8838）与 Vanilla ICE（offer 一次性带全候选）两种模式。Azure 数字人信令是一次性的（offer 以 base64 blob 经 `session.avatar.connect` 只发一次，无补发通道），所以\"发前收集齐候选\"是本信令通道下的标准做法——但 `complete` 信号的语义是\"**所有**网络接口都了结\"，被最慢最坏的接口绑架：VPN 虚拟网卡对 STUN/TURN 的 UDP 请求石沉大海（无响应也无错误）、mDNS 混淆地址解析、IPv6/代理路由黑洞，都让它在多网卡环境永远不来——每次连接硬等满 8s 兜底超时（开发者/企业办公电脑必现，\"干净\"家庭网络测不出）。修复的关键是**场景特化知识**：Azure 数字人 relay-only（下发的 `ice_servers` 只有一个带凭据 relay，无 STUN、无 P2P），胜出候选已知——SDP 里有第一个 relay candidate（+300ms 收敛窗收同批）就是\"够用集\"，后续 host 候选永远不会被选中，正确性零损失而 ICE 段 **8s→0.38s**（生产 n=9 全部走快路径、中位 0.54s，无一打满兜底）。可推广原则：**很多\"标准做法\"的等待，等的是通用假设下的最坏情况；对服务端行为有确定性知识时，等待条件就可以收窄**——前提是兜底全部保留（null candidate / `complete` / 超时三信号仍在，正常网络行为不变）。配套判据：兜底超时每次被打满即主信号失效，值得显式标记 + 报警。"
+        },
+        {
+          "statement": "媒体面/控制面的术语精确化与双通道的代价面——uplink 音频 WebRTC 化后后端收缩为\"纯控制面\"；音频播放路径分叉导致服务端 AEC 参考失配",
+          "source": "Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API",
+          "first_seen": "2026-09-19",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "\"双通道两条路径职责严格解耦\"的术语精确化：avatar 模式下全部输出（音频+视频）统一走 WebRTC 保证 AV 同步，WS 只承载上行麦克风与控制面；**媒体面始终 browser↔Azure 直连、控制面始终经后端**——uplink 音频 WebRTC 化后，后端是收缩为\"纯控制面\"而非被绕过（弱网收益判断依据）。传输层对两类数字人头像完全相同（同一 ICE/SDP 握手、H.264）：系列03 的 ICE 门控与预热占位策略对 photo 头像直接复用，photo 逐帧生成发生在 Azure 侧 GPU、不引入客户端时序新环节。代价面（VL07 生产实证）：音频播放路径分叉（WS audio delta vs WebRTC 视频流音轨）导致服务端 AEC 参考信号失配——双通道架构的副作用，需 Live-Reference AEC 补偿。"
         }
       ]
     },
@@ -5242,8 +5624,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.84,
+      "claims_count": 11,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "RL 的核心贡献是 Search + Learning 的统一",
@@ -5325,6 +5707,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的\"prompt+response 一起进 loss\"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的\"target 是评分键\"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问\"哪列进模型、哪列进 reward\"即可快速定位。"
+        },
+        {
+          "statement": "世界模型概念在 RL 中成型——model-based/model-free 之分、交叉的三档深度、L2→L4 数据飞轮裂缝",
+          "source": "世界模型系列01：世界模型不是一种架构——像素、潜空间、显式3D与物理方程四条实现路线",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "世界模型最早在 RL 里成型（Ha & Schmidhuber 2018、Dreamer 系列）：用学出来的\"可微分环境代理\"替代真实环境训练策略，省掉昂贵交互。与 RL 共享 MDP 词汇表但学不同函数：RL 学 π(a|s)（怎么得高分），世界模型学 P(s'|s,a)（世界怎么变）；model-free RL 从头到尾不学世界模型。交叉三档深度：reward 浅则推理时给想象轨迹打分（MPC/CEM，不训练任何东西）、中则在想象里训练 actor-critic（Dreamer，模型自带 reward 头）、深则由 reward/value 直接定义模型训练目标（MuZero value equivalence）；不变分界：预测误差训练\"世界怎么变\"、reward 训练\"什么算好\"。产业侧：L2→L4 数据飞轮的裂缝——L2 量产数据学的是 human driving distribution 而非\"我该怎么开\"，必须插入 World Model+Simulation+RL 环节（驾驶数据天然自带 observation→action→consequence 三元组，是 action-conditioned 模型的理想形态）。真机侧：π0.6/π*0.6 的 RECAP 转向真机经验 RL，与软件 Agent 的 APO→SFT→RL 阶梯平行（先模仿/监督做扎实再上强化信号；其\"从经验学习\"含人工纠正+离线迭代，非部署中实时更新）。"
+        },
+        {
+          "statement": "exploration 的三个搜索空间与\"采样太贵→离线复用\"母题——Dream-RSI 是 off-policy evaluation 的退化特例",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "\"exploration\"在 RL 里至少有三个搜索空间：状态-动作序列空间、策略参数空间、经验-数据空间——含义各不同；Dream-RSI 的 exploration policy 属第一个（=搜索控制策略），优化它本身可形式化为 meta-MDP（state=discovery tree/action=扩哪个分支+预算/reward=发现质量），落进 learning to search / metareasoning 传统。OPE（off-policy evaluation，属 offline RL）：用已记录轨迹评估未跑过的策略，经典方法需 importance sampling 修正随机转移（IS/WIS/DR/FQE，偏差-方差权衡）；Dream-RSI 是其退化特例——确定性转移免 IS、零估计误差、只剩 coverage 约束（对应 offline RL 的 OOD action，CQL/IQL 用悲观主义处理）。母题：\"采样太贵所以离线复用已有轨迹\"在权重层与搜索策略层是同一件事——PPO ratio+clip 就是 off-policy 修正、GRPO 组内复用同理、agent-lightning/verl 的存在动机一字不差，区别只在优化对象（模型权重 vs 搜索策略代码）。（论文初读，replay objective/防作弊机制未精读，置信度留低）"
         }
       ]
     },
@@ -5635,8 +6035,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.85,
+      "claims_count": 3,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Scaling Laws 是 Bitter Lesson 的定量化证明",
@@ -5655,6 +6055,15 @@
           "confidence": 0.85,
           "status": "stale",
           "evidence": "模型能力提升所需的训练数据量呈幂律增长——这是 Scaling Laws 的实际约束，也是合成数据和自我改进方法出现的驱动力。"
+        },
+        {
+          "statement": "数据规模-多样性 scaling 在具身域三种数据形态上成立——人类视频预训练、跨平台机器人数据、天然带 action 的驾驶数据",
+          "source": "落地实践系列01：数据飞轮与VITRA——把人类视频变成机器人的互联网语料",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "① VITRA：人类第一视角视频转 VLA 预训练语料，视频数据越多越多样、真机成功率越高（未见物体约 70% 零样本）——scaling law 在人类视频预训练路线成立；② π0.5：97.6% 预训练数据来自非目标平台、环境数 3→104 性能单调上升、去掉跨平台数据则分布外指令遵循崩坏——多样性维度的真机续证；③ 驾驶数据的形态对照：天然自带 observation→action→consequence 三元组 vs VITRA 需伪标注 action——数据形态决定它能喂 policy 还是 dynamics。三者合起来：具身域的 scaling 杠杆在数据多样性与数据形态，不只是规模。"
         }
       ]
     },
@@ -5908,8 +6317,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.86,
+      "claims_count": 8,
+      "avg_confidence": 0.83,
       "claims": [
         {
           "statement": "SkillOpt 把 SGD 四大机件搬进文本空间——有界 LR / 拒绝记忆 / 慢权重 / meta-learning",
@@ -5973,6 +6382,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是\"在 val 上不退步\"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好\"更稳\"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则\"移植成功\"只是管道意义上的成功。**"
+        },
+        {
+          "statement": "SkillOpt × Dream-RSI 同构分工——procedural knowledge vs search behavior，真实 rollout vs 离线 replay",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "骨架同构：记 bad case→探索→修改→打分→保留；对象不同：SkillOpt 改 skill.md 文本（procedural knowledge），Dream-RSI 改 policy.py 调度代码（search behavior）；验证方式不同：held-out 真实 rollout vs 历史树离线 replay——对应 RL 的 exploitation vs exploration，两者可同时挂载互不冲突。\"自我改进的瓶颈是改了之后敢不敢信\"：validation gate 与 replay simulator 是同一命题的两种解法。启发：SkillOpt 历史 trajectory 里躺着\"当时若用别的 skill 会怎样\"的部分信息，哪些验证环节可借 replay 降成本值得探索。开放问题（两篇论文都未答）：双层优化的干涉——skill 变了之后，旧 discovery tree 的 replay 是否失效。（论文初读，置信度留低）"
         }
       ]
     },
@@ -6022,6 +6440,62 @@
           "confidence": 0.75,
           "status": "stale",
           "evidence": "适合：Agent RL（多轮）、MoE 大模型训练、高吞吐 rollout、已有 Megatron 体系的团队。不适合：已在 HF/vLLM 体系、需要多 inference backend、想做通用 RL 平台。一句话画像——Slime 是\"server-first + dataflow-first\"框架，通过将训练/rollout/agent 交互统一到一个数据流水线实现高吞吐大模型 RL；相比 VERL 牺牲部分通用性，换取更简单的系统结构与更强性能。"
+        }
+      ]
+    },
+    {
+      "id": "spatial-intelligence",
+      "type": "concept",
+      "title": "Spatial Intelligence（空间智能）",
+      "summary": "空间智能（李飞飞 2024 提出）指 AI 感知、理解、推理三维世界的能力，强调\"看到就能理解\"。它被单独提出为一个方向的原因：3D/空间拓扑理解目前仍是大模型的明显短板——语言模型对\"左边第二个抽屉\"、\"门后面\"这类空间关系的推理远弱于文本关系推理。\n\n结构上它是一个**分层栈**：① 感知与重建（传感器数据→3D 状态 s_t：VGGT/3DGS/SAM/SLAM）→ ② 3D 表征与空间推理（3D 语义地图、场景记忆）→ ③ 世界模型（状态转移 P(s_{t+1}|s_t,a_t)）→ ④ 规划与行动（VLA/MPC）。一句话区分：**重建/表征层管\"状态\"，世界模型层管\"状态转移\"**。日常语境的\"空间智能\"多指重建层；产业积累集中在重建层（管线成熟）与行动层（VLA 热点），**中间的世界模型层反而是栈里最薄的一层**。",
+      "tags": [
+        "wiki",
+        "concept",
+        "embodied-ai",
+        "spatial-intelligence",
+        "3d"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.69,
+      "claims": [
+        {
+          "statement": "空间智能分层栈——重建层回答\"世界现在什么样\"，世界模型层回答\"动作之下会怎么变\"，两层常被混为一谈",
+          "source": "空间智能系列01：3D感知重建与世界模型的关系——状态与状态转移的空间智能分层栈",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "家庭场景例子：固定摄像头+移动机器人融合出的家庭 3D 语义地图属重建层（\"沙发在哪、门开着没\"）；在这张地图上预测\"猫下一秒往哪跑、路径两秒后会不会被人挡住\"才是世界模型层。TRELLIS 这类生成式 3D 不是世界模型——它为仿真世界提供\"内容\"，与世界模型的关系分三层：重建提供状态、生成提供内容、边界正在模糊。VGGT 的准确定位是 3D State Encoder，不是世界模型。"
+        },
+        {
+          "statement": "从几何到记忆隔着两层——3DGS 不是 Spatial Memory；Spatial Memory 不是一张地图而是一个数据库",
+          "source": "空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "五层抽象链：Perception → Geometry → 3D Semantic Map → Spatial Memory → World Model。VGGT 管\"看懂\"（一次前馈替代 COLMAP 优化管线，从图像恢复 pose/depth/point map），3DGS 管\"存下并重现\"（显式 Gaussian 集合+实时渲染），两者可组官方管线（VGGT 做 geometry init）但都只处理\"现在\"。几何之上先加语义（3D Semantic Map/Scene Graph：对象+位姿+关系），再加时间与生命周期（Spatial Memory：可查询、可更新的 3D+语义+时间数据库，支持 `objects where class=camera` 式空间查询），World Model 消费的 spatial state 才从这里产出。"
+        },
+        {
+          "statement": "选用边界——需要 XYZ 才建显式 3D，且建到需求对应的那一层为止；显式与隐式是平行路线不是上下游",
+          "source": "空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "需要精确测量、多相机统一坐标、导航、长期记忆、空间查询五类场景才建显式 3D；需要高保真自由视角渲染才上 3DGS——扫地机器人一张 occupancy grid 就够，别上五百万个 Gaussian。隐式路线（Cosmos 直接吃视频、在 latent 里学空间与动力学）不是性能妥协而是任务不同：隐式 3D 有空间理解但没有 XYZ。产品路线是 Hybrid：一致性交给显式表示、动态交给学习。"
+        },
+        {
+          "statement": "神经 3D 生成的开源版图是三层分工——场景生成铺环境、资产生成出道具、Agent 操作引擎组装规则与物理",
+          "source": "空间智能系列04：神经3D生成的开源版图——HY-World 2.0可探索世界、TRELLIS.2高保真资产与Marble对照",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "世界层 HY-World 2.0（开放权重、对标 Marble 的\"一张图变可探索 3D 世界\"能力定义——注意 Marble 是平台非模型，只能比\"平台能力定义\"层次）+ 资产层 TRELLIS.2（MIT，接近生产资产精度）+ 引擎层 Agent 操作 Blender/UE5（作者自注\"基于能力分析、非已验证集成\"）。\"可参数化编辑的工程资产\"仍归 Agent+传统工具路线——TRELLIS.2 附录自认不编码部件级语义。3D 内容生产两条路线（指挥工具造 vs 直接生成）的分工：离线生产 vs 运行时感知。"
         }
       ]
     },
@@ -6178,8 +6652,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.74,
+      "claims_count": 10,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "实时语音 Agent 涉及三层技术栈",
@@ -6252,6 +6726,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "简化口型同步的可复用实现：对每句音频按 60 Hz 计算音量包络（48 kHz 采样、每窗 800 采样求 RMS），用**第 88 百分位做自适应参考值**（不同声音音量不同，不能用固定阈值），减底噪门限归一到 0–1，再做 `**0.75` 幂次压缩（让小音量也有可见开口）；渲染端在每个视频帧对 60 Hz 包络线性插值驱动嘴部形态键（60 Hz → 24 fps）。效果与局限都清晰：说话张合、停顿回落、各角色各随自己的台词——但**只认音量不认发音**，\"b/p/m\"的闭唇、\"哦\"的圆唇它都不知道，强音不一定张大嘴。这就是分界线：精细口型必须走 viseme/面部系数路线（与最终音频对齐的时间轴数据），且渲染端要有对应控制面——只有三个形态键的角色接 55 项 BlendShapes 不叫精细同步。工程验收口径：24 fps 一帧约 41.7 毫秒，先把关键闭唇与可听辅音的偏移控制在 1–2 帧内（这是验收目标，不是人类感知阈值，也不是 API 精度保证）。"
+        },
+        {
+          "statement": "检测器与策略开关的分离在 Voice Live schema 中显式化——\"Semantic VAD 是 Turn-Taking Policy 接口壳\"的生产级续证",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "`turn_detection` 是跨层混合对象：检测器参数（`threshold`/`prefix_padding_ms`/`silence_duration_ms`/`end_of_utterance_detection`）归 Speech 层，行为策略开关（`create_response`/`interrupt_response`/`auto_truncate`）归编排层——`server_vad` 下行为开关确实只有 `create_response` 一个。这把本页\"Semantic VAD 本质是 Turn-Taking Policy 的接口壳\"（04-30）从分析推断升级为产品 schema 层面的显式分离证据。注意本页三层技术栈（Speech In / Core / Speech Out，功能流水线切分）与 VL06 三层归属（Speech 层/编排层/LLM 层，控制权切分）是不同切分轴，互为 extends 不冲突。"
+        },
+        {
+          "statement": "AEC 的参考信号从哪来是数字人场景的隐藏维度——服务端默认参考失配，需 Live-Reference AEC",
+          "source": "Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "`server_echo_cancellation` 默认用服务端自发音频作参考、并假设客户端即时播放（播放延迟 >2s 质量下降）；带 avatar 时用户实际听到的是 WebRTC 视频流音轨而非 WebSocket audio delta——路径与时序都对不上，导致数字人语音被麦克风拾回、转写成\"复述自己的话\"再触发开轮。修法：Live-Reference AEC（`reference_source: client` + `channels: 2`，客户端把实际播放的音频作第二声道上传作参考）。它是\"听\"关的 Speech 层参数，与编排层修法（线性轮次）正交可同时做——本页\"音频前处理链 AEC→ANS→AGC→VAD 严格顺序\"Claim 补上\"参考信号来源\"维度。"
         }
       ]
     },
@@ -6459,8 +6951,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.8,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Turn-Taking 不等于端点检测",
@@ -6497,6 +6989,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Azure Voice Live 生产实测把\"说完话→听到回复\"切成分段中位：**semantic VAD 判停 ~0.86s + 转写终稿 ~0.2s + LLM 首 token ~0.2s + TTS 首块音频 ~0.2s ≈ 1.5s**（直连对照 1.39~1.59s）。最大单项是 VAD 的静音判定窗——它**不是技术延迟而是话轮决策参数**：可调收紧换响应速度，代价是把用户停顿误判为\"说完\"的风险上升。这正是\"Turn-Taking≠端点检测\"的生产实证：对话节奏的第一杠杆在话轮判停策略层，不在 STT/LLM/TTS 管线层——文本轮（跳过 VAD+STT）首文本 0.51s/首音频 0.63s 是管线净成本下界，语音轮与文本轮的差值几乎全部是话轮判停+转写成本。多轮稳定性：同 session 轮 1/2/3 各阶段中位几乎重合（上下文增长不影响首 token）、两组 24 个语音轮零失败方差极小——话轮管线本身相当稳定，与出场链路的长尾异常形成对照。"
+        },
+        {
+          "statement": "全双工/半双工的两层判定——半双工卡在模型/对话层的轮次状态机，而非传输层",
+          "source": "Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估",
+          "first_seen": "2026-09-19",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "传输层（WebSocket/WebRTC/RTP）本来就是全双工的；半双工的根源在模型/对话层的轮次状态机——系统只有\"听\"和\"说\"两个状态。GPT-Live-1 把判停、打断、附和原生化为模型能力（Full Duplex Bench 比 GPT-Realtime-2.1 高约 30 个百分点），是\"端到端架构将 Turn-Taking 内化为模型能力\"论断在全双工方向的最新证据层；对数字人场景 AEC 从可选变必选。"
+        },
+        {
+          "statement": "\"端点之后\"还有三个应用层判断——\"该不该 response\"拆成四问；两段式提交把判断延迟藏进用户自己的停顿里",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"Turn-Taking≠端点检测\"的最强续证：把一个布尔开关拆成四问——说完了没（EOU 模型/Speech 层/几十 ms）、答完了没（LLM judge/应用层/几百 ms~1s 且知道任务）、要不要致谢（跨轮状态规则/零时延）、说什么（分档内容源+代码校验）；混在一起就退回布尔开关。判停（VAD）→开轮（create_response）→生成（LLM）是三个独立决策点，Voice Live 把判停与开轮在协议上拆开。两段式提交状态机（LISTENING→PENDING→COMPLETE）：T1 试探性预生成不出声、T2 确认后播出、之间用户开口即丢弃，阈值按说话人 95 分位自适应——\"把判断延迟藏进用户自己的停顿里\"是延迟工程治体感的第三实例（与 VL03 思考过渡语、interim_response 同族）。度量与演进：误判完成率（COMPLETE 后 3s 内 speech_started 比例）/完成延迟/致谢重复率三指标，事件流回放到不同阈值组合画曲线选拐点（与 LiveKit eot-bench 同思路）；演进顺序：规则+两段式 → EOU+拉长 silence（1200~1500ms）→ LLM judge → 音频原生模型——\"话轮判停是决策参数而非技术延迟\"的度量方法补充。"
         }
       ]
     },
@@ -6595,6 +7105,144 @@
       ]
     },
     {
+      "id": "viseme",
+      "type": "concept",
+      "title": "Viseme（视觉音素）",
+      "summary": "Viseme（vis- = see）是**眼睛看到的最小口型单位**，与 phoneme（音素，耳朵听到的最小语音单位）构成 `-eme` 词族（还有 grapheme 字素、morpheme 语素——各领域的最小功能单位）。关键关系：**多个 phoneme 映射到同一个 viseme**——/p/ /b/ /m/ 听起来不同但口型都是\"双唇闭合→打开\"；人眼能区分的口型数量远少于人耳能区分的音素数量，Azure 为 en-US 定义了 22 个 viseme ID（0–21）。\n\nviseme 是语音驱动动画领域的基础单位，跨 TTS、数字人、3D 动画三个子域：TTS 引擎在合成音频的同时输出 viseme 时间轴（Voice Live 事件 `response.animation_viseme.delta`：`viseme_id` + `audio_offset_ms`），下游渲染层（云端神经渲染或客户端 blendshape/骨骼动画）按时间轴驱动口型。",
+      "tags": [
+        "wiki",
+        "concept",
+        "voice",
+        "avatar",
+        "tts"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "viseme 序列比音素序列更接近渲染层——这是口型输出协议选 viseme 时间轴而非音素序列的原因",
+          "source": "Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "几十个英语音素收敛到 22 个口型单位，渲染层只需关心视觉可区分的形状。官方文档 + 生产接入双重印证。"
+        },
+        {
+          "statement": "viseme 是离散的驱动信号，渲染输出是连续的——\"查表贴图\"是误解，实际是协同发音条件下的神经渲染",
+          "source": "Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "若按 viseme ID 查表贴预录口型帧，口型会像早期游戏 NPC 一样机械——真实说话中相邻音素口型互相渗透（协同发音 coarticulation：/s/ 接 /u/ 和接 /i/ 嘴形不同）。实际做法：深度视觉模型以音频/viseme 时间轴为条件逐帧合成嘴部及周边区域，再无缝融合回实拍素材。Video 头像的\"素材回放\"部分是身体、衣着、姿态；嘴是每次实时生成的（显式流水线 `audio → phoneme → viseme → mouth animation → 与素材合成`）。"
+        },
+        {
+          "statement": "\"viseme 是数字人准入闸门\"约束的是\"谁来出声\"，不约束\"头怎么动\"",
+          "source": "Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "闸门的准确含义：驱动信号必须来自 TTS 合成环节，所以数字人必然落在混合式/级联式路线——对两类头像都成立（photo 头像同样吃 Azure TTS 输出）。但 video 头像消费\"音频 + viseme 时间轴\"，photo 头像消费\"音频波形本身\"（VASA-1 直接从音频提特征，中间**没有显式 viseme 表示**，面部动力学作为联合潜变量整体建模）。此条精确化了 VL04 的初版表述。"
+        },
+        {
+          "statement": "客户端 viseme 渲染的六条同步工程规则——时间轴是云端计算与本地渲染两个位面的耦合接口",
+          "source": "Blender系列04：口型同步实战——从音量包络到viseme的渐进式改造与三维口型架构",
+          "first_seen": "2026-09-12",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Blender 系列独立批次的客户端接入实证：viseme 事件流由云端语音 API 下发、渲染在本地执行，`audio_offset_ms` 时间轴是跨位面耦合接口（相关判据框架见 [[compute-locus-spectrum]]）。工程规则要点：按音频播放时钟对齐而非事件到达时刻、口型过渡需插值平滑、简化方案（音量包络）与精细方案（viseme）的分界在\"是否需要可辨认的发音口型\"。卡通数字人（非人类比例明确不被 photo 头像支持）的唯一出路正是客户端拿 viseme 时间轴自渲染。"
+        }
+      ]
+    },
+    {
+      "id": "vision-language-action-model",
+      "type": "concept",
+      "title": "VLA（Vision-Language-Action Model）",
+      "summary": "VLA（Vision-Language-Action）模型在 VLM 骨干上接动作输出，让同一个模型看图、听指令、直接出动作——**把\"动作\"当成和图像、语言并列的一种模态来预测**。代表：Google RT-2、OpenVLA、Physical Intelligence π 系列、NVIDIA GR00T、微软 Rho-alpha。各家共同点是复用 VLM 的视觉语言理解，差异在数据来源（遥操作/仿真/人类视频）、模态覆盖（是否加触觉/力）、跨形态迁移成本三处。\n\n理解 VLA 架构的主线是**输出方式的两代演进**：第一代把动作离散化成 token（RT-2/OpenVLA，2023–2024），第二代用独立的连续动作头（扩散/flow matching，π0 起）——转向的根本原因是动作输出的问题形状（连续、高频、多峰、维度耦合）与 structured output 的收益模型冲突。π 系列（openpi 开源）是把原理对到真实模型演进的最佳样本。",
+      "tags": [
+        "wiki",
+        "concept",
+        "embodied-ai",
+        "vla"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 7,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "动作输出从离散 token 转向连续动作头的四个原因——精度平滑性、频率延迟、多峰分布（最本质）、维度间耦合；主流系统仍是分层的",
+          "source": "VLA系列01：VLA输出架构演进——从动作token到扩散动作头",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Computer use 与机器人控制的输出分界：低频秒级/高频 10–50Hz、离散命令/连续控制信号（本身就是执行）、答案通常唯一/常常多解（多峰）、容错高/毫米级偏差即失败、可重试/不可撤销。两者不对立——主流 VLA 是分层的：高层任务规划（VLM 做任务分解，低频离散决策，完全可用 structured output）+ 低层动作策略（连续动作头译成高频控制信号）；planner/executor 结构依然成立，只是 executor 从确定性代码换成概率性控制模型。"
+        },
+        {
+          "statement": "π0 证明 VLM 知识可以接到连续控制上——双专家共享 self-attention 交互 + 流匹配整块生成；但权重分离 ≠ 梯度隔离，动作损失仍侵蚀 VLM 主干（KI 因此而生）",
+          "source": "VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "官方论文核对后的精确表述：π0 两组专家权重（VLM 3B + 动作专家 300M 刻意做小）通过共享 self-attention 交互（非固定拼接+MLP——那是带噪动作与 flow timestep 的输入适配器；也非稀疏 MoE——按模态静态分配权重，无 learned router）；整块动作（H=50）经多步 flow matching 数值积分**联合**生成，与 π0-FAST 的自回归解码相对。Knowledge Insulation 的解法：梯度隔离 + 双目标单阶段协同训练——训练吃自回归的快、部署吃流匹配的快。"
+        },
+        {
+          "statement": "FAST 证明离散路线的瓶颈在分词而非离散本身——离散/连续是分工不是替代",
+          "source": "VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "朴素离散化卡在逐维取整的分词上；FAST 用 DCT+BPE 频域压缩（系数缩放取整使不显著系数归零再 BPE），压缩后自回归训练快 5 倍、精度与流匹配相当——但推理延迟大 7 倍（2B 主干串行解码 30–60 token）。π0.5 把两条路线串联：\"离散 token 预训练 + 流匹配后训练\"，各取所长。这修正了\"structured output 在物理控制域不成立\"的论断强度：离散可行，但代价在推理侧。"
+        },
+        {
+          "statement": "π0.5 的开放世界泛化靠数据组合而非架构魔法——97.6% 预训练数据来自非目标平台，环境数 3→104 性能单调上升",
+          "source": "VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "\"没见过的房子里干活\"的实验支撑：去掉跨平台数据（WD）则分布外指令遵循崩坏。π0.6/π*0.6 的 RECAP 转向真机经验 RL——与软件 Agent 的 APO→SFT→RL 阶梯平行（先把模仿/监督做扎实再引入强化信号）；注意 RECAP 的\"从经验学习\"含人工纠正+离线迭代，非部署中实时更新。"
+        },
+        {
+          "statement": "分层是能力结构，不必然是部署结构——Hi Robot 双模型分层 vs π0.5 同权重分层",
+          "source": "VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Hi Robot 用同一 VLM 底座两种微调实现 System 2（约 1s 或收到语言反馈触发，实时语言反馈成为一等输入）/System 1（高频出块）双模型分层；π0.5 把同样的分层做在同一组权重里（统一分层推理）。\"角色是接口、模型是实现\"框架的最佳实例对：角色分离≠模型分离——VLA 内嵌世界模型有三种融合模式（UniPi 想象后动/WorldVLA 联合训练/网络内规划），一组权重可以同时扮演多个角色。"
+        },
+        {
+          "statement": "评估 VLA 声明的维度清单——新环境/新物体/新技能是三件事，成功率必须挂实验设置，三个频率口径必须分开",
+          "source": "VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "评估任何 VLA 声明至少分开问：新环境/新物体/新技能泛化（π0.5 未见住宅实验≠任意家庭任意任务）；成功率挂什么任务与设置；错误恢复与人工介入率；数据成本（多少小时遥操作/多少环境）。频率口径纠错（π0 附录 D 一手数字）：动作块生成延迟（100/750ms，本机 73ms=14+32+27）≠ 最大串行推理调用速率 ≠ 控制执行频率（50Hz 级）≠ 重规划频率（20Hz 平台 16 步重规划 ≈1.25Hz，\"实验设置非架构上限\"）。常见误读纠正表 6 条（见 VLA04 第四节）可直接作反例证据。"
+        },
+        {
+          "statement": "VLA 选型看场景而非排名——GR00T/π0/OpenVLA 定位本质不同",
+          "source": "落地实践系列03：分层选型决策——世界模型、VLA与空间智能的技术栈选择指南",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "人形/Isaac 生态/快速 POC 选 GR00T N1.7（cross-embodiment 设计：relative end-effector action space、state/action 132 维、horizon 40；Policy Server 形态嵌控制回路，TensorRT 加速 H100 上 11.7→35.9Hz——无 NIM 是产品形态差异非能力缺陷）；研究 flow policy 选 π0；改架构做 baseline 选 OpenVLA；机械臂先 benchmark 再定。单篇咨询讨论成文，无自身实测。"
+        }
+      ]
+    },
+    {
       "id": "voice-activity-detection",
       "type": "concept",
       "title": "Voice Activity Detection",
@@ -6609,7 +7257,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.77,
       "claims": [
         {
@@ -6649,13 +7297,13 @@
           "evidence": "Personal VAD（说话人条件化，约 13 万参数，三分类：非语音/目标/非目标）；CNN+Attention VAD（时频双重注意力，约 15 万参数即超越更大 CNN）；NAS-VAD（神经架构搜索，151K 参数，AUC 0.982，跨数据集泛化性强）。三者与云端 Semantic VAD 不是竞争关系而是互补的不同层次——声学 VAD 捕获语音帧，语义 VAD 调优切分时机。"
         },
         {
-          "statement": "Semantic VAD 只做 end-of-turn 检测，不等于打断能力",
+          "statement": "OpenAI semantic_vad 只做 end-of-turn 检测，不等于打断能力（范围限定：指 OpenAI 模型内置 semantic_vad）",
           "source": "2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测",
           "first_seen": "2026-04-27",
-          "last_updated": "2026-04-30",
+          "last_updated": "2026-09-25",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Semantic VAD 本质只判断\"用户这一轮说话什么时候结束\"，不决定\"要不要打断 AI\"。打断 = VAD 事件（speech_started）+ Interrupt Controller + 流式 TTS 控制。eagerness 参数只调 end-of-turn 阈值，不控制打断行为。"
+          "status": "active",
+          "evidence": "Semantic VAD 本质只判断\"用户这一轮说话什么时候结束\"，不决定\"要不要打断 AI\"。打断 = VAD 事件（speech_started）+ Interrupt Controller + 流式 TTS 控制。eagerness 参数只调 end-of-turn 阈值，不控制打断行为。  2026-09-25 范围限定（Voice Live 系列08）：本条对象是 **OpenAI `semantic_vad`**（模型内置、仅 gpt-realtime），成立；Azure `azure_semantic_vad` 是另一回事——官方定义为\"噪音下更稳健的起止检测\"，完整性判断（EOU）是另配的 `end_of_utterance_detection` 子对象，见对照 Claim 与 [[end-of-turn-detection]]。"
         },
         {
           "statement": "完整 Voice Agent 打断需要 6 个必要组件协同",
@@ -6674,6 +7322,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "VAD 检测\"有无人声\"（逐帧二值），KWS 检测\"是否说了特定词\"（事件触发）。VAD 无法替代 KWS——只用 VAD 会导致任何环境对话触发系统，功耗爆炸和隐私泄露。典型语音助手流水线：KWS（超低功耗 DSP 持续监听）→ VAD + ASR（主 CPU 激活后）→ Semantic VAD（云端判断说完没）。"
+        },
+        {
+          "statement": "同名\"semantic VAD\"两家语义不同——Azure azure_semantic_vad 管起止检测的噪音鲁棒性，EOU 另配；打断是编排层策略开关，与判停/开轮正交",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Voice Live 实际有三种 VAD 归属两层：OpenAI `semantic_vad`（模型内置、仅 gpt-realtime、`eagerness`）与 Azure `azure_semantic_vad(_multilingual)`（Azure Speech 层、全模型可用）名似层异；只开 `azure_semantic_vad` 不配 EOU 块，停顿仍按 `silence_duration_ms` 一刀切。打断与开轮相互独立：`interrupt_response` 与 `create_response` 是两个正交的编排层开关——不需要为\"应用全权控制开轮\"关掉整个 VAD。反向实例（VL07 生产复现）：`interrupt_response=true` 下任何被判为语音的声音（含数字人回声）都会打断播报并开新一段用户发言、再触发一次开轮——\"完整打断需 6 组件协同\"的反向印证：打断链路每一环都可能被噪音/回声劫持，数字人场景需 Live-Reference AEC 治源头。"
         }
       ]
     },
@@ -6693,8 +7350,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 14,
-      "avg_confidence": 0.77,
+      "claims_count": 18,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
@@ -6799,10 +7456,10 @@
           "statement": "数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器",
           "source": "从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）",
           "first_seen": "2026-08-26",
-          "last_updated": "2026-08-30",
-          "confidence": 0.75,
+          "last_updated": "2026-09-25",
+          "confidence": 0.85,
           "status": "active",
-          "evidence": "Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是\"计算发生在哪里\"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为\"语音驱动画面\"，两者的计算位置相距整个光谱。"
+          "evidence": "Foundry Voice Live 页面 Inspector 实探：数字人形象不在本地渲染——云端 GPU 做神经视频合成（口型由 TTS 输出的 viseme 时间轴驱动），WebRTC 把视频流推给浏览器，`<video>` 元素只是显示器。三条技术路线对照：① 云端视频合成（效果最真、延迟与 GPU 成本最高，Voice Live avatar 属此路）；② 客户端 3D blendshape（Three.js 本地渲染，viseme 驱动表情骨骼，成本低可离线）；③ Live2D 纸片人（2D 变形，最轻量）。选型判据是\"计算发生在哪里\"：内容复杂度 × 实时性来源决定画面在文档内/本地 JS/本地 GPU/云端 GPU 哪一层生成。音波球一类可视化则是本地 Canvas 四环节驱动链（Web Audio AnalyserNode → 几何映射 → 涂像素 → rAF 帧循环）——同为\"语音驱动画面\"，两者的计算位置相距整个光谱。  2026-09-25 精确化（Voice Live 系列05）：\"口型由 viseme 时间轴驱动\"**仅对 video 头像成立**——photo 头像由 VASA-1 直接消费音频波形逐帧生成整头，中间无显式 viseme 表示；见下方两类头像 Claim 与 [[viseme]] 页。"
         },
         {
           "statement": "四种语音要求各有专属控制面——提示词表达表演意图、语音接口生成声音、声音自带的时间数据驱动嘴型",
@@ -6821,6 +7478,133 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "数字人出场链路的三层优化各治一段，构成\"技术等待 vs 感知等待\"的分离范式：**ICE 门控消灭确定性等待**（治本，8s→0.38s）、**说明页预热把连接藏进阅读时间**（重叠——预热时机 = 能拿到会话的最早时刻，阅读 ≥7s 即零等待）、**上次会话截帧占位让人物形象秒出**（治体感，体感 ≈0）——\"用户感知的等待可以远小于技术上的等待\"。出场合计：16s→11.25s（本地最坏情况）→9.99s（同区域生产单测）→中位 8.61s（生产 n=9）。对话面合成端到端：说完话→数字人开口说下一题 ≈ 0.86s（VAD 判停）+ 0.19s（转写尾）+ **3.90s（外部面试网关 RTT，n=20 中位，2.87~5.04s）**+ 0.63s（读题→首块音频）≈ **5.6s——网关一段占 70% 且波动最大**，与出场链路最大头（面试创建中位 4.7s）是同一项成本，是对话面唯一的结构性优化点：**同域部署/网关提速治本，思考过渡语遮蔽治体感**。反面印证：同区域后端 proxy 中转几乎免费（`response.create`→首 token 生产与直连都 ~0.5s），瓶颈在浏览器到区域的公网 RTT 与外部依赖，不在语音层这层壳——与既有\"延迟瓶颈在模型和工具而非 Voice Live 这层壳\"Claim 互证。"
+        },
+        {
+          "statement": "S2S 与混合式的真开关是 voice 配置字段而非模型选择——\"架构决策降级为配置项\"在输出侧再次上演",
+          "source": "Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估",
+          "first_seen": "2026-09-19",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "四条路线（级联/混合/S2S/全双工）中，gpt-realtime 配 azure-custom voice 即滑入混合式（Speech-LLM + Azure TTS），解锁 viseme/avatar；纯 openai 原生音色锁死纯语音——数字人的 viseme 闸门由 voice 配置决定。GPT-Live-1（全双工）把判停/打断/附和原生化，吃掉平台\"轮次机器\"。产品组问答五点：① GPT-Live-1×avatar 是结构性难题（viseme 控制面缺失，\"换嘴\"退路对全双工不成立）；② gpt-live-1 尚未上线 Voice Live（当前 gpt-realtime 2.1/1.5）；③ \"prompt agent + gpt-live-1\"走 Voice Live 可行；④ 中文轮次判断产品组自己打问号需实测；⑤ **更正记录：\"Agent 选不到 gpt-realtime\"确认是 bug 且已于 2026-09 修复，非解耦设计**——此前系列02 曾按\"解耦设计结果\"解读，已原地更正；本页解耦/三模式/会话绑定三条 Claim 不以\"bug=设计\"为核心论断、不受影响；Agent+gpt-realtime 组合当前可用，为选型光谱左端新增可用组合点。落地量化：$0.05/分钟按秒计、按并发会话数限流、只支持音频+文本无图像。"
+        },
+        {
+          "statement": "两类数字人头像=两条合成路线——video 素材回放 + viseme 神经渲染嘴部，photo 单图 + VASA-1 逐帧生成整头；session 构造必须按头像类型分支",
+          "source": "Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "`type: photo-avatar` 是后端路由开关、`model: vasa-1` 是版本化声明；`style` 本义是\"另一段实拍素材\"故 photo 头像无 style、连续参数 `scene` 取代之；session 构造器与 agent metadata 必须按头像类型分支——`avatar_verification_failed` 生产事故实证。素材边界与 RAI 身份闸门：photo 用真人照片需 consent 视频+人脸比对核验 / AI 生成虚拟人免 consent / 卡通非人类比例明确不支持（VASA-1 潜空间在真实人脸上训练）；自定义 video 头像只能真人 ≥10min 实拍。成本结构：自定义 video=重资产（训练 $600–1,440/个 + endpoint hosting ≈$432/月/个），自定义 photo=一次性 creation 费无 hosting、换形象边际成本≈0；会话计费两类同表（$0.50/$0.60 每分钟）。推荐逻辑按呈现窗口分：头像框/小窗→photo（脸更生动且 512×512 短板不暴露）；半身/大屏/品牌服装/竖屏立牌→video；photo 仍 public preview 需核 region/SLA。传输层两类完全相同（同一 ICE/SDP/WebRTC/H.264）。"
+        },
+        {
+          "statement": "session 字段三层归属与开轮/生成两关分离——Agent 模式下 create_response 从调节器退化为总闸",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "session 字段按控制权归属分三层：检测器参数（`threshold`/`silence_duration_ms`/`end_of_utterance_detection`）归 Speech 层；行为策略开关（`create_response`/`interrupt_response`/`auto_truncate`）归编排层；生成约束归 LLM 层——`turn_detection` 是跨层混合对象（与 [[speech-technology-stack]] 的功能流水线三层是不同切分轴，互为补充）。**开轮与生成是两个独立关卡**：`create_response` 只管要不要开轮、`instructions` 只管轮里说什么；关掉自动开轮后提示词\"无处施力\"而非\"失效\"，反向手动发不带约束的 `response.create` 模型照样自由发挥。\"谁开轮 × 怎么约束\"叉乘出七种使用形态（全自动/应用节拍/受约束轮次〔模型模式独有〕/脚本朗读/旁路生成 `conversation: \"none\"`/分阶段混合/push-to-talk），判断顺序：谁决定何时答 → 每轮任务是否一样 → 要不要托管知识库工具 → 音频质量与判停精度（正交）。应用节拍副产品=彻底消除 `conversation_already_has_active_response` 撞车；`interim_response` 是 Agent 推理耗时时编排器推的填充语，应用节拍下不出现；`create_response=false` 不影响数据采集（VAD 仍 commit/生成 user item/转写照跑）。Agent 模式拿走 session 级与 per-turn `instructions`（实测报错 \"Overriding instructions in response.create is not supported\"），保留 item 注入与 interim_response——模型模式\"开轮但只说一句确认\"的中间档在 Agent 模式不存在；`conversation.item.create` 是两种模式下唯一的内容级操控手段（官方 Agent quickstart 开场白=先塞 system item 再发空 `response.create`；官方原话 response 属性 \"later overridable using the response.create event\"）；VAD/EOU 参数可预置于 Agent metadata `microsoft.voice-live.configuration`（512 字符分块）。级联（文本）模型下 `modalities: audio` 是假的——音频由 Azure TTS 合成，\"让模型小声慢点说\"的提示词不可能生效，韵律要调 `voice.rate`/`voice.temperature` Speech 层参数〔文章自标推断，0.7〕；转写主链路（文本模型下 azure-speech 自动开启）/旁路（gpt-realtime 下仅留记录）随模型翻转。"
+        },
+        {
+          "statement": "Agent 的价值=交给它的内容决定权；重复回应=开轮关卡放行次数，与提示词无关——转写指纹排查法与 response.created 验证标准",
+          "source": "Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "\"谁开轮 × 谁给内容\"2×2 控制权矩阵：external API 与 bank linear 两种 persona 同在\"应用开轮 + 现成文本逐字读\"行——Agent 价值为零且 Agent 模式是负资产（丢 per-turn `instructions`/多一圈 Foundry runtime/无 `interim_response`），应走 `?model=` + 最小模型（生产 external-brain persona 用 gpt-4.1-mini 即此用法）；**传声筒也绕不开模型**——Voice Live 没有\"说这句话\"事件，文本进 TTS 的唯一入口是 response、response 的唯一入口是模型（`?model=`/`?agent_id=` 必选其一）；response 档是串行两段不是并列选项：门控链 VAD→EOU→LLM judge→两段式提交归应用侧、与 model/agent 无关，开轮后\"说什么\"才轮到二选一。VL07 生产实证：**重复回应=开轮关卡放行次数**——三个开轮来源要分别关（VAD 判停走 `create_response`；前端\"我答完了\"补发的裸 `response.create` 不走 VAD 也不受 `create_response` 管；无噪音也能三次：中途停顿/说完停下/按钮补发，噪音与回声只是放大器）。转写指纹排查法：每个 `response.created` 向前配对最近 user item 的转写——空=噪音 / 半句=停顿 / 复述自己的话=回声；级联模型下先开轮再等转写（`response.create` 在 `speech_stopped` 时即发），读日志按此顺序。十三步完整流程三段归属：门控段全在应用侧与挂不挂 Agent 无关 / 开轮生成段仅推理是 persona 定义生效处 / 播出段；两个易漏点：judge 异步竞态复查（放行瞬间用户又开口则丢弃）、`acked` 只翻一次。验证标准：`response.created` 次数严格等于门控放行次数（面试场景=读题次数），多出的每一个都能用指纹表分类。"
+        }
+      ]
+    },
+    {
+      "id": "world-model",
+      "type": "concept",
+      "title": "World Model（世界模型）",
+      "summary": "世界模型的定义很朴素：**给定当前状态和一个动作，预测接下来世界会变成什么样**——`P(s'|s,a)`，作用是让 Agent 能\"在脑子里演一遍\"再行动。概念在强化学习中成型（Ha & Schmidhuber 2018《World Models》、Dreamer 系列），核心动机是用学出来的环境模型替代真实环境训练策略，省掉昂贵的真实交互。\n\n最重要的认知修正：**世界模型是一个角色，不是一种架构**——它用\"回答什么问题\"定义，不用\"长什么样\"定义（如同\"缓存是一个角色\"：Redis 或进程内字典都算）。同一个 Diffusion Transformer，输入历史帧+动作、输出未来帧是世界模型；输入当前帧+指令、输出动作块就是策略。扮演这个角色的具体实现分四条路线：**像素/视频**（Genie、Cosmos）、**潜空间**（V-JEPA 2、Dreamer）、**显式 3D**（Marble、数字孪生）、**物理方程**（MuJoCo、Isaac）——且路线可以串联为工序而非互斥阵营（HY-World 2.0 中间用视频、产物是 3D）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "embodied-ai",
+        "world-model"
+      ],
+      "category": "具身智能（Embodied AI）",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 8,
+      "avg_confidence": 0.68,
+      "claims": [
+        {
+          "statement": "世界模型是角色不是架构——四条实现路线用不同语言描述世界（像素/特征/几何/方程），架构与生成机制只是路线内部的工程选择",
+          "source": "世界模型系列01：世界模型不是一种架构——像素、潜空间、显式3D与物理方程四条实现路线",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "四路线差别归纳：一致性来源——像素靠学习+长上下文（天然会漂）、潜空间只关心决策相关特征、显式 3D 由表示本身保证、物理方程由方程保证；动态来源——前两条神经网络预测且**可微**，后两条物理引擎（不会\"穿墙\"但一般不可微）；典型用途——像素产多样化训练数据与视觉逼真仿真、潜空间做规划与想象中训练策略、显式 3D 给持久记忆/可编辑/可测量、物理方程做高保真训练验证。\"在脑子里演一遍\"是字面意义上的计算：MPC 式规划把世界模型前向传播调 1000×10 次给候选轨迹打分；Dreamer 让策略在模型里连续\"想象\"几百万步——沙箱就是网络本身，除非走物理方程路线沙箱才是独立仿真软件。补充（空间智能系列04）：路线可串联——HY-World 2.0 用像素路线当扩展工序、重建模型固化成显式 3D 表示，修正了\"四条路线并列互斥\"的初版表述。"
+        },
+        {
+          "statement": "判别世界模型看三要素——Representation、action-conditioned Prediction、Planning；与 RL 共享 MDP 词汇表但学的函数不同（π(a|s) vs P(s'|s,a)）",
+          "source": "世界模型系列03：世界模型与强化学习的边界——判别三要素、脑内模拟器与特斯拉FSD的归类",
+          "first_seen": "2026-09-19",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "传感器构成、端到端与否、生不生成视频、有没有显式状态变量，都不在判别标准里。与 RL 的交叉是双向且有三档深度：reward 浅则推理时给想象轨迹打分（MPC/CEM，不训练任何东西）、中则在想象里训练 actor-critic（Dreamer，世界模型自带 reward 头）、深则直接定义模型训练目标（MuZero value equivalence，模型被 reward/value\"雕刻\"出来）。不变的分界线：预测误差训练\"世界怎么变\"，reward 训练\"什么算好\"。案例：特斯拉 FSD 是光谱问题非判断题——高度端到端视觉 driving policy + 强世界表征，缺的一环证据是显式 action-conditioned dynamics 学习与 rollout；\"每天 500 万公里\"喂的是数据引擎，喂 policy 还是 dynamics 才是归类问题所在（基于公开材料推断，非官方确认）。"
+        },
+        {
+          "statement": "与策略/评估器/时间序列预测的三条分界线——条件里有没有目标、状态含后果不含评判、条件里有没有\"我\"",
+          "source": "世界模型系列01：世界模型不是一种架构——像素、潜空间、显式3D与物理方程四条实现路线",
+          "first_seen": "2026-09-18",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "① vs 策略：策略条件里有目标（\"要完成什么\"），世界模型对任务中立；② vs 评估器：世界模型预测后果（状态里含后果），不做好坏评判——Dreamer 的 reward head 是常见混淆点（那是叠加在世界模型上的评估角色）；③ vs 时间序列预测：世界模型条件里有\"我\"的动作，时序预测没有——股票预测若不建模自己下单的市场冲击就只是时序预测，建模了才是世界模型。世界模型在闭环中的位置：**消费动作、吸收反馈，但不产生它们**——不产生动作（那是策略），不执行反馈（但预测误差本身是它的训练信号）。"
+        },
+        {
+          "statement": "与 LLM 的分野不在生成机制而在要回答的问题——动作条件化、空间持久记忆、连续高维模态、被规划器高频调用的中间件角色",
+          "source": "世界模型系列02：世界模型与LLM的分野——动作条件化、空间持久记忆与中间件角色",
+          "first_seen": "2026-09-17",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "LLM 回答\"接下来最可能**说**什么\"，世界模型回答\"如果我这么**做**，世界会变成什么样\"——\"是否自回归\"不是分界线。V-JEPA 2 vs Qwen3-VL 把分野推到精确表述：**分野本质是\"预测放在训练目标的哪个位置\"**——Qwen3-VL 也会预测未来，但经 next token 间接表达成语言（接口 text，消费者是人/Agent）；V-JEPA 2 把预测未来表征直接写进 objective（接口 latent，消费者是每秒几十次调用的规划器）。具身系统里两者是语义层与动力学层的分工，是组合不是替换。注意：V-JEPA 2 的 Video QA 成绩是\"V-JEPA 2 + LLM\"组合功劳，不可用于横向比较。"
+        },
+        {
+          "statement": "像素路线与潜空间路线是用途分工不是优劣——像素的产品是\"可看的世界\"（合成数据/仿真/Sim2Real），潜空间的产品是\"可规划的状态\"",
+          "source": "世界模型系列05：像素路线与Cosmos——扩散与自回归双轨WFM、预训练到后训练的场景分工及全模态Cosmos 3",
+          "first_seen": "2026-09-21",
+          "last_updated": "2026-09-25",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "\"latent 没法给别的模型当训练语料，视频可以\"——两者两段式训练同构，差别只在基座输出。Cosmos 是像素路线工业化样本：WFM 平台 = 预训练基座 + tokenizer + 数据管线（2000 万小时→1 亿 clip 量级）+ 护栏，复制 LLM\"基座+后训练\"公式到物理世界；预训练学通用动力学，后训练接四种条件信号（相机位姿/文字指令/关节动作/行车轨迹）——动作条件化在后训练阶段才接入是平台设计而非能力缺失。V-JEPA 2-AC 用 62h DROID 数据即把纯视频预训练的 encoder 变成可规划的 latent dynamics model。Cosmos 3（2026.06 全模态，mixture-of-transformers）直接输出动作后，像素路线开始侵入 VLA 领地——\"同一网络换输入输出就换角色\"的最新样本。"
+        },
+        {
+          "statement": "显式路线的一致性由表示本身保证，latent 路线的空间一致性是统计能力且无 metric 精度承诺",
+          "source": "空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Cosmos 直接吃视频、在 latent 里学空间与动力学，不经过显式 3D——这不是准确率妥协而是任务不同：隐式 3D 有空间理解但没有 XYZ。\"Cosmos latent 有没有真正的 3D spatial state\"是开放问题。产品路线是 Hybrid：显式几何管\"在哪里\"（一致性交给表示），学习动力学管\"接下来会怎样\"（动态交给学习）——与 Marble+SceniX、SLAM+动力学模型是同一分工的不同实现。"
+        },
+        {
+          "statement": "自动驾驶与具身智能两条产业线在世界模型层交汇——L2→L4 数据飞轮的裂缝必须靠 World Model + Simulation + RL 补",
+          "source": "落地实践系列02：自动驾驶与世界模型的路线交汇——传感器之争、数据飞轮与世界基础模型",
+          "first_seen": "2026-09-20",
+          "last_updated": "2026-09-25",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "五代演进轴：Driving Model → Driving World Model → Physical World Model → WM+Policy+RL → General Physical Intelligence。L2 量产数据学的是 human driving distribution 而非\"我该怎么开\"，两分布不同——这是飞轮的裂缝，必须插入 WM+Simulation+RL 环节再由 L4 运营数据回流。驾驶数据的独特价值是天然自带 action（observation→action→consequence 三元组齐全，是训练 action-conditioned world model 的理想形态；对照 VITRA 需伪标注 action），但统计规律不等于因果理解——planning 级世界模型必须能做反事实推演。\"懂世界\"要拆三层：视觉语义/物理规律可迁移，action→consequence 绑定 embodiment——Cosmos 把适配层产品化为 pretrain→post-train 两段式。"
+        },
+        {
+          "statement": "\"学出来的动力学模型\"之外还有第五种最朴素的沙箱——精确回放已实现的搜索历史（world-model-free dreaming）",
+          "source": "2026-09-22-Dream-RSI-递归自我改进论文初读",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Dream-RSI 借 Dreamer 之名但沙箱不是学出来的：Dreamer/V-JEPA 2 泛化到未见状态、有模型偏差、需训练；replay simulator 精确回放、零偏差、免训练——代价是候选策略走进历史树未覆盖区域时 replay 给不出答案（既是便宜的原因也是天花板）。这是本页概念的首个系列外独立引用（\"四条路线之外的录像回放\"），也是\"世界模型判别三要素\"框架被用作对照轴的实例。VASA 线是另一个镜像：世界模型学环境动力学先验、VASA 学人类面部动力学先验——领域专用动力学先验对泛化视频模型有三个结构性优势（实时硬约束 170ms、单卡 40fps 并发成本、身份锁定架构保证）。（论文初读，置信度留低待精读复核）"
         }
       ]
     },
@@ -7611,8 +8395,8 @@
       "category": "",
       "method_type": "architecture-pattern",
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.8,
+      "claims_count": 3,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "低延迟关键在于组件重叠执行",
@@ -7631,6 +8415,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。"
+        },
+        {
+          "statement": "Dialog Manager 是被 Voice Live 默认配置折叠掉的一层——应答门控把它重新展开为显式状态机",
+          "source": "Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "级联流水线 ASR→NLU→DM→NLG→TTS 中的 Dialog Manager 层，在 Voice Live `create_response=true` 默认配置下被折叠成一个布尔开关（VAD 判停即开轮）。应答门控是把 DM 重新展开：EOU（说完了没）→ LLM judge（答完了没）→ 跨轮状态规则（要不要致谢）→ 分档内容源（说什么），配两段式提交状态机（LISTENING→PENDING→COMPLETE）。十三步完整流程在 Voice Live 事件流上的三段对应：门控段（VAD→EOU→judge→提交→竞态复查，全在应用侧）、开轮生成段（组装约束→response.create→推理→TTS/viseme）、播出段（播放→打断→response.done→acked 复位）——级联流水线各层与 Realtime 事件的映射表。"
         }
       ]
     },
@@ -7648,8 +8441,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 1,
-      "avg_confidence": 0.8,
+      "claims_count": 2,
+      "avg_confidence": 0.82,
       "claims": [
         {
           "statement": "四层防线是代码复用的真正解法",
@@ -7659,6 +8452,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。"
+        },
+        {
+          "statement": "语音轮次域实例——\"不要主动追问\"从提示词约束变为结构性不可能（by construction 而非 by instruction）",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-09-23",
+          "last_updated": "2026-09-25",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "本决策\"架构约束优于 agent 学习/指令\"在 Realtime 协议层的落地：`create_response=true` 时判断与说出在同一 response 内、无人能否决——这是提示词约束失效的**结构原因**（VL07 生产实证：致谢与追问出自同一 response，\"the turn and the follow-up turn are the same turn\"——协议层没有\"只许致谢不许追问\"档）。修法是把 judge 与 speaker 分离：独立 judge 调用输出结构化 JSON（complete/partial/off-topic），追问从模型自由行为变成应用显式触发的 `response.create`，每题致谢上限由状态机保证而非提示词承诺。两层各治一段：线性轮次治\"次数\"（`create_response=false` + 去掉补发后模型拿不到轮次）、Speech 层治\"内容进缓冲区\"（EOU/`remove_filler_words`/降噪/Live-Reference AEC）。频率策略只能在应用层——依赖跨轮状态（每题上限 1/答题<3s 不致谢/距上次<2 题不致谢/相邻不同句），\"一行都写不进提示词，因为提示词只在单个 response 内生效\"；内容三档（脚本池/模板加槽位/受约束生成+代码校验回退），评价色彩场景停在第二档。"
         }
       ]
     },
@@ -7676,8 +8478,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
-      "avg_confidence": 0.8,
+      "claims_count": 4,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "端到端模型尚未达到企业生产可用",
@@ -7705,6 +8507,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "生产对照测试发现并修复的配置坑直接续证上一条 Claim：Voice Live 对模型类型没有\"只能语音专用模型\"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）**两类都支持**，级联 vs 端到端确实已降级为配置项。真正的部署分水岭是**同一模型在不同 region 对 Voice Live 的可用性**：配了当前 region 不可用的模型，症状是\"永远停在 text、控制台报 Model X is not supported in this region\"（本次即 gpt-5.4-mini 在该 region 不可用，换该 region 可用的 gpt-4o / gpt-4.1-mini 即恢复）。落地含义：部署检查清单要加一条硬检查项——`VOICE_LIVE_DEFAULT_MODEL`（bicep 参数）必须在部署 region 对 Voice Live 可用；\"架构决策降级为配置项\"的另一面是**配置项的坑也升级为架构级症状**（表现为整条语音链路不通，而非清晰的配置错误提示）。"
+        },
+        {
+          "statement": "GPT-Live-1 触发前提重评估，方向是坐标系更换而非切换 E2E；\"切换成本降到配置级\"的副作用是控制面归属随之翻转",
+          "source": "Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估",
+          "first_seen": "2026-09-19",
+          "last_updated": "2026-09-25",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "GPT-Live-1（原生全双工）触发了本决策页的前提重评估触发器，但方向不是\"该切端到端了\"，而是坐标系更换：把\"对话层半双工/全双工\"与\"推理层委派\"拆成两个独立配置维度。S2S 与混合式的真开关是 `voice` 配置字段而非模型选择——数字人的 viseme 闸门约束\"谁来出声\"（TTS 必在链路 → 数字人必落混合式/级联式，对 video/photo 两类头像均成立），不约束\"头怎么动\"。副作用补充：配置级切换的同时**控制面归属翻转**——级联（文本）模型下 `modalities: audio` 是假的（音频由 Azure TTS 合成，韵律控制面在 `voice.rate` 等 Speech 层参数而非 LLM 提示词）、转写主链路/旁路随模型翻转；且级联式在 Voice Live 内有协议层约束：没有直达 TTS 的事件，文本进 TTS 的唯一入口是 response。"
         }
       ]
     },
@@ -7722,7 +8533,7 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 8,
+      "claims_count": 9,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -7796,6 +8607,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
+        },
+        {
+          "statement": "反向判据：何时不该挂 Agent——\"应用开轮 + 现成文本逐字读\"下 Agent 价值为零且 Agent 模式是负资产",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-09-24",
+          "last_updated": "2026-09-25",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"谁开轮 × 谁给内容\"2×2 控制权矩阵给本决策页补上缺失的反向判据（现页只讲组合方向）：**Agent 的价值 = 交给它的内容决定权**。VAD 自动开轮+模型自由生成=价值高；应用开轮+模型自由生成=中；应用开轮+现成文本逐字读=零——external API 与 bank linear 两种 persona 同在此行，挂 Agent 反而是负资产（丢 per-turn `instructions`、多一圈 Foundry runtime、无 `interim_response`），应走 `?model=` + 最小模型、Agent 字段留空；应用开轮+per-turn instructions 约束=模型模式独有档（Agent 模式失去 per-turn 参数化——\"Voice Live 组合方向相反\"Claim 的补充）。Agent 在语音场景的四个正向落点：分阶段混合、追问、内容无法预写、多 persona 共享同一 brain。产品配置启示：brain 类型应显式分三档 external-brain / foundry-agent / model+instructions。"
         }
       ]
     },
@@ -8064,6 +8884,18 @@
     }
   ],
   "links": [
+    {
+      "source": "action-chunking",
+      "target": "vision-language-action-model",
+      "relation_type": "part-of",
+      "description": "VLA 连续动作头的输出单位"
+    },
+    {
+      "source": "action-chunking",
+      "target": "agent-loop-architecture",
+      "relation_type": "extends",
+      "description": "\"块内一次联合生成 + 块间拿 observation 重规划\"是 agent loop 在高频控制域的实例化"
+    },
     {
       "source": "advantage-function",
       "target": "reinforcement-learning",
@@ -8731,6 +9563,30 @@
       "description": "Skill Runtime 对应控制论中缺位的 L5 状态观测层"
     },
     {
+      "source": "diffusion-model",
+      "target": "vision-language-action-model",
+      "relation_type": "grounds",
+      "description": "连续动作头（扩散/flow matching）的方法论地基"
+    },
+    {
+      "source": "diffusion-model",
+      "target": "world-model",
+      "relation_type": "grounds",
+      "description": "像素路线视频生成的方法论地基"
+    },
+    {
+      "source": "diffusion-model",
+      "target": "rejection-sampling-finetuning",
+      "relation_type": "contrasts",
+      "description": "同为生成方法选型语境：RAFT 适用范围讨论曾浅提扩散（跨域仅此一处独立引用）"
+    },
+    {
+      "source": "diffusion-model",
+      "target": "action-chunking",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
       "source": "distributed-training-parallelism",
       "target": "reinforcement-learning",
       "relation_type": "grounds",
@@ -8747,6 +9603,42 @@
       "target": "hybrid-linear-attention-architecture",
       "relation_type": "uses",
       "description": "MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP"
+    },
+    {
+      "source": "embodied-ai",
+      "target": "agent-loop-architecture",
+      "relation_type": "extends",
+      "description": "软件 Agent loop 在具身系统里扩展为分层多频率控制回路（任务层 0.1–1Hz / 策略层 10–50Hz / 控制层 100–1000Hz + 独立安全监视器），五个本质分野：结束信号来源/时间角色/工具性质/观测性质/安全边界位置"
+    },
+    {
+      "source": "embodied-ai",
+      "target": "cybernetics-agent-design",
+      "relation_type": "uses",
+      "description": "bounded autonomy 权限模型与 ODD 安全退出是调节器/负反馈框架在物理域的应用"
+    },
+    {
+      "source": "embodied-ai",
+      "target": "scaling-laws",
+      "relation_type": "uses",
+      "description": "VITRA 证明数据规模-泛化 scaling 在人类视频预训练路线成立"
+    },
+    {
+      "source": "end-of-turn-detection",
+      "target": "voice-activity-detection",
+      "relation_type": "extends",
+      "description": "VAD 判\"声音停了\"，EOU 在其上判\"话说完了\""
+    },
+    {
+      "source": "end-of-turn-detection",
+      "target": "turn-taking",
+      "relation_type": "part-of",
+      "description": "轮次协调的判停环节：EOU 洗干净判停信号，开轮/生成是另外两个独立决策点"
+    },
+    {
+      "source": "end-of-turn-detection",
+      "target": "llm-as-a-judge",
+      "relation_type": "contrasts",
+      "description": "EOU 小模型（几十 ms、不知任务）与 LLM judge（几百 ms、知道任务）叠放不替代"
     },
     {
       "source": "enterprise-ontology",
@@ -9829,6 +10721,30 @@
       "description": "rollout 强绑定 SGLang，倚重其 RadixAttention 前缀复用"
     },
     {
+      "source": "spatial-intelligence",
+      "target": "embodied-ai",
+      "relation_type": "part-of",
+      "description": "具身智能五条主线的空间层，也是其认知底座（感知/理解/规划三段）"
+    },
+    {
+      "source": "spatial-intelligence",
+      "target": "world-model",
+      "relation_type": "grounds",
+      "description": "分层栈的重建/表征层为世界模型提供状态与显式一致性基础"
+    },
+    {
+      "source": "spatial-intelligence",
+      "target": "personal-knowledge-compiler",
+      "relation_type": "contrasts",
+      "description": "Spatial Memory 的\"数据库式消费\"与 PKC\"编译一次持续查询\"是同一原则在空间域与知识域的两个实例"
+    },
+    {
+      "source": "spatial-intelligence",
+      "target": "compute-locus-spectrum",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
       "source": "spec-driven-development",
       "target": "generation-evaluation-separation",
       "relation_type": "implements",
@@ -9851,6 +10767,18 @@
       "target": "harness-engineering",
       "relation_type": "implements",
       "description": "命令模板 + 确定性脚本门禁是 Harness 工程在开发流程上的实现"
+    },
+    {
+      "source": "speech-technology-stack",
+      "target": "viseme",
+      "relation_type": "produces",
+      "description": "Speech Out/TTS 环节输出 viseme 时间轴驱动下游口型渲染"
+    },
+    {
+      "source": "speech-technology-stack",
+      "target": "end-of-turn-detection",
+      "relation_type": "part-of",
+      "description": "判停精度环节：静音阈值→文本语义→音频原生三代方法"
     },
     {
       "source": "speech-technology-stack",
@@ -9902,6 +10830,12 @@
     },
     {
       "source": "turn-taking",
+      "target": "end-of-turn-detection",
+      "relation_type": "part-of",
+      "description": "轮次协调的判停环节：EOU 洗干净判停信号，开轮/生成是另外两个独立决策点"
+    },
+    {
+      "source": "turn-taking",
       "target": "voice-live-agent",
       "relation_type": "uses",
       "description": "Voice Agent 的对话自然度依赖 Turn-Taking 质量"
@@ -9949,6 +10883,48 @@
       "description": "VERL 在 RL 引擎内部实现\"算法可插拔\"，是 method-agnostic 同一原则在更低一层的表达"
     },
     {
+      "source": "viseme",
+      "target": "speech-technology-stack",
+      "relation_type": "part-of",
+      "description": "TTS/Speech Out 环节的口型输出单位"
+    },
+    {
+      "source": "viseme",
+      "target": "grapheme-to-phoneme",
+      "relation_type": "extends",
+      "description": "G2P 之后的下一段映射：phoneme → viseme 多对一收敛"
+    },
+    {
+      "source": "viseme",
+      "target": "compute-locus-spectrum",
+      "relation_type": "uses",
+      "description": "viseme 时间轴是\"云端计算 × 本地渲染\"跨位面组合形态的耦合接口"
+    },
+    {
+      "source": "vision-language-action-model",
+      "target": "embodied-ai",
+      "relation_type": "part-of",
+      "description": "具身智能五条主线的行动层"
+    },
+    {
+      "source": "vision-language-action-model",
+      "target": "action-chunking",
+      "relation_type": "uses",
+      "description": "动作块是 VLA 输出的基本单位（块内并行去噪、块间闭环重规划）"
+    },
+    {
+      "source": "vision-language-action-model",
+      "target": "computer-use",
+      "relation_type": "contrasts",
+      "description": "同为\"模型操作世界\"，输出问题形状相反：离散命令+确定性执行器 vs 连续多峰控制信号"
+    },
+    {
+      "source": "voice-activity-detection",
+      "target": "end-of-turn-detection",
+      "relation_type": "produces",
+      "description": "VAD 判停信号是 EOU 完整性判断的触发输入（VAD 判\"声音停了\"，EOU 判\"话说完了\"）"
+    },
+    {
       "source": "voice-activity-detection",
       "target": "voice-live-agent",
       "relation_type": "part-of",
@@ -9974,6 +10950,18 @@
     },
     {
       "source": "voice-live-agent",
+      "target": "viseme",
+      "relation_type": "uses",
+      "description": "数字人 video 头像的口型驱动信号与时间轴事件协议"
+    },
+    {
+      "source": "voice-live-agent",
+      "target": "end-of-turn-detection",
+      "relation_type": "uses",
+      "description": "turn_detection 内可选的 EOU 子对象，判停精度的第二代/三代方法"
+    },
+    {
+      "source": "voice-live-agent",
       "target": "intelligent-dictation",
       "relation_type": "extends",
       "description": "Voice Agent 输出可从\"记录说了什么\"升级为\"写出想表达什么\""
@@ -9983,6 +10971,30 @@
       "target": "foundry-agent-type-selection",
       "relation_type": "grounds",
       "description": "Voice Live 组合方向为 Foundry Agent 类型选型提供依据"
+    },
+    {
+      "source": "world-model",
+      "target": "embodied-ai",
+      "relation_type": "part-of",
+      "description": "具身智能五条主线的认知层"
+    },
+    {
+      "source": "world-model",
+      "target": "reinforcement-learning",
+      "relation_type": "contrasts",
+      "description": "共享 MDP 词汇表但学不同函数：RL 学 π(a|s)，世界模型学 P(s'|s,a)；交叉有三档深度（MPC/Dreamer/MuZero）"
+    },
+    {
+      "source": "world-model",
+      "target": "vision-language-action-model",
+      "relation_type": "contrasts",
+      "description": "信息流方向相反：VLA 条件里有目标、产生动作；世界模型任务中立、消费动作预测后果"
+    },
+    {
+      "source": "world-model",
+      "target": "spatial-intelligence",
+      "relation_type": "uses",
+      "description": "空间智能分层栈的重建层为世界模型提供状态 s_t，世界模型层管状态转移"
     },
     {
       "source": "ai-adoption-six-step-evolution",
@@ -10629,7 +11641,21 @@
         "grapheme-to-phoneme",
         "intelligent-dictation",
         "realtime-protocol-selection",
-        "compute-locus-spectrum"
+        "compute-locus-spectrum",
+        "viseme",
+        "end-of-turn-detection"
+      ]
+    },
+    {
+      "id": "embodied-ai",
+      "name": "具身智能（Embodied AI）",
+      "members": [
+        "embodied-ai",
+        "world-model",
+        "vision-language-action-model",
+        "spatial-intelligence",
+        "action-chunking",
+        "diffusion-model"
       ]
     },
     {
