@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/></marker>
+    <marker id="aA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/></marker>
+    <marker id="aV" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#a78bfa"/></marker>
+    <marker id="aB" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#60a5fa"/></marker>
+  </defs>
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.85; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flow  { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flowA { stroke-dasharray: 8 12;  animation: flowDash 1.7s linear infinite; }
+    .flowV { stroke-dasharray: 8 12;  animation: flowDash 1.9s linear infinite; }
+    .flowB { stroke-dasharray: 8 12;  animation: flowDash 1.6s linear infinite; }
+    .halo  { animation: pulse 2.2s ease-in-out infinite; }
+    .live  { animation: shimmer 3.5s ease-in-out infinite; }
+    .p { animation: pulse 1.8s ease-in-out infinite; }
+  </style>
+
+  <rect width="1200" height="700" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="698" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="42" font-size="21" font-weight="700" fill="#e2e8f0">response 档完整流程 — 从候选人开口到状态机复位</text>
+  <text x="36" y="64" font-size="12" fill="#64748b">create_response=false · 门控段（应用 dialog manager）→ 开轮段（response.create）→ 生成播出段（⑤生成 + TTS/avatar + 打断） · 2026.09</text>
+
+  <!-- legend -->
+  <g font-size="11">
+    <rect x="800" y="30" width="12" height="12" rx="3" fill="#0f2a26" stroke="#2dd4bf"/><text x="818" y="40" fill="#94a3b8">Speech 层</text>
+    <rect x="892" y="30" width="12" height="12" rx="3" fill="#2a2210" stroke="#fbbf24"/><text x="910" y="40" fill="#94a3b8">应用层</text>
+    <rect x="972" y="30" width="12" height="12" rx="3" fill="#1c1738" stroke="#a78bfa"/><text x="990" y="40" fill="#94a3b8">LLM 层（⑤）</text>
+    <rect x="1074" y="30" width="12" height="12" rx="3" fill="#10233c" stroke="#60a5fa"/><text x="1092" y="40" fill="#94a3b8">播出/打断</text>
+  </g>
+
+  <!-- ============ Row 1: gating ============ -->
+  <text x="36" y="102" font-size="12" font-weight="700" fill="#fbbf24">门控段 · 该不该开轮（全在应用侧，与挂不挂 Agent 无关）</text>
+
+  <!-- 1 VAD -->
+  <g filter="url(#softGlow)"><rect x="36" y="116" width="196" height="92" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/></g>
+  <text x="134" y="140" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">① 收音 · VAD 判停</text>
+  <text x="134" y="158" font-size="10.5" fill="#94a3b8" text-anchor="middle">azure_semantic_vad 抗噪判起止</text>
+  <text x="134" y="174" font-size="10.5" fill="#94a3b8" text-anchor="middle">转写累计进答案缓冲区</text>
+  <text x="134" y="192" font-size="10" fill="#5eead4" text-anchor="middle">speech_stopped ↗</text>
+
+  <path d="M232 162 L 286 162" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+
+  <!-- 2 EOU -->
+  <g filter="url(#softGlow)"><rect x="288" y="116" width="196" height="92" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5"/></g>
+  <text x="386" y="140" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">② EOU · 说完了没</text>
+  <text x="386" y="158" font-size="10.5" fill="#94a3b8" text-anchor="middle">end_of_utterance_detection</text>
+  <text x="386" y="174" font-size="10.5" fill="#94a3b8" text-anchor="middle">输出概率不输出布尔</text>
+  <text x="386" y="192" font-size="10" fill="#5eead4" text-anchor="middle">句中停顿在这里被挡下</text>
+
+  <path d="M484 162 L 538 162" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- 3 LLM judge -->
+  <g filter="url(#softGlow)"><rect x="540" y="116" width="196" height="92" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/></g>
+  <text x="638" y="140" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">③ LLM judge · 答完了没</text>
+  <text x="638" y="158" font-size="10.5" fill="#94a3b8" text-anchor="middle">拿转写 + 题目判完成度</text>
+  <text x="638" y="174" font-size="10.5" fill="#94a3b8" text-anchor="middle">同时给内容档位（致谢/追问/过渡）</text>
+  <text x="638" y="192" font-size="10" fill="#fcd34d" text-anchor="middle">judge 与 speaker 分离</text>
+
+  <path d="M736 162 L 790 162" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- 4 two-stage -->
+  <g filter="url(#softGlow)"><rect x="792" y="116" width="196" height="92" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/></g>
+  <text x="890" y="140" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">④ 两段式提交</text>
+  <text x="890" y="158" font-size="10.5" fill="#94a3b8" text-anchor="middle">T1≈1.2s 预生成内容不出声</text>
+  <text x="890" y="174" font-size="10.5" fill="#94a3b8" text-anchor="middle">T2≈2.5s 确认完成才播出</text>
+  <text x="890" y="192" font-size="10" fill="#fcd34d" text-anchor="middle">频率策略：每题致谢上限 1</text>
+
+  <path d="M988 162 L 1042 162" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- 5 race check -->
+  <g filter="url(#softGlow)"><rect x="1044" y="116" width="120" height="92" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/></g>
+  <text x="1104" y="144" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">⑤ 竞态复查</text>
+  <text x="1104" y="164" font-size="10" fill="#94a3b8" text-anchor="middle">用户又开口了？</text>
+  <text x="1104" y="180" font-size="10" fill="#94a3b8" text-anchor="middle">是 → 丢弃决定</text>
+  <text x="1104" y="196" font-size="10" fill="#fcd34d" text-anchor="middle">否 → 开轮</text>
+
+  <!-- abort arc back to 1 -->
+  <path d="M1104 116 C 1104 66, 134 66, 134 114" fill="none" stroke="#fbbf24" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#aA)"/>
+  <text x="620" y="80" font-size="10.5" fill="#fcd34d" text-anchor="middle">speech_started → 丢弃已准备内容，回到聆听（多次停顿只产生一次开轮）</text>
+
+  <!-- down to row 2 -->
+  <path d="M1104 208 C 1104 258, 1104 258, 1104 290" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- ============ Row 2: open turn + generate ============ -->
+  <text x="36" y="278" font-size="12" font-weight="700" fill="#a78bfa">开轮段 + 生成段 · 说什么（persona 的 instructions / Agent 定义唯一生效处）</text>
+
+  <!-- 6 assemble (rightmost) -->
+  <g filter="url(#softGlow)"><rect x="968" y="292" width="196" height="104" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/></g>
+  <text x="1066" y="316" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">⑥ 组装约束</text>
+  <text x="1066" y="334" font-size="10.5" fill="#94a3b8" text-anchor="middle">model：response.create 带</text>
+  <text x="1066" y="349" font-size="10.5" fill="#94a3b8" text-anchor="middle">per-turn instructions + max_tokens</text>
+  <text x="1066" y="366" font-size="10.5" fill="#94a3b8" text-anchor="middle">agent：先塞 system item</text>
+  <text x="1066" y="382" font-size="10" fill="#fcd34d" text-anchor="middle">先确认无活跃 response</text>
+
+  <path d="M968 344 L 916 344" fill="none" stroke="#a78bfa" stroke-width="2.5" class="flowV" marker-end="url(#aV)"/>
+  <text x="942" y="334" font-size="10" fill="#c4b5fd" text-anchor="middle">发出</text>
+
+  <!-- 7 response.create -->
+  <g filter="url(#softGlow)"><rect x="718" y="292" width="196" height="104" rx="12" fill="#1c1738" stroke="#a78bfa" stroke-width="1.5" class="p"/></g>
+  <text x="816" y="316" font-size="13" font-weight="700" fill="#a78bfa" text-anchor="middle">⑦ response.create</text>
+  <text x="816" y="334" font-size="10.5" fill="#94a3b8" text-anchor="middle">服务端回 response.created</text>
+  <text x="816" y="350" font-size="10.5" fill="#94a3b8" text-anchor="middle">"轮次"= response 对象诞生</text>
+  <text x="816" y="368" font-size="10" fill="#c4b5fd" text-anchor="middle">同一时刻只能有一个活跃 response</text>
+  <text x="816" y="384" font-size="10" fill="#c4b5fd" text-anchor="middle">否则 already_has_active_response</text>
+
+  <path d="M718 344 L 666 344" fill="none" stroke="#a78bfa" stroke-width="2.5" class="flowV" marker-end="url(#aV)"/>
+
+  <!-- 8 inference -->
+  <g filter="url(#softGlow)"><rect x="468" y="292" width="196" height="104" rx="12" fill="#1c1738" stroke="#a78bfa" stroke-width="1.5"/></g>
+  <text x="566" y="316" font-size="13" font-weight="700" fill="#a78bfa" text-anchor="middle">⑧ 模型/Agent 推理</text>
+  <text x="566" y="334" font-size="10.5" fill="#94a3b8" text-anchor="middle">conversation + instructions + tools</text>
+  <text x="566" y="350" font-size="10.5" fill="#94a3b8" text-anchor="middle">级联模型只出文本</text>
+  <text x="566" y="368" font-size="10" fill="#c4b5fd" text-anchor="middle">Agent 推理慢时 interim_response</text>
+  <text x="566" y="384" font-size="10" fill="#c4b5fd" text-anchor="middle">代码校验不合格回退脚本池</text>
+
+  <path d="M468 344 L 416 344" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <text x="442" y="334" font-size="10" fill="#5eead4" text-anchor="middle">文本</text>
+
+  <!-- 9 TTS -->
+  <g filter="url(#softGlow)"><rect x="218" y="292" width="196" height="104" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5"/></g>
+  <text x="316" y="316" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">⑨ TTS + viseme</text>
+  <text x="316" y="334" font-size="10.5" fill="#94a3b8" text-anchor="middle">Azure TTS 合成音频与口型</text>
+  <text x="316" y="350" font-size="10.5" fill="#94a3b8" text-anchor="middle">韵律靠 voice.rate/temperature</text>
+  <text x="316" y="368" font-size="10" fill="#5eead4" text-anchor="middle">avatar：音频走 WebRTC 音轨</text>
+  <text x="316" y="384" font-size="10" fill="#5eead4" text-anchor="middle">不走 WS audio delta</text>
+
+  <path d="M218 344 L 166 344" fill="none" stroke="#60a5fa" stroke-width="2.5" class="flowB" marker-end="url(#aB)"/>
+
+  <!-- 10 playback -->
+  <g filter="url(#softGlow)"><rect x="36" y="292" width="128" height="104" rx="12" fill="#10233c" stroke="#60a5fa" stroke-width="1.5"/></g>
+  <text x="100" y="320" font-size="13" font-weight="700" fill="#60a5fa" text-anchor="middle">⑩ 播出</text>
+  <text x="100" y="340" font-size="10.5" fill="#94a3b8" text-anchor="middle">数字人开口</text>
+  <text x="100" y="356" font-size="10" fill="#93c5fd" text-anchor="middle">Live-Reference AEC</text>
+  <text x="100" y="372" font-size="10" fill="#93c5fd" text-anchor="middle">防自己的声音变输入</text>
+
+  <!-- down to row 3 -->
+  <path d="M100 396 C 100 436, 100 436, 100 470" fill="none" stroke="#60a5fa" stroke-width="2.5" class="flowB" marker-end="url(#aB)"/>
+
+  <!-- ============ Row 3: interrupt + done ============ -->
+  <text x="36" y="458" font-size="12" font-weight="700" fill="#60a5fa">播出段收尾 · 打断与复位</text>
+
+  <!-- 11 interrupt -->
+  <g filter="url(#softGlow)"><rect x="36" y="472" width="240" height="100" rx="12" fill="#10233c" stroke="#60a5fa" stroke-width="1.5"/></g>
+  <text x="156" y="496" font-size="13" font-weight="700" fill="#60a5fa" text-anchor="middle">⑪ 打断处理（与门控独立）</text>
+  <text x="156" y="514" font-size="10.5" fill="#94a3b8" text-anchor="middle">播出中 speech_started →</text>
+  <text x="156" y="530" font-size="10.5" fill="#94a3b8" text-anchor="middle">interrupt_response 截断播报</text>
+  <text x="156" y="548" font-size="10" fill="#93c5fd" text-anchor="middle">auto_truncate 把历史截到实际听到处</text>
+  <text x="156" y="562" font-size="10" fill="#93c5fd" text-anchor="middle">致谢/读题时是否允许打断由应用定</text>
+
+  <path d="M276 522 L 330 522" fill="none" stroke="#60a5fa" stroke-width="2.5" class="flowB" marker-end="url(#aB)"/>
+
+  <!-- 12 done -->
+  <g filter="url(#softGlow)"><rect x="332" y="472" width="240" height="100" rx="12" fill="#10233c" stroke="#60a5fa" stroke-width="1.5"/></g>
+  <text x="452" y="496" font-size="13" font-weight="700" fill="#60a5fa" text-anchor="middle">⑫ response.done</text>
+  <text x="452" y="514" font-size="10.5" fill="#94a3b8" text-anchor="middle">assistant item 已追加进 conversation</text>
+  <text x="452" y="530" font-size="10.5" fill="#94a3b8" text-anchor="middle">下轮推理模型看得见自己说过什么</text>
+  <text x="452" y="548" font-size="10" fill="#93c5fd" text-anchor="middle">日志核验：response.created 次数</text>
+  <text x="452" y="562" font-size="10" fill="#93c5fd" text-anchor="middle">= 门控放行次数</text>
+
+  <path d="M572 522 L 626 522" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- 13 reset -->
+  <g filter="url(#softGlow)"><rect x="628" y="472" width="240" height="100" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5" class="live"/></g>
+  <text x="748" y="496" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">⑬ 状态机复位</text>
+  <text x="748" y="514" font-size="10.5" fill="#94a3b8" text-anchor="middle">本题 acked 标志 false → true</text>
+  <text x="748" y="530" font-size="10.5" fill="#94a3b8" text-anchor="middle">只翻一次：致谢上限的结构保证</text>
+  <text x="748" y="548" font-size="10" fill="#fcd34d" text-anchor="middle">回 LISTENING 等下一次判断</text>
+
+  <!-- loop back to start -->
+  <path d="M868 522 C 1120 522, 1160 660, 600 660 C 200 660, 60 640, 36 560" fill="none" stroke="#2dd4bf" stroke-width="1.8" stroke-dasharray="6 8" class="flow" marker-end="url(#aT)"/>
+  <text x="600" y="648" font-size="11" fill="#5eead4" text-anchor="middle">回到 ① 收音 · 门控链重新积累下一次判断</text>
+</svg>

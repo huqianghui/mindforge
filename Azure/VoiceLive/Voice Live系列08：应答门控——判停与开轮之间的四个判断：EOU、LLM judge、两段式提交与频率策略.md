@@ -9,7 +9,7 @@ tags:
   - end-of-turn
   - dialog-policy
   - llm-judge
-description: 回答"要么回太多、要么静默"之间怎么走：create_response=false 之后，在判停与开轮之间由应用补回 dialog manager 层，把"该不该 response"拆成说完了没、答完了没、要不要致谢、说什么四个判断。梳理 end-of-turn 三代方法（静音阈值、文本语义 EOU、音频原生），澄清 azure_semantic_vad 不等于 EOU、文本 EOU 未退役而 preview 新增 smart_end_of_turn_detection，给出 end_of_utterance_detection 的完整配置与使用细节；说明 EOU 小模型与 LLM judge 的分工及 judge 与 speaker 分离；用两段式提交与应答门控状态机把判断延迟藏进停顿里；最后是频率策略、内容三档加校验、三项离线评估指标与四步演进顺序
+description: 回答"要么回太多、要么静默"之间怎么走：create_response=false 之后，在判停与开轮之间由应用补回 dialog manager 层，把"该不该 response"拆成说完了没、答完了没、要不要致谢、说什么四个判断。按时序串出十三步完整流程（门控段/开轮生成段/播出段，竞态复查与 acked 复位是两个易漏点）。梳理 end-of-turn 三代方法（静音阈值、文本语义 EOU、音频原生），澄清 azure_semantic_vad 不等于 EOU、文本 EOU 未退役而 preview 新增 smart_end_of_turn_detection，给出 end_of_utterance_detection 的完整配置与使用细节；说明 EOU 小模型与 LLM judge 的分工及 judge 与 speaker 分离；用两段式提交与应答门控状态机把判断延迟藏进停顿里；最后是频率策略、内容三档加校验、三项离线评估指标与四步演进顺序
 ---
 
 # Voice Live 系列 08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略
@@ -131,7 +131,37 @@ description: 回答"要么回太多、要么静默"之间怎么走：create_resp
 
 面试场景建议停在第二档。带评价色彩的回应会被候选人读成信号，也让不同候选人的体验不一致，结构化面试刻意保持中立不是妥协而是优点。
 
-## 六、评估指标与演进顺序
+## 六、串起来：从开口到复位的完整流程
+
+前五节把各个判断拆开讲了，这一节按时序把它们串成一条链。整条链分三段：**门控段**（该不该开轮，全在应用侧，与挂不挂 Agent 无关）、**开轮加生成段**（说什么，persona 的 instructions 或 Agent 定义唯一生效的位置）、**播出段**（打断与复位）。
+
+![response 档完整流程：从候选人开口到状态机复位|760](../../asset/voice-live-full-response-flow-2026-09-24.svg)
+
+**门控段（①~⑤，应用的 dialog manager）**：
+
+1. **收音与 VAD 判停**（Speech 层）：`azure_semantic_vad` 抗噪判起止，转写持续累计进答案缓冲区，静音触发 `speech_stopped`。
+2. **EOU 判"说完了没"**（Speech 层）：`end_of_utterance_detection` 输出句子完整性的概率，句中停顿在这里被挡下。输出是概率不是布尔，阈值留给应用。
+3. **LLM judge 判"答完了没、要不要回"**（应用层）：拿转写和题目判完成度，同时给出内容档位——致谢、追问还是过渡语。judge 与 speaker 分离，追问才是显式可控的。
+4. **两段式提交**（应用层）：T1（约 1.2s 或 EOU 过阈值）开始预生成内容但不出声，T2（约 2.5s 或完成度判定通过）确认播出；T1 到 T2 之间用户再开口就丢弃。频率策略在这里生效：每题致谢上限 1、答题不足 3 秒不致谢等。
+5. **竞态复查**（应用层）：judge 是异步的，放行的瞬间用户可能已经又开口。发 `response.create` 前再查一次是否处于 `speech_started` 之后的收音态，是则丢弃这次开轮决定，让门控链重新走。这一步实现时最容易漏。
+
+**开轮加生成段（⑥~⑨）**：
+
+6. **组装约束**（应用层）：模型模式直接在 `response.create` 上带 per-turn `instructions`（"只说一句简短致谢，不要追问"）和 `max_response_output_tokens`；Agent 模式 per-turn instructions 被拒，先 `conversation.item.create` 塞一条 system item 再发裸的 `response.create`，约束力弱一档。发之前确认没有活跃 response，上一轮没播完要先 `response.cancel`。
+7. **`response.create` 开轮**（编排层）：服务端回 `response.created`，"轮次"即 response 对象在这一刻诞生。同一时刻只能有一个活跃 response。
+8. **模型或 Agent 推理**（LLM 层）：拿当前 conversation 加 instructions 加 tools 跑一次推理。这是全链路里 persona 定义唯一生效的位置。Agent 推理慢时服务端会推 `interim_response` 填充语。受约束生成档在这里配代码校验，不合格回退脚本池。
+9. **TTS 与 viseme**（Speech 层）：级联模型只出文本，Azure TTS 合成音频与口型；韵律归 `voice.rate` / `voice.temperature`，提示词管不到。avatar 场景下音频走 WebRTC 音轨，不走 WebSocket audio delta。
+
+**播出段（⑩~⑬）**：
+
+10. **播出**：数字人开口。自己的声音可能绕回麦克风，数字人场景要配 Live-Reference AEC（见 [系列07](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md) 第四节）。
+11. **打断处理**（编排层，与门控独立）：播出中用户开口触发 `speech_started`，`interrupt_response` 截断播报，`auto_truncate` 把对话历史截到用户实际听到的位置。致谢或读题时要不要允许打断，是应用要显式决定的事。
+12. **`response.done`**：assistant item 已追加进 conversation，下一轮推理模型看得见自己刚说过什么。日志核验点在这里：`response.created` 次数应严格等于门控放行次数。
+13. **状态机复位**（应用层）：本题 `acked` 标志从 false 翻到 true，只能翻一次——致谢上限是结构保证的。回到 LISTENING，门控链重新积累下一次判断。
+
+三段的归属正好对应 [系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) 的矩阵第二行：①~⑤ 决定时机与频率，是应用补回的 dialog manager；⑧ 决定内容，才轮到 model 与 agent 二选一。把两段混起来（比如指望提示词管频率、或指望门控链影响语气）就会回到"要么回太多、要么静默"的原点。
+
+## 七、评估指标与演进顺序
 
 已有的事件日志就够做离线评估，不用再埋点：
 
@@ -148,14 +178,15 @@ description: 回答"要么回太多、要么静默"之间怎么走：create_resp
 3. 需要区分"说完"和"答完"：加 LLM judge 做完成度判断，追问变成显式触发。
 4. 前三步都做了仍嫌手快：试 preview 的 `smart_end_of_turn_detection`，或自跑 LiveKit / Pipecat 的音频模型。后者要接管音频流，工程量最大，放最后。
 
-## 七、小结
+## 八、小结
 
 1. **"要么回太多、要么静默"之间有中间地带**，前提是 `create_response=false` 把决定权拿回应用，在 ③ 判停与 ④ 开轮之间补回 dialog manager 这一层。
 2. **"该不该 response"是四个判断**：说完了没（EOU 模型，Speech 层，几十毫秒）、答完了没（LLM judge，应用层，知道任务）、要不要致谢（跨轮状态规则）、说什么（分档内容源 + 代码校验）。混在一起就退回布尔开关。
 3. **EOU 与 LLM judge 是叠放不是替代**：EOU 只决定 ③ 何时触发，挡得住句中停顿、挡不住完整句子后的想词；judge 决定接下来干什么。judge 与 speaker 分离是追问可控的结构前提。
 4. **`azure_semantic_vad` 不等于 EOU**：前者管噪音下的起止鲁棒性，句子完整性要另配 `end_of_utterance_detection`（`model` / `threshold_level` / `timeout_ms`，字段名随 API 版本变过）。文本 EOU 在 GA 版仍在，2026-06-01-preview 新增音频原生 `smart_end_of_turn_detection`。
 5. **两段式提交**把判断延迟藏进候选人自己的停顿里；每题致谢上限由状态机保证；面试场景内容分档建议停在模板加槽位。
-6. **用已有事件日志离线评估**：误判完成率、完成延迟、致谢重复率；演进顺序是规则 → EOU → LLM judge → 音频原生模型。
+6. **完整链路十三步分三段**：门控段（VAD → EOU → LLM judge → 两段式提交 → 竞态复查）决定时机与频率，全在应用侧；开轮生成段（组装约束 → `response.create` → 推理 → TTS/viseme）里只有推理一步是 persona 定义生效处；播出段（播放 → 打断 → `response.done` → acked 翻真复位）收尾。竞态复查（judge 放行瞬间用户又开口则丢弃）是实现时最容易漏的一步。
+7. **用已有事件日志离线评估**：误判完成率、完成延迟、致谢重复率；演进顺序是规则 → EOU → LLM judge → 音频原生模型。
 
 ## 参考
 
