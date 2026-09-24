@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-08-30"
+updated: "2026-09-25"
 tags:
   - wiki
   - decision
@@ -139,6 +139,16 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **状态**：active
 
 > 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
+
+### Claim: 反向判据：何时不该挂 Agent——"应用开轮 + 现成文本逐字读"下 Agent 价值为零且 Agent 模式是负资产
+
+- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **首次出现**：2026-09-24
+- **最近更新**：2026-09-25
+- **置信度**：0.8
+- **状态**：active
+
+> "谁开轮 × 谁给内容"2×2 控制权矩阵给本决策页补上缺失的反向判据（现页只讲组合方向）：**Agent 的价值 = 交给它的内容决定权**。VAD 自动开轮+模型自由生成=价值高；应用开轮+模型自由生成=中；应用开轮+现成文本逐字读=零——external API 与 bank linear 两种 persona 同在此行，挂 Agent 反而是负资产（丢 per-turn `instructions`、多一圈 Foundry runtime、无 `interim_response`），应走 `?model=` + 最小模型、Agent 字段留空；应用开轮+per-turn instructions 约束=模型模式独有档（Agent 模式失去 per-turn 参数化——"Voice Live 组合方向相反"Claim 的补充）。Agent 在语音场景的四个正向落点：分阶段混合、追问、内容无法预写、多 persona 共享同一 brain。产品配置启示：brain 类型应显式分三档 external-brain / foundry-agent / model+instructions。
 
 ## 冲突与演进
 

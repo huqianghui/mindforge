@@ -1,7 +1,7 @@
 ---
 title: "LLM 中的全局工作空间（J-space）"
 created: "2026-08-04"
-updated: "2026-08-04"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -75,6 +75,16 @@ Anthropic 可解释性研究发现：语言模型残差流中存在一个占活�
 - **状态**：active
 
 > 作者的哲学定位克制：J-space 满足 Block 意义上 access consciousness 的功能标准（信息全局可取用、可报告、参与推理与控制），可称 "Verbal Global Workspace"；但对 phenomenal consciousness（主观体验）不做任何主张——功能等价不蕴含体验存在。开放问题：J-space 是否比 logits 更 batch-invariant（logit→argmax 处存在混沌放大，J-space 作为更深层表示可能更稳定）——若成立，对可复现性与审计都有工程价值。
+
+### Claim: 弱探针原则——latent 读出方法学的跨域同族续证
+
+- **来源**：[[世界模型系列04：潜空间路线与V-JEPA 2——预测表征而非像素、与Qwen3-VL的分野及潜空间验证五步法]]
+- **首次出现**：2026-09-21
+- **最近更新**：2026-09-25
+- **置信度**：0.65
+- **状态**：active
+
+> 潜空间验证五步法的第一条纪律与 J-lens 读出方法同族：**探针必须弱**——frozen encoder + 最弱可用探针（linear probe），否则分不清"模型学会了"还是"探针自己推理出来了"；且 latent 误差≠物理误差，须把读出结果对回物理量（位置/速度误差随步长曲线）。可解释性读出的方法学纪律在视频表征域独立重现。
 
 ## 冲突与演进
 

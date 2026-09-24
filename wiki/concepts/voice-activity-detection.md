@@ -1,7 +1,7 @@
 ---
 title: "Voice Activity Detection"
 created: "2026-04-11"
-updated: "2026-04-30"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -66,15 +66,17 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 > Personal VAD（说话人条件化，约 13 万参数，三分类：非语音/目标/非目标）；CNN+Attention VAD（时频双重注意力，约 15 万参数即超越更大 CNN）；NAS-VAD（神经架构搜索，151K 参数，AUC 0.982，跨数据集泛化性强）。三者与云端 Semantic VAD 不是竞争关系而是互补的不同层次——声学 VAD 捕获语音帧，语义 VAD 调优切分时机。
 
-### Claim: Semantic VAD 只做 end-of-turn 检测，不等于打断能力
+### Claim: OpenAI semantic_vad 只做 end-of-turn 检测，不等于打断能力（范围限定：指 OpenAI 模型内置 semantic_vad）
 
 - **来源**：[[2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
 - **首次出现**：2026-04-27
-- **最近更新**：2026-04-30
+- **最近更新**：2026-09-25
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 
 > Semantic VAD 本质只判断"用户这一轮说话什么时候结束"，不决定"要不要打断 AI"。打断 = VAD 事件（speech_started）+ Interrupt Controller + 流式 TTS 控制。eagerness 参数只调 end-of-turn 阈值，不控制打断行为。
+>
+> 2026-09-25 范围限定（Voice Live 系列08）：本条对象是 **OpenAI `semantic_vad`**（模型内置、仅 gpt-realtime），成立；Azure `azure_semantic_vad` 是另一回事——官方定义为"噪音下更稳健的起止检测"，完整性判断（EOU）是另配的 `end_of_utterance_detection` 子对象，见对照 Claim 与 [[end-of-turn-detection]]。
 
 ### Claim: 完整 Voice Agent 打断需要 6 个必要组件协同
 
@@ -96,11 +98,23 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 > VAD 检测"有无人声"（逐帧二值），KWS 检测"是否说了特定词"（事件触发）。VAD 无法替代 KWS——只用 VAD 会导致任何环境对话触发系统，功耗爆炸和隐私泄露。典型语音助手流水线：KWS（超低功耗 DSP 持续监听）→ VAD + ASR（主 CPU 激活后）→ Semantic VAD（云端判断说完没）。
 
+### Claim: 同名"semantic VAD"两家语义不同——Azure azure_semantic_vad 管起止检测的噪音鲁棒性，EOU 另配；打断是编排层策略开关，与判停/开轮正交
+
+- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **首次出现**：2026-09-23
+- **最近更新**：2026-09-25
+- **置信度**：0.8
+- **状态**：active
+
+> Voice Live 实际有三种 VAD 归属两层：OpenAI `semantic_vad`（模型内置、仅 gpt-realtime、`eagerness`）与 Azure `azure_semantic_vad(_multilingual)`（Azure Speech 层、全模型可用）名似层异；只开 `azure_semantic_vad` 不配 EOU 块，停顿仍按 `silence_duration_ms` 一刀切。打断与开轮相互独立：`interrupt_response` 与 `create_response` 是两个正交的编排层开关——不需要为"应用全权控制开轮"关掉整个 VAD。反向实例（VL07 生产复现）：`interrupt_response=true` 下任何被判为语音的声音（含数字人回声）都会打断播报并开新一段用户发言、再触发一次开轮——"完整打断需 6 组件协同"的反向印证：打断链路每一环都可能被噪音/回声劫持，数字人场景需 Live-Reference AEC 治源头。
+
 ## 冲突与演进
 
 - 2026-04-30：VAD 论文深入分析后，摘要扩展为涵盖深度学习三条路径和 Semantic VAD ≠ 打断能力的关键区分。原有 Claims 仍有效，新 Claims 补充了更细粒度的技术路径和系统级打断机制。
 
 ## 关联概念
+
+- [[end-of-turn-detection]] — `produces` VAD 判停信号是 EOU 完整性判断的触发输入（VAD 判"声音停了"，EOU 判"话说完了"）
 
 - [[voice-live-agent]] — `part-of` Voice Live Agent 依赖 VAD 实现语音交互
 - [[speech-technology-stack]] — `part-of` VAD 是 Speech 技术栈的基础组件

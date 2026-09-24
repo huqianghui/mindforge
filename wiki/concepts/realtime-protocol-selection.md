@@ -1,7 +1,7 @@
 ---
 title: "Realtime Protocol Selection"
 created: "2026-05-24"
-updated: "2026-09-16"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -95,6 +95,16 @@ related:
 - **状态**：active
 
 > WebRTC 传候选有 Trickle ICE（增量补发，RFC 8838）与 Vanilla ICE（offer 一次性带全候选）两种模式。Azure 数字人信令是一次性的（offer 以 base64 blob 经 `session.avatar.connect` 只发一次，无补发通道），所以"发前收集齐候选"是本信令通道下的标准做法——但 `complete` 信号的语义是"**所有**网络接口都了结"，被最慢最坏的接口绑架：VPN 虚拟网卡对 STUN/TURN 的 UDP 请求石沉大海（无响应也无错误）、mDNS 混淆地址解析、IPv6/代理路由黑洞，都让它在多网卡环境永远不来——每次连接硬等满 8s 兜底超时（开发者/企业办公电脑必现，"干净"家庭网络测不出）。修复的关键是**场景特化知识**：Azure 数字人 relay-only（下发的 `ice_servers` 只有一个带凭据 relay，无 STUN、无 P2P），胜出候选已知——SDP 里有第一个 relay candidate（+300ms 收敛窗收同批）就是"够用集"，后续 host 候选永远不会被选中，正确性零损失而 ICE 段 **8s→0.38s**（生产 n=9 全部走快路径、中位 0.54s，无一打满兜底）。可推广原则：**很多"标准做法"的等待，等的是通用假设下的最坏情况；对服务端行为有确定性知识时，等待条件就可以收窄**——前提是兜底全部保留（null candidate / `complete` / 超时三信号仍在，正常网络行为不变）。配套判据：兜底超时每次被打满即主信号失效，值得显式标记 + 报警。
+
+### Claim: 媒体面/控制面的术语精确化与双通道的代价面——uplink 音频 WebRTC 化后后端收缩为"纯控制面"；音频播放路径分叉导致服务端 AEC 参考失配
+
+- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]（2026-09 双通道章节修订）、[[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]
+- **首次出现**：2026-09-19
+- **最近更新**：2026-09-25
+- **置信度**：0.75
+- **状态**：active
+
+> "双通道两条路径职责严格解耦"的术语精确化：avatar 模式下全部输出（音频+视频）统一走 WebRTC 保证 AV 同步，WS 只承载上行麦克风与控制面；**媒体面始终 browser↔Azure 直连、控制面始终经后端**——uplink 音频 WebRTC 化后，后端是收缩为"纯控制面"而非被绕过（弱网收益判断依据）。传输层对两类数字人头像完全相同（同一 ICE/SDP 握手、H.264）：系列03 的 ICE 门控与预热占位策略对 photo 头像直接复用，photo 逐帧生成发生在 Azure 侧 GPU、不引入客户端时序新环节。代价面（VL07 生产实证）：音频播放路径分叉（WS audio delta vs WebRTC 视频流音轨）导致服务端 AEC 参考信号失配——双通道架构的副作用，需 Live-Reference AEC 补偿。
 
 ## 冲突与演进
 

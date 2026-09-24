@@ -1,7 +1,7 @@
 ---
 title: "控制论 Agent 设计（Cybernetics-Agent Design）"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -88,6 +88,16 @@ related:
 - **状态**：stale
 
 > 控制论五层（WHY，设计原理）、六层工程模型（WHAT，模块结构）、三层控制模型（HOW，运行动力学）三者回答不同问题。收敛性公式 = 约束强度 × 反馈频率 / 执行自由度，其中每个因子的来源由控制论五层解释。
+
+### Claim: bounded autonomy 与 ODD 安全退出是调节器框架的物理域实例；MPC receding horizon 是"规划一长段、执行一小段"的控制论正形
+
+- **来源**：[[具身智能全景：从LLM、Agent、RAG到物理世界闭环]]、[[落地实践系列02：自动驾驶与世界模型的路线交汇——传感器之争、数据飞轮与世界基础模型]]、[[机器人系统系列03：角色与实现的分离——七个功能角色、合并拆分光谱与扫地机器人的演进路径]]
+- **首次出现**：2026-09-17
+- **最近更新**：2026-09-25
+- **置信度**：0.7
+- **状态**：active
+
+> 物理世界落地形态普遍是 bounded autonomy（信息理解→人工审核→边界内自动执行），与软件 Agent 权限模型（read-only→approval→auto-accept）完全同构；L4 自动驾驶把"知道自己不知道"工程化——perception confidence 低于阈值即主动降级/fallback/Minimal Risk Maneuver，ODD 边界安全退出比"开得更好"更难也更关键（负反馈的边界条件设计）。MPC（Model Predictive Control）"规划一长段、执行一小段、再重规划"是 receding horizon 闭环——2026-09-17 裁决不为其单独建页、归口控制论概念族的第二次证据来源；机器人系统的七角色分解中，控制与安全两个角色是"实现从手工设计换成学习得到"这场替换里最稳定的锚。
 
 ## 冲突与演进
 

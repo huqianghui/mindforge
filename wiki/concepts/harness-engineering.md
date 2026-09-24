@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-09-04"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -259,6 +259,16 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **状态**：active
 
 > 把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像"编排层/胶水"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是"你要对 harness 拥有多大控制权、控制发生在哪一层"——loop 内（能力件级）还是 loop 外（架构层级）。
+
+### Claim: harness 的职责边界——单轨执行器不含搜索编排：并行候选、分支比较、预算分配在 harness 之外
+
+- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **首次出现**：2026-09-22
+- **最近更新**：2026-09-25
+- **置信度**：0.6
+- **状态**：active
+
+> Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——"控制权在哪一层"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）
 
 ## 冲突与演进
 

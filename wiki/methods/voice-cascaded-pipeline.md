@@ -1,7 +1,7 @@
 ---
 title: "语音级联管线架构"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-09-25"
 tags:
   - wiki
   - method
@@ -82,6 +82,16 @@ related_methods: []
 - **状态**：stale
 
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。
+
+### Claim: Dialog Manager 是被 Voice Live 默认配置折叠掉的一层——应答门控把它重新展开为显式状态机
+
+- **来源**：[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **首次出现**：2026-09-24
+- **最近更新**：2026-09-25
+- **置信度**：0.75
+- **状态**：active
+
+> 级联流水线 ASR→NLU→DM→NLG→TTS 中的 Dialog Manager 层，在 Voice Live `create_response=true` 默认配置下被折叠成一个布尔开关（VAD 判停即开轮）。应答门控是把 DM 重新展开：EOU（说完了没）→ LLM judge（答完了没）→ 跨轮状态规则（要不要致谢）→ 分档内容源（说什么），配两段式提交状态机（LISTENING→PENDING→COMPLETE）。十三步完整流程在 Voice Live 事件流上的三段对应：门控段（VAD→EOU→judge→提交→竞态复查，全在应用侧）、开轮生成段（组装约束→response.create→推理→TTS/viseme）、播出段（播放→打断→response.done→acked 复位）——级联流水线各层与 Realtime 事件的映射表。
 
 ## 实践记录
 

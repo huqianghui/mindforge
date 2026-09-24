@@ -1,7 +1,7 @@
 ---
 title: "在线学习（Online Learning）"
 created: "2026-06-29"
-updated: "2026-07-07"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -99,6 +99,16 @@ related:
 - **状态**：stale
 
 > LifeSkill 是本页定义的"真在线学习"（部署后真改权重）里少见的一个实例，但它暴露了这类方法的工程真相：**理论上满足 online learning 定义（数据 streaming、test-time 更新、逐步改参数），工程上基本不可能真在线**。它的核心循环"失败 → 生成 K 个 skill → 每个 rollout N 次 → verifier 评分 → 训 skill extractor → 再训 policy"本质是一个被 test-time 触发的小型 offline RL 训练循环，成本量级 $O(K\times N\times\text{LLM}+\text{2 次训练})$：latency 爆炸（不能让用户等 rollout+训练）、compute 不可持续、且不满足 real-time CL 三要求（更新慢、无防遗忘、依赖 batch）。准确定位是"test-time triggered offline training loop"——不是 learn *while* acting，而是 learn *after* acting, in mini-batches。所以真在线学习（改参数那一侧）现实的部署形态只能是**异步/延迟在线学习**：fast path 执行 + 异步后台训练 + 周期性热更新，即"不能 real-time CL，只能 offline CL with online data"。这给本页三个致命问题（不稳定/不可控/灾难性遗忘）补了第四个工程约束：**适应延迟**——改参数这次适应能不能塞进部署的延迟预算。这根"适应延迟"轴正好分开 JitRL（不改参数、即时在线）与 LifeSkill（改参数、只能延迟离线），也指向最优架构 hybrid：短期适应用 JitRL（前台改 logits），长期沉淀用 LifeSkill（后台改权重），JitRL 的 memory 顺便当 LifeSkill 的训练数据源。
+
+### Claim: 真机遥操作纠正的持续学习对应 RLHF，但反馈信号来自物理世界、采集成本差量级
+
+- **来源**：[[具身智能全景：从LLM、Agent、RAG到物理世界闭环]]
+- **首次出现**：2026-09-17
+- **最近更新**：2026-09-25
+- **置信度**：0.65
+- **状态**：active
+
+> 概念映射表的持续学习行：软件侧 RLHF/用户反馈 ↔ 具身侧真机反馈、遥操作纠正后的持续学习（Rho-alpha 宣称支持部署中从人类遥操作反馈持续学习）。关键差异：反馈信号来自物理世界，采集成本高一个量级——这决定了具身域的"在线"多为准在线（收集-离线迭代-再部署），与本页"工程在线=理论在线+适应延迟"判据一致。
 
 ## 冲突与演进
 

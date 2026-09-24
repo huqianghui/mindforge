@@ -1,7 +1,7 @@
 ---
 title: "SkillOpt（文本空间 skill 优化器）"
 created: "2026-07-01"
-updated: "2026-07-16"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -102,6 +102,16 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **状态**：active
 
 > video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是"在 val 上不退步"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好"更稳"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则"移植成功"只是管道意义上的成功。**
+
+### Claim: SkillOpt × Dream-RSI 同构分工——procedural knowledge vs search behavior，真实 rollout vs 离线 replay
+
+- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **首次出现**：2026-09-22
+- **最近更新**：2026-09-25
+- **置信度**：0.6
+- **状态**：active
+
+> 骨架同构：记 bad case→探索→修改→打分→保留；对象不同：SkillOpt 改 skill.md 文本（procedural knowledge），Dream-RSI 改 policy.py 调度代码（search behavior）；验证方式不同：held-out 真实 rollout vs 历史树离线 replay——对应 RL 的 exploitation vs exploration，两者可同时挂载互不冲突。"自我改进的瓶颈是改了之后敢不敢信"：validation gate 与 replay simulator 是同一命题的两种解法。启发：SkillOpt 历史 trajectory 里躺着"当时若用别的 skill 会怎样"的部分信息，哪些验证环节可借 replay 降成本值得探索。开放问题（两篇论文都未答）：双层优化的干涉——skill 变了之后，旧 discovery tree 的 replay 是否失效。（论文初读，置信度留低）
 
 ## 冲突与演进
 

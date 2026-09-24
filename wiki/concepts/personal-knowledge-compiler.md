@@ -1,7 +1,7 @@
 ---
 title: "Personal Knowledge Compiler"
 created: "2026-04-13"
-updated: "2026-08-30"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -113,6 +113,16 @@ related:
 - **状态**：active
 
 > PKC 管线四环（获取→落盘→编译→检索）中最痛的获取环由 Codex 原生浏览器能力承接（登录页面/字幕导出/搜索汇总），编译环留在 Claude Code（vault 规则、agent 路由、wiki schema、loop engineering 是多年 harness 资产，不随获取工具切换）。分工的工程落地是 **inbox/codex 交接协议**（commit 71025b3）：Codex 按约定落盘 `status: raw` 完整问答，Claude Code 取料成文后回写 `processed` + output 溯源——已在 Computer Use 系列六成文中首次走通全链路。这不是二选一，而是按环节用所长：不同 harness 有不同原生能力禀赋，路由到擅长的环节。
+
+### Claim: Spatial Memory 的数据库式消费与"编译一次、持续查询"同构——知识编译原则的空间域实例
+
+- **来源**：[[空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界]]
+- **首次出现**：2026-09-20
+- **最近更新**：2026-09-25
+- **置信度**：0.65
+- **状态**：active
+
+> Spatial Memory（3D+语义+时间的可查询数据库）的消费方式：Agent 发空间查询 `objects where class=camera` 直接出答案，而不是让 VLM 把 500 张历史图像重看一遍——与 PKC"知识编译一次保持最新、不在每次查询时重新推导"是同一原则：把昂贵的一次性构建（重建/提取）与廉价的高频查询分离。跨域旁证：编译式知识管理的适用条件是查询频率 ≫ 更新频率，空间域（机器人持续查地图）与知识域（wiki 持续被检索）都满足。
 
 ## 冲突与演进
 

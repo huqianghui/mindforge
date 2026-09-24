@@ -1,7 +1,7 @@
 ---
 title: "Agent Loop Architecture"
 created: "2026-04-13"
-updated: "2026-08-30"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -73,6 +73,27 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **状态**：active
 
 > Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是"模型判断 + 执行 + 结果回灌"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。"One loop & Bash is all you need" 在 GUI 域的对应物是 "One loop & screenshot+click is all you need"——loop 骨架不变，工具面变了。
+
+### Claim: agent loop 的物理域实例化——分层多频率控制回路：三档频率来自时间尺度分离，五个本质分野
+
+- **来源**：[[机器人系统系列02：Agent循环的物理形态——分层多频率控制回路与五个本质分野]]、[[落地实践系列03：分层选型决策——世界模型、VLA与空间智能的技术栈选择指南]]、[[VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互]]、[[VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行]]
+- **首次出现**：2026-09-18
+- **最近更新**：2026-09-25
+- **置信度**：0.7
+- **状态**：active
+
+> 软件 Agent 的单个 while 循环在具身系统里被物理时间拆成三层嵌套：任务层 0.1–1Hz（最像软件 loop）/策略层 10–50Hz（VLA/扩散策略）/控制层 100–1000Hz（经典控制器，通常没有模型），外加绕开模型的独立安全监视器。频率由该层对付的物理过程时间尺度决定、允许计算量与频率成反比、相邻层约 10 倍 time-scale separation。五个本质分野：**结束信号来源**（软件 loop 模型自宣告结束 vs 外部验证）、时间角色（回合制 vs 实时异步）、工具性质（确定性 vs 概率性技能）、观测性质、安全边界位置（安全层独立于模型）——"软件 Agent 的 loop 是模型驱动、回合制、确定性工具、自宣告结束；具身的 loop 是分层多频率、实时异步、概率性技能、外部验证结束、安全层独立于模型"。部署侧数据点：GR00T Policy Server TensorRT 加速 H100 11.7→35.9Hz 恰落策略层窗口；π0 三个频率口径分解（块生成延迟 73ms ≠ 调用速率 ≠ 控制频率 50Hz ≠ 重规划 1.25Hz）；Hi Robot 系统 2 约 1s 或语言反馈触发/系统 1 高频出块——实时语言反馈成一等输入（物理域 barge-in）。VLA"块内一次联合生成+块间拿 observation 重规划"与软件 loop 同构，区别只在频率与代价；RTC"边执行边生成"与流式工具调用/speculative execution 同构。这是继 Computer Use action loop（08-30）后第二个跨域实例化。
+
+
+### Claim: agent loop 不是什么——exploration policy/搜索编排不在现有 coding agent 的 harness 里
+
+- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **首次出现**：2026-09-22
+- **最近更新**：2026-09-25
+- **置信度**：0.6
+- **状态**：active
+
+> 给"agent loop 是什么"补边界：Claude Code/OpenCode 的 harness 是**单轨执行器**——提供 loop、session、context 压缩、记忆、权限、沙箱，不含并行候选、分支比较、预算分配；探索决策隐式混在 LLM 的"下一步做什么"里；plan mode 是权限门不是搜索。Dream-RSI 的 exploration policy 是在 coding agent 之外新加的编排层（两层结构：Policy Developer Agent 改 Discovery Agent 的"指挥方式"），使探索 explicit and programmable；日常对应物是 fan-out + pick-the-winner 的分发脚本。（论文初读，置信度留低）
 
 ## 冲突与演进
 

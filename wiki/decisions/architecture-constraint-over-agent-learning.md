@@ -1,7 +1,7 @@
 ---
 title: "架构约束优于 Agent 自主学习：代码复用策略"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-09-25"
 tags:
   - wiki
   - decision
@@ -65,6 +65,16 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 - **状态**：stale
 
 > 不让 agent 自己学会复用，而是用架构约束让它不得不复用。
+
+### Claim: 语音轮次域实例——"不要主动追问"从提示词约束变为结构性不可能（by construction 而非 by instruction）
+
+- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **首次出现**：2026-09-23
+- **最近更新**：2026-09-25
+- **置信度**：0.85
+- **状态**：active
+
+> 本决策"架构约束优于 agent 学习/指令"在 Realtime 协议层的落地：`create_response=true` 时判断与说出在同一 response 内、无人能否决——这是提示词约束失效的**结构原因**（VL07 生产实证：致谢与追问出自同一 response，"the turn and the follow-up turn are the same turn"——协议层没有"只许致谢不许追问"档）。修法是把 judge 与 speaker 分离：独立 judge 调用输出结构化 JSON（complete/partial/off-topic），追问从模型自由行为变成应用显式触发的 `response.create`，每题致谢上限由状态机保证而非提示词承诺。两层各治一段：线性轮次治"次数"（`create_response=false` + 去掉补发后模型拿不到轮次）、Speech 层治"内容进缓冲区"（EOU/`remove_filler_words`/降噪/Live-Reference AEC）。频率策略只能在应用层——依赖跨轮状态（每题上限 1/答题<3s 不致谢/距上次<2 题不致谢/相邻不同句），"一行都写不进提示词，因为提示词只在单个 response 内生效"；内容三档（脚本池/模板加槽位/受约束生成+代码校验回退），评价色彩场景停在第二档。
 
 ## 关联概念
 

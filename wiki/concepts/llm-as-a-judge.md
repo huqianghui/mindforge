@@ -1,7 +1,7 @@
 ---
 title: "LLM-as-a-Judge（三层正交评估模型）"
 created: "2026-08-03"
-updated: "2026-08-03"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -77,6 +77,16 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **状态**：active
 
 > Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。
+
+### Claim: judge 的时延与知识边界决定其在实时链路中的位置——EOU 洗触发、judge 做决策；视频域新实例：物理合理性判官
+
+- **来源**：[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]、[[世界模型系列05：像素路线与Cosmos——扩散与自回归双轨WFM、预训练到后训练的场景分工及全模态Cosmos 3]]
+- **首次出现**：2026-09-24
+- **最近更新**：2026-09-25
+- **置信度**：0.75
+- **状态**：active
+
+> 语音轮次场景给 judge 定位补上时延/知识两条边界：LLM 做 end-of-turn 判断是错位（每次停顿都等一次几百 ms 往返、且读不到语调）；EOU 小模型做任务完成判断不可能（不知道题目）——正确叠法是 EOU 洗干净 `speech_stopped` 触发、LLM judge 决定接下来干什么：**judge 不该放在 Speech 层实时路径上**。judge 输出结构化 JSON（complete/partial/off-topic）并与 speaker 分离，是追问可控的结构前提。另一域新实例：Cosmos Reason 在 WFM 合成数据管线里当物理合理性判官（生成→过滤→再入库，"否则是用幻觉污染训练集"）——视频域的 Rule/Metric 之外首个物理常识 judge 样本。
 
 ## 冲突与演进
 

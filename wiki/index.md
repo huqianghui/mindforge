@@ -1,8 +1,8 @@
 ---
 title: Personal Knowledge Wiki
 created: 2026-04-13
-updated: 2026-09-16
-stats: "98 concepts, 19 methods, 8 decisions, 609 claims"
+updated: 2026-09-25
+stats: "106 concepts, 19 methods, 8 decisions, 683 claims"
 tags:
   - wiki
   - index
@@ -157,6 +157,17 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[intelligent-dictation]] — 智能听写：从 Speech Recognition 到 Speech Writing 的范式转移
 - [[realtime-protocol-selection]] — 实时通信协议选型：Control Plane vs Data Plane 分离
 - [[compute-locus-spectrum]] — 计算位置光谱：内容复杂度 × 实时性来源决定画面计算发生在哪里（文档内 → 本地 JS/GPU → 云端 GPU 推流）
+- [[viseme]] — Viseme（视觉音素）：phoneme 多对一收敛的最小口型单位，TTS→数字人口型驱动的时间轴协议
+- [[end-of-turn-detection]] — EOU（话轮结束检测）：介于 VAD 与 turn-taking 之间的独立层，三代方法谱系（静音阈值→文本语义→音频原生）
+
+### 具身智能（Embodied AI）
+
+- [[embodied-ai]] — 具身智能（域锚点）：感知→理解→规划→行动→反馈学习闭环，与软件 Agent 同构、根源差异是物理世界不可回滚
+- [[world-model]] — 世界模型：角色非架构（P(s'|s,a)），像素/潜空间/显式3D/物理方程四条实现路线，与 RL/策略/评估器/LLM 的分界
+- [[vision-language-action-model]] — VLA：把动作变成一种模态，动作 token→扩散动作头演进，π 系列演进样本
+- [[spatial-intelligence]] — 空间智能：状态 vs 状态转移分层栈，显式/隐式空间表达的选用边界
+- [[action-chunking]] — 动作块：块内并行去噪+块间闭环重规划，RTC 与三个频率口径
+- [[diffusion-model]] — 扩散模型/Flow Matching：高维连续多峰选型判据，同一框架两种参数化
 
 ### AI 硬件与推理基础设施
 

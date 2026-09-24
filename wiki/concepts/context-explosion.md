@@ -1,7 +1,7 @@
 ---
 title: "Context Explosion"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -76,6 +76,16 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **状态**：stale
 
 > 正确做法应是 state 外部存储 + context 按需投影（projection）。
+
+### Claim: CoT 软回溯是推理模型烧 token 与"陷在错误框架出不来"的机制根源
+
+- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **首次出现**：2026-09-22
+- **最近更新**：2026-09-25
+- **置信度**：0.6
+- **状态**：active
+
+> 推理模型的思维链只能软回溯：说"等等，前面不对"之后，错误 token 仍留在 context 里继续作为条件分布的一部分，只能靠注意力压低权重、无法像真搜索那样硬回溯（把状态弹出、换分支重来）——搜索状态存在 context window 而非外部结构。这是 CoT 越长越烧 token、且容易陷在错误框架里出不来的机制解释；"CoT 把网络深度换成序列长度"——上下文膨胀在推理模型上的新形态。（论文初读，置信度留低）
 
 ## 冲突与演进
 

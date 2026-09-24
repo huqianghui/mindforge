@@ -1,7 +1,7 @@
 ---
 title: "级联管线 vs 端到端：Voice Agent 架构选择"
 created: "2026-04-13"
-updated: "2026-09-16"
+updated: "2026-09-25"
 tags:
   - wiki
   - decision
@@ -90,6 +90,16 @@ related_methods:
 - **状态**：active
 
 > 生产对照测试发现并修复的配置坑直接续证上一条 Claim：Voice Live 对模型类型没有"只能语音专用模型"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）**两类都支持**，级联 vs 端到端确实已降级为配置项。真正的部署分水岭是**同一模型在不同 region 对 Voice Live 的可用性**：配了当前 region 不可用的模型，症状是"永远停在 text、控制台报 Model X is not supported in this region"（本次即 gpt-5.4-mini 在该 region 不可用，换该 region 可用的 gpt-4o / gpt-4.1-mini 即恢复）。落地含义：部署检查清单要加一条硬检查项——`VOICE_LIVE_DEFAULT_MODEL`（bicep 参数）必须在部署 region 对 Voice Live 可用；"架构决策降级为配置项"的另一面是**配置项的坑也升级为架构级症状**（表现为整条语音链路不通，而非清晰的配置错误提示）。
+
+### Claim: GPT-Live-1 触发前提重评估，方向是坐标系更换而非切换 E2E；"切换成本降到配置级"的副作用是控制面归属随之翻转
+
+- **来源**：[[Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估]]、[[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar]]、[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **首次出现**：2026-09-19
+- **最近更新**：2026-09-25
+- **置信度**：0.75
+- **状态**：active
+
+> GPT-Live-1（原生全双工）触发了本决策页的前提重评估触发器，但方向不是"该切端到端了"，而是坐标系更换：把"对话层半双工/全双工"与"推理层委派"拆成两个独立配置维度。S2S 与混合式的真开关是 `voice` 配置字段而非模型选择——数字人的 viseme 闸门约束"谁来出声"（TTS 必在链路 → 数字人必落混合式/级联式，对 video/photo 两类头像均成立），不约束"头怎么动"。副作用补充：配置级切换的同时**控制面归属翻转**——级联（文本）模型下 `modalities: audio` 是假的（音频由 Azure TTS 合成，韵律控制面在 `voice.rate` 等 Speech 层参数而非 LLM 提示词）、转写主链路/旁路随模型翻转；且级联式在 Voice Live 内有协议层约束：没有直达 TTS 的事件，文本进 TTS 的唯一入口是 response。
 
 ## 关联概念
 

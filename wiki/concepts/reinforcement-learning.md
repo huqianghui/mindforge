@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-07-14"
+updated: "2026-09-25"
 tags:
   - wiki
   - concept
@@ -124,6 +124,27 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **状态**：active
 
 > RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的"prompt+response 一起进 loss"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的"target 是评分键"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问"哪列进模型、哪列进 reward"即可快速定位。
+
+### Claim: 世界模型概念在 RL 中成型——model-based/model-free 之分、交叉的三档深度、L2→L4 数据飞轮裂缝
+
+- **来源**：[[世界模型系列01：世界模型不是一种架构——像素、潜空间、显式3D与物理方程四条实现路线]]、[[世界模型系列03：世界模型与强化学习的边界——判别三要素、脑内模拟器与特斯拉FSD的归类]]、[[落地实践系列02：自动驾驶与世界模型的路线交汇——传感器之争、数据飞轮与世界基础模型]]、[[VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行]]
+- **首次出现**：2026-09-17
+- **最近更新**：2026-09-25
+- **置信度**：0.7
+- **状态**：active
+
+> 世界模型最早在 RL 里成型（Ha & Schmidhuber 2018、Dreamer 系列）：用学出来的"可微分环境代理"替代真实环境训练策略，省掉昂贵交互。与 RL 共享 MDP 词汇表但学不同函数：RL 学 π(a|s)（怎么得高分），世界模型学 P(s'|s,a)（世界怎么变）；model-free RL 从头到尾不学世界模型。交叉三档深度：reward 浅则推理时给想象轨迹打分（MPC/CEM，不训练任何东西）、中则在想象里训练 actor-critic（Dreamer，模型自带 reward 头）、深则由 reward/value 直接定义模型训练目标（MuZero value equivalence）；不变分界：预测误差训练"世界怎么变"、reward 训练"什么算好"。产业侧：L2→L4 数据飞轮的裂缝——L2 量产数据学的是 human driving distribution 而非"我该怎么开"，必须插入 World Model+Simulation+RL 环节（驾驶数据天然自带 observation→action→consequence 三元组，是 action-conditioned 模型的理想形态）。真机侧：π0.6/π*0.6 的 RECAP 转向真机经验 RL，与软件 Agent 的 APO→SFT→RL 阶梯平行（先模仿/监督做扎实再上强化信号；其"从经验学习"含人工纠正+离线迭代，非部署中实时更新）。
+
+
+### Claim: exploration 的三个搜索空间与"采样太贵→离线复用"母题——Dream-RSI 是 off-policy evaluation 的退化特例
+
+- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **首次出现**：2026-09-22
+- **最近更新**：2026-09-25
+- **置信度**：0.6
+- **状态**：active
+
+> "exploration"在 RL 里至少有三个搜索空间：状态-动作序列空间、策略参数空间、经验-数据空间——含义各不同；Dream-RSI 的 exploration policy 属第一个（=搜索控制策略），优化它本身可形式化为 meta-MDP（state=discovery tree/action=扩哪个分支+预算/reward=发现质量），落进 learning to search / metareasoning 传统。OPE（off-policy evaluation，属 offline RL）：用已记录轨迹评估未跑过的策略，经典方法需 importance sampling 修正随机转移（IS/WIS/DR/FQE，偏差-方差权衡）；Dream-RSI 是其退化特例——确定性转移免 IS、零估计误差、只剩 coverage 约束（对应 offline RL 的 OOD action，CQL/IQL 用悲观主义处理）。母题："采样太贵所以离线复用已有轨迹"在权重层与搜索策略层是同一件事——PPO ratio+clip 就是 off-policy 修正、GRPO 组内复用同理、agent-lightning/verl 的存在动机一字不差，区别只在优化对象（模型权重 vs 搜索策略代码）。（论文初读，replay objective/防作弊机制未精读，置信度留低）
 
 ## 冲突与演进
 
