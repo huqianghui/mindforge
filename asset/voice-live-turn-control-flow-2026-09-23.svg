@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="670" viewBox="0 0 1160 670" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrowTeal" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowViolet" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#a78bfa"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.7; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    .flow       { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flow-amber { stroke-dasharray: 8 12;  animation: flowDash 1.7s linear infinite; }
+    .flow-violet{ stroke-dasharray: 8 12;  animation: flowDash 1.9s linear infinite; }
+    .halo       { animation: pulse 2s ease-in-out infinite; }
+    .live       { animation: shimmer 3.5s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="670" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="668" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">Voice Live 一个轮次的五道关卡 — 开关归属分层</text>
+  <text x="640" y="44" font-size="13" fill="#475569">create_response 只管"开不开轮"，instructions 只管"轮里说什么" · 2026.09</text>
+  <line x1="36" y1="66" x2="66" y2="66" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round"/>
+  <text x="72" y="70" font-size="12" fill="#94a3b8">Azure Speech 层（信号与语音模型）</text>
+  <line x1="286" y1="66" x2="316" y2="66" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+  <text x="322" y="70" font-size="12" fill="#94a3b8">Voice Live 编排层（协议事件与策略开关）</text>
+  <line x1="580" y1="66" x2="610" y2="66" stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+  <text x="616" y="70" font-size="12" fill="#94a3b8">LLM 层（模型模式归客户端 / Agent 模式归 Foundry Agent）</text>
+
+  <!-- ===== lanes ===== -->
+  <rect x="36" y="96" width="1100" height="170" rx="12" fill="#0f1a2a" stroke="#1e293b" stroke-width="1"/>
+  <rect x="36" y="96" width="4" height="170" rx="2" fill="#2dd4bf"/>
+  <text x="56" y="124" font-size="13" font-weight="700" fill="#2dd4bf">Azure Speech</text>
+  <text x="56" y="142" font-size="10.5" fill="#64748b">VAD · 降噪 · 回声消除</text>
+  <text x="56" y="158" font-size="10.5" fill="#64748b">EOU 语义判停 · STT · TTS</text>
+
+  <rect x="36" y="282" width="1100" height="170" rx="12" fill="#121a26" stroke="#1e293b" stroke-width="1"/>
+  <rect x="36" y="282" width="4" height="170" rx="2" fill="#fbbf24"/>
+  <text x="56" y="310" font-size="13" font-weight="700" fill="#fbbf24">Voice Live 编排</text>
+  <text x="56" y="328" font-size="10.5" fill="#64748b">Realtime 协议事件</text>
+  <text x="56" y="344" font-size="10.5" fill="#64748b">create / interrupt 策略</text>
+
+  <rect x="36" y="468" width="1100" height="150" rx="12" fill="#131528" stroke="#1e293b" stroke-width="1"/>
+  <rect x="36" y="468" width="4" height="150" rx="2" fill="#a78bfa"/>
+  <text x="56" y="496" font-size="13" font-weight="700" fill="#a78bfa">LLM / Agent</text>
+  <text x="56" y="514" font-size="10.5" fill="#64748b">instructions · tools</text>
+  <text x="56" y="530" font-size="10.5" fill="#64748b">生成文本 / 原生音频</text>
+
+  <!-- ===== Speech lane nodes ===== -->
+  <g filter="url(#softGlow)">
+    <rect x="170" y="126" width="170" height="110" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/>
+  </g>
+  <text x="255" y="150" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">① 听</text>
+  <text x="255" y="170" font-size="10.5" fill="#94a3b8" text-anchor="middle">input_audio_buffer.append</text>
+  <text x="255" y="192" font-size="10.5" fill="#5eead4" text-anchor="middle">azure_deep_noise_suppression</text>
+  <text x="255" y="208" font-size="10.5" fill="#5eead4" text-anchor="middle">server_echo_cancellation</text>
+  <text x="255" y="226" font-size="10" fill="#64748b" text-anchor="middle">session 级，会话中不可改采样率</text>
+
+  <path d="M340 181 L 383 181" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrowTeal)"/>
+
+  <g filter="url(#softGlow)">
+    <rect x="385" y="126" width="170" height="110" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/>
+  </g>
+  <text x="470" y="150" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">② 判起</text>
+  <text x="470" y="170" font-size="10.5" fill="#94a3b8" text-anchor="middle">VAD → speech_started</text>
+  <text x="470" y="192" font-size="10.5" fill="#5eead4" text-anchor="middle">threshold · prefix_padding_ms</text>
+  <text x="470" y="208" font-size="10.5" fill="#5eead4" text-anchor="middle">speech_duration_ms</text>
+  <text x="470" y="226" font-size="10" fill="#64748b" text-anchor="middle">server_vad 按音量 / semantic 按语义</text>
+
+  <path d="M555 181 L 598 181" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrowTeal)"/>
+
+  <g filter="url(#softGlow)">
+    <rect x="600" y="126" width="170" height="110" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/>
+  </g>
+  <text x="685" y="150" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">③ 判停</text>
+  <text x="685" y="170" font-size="10.5" fill="#94a3b8" text-anchor="middle">VAD → speech_stopped</text>
+  <text x="685" y="192" font-size="10.5" fill="#5eead4" text-anchor="middle">silence_duration_ms</text>
+  <text x="685" y="208" font-size="10.5" fill="#5eead4" text-anchor="middle">end_of_utterance_detection</text>
+  <text x="685" y="226" font-size="10" fill="#64748b" text-anchor="middle">remove_filler_words 防误打断</text>
+
+  <!-- TTS node -->
+  <g filter="url(#softGlow)">
+    <rect x="940" y="126" width="190" height="110" rx="12" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/>
+  </g>
+  <text x="1035" y="150" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">⑥ 合成输出</text>
+  <text x="1035" y="170" font-size="10.5" fill="#94a3b8" text-anchor="middle">Azure TTS 或模型原生音频</text>
+  <text x="1035" y="192" font-size="10.5" fill="#5eead4" text-anchor="middle">voice · rate · temperature</text>
+  <text x="1035" y="208" font-size="10.5" fill="#5eead4" text-anchor="middle">viseme_id · word timestamps</text>
+  <text x="1035" y="226" font-size="10" fill="#64748b" text-anchor="middle">audio.delta → 客户端播放 / 数字人</text>
+
+  <!-- ===== Orchestrator lane nodes ===== -->
+  <path d="M470 236 L 470 310" fill="none" stroke="#fbbf24" stroke-width="2" class="flow-amber" marker-end="url(#arrowAmber)"/>
+  <text x="480" y="278" font-size="10" fill="#64748b">正在播放时</text>
+  <g filter="url(#softGlow)">
+    <rect x="385" y="312" width="170" height="110" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/>
+  </g>
+  <text x="470" y="336" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">打断处理</text>
+  <text x="470" y="356" font-size="10.5" fill="#94a3b8" text-anchor="middle">interrupt_response</text>
+  <text x="470" y="374" font-size="10.5" fill="#fcd34d" text-anchor="middle">取消进行中的 response</text>
+  <text x="470" y="392" font-size="10.5" fill="#fcd34d" text-anchor="middle">auto_truncate 截断已播 item</text>
+  <text x="470" y="410" font-size="10" fill="#64748b" text-anchor="middle">仅 azure_semantic_vad 可关</text>
+
+  <path d="M685 236 L 685 310" fill="none" stroke="#fbbf24" stroke-width="2" class="flow-amber" marker-end="url(#arrowAmber)"/>
+  <g filter="url(#softGlow)">
+    <rect x="600" y="312" width="170" height="110" rx="12" fill="#2a2210" stroke="#fbbf24" stroke-width="1.5"/>
+  </g>
+  <text x="685" y="336" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">提交与转写</text>
+  <text x="685" y="356" font-size="10.5" fill="#94a3b8" text-anchor="middle">commit buffer → user item</text>
+  <text x="685" y="374" font-size="10.5" fill="#fcd34d" text-anchor="middle">input_audio_transcription</text>
+  <text x="685" y="392" font-size="10.5" fill="#fcd34d" text-anchor="middle">azure-speech / whisper / gpt-4o-transcribe</text>
+  <text x="685" y="410" font-size="10" fill="#64748b" text-anchor="middle">create_response=false 时仍然执行</text>
+
+  <path d="M770 367 L 788 367" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flow-amber" marker-end="url(#arrowAmber)"/>
+
+  <!-- gate diamond -->
+  <g filter="url(#softGlow)">
+    <polygon points="860,322 930,367 860,412 790,367" fill="#2a2210" stroke="#fbbf24" stroke-width="2"/>
+  </g>
+  <polygon points="860,322 930,367 860,412 790,367" fill="none" stroke="#fbbf24" stroke-width="6" opacity="0.3" class="halo"/>
+  <text x="860" y="362" font-size="12" font-weight="700" fill="#fbbf24" text-anchor="middle">④ 开轮</text>
+  <text x="860" y="380" font-size="10.5" fill="#fcd34d" text-anchor="middle">create_response?</text>
+
+  <!-- gate true -> LLM -->
+  <path d="M860 412 L 860 486" fill="none" stroke="#fbbf24" stroke-width="2.5" class="flow-amber" marker-end="url(#arrowAmber)"/>
+  <text x="852" y="440" font-size="10.5" fill="#fcd34d" text-anchor="end">true</text>
+  <text x="852" y="455" font-size="10" fill="#64748b" text-anchor="end">服务端自动 response.create</text>
+
+  <!-- gate false -> client box -->
+  <path d="M930 367 L 963 367" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrowAmber)"/>
+  <text x="946" y="358" font-size="10.5" fill="#fcd34d" text-anchor="middle">false</text>
+  <g filter="url(#softGlow)">
+    <rect x="965" y="312" width="165" height="110" rx="12" fill="#1a1e2c" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6 4"/>
+  </g>
+  <text x="1047" y="336" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">客户端决定</text>
+  <text x="1047" y="356" font-size="10.5" fill="#94a3b8" text-anchor="middle">先跑业务逻辑 / 状态机</text>
+  <text x="1047" y="374" font-size="10.5" fill="#fcd34d" text-anchor="middle">response.create · 延后 · 跳过</text>
+  <text x="1047" y="392" font-size="10.5" fill="#fcd34d" text-anchor="middle">conversation.item.create 塞 item</text>
+  <text x="1047" y="410" font-size="10" fill="#64748b" text-anchor="middle">per-turn 参数仅模型模式可用</text>
+
+  <path d="M1047 422 L 1047 486" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrowAmber)"/>
+
+  <!-- ===== LLM lane node ===== -->
+  <g filter="url(#softGlow)">
+    <rect x="600" y="488" width="530" height="112" rx="12" fill="#1c1738" stroke="#a78bfa" stroke-width="1.5"/>
+  </g>
+  <text x="620" y="512" font-size="13" font-weight="700" fill="#a78bfa">⑤ 生成轮次</text>
+  <text x="730" y="512" font-size="10.5" fill="#64748b">提示词唯一能施力的关卡 · interim_response 在这里插填充语</text>
+
+  <rect x="620" y="526" width="245" height="62" rx="8" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1"/>
+  <text x="742" y="546" font-size="11.5" font-weight="700" fill="#2dd4bf" text-anchor="middle">模型模式（?model=…）</text>
+  <text x="742" y="563" font-size="10.5" fill="#94a3b8" text-anchor="middle">session instructions · tools 归客户端</text>
+  <text x="742" y="579" font-size="10.5" fill="#5eead4" text-anchor="middle">response.create 可 per-turn 覆盖</text>
+
+  <rect x="880" y="526" width="235" height="62" rx="8" fill="#2a2210" stroke="#fbbf24" stroke-width="1"/>
+  <text x="997" y="546" font-size="11.5" font-weight="700" fill="#fbbf24" text-anchor="middle">Agent 模式（?agent_id=…）</text>
+  <text x="997" y="563" font-size="10.5" fill="#94a3b8" text-anchor="middle">instructions · tools 归 Foundry Agent</text>
+  <text x="997" y="579" font-size="10.5" fill="#fcd34d" text-anchor="middle">per-turn 覆盖被拒，只能塞 item</text>
+
+  <!-- LLM -> TTS -->
+  <path d="M1118 488 L 1118 238" fill="none" stroke="#a78bfa" stroke-width="2.5" class="flow-violet" marker-end="url(#arrowViolet)"/>
+  <text x="1126" y="290" font-size="10" fill="#a78bfa" writing-mode="tb">文本 / 音频 delta</text>
+
+  <!-- particles -->
+  <circle r="4" fill="#2dd4bf">
+    <animateMotion dur="1.6s" repeatCount="indefinite" path="M340 181 L 383 181"/>
+  </circle>
+  <circle r="4" fill="#2dd4bf">
+    <animateMotion dur="1.6s" repeatCount="indefinite" begin="0.5s" path="M555 181 L 598 181"/>
+  </circle>
+  <circle r="4" fill="#fbbf24">
+    <animateMotion dur="1.8s" repeatCount="indefinite" path="M685 236 L 685 310"/>
+  </circle>
+  <circle r="4" fill="#fbbf24">
+    <animateMotion dur="2.2s" repeatCount="indefinite" path="M860 412 L 860 486"/>
+  </circle>
+  <circle r="4" fill="#a78bfa">
+    <animateMotion dur="2.6s" repeatCount="indefinite" path="M1118 488 L 1118 238"/>
+  </circle>
+
+  <!-- footnote -->
+  <text x="36" y="646" font-size="11.5" fill="#94a3b8">读法：① ② ③ 在 Speech 层，④ 是编排层的总闸，⑤ 才是 LLM 层。instructions 只作用于 ⑤；④ 关闭后 ⑤ 不再自动发生，提示词就无处施力。</text>
+  <text x="36" y="662" font-size="11" fill="#64748b">Agent 模式把 ⑤ 的脑子搬到 Foundry，① 到 ④ 仍归客户端；模型模式五关全部归客户端。</text>
+</svg>

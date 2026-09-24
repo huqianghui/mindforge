@@ -343,6 +343,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 03：数字人出场延迟优化——ICE 门控根因、实测分解与预热占位策略](Azure/VoiceLive/Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)
 - [Voice Live 系列 04：四条路线与全双工——GPT-Live-1 对数字人方案的影响评估](Azure/VoiceLive/Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)
 - [Voice Live 系列 05：两类数字人头像——viseme 驱动的 Video Avatar 与 VASA-1 生成的 Photo Avatar](Azure/VoiceLive/Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)
+- [Voice Live 系列 06：轮次控制的五道关卡——create_response、response.create 与 Model、Agent 模式的控制权归属](Azure/VoiceLive/Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md)
 
 #### Azure/Foundary-Agent
 
