@@ -218,6 +218,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [tmux 与 Claude 远程交互实践](Notes/DevOps/tmux与Claude远程交互实践.md)
 
+### Notes/FinOps
+
+- [FinOps 系列 01：从 token 价格到任务完成花费——指标转向与 AI 使用边界](Notes/FinOps/FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界.md)
+- [FinOps 系列 02：数据飞轮与 RSI——三层嵌套循环与一个贯穿指标](Notes/FinOps/FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标.md)
+- [FinOps 系列 03：落地提纲——从使用洞见到优化、监控、评估闭环（活文档）](Notes/FinOps/FinOps系列03：落地提纲——从使用洞见到优化、监控、评估闭环（活文档）.md)
+
 ### Notes/Embodied AI
 
 具身智能系列按五条主线组织，总导读（含阅读地图）：
