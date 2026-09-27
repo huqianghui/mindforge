@@ -10,7 +10,7 @@ tags:
   - prompt-cache
   - azure-openai
   - finops
-description: 在 Codex 模型菜单里加一个 Auto / Jev 入口，由本机网关调用 TypeSafe 的 Jev 在七个 Azure 部署与四档推理强度之间做上下文感知的路由。正文回答四个问题：Jev 具体怎么判断（给它什么输入、问它什么问题、拿回什么输出、确定性代码怎么把判断变成绑定）；它与关键词或规则匹配的区别；它与用一个轻量 LLM 做路由器的区别；以及整体收益在性能、准确率、缓存命中与费用之间怎么平衡。路由粒度是任务级绑定而非每次 input，Jev 只判断不执行，阈值与兜底是待校准的策略。全文区分已实测、已实现未启用、待校准三类事实，不给"最优路由"或"省了多少"结论
+description: 在 Codex 模型菜单里加一个 Auto / Jev 入口，由本机网关调用 TypeSafe 的 Jev 在七个 Azure 部署与四档推理强度之间做上下文感知的路由。正文回答四个问题：Jev 具体怎么判断（给它什么输入、问它什么问题、拿回什么输出、确定性代码怎么把判断变成绑定）；它与关键词或规则匹配的区别；它与用一个轻量 LLM 做路由器的区别；以及整体收益在性能、准确率、缓存命中与费用之间怎么平衡。路由粒度是任务级绑定而非每次 input，Jev 只判断不执行，阈值与兜底是待校准的策略。全文区分已实测、已实现未启用、待校准三类事实，不给"最优路由"或"省了多少"结论；完整实现（网关、策略、安装脚本、62 项测试）随文附在 jev-router/ 目录
 ---
 
 # Codex Desktop 系列07：用 Jev 做 Auto 模型与推理强度路由——七模型与 effort 的判断设计、与规则匹配和轻量 LLM 路由的区别、性能准确缓存的平衡
@@ -147,6 +147,21 @@ description: 在 Codex 模型菜单里加一个 Auto / Jev 入口，由本机网
 | 待校准或未做 | 阈值与三档兜底的分类质量与真实延迟；Azure 实际费率；28 个组合的质量与费用对比；Desktop 的 Auto effort 控件；修复后菜单选中保持的真实点击 |
 
 放回 [FinOps 系列 01](../../FinOps/FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界.md) 的坐标，这条路由链做的是把任务完成花费拆到正确的粒度：绑定按任务而不是按调用，切换算总账而不是比单价，缓存以 usage 为证而不是以配置推断。它与 [Computer Use 系列八](../../AI/computer-use/Computer%20Use与Browser%20Use系列八：Jev×Codex实践——把动作判断交给System%20One模型的受控对照、费用账与skill优先级结论.md) 里 Jev 选 UI 动作的分工同构：Jev 给 typed 判断与置信度，确定性代码守边界。
+
+## 八、代码与使用
+
+完整实现放在同目录的 [jev-router/](jev-router/README.md)：约 1,800 行标准库 Python，含网关、Jev 客户端、策略、联合 effort、安装与回滚脚本、62 项离线测试与配置样例，MIT 许可。README 分两部分：**怎么用**（前置条件、四条命令、安装器改动的三处文件与备份位置、日常使用与两种"回退到 Astra"的分辨方法）和**为什么这样实现**（为什么是本机网关而不是插件、为什么用 launchd 而不随 Codex 启停、为什么按任务绑定、为什么 Jev 只判断、为什么 effort 与模型进同一个 Choice、为什么价格为空禁止成本降档、为什么安装器先起服务再改配置、为什么流式转发需要 SSE 观察器）。
+
+| 文件 | 作用 |
+|---|---|
+| `gateway.py` | 回环 HTTP 服务：会话标识、绑定、调 Jev、转发 Azure、流式回传、SQLite 状态 |
+| `jev.py` | 构造四个 typed 问题，校验返回 |
+| `policy.py` | 任务级绑定、事件识别、上下文裁剪、分层兜底、缓存成本门槛 |
+| `effort.py` | 模型与 effort 的合法组合、`auto` / `fixed` 策略、联合决策 |
+| `install.py` / `control.py` | 目录条目、provider 地址、LaunchAgent 与受保护回滚；状态与成本预测 |
+| `tests/` | 62 项离线测试，无真实请求 |
+
+发布前已去除本机路径与 Azure 资源名，`config.example.json` 的 `upstream_base_url` 是占位符；evidence 与 manifest 等归档文件不随代码发布。
 
 ---
 

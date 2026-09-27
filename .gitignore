@@ -39,3 +39,7 @@ inbox/
 # oh-my-claudecode runtime state (tool uninstalled 2026-09; never track)
 .omc/
 **/.omc/
+
+# Python bytecode
+__pycache__/
+*.pyc

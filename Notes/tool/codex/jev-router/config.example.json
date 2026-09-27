@@ -1,0 +1,126 @@
+{
+  "alias": "auto-jev",
+  "port": 43187,
+  "upstream_base_url": "https://<your-azure-resource>.openai.azure.com/openai/v1",
+  "default_model": "gpt-6-sol",
+  "policy_version": "joint-effort-v3",
+  "effort_policy": "fixed",
+  "auto_efforts": [
+    "low",
+    "medium",
+    "high",
+    "xhigh"
+  ],
+  "fallback_efforts": {
+    "simple": "low",
+    "standard": "medium",
+    "demanding": "high"
+  },
+  "profile_confidence_threshold": 0.7,
+  "risk_threshold": 0.7,
+  "low_risk_threshold": 0.2,
+  "fallback_models": {
+    "simple": "gpt-6-luna",
+    "standard": "gpt-6-sol",
+    "demanding": "gpt-6-astra"
+  },
+  "jev_model": "jev-1.13.0",
+  "jev_timeout_seconds": 12,
+  "upstream_timeout_seconds": 300,
+  "confidence_threshold": 0.7,
+  "gap_threshold": 0.8,
+  "minimum_hold_seconds": 300,
+  "evaluation_cooldown_seconds": 120,
+  "cost_evidence_max_age_seconds": 300,
+  "cost_horizon_requests": 6,
+  "switch_overhead_usd": 0.01,
+  "minimum_savings_usd": 0.02,
+  "minimum_savings_fraction": 0.2,
+  "models": {
+    "gpt-6-astra": {
+      "rank": 4,
+      "description": "Strongest reasoning for demanding end-to-end work: architecture, intricate concurrency and security analysis, ambiguous cross-system problems.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-6-sol": {
+      "rank": 3,
+      "description": "New-generation general and complex coding and agentic workflows, with improved factual reliability and communication relative to GPT-5.6 Sol.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-6-luna": {
+      "rank": 1,
+      "description": "New-generation focused, repeatable coding, extraction, transformation and summaries with clear acceptance criteria.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-5.6-sol": {
+      "rank": 3,
+      "description": "Earlier-generation flagship for complex coding, research and agent workflows; retain for established compatible tasks or demonstrated cost/quality advantage.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-5.6-terra": {
+      "rank": 2,
+      "description": "Earlier-generation balanced model for routine work and bounded multi-step coding; suitable when tasks need more judgment than focused extraction.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-5.6-luna": {
+      "rank": 1,
+      "description": "Earlier-generation model for focused, cost-sensitive high-volume tasks. Cost advantage must be established from supplied prices, not assumed.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "prices": null
+    },
+    "gpt-5.5": {
+      "rank": 3,
+      "description": "Legacy general-purpose reasoning and coding model; useful for workflows evaluated on GPT-5.5 or when the supplied policy/context favors that model. Do not invent a price or performance advantage.",
+      "efforts": [
+        "low",
+        "medium",
+        "high",
+        "xhigh"
+      ],
+      "prices": null,
+      "enabled": true
+    }
+  },
+  "catalog_protocol_model": "gpt-5.5"
+}
