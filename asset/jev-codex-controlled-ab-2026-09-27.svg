@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="608" viewBox="0 0 1160 608" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient>
+    <radialGradient id="pA" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e0e7ff"/><stop offset="0.5" stop-color="#818cf8"/><stop offset="1" stop-color="#818cf8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="pJ" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ccfbf1"/><stop offset="0.5" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <style>
+    @keyframes dash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+    .flow { stroke-dasharray: 10 14; animation: dash 1.8s linear infinite; }
+    .pulse { animation: pulse 2.2s ease-in-out infinite; }
+  </style>
+  <rect width="1160" height="608" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="606" rx="17" fill="none" stroke="#1e293b"/>
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">B1 受控对照：同一执行器，只换"下一步做什么"的判断模型</text>
+  <text x="36" y="70" font-size="13" fill="#475569">筛选显示器 · 价格 ≤ 1000 · 仅看有货 · 选择 M24｜两次正式运行均值｜同一系统 Browser、DOM 观察器、候选动作、Azure Astra writer（medium）、停止条件与验收器</text>
+
+  <!-- time axis -->
+  <g font-size="11" fill="#475569">
+    <line x1="170.0" y1="130" x2="170.0" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="170.0" y="122" text-anchor="middle">0s</text><line x1="275.8" y1="130" x2="275.8" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="275.8" y="122" text-anchor="middle">2s</text><line x1="381.7" y1="130" x2="381.7" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="381.7" y="122" text-anchor="middle">4s</text><line x1="487.5" y1="130" x2="487.5" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="487.5" y="122" text-anchor="middle">6s</text><line x1="593.4" y1="130" x2="593.4" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="593.4" y="122" text-anchor="middle">8s</text><line x1="699.2" y1="130" x2="699.2" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="699.2" y="122" text-anchor="middle">10s</text><line x1="805.1" y1="130" x2="805.1" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="805.1" y="122" text-anchor="middle">12s</text><line x1="910.9" y1="130" x2="910.9" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="910.9" y="122" text-anchor="middle">14s</text><line x1="1016.8" y1="130" x2="1016.8" y2="310" stroke="#1e293b" stroke-dasharray="2 4"/><text x="1016.8" y="122" text-anchor="middle">16s</text>
+  </g>
+
+  <!-- lane labels -->
+  <text x="36" y="172" font-size="13" font-weight="700" fill="#c7d2fe">Astra 判断组</text>
+  <text x="36" y="190" font-size="11" fill="#64748b">gpt-6-astra 判断 ×6</text>
+  <text x="36" y="282" font-size="13" font-weight="700" fill="#99f6e4">Jev 判断组</text>
+  <text x="36" y="300" font-size="11" fill="#64748b">jev-1.13.0 判断 ×6</text>
+
+  <rect x="170.0" y="150" width="26.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="196.0" y="150" width="126.1" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="259.1" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断① 2.38s</text>
+<rect x="322.2" y="150" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="331.1" y="150" width="143.9" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="403.1" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断② 2.72s</text>
+<rect x="475.0" y="150" width="86.0" height="34" fill="#fbbf24" opacity="0.95"/>
+<text x="518.0" y="172" font-size="11" fill="#1c1917" text-anchor="middle" font-weight="700">writer 1.62s</text>
+<rect x="561.0" y="150" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="570.0" y="150" width="177.7" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="658.9" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断④ 3.36s</text>
+<rect x="747.7" y="150" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="756.7" y="150" width="106.5" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="810.0" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断⑤ 2.01s</text>
+<rect x="863.2" y="150" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="872.2" y="150" width="107.4" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="925.9" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断⑥ 2.03s</text>
+<rect x="979.6" y="150" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="988.6" y="150" width="112.0" height="34" fill="#818cf8" opacity="0.95"/>
+<text x="1044.6" y="172" font-size="11" fill="#e0e7ff" text-anchor="middle">判断⑦ 2.12s</text>
+<rect x="1100.6" y="150" width="9.8" height="34" fill="#334155" opacity="0.8"/>
+  <rect x="170.0" y="260" width="25.1" height="34" fill="#334155" opacity="0.8"/>
+<rect x="195.1" y="260" width="27.8" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="209.0" y="282" font-size="11" fill="#0f172a" text-anchor="middle">①</text>
+<rect x="222.9" y="260" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="231.9" y="260" width="13.9" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="238.9" y="282" font-size="10" fill="#0f172a" text-anchor="middle">②</text>
+<rect x="245.8" y="260" width="144.4" height="34" fill="#fbbf24" opacity="0.95"/>
+<text x="318.0" y="282" font-size="11" fill="#1c1917" text-anchor="middle" font-weight="700">writer 2.73s</text>
+<rect x="390.2" y="260" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="399.2" y="260" width="14.2" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="406.3" y="282" font-size="10" fill="#0f172a" text-anchor="middle">④</text>
+<rect x="413.4" y="260" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="422.4" y="260" width="13.7" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="429.2" y="282" font-size="10" fill="#0f172a" text-anchor="middle">⑤</text>
+<rect x="436.1" y="260" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="445.1" y="260" width="12.1" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="451.1" y="282" font-size="10" fill="#0f172a" text-anchor="middle">⑥</text>
+<rect x="457.2" y="260" width="9.0" height="34" fill="#334155" opacity="0.8"/>
+<rect x="466.2" y="260" width="13.1" height="34" fill="#2dd4bf" opacity="0.95"/>
+<text x="472.8" y="282" font-size="10" fill="#0f172a" text-anchor="middle">⑦</text>
+<rect x="479.3" y="260" width="13.2" height="34" fill="#334155" opacity="0.8"/>
+
+  <!-- totals -->
+  <text x="1110" y="143" font-size="13" font-weight="700" fill="#c7d2fe" text-anchor="end">任务总耗时 17.762 s</text>
+  <text x="502.6" y="272" font-size="13" font-weight="700" fill="#99f6e4">任务总耗时 6.096 s</text>
+  <text x="502.6" y="290" font-size="11" fill="#64748b">−65.7%</text>
+
+  <!-- particles running along lanes -->
+  <circle r="5" fill="url(#pA)" filter="url(#glow)"><animateMotion dur="8.9s" repeatCount="indefinite" path="M 170 167 H 1110.4"/></circle>
+  <circle r="5" fill="url(#pJ)" filter="url(#glow)"><animateMotion dur="3.05s" repeatCount="indefinite" path="M 170 277 H 492.6"/></circle>
+
+  <!-- legend -->
+  <g font-size="12" fill="#94a3b8">
+    <rect x="36" y="330" width="14" height="14" rx="3" fill="#818cf8"/><text x="56" y="341">Astra 判断调用（合计 14.619 s · 5,380 / 71 token）</text>
+    <rect x="400" y="330" width="14" height="14" rx="3" fill="#2dd4bf"/><text x="420" y="341">Jev 判断调用（合计 1.794 s · 9,712 / 667 token，输出免费）</text>
+    <rect x="790" y="330" width="14" height="14" rx="3" fill="#fbbf24"/><text x="810" y="341">writer：两组都是 Astra，生成 "1000"</text>
+    <rect x="36" y="354" width="14" height="14" rx="3" fill="#334155"/><text x="56" y="365">开页 / DOM 观察 / 浏览器动作 / 验收（两组各约 1.5 s）</text>
+  </g>
+
+  <!-- per-call table -->
+  <g font-size="11.5">
+    <rect x="36" y="388" width="1088" height="176" rx="12" fill="#0f172a" stroke="#1e293b"/>
+    <text x="56" y="412" font-size="13" font-weight="700" fill="#e2e8f0">逐次 API 往返（秒 · 输出 token）</text>
+    <text x="56" y="436" fill="#64748b">顺序</text><text x="130" y="436" fill="#64748b">这一步决定什么</text><text x="470" y="436" fill="#c7d2fe">Astra 组</text><text x="660" y="436" fill="#99f6e4">Jev 组</text><text x="850" y="436" fill="#64748b">两组输出的动作</text>
+    <text x="56" y="458" fill="#94a3b8">①</text><text x="130" y="458" fill="#cbd5e1">选择类别为“显示器”</text><text x="470" y="458" fill="#c7d2fe">2.383 s · 12</text><text x="660" y="458" fill="#99f6e4">0.526 s · 122</text><text x="850" y="458" fill="#94a3b8">a0</text><text x="56" y="475" fill="#94a3b8">②</text><text x="130" y="475" fill="#cbd5e1">决定填写“价格上限”字段</text><text x="470" y="475" fill="#c7d2fe">2.719 s · 12</text><text x="660" y="475" fill="#99f6e4">0.262 s · 122</text><text x="850" y="475" fill="#94a3b8">a2</text><text x="56" y="492" fill="#94a3b8">③</text><text x="130" y="492" fill="#cbd5e1">writer 生成要填的文字（两组都是 Astra）</text><text x="470" y="492" fill="#c7d2fe">1.625 s · 13</text><text x="660" y="492" fill="#99f6e4">2.728 s · 13</text><text x="850" y="492" fill="#94a3b8">text = 1000</text><text x="56" y="509" fill="#94a3b8">④</text><text x="130" y="509" fill="#cbd5e1">勾选“仅看有货”</text><text x="470" y="509" fill="#c7d2fe">3.358 s · 12</text><text x="660" y="509" fill="#99f6e4">0.269 s · 122</text><text x="850" y="509" fill="#94a3b8">a3</text><text x="56" y="526" fill="#94a3b8">⑤</text><text x="130" y="526" fill="#cbd5e1">点击“筛选”</text><text x="470" y="526" fill="#c7d2fe">2.012 s · 12</text><text x="660" y="526" fill="#99f6e4">0.259 s · 122</text><text x="850" y="526" fill="#94a3b8">a4</text><text x="56" y="543" fill="#94a3b8">⑥</text><text x="130" y="543" fill="#cbd5e1">选择 M24</text><text x="470" y="543" fill="#c7d2fe">2.029 s · 12</text><text x="660" y="543" fill="#99f6e4">0.229 s · 90</text><text x="850" y="543" fill="#94a3b8">a5</text><text x="56" y="560" fill="#94a3b8">⑦</text><text x="130" y="560" fill="#cbd5e1">判断任务是否完成</text><text x="470" y="560" fill="#c7d2fe">2.117 s · 11</text><text x="660" y="560" fill="#99f6e4">0.248 s · 89</text><text x="850" y="560" fill="#94a3b8">DONE</text>
+  </g>
+  <text x="36" y="580" font-size="11.5" fill="#475569" class="pulse">Jev 组 6.096 s 里真正花在 Jev 判断上的只有 1.794 s；最大的单项是让 Astra 再生成一次用户已给定的 "1000"（2.728 s，约 45%）。</text>
+  <text x="36" y="596" font-size="11" fill="#475569">费用估算按 Azure Global 公开价：Astra 组 $0.059 / 次，Jev 组 $0.0021 / 次；均为估算，非实际账单。</text>
+</svg>

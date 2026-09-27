@@ -121,6 +121,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Computer Use 与 Browser Use 系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)
 - [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的能力分界——同一套 Skill、两条调用链与第三方生态补位](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
 - [Computer Use 与 Browser Use 系列七：Web Search 与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)
+- [Computer Use 与 Browser Use 系列八：Jev × Codex 实践——把动作判断交给 System One 模型的受控对照、费用账与 skill 优先级结论](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列八：Jev×Codex实践——把动作判断交给System%20One模型的受控对照、费用账与skill优先级结论.md)
 
 ### Notes/AI/agent-lightning
 
