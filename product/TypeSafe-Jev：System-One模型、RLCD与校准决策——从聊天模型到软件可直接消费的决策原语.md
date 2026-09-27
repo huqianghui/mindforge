@@ -19,7 +19,7 @@ description: 用四个概念串起 TypeSafe 的 Jev：System One 模型是什么
 
 > TypeSafe AI 于 2026 年 9 月 15 日发布第一款 System One Model，命名 Jev（取自经济学家 William Stanley Jevons，寓意智能变得足够便宜时需求反而上升）。公开报道称创始人 Diogo Almeida 曾在 OpenAI 参与 ChatGPT 与 RLHF 的早期工作。它的主张很直接：过去几年的模型都在优化"给人看的文字"，而软件里绝大多数决策要的是一个能直接执行的类型化答案。本文不评测产品，只把四个概念串起来：System One 是什么，RLCD 是什么，校准决策与传统分类分数差在哪，以及企业拿到一个 confidence 之后怎么让它变得可信。
 >
-> 素材来自 2026-09-26 的一场 ChatGPT 讨论（五轮问答），关键事实对照 TypeSafe 官网、[DataCamp 解读](https://www.datacamp.com/blog/system-one-models-jev) 与 [Turing Post 指南](https://www.turingpost.com/p/what-is-jev-rlcd) 核订。本文与 [FinOps 系列 02](../Notes/FinOps/FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标.md) 第五节互为补充：那里讨论 RLHF 与 RLVR 对应 AI 好用与不好用的两栏，这里补上第三条路。
+>关键事实对照 TypeSafe 官网、[DataCamp 解读](https://www.datacamp.com/blog/system-one-models-jev) 与 [Turing Post 指南](https://www.turingpost.com/p/what-is-jev-rlcd) 核订。本文与 [FinOps 系列 02](../Notes/FinOps/FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标.md) 第五节互为补充：那里讨论 RLHF 与 RLVR 对应 AI 好用与不好用的两栏，这里补上第三条路。
 >
 > 官网：[typesafe.ai](https://typesafe.ai)｜创始人演讲：[AI: too good to be true, too bad to be useful](https://typesafe.ai/blog/ai-too-good-to-be-true-too-bad-to-be-useful-typesafe-ai)
 
