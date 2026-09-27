@@ -259,6 +259,7 @@ P(correct | task, confidence, customer_segment, state)
 **相关阅读**
 
 - [Computer Use 与 Browser Use 系列八：Jev × Codex 实践](../Notes/AI/computer-use/Computer%20Use与Browser%20Use系列八：Jev×Codex实践——把动作判断交给System%20One模型的受控对照、费用账与skill优先级结论.md)：实践篇，把 Jev 作为 UI 动作判断层的受控对照与 skill 路由结论
+- [Codex Desktop 系列07：用 Jev 做 Auto 模型与推理强度路由](../Notes/tool/codex/Codex%20Desktop系列07：用Jev做Auto模型与推理强度路由——任务级绑定、缓存账、误兜底诊断与model+effort联合选择.md)：实践篇，Jev 作为模型与 effort 路由的判断层，任务级绑定与误兜底诊断
 - [FinOps 系列 01：从 token 价格到任务完成花费](../Notes/FinOps/FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界.md)：两变量分界与迁栏阈值，本文第四节阈值策略的来源
 - [FinOps 系列 02：数据飞轮与 RSI](../Notes/FinOps/FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标.md)：RLHF 与 RLVR 对应两栏、置信度校准降低验证成本
 - [FinOps 系列 03：落地提纲](../Notes/FinOps/FinOps系列03：落地提纲——从使用洞见到优化、监控、评估闭环（活文档）.md)：任务级度量字段

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="620" viewBox="0 0 1160 620" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient>
+    <radialGradient id="pT" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ccfbf1"/><stop offset="0.5" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+    <radialGradient id="pA" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+    <marker id="arA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fbbf24"/></marker>
+    <marker id="arG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"/></marker>
+  </defs>
+  <style>
+    @keyframes dash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+    .flow { stroke-dasharray: 12 14; animation: dash 1.6s linear infinite; }
+    .flowSlow { stroke-dasharray: 8 18; animation: dash 3s linear infinite; }
+    .pulse { animation: pulse 2.2s ease-in-out infinite; }
+  </style>
+  <rect width="1160" height="620" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="618" rx="17" fill="none" stroke="#1e293b"/>
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">Auto / Jev 路由决策链：Jev 只判断，确定性代码决定绑定，执行模型负责回答与工具</text>
+  <text x="36" y="70" font-size="13" fill="#475569">本机回环网关 · 七模型候选池 · 任务内固定、事件触发重评 · fixed / auto 两种 effort 策略</text>
+
+  <!-- top row: request path -->
+  <g font-size="12.5" text-anchor="middle">
+    <rect x="40" y="110" width="150" height="64" rx="10" fill="#0f172a" stroke="#334155"/>
+    <text x="115" y="136" fill="#cbd5e1">Codex 请求</text><text x="115" y="156" font-size="11" fill="#64748b">model = auto-jev</text>
+
+    <rect x="230" y="110" width="170" height="64" rx="10" fill="#0f172a" stroke="#334155"/>
+    <text x="315" y="130" fill="#cbd5e1">本机网关</text>
+    <text x="315" y="148" font-size="11" fill="#64748b">读 thread_id / turn_id</text>
+    <text x="315" y="164" font-size="11" fill="#64748b">已有绑定？同轮？工具续答？</text>
+
+    <rect x="440" y="110" width="190" height="64" rx="10" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="535" y="130" font-weight="700" fill="#ccfbf1">Jev 一次 typed 判断</text>
+    <text x="535" y="148" font-size="11" fill="#99f6e4">execution Choice：(model, effort)</text>
+    <text x="535" y="164" font-size="11" fill="#99f6e4">+ 任务需求 / 高风险 / 能力缺口</text>
+
+    <rect x="670" y="110" width="200" height="64" rx="10" fill="#1e1b4b" stroke="#818cf8"/>
+    <text x="770" y="130" font-weight="700" fill="#e0e7ff">确定性策略</text>
+    <text x="770" y="148" font-size="11" fill="#c7d2fe">置信阈值 · 兼容性 · 保持时间</text>
+    <text x="770" y="164" font-size="11" fill="#c7d2fe">冷却 · 缓存成本门槛 · 兜底</text>
+
+    <rect x="910" y="110" width="210" height="64" rx="10" fill="#3b2f0b" stroke="#fbbf24"/>
+    <text x="1015" y="130" font-weight="700" fill="#fef3c7">绑定并转发 Azure</text>
+    <text x="1015" y="148" font-size="11" fill="#fde68a">持久化 model + effort</text>
+    <text x="1015" y="164" font-size="11" fill="#fde68a">原 input / tools / cache_key 不改</text>
+  </g>
+  <g fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow">
+    <path d="M190 142 H 228" marker-end="url(#arT)"/>
+    <path d="M400 142 H 438" marker-end="url(#arT)"/>
+    <path d="M630 142 H 668" marker-end="url(#arT)"/>
+    <path d="M870 142 H 908" marker-end="url(#arT)"/>
+  </g>
+  <circle r="5" fill="url(#pT)" filter="url(#glow)"><animateMotion dur="4s" repeatCount="indefinite" path="M190 142 H 908"/></circle>
+
+  <!-- bypass: existing binding skips Jev -->
+  <path d="M315 174 V 215 H 1015 V 176" fill="none" stroke="#fbbf24" stroke-width="1.8" class="flowSlow" marker-end="url(#arA)"/>
+  <text x="660" y="208" font-size="11.5" fill="#fde68a" text-anchor="middle" class="pulse">已有绑定 / 同一 turn / 工具续答 / 不透明历史 → 直接沿用，不调用 Jev（sticky）</text>
+  <circle r="4" fill="url(#pA)" filter="url(#glow)"><animateMotion dur="5s" repeatCount="indefinite" path="M315 174 V 215 H 1015 V 176"/></circle>
+
+  <!-- manual bypass -->
+  <path d="M115 174 V 240 H 1015 V 176" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3 6" marker-end="url(#arG)"/>
+  <text x="560" y="256" font-size="11" fill="#64748b" text-anchor="middle">手动选择具体模型 → 完整透传，不调用 Jev，不改 effort</text>
+
+  <!-- bottom: decision table -->
+  <g font-size="12">
+    <rect x="40" y="290" width="1080" height="300" rx="12" fill="#0f172a" stroke="#1e293b"/>
+    <text x="60" y="316" font-size="13" font-weight="700" fill="#e2e8f0">确定性策略的关键分支（joint-effort-v3，源码与离线验证，未启用到共享服务）</text>
+    <text x="60" y="342" fill="#64748b">Jev 返回</text><text x="330" y="342" fill="#64748b">附加条件</text><text x="640" y="342" fill="#64748b">决策</text><text x="900" y="342" fill="#64748b">状态标记</text>
+    <line x1="60" y1="350" x2="1100" y2="350" stroke="#1e293b"/>
+    <text x="60" y="372" fill="#ccfbf1">组合可信（≥ 0.7）</text><text x="330" y="372" fill="#cbd5e1">不违背明确复杂 / 高风险信号</text><text x="640" y="372" fill="#e0e7ff">接受 Jev 选的 (model, effort)</text><text x="900" y="372" fill="#94a3b8">confirmed</text>
+    <text x="60" y="396" fill="#ccfbf1">uncertain</text><text x="330" y="396" fill="#cbd5e1">任务明确简单且风险 ≤ 0.2</text><text x="640" y="396" fill="#e0e7ff">gpt-6-luna + low</text><text x="900" y="396" fill="#94a3b8">confirmed</text>
+    <text x="60" y="420" fill="#ccfbf1">uncertain</text><text x="330" y="420" fill="#cbd5e1">一般任务或需求未知</text><text x="640" y="420" fill="#e0e7ff">gpt-6-sol + medium</text><text x="900" y="420" fill="#94a3b8">confirmed</text>
+    <text x="60" y="444" fill="#ccfbf1">任一</text><text x="330" y="444" fill="#cbd5e1">明确复杂或高风险（≥ 0.7），候选不足</text><text x="640" y="444" fill="#e0e7ff">gpt-6-astra + high</text><text x="900" y="444" fill="#94a3b8">confirmed</text>
+    <text x="60" y="468" fill="#fb7185">超时 / 非法响应</text><text x="330" y="468" fill="#cbd5e1">首次请求</text><text x="640" y="468" fill="#e0e7ff">gpt-6-sol + medium，不重试</text><text x="900" y="468" fill="#fbbf24">provisional</text>
+    <text x="60" y="492" fill="#fb7185">超时 / 需求仍未知</text><text x="330" y="492" fill="#cbd5e1">已有绑定</text><text x="640" y="492" fill="#e0e7ff">保留当前组合</text><text x="900" y="492" fill="#94a3b8">不变</text>
+    <text x="60" y="516" fill="#ccfbf1">要求换模型</text><text x="330" y="516" fill="#cbd5e1">同任务需能力缺口证据；降档需新任务+冷却+价格预测</text><text x="640" y="516" fill="#e0e7ff">通过才切换，否则保留</text><text x="900" y="516" fill="#94a3b8">切换时更新保持时间</text>
+    <text x="60" y="540" fill="#ccfbf1">切换被拒绝</text><text x="330" y="540" fill="#cbd5e1">—</text><text x="640" y="540" fill="#e0e7ff">不把被拒候选的 effort 拼到当前模型</text><text x="900" y="540" fill="#94a3b8">不变</text>
+    <text x="60" y="572" font-size="11.5" fill="#475569">阈值 0.7 / 0.7 / 0.2 与三档兜底是可配置策略，尚未用代表性任务校准；置信度是分类确定度，不是选中模型的完成率。prices 为 null 时禁止纯成本降档。</text>
+  </g>
+</svg>
