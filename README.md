@@ -372,6 +372,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Palantir 数据本体论（Ontology）：从概念到产品的深度解析](product/Palantir数据本体论（Ontology）：从概念到产品的深度解析.md)
 - [Accio Work——阿里跨境 AI Agent 工作台与企业级 Skill Hub 设计解读](product/Accio%20Work——阿里跨境AI%20Agent工作台与企业级Skill%20Hub设计解读.md)
 - [摄像头 ReID 人物识别——证明系统随使用越来越准的评估基准与流程设计](product/摄像头ReID人物识别——证明系统随使用越来越准的评估基准与流程设计.md)
+- [TypeSafe Jev：System One 模型、RLCD 与校准决策——从聊天模型到软件可直接消费的决策原语](product/TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语.md)
 
 ### paper
 
