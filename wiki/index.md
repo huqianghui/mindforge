@@ -102,6 +102,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[online-learning]] — 在线学习：双回路混合系统（改行为+改参数），自适应控制，区别 Harness 看"改没改参数"
 - [[context-projection]] — 上下文投影：context ≠ state，按需投影解决 Context 爆炸
 - [[claim-based-schema]] — 基于论断的知识模式：不存事实只存论断的知识系统设计
+- [[system-one-model]] — System One 模型：输出原语从 token 换成 typed decision（Choice/Score/Noul + confidence），与 reasoning 模型组合非替代，"为什么不是 LLM 换分类头"四点
 
 ### LLM 推理与训练
 
@@ -120,6 +121,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[rubric]] — Rubric（评分细则）：维度+等级+锚点，judge 的配置而非 judge 本身；Rubric as Reward 趋势线
 - [[process-reward-model]] — PRM vs ORM：结果打分 vs 步骤打分，专家标注不可替代性的所在
 - [[global-workspace-llm]] — J-space：LLM 残差流中涌现的全局工作空间，J-lens 读"准备说什么"
+- [[confidence-calibration]] — 置信度校准：相对参照物的统计性质（proper scoring rule）、RLCD 参照物=前沿模型分布、probability≠confidence、企业两层校准与验证→校准→后训练顺序
 
 ### Claude Code 与扩展生态
 
@@ -172,6 +174,11 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### AI 硬件与推理基础设施
 
 - [[ai-inference-asic]] — AI 推理 ASIC：四层联合优化分类、benchmark 工作点读数法（1.9× 与 104× 不矛盾）、部署≠量产
+
+### AI FinOps 与经济学
+
+- [[cost-per-task]] — 任务完成花费：模型调用 + 人工验证 + (1−成功率)×错误成本；验证成本×错误成本两变量分界与迁栏阈值；ROI 站接收方；Copilot→Cowork→Super App = 人在环位置三次后移
+- [[data-flywheel]] — 数据飞轮：与 RSI 同一循环两视角（人在不在环/积累什么/时间常数），三层嵌套循环（经济飞轮/工程数据飞轮/RSI）与一个贯穿刻度，右栏先当验证器再迁栏，金字塔 doing the right task
 
 ### Azure 与云平台
 
@@ -260,6 +267,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 - [[voice-cascaded-pipeline]] — 语音级联管线架构
 - [[orchestrator-pattern-multi-agent]] — Orchestrator Pattern：多 Agent 编排模式（OpenClaw sessions_spawn）
+- [[decision-policy-executor-split]] — 决策-策略-执行三分：typed 判断（System One 模型）/ 确定性策略（阈值·兜底·绑定·锁·验收）/ 执行（LLM 或执行器），两个 Jev 实践归口
 
 ## 决策索引
 

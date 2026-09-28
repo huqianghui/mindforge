@@ -1,7 +1,7 @@
 ---
 title: "Azure Copilot Ecosystem"
 created: "2026-04-11"
-updated: "2026-08-04"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -105,9 +105,20 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 > Foundry 的 skill 分发走 toolbox（不可变版本 + 显式 publish，治理优先），但 Prompt Agent 消费 skill 的三条候选路径——toolbox 挂 skill 的 MCP Resources 消费、直接注入、Responses API shell tool——截至 2026-07-31 复核没有一条文档化可走通；Responses API 的 shell tool（`container_auto`：Debian 12 容器、默认断网）是真执行环境但属 API 侧非 Agents 侧。根因是 harness 实现权：托管 harness 是平台封闭代码（详见 [[foundry-agent-type-selection]]）。对照 Copilot Studio 一个产品里就有三种 harness 可选——选 harness 就是选行为语义。
 
+### Claim: Copilot → Cowork → Super App 是人在环里位置的三次后移；微软定价已按此分档——席位价留在辅助档，Cowork 起按 Copilot Credits 计任务四项输入，但按量 ≠ 按结果；新版 Copilot 统一入口是"借 C 端 agent 形态提升企业渗透"
+
+- **来源**：[[FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界]]
+- **首次出现**：2026-09-26
+- **最近更新**：2026-09-28
+- **置信度**：0.7
+- **状态**：active
+
+> 2026-06-16 Copilot Cowork GA 转按量：M365 Copilot 席位 $30/用户/月不变覆盖 Chat 与应用内辅助；Cowork 任务执行在席位之上按 Copilot Credit 计量，每任务 credit 由模型使用/上下文检索/工具调用/运行时长四项决定，轻中重三档参考区间，管理员可设支出策略；GitHub Copilot 同年按量（理由：有用户一周跑几百个任务，固定席位价无法承受 agent 反复调用）；第三档 Autopilot 报道称与 Code 一同按量，待核实。两层意义：供给方定价确认了阶段分界（人是否逐条在环）；Credits 计量的是任务消耗的算力，失败与重试同样计费——客户从 Cowork 起为"尝试"付钱而非为"完成"付钱，成功任务数要使用方自己补，使用方 FinOps 由此从可选变必需（[[cost-per-task]]）。分发策略：新版 Copilot 应用把 Chat/Cowork/Search/Library/Agents 收进一个入口，形态上是消费级 agent 产品（聊天起手、单一入口、习惯养成），用 Office 企业用户基础先在 Copilot 层建习惯再向 Autopilot 延伸——C 端天然落左栏（RLHF 舒适区），B 端价值在右栏，所以这条策略解决采用不解决价值证明，ROI 责任推到 Cowork/Autopilot 档。三类使用洞见（GitHub Copilot / Copilot Studio / AI Foundry）都只给公式第一项，Cowork Credits 是唯一原生 task 粒度数据源。背景数字"Office 商业账户 4.5 亿 / Copilot 付费渗透 <7%"为二手数据未核实。（Computerworld 报道核订）
+
 ## 冲突与演进
 
 - 2026-08-04：从 AG-UI 篇与 Foundry Toolbox/Skills 篇补充协议面（AG-UI 向上补齐）与 skill 治理面（toolbox 版本化、三路径不通、harness 实现权）两条新证据。
+- 2026-09-28：注入 FinOps 系列 01 Claim——从 Skills/协议/治理面扩展到产品阶段与定价面（Copilot/Cowork/Super App 三档、Copilot Credits 计价、C 端引 B 端分发策略）；页面自 08-04 起首次更新。
 
 ## 关联概念
 
@@ -122,3 +133,4 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - [[2026-05-14-周四]] — 深入学习 Azure Skills 三层架构和工具路由机制
 - [[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]] — AG-UI 属 Foundry custom protocols、MAF 已支持（2026-07-30）
 - [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — toolbox 治理、skill 三路径不通、Copilot Studio 三 harness（2026-07-30）
+- [[FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界]] — 三阶段 = 人在环位置三次后移、微软定价分档表、按量≠按结果、C 端思路引到 B 端、三类使用洞见能给什么（2026-09-26）

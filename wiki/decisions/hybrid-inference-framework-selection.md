@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang"
 created: "2026-06-29"
-updated: "2026-09-04"
+updated: "2026-09-28"
 tags:
   - wiki
   - decision
@@ -115,6 +115,7 @@ related_methods: []
 ## 冲突与演进
 
 - 2026-09-04：注入六层降本文两条 Claim（归因拆分 + 每成功任务成本口径；SGLang 生产级续证）——本页脱离 A 类"隐藏过期"状态（08-29 hygiene 曾报证据停 06-22）。
+- 2026-09-28：本页 09-04 注入的"选型口径升级为每成功任务成本"已升格为独立概念页 [[cost-per-task]]（三项公式 + 两变量分桶 + 迁栏阈值），HOLD `cost-per-successful-task` 解除；本页 Claim 保留作推理侧价格归因的来源，任务级口径的展开归口该页。
 
 ## 关联概念
 

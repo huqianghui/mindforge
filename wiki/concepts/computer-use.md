@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-09-25"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -159,12 +159,33 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 > Computer use 的 structured output + 确定性执行器组合，其收益前提（离散决策、答案唯一、可重试、像素级容错）在机器人控制域全部翻转：连续高频控制信号本身就是执行、多峰分布、毫米级偏差即失败、不可撤销——离散化在精度/延迟/多峰分布/维度耦合四处冲突，物理合法性才是真诉求。FAST（2026-09-21 续证）修正论断强度：瓶颈在分词而非离散本身——DCT+BPE 频域压缩后自回归精度与流匹配相当、训练快 5 倍，但推理慢 7 倍：**离散/连续是分工不是替代，离散可行但代价在推理侧**。同一对权衡的跨尺度重现：① 动作输出（token vs 扩散头）；② 3D 内容生产（Astra+Blender 离散符号+确定性执行 vs 神经 3D 连续分布一次前向——"更高层放大版"）；③ 工程资产边界（TRELLIS.2 自认不编码部件级语义，可参数化编辑仍归 Agent+传统工具）——第三次重现划出神经生成路线的当前边界。
 
+### Claim: 单变量受控对照：同一执行器只换判断模型，DOM 型网页任务判断延迟约为 LLM 的 1/8、任务耗时 −58~66%、公开价费用 −90~96%、成功率同为 4/4——但探索轮曾因三处口径不一致得出相反结论
+
+- **来源**：[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]
+- **首次出现**：2026-09-27
+- **最近更新**：2026-09-28
+- **置信度**：0.75
+- **状态**：active
+
+> 口径三坑：计时边界（Jev 总时间含关闭临时 Chrome 与守护进程退出约 15.7 s，系统侧只计到验收）、writer 条件（会话内 medium vs 独立 low）、执行链路（Codex 内置浏览器 vs Chrome，观察方式不同）。修正后两组共用同一本地合成页 1280×720、同一 DOM 观察器与编号规则、同一 Azure gpt-6-astra/medium writer 逐字一致请求、同一系统 Browser 接口 20 步/120 s、逐字段验收，唯一变量是下一步动作由 Astra 还是 jev-1.13.0 判断。8 次正式样本：B1 17.76→6.10 s、B2 23.71→9.84 s，判断 14.62→1.79 s，轨迹完全一致（五步/六步）。费用按模型归属：Jev 组 token 总数约为 Astra 组 1.9 倍（B1 10,495 vs 5,567）但 Jev 输入 $0.042/M 输出免费，费用几乎全部来自 writer 的 Astra 调用——token 多不等于贵，跨模型合计不能套单一价格。Jev 组 6 秒分解：判断 29% / writer 生成用户已给定字面值 45%（最大可优化项）/ 编排 26%。边界：两类简单页面、每组 4 次，无相似选项/动态加载/错误恢复/canvas/iframe/真实站点；不是完整产品对照（Codex 原生一轮批量规划 vs 本实验逐步循环）。
+
+### Claim: Jev skill 是"条件默认"不是"优先选择"——DOM 可观察/目标明确/有程序化验收/动作可逆的网页任务默认 jev-browser；纯视觉、跨 App、有 stakes 动作与用户点名各有归口；桌面 Computer Use 尚无有效数据
+
+- **来源**：[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]
+- **首次出现**：2026-09-27
+- **最近更新**：2026-09-28
+- **置信度**：0.75
+- **状态**：active
+
+> 三层分清：API（`POST /v1/systemone`，不接受截图，不能替换 Codex 通用模型）/ skill 指导（官方 `typesafe-ai` skill 装了不等于每步 UI 决策都经过 Jev）/ UI 执行器（`browser-use/jev-ultrafast` 读 DOM 一次选动作与目标；`awlevin/typesafe-computer-use` OCR + 辅助功能树；skill 名字本身不提供互斥，执行器才需要锁）。"事后询问"（Codex 已决定再让 Jev 判一次）纯增加请求只会更慢，"接管循环"才是提速来源。两个新 skill `jev-browser` / `jev-desktop`：允许自动选择、执行前告知、低置信度交回、`receipt.json`/`result.json` + 独立 `verified_success`（不直接接受模型 DONE）；任务文件只放目标与验收不放凭据；互斥分层——两 Jev 入口全机锁（程序强制）/ 与系统工具 `native-begin`/`native-end` 预约（协作式）/ OS 级不存在不能宣称。路由规则：网页纯视觉/canvas/iframe/跨站点长流程→系统 Browser（Jev 不看截图、跨 origin 停止交回）；macOS 应用→系统 Computer Use（jev-desktop 待 Accessibility 权限修复后重测）；付款/删除/不可撤销提交→任一执行器都走人工确认（错误成本主导与判断模型无关，见 [[cost-per-task]]）；用户点名最高优先级。桌面无成绩原因：系统侧 ScreenCaptureKit -3811 两次、Jev Desktop 缺 Accessibility 权限（22.4 s 是启动失败耗时非成绩），未改权限未重启掩盖。confidence 不是正确率，`min_confidence: 0.4` 未用结果标签校准（[[confidence-calibration]]）。升级为优先选择还差四个实验：桌面复测、难任务集、三臂对照加 Codex 原生批量规划、writer 优化两组同步。
+
 ## 冲突与演进
 
 - 2026-08-30：建页。系列一~七 + Orca 使用笔记二共 8 篇（2026-08-29~30 成文）提供完整素材；browser-use 不单独建页（包含关系即本页第一条 Claim）；action-loop、semantic-first-coordinate-fallback 按"避免同批次碎片化"作页内 Claims 收入。
 - 2026-09-04：注入系列七 08-30/08-31 三波修订的两条新 Claim——两层判断框架（端点层×harness 层，Codex+Azure 断供解剖 + Scout 镜像）与五条执行位置判定指纹（三模型对照实验）。"执行位置决定能力归属"从单层判断细化为两层判断。
 - 2026-09-06：注入 Codex Desktop 系列02/03/04/06 两条新 Claim——治理层断供（审批链路是第二条隐藏模型调用链，断供框架从两层扩展为工具层/目录层/治理层序列，源码常量实锤 + 实测修复闭环）与分发链解剖（分发态 App bundle / 运行态用户目录、feature flag ≠ payload、签名权限进程树不可拆整体）。confirmation_policies 源码原文为"四级确认分类"Claim（系列四）提供第一方源码印证。
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正两处——分发链 Claim 的"签名/TCC/进程树不可拆整体"软化为"疑似紧耦合（推测，未直接验证）"并降置信度 0.8→0.75；治理层 Claim 补证据边界（修复为推断确认非抓包、404 归因为两证据推理）。同日注入 Blender DCC 域实证 Claim（三入口分工、Computer Use 三故障、"眼睛不做手"）。
+- 2026-09-28：注入系列八两条 Claim——首次把"下一步做什么"的判断从通用 LLM 换成 typed 决策模型做单变量受控对照，并给出 Jev skill 的条件默认路由规则；系列五场景路由表因此新增"判断模型"这一维。方法层归口 [[decision-policy-executor-split]]。
 
 ## 关联概念
 
@@ -172,6 +193,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - [[model-harness-codesign]] — `grounds` CLI 无原生 Computer Use 的产品边界推断与服务端工具全家桶现象，为第一方绑定路线提供实证
 - [[skill-runtime]] — `grounds` "Skill 可见但 runtime 缺失"是 skill 声明与执行环境分离的又一实证（与 scripts 断层同构）
 - [[harness-portability-spectrum]] — `grounds` Skill 跨 CLI/App 可发现但 runtime 不可移植，是可移植性分层的第 3 处独立论证
+- [[system-one-model]] — `uses` action loop 里"选下一步动作"这一判断可交给 typed 决策模型（DOM 元素编号表 → Choice），执行与验收仍在执行器
 
 ## 来源日记
 
@@ -182,3 +204,4 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 审批模型常量与 override 代码路径、治理四件套字段、retirement_at Informational
 - [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — 三入口分工表、Computer Use 三故障实录
 - [[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]] — "眼睛不做手"结论的来源实操
+- [[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]] — API/skill/执行器三层、两种接法、两 skill 与分层互斥、口径修正与单变量实验、结果表与 6 秒分解、桌面阻塞、条件默认结论与四个实验

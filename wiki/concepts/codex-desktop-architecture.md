@@ -1,7 +1,7 @@
 ---
 title: "Codex Desktop Architecture（Codex Desktop 架构机制）"
 created: "2026-09-06"
-updated: "2026-09-06"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -91,9 +91,20 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 **读这张表的正确姿势是"两组实验假设"而非"两份产品说明"**：Codex 这一列押注"模型足够强时，harness 应该跟着模型走"（切片化、代码化、payload 化都是这个假设的推论）；Claude Code 那一列押注"harness 是长期资产，模型是可替换引擎"。哪个假设赢，取决于模型能力演进速度与企业对可控性/可移植性的需求强度——目前两条路线都在加注（Codex 给老模型保留 direct、Claude Code 也在靠近 MCP code execution），中间态互相渗透恰是"尝试"而非"定局"的证据。后续观察锚点：xAI grok-build 等新入场第一方 harness 会选哪一侧、DSH"Everything is a Plugin"会不会成为第三条可分解路线（见 [[model-harness-codesign]] 绑定×可分解十字定位）。
 
+### Claim: provider 层是可撬的第三个接入操作面——目录别名 + 本机回环网关可在 Codex 不知情的情况下做透明模型路由；项目级 config 覆盖全局是菜单"选中即回退"的根因
+
+- **来源**：[[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]]
+- **首次出现**：2026-09-27
+- **最近更新**：2026-09-28
+- **置信度**：0.75
+- **状态**：active
+
+> 系列07 在模型菜单加 `auto-jev` 条目：目录层给一个别名，provider 地址指向本机回环 HTTP 服务（launchd 常驻，不随 Codex 启停），网关读请求自带的 `thread_id`/`turn_id`/`context_window_id` 做任务级绑定后转发 Azure 七个部署之一并流式回传——Codex 侧完全透明，与 CodexSaver 的 MCP 路径（agent 主动派发）是两条路。安装器改三处文件并备份，先起服务再改配置、哈希校验回滚。实测坑：Desktop 菜单可见但选择后回退，原因是项目级 config 固定了模型覆盖全局（已移除）——与系列02"全局配置菜单"暗线同族。CLI `-m auto-jev` 走正式配置。已实测/已实现未启用/待校准三类事实见 [[model-routing]] 与 [[decision-policy-executor-split]]。
+
 ## 冲突与演进
 
 - 2026-09-06：建页（用户裁决）。定位为系列01~06 的伞形索引页——"产品名不建页"先例不变（本页主语是架构机制而非产品）；已归口论断只做路由不复制，自有 Claims 收"三元组合/接入操作面/Computer Use 发力方向"三条此前无归口的论断。
+- 2026-09-28：注入系列07 Claim——接入操作面从"目录层 + bundled CLI"扩展到 provider 层（回环网关透明路由）；路由与缓存论断归口 [[model-routing]] / [[prefix-caching]]，本页只收架构接入点。
 
 ## 关联概念
 
@@ -101,6 +112,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 - [[computer-use]] — `uses` Computer Use 是 bundled plugins 一元的旗舰 payload；其分发链与治理层论断归口该页
 - [[mcp-vs-cli]] — `uses` 架构内部用 MCP 作 CLI↔native helper 的解耦协议
 - [[harness-portability-spectrum]] — `grounds` bundled payload 随第一方 App 分发 = 可移植性光谱"不可移植端"的实证
+- [[model-routing]] — `uses` provider 层回环网关是模型路由在 Codex 架构内的接入位置（目录别名 → 本机服务 → Azure 部署）
 
 ## 来源日记
 
@@ -110,3 +122,4 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 - [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — 分发链、cua_node、两种 plugins 目录
 - [[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]] — 九层解剖（论断归口 codesign）
 - [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 源码级字段核实、cua_repl、治理字段
+- [[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]] — auto-jev 目录别名、回环网关与 launchd 生命周期、安装器三处改动与回滚、项目级 config 覆盖全局的菜单回退根因

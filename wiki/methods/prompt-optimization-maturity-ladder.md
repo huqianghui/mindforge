@@ -1,7 +1,7 @@
 ---
 title: "Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环"
 created: "2026-08-04"
-updated: "2026-08-04"
+updated: "2026-09-28"
 tags:
   - wiki
   - method
@@ -121,6 +121,16 @@ related_methods:
 
 > 工作流是"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。
 
+### Claim: 阶梯是数据飞轮中圈的优化环节：L0→L2 每上一级人的参与从"人改人看"退到"人定评估集、算法闭合回路"；L1 用 RLHF 式主观分、L2 才可能接 RLVR 式客观分；L2→RSI 的迁移阈值尚未知
+
+- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]
+- **首次出现**：2026-09-26
+- **最近更新**：2026-09-28
+- **置信度**：0.65
+- **状态**：active
+
+> FinOps 系列 02 把三层嵌套循环（经济飞轮 / 工程数据飞轮 / RSI）的中圈定义为"使用洞见 → 评估 → 优化 → 部署"，优化手段沿本阶梯 prompt 改写 → APO → SFT → RL 升级（[[data-flywheel]]）。评估信号的成熟度对应 reward 来源：L1 阶段 LLM-judge 主观分是 RLHF 式信号、人闭合回路；到 L2 才有机会接 RLVR 式客观 reward、算法闭合回路；内圈 RSI 在 replay 中比较策略几乎只能建立在 RLVR 式信号上（主观分离线不可重得）。飞轮路线在右栏任务上的四步（人当验证器积累带标签样本 → 客观 reward 可用成功率上升 → 越过迁栏阈值 → 人力转向下一批）中，L1 阶段的 bad case 正是 L2 评估集的种子——与本页 30~50 条起步 / 100+ 条稳定的迁移阈值一致。开放问题：从 L2 到 RSI 是否有类似阈值还是取决于 replay 的 coverage。FLAN lesson 的提醒：L2 产出的 prompt 配方 / skill 文本 / 微调数据在模型换代后可能归零，评估集与验收标准最抗归零应优先投资。
+
 ## 实践记录
 
 （暂无——阶梯本身是从 APO/SkillOpt 实践反推的前置框架，L2 段实践见 [[automatic-prompt-optimization]] 与 [[skillopt]] 的实测记录）
@@ -140,3 +150,4 @@ related_methods:
 ## 来源
 
 - [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] — 三层阶梯、迁移阈值、prompt-optimizer 机制、system/user prompt 分工（2026-07-30）
+- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — 中圈定义、阶梯与人退出程度、L1/L2 对应 RLHF/RLVR 式信号、L2→RSI 阈值开放问题、资产折旧（2026-09-26）

@@ -1,7 +1,7 @@
 ---
 title: "LLM-as-a-Judge（三层正交评估模型）"
 created: "2026-08-03"
-updated: "2026-09-25"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -88,9 +88,20 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 > 语音轮次场景给 judge 定位补上时延/知识两条边界：LLM 做 end-of-turn 判断是错位（每次停顿都等一次几百 ms 往返、且读不到语调）；EOU 小模型做任务完成判断不可能（不知道题目）——正确叠法是 EOU 洗干净 `speech_stopped` 触发、LLM judge 决定接下来干什么：**judge 不该放在 Speech 层实时路径上**。judge 输出结构化 JSON（complete/partial/off-topic）并与 speaker 分离，是追问可控的结构前提。另一域新实例：Cosmos Reason 在 WFM 合成数据管线里当物理合理性判官（生成→过滤→再入库，"否则是用幻觉污染训练集"）——视频域的 Rule/Metric 之外首个物理常识 judge 样本。
 
+### Claim: 左栏开放式生成没有 ground truth 只能靠 LLM judge——它是 RLHF 的推理时版本；右栏任务优先接程序化验证器，judge 退为兜底；typed 决策模型是同一判断层的另一种实现
+
+- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]、[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **首次出现**：2026-09-26
+- **最近更新**：2026-09-28
+- **置信度**：0.7
+- **状态**：active
+
+> 两变量坐标（[[cost-per-task]]）下：研究报告、代码风格、对话质量等左栏任务无 ground truth，评估只能是主观分——LLM-as-a-Judge 就是 RLHF learned reward model 在推理时的形态，覆盖面宽但可被投机、在离线回放里无法重新获得，因此难驱动 RL/RSI；右栏任务（报税 accept/reject、数据录入对源单据、QA 测试结果）有客观信号，评估应优先接 RLVR 式验证器，"客服回复是否得体"这类写不出验证器的才退回 judge。落地（FinOps 系列 03）：左栏桶 judge + 抽样人工校准，右栏桶每桶回答"写得出验证器吗、信号延迟多久"，答不出的暂不进优化阶梯 L2。另一维对照：judge 通过 LLM 生成文字做评估（有 rationale、可思维链、秒级、RLHF 训练的自报置信不与正确率对应），[[system-one-model]] 通过 typed decision 做判断（无理由、单次前向、校准是训练目标）——同一判断层的两种实现，DataCamp 的组合建议是 typed 决策做快速分类/路由层，困难 case 交 reasoning 模型。
+
 ## 冲突与演进
 
 - 2026-08-03：概念篇 + 链路篇两篇成文，三层正交模型与 Judge Reliability 议题入库。ChatGPT 讨论中引用的 "RUBRIC-ARROW"、"C2" 两篇论文经核实不存在（幻觉引用），已替换为已核实论文（Survey 2411.15594 / 2411.16594 / 2412.05579 / 2507.21504 / MRRG 2607.01830）。
+- 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——judge 在两变量坐标里的定位（左栏唯一评估手段、右栏兜底）与 typed 决策模型的对照；Reliability 议题新增"自报置信度无训练目标约束"一条具体来源。
 
 ## 关联概念
 
@@ -101,3 +112,5 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 ## 来源日记
 
 - [[2026-08-03-周一]] — rubric 与 evaluator 概念梳理主任务，概念篇 + 链路篇两篇成文
+- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — 左栏无 ground truth 靠 judge、右栏 RLVR 式验证器、judge = RLHF 推理时版本
+- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — LLM 自报 confidence 字段无训练目标约束；与 System One 模型的判断层对照

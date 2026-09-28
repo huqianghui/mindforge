@@ -1,7 +1,7 @@
 ---
 title: "SkillOpt（文本空间 skill 优化器）"
 created: "2026-07-01"
-updated: "2026-09-25"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -113,10 +113,21 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 > 骨架同构：记 bad case→探索→修改→打分→保留；对象不同：SkillOpt 改 skill.md 文本（procedural knowledge），Dream-RSI 改 policy.py 调度代码（search behavior）；验证方式不同：held-out 真实 rollout vs 历史树离线 replay——对应 RL 的 exploitation vs exploration，两者可同时挂载互不冲突。"自我改进的瓶颈是改了之后敢不敢信"：validation gate 与 replay simulator 是同一命题的两种解法。启发：SkillOpt 历史 trajectory 里躺着"当时若用别的 skill 会怎样"的部分信息，哪些验证环节可借 replay 降成本值得探索。开放问题（两篇论文都未答）：双层优化的干涉——skill 变了之后，旧 discovery tree 的 replay 是否失效。（论文初读，置信度留低）
 
+### Claim: best_skill.md 是 RSI"积累能力本身"这类资产的具体形态；bad-case 挖掘循环同构于 Jev 企业侧校准回流——优化对象从 skill 文本换成决策模型 + confidence + workflow 策略
+
+- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]、[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **首次出现**：2026-09-26
+- **最近更新**：2026-09-28
+- **置信度**：0.65
+- **状态**：active
+
+> FinOps 系列 02：飞轮的资产是数据（需存储/治理/合规），RSI 的资产是一段几百到几千 token 的 skill 文本或一个搜索策略，用完数据即可丢——SkillOpt 的 `best_skill.md` 就是这种资产，这解释了为什么 RSI 比数据飞轮"轻"、时间常数可以小时计。Jev 文：企业校准决策模型的正确做法不是把全部历史塞进去训练，而是错误与分歧挖掘——从历史找 bad case（人工覆写、低置信却对、高置信却错）分送训练与校准，评估后影子部署，再从生产收新 bad case——与 SkillOpt / APO 的 bad-case mining 是同一个循环，只是优化对象不同；放到三层循环里这是中圈数据飞轮在决策模型上的具体形态（[[data-flywheel]]、[[confidence-calibration]]）。另一提醒（FLAN lesson）：skill 文本属"可能被模型换代清零"的中圈资产，要按此折旧。
+
 ## 冲突与演进
 
 - 2026-07-01：从 SkillOpt 论文精读 + 源码拆解 + AML 实战三条线首次建页。论文提供机制原理（四大机件/三 split/快慢循环），源码篇提供 environment-agnostic 骨架与 memory 代码落点，实战篇提供"冒烟只测管路不测效果"的关键经验教训。
 - 2026-07-16：从系列03 实战篇补充第一个真实客户任务（video2frames）的移植与实测证据——三层机制对比取代"门控唯一论"，100 任务无污染配对对决给出"机制稳 ≠ 效果赢"的一手辩证：SkillOpt 增益未泛化（gate 过拟合 val），保守机制在低天花板任务上探索不足。
+- 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——SkillOpt 资产在飞轮/RSI 坐标中的定位（能力资产、轻、可折旧）与 bad-case 循环的跨对象同构（skill 文本 ↔ 决策模型校准）。
 
 ## 关联概念
 
@@ -136,3 +147,5 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
 - [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 三层机制对比、真实客户任务移植、reward 双指标分工、静默 skip 事故、100 任务配对对决
 - [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — 探索/精修互补性、两段式管道、三个数算账判断式、reward v2 改良方案
+- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — best_skill.md 作 RSI 能力资产形态、资产折旧（2026-09-26）
+- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — bad-case 挖掘循环与 SkillOpt/APO 同构（2026-09-27）

@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-09-25"
+updated: "2026-09-28"
 tags:
   - wiki
   - concept
@@ -146,6 +146,16 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 > "exploration"在 RL 里至少有三个搜索空间：状态-动作序列空间、策略参数空间、经验-数据空间——含义各不同；Dream-RSI 的 exploration policy 属第一个（=搜索控制策略），优化它本身可形式化为 meta-MDP（state=discovery tree/action=扩哪个分支+预算/reward=发现质量），落进 learning to search / metareasoning 传统。OPE（off-policy evaluation，属 offline RL）：用已记录轨迹评估未跑过的策略，经典方法需 importance sampling 修正随机转移（IS/WIS/DR/FQE，偏差-方差权衡）；Dream-RSI 是其退化特例——确定性转移免 IS、零估计误差、只剩 coverage 约束（对应 offline RL 的 OOD action，CQL/IQL 用悲观主义处理）。母题："采样太贵所以离线复用已有轨迹"在权重层与搜索策略层是同一件事——PPO ratio+clip 就是 off-policy 修正、GRPO 组内复用同理、agent-lightning/verl 的存在动机一字不差，区别只在优化对象（模型权重 vs 搜索策略代码）。（论文初读，replay objective/防作弊机制未精读，置信度留低）
 
+### Claim: RLHF 与 RLVR 的区别恰是 AI"好用/不好用"两栏的区别——左栏是 RLHF 训练目标的投影（we optimized for assistance），右栏靠 RLVR 把人工验证换成程序验证；RLCD 是第三条训练目标
+
+- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]、[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **首次出现**：2026-09-26
+- **最近更新**：2026-09-28
+- **置信度**：0.75
+- **状态**：active
+
+> 对照：reward 来源（人对回复的主观偏好训成 learned reward model vs 程序化验证器直接给 correct/incorrect）、性质（连续主观可被 reward hacking vs 二值客观难投机但覆盖有限）、训练出的能力（让人满意即"辅助" vs 得到正确答案即"完成任务"）、对应栏（左栏人当场看一眼点个赞即验收 vs 右栏有 ground truth）、产品阶段（Copilot/Cowork 人在环给偏好 vs 迈向 Super App 前提）。TypeSafe 创始人（RLHF 早期核心研究者之一）演讲总结四句：we optimized for assistance / don't have AI make decisions with stakes / other paths than RLHF / Automation is coming soon™——第一句是原因（左栏不是 LLM 碰巧擅长而是训练目标直接投影），第二句是训练目标的边界而非智能的边界（stakes 可量化为错误成本 × 失败率），第三句指向 RLVR（[[cost-per-task]] 公式第二项人工验证由此可压到接近零），第四句的 ™ 是自嘲（自动化是逐任务跨阈值的过程不是时间点）。RLVR 两个工程限制：覆盖面（写不出验证器的任务只能退回 LLM judge）与延迟稀疏（需 [[process-reward-model]] / 规则校验 / 抽样复核作近端代理）。第三条路 RLCD（Reinforcement Learning for Calibrated Decisions）：问"这个决策上概率分布应是什么"，reward 来自参考概率分布（当前为前沿模型共识），优化出校准过的不确定性——比 RLVR 覆盖宽、正确性保证弱（见 [[confidence-calibration]]）。
+
 ## 冲突与演进
 
 - 2026-03-21：从 Bitter Lesson 角度首次系统对比 RL Agent 与 LLM Agent。
@@ -153,6 +163,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - 2026-07-07：从 JitRL 论文解读补充 GPI（RL 中轴）与"策略改进 vs 参数更新可拆开"两条 Claim，接入 [[advantage-function]] 基础构造页与 [[online-learning]] 存储位面判据。
 - 2026-07-14：从 ms-swift 全景文补 GRPO/RLVR 数据流不变量 Claim——一条样本两个消费方（prompt→rollout、ground truth→reward 函数），行式对齐配对是静默错配的高危点。
 - 2026-09-06：镜像冗余边清理——删除本页指向 [[advantage-function]] 的 `uses` 行（对方页已声明 `part-of`，有向关系单侧保留）。
+- 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——RLHF/RLVR 从训练方法对照升到"决定 AI 在哪些任务上好用"的解释框架，并补 RLCD 为第三条训练目标；07-14 GRPO/RLVR 数据流 Claim 获应用侧续证。
 
 ## 关联概念
 
@@ -170,3 +181,5 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 - [[2026-03-21-The-Bitter-Lesson]] — Section 二-三 RL 的核心贡献与 RL/LLM Agent 对比
 - [[ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — GRPO 数据格式、solution 列 kwargs 透传、行式对齐 reward 配对
+- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — RLHF vs RLVR 五维对照表、演讲四句逐句对齐、RLVR 两个工程限制（2026-09-26）
+- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — RLHF / RLVR / RLCD 三目标对照、RLCD 参考分布来源（2026-09-27）
