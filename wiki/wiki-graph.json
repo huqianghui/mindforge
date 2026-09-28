@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-25",
+  "generated_at": "2026-09-28",
   "stats": {
-    "nodes": 133,
-    "links": 441,
+    "nodes": 138,
+    "links": 480,
     "orphan_links_removed": 0,
-    "claims": 683,
-    "categories": 12
+    "claims": 727,
+    "categories": 13
   },
   "nodes": [
     {
@@ -979,8 +979,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.76,
+      "claims_count": 9,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "Azure Copilot Agents 仅限 Portal UI，无 API/SDK",
@@ -1053,6 +1053,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Foundry 的 skill 分发走 toolbox（不可变版本 + 显式 publish，治理优先），但 Prompt Agent 消费 skill 的三条候选路径——toolbox 挂 skill 的 MCP Resources 消费、直接注入、Responses API shell tool——截至 2026-07-31 复核没有一条文档化可走通；Responses API 的 shell tool（`container_auto`：Debian 12 容器、默认断网）是真执行环境但属 API 侧非 Agents 侧。根因是 harness 实现权：托管 harness 是平台封闭代码（详见 [[foundry-agent-type-selection]]）。对照 Copilot Studio 一个产品里就有三种 harness 可选——选 harness 就是选行为语义。"
+        },
+        {
+          "statement": "Copilot → Cowork → Super App 是人在环里位置的三次后移；微软定价已按此分档——席位价留在辅助档，Cowork 起按 Copilot Credits 计任务四项输入，但按量 ≠ 按结果；新版 Copilot 统一入口是\"借 C 端 agent 形态提升企业渗透\"",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "2026-06-16 Copilot Cowork GA 转按量：M365 Copilot 席位 $30/用户/月不变覆盖 Chat 与应用内辅助；Cowork 任务执行在席位之上按 Copilot Credit 计量，每任务 credit 由模型使用/上下文检索/工具调用/运行时长四项决定，轻中重三档参考区间，管理员可设支出策略；GitHub Copilot 同年按量（理由：有用户一周跑几百个任务，固定席位价无法承受 agent 反复调用）；第三档 Autopilot 报道称与 Code 一同按量，待核实。两层意义：供给方定价确认了阶段分界（人是否逐条在环）；Credits 计量的是任务消耗的算力，失败与重试同样计费——客户从 Cowork 起为\"尝试\"付钱而非为\"完成\"付钱，成功任务数要使用方自己补，使用方 FinOps 由此从可选变必需（[[cost-per-task]]）。分发策略：新版 Copilot 应用把 Chat/Cowork/Search/Library/Agents 收进一个入口，形态上是消费级 agent 产品（聊天起手、单一入口、习惯养成），用 Office 企业用户基础先在 Copilot 层建习惯再向 Autopilot 延伸——C 端天然落左栏（RLHF 舒适区），B 端价值在右栏，所以这条策略解决采用不解决价值证明，ROI 责任推到 Cowork/Autopilot 档。三类使用洞见（GitHub Copilot / Copilot Studio / AI Foundry）都只给公式第一项，Cowork Credits 是唯一原生 task 粒度数据源。背景数字\"Office 商业账户 4.5 亿 / Copilot 付费渗透 <7%\"为二手数据未核实。（Computerworld 报道核订）"
         }
       ]
     },
@@ -1071,8 +1080,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.81,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "通用计算方法最终胜过手工领域知识",
@@ -1118,6 +1127,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "Bitter Lesson 投射到个人职业层面：凡是\"操作性知识\"（怎么写某框架代码、某工具的使用步骤）都会被更强模型 + 更多算力吞噬——教 AI 做的每件事都在为自己的替代计时。存活的是三元能力：① **问题定义**——把客户模糊痛点翻译成可解问题（模型只能解已定义的问题）；② **约束设计**——为 AI 划定行为边界与验收标准（Harness 侧工作，见 [[forward-deployed-engineer]]）；③ **跨域迁移**——把 A 领域的解决模式搬到 B 领域（模式识别的输入来自跨现场经验，模型没有你的现场）。个人策略不是和算力赛跑，而是站到算力曲线的乘法位置上。"
+        },
+        {
+          "statement": "金字塔 algorithms < compute < data < doing the right task 把 Bitter Lesson 再推一层——连方法都不是关键，关键是选对要解的任务；FLAN lesson 与\"Bitterest lesson\"是两个例证",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "TypeSafe 创始人演讲 slide《How can that be possible?》四层金字塔，越底层杠杆越大。FLAN lesson：Google FLAN 论文创造 \"instruction tuning\" 一词六千引用，事后看指令微调最优用量为零——算法层大量投入被更底层变化整体抹掉。Bitterest lesson：如果 RLHF 这么显然为什么 GPT-2 时代没做？模型能力已够、缺的不是算法与算力，是没人把\"按人类偏好对齐\"当作要做的任务——\"doing the right task\"在 LLM 史上只发生过约一次半。Bitter Lesson 原始表述是\"通用方法 + 算力最终胜过人工注入的领域知识\"，这张 slide 说连方法都不是关键。对 FinOps 与飞轮的推论（[[data-flywheel]] / [[cost-per-task]]）：三层循环都运行在任务已选定的前提下，RSI 与飞轮都不能纠正任务选错；中圈资产（prompt 配方 / skill 文本 / 微调数据）要按\"可能被清零\"折旧，评估集与接收方判定标准最抗归零应优先投资。（演讲观点 + 作者对齐，单篇）"
         }
       ]
     },
@@ -1575,8 +1593,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.82,
+      "claims_count": 4,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Codex Desktop 是三元组合的 runtime distribution——三版本号互相独立，排查一律问包内二进制",
@@ -1604,6 +1622,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "从最强模型条目的字段配置能读出能力投资方向：gpt-6-astra 的 ModelInfo 自带 computer/browser use 的**全套治理内容**——`confirmation_policies` 四级确认政策全文、guardian 的 `node_repl_policy.md` 专管 \"computer and browser use via node_repl or cua_repl\"；运行时侧，`cua_repl`（cua = Computer Use Agent）是与 node_repl 同一 bundled Node.js 24 运行时的 Computer Use 变体（App bundle 内 `cua_node/` 目录），`tool_mode: code_mode_only` 下桌面/浏览器操作与其他工具一样走 JS 编排、收进单一治理入口。结合分发链事实（payload 只随 Apple Silicon 的第一方 App 分发、standalone CLI 与 Intel 构建都不带），可见 **Computer Use 能力栈是围绕\"最新模型档 × 第一方 App 形态\"优先配齐的**：老模型（mini，`direct`）与 CLI 发行版都不在第一梯队。这与 ChatGPT Work 把 Codex harness 泛化为\"通用工作 harness\"的产品方向互为表里——通用工作任务需要操作 GUI，Computer Use 就是最新模型档的发力点。"
+        },
+        {
+          "statement": "provider 层是可撬的第三个接入操作面——目录别名 + 本机回环网关可在 Codex 不知情的情况下做透明模型路由；项目级 config 覆盖全局是菜单\"选中即回退\"的根因",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "系列07 在模型菜单加 `auto-jev` 条目：目录层给一个别名，provider 地址指向本机回环 HTTP 服务（launchd 常驻，不随 Codex 启停），网关读请求自带的 `thread_id`/`turn_id`/`context_window_id` 做任务级绑定后转发 Azure 七个部署之一并流式回传——Codex 侧完全透明，与 CodexSaver 的 MCP 路径（agent 主动派发）是两条路。安装器改三处文件并备份，先起服务再改配置、哈希校验回滚。实测坑：Desktop 菜单可见但选择后回退，原因是项目级 config 固定了模型覆盖全局（已移除）——与系列02\"全局配置菜单\"暗线同族。CLI `-m auto-jev` 走正式配置。已实测/已实现未启用/待校准三类事实见 [[model-routing]] 与 [[decision-policy-executor-split]]。"
         }
       ]
     },
@@ -1706,7 +1733,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 13,
+      "claims_count": 15,
       "avg_confidence": 0.76,
       "claims": [
         {
@@ -1825,6 +1852,98 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Computer use 的 structured output + 确定性执行器组合，其收益前提（离散决策、答案唯一、可重试、像素级容错）在机器人控制域全部翻转：连续高频控制信号本身就是执行、多峰分布、毫米级偏差即失败、不可撤销——离散化在精度/延迟/多峰分布/维度耦合四处冲突，物理合法性才是真诉求。FAST（2026-09-21 续证）修正论断强度：瓶颈在分词而非离散本身——DCT+BPE 频域压缩后自回归精度与流匹配相当、训练快 5 倍，但推理慢 7 倍：**离散/连续是分工不是替代，离散可行但代价在推理侧**。同一对权衡的跨尺度重现：① 动作输出（token vs 扩散头）；② 3D 内容生产（Astra+Blender 离散符号+确定性执行 vs 神经 3D 连续分布一次前向——\"更高层放大版\"）；③ 工程资产边界（TRELLIS.2 自认不编码部件级语义，可参数化编辑仍归 Agent+传统工具）——第三次重现划出神经生成路线的当前边界。"
+        },
+        {
+          "statement": "单变量受控对照：同一执行器只换判断模型，DOM 型网页任务判断延迟约为 LLM 的 1/8、任务耗时 −58~66%、公开价费用 −90~96%、成功率同为 4/4——但探索轮曾因三处口径不一致得出相反结论",
+          "source": "Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "口径三坑：计时边界（Jev 总时间含关闭临时 Chrome 与守护进程退出约 15.7 s，系统侧只计到验收）、writer 条件（会话内 medium vs 独立 low）、执行链路（Codex 内置浏览器 vs Chrome，观察方式不同）。修正后两组共用同一本地合成页 1280×720、同一 DOM 观察器与编号规则、同一 Azure gpt-6-astra/medium writer 逐字一致请求、同一系统 Browser 接口 20 步/120 s、逐字段验收，唯一变量是下一步动作由 Astra 还是 jev-1.13.0 判断。8 次正式样本：B1 17.76→6.10 s、B2 23.71→9.84 s，判断 14.62→1.79 s，轨迹完全一致（五步/六步）。费用按模型归属：Jev 组 token 总数约为 Astra 组 1.9 倍（B1 10,495 vs 5,567）但 Jev 输入 $0.042/M 输出免费，费用几乎全部来自 writer 的 Astra 调用——token 多不等于贵，跨模型合计不能套单一价格。Jev 组 6 秒分解：判断 29% / writer 生成用户已给定字面值 45%（最大可优化项）/ 编排 26%。边界：两类简单页面、每组 4 次，无相似选项/动态加载/错误恢复/canvas/iframe/真实站点；不是完整产品对照（Codex 原生一轮批量规划 vs 本实验逐步循环）。"
+        },
+        {
+          "statement": "Jev skill 是\"条件默认\"不是\"优先选择\"——DOM 可观察/目标明确/有程序化验收/动作可逆的网页任务默认 jev-browser；纯视觉、跨 App、有 stakes 动作与用户点名各有归口；桌面 Computer Use 尚无有效数据",
+          "source": "Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三层分清：API（`POST /v1/systemone`，不接受截图，不能替换 Codex 通用模型）/ skill 指导（官方 `typesafe-ai` skill 装了不等于每步 UI 决策都经过 Jev）/ UI 执行器（`browser-use/jev-ultrafast` 读 DOM 一次选动作与目标；`awlevin/typesafe-computer-use` OCR + 辅助功能树；skill 名字本身不提供互斥，执行器才需要锁）。\"事后询问\"（Codex 已决定再让 Jev 判一次）纯增加请求只会更慢，\"接管循环\"才是提速来源。两个新 skill `jev-browser` / `jev-desktop`：允许自动选择、执行前告知、低置信度交回、`receipt.json`/`result.json` + 独立 `verified_success`（不直接接受模型 DONE）；任务文件只放目标与验收不放凭据；互斥分层——两 Jev 入口全机锁（程序强制）/ 与系统工具 `native-begin`/`native-end` 预约（协作式）/ OS 级不存在不能宣称。路由规则：网页纯视觉/canvas/iframe/跨站点长流程→系统 Browser（Jev 不看截图、跨 origin 停止交回）；macOS 应用→系统 Computer Use（jev-desktop 待 Accessibility 权限修复后重测）；付款/删除/不可撤销提交→任一执行器都走人工确认（错误成本主导与判断模型无关，见 [[cost-per-task]]）；用户点名最高优先级。桌面无成绩原因：系统侧 ScreenCaptureKit -3811 两次、Jev Desktop 缺 Accessibility 权限（22.4 s 是启动失败耗时非成绩），未改权限未重启掩盖。confidence 不是正确率，`min_confidence: 0.4` 未用结果标签校准（[[confidence-calibration]]）。升级为优先选择还差四个实验：桌面复测、难任务集、三臂对照加 Codex 原生批量规划、writer 优化两组同步。"
+        }
+      ]
+    },
+    {
+      "id": "confidence-calibration",
+      "type": "concept",
+      "title": "置信度校准（Confidence Calibration）",
+      "summary": "校准回答的问题是：**模型说 0.9 时，是否真的大约九成对**。它不是模型对自己的一种感觉，而是一种**统计关系**——必须相对于某个\"结果\"来定义，在整个样本分布上才出现（单条样本上模型永远不知道自己对不对）。工程上用可靠性表（按 confidence 分桶，看每桶实际正确率是否与桶中心一致）来检验；训练上用 proper scoring rule（log loss、Brier score）对大量样本优化——数学上最小化这类损失的唯一办法就是报告真实概率，报 0.99 而实际九成对会被惩罚。传统机器学习的 temperature scaling / Platt scaling / isotonic regression 是针对固定任务固定数据集的事后校准；LLM 的 next-token logit 从未被当作决策概率训练过，且 RLHF 已知会破坏校准（GPT-4 技术报告），让 LLM 在 JSON 里写一个 `\"confidence\": 0.97` 没有任何训练目标约束它与正确率对应。\n\n校准之所以进入 agent 与 FinOps 讨论，是因为它把 [[cost-per-task]] 公式的第二项\"人工验证成本\"再拆了一层：一个模型 95% 正确却说不出哪 5% 错，人只能复核 100%；若能可靠标出低置信部分，验证成本降到\"复核被标记的 5% 加抽检\"，迁栏阈值随之更容易满足。TypeSafe 的 RLCD（Reinforcement Learning for Calibrated Decisions）把校准作为训练目标内建进 [[system-one-model]]，但其参照物是前沿模型的概率分布而非真实结果——所以校准永远是**相对某个参照物**成立，\"参照物是否为真\"留给拥有结果标签的使用方，这就是企业侧必须做第二层校准的原因。",
+      "tags": [
+        "wiki",
+        "concept",
+        "evaluation",
+        "decision-model",
+        "finops"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "校准是相对参照物的统计性质——proper scoring rule 在群体上让\"报告真实概率\"成为唯一最优，单条样本上不存在\"自信\"",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "\"训模型对答案的自信\"与\"和结果对比\"不是两条路——前者是通过后者在群体上实现的。用 log loss / Brier score 对大量样本优化，最小化损失的唯一办法就是报告真实概率；报 0.99 而实际只有九成对会被惩罚，报 0.9 才最优。所以问题从来不是\"训自信还是比 ground truth\"，而是\"拿什么当结果来比\"。同一句 \"I don't want this subscription\" 的真实结果只有一个（cancellation），但正确的概率不是 1.0，因为相似句子里有一部分其实是要退款——校准的对象是\"大量相似样本的频率\"，单个硬标签给不出概率。（经典统计结论，文章为讨论整理，与公开资料一致）"
+        },
+        {
+          "statement": "RLCD 当前的参照物是前沿模型的概率分布而非真实结果——数学上接近软标签蒸馏，Jev 精确继承 teacher 的校准或偏差",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "TypeSafe 公开做法：假设 workflow 本身正确，用最大最贵的外部前沿模型（公开提到 GPT-6 Astra 与 Claude Fable 5.1）对同一问题给出的概率取平均作 reference，训练 Jev 逼近 reference 而不是输出 cancellation=0.99。所以 RLCD 学到的是\"对这类 workflow 决策，什么分布与高质量参考判断一致\"，没学到\"宇宙真理\"：它解决\"模型的不确定性是否有意义\"，没解决\"这个决策本身是否正确\"——参考分布错了，Jev 会校准地跟着错；TypeSafe 自己承认 benchmark 因此偏向 OpenAI/Anthropic 模型。不直接用真实结果的两个原因：① 覆盖——问题由调用方运行时定义任意 schema，不可能事先有带结果标注，前沿模型是唯一能对任意问题给分布的信号源；② 单硬标签给不出概率，前沿模型的分布替代了\"对大量相似样本求频率\"那一步。Jev 独立输出的 confidence 训练目标未公开，合理推断类似 selective prediction（预测\"这次答案与参考一致的概率\"），同样以参考分布为准。RLCD 与 RLHF 的区别在问的问题（RLHF 问 A/B 哪个好不问概率；RLCD 只问概率）；与 RLVR 的区别在信号来源（RLVR 要可执行验证器，RLCD 只要可信参考分布——覆盖更宽、正确性保证更弱）。"
+        },
+        {
+          "statement": "probability 与 confidence 是两个量——分布可以很尖但 confidence 很低；后者让\"不知道自己不知道却继续执行\"第一次有可读信号",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "probability 回答\"在这个答案空间里各选项的相对可能性\"，confidence 回答\"我对这次判断整体有多确定\"。Case A：cancel 0.95 / confidence 0.97 → 明确；Case B：cancel 0.55, refund 0.40 / confidence 0.42 → 模型在说不确定。输入本身模糊或超出训练分布时分布可以尖而 confidence 低。Workflow 需要的正是第二个量。实践佐证（Computer Use 系列八）：Jev 单步返回 `choice: a0, confidence 0.96, probabilities {a0 0.97, a2 0.02, …}`，可按 confidence 做门控与交回；但该文同时明确 \"confidence 不是正确率，`min_confidence: 0.4` 是拍脑袋值，尚未用结果标签校准\"——正是本页下一条 Claim 所说的应用层校准缺位。"
+        },
+        {
+          "statement": "企业落地是两层校准加一层业务策略——模型层校准（RLCD）不能替代应用层校准；阈值从可靠性表反推并带上错误成本",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "绝不能从\"Jev 说 0.97\"跳到\"生产是安全的\"。可靠性表示例：0.90~1.00 桶 20,000 样本实际正确率 94% 是校准；同桶实际 71% 是严重过度自信，阈值 0.95 自动执行会大量出错——只有前者成立 confidence 才有资格作自动化阈值信号。验证校准的前提是**结果标签**：七字段 `input · prediction · confidence · calibrated probability · decision · human override · final outcome`，只有预测没有结果的历史只能观察模型行为不能验证校准（与 [[cost-per-task]] 的任务级七字段是同一套东西的两面：那边算成本，这边算校准）。阈值 `if confidence >= 0.98` 里的 0.98 从可靠性表反推，且策略函数至少三个输入——校准后概率、错误成本、人工复核成本（同一个 0.99，自动推荐 FAQ 够用，自动删生产库不行）——这是 FinOps 迁栏阈值在单条决策上的形态。校准函数应条件化 `P(correct | task, confidence, customer_segment, state)`（同样 0.95：意图识别 97% 对、欺诈判断 89%、法律风险 71%），并需持续监测漂移与定期重校准（2025 客群验证过的 0.95 不保证 2026 新客群成立）——做到位已接近一个 AI 控制平面。"
+        },
+        {
+          "statement": "验证 → 校准 → 后训练顺序不能反；bad-case 挖掘而非全量塞数据；企业自己的\"决策 + 结果\"标签可构造比前沿共识更好的 RLCD 信号",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "三层次：Validation（验证 confidence 与实际正确率匹配，不改模型，先）→ Calibration（训一个小校准模型把 raw confidence 映射成真实业务概率，输入可含任务类型/客群/元数据，通常不改模型，再）→ Post-training（让模型学企业决策模式，改模型，最后；分领域 SFT / RLCD 式校准训练把过度自信的 0.95 压到与结果一致的 0.75 / 策略学习三种）。连\"0.95 在我的业务里意味着什么\"都没验证清楚就微调，会把问题藏起来。更聪明的做法是错误与分歧挖掘：从历史找 bad case（人工覆写、低置信却对、高置信却错）分送训练与校准，评估后影子部署，再从生产收新 bad case——与 [[skillopt]]、APO 的 bad-case mining 同一循环，优化对象从 skill 文本换成决策模型 + confidence + workflow 策略（[[data-flywheel]] 中圈在决策模型上的具体形态）。数据授权边界：TypeSafe 默认不用用户输入训练，\"把历史数据给它就自动变聪明\"不成立。反向判断：企业自己的\"历史决策 + 最终结果\"在标签质量与覆盖足够时，是比\"前沿模型共识\"更好的 RLCD 信号（参照物换成真实结果），若 System One 类模型进入垂直场景这可能是核心护城河，且属于拥有结果标签的企业而非模型供给方。（推论性判断，置信度中等）"
+        },
+        {
+          "statement": "校准把 FinOps 人工验证项从\"复核 100%\"降到\"复核被标记部分加抽检\"——是成功率之外评估环节应追踪的第二个模型侧指标",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "演讲原话：\"如果一个模型在某任务上 95% 正确，却说不出自己什么时候处于那 5%，这个任务就无法自动化。\"这把公式第二项再拆一层：右栏人工验证居高不下不只因成功率不到 100%，更因模型不提供校准过的置信度，人只能复核全部。机制本身不依赖任何特定产品；Jev 是否真正做到是待核实项。落地含义（系列 03）：若成立，`verify_minutes` 字段应按\"被标记 / 未标记\"分开记录；主流 LLM 的置信度输出是否可用、决策模型在真实右栏任务上的校准质量均待核实。"
         }
       ]
     },
@@ -2136,7 +2255,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
+      "claims_count": 9,
       "avg_confidence": 0.77,
       "claims": [
         {
@@ -2210,6 +2329,15 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "递归自我改进（RSI）的成立条件被放宽：不必动权重、甚至不训任何网络——**能改自己的探索策略代码、且能可靠评价改动**即成立。三层学习位置：Model 权重（fine-tuning）/ Skill 技能（SkillOpt）/ Search 搜索策略（Dream-RSI）；三层搜索位置：训练时 RL 真搜索 ✅ / 推理时单轨 CoT 非搜索（是摊销搜索——AlphaZero 类比：训练时 MCTS 搜、推理时策略网络一次前向是摊销产物；软回溯 vs 硬回溯、错误 token 留在 context 继续污染条件分布）/ 推理时外层显式编排 ✅（best-of-N→ToT→Dream-RSI）。这个正交坐标把本页既有的 CL-RL 四篇全景与 LifeSkill hybrid 架构放进更大定位图：技能层用完即消失的问题、参数化路径的成本，都是\"学习位置\"选择的后果。（论文初读，置信度留低）"
+        },
+        {
+          "statement": "RSI = Recursive Self-Improvement（用改进后的能力再改进自己），不是 recurrent 也不指\"递归超级智能\"；它是数据飞轮去掉人之后的样子，进内圈的判据是\"写得出验证器\"",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "术语澄清：\"recursively self-improving superintelligence\"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮\"轻\"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以\"哪些任务能进内圈\"= \"哪些任务写得出验证器\"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。"
         }
       ]
     },
@@ -2247,6 +2375,80 @@
           "confidence": 0.5,
           "status": "stale",
           "evidence": "PactFlow AI（2025）支持 MCP Server 集成 VS Code/Cursor/Claude Code，从 OpenAPI spec 自动生成契约测试。这是 AI 辅助测试生成的前沿方向。"
+        }
+      ]
+    },
+    {
+      "id": "cost-per-task",
+      "type": "concept",
+      "title": "任务完成花费（Cost per Task）",
+      "summary": "任务完成花费是 AI FinOps 的度量刻度从 **token 价格**转向**\"完成一项任务花多少钱\"**之后的核心对象。它把一项由 AI 完成的任务的真实成本拆成三项——`模型调用成本 + 人工验证成本 + (1 − 成功率) × 错误成本`——其中只有第一项随 token 降价而下降。供给方（OpenAI《Building abundant intelligence》）已把度量口径改成\"让多少有用工作成为可能\"，使用方需要一个对应的刻度来判断\"哪些工作值得开展\"，这就是任务完成花费。\n\n它同时是一个**分类工具**：AI 好用与不好用的分界不是行业而是两个变量——验证成本（人能否当场判对错）× 错误成本（可逆还是不可逆）。至少一个变量便宜的任务落在\"Too good to be true\"栏（第一项主导，token 便宜即真便宜）；两个都贵的任务落在\"Too bad to be useful\"栏（第三项主导，token 降价十倍总成本几乎不动）。迁栏阈值 `(1 − 成功率) × 错误成本 < 人工复核成本` 决定何时去掉人在环里的复核才划算。这一刻度贯穿 [[data-flywheel]] 的三层嵌套循环，并在 [[confidence-calibration]] 进入后把\"人工验证\"这一项再拆一层（复核 100% → 复核被标记部分）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "finops",
+        "agent-evaluation",
+        "roi"
+      ],
+      "category": "AI FinOps 与经济学",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.71,
+      "claims": [
+        {
+          "statement": "任务完成花费 = 模型调用 + 人工验证 + (1 − 成功率) × 错误成本；token 价格只影响第一项",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三项分别是：模型调用成本（token×单价 + 工具/检索/外部 API，传统 AI FinOps 唯一盯住的一项）、人工验证成本（不随 token 降价下降，只随任务可验证性变化）、错误成本期望值（由任务性质决定，可逆≈0，不可逆可能远大于前两项之和）。右栏任务 95% 成功率听起来不低，但对报税/数据录入意味着人仍要复核 100%（不知道哪 5% 错），第二项不降反升。Agentic Engineering 文观察到的\"过度节省 token 导致 agent 质量下降触发更多重试反而更贵\"，用此公式看是\"压第一项压过头，第三项涨回来\"。供给方口径来源：OpenAI CFO 2026-07-31 原话 \"not simply … lower token prices … measure our progress by how much useful work it makes possible\"。（讨论整理 + 官方博文核订）"
+        },
+        {
+          "statement": "AI 好用与不好用的分界不是行业而是两个变量——验证成本 × 错误成本；\"无人在环\"与\"要求可靠性\"是同一件事",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "TypeSafe 创始人演讲 slide《LLMs: what's the deal?》两栏中 Customer Service 同时出现，左栏多一个限定词 \"w/o decisions\"——同一行业有没有\"决策\"就跨了栏，说明分界不在行业。左栏共性：至少一个变量便宜（Copilot/Coding agent 验证便宜可回滚；Slop 错了没人在意）；右栏共性：两个都贵（报税/保险/数据录入要专业复核且不可逆）。训练侧解释：主流模型用 RLHF 优化成\"辅助者\"，左栏是训练目标的投影；右栏需要客观对错信号，是 RLVR 的领域（见 [[reinforcement-learning]]）。迁栏阈值 `(1 − 成功率) × 错误成本 < 人工复核成本` 随成功率提升向右上移动，覆盖越来越多任务。（演讲为 Jev 产品预热，讲者立场已注明）"
+        },
+        {
+          "statement": "ROI 必须站在接收方算——\"成功\"的判定归接收方，验收口径与优化口径分开",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "生产方视角：\"返回了结果、没报错、token 很少\"=完成得很便宜；接收方视角：\"能不能直接用、改的时间是否比自己写还长\"才是完成。slide 把 Slop/Spam 放在 Too good to be true 栏正是警告：站生产方它最便宜，站接收方价值为负。工程含义两条：① 成功判定归接收方不归生成方——与 [[generation-evaluation-separation]] 同一原则；② 验收分逐字节不动作历史可比业务口径，优化用 reward 单独设计——[[reward-design-three-inputs]] 的\"两本账\"在 FinOps 语境同样成立；不分家的后果是 Goodhart（cost per task 直接当 RSI 目标会学到省钱但降质：少验证、缩输出、模糊情况直接宣告完成，错误暴露有延迟）。"
+        },
+        {
+          "statement": "度量最小单位是任务不是调用；使用洞见只给第一项；分桶后策略分叉；任务选择杠杆大于任何优化手段",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "任务级最小字段集七个：task_id / scenario_bucket（两变量坐标位置，至少左右两桶建议四象限）/ model_cost / success（接收方判定）/ verify_minutes / error_cost_est / reversible。GitHub Copilot、Copilot Studio、AI Foundry 的 usage insights 只能给第一项（用量在哪），成功率与验证成本要自己补（价值在哪）；Copilot Cowork 的 Copilot Credits 是唯一原生 task 粒度的数据源但仍只是第一项。分桶后策略分叉：左栏压 token（上下文裁剪/[[model-routing]]/输出压缩），右栏提成功率（评估→优化→监控闭环），两桶混算平均得到\"AI 很便宜但没人敢用\"与\"AI 很有用但算不出 ROI\"并存的假象。第四推论：两变量图是\"哪些任务该做、成功由谁判定\"的操作界面，排在 token 压缩与优化算法之前——对应金字塔 algorithms < compute < data < doing the right task（见 [[data-flywheel]]、[[bitter-lesson]]）。开放问题：verify_minutes 无自动记录手段（代理：输出被修改比例 / 生成到提交间隔）；右栏错误成本是尾部分布，期望值低估风险，或需分位数/风险溢价。（提纲级，待核实项多，置信度偏低）"
+        },
+        {
+          "statement": "Copilot → Cowork → Super App 是人在环里位置的三次后移；微软定价已按此分档，但按量计费 ≠ 按结果计费",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三阶段不是三种产品：Copilot=人逐条接受/拒绝（token/建议级验证，第二项单次极小次数极多，无进入条件）→ Cowork=agent 完成整个任务人按任务审阅（task 级，进入条件\"审阅比自己做便宜\"）→ Super App=多 agent 自主运行人只处理例外（outcome 级，进入条件即迁栏阈值）。每后移一次换一种验证形态并要求成功率越过新阈值，所以产品路线图与飞轮是同一件事。微软定价确认分界：M365 Copilot 席位 $30/用户/月不变覆盖辅助档；Copilot Cowork 2026-06-16 GA 转按量，Copilot Credits 按任务四项输入（模型/上下文检索/工具调用/运行时长）轻中重三档；GitHub Copilot 同年按量；Autopilot 待核实。关键：Credits 计量的是任务消耗的算力，**失败与重试同样计费**——账单给分子，成功任务数要使用方自己补，使用方 FinOps 由此从可选变必需。C 端式采用指标（活跃/会话/留存）只能当先行指标，Cowork 启用后必须切换到任务口径。\"自动化做不到是否只能走辅助\"：辅助不是备选而是入口（人当验证器、每次接受/修改都是带标签样本），但高错误成本不可逆任务终态可能长期停在\"agent 干活、人签字\"。（Computerworld 报道核订；\"Office 商业账户 4.5 亿 / Copilot 付费渗透 <7%\"为二手数据未核实）"
+        },
+        {
+          "statement": "实践对照——Jev 判断层压低的是第一项与时间，成功率与错误成本那一项要靠验收器、置信度门控与人工确认守住",
+          "source": "Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "系列八受控对照：只换判断模型，每次任务费用（公开价估算）减少 90~96%、耗时减少 58~66%，成功率两组均 4/4——但结论写成\"条件默认\"而非\"优先选择\"，因为只在低错误成本任务上验证了第一项；有 stakes 的动作（付款/删除/不可撤销提交）任一执行器都走人工确认，\"错误成本主导，与判断模型无关\"。Codex 系列07 的路由链把任务完成花费拆到正确粒度：绑定按任务不按调用、切换算总账不比单价（缓存账算例：B 单价便宜五倍，历史 10 万 token 读取仍贵一倍）、缓存以 usage 为证不以配置推断；Azure 实际费率为空时**禁止纯成本降档、不报告节省金额**——这是\"缺失字段不补 0\"纪律（见 [[generation-evaluation-separation]]）在 FinOps 上的体现。两篇是本页公式的首批工程实践。"
         }
       ]
     },
@@ -2332,6 +2534,71 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "物理世界落地形态普遍是 bounded autonomy（信息理解→人工审核→边界内自动执行），与软件 Agent 权限模型（read-only→approval→auto-accept）完全同构；L4 自动驾驶把\"知道自己不知道\"工程化——perception confidence 低于阈值即主动降级/fallback/Minimal Risk Maneuver，ODD 边界安全退出比\"开得更好\"更难也更关键（负反馈的边界条件设计）。MPC（Model Predictive Control）\"规划一长段、执行一小段、再重规划\"是 receding horizon 闭环——2026-09-17 裁决不为其单独建页、归口控制论概念族的第二次证据来源；机器人系统的七角色分解中，控制与安全两个角色是\"实现从手工设计换成学习得到\"这场替换里最稳定的锚。"
+        }
+      ]
+    },
+    {
+      "id": "data-flywheel",
+      "type": "concept",
+      "title": "数据飞轮（Data Flywheel）",
+      "summary": "数据飞轮的经典画法是一个圈：使用产生数据，数据改进模型，模型改进带来更多使用。它回答的是**\"为什么会越转越快\"**——经济学与组织层面的描述，主语是产品或公司，默认人在环里（标注、评估、决定投资），积累的是数据与资本，时间常数以季度计。与它形状相同但主语不同的是 RSI（递归自我改进，见 [[continual-self-improving-ai]]）：回答\"谁在推轮子、能不能把人拿掉\"，主语是一个 agent 系统。一句话骨架：\"**数据飞轮是 RSI 的宏观影子，RSI 是数据飞轮去掉人之后的样子**\"。\n\n本页把两者放回同一张图：**三层嵌套循环**——外圈经济飞轮（OpenAI《Building abundant intelligence》：成本下降→更多工作值得开展→采用带来收入与反馈→再投资）、中圈工程数据飞轮（使用洞见/遥测 → 评估 → 优化 → 部署，人还在环中，优化手段沿 [[prompt-optimization-maturity-ladder]] L0→L2 升级）、内圈 RSI（中圈的自动化版本，agent 对自身历史 replay 与策略选择）。三层之所以能嵌套不脱节，是因为 [[cost-per-task]] 在每层都能读：外圈读作单位经济学、中圈读作评估目标（reward = 成功率 / 成本）、内圈读作 RSI 的优化对象。而三层循环全部运行在\"任务已选定\"的前提下——金字塔底层 doing the right task 的杠杆大于飞轮与 RSI 本身。",
+      "tags": [
+        "wiki",
+        "concept",
+        "finops",
+        "self-improvement",
+        "reward-design"
+      ],
+      "category": "AI FinOps 与经济学",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.69,
+      "claims": [
+        {
+          "statement": "数据飞轮与 RSI 不是并列概念而是同一循环的两个视角，用三个维度拉开——人在不在环里、积累的是什么、时间常数",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "重叠的是形状（用产出改进产出者），不重叠的是主语和机制。① 人在不在环里：飞轮默认在（标注/评估/投资方向由人做，人是飞轮的一个部件），RSI 目标是不在（agent 用自身轨迹当 replay simulator）；② 积累的是什么：飞轮积累数据与资本（需存储/治理/合规），RSI 积累能力本身（skill、搜索策略、prompt 配方，数据只是中间产物），[[skillopt]] 的 `best_skill.md` 就是这种资产的具体形态，所以 RSI 比飞轮\"轻\"；③ 时间常数：飞轮以季度计需用户规模驱动，RSI 以小时/天计单系统内可闭环——转速差两到三个数量级，慢圈给快圈方向与预算，快圈给慢圈证据，因此两者是嵌套不是替代。"
+        },
+        {
+          "statement": "三层嵌套循环——外圈经济飞轮 / 中圈工程数据飞轮 / 内圈 RSI；关系是供给不是替代",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "外圈（OpenAI 口径）决定预算从哪来往哪投；中圈以 GitHub Copilot / Copilot Studio / AI Foundry usage insights 为遥测入口，经评估（判成功算成本）进优化（prompt 改写 → APO → SFT → RL，对应成熟度阶梯 L0→L2，每上一级人的参与从\"人改人看\"退到\"人定评估集、算法闭合回路\"），部署回生产——Azure 博客所谓 continuous optimization 即这一圈的平台化；内圈是中圈的自动化版本，Dream-RSI 三阶段直接映射（探索产生历史 → 历史变 replay simulator 离线回放 → dreaming 选更好的探索策略），比中圈快两个数量级因为省掉人的响应时间与真实 rollout。供给关系：外圈给中圈预算方向，中圈给内圈评估集与 reward 定义，内圈给中圈成功率提升证据，中圈给外圈\"哪些工作已值得开展\"的答案。（作者综合框架，单系列，置信度中等）"
+        },
+        {
+          "statement": "反直觉接口——可验证 reward 最充足的恰是\"Too bad to be useful\"栏；飞轮路线是先让人在右栏当验证器，成功率越过阈值后任务迁栏",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "右栏（报税 accept/reject、数据录入对源单据、QA 测试结果、保险理赔结论）有 ground truth；左栏开放式生成（研究报告、代码风格、对话质量）没有，只能靠 [[llm-as-a-judge]] 做主观评估，难驱动 RL/RSI。路线四步：① 右栏先把人放进环里当验证器（第二项很高，但每次人工复核都是带标签样本，成熟度 L1 阶段的 bad case 是 L2 评估集种子）→ ② 样本到位后中圈优化有客观 reward，成功率上升 → ③ 越过阈值 `(1 − 成功率) × 错误成本 < 人工复核成本` 去掉复核划算，任务右栏迁左栏 → ④ 释放人力转向下一批右栏任务。slide 是快照，飞轮讲快照怎么随时间变；OpenAI\"成本下降就有更多工作值得开展\"落到工程上就是迁栏，让它成立的不是 token 降价而是成功率越过阈值。\"哪些任务能进内圈 RSI\"的判据 = \"哪些任务写得出验证器\"（RLVR 式信号；主观分在离线回放里无法重新获得）。"
+        },
+        {
+          "statement": "安全阀——评估门控独立于优化目标；两本账分家；先把 reward 做稳再让轮子转快",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "把任务完成花费直接当内圈优化目标会 Goodhart：agent 学到省钱但降质（少验证、缩输出、模糊情况直接宣告完成），生产方看 cost 在降、接收方看错误成本在升，只是暴露有延迟——RLHF 的 reward hacking 是同一问题最著名实例，reward 含主观分风险就跟着进来。三条对策：① 监控与评估不是优化的附属而是内圈的刹车，评估器不能与被优化策略共享目标函数（[[generation-evaluation-separation]]）；② 两本账分家（[[reward-design-three-inputs]]：验收分逐字节不动，优化 reward 单设可拆 judge/约束饱和/加确定性规则）；③ 客户侧 APO 摆动主因是评估噪声而非算法，同一 reward 进 RL/RSI 后噪声仍是第一大不稳定源——扩大评估集、同 prompt 多次采样取均值、拆 judge 降分母噪声，要在加速内圈之前完成。结论：FinOps 的\"监控、评估\"环节不是成本中心，是内圈可以安全加速的前提。"
+        },
+        {
+          "statement": "金字塔底层——三层循环都压在\"做对的任务\"上；中圈资产按可能被清零折旧，评估集与验收标准最抗归零",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "slide《How can that be possible?》四层金字塔 algorithms < compute < data < doing the right task，越底层杠杆越大。对齐：algorithms = 内圈 RSI 与中圈 APO→SFT→RL（最小，在给定任务上提几个点）；compute = 外圈算力投资与 token 价格（传统 FinOps 盯住的那层）；data = 中圈积累的评估集与轨迹（决定优化有没有原料）；doing the right task = [[cost-per-task]] 的两变量分桶与\"成功由接收方定义\"（决定上面三层有没有意义）。警告：RSI 只能在给定任务上让策略变好、飞轮只能在给定任务上积累数据，都不能纠正任务选错；Goodhart 在此视角就是\"任务定义错了\"的症状。两个例子：FLAN lesson（instruction tuning 六千引用，事后看最优用量为零——算法层投入被更底层变化整体抹掉）；Bitterest lesson（GPT-2 时代没做 RLHF 不是缺算法算力，是没人把\"按人类偏好对齐\"当要做的任务，\"doing the right task\"在 LLM 史上只发生过约一次半）。推论：预算与杠杆成正比——花在选任务与定义成功上的时间不应少于 token 压缩与优化算法；中圈的 prompt 配方/skill 文本/微调数据在模型换代后都可能归零，要按\"可能被清零\"折旧，评估集与接收方判定标准最不易归零应优先投资。（把 [[bitter-lesson]]\"通用方法+算力胜过领域知识\"再推一层：连方法都不是关键）"
         }
       ]
     },
@@ -3081,7 +3348,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
+      "claims_count": 13,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -3191,6 +3458,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "训练循环、延迟测量、验证纪律之后的第四域：`create_response=true` 时\"答完了没\"的判断与\"接下来说什么\"的生成发生在同一个 response 里、无人能否决——这是提示词约束追问行为失效的结构原因。拆成独立 judge 调用（输出结构化 JSON）后，追问从模型自由行为变成应用显式触发的 `response.create`——生成/评估分离原则在实时语音链路的落地形态。"
+        },
+        {
+          "statement": "FinOps 域实例：ROI 站在接收方算——\"成功\"由接收方判定不由生成方；评估门控独立于优化目标是内圈 RSI 的刹车；决策层可用不生成文本的模型来做",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三条同源的新实例：① 度量侧——生产方看\"返回结果没报错 token 少\"即完成，接收方看\"能否直接用、改的时间是否比自己写还长\"才是完成，slop 站生产方最便宜站接收方价值为负，所以 [[cost-per-task]] 的 success 字段由接收方判定，验收口径与优化口径分开（两本账）；② 优化侧——cost per task 直接当 RSI 目标会 Goodhart（省钱但降质：少验证、缩输出、模糊情况直接宣告完成，错误暴露有延迟），判分的评估器不能与被优化策略共享目标函数，\"监控、评估\"不是成本中心而是内圈可以安全加速的前提（[[data-flywheel]]）；③ 模型侧——TypeSafe Jev 把\"该不该执行\"交给只返回 typed decision + confidence 的 [[system-one-model]]，生成归 LLM、判断归专门决策层，这是分离原则从流程/角色层下沉到模型层的第一个产品化实例；且校准要两层——模型层（供给方 RLCD）与应用层（使用方用自己的结果标签），跳过后者就是把 0.97 当安全承诺。"
         }
       ]
     },
@@ -3701,8 +3977,8 @@
       "category": "工程质量与测试",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.67,
+      "claims_count": 4,
+      "avg_confidence": 0.68,
       "claims": [
         {
           "statement": "质量门禁应覆盖 5 个递进维度——代码格式、架构验证、代码检查、CI 编译、性能测试",
@@ -3730,6 +4006,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "四层门禁：Layer 1 代码格式与 Lint（Prettier/ESLint/Ruff）→ Layer 2 架构约束执行（ArchUnit/dependency-cruiser/Tach/Semgrep）→ Layer 3 模块化与复用分析（Code Maat/ArchUnitTS LCOM/jscpd）→ Layer 4 AI 辅助 Review（PR-Agent/oh-my-claudecode/Tanagram）。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 是最有价值的新增层。"
+        },
+        {
+          "statement": "质量门禁延伸到运行时决策门控——\"该不该执行\"从布尔开关变成带校准 confidence 的阈值策略，策略函数至少三个输入：校准后概率、错误成本、人工复核成本",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "本页此前三条 Claims 都是开发期静态门禁（Lint → 架构约束 → 模块化 → AI Review）。Jev 文把同一\"生成与门控分离\"思路搬到运行时：生成归 LLM，判断该不该执行归一个专门决策层（[[system-one-model]]），交接点是 confidence 阈值。阈值不能拍脑袋：`if confidence >= 0.98` 的 0.98 要从可靠性表反推（[[confidence-calibration]]），且同一个 0.99 自动推荐 FAQ 够用、自动删生产库不行——所以门控策略 = f(校准后概率, 错误成本, 人工复核成本)，这正是 [[cost-per-task]] 迁栏阈值在单条决策上的形态：AUTO / REVIEW / HUMAN 三档。实践形态（Computer Use 系列八）：执行器入口限制步数与时长、低置信度交回、验收器独立给 `verified_success` 而不直接接受模型 DONE、有 stakes 动作一律人工确认——门禁的通过/失败标准从\"代码是否合规\"扩展到\"这次判断是否值得放行\"。"
         }
       ]
     },
@@ -3937,8 +4222,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.73,
+      "claims_count": 7,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "Evaluator 有三个正交维度——Judge（谁评）× Strategy（怎么评）× Criteria（评什么），不应压成一棵树",
@@ -3993,6 +4278,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "语音轮次场景给 judge 定位补上时延/知识两条边界：LLM 做 end-of-turn 判断是错位（每次停顿都等一次几百 ms 往返、且读不到语调）；EOU 小模型做任务完成判断不可能（不知道题目）——正确叠法是 EOU 洗干净 `speech_stopped` 触发、LLM judge 决定接下来干什么：**judge 不该放在 Speech 层实时路径上**。judge 输出结构化 JSON（complete/partial/off-topic）并与 speaker 分离，是追问可控的结构前提。另一域新实例：Cosmos Reason 在 WFM 合成数据管线里当物理合理性判官（生成→过滤→再入库，\"否则是用幻觉污染训练集\"）——视频域的 Rule/Metric 之外首个物理常识 judge 样本。"
+        },
+        {
+          "statement": "左栏开放式生成没有 ground truth 只能靠 LLM judge——它是 RLHF 的推理时版本；右栏任务优先接程序化验证器，judge 退为兜底；typed 决策模型是同一判断层的另一种实现",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "两变量坐标（[[cost-per-task]]）下：研究报告、代码风格、对话质量等左栏任务无 ground truth，评估只能是主观分——LLM-as-a-Judge 就是 RLHF learned reward model 在推理时的形态，覆盖面宽但可被投机、在离线回放里无法重新获得，因此难驱动 RL/RSI；右栏任务（报税 accept/reject、数据录入对源单据、QA 测试结果）有客观信号，评估应优先接 RLVR 式验证器，\"客服回复是否得体\"这类写不出验证器的才退回 judge。落地（FinOps 系列 03）：左栏桶 judge + 抽样人工校准，右栏桶每桶回答\"写得出验证器吗、信号延迟多久\"，答不出的暂不进优化阶梯 L2。另一维对照：judge 通过 LLM 生成文字做评估（有 rationale、可思维链、秒级、RLHF 训练的自报置信不与正确率对应），[[system-one-model]] 通过 typed decision 做判断（无理由、单次前向、校准是训练目标）——同一判断层的两种实现，DataCamp 的组合建议是 typed 决策做快速分类/路由层，困难 case 交 reasoning 模型。"
         }
       ]
     },
@@ -4603,8 +4897,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.82,
+      "claims_count": 6,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "压缩与路由是两条正交的 Token 优化轴",
@@ -4641,6 +4935,24 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "相对压缩的独特优势：不像 Caveman/RTK 通过压缩减少信息量，路由**保持完整上下文**、可审计（每次路由决策有可见 `interaction` 记录，解决\"哪个模型处理哪个任务\"的信任问题）、对用户透明（全局 MCP 注册零修改工作流）。代价是新风险维度：廉价模型执行质量可能不足（靠旗舰 model 最终 review 缓解）、额外延迟（~6s/任务，仅批量任务路由）、数据安全（代码发第三方，可用本地 Ollama 替代）、路由误判（保守策略+人工 review）。不适用：月 token < 千万级（工程复杂度超收益）、长链一致性推理（不宜中途切模型）、高合规（除非本地模型）。"
+        },
+        {
+          "statement": "路由粒度应是任务不是 input——任务级绑定 + 缓存总账决定升降级不对称，Jev 回答的是\"是否值得打破绑定\"",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "本页 CodexSaver 范式是 agent 主动把子任务派给廉价模型；Codex 系列07 走另一条路：provider 层透明路由（目录别名 auto-jev + 本机回环网关），Codex 本身不知道后面换了谁。核心修正是粒度：按每次 input 换模型看似最省，但缓存不跨模型共享——算例：留在 A 读 10 万 token 历史按缓存价 10% 等价 1 万 token，切到 B 无缓存按普通价（A 的 20%）等价 2 万，B 单价便宜五倍这一次仍贵一倍。所以以 thread 为绑定范围、turn_id 防同回合重判，只有新任务/要求重评/能力缺口才重判；升级看能力缺口与关键验证反复失败，降级等任务结束且价格与预测齐全（价格字段为 null 时禁止纯成本降档、不报告节省）；最小保持 300 秒、冷却 120 秒。effort 与模型进同一个 Choice（28 个合法组合），`X-Jev-Effort-Policy: auto|fixed` 显式策略头区分用户手选与客户端默认。已实测：同回合第二次请求读取 15,995 与约 17,400 个缓存 token；已实现未启用：分层兜底与联合 effort（离线 62 项测试）。"
+        },
+        {
+          "statement": "路由判断层三选一：规则匹配做筛子、轻量 LLM 可推理可解释、typed 决策模型给校准过的分布——三者可叠不是二选一",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "规则（关键词/正则/长度）零延迟零费用完全可解释，但读不懂上下文、候选写死、无把握程度、漏写即误判且不知道；轻量 LLM 路由器可读上下文可给理由可思维链、数据不出租户，但输出要解析校验可能越界、自报置信数未被训练成与正确率对应（RLHF）、自回归秒级、同家族排自家可能有偏；typed 决策模型（[[system-one-model]]）封闭分布构造上不越界、confidence 是训练目标、单次前向 0.2~0.5 秒、输入 $0.042/M 输出免费，但不给理由、不做复杂推理、近期文字发往第三方需评估数据边界。落法：硬约束（用户手选、部署存在、effort 支持、不透明历史不迁移）留给规则，规则筛完 Jev 在合法候选里选；仅在 Jev uncertain 且任务判 demanding 时才值得 LLM 读更长上下文二次判断（当前未实现）。方法层展开见 [[decision-policy-executor-split]]。"
         }
       ]
     },
@@ -5267,7 +5579,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
+      "claims_count": 12,
       "avg_confidence": 0.8,
       "claims": [
         {
@@ -5368,6 +5680,15 @@
           "confidence": 0.65,
           "status": "active",
           "evidence": "VLA 架构里 VLM 骨干只做一次 prefill 当编码器（一次编码+十步去噪），\"decode 慢\"的根源同为显存带宽——与 speculative decoding 的加速动机一致；Cosmos 双轨的离散 token 自回归轨天然继承 LLM 全套推理基建（KV cache、投机解码），这正是 tokenizer 选离散的核心收益之一（连续潜变量扩散轨则拿画质上限）。缓存与解码经济学的判据在动作、视频两个新模态域复现。"
+        },
+        {
+          "statement": "缓存不跨模型共享是模型路由的硬约束——切换模型要算历史读取的总账，任务级绑定与最小保持时间由此而来",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Codex 系列07 路由网关的缓存账：切换后新模型冷启动，历史上下文全按普通价重读。算例——留在 A：10 万 token 历史按缓存价（普通价 10%）等价 1 万；切到 B：无缓存，普通价为 A 的 20%，等价 2 万——B 单价便宜五倍这一次读取仍贵一倍，后续用量大或输出便宜时账才可能反过来。工程后果：以 thread 为绑定范围，最小保持 300 秒、冷却 120 秒、切换要过成本门槛；网关不总结或重写执行模型的输入、工具定义与 prompt_cache_key，保持同模型前缀可复用。实测：同回合第二次请求读取 15,995 与约 17,400 个缓存 token。纪律沿用 Prompt Cache 系列：缓存以 usage 为证不以配置推断，缺失字段不等于 miss 也不等于 hit；流式转发需 SSE 观察器读 usage。"
         }
       ]
     },
@@ -5386,8 +5707,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.72,
+      "claims_count": 3,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "ORM vs PRM——打分对象、数据成本与风险的三重权衡",
@@ -5406,6 +5727,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "内容工程师（及一切领域专家）在 reward 侧的核心价值：普通标注员只能判断最终产出好坏（ORM 级信号），专家能在轨迹中间指出\"第③步发散时角度就选错了\"（PRM 级信号）。过程隐性、依赖情境判断的能力（\"什么时候该沉默、什么时候追问\"）无法写成 pipeline，只能靠带步骤级标注的过程样本让模型统计出来——这正是 PRM 数据贵的原因，也是专家经验变现为训练信号的通道。"
+        },
+        {
+          "statement": "RLVR 信号在真实业务里延迟且稀疏（税务结论几个月后才回来、只在终点给分），PRM 与规则校验、抽样人工复核是三种近端代理——决定哪些右栏任务能靠飞轮迁栏",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "FinOps 系列 02 把 RLVR 的两个工程限制对应到任务级字段表最难填的两项：覆盖面（只有写得出验证器的任务才有 RLVR 信号）与延迟/稀疏（真实验证滞后且终点给分）。后者的工程解法是近端代理：对源单据的规则校验、中间步骤的 PRM、抽样人工复核——[[reward-design-three-inputs]]\"确定性规则分白送零噪声信号\"说的就是在主观分之外尽可能多接客观分。含义：PRM 的价值不只在数学/代码推理链，在右栏业务任务里它是把\"几个月后才知道对错\"变成\"每一步可即时打分\"的手段，是任务能否进入优化阶梯 L2 与内圈 RSI 的门槛条件之一。（FinOps 语境下的推论，单篇）"
         }
       ]
     },
@@ -5624,8 +5954,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
-      "avg_confidence": 0.81,
+      "claims_count": 12,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "RL 的核心贡献是 Search + Learning 的统一",
@@ -5725,6 +6055,15 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "\"exploration\"在 RL 里至少有三个搜索空间：状态-动作序列空间、策略参数空间、经验-数据空间——含义各不同；Dream-RSI 的 exploration policy 属第一个（=搜索控制策略），优化它本身可形式化为 meta-MDP（state=discovery tree/action=扩哪个分支+预算/reward=发现质量），落进 learning to search / metareasoning 传统。OPE（off-policy evaluation，属 offline RL）：用已记录轨迹评估未跑过的策略，经典方法需 importance sampling 修正随机转移（IS/WIS/DR/FQE，偏差-方差权衡）；Dream-RSI 是其退化特例——确定性转移免 IS、零估计误差、只剩 coverage 约束（对应 offline RL 的 OOD action，CQL/IQL 用悲观主义处理）。母题：\"采样太贵所以离线复用已有轨迹\"在权重层与搜索策略层是同一件事——PPO ratio+clip 就是 off-policy 修正、GRPO 组内复用同理、agent-lightning/verl 的存在动机一字不差，区别只在优化对象（模型权重 vs 搜索策略代码）。（论文初读，replay objective/防作弊机制未精读，置信度留低）"
+        },
+        {
+          "statement": "RLHF 与 RLVR 的区别恰是 AI\"好用/不好用\"两栏的区别——左栏是 RLHF 训练目标的投影（we optimized for assistance），右栏靠 RLVR 把人工验证换成程序验证；RLCD 是第三条训练目标",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "对照：reward 来源（人对回复的主观偏好训成 learned reward model vs 程序化验证器直接给 correct/incorrect）、性质（连续主观可被 reward hacking vs 二值客观难投机但覆盖有限）、训练出的能力（让人满意即\"辅助\" vs 得到正确答案即\"完成任务\"）、对应栏（左栏人当场看一眼点个赞即验收 vs 右栏有 ground truth）、产品阶段（Copilot/Cowork 人在环给偏好 vs 迈向 Super App 前提）。TypeSafe 创始人（RLHF 早期核心研究者之一）演讲总结四句：we optimized for assistance / don't have AI make decisions with stakes / other paths than RLHF / Automation is coming soon™——第一句是原因（左栏不是 LLM 碰巧擅长而是训练目标直接投影），第二句是训练目标的边界而非智能的边界（stakes 可量化为错误成本 × 失败率），第三句指向 RLVR（[[cost-per-task]] 公式第二项人工验证由此可压到接近零），第四句的 ™ 是自嘲（自动化是逐任务跨阈值的过程不是时间点）。RLVR 两个工程限制：覆盖面（写不出验证器的任务只能退回 LLM judge）与延迟稀疏（需 [[process-reward-model]] / 规则校验 / 抽样复核作近端代理）。第三条路 RLCD（Reinforcement Learning for Calibrated Decisions）：问\"这个决策上概率分布应是什么\"，reward 来自参考概率分布（当前为前沿模型共识），优化出校准过的不确定性——比 RLVR 覆盖宽、正确性保证弱（见 [[confidence-calibration]]）。"
         }
       ]
     },
@@ -6317,8 +6656,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.83,
+      "claims_count": 9,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "SkillOpt 把 SGD 四大机件搬进文本空间——有界 LR / 拒绝记忆 / 慢权重 / meta-learning",
@@ -6391,6 +6730,15 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "骨架同构：记 bad case→探索→修改→打分→保留；对象不同：SkillOpt 改 skill.md 文本（procedural knowledge），Dream-RSI 改 policy.py 调度代码（search behavior）；验证方式不同：held-out 真实 rollout vs 历史树离线 replay——对应 RL 的 exploitation vs exploration，两者可同时挂载互不冲突。\"自我改进的瓶颈是改了之后敢不敢信\"：validation gate 与 replay simulator 是同一命题的两种解法。启发：SkillOpt 历史 trajectory 里躺着\"当时若用别的 skill 会怎样\"的部分信息，哪些验证环节可借 replay 降成本值得探索。开放问题（两篇论文都未答）：双层优化的干涉——skill 变了之后，旧 discovery tree 的 replay 是否失效。（论文初读，置信度留低）"
+        },
+        {
+          "statement": "best_skill.md 是 RSI\"积累能力本身\"这类资产的具体形态；bad-case 挖掘循环同构于 Jev 企业侧校准回流——优化对象从 skill 文本换成决策模型 + confidence + workflow 策略",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "FinOps 系列 02：飞轮的资产是数据（需存储/治理/合规），RSI 的资产是一段几百到几千 token 的 skill 文本或一个搜索策略，用完数据即可丢——SkillOpt 的 `best_skill.md` 就是这种资产，这解释了为什么 RSI 比数据飞轮\"轻\"、时间常数可以小时计。Jev 文：企业校准决策模型的正确做法不是把全部历史塞进去训练，而是错误与分歧挖掘——从历史找 bad case（人工覆写、低置信却对、高置信却错）分送训练与校准，评估后影子部署，再从生产收新 bad case——与 SkillOpt / APO 的 bad-case mining 是同一个循环，只是优化对象不同；放到三层循环里这是中圈数据飞轮在决策模型上的具体形态（[[data-flywheel]]、[[confidence-calibration]]）。另一提醒（FLAN lesson）：skill 文本属\"可能被模型换代清零\"的中圈资产，要按此折旧。"
         }
       ]
     },
@@ -6744,6 +7092,71 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "`server_echo_cancellation` 默认用服务端自发音频作参考、并假设客户端即时播放（播放延迟 >2s 质量下降）；带 avatar 时用户实际听到的是 WebRTC 视频流音轨而非 WebSocket audio delta——路径与时序都对不上，导致数字人语音被麦克风拾回、转写成\"复述自己的话\"再触发开轮。修法：Live-Reference AEC（`reference_source: client` + `channels: 2`，客户端把实际播放的音频作第二声道上传作参考）。它是\"听\"关的 Speech 层参数，与编排层修法（线性轮次）正交可同时做——本页\"音频前处理链 AEC→ANS→AGC→VAD 严格顺序\"Claim 补上\"参考信号来源\"维度。"
+        }
+      ]
+    },
+    {
+      "id": "system-one-model",
+      "type": "concept",
+      "title": "System One 模型（Typed Decision 决策原语）",
+      "summary": "System One 模型是一类**不生成文本、只对调用方运行时声明的问题返回类型化决策**的模型：输出的基本单位从 token 换成 typed decision——目前三种原语 Choice（从固定选项中选）、Score（打分）、Noul（是或否），每个问题直接给出一个概率分布和一个 confidence，多个问题在同一次前向里并行给出。名字借自 Kahneman 的 System 1/2：现有 LLM（长思维链、多秒级、面向人的文字）全部落在 System 2 一侧，而软件里绝大多数决策（这条消息是不是垃圾、下一步调哪个工具、这个请求属哪类）要的是一个快速的 System 1 答案。它不是\"不思考、智力低\"，也不是\"更小的 LLM\"，改变的是计算形式。\n\n该类别目前由 TypeSafe AI 定义，首款产品 Jev（2026-09-15 发布，取自经济学家 Jevons，训练目标 RLCD，见 [[confidence-calibration]]），\"System One Model\"尚未成为社区共识，架构细节未公开；但\"把不确定性变成软件可消费的一等公民\"这个方向对 agent 与 harness 的意义是实在的——传统 agent 最大的问题不是不知道答案，而是不知道自己不知道却继续执行。它与 reasoning 模型是**组合而非替代**：System One 做快速的分类、打分、路由、门控层，少量困难或开放式 case 交给 reasoning 模型，让这次交接干净的正是 confidence 阈值——这是 [[generation-evaluation-separation]]\"生成归 LLM、判断该不该执行归专门决策层\"的模型级形态。vault 内两处实践（Computer Use 动作判断、Codex 模型与 effort 路由）的共同分工见方法页 [[decision-policy-executor-split]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "decision-model",
+        "agent-harness",
+        "model-routing"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "准确的说法不是\"把 decoding 并行化\"，而是输出原语从 token 换成 typed decision——由此几个性质是构造上成立的",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "传统 LLM 输出 `P(y1|x), P(y2|x,y1), …` 天然串行；套上 JSON Schema / Structured Output 只改最终格式约束，模型仍逐 token 生成字符串再由程序解析校验取值。Jev 让调用方先声明问题与答案空间，模型对每个问题直接输出分布 + confidence（示例：`sky_color → Choice(blue, gray, …)` 返回 `{gray 0.61, green 0.27, …} confidence 0.83`）。构造上成立的性质：不会输出 schema 之外的值（TypeSafe 报告结构化输出错误率为零）；不生成解释、代码、理由；多加一个问题几乎不增加延迟，只多付问题本身的 token。宣称数字位置：输入每十亿 token $42、输出不计费、端到端 70~500ms、相对前沿模型数十到数百倍速度/成本优势——来自其自建 workflow benchmark，参考模型场景自选，且承认无法证明定价无补贴，只能当方向性信号。输入目前仅文本与结构化状态，不支持图像。"
+        },
+        {
+          "statement": "与 reasoning 模型八维对照——关系是组合而非替代，confidence 阈值是交接点",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "八维：输出单位（token 序列可含思维链 vs 分布 + confidence）、计算形式（自回归、测试时算力随推理长度增长 vs 一次前向并行多决策）、输出空间（开放由模型生成 vs 封闭由调用方运行时声明）、解释性（有 rationale vs 只有概率）、延迟（秒到分钟 vs 报告 70~500ms）、适用位置（开放式生成/多步推理/需向人解释 vs 程序里的 if/switch/路由/打分/门控）、训练目标（RLHF/RLVR vs RLCD）、输入模态（多模态 vs 文本与结构化状态）。DataCamp 概括：Jev 做快速的分类/打分/路由层，少量困难 case 交 reasoning 模型，confidence 阈值让交接干净。"
+        },
+        {
+          "statement": "为什么不是\"LLM 换一个分类头\"——四件事：运行时答案空间、原生并行多问题、校准拿不到、去自回归即去测试时算力",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "速度提升的大头确实来自去掉自回归，业界也在做（Turing Post 把 Jev 定位为分类/校准/选择性预测研究线的重新组合并列出开源类 Jev 项目）。但差四件事：① softmax 头标签空间训练时定死，Jev 要回答现场给出的任意 Choice/Score——LLM 现成办法是约束解码只走一步读选项 logit，可单次前向但选项多 token 要拼概率、选项顺序与字面带位置/词面偏差、这些 logit 从未被当决策概率训练；干净做法需把选项编码进模型让决策作 query 去 attend 状态表示，已是输出侧改架构；② 同一状态问十个问题 LLM 要串行或十次前向，parallel sampler 把\"一次前向 N 个决策\"做成原生；③ **最关键**：LLM logit 对决策没校准过且 RLHF 破坏校准，接分类头用交叉熵在硬标签上微调得到典型过度自信分类器——分类头解决延迟，RLCD 解决\"0.9 是否真九成对\"，两者分开；④ 思维链是把推理展开成序列长度换算力，单次前向必须把全部推断压进一次前向，对 System 1 类任务够用，对多步推理不够——不是免费加速而是明确边界。前沿厂商部分做了（logprobs、Structured Outputs、moderation 分类模型），但生成文本是它们的产品，按决策计价的小模型是另一门生意。"
+        },
+        {
+          "statement": "企业今天就能搭简版验证\"决策层单独拆出来\"是否成立——LLM 约束单步解码读选项 logit + 自有标签 temperature scaling，固定任务可直接微调 encoder",
+          "source": "TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "简版与 Jev 的差距就是上一条的四件事：跨运行时 schema 的通用性、原生并行多问题、训练内建的校准、未公开的架构细节。它的实际意义是：在决定是否依赖一个新供应商之前，以最低成本验证\"把决策层从生成层拆出来\"这条路在自己业务上是否成立。与传统分类器的四维差别（任务与标签固定 vs 运行时声明；单模态单对象 vs 对话+档案+交易+规则拼接的状态需语言理解；一任务一分布 vs 多问题并行程序分支；交叉熵常伴过度自信 vs 校准即训练目标 + 独立 confidence）说明这是 ML 分类器的谱系延伸而非断裂。（作者建议，未在 vault 内实践）"
+        },
+        {
+          "statement": "实践位置——UI 动作判断与模型/effort 路由；Jev 只判断不执行、不看图、不授权，确定性代码守边界",
+          "source": "Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "两个实践共同点：Jev 给 typed 判断与置信度，确定性代码守边界（阈值、兼容性、兜底、锁、验收），执行由 LLM 或执行器完成——两文互相注明\"分工同构\"。Computer Use 侧：API `POST /v1/systemone`（`jev-1.13.0`）不接受截图、不能替换 Codex 背后的通用模型；装了官方 `typesafe-ai` skill 不等于每步 UI 决策都经过 Jev（skill 只是调用指导），真正接管循环的是开源执行器（`browser-use/jev-ultrafast` 读 DOM 一次请求同时选动作与目标；`awlevin/typesafe-computer-use` OCR + 辅助功能树多个 Choice）；\"事后询问\"接法（Codex 已决定再问 Jev 一次）纯增加请求只会更慢，\"接管循环\"（观察→元素编号表交 Jev 选→执行→重观察，需填文字才调 writer）才是提速来源。Codex 路由侧：Jev 一次 typed 判断回答四个独立问题（execution 28 组合 Choice / 任务需求 Choice / 高风险 Noul / 能力缺口 Noul），不回答、不调工具、不授权，不看图片、工具输出与代码库；近期文字发往 TypeSafe 需评估数据边界（对照轻量 LLM 路由器与执行模型同 Azure 租户数据不出户）。两处细节见 [[decision-policy-executor-split]] 与 [[computer-use]] / [[model-routing]] 页 Claims。"
         }
       ]
     },
@@ -7763,6 +8176,72 @@
       ]
     },
     {
+      "id": "decision-policy-executor-split",
+      "type": "method",
+      "title": "决策-策略-执行三分（Typed 判断 · 确定性策略 · 执行）",
+      "summary": "把 agent 循环里\"下一步做什么\"的判断从生成与执行中拆出来，交给一个只返回 typed decision（分布 + confidence）的 [[system-one-model]]；把阈值、兼容性、兜底、绑定、锁、冷却、验收等**所有守边界的逻辑**写成确定性代码；执行（回答、工具调用、UI 动作）仍由 LLM 或执行器完成。三个角色互不越界：判断模型不执行、不授权、不看它不该看的东西；确定性代码不总结或重写执行模型的输入；执行模型不自判\"该不该\"。\n\n该模式在 vault 内有两个 2026-09-27 的实践：Computer Use 系列八把 Codex 在网页操作里的动作选择交给 Jev（同一执行器只换判断模型的受控对照），Codex Desktop 系列07 在 provider 层用本机网关让 Jev 在七模型 × 四档 effort 间做任务级路由。两文互注\"分工同构\"。适用前提是：答案空间能在运行时声明成封闭选项、错误成本可由验收器与人工确认兜住、判断的输入可以裁剪成文本/结构化状态。它是 [[generation-evaluation-separation]] 的一种实现形态：生成与门控分离，且门控用不生成文本的模型来做。",
+      "tags": [
+        "wiki",
+        "method",
+        "agent-harness",
+        "decision-model",
+        "model-routing",
+        "computer-use"
+      ],
+      "category": "",
+      "method_type": "architecture-pattern",
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "规则做筛子、typed 判断在筛后的合法候选里选——硬约束留给规则，语义判断交给模型，不是二选一",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "规则匹配（关键词/正则/长度/文件类型）六维短板：读不懂上下文（\"继续\"、\"补个测试\"看不出改格式还是查并发）、候选空间写死加模型要改代码、输出无把握程度、规则漏写就误判且不知道；优势是零延迟零费用、完全可解释。Jev 反之：近期对话进入判断、候选运行时声明加一行配置、完整分布 + confidence 可设门槛与兜底、低置信度会说\"不确定\"由代码接管；代价是一次往返 0.2~0.5 秒、无理由文本。所以硬约束（用户手选优先、部署存在、effort 支持、不透明历史不迁移）留给规则，规则筛完 Jev 选。"
+        },
+        {
+          "statement": "与轻量 LLM 路由器的八维区别——封闭选项构造上不越界、confidence 是训练目标、单次前向亚秒、输入极低输出免费；代价是无理由、无推理、数据出租户",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "轻量 LLM（如 Luna）读上下文输出模型名：生成文本或 JSON 要解析校验、可能输出不在候选里的名字；可以让它写一个置信数但 RLHF 训练的模型没被训练成让这个数与正确率对应；自回归秒级（受控对照里同类单步判断 Astra 2~3 秒）；按输入输出 token 计费；能给理由便于调试；可思维链处理模糊长任务更稳；与执行模型同 Azure 资源数据不出租户；同家族给自家排序可能有偏。Jev：封闭分布不越界、confidence 是 RLCD 训练目标（仍需在自己任务上校准）、0.2~0.5 秒、输入 $0.042/M 输出免费、不给理由、一次前向不做复杂推理、近期文字发往 TypeSafe 需评估数据边界、第三方判别器。两者可叠：Jev 做每次任务开始的快判，仅在返回 uncertain 且任务被判 demanding 时才让 LLM 读更长上下文二次判断——当前实现未做。"
+        },
+        {
+          "statement": "把\"任务需求\"与\"型号选择\"拆成两个问题是设计里最重要的一步——不确定不再等于最强兜底",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "早期版本只问\"选哪个模型\"，Jev 返回 uncertain 时代码直接用最强模型兜底，一句 \"hello, who are you\" 也落到 Astra。拆开后\"选不准型号\"与\"任务很难\"是两件事：前者按需求（simple/standard/demanding/unknown）分层兜底，后者才需要最强模型。四个问题互相不可见：execution Choice（28 组合 + uncertain，主判断）/ 任务需求 Choice（分层兜底依据）/ 高风险 Noul（只影响选模不授予权限）/ 能力缺口 Noul（已有绑定时是否值得升级的证据）。confidence 是分类的确定程度，不是选中模型的完成率。（已实现、离线 62 项测试通过、归档时共享服务仍是旧版本，\"已实现未启用\"）"
+        },
+        {
+          "statement": "路由粒度是任务不是 input——升降级不对称，Jev 回答的是\"当前情况是否值得打破绑定\"而非\"这条消息属哪一档\"",
+          "source": "Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Codex 请求自带 `thread_id` / `turn_id` / `context_window_id`，网关以 thread 为绑定范围、用 turn_id 阻止同回合重复判断；任务可跨多 turn，绑定在任务开始时建立，只有明确事件（新任务、要求重评、能力缺口）才重判。原因是缓存账：缓存不跨模型共享，切换后新模型冷启动；算例——留在 A 读历史 10 万 token 按缓存价 10% 等价 1 万，切到 B 无缓存按普通价（A 的 20%）等价 2 万，B 单价便宜五倍这一次仍贵一倍。所以升级看能力缺口/关键验证反复失败/任务范围扩大，降级等任务结束或明确新任务且价格与预测齐全；最小保持 300 秒、冷却 120 秒、只改 effort 也刷新保持时间否则保持期被绕过。effort 规则：请求里的 `reasoning.effort: low` 无来源标记分不清用户手选还是客户端默认，靠显式策略头 `X-Jev-Effort-Policy: auto|fixed` 传意图并在出站前剥离；max/ultra 不进自动池。已实测：同回合第二次请求读取 15,995 与约 17,400 个缓存 token；Jev 首选 gpt-5.6-terra 下一回合保持、手动 Astra 直通。"
+        },
+        {
+          "statement": "事后询问只会更慢，接管循环才是提速来源；单变量受控对照下判断延迟约为 LLM 的 1/8",
+          "source": "Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论",
+          "first_seen": "2026-09-27",
+          "last_updated": "2026-09-28",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "探索轮直接拿系统 Browser 与 Jev 执行器比总时间得出\"Jev 更慢\"，复核发现三处口径不一致（Jev 总时间含关闭临时 Chrome 与守护进程退出约 15.7 s、writer 推理档不同、执行链路与观察方式不同）。修正后只留一个变量：同一本地合成页 1280×720、同一 DOM 观察器与编号规则、同一 Azure gpt-6-astra/medium writer 请求逐字一致、同一系统 Browser 接口 20 步上限 120 s 软截止、逐字段验收——唯一变量是下一步动作由 Astra 还是 jev-1.13.0 判断。结果 8 次正式样本：B1 17.76 s → 6.10 s（−65.7%），B2 23.71 s → 9.84 s（−58.5%）；判断部分 14.62 s → 1.79 s；两组轨迹完全一致（B1 五步、B2 六步）；成功率各 4/4。Jev 组 6 秒分解：6 次判断 29%、1 次 writer 生成用户已给定的 \"1000\" 占 45%（当前最大可优化项）、开页/观察/动作/验收 26%——判断串行六次是循环结构决定的。数据边界：只有两类简单页面、每组 4 次、无相似选项/动态加载/错误恢复/canvas/iframe/真实站点干扰；不是\"完整产品\"对照（Codex 原生是一轮批量规划多步，本实验是逐步循环）。"
+        }
+      ]
+    },
+    {
       "id": "four-layer-architecture-quality-gate",
       "type": "method",
       "title": "四层架构质量门禁",
@@ -8129,8 +8608,8 @@
       "category": "",
       "method_type": "decision-framework",
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.75,
+      "claims_count": 5,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "分层依据是评估信号的成熟度，不是改写算法——核心差异在\"回路由谁闭合\"",
@@ -8167,6 +8646,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "工作流是\"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt\"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。"
+        },
+        {
+          "statement": "阶梯是数据飞轮中圈的优化环节：L0→L2 每上一级人的参与从\"人改人看\"退到\"人定评估集、算法闭合回路\"；L1 用 RLHF 式主观分、L2 才可能接 RLVR 式客观分；L2→RSI 的迁移阈值尚未知",
+          "source": "FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "FinOps 系列 02 把三层嵌套循环（经济飞轮 / 工程数据飞轮 / RSI）的中圈定义为\"使用洞见 → 评估 → 优化 → 部署\"，优化手段沿本阶梯 prompt 改写 → APO → SFT → RL 升级（[[data-flywheel]]）。评估信号的成熟度对应 reward 来源：L1 阶段 LLM-judge 主观分是 RLHF 式信号、人闭合回路；到 L2 才有机会接 RLVR 式客观 reward、算法闭合回路；内圈 RSI 在 replay 中比较策略几乎只能建立在 RLVR 式信号上（主观分离线不可重得）。飞轮路线在右栏任务上的四步（人当验证器积累带标签样本 → 客观 reward 可用成功率上升 → 越过迁栏阈值 → 人力转向下一批）中，L1 阶段的 bad case 正是 L2 评估集的种子——与本页 30~50 条起步 / 100+ 条稳定的迁移阈值一致。开放问题：从 L2 到 RSI 是否有类似阈值还是取决于 replay 的 coverage。FLAN lesson 的提醒：L2 产出的 prompt 配方 / skill 文本 / 微调数据在模型换代后可能归零，评估集与验收标准最抗归零应优先投资。"
         }
       ]
     },
@@ -8185,8 +8673,8 @@
       "category": "",
       "method_type": "workflow",
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.76,
+      "claims_count": 7,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "reward 设计不是写规格是做实验——第一天就需要三份输入，只用业务直觉拍权重是可在设计当时发现的缺陷",
@@ -8241,6 +8729,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "当业务属性本身是主观品味（语感、风格）时，\"三份输入\"的第一份需要一条前置编译链：① 偏好差分法——不问\"好文案什么样\"，给同题两版（7 分 vs 10 分）问\"把 B 改到 A 最少动什么\"，从偏好对归纳维度；② BARS 锚定量表——每维度配分档真实样例 + 边界反例（规则是品味的有损压缩，样例保留未显式化的隐维度）；③ 维度硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果。产出接本方法的三层验证闭环：judge 与专家对齐（对应盲选 ≥85%）、盲测胜率、噪声控制。这把 Step 4 的盲选校准从\"反推权重\"扩展到\"从零发明维度\"。"
+        },
+        {
+          "statement": "FinOps 语境下两本账同样成立：接收方验收分作历史可比业务口径不动，中圈优化 reward = 成功率 / 成本单设；RLVR 式客观分要尽可能多接，延迟稀疏处用规则校验 / PRM / 抽样复核作近端代理",
+          "source": "FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界",
+          "first_seen": "2026-09-26",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "[[cost-per-task]] 的 success 字段由接收方判定（生产方不得自评），这份验收分逐字节不动作业务口径与历史比较基准；用于训练/优化的 reward 单独设计——可拆 judge、约束饱和分量、加确定性规则。不分家的后果是 Goodhart：把 cost per task 直接当优化目标，agent 学到省钱但降质（少验证、缩输出、模糊情况直接宣告完成），生产方看 cost 在降接收方看错误成本在升。三份输入之外补一条 FinOps 侧纪律：先把 reward 做稳再让轮子转快——客户侧 APO 摆动主因是评估噪声，同一 reward 进 RL/RSI 后噪声仍是第一大不稳定源，扩大评估集、同 prompt 多次采样取均值、拆 judge 降分母噪声要在加速内圈前完成。RLVR 式信号（对源单据规则校验、测试结果、对账结论）是\"确定性规则分白送零噪声\"的业务侧来源；其延迟与稀疏用 [[process-reward-model]] / 规则校验 / 抽样人工复核作近端代理。左栏桶（无 ground truth）只能 LLM judge + 抽样人工校准。"
         }
       ]
     },
@@ -9383,6 +9880,12 @@
       "description": "bundled payload 随第一方 App 分发 = 可移植性光谱\"不可移植端\"的实证"
     },
     {
+      "source": "codex-desktop-architecture",
+      "target": "model-routing",
+      "relation_type": "uses",
+      "description": "provider 层回环网关是模型路由在 Codex 架构内的接入位置（目录别名 → 本机服务 → Azure 部署）"
+    },
+    {
       "source": "compute-locus-spectrum",
       "target": "voice-live-agent",
       "relation_type": "grounds",
@@ -9417,6 +9920,42 @@
       "target": "harness-portability-spectrum",
       "relation_type": "grounds",
       "description": "Skill 跨 CLI/App 可发现但 runtime 不可移植，是可移植性分层的第 3 处独立论证"
+    },
+    {
+      "source": "computer-use",
+      "target": "system-one-model",
+      "relation_type": "uses",
+      "description": "action loop 里\"选下一步动作\"这一判断可交给 typed 决策模型（DOM 元素编号表 → Choice），执行与验收仍在执行器"
+    },
+    {
+      "source": "confidence-calibration",
+      "target": "cost-per-task",
+      "relation_type": "grounds",
+      "description": "校准是\"人工验证成本\"项能从复核 100% 降到复核被标记部分的机制，直接改变迁栏阈值的可达性"
+    },
+    {
+      "source": "confidence-calibration",
+      "target": "harness-quality-gate",
+      "relation_type": "grounds",
+      "description": "门控阈值只有在校准成立时才是有意义的信号；阈值策略至少三个输入（校准后概率、错误成本、复核成本）"
+    },
+    {
+      "source": "confidence-calibration",
+      "target": "generation-evaluation-separation",
+      "relation_type": "extends",
+      "description": "校准把\"评估\"从判对错细化到\"判断自己判对的概率\"；结果标签回流是评估侧独立于生成侧的数据前提"
+    },
+    {
+      "source": "confidence-calibration",
+      "target": "reinforcement-learning",
+      "relation_type": "extends",
+      "description": "RLCD 是 RLHF / RLVR 之外的第三条训练目标：优化对象从人类偏好 / 可验证正确性换成校准过的概率分布"
+    },
+    {
+      "source": "confidence-calibration",
+      "target": "llm-as-a-judge",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "conjugate-transformation",
@@ -9551,6 +10090,48 @@
       "description": "契约测试是质量门禁测试层的一部分"
     },
     {
+      "source": "cost-per-task",
+      "target": "generation-evaluation-separation",
+      "relation_type": "extends",
+      "description": "\"成功判定归接收方、验收口径与优化口径分开\"是分离原则在 FinOps 度量上的延伸——判分的一方不能是写答案的一方"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "model-routing",
+      "relation_type": "constrains",
+      "description": "路由只优化第一项、只对左栏任务有效；切换模型须算缓存总账而非比单价"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "three-layer-token-optimization",
+      "relation_type": "constrains",
+      "description": "token 压缩手段的适用边界：右栏任务第三项主导，压第一项过头会让第三项涨回来"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "hybrid-inference-framework-selection",
+      "relation_type": "grounds",
+      "description": "该决策页\"选型口径升级为每成功任务成本\"Claim 的理论展开（三项公式 + 分桶）"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "grounds",
+      "description": "Copilot → Cowork → Super App 分档定价（席位 vs Copilot Credits）的解释框架：人在环位置后移"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "bitter-lesson",
+      "relation_type": "extends",
+      "description": "金字塔 algorithms < compute < data < doing the right task 把 Bitter Lesson 再推一层：连方法都不是关键，关键是选对任务"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "reward-design-three-inputs",
+      "relation_type": "uses",
+      "description": "两本账分家（验收分不动、优化 reward 单设）是防 cost per task 被 Goodhart 的手段"
+    },
+    {
       "source": "cybernetics-agent-design",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -9561,6 +10142,54 @@
       "target": "skill-runtime",
       "relation_type": "contrasts",
       "description": "Skill Runtime 对应控制论中缺位的 L5 状态观测层"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "cost-per-task",
+      "relation_type": "uses",
+      "description": "任务完成花费是贯穿三层循环的同一把刻度（单位经济学 / 评估目标 / RSI 优化对象），也是迁栏阈值的来源"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "continual-self-improving-ai",
+      "relation_type": "contrasts",
+      "description": "RSI 是飞轮去掉人之后的样子：同一循环形状，主语从产品/公司换成 agent 系统，积累从数据资本换成能力本身，时间常数差两到三个量级"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "reinforcement-learning",
+      "relation_type": "uses",
+      "description": "内圈 RSI 几乎只能建立在 RLVR 式可验证信号之上；RLHF 式主观分对应左栏、在离线回放中无法重新获得"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "bitter-lesson",
+      "relation_type": "extends",
+      "description": "金字塔 doing the right task 把 Bitter Lesson 再推一层：飞轮与 RSI 都不能纠正任务选错"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "skillopt",
+      "relation_type": "uses",
+      "description": "`best_skill.md` 是 RSI 积累\"能力本身\"这类资产的具体形态；bad-case mining 是中圈到内圈的同一循环"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "prompt-optimization-maturity-ladder",
+      "relation_type": "uses",
+      "description": "中圈优化手段沿 L0→L2 逐级上升，人的参与逐级后退；L1 用 RLHF 式主观分、L2 才有机会接 RLVR 式客观分"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "reward-design-three-inputs",
+      "relation_type": "uses",
+      "description": "两本账分家与\"确定性规则分白送零噪声信号\"是内圈安全阀的具体做法"
+    },
+    {
+      "source": "data-flywheel",
+      "target": "generation-evaluation-separation",
+      "relation_type": "untyped",
+      "description": ""
     },
     {
       "source": "diffusion-model",
@@ -9749,6 +10378,12 @@
       "description": "评估结果作为负反馈驱动生成修正"
     },
     {
+      "source": "generation-evaluation-separation",
+      "target": "cost-per-task",
+      "relation_type": "grounds",
+      "description": "success 字段由接收方判定、验收口径与优化口径分开，是分离原则给 FinOps 度量设计的直接约束"
+    },
+    {
       "source": "global-workspace-llm",
       "target": "claude-code-memory-system",
       "relation_type": "contrasts",
@@ -9879,6 +10514,12 @@
       "target": "harness-engineering",
       "relation_type": "contrasts",
       "description": "名称类似但不同概念：Harness Quality Gate 是 DevOps 质量门禁，Harness Engineering 是 AI Agent 系统工程范式"
+    },
+    {
+      "source": "harness-quality-gate",
+      "target": "generation-evaluation-separation",
+      "relation_type": "extends",
+      "description": "门禁是分离原则在\"放行与否\"这一步的工程化：开发期由 Lint/架构测试/AI Review 判，运行时由带 confidence 阈值的决策层判"
     },
     {
       "source": "hermes-agent",
@@ -10149,6 +10790,18 @@
       "target": "claude-code-agent-subagent",
       "relation_type": "contrasts",
       "description": "Claude Code 的 `model` 参数是 Agent 级分级，MCP 模型路由是 task 级细粒度控制"
+    },
+    {
+      "source": "model-routing",
+      "target": "system-one-model",
+      "relation_type": "uses",
+      "description": "路由的判断层可以交给不生成文本的 typed 决策模型：封闭候选 + confidence 阈值 + 分层兜底"
+    },
+    {
+      "source": "model-routing",
+      "target": "cost-per-task",
+      "relation_type": "constrains",
+      "description": "路由只优化任务完成花费的第一项（模型调用），对右栏任务几乎无效；切换要算缓存总账而非比单价"
     },
     {
       "source": "negative-feedback",
@@ -10799,6 +11452,36 @@
       "description": "语音技术栈的传输层依赖协议选型"
     },
     {
+      "source": "system-one-model",
+      "target": "confidence-calibration",
+      "relation_type": "uses",
+      "description": "System One 模型的可用性建立在校准之上：RLCD 是模型层校准，应用层校准由使用方补"
+    },
+    {
+      "source": "system-one-model",
+      "target": "generation-evaluation-separation",
+      "relation_type": "extends",
+      "description": "\"生成归 LLM、判断该不该执行归专门决策层\"是分离原则从流程/角色层下沉到模型层：判断用不生成文本的模型来做"
+    },
+    {
+      "source": "system-one-model",
+      "target": "llm-as-a-judge",
+      "relation_type": "contrasts",
+      "description": "两种判断层实现：LLM 生成式评估（有 rationale、可推理、校准差、秒级）vs typed decision（无理由、单次前向、校准即训练目标、亚秒级）"
+    },
+    {
+      "source": "system-one-model",
+      "target": "harness-quality-gate",
+      "relation_type": "grounds",
+      "description": "为门控提供可读的不确定性信号（confidence + 候选概率），使\"该不该执行\"从布尔开关变成带阈值的策略"
+    },
+    {
+      "source": "system-one-model",
+      "target": "decision-policy-executor-split",
+      "relation_type": "produces",
+      "description": "两个实践共同提炼的\"typed 判断 / 确定性策略 / 执行\"三分模式由本概念派生"
+    },
+    {
       "source": "testcontainers",
       "target": "harness-quality-gate",
       "relation_type": "part-of",
@@ -11073,6 +11756,54 @@
       "target": "ai-native-five-layer-pipeline",
       "relation_type": "contrasts",
       "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "system-one-model",
+      "relation_type": "implements",
+      "description": "该模式是 System One 模型在 agent 循环里的接入方式：judge 用 typed decision，边界用确定性代码"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "confidence-calibration",
+      "relation_type": "uses",
+      "description": "阈值与兜底依赖 confidence；未做应用层校准前阈值只能标为\"策略值\""
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "generation-evaluation-separation",
+      "relation_type": "implements",
+      "description": "生成与门控分离的一种实现：判断层不生成、执行层不自判、验收独立于两者"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "cost-per-task",
+      "relation_type": "uses",
+      "description": "费用按模型归属记账、切换算缓存总账、价格为空不报节省——任务完成花费口径在路由与执行器层的落地"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "model-routing",
+      "relation_type": "extends",
+      "description": "在\"昂贵模型判断、廉价模型执行\"之上加了第三个角色：判断本身也可以交给不生成文本的决策模型，并把粒度从每请求提到每任务"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "computer-use",
+      "relation_type": "addresses",
+      "description": "解决 GUI action loop 里\"每步都让 LLM 完整思考一次\"导致的串行慢与贵；不解决纯视觉与桌面权限问题"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "prefix-caching",
+      "relation_type": "uses",
+      "description": "任务级绑定与最小保持时间的依据是缓存不跨模型共享，切换要算总账"
+    },
+    {
+      "source": "decision-policy-executor-split",
+      "target": "harness-five-dimension-quality-gate",
+      "relation_type": "extends",
+      "description": "质量门禁从代码/架构维度延伸到运行时决策：门控信号从布尔开关变成带 confidence 的阈值策略"
     },
     {
       "source": "four-layer-architecture-quality-gate",
@@ -11571,7 +12302,8 @@
         "advantage-function",
         "online-learning",
         "context-projection",
-        "claim-based-schema"
+        "claim-based-schema",
+        "system-one-model"
       ]
     },
     {
@@ -11592,7 +12324,8 @@
         "llm-as-a-judge",
         "rubric",
         "process-reward-model",
-        "global-workspace-llm"
+        "global-workspace-llm",
+        "confidence-calibration"
       ]
     },
     {
@@ -11663,6 +12396,14 @@
       "name": "AI 硬件与推理基础设施",
       "members": [
         "ai-inference-asic"
+      ]
+    },
+    {
+      "id": "ai-finops",
+      "name": "AI FinOps 与经济学",
+      "members": [
+        "cost-per-task",
+        "data-flywheel"
       ]
     },
     {
