@@ -76,7 +76,7 @@ Azure 会把它原样回显在 `session.updated.session.avatar.ice_servers`，�
 | 公网可达，UDP 3478 + TCP/TLS 443 | Azure 媒体服务器从公网发包到你的 allocation；企业网 UDP 被封时浏览器要回落 TCP 443 | `listening-port=3478`、`tls-listening-port=443`、`external-ip=<公网IP>/<内网IP>`（云上 NAT 后必填） |
 | 短期凭据（RFC 8489 long-term credential 机制 + TURN REST API 约定） | 凭据会下发到浏览器，必须可过期；不要用静态用户名密码 | `use-auth-secret`、`static-auth-secret=...`、`realm=turn.example.com`；后端按 `username = <unix过期时间>:<标识>`、`credential = base64(HMAC-SHA1(secret, username))` 生成 |
 | 允许对端是 Azure 的公网地址 | TURN 只转发浏览器 CreatePermission 过的对端；对端就是 Azure 在 answer 里给的公网候选 | 不要把 `denied-peer-ip` 配得过宽；如做白名单，放行数字人服务所在 Azure 区域的地址段 |
-| 带宽与并发 | 1080p H.264 数字人约 2~4 Mbps/会话（photo 头像 512×512 低一个数量级），音频上行约 0.4 Mbps；全部经中继 | 按并发会话数 × 码率预留；`total-quota` / `user-quota` 设上限 |
+| 带宽与并发 | 1080p H.264 数字人约 2~4 Mbps/会话（photo 头像 512×512 低一个数量级），音频上行走 WebSocket 不经 TURN，24 kHz PCM16 含封装实测约 0.54~0.68 Mbps（[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 4.5.1）；视频与下行音频全部经中继 | 按并发会话数 × 码率预留；`total-quota` / `user-quota` 设上限 |
 | 地理位置 | 媒体路径变成 浏览器 → 你的 TURN → Azure，中继离两端都远会加 RTT | 放在客户用户与 Azure 区域之间，或客户机房 DMZ |
 | 证书 | `turns:` 需要真实证书，浏览器不接受自签 | `cert=` / `pkey=`，Let's Encrypt 即可 |
 

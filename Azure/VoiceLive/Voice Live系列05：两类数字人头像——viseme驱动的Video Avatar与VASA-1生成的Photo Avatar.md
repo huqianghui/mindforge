@@ -178,7 +178,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 
 | 方案 | 单会话下行（视频） | 100 并发经中继的下行总量 | 上行（音频） |
 |---|---:|---:|---:|
-| Video 头像，默认 1080p H.264 | 约 2~4 Mbps | 约 200~400 Mbps | 约 0.4 Mbps/会话，两类相同 |
+| Video 头像，默认 1080p H.264 | 约 2~4 Mbps | 约 200~400 Mbps | 24 kHz PCM16 原始 0.38 Mbps，含 base64 与 JSON 封装实测 0.54~0.68 Mbps；级联模式可降 16 kHz 至约 0.36~0.45 Mbps（[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 4.5.1），两类相同 |
 | Photo 头像，512×512 | 约 0.3~0.8 Mbps | 约 30~80 Mbps | 同上 |
 
 把它写进选型时要带三个限定：
