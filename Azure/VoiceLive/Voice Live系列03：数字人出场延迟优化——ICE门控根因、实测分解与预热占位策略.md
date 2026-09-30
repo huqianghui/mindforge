@@ -15,7 +15,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 # Voice Live 系列 03：数字人出场延迟优化——ICE 门控根因、实测分解与预热占位策略
 
 > 本文源于 AI 面试项目 [AI-interview-vibe-coding](https://github.com/huqianghui/AI-interview-vibe-coding) 的一次真实性能排查。所有时间均为真实环境实测（本地前后端 + 真实 Azure Sweden Central Voice Live + 外部面试网关），非估算。
-> 版本脉络：ICE 门控修复 v0.37.4.2（PR #95）、说明页预热 v0.37.4.0（PR #93）、人物形象秒出（截帧占位）v0.37.4.3。
+> 三层优化按落地顺序：ICE 门控修复、说明页预热、人物形象秒出（截帧占位）。
 > 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲了 WebSocket + WebRTC 双通道与 Avatar 连接时序；[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md) 的开放问题里挂着"实测延迟数据"——本文用数字人出场链路补上了其中一块。
 
 ---
@@ -26,7 +26,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 
 体验上还有一个连带缺陷：系统原本设计了「先见人再开口」的 6 秒等待门，但在延迟面前必然超时（日志：`avatar-ready gate elapsed; reading first question anyway`）——结果是**先闻其声、后见其人**，比单纯的慢更违和。
 
-![数字人出场延迟分解：修复前后与生产环境对照|700](../../asset/voice-live-avatar-latency-2026-09-14.svg)
+![数字人出场延迟分解：修复前后与云上部署对照|700](../../asset/voice-live-avatar-latency-2026-09-14.svg)
 
 ## 二、延迟测试：先分解，再定位
 
@@ -34,7 +34,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 
 测量方法：给页面 console 注入时间戳记录器，用最坏情况操作（页面加载后立即点「开始面试」，说明页出现后立即点「I'm ready」，不留任何阅读时间），把 16 秒切成可归因的段：
 
-| 阶段                                                  | 耗时（v0.37.4.1） | 归因                        |
+| 阶段                                                  | 耗时（修复前） | 归因                        |
 | --------------------------------------------------- | ------------: | ------------------------- |
 | 点「开始面试」→ 面试创建完成、开始连语音                               |         2.76s | 外部面试网关一次往返                |
 | WS proxy → Azure Voice Live 会话建立（`proxy.connected`） |         2.52s | 后端 → Sweden Central 的网络往返 |
@@ -76,7 +76,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 - **mDNS 候选**（Chrome 为隐私把局域网 IP 混淆成 `xxx.local`）增加一层解析等待；
 - **IPv6 / 公司代理 / 防火墙**：路由黑洞或静默丢包，同样表现为「悬着不结束」。
 
-普通家庭单网卡网络里，所有接口很快各自了结，`complete` 在几百毫秒内到达——这就是为什么这个 bug 在开发者/企业办公电脑上必现，而在「干净」网络里测不出来。
+普通家庭单网卡网络里，所有接口很快各自了结，`complete` 在几百毫秒内到达——这就是为什么这个问题在开发者/企业办公电脑上必现，而在「干净」网络里测不出来。
 
 ## 四、洞见：把等待目标从「全量集」改成「够用集」
 
@@ -97,9 +97,9 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 ## 五、优化：三层策略 + 部署位置
 
-### 5.1 第一层：ICE 门控快路径（v0.37.4.2，消灭 7.6 秒）
+### 5.1 第一层：ICE 门控快路径（消灭 7.6 秒）
 
-修复位置 `frontend/src/hooks/useAvatarStream.ts`：
+修复落在前端负责 WebRTC 握手的 hook 里：
 
 - 收到**第一个 relay（或 srflx）candidate** 后，开一个 **300ms 收敛窗**（让同批到达的候选一并写入 SDP），然后立即发 offer；
 - `typ host` 候选**不**触发快路径（局域网地址到不了 Azure 的 relay，发了也没用）；
@@ -107,7 +107,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 修复前后同环境实测对比：
 
-| 阶段                             | 修复前 v0.37.4.1 |                      修复后 v0.37.4.2 |
+| 阶段                             | 修复前 |                      修复后 |
 | ------------------------------ | ------------: | ---------------------------------: |
 | 面试创建（外部网关往返）                   |         2.76s |           4.00s（该次偏慢，波动区间 ~2.5-4s） |
 | WS proxy → Azure 会话建立          |         2.52s |                              2.67s |
@@ -120,30 +120,30 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 **为什么总量只降了 4.73s，而不是 ICE 段省下的 7.6s？** 逐段相减即可对账：ICE 段 −7.61s，但面试创建 +1.24s、会话建立 +0.15s、首帧 +1.48s——三段增加合计 +2.87s，恰好补上缺口。这三段的变化与修复**无关**，因果上也不可能有关：链路严格串行，Azure 侧收到 offer 前不做任何工作，ICE 门控改的只是「何时发 offer」，不存在把成本挤到别段的通道。增加纯属单次采样的波动——面试创建的波动区间本就是 ~2.5-4s（修复前抓到快端、修复后抓到慢端）；首帧段的多轮实测分布为 2.1-3.9s（见 5.5 节），修复前后的 2.40s 与 3.88s 都落在正常区间内，单样本差异不构成趋势。方法论上：修复消灭的是一个**确定性常数**（8s 兜底每次必打满，方差为零），其余各段是**随机变量**，单次总量对比会把确定性收益和采样噪声混在一起——所以定位和验证都要看**分段数字**（ICE 段 7.99→0.38 两边都稳定，才是修复效果的干净证据）。按各段典型值折算，修复前后的期望总量约为 17s vs 10s，期望差正是 ~7.6s；若要发布统计口径的数字（P50/P95），需多次运行取分位数，见系列 02 开放问题。
 
-### 5.2 第二层：说明页预热（v0.37.4.0，把等待藏进阅读时间）
+### 5.2 第二层：说明页预热（把等待藏进阅读时间）
 
-上表是「秒点通过」的最坏情况。v0.37.4.0 起，语音 + 数字人连接在**说明页出现的瞬间**就开始预热（此时机 = 能拿到面试会话的最早时刻），候选人阅读说明的时间与连接过程重叠：
+上表是「秒点通过」的最坏情况。第二层落地后，语音 + 数字人连接在**说明页出现的瞬间**就开始预热（此时机 = 能拿到面试会话的最早时刻），候选人阅读说明的时间与连接过程重叠：
 
 - 说明页阅读 **≥7 秒**（正常速度）：点「I'm ready」时数字人**已就绪，零等待**；
 - 阅读 3-4 秒就点：还需等 ~3-4 秒（此时显示人物静态形象占位，见下）；
 - 预热期间麦克风自动静音、不读题，进入答题阶段才解除并朗读第一题。
 
-实现位置：`frontend/src/pages/InterviewPage.tsx`（说明页预热 + 读题阶段门 + 预热期静音）。
+实现落在面试页组件，分三处：说明页预热、读题阶段门、预热期静音。
 
-### 5.3 第三层：人物形象截帧占位（v0.37.4.3，体感归零）
+### 5.3 第三层：人物形象截帧占位（体感归零）
 
 上一次会话自动截取一帧人物画面缓存在浏览器（localStorage），下次进入时**人物形象立即显示**（略调暗 + 「连接中」提示），直播流一到无缝淡入替换。首次访问以外，「人物出现」的体感时间 ≈ 0。
 
-实现位置：`frontend/src/components/AvatarView.tsx`。
+实现落在头像视图组件。
 
 ### 5.4 部署位置：剩余 ~11 秒的三项构成逐一分析
 
-剩余构成全部是**网络/服务往返**，但三项的可优化性各不相同。为验证部署位置的影响，用**部署在 Azure 上的生产环境**（后端 Container Apps 与 Voice Live 资源同在 `swedencentral`）跑了同一套计时脚本做对照（浏览器仍在同一台开发机上，公平对比）：
+剩余构成全部是**网络/服务往返**，但三项的可优化性各不相同。为验证部署位置的影响，用**部署在 Azure 同区域的云上环境**（后端 Container Apps 与 Voice Live 资源同在 `swedencentral`）跑了同一套计时脚本做对照（浏览器仍在同一台开发机上，公平对比）：
 
-| 构成 | 本地开发环境 | Azure 生产环境（同区域） | 怎么优化 |
+| 构成 | 本地开发环境 | Azure 云上环境（同区域） | 怎么优化 |
 |---|---:|---:|---|
 | 面试创建（含外部面试网关取第一题） | ~2.8-4.0s | ~4.4s | **客户自有环境部署可解**：这是到第三方面试服务的往返，客户把本系统部署进自己的网络（与面试服务同域/内网）后收敛到内网延迟。且此成本已被说明页预热完全重叠 |
-| 后端 → Azure Voice Live 会话建立 | ~2.5-2.7s | **0.95s** | **同区域部署可解（已实测验证）**：生产 bicep 默认 `location=swedencentral`，后端↔Voice Live 变成区域内往返，实测省 ~1.6-1.7s。本地开发的 2.5s+ 是开发机跨洲连 Sweden 的放大值 |
+| 后端 → Azure Voice Live 会话建立 | ~2.5-2.7s | **0.95s** | **同区域部署可解（已实测验证）**：部署模板默认 `location=swedencentral`，后端↔Voice Live 变成区域内往返，实测省 ~1.6-1.7s。本地开发的 2.5s+ 是开发机跨洲连 Sweden 的放大值 |
 | Azure 数字人建流到首帧（1080p） | ~3.9s | ~3.5s | **无法消除，可部分缓解**（见下） |
 | **点「开始」→ 数字人出帧（合计）** | **11.25s** | **9.99s** | |
 
@@ -154,9 +154,9 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 不过它的实际影响比数字看起来小：**每场面试只付一次**（会话全程保持，换题不重连），且已被预热 + 截帧占位两层体验优化覆盖。
 
-### 5.5 生产环境多轮实测（n=11，Playwright 自动化）
+### 5.5 云上环境多轮实测（n=11，Playwright 自动化）
 
-以上生产数字来自单次运行。为把"典型值"从单样本猜测变成统计事实，用 Playwright 无头浏览器对生产环境（同一 URL）自动化跑了 11 轮最坏情况流程：fake 麦克风授权 → 点「Start interview」→「I'm ready」出现的瞬间点掉（零阅读时间）→ 等待应用自身的首帧日志。阶段边界全部取自应用 console 日志（`opening WS proxy` / `proxy.connected` / `session.updated received` / `gathering ICE for offer` / `offer ready` / `video HAS frames: 1920x1080`），浏览器仍在开发机（跨洲连 Sweden）。9 轮完整成功，统计如下：
+以上云上数字来自单次运行。为把"典型值"从单样本猜测变成统计事实，用 Playwright 无头浏览器对云上环境（同一 URL）自动化跑了 11 轮最坏情况流程：fake 麦克风授权 → 点「Start interview」→「I'm ready」出现的瞬间点掉（零阅读时间）→ 等待应用自身的首帧日志。阶段边界全部取自应用 console 日志（`opening WS proxy` / `proxy.connected` / `session.updated received` / `gathering ICE for offer` / `offer ready` / `video HAS frames: 1920x1080`），浏览器仍在开发机（跨洲连 Sweden）。9 轮完整成功，统计如下：
 
 | 阶段                    |       min |       中位数 |              max（除异常轮） |
 | --------------------- | --------: | --------: | ---------------------: |
@@ -170,16 +170,16 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 四个结论：
 
-1. **ICE 修复在生产稳定成立**：9/9 轮全部走快路径（0.37~0.62s，中位 0.54s），无一轮打满 8s 兜底——修复效果不是单次运气。
-2. **首帧段比单次样本显示的更快且极稳**（2.33~2.43s，中位 2.36s）。原因：该段中经过后端的只有 offer/answer 信令（媒体流直连，但 `session.avatar.connect` 信令走 WS proxy），生产后端与 Voice Live 同区域把信令腿压短了。此前 5.4 节单次测到的 ~3.5s 是偏慢样本——**生产首帧典型值应修正为 ≈2.4s**，"固有成本"的构成分析（握手 RTT + 渲染冷启动）不变。
+1. **ICE 修复在云上稳定成立**：9/9 轮全部走快路径（0.37~0.62s，中位 0.54s），无一轮打满 8s 兜底——修复效果不是单次运气。
+2. **首帧段比单次样本显示的更快且极稳**（2.33~2.43s，中位 2.36s）。原因：该段中经过后端的只有 offer/answer 信令（媒体流直连，但 `session.avatar.connect` 信令走 WS proxy），云上后端与 Voice Live 同区域把信令腿压短了。此前 5.4 节单次测到的 ~3.5s 是偏慢样本——**云上首帧典型值应修正为 ≈2.4s**，"固有成本"的构成分析（握手 RTT + 渲染冷启动）不变。
 3. **面试创建段是当前最大头且波动最大**（4.0~5.6s，占总时长一半以上）——印证 5.4 节的判断：客户自有环境部署（与面试服务同域）是剩余延迟的第一杠杆。
-4. **长尾异常真实存在**：11 次尝试中，1 次 `session.updated` 等了 17.25s（该轮总时长 25.5s）、1 次页面加载直接 `ERR_CONNECTION_ABORTED`、1 次流程未走到建流。均为偶发不可复现。生产监控值得对「`proxy.connected` 后 N 秒未收到 `session.updated`」这类主信号缺席加超时重试与告警——与第七节经验 5（兜底打满即报警）同源。
+4. **长尾异常真实存在**：11 次尝试中，1 次 `session.updated` 等了 17.25s（该轮总时长 25.5s）、1 次页面加载直接 `ERR_CONNECTION_ABORTED`、1 次流程未走到建流。均为偶发不可复现。上线后的监控值得对「`proxy.connected` 后 N 秒未收到 `session.updated`」这类主信号缺席加超时重试与告警——与第七节经验 5（兜底打满即报警）同源。
 
-**部署给客户时的检查项**（本次生产对照测试顺带发现并修复的坑）：`VOICE_LIVE_DEFAULT_MODEL`（bicep 参数 `voiceLiveDefaultModel`）配置的模型必须在**部署 region 对 Voice Live 可用**。注意 Voice Live 对模型类型本身没有"只能语音专用"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）两类都支持；但同一模型在不同 region 的可用性不同，配了当前 region 不可用的模型，症状是「永远停在 text、控制台报 Model X is not supported in this region」——本次即 gpt-5.4-mini 在该 region 不可用，换成该 region 可用的模型（gpt-4o、gpt-4.1-mini 均可）即恢复。两类模型组合的选型逻辑见[系列02](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)。
+**部署给客户时的检查项**（本次云上对照测试顺带发现并修复的坑）：默认语音模型配置项里的模型必须在**部署 region 对 Voice Live 可用**。注意 Voice Live 对模型类型本身没有"只能语音专用"的限制——原生 Realtime 与级联（gpt-5.4-mini 这类文本模型 + Azure STT/TTS）两类都支持；但同一模型在不同 region 的可用性不同，配了当前 region 不可用的模型，症状是「永远停在 text、控制台报 Model X is not supported in this region」——本次即 gpt-5.4-mini 在该 region 不可用，换成该 region 可用的模型（gpt-4o、gpt-4.1-mini 均可）即恢复。两类模型组合的选型逻辑见[系列02](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)。
 
 ## 六、对话轮次延迟：说完话 → 回复返回（单并发多轮实测）
 
-出场链路之外，对话面的每一轮有自己的延迟链：候选人说完话 → VAD 判停 → 转写终稿 → 触发回复 → 首个文本 delta / 首段回复音频。用 WS 协议层脚本（`backend/scripts/voice_turn_latency.py`）模拟真实浏览器行为实测：以 100ms 块、24kHz PCM16 实时节奏推流合成的候选人回答（4~6.4s），说完后持续推静音模拟真实麦克风，对生产环境跑 5 个 session × 每 session 连续 3 个语音轮 + 1 个文本轮（单并发）。另用同区域、同 VAD/降噪配置、无 avatar 的直连 session 做对照（3 session × 3 轮）——因为 avatar 模式下回复音频只走 WebRTC 轨、WS 上没有 `response.audio.delta`，「语音返回」只能在对照组测到。
+出场链路之外，对话面的每一轮有自己的延迟链：候选人说完话 → VAD 判停 → 转写终稿 → 触发回复 → 首个文本 delta / 首段回复音频。用 WS 协议层的延迟探针脚本模拟真实浏览器行为实测：以 100ms 块、24kHz PCM16 实时节奏推流合成的候选人回答（4~6.4s），说完后持续推静音模拟真实麦克风，对云上环境跑 5 个 session × 每 session 连续 3 个语音轮 + 1 个文本轮（单并发）。另用同区域、同 VAD/降噪配置、无 avatar 的直连 session 做对照（3 session × 3 轮）——因为 avatar 模式下回复音频只走 WebRTC 轨、WS 上没有 `response.audio.delta`，「语音返回」只能在对照组测到。
 
 先看全景——出场链路、读题、多轮问答串成一条完整时间线，每段的耗时、已完成的优化与待做的优化点、优化后的期望值都在图上：
 
@@ -193,8 +193,8 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 1. **说完话 → 听到回复中位 ≈1.5s**（直连对照 1.39~1.59s），分段大致为：VAD 判停 ~0.86s + 转写终稿 ~0.2s + LLM 首 token ~0.2s + TTS 首块音频 ~0.2s。最大单项是 semantic VAD 的静音判定窗（~0.86s），属可调参数（收紧会增加把停顿误判为说完的风险）。
 2. **多轮无退化**：同 session 轮 1/2/3 各阶段中位几乎重合（上下文增长未影响首 token），两组共 24 个语音轮无一失败、方差极小——与出场链路的长尾异常（5.5 节）形成对照，对话面管线本身相当稳定。
-3. **后端 proxy 这一跳几乎免费**：`response.create → response.created` 生产与直连都是 0.26s、create 后首 token 都是 ~0.5s——生产后端与 Voice Live 同区域，中转不构成延迟因素，瓶颈在浏览器到区域的公网 RTT 与 Azure 管线本身。文本轮（跳过 VAD+STT）的首文本 0.51s / 首音频 0.63s 是这条管线净成本的下界（该数字含一次模型推理；改用 `pre_generated_assistant_message` 直接 TTS 后，读题请求到 `response.created` 约 0.26~0.35s，两者口径不同不可直接相减，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。
-4. **外部 brain RTT 已补测，端到端每轮 ≈5.6s、网关占 70%**：生产默认 persona 是 external-brain（VAD 不自动回复），上图按 brain 延迟 = 0 建模；另用 `backend/scripts/brain_turn_rtt.py` 对面试接口直接计时（5 场 × 4 答题轮，n=20 全部成功）——**提交答案 → 外部网关返回下一题中位 3.90s（2.87~5.04s）**，取首题（面试创建）3.53s，与 5.5 节出场链路的最大头是同一项成本。合成端到端：说完话 → 数字人开口说下一题 ≈ 0.86（VAD）+ 0.19（转写尾）+ 3.90（外部网关）+ 0.63（读题→首块音频）≈ **5.6s**——网关一段占 70% 且波动最大，是对话面唯一的结构性优化点（同域部署/网关提速治本，思考过渡语遮蔽治体感）。仍待测：「数字人开口」相对首段音频的 avatar 渲染/传输增量，需浏览器层（WebRTC 音频轨能量检测）实测。
+3. **后端 proxy 这一跳几乎免费**：`response.create → response.created` 云上与直连都是 0.26s、create 后首 token 都是 ~0.5s——云上后端与 Voice Live 同区域，中转不构成延迟因素，瓶颈在浏览器到区域的公网 RTT 与 Azure 管线本身。文本轮（跳过 VAD+STT）的首文本 0.51s / 首音频 0.63s 是这条管线净成本的下界（该数字含一次模型推理；改用 `pre_generated_assistant_message` 直接 TTS 后，读题请求到 `response.created` 约 0.26~0.35s，两者口径不同不可直接相减，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。
+4. **外部 brain RTT 已补测，端到端每轮 ≈5.6s、网关占 70%**：默认 persona 是 external-brain（VAD 不自动回复），上图按 brain 延迟 = 0 建模；另用外部网关计时脚本对面试接口直接计时（5 场 × 4 答题轮，n=20 全部成功）——**提交答案 → 外部网关返回下一题中位 3.90s（2.87~5.04s）**，取首题（面试创建）3.53s，与 5.5 节出场链路的最大头是同一项成本。合成端到端：说完话 → 数字人开口说下一题 ≈ 0.86（VAD）+ 0.19（转写尾）+ 3.90（外部网关）+ 0.63（读题→首块音频）≈ **5.6s**——网关一段占 70% 且波动最大，是对话面唯一的结构性优化点（同域部署/网关提速治本，思考过渡语遮蔽治体感）。仍待测：「数字人开口」相对首段音频的 avatar 渲染/传输增量，需浏览器层（WebRTC 音频轨能量检测）实测。
 
 ## 七、总结：五条可迁移的延迟工程经验
 
@@ -204,18 +204,8 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 4. **固有 RTT 消不掉，就用「重叠」和「占位」。** 连接成本挪到用户阅读说明的时间里（预热）、人物形象用上一次的截帧秒出（占位）——用户感知的等待可以远小于技术上的等待。
 5. **凡是「兜底超时」被打满的路径都值得报警。** 兜底是给罕见情况的；如果它每次都被打满，说明主信号失效了——本例即是。日志里给兜底触发加显式标记（`gate elapsed` 这类字样），巡检时 grep 即可发现。
 
-## 八、相关代码位置
-
-- ICE 门控（本次修复）：`frontend/src/hooks/useAvatarStream.ts`（`runHandshake` 内 `offerReadyPromise`；常量 `ICE_SETTLE_AFTER_CANDIDATE_MS = 300`）
-- 说明页预热 + 读题阶段门 + 预热期静音：`frontend/src/pages/InterviewPage.tsx`（v0.37.4.0）
-- 人物形象截帧占位：`frontend/src/components/AvatarView.tsx`（v0.37.4.3）
-- 对话轮次延迟测试脚本（第六节）：`backend/scripts/voice_turn_latency.py`（WS 协议层，单并发多轮；`--direct` 为直连无 avatar 对照）
-- 后端凭据预热（启动即预取 Entra token，首个连接不付 3-5s 凭据链成本）：`backend/app/main.py` `_prewarm_azure_credential`
-- 生产静态资源缓存（immutable 哈希资源 + no-cache 入口页）：`frontend/nginx.conf`（v0.37.4.2）
-
 ## 参考
 
-- 项目仓库：[AI-interview-vibe-coding](https://github.com/huqianghui/AI-interview-vibe-coding)（ICE 门控修复 PR #95、说明页预热 PR #93）
 - 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
 - 协议背景：[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 - [Trickle ICE: Incremental Provisioning of Candidates for the Interactive Connectivity Establishment (ICE) Protocol — RFC 8838](https://datatracker.ietf.org/doc/html/rfc8838)

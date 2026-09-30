@@ -15,7 +15,7 @@ description: 以 2026-09 Voice Live 培训的四路线架构图为骨架：级�
 # Voice Live 系列 04：四条路线与全双工——GPT-Live-1 对数字人方案的影响评估
 
 > 本文源于三件事的叠加：2026-09 一场 Azure Voice Live 产品培训（[Voice Live 架构总览页](https://shawnq-msft.github.io/AzureVoicePlayground/voice-live-architecture.html)给出的四路线架构图）、OpenAI 于 2026-09-10 发布全双工模型 [GPT-Live-1](https://openai.com/index/introducing-gpt-live-1-in-the-api)，以及培训后与 Speech 产品组的直接答疑（2026-09-18）。
-> 系列前篇：[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲两种架构路线与双通道实现；[系列02](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md) 讲与 Agent Service 解耦后的合作模式与选型光谱；[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 讲数字人延迟工程的生产实测。本文把选型光谱扩展到**输出端**（谁来出声、谁能驱动数字人），并评估全双工带来的范式变化。
+> 系列前篇：[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲两种架构路线与双通道实现；[系列02](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md) 讲与 Agent Service 解耦后的合作模式与选型光谱；[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 讲数字人延迟工程的云上实测。本文把选型光谱扩展到**输出端**（谁来出声、谁能驱动数字人），并评估全双工带来的范式变化。
 
 ---
 
@@ -143,7 +143,7 @@ Voice Live 现有的很多平台能力——semantic VAD / EoU 判停、打断�
 
 ## 六、对现有方案的落地清单
 
-结合 [AI 面试项目的生产实测](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)与 [级联 vs 端到端决策页](../../wiki/decisions/cascaded-vs-e2e-voice.md)，逐项落地：
+结合 [AI 面试项目的云上实测](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)与 [级联 vs 端到端决策页](../../wiki/decisions/cascaded-vs-e2e-voice.md)，逐项落地：
 
 1. **决策页的重评估条件已触发**。决策页前提假设写着"E2E 模型未来 1–2 年内无法达到企业级质量——出现突破性进展需重新评估"。GPT-Live-1 就是触发器，但重评估的方向不是"改选 E2E"，而是**坐标系更换**：对话层选半双工还是全双工、推理层委派给谁，成为两个独立配置维度。
 2. **治体感升级，治本瓶颈不变**。系列03 实测：对话面每轮 ≈5.6s，外部面试网关 RTT 3.9s 占 70%。全双工不会缩短网关那 3.9s，但把"思考过渡语遮蔽"从自己搭的工程手段变成模型原生行为；每轮里 0.86s VAD 判停 + 0.19s 转写尾在全双工下结构性消失。

@@ -187,7 +187,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **置信度**：0.85
 - **状态**：active
 
-> `type: photo-avatar` 是后端路由开关、`model: vasa-1` 是版本化声明；`style` 本义是"另一段实拍素材"故 photo 头像无 style、连续参数 `scene` 取代之；session 构造器与 agent metadata 必须按头像类型分支——`avatar_verification_failed` 生产事故实证。素材边界与 RAI 身份闸门：photo 用真人照片需 consent 视频+人脸比对核验 / AI 生成虚拟人免 consent / 卡通非人类比例明确不支持（VASA-1 潜空间在真实人脸上训练）；自定义 video 头像只能真人 ≥10min 实拍。成本结构：自定义 video=重资产（训练 $600–1,440/个 + endpoint hosting ≈$432/月/个），自定义 photo=一次性 creation 费无 hosting、换形象边际成本≈0；会话计费两类同表（$0.50/$0.60 每分钟）。推荐逻辑按呈现窗口分：头像框/小窗→photo（脸更生动且 512×512 短板不暴露）；半身/大屏/品牌服装/竖屏立牌→video；photo 仍 public preview 需核 region/SLA。传输层两类完全相同（同一 ICE/SDP/WebRTC/H.264）。
+> `type: photo-avatar` 是后端路由开关、`model: vasa-1` 是版本化声明；`style` 本义是"另一段实拍素材"故 photo 头像无 style、连续参数 `scene` 取代之；session 构造器与 agent metadata 必须按头像类型分支——`avatar_verification_failed` 校验失败案例实证。素材边界与 RAI 身份闸门：photo 用真人照片需 consent 视频+人脸比对核验 / AI 生成虚拟人免 consent / 卡通非人类比例明确不支持（VASA-1 潜空间在真实人脸上训练）；自定义 video 头像只能真人 ≥10min 实拍。成本结构：自定义 video=重资产（训练 $600–1,440/个 + endpoint hosting ≈$432/月/个），自定义 photo=一次性 creation 费无 hosting、换形象边际成本≈0；会话计费两类同表（$0.50/$0.60 每分钟）。推荐逻辑按呈现窗口分：头像框/小窗→photo（脸更生动且 512×512 短板不暴露）；半身/大屏/品牌服装/竖屏立牌→video；photo 仍 public preview 需核 region/SLA。传输层两类完全相同（同一 ICE/SDP/WebRTC/H.264）。
 
 
 ### Claim: session 字段三层归属与开轮/生成两关分离——Agent 模式下 create_response 从调节器退化为总闸

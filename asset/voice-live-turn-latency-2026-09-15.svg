@@ -73,7 +73,7 @@
   <text x="204" y="130" font-size="11" fill="#fbbf24" text-anchor="end" transform="rotate(-90 204 130)"></text>
 
   <!-- ── Group 1: production proxy (avatar) ─────────────────────────── -->
-  <text x="36" y="142" font-size="14" font-weight="600" fill="#e2e8f0">生产环境（后端 proxy · avatar 开启 · gpt-4.1-mini）</text>
+  <text x="36" y="142" font-size="14" font-weight="600" fill="#e2e8f0">云上环境（后端 proxy · avatar 开启 · gpt-4.1-mini）</text>
   <text x="1124" y="142" font-size="11" fill="#64748b" text-anchor="end">external persona：回复由 response.create 触发（brain=0 建模）· n=5 session</text>
 
   <!-- lane 轮1: VAD 0.77 STT 1.02 created 1.27 首文本 1.48 done 2.05 -->
@@ -205,7 +205,7 @@
   <line x1="36" y1="452" x2="1124" y2="452" stroke="#1e293b" stroke-width="1"/>
 
   <!-- session setup chain -->
-  <text x="36" y="478" font-size="12" font-weight="600" fill="#94a3b8">会话建立（每 session 一次，生产中位）</text>
+  <text x="36" y="478" font-size="12" font-weight="600" fill="#94a3b8">会话建立（每 session 一次，云上中位）</text>
   <g font-size="11.5" fill="#cbd5e1">
     <rect x="340" y="462" width="128" height="24" rx="6" fill="#12203a" stroke="#334155"/>
     <text x="404" y="478" text-anchor="middle">匿名 token 0.93s</text>
@@ -243,6 +243,6 @@
 
   <!-- footnotes -->
   <text x="36" y="566" font-size="11" fill="#475569">锚点 0s = 候选人语音内容实时推流完毕（说完话）；100ms/块 24kHz PCM16 实时节奏推流，说完后持续静音模拟真实麦克风；条内数字为该事件的累计中位秒数</text>
-  <text x="36" y="586" font-size="11" fill="#475569">客户端在开发机（跨洲连 Sweden Central，含公网 RTT）；生产组每轮回复由转写终稿瞬间发 response.create 触发（外部 brain 延迟另计）；短回复（1~2 句）口径</text>
-  <text x="36" y="606" font-size="11" fill="#475569">测试脚本：backend/scripts/voice_turn_latency.py（WS 协议层，单并发；--direct 为直连无 avatar 对照）· 生产 5 session × 3 轮全部成功，直连 3 × 3 全部成功</text>
+  <text x="36" y="586" font-size="11" fill="#475569">客户端在开发机（跨洲连 Sweden Central，含公网 RTT）；云上组每轮回复由转写终稿瞬间发 response.create 触发（外部 brain 延迟另计）；短回复（1~2 句）口径</text>
+  <text x="36" y="606" font-size="11" fill="#475569">测试脚本：WS 协议层延迟探针（单并发；另有直连无 avatar 对照组）· 云上 5 session × 3 轮全部成功，直连 3 × 3 全部成功</text>
 </svg>

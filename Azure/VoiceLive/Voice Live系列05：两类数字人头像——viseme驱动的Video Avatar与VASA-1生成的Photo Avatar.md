@@ -10,13 +10,13 @@ tags:
   - vasa-1
   - viseme
   - webrtc
-description: 从一次 avatar_verification_failed 生产事故入手，讲清 Voice Live 两类数字人头像的本质区分：Video 头像是真人实拍素材 + viseme 时间轴驱动口型，Photo 头像是单张照片 + VASA-1 生成模型逐帧生成整个头部；解释 photo-avatar 为什么没有 style、model 字段里的 vasa-1 是什么（NeurIPS 2024 论文：解耦人脸潜空间 + 音频条件 Diffusion Transformer），并核对两类头像在传输层的异同（同一条 WebRTC，差异全在合成侧与可配置项）
+description: 从一次 avatar_verification_failed 校验失败入手，讲清 Voice Live 两类数字人头像的本质区分：Video 头像是真人实拍素材 + viseme 时间轴驱动口型，Photo 头像是单张照片 + VASA-1 生成模型逐帧生成整个头部；解释 photo-avatar 为什么没有 style、model 字段里的 vasa-1 是什么（NeurIPS 2024 论文：解耦人脸潜空间 + 音频条件 Diffusion Transformer），并核对两类头像在传输层的异同（同一条 WebRTC，差异全在合成侧与可配置项）
 ---
 
 # Voice Live 系列 05：两类数字人头像——viseme 驱动的 Video Avatar 与 VASA-1 生成的 Photo Avatar
 
 >数字人选 Adrian 时会话直接被 Azure 拒绝（`avatar_verification_failed`），排查后发现根因是**把 photo 头像按 video 头像的 schema 发送**。顺着这个错误往下挖，牵出两类头像在合成技术路线上的根本分岔——而分岔点恰好是之前讨论过的 viseme（[phoneme/viseme/grapheme/morpheme 词族讨论](https://chatgpt.com/share/6ab3379b-7020-83ec-bd26-9673b14441d9)）。
-> 系列前篇：[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲 WebSocket + WebRTC 双通道与 Avatar 连接时序；[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 讲数字人出场延迟的生产实测；[系列04](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md) 提出"viseme 是数字人的准入闸门"。本文把镜头从"谁能驱动数字人"转向**数字人本身**：两类头像各是怎么被合成出来的。
+> 系列前篇：[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲 WebSocket + WebRTC 双通道与 Avatar 连接时序；[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 讲数字人出场延迟的云上实测；[系列04](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md) 提出"viseme 是数字人的准入闸门"。本文把镜头从"谁能驱动数字人"转向**数字人本身**：两类头像各是怎么被合成出来的。
 
 ---
 

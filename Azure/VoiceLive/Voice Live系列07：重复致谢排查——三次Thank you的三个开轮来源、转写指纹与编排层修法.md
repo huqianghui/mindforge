@@ -14,7 +14,7 @@ description: 一个真实案例：语音面试产品的题库模式下，数字�
 
 # Voice Live 系列 07：重复致谢排查——三次 Thank you 的三个开轮来源、转写指纹与编排层修法
 
-> 本文是 [系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) 五关框架的第一个应用：一次生产事故的排查。文中 ② ③ ④ ⑤ 指系列06 的五道关卡编号（判起、判停、开轮、生成）。案例里"修法落在编排层"带来的题间静默，在 [系列08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md) 里有中间地带的解法。
+> 本文是 [系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) 五关框架的第一个应用：一次实际案例的排查。文中 ② ③ ④ ⑤ 指系列06 的五道关卡编号（判起、判停、开轮、生成）。案例里"修法落在编排层"带来的题间静默，在 [系列08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md) 里有中间地带的解法。
 
 ---
 
@@ -72,7 +72,7 @@ description: 一个真实案例：语音面试产品的题库模式下，数字�
 ## 参考
 
 - [How to use the Voice Live API — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to)（server_echo_cancellation 默认参考信号的两秒播放假设与 Live-Reference AEC 的 reference_source / channels 配置；turn_detection 字段与默认值）
-- [Voice Live 线性轮次部署报告的翻译与解释](https://chatgpt.com/share/6ab4930c-54d4-83ec-8072-078d399be32d)（本文案例的收尾报告：bank 模式默认改线性轮次、"Model has its own turn" 选项、对 "engine decides, no knob" 决策的反转；注意其中对缺词原文的还原属推测，第三次 "Thank you" 的来源以代码链路为准）
+- 本文案例的收尾报告（未公开）：bank 模式默认改线性轮次、"Model has its own turn" 选项、对 "engine decides, no knob" 决策的反转；其中对缺词原文的还原属推测，第三次 "Thank you" 的来源以代码链路为准
 - [Voice Live API Reference 2026-06-01-preview — Microsoft Learn](https://learn.microsoft.com/azure/ai-services/speech-service/voice-live-api-reference-2026-06-01-preview)（Live-Reference AEC 首次出现的 preview 版本）
 - 系列前篇：[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md)（五关框架与 Model / Agent 模式控制权归属）；更早各篇见系列06 参考
 - 系列续篇：[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)（题间静默的中间地带）、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（线性轮次管次数，系列09 管读出来的内容是不是给定的字）

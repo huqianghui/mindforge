@@ -73,7 +73,7 @@
 
   <!-- ============ row 1: before fix (single worst-case run, local) ============ -->
   <text x="36" y="150" font-size="13" font-weight="600" fill="#e2e8f0">修复前</text>
-  <text x="36" y="168" font-size="11" fill="#64748b">v0.37.4.1 本地·单次</text>
+  <text x="36" y="168" font-size="11" fill="#64748b">修复前 本地·单次</text>
   <g>
     <rect x="150" y="140" width="154.6" height="36" fill="#6366f1"/>
     <rect x="304.6" y="140" width="141.1" height="36" fill="#0ea5e9"/>
@@ -96,14 +96,14 @@
 
   <!-- annotation between rows -->
   <g text-anchor="middle">
-    <text x="597" y="232" font-size="14" font-weight="700" fill="#2dd4bf">ICE 门控修复（PR #95）：等「全量集」改为等「够用集」—— 8.0s → 0.38s，省 ~7.6s</text>
+    <text x="597" y="232" font-size="14" font-weight="700" fill="#2dd4bf">ICE 门控修复：等「全量集」改为等「够用集」—— 8.0s → 0.38s，省 ~7.6s</text>
     <line x1="686" y1="184" x2="597" y2="216" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5"/>
     <line x1="561" y1="246" x2="551" y2="282" stroke="#2dd4bf" stroke-width="1.5" opacity="0.5"/>
   </g>
 
   <!-- ============ row 2: after fix (single worst-case run, local) ============ -->
   <text x="36" y="300" font-size="13" font-weight="600" fill="#e2e8f0">修复后</text>
-  <text x="36" y="318" font-size="11" fill="#64748b">v0.37.4.2 本地·单次</text>
+  <text x="36" y="318" font-size="11" fill="#64748b">修复后 本地·单次</text>
   <g>
     <rect x="150" y="290" width="224" height="36" fill="#6366f1"/>
     <rect x="374" y="290" width="149.5" height="36" fill="#0ea5e9"/>
@@ -123,7 +123,7 @@
   </circle>
 
   <!-- ============ row 3: production, per-stage medians over 9 runs ============ -->
-  <text x="36" y="450" font-size="13" font-weight="600" fill="#e2e8f0">生产环境</text>
+  <text x="36" y="450" font-size="13" font-weight="600" fill="#e2e8f0">云上环境</text>
   <text x="36" y="468" font-size="11" fill="#64748b">swedencentral·n=9 中位数</text>
   <g>
     <rect x="150" y="440" width="263.2" height="36" fill="#6366f1"/>
@@ -149,6 +149,6 @@
   </circle>
 
   <!-- footnote -->
-  <text x="36" y="536" font-size="11.5" fill="#475569">修复前/后两行为本地开发机单次最坏情况实测；生产行为 Playwright 自动化 11 轮（9 轮成功）的分段中位数，总时长中位 8.61s（min 7.93 / max 9.78，另有 1 轮 session.updated 17s 长尾异常）。</text>
-  <text x="36" y="552" font-size="11.5" fill="#475569">生产后端 Container Apps 与 Voice Live 同在 swedencentral；数字人媒体流为浏览器直连 Azure TURN relay，不经过后端。配合说明页预热与截帧占位，用户体感等待远小于图中技术等待。</text>
+  <text x="36" y="536" font-size="11.5" fill="#475569">修复前/后两行为本地开发机单次最坏情况实测；云上行为 Playwright 自动化 11 轮（9 轮成功）的分段中位数，总时长中位 8.61s（min 7.93 / max 9.78，另有 1 轮 session.updated 17s 长尾异常）。</text>
+  <text x="36" y="552" font-size="11.5" fill="#475569">云上后端 Container Apps 与 Voice Live 同在 swedencentral；数字人媒体流为浏览器直连 Azure TURN relay，不经过后端。配合说明页预热与截帧占位，用户体感等待远小于图中技术等待。</text>
 </svg>
