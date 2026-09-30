@@ -168,7 +168,7 @@ Azure Voice Live API 最初只提供 WebSocket 作为音频传输通道。从工
 |------|------|----------------|
 | 延迟抖动 | TCP 队头阻塞（Head-of-Line Blocking） | UDP 无队头阻塞 |
 | 丢包重传带来延迟尖峰 | TCP 保证有序送达，丢包必须重传 | RTP 容忍丢包，音频 codec 有丢包补偿（PLC） |
-| 无法利用浏览器 AEC/NS | WebSocket 传 binary 需自己处理音频管线 | WebRTC 原生集成浏览器音频处理链（AEC、AGC、NS） |
+| 需自己处理编码与抖动 | WebSocket 传 binary 需自己做 PCM 打包、无抖动缓冲与丢包隐藏 | WebRTC 原生带 Opus 编码、抖动缓冲、PLC；注意 AEC/AGC/NS 是 `getUserMedia` 的采集约束，采集时已生效，与传输方式无关，两种方式都能用 |
 | 无 AV sync 机制 | WebSocket 无时间戳同步 | RTP timestamp 天然支持音视频同步 |
 | 无法支持 Avatar 视频 | TCP 带宽和延迟不适合视频 | WebRTC 原生支持音视频多路复用 |
 
@@ -205,7 +205,7 @@ Azure Voice Live API 最初只提供 WebSocket 作为音频传输通道。从工
 ### 什么时候应该引入 WebRTC？
 
 - 端到端延迟要求 < 300ms
-- 需要浏览器 AEC/NS/AGC
+- 需要 Opus 编码、抖动缓冲与丢包隐藏（弱网收益；AEC/NS/AGC 与传输无关，不构成选 WebRTC 的理由）
 - 需要音视频同步（Avatar）
 - 需要 P2P 或 SFU 拓扑
 - 生产环境对音质和稳定性有高要求
