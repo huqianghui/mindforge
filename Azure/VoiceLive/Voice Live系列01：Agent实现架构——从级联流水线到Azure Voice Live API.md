@@ -142,7 +142,7 @@ Azure Voice Live API 走的是**端到端托管**路线——STT、GPT Realtime�
 Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 ```
 
-**为什么需要 Backend Proxy？** 保护 Azure API Key。浏览器永远不直接接触 Azure endpoint，所有 WebSocket 通信都经由后端 Python SDK 代理转发。
+**为什么需要 Backend Proxy？** 保护 Azure 侧凭据（Entra ID token 或 API Key）。浏览器永远不直接接触 Azure endpoint，所有 WebSocket 通信都经由后端 Python SDK 代理转发。
 
 ### 4.2 双通道并行——WebSocket + WebRTC
 
@@ -175,7 +175,7 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 - **带宽爆炸**：H.264 视频 30fps ≈ 2-5 Mbps/用户，10 个并发 = 50 Mbps 后端带宽
 - **延迟不可接受**：加 TCP proxy ≈ +100-300ms，口型同步完全错位
 
-安全性通过 **临时 TURN 凭据** 保障——Azure 为每个 session 动态生成有效期仅几分钟的凭据，通过已认证的 WebSocket 传递给浏览器。API Key 始终留在后端内存中。
+安全性通过 **临时 TURN 凭据** 保障——Azure 为每个 session 动态生成短期凭据，通过已认证的 WebSocket 传递给浏览器。Azure 侧凭据（Entra token 或 API Key）始终留在后端。
 
 #### 媒体面与控制面：backend 的真实角色
 
@@ -193,8 +193,9 @@ Voice Live 的接口层也支持把**上行音频**走 WebRTC（接口列表：S
 ### 4.4 连接建立时序
 
 ```
-[Phase 1] 认证
-  浏览器 ─JWT─► 后端 ─验证─► 后端 ─API Key─► Azure ─创建 Session
+[Phase 1] 认证（两段）
+  浏览器 ─登录 JWT─► 后端 ─换取短期会话 token（服务端可撤销、可过期）─► 浏览器
+  浏览器 ─会话 token─► 后端 WS 代理 ─验证─► 后端 ─Entra ID token（Managed Identity / 本地 az login；无则回退 API Key）─► Azure ─创建 Session
 
 [Phase 2] WebSocket 会话配置
   后端 → Azure: session.configure（model, voice, avatar, VAD, 降噪）
@@ -267,9 +268,9 @@ Avatar 模式下差距更大——音频需要额外经过口型同步计算 + �
 
 | 维度 | 级联方案 | Azure Voice Live |
 |------|---------|-----------------|
-| API Key 保护 | 服务端部署 | Backend Proxy 模式 |
+| Azure 凭据保护 | 服务端部署 | Backend Proxy 模式；Entra ID 优先（Managed Identity），API Key 仅作回退 |
 | 传输加密 | WSS/HTTPS | WSS + WebRTC DTLS/SRTP |
-| 身份验证 | 自定义 | JWT + DTLS 指纹绑定 |
+| 身份验证 | 自定义 | 登录 JWT 只用于换取短期会话 token，会话 token 服务端可撤销；媒体面 DTLS 指纹绑定 |
 
 Azure 的 DTLS 指纹机制特别精巧：SDP 中声明浏览器的密码学指纹，WebRTC 握手时验证——即使 TURN 凭据泄露，攻击者也无法伪造 DTLS 私钥。
 

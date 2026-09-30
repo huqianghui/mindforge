@@ -285,16 +285,18 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 以下问题本文尚未覆盖，做 solution 设计时需要逐项确认：
 
 1. **成本精算**：audio token vs 文本 token + STT/TTS 的具体单价对比，按"分钟通话成本"折算各组合的真实差距（含 interim response、avatar 的额外计费）。
-2. **实测延迟数据**：三条路线在同 region 下的 P50/P95/P99 端到端延迟实测（目前文中只有量级判断，无实测数字）。→ 数字人出场链路的延迟分解实测（含同区域部署对照）已在 [Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 补上一块。
+2. **实测延迟数据**：三条路线在同 region 下的 P50/P95/P99 端到端延迟实测（目前文中只有量级判断，无实测数字）。→ 数字人出场链路的延迟分解实测（含同区域部署对照）已在 [Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 补上一块；对话轮次（说完话 → 回复）的分段中位数见同篇第六节。P50/P95 统计口径仍待多轮发布。
 3. **Region 与合规**：Voice Live 各模型的 region 覆盖差异、数据驻留与 GDPR 要求（如 Sweden Central 的组合可用性）；中国区可用性。
 4. **电话接入**：与 Azure Communication Services（PSTN/SIP）的集成路径——呼叫中心场景 Voice Live 如何接电话线，直连 Realtime 的 SIP 是否更成熟。
 5. **Agent V2 演进风险**：新 Foundry portal 的 Agent V2 与 Voice Live 的接入方式仍在变化（api-version 敏感），生产选型前需锁定版本组合。
 6. **长会话与上下文管理**：Agent 模式下 thread 的上下文增长如何影响延迟与成本；realtime 直连约 128k token 限制下的会话截断策略。
-7. **可观测性与评测**：Voice Live 的 conversation log / 系统日志如何接入现有监控；语音 Agent 的自动化评测方案（可结合 τ-Voice 一类全双工基准的失败分类）。
+7. **可观测性与评测**：Voice Live 的 conversation log / 系统日志如何接入现有监控；语音 Agent 的自动化评测方案（可结合 τ-Voice 一类全双工基准的失败分类）。→ 值得盯的信号已散落成型：兜底超时被打满即报警（[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)第七节）、`response.created` 次数应等于读题次数（系列07 第六节）、误判完成率 / 完成延迟 / 致谢重复率三项离线指标（系列08 第七节）、读题转写偏离告警（系列09 3.5 节）；平台监控接入未做。
 8. **故障降级**：Voice Live 服务不可用时能否降级到直连 Realtime 或级联管线；多 region 容灾设计。
 9. **内容安全**：语音输入/输出的 content filter 行为与文本链路的差异，以及对延迟的影响。
-10. **gpt-live-1（全双工）接入 Voice Live 的路线评估**：OpenAI 已于 2026-09-10 发布全双工模型 gpt-live-1（边说边听 + 推理委派后端）。产品组信息（2026-09-18）：gpt-live-1 尚未在 Voice Live 上线，数字人方案当前继续用 gpt-realtime 1.5/2.1；OpenAI 侧没有视觉生成产品，数字人整合要看 Voice Live/Speech 层的方案；"prompt agent + gpt-live-1"走 Voice Live 的组合是可行方向。完整评估见 [Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)。
+10. **gpt-live-1（全双工）接入 Voice Live 的路线评估**：OpenAI 已于 2026-09-10 发布全双工模型 gpt-live-1（边说边听 + 推理委派后端）。产品组信息（2026-09-18）：gpt-live-1 尚未在 Voice Live 上线，数字人方案当前继续用 gpt-realtime 1.5/2.1；OpenAI 侧没有视觉生成产品，数字人整合要看 Voice Live/Speech 层的方案；"prompt agent + gpt-live-1"走 Voice Live 的组合是可行方向。完整评估见 [Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)。→ 已评估；截至 2026-09-30 仍未上线 Voice Live，后续变化回填系列04 第八节。
 11. **中文轮次检测对比实测**：产品组提示 gpt-live-1 的中文能力（含轮次判断）不见得强于 Voice Live 的 smart turn detection（semantic VAD）——中文场景选型前需要实测对比两者的判停/打断表现。
+12. **会话时长上限（备忘，尚未撞到）**：官方配额文档规定 Voice Live 单会话最长 60 分钟；数字人实时会话在说话状态最长 30 分钟、空闲状态最长 5 分钟；每资源新连接 30 次/分钟。现有前端重连（3 次退避）针对意外断连设计，未针对这些上限；超过 30 分钟的会话会先撞数字人上限，撞到后再实测 Azure 的断连表现与恢复方式。
+13. **终端边界**：当前方案只验证桌面浏览器；移动端（iOS Safari 的 autoplay 与手势要求、蓝牙耳机回声）不在范围内，有需求时再评估。
 
 ---
 
