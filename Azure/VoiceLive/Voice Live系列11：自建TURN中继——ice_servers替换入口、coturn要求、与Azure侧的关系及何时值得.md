@@ -11,12 +11,12 @@ tags:
   - avatar
   - networking
   - deployment
-description: 系列10 讲清了数字人媒体为什么 relay-only、relay 就是 Azure 额外运营的一台 TURN。本文回答接下来的部署问题：客户想用自己的中继怎么替换、替换之后还需不需要和 Azure 的中继"沟通"。替换入口是 session.update 里 avatar.ice_servers 这个正式字段，不传则 Azure 填入自己的中继，传了则原样回显到 session.updated，浏览器据此建 RTCPeerConnection；Speech SDK 直连数字人则在 RTCPeerConnection 构造时填。自建 TURN 要满足六项要求（公网可达且 UDP 3478 + TCP/TLS 443、短期 HMAC 凭据、允许对端为 Azure 公网地址、带宽与并发配额、地理位置、真实证书），附 coturn 最小配置；代码侧只动后端会话构建器一处，前端与 ICE 门控不用改。第二部分澄清"Azure 媒体服务器不可达"的精确含义：它不给浏览器直连入口，但自己发包完全可达；TURN 不是联邦网络，两台 TURN 不互相协商，你的 TURN 只需能出向到达 Azure 在 SDP answer 里给出的候选地址，那个候选是媒体服务器公网地址还是 Azure 中继上的 relay 候选尚待实证，打印 answer 的 a=candidate 行即可确认。最后给出验证三处与"何时值得自建"的三种情况：默认中继零运维且含在分钟费里，自建换来带宽、证书、容量可用性、凭据四项运维负担，只在出向白名单、合规路径、地理接入三种情况下值得
+description: 系列10 讲清了数字人媒体的拓扑：Azure 媒体服务器公网可达、能直连就直连，relay 是 Azure 额外运营的一台兼做 STUN 的 TURN 保底。本文回答接下来的部署问题：客户想用自己的中继怎么替换、替换之后还需不需要和 Azure 的中继"沟通"。替换入口是 session.update 里 avatar.ice_servers 这个正式字段，不传则 Azure 填入自己的中继，传了则原样回显到 session.updated，浏览器据此建 RTCPeerConnection；Speech SDK 直连数字人则在 RTCPeerConnection 构造时填。自建 TURN 要满足六项要求（公网可达且 UDP 3478 + TCP/TLS 443、短期 HMAC 凭据、允许对端为 Azure 公网地址、带宽与并发配额、地理位置、真实证书），附 coturn 最小配置；代码侧只动后端会话构建器一处，前端与 ICE 门控不用改。第二部分澄清"Azure 媒体服务器不可达"的精确含义：它不给浏览器直连入口，但自己发包完全可达；TURN 不是联邦网络，两台 TURN 不互相协商，你的 TURN 只需能出向到达 Azure 在 SDP answer 里给出的候选地址，那个候选是媒体服务器公网地址还是 Azure 中继上的 relay 候选尚待实证，打印 answer 的 a=candidate 行即可确认。最后给出验证三处与"何时值得自建"的三种情况：默认中继零运维且含在分钟费里，自建换来带宽、证书、容量可用性、凭据四项运维负担，只在出向白名单、合规路径、地理接入三种情况下值得
 ---
 
 # Voice Live 系列 11：自建 TURN 中继——ice_servers 替换入口、coturn 要求、与 Azure 侧的关系及何时值得
 
-> [系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md) 讲清了两件事：数字人媒体为什么只走 relay，以及 relay 就是 Azure 额外运营的一台 TURN 中继。紧接着的部署问题是：如果客户有自己的中继，具体怎么配置和替换；既然 Azure 没有提供其他接入点、它底层的媒体服务器又"不可达"，客户自建的 relay 是不是还得和 Azure 的 relay 沟通。
+> [系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md) 讲清了两件事：数字人媒体能直连就直连、relay 是保底，以及 relay 就是 Azure 额外运营的一台兼做 STUN 的 TURN 中继。紧接着的部署问题是：如果客户有自己的中继，具体怎么配置和替换；既然 Azure 没有提供其他接入点、它底层的媒体服务器又"不可达"，客户自建的 relay 是不是还得和 Azure 的 relay 沟通。
 > 本文分四段：替换入口在哪、自己的 TURN 要满足什么、代码里改哪几处、怎么验证真的走了自己的中继；然后单独回答"要不要和 Azure 的中继对接"，把"不可达"说精确；最后是决策：什么时候值得这么做。两类头像的码率差异会直接进入中继的容量预算，见[系列05](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)第七节。本文所有"改动点"都是位置与量的说明，尚未实施。
 
 ---
@@ -57,7 +57,7 @@ Azure 会把它原样回显在 `session.updated.session.avatar.ice_servers`，�
 
 **Speech SDK 直连数字人路径**（不经 Voice Live）：没有会话字段，直接在 `new RTCPeerConnection({ iceServers: [...] })` 里填自己的 TURN，然后把这个 peer connection 交给 avatar synthesizer 启动。官方文档那句 "We recommend fetching ICE server details from Speech service, but you can use your own" 指的就是这里。
 
-两条路的本质一样：**你的 TURN 只替换"浏览器那一侧的中继"**。Azure 媒体服务器会把媒体发到你 TURN 上分给浏览器的 allocation 地址。Azure 那一侧不需要、也不能改。
+两条路的本质一样：**你的 TURN 只替换"浏览器那一侧的中继"**。Azure 媒体服务器会把媒体发到你 TURN 上分给浏览器的 allocation 地址。Azure 那一侧不需要、也不能改。能直连时浏览器仍会与媒体服务器直连，你的 TURN 只在直连不通时被用到。
 
 ## 二、自己的 TURN 要满足什么
 
@@ -115,7 +115,7 @@ Linux 上一般 `apt install coturn` 即可安装，配置文件是 `/etc/turnse
 
 不需要。这里要把"不可达"说精确。
 
-**Azure 的数字人媒体服务器"不可达"，指的是它不给浏览器一条可以直连它的路**：不发 STUN、不在网络要求里列出直连地址。它自己**发包**是完全没问题的——它现在每一帧视频，就是发到 `relay.communication.microsoft.com` 上你那个 allocation 端口的。
+**Azure 的数字人媒体服务器并非"不可达"**：系列12 的探针实测开发机与它 srflx ↔ srflx 直连，它在 answer 里给出自己的公网候选。"不可达"只在出向 UDP 受限的办公网里成立，那时媒体经中继转发，它把每一帧视频发到中继上你的 allocation 端口。
 
 ### 5.1 TURN 之间不存在"沟通"
 
@@ -136,10 +136,10 @@ Azure 在 SDP answer 里放的候选是什么，决定你的 TURN 主机出向�
 
 | Azure 侧候选类型 | 你的 TURN 需要能到达 | 备注 |
 |---|---|---|
-| 媒体服务器自己的公网地址（host / srflx） | 该 IP 的某个 UDP 端口 | 最直接 |
+| 媒体服务器自身的公网候选（srflx / host） | 该 IP 的某个 UDP 端口 | 最直接；系列12 已在开发机实测到 srflx ↔ srflx |
 | Azure 自己 TURN 上的 relay 候选（文档列出的 ACS 中继地址段，如 `20.202.0.0/16`） | 该地址段的 UDP 3478 / TCP 443 | 路径变成"你的 TURN → Azure 的 TURN → 媒体服务器"，但对你的 TURN 只是一个公网目的地，不是对接 |
 
-**哪一种，目前没有实证**——从没打印过 Azure 的 answer SDP 里的 `a=candidate` 行。这是一个很便宜的诊断：在握手 hook 的 `setRemoteDescription` 之前把 answer 的候选行打到 console，跑一次真机就知道。它同时能回答"胜出的到底是不是 relay"。
+**系列12 的探针已经实测到第一种**：开发机上选中的候选对是 srflx ↔ srflx，对端是媒体服务器自身的公网候选，胜出的不是 relay。是否还会出现第二种（Azure 中继上的 relay 候选）以及具体地址段，仍要在握手 hook 的 `setRemoteDescription` 之前把 answer 的 `a=candidate` 行打到 console 确认，以便写进客户的出向白名单。
 
 两种情况下对客户的运维要求都一样：TURN 主机的出向规则要允许到 Azure 的那些公网地址（通常就是允许所有出向 UDP 与 443 TCP，云主机默认如此）；如果 TURN 放在客户 DMZ 且出向也做白名单，就把 answer 里看到的地址段加进去——这条和现在文档里"放行 `relay.communication.microsoft.com`"是同一性质，只是从"浏览器出向"挪到了"TURN 出向"。
 
@@ -164,13 +164,13 @@ Azure 自带的中继是**零运维、已含在数字人分钟费里**的。自�
 1. **替换入口只有一个字段**：`session.avatar.ice_servers`。不传，Azure 填自己的中继；传了，原样回显，浏览器照用。前端与 ICE 门控都不用改，后端会话构建器加约二十行。
 2. **自建 TURN 六项要求**：公网可达（UDP 3478 + TCP/TLS 443）、短期 HMAC 凭据、允许对端为 Azure 公网地址、按并发 × 码率预留配额、放在两端之间、真实证书。
 3. **你的 TURN 只替换浏览器一侧的中继**，Azure 侧不变、不能改、也不需要知道你的 TURN 存在。TURN 不是联邦网络。
-4. **"不可达"要说精确**：媒体服务器不给浏览器直连入口，但自己发包完全可达。唯一前提是你的 TURN 能出向到达 Azure 在 answer 里给出的候选地址；那个候选是媒体服务器公网地址还是 Azure 中继上的 relay，打印 answer 的 `a=candidate` 行即可实证。
+4. **"不可达"要说精确**：媒体服务器公网可达，系列12 实测开发机直连；只在出向 UDP 受限时走中继。唯一前提是你的 TURN 能出向到达 Azure 在 answer 里给出的候选地址；具体地址段打印 answer 的 `a=candidate` 行即可确认。
 5. **验证三处**：`session.updated` 回显、`getStats()` 选中 candidate-pair 的 relay 地址、TURN 日志里的 allocation。
 6. **默认中继是默认答案**：零运维且含在分钟费里；只在出向白名单、合规路径、地理接入三种情况下值得自建，代价是带宽、证书、容量可用性、凭据四项运维。
 
 ## 参考
 
-- 系列前篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)（relay-only 拓扑与 TURN 在做什么，本文是其部署延伸）、[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（ICE 门控，自建 TURN 后仍成立）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（两类头像的码率与中继容量预算）、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（"旋钮不等于生效"的回显断言模式）
+- 系列前篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（直连优先、relay 保底的拓扑与 TURN 在做什么，本文是其部署延伸）、[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（ICE 门控，自建 TURN 后仍成立）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（两类头像的码率与中继容量预算）、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（"旋钮不等于生效"的回显断言模式）
 - [Voice Live API Reference — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-api-reference-2026-04-10)（`RealtimeAvatarConfig.ice_servers` 与 `RealtimeIceServer` 字段定义）
 - [Real-time synthesis for text to speech avatar — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech-avatar/real-time-synthesis-avatar)（"you can use your own" ICE server 说明与 relay token 接口）
 - [Network recommendations — Azure Communication Services — Microsoft Learn](https://learn.microsoft.com/en-us/azure/communication-services/concepts/voice-video-calling/network-requirements)（ACS 中继域名与地址段）

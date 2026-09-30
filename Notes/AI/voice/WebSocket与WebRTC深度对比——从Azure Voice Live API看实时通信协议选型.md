@@ -248,5 +248,5 @@ Voice Live API 的演进路径（WebSocket-only → WebSocket + WebRTC）是一�
 
 - [Azure Voice Live API - WebRTC](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-webrtc)
 - [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](../../../Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
-- [Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑](../../../Azure/VoiceLive/Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)（本文第五节「无需 ICE/STUN/TURN」的展开：三类候选、TURN 中继在做什么、为什么 WebSocket 不需要配对而 WebRTC 即使一端是服务器也逃不掉 ICE）
+- [Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑](../../../Azure/VoiceLive/Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（本文第五节「无需 ICE/STUN/TURN」的展开：三类候选、TURN 中继在做什么、为什么 WebSocket 不需要配对而 WebRTC 即使一端是服务器也逃不掉 ICE）
 - [Speech技术全景——从音频处理基础到Turn-Taking的深层机制](Speech技术全景——从音频处理基础到Turn-Taking的深层机制.md)

@@ -15,7 +15,7 @@ description: 系列03 与系列10 的实测全部在开发机与云上好网络�
 
 # Voice Live 系列 12：数字人弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音
 
-> 系列03 把数字人出场与对话轮次的延迟测清了，系列10、11 把 relay-only 拓扑讲透了，但所有实测都在开发机和云上的好网络上。客户的办公网不是这样：共享上行、VPN、1% 到 3% 的丢包、上百毫秒的时延。这一篇回答三个问题：Azure 数字人流是否自适应码率、卡顿的机制是什么、部署到客户办公网时该定什么规则。方法是浏览器侧 getStats 探针加 OS 层限速，全部数字来自 2026-09-30 的真机实测。
+> 系列03 把数字人出场与对话轮次的延迟测清了，系列10、11 把直连优先、relay 保底的拓扑讲透了，但所有实测都在开发机和云上的好网络上。客户的办公网不是这样：共享上行、VPN、1% 到 3% 的丢包、上百毫秒的时延。这一篇回答三个问题：Azure 数字人流是否自适应码率、卡顿的机制是什么、部署到客户办公网时该定什么规则。方法是浏览器侧 getStats 探针加 OS 层限速，全部数字来自 2026-09-30 的真机实测。
 > 结论先看第一节；两个反直觉的机制在第五节（1080p 一帧都解不出来却仍吃带宽、胖视频饿死音频）；决定性对照在第六节（关画面让语音质量提升一个数量级）；自适应设计在第七节。它同时修正了系列05、11 里"照片数字人码率低一个数量级"的说法：默认下只差约 2.4 倍。
 
 ---
@@ -31,6 +31,7 @@ description: 系列03 与系列10 的实测全部在开发机与云上好网络�
 5. **麦克风上行不是小数目。** PCM16 24 kHz 加 base64 加 JSON 封装实测 540 到 680 kbps。上行限到 300 kbps 时，`session.avatar.connect` 的数 KB SDP 排在几百个音频帧后面发不出去，数字人握不上手。这是自伤，不是环境限制。
 6. **UDP 被封则既无画面也无声音。** Azure 下发的 ICE 只有 `turn:relay.communication.microsoft.com:3478` UDP，没有 `?transport=tcp` 候选，客户端也无法自行加 TURN/TCP（凭据是 Azure 的）。avatar 模式下 WS 上不发 `response.audio.delta`，所以封 UDP 后候选人能被听到和转写，面试官却无声无画。
 7. **照片数字人的码率优势比预期小**：默认下 645 对 1548 kbps，约 2.4 倍，不是一个数量级。真正拉开差距靠 `video.bitrate` 上限，不是换角色。
+8. **所有结论的前提是 RTT 约 300 ms 起**（开发机到 Sweden Central）。失效链由"重传等一个 RTT 大于抖动缓冲"触发，用户离区域近则同样丢包率下不会触发；选离用户最近的数字人区域、或用同区域 AVD 跑浏览器，效果好于任何码率调优，见 5.6。
 
 ## 二、测量方法
 
@@ -74,7 +75,7 @@ description: 系列03 与系列10 的实测全部在开发机与云上好网络�
 | 服务端 bitrate=300k | amira | 276 (152/370) | 512×512 @25 | 4 | 2 / 0.6 | 8 | 8 | 281 | 542 |
 | 会话中 `session.update` 400k | lisa | 前 1184 / 后 2785 | 1920×1080 @25 | — | 72 / 19.3 | 557 | — | — | — |
 
-读法：音频丢包与视频码率无关，可当作"这一轮网络有多差"的对照列，所以 bitrate=500k 那轮的冻结数不能和基线比，bitrate=300k 那轮网络最好、冻结也最少。开发网的随机波动不足以下结论，必须在限速下重复。协商到的编码是视频 H.264（照片数字人还多给了 VP8 选项）、音频 Opus 48 kHz 立体声，说话时约 130 kbps，静音期 DTX 到 1 到 2 kbps。ICE 路径全程 srflx 到 srflx，说明开发机能直连 Azure 媒体服务器、没走 TURN。
+读法：音频丢包与视频码率无关，可当作"这一轮网络有多差"的对照列，所以 bitrate=500k 那轮的冻结数不能和基线比，bitrate=300k 那轮网络最好、冻结也最少。开发网的随机波动不足以下结论，必须在限速下重复。协商到的编码是视频 H.264（照片数字人还多给了 VP8 选项）、音频 Opus 48 kHz 立体声，说话时约 130 kbps，静音期 DTX 到 1 到 2 kbps。ICE 路径全程 srflx 到 srflx，说明开发机能直连 Azure 媒体服务器、没走 TURN。这一观察修正了系列10、11 初版"relay-only、胜出必是 relay"的表述：Azure 媒体服务器公网可达，relay 是保底不是唯一。
 
 **"好网络"上就已经在卡。** 本机到 Azure 媒体服务器 RTT 约 300 ms。每丢一个视频包，重传要等一个 RTT 以上，解码器冻结 0.3 秒左右。45 秒窗口里视频冻结 9 秒，占 20%。冻结次数与丢包数近似 1 比 1，所以降码率（少发包）在同等丢包率下直接减少冻结。这条对照片数字人成立，对 1080p 要改读为"冻结约等于 NACK 次数除以若干"，见第五节。
 
@@ -92,6 +93,8 @@ description: 系列03 与系列10 的实测全部在开发机与云上好网络�
 ## 四、通道结构与"关画面保声音"的两条路
 
 开启数字人时有两条独立通道：Voice Live WebSocket（麦克风上行、转写、VAD、题目控制，TCP 443）和 avatar 的 WebRTC 连接（数字人画面加说话声音两条 RTP 轨，服务端唇形对齐，UDP 3478 TURN）。Azure 在 avatar 模式下不在 WS 上发 `response.audio.delta`，所以"UDP 被封"的准确描述是：候选人能被听到和转写，面试官既无画面也无声音。
+
+两条通道的音频格式也不同，容易混淆：WebSocket 上行的麦克风音频是应用自己打包的 PCM16（24 kHz，可降 16 kHz，见系列01 4.5.1），没有编码器；avatar 连接里的下行音频是 WebRTC 音频轨，浏览器与 Azure 协商出 Opus 编码。Opus 内部固定以 48 kHz 表示，与源是 24 kHz 的 TTS 输出无关，本次 SDP 协商成立体声，实测说话时约 130 kbps、静音期 DTX 降到 1 到 2 kbps。所以"24 降 16"改的是上行 PCM 那条，"Opus 48 kHz 立体声"是下行 RTP 那条，两者互不影响。
 
 **路 A：同一条 avatar 连接里只收音频。**
 
@@ -188,6 +191,14 @@ office-bad-amira 在 t=42 视频归零，t=46 ICE 报 disconnected，t=49 触发
 
 上行限到 300 kbps（无丢包）后两轮均失败：能建起会话的那一轮里 ICE 收集从平时的 1 秒拖到 4.3 秒，`session.avatar.connect` 发出后 SDP 应答等不到，最终 "Voice connection timeout (30s)"。原因不是网络慢，是麦克风流把上行占满了：PCM16 24 kHz 加 base64 约 600 kbps，管道只有 300 kbps，携带数 KB SDP 的 `session.avatar.connect` 排在几百个音频帧后面发不出去。降采样率到 16 kHz（约 400 kbps，见[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 4.5.1）能直接消除。
 
+### 5.6 所有结论的前提：RTT 约 300 ms 起，区域距离比丢包率更决定结果
+
+RTT（Round-Trip Time，往返时延）是一个包从浏览器到对端再回来的总时间。本文的失效链靠的是"重传要等一个 RTT，而 RTT 大于抖动缓冲预算"这一关系，所以 RTT 的基线决定了同样的丢包率会不会触发它。这批实测的开发机在亚洲、数字人区域在 Sweden Central，无限速时 RTT 就有约 300 ms，限速再加 120 ms 单向时延后到 600 到 870 ms。如果用户就在数字人区域附近，RTT 只有几十毫秒，1% 丢包下重传轻松落在 369 ms 的缓冲内，1080p 不会死，音频也不会被饿到 31%。
+
+这解释了一个此前只有经验没有机制的现象：用与 Voice Live 同区域的 Azure Virtual Desktop 跑浏览器给客户演示，效果明显好于本地浏览器。不是因为 AVD 的网络"更好"，而是浏览器到媒体服务器的 RTT 从 300 ms 降到区域内的几十毫秒，整条 NACK 迟到的链路根本不触发；同时后端到 Voice Live 也是区域内往返（系列03 5.4 节实测省 1.6 到 1.7 秒）。
+
+对部署的含义：选离**用户**最近且支持数字人的区域，对弱网表现的影响可能大于所有码率、GOP 与编码调优；本文的限速数据应读作"RTT 300 ms 起的用户"的结果，欧洲用户与亚洲用户看到的会是两套曲线。跨洲用户如果只能用远区域，AVD 或同区域的远程桌面是把 RTT 问题从客户网络挪走的现成手段，代价是远程桌面自身的画面延迟与成本。
+
 ## 六、决定性对照：关画面留声音
 
 同一 office-bad 档位四轮对比。"音频死亡"是补偿比例达到 100% 的时刻。
@@ -233,6 +244,8 @@ office-bad-amira 在 t=42 视频归零，t=46 ICE 报 disconnected，t=49 触发
 
 结论：在"客户办公网、机器配置不可控"的场景下，H.264 的普适硬解比编码效率更重要，默认值是对的；能压包数的手段仍是分辨率与码率，不是换编码。
 
+**音频轨侧待查。** 下行音频是 Opus，SDP 的 fmtp 是否带 `useinbandfec=1`（带内 FEC 不等重传即可恢复丢包，正对高 RTT）、是否协商成立体声（人头说话用单声道足够）、有没有 RED 冗余音频，探针抓的 SDP 里 grep 即可。浏览器可以在 offer 的 fmtp 里请求 `useinbandfec=1`、`stereo=0`、`maxaveragebitrate`，发送端通常尊重，与被忽略的 `b=AS` 不是同一机制。这直接作用在"胖视频饿死音频"那 31% 上。
+
 ## 七、自适应设计建议
 
 ### 7.1 已确认的六条事实
@@ -276,7 +289,7 @@ office-bad-amira 在 t=42 视频归零，t=46 ICE 报 disconnected，t=49 触发
 
 ## 参考
 
-- 系列前篇：[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（好网络下的延迟基线、说明页预热、首读等首帧的门）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（两类头像的分辨率与带宽，本文修正其码率差距）、[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)（RTP/RTCP 与 UDP 的关系、媒体层自愈）、[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)（Azure 只下发 UDP TURN 的部署含义）、[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)（4.5.1 输入采样率 24 kHz 与 16 kHz）
+- 系列前篇：[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（好网络下的延迟基线、说明页预热、首读等首帧的门）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（两类头像的分辨率与带宽，本文修正其码率差距）、[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（RTP/RTCP 与 UDP 的关系、媒体层自愈）、[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)（Azure 只下发 UDP TURN 的部署含义）、[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)（4.5.1 输入采样率 24 kHz 与 16 kHz）
 - [RTCInboundRtpStreamStats — MDN](https://developer.mozilla.org/en-US/docs/Web/API/RTCInboundRtpStreamStats)（`framesPerSecond`、`freezeCount`、`concealedSamples`、`nackCount`、`pliCount`、`jitterBufferDelay`）
 - [RTCIceCandidatePairStats: availableIncomingBitrate — MDN](https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidatePairStats/availableIncomingBitrate)
 - [RTCP message for Receiver Estimated Maximum Bitrate — draft-alvestrand-rmcat-remb](https://datatracker.ietf.org/doc/html/draft-alvestrand-rmcat-remb-03)（`goog-remb`）

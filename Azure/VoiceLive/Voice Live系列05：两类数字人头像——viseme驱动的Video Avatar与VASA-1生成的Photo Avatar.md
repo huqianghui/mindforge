@@ -174,7 +174,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 
 ### 带宽与并发：photo 默认码率更低，但那是分辨率的副产品，且差距比预想小
 
-数字人的音视频在 relay-only 拓扑下**全部经 TURN 中继转发**（见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)第六节），所以每会话码率直接决定两件事：用 Azure 中继时，客户办公网入口带宽够不够；自建 TURN（如 coturn）时，中继机出网带宽与 `total-quota` / `user-quota` 怎么设（自建 TURN 的替换入口与全部要求见[系列11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)）。码率由分辨率、帧率、画面复杂度决定，与头像类型本身无关——但两类头像的**默认分辨率差了八倍像素**，默认配置下的带宽差距因此很大：
+数字人的音视频能直连时直连 Azure 媒体服务器，出向 UDP 受限的办公网里则**经 TURN 中继转发**（见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)第六节），所以每会话码率直接决定两件事：用 Azure 中继时，客户办公网入口带宽够不够；自建 TURN（如 coturn）时，中继机出网带宽与 `total-quota` / `user-quota` 怎么设（自建 TURN 的替换入口与全部要求见[系列11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)）。码率由分辨率、帧率、画面复杂度决定，与头像类型本身无关——但两类头像的**默认分辨率差了八倍像素**，默认配置下的带宽差距因此很大：
 
 | 方案 | 单会话下行（视频） | 100 并发经中继的下行总量 | 上行（音频） |
 |---|---:|---:|---:|
@@ -213,7 +213,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 4. **传输层两者完全相同**：同一套 ICE/SDP 握手、同一条 WebRTC、同样的 H.264——系列03 的延迟工程结论直接复用；差异全部在合成侧（head-only vs 全身、512×512 vs 1080p 源、scene vs crop/background）。
 5. **素材来源三条线**：photo 头像支持真人照片（需 consent 视频 + 人脸比对核验）与 AI 生成虚拟人（免 consent），但必须是人类比例的脸——卡通/动漫明确不支持；自定义 video 头像只能用真人实拍（≥10min 录像）；想要卡通数字人只能客户端拿 viseme 时间轴自渲染。
 6. 工程守则：**session 构造器与 agent metadata 必须按头像类型分支**；photo 头像必带 `type` + `model`，不得带 style。
-7. **带宽是 photo 的一项部署优势，但只是分辨率的副产品**：默认 1080p 的 video 头像实测约 1.5~2.4 Mbps/会话，512×512 的 photo 头像约 0.65 Mbps，只低约 2.4 倍而非一个数量级（弱网下的真正优势是可解码性，见系列12），relay-only 下全部经中继，直接换算成办公网入口或自建 TURN 的配额；video 头像可降 `resolution` / `bitrate` 缩小差距，photo 的低码率同时也是画质天花板。
+7. **带宽是 photo 的一项部署优势，但只是分辨率的副产品**：默认 1080p 的 video 头像实测约 1.5~2.4 Mbps/会话，512×512 的 photo 头像约 0.65 Mbps，只低约 2.4 倍而非一个数量级（弱网下的真正优势是可解码性，见系列12），出向 UDP 受限走中继时，直接换算成办公网入口或自建 TURN 的配额；video 头像可降 `resolution` / `bitrate` 缩小差距，photo 的低码率同时也是画质天花板。
 
 ## 参考
 

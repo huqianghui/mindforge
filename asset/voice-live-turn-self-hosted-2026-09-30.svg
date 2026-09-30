@@ -29,7 +29,7 @@
   <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
 
   <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">默认中继 vs 自建 TURN — 只替换浏览器一侧的中继，Azure 侧不变，两台 TURN 之间没有"对接"</text>
-  <text x="36" y="66" font-size="12" fill="#64748b">青绿 = 默认路径 · 琥珀 = 自建路径 · 紫 = 一次性信令（WS）· 灰虚线 = 待实证 · 2026.09</text>
+  <text x="36" y="66" font-size="12" fill="#64748b">青绿 = 默认路径 · 琥珀 = 自建路径 · 紫 = 一次性信令（WS）· 灰虚线 = 系列12 已部分实测 · 2026.09</text>
 
   <!-- switch: session.update -->
   <rect x="40" y="92" width="1080" height="46" rx="10" fill="#1a1426" stroke="#a78bfa" stroke-width="1.2"/>
@@ -75,9 +75,9 @@
   <text x="683" y="300" font-size="9.5" fill="#fcd34d" text-anchor="middle">出向到 answer 候选</text>
 
   <rect x="730" y="280" width="390" height="60" rx="10" fill="#111827" stroke="#475569" stroke-width="1.2" stroke-dasharray="5 4"/>
-  <text x="925" y="300" font-size="11.5" fill="#cbd5e1" text-anchor="middle">Azure 在 SDP answer 里给出的候选（待实证，二选一）</text>
-  <text x="925" y="317" font-size="10" fill="#94a3b8" text-anchor="middle">a. 媒体服务器自己的公网地址（host / srflx）→ 最直接</text>
-  <text x="925" y="332" font-size="10" fill="#94a3b8" text-anchor="middle">b. Azure TURN 上的 relay 候选 → 对你的 TURN 只是一个公网目的地</text>
+  <text x="925" y="300" font-size="11.5" fill="#cbd5e1" text-anchor="middle">Azure 在 SDP answer 里给出的候选（系列12 实测：开发机 srflx ↔ srflx 直连）</text>
+  <text x="925" y="317" font-size="10" fill="#94a3b8" text-anchor="middle">a. 媒体服务器自身的公网候选 → 直连，已观测到</text>
+  <text x="925" y="332" font-size="10" fill="#94a3b8" text-anchor="middle">b. Azure TURN 上的 relay 候选 → 若出现，对你的 TURN 也只是公网目的地</text>
 
   <!-- non-federation note -->
   <rect x="340" y="352" width="780" height="34" rx="8" fill="#0f172a" stroke="#f87171" stroke-width="1.2" stroke-dasharray="6 5" class="warn"/>

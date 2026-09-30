@@ -9,7 +9,7 @@ tags:
   - avatar
   - latency
   - performance
-description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的延迟分解、ICE gathering 死等 complete 的根因剖析（Vanilla ICE + relay-only 场景下"全量集→够用集"的关键洞察）、三层优化策略（ICE 门控快路径、说明页预热、截帧占位）与同区域部署对照数据，外加对话轮次延迟实测（说完话→听到回复 ≈1.5s 的分段中位数与多轮稳定性），最后沉淀五条可迁移的延迟工程经验
+description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的延迟分解、ICE gathering 死等 complete 的根因剖析（Vanilla ICE + 候选同源场景下"全量集→够用集"的关键洞察）、三层优化策略（ICE 门控快路径、说明页预热、截帧占位）与同区域部署对照数据，外加对话轮次延迟实测（说完话→听到回复 ≈1.5s 的分段中位数与多轮稳定性），最后沉淀五条可迁移的延迟工程经验
 ---
 
 # Voice Live 系列 03：数字人出场延迟优化——ICE 门控根因、实测分解与预热占位策略
@@ -49,7 +49,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 
 ## 三、根因：ICE gathering `complete` 在多网卡环境下永远不来
 
-数字人的视频是一条独立的 WebRTC 连接（浏览器 ↔ Azure 数字人 TURN relay）。建立连接前，浏览器要做 **ICE candidate 收集**——枚举本机每个网络接口的候选地址，写进 SDP offer（双通道架构见[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)；WebSocket 与 WebRTC 的协议分工见 [WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)）。
+数字人的视频是一条独立的 WebRTC 连接（浏览器 ↔ Azure 数字人媒体服务器，直连或经其 TURN 中继）。建立连接前，浏览器要做 **ICE candidate 收集**——枚举本机每个网络接口的候选地址，写进 SDP offer（双通道架构见[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)；WebSocket 与 WebRTC 的协议分工见 [WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)）。
 
 原实现发出 offer 前等待以下三个信号之一：
 
@@ -66,7 +66,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 - **Trickle ICE**（增量）：offer 先发出去，候选收集到一个就补发一个。要求信令通道支持双向、多次的候选交换。
 - **Vanilla ICE**（一次性）：offer 作为**一个完整包**只发一次，里面必须已经带上所有要用的候选，之后没有补发机会。
 
-Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通过 `session.avatar.connect` 消息**只发送一次**，没有后续补发候选的通道。所以「发之前把候选收集齐」是必要的——如果 offer 里缺了最终连接要用的那个候选，连接就建不起来。在**不知道哪个候选会胜出**的通用场景下，「等全部收集完成」是唯一保证正确的等法（为什么不能「先到先得」、host / srflx / relay 三类候选各是什么、STUN 与 TURN 的分工，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)）。
+Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通过 `session.avatar.connect` 消息**只发送一次**，没有后续补发候选的通道。所以「发之前把候选收集齐」是必要的——如果 offer 里缺了最终连接要用的那个候选，连接就建不起来。在**不知道哪个候选会胜出**的通用场景下，「等全部收集完成」是唯一保证正确的等法（为什么不能「先到先得」、host / srflx / relay 三类候选各是什么、STUN 与 TURN 的分工，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)）。
 
 ### 3.2 为什么 VPN/企业网络环境必现？
 
@@ -80,18 +80,18 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 ## 四、洞见：把等待目标从「全量集」改成「够用集」
 
-修复的关键洞察是一个**场景特化知识**：**Azure 数字人只走它下发的 TURN relay**（`session.updated` 里 `ice_servers: 1`，一个带凭据的 relay，没有 STUN、没有 P2P 直连路径）。媒体流的最终路径一定是「浏览器 → 这个 relay → Azure」。
+修复的关键洞察是一个**场景特化知识**：**Azure 只下发一台 TURN**（`session.updated` 里 `ice_servers: 1`，一个带凭据的 relay），而 TURN 兼做 STUN，浏览器的 srflx 与 relay 候选来自同一次往返、几乎同时到达；Azure 媒体服务器公网可达，能直连就 srflx 直连，否则走 relay 保底（系列12 实测开发机为直连）。无论哪种，胜出者都只可能是这两类之一，host 必输。
 
-也就是说，SDP 里只要有**一个 relay 类型的 candidate**，最终会胜出的那一对候选就已经在包里了——后面再收集到的 host 候选（局域网地址）根本到不了 Azure 的 relay，**永远不会被选中**，等它们纯属浪费。
+也就是说，SDP 里只要有**一个 relay 或 srflx 候选**，最终会胜出的那一对就已经在包里了——后面再收集到的 host 候选（局域网地址）根本到不了 Azure 的 relay，**永远不会被选中**，等它们纯属浪费。
 
 | | 修复前 | 修复后 |
 |---|---|---|
-| 等的目标 | **全量集**：所有接口的所有候选 | **够用集**：第一个 relay 候选（+300ms 同批） |
-| 成立前提 | 通用场景——不知道哪个候选会胜出，只能全要 | 本场景特有——服务端 relay-only，胜出者已知 |
+| 等的目标 | **全量集**：所有接口的所有候选 | **够用集**：第一个 relay 或 srflx 候选（+300ms 同批） |
+| 成立前提 | 通用场景——不知道哪个候选会胜出，只能全要 | 本场景特有——srflx 与 relay 同源、host 必输，胜出者范围已知 |
 | 被谁拖慢 | 最慢/最坏的那个网络接口 | 只取决于到 relay 的一次 UDP 往返（快且必要） |
 | 正确性 | 永远正确，但可能极慢 | 同样正确（胜出候选必在包内），且快 |
 
-一句话：原来的等待在「不知道谁会赢」的通用假设下是必要的；一旦确认这条链路**只可能由 relay 候选获胜**（Azure 数字人服务的固定行为），「等全部」就退化成了「等无用的东西」——把等待目标从全量集改成够用集，正确性不损失，时间从 8 秒变 0.38 秒。这个捷径的前提是服务端 relay-only（一个 TURN、无 STUN、无直连）；官方 SDK 为什么不能这么写、`iceTransportPolicy: "relay"` 为什么解决不了这 8 秒、Azure 为什么额外提供一台 TURN 中继而不让浏览器直连，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)第五、六节。
+一句话：原来的等待在「不知道谁会赢」的通用假设下是必要的；一旦确认这条链路**只可能由 relay 或 srflx 候选获胜**（Azure 只下发一台兼做 STUN 的 TURN），「等全部」就退化成了「等无用的东西」——把等待目标从全量集改成够用集，正确性不损失，时间从 8 秒变 0.38 秒。这个捷径的前提是两类候选同源（只下发一台兼做 STUN 的 TURN）；官方 SDK 为什么不能这么写、`iceTransportPolicy: "relay"` 为什么解决不了这 8 秒、Azure 为什么额外提供一台 TURN 中继而不让浏览器直连，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)第五、六节。
 
 这个思路可以推广：**很多"标准做法"的等待，等的是通用假设下的最坏情况；当你对服务端行为有确定性知识时，等待条件就可以收窄**。前提是把兜底留住——本次修复中原有三个信号（null candidate / `complete` / 8s 兜底）全部保留，所以在 `complete` 来得快的正常网络上行为与之前完全一致。
 
@@ -149,7 +149,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 **关于首帧的 ~3.5s，为什么说「固有」但仍可部分缓解**——它由两部分组成：
 
-1. **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS）：与**浏览器↔Azure 区域**的 RTT 成正比。注意数字人媒体流是浏览器直连 Azure TURN relay，**不经过后端**——所以这部分取决于最终用户离区域多近，选一个离用户近且支持 Voice Live 数字人的区域是唯一手段；
+1. **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS）：与**浏览器↔Azure 区域**的 RTT 成正比。注意数字人媒体流是浏览器直连 Azure 媒体服务器或经其 TURN 中继，**不经过后端**——所以这部分取决于最终用户离区域多近，选一个离用户近且支持 Voice Live 数字人的区域是唯一手段；
 2. **Azure 侧渲染管线冷启动**（数字人合成器启动 + H.264 编码器出第一个关键帧）：纯服务端成本，客户端与部署拓扑都无法改变。
 
 不过它的实际影响比数字看起来小：**每场面试只付一次**（会话全程保持，换题不重连），且已被预热 + 截帧占位两层体验优化覆盖。
@@ -198,7 +198,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 
 ## 七、总结：五条可迁移的延迟工程经验
 
-1. **不要死等 WebRTC gathering `complete`。** 多网卡/VPN 环境下它可能永远不来。正确姿势是「够用即走」：目标是 relay-only 服务时，等到第一个 relay candidate（+ 短收敛窗）即可，`complete` 与超时只做兜底。这是 WebRTC 集成的通用经验，不限于本项目。
+1. **不要死等 WebRTC gathering `complete`。** 多网卡/VPN 环境下它可能永远不来。正确姿势是「够用即走」：服务端只下发一台 TURN 时，等到第一个 relay 或 srflx candidate（+ 短收敛窗）即可，`complete` 与超时只做兜底。这是 WebRTC 集成的通用经验，不限于本项目。
 2. **给每一段等待打上时间戳日志。** 本次能 10 分钟定位，靠的是握手代码原本就逐步打日志（`gathering ICE for offer` → `offer ready`），两条日志一减就看到 8 秒。新增等待逻辑时，入口/出口各打一条。
 3. **优化前先实测分解，不要猜。** 「数字人慢」的候选嫌疑有五六个；console 注入计时器一跑，8/16 秒落在谁身上一目了然。修完再跑同一脚本对比，数字就是证据。
 4. **固有 RTT 消不掉，就用「重叠」和「占位」。** 连接成本挪到用户阅读说明的时间里（预热）、人物形象用上一次的截帧秒出（占位）——用户感知的等待可以远小于技术上的等待。
@@ -207,7 +207,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 ## 参考
 
 - 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
-- 系列后篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)（本文根因下面的协议层：三类候选、STUN/TURN、一次性信令与 Vanilla ICE、官方为何等全量、WebSocket 为何不需要 ICE）
+- 系列后篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（本文根因下面的协议层：三类候选、STUN/TURN、一次性信令与 Vanilla ICE、官方为何等全量、WebSocket 为何不需要 ICE）
 - 协议背景：[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 - [Trickle ICE: Incremental Provisioning of Candidates for the Interactive Connectivity Establishment (ICE) Protocol — RFC 8838](https://datatracker.ietf.org/doc/html/rfc8838)
 - [How to use the Voice Live API — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to)
