@@ -66,7 +66,7 @@ description: 基于 AI 面试项目的真实实测：数字人出场 16 秒的�
 - **Trickle ICE**（增量）：offer 先发出去，候选收集到一个就补发一个。要求信令通道支持双向、多次的候选交换。
 - **Vanilla ICE**（一次性）：offer 作为**一个完整包**只发一次，里面必须已经带上所有要用的候选，之后没有补发机会。
 
-Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通过 `session.avatar.connect` 消息**只发送一次**，没有后续补发候选的通道。所以「发之前把候选收集齐」是必要的——如果 offer 里缺了最终连接要用的那个候选，连接就建不起来。在**不知道哪个候选会胜出**的通用场景下，「等全部收集完成」是唯一保证正确的等法。
+Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通过 `session.avatar.connect` 消息**只发送一次**，没有后续补发候选的通道。所以「发之前把候选收集齐」是必要的——如果 offer 里缺了最终连接要用的那个候选，连接就建不起来。在**不知道哪个候选会胜出**的通用场景下，「等全部收集完成」是唯一保证正确的等法（为什么不能「先到先得」、host / srflx / relay 三类候选各是什么、STUN 与 TURN 的分工，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)）。
 
 ### 3.2 为什么 VPN/企业网络环境必现？
 
@@ -91,7 +91,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 | 被谁拖慢 | 最慢/最坏的那个网络接口 | 只取决于到 relay 的一次 UDP 往返（快且必要） |
 | 正确性 | 永远正确，但可能极慢 | 同样正确（胜出候选必在包内），且快 |
 
-一句话：原来的等待在「不知道谁会赢」的通用假设下是必要的；一旦确认这条链路**只可能由 relay 候选获胜**（Azure 数字人服务的固定行为），「等全部」就退化成了「等无用的东西」——把等待目标从全量集改成够用集，正确性不损失，时间从 8 秒变 0.38 秒。
+一句话：原来的等待在「不知道谁会赢」的通用假设下是必要的；一旦确认这条链路**只可能由 relay 候选获胜**（Azure 数字人服务的固定行为），「等全部」就退化成了「等无用的东西」——把等待目标从全量集改成够用集，正确性不损失，时间从 8 秒变 0.38 秒。这个捷径的前提是服务端 relay-only（一个 TURN、无 STUN、无直连）；官方 SDK 为什么不能这么写、`iceTransportPolicy: "relay"` 为什么解决不了这 8 秒、Azure 为什么额外提供一台 TURN 中继而不让浏览器直连，见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)第五、六节。
 
 这个思路可以推广：**很多"标准做法"的等待，等的是通用假设下的最坏情况；当你对服务端行为有确定性知识时，等待条件就可以收窄**。前提是把兜底留住——本次修复中原有三个信号（null candidate / `complete` / 8s 兜底）全部保留，所以在 `complete` 来得快的正常网络上行为与之前完全一致。
 
@@ -207,6 +207,7 @@ Azure 数字人的信令就是一次性的：offer 以 base64 blob 的形式通�
 ## 参考
 
 - 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)
+- 系列后篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)（本文根因下面的协议层：三类候选、STUN/TURN、一次性信令与 Vanilla ICE、官方为何等全量、WebSocket 为何不需要 ICE）
 - 协议背景：[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 - [Trickle ICE: Incremental Provisioning of Candidates for the Interactive Connectivity Establishment (ICE) Protocol — RFC 8838](https://datatracker.ietf.org/doc/html/rfc8838)
 - [How to use the Voice Live API — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to)

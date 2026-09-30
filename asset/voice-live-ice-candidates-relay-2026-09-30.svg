@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="680" viewBox="0 0 1160 680" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/></marker>
+    <marker id="aA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/></marker>
+    <marker id="aG" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#64748b"/></marker>
+    <marker id="aR" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#f87171"/></marker>
+  </defs>
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.7; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.3; } 50% { stroke-opacity: 1; } }
+    .flow  { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flowA { stroke-dasharray: 8 12;  animation: flowDash 1.7s linear infinite; }
+    .halo  { animation: pulse 2s ease-in-out infinite; }
+    .live  { animation: shimmer 3.5s ease-in-out infinite; }
+    .warn  { animation: breathe 2.2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="680" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="678" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">ICE 候选三类型与 relay-only 拓扑 — 谁到得了 Azure、谁会胜出、门控等的是什么</text>
+  <text x="36" y="66" font-size="12" fill="#64748b">灰虚线 = host（必输）· 琥珀虚线 = srflx（本场景无 STUN，不产生）· 青绿 = relay（唯一可能胜出）· 红 = 悬着的网卡 · 2026.09</text>
+
+  <!-- ===== A. Topology ===== -->
+  <text x="36" y="98" font-size="12.5" font-weight="700" fill="#94a3b8">A. 数据面拓扑：浏览器 ↔ Azure 数字人媒体服务器，音视频每一个 RTP 包都经 TURN 中继转发</text>
+
+  <!-- browser -->
+  <rect x="40" y="110" width="250" height="212" rx="12" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="165" y="132" font-size="12" font-weight="700" fill="#cbd5e1" text-anchor="middle">浏览器（NAT / 企业防火墙后）</text>
+
+  <rect x="55" y="146" width="220" height="44" rx="8" fill="#0f172a" stroke="#475569" stroke-width="1.1" stroke-dasharray="5 4"/>
+  <text x="165" y="164" font-size="11" fill="#94a3b8" text-anchor="middle" font-family="Menlo, monospace">typ host  192.168.1.23:52000</text>
+  <text x="165" y="181" font-size="10" fill="#64748b" text-anchor="middle">读本机网卡 · 零往返 · 永远最先到</text>
+
+  <rect x="55" y="200" width="220" height="44" rx="8" fill="#0f172a" stroke="#fbbf24" stroke-width="1.1" stroke-dasharray="5 4" opacity="0.75"/>
+  <text x="165" y="218" font-size="11" fill="#fcd34d" text-anchor="middle" font-family="Menlo, monospace">typ srflx  203.0.113.7:61234</text>
+  <text x="165" y="235" font-size="10" fill="#94a3b8" text-anchor="middle">STUN 反射的公网出口 · 本场景不产生</text>
+
+  <rect x="55" y="254" width="220" height="50" rx="8" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <text x="165" y="273" font-size="11" fill="#5eead4" text-anchor="middle" font-family="Menlo, monospace">typ relay  20.x.x.x:3478</text>
+  <text x="165" y="291" font-size="10" fill="#99f6e4" text-anchor="middle">TURN 分给我的 allocation 端口 · 唯一胜出者</text>
+
+  <!-- NAT wall -->
+  <rect x="330" y="110" width="14" height="212" rx="4" fill="#1f2937" stroke="#475569" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="337" y="338" font-size="10" fill="#64748b" text-anchor="middle">NAT / 防火墙</text>
+  <text x="337" y="352" font-size="9.5" fill="#64748b" text-anchor="middle">允许出向 · 不放入向</text>
+
+  <!-- host arrow: dies at the wall -->
+  <path d="M275 168 L 324 168" fill="none" stroke="#64748b" stroke-width="1.6" stroke-dasharray="5 5"/>
+  <text x="337" y="173" font-size="14" font-weight="700" fill="#f87171" text-anchor="middle">✕</text>
+  <text x="352" y="172" font-size="10" fill="#f87171">局域网地址，出不了 NAT，对端配不上</text>
+
+  <!-- STUN box (absent) -->
+  <rect x="470" y="118" width="230" height="60" rx="10" fill="#111827" stroke="#475569" stroke-width="1.1" stroke-dasharray="5 4" opacity="0.8"/>
+  <text x="585" y="141" font-size="12" fill="#94a3b8" text-anchor="middle">STUN 服务器（照镜子）</text>
+  <text x="585" y="158" font-size="10" fill="#64748b" text-anchor="middle">只回答"我看到你的地址是 X"，不转发媒体</text>
+  <text x="585" y="172" font-size="10" fill="#fbbf24" text-anchor="middle">本场景 session.updated 未下发 → 无 srflx</text>
+  <!-- srflx arrow: dashed, static (not produced) -->
+  <path d="M470 222 L 282 222" fill="none" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="4 6" opacity="0.55" marker-end="url(#aA)"/>
+
+  <!-- TURN relay box -->
+  <rect x="470" y="236" width="230" height="78" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <text x="585" y="259" font-size="12" font-weight="700" fill="#5eead4" text-anchor="middle">TURN relay（ACS 中继基础设施）</text>
+  <text x="585" y="277" font-size="10" fill="#99f6e4" text-anchor="middle">session.updated 唯一下发的 ICE server，带短期凭据</text>
+  <text x="585" y="293" font-size="10" fill="#99f6e4" text-anchor="middle">为我分配 allocation 端口，转发全部 RTP</text>
+  <text x="585" y="307" font-size="9.5" fill="#64748b" text-anchor="middle">UDP 3478 · 被封时回落 TCP/TLS 443</text>
+
+  <!-- relay arrows browser <-> TURN -->
+  <path d="M275 268 L 466 268" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <path d="M470 296 L 279 296" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="1.5s" repeatCount="indefinite" path="M275 268 L 466 268"/></circle>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="1.5s" begin="0.5s" repeatCount="indefinite" path="M470 296 L 279 296"/></circle>
+  <text x="372" y="260" font-size="9.5" fill="#5eead4" text-anchor="middle">出向连中继：只要能出网即可</text>
+  <text x="372" y="312" font-size="9.5" fill="#5eead4" text-anchor="middle">媒体（音频 + 视频 RTP）沿原路回来</text>
+
+  <!-- Azure media server -->
+  <rect x="790" y="236" width="330" height="78" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.3"/>
+  <text x="955" y="259" font-size="12" font-weight="700" fill="#5eead4" text-anchor="middle">Azure 数字人媒体服务器</text>
+  <text x="955" y="277" font-size="10" fill="#94a3b8" text-anchor="middle">不暴露直连地址（未做 ICE-lite 公网 host 候选）</text>
+  <text x="955" y="293" font-size="10" fill="#99f6e4" text-anchor="middle">胜出配对必然是：我的 relay 候选 ↔ 服务器候选</text>
+  <text x="955" y="307" font-size="9.5" fill="#64748b" text-anchor="middle">offer / answer 走 WS 信令（session.avatar.connect），媒体不经后端</text>
+
+  <path d="M700 262 L 786 262" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <path d="M790 290 L 704 290" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="0.9s" repeatCount="indefinite" path="M700 262 L 786 262"/></circle>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="0.9s" begin="0.3s" repeatCount="indefinite" path="M790 290 L 704 290"/></circle>
+
+  <!-- ===== B. Vanilla ICE timeline ===== -->
+  <text x="36" y="372" font-size="12.5" font-weight="700" fill="#94a3b8">B. Vanilla ICE 时间线：offer 只发一次，门控等的是"胜出者进包"——修复前等全量集，修复后等够用集</text>
+  <text x="357" y="392" font-size="10" fill="#fbbf24" text-anchor="middle">▼ 门控 = 发 offer 之前的这段等待</text>
+
+  <!-- 5 stages -->
+  <rect x="40" y="398" width="190" height="52" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="135" y="419" font-size="11.5" fill="#cbd5e1" text-anchor="middle">① 收集候选</text>
+  <text x="135" y="436" font-size="9.5" fill="#64748b" text-anchor="middle">每张网卡各自向 STUN / TURN 发请求</text>
+  <path d="M230 424 L 258 424" fill="none" stroke="#2dd4bf" stroke-width="2" class="flow" marker-end="url(#aT)"/>
+
+  <rect x="262" y="398" width="190" height="52" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.4"/>
+  <text x="357" y="419" font-size="11.5" fill="#fcd34d" text-anchor="middle">② 写进 offer，一次性发出</text>
+  <text x="357" y="436" font-size="9.5" fill="#94a3b8" text-anchor="middle">base64 blob · 之后没有补发候选的通道</text>
+  <path d="M452 424 L 480 424" fill="none" stroke="#2dd4bf" stroke-width="2" class="flow" marker-end="url(#aT)"/>
+
+  <rect x="484" y="398" width="190" height="52" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="579" y="419" font-size="11.5" fill="#cbd5e1" text-anchor="middle">③ 收到 answer</text>
+  <text x="579" y="436" font-size="9.5" fill="#64748b" text-anchor="middle">拿到对端候选列表</text>
+  <path d="M674 424 L 702 424" fill="none" stroke="#2dd4bf" stroke-width="2" class="flow" marker-end="url(#aT)"/>
+
+  <rect x="706" y="398" width="190" height="52" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="801" y="419" font-size="11.5" fill="#cbd5e1" text-anchor="middle">④ 连通性检查</text>
+  <text x="801" y="436" font-size="9.5" fill="#64748b" text-anchor="middle">两两配对互发 STUN binding，谁通谁留</text>
+  <path d="M896 424 L 924 424" fill="none" stroke="#2dd4bf" stroke-width="2" class="flow" marker-end="url(#aT)"/>
+
+  <rect x="928" y="398" width="192" height="52" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <text x="1024" y="419" font-size="11.5" fill="#5eead4" text-anchor="middle">⑤ 胜出配对</text>
+  <text x="1024" y="436" font-size="9.5" fill="#99f6e4" text-anchor="middle">本场景只可能是 relay ↔ server</text>
+
+  <!-- scale: 8s over 1000px => 125px/s; origin x=60 -->
+  <!-- lane 1: before -->
+  <text x="40" y="482" font-size="11" font-weight="700" fill="#94a3b8">修复前 · 等 complete / null candidate / 8 秒兜底</text>
+  <line x1="60" y1="512" x2="1120" y2="512" stroke="#1e293b" stroke-width="1"/>
+  <rect x="60" y="500" width="1000" height="24" rx="6" fill="none" stroke="#f87171" stroke-width="1.6" stroke-dasharray="6 6" class="warn"/>
+  <text x="560" y="516" font-size="10" fill="#f87171" text-anchor="middle">VPN 虚拟网卡向 TURN 的申请石沉大海 → 没响应也没错误 → complete 永远不来 → 每次硬等满兜底</text>
+  <line x1="66" y1="496" x2="66" y2="528" stroke="#64748b" stroke-width="1.6"/>
+  <text x="66" y="540" font-size="9.5" fill="#64748b" text-anchor="middle">0s host 到（必输）</text>
+  <line x1="107" y1="496" x2="107" y2="528" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text x="120" y="540" font-size="9.5" fill="#5eead4" text-anchor="middle">0.3s relay 到（已够用，但没人看）</text>
+  <circle cx="1060" cy="512" r="7" fill="#f87171" opacity="0.35" class="halo"/>
+  <circle cx="1060" cy="512" r="4" fill="#f87171"/>
+  <text x="1060" y="540" font-size="10" font-weight="700" fill="#f87171" text-anchor="middle">7.99s 兜底打满 → 发 offer</text>
+
+  <!-- lane 2: after -->
+  <text x="40" y="576" font-size="11" font-weight="700" fill="#94a3b8">修复后 · 第一个 relay 候选 + 300 ms 收敛窗</text>
+  <line x1="60" y1="606" x2="1120" y2="606" stroke="#1e293b" stroke-width="1"/>
+  <line x1="66" y1="590" x2="66" y2="622" stroke="#64748b" stroke-width="1.6"/>
+  <text x="66" y="634" font-size="9.5" fill="#64748b" text-anchor="middle">0s host（不触发）</text>
+  <rect x="107" y="594" width="37" height="24" rx="5" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <line x1="107" y1="590" x2="107" y2="622" stroke="#2dd4bf" stroke-width="1.6"/>
+  <circle cx="144" cy="606" r="7" fill="#2dd4bf" opacity="0.35" class="halo"/>
+  <circle cx="144" cy="606" r="4" fill="#2dd4bf"/>
+  <text x="185" y="634" font-size="10" font-weight="700" fill="#5eead4" text-anchor="middle">0.38s 发 offer（relay 到 + 300ms）</text>
+  <path d="M170 606 L 1050 606" fill="none" stroke="#334155" stroke-width="1.4" stroke-dasharray="3 6"/>
+  <text x="610" y="600" font-size="10" fill="#94a3b8" text-anchor="middle">省下 ~7.6s · 三个兜底信号全部保留：干净网络上行为与修复前完全一致</text>
+
+  <text x="36" y="664" font-size="10" fill="#64748b">捷径成立的前提是服务端 relay-only（一个 TURN、无 STUN、无直连）。换成开放 STUN / 直连的服务端，胜出者不再确定，需回到 Trickle ICE 或等全量。</text>
+</svg>
