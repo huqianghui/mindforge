@@ -263,7 +263,7 @@ Voice Live 官方对 `gpt-5-mini` 的描述是 "audio input through Azure speech
 
 **真要改，两边必须同时改（尚未改）。** 前端麦克风侧要改两处：`getUserMedia` 的采样率约束和采集用的 `AudioContext`；后端会话侧要在 avatar 会话配置里声明 `input_audio_sampling_rate: 16000`（目前没有声明，用的是 Azure 默认 24000，恰好和前端的 24 kHz 对上）。只改一边会让 Azure 按错误速率解释字节流，声音变调变速，转写直接废掉。播放侧的 24 kHz 不能动，那是 Azure 下发 PCM 的速率。这个参数和 avatar 码率一样，会话中途不能改，官方文档明确说明（[系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) ① 听那一关的"会话中不可改采样率与 AEC 参考源"）。
 
-**为什么上行不干脆压缩，而只是降采样率。** 因为 WebSocket 这条路的协议只收三种输入格式：`pcm16`、`g711_ulaw`、`g711_alaw`，没有 Opus。Opus 只存在于 WebRTC 音频轨里，而 Voice Live 的 WebRTC 模式目前不支持 avatar（系列10 相关讨论）；浏览器虽然能用 WebCodecs 自己编 Opus，服务端也不认。G.711 是唯一可选的压缩格式，但它是 8 kHz 窄带、8 位压扩，64 kbps，电话音质，识别器虽然支持电话音频，准确率会有可感知的下降。另外 `input_audio_buffer.append` 只接受 base64 字符串，不能发二进制帧，所以无论哪种格式都要再付 33% 的编码开销。上行可选项与代价如下：
+**为什么上行不干脆压缩，而只是降采样率。** 先划清一层：WebSocket 本身与压缩无关，它只是字节管道，放 Opus 编码后的字节完全可以，它甚至有自己的 permessage-deflate 扩展（对音频几乎无效）。限制在**应用层协议**：Voice Live 走 WebSocket 的事件协议只收三种输入格式：`pcm16`、`g711_ulaw`、`g711_alaw`，没有 Opus。Opus 只存在于 WebRTC 音频轨里，而 Voice Live 的 WebRTC 模式目前不支持 avatar（系列10 相关讨论）；浏览器虽然能用 WebCodecs 自己编 Opus，服务端也不认。G.711 是唯一可选的压缩格式，但它是 8 kHz 窄带、8 位压扩，64 kbps，电话音质，识别器虽然支持电话音频，准确率会有可感知的下降。另外 `input_audio_buffer.append` 只接受 base64 字符串，不能发二进制帧，所以无论哪种格式都要再付 33% 的编码开销。上行可选项与代价如下：
 
 | 上行格式 | 原始码率 | 加 base64 | 质量 | 备注 |
 |---|---:|---:|---|---|
@@ -275,6 +275,21 @@ Voice Live 官方对 `gpt-5-mini` 的描述是 "audio input through Azure speech
 顺带一个下行侧的对应发现：`output_audio_format` 有 `pcm16_16000hz` 与 `pcm16_8000hz` 两个变体，系列12 里"UDP 被封时重建不带 avatar 的会话、音频改走 WebSocket"的兜底路径，下行也可以用它们把 PCM 从 384 kbps 压到 256 或 128 kbps，代价同样是人耳可感的音质下降。
 
 前提提醒：如果将来把语音模型换成 `gpt-realtime` 这类原生音频模型，本节结论要重新评估，那时输入降到 16 kHz 可能真的掉准确率。
+
+#### 4.5.2 为什么会有这些不一致：三条产品线的拼接缝
+
+"同一家 Azure、同样跑在 WebSocket 上，Speech SDK 收 Opus 而 Voice Live 不收""输入默认 24 kHz 而识别器原生 16 kHz""给浏览器的 WebRTC 模式能压缩却带不了数字人"——这组不一致不是技术上的奇怪，是产品拼接的缝。Voice Live 由三条不同出身的产品线粘成，每条都带着自己的传输假设：
+
+| 组件 | 出身 | 带来的假设 |
+|---|---|---|
+| 会话与事件协议 | OpenAI Realtime API | 为后端与电话集成设计：WebSocket、JSON、base64、pcm16 与 G.711，24 kHz 默认 |
+| 识别、VAD、降噪、TTS | Azure Speech 服务 | 自己的 SDK 协议历史更久、面向客户端，收压缩输入；识别管线原生 16 kHz |
+| 数字人 | Azure Speech 的 TTS Avatar | 独立的 WebRTC 媒体管线：avatar 媒体服务器加 ACS 中继，信令借道会话 WS，只出不进 |
+| Voice Live WebRTC 模式 | 2026 年新加 | 音频双向走 RTP、事件走 data channel，是另一条独立的 WebRTC 管线 |
+
+读这张表：不收 Opus，是事件协议要与 Realtime 客户端兼容，音频枚举跟着 Realtime 走，Speech 那边的压缩输入能力没有接进来；输入默认 24 kHz 而识别器 16 kHz，同一根源；WebRTC 模式不支持 avatar，是数字人自己有一条 WebRTC 管线，新模式是另一条，两条还没合并，官方文档那句 "Avatar configurations are currently unsupported with side-band control" 里的 currently 表明微软自己也把它当待办；浏览器直连数字人就得用为后端设计的 WS 上传麦克风，是因为浏览器唯一能带数字人的路径是"WS 会话加 avatar 的 WebRTC"，而 WS 会话的上行格式由 Realtime 血统决定。
+
+对照 OpenAI 自己的 Realtime API：它同样提供两种接入，WebSocket 给后端服务与电话集成（pcm16 / G.711 base64），WebRTC 给浏览器与移动端（Opus）。浏览器用户按推荐走 WebRTC，上下行都是 Opus 几十 kbps，且没有视频，弱网表现天然好；"要 24 kHz 音质"与"压缩到几十 kbps"并不矛盾，Opus 的 48 kHz 是时钟标签，实际按内容选带宽档，32 kbps 以上就保得住 12 kHz 以内的频段。本项目比 OpenAI 的默认形态更吃网络，正是因为数字人：上行被迫用 WS 传 PCM，下行多了一条 1080p 视频轨（弱网表现见[系列12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)）。从时间线看这是过渡态：先用 Realtime 协议把 Speech 能力与数字人挂上，再补面向浏览器的 WebRTC 模式，最后一步才是把数字人接进新模式。以上是基于文档与观察行为的推断，微软没有公开说明这些取舍。
 
 **尚未验证**：以上是文档与架构推理，没有实测。验证方式很便宜：live 配置已支持用 WAV 文件当假麦克风，同一段录音分别在 24 kHz 和 16 kHz 会话下各跑一遍，直接 diff 转写文本。
 
