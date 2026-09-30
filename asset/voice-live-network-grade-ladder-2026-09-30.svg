@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="600" viewBox="0 0 1160 600" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="ngbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="ngp" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ngglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="ngT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/></marker>
+    <marker id="ngR" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#f87171"/></marker>
+    <marker id="ngA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/></marker>
+    <marker id="ngG" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#64748b"/></marker>
+  </defs>
+  <style>
+    @keyframes ngFlow { to { stroke-dashoffset: -60; } }
+    @keyframes ngPulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.9; } }
+    .ng-flow  { stroke-dasharray: 10 12; animation: ngFlow 1.4s linear infinite; }
+    .ng-flowR { stroke-dasharray: 8 10;  animation: ngFlow 1.1s linear infinite; }
+    .ng-flowA { stroke-dasharray: 8 12;  animation: ngFlow 1.7s linear infinite; }
+    .ng-warn  { animation: ngPulse 2.2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="600" rx="18" fill="url(#ngbg)"/>
+  <rect x="1" y="1" width="1158" height="598" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">客户网络基线 → 起始形态：先过 UDP 门，再按 RTT 与丢包对号入座</text>
+  <text x="36" y="66" font-size="12" fill="#64748b">RTT 指浏览器到数字人媒体服务器的往返时延（探针 candidate-pair 读数），不是到公网的 ping · 实线为实测锚点，虚线为推导区间</text>
+
+  <!-- ===== step 1: probe ===== -->
+  <rect x="36" y="100" width="200" height="86" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="136" y="126" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">① 座位上跑探针 60 s × 3</text>
+  <text x="136" y="148" font-size="11" fill="#94a3b8" text-anchor="middle">读 RTT、音频丢包率、可用下行估计</text>
+  <text x="136" y="166" font-size="11" fill="#94a3b8" text-anchor="middle">取三次里最差的一组</text>
+
+  <!-- ===== step 2: UDP gate ===== -->
+  <line class="ng-flow" x1="236" y1="143" x2="296" y2="143" stroke="#2dd4bf" stroke-width="2" marker-end="url(#ngT)"/>
+  <rect x="300" y="100" width="190" height="86" rx="10" fill="#111827" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="395" y="126" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">② UDP 3478 出向可达？</text>
+  <text x="395" y="148" font-size="11" fill="#94a3b8" text-anchor="middle">avatar 连接能否到 connected</text>
+  <text x="395" y="166" font-size="11" fill="#94a3b8" text-anchor="middle">Azure 只下发 UDP 中继，无 TCP 候选</text>
+
+  <!-- UDP blocked branch -->
+  <line class="ng-flowR" x1="395" y1="186" x2="395" y2="236" stroke="#f87171" stroke-width="2" marker-end="url(#ngR)"/>
+  <text x="410" y="215" font-size="11" fill="#f87171">否</text>
+  <rect x="300" y="240" width="190" height="70" rx="10" fill="#1c1012" stroke="#f87171" stroke-width="1.2"/>
+  <text x="395" y="264" font-size="12" font-weight="700" fill="#fca5a5" text-anchor="middle">E · 只能纯音频走 WebSocket</text>
+  <text x="395" y="282" font-size="10.5" fill="#94a3b8" text-anchor="middle">不带 avatar 的会话，PCM 下行 384 kbps 起</text>
+  <text x="395" y="298" font-size="10.5" fill="#94a3b8" text-anchor="middle">无论其余指标多好；交付手册写明放行 UDP 3478</text>
+
+  <!-- ===== step 3: grade ladder ===== -->
+  <line class="ng-flow" x1="490" y1="143" x2="550" y2="143" stroke="#2dd4bf" stroke-width="2" marker-end="url(#ngT)"/>
+  <text x="505" y="136" font-size="11" fill="#5eead4">是</text>
+
+  <text x="560" y="96" font-size="12" font-weight="700" fill="#94a3b8">③ 按 RTT 与丢包分级 → 起始形态（自动降级仍在，分级只决定起点与降级频率）</text>
+
+  <!-- Grade A -->
+  <rect x="560" y="106" width="564" height="72" rx="10" fill="#0f1a1a" stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text x="578" y="130" font-size="12" font-weight="700" fill="#99f6e4">A · 同区域或同洲：RTT ≤ 150 ms，丢包 ≤ 0.5%，下行 ≥ 4 Mbps 稳定</text>
+  <text x="578" y="150" font-size="11" fill="#94a3b8">视频数字人默认码率可用。推导值：重传一次仍落在约 370 ms 抖动缓冲内；同区域 AVD 演示经验一致</text>
+  <text x="578" y="168" font-size="11" fill="#64748b">下行按静音期突发 3.5 Mbps 定，不按说话期均值；未在限速台架上实测</text>
+
+  <!-- Grade B -->
+  <rect x="560" y="188" width="564" height="72" rx="10" fill="#111827" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="578" y="212" font-size="12" font-weight="700" fill="#c4b5fd">B · 跨洲好网：RTT 150 到 300 ms，丢包 ≤ 0.5%，下行 ≥ 2 Mbps</text>
+  <text x="578" y="232" font-size="11" fill="#94a3b8">照片数字人流畅（实测 RTT 284、0 丢包：24 fps、零冻结、补偿 0%）</text>
+  <text x="578" y="250" font-size="11" fill="#94a3b8">1080p 能解码但一半时间在冻结（实测 18.5 s / 38 s），不推荐；压到 500 kbps 是否可用待验</text>
+
+  <!-- Grade C -->
+  <rect x="560" y="270" width="564" height="72" rx="10" fill="#111827" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="578" y="294" font-size="12" font-weight="700" fill="#fde68a">C · 一般办公网 / VPN：RTT 300 到 500 ms，丢包 0.5 到 1%，下行 1.5 到 4 Mbps</text>
+  <text x="578" y="314" font-size="11" fill="#94a3b8">照片数字人可用但卡顿（实测 24 fps、冻结 19 到 29 s / 39 s、补偿 2 到 10%）；建议 bitrate 压到 300 k</text>
+  <text x="578" y="332" font-size="11" fill="#fca5a5">1080p 在 1% 丢包下 0 fps 且仍吃 1 Mbps，禁用；主触发会在十几秒内把它关掉</text>
+
+  <!-- Grade D -->
+  <rect x="560" y="352" width="564" height="72" rx="10" fill="#1c1012" stroke="#f87171" stroke-width="1.2"/>
+  <text x="578" y="376" font-size="12" font-weight="700" fill="#fca5a5">D · 拥塞 / 热点：丢包 ≥ 3%，或 RTT ≥ 600 ms，或下行 &lt; 1 Mbps</text>
+  <text x="578" y="396" font-size="11" fill="#94a3b8">直接以纯音频起步（avatar 会话、视频轨 inactive）。实测照片数字人也在 42 s 媒体死亡</text>
+  <text x="578" y="414" font-size="11" fill="#94a3b8">纯音频把"听不清"变"听得清"，但不保证连接不死，靠媒体层自愈重建</text>
+
+  <!-- ===== uplink rail ===== -->
+  <rect x="36" y="352" width="454" height="72" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="54" y="376" font-size="12" font-weight="700" fill="#e2e8f0">上行单独看：与形态无关，任何一级都要过</text>
+  <text x="54" y="396" font-size="11" fill="#94a3b8">麦克风 PCM16 24 kHz 约 600 kbps，16 kHz 约 400 kbps，另需给 SDP 留余量</text>
+  <text x="54" y="414" font-size="11" fill="#94a3b8">实测 300 kbps 必败（信令排在音频帧后面）；建议上行 ≥ 1 Mbps 稳定，且一律 16 kHz</text>
+
+  <!-- ===== bottom: what the grade decides ===== -->
+  <rect x="36" y="446" width="1088" height="128" rx="10" fill="#0b1220" stroke="#1e293b" stroke-width="1"/>
+  <text x="54" y="472" font-size="12" font-weight="700" fill="#e2e8f0">分级决定三件事，其余交给运行时自动降级</text>
+  <text x="54" y="496" font-size="11" fill="#94a3b8">1. 默认形象：A 用视频数字人，B、C 用照片数字人，D 纯音频起步，E 无 avatar 会话</text>
+  <text x="54" y="516" font-size="11" fill="#94a3b8">2. 建会话时的 session.avatar.video.bitrate：A 默认 2 M，B 默认或 500 k，C 300 k；会话中改不了，只能在这一刻定</text>
+  <text x="54" y="536" font-size="11" fill="#94a3b8">3. 区域：选离用户最近且支持数字人的区域；把 RTT 从 300 ms 拉回几十毫秒，比任何码率调优都有效；跨洲只能远区域时用同区域 AVD</text>
+  <text x="54" y="560" font-size="11" fill="#64748b">所有阈值来自亚洲开发机到 Sweden Central（无限速 RTT 约 300 ms）的四档限速台架；A 级为推导值，B 到 D 各有实测锚点；三个未实测区间已标出</text>
+
+  <!-- moving particle along the ladder -->
+  <circle r="5" fill="url(#ngp)" filter="url(#ngglow)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M 236 143 H 296 M 490 143 H 550 V 142 M 550 142 L 560 142"/>
+  </circle>
+</svg>

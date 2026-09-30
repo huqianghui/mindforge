@@ -10,7 +10,7 @@ tags:
   - networking
   - performance
   - troubleshooting
-description: 系列03 与系列10 的实测全部在开发机与云上好网络。本文用 getStats 探针加 OS 层 UDP 限速，把数字人在办公网弱网下的行为测清：Azure 发送端协商了 REMB 反馈并确实按接收端带宽估计自动降码率（1080p 从 2382 降到 718 kbps），程序不需要再做一遍；客户端 SDP 的 b=AS 上限被忽略，会话中 session.update 改码率被静默忽略，唯一杠杆是建会话时的 session.avatar.video.bitrate。但自适应救不了 1080p：1% 丢包下抖动缓冲预算（369 ms）小于 RTT（609 ms），NACK 重传永远迟到，P 帧依赖使整个 GOP 不可解，视频 0 fps 却仍吃约 1 Mbps，且 freezeCount 为 0 是假象；512×512 照片数字人一帧只占 1 到 2 个包，同档位照常播。画面与声音共用一条 RTP 传输，胖视频流把面试官声音饿到 31% 由丢包隐藏合成，关掉视频轨（保留 m=video 但 a=inactive，建连时可行；落地时发现会话中途不可重协商，切换需重建会话）后降到 2.5%、RTT 少 340 ms，对照组复现。麦克风上行 PCM16 24 kHz 加封装约 600 kbps，在 300 kbps 上行下把自己的 SDP 挤死，是自伤不是环境限制。UDP 被封则既无画面也无声音，Azure 只下发 UDP TURN。给出七条已确认事实、P0 到 P4 全自动的自适应设计（触发用音频健康度而非冻结次数）与五条明确不做的事，附测量方法与两个方法学坑。7.4 为落地补记：session.avatar.connect 每会话只接受一次、avatar 会话创建有速率限制两条硬约束，由此得出关画面立即、开画面冷却 60 秒且失败门槛翻倍的不对称策略，两级触发判决（主触发免阈值），以及 16 kHz 上行 A/B 验证词错误率无差异。7.5 为实测回填：限速真机上端到端触发已验证，第 16 秒主触发关画面、64 秒后自动开回且真实解码；音频补偿率的健康基线随数字人差一个量级（1080p 视频数字人 0.3 到 0.5%、照片数字人 8 到 19.3%）而阈值是全局的，次触发保持关闭、只留免阈值主触发，未来形状是与视频带宽合取；抓到被否决的恢复被记成已发生致画面永不回来的失同步；更正第六节 31% 为含静音的原始比值；六轮里五轮无效全因测试工具，教训是工具要报告测到了什么而不只是通过或失败
+description: 系列03 与系列10 的实测全部在开发机与云上好网络。本文用 getStats 探针加 OS 层 UDP 限速，把数字人在办公网弱网下的行为测清：Azure 发送端协商了 REMB 反馈并确实按接收端带宽估计自动降码率（1080p 从 2382 降到 718 kbps），程序不需要再做一遍；客户端 SDP 的 b=AS 上限被忽略，会话中 session.update 改码率被静默忽略，唯一杠杆是建会话时的 session.avatar.video.bitrate。但自适应救不了 1080p：1% 丢包下抖动缓冲预算（369 ms）小于 RTT（609 ms），NACK 重传永远迟到，P 帧依赖使整个 GOP 不可解，视频 0 fps 却仍吃约 1 Mbps，且 freezeCount 为 0 是假象；512×512 照片数字人一帧只占 1 到 2 个包，同档位照常播。画面与声音共用一条 RTP 传输，胖视频流把面试官声音饿到 31% 由丢包隐藏合成，关掉视频轨（保留 m=video 但 a=inactive，建连时可行；落地时发现会话中途不可重协商，切换需重建会话）后降到 2.5%、RTT 少 340 ms，对照组复现。麦克风上行 PCM16 24 kHz 加封装约 600 kbps，在 300 kbps 上行下把自己的 SDP 挤死，是自伤不是环境限制。UDP 被封则既无画面也无声音，Azure 只下发 UDP TURN。给出七条已确认事实、P0 到 P4 全自动的自适应设计（触发用音频健康度而非冻结次数）与五条明确不做的事，附测量方法与两个方法学坑。7.4 为落地补记：session.avatar.connect 每会话只接受一次、avatar 会话创建有速率限制两条硬约束，由此得出关画面立即、开画面冷却 60 秒且失败门槛翻倍的不对称策略，两级触发判决（主触发免阈值），以及 16 kHz 上行 A/B 验证词错误率无差异。7.5 为实测回填：限速真机上端到端触发已验证，第 16 秒主触发关画面、64 秒后自动开回且真实解码；音频补偿率的健康基线随数字人差一个量级（1080p 视频数字人 0.3 到 0.5%、照片数字人 8 到 19.3%）而阈值是全局的，次触发保持关闭、只留免阈值主触发，未来形状是与视频带宽合取；抓到被否决的恢复被记成已发生致画面永不回来的失同步；更正第六节 31% 为含静音的原始比值；六轮里五轮无效全因测试工具，教训是工具要报告测到了什么而不只是通过或失败。7.6 给出客户可执行的网络基线：先过 UDP 3478 门，再测到媒体服务器的 RTT、UDP 丢包率、可用下行三个数，对照 A 到 E 五级选起始形态（视频数字人 / 照片数字人 / 压码率照片数字人 / 纯音频 / WS 纯音频）与配置项，实测锚点与推导区间分开标；附五段链路的分段测点（后端到 Voice Live 端点、STUN/TURN、媒体服务器、上行）与七项待补台架测试；7.6.6 说明 RTT 的对端是无固定域名的媒体服务器、四类端点各从哪个事件拿到、哪些网络命令能用哪些不能（中继 RTT 不代表区域 RTT，本机 80 对 252 ms），并给出三个现成脚本——STUN Binding 测 UDP 门、curl 测 TCP 建连时延、浏览器控制台 getStats 探针自动分级
 ---
 
 # Voice Live 系列 12：数字人弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音
@@ -34,6 +34,7 @@ description: 系列03 与系列10 的实测全部在开发机与云上好网络�
 8. **所有结论的前提是 RTT 约 300 ms 起**（开发机到 Sweden Central）。失效链由"重传等一个 RTT 大于抖动缓冲"触发，用户离区域近则同样丢包率下不会触发；选离用户最近的数字人区域、或用同区域 AVD 跑浏览器，效果好于任何码率调优，见 5.6。
 9. **落地后补两条硬约束。** `session.avatar.connect` 每个会话只接受一次，会话中途不能重协商，所以画面开关都要重建整条会话，约 5 秒；avatar 会话创建有速率限制，约 20 秒内第三次请求被拒并要求 43 秒后重试，被拒会耗尽重连预算把面试打成"语音不可用"。降级策略因此必须不对称：关画面立即，开画面冷却，见 7.4。
 10. **实测回填。** 端到端触发已在限速真机验证：第 16 秒主触发关画面，64 秒后自动开回且真实解码。音频补偿率的健康基线随数字人差一个量级，全局阈值不可行，次触发保持关闭，免阈值的主触发在真正需要保护的场景本来就开火；两个都差先关画面且关画面永不等待。被否决的恢复若被记成已发生，画面就永远回不来，真机只差 1 秒抓到正面。见 7.5。
+11. **客户网络基线（7.6）。** 先过 UDP 3478 门，再测到媒体服务器的 RTT、UDP 丢包率、可用下行三个数：RTT ≤ 150 ms 且丢包 ≤ 0.5% 才推荐视频数字人（推导值）；RTT 到 300 ms 用照片数字人流畅；300 到 500 ms 或丢包到 1% 用照片数字人并压码率；丢包 3% 起纯音频起步；UDP 不通只剩 WS 纯音频。上行独立于形态，300 kbps 必败、一律 16 kHz。分段测点先看后端有没有 `session.created`，再看 ICE 候选类型，再看选中候选对的 RTT。
 
 ## 二、测量方法
 
@@ -378,6 +379,273 @@ RTT（Round-Trip Time，往返时延）是一个包从浏览器到对端再回�
 
 真正让局面转向的改动不是任何一个修复，而是**让工具报告它测到了什么，而不只是通过或失败**：每个采样窗口落一行 JSON、可听与原始补偿率并排打印、采样器每十个样本吐一次摘要。加上这些之后，一轮就看清了问题在哪。
 
+### 7.6 给客户的网络基线与配置推荐：先测三个数，再对号入座
+
+> 前几节回答"机制是什么"，这一节回答客户会问的"我们的网络到底能不能用数字人、该用哪种"。所有阈值来自第五节的八个实测点（亚洲开发机到 Sweden Central，无限速 RTT 约 300 ms，四档限速），**实测锚点与推导区间分开标**，未测过的不冒充测过。
+
+#### 7.6.1 客户要测什么
+
+只需要三个数加一道门，都能从一次 60 秒的探针会话里读出来（第二节的探针，或说明页预热阶段的 P2 探测）。
+
+| 测什么 | 从哪读 | 为什么是它 |
+|---|---|---|
+| **UDP 3478 出向是否可达** | avatar 连接能否到 `connected`；ICE 候选里有没有 srflx 或 relay | 一道门。Azure 只下发 UDP 中继、没有 TCP 候选，封了就没有任何形态的数字人（第三节前提四、6.1） |
+| **RTT** | candidate-pair 的 `currentRoundTripTime`，取 p95 | 失效链的主变量：重传要等一个 RTT，RTT 大于抖动缓冲预算（实测约 370 ms）时多包帧必死（5.2、5.6）。注意是浏览器到**媒体服务器**的 RTT，不是到公网网关的 ping；媒体服务器没有固定域名，对端从哪来、离线怎么代理见 7.6.6 |
+| **UDP 丢包率** | 音频轨 `packetsLost / (packetsReceived + packetsLost)` | 音频丢包与视频码率无关，是"这条网络有多差"最干净的读数（第三节读法） |
+| **可用下行** | candidate-pair `availableIncomingBitrate`，取 p50 | Azure 据此降码率；也是判断能不能喂饱某个形态的直接数 |
+| **上行带宽**（单独测） | 限全部流量的一次上行探测，或 WS 上行字节速率对比设定值 | 与形态无关，任何一级都要过：麦克风 PCM 约 400 到 600 kbps，300 kbps 必败（5.5） |
+
+三条测法要求：**在真实座位、真实时段测**（上班高峰、VPN 开与关各一遍），每处跑三次取最差一组；测的是到**目标数字人区域**，换区域要重测；探针本身用 avatar 会话，不要拿网页测速站的数字代替，它测的是到 CDN 的 TCP。
+
+#### 7.6.2 五级对照：网络分级决定起始形态
+
+![客户网络基线到起始形态：先过 UDP 门，再按 RTT 与丢包对号入座|780](../../asset/voice-live-network-grade-ladder-2026-09-30.svg)
+
+| 级 | 网络特征（RTT 到媒体服务器 / UDP 丢包 / 下行） | 推荐起始形态 | 依据 | 性质 |
+|---|---|---|---|---|
+| **A** | RTT ≤ 150 ms，丢包 ≤ 0.5%，下行 ≥ 4 Mbps 稳定 | 视频数字人，默认码率 | 重传一次仍落在约 370 ms 缓冲内，失效链不触发；同区域 AVD 演示效果好的机制（5.6）。下行按静音期突发 3.5 Mbps 定，不按说话期均值（第三节码率倒挂） | **推导值**，台架未测：亚洲机器到 Sweden Central 做不出 150 ms 以下 |
+| **B** | RTT 150 到 300 ms，丢包 ≤ 0.5%，下行 ≥ 2 Mbps | 照片数字人，默认码率 | 实测锚点 baseline：amira RTT 284、0 丢包，24 fps、零冻结、补偿 0%。同点 lisa 能解码但 38 秒里冻结 18.5 秒、补偿 4.9%，"好网络上就已经在卡"（第三节），不推荐 | 实测 |
+| **C** | RTT 300 到 500 ms，丢包 0.5 到 1%，下行 1.5 到 4 Mbps | 照片数字人，`video.bitrate` 压到 300 k | 实测锚点 office-ok / office-tight：amira 24 fps 但冻结 19 到 29 秒 / 39 秒、补偿 2 到 10%，可用但"动一下停一下"；lisa 在 1% 丢包下 0 fps 且仍吃 1 Mbps，主触发会在十几秒内把它关掉（7.5），不要以它起步 | 形态为实测；300 k 能否减少冻结为推导（第三节 276 kbps 那轮冻结最少，但那轮网络也最好） |
+| **D** | 丢包 ≥ 3%，或 RTT ≥ 600 ms，或下行 < 1 Mbps | 纯音频起步（avatar 会话、视频轨 `inactive`） | 实测锚点 office-bad：照片数字人也在 42 秒媒体死亡；纯音频把 31% 原始补偿压到 2.5%，但不保证连接不死，靠媒体层自愈（第六节） | 实测 |
+| **E** | UDP 3478 不可达 | 纯音频走 WebSocket（不带 avatar 的会话） | 无论其余指标多好；PCM 下行 384 kbps 起，可用 `pcm16_16000hz` 压到 256（第四节末）。交付手册写明放行 UDP 3478 | 实测（前提四） |
+
+**分级只决定起点，不替代运行时降级。** 7.4、7.5 的自动降级在任何一级都开着，分级的作用是让用户不必先看一段卡死的画面再被降级（P2 的由来），并决定降级会多频繁地开火。C 级用视频数字人不是"不能"，是每场都会在十几秒内被关掉，等于白花一次会话重建。
+
+#### 7.6.3 每级对应的配置项
+
+| 配置项 | 在哪定 | A | B | C | D | E | 状态 |
+|---|---|---|---|---|---|---|---|
+| 数字人形象 | 建会话 | 视频数字人 | 照片数字人 | 照片数字人 | 无画面 | 无 avatar | 已验证 |
+| `session.avatar.video.bitrate` | 建会话时，会话中改不了（第三节） | 默认 2 M | 默认，或 500 k | 300 k | 不适用 | 不适用 | 300 k / 500 k 的绝对码率已验证；对冻结的改善待验 |
+| 起始形态 | 说明页预热探测（P2） | 视频 | 视频 | 视频 | 纯音频 | WS 纯音频 | 已落地 |
+| 上行采样率 `input_audio_sampling_rate` | 前后端同改 | 16 k | 16 k | 16 k | 16 k | 16 k | 已验证，词错误率无差异（7.4） |
+| 数字人区域 | 部署 | 离**用户**最近且支持数字人的区域；跨洲只能远区域时用同区域 AVD 跑浏览器 | 同 | 同 | 同 | 同 | 机制已解释（5.6），区域切换后的曲线未重测 |
+| `gop_size` | 建会话 | 默认 10 | 默认 | 待验：拉长可省关键帧突发，但丢包后恢复更慢 | 不适用 | 不适用 | 待验（6.1） |
+| 接收端 `jitterBufferTarget` | 页面侧 | 不动 | 不动 | 待验：拉到大于 RTT 可能救回多包帧，代价整体延迟加几百毫秒 | 不适用 | 不适用 | 待验（6.1） |
+| 下行 Opus 单声道 | Azure 侧是否可请求待查 | 若可行全级适用，音频轨自身份额少四分之三（第四节） | | | | | 待查 |
+
+#### 7.6.4 分段测点：坏的是哪一段
+
+一场数字人面试经过五段链路，客户网络只承载其中三段。定位时先看**哪一层的连接状态先出问题**，再对着下表找测法。
+
+| 段 | 端点 | 协议 | 谁承载 | 怎么测 | 坏了长什么样 |
+|---|---|---|---|---|---|
+| ① 浏览器 → 后端 | 应用后端 WS | TCP 443 | 客户网络 | WS 连接时间；上行字节速率对设定值（16 k 时约 400 kbps）；限全部流量到目标上行值跑一场 | 上行不够时 `session.avatar.connect` 排在音频帧后面发不出去，30 秒超时；ICE 收集从 1 秒拖到 4 秒以上（5.5）。这是**自伤**，与 Azure 无关 |
+| ② 后端 → Voice Live 端点 | AI Foundry 资源的 wss 端点 `/voice-live/realtime` | TCP 443 | 后端所在网络（通常 Azure 内） | TLS 握手与 WS 建连时间、`session.created` 时延、会话创建请求的成功率 | 建连超时表现为"Voice connection timeout"且连数字人画面都没开始（第二节方法学坑）；连续创建被拒并要求 43 秒后重试是 avatar 会话速率限制（7.4），不是网络 |
+| ③ 浏览器 → STUN/TURN | `relay.communication.microsoft.com:3478` | UDP | 客户网络 | ICE 候选收集：srflx 候选是否出现（到达 STUN 并拿到公网映射）、relay 候选是否出现（TURN 分配成功）、收集耗时 | 只有 host 候选：UDP 出向被封或 3478 被封，avatar 永远到不了 `connected`（前提四）；有 srflx 无 relay：TURN 分配被拦，直连可行时不影响，直连不可行时无保底 |
+| ④ 浏览器 ↔ 媒体服务器 | avatar 音视频 RTP 对端（公网可达） | UDP，srflx 直连或经 relay | 客户网络 | 选中候选对的类型（srflx↔srflx 为直连，含 relay 为中继）；candidate-pair RTT、音频丢包率、`availableIncomingBitrate`；视频 `framesPerSecond` 是否为 null | 这一段就是第五节全部数据的来源。走了 relay 时 RTT 里多一跳，B 级可能掉到 C 级；直连 RTT 300 ms 起是区域距离，不是网络故障（5.6） |
+| ⑤ 后端 → 会话与 token 的 REST | Foundry / Speech 资源的 REST 端点 | TCP 443 | 后端所在网络 | 请求时延与状态码 | 与客户办公网无关；出问题是配额、鉴权或速率限制 |
+
+定位顺序：**先看 ② 有没有 `session.created`**，没有则问题在后端到 Azure，客户网络无关；**再看 ③ 候选类型**，只有 host 就是 UDP 门没过，直接归 E 级；**然后看 ④ 选中的候选对与 RTT**，这决定 A 到 D；**最后单独看 ①** 的上行，它独立于形态。①③④ 都能在浏览器的 `getStats()` 与 ICE 事件里拿到，客户座位上一个探针页面就够；② ⑤ 在后端日志里看。
+
+#### 7.6.5 待补的台架测试
+
+上表标"推导"和"待验"的项，每一项都能在第二节的限速台架上补一轮。按对基线指导的价值排序：
+
+1. **A 级实证：小 RTT 下 1080p 是否真的扛住 1% 丢包。** 亚洲机器做不出 150 ms 以下的 RTT，要把探针放到数字人同区域或邻近区域的 VM 上跑 office-ok 与 office-tight 两档。这是 A 级唯一没有实测锚点的地方，也是"区域选择比码率调优更重要"这条结论的正面证据。
+2. **1080p 压到 500 kbps 在 office-tight 下能否解码。** 第六节末的待验假设，决定 B 级能否给视频数字人开一条"糊但会动"的路。
+3. **照片数字人 300 k 在 office-tight / office-bad 下的冻结与存活时长。** C 级推荐 300 k 目前只有开发网一轮的旁证。
+4. **上行下限扫描。** 16 kHz 下把上行限到 400 / 600 / 800 kbps（限全部流量、零丢包），找到 `session.avatar.connect` 能发出去的最低值；现在只知道 300 败、2000 成。
+5. **纯音频的下行与丢包下限。** 300 / 500 kbps 下行加 3% 与 5% 丢包，看纯音频会话的可听补偿率与存活时长，给 D 级一个"再差到哪就连纯音频也不行"的边界。
+6. **把每档跑到 3 分钟而不是 40 秒。** 第六节已指出 3% 丢包下 40 秒窗口方差很大，"死亡 t"需要更长窗口才有统计意义。
+7. **分段探针脚本。** 把 7.6.4 的 ①③④ 做成一个客户座位上可跑的页面或命令：输出 UDP 门、候选类型、RTT p95、音频丢包率、下行估计、上行速率，并直接给出 A 到 E 的分级。这是交付给客户的测试工具，也是 P2 开场探测的离线版。
+
+补完 1 到 3 之后，7.6.2 的"推导"列就能全部换成"实测"，本节才算定稿。
+
+#### 7.6.6 RTT 测的是谁、端点从哪来、命令与现成脚本
+
+**RTT 的对端是媒体服务器，它没有固定域名。** 第五节与 7.6.2 里的 RTT 是 WebRTC 连通性检查的往返：浏览器向**选中候选对的远端**发 STUN Binding 请求并计时，`getStats()` 里 candidate-pair 的 `currentRoundTripTime` 就是它。远端是谁取决于选中的路径：直连时是 avatar 媒体服务器的公网地址（远端候选类型 srflx），中继时是 TURN 的地址（relay，此时 RTT 已含中继那一跳，也正是实际生效的时延）。这个地址每场会话都可能不同，来自 Azure 的媒体服务器池，所以**没有一个可以事先 ping 的域名**，只能在会话里读。
+
+| 端点 | 域名或地址从哪来 | 承载什么 | 客户网络能否事先测 |
+|---|---|---|---|
+| Voice Live 端点 | AI Foundry 资源的端点主机名，路径 `/voice-live/realtime`，TCP 443 | 后端到 Azure 的会话 WS | 能：TCP 建连时间就是到该区域的一个 RTT（脚本 ②） |
+| STUN/TURN | `session.updated` 回显的 `avatar.ice_servers`，默认 `turn:relay.communication.microsoft.com:3478` UDP 加短期凭据 | ICE 候选收集、中继保底 | 能：STUN Binding 请求测 UDP 门与到中继的 RTT（脚本 ①）。TURN 分配需凭据，只能在会话里看 relay 候选是否出现 |
+| 媒体服务器 | 只出现在 `session.avatar.connecting` 带回的 answer SDP 的 `a=candidate` 行，以及 `getStats()` 的 remote-candidate（address、port、candidateType） | 数字人音视频 RTP | 不能事先测；会话内读 candidate-pair RTT（脚本 ③）。离线只能用同区域 TCP 建连时间当下界 |
+| 应用后端 | 部署地址，TCP 443 | 麦克风上行、事件 | 能：WS 建连时间与上行速率 |
+
+**一个容易踩的错位：中继的 RTT 不代表区域的 RTT。** `relay.communication.microsoft.com` 是就近接入的中继池，本机测得 STUN 往返约 80 ms，而同一台机器到 Sweden Central 的 TCP 建连约 252 ms。若拿前者当"网络很好"的证据，会把 B、C 级误判成 A 级。到中继的 RTT 只回答"UDP 门通不通、中继近不近"；到数字人区域的 RTT 要看脚本 ② 的 TCP 建连时间（下界）或脚本 ③ 的会话内读数（权威）。
+
+**哪些命令能用、哪些不能。**
+
+| 想测 | 用 | 不要用 | 原因 |
+|---|---|---|---|
+| UDP 3478 通不通 | STUN Binding 请求（脚本 ①），或浏览器 ICE 收集里出现 srflx 候选 | `nc -u -z host 3478` | UDP 没有握手，`nc` 的"成功"只是发出去了 |
+| 到区域的 RTT | `curl -w '%{time_connect}'` 到 Foundry 端点或同区域任一 TCP 服务（脚本 ②） | `ping` 媒体服务器地址 | Azure 公网地址普遍不回 ICMP；且媒体地址事先不知道 |
+| 会话内真实 RTT、丢包、下行估计 | `getStats()`（脚本 ③）或 `chrome://webrtc-internals` 里该 PeerConnection 的 candidate-pair 图 | 网页测速站 | 测速站测的是到 CDN 的 TCP，与 UDP 媒体路径无关 |
+| 路径与跳数 | `mtr -T -P 443` 或 `traceroute -P TCP -p 443`（macOS 需 sudo） | 默认 ICMP traceroute | 中间跳与终点多不回 ICMP，TCP 443 探针能走到头 |
+| Windows 座位 | `curl` 与 `tracert` 自带；脚本 ① 需 Python 3；脚本 ③ 与平台无关 | `Test-NetConnection` 测 UDP | 它只测 TCP |
+
+**脚本 ①：UDP 门与 STUN 往返（Python 3，无依赖）。** 向 STUN/TURN 发 RFC 5389 Binding Request，打印公网映射（即 srflx 地址）与 RTT；不通则退出码 2，直接归 E 级。
+
+```python
+#!/usr/bin/env python3
+"""UDP 门 + STUN 往返：向 STUN/TURN 服务器发 RFC 5389 Binding Request，打印公网映射（srflx）与 RTT。
+用法：python3 stun_probe.py [host] [port]   默认 relay.communication.microsoft.com 3478；环境变量 N 控制次数。"""
+import os, socket, struct, statistics, sys, time
+
+host = sys.argv[1] if len(sys.argv) > 1 else "relay.communication.microsoft.com"
+port = int(sys.argv[2]) if len(sys.argv) > 2 else 3478
+n = int(os.environ.get("N", "5"))
+MAGIC = 0x2112A442
+
+def binding_request():
+    tid = os.urandom(12)
+    return struct.pack("!HHI", 0x0001, 0, MAGIC) + tid, tid
+
+def mapped_address(data, tid):
+    mtype, length, magic = struct.unpack("!HHI", data[:8])
+    if magic != MAGIC or data[8:20] != tid:
+        return None
+    p = 20
+    while p < 20 + length:
+        atype, alen = struct.unpack("!HH", data[p:p + 4])
+        val = data[p + 4:p + 4 + alen]
+        p += 4 + ((alen + 3) // 4) * 4
+        if atype in (0x0020, 0x8020) and val[1] == 1:          # XOR-MAPPED-ADDRESS, IPv4
+            xport = struct.unpack("!H", val[2:4])[0] ^ (MAGIC >> 16)
+            ip = ".".join(str(b ^ m) for b, m in zip(val[4:8], struct.pack("!I", MAGIC)))
+            return ip, xport
+        if atype == 0x0001 and val[1] == 1:                      # MAPPED-ADDRESS
+            return socket.inet_ntoa(val[4:8]), struct.unpack("!H", val[2:4])[0]
+    return None
+
+ip = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_DGRAM)[0][4][0]
+print(f"{host} -> {ip}:{port}")
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.settimeout(2.0)
+rtts, mapped = [], None
+for i in range(n):
+    pkt, tid = binding_request()
+    t0 = time.perf_counter()
+    try:
+        sock.sendto(pkt, (ip, port))
+        data, _ = sock.recvfrom(2048)
+        rtt = (time.perf_counter() - t0) * 1000
+        mapped = mapped_address(data, tid) or mapped
+        rtts.append(rtt)
+        print(f"  #{i + 1} rtt={rtt:.1f} ms  mapped={mapped}")
+    except socket.timeout:
+        print(f"  #{i + 1} timeout（UDP 出向 {port} 被封，或无应答）")
+    time.sleep(0.2)
+if rtts:
+    print(f"UDP 门: 通   srflx 映射={mapped}   rtt p50={statistics.median(rtts):.1f} ms  max={max(rtts):.1f} ms")
+else:
+    print("UDP 门: 不通 → E 级，只能 WebSocket 纯音频")
+    sys.exit(2)
+```
+
+**脚本 ②：TCP 段时延（bash + curl）。** 对 Voice Live 端点与区域锚点各测 N 次：`tcp - dns` 约一个 RTT，`tls - tcp` 约一到两个 RTT。区域锚点用同区域任一 TCP 服务即可，只看建连时间。
+
+```bash
+#!/usr/bin/env bash
+# TCP 段：Voice Live 端点与区域锚点的 DNS / TCP 建连 / TLS 时延。tcp-dns ≈ 1 个 RTT，tls-tcp ≈ 1~2 个 RTT。
+# 用法：tcp_probe.sh <foundry-host> [region]   例：tcp_probe.sh my-res.services.ai.azure.com swedencentral
+set -u
+HOST=${1:?用法: tcp_probe.sh <foundry-host> [region]}
+REGION=${2:-}
+N=${N:-5}
+probe() {
+  local url=$1
+  for _ in $(seq "$N"); do
+    curl -s -o /dev/null --max-time 10 \
+      -w '%{time_namelookup} %{time_connect} %{time_appconnect} %{http_code}\n' "$url"
+  done | awk '{ rtt=($2-$1)*1000; tls=($3-$2)*1000; printf "  dns=%.0fms  tcp(≈RTT)=%.0fms  tls=%.0fms  http=%s\n", $1*1000, rtt, tls, $4; s+=rtt; if(rtt>m)m=rtt; n++ }
+              END { if(n) printf "  → TCP RTT 均值 %.0f ms，最大 %.0f ms\n", s/n, m }'
+}
+echo "== DNS  $HOST"; (dig +short "$HOST" 2>/dev/null || nslookup "$HOST") | sed 's/^/  /'
+echo "== Voice Live 端点  https://$HOST/"; probe "https://$HOST/"
+if [ -n "$REGION" ]; then
+  echo "== 区域锚点  https://$REGION.tts.speech.microsoft.com/（同区域任一 TCP 服务即可，只看建连时间）"
+  probe "https://$REGION.tts.speech.microsoft.com/"
+fi
+echo "== 路径（TCP 443；macOS 的 traceroute 需要 sudo，否则报 pcap_activate）"
+if command -v mtr >/dev/null; then mtr -rwzc 10 -T -P 443 "$HOST"
+elif [ "$(uname)" = Darwin ]; then traceroute -P TCP -p 443 -w 2 -q 1 "$HOST"
+else traceroute -T -p 443 -w 2 -q 1 "$HOST"; fi 2>&1 | head -30
+```
+
+**脚本 ③：会话内探针（浏览器控制台）。** 在点击"开始"之前粘贴，它包住 `RTCPeerConnection` 构造器，之后每 2 秒采一行：选中路径类型（srflx→srflx 为直连，含 relay 为中继）、远端地址（就是 RTT 的对端）、RTT、下行估计、音频丢包与补偿、视频字节与解码帧。结束后 `__vlProbe.report()` 按 7.6.2 的阈值给出 A 到 E；`copy(JSON.stringify(__vlProbe.rows))` 导出逐窗口数据。它就是第二节 Playwright 探针的手工版，也是 7.6.5 第 7 项分段探针脚本的雏形。
+
+```js
+// 会话内探针：在点击"开始"之前粘贴到浏览器控制台。包住 RTCPeerConnection 构造器，之后每 2 秒采样一次 getStats。
+// 结束后运行 __vlProbe.report() 得到 A~E 分级；copy(JSON.stringify(__vlProbe.rows)) 导出逐窗口数据。
+(() => {
+  const S = (window.__vlProbe = { pcs: [], rows: [], t0: Date.now() });
+  const Orig = window.RTCPeerConnection;
+  window.RTCPeerConnection = function (...args) {
+    const pc = new Orig(...args);
+    S.pcs.push(pc);
+    pc.addEventListener('icecandidate', (e) => {
+      if (e.candidate) console.log('[ice local]', e.candidate.type, e.candidate.protocol, e.candidate.address || '', `${Date.now() - S.t0} ms`);
+    });
+    pc.addEventListener('iceconnectionstatechange', () => console.log('[ice state]', pc.iceConnectionState, `${Date.now() - S.t0} ms`));
+    pc.addEventListener('track', () => {
+      // 远端候选来自 SDP answer（session.avatar.connecting 的 server_sdp），这里直接打印其中的 a=candidate 行
+      const sdp = pc.remoteDescription && pc.remoteDescription.sdp;
+      if (sdp) sdp.split('\n').filter((l) => l.startsWith('a=candidate')).forEach((l) => console.log('[ice remote]', l.trim()));
+    });
+    return pc;
+  };
+  window.RTCPeerConnection.prototype = Orig.prototype;
+
+  let prev = null;
+  S.timer = setInterval(async () => {
+    for (const pc of S.pcs) {
+      if (pc.connectionState === 'closed') continue;
+      const st = await pc.getStats();
+      let pair, audio, video;
+      st.forEach((r) => {
+        if (r.type === 'transport' && r.selectedCandidatePairId) pair = st.get(r.selectedCandidatePairId);
+        if (r.type === 'inbound-rtp' && r.kind === 'audio') audio = r;
+        if (r.type === 'inbound-rtp' && r.kind === 'video') video = r;
+      });
+      if (!pair) st.forEach((r) => { if (r.type === 'candidate-pair' && r.nominated && r.state === 'succeeded') pair = r; });
+      if (!pair) continue;
+      const rc = st.get(pair.remoteCandidateId), lc = st.get(pair.localCandidateId);
+      const row = {
+        t: Math.round((Date.now() - S.t0) / 1000),
+        path: `${lc && lc.candidateType}->${rc && rc.candidateType}`,          // srflx->srflx 为直连，含 relay 为中继
+        remote: rc ? `${rc.address || rc.ip}:${rc.port}` : '',                  // 媒体服务器（或 TURN）的公网地址，就是 RTT 的对端
+        rtt_ms: Math.round((pair.currentRoundTripTime || 0) * 1000),
+        bwe_kbps: Math.round((pair.availableIncomingBitrate || 0) / 1000),
+        a_lost: (audio && audio.packetsLost) || 0,
+        a_recv: (audio && audio.packetsReceived) || 0,
+        a_conceal: (audio && audio.concealedSamples) || 0,
+        a_total: (audio && audio.totalSamplesReceived) || 0,
+        v_frames: (video && video.framesDecoded) || 0,
+        v_bytes: (video && video.bytesReceived) || 0,
+        v_fps: video ? (video.framesPerSecond ?? null) : null,
+      };
+      row.loss_pct = row.a_recv + row.a_lost ? +((100 * row.a_lost) / (row.a_recv + row.a_lost)).toFixed(2) : 0;
+      if (prev) { row.v_flowing = row.v_bytes > prev.v_bytes; row.v_decoding = row.v_frames > prev.v_frames; }
+      S.rows.push(row); prev = row;
+      console.log(JSON.stringify(row));
+    }
+  }, 2000);
+
+  S.report = () => {
+    const r = S.rows;
+    if (!r.length) return '无数据：探针要在建连前粘贴';
+    const q = (arr, p) => arr.slice().sort((a, b) => a - b)[Math.floor((arr.length - 1) * p)];
+    const rtt95 = q(r.map((x) => x.rtt_ms).filter(Boolean), 0.95) || 0;
+    const bwe50 = q(r.map((x) => x.bwe_kbps).filter(Boolean), 0.5) || 0;
+    const last = r[r.length - 1], loss = last.loss_pct;
+    const udp = r.some((x) => /srflx|relay/.test(x.path));
+    const grade = !udp ? 'E'
+      : loss >= 3 || rtt95 >= 600 || bwe50 < 1000 ? 'D'
+      : rtt95 > 300 || loss > 0.5 || bwe50 < 2000 ? 'C'
+      : rtt95 > 150 || bwe50 < 4000 ? 'B' : 'A';
+    const out = { grade, rtt_p95_ms: rtt95, loss_pct: loss, bwe_p50_kbps: bwe50, path: last.path, remote: last.remote,
+      samples: r.length, video_dead_windows: r.filter((x) => x.v_flowing && x.v_decoding === false).length };
+    console.table(out);
+    return out;
+  };
+  console.log('probe armed。现在开始会话；结束后运行 __vlProbe.report()');
+})();
+```
+
+**三个脚本的读法合在一起。** ① 不通，E 级，后面不用测。① 通而 ③ 里只有 host 候选、连不上，说明 STUN 能到但媒体路径被拦（常见于只放行 3478 而拦其他 UDP 端口的出向策略），仍归 E。② 的 TCP RTT 是区域距离的下界，若已超过 300 ms，A 级不用想，直接在 B 与 C 之间按丢包分。③ 是最终判决，RTT 取 p95、下行取 p50、丢包取会话末的累计值，三次取最差。
+
 ## 八、小结
 
 1. **Azure 已做码率自适应**，方向正确幅度够；客户端 `b=AS` 与会话中 `session.update` 都改不了码率，唯一杠杆是建会话时的 `session.avatar.video.bitrate`。
@@ -388,6 +656,7 @@ RTT（Round-Trip Time，往返时延）是一个包从浏览器到对端再回�
 6. **照片数字人默认码率只低 2.4 倍**，不是一个数量级；但它在 1% 丢包下照常播，1080p 不行，这才是弱网下的真正差异。
 7. **次触发不做全局阈值**：可听补偿率的健康基线随数字人差一个量级（1080p 0.3 到 0.5%，照片数字人 8 到 19.3%），保留免阈值的主触发就够，真正要保护的场景它本来就开火；再加回来要做成与视频带宽的合取，且等真实案例。第六节的 31% 是含静音的原始比值，已加注。
 8. **方法学**：限速必须在 OS 层且只限 UDP，限全部流量会把后端到 Azure 的 TLS 握手也弄死，与生产拓扑不符。测试工具要报告它测到了什么而不只是通过或失败，被测形象必须钉住，否则会像 7.5 那样六轮里五轮在测一个不可能触发的条件。
+9. **客户基线（7.6）**：UDP 门加三个数（RTT、丢包、下行）定 A 到 E 五级，分级只决定起始形态与码率，运行时降级照常；A 级视频数字人是推导值，等同区域小 RTT 的台架实证；分段测点按后端会话、ICE 候选类型、选中候选对 RTT、上行的顺序定位。
 
 ## 参考
 
