@@ -172,6 +172,23 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 
 所以推荐逻辑按**呈现窗口**分：数字人以头像框/小窗形式出现（客服助手、面试官、培训陪练）→ photo，脸的生动性正是这类场景的第一观感，且分辨率短板暴露不出来；需要半身出镜、大屏展示、品牌服装/场景、竖屏数字人立牌 → video。另有两个前置核查：photo avatar 目前是 **public preview**（video 头像 GA 更久），region 覆盖与 SLA 要先确认；512×512 在目标 UI 尺寸下的清晰度建议实测。
 
+### 带宽与并发：photo 默认低一个数量级，但那是分辨率的副产品
+
+数字人的音视频在 relay-only 拓扑下**全部经 TURN 中继转发**（见[系列10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与relay-only拓扑.md)第六节），所以每会话码率直接决定两件事：用 Azure 中继时，客户办公网入口带宽够不够；自建 TURN（如 coturn）时，中继机出网带宽与 `total-quota` / `user-quota` 怎么设（自建 TURN 的替换入口与全部要求见[系列11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)）。码率由分辨率、帧率、画面复杂度决定，与头像类型本身无关——但两类头像的**默认分辨率差了八倍像素**，默认配置下的带宽差距因此很大：
+
+| 方案 | 单会话下行（视频） | 100 并发经中继的下行总量 | 上行（音频） |
+|---|---:|---:|---:|
+| Video 头像，默认 1080p H.264 | 约 2~4 Mbps | 约 200~400 Mbps | 约 0.4 Mbps/会话，两类相同 |
+| Photo 头像，512×512 | 约 0.3~0.8 Mbps | 约 30~80 Mbps | 同上 |
+
+把它写进选型时要带三个限定：
+
+- **video 头像也能降码率**。`video.resolution` / `bitrate` / `crop` 可调，压到 720p 或更低后差距会大幅缩小。photo 的优势准确说是"下限低、默认就低、上限也就那么高"，不是 video 做不到。
+- **低分辨率同时是天花板**。省下的带宽是用画面质感和形象定制度换的——上一小节"铺满大屏会发软"与这里是同一枚硬币的两面。
+- **省的是网络，不是服务端算力**。VASA-1 逐帧生成比 viseme 驱动的素材回放更重，但那部分成本在 Azure 侧 GPU，不出现在客户的带宽预算里。
+
+结论：并发数高、办公网出口窄、或需要自建中继按码率预留配额的部署，带宽可以算 photo 头像的一项**部署优势**，标注"默认配置下"，并注明 video 头像可通过降分辨率缩小差距。
+
 ### 价格：会话计费同一个表，差异在自定义的成本结构
 
 **会话（每分钟）计费两类走同一个计量项**：Voice Live 的 avatar 输出统一按 Text to Speech Avatar 的"interactive avatar (real-time) 每分钟"计费（[定价页](https://azure.microsoft.com/en-us/pricing/details/speech/)原文："Charged through Text to Speech Avatar 'interactive avatar (real-time)'"），叠加在 Voice Live 本身的 token/音频计费之上。2025-07 [官方定价公告](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/azure-ai-voice-live-api-what%E2%80%99s-new-and-the-pricing-announcement/4428687)的锚点：标准头像 real-time **$0.50/分钟**、自定义头像 real-time **$0.60/分钟**（当前具体数字以 region 计价页/计算器为准）。
@@ -196,6 +213,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 4. **传输层两者完全相同**：同一套 ICE/SDP 握手、同一条 WebRTC、同样的 H.264——系列03 的延迟工程结论直接复用；差异全部在合成侧（head-only vs 全身、512×512 vs 1080p 源、scene vs crop/background）。
 5. **素材来源三条线**：photo 头像支持真人照片（需 consent 视频 + 人脸比对核验）与 AI 生成虚拟人（免 consent），但必须是人类比例的脸——卡通/动漫明确不支持；自定义 video 头像只能用真人实拍（≥10min 录像）；想要卡通数字人只能客户端拿 viseme 时间轴自渲染。
 6. 工程守则：**session 构造器与 agent metadata 必须按头像类型分支**；photo 头像必带 `type` + `model`，不得带 style。
+7. **带宽是 photo 的一项部署优势，但只是分辨率的副产品**：默认 1080p 的 video 头像约 2~4 Mbps/会话，512×512 的 photo 头像低一个数量级，relay-only 下全部经中继，直接换算成办公网入口或自建 TURN 的配额；video 头像可降 `resolution` / `bitrate` 缩小差距，photo 的低码率同时也是画质天花板。
 
 ## 参考
 

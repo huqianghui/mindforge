@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="560" viewBox="0 0 1160 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/></marker>
+    <marker id="aA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/></marker>
+    <marker id="aG" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#64748b"/></marker>
+    <marker id="aV" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#a78bfa"/></marker>
+  </defs>
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.7; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.3; } 50% { stroke-opacity: 1; } }
+    .flow  { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flowA { stroke-dasharray: 8 12;  animation: flowDash 1.7s linear infinite; }
+    .halo  { animation: pulse 2s ease-in-out infinite; }
+    .live  { animation: shimmer 3.5s ease-in-out infinite; }
+    .warn  { animation: breathe 2.2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="560" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="558" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">默认中继 vs 自建 TURN — 只替换浏览器一侧的中继，Azure 侧不变，两台 TURN 之间没有"对接"</text>
+  <text x="36" y="66" font-size="12" fill="#64748b">青绿 = 默认路径 · 琥珀 = 自建路径 · 紫 = 一次性信令（WS）· 灰虚线 = 待实证 · 2026.09</text>
+
+  <!-- switch: session.update -->
+  <rect x="40" y="92" width="1080" height="46" rx="10" fill="#1a1426" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="580" y="111" font-size="11.5" fill="#c4b5fd" text-anchor="middle" font-family="Menlo, monospace">session.update → session.avatar.ice_servers: [ { urls, username, credential } ]   （不传 = Azure 填入自己的中继；传 = 原样回显到 session.updated，浏览器据此建 RTCPeerConnection）</text>
+  <text x="580" y="129" font-size="10" fill="#94a3b8" text-anchor="middle">这个字段是全部替换点：后端会话构建器按需注入；前端本来就从 session.updated 读 ICE 配置，不用改；ICE 门控等"第一个 relay 候选"照样成立</text>
+
+  <!-- ===== Lane 1: default ===== -->
+  <text x="36" y="176" font-size="11.5" font-weight="700" fill="#2dd4bf">默认</text>
+  <rect x="80" y="160" width="170" height="60" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="165" y="184" font-size="12" fill="#cbd5e1" text-anchor="middle">浏览器</text>
+  <text x="165" y="202" font-size="10" fill="#64748b" text-anchor="middle">企业 NAT / 防火墙后</text>
+  <path d="M250 190 L 336 190" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="1.2s" repeatCount="indefinite" path="M250 190 L 336 190"/></circle>
+  <text x="293" y="180" font-size="9.5" fill="#5eead4" text-anchor="middle">出向 UDP 3478 / TCP 443</text>
+
+  <rect x="340" y="160" width="300" height="60" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <text x="490" y="182" font-size="12" font-weight="700" fill="#5eead4" text-anchor="middle">Azure TURN（ACS relay）</text>
+  <text x="490" y="199" font-size="10" fill="#99f6e4" text-anchor="middle">relay.communication.microsoft.com:3478 · 短期凭据由 Azure 下发</text>
+  <text x="490" y="212" font-size="9.5" fill="#64748b" text-anchor="middle">零运维 · 含在数字人分钟费里</text>
+  <path d="M640 190 L 726 190" fill="none" stroke="#2dd4bf" stroke-width="2.2" class="flow" marker-end="url(#aT)"/>
+  <circle r="3.2" fill="#99f6e4"><animateMotion dur="1.2s" begin="0.4s" repeatCount="indefinite" path="M640 190 L 726 190"/></circle>
+
+  <rect x="730" y="160" width="390" height="60" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.3"/>
+  <text x="925" y="182" font-size="12" font-weight="700" fill="#5eead4" text-anchor="middle">Azure 数字人媒体服务器</text>
+  <text x="925" y="199" font-size="10" fill="#94a3b8" text-anchor="middle">不给浏览器直连入口，但自己"发包"完全可达</text>
+  <text x="925" y="212" font-size="9.5" fill="#64748b" text-anchor="middle">每一帧视频都发往 offer 里那个 relay 候选地址</text>
+
+  <!-- ===== Lane 2: self-hosted ===== -->
+  <text x="36" y="296" font-size="11.5" font-weight="700" fill="#fbbf24">自建</text>
+  <rect x="80" y="280" width="170" height="60" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2"/>
+  <text x="165" y="304" font-size="12" fill="#cbd5e1" text-anchor="middle">浏览器</text>
+  <text x="165" y="322" font-size="10" fill="#64748b" text-anchor="middle">出向白名单只放自家域名</text>
+  <path d="M250 310 L 336 310" fill="none" stroke="#fbbf24" stroke-width="2.2" class="flowA" marker-end="url(#aA)"/>
+  <circle r="3.2" fill="#fde68a"><animateMotion dur="1.3s" repeatCount="indefinite" path="M250 310 L 336 310"/></circle>
+  <text x="293" y="300" font-size="9.5" fill="#fcd34d" text-anchor="middle">turn: 3478 / turns: 443</text>
+
+  <rect x="340" y="280" width="300" height="60" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.6" filter="url(#softGlow)" class="live"/>
+  <text x="490" y="302" font-size="12" font-weight="700" fill="#fcd34d" text-anchor="middle">你的 TURN（coturn，公网 / DMZ）</text>
+  <text x="490" y="319" font-size="10" fill="#fde68a" text-anchor="middle">use-auth-secret 短期凭据 · 真实证书 · external-ip</text>
+  <text x="490" y="332" font-size="9.5" fill="#94a3b8" text-anchor="middle">allocation 203.0.113.10:49152 写进 offer 的 typ relay 行</text>
+  <path d="M640 310 L 726 310" fill="none" stroke="#fbbf24" stroke-width="2.2" class="flowA" marker-end="url(#aA)"/>
+  <circle r="3.2" fill="#fde68a"><animateMotion dur="1.3s" begin="0.4s" repeatCount="indefinite" path="M640 310 L 726 310"/></circle>
+  <text x="683" y="300" font-size="9.5" fill="#fcd34d" text-anchor="middle">出向到 answer 候选</text>
+
+  <rect x="730" y="280" width="390" height="60" rx="10" fill="#111827" stroke="#475569" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="925" y="300" font-size="11.5" fill="#cbd5e1" text-anchor="middle">Azure 在 SDP answer 里给出的候选（待实证，二选一）</text>
+  <text x="925" y="317" font-size="10" fill="#94a3b8" text-anchor="middle">a. 媒体服务器自己的公网地址（host / srflx）→ 最直接</text>
+  <text x="925" y="332" font-size="10" fill="#94a3b8" text-anchor="middle">b. Azure TURN 上的 relay 候选 → 对你的 TURN 只是一个公网目的地</text>
+
+  <!-- non-federation note -->
+  <rect x="340" y="352" width="780" height="34" rx="8" fill="#0f172a" stroke="#f87171" stroke-width="1.2" stroke-dasharray="6 5" class="warn"/>
+  <text x="730" y="374" font-size="10.5" fill="#fca5a5" text-anchor="middle">TURN 不是联邦网络：两台 TURN 不互相协商、不需要对接。你的 TURN 只做一件事——把浏览器的包转到对端候选地址，把对端的包转回来</text>
+
+  <!-- signaling lane -->
+  <path d="M165 220 L 165 280" fill="none" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="4 5"/>
+  <text x="172" y="253" font-size="9.5" fill="#c4b5fd">同一浏览器，只是 ice_servers 不同</text>
+
+  <!-- bottom: when worth it / burdens -->
+  <rect x="40" y="404" width="530" height="132" rx="10" fill="#0f2a2a" stroke="#2dd4bf" stroke-width="1.1"/>
+  <text x="56" y="426" font-size="11.5" font-weight="700" fill="#5eead4">值得自建的三种情况（否则用默认）</text>
+  <text x="56" y="448" font-size="10.5" fill="#cbd5e1">① 客户出向白名单只允许自家域名，放不了 relay.communication.microsoft.com</text>
+  <text x="56" y="468" font-size="10.5" fill="#cbd5e1">② 合规要求媒体路径必须经过自己的基础设施</text>
+  <text x="56" y="488" font-size="10.5" fill="#cbd5e1">③ 客户离 Azure 中继接入点很远，自建放在用户与 Azure 区域之间反而更近</text>
+  <text x="56" y="516" font-size="9.5" fill="#64748b">前提核查：answer 候选落在哪个地址段，好写进 TURN 主机的出向白名单</text>
+
+  <rect x="590" y="404" width="530" height="132" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.1"/>
+  <text x="606" y="426" font-size="11.5" font-weight="700" fill="#fcd34d">自建换来的四项运维负担</text>
+  <text x="606" y="448" font-size="10.5" fill="#cbd5e1">带宽：1080p 视频数字人约 2~4 Mbps/会话，全部经中继，按并发 × 码率预留 quota</text>
+  <text x="606" y="468" font-size="10.5" fill="#cbd5e1">证书：turns: 需要真实证书，浏览器不接受自签</text>
+  <text x="606" y="488" font-size="10.5" fill="#cbd5e1">容量与可用性：单点即全部数字人断流；多实例要配 DNS / 多 urls</text>
+  <text x="606" y="508" font-size="10.5" fill="#cbd5e1">凭据：短期 HMAC 凭据由后端每次建连现算，过期时间 = 会话上限</text>
+  <text x="606" y="526" font-size="9.5" fill="#64748b">验证三处：session.updated 回显 · getStats 选中 candidate-pair 的 relay 地址 · TURN 日志 allocation</text>
+</svg>
