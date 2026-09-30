@@ -263,6 +263,17 @@ Voice Live 官方对 `gpt-5-mini` 的描述是 "audio input through Azure speech
 
 **真要改，两边必须同时改（尚未改）。** 前端麦克风侧要改两处：`getUserMedia` 的采样率约束和采集用的 `AudioContext`；后端会话侧要在 avatar 会话配置里声明 `input_audio_sampling_rate: 16000`（目前没有声明，用的是 Azure 默认 24000，恰好和前端的 24 kHz 对上）。只改一边会让 Azure 按错误速率解释字节流，声音变调变速，转写直接废掉。播放侧的 24 kHz 不能动，那是 Azure 下发 PCM 的速率。这个参数和 avatar 码率一样，会话中途不能改，官方文档明确说明（[系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) ① 听那一关的"会话中不可改采样率与 AEC 参考源"）。
 
+**为什么上行不干脆压缩，而只是降采样率。** 因为 WebSocket 这条路的协议只收三种输入格式：`pcm16`、`g711_ulaw`、`g711_alaw`，没有 Opus。Opus 只存在于 WebRTC 音频轨里，而 Voice Live 的 WebRTC 模式目前不支持 avatar（系列10 相关讨论）；浏览器虽然能用 WebCodecs 自己编 Opus，服务端也不认。G.711 是唯一可选的压缩格式，但它是 8 kHz 窄带、8 位压扩，64 kbps，电话音质，识别器虽然支持电话音频，准确率会有可感知的下降。另外 `input_audio_buffer.append` 只接受 base64 字符串，不能发二进制帧，所以无论哪种格式都要再付 33% 的编码开销。上行可选项与代价如下：
+
+| 上行格式 | 原始码率 | 加 base64 | 质量 | 备注 |
+|---|---:|---:|---|---|
+| pcm16 @ 24 kHz（当前） | 384 kbps | 512 kbps | 超宽带，识别器用不到的高频被 Azure 丢弃 | 协议默认 |
+| pcm16 @ 16 kHz | 256 kbps | 341 kbps | 识别器原生带宽，理论无损 | 需 `input_audio_sampling_rate: 16000`，前后端同时改 |
+| g711_ulaw / alaw | 64 kbps | 85 kbps | 8 kHz 电话音质 | 上行极窄时的最后一档，识别准确率待测 |
+| Opus | 24~32 kbps | — | 宽带、最优 | WS 协议不支持；WebRTC 模式不支持 avatar |
+
+顺带一个下行侧的对应发现：`output_audio_format` 有 `pcm16_16000hz` 与 `pcm16_8000hz` 两个变体，系列12 里"UDP 被封时重建不带 avatar 的会话、音频改走 WebSocket"的兜底路径，下行也可以用它们把 PCM 从 384 kbps 压到 256 或 128 kbps，代价同样是人耳可感的音质下降。
+
 前提提醒：如果将来把语音模型换成 `gpt-realtime` 这类原生音频模型，本节结论要重新评估，那时输入降到 16 kHz 可能真的掉准确率。
 
 **尚未验证**：以上是文档与架构推理，没有实测。验证方式很便宜：live 配置已支持用 WAV 文件当假麦克风，同一段录音分别在 24 kHz 和 16 kHz 会话下各跑一遍，直接 diff 转写文本。
