@@ -54,7 +54,17 @@ Voice Live 官方定位是"把 speech recognition、generative AI、text to spee
 
 可以把整个会话理解为一份共享文档，即 conversation，里面是一条条 item：用户说的话（转写后的 user item）、模型说过的话（assistant item）、function call 及其结果、应用塞进去的 system item。用户说话、应用塞 item，都只是在往这份文档里追加内容，**模型并没有被调用**。response 才是"调用模型"这个动作：服务端拿当前的 conversation 加上 instructions 和 tools，让模型跑一次推理，把输出（文本、音频、function_call）追加回 conversation，然后 `response.done`。同一时刻只能有一个活跃的 response，这就是 `conversation_already_has_active_response` 错误的来源。
 
-`create_response` 这个名字已经把它管的东西说清楚了：用户语音轮结束后，要不要自动 create 一个 response。两条事件轨迹对照，用户同样说完一句话：
+`create_response` 与 `response.create` 两个名字长得像，但根本不在同一层：一个是**会话配置里的开关**，一个是**客户端发出的事件**。先把两者正面摆在一起：
+
+| | `response.create` | `create_response` |
+|---|---|---|
+| 是什么 | 一条 WebSocket 事件，即**动作**："现在调一次模型，产出一个 response" | `turn_detection` 里的一个布尔，即**开关**："VAD 判停后，服务端要不要自动替你发一次 `response.create`" |
+| 谁发出 | 客户端（应用）；或服务端在 `create_response=true` 时代发 | 客户端在 `session.update` 里设定，可中途改 |
+| 作用点 | ④ 开轮的那一刻：拿当前 conversation 加 instructions 加 tools 跑一次推理，流式回 `response.created → delta → response.done` | ③ 判停与 ④ 开轮之间：决定 `speech_stopped` 之后要不要自动进入 ④ |
+| 能带什么 | per-turn `instructions`、`max_output_tokens`、`tools` / `tool_choice`、`conversation: "none"` + `input` 旁路生成、`pre_generated_assistant_message` 直接 TTS（模型模式；Agent 模式下 `instructions` 被拒） | 只有 true / false |
+| 默认 | 无所谓默认，不发就没有 response | true，于是"用户说完一句、模型答一句"看起来是一体的 |
+
+两者是**触发器与动作**的关系：`create_response` 是自动触发器，`response.create` 是被触发的动作。关掉自动触发器，动作本身还在，只是触发权从服务端回到应用。`create_response` 这个名字已经把它管的东西说清楚了：用户语音轮结束后，要不要自动 create 一个 response。两条事件轨迹对照，用户同样说完一句话：
 
 ```text
 # create_response=true
@@ -79,7 +89,18 @@ conversation.item.input_audio_transcription.completed
 
 第二条轨迹里，模型一次都没被调用，提示词一次都没被读。**提示词的作用范围是 per-response 的**：session instructions 在每个 response 开始时被带进上下文，只在 response 里生效。
 
-**默认配置下这就是一来一回**，感觉不到拆过。普通的 Chat Completions 把"用户一句 + 模型一句"焊在一次调用里；Realtime 协议把两半拆成独立动作，`create_response=true` 再把它们粘回去。拆开的原因是语音输入和文字不一样，一来一回在几种场景下会出问题：用户说到一半停顿两秒想词，VAD 判停了，模型立刻插话；用户连说三段，想让模型一次看完再回；用户说完后应用要先查库、走状态机再让模型开口；用户没说话，应用要模型先开口（开场白、超时提醒）；用户说完了但这一句根本不需要回。这些都是"来"和"回"不再一一对应的情况。`create_response=false` 是把"回"的触发权从服务端拿到应用手里，让一来一回变成一来 N 回、N 来一回或者零来一回。
+**默认配置下这就是一来一回**，感觉不到拆过。普通的 Chat Completions 把"用户一句 + 模型一句"焊在一次调用里；Realtime 协议把两半拆成独立动作，`create_response=true` 再把它们粘回去。
+
+拆开的原因是**语音特有的**，文字 LLM 没有这个问题。文字聊天里"用户一段话"的边界是确定的：用户按下回车，一条消息就结束了，模型该不该答、答几次，没有歧义。语音里没有回车键，"用户说完了"这件事本身要靠 VAD 从声音里**猜**出来，而猜出来的边界和"该不该让模型答一次"并不一一对应。几类典型场景：
+
+- **边界猜错**：用户说到一半停顿两秒想词，VAD 按静音时长判停了，模型立刻插话。这是 ③ 判停的误判（[系列08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md) 第二节的 end-of-turn 问题），文字里不存在"半句消息"。
+- **边界根本不是用户的话**：环境噪音被判为一段语音，转写为空或碎片，模型拿到一个空的 user item 也会回一句；更隐蔽的是数字人自己的声音从扬声器回到麦克风，形成"说一句 → 被自己触发 → 再说一句"的短循环（[系列07](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md) 第三、四节的噪音与回声指纹）。文字输入没有噪音，也不会把自己的输出当成输入。
+- **多来一回**：用户连说三段，希望模型看完整再答。文字里用户会把三段写进一条消息，语音里每段之间的停顿都是一个潜在的判停点。
+- **来了先不回**：用户说完后，应用要先查库、走状态机、判断"该不该回"，再让模型开口（系列08 的应答门控）。
+- **没来也要回**：用户没说话，应用要模型先开口（开场白、超时提醒）。
+- **来了不需要回**：用户说完了，但这一句根本不需要回。面试读题场景答完直接读下一题，不需要模型对答案发表意见。
+
+前两类是 VAD、噪音、回声这些**声学层**制造的假边界，后四类是**业务层**对"来"与"回"对应关系的不同要求。共同点是"来"和"回"不再一一对应。`create_response=true` 把这两件事焊在一起，所以只能在"每个边界都答"和"都不答"之间选；`create_response=false` 是把"回"的触发权从服务端拿到应用手里，让一来一回变成一来 N 回、N 来一回或者零来一回，声学层的假边界仍然会产生 user item 和转写，但不再自动变成一次模型开口。
 
 ### 2.2 五道关卡
 
@@ -101,7 +122,7 @@ conversation.item.input_audio_transcription.completed
 
 **关键是 ④ 和 ⑤ 是两个独立关卡**。`create_response` 只决定 ④ "要不要开轮"，⑤ "轮里说什么"由另一套东西管。开头那个困惑的机制解释就在这里：提示词只作用于 ⑤；`create_response=true` 时每次说话停止都会自动进入 ⑤，模型拿到轮次后是否守规矩靠概率；`create_response=false` 时 ⑤ 根本不会自动发生，提示词也就无处施力——不是提示词失效，而是**没有轮次可供提示词约束**。这就是 "impossible by construction instead of by instruction" 的确切含义：它不是加强版的提示词，它是换了一层。
 
-反过来也成立：`create_response=false` 之后应用仍然可以手动发一个不带任何约束的 `response.create`，模型照样自由发挥。"关掉自动开轮"和"模型只念稿"不是一回事，后者还需要应用自己发的每一次 `response.create` 都带着确定的内容。
+反过来也成立：`create_response=false` 之后应用仍然可以手动发一个不带任何约束的 `response.create`，模型照样自由发挥。"关掉自动开轮"和"模型只念稿"不是一回事，后者还需要应用自己发的每一次 `response.create` 都带着确定的内容——靠 per-turn `instructions` 求它照读会随模型漂，可靠的做法是让 `response.create` 带 `pre_generated_assistant_message`，文本不进模型（[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。
 
 ---
 
@@ -226,7 +247,7 @@ response 档下容易把 VAD、EOU、LLM judge 和 model / agent response 当成
 ## 八、小结
 
 1. **Voice Live 的 session 字段分三层**：Speech 层（VAD 检测器、降噪、转写、TTS、viseme、avatar）、编排层（协议事件与 `create_response` / `interrupt_response` / `auto_truncate` 策略开关）、LLM 层（instructions、tools、per-turn 参数，Agent 模式下整层归 Foundry Agent）。`turn_detection` 是跨 Speech 与编排两层的混合对象。
-2. **"轮次"= response 对象**，与用户语音轮、人感觉的对话轮是三样东西；`create_response` 管的是语音轮结束后要不要自动 create 一个 response，默认 true 把两者粘成一来一回。**一个轮次五道关卡**：听、判起、判停归 Speech；开轮归编排；生成归 LLM。`create_response` 只管 ④，`instructions` 只管 ⑤；④ 关掉后 ⑤ 不再自动发生，提示词无处施力——这是"by construction 而非 by instruction"的机制含义。
+2. **"轮次"= response 对象**，与用户语音轮、人感觉的对话轮是三样东西；`create_response` 管的是语音轮结束后要不要自动 create 一个 response，默认 true 把两者粘成一来一回。`create_response` 与 `response.create` 是触发器与动作的关系：前者是 `turn_detection` 里的配置开关，后者是客户端事件；关掉开关动作仍在，只是触发权从服务端回到应用，拆开是因为语音里"用户一段话"与"模型一次回答"并不一一对应。**一个轮次五道关卡**：听、判起、判停归 Speech；开轮归编排；生成归 LLM。`create_response` 只管 ④，`instructions` 只管 ⑤；④ 关掉后 ⑤ 不再自动发生，提示词无处施力——这是"by construction 而非 by instruction"的机制含义。
 3. **两种模式的差别集中在 ⑤**：Agent 模式拿走 session 级与 per-turn 的 `instructions`，保留 item 注入；由此 `create_response` 在模型模式下是调节器，在 Agent 模式下是总闸。
 4. **七种形态由"谁开轮 × 怎么约束"叉乘得到**，其中受约束轮次与旁路生成是模型模式独有；分层混合形态依赖 `session.update` 可中途改 `create_response` 这一事实。
 5. 级联模型下 `modalities: audio` 由 Azure TTS 兑现，LLM 层的提示词管不到韵律，要调 `voice.rate` / `voice.temperature`；原生音频模型才在 LLM 层产出音频。

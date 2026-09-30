@@ -34,15 +34,15 @@ description: 一次真实面试中题目被改写、被编造的事故，把系�
 
 一个 Voice Live 会话就是一条 WebSocket，上面同时跑着五件事。对照系列06 的六道关卡：
 
-| 环节 | 对应关卡 | 谁在做 | 我们能控制的开关 |
-|---|---|---|---|
-| 听（VAD + STT） | ① ② ③ | Azure `turn_detection` + `input_audio_transcription` | VAD 类型、`create_response`、EOU 检测 |
-| 想（决定说什么） | ④ ⑤ | 会话绑定的**模型**（`?model=` 或 Foundry agent） | `response.create` 发不发、带什么 |
-| 说（TTS） | ⑥ | Azure 语音（`voice`） | 文本从哪来、怎么发声 |
-| 脸（avatar） | ⑥ 之后 | Azure avatar 管线（WebRTC 视频） | `avatar` 配置 |
-| 记（对话历史） | 贯穿 | 会话里的 conversation items | `conversation.item.create / delete` |
+| 环节           | 对应关卡  | 谁在做                                                  | 我们能控制的开关                            |
+| ------------ | ----- | ---------------------------------------------------- | ----------------------------------- |
+| 听（VAD + STT） | ① ② ③ | Azure `turn_detection` + `input_audio_transcription` | VAD 类型、`create_response`、EOU 检测     |
+| 想（决定说什么）     | ④ ⑤   | 会话绑定的**模型**（`?model=` 或 Foundry agent）               | `response.create` 发不发、带什么           |
+| 说（TTS）       | ⑥     | Azure 语音（`voice`）                                    | 文本从哪来、怎么发声                          |
+| 脸（avatar）    | ⑥ 之后  | Azure avatar 管线（WebRTC 视频）                           | `avatar` 配置                         |
+| 记（对话历史）      | 贯穿    | 会话里的 conversation items                              | `conversation.item.create / delete` |
 
-关键认识只有一句：**每一次 `response.create` 默认都是一次"想"**。`create_response=true` 时候选人一停顿 Azure 就自动替你发一次；即便关掉自动回复，你手动发的 `response.create` 仍然是一次模型推理。题库驱动的面试里，问哪题由后端定，数字人只是嘴，"想"这一步在读题环节是多余的，也正是它出的错。
+关键认识只有一句：**每一次 `response.create` 默认都是一次"想"**。`create_response=true` 时候选人一停顿 Azure 就自动替你发一次；即便关掉自动回复，你手动发的 `response.create` 仍然是一次模型推理。题库驱动的面试里，问哪题由后端定，数字人只是嘴，"想"这一步在读题环节是多余的，也正是它出的错。两个名字的正面对照见[系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) 2.1 节：`create_response` 是 `turn_detection` 里的自动触发开关，`response.create` 是客户端事件即动作本身；本文管的是这个动作里"带什么"。
 
 ## 三、怎么直接 TTS，不让模型"回复"
 
