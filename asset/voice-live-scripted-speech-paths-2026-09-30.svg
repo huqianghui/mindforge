@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aT" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/></marker>
+    <marker id="aA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/></marker>
+    <marker id="aG" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#64748b"/></marker>
+    <marker id="aV" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#a78bfa"/></marker>
+    <marker id="aR" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#f87171"/></marker>
+  </defs>
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -60; } }
+    @keyframes pulse { 0%,100% { opacity: 0.18; } 50% { opacity: 0.7; } }
+    @keyframes shimmer { 0%,100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.35; } 50% { stroke-opacity: 1; } }
+    .flow  { stroke-dasharray: 10 12; animation: flowDash 1.4s linear infinite; }
+    .flowA { stroke-dasharray: 8 12;  animation: flowDash 1.7s linear infinite; }
+    .flowV { stroke-dasharray: 8 12;  animation: flowDash 1.9s linear infinite; }
+    .halo  { animation: pulse 2s ease-in-out infinite; }
+    .live  { animation: shimmer 3.5s ease-in-out infinite; }
+    .warn  { animation: breathe 2.2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1160" height="640" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1158" height="638" rx="17" fill="none" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="36" y="44" font-size="21" font-weight="700" fill="#e2e8f0">脚本朗读的三代路径 — 文本从哪进、要不要经过 ⑤ 模型推理、"字"与"声"各归谁管</text>
+  <text x="36" y="66" font-size="12" fill="#64748b">①~⑥ 为系列06 的关卡编号 · 灰 = 已淘汰 · 琥珀 = 曾可靠后失效 · 青绿 = 当前机制 · 2026.09</text>
+
+  <!-- column headers -->
+  <text x="115" y="96" font-size="11" fill="#64748b" text-anchor="middle">内容来源（后端）</text>
+  <text x="360" y="96" font-size="11" fill="#64748b" text-anchor="middle">④ 开轮：response.create 怎么带文本</text>
+  <text x="615" y="96" font-size="11" fill="#64748b" text-anchor="middle">⑤ 生成</text>
+  <text x="930" y="96" font-size="11" fill="#64748b" text-anchor="middle">⑥ 合成 → 实测结果</text>
+
+  <!-- ===== Lane 1: v1 assistant item ===== -->
+  <text x="36" y="128" font-size="11.5" font-weight="700" fill="#64748b">v1 · 最早</text>
+  <rect x="40" y="136" width="150" height="56" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="115" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">题目文本</text>
+  <text x="115" y="178" font-size="10" fill="#64748b" text-anchor="middle">题库指针 / 外部网关</text>
+  <path d="M190 164 L 228 164" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5 5" marker-end="url(#aG)"/>
+  <rect x="230" y="136" width="260" height="56" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="360" y="158" font-size="11.5" fill="#94a3b8" text-anchor="middle">conversation.item.create(role=assistant)</text>
+  <text x="360" y="176" font-size="11" fill="#64748b" text-anchor="middle">+ 裸 response.create</text>
+  <path d="M490 164 L 528 164" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5 5" marker-end="url(#aG)"/>
+  <rect x="530" y="136" width="170" height="56" rx="10" fill="#1a1426" stroke="#64748b" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="615" y="158" font-size="12" fill="#94a3b8" text-anchor="middle">模型推理（"想"）</text>
+  <text x="615" y="176" font-size="10" fill="#64748b" text-anchor="middle">看整段对话历史决定说什么</text>
+  <path d="M700 164 L 738 164" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5 5" marker-end="url(#aG)"/>
+  <rect x="740" y="136" width="380" height="56" rx="10" fill="#111827" stroke="#334155" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="930" y="158" font-size="11.5" fill="#94a3b8" text-anchor="middle">模型把 assistant item 当"我已说过"</text>
+  <text x="930" y="176" font-size="10.5" fill="#f87171" text-anchor="middle">回 "Understood." 或自己编一道题</text>
+
+  <!-- ===== Lane 2: v2 instructions verbatim ===== -->
+  <text x="36" y="228" font-size="11.5" font-weight="700" fill="#fbbf24">v2 · 0.37.x ~ 0.39.2.2</text>
+  <rect x="40" y="236" width="150" height="56" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="115" y="260" font-size="12" fill="#fcd34d" text-anchor="middle">题目文本</text>
+  <text x="115" y="278" font-size="10" fill="#94a3b8" text-anchor="middle">同上</text>
+  <path d="M190 264 L 228 264" fill="none" stroke="#fbbf24" stroke-width="2.2" class="flowA" marker-end="url(#aA)"/>
+  <rect x="230" y="236" width="260" height="56" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="360" y="258" font-size="11.5" fill="#fcd34d" text-anchor="middle">response.create { instructions:</text>
+  <text x="360" y="276" font-size="11" fill="#fcd34d" text-anchor="middle">"say ONLY this, verbatim: …" }</text>
+  <path d="M490 264 L 528 264" fill="none" stroke="#fbbf24" stroke-width="2.2" class="flowA" marker-end="url(#aA)"/>
+  <g><rect x="530" y="236" width="170" height="56" rx="10" fill="#1a1426" stroke="#fbbf24" stroke-width="1.4" class="warn"/></g>
+  <text x="615" y="258" font-size="12" fill="#fcd34d" text-anchor="middle">模型推理（"想"）</text>
+  <text x="615" y="276" font-size="10" fill="#94a3b8" text-anchor="middle">prompt 约束：在"求"它照读</text>
+  <path d="M700 264 L 738 264" fill="none" stroke="#fbbf24" stroke-width="2.2" class="flowA" marker-end="url(#aA)"/>
+  <rect x="740" y="236" width="380" height="56" rx="10" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="930" y="258" font-size="11.5" fill="#fcd34d" text-anchor="middle">gpt-4o 可靠；切 gpt-5-mini 后第 4/7 题起漂</text>
+  <text x="930" y="276" font-size="10.5" fill="#f87171" text-anchor="middle">对话历史像一场面试，模型按惯性"出下一题"</text>
+
+  <!-- ===== Lane 3: v3 pre_generated ===== -->
+  <text x="36" y="328" font-size="11.5" font-weight="700" fill="#2dd4bf">v3 · 0.39.2.3 起（当前）</text>
+  <g filter="url(#softGlow)"><rect x="40" y="336" width="150" height="56" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/></g>
+  <text x="115" y="360" font-size="12" fill="#2dd4bf" text-anchor="middle">题目 / nudge 文本</text>
+  <text x="115" y="378" font-size="10" fill="#94a3b8" text-anchor="middle">题库、外部网关、后端 judge</text>
+  <path d="M190 364 L 228 364" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <g filter="url(#softGlow)"><rect x="230" y="336" width="260" height="56" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/></g>
+  <text x="360" y="358" font-size="11.5" fill="#2dd4bf" text-anchor="middle">response.create { response:</text>
+  <text x="360" y="376" font-size="11" fill="#2dd4bf" text-anchor="middle">{ pre_generated_assistant_message } }</text>
+  <!-- bypass arc over the model box -->
+  <path d="M490 364 C 530 364, 530 318, 615 318 C 700 318, 700 364, 738 364" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <rect x="530" y="336" width="170" height="56" rx="10" fill="#0b1220" stroke="#334155" stroke-width="1" stroke-dasharray="3 5"/>
+  <text x="615" y="358" font-size="11.5" fill="#475569" text-anchor="middle">⑤ 被跳过</text>
+  <text x="615" y="376" font-size="10" fill="#475569" text-anchor="middle">bypassing model inference</text>
+  <g filter="url(#softGlow)"><rect x="740" y="336" width="380" height="56" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5" class="live"/></g>
+  <text x="930" y="358" font-size="11.5" fill="#2dd4bf" text-anchor="middle">⑥ Azure TTS + viseme → avatar · 文本仍进对话历史</text>
+  <text x="930" y="376" font-size="10.5" fill="#94a3b8" text-anchor="middle">usage.input_tokens = 0 · 转写 == 题目 · 首字 ~0.3s</text>
+
+  <!-- ===== Bottom: two layers ===== -->
+  <line x1="36" y1="418" x2="1124" y2="418" stroke="#1e293b" stroke-width="1"/>
+  <text x="36" y="446" font-size="14" font-weight="700" fill="#e2e8f0">同一句话的两层控制：机制先于 prompt，prompt 碰不到语音层</text>
+
+  <!-- 字 box -->
+  <rect x="40" y="462" width="480" height="150" rx="12" fill="#151a2b" stroke="#a78bfa" stroke-width="1.3"/>
+  <text x="60" y="488" font-size="13" font-weight="700" fill="#a78bfa">字 — 说什么</text>
+  <text x="60" y="510" font-size="11" fill="#cbd5e1">• 题目原文一字不差 → pre_generated（机制，不进模型）</text>
+  <text x="60" y="530" font-size="11" fill="#cbd5e1">• 候选人停顿不插话 → create_response=false（协议开关）</text>
+  <text x="60" y="550" font-size="11" fill="#cbd5e1">• 不追问 / 不泄露 → 后端 verdict 集合 + probe_guard / leak_guard</text>
+  <text x="60" y="570" font-size="11" fill="#cbd5e1">• 用词、耐心、是否致谢 → prompt（persona / reader / judge 契约）</text>
+  <text x="60" y="592" font-size="10.5" fill="#64748b">prompt 只影响模型生成出来的文字；mouth 模式下读题连字都不是模型的</text>
+
+  <!-- center TTS -->
+  <path d="M520 537 L 578 537" fill="none" stroke="#a78bfa" stroke-width="2" class="flowV" marker-end="url(#aV)"/>
+  <g filter="url(#softGlow)"><rect x="580" y="507" width="80" height="60" rx="10" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.5"/></g>
+  <text x="620" y="532" font-size="12" font-weight="700" fill="#2dd4bf" text-anchor="middle">⑥ TTS</text>
+  <text x="620" y="550" font-size="10" fill="#94a3b8" text-anchor="middle">文本 → 音频</text>
+  <path d="M700 537 L 662 537" fill="none" stroke="#fbbf24" stroke-width="2" class="flowA" marker-end="url(#aA)"/>
+
+  <!-- 声 box -->
+  <rect x="700" y="462" width="420" height="150" rx="12" fill="#1c1a12" stroke="#fbbf24" stroke-width="1.3"/>
+  <text x="720" y="488" font-size="13" font-weight="700" fill="#fbbf24">声 — 怎么发声（session.update → voice）</text>
+  <text x="720" y="510" font-size="11" fill="#cbd5e1">• name：选音色（HD 语音更有表现力）</text>
+  <text x="720" y="530" font-size="11" fill="#cbd5e1">• temperature 0~1：表现力 / 情绪起伏 · rate "0.5"~"1.5"：语速</text>
+  <text x="720" y="550" font-size="11" fill="#cbd5e1">• custom_lexicon_url：TMF / EMEA / SOP 怎么念 · style · prosody</text>
+  <text x="720" y="570" font-size="11" fill="#f87171">• 会话级参数，不是逐句 SSML；改声要发 session.update</text>
+  <text x="720" y="592" font-size="10.5" fill="#64748b">旋钮 ≠ 生效：抓 session.updated 回显断言 temperature / rate</text>
+</svg>

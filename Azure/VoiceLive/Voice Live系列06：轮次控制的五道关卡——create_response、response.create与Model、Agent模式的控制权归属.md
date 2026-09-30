@@ -9,7 +9,7 @@ tags:
   - turn-detection
   - vad
   - foundry-agent
-description: 把 Voice Live 一个对话轮次拆成五道关卡（听、判起、判停、开轮、生成），逐一说明每道关卡的开关是什么、归哪一层（Azure Speech 层 / Voice Live 编排层 / LLM 层），解释 create_response 为什么是"总闸"而不是"调节器"、提示词为什么只在第五关起作用；对照 Model 模式与 Agent 模式下每个控制点的归属差异，给出由"谁开轮 × 怎么约束内容"叉乘出的七种使用形态与选型判断顺序。第七节用"谁开轮 × 谁给内容"矩阵回答 persona 挂 Agent 还有没有意义：bank 线性与 external API 两种 persona 同在"应用开轮 + 现成文本逐字读"一行，会话内模型只是传声筒但绕不开（Voice Live 没有直达 TTS 的事件），Agent 模式在此是负资产，Agent 只在自由轮次里生效。案例排查见系列07，判停与开轮之间的应答门控见系列08
+description: 把 Voice Live 一个对话轮次拆成五道关卡（听、判起、判停、开轮、生成），逐一说明每道关卡的开关是什么、归哪一层（Azure Speech 层 / Voice Live 编排层 / LLM 层），解释 create_response 为什么是"总闸"而不是"调节器"、提示词为什么只在第五关起作用；对照 Model 模式与 Agent 模式下每个控制点的归属差异，给出由"谁开轮 × 怎么约束内容"叉乘出的七种使用形态与选型判断顺序。第七节用"谁开轮 × 谁给内容"矩阵回答 persona 挂 Agent 还有没有意义：bank 线性与 external API 两种 persona 同在"应用开轮 + 现成文本逐字读"一行，会话内模型只是传声筒，Agent 模式在此是负资产，Agent 只在自由轮次里生效。初版 7.3 节"传声筒也绕不开模型（Voice Live 没有直达 TTS 的事件）"已由系列09 修正：response.create 可带 pre_generated_assistant_message 直接 TTS、跳过模型推理，会话仍必须配模型但原因是宿主而非复述。案例排查见系列07，判停与开轮之间的应答门控见系列08，脚本朗读的机制化见系列09
 ---
 
 # Voice Live 系列 06：轮次控制的五道关卡——create_response、response.create 与 Model、Agent 模式的控制权归属
@@ -150,7 +150,7 @@ conversation.item.input_audio_transcription.completed
 
 3. **受约束轮次**。应用节拍 + `response.create` 带 per-turn `instructions` / `max_output_tokens`。每一轮可以换角色、换任务（这轮只确认、这轮只翻译、这轮只复述）。**模型模式独有**。Agent 模式的近似替代是塞一条 system item 再开轮，约束力弱一档。
 
-4. **脚本朗读**。应用节拍 + 把要说的话以极窄指令塞进轮次（模型模式用 `instructions: "逐字朗读："`，Agent 模式用 system item），模型退化为 TTS。合规话术、流程引导、播报。Voice Live 没有独立的 TTS 事件，逐字朗读本质是"指令窄到只剩一个正确答案"。
+4. **脚本朗读**。应用节拍 + 把要说的话以极窄指令塞进轮次（模型模式用 `instructions: "逐字朗读："`，Agent 模式用 system item），模型退化为 TTS。合规话术、流程引导、播报。**修正（2026-09-30）**：本文初版写"Voice Live 没有独立的 TTS 事件，逐字朗读本质是指令窄到只剩一个正确答案"，这在 `response.create` 带 `pre_generated_assistant_message` 时不成立——服务端对给定文本直接 TTS、跳过 ⑤，逐字朗读从 prompt 约束变成机制约束，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)。"指令窄到只剩一个正确答案"只剩 Agent 模式（`pre_generated` 在该模式下未实测）这一条退路。
 
 5. **旁路生成**。`conversation: "none"` + `input`，让模型对当前对话做一次不进历史的判断：意图分类、情绪判断、路由决策、要不要转人工。结果给应用用，不给用户听。模型模式可用。
 
@@ -200,13 +200,15 @@ response 档下容易把 VAD、EOU、LLM judge 和 model / agent response 当成
 
 在第三行，挂 `agent_id` 不只是没用，还比 `model` 模式差三点：
 
-- Agent 模式不接受 per-turn `instructions`，逐字朗读只能靠塞 system item 提示，模型有改写余地；模型模式可以在每次 `response.create` 上带 `instructions: "逐字朗读以下内容"` 与 `max_output_tokens`，把模型钉死成传声筒。
+- Agent 模式不接受 per-turn `instructions`，逐字朗读只能靠塞 system item 提示，模型有改写余地；模型模式可以在每次 `response.create` 上带 `instructions: "逐字朗读以下内容"` 与 `max_output_tokens`，把模型钉死成传声筒；更彻底的做法是 `pre_generated_assistant_message`，连模型都不经过（[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。
 - 每次读题都要经过 Foundry Agent Service 的 thread 与 runtime 一圈，多一段延迟，而读题完全用不上知识库和工具。
 - `interim_response` 是服务端在 Agent 推理耗时时才推的填充语，应用节拍下没有 Agent 推理，它不会出现，题间空白仍要应用自己填。
 
 所以 external API 与 bank 线性两种 persona 应当走 `?model=`，选最小最便宜的模型当传声筒（生产 external-brain persona 用的 gpt-4.1-mini 就是这个用法），Agent 字段留空，避免团队误以为写在 Agent 里的 instructions 会生效。产品配置上值得把"brain 类型"显式分成 external-brain、foundry-agent、model+instructions 三档，"Model has its own turn" 开关只对后两档有意义。
 
-### 7.3 传声筒也绕不开模型：为什么不能直接到 Speech
+### 7.3 传声筒也绕不开模型：为什么不能直接到 Speech（已由系列09 修正）
+
+> **修正（2026-09-30）**：本节"response 的唯一入口是模型"不成立。`response.create` 可以带 `pre_generated_assistant_message`，服务端对给定文本直接 TTS 并跳过 ⑤ 模型推理（`response.done.usage.input_tokens` 为 0），文本仍入对话历史。会话必须配模型这一点仍然成立，但原因是模型是 VAD / STT / TTS / avatar 的宿主，不是文本必须经它复述。原文保留供对照，完整分析见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)。
 
 第三行里内容只剩"嘴巴读"，但在 Voice Live 里嘴巴前面必须先过一次模型，`?model=` 或 `?agent_id=` 两者必选其一，**不能直接把文本交给 Speech 层的 TTS**。原因在协议层：Voice Live 没有"说这句话"的事件，唯一能让服务端出声的动作是 `response.create`，而 response 的定义就是"调用模型跑一次推理"（见 2.1）。应用把下一题塞成 item，发 `response.create`，模型把文本原样复述一遍，复述出来的文本再交给 Azure TTS 合成音频与 viseme，最后驱动 avatar。模型在这条链上是传声筒，但拆不掉。系列03 测出的"读题到首块音频 0.63s"里就含着这一次推理的开销。
 
@@ -228,8 +230,8 @@ response 档下容易把 VAD、EOU、LLM judge 和 model / agent response 当成
 3. **两种模式的差别集中在 ⑤**：Agent 模式拿走 session 级与 per-turn 的 `instructions`，保留 item 注入；由此 `create_response` 在模型模式下是调节器，在 Agent 模式下是总闸。
 4. **七种形态由"谁开轮 × 怎么约束"叉乘得到**，其中受约束轮次与旁路生成是模型模式独有；分层混合形态依赖 `session.update` 可中途改 `create_response` 这一事实。
 5. 级联模型下 `modalities: audio` 由 Azure TTS 兑现，LLM 层的提示词管不到韵律，要调 `voice.rate` / `voice.temperature`；原生音频模型才在 LLM 层产出音频。
-6. **persona 挂 Agent 的价值 = 交给它的内容决定权**：按"谁开轮 × 谁给内容"画矩阵，bank 线性与 external API 两种 persona 都在"应用开轮 + 应用给现成文本"这一行，会话内模型只是传声筒，Agent 价值为零且 Agent 模式还是负资产（丢 per-turn 约束、多一圈 runtime、无 `interim_response`），应走 `?model=` + 最小模型；只有开 "Model has its own turn" 或分阶段切回自由轮次，Agent 定义才生效。传声筒也绕不开模型：Voice Live 没有"说这句话"的事件，文本进 TTS 的唯一入口是 response，response 的唯一入口是模型，不能直接到 Speech。
-7. 机制之上的两个续篇：[系列07](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md) 用"三次 Thank you"案例演示排查方法（先数 `response.created`，再按转写指纹分停顿、噪音、回声）；[系列08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md) 给出"要么回太多、要么静默"之间的应答门控方案（EOU 与 LLM judge 分工、两段式提交、频率策略）。
+6. **persona 挂 Agent 的价值 = 交给它的内容决定权**：按"谁开轮 × 谁给内容"画矩阵，bank 线性与 external API 两种 persona 都在"应用开轮 + 应用给现成文本"这一行，会话内模型只是传声筒，Agent 价值为零且 Agent 模式还是负资产（丢 per-turn 约束、多一圈 runtime、无 `interim_response`），应走 `?model=` + 最小模型；只有开 "Model has its own turn" 或分阶段切回自由轮次，Agent 定义才生效。传声筒是否绕得开模型：文本进 TTS 的唯一入口是 response 这一点成立，但 response 不一定调模型——`response.create` 带 `pre_generated_assistant_message` 时直接 TTS，系列09 据此修正了初版"绕不开"的说法；会话仍必须配模型，原因是它是 VAD / STT / TTS / avatar 的宿主。
+7. 机制之上的三个续篇：[系列07](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md) 用"三次 Thank you"案例演示排查方法（先数 `response.created`，再按转写指纹分停顿、噪音、回声）；[系列08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md) 给出"要么回太多、要么静默"之间的应答门控方案（EOU 与 LLM judge 分工、两段式提交、频率策略）；[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md) 用一次读题被改写、被编造的事故修正本文 7.3 节，给出 `pre_generated_assistant_message` 直接 TTS 的机制、宿主模型的角色与代码、prompt、`session.voice` 三层分工。
 
 ## 参考
 
@@ -238,5 +240,5 @@ response 档下容易把 VAD、EOU、LLM judge 和 model / agent response 当成
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)（Agent metadata `microsoft.voice-live.configuration` 分块存储；system item + 空 response.create 触发开场白；interim_response 配置）
 - [Azure OpenAI Realtime API events reference — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/realtime-audio-reference)（response.create 的 instructions / conversation / input 等字段；conversation.item.* 与 input_audio_buffer.* 事件语义）
 - 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)、[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)、[Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)
-- 系列续篇：[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md)、[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)
+- 系列续篇：[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md)、[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（修正本文 7.3 节：pre_generated_assistant_message 直接 TTS）
 - 相关 wiki：[voice-live-agent 概念页](../../wiki/concepts/voice-live-agent.md)（三种模式的控制力光谱与"挂 Agent 后 instructions 禁用"证据）、[turn-taking 概念页](../../wiki/concepts/turn-taking.md)（轮次交接的通用机制）

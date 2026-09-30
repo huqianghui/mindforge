@@ -147,10 +147,10 @@ description: 回答"要么回太多、要么静默"之间怎么走：create_resp
 
 **开轮加生成段（⑥~⑨）**：
 
-6. **组装约束**（应用层）：模型模式直接在 `response.create` 上带 per-turn `instructions`（"只说一句简短致谢，不要追问"）和 `max_response_output_tokens`；Agent 模式 per-turn instructions 被拒，先 `conversation.item.create` 塞一条 system item 再发裸的 `response.create`，约束力弱一档。发之前确认没有活跃 response，上一轮没播完要先 `response.cancel`。
+6. **组装约束**（应用层）：内容若是现成文本（脚本池、模板加槽位、后端已生成并校验过的一句），直接用 `response.create` 的 `pre_generated_assistant_message` 让服务端 TTS，不经模型、两种模式下都不依赖 `instructions`（见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）；需要模型现场生成时，模型模式直接在 `response.create` 上带 per-turn `instructions`（"只说一句简短致谢，不要追问"）和 `max_response_output_tokens`；Agent 模式 per-turn instructions 被拒，先 `conversation.item.create` 塞一条 system item 再发裸的 `response.create`，约束力弱一档。发之前确认没有活跃 response，上一轮没播完要先 `response.cancel`。
 7. **`response.create` 开轮**（编排层）：服务端回 `response.created`，"轮次"即 response 对象在这一刻诞生。同一时刻只能有一个活跃 response。
 8. **模型或 Agent 推理**（LLM 层）：拿当前 conversation 加 instructions 加 tools 跑一次推理。这是全链路里 persona 定义唯一生效的位置。Agent 推理慢时服务端会推 `interim_response` 填充语。受约束生成档在这里配代码校验，不合格回退脚本池。
-9. **TTS 与 viseme**（Speech 层）：级联模型只出文本，Azure TTS 合成音频与口型；韵律归 `voice.rate` / `voice.temperature`，提示词管不到。avatar 场景下音频走 WebRTC 音轨，不走 WebSocket audio delta。
+9. **TTS 与 viseme**（Speech 层）：级联模型只出文本，Azure TTS 合成音频与口型；韵律归 `voice.rate` / `voice.temperature` 等会话级 `voice` 参数（完整参数表与"会话级参数、不是逐句 SSML"的限制见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md) 第六节），提示词管不到。avatar 场景下音频走 WebRTC 音轨，不走 WebSocket audio delta。
 
 **播出段（⑩~⑬）**：
 
@@ -199,4 +199,5 @@ description: 回答"要么回太多、要么静默"之间怎么走：create_resp
 - [pipecat-ai/smart-turn — GitHub](https://github.com/pipecat-ai/smart-turn)（开源音频原生 turn detection 模型）
 - [Azure OpenAI Realtime API events reference — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/realtime-audio-reference)（response.create 的 instructions / conversation / input 等字段；conversation.item.* 与 input_audio_buffer.* 事件语义）
 - 系列前篇：[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md)（五关框架、七种形态）、[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md)（本文要解决的题间静默来自其修法）；更早各篇见系列06 参考
+- 系列续篇：[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（第 ⑥ 步现成文本走 pre_generated、第 ⑨ 步 voice 参数的展开；judge 与 speaker 分离在后端 judge + TTS 上的落地）
 - 相关 wiki：[turn-taking 概念页](../../wiki/concepts/turn-taking.md)（轮次交接的通用机制）、[generation-evaluation-separation 概念页](../../wiki/concepts/generation-evaluation-separation.md)（judge 与 speaker 分离的理论基础）

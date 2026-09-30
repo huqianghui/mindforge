@@ -81,7 +81,7 @@ Viseme（视位素，visual + phoneme 的合成词）是 phoneme（音位素）�
 
 所以架构图里"混合式"行的 GPT Realtime 2.1/1.5 和"语音到语音"行的 GPT Realtime **是同一个模型的两种输出接线方式**。S2S 还是混合式不是选模型时定死的，而是逐会话的 `voice` 配置项——继系列02"级联 vs 端到端降级为配置项"（模型侧）、系列03"region 可用性才是真分水岭"（部署侧）之后，这是"架构决策降级为配置项"在**输出侧**的第三次上演。
 
-代价也要说清：**挂 avatar 就必然落在混合式接线上**，放弃的是模型原生音频的副语言表现力（它自己的笑声、语气起伏、audio token 直出的韵律），输出表现力上限变成 Azure TTS 的能力（HD Voice / Custom Voice + SSML）。数字人场景下，gpt-realtime 的端到端优势只保留在**输入侧**（直接理解音频、无转写级联），输出侧被 TTS 接管。
+代价也要说清：**挂 avatar 就必然落在混合式接线上**，放弃的是模型原生音频的副语言表现力（它自己的笑声、语气起伏、audio token 直出的韵律），输出表现力上限变成 Azure TTS 的能力（HD Voice / Custom Voice + SSML；在 Voice Live 会话内这条上限通过 `session.voice` 的 `temperature` / `rate` / `custom_lexicon_url` 等会话级参数触达，逐句 SSML 不可用，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。数字人场景下，gpt-realtime 的端到端优势只保留在**输入侧**（直接理解音频、无转写级联），输出侧被 TTS 接管。
 
 ## 四、全双工 GPT-Live-1：发布事实与它吃掉的"轮次机器"
 

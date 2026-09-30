@@ -354,6 +354,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 06：轮次控制的五道关卡——create_response、response.create 与 Model、Agent 模式的控制权归属](Azure/VoiceLive/Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md)
 - [Voice Live 系列 07：重复致谢排查——三次 Thank you 的三个开轮来源、转写指纹与编排层修法](Azure/VoiceLive/Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md)
 - [Voice Live 系列 08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Azure/VoiceLive/Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)
+- [Voice Live 系列 09：脚本朗读的机制化——pre_generated 绕过模型推理、宿主模型与代码、prompt、voice 三层分工](Azure/VoiceLive/Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)
 
 #### Azure/Foundary-Agent
 

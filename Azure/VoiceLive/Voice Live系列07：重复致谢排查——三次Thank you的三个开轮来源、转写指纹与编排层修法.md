@@ -52,7 +52,7 @@ description: 一个真实案例：语音面试产品的题库模式下，数字�
 
 ## 五、修法落在编排层
 
-产品最终把 bank 模式默认改为线性轮次：`create_response=false` 并去掉前端的补发，模型不再拿到自己的轮次，只在后端给题时逐字读题，题间静默。无论 VAD 因停顿、噪音还是回声被触发多少次，都不会再多出一句 "Thank you"。这是系列06 七种形态里形态 2 "应用节拍"叠加形态 4 "脚本朗读"的组合。收尾报告里的一句原话把机制说得很准："that auto-response setting is a single bool; the turn and the follow-up turn are the same turn"——致谢和追问出自同一个 response，协议层没有"只许致谢、不许追问"这一档，这就是提示词修不了它的原因。
+产品最终把 bank 模式默认改为线性轮次：`create_response=false` 并去掉前端的补发，模型不再拿到自己的轮次，只在后端给题时逐字读题，题间静默。读题本身怎么做到"逐字"是另一个问题：靠 per-turn `instructions` 求模型照读在换模型后会漂，可靠做法是 `response.create` 带 `pre_generated_assistant_message` 直接 TTS，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)。无论 VAD 因停顿、噪音还是回声被触发多少次，都不会再多出一句 "Thank you"。这是系列06 七种形态里形态 2 "应用节拍"叠加形态 4 "脚本朗读"的组合。收尾报告里的一句原话把机制说得很准："that auto-response setting is a single bool; the turn and the follow-up turn are the same turn"——致谢和追问出自同一个 response，协议层没有"只许致谢、不许追问"这一档，这就是提示词修不了它的原因。
 
 ## 六、三个设计对照
 
@@ -75,4 +75,4 @@ description: 一个真实案例：语音面试产品的题库模式下，数字�
 - [Voice Live 线性轮次部署报告的翻译与解释](https://chatgpt.com/share/6ab4930c-54d4-83ec-8072-078d399be32d)（本文案例的收尾报告：bank 模式默认改线性轮次、"Model has its own turn" 选项、对 "engine decides, no knob" 决策的反转；注意其中对缺词原文的还原属推测，第三次 "Thank you" 的来源以代码链路为准）
 - [Voice Live API Reference 2026-06-01-preview — Microsoft Learn](https://learn.microsoft.com/azure/ai-services/speech-service/voice-live-api-reference-2026-06-01-preview)（Live-Reference AEC 首次出现的 preview 版本）
 - 系列前篇：[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md)（五关框架与 Model / Agent 模式控制权归属）；更早各篇见系列06 参考
-- 系列续篇：[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)
+- 系列续篇：[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)（题间静默的中间地带）、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（线性轮次管次数，系列09 管读出来的内容是不是给定的字）
