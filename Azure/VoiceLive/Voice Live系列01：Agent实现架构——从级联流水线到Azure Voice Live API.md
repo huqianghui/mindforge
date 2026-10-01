@@ -167,13 +167,24 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 
 > **一个常见误读**："只有视频走 WebRTC、音频都走 WebSocket"——不对。Avatar 模式下，**数字人的整个输出（音频 + 视频）都在 WebRTC 同一条流里**：口型同步依赖音画同流做 AV sync，如果声音走 WS、画面走 RTC，两条路径的延迟抖动各自独立，嘴型必然对不上。WebSocket 上承载的音频只有**上行麦克风**（以及非 Avatar 模式的下行音频）。
 
-> **实测坐实（2026-10-01）**：把 persona 的 avatar 形象清空后跑一场真实面试，浏览器层统计 `RTCPeerConnection` 构造次数——**0 次**，`session.avatar.connect` 发送 0 次，而 WS 上收到 10 帧 `response.audio.delta`。也就是说这条链路里 **WebRTC 是由数字人握手创建的，不是由语音会话创建的**：没有数字人就没有握手，也就没有 PeerConnection。
->
-> **纯音频走 WebRTC 已实测可行（2026-10-01）**：在会话建立之前就把画面钉成关（`setVideoPreference("off")` 在没有活动会话时只决定下一次 connect 要 offer 什么），于是**第一次** `session.avatar.connect` 就是纯音频的。实测：`RTCPeerConnection` 创建 1 个、inbound RTP **音频** 5704 字节、inbound RTP **视频 0 字节**；冷启动（钉住 → 听见第一题）6389 ms，逐轮 894 / 1067 ms——与带画面的 1069 ms 中位同量级。所以「纯音频 + WebRTC」这个组合是成立的、可演示的。
->
-> 但要说清它经过了什么：它仍然走 `session.avatar.connect`，**仍然分配了一个 avatar**，只是那个 avatar 不推视频。这不是 4.5.2 里那个「WebRTC 接入方式」——后者是整条会话（控制 + 上行 + 下行）都走 WebRTC、与 avatar 无关的另一个入口，本项目没有实现。
->
-> 由此有一个容易想反的推论：**纯音频不会自动变成 WebRTC**。想让纯音频也走 WebRTC，要用的是 Voice Live 自己的 WebRTC 接入方式（接口列表 SDK / WebSocket / WebRTC / SIP 中的那一项，见 4.5.2），那是另一个入口，不是「不开数字人」的副产品。注意与「关画面保声音」区分：后者**保留**已建好的 WebRTC 连接、只把 video m-line 标 `a=inactive`，音频仍在 RTP 音轨上（系列12 六），所以它是 WebRTC；而「从一开始就没有数字人」则完全没有 WebRTC。
+**实测坐实（2026-10-01）：WebRTC 由数字人握手创建，不是由语音会话创建。** 三种形态逐项测过：
+
+| 形态 | `RTCPeerConnection` | `session.avatar.connect` | 下行音频 | 下行视频 |
+|---|:---:|:---:|---|:---:|
+| 配了形象（产品默认） | 1 | 发送 | WebRTC RTP | WebRTC RTP |
+| 配了形象 + 建连前钉住关画面 | 1 | 发送 | WebRTC RTP | **0 B** |
+| 不配形象 | **0** | 不发送 | WebSocket（`response.audio.delta` ×10） | 无 |
+
+两个推论，都容易想反：
+
+| 推论 | 实测依据 |
+|---|---|
+| **纯音频不会自动变成 WebRTC** | 不配形象时连 PeerConnection 都不存在，音频以 PCM 走 WS |
+| **「纯音频 + WebRTC」成立且可演示**，但仍占一个 avatar（只是不推视频） | 冷启动 6389 ms、逐轮 894 / 1067 ms，与带画面 1069 ms 中位同量级 |
+
+与「关画面保声音」的区别：后者**保留**已建好的 WebRTC 连接，只把 video m-line 标 `a=inactive`，音频仍在 RTP 音轨上（系列12 六）；而「从一开始就没有数字人」完全没有 WebRTC。
+
+想让纯音频走的是 4.5.2 那个**原生 WebRTC 入口**（`/voice-live/realtime/calls`，整条会话双向 RTP、与 avatar 无关）：**当天实测通了**，矩阵见 [系列04 一](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)，只是本项目的产品链路没有采用它。
 
 ### 4.3 为什么 WebRTC 不走后端代理？
 
@@ -195,6 +206,30 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 | **控制面** | 鉴权/token 签发、session 配置、SDP 信令、事件与转写、业务逻辑 | 必经后端 |
 
 Voice Live 的接口层也支持把**上行音频**走 WebRTC（接口列表：SDK / WebSocket / WebRTC / SIP）。若把上行麦克风从 WebSocket 挪到 WebRTC，变化只是最后一段仍经后端的媒体字节也直连了——后端从"控制 + 中转部分媒体"收缩为**纯控制面**，而不是被绕开：WebRTC 的 SDP 交换本身就通过 WebSocket 会话完成（`session.avatar.connect`，先有 WS 才有 RTC）；API Key/token 签发、外部系统对接、转写落库都离不开后端。
+
+**实测补记（2026-10-01）：数字人在场时上行走不了那条 WebRTC 连接，而且是静默失败。** 把音频 transceiver 从 `recvonly` 改成 `sendrecv` 挂上麦克风轨、同时关掉 WS 上行，与现状对照：
+
+| 观测项 | 对照组（现状） | 实验组（麦克风走 RTP） |
+|---|---|---|
+| PC 上音频发送端 | 0 | 1 |
+| 出向 RTP 音频 | 0 B | **156473 B / 2300 包** |
+| 下行 RTP（数字人） | 53847 B | 63075 B |
+| WS 上 `input_audio_buffer.append` | 5932 帧 | **0 帧** |
+| 用户转写 | 正常 | **无** |
+| 错误 | 无 | **无** |
+
+Azure 接受 `sendrecv`、连接正常、数字人照样说话、156 KB 真的发出去了，而转写一个字都没有、也没有任何错误。原因不是笼统的「不支持」：数字人那条连接是**下行通道**（TTS Avatar 的媒体投递），不是会话的输入路径。
+
+所以本节结论成立，但理由要改写——不是「等该模式支持 avatar」这一条等待，而是这两件事**今天互斥**：
+
+| 想要 | 上行走什么 | 代价 |
+|---|---|---|
+| 数字人（通路 A） | 只能 WebSocket | — |
+| 上行也走 WebRTC（通路 C，`/calls`） | WebRTC RTP，实测可用 | 放弃数字人（官方：avatar 在 side-band control 下不支持） |
+
+> 限制：只测了最自然的实现（`addTrack` → 音频 `sendrecv`）；是否存在某个 session 字段能让 avatar 会话从 RTP 收输入，没有穷举。
+
+> **方法学：协商成功不等于会话可用。** 这次连错误都没有；同日另一次 voice 类型配错时，`rtc.call.error` 回来了，但 SDP answer、PeerConnection、出向音频全都正常，只是永远没有回复。判据必须是业务信号——转写出现、`response.created` 到达、下行 RTP 字节增长——不是 `connectionState === "connected"`。
 
 值不值得改，用 [系列03 的实测](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)判断：同区域后端 proxy 中转几乎免费（`response.create` → 首 token，经 proxy 与直连均 ~0.5s），延迟大头在外部网关与公网 RTT。所以上行音频 WebRTC 化赢的不是平均延迟，而是**弱网表现**——UDP 没有 TCP 队头阻塞、丢包不重传，卡顿退化为瞬间失真而非延迟尖峰（协议层完整分析见 [WebSocket与WebRTC深度对比](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)）。内网/办公网等网络良好的场景，WS 上行没有实际痛点。
 
