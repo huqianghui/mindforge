@@ -167,6 +167,14 @@ Frontend (React)  ←→  Backend (FastAPI Proxy)  ←→  Azure AI Services
 
 > **一个常见误读**："只有视频走 WebRTC、音频都走 WebSocket"——不对。Avatar 模式下，**数字人的整个输出（音频 + 视频）都在 WebRTC 同一条流里**：口型同步依赖音画同流做 AV sync，如果声音走 WS、画面走 RTC，两条路径的延迟抖动各自独立，嘴型必然对不上。WebSocket 上承载的音频只有**上行麦克风**（以及非 Avatar 模式的下行音频）。
 
+> **实测坐实（2026-10-01）**：把 persona 的 avatar 形象清空后跑一场真实面试，浏览器层统计 `RTCPeerConnection` 构造次数——**0 次**，`session.avatar.connect` 发送 0 次，而 WS 上收到 10 帧 `response.audio.delta`。也就是说这条链路里 **WebRTC 是由数字人握手创建的，不是由语音会话创建的**：没有数字人就没有握手，也就没有 PeerConnection。
+>
+> **纯音频走 WebRTC 已实测可行（2026-10-01）**：在会话建立之前就把画面钉成关（`setVideoPreference("off")` 在没有活动会话时只决定下一次 connect 要 offer 什么），于是**第一次** `session.avatar.connect` 就是纯音频的。实测：`RTCPeerConnection` 创建 1 个、inbound RTP **音频** 5704 字节、inbound RTP **视频 0 字节**；冷启动（钉住 → 听见第一题）6389 ms，逐轮 894 / 1067 ms——与带画面的 1069 ms 中位同量级。所以「纯音频 + WebRTC」这个组合是成立的、可演示的。
+>
+> 但要说清它经过了什么：它仍然走 `session.avatar.connect`，**仍然分配了一个 avatar**，只是那个 avatar 不推视频。这不是 4.5.2 里那个「WebRTC 接入方式」——后者是整条会话（控制 + 上行 + 下行）都走 WebRTC、与 avatar 无关的另一个入口，本项目没有实现。
+>
+> 由此有一个容易想反的推论：**纯音频不会自动变成 WebRTC**。想让纯音频也走 WebRTC，要用的是 Voice Live 自己的 WebRTC 接入方式（接口列表 SDK / WebSocket / WebRTC / SIP 中的那一项，见 4.5.2），那是另一个入口，不是「不开数字人」的副产品。注意与「关画面保声音」区分：后者**保留**已建好的 WebRTC 连接、只把 video m-line 标 `a=inactive`，音频仍在 RTP 音轨上（系列12 六），所以它是 WebRTC；而「从一开始就没有数字人」则完全没有 WebRTC。
+
 ### 4.3 为什么 WebRTC 不走后端代理？
 
 这不是优化选择，而是 **技术限制**：
