@@ -30,6 +30,11 @@ README.md                 # Article navigation index (single source of truth for
 Core rules that apply everywhere:
 - **Links**: 分场景——**进 git 的文章**（`Notes/` `Azure/` `paper/` `book/` `product/`、README）内部链接**必须**用相对路径 markdown 链接（空格编码 `%20`，如 `[标题](../../wiki/concepts/xxx.md)`），**禁止** `[[wikilink]]`（GitHub 不渲染）；`[[wikilinks]]` 仅用于不进 git 的内容（日记、personal-journal、inbox）和 `wiki/`（知识图谱脚本依赖 `[[]]` 语法解析关系，勿转换）。External links 用 `[content-title](url)`，链接文本必须用内容标题而非平台名。
 - **Images**: `![alt](relative-path)` with correct `../` depth to root `asset/`. **Never** use `![[filename.png]]` wikilink syntax (GitHub cannot render it).
+- **两个渲染器的交集才是可用语法**：进 git 的文章要在 **Obsidian 和 GitHub 上都正确渲染**，所以可用语法是两者的**交集**；真正无法兼容时**优先 GitHub**（对外可见的那一面）。已踩过的具体项——
+  - **引用块里禁止放表格**（以及列表之外的任何块级结构）：`> | a | b |` 在 GitHub 渲染成表格，在 Obsidian 渲染成**裸竖线文本**，整段变成不可读的流水账。`>` 只用于**单行短注**；表格、代码块、图片一律放回正常层级，正常层级两边都渲染。写补充材料时先列表格再决定要不要加注，而不是把表格塞进注里。
+  - **callout 只用 GitHub alert 的五种类型**（`NOTE` `TIP` `IMPORTANT` `WARNING` `CAUTION`）：其它类型（如 `[!INFO]`）在 Obsidian 是 callout，在 GitHub 退化成普通引用块。
+  - **`![alt|宽度]` 的宽度只对 Obsidian 生效**：GitHub 把 `|700` 当 alt 文本，图照样显示但不限宽。沿用它（Obsidian 侧必须限宽），需要 GitHub 也限宽时才改 `<img src width>`。
+  - **判定方式**：不要凭印象断言某语法"应该支持"。改完在 Obsidian 里实际看一眼，或 `grep -c '^> *|'` 这类机械检查扫一遍全目录；渲染假设和实际不符时，相信看到的那个。
 - **Language**: Chinese for body text, English for technical terms. Use `（）` and `—`.
 - **Frontmatter 是 YAML**：`title` / `description` 等值里**禁止**出现英文冒号加空格（`: `）、行首 `#` 或 ` #`，否则 GitHub（Ruby Psych）整页报 "mapping values are not allowed"。代码类表述改写为无冒号形式（如 `iceTransportPolicy 设为 relay`）或改用中文冒号。写完可用 `python3 /tmp/fm_check.py` 类脚本（PyYAML 解析全部进 git 的 md frontmatter）自检。
 - **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Claude Code 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
