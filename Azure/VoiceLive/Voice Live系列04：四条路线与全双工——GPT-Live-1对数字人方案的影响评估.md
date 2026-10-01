@@ -25,6 +25,45 @@ description: 以 2026-09 Voice Live 培训的四路线架构图为骨架：级�
 
 ![Azure Voice Live 培训架构图：四条路线总览|700](../../asset/voice-live-four-routes-training-2026-09-18.png)
 
+> **补充（2026-10-01 实测）**：图上「接口」那一行的四种接入方式是**平台能力**，与 endpoint 类型无关；但它们与
+> 「输出」那一格的**数字人互斥**。把 WebRTC 这一项落到实际链路上逐条测过，结论如下图与两张表。
+
+![Voice Live 三条音频通路：谁能走 WebRTC、谁能带数字人|780](../../asset/voice-live-transport-matrix-2026-10-01.svg)
+
+**通路矩阵**（实测，真 Azure、自有区域资源）：
+
+| 通路 | 端点 | 上行 | 下行 | 数字人 | PeerConnection |
+|---|---|---|---|---|---|
+| **A** 产品在用 | `/voice-live/realtime` + `session.avatar.connect` | WebSocket（base64 PCM） | **WebRTC RTP** | **支持** | 1 |
+| **B** 不配形象 | `/voice-live/realtime` | WebSocket | WebSocket（`response.audio.delta`） | 无 | **0** |
+| **C** 原生 WebRTC | `/voice-live/realtime/calls` | **WebRTC RTP** | **WebRTC RTP** | **不支持** | 1 |
+
+**C 的模型与 voice 配对矩阵**（`invalid_voice_type` 由 Azure 直接报出）：
+
+| 模型 | `azure-realtime-native` | `azure-standard` | 实测下行 |
+|---|---|---|---|
+| `azure-realtime` | ✅ | ❌ | 1212 B |
+| `gpt-realtime` | ❌ | ✅ | 2802 B |
+| `gpt-5-mini` | — | ✅ | 2262 B |
+
+**关键数字与判定**：
+
+| 项 | 实测 |
+|---|---|
+| C 建连：offer → SDP answer | 511 ～ 1519 ms |
+| C 建连：answer → PC 连上 | 约 800 ms（稳定） |
+| A 纯音频形态 | PeerConnection 1、RTP 音频有、RTP 视频 **0 B**、逐轮约 1.07 s |
+| A 上行改走 RTP | 发出 **156473 B**、转写 **0 字**、报错 **0 条** → 静默丢弃 |
+| B 的 WebRTC | `RTCPeerConnection` 构造 **0 次** → 关掉数字人**不会**自动变成 WebRTC |
+
+**一句话**：要数字人（A），上行只能留在 WebSocket；要上行也走 WebRTC（C），今天就得放弃数字人。
+图上两格都支持，但不能同时勾选。
+
+> 方法学一条：**协商成功不等于会话可用。** 上面两种失败里，一种只在控制 WS 回 `rtc.call.error`、另一种连错误
+> 都没有，而 SDP answer、PeerConnection、出向音频全都正常。判据必须是业务信号——转写出现、`response.created`
+> 到达、下行 RTP 字节增长——不是 `connectionState === "connected"`。探针见本项目
+> `frontend/e2e/native-webrtc-voice-live.spec.ts`、`docs/voice-live-control-notes.md` §5。
+
 四条路线从下往上看，本质是一条"组件合并程度递增"的光谱：
 
 ![Voice Live 四条语音路线与数字人闸门|700](../../asset/voice-live-four-routes-2026-09-19.svg)

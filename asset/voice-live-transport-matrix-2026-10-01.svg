@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="650" viewBox="0 0 1160 650" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <marker id="aTeal" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="aAmber" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#fbbf24"/>
+    </marker>
+    <marker id="aGray" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <style>
+    .t   { fill: #e2e8f0; font-size: 14px; }
+    .sm  { fill: #94a3b8; font-size: 12px; }
+    .xs  { fill: #64748b; font-size: 11px; }
+    .h1  { fill: #f1f5f9; font-size: 21px; font-weight: 600; }
+    .lane{ fill: #131c30; stroke: #1e293b; }
+    .node{ fill: #172135; stroke: #334155; }
+    .teal{ fill: #2dd4bf; }
+    .amb { fill: #fbbf24; }
+    .red { fill: #f87171; }
+    .tag { font-size: 12px; font-weight: 600; }
+  </style>
+
+  <rect width="1160" height="650" fill="url(#bg)"/>
+  <text x="40" y="44" class="h1">Voice Live 三条音频通路：谁能走 WebRTC，谁能带数字人</text>
+  <text x="40" y="68" class="sm">2026-10-01 浏览器层实测（真 Azure，自有区域资源）。实线 = 实测有字节流过；虚线 = 实测无</text>
+
+  <!-- column headers -->
+  <text x="40"  y="112" class="xs">通路 / 端点</text>
+  <text x="372" y="112" class="xs">上行（麦克风 → Azure）</text>
+  <text x="640" y="112" class="xs">下行（Azure → 浏览器）</text>
+  <text x="908" y="112" class="xs">数字人</text>
+  <line x1="40" y1="120" x2="1120" y2="120" stroke="#1e293b"/>
+
+  <!-- lane A -->
+  <rect x="40" y="134" width="1080" height="104" rx="10" class="lane"/>
+  <text x="60" y="162" class="t" font-weight="600">A　产品在用</text>
+  <text x="60" y="184" class="xs">/voice-live/realtime</text>
+  <text x="60" y="200" class="xs">+ session.avatar.connect</text>
+  <text x="60" y="222" class="teal tag">纯音频形态也可：首次握手即关画面</text>
+
+  <line x1="330" y1="186" x2="470" y2="186" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#aAmber)"/>
+  <text x="340" y="176" class="amb tag">WebSocket</text>
+  <text x="340" y="206" class="xs">base64 PCM 16 kHz</text>
+
+  <line x1="760" y1="186" x2="620" y2="186" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#aTeal)"/>
+  <text x="632" y="176" class="teal tag">WebRTC RTP</text>
+  <text x="632" y="206" class="xs">音视频同流，做 AV sync</text>
+
+  <text x="908" y="180" class="teal" font-size="20">✓ 支持</text>
+  <text x="908" y="204" class="xs">关画面后仍占一个 avatar</text>
+
+  <!-- lane B -->
+  <rect x="40" y="250" width="1080" height="96" rx="10" class="lane"/>
+  <text x="60" y="278" class="t" font-weight="600">B　不配形象</text>
+  <text x="60" y="300" class="xs">/voice-live/realtime</text>
+  <text x="60" y="326" class="red tag">RTCPeerConnection 构造 0 次</text>
+
+  <line x1="330" y1="296" x2="470" y2="296" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#aAmber)"/>
+  <text x="340" y="286" class="amb tag">WebSocket</text>
+
+  <line x1="760" y1="296" x2="620" y2="296" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#aAmber)"/>
+  <text x="632" y="286" class="amb tag">WebSocket</text>
+  <text x="632" y="316" class="xs">response.audio.delta ×10</text>
+
+  <text x="908" y="296" class="sm" font-size="18">无</text>
+
+  <!-- lane C -->
+  <rect x="40" y="358" width="1080" height="104" rx="10" class="lane"/>
+  <text x="60" y="386" class="t" font-weight="600">C　原生 WebRTC</text>
+  <text x="60" y="408" class="xs">/voice-live/realtime/calls</text>
+  <text x="60" y="430" class="xs">WS 仅做 SDP 信令 + 控制面</text>
+  <text x="60" y="450" class="teal tag">data channel: voice-live-events</text>
+
+  <line x1="330" y1="404" x2="470" y2="404" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#aTeal)"/>
+  <text x="340" y="394" class="teal tag">WebRTC RTP</text>
+  <text x="340" y="424" class="xs">Opus，服务端 VAD 驱动</text>
+
+  <line x1="760" y1="404" x2="620" y2="404" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#aTeal)"/>
+  <text x="632" y="394" class="teal tag">WebRTC RTP</text>
+  <text x="632" y="424" class="xs">下行 1212～2802 B</text>
+
+  <text x="908" y="398" class="red" font-size="20">✗ 不支持</text>
+  <text x="908" y="422" class="xs">avatar 块必须剥掉才跑通</text>
+
+  <!-- the exclusion -->
+  <rect x="40" y="482" width="530" height="134" rx="10" class="node"/>
+  <text x="60" y="510" class="t" font-weight="600">互斥：两格不能同时勾选</text>
+  <text x="60" y="538" class="sm">要数字人 → 上行只能留在 WebSocket（A）</text>
+  <text x="60" y="562" class="sm">要上行也走 WebRTC → 今天得放弃数字人（C）</text>
+  <text x="60" y="590" class="xs">A 的上行改 sendrecv 挂麦克风：发出 156473 B RTP，</text>
+  <text x="60" y="606" class="xs">转写 0 字、报错 0 条——静默丢弃</text>
+
+  <rect x="590" y="482" width="530" height="134" rx="10" class="node"/>
+  <text x="610" y="510" class="t" font-weight="600">C 的建连开销（实测）</text>
+  <text x="610" y="538" class="sm">offer → SDP answer　　511 ～ 1519 ms</text>
+  <text x="610" y="562" class="sm">answer → PC 连上　　　约 800 ms（稳定）</text>
+  <text x="610" y="590" class="xs">A 的对照：Azure 确认读题 → 真正听见</text>
+  <text x="610" y="606" class="xs">amira 806 ms　lisa 988 ms　逐轮约 1.07 s</text>
+</svg>
