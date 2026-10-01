@@ -217,6 +217,24 @@ judged 模式是"保留部分 LLM"的典型。LLM 在**后端**（gpt-5-mini 的
 
 教训和读题那件事同源：**以为在控制，其实那条路径根本没接上；只有抓 WS 帧断言，才知道生效没有。而一条路径真接上之后，原本"无害"的输入范围就要重新审一遍。**
 
+### 6.1 `voice.type` 与模型是硬约束，配错了会静默失败（2026-10-01 实测）
+
+`voice` 不是"填个名字就行"：**type 必须和会话的模型匹配**，否则 Azure 直接拒。原生 WebRTC 入口
+（`/voice-live/realtime/calls`）上实测到的允许清单，由 Azure 的报错原文给出：
+
+| 模型 | 允许的 `voice.type` |
+|---|---|
+| `azure-realtime` | 只有 `azure-realtime-native` |
+| `gpt-realtime` | `openai`、`azure-standard`、`azure-platform`、`azure-custom`、`custom`、`azure-personal`、`avatar-voice-sync`（**不含** `azure-realtime-native`） |
+
+实测通过的三种组合：`azure-realtime` + `azure-realtime-native`（ava）、`gpt-realtime` + `azure-standard`
+（en-US-AvaNeural）、`gpt-5-mini` + `azure-standard`。两种被拒：`gpt-realtime` + `azure-realtime-native`、
+`azure-realtime` + `azure-standard`，报错都是 `invalid_voice_type`、`param: session.voice`。
+
+**失败的样子很容易误读**：`rtc.call.error` 在控制 WS 上回来了，但 SDP answer 照样返回、PeerConnection 照样
+连上、我们的音频照样发出去——只是永远不会有回复。所以排查时的判据必须是**业务信号**（转写出现、
+`response.created` 到达、下行 RTP 字节增长），不是 `connectionState === "connected"`。
+
 ## 七、一个决策清单
 
 新加一句"数字人要说的话"时，问自己：
