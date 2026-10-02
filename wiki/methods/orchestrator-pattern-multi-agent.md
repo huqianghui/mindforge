@@ -1,5 +1,10 @@
 ---
-title: "Orchestrator Pattern（多 Agent 编排模式）"
+title: "Orchestrator Pattern (Multi-Agent)"
+aliases:
+  - "多 Agent 编排模式"
+  - "Orchestrator Pattern"
+  - "Multi-Agent Orchestration"
+  - "sessions_spawn"
 created: "2026-05-07"
 updated: "2026-05-07"
 tags:
@@ -17,7 +22,7 @@ related_methods:
   - "[[openclaw-five-stage-gateway]]"
 ---
 
-# Orchestrator Pattern（多 Agent 编排模式）
+# Orchestrator Pattern (Multi-Agent)（多 Agent 编排模式）
 
 ## 摘要
 

@@ -1,5 +1,8 @@
 ---
-title: "AI-Native 五层开发流水线"
+title: "AI-Native Five-Layer Pipeline"
+aliases:
+  - "AI-Native 五层开发流水线"
+  - "AI-Native Development Pipeline"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -18,7 +21,7 @@ related_methods:
   - "[[cybernetics-harness-design-sheet]]"
 ---
 
-# AI-Native 五层开发流水线
+# AI-Native Five-Layer Pipeline（AI-Native 五层开发流水线）
 
 ## 摘要
 

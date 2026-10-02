@@ -1,5 +1,8 @@
 ---
-title: "先算账再开跑——三个数判断式（σ_d / δ_min / δ_remain）"
+title: "Pre-Run Three-Number Accounting"
+aliases:
+  - "先算账再开跑——三个数判断式"
+  - "σ_d / δ_min / δ_remain"
 created: "2026-07-16"
 updated: "2026-07-16"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[reward-design-three-inputs]]"
 ---
 
-# 先算账再开跑——三个数判断式（σ_d / δ_min / δ_remain）
+# Pre-Run Three-Number Accounting（先算账再开跑——三个数判断式）
 
 ## 摘要
 

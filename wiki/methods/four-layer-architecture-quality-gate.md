@@ -1,5 +1,8 @@
 ---
-title: "四层架构质量门禁"
+title: "Four-Layer Architecture Quality Gate"
+aliases:
+  - "四层架构质量门禁"
+  - "Lint → Constraint → Analysis → AI Review"
 created: "2026-04-23"
 updated: "2026-04-23"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[harness-five-dimension-quality-gate]]"
 ---
 
-# 四层架构质量门禁
+# Four-Layer Architecture Quality Gate（四层架构质量门禁）
 
 ## 摘要
 

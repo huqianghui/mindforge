@@ -1,5 +1,8 @@
 ---
-title: "AI 工具采纳六步进化"
+title: "AI Adoption Six-Step Evolution"
+aliases:
+  - "AI 工具采纳六步进化"
+  - "AI Tool Adoption Ladder"
 created: "2026-04-15"
 updated: "2026-04-15"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[gsd-five-step-workflow]]"
 ---
 
-# AI 工具采纳六步进化
+# AI Adoption Six-Step Evolution（AI 工具采纳六步进化）
 
 ## 摘要
 

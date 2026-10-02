@@ -1,5 +1,8 @@
 ---
-title: "Reward 设计三份输入与两本账分家"
+title: "Reward Design Three Inputs"
+aliases:
+  - "Reward 设计三份输入与两本账分家"
+  - "Two Ledgers of Reward Design"
 created: "2026-07-16"
 updated: "2026-09-28"
 tags:
@@ -16,7 +19,7 @@ related_concepts:
 related_methods: []
 ---
 
-# Reward 设计三份输入与两本账分家
+# Reward Design Three Inputs（Reward 设计三份输入与两本账分家）
 
 ## 摘要
 

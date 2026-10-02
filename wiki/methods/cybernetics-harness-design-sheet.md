@@ -1,5 +1,8 @@
 ---
-title: "控制论 Harness Design Sheet"
+title: "Cybernetics Harness Design Sheet"
+aliases:
+  - "控制论 Harness Design Sheet"
+  - "Harness Design Sheet"
 created: "2026-04-17"
 updated: "2026-04-17"
 tags:
@@ -16,7 +19,7 @@ related_methods:
   - "[[ai-native-five-layer-pipeline]]"
 ---
 
-# 控制论 Harness Design Sheet
+# Cybernetics Harness Design Sheet（控制论 Harness Design Sheet）
 
 ## 摘要
 

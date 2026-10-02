@@ -1,5 +1,8 @@
 ---
-title: "GSD 项目规模分级与工具选择"
+title: "GSD Project Scale Selection"
+aliases:
+  - "GSD 项目规模分级与工具选择"
+  - "GSD Project Tiering"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[gsd-five-step-workflow]]"
 ---
 
-# GSD 项目规模分级与工具选择
+# GSD Project Scale Selection（GSD 项目规模分级与工具选择）
 
 ## 摘要
 

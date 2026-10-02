@@ -1,5 +1,8 @@
 ---
-title: "个人知识编译工作流"
+title: "Personal Knowledge Compiler Workflow"
+aliases:
+  - "个人知识编译工作流"
+  - "PKC Workflow"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -15,7 +18,7 @@ related_concepts:
 related_methods: []
 ---
 
-# 个人知识编译工作流
+# Personal Knowledge Compiler Workflow（个人知识编译工作流）
 
 ## 摘要
 

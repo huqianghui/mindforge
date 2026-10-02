@@ -1,5 +1,8 @@
 ---
-title: "四层测试环境策略"
+title: "Four-Layer Test Environment Strategy"
+aliases:
+  - "四层测试环境策略"
+  - "Unit → Integration → E2E → Ephemeral"
 created: "2026-04-23"
 updated: "2026-04-23"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[harness-five-dimension-quality-gate]]"
 ---
 
-# 四层测试环境策略
+# Four-Layer Test Environment Strategy（四层测试环境策略）
 
 ## 摘要
 

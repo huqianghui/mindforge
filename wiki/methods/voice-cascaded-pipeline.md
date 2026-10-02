@@ -1,5 +1,8 @@
 ---
-title: "语音级联管线架构"
+title: "Voice Cascaded Pipeline"
+aliases:
+  - "语音级联管线架构"
+  - "STT → LLM → TTS Pipeline"
 created: "2026-04-13"
 updated: "2026-09-25"
 tags:
@@ -17,7 +20,7 @@ related_concepts:
 related_methods: []
 ---
 
-# 语音级联管线架构
+# Voice Cascaded Pipeline（语音级联管线架构）
 
 ## 摘要
 

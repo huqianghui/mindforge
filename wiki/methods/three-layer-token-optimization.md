@@ -1,5 +1,8 @@
 ---
-title: "三层 Token 优化策略"
+title: "Three-Layer Token Optimization"
+aliases:
+  - "三层 Token 优化策略"
+  - "compact / RTK / Caveman"
 created: "2026-04-30"
 updated: "2026-04-30"
 tags:
@@ -18,7 +21,7 @@ related_concepts:
 related_methods: []
 ---
 
-# 三层 Token 优化策略
+# Three-Layer Token Optimization（三层 Token 优化策略）
 
 ## 摘要
 

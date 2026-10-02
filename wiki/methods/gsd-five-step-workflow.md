@@ -1,5 +1,8 @@
 ---
-title: "GSD 五步开发工作流"
+title: "GSD Five-Step Workflow"
+aliases:
+  - "GSD 五步开发工作流"
+  - "Get Shit Done Workflow"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -17,7 +20,7 @@ related_methods:
   - "[[code-reuse-four-layer-defense]]"
 ---
 
-# GSD 五步开发工作流
+# GSD Five-Step Workflow（GSD 五步开发工作流）
 
 ## 摘要
 

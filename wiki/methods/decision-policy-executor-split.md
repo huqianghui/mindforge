@@ -1,5 +1,9 @@
 ---
-title: "决策-策略-执行三分（Typed 判断 · 确定性策略 · 执行）"
+title: "Decision-Policy-Executor Split"
+aliases:
+  - "决策-策略-执行三分"
+  - "Typed Decision / Deterministic Policy / Executor"
+  - "Typed 判断 · 确定性策略 · 执行"
 created: "2026-09-28"
 updated: "2026-09-28"
 tags:
@@ -22,7 +26,7 @@ related_methods:
   - "[[harness-five-dimension-quality-gate]]"
 ---
 
-# 决策-策略-执行三分（Typed 判断 · 确定性策略 · 执行）
+# Decision-Policy-Executor Split（决策-策略-执行三分）
 
 ## 摘要
 

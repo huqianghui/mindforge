@@ -1,5 +1,8 @@
 ---
-title: "SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）"
+title: "Rejection-Sampling SFT Hands-On"
+aliases:
+  - "SFT 拒绝采样微调实战流程"
+  - "Azure GPU VM + unsloth"
 created: "2026-06-29"
 updated: "2026-06-29"
 tags:
@@ -16,7 +19,7 @@ related_concepts:
 related_methods: []
 ---
 
-# SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）
+# Rejection-Sampling SFT Hands-On（SFT 拒绝采样微调实战流程）
 
 ## 摘要
 

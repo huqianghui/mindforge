@@ -1,5 +1,8 @@
 ---
-title: "Agent 时代四层代码复用防线"
+title: "Four-Layer Code Reuse Defense"
+aliases:
+  - "Agent 时代四层代码复用防线"
+  - "Code Reuse Defense in Depth"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -16,7 +19,7 @@ related_concepts:
 related_methods: []
 ---
 
-# Agent 时代四层代码复用防线
+# Four-Layer Code Reuse Defense（Agent 时代四层代码复用防线）
 
 ## 摘要
 

@@ -1,5 +1,8 @@
 ---
-title: "OpenClaw Agent 网关五阶段建设"
+title: "OpenClaw Five-Stage Gateway"
+aliases:
+  - "OpenClaw Agent 网关五阶段建设"
+  - "OpenClaw Agent Gateway Build-out"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -15,7 +18,7 @@ related_concepts:
 related_methods: []
 ---
 
-# OpenClaw Agent 网关五阶段建设
+# OpenClaw Five-Stage Gateway（OpenClaw Agent 网关五阶段建设）
 
 ## 摘要
 

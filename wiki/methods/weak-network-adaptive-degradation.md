@@ -1,7 +1,7 @@
 ---
-title: "弱网自适应降级阶梯（Weak-Network Adaptive Degradation）"
+title: "Weak-Network Adaptive Degradation"
 aliases:
-  - "Weak-Network Adaptive Degradation"
+  - "弱网自适应降级阶梯"
   - "Weak Network Degradation Ladder"
   - "Graceful Degradation for Avatar WebRTC"
   - "Network Grade A-E Baseline"
@@ -26,7 +26,7 @@ related_methods:
   - "[[pre-run-three-number-accounting]]"
 ---
 
-# 弱网自适应降级阶梯（Weak-Network Adaptive Degradation）——先测三个数定起始形态，关画面保声音
+# Weak-Network Adaptive Degradation（弱网自适应降级阶梯）
 
 ## 摘要
 

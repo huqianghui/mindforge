@@ -1,5 +1,8 @@
 ---
-title: "工作点读数法（Throughput-Latency Operating Point）"
+title: "Throughput-Latency Operating Point"
+aliases:
+  - "工作点读数法"
+  - "Operating Point Reading"
 created: "2026-09-04"
 updated: "2026-09-04"
 tags:
@@ -15,7 +18,7 @@ related_concepts:
 related_methods: []
 ---
 
-# 工作点读数法（Throughput-Latency Operating Point）
+# Throughput-Latency Operating Point（工作点读数法）
 
 ## 摘要
 

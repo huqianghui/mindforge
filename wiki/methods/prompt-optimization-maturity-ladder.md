@@ -1,5 +1,8 @@
 ---
-title: "Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环"
+title: "Prompt Optimization Maturity Ladder"
+aliases:
+  - "Prompt 优化成熟度阶梯"
+  - "L0 vibe check → L1 LLM-judge → L2 数据闭环"
 created: "2026-08-04"
 updated: "2026-09-28"
 tags:
@@ -19,7 +22,7 @@ related_methods:
   - "[[reward-design-three-inputs]]"
 ---
 
-# Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环
+# Prompt Optimization Maturity Ladder（Prompt 优化成熟度阶梯）
 
 ## 摘要
 

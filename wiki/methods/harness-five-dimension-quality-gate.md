@@ -1,5 +1,8 @@
 ---
-title: "Harness 五维质量门禁"
+title: "Harness Five-Dimension Quality Gate"
+aliases:
+  - "Harness 五维质量门禁"
+  - "Harness Quality Gate"
 created: "2026-04-13"
 updated: "2026-04-13"
 tags:
@@ -19,7 +22,7 @@ related_methods:
   - "[[cybernetics-harness-design-sheet]]"
 ---
 
-# Harness 五维质量门禁
+# Harness Five-Dimension Quality Gate（Harness 五维质量门禁）
 
 ## 摘要
 
