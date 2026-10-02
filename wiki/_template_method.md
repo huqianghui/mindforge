@@ -1,5 +1,7 @@
 ---
-title: "{{method_name}}"
+title: "{{method_name_english}}"
+aliases:
+  - "{{method_name_chinese}}"
 created: "{{date}}"
 updated: "{{date}}"
 tags:
@@ -13,7 +15,7 @@ related_methods:
   - "[[related-method]]"
 ---
 
-# {{method_name}}
+# {{method_name_english}}（{{method_name_chinese}}）
 
 ## 摘要
 
