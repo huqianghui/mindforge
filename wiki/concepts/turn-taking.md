@@ -1,7 +1,7 @@
 ---
 title: "话轮转换（Turn-Taking）"
 created: "2026-04-17"
-updated: "2026-09-25"
+updated: "2026-10-02"
 tags:
   - wiki
   - concept
@@ -90,10 +90,21 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 
 > "Turn-Taking≠端点检测"的最强续证：把一个布尔开关拆成四问——说完了没（EOU 模型/Speech 层/几十 ms）、答完了没（LLM judge/应用层/几百 ms~1s 且知道任务）、要不要致谢（跨轮状态规则/零时延）、说什么（分档内容源+代码校验）；混在一起就退回布尔开关。判停（VAD）→开轮（create_response）→生成（LLM）是三个独立决策点，Voice Live 把判停与开轮在协议上拆开。两段式提交状态机（LISTENING→PENDING→COMPLETE）：T1 试探性预生成不出声、T2 确认后播出、之间用户开口即丢弃，阈值按说话人 95 分位自适应——"把判断延迟藏进用户自己的停顿里"是延迟工程治体感的第三实例（与 VL03 思考过渡语、interim_response 同族）。度量与演进：误判完成率（COMPLETE 后 3s 内 speech_started 比例）/完成延迟/致谢重复率三指标，事件流回放到不同阈值组合画曲线选拐点（与 LiveKit eot-bench 同思路）；演进顺序：规则+两段式 → EOU+拉长 silence（1200~1500ms）→ LLM judge → 音频原生模型——"话轮判停是决策参数而非技术延迟"的度量方法补充。
 
+### Claim: "轮"有三种要分开——生成轮次（response）、对话历史里的 assistant 轮、语音轮（`turn_detection` 的 turn）；脚本朗读的 `pre_generated` 算前两种不算第三种；历史完整恰是模型漂移的原因，切回自由轮次要显式声明阶段切换
+
+- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]
+- **首次出现**：2026-09-30
+- **最近更新**：2026-10-02
+- **置信度**：0.8
+- **状态**：active
+
+> `pre_generated_assistant_message` 读题"算不算一个 turn"要按三种"轮"分开看：作**生成轮次（response）**算——仍是一次 `response.create`，事件流照常、同一时刻只能有一个活跃 response 的约束照常、"`response.created` 次数等于读题次数"的验证标准照常，只是模型推理空转、`input_tokens` 为 0；作**对话历史里的 assistant 轮**算——以一条 `role: assistant` 的 message item 落进 conversation，与模型自己生成的回答无区别；作**语音轮（`turn_detection` 里的 turn）**不算——那个 turn 指用户这一段话的起止。中途把整段内容交给模型时历史主线是完整的（system item、每次读出的题目与 nudge、候选人每段转写），不在历史里的有四类：per-turn `instructions`（只在那一个 response 内生效）、后端 judge 的判断过程（只有被说出的 nudge 进了历史）、被打断截掉的部分（`auto_truncate` 截到用户实际听到的位置，`pre_generated` 被打断同样如此）、重连之前的一切（新会话历史清零，要延续得用 `conversation.item.create` 回放）。一个实际风险：**历史完整正是 prompt 约束读法漂掉的原因**——到中后段这段历史看起来就是一场进行中的面试，模型一旦拿到自由轮次第一反应很可能是出下一题或致谢；切回自由轮次时要在 `response.create` 上带明确的 per-turn `instructions`（模型模式）或先塞一条 system item 说明"接下来是自由问答，不要再出题"（两种模式都可），不要指望它从历史里自己读懂阶段切换。这是本页"Turn-Taking ≠ 端点检测"的又一层：端点之外的"轮"本身就不是一个对象。
+
 ## 冲突与演进
 
 - 2026-04-11：首次系统定义 Turn-Taking 的深层机制。
 - 2026-09-16：注入 Voice Live 系列03 对话轮次实测 Claim——"Turn-Taking≠端点检测"获首个生产数据续证（VAD 判停窗 ~0.86s 是每轮延迟最大单项且属决策参数），页面脱离全 stale 状态。
+- 2026-10-02：注入 Voice Live 系列09"三种轮"Claim——生成轮次 / 历史 assistant 轮 / 语音轮三个对象分开，脚本朗读与阶段切换的历史风险。
 
 ## 关联概念
 
@@ -108,3 +119,4 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 - [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] — Section 四 Turn-Taking 深度解析
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — Turn Detection 与 Azure VAD 对比
 - [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — 对话轮次延迟分解与多轮稳定性生产实测（第六节）
+- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 3.3 节"它算不算一个 turn"三分法与"中途交给模型时历史是否完整"

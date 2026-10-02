@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-10-02"
 tags:
   - wiki
   - concept
@@ -205,17 +205,50 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]、[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
 - **首次出现**：2026-09-24
-- **最近更新**：2026-09-25
+- **最近更新**：2026-10-02
 - **置信度**：0.85
 - **状态**：active
 
 > "谁开轮 × 谁给内容"2×2 控制权矩阵：external API 与 bank linear 两种 persona 同在"应用开轮 + 现成文本逐字读"行——Agent 价值为零且 Agent 模式是负资产（丢 per-turn `instructions`/多一圈 Foundry runtime/无 `interim_response`），应走 `?model=` + 最小模型（生产 external-brain persona 用 gpt-4.1-mini 即此用法）；**传声筒也绕不开模型**——Voice Live 没有"说这句话"事件，文本进 TTS 的唯一入口是 response、response 的唯一入口是模型（`?model=`/`?agent_id=` 必选其一）；response 档是串行两段不是并列选项：门控链 VAD→EOU→LLM judge→两段式提交归应用侧、与 model/agent 无关，开轮后"说什么"才轮到二选一。VL07 生产实证：**重复回应=开轮关卡放行次数**——三个开轮来源要分别关（VAD 判停走 `create_response`；前端"我答完了"补发的裸 `response.create` 不走 VAD 也不受 `create_response` 管；无噪音也能三次：中途停顿/说完停下/按钮补发，噪音与回声只是放大器）。转写指纹排查法：每个 `response.created` 向前配对最近 user item 的转写——空=噪音 / 半句=停顿 / 复述自己的话=回声；级联模型下先开轮再等转写（`response.create` 在 `speech_stopped` 时即发），读日志按此顺序。十三步完整流程三段归属：门控段全在应用侧与挂不挂 Agent 无关 / 开轮生成段仅推理是 persona 定义生效处 / 播出段；两个易漏点：judge 异步竞态复查（放行瞬间用户又开口则丢弃）、`acked` 只翻一次。验证标准：`response.created` 次数严格等于门控放行次数（面试场景=读题次数），多出的每一个都能用指纹表分类。
+>
+> 2026-10-02 修正（Voice Live 系列09）："传声筒也绕不开模型"只对了前半句——response 确实是文本进 TTS 的唯一入口，但 `response.create` 可带 `pre_generated_assistant_message`，服务端对给定文本直接合成音频、跳过模型推理（`input_tokens: 0`），所以 response 不一定调模型。本条"Agent 价值为零 / 应走 `?model=` + 最小模型"的结论不受影响且被坐实：模型在嘴型会话里只当会话宿主与保险丝，详见下方脚本朗读机制化 Claim。
+
+### Claim: 脚本朗读的机制化——`pre_generated_assistant_message` 让 response 不调模型，读题从 prompt 约束变机制约束；模型是会话宿主与保险丝而非脑子；字与声是两层，旋钮不等于生效
+
+- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]
+- **首次出现**：2026-09-30
+- **最近更新**：2026-10-02
+- **置信度**：0.85（photo avatar + gpt-5-mini 实测 `input_tokens: 0`、首字 0.26~0.35 s；2026-10-01 `voice.type` 允许清单由 Azure 报错原文给出）
+- **状态**：active
+
+> 读题三代路径：第一代 `conversation.item.create(role=assistant)` + 裸 `response.create`（隐式 prompt 约束，模型把 assistant item 当"我已说过"回 Understood 或自己编题）→ 第二代 per-turn `instructions` 带 "say ONLY this, verbatim"（显式 prompt 约束，gpt-4o 可靠、换 gpt-5-mini 后中后段按对话历史惯性"出下一题"）→ 第三代 `response.create { response: { pre_generated_assistant_message } }`（**机制约束**，文本根本不进模型、不可能改写；API 参考原文 "bypassing model inference for text generation"，三个 API 版本都有，`role` 必须 assistant、单个 text 部分）。实测要点：事件流与普通 response 一样（`response.created → audio_transcript.delta/done → response.done`，avatar 模式下音频走 WebRTC），现有按 response id 的送达确认一行没改；`response.done.usage.input_tokens: 0`、只计 TTS 输出音频 token，读题环节模型输入成本归零；文本仍进对话历史，后续真正的模型回合知道数字人说过这句——这也正是第二代读法漂掉的原因，切回自由轮次要显式带 per-turn `instructions`（模型模式）或先塞 system item 声明阶段切换，不要指望模型从历史里读懂。**堵口子要用协议级开关而非 prompt**：候选人停顿后自动回复 `create_response: false`；前端"我答完了"后的裸 `response.create` 在线性模式不发；嘴型会话（external / linear / judged）**不挂 Agent** 走模型模式——Agent 模式拒绝 per-turn `instructions`（"Overriding instructions in response.create is not supported"）且 agent 自己的指令会赢过任何 assistant item，实测一次读题被 agent 变成一句 "Thank you."，是系列06"第三行下 Agent 模式是负资产"的现场版；读题用 `pre_generated`。**送达确认要看内容**：运行时把 `audio_transcript.done` 转写与题目归一化比对（TTS 读法下永不该触发、触发即回归），测试时抓 WS 帧断言 `pre_generated_assistant_message.content[0].text` 等于卡片题目——系列07 管次数、本条管内容。**模型是会话宿主不是脑子**：建连 URL 必须带 `model=<区域原生模型>` 或 `agent_name`，没有"纯 TTS 会话"类型，VAD / STT / TTS / avatar 都挂在模型会话上；嘴型会话里它一句不生成，只当宿主、当保险丝（reader prompt 作 system item 注入，万一误发裸 `response.create` 也只读稿不发挥）、真正用到它的只剩编辑器 Playground；彻底不配模型要换成 Speech 服务的实时 TTS avatar 并自建 VAD / STT，即退回自建级联流水线，对"题库驱动 + 要听 + 偶尔 judge 出声"不划算。**代码与 prompt 的分工原则**：能用机制绝不用 prompt，prompt 只管模型生成的字——题目一字不差（`pre_generated`）/ 不插话（`create_response=false`）/ 不追问（judge verdict 集合由代码给，`follow_up` 直接不认）/ nudge 不变相提问（疑问句守卫）/ 不泄露评分（judge prompt 不放 rubric）/ 何时说（状态机 + 计时器）归机制；用词、耐心、是否致谢归 prompt。三种"嘴"：linear / judged / external 都走 `pre_generated` TTS，只有 Playground 让 Voice Live 内模型"想"；judged 模式的 LLM 在**后端**出结构化 verdict。**字与声是两层**：prompt 碰不到语音层——语速、表现力 / 情绪、发音走 `session.voice`（`name` / `temperature` 0~1 表现力 / `rate` "0.5"~"1.5" / `style` / `prosody` / `custom_lexicon_url` / `custom_text_normalization_url`），是**会话级参数不是逐句 SSML**（`pre_generated` 文本是纯文本、不支持内联 `<speak>`，"这题读慢一点"要在两次读题之间 `session.update` 改 voice；情绪不能像 `express-as` 逐句指定）。两个陷阱：管理端的语音温度 / 语速旋钮只被旧构建器用到、实际会话构建器只传 `name` 与 `type`——调了没效果，修法接进去并用 live spec 断言 `session.updated` 回显；接上之后原本"无害"的输入范围要重审（超范围会让 `session.update` 被拒、整条语音通道 "Voice unavailable"，须 API 边界 + 编辑器范围 + 构建器 clamp 三处同做）。**`voice.type` 与模型是硬约束**（2026-10-01 原生 WebRTC 入口实测）：`azure-realtime` 只配 `azure-realtime-native`；`gpt-realtime` 配 `openai` / `azure-standard` / `azure-platform` / `azure-custom` / `custom` / `azure-personal` / `avatar-voice-sync` 七种但不含 native；配错报 `invalid_voice_type`，而失败形态是 `rtc.call.error` 回来但 SDP answer / PeerConnection / 出向音频全正常只是永远无回复——排查判据必须是业务信号（转写出现、`response.created`、下行 RTP 字节增长），不是 `connectionState === "connected"`。一句话：**Voice Live 里的模型是会话的宿主，脑子在后端，嘴用 TTS，说什么字由 prompt 管、怎么发声由 `session.voice` 管，而每一条"以为在控制"的路径都要抓 WS 帧证明它真的接上了。**
+
+### Claim: 数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、唯一杠杆是建会话时 bitrate、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定"关画面立即、开画面冷却"
+
+- **来源**：[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]、[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **首次出现**：2026-09-30
+- **最近更新**：2026-10-02
+- **置信度**：0.85（2026-09-30 真机四档 UDP 限速 + 落地回填 + 六轮端到端验证）
+- **状态**：active
+
+> 七条已确认事实：① Azure 发送端协商 REMB 并随接收端估计自动降码率（1080p 2382→718 kbps），应用不重复做；② 客户端 `b=AS` 被忽略、会话中 `session.update` 改 `avatar.video.bitrate` 被静默忽略，码率只能建会话时定；③ 1% 丢包 + RTT 约 600 ms 下 1080p 一帧解不出却仍吃约 1 Mbps（抖动缓冲 369 ms < RTT，NACK 迟到，GOP 报废），`freezeCount` 为 0 是假象，同档位 512×512 照片数字人照播；④ 画面与声音共用一条 RTP 传输，3% 丢包下 1080p 死前原始补偿率 31%、关视频轨后 2.5%、RTT 少 340 ms，两轮复现；⑤ 关画面留声音可行（保留 `m=video` 但 `a=inactive`，去掉 `m=video` 被拒）但只能建连时定；⑥ 麦克风上行 PCM16 24 kHz 加封装 540~680 kbps 在 300 kbps 上行下挤死自己的 SDP（自伤），降 16 kHz 消除且 A/B 词错误率均 0.0%；⑦ Azure 只下发 UDP 3478 TURN 无 TCP 候选，UDP 被封既无画面也无声音（avatar 模式下 WS 上不发 `response.audio.delta`），兜底是重建不带 avatar 的会话让 PCM 走 WS。**照片数字人的码率优势只约 2.4 倍**（645 vs 1548 kbps）而非一个数量级——修正系列05 / 11 口径，真正差异是每帧 1~2 包 vs 5 包以上带来的可解码性；1080p 还有说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵）。**前提是 RTT 约 300 ms 起**（亚洲到 Sweden Central），用户在区域附近则同样丢包率不触发——这就是同区域 Azure Virtual Desktop 跑浏览器演示效果更好的机制，选离用户最近的数字人区域比任何码率调优更有效。**两条硬约束**（落地才撞到）：`session.avatar.connect` 每会话只接受一次、中途不可重协商（再发 offer 回 "WebRTC connection is in connected state"），开关画面都要重建整条会话约 5 秒；avatar 会话创建有速率限制（约 20 秒内第三次被拒、要求 43 秒后重试），被拒会耗尽重连预算把会话打成"语音不可用"——与系列02 备忘的配额不是同一限制（单会话最长 60 分钟、数字人说话态 30 分钟 / 空闲 5 分钟、每资源 30 新连接/分钟；移动端 iOS Safari autoplay 与蓝牙回声不在已验证范围）。由此降级必须不对称：关画面立即、开画面冷却 60 秒且失败门槛 45→90→180 翻倍。实施形态（P0~P4 全自动、A~E 五级网络基线、免阈值主触发、六轮真机实践）归方法页 [[weak-network-adaptive-degradation]]；ICE 候选与直连 / 中继拓扑归 [[realtime-protocol-selection]]。五条明确不做：不给用户选网络档位、不自己实现码率自适应、不用 `b=AS`、不用冻结次数当健康指标、上行不改走 WebRTC（官方 WebRTC 模式不支持 avatar）。
+
+### Claim: Voice Live 的一组不一致是三条产品线的拼接缝——输入默认 24 kHz 是 Realtime 协议继承而非语音工程选择，WS 不收 Opus、WebRTC 模式不带 avatar 同一根源；对照 OpenAI Realtime 浏览器走 WebRTC Opus 弱网天然好，本方案更吃网络正因为数字人
+
+- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]（2026-09-30 新增 4.5.1 / 4.5.2）
+- **首次出现**：2026-09-30
+- **最近更新**：2026-10-02
+- **置信度**：0.75（基于文档与观察行为的推断，文章自标微软未公开说明；16 kHz 降采样已 A/B 实测）
+- **状态**：active
+
+> 三条不一致——"Speech SDK 收 Opus 而 Voice Live 不收""输入默认 24 kHz 而识别器原生 16 kHz""浏览器 WebRTC 模式能压缩却带不了数字人"——不是技术上的奇怪，是产品拼接的缝。Voice Live 由四块不同出身粘成：会话与事件协议来自 **OpenAI Realtime API**（为后端与电话集成设计：WebSocket、JSON、base64、pcm16 / G.711、24 kHz 默认）；识别 / VAD / 降噪 / TTS 来自 **Azure Speech 服务**（自有 SDK 面向客户端、收压缩输入、识别管线原生 16 kHz）；数字人来自 **Speech 的 TTS Avatar**（独立 WebRTC 媒体管线：avatar 媒体服务器 + ACS 中继，信令借道会话 WS，只出不进）；**Voice Live WebRTC 模式**（2026 新加，音频双向走 RTP、事件走 data channel）是另一条独立管线。读法：不收 Opus 是事件协议要与 Realtime 客户端兼容、音频枚举跟着 Realtime 走；24 kHz 默认同一根源（`pcm16` 在 Realtime 协议里定义上就是 24 kHz，.NET SDK 原话 "default sampling rate (24kHz)"，输入输出同一枚举、单改输入破坏对称）；WebRTC 模式不支持 avatar 是数字人自己有一条 WebRTC 管线、新模式是另一条、两条还没合并（官方 "Avatar configurations are currently unsupported with side-band control" 的 currently 表明微软自己也当待办）；浏览器直连数字人就得用为后端设计的 WS 上传 PCM 麦克风。对原生多模态模型（`gpt-realtime` / `gpt-live`）24 kHz 是对的（音频直接作 token 进出、模型在 24 kHz 上训练、合成自然度靠 12 kHz 以内高频）；级联配置（如 `gpt-5-mini`）输入先过 Azure 语音转文字、原生 16 kHz，多传的那段 Azure 自己丢掉——`input_audio_sampling_rate` 只接受 16000 / 24000 本身就说明 Azure 清楚级联用户不需要 24 kHz。对照 OpenAI 自己的 Realtime：WebSocket 给后端与电话（pcm16 / G.711 base64），WebRTC 给浏览器与移动端（Opus 几十 kbps、无视频），弱网表现天然好；本方案比 OpenAI 默认形态更吃网络正是因为数字人——上行被迫 WS 传 PCM、下行多一条 1080p 视频轨。时间线上是过渡态：先用 Realtime 协议把 Speech 能力与数字人挂上，再补面向浏览器的 WebRTC 模式，最后一步才是把数字人接进新模式。若将来换成原生音频模型，输入降 16 kHz 的结论要重新评估。
 
 ## 冲突与演进
 
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
 - 2026-09-12：注入四种语音要求分层 + viseme 工程细节 Claim（Blender 系列04，官方文档核对）——"viseme 时间轴"Claim 获得跨域（DCC 渲染端）工程续证；计算位置判据归口新页 [[compute-locus-spectrum]]。
 - 2026-09-16：注入 Voice Live 系列03 延迟工程 Claim（治本/治体感二分 + 端到端 5.6s/网关 70%）——"选型光谱与延迟瓶颈"Claim 获生产实测互证；对话轮次分解归口 [[turn-taking]]、首帧成本量化归口 [[compute-locus-spectrum]]、ICE 协议工程归口 [[realtime-protocol-selection]]。
+- 2026-10-02：注入 Voice Live 系列09（脚本朗读机制化 / 模型是会话宿主 / 字与声两层）、系列12（弱网七条事实 + 两条 Azure 硬约束）、系列01 4.5 增补（三条产品线拼接缝）三条 Claim；09-24 Claim 的"传声筒绕不开模型"加修正注（response 不一定调模型）。ICE 协议层压成一条 Claim 归 [[realtime-protocol-selection]]（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级阶梯归口方法页 [[weak-network-adaptive-degradation]]，采样率与编解码技术细节归 [[speech-technology-stack]]。系列00 导读为主题地图不含新内容，不注入。
 
 ## 关联概念
 
@@ -233,3 +266,9 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 解耦后三种合作模式与选型光谱
 - [[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]] — 四种语音要求分层、两条 API 路线与 viseme 同步工程规则
 - [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — 出场延迟分解与三层优化、对话轮次与外部网关实测
+- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 脚本朗读机制化：`pre_generated` 三代路径、宿主模型、代码 / prompt / voice 三层分工、`voice.type` 硬约束
+- [[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 数字人弱网实测：码率自适应、1080p 失效、胖视频饿死音频、关画面保声音、两条硬约束、客户网络基线
+- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 4.5.1 输入采样率 24 kHz 的来历、4.5.2 三条产品线拼接缝（2026-09-30 增补）
+- [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 开放问题 12（会话时长上限备忘）/ 13（终端边界）
+- [[Voice Live系列00：导读——主题地图、阅读顺序与已定决策速查]] — 系列导读：七张主题地图与已定决策速查（不含新内容，作系列入口）
+- [[2026-09-30-周三]] — 系列09~12 与 00 成文、弱网落地与实测回填的当日记录

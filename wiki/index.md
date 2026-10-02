@@ -262,6 +262,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### Layered Strategy（分层策略）— 补充
 
 - [[three-layer-token-optimization]] — 三层 Token 优化策略：compact / RTK / Caveman 全链路压缩
+- [[weak-network-adaptive-degradation]] — 弱网自适应降级阶梯：先测 UDP 门 + RTT / 丢包 / 下行定 A~E 起始形态、免阈值主触发关画面保声音、不对称冷却恢复、UDP 封锁兜底
 
 ### Architecture Pattern（架构模式）
 

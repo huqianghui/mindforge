@@ -1,7 +1,7 @@
 ---
 title: "级联管线 vs 端到端：Voice Agent 架构选择"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-10-02"
 tags:
   - wiki
   - decision
@@ -101,6 +101,16 @@ related_methods:
 
 > GPT-Live-1（原生全双工）触发了本决策页的前提重评估触发器，但方向不是"该切端到端了"，而是坐标系更换：把"对话层半双工/全双工"与"推理层委派"拆成两个独立配置维度。S2S 与混合式的真开关是 `voice` 配置字段而非模型选择——数字人的 viseme 闸门约束"谁来出声"（TTS 必在链路 → 数字人必落混合式/级联式，对 video/photo 两类头像均成立），不约束"头怎么动"。副作用补充：配置级切换的同时**控制面归属翻转**——级联（文本）模型下 `modalities: audio` 是假的（音频由 Azure TTS 合成，韵律控制面在 `voice.rate` 等 Speech 层参数而非 LLM 提示词）、转写主链路/旁路随模型翻转；且级联式在 Voice Live 内有协议层约束：没有直达 TTS 的事件，文本进 TTS 的唯一入口是 response。
 
+### Claim: "配置级切换"的另一面是宿主不可拆——Voice Live 会话必须配模型，模型是会话宿主（VAD / STT / TTS / avatar 都挂在模型会话上）；嘴型会话里它一句不生成只当宿主与保险丝；彻底不配模型要换成 Speech 服务的实时 TTS avatar 并自建 VAD / STT，即退回自建级联流水线
+
+- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]（第四节）
+- **首次出现**：2026-09-30
+- **最近更新**：2026-10-02
+- **置信度**：0.8
+- **状态**：active
+
+> 本决策 07-21 Claim 说 Voice Live 把级联与端到端统一在同一 API 后、切换成本降到配置级；系列09 补上这枚硬币的另一面：**会话身份就是"一个模型 + 一组语音能力"**，建连 URL 必须带 `model=<区域原生模型>`（swedencentral 上如 gpt-5-mini / gpt-4o / gpt-4.1-mini，自己部署的 deployment 名不算——"region 可用性才是真分水岭"在模型字段上的另一面）或 `agent_name`，没有"纯 TTS 会话"这种类型。所以即使应用一次都不让模型"想"（读题全走 `pre_generated`），会话也要有个模型坐在那里——它是会话的**宿主**，不是应用在用的功能。在嘴型会话里它只剩三件事：当宿主（承载 VAD / STT / TTS / avatar）、当保险丝（reader prompt 作 system item 注入，万一哪条代码路径误发裸 `response.create` 也按"只读稿、不追问"行事）、真正用到它的只剩编辑器 Playground。对照系列06 控制权矩阵"应用开轮 + 应用给现成文本"这一行会话内模型价值为零的判断没变，变的是"零价值但拆不掉"的原因：不是"文本必须经它复述"，而是"会话必须有个宿主"。**想彻底不配模型，可以，但换产品**：Azure Speech 服务的实时 TTS avatar（Speech SDK avatar synthesis，WebRTC 出音视频）是纯 TTS 加数字人、不涉及任何 LLM，代价是听（STT + VAD）要自己另接 Speech 的识别服务、轮次管理自己写——这就回到了系列01 的级联流水线，dialog manager、句子缓冲、打断都要自己拼；一条连接变多条，延迟与状态同步自理；已踩平的 Voice Live 坑（首读被 avatar 握手切掉、cancel-then-speak、重连状态）要在新管线上重来一遍。对"题库驱动 + 需要听候选人 + 偶尔 judge 出声"的场景，留在 Voice Live、把模型当宿主更省：读题走 TTS、模型输入成本归零、架构不变；系列06 7.3"省掉模型这 0.6 s 不值这个改动"的账不用算了——推理开销已被 `pre_generated` 省掉且不用换产品。
+
 ## 关联概念
 
 - [[voice-live-agent]] — `grounds` 此决策的上下文概念
@@ -115,3 +125,4 @@ related_methods:
 - [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景对比
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级验证
 - [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — region 可用性分水岭与自有生产实测
+- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 第四节"不走 LLM 了为什么建连还必须配模型"：宿主 / 保险丝 / 换产品的代价
