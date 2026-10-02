@@ -336,6 +336,114 @@ Voice Live 官方对 `gpt-5-mini` 的描述是 "audio input through Azure speech
 
 **已验证（2026-09-30）**：验证方式很便宜，live 配置支持用 WAV 文件当假麦克风，同一段录音分别在 24 kHz 和 16 kHz 会话下各跑一遍，直接 diff 转写文本。结果两档词错误率都是 0.0%，整句逐字一致，上面的推理成立。一个容易混的点：假麦克风素材的 WAV 本身是 48 kHz，那是文件采样率，不是会话参数；真实麦克风硬件通常也是 48 kHz，浏览器按会话要求重采样，`input_audio_sampling_rate` 只有 16000 与 24000 两个取值。落地时撞到的其他约束见[系列12 7.4](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却)。
 
+#### 4.5.3 转写的中间结果：Speech SDK 给，Voice Live 不给（2026-10-02 对照实测）
+
+> 起因是一个产品需求：面试时候选人说话，希望文字**逐字上屏并随识别器修正而改写**——就是用 Speech SDK 做
+> 流式识别时人人都见过的那个效果。前端按这个契约实现了（按 `item_id` 累积 partial、以稳定 id 原地替换、
+> `.completed` 顶掉），但线上**一个字都不动**，要整句说完才一次性出现。查下来的四层，正好是 4.5.2 那条
+> 拼接缝的一个新实例。
+
+**第一层：协议里有这个事件。** `conversation.item.input_audio_transcription.delta` 在 2025-10-01、
+2026-04-10、2026-06-01-preview 三个版本的参考文档里都有定义，服务端事件表标注 "Streaming input audio
+transcription"，文档原话是"在转写**进行中**返回，提供**部分**结果"。所以不是我们查漏了。
+
+**第二层：实测它不来。** 抓 `/voice-live/ws` 全量帧，同一段 12.47 s 的 WAV 假麦克风：
+
+| 转写模型 | `transcription.delta` | `transcription.completed` |
+|---|---:|---:|
+| `azure-speech`（级联默认） | **0** | 1 |
+| `mai-transcribe` | **0** | 1 |
+
+两个模型都只在段末发一次。而 `mai-transcribe` 确实生效了（不是静默回退）：`language` 字段从 `en-US` 变成
+`en`，并且同一段音频转写明显更准——`azure-speech` 把 "Notify the sponsor and the" 整段丢成了 "In the"。
+
+同一次探针顺带把段边界的时序测实了（此前只是推断）：
+
+```
++ 6894ms  input_audio_buffer.speech_started
++13702ms  input_audio_buffer.speech_stopped
++13702ms  input_audio_buffer.committed            ← 与 speech_stopped 同一毫秒
++14204ms  conversation.item.input_audio_transcription.completed   ← commit 之后 502 ms
+```
+
+所以转写是**对 committed 段的一次批式调用**，约 0.5 s 出结果。这也给出任何"文字出现"的硬下限。
+
+**第三层：请求 schema 里没有开关。** 查 SDK `azure-ai-voicelive 1.3.0b1`（生成式客户端，是服务 schema 的
+权威投影），三处：
+
+| 查的位置 | 全部取值 |
+|---|---|
+| `AudioInputTranscriptionOptions` | `model`、`language`、`custom_speech`、`phrase_list` —— 共 4 个 |
+| `RequestSession` | 22 个字段，无转写 interim 项 |
+| `SessionIncludeOption` | `item.input_audio_transcription.logprobs`、`item.input_audio_transcription.phrases`、`file_search_call.results` |
+
+`include` 本是最可能藏开关的地方（Realtime 惯例用它订阅额外内容），但枚举只有三个值。另外两个**容易误认**
+的东西要排掉：
+
+- **`interim_response`**（`RequestSession` 的字段）不是转写中间结果，是**助手侧的"思考过渡语"**。看它的
+  触发器就清楚：`InterimResponseTrigger.LATENCY`（响应延迟超阈值）/ `TOOL`（工具调用执行中），配置类型
+  `static_interim_response` / `llm_interim_response`。
+- **`item.input_audio_transcription.phrases`** 这个 include 选项，对应的 `phrases` 字段挂在
+  **`...TranscriptionCompleted`** 事件上，内容是 `TranscriptionPhrase`（offset/duration/text/words 的
+  词级时间信息）。是**附在最终结果上的时间标注**，不是中间结果。
+
+**第四层（决定性）：同一个资源、同一段音频，换 Speech SDK 就有。**
+
+`SpeechRecognizer` + `start_continuous_recognition()`，连同一个 AI Services 资源
+（swedencentral）、读同一个 WAV：
+
+```
+INTERIM (recognizing) : 14
+FINAL   (recognized)  : 1
+interim 间隔: 中位 102 ms（最小 55、最大 198）
+
+[ 0] +4229ms  'i document the dev'
+[ 1] +4335ms  'i document the deviation in'
+[ 3] +4535ms  'i document the deviation in the side log'
+[ 4] +4641ms  'i document the deviation in the side log the same day'
+...
+[13] +5697ms  '...assess whether subject safety or data integrity was affected'
+FINAL +5852ms 'I document the deviation in the side log the same day, notify the sponsor and the
+               medical monitor, and assess whether subject safety or data integrity was affected.'
+```
+
+interim 全小写无标点、逐步增长；final 补上大小写与标点——**"边说边改写"的效果在数据里是直接可见的**。
+
+**结论：不是 Azure 做不到，是 Voice Live 这一层没有把它透出来。** 不是区域、不是 SKU、不是配额——同资源、
+同凭据、同音频，换个接口就有。这与 4.5.2 的论断同形：会话与事件协议来自 Realtime 血统，识别能力来自 Speech
+服务，而两边的能力**没有完全接起来**；4.5.2 举的例子是"Speech SDK 收 Opus 而 Voice Live 不收"，这里是
+"Speech SDK 给 interim 而 Voice Live 不给"。
+
+**一条结构性线索指出 `.delta` 是为谁设计的。** `ServerEventConversationItemInputAudioTranscriptionDelta`
+自带一个 `logprobs: list[LogProbProperties]` 字段，而 `include` 里正有配套的
+`item.input_audio_transcription.logprobs`。**logprobs 是 OpenAI 模型的概念**（token 对数概率），Azure
+Speech 的识别器产出的是词与置信度，不是这个。所以合理推断：`.delta` 是为 `gpt-4o-transcribe` 那一族设计
+的，而那一族要求 chat 模型是 `gpt-realtime` / `gpt-realtime-mini`。**该路径未测通**——把 chat 模型换成
+`gpt-realtime` 后，我们的 `session.update` 被 Azure 以
+`invalid_session_update_message`（"The \`type\` field of SessionUpdatedMessage message should be
+'session.update'."）拒绝，尚未隔离是 `gpt-realtime` 本身、`gpt-4o-transcribe`、还是与 avatar 的组合。
+
+**两个实现者会撞到的坑（都实际撞了）**
+
+1. 资源**禁用了 key 认证**：拿 `.env` 里的 API key 打 Speech STT 返回 **401 WebSocket upgrade failed**。
+   必须走 Entra，形式是 `SpeechConfig(auth_token=f"aad#{resourceId}#{aadToken}", region=...)`，
+   token 的 scope 是 `https://cognitiveservices.azure.com`。
+2. `REGION=global` **不是 Speech 的区域名**。SDK 会据此拼出不存在的
+   `wss://global.stt.speech.microsoft.com/stt/speech/universal/v2`，报
+   `WS_OPEN_ERROR_UNDERLYING_IO_ERROR`，看起来像网络问题而不是配置问题。真实区域要填
+   `swedencentral` 这种。
+
+**落地含义。** 要这个效果，现实路径是**双路**：Speech SDK 的流式识别**只用于显示**，Voice Live 的
+`.completed` 仍是打分的唯一真相（前端那套 partial 原地替换 → final 顶掉的机制原封不动可接）。代价是同一份
+麦克风音频上行两遍，而上行正是会把自己的 avatar 信令挤死的那条管道（系列12 结论五）。缓解办法：用 Voice
+Live 的 `speech_started` / `speech_stopped` **当开关**，只在候选人真正说话时开启显示用识别器——面试绝大
+部分时间是静音期，额外上行只在说话的那三四成时间里付，而判停权仍留在打分路径那一侧。
+
+**方法学复盘：这一节我错了两次，都是同一类错。** 第一次把"文档写了有这个事件"读成"这条链路会来"；第二次
+把"我们这套配置不发"推成"Azure 不能发"。第二次是负责人用自己的经验挡回来的——他早年用 Speech SDK 做过这个
+效果，所以"Azure 不能"这个结论在他那里一眼就不成立。对照实验是他提的。教训与系列 05 §5.4 同形：
+**判据必须是业务信号，而"某一层做不到"只能由"换一层仍做不到"来证明。**
+
 ### 4.6 Avatar 类型
 
 | 类型 | 技术 | 特点 |
