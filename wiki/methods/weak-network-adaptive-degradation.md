@@ -1,5 +1,11 @@
 ---
-title: "弱网自适应降级阶梯——先测三个数定起始形态，关画面保声音"
+title: "弱网自适应降级阶梯（Weak-Network Adaptive Degradation）"
+aliases:
+  - "Weak-Network Adaptive Degradation"
+  - "Weak Network Degradation Ladder"
+  - "Graceful Degradation for Avatar WebRTC"
+  - "Network Grade A-E Baseline"
+  - "关画面保声音"
 created: "2026-10-02"
 updated: "2026-10-02"
 tags:
@@ -20,7 +26,7 @@ related_methods:
   - "[[pre-run-three-number-accounting]]"
 ---
 
-# 弱网自适应降级阶梯——先测三个数定起始形态，关画面保声音
+# 弱网自适应降级阶梯（Weak-Network Adaptive Degradation）——先测三个数定起始形态，关画面保声音
 
 ## 摘要
 
