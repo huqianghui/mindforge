@@ -8132,7 +8132,7 @@
     {
       "id": "ai-adoption-six-step-evolution",
       "type": "method",
-      "title": "AI 工具采纳六步进化",
+      "title": "AI Adoption Six-Step Evolution",
       "summary": "Mitchell Hashimoto（HashiCorp 联合创始人）从 AI 怀疑论者到重度用户的六步进化模型。核心洞见：AI 工具的价值不在于它能做什么，而在于你是否愿意投入足够时间去发现它的边界，然后在边界内让它为你工作。这是一个渐进式的认知迭代过程，每一步都建立在前一步的经验之上。",
       "tags": [
         "wiki",
@@ -8170,7 +8170,7 @@
     {
       "id": "ai-native-five-layer-pipeline",
       "type": "method",
-      "title": "AI-Native 五层开发流水线",
+      "title": "AI-Native Five-Layer Pipeline",
       "summary": "AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶段，每个阶段有独立的 AI 工具和明确的输入输出。核心思路不是\"用 AI 替代人写代码\"，而是**让每个阶段产出下一阶段所需的 context 类型**——从视觉信息逐步转化为需求信息、变更信息、测试信息和审查信息。直接从 Figma 设计稿让 AI 写代码效果差，因为设计稿只有\"像素级信息\"而缺少\"需求级信息\"。",
       "tags": [
         "wiki",
@@ -8209,7 +8209,7 @@
     {
       "id": "code-reuse-four-layer-defense",
       "type": "method",
-      "title": "Agent 时代四层代码复用防线",
+      "title": "Four-Layer Code Reuse Defense",
       "summary": "Coding Agent 存在结构性代码复用缺陷：每次会话倾向从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角。四层防线的核心思路是**不让 agent 自己学会复用，而是用架构约束让它不得不复用**。四层按优先级从高到低排列，每一层用不同机制\"逼迫\" agent 遵守复用规则。",
       "tags": [
         "wiki",
@@ -8247,7 +8247,7 @@
     {
       "id": "cybernetics-harness-design-sheet",
       "type": "method",
-      "title": "控制论 Harness Design Sheet",
+      "title": "Cybernetics Harness Design Sheet",
       "summary": "基于控制论五层设计维度，每次设计 Agent 时强制填写的检查表。确保设计者在写 prompt 或代码之前，先回答五个控制论核心问题：可能性空间是否定义？共轭变换是否设计？负反馈是否可计算？探索是否有逃逸机制？控制能力是否充分？",
       "tags": [
         "wiki",
@@ -8286,7 +8286,7 @@
     {
       "id": "decision-policy-executor-split",
       "type": "method",
-      "title": "决策-策略-执行三分（Typed 判断 · 确定性策略 · 执行）",
+      "title": "Decision-Policy-Executor Split",
       "summary": "把 agent 循环里\"下一步做什么\"的判断从生成与执行中拆出来，交给一个只返回 typed decision（分布 + confidence）的 [[system-one-model]]；把阈值、兼容性、兜底、绑定、锁、冷却、验收等**所有守边界的逻辑**写成确定性代码；执行（回答、工具调用、UI 动作）仍由 LLM 或执行器完成。三个角色互不越界：判断模型不执行、不授权、不看它不该看的东西；确定性代码不总结或重写执行模型的输入；执行模型不自判\"该不该\"。\n\n该模式在 vault 内有两个 2026-09-27 的实践：Computer Use 系列八把 Codex 在网页操作里的动作选择交给 Jev（同一执行器只换判断模型的受控对照），Codex Desktop 系列07 在 provider 层用本机网关让 Jev 在七模型 × 四档 effort 间做任务级路由。两文互注\"分工同构\"。适用前提是：答案空间能在运行时声明成封闭选项、错误成本可由验收器与人工确认兜住、判断的输入可以裁剪成文本/结构化状态。它是 [[generation-evaluation-separation]] 的一种实现形态：生成与门控分离，且门控用不生成文本的模型来做。",
       "tags": [
         "wiki",
@@ -8352,7 +8352,7 @@
     {
       "id": "four-layer-architecture-quality-gate",
       "type": "method",
-      "title": "四层架构质量门禁",
+      "title": "Four-Layer Architecture Quality Gate",
       "summary": "在 Vibe Coding 时代，AI Agent 高速生成代码加速了架构腐蚀。本方法将架构质量保障组织为四层递进门禁，从基础格式到 AI 语义审查逐层递进。相比原有五维线性模型，四层模型更强调层级嵌套关系和 AI 辅助层的价值。适用于使用 Harness CI pipeline 的多语言项目。",
       "tags": [
         "wiki",
@@ -8381,7 +8381,7 @@
     {
       "id": "four-layer-test-environment-strategy",
       "type": "method",
-      "title": "四层测试环境策略",
+      "title": "Four-Layer Test Environment Strategy",
       "summary": "将测试环境按隔离粒度组织为四层递进策略，从单元测试的 mock 到 PR 级的 Ephemeral Environment 逐层升级。核心认知：docker-compose 是\"你维护一个环境\"，Testcontainers 是\"测试自己创建环境\"，Ephemeral Environment 是\"每个 PR 拥有自己的世界\"——三者不是替代关系，而是不同粒度的环境隔离。",
       "tags": [
         "wiki",
@@ -8410,7 +8410,7 @@
     {
       "id": "gsd-five-step-workflow",
       "type": "method",
-      "title": "GSD 五步开发工作流",
+      "title": "GSD Five-Step Workflow",
       "summary": "GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Coding 的标准执行流程。五个阶段：Init（初始化）→ Clarify（澄清需求）→ Plan（制定计划）→ Execute（执行编码）→ Verify（验证交付）。配合三级缺陷修复升级机制（L1 自动修复 → L2 针对性调试 → L3 外部协助），确保交付质量。",
       "tags": [
         "wiki",
@@ -8448,7 +8448,7 @@
     {
       "id": "gsd-project-scale-selection",
       "type": "method",
-      "title": "GSD 项目规模分级与工具选择",
+      "title": "GSD Project Scale Selection",
       "summary": "GSD 项目规模分级是一个决策框架，用于根据项目复杂度选择合适的 Vibe Coding 工具组合。核心洞察：项目复杂度应按**\"需要同时保持在 Context 中的关联信息量\"**而非代码行数来定级——50 行 LangGraph 编排文件可能比 500 行 CRUD 更复杂。不同规模的项目适用不同的工具组合，过度使用工具链在简单项目中是纯开销。",
       "tags": [
         "wiki",
@@ -8495,7 +8495,7 @@
     {
       "id": "harness-five-dimension-quality-gate",
       "type": "method",
-      "title": "Harness 五维质量门禁",
+      "title": "Harness Five-Dimension Quality Gate",
       "summary": "通过 pre-commit hook + Harness CI pipeline 构建全链路质量保障方案。五个维度按严格递进顺序排列，每一层过滤特定类型的问题，越往后越重（成本越高、反馈越慢）。核心原则：**尽早拦截、逐层加重**——格式问题在本地 pre-commit 就拦截，不要浪费 CI 资源。",
       "tags": [
         "wiki",
@@ -8534,7 +8534,7 @@
     {
       "id": "openclaw-five-stage-gateway",
       "type": "method",
-      "title": "OpenClaw Agent 网关五阶段建设",
+      "title": "OpenClaw Five-Stage Gateway",
       "summary": "从教学级 Agent（claw0）到生产级 Agent 网关的五个递进阶段。核心洞察：Agent 本质上是一个循环（while loop + tool dispatch），但要从循环到生产需要逐层加固——网络层处理多用户/多渠道、智能层处理 prompt 组装和记忆、自主层处理可靠性、生产层处理并发和容错。每个阶段都在前一阶段的基础上增加一个维度的复杂性。",
       "tags": [
         "wiki",
@@ -8572,7 +8572,7 @@
     {
       "id": "orchestrator-pattern-multi-agent",
       "type": "method",
-      "title": "Orchestrator Pattern（多 Agent 编排模式）",
+      "title": "Orchestrator Pattern (Multi-Agent)",
       "summary": "Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过指定一个 Orchestrator Agent（编排者）来分解任务、spawn 子 Agent 并行执行、收集结果后综合输出。关键设计决策是**Gateway 不参与任务编排**——编排逻辑完全由一个普通 Agent Node 通过 `sessions_spawn` 工具实现。这种\"编排者也是 Agent\"的设计使系统保持灵活性，避免了将编排逻辑硬编码在基础设施层。",
       "tags": [
         "wiki",
@@ -8619,7 +8619,7 @@
     {
       "id": "personal-knowledge-compiler-workflow",
       "type": "method",
-      "title": "个人知识编译工作流",
+      "title": "Personal Knowledge Compiler Workflow",
       "summary": "个人知识编译工作流（PKC Workflow）将日记/笔记/文章通过 LLM 编译为结构化知识库。核心问题是**日记按时间线写但按主题消费**——线性增长没有网络效应，大多笔记\"写后即沉\"。工作流的核心是让 LLM 充当知识维护者（像 Wikipedia 编辑），定期从日记中提取概念和论断，编译为可复用的 wiki 概念页。",
       "tags": [
         "wiki",
@@ -8657,7 +8657,7 @@
     {
       "id": "pre-run-three-number-accounting",
       "type": "method",
-      "title": "先算账再开跑——三个数判断式（σ_d / δ_min / δ_remain）",
+      "title": "Pre-Run Three-Number Accounting",
       "summary": "在启动一轮 prompt/skill 优化（尤其是 APO→SkillOpt 两段式管道的第二段）之前，用三个数回答\"这轮训练值不值得跑\"：**σ_d**（配对差值的散布，决定评估噪声下限）、**δ_min = 2×σ_d/√n**（门控/比较在给定 val 大小下能分辨的最小真实差异）、**δ_remain**（当前候选距任务天花板的剩余提升空间，实测估计非理论推导）。判断式：`δ_remain > δ_min → 跑；δ_remain ≤ δ_min → 停（瓶颈不在 prompt）`。三个数全部从已有 eval 产物 `results.jsonl` 免费算出，时点在上一段优化结束后、下一段开跑前——几分钟的算术可以省掉一次百万 token 的无效训练。video2frames 实测把账走完的答案是\"停\"，且矛头指回 reward 结构（见 [[reward-design-three-inputs]]）。",
       "tags": [
         "wiki",
@@ -8704,7 +8704,7 @@
     {
       "id": "prompt-optimization-maturity-ladder",
       "type": "method",
-      "title": "Prompt 优化成熟度阶梯：L0 vibe check → L1 LLM-judge → L2 数据闭环",
+      "title": "Prompt Optimization Maturity Ladder",
       "summary": "回答一个比\"选哪个优化工具\"更早的问题：**还没有数据集、没有可验证 reward 时，prompt 该怎么优化？积累到多少数据后才值得迁移到 APO/SkillOpt 这类自动闭环工具？** 核心判断：prompt 优化的分层依据是**评估信号的成熟度**，不是改写算法的花哨程度——L0 vibe check（无评估、人改人看）→ L1 模板改写 + LLM-judge（主观评估、人闭合回路，代表工具 prompt-optimizer）→ L2 数据集 + 客观 reward 自动闭环（算法闭合回路，APO/SkillOpt/DSPy）。L1 与 L2 不是竞品而是流水线上下游：L1 负责冷启动把 prompt 写规范，L2 负责有可衡量指标后持续压榨；L1 人工迭代中积累的 bad case 就是 L2 评估集的种子。",
       "tags": [
         "wiki",
@@ -8769,7 +8769,7 @@
     {
       "id": "reward-design-three-inputs",
       "type": "method",
-      "title": "Reward 设计三份输入与两本账分家",
+      "title": "Reward Design Three Inputs",
       "summary": "Reward 设计不是写规格，是做实验。这个工作流回答\"训练用的分数该怎么定\"：第一天就要凑齐**三份输入**——业务属性（问客户）、数据分布（扫标签）、基线能力（一次校准跑）；只用第一份（按业务直觉拍权重）是 video2frames 原始 reward 错配的根源。核心原则是**两本账分家**：验收分逐字节不动（历史可比、业务汇报口径），优化 reward 单独按信噪比设计（拆分 judge 降分母、饱和分量约束化还分子、确定性规则分白送零噪声信号）。业务对齐靠**盲选 A/B 反推权重**（judge 与业务盲选一致率 ≥85% 才获得代理资格），落地形态是一次一小时的共商工作坊 + 训练前锁版。改完必须重走 [[pre-run-three-number-accounting]] 三个数——判断式翻转为\"值得跑\"才开训。",
       "tags": [
         "wiki",
@@ -8852,7 +8852,7 @@
     {
       "id": "sft-rejection-sampling-hands-on",
       "type": "method",
-      "title": "SFT 拒绝采样微调实战流程（Azure GPU VM + unsloth）",
+      "title": "Rejection-Sampling SFT Hands-On",
       "summary": "把 [[rejection-sampling-finetuning]] 的原理落成可执行流程：在一台 Linux + NVIDIA GPU 机器上装通 unsloth + vLLM 全栈，跑 agent-lightning `examples/unsloth/` 的 GSM-hard 迭代自提升训练（version_0→1→2），并正确解读 loss/reward/留用样本数。核心是「采样自产轨迹 → reward 过滤 → LoRA 微调 → 存 checkpoint 供下一轮 serving」的自举飞轮。\n\n本方法是 [[agent-lightning]] 三级阶梯第二级（SFT）的动手配套——SFT 不是内置算法类，走自定义算法扩展点。",
       "tags": [
         "wiki",
@@ -8901,7 +8901,7 @@
     {
       "id": "three-layer-token-optimization",
       "type": "method",
-      "title": "三层 Token 优化策略",
+      "title": "Three-Layer Token Optimization",
       "summary": "AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、工具命令输出（input）、对话历史累积（context window）。三层 Token 优化策略通过在每一层部署专门工具——Caveman（输出层）、RTK（中间层）、/compact（输入层）——实现全链路 token 压缩，三者作用于完全不同的数据流，可同时启用互不干扰。\n\n以一次 30 分钟 Claude Code 会话估算：无优化 ~130,900 tokens → 三层联合优化 ~28,586 tokens（总节省 ~78%）。",
       "tags": [
         "wiki",
@@ -8940,7 +8940,7 @@
     {
       "id": "throughput-latency-operating-point",
       "type": "method",
-      "title": "工作点读数法（Throughput-Latency Operating Point）",
+      "title": "Throughput-Latency Operating Point",
       "summary": "解读任何推理性能 benchmark（芯片、框架、模型 API）时的防误读方法：厂商公布的每个数字都是**吞吐—延迟曲线上某个工作点**在**某种口径**下的读数，直接拿数字比大小必然误判。同一对硬件能同时给出 1.9× 和 104× 两套不矛盾的数字（Jalapeño vs GB300），同一个模型能同时宣称\"Prefill 快 7.6×\"和账单只降三成（内核级 vs 端到端）——方法的核心动作是：先定位工作点、再还原口径与基线、区分组件级与端到端读数，最后换算到自己的负载形状。\n\n两次独立实践验证：OpenAI Jalapeño 首测解读（2026-08-26，硬件对比场景）与 Qwen3.8/GLM-5.3-Flash 六层降本解剖（2026-08-31，架构降本与价格战场景）。2026-08-30 曾裁决 HOLD 归口 Claims，2026-09-04 因第 2 次实践命中复核阈值升格为方法页。",
       "tags": [
         "wiki",
@@ -8987,7 +8987,7 @@
     {
       "id": "voice-cascaded-pipeline",
       "type": "method",
-      "title": "语音级联管线架构",
+      "title": "Voice Cascaded Pipeline",
       "summary": "语音级联管线（Cascaded Pipeline）是当前企业级 Voice Agent 的唯一生产可行架构。核心是将语音交互拆解为 STT → LLM → TTS 三个独立流式组件，通过 streaming + pipelining 重叠执行实现低延迟。**低延迟的关键不是让单个组件更快，而是让它们重叠执行**——Salesforce 级联管线实现 ~755ms first-audio latency。",
       "tags": [
         "wiki",
@@ -9035,7 +9035,7 @@
     {
       "id": "weak-network-adaptive-degradation",
       "type": "method",
-      "title": "弱网自适应降级阶梯（Weak-Network Adaptive Degradation）",
+      "title": "Weak-Network Adaptive Degradation",
       "summary": "解决的问题：云端渲染推流的数字人（音频与视频同走一条 WebRTC 传输）部署到客户办公网后，丢包 1% 到 3%、RTT 几百毫秒的弱网会让 1080p 画面一帧都解不出却仍吃约 1 Mbps，并把同车的说话声饿到三分之一由丢包隐藏算法合成——用户听不清题目，会话直接作废。核心思路有四条：① **码率自适应 Azure 发送端已做**（REMB 反馈，2382→718 kbps 贴着接收端估计走），应用不重复实现，唯一静态杠杆是建会话时的 `session.avatar.video.bitrate`；② 应用层只做**形态决策**——\"要不要脸\"这个布尔值，而不是调码率：开场前先测 UDP 门加 RTT / 丢包 / 下行三个数对号入座 A 到 E 级定起始形态，运行时用**免阈值主触发**（视频字节在涨而解码帧不增）立刻关画面保声音；③ 两条 Azure 硬约束（`session.avatar.connect` 每会话只接受一次、avatar 会话创建有速率限制）决定降级必须**不对称**——关画面立即、开画面冷却 60 秒且失败门槛翻倍；④ UDP 被整个封死时既无画也无声，兜底是重建不带 avatar 的会话让音频以 PCM 走 WebSocket。\n\n它是 [[pre-run-three-number-accounting]]\"开跑前先算三个数\"纪律在网络基线上的同构：先用一次 60 秒探针会话读出三个数，再决定形态与配置，而不是让用户先看一段卡死的画面再被降级。全部数字来自 2026-09-30 真机实测（亚洲开发机到 Sweden Central，无限速 RTT 约 300 ms，OS 层 UDP 限速四档），实测锚点与推导区间分开标。",
       "tags": [
         "wiki",
