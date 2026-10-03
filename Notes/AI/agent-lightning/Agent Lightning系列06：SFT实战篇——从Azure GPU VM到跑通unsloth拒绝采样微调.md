@@ -100,14 +100,14 @@ pip install uv                       # 提供 uvx，math_agent.py 用 `uvx mcp-s
 
 ### 1.4 下基座模型（最容易漏的前置步骤）
 
-`sft_algorithm.py:10` 的 docstring 藏着一条**必做前置**——例子默认从 `models/version_0` 这个本地目录起步，但仓库里**不含**这个模型，要自己下：
+`sft_algorithm.py` 的 docstring 藏着一条**必做前置**——例子默认从 `models/version_0` 这个本地目录起步，但仓库里**不含**这个模型，要自己下：
 
 ```bash
 cd /path/to/agent-lightning/examples/unsloth
 hf download unsloth/Qwen3-4B-Instruct-2507 --local-dir models/version_0
 ```
 
-> 漏了这步，跑 `sft_allinone.py` 会直接抛 `ValueError: Model path models/version_0 does not exist.`（`sft_algorithm.py:169-170`）。
+> 漏了这步，跑 `sft_allinone.py` 会直接抛 `ValueError: Model path models/version_0 does not exist.`（`sft_algorithm.py`）。
 
 ### 1.5 拿源码
 
@@ -135,7 +135,7 @@ export OPENAI_BASE_URL=<your_endpoint>   # 如 Azure OpenAI / OpenAI / 任意兼
 python math_agent.py
 ```
 
-它会跑前 4 条题（`math_agent.py:161` `limit=4`），每条让模型调 `uvx mcp-server-calculator` 算术、输出 `### <数字> ###`，再用 `compute_reward` 的 `np.isclose` 判分。
+它会跑前 4 条题（`math_agent.py` `limit=4`），每条让模型调 `uvx mcp-server-calculator` 算术、输出 `### <数字> ###`，再用 `compute_reward` 的 `np.isclose` 判分。
 
 > **坑**：`uvx mcp-server-calculator` 首次会现拉包，需要联网；若卡住先单独 `uvx mcp-server-calculator --help` 预热。
 
@@ -153,7 +153,7 @@ python math_agent.py
 python sft_allinone.py
 ```
 
-它等价于把 store / runners / algorithm 三件事塞进一个进程（`sft_allinone.py:3-12`）。关键参数（`:99-108`）：
+它等价于把 store / runners / algorithm 三件事塞进一个进程（`sft_allinone.py`）。关键参数：
 
 | 参数 | 值 | 含义 |
 |------|----|----|
@@ -163,7 +163,7 @@ python sft_allinone.py
 | `LLMProxy(port=12358)` | 12358 | LLM 代理（采轨迹） |
 | `train_triplet_fraction` | 0.5 | 每轮留 reward 最高的 50% 轨迹训练 |
 
-一键模式默认用 **runner 侧 OtelTracer + TracerTraceToTriplet** 采轨迹（`:109-113` 注释说明，若想改成 proxy 侧采集就解开那两行）。
+一键模式默认用 **runner 侧 OtelTracer + TracerTraceToTriplet** 采轨迹（源码里有注释说明，若想改成 proxy 侧采集就解开那两行）。
 
 > ✅ 实测：A100 上一把跑通，version_0 → version_1 → version_2 两轮自提升全程无报错，**总耗时约 9.5 分钟**（04:08:44 → 04:18:09），每轮约 3.5 分钟。关键节点如下。
 
@@ -230,7 +230,7 @@ python sft_algorithm.py
 python sft_rollout_runners.py
 ```
 
-注意 `sft_algorithm.py:365` 这里用的是 **proxy 侧 `LlmProxyTraceToTriplet()`** 采集——和一键模式默认的 tracer 侧不同。这对应系列 03 讲的「生产者/消费者经 store 解耦」。
+注意 `sft_algorithm.py` 这里用的是 **proxy 侧 `LlmProxyTraceToTriplet()`** 采集——和一键模式默认的 tracer 侧不同。这对应系列 03 讲的「生产者/消费者经 store 解耦」。
 
 > ⏳ 实测待填：三进程各自的日志片段、store 队列状态、runner 与 algorithm 经 store 的交互节奏；与一键模式产出是否一致。
 
@@ -253,8 +253,8 @@ python sft_rollout_runners.py
 按 `sft_one_iter`（系列 05 §二）的四步，一轮跑完你应该看到：
 
 1. **rollout 阶段**：vLLM 用当前 `models/version_{n}` 起服务，4 个 runner 并发跑 64 条题，每条产出 reasoning + tool 调用 + 最终答案，grader 打 0/1。
-2. **筛选阶段**：所有 triplet 按 reward 降序排，留 top 50%（`sft_algorithm.py:294-295`）。
-3. **训练阶段**：unsloth 子进程跑 LoRA SFT，trl `SFTTrainer` 按 `unsloth_helper.py:63-76` 配置——`max_steps=60`、`batch=2`、`grad_accum=4`、`lr=2e-4`、`adamw_8bit`。
+2. **筛选阶段**：所有 triplet 按 reward 降序排，留 top 50%（`sft_algorithm.py`）。
+3. **训练阶段**：unsloth 子进程跑 LoRA SFT，trl `SFTTrainer` 按 `unsloth_helper.py` 配置——`max_steps=60`、`batch=2`、`grad_accum=4`、`lr=2e-4`、`adamw_8bit`。
 4. **存模型**：`save_pretrained_merged(..., "merged_16bit")` 存成 `models/version_{n+1}`，供下一轮 vLLM serving。
 
 ### 3.2 该盯哪几个数
@@ -361,7 +361,7 @@ python math_agent.py
 
 等式 `len(input_ids) = prompt_token_count + response_token_count`；prompt 段全 `-100`、只 response 段算 loss；`attention_mask` 全 1。`reward` 字段此时已用完（筛 top-k），**不进张量、不进 loss**。
 
-**[5] epoch → loss：只在 response token 上算交叉熵**——配置（`unsloth_helper.py:63-76`）：`batch 2 × grad_accum 4 = 总 batch 8`，`max_steps=60`。实测对得上：**80 样本 × 6 epoch ÷ 8 = 60 步**（`max_steps` 是硬上限，80 条时恰好 = 6 epoch；iter1 的 86 条则约 5.6 epoch 就被 60 步截断）。每步：取 8 条前向，对每条**只在 `labels≠-100` 的 response token 上**算 `CrossEntropyLoss`（`-100`=`ignore_index`，prompt 段贡献 0）→ 求均值 → 反向 → 更新。只动 LoRA 适配器：可训 **66,060,288 / 4,088,528,384 = 1.62%**，基座冻结。`train_loss` iter0 = 0.0151（注意 §3.2.1：只表对自筛轨迹的拟合，不表解题能力）。
+**[5] epoch → loss：只在 response token 上算交叉熵**——配置（`unsloth_helper.py`）：`batch 2 × grad_accum 4 = 总 batch 8`，`max_steps=60`。实测对得上：**80 样本 × 6 epoch ÷ 8 = 60 步**（`max_steps` 是硬上限，80 条时恰好 = 6 epoch；iter1 的 86 条则约 5.6 epoch 就被 60 步截断）。每步：取 8 条前向，对每条**只在 `labels≠-100` 的 response token 上**算 `CrossEntropyLoss`（`-100`=`ignore_index`，prompt 段贡献 0）→ 求均值 → 反向 → 更新。只动 LoRA 适配器：可训 **66,060,288 / 4,088,528,384 = 1.62%**，基座冻结。`train_loss` iter0 = 0.0151（注意 §3.2.1：只表对自筛轨迹的拟合，不表解题能力）。
 
 **[6] checkpoint：LoRA 合并回基座，存 16bit**——`save_pretrained_merged(..., "merged_16bit")` 把训好的 LoRA 增量**合并回基座权重**，存成完整 16bit 模型（不是只存适配器），这样下一轮 vLLM 能直接 serve。产出 `models/version_1`。
 
@@ -387,7 +387,7 @@ python math_agent.py
 **Q3：终止条件是什么？**——两层，都是**写死的计数，不是质量判据**：
 
 - 内层（单轮训练停在哪）：`max_steps=60`（`unsloth_helper.py`）。80 样本 ×6 epoch ÷8 batch 恰好 = 60 步；86 样本约 5.6 epoch 就被 60 步截断。
-- 外层（飞轮转几圈）：`MAX_ITERATIONS=2`（`sft_algorithm.py:351`），固定两轮 `version_0→1→2` 就停。
+- 外层（飞轮转几圈）：`MAX_ITERATIONS=2`（`sft_algorithm.py`），固定两轮 `version_0→1→2` 就停。
 
 demo **没有任何收敛 / 质量终止**（不看留用数是否还涨、不看 holdout、无 early-stopping）。真实任务该用的信号是**飞轮到顶**——`Keeping X` 连续几轮不再上升 = 模型已稳定输出它能找到的全部正确轨迹，该停 SFT；这正是系列05 §7.1「SFT 到顶 → 升 RL」的触发点。
 
@@ -400,10 +400,10 @@ demo **没有任何收敛 / 质量终止**（不看留用数是否还涨、不�
 
 `litagent→runner→tracer→store→adapter→reward` 这一段两者完全相同——正是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §6.3 的 method-agnostic 兑现：换算法只换槽位 + adapter 出口，脊柱不动。
 
-**Q5：两轮和 60 步都写死了，能不能让飞轮「自动转」、步数随数据走？**——能，但要分清这是**两个独立的常量**（别和 Q3 混）：外层圈数 `MAX_ITERATIONS=2`（`sft_algorithm.py:351`，覆盖入口 `sft_allinone.py:99-108`），内层步数 `max_steps=60`（`unsloth_helper.py:63-76`）。后者是**硬上限步数、不是从数据算的**：total batch=8，80 样本→60 步=6 epoch，86 样本→60 步≈5.6 epoch——**数据涨了过的遍数反缩**（6→5.6），是固定 `max_steps` 的小坑。两处分别这样改：
+**Q5：两轮和 60 步都写死了，能不能让飞轮「自动转」、步数随数据走？**——能，但要分清这是**两个独立的常量**（别和 Q3 混）：外层圈数 `MAX_ITERATIONS=2`（`sft_algorithm.py`，覆盖入口 `sft_allinone.py`），内层步数 `max_steps=60`（`unsloth_helper.py`）。后者是**硬上限步数、不是从数据算的**：total batch=8，80 样本→60 步=6 epoch，86 样本→60 步≈5.6 epoch——**数据涨了过的遍数反缩**（6→5.6），是固定 `max_steps` 的小坑。两处分别这样改：
 
 - **飞轮动态（替换固定两轮）**：把 `for i in range(MAX_ITERATIONS)` 换成 `while` + 平台检测，停条件用真实信号 `Keeping X`——连续几轮 Δ 小于阈值 = 饱和就停（即 Q3 说的「飞轮到顶 → 升 RL」），并加安全上限防空转。**更稳的是用 holdout 的 pass@1 不再涨来驱动停**（§3.3 有配方），因为 `Keeping X` 在训练题上量、80→86 的 +6 可能是采样噪声（§3.2.1 诚实边界），不宜单独当停机判据。
-- **步数随数据 scale（替换固定 60）**：在 `unsloth_helper.py:63-76` 的 SFTConfig 里设 `num_train_epochs=N` 且 `max_steps=-1`（关掉硬上限）→ 每轮过固定遍数、步数随留用数涨（80→6 epoch=60 步，86→6 epoch≈64.5 步）；或每轮算 `max_steps = ceil(kept / total_batch) * target_epochs`。固定 epoch 若数据增长多易过拟合，配 val loss 的 early-stopping 更稳。
+- **步数随数据 scale（替换固定 60）**：在 `unsloth_helper.py` 的 SFTConfig 里设 `num_train_epochs=N` 且 `max_steps=-1`（关掉硬上限）→ 每轮过固定遍数、步数随留用数涨（80→6 epoch=60 步，86→6 epoch≈64.5 步）；或每轮算 `max_steps = ceil(kept / total_batch) * target_epochs`。固定 epoch 若数据增长多易过拟合，配 val loss 的 early-stopping 更稳。
 
 > 一句话：demo 把外层圈数和内层步数都写成**与数据无关的常量**，真实任务应分别换成「飞轮 kept 平台检测（最好 holdout 驱动）」和「按 epoch 自动算步数」。
 
@@ -431,7 +431,7 @@ HF Trainer 的规则是 **`max_steps > 0` 直接覆盖 `num_train_epochs`**，ep
 
 **但 demo 选 `max_steps` 是对的**——它正踩中 `max_steps` 的三个专用场景：①算力预算固定（每圈严格等长、可预算，而飞轮每圈 kept 在变 80→86，用 epoch 则时长飘）；②数据量未知 / 流式（没 N 算不出「一遍」）；③飞轮每圈要点到为止（系列05 ReST：浅训保多样性）。demo 是「飞轮 + 每圈数据量变 + 没 holdout」三条叠加，固定小步数刚好同时满足「没信号可早停」和「故意别训深」。
 
-**想用「loss 升了再停」（early stopping）要注意**：靠的是 **val loss 不是 train loss**。train loss 几乎一路降不回升（模型在死记这批数据，demo 的 `0.0151` 就是这么压下来的），等它回升早已过拟合；只有 holdout 上的 val loss「先降后升」，拐点才是早停时机。demo 没切 holdout（成功轨迹全喂训练，`sft_algorithm.py:291-295`），没有 val 曲线 → 早停无从触发 → 只能退回固定 `max_steps`。要换早停，前提是先切一份 holdout（§3.3 配方）。
+**想用「loss 升了再停」（early stopping）要注意**：靠的是 **val loss 不是 train loss**。train loss 几乎一路降不回升（模型在死记这批数据，demo 的 `0.0151` 就是这么压下来的），等它回升早已过拟合；只有 holdout 上的 val loss「先降后升」，拐点才是早停时机。demo 没切 holdout（成功轨迹全喂训练，`sft_algorithm.py`），没有 val 曲线 → 早停无从触发 → 只能退回固定 `max_steps`。要换早停，前提是先切一份 holdout（§3.3 配方）。
 
 > 一句话：epoch 是更好的「默认单位」（自适应、整遍、曝光均匀），`max_steps` 是「固定算力 / 数据量未知 / 飞轮等长」的专用工具；日志里的小数 epoch 是 `max_steps` 倒推的进度比、不是设定值；想按 loss 早停得先有 holdout 的 val loss，train loss 不回升用不了。
 
@@ -443,13 +443,13 @@ HF Trainer 的规则是 **`max_steps > 0` 直接覆盖 `num_train_epochs`**，ep
 
 | 代码事实 | 位置 | 后果 |
 |---|---|---|
-| temperature 默认 **0.0（greedy）** | `math_agent.py:140`（`sampling_parameters` 从没设 temperature，`:185`） | 每题只产**唯一确定轨迹**，零探索 |
-| 每题每轮只 **enqueue 一次** | `sft_algorithm.py:290` | 单采样，方差大、漏掉「本能做对但这次没采到」 |
-| 每轮只训**本轮数据、非累积** | `all_records` 空列表重建 `:320` | 每轮 ~80 条训 3 epoch（≈30 步）= 轻推非跃升 |
+| temperature 默认 **0.0（greedy）** | `math_agent.py`（`sampling_parameters` 从没设 temperature） | 每题只产**唯一确定轨迹**，零探索 |
+| 每题每轮只 **enqueue 一次** | `sft_algorithm.py` | 单采样，方差大、漏掉「本能做对但这次没采到」 |
+| 每轮只训**本轮数据、非累积** | `all_records` 空列表重建 | 每轮 ~80 条训 3 epoch（≈30 步）= 轻推非跃升 |
 
 greedy + 单采样 = **结构上不可能头轮大跳**：你只能收割「贪心路径自上轮翻对」的那几道题。要回到标准 RAFT/STaR 的「头轮大跳→快速到顶」曲线，**真正的杠杆是采样数（pass@k）而非 LR**：把 temperature 调>0（如 0.7~1.0）+ 每题采 k 次，「k 条里一条对就成 SFT 样本」= pass@k 收割，一次性抓住大批边界题。加大 LR 反而有 catastrophic forgetting 风险（模型被自产同质数据拽偏→下轮 rollout 变差→飞轮反转），代码注释自己都写 `Reduce to 2e-5 for long training runs`。
 
-> 天花板的代码依据：训练集**全部来自模型自己答对的轨迹**（reward 来自 `compute_reward(自答, target)` `math_agent.py:145`→`reward>0` 过滤 `sft_algorithm.py:400`），`target` 只用来打分、**从不作 label 喂训练**（系列05「reward 造标签而非喂答案」）。所以一道题进训练集 ⟺ 它 pass@k>0；模型从不会做的题永远学不到 → **天花板 = 基座 pass@k**，k 越大越能把潜在能力榨出来。
+> 天花板的代码依据：训练集**全部来自模型自己答对的轨迹**（reward 来自 `compute_reward(自答, target)` `math_agent.py`→`reward>0` 过滤 `sft_algorithm.py`），`target` 只用来打分、**从不作 label 喂训练**（系列05「reward 造标签而非喂答案」）。所以一道题进训练集 ⟺ 它 pass@k>0；模型从不会做的题永远学不到 → **天花板 = 基座 pass@k**，k 越大越能把潜在能力榨出来。
 
 **复盘二：「reward 样本数上涨」测不出过拟合，holdout pass@1 才是干净信号。** 这是这个动态飞轮最大的认知陷阱——`reward_sample_count` 是在**同一批训练题**上量的，它上涨和「模型记住了训练题」无法区分，**停止信号本身被训练集污染**。又因每轮在自产同质数据上反复训（数据小+重复度高），记忆风险实打实。唯一能分辨的办法是**训练宽松 / 验证严格的不对称评测**：
 
@@ -463,12 +463,12 @@ greedy + 单采样 = **结构上不可能头轮大跳**：你只能收割「贪�
 
 ### 3.8 一根线：APO / SFT / RL 都用 reward 筛选，区别只在「筛什么、优化谁」✅
 
-跑通 SFT 后回头看，会发现 agent-lightning 三条线（系列04 的 APO、本篇的 SFT、系列05 提到的 RL）共享**同一套数据哲学**：`rollout → 算 reward → 按 reward 选择/优化`，消费的都是同一个三元组 `(prompt, response, reward)`（≈ RL 的 `(s, a, r)`）。本篇这条拒绝采样 SFT 是 RAFT/STaR（`reward>0` 过滤 `sft_algorithm.py:400` + reward 排序 `:404` + while 迭代），而 **APO 同样用 reward 筛选**——只是筛的对象和"优化器"不同。
+跑通 SFT 后回头看，会发现 agent-lightning 三条线（系列04 的 APO、本篇的 SFT、系列05 提到的 RL）共享**同一套数据哲学**：`rollout → 算 reward → 按 reward 选择/优化`，消费的都是同一个三元组 `(prompt, response, reward)`（≈ RL 的 `(s, a, r)`）。本篇这条拒绝采样 SFT 是 RAFT/STaR（`reward>0` 过滤 `sft_algorithm.py` + reward 排序 + while 迭代），而 **APO 同样用 reward 筛选**——只是筛的对象和"优化器"不同。
 
 APO 的筛选就发生在 beam search 那一行（系列04 §3）：
 
 ```python
-sorted_prompts = sorted(candidates, key=lambda x: x.score, reverse=True)  # apo.py:741
+sorted_prompts = sorted(candidates, key=lambda x: x.score, reverse=True)  # apo.py
 selected_prompts = sorted_prompts[:self.beam_width]                       # :742  取 top-k
 ```
 
@@ -477,8 +477,8 @@ selected_prompts = sorted_prompts[:self.beam_width]                       # :742
 | 维度 | APO（系列04） | RAFT/SFT（本篇） | PPO/GRPO（系列05 RL） |
 |---|---|---|---|
 | rollout 产物 | 一批 `(prompt, response, reward)` | 同左 | 同左 |
-| reward 来源 | `compute_reward`（同一评分函数） | `compute_reward` `math_agent.py:145` | 同左 |
-| 筛选动作 | `sort(score)+[:beam_width]` `apo.py:741-742` | `sort(reward)+filter(reward>0)` `:404`/`:400` | reward 算 advantage |
+| reward 来源 | `compute_reward`（同一评分函数） | `compute_reward` `math_agent.py` | 同左 |
+| 筛选动作 | `sort(score)+[:beam_width]` `apo.py` | `sort(reward)+filter(reward>0)` | reward 算 advantage |
 | **筛选对象** | **Prompt**（留高分提示词） | **Trajectory**（留高分轨迹当训练样本） | 用全部样本（含负） |
 | **怎么改进** | 高分 prompt 喂 critic 生成更好的——**改文本、冻权重** | 高分轨迹做 SFT——**改权重、不动 prompt** | 策略梯度更新权重 |
 | 梯度形态 | 文本梯度（critic 自然语言批评） | 数值梯度（CE loss 反传） | 数值梯度（带 advantage + KL） |
@@ -502,13 +502,13 @@ GSM-hard 的记录是 `{input, target}`（`code` 字段是死字段，系列05 �
 ```
 
 - `target` **不必是数字**——可以是字符串、JSON、任何能被你的 grader 拿来判分的东西。
-- 把 `math_agent.py` 的 `GsmProblem` TypedDict（`:39-50`）和 `load_math_dataset`（`:69`）改成读你的字段即可。
+- 把 `math_agent.py` 的 `GsmProblem` TypedDict 和 `load_math_dataset` 改成读你的字段即可。
 
 > **铁律重申**（系列05 §一）：你**不需要**提供「标准解题过程」当模仿 label——那是模型自己 rollout 造的。你只需提供 `target` 当评分钥匙。
 
 ### 4.2 换 grader：reward 设计才是真瓶颈
 
-`compute_reward`（`math_agent.py:128`）是整个流程**唯一需要你动脑的地方**。GSM-hard 用的是精确匹配：
+`compute_reward`（`math_agent.py`）是整个流程**唯一需要你动脑的地方**。GSM-hard 用的是精确匹配：
 
 ```python
 answer = float(answer_extracted.group(1))
@@ -523,7 +523,7 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 
 ### 4.3 换 agent：rollout 逻辑随便写
 
-`math_agent` 是个 `@rollout async def`（`math_agent.py:85`），签名 `(task, llm)`，体内用 OpenAI Agents SDK + MCP 计算器。换成你的 agent：
+`math_agent` 是个 `@rollout async def`（`math_agent.py`），签名 `(task, llm)`，体内用 OpenAI Agents SDK + MCP 计算器。换成你的 agent：
 
 - 工具不用计算器 → 换成你的 MCP server / function（但记住系列05 §2.5：**换工具 schema = 调用语法不迁移，要重训**，先把工具契约定稳）。
 - 不想用 Agents SDK → 裸写 OpenAI 调用、LangChain、AutoGen 都行，框架只认「签名 + 返回 float」（系列02 §2.1）。
@@ -564,10 +564,10 @@ return 1.0 if np.isclose(answer, target, rtol=1e-5) else 0.0
 | 数据结构 + 加载 | `math_agent.py` `GsmProblem` / `load_math_dataset` | input 喂模型、target 只喂 grader |
 | grader | `math_agent.py` `compute_reward` | 可验证优先；加阈值过滤 |
 | agent 逻辑 + 工具 | `math_agent.py` `math_agent` | 工具契约定稳再 SFT |
-| 数据清洗 | `sft_algorithm.py:291-295` 筛选逻辑 | demo 只有 `reward>0`；真实任务补阈值收紧 / 去重 / 过程过滤（§4.4） |
+| 数据清洗 | `sft_algorithm.py` 筛选逻辑 | demo 只有 `reward>0`；真实任务补阈值收紧 / 去重 / 过程过滤（§4.4） |
 | 评测 holdout | 自搭（§3.3） | 留出没训过的题，否则 pass@1 虚高 |
-| 基座模型 | `sft_algorithm.py:358` / `hf download` | 换成你要微调的模型 |
-| 迭代/超参 | `sft_allinone.py:99-108`、`unsloth_helper.py:63-76` | max_iterations / lr / max_steps 等 |
+| 基座模型 | `sft_algorithm.py` / `hf download` | 换成你要微调的模型 |
+| 迭代/超参 | `sft_allinone.py`、`unsloth_helper.py` | max_iterations / lr / max_steps 等 |
 
 > 这一节本质就是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) §六的「四步插槽」在 SFT 上的具象，也是系列08「套到真实 Agent」的预演。
 
