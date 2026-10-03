@@ -19,7 +19,8 @@ description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agen
 > 本文源于一次架构选型讨论（与 ChatGPT 的讨论，2026-07-19）：在 Microsoft Foundry 里建 Agent 时，Prompt Agent、Hosted Agent、Workflow Agent 到底差在哪？什么场景该用哪个？
 > 姊妹篇（语音入口视角）：[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](../VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)。
 
-> [!warning] 更新说明（2026-07-31）：Workflow Agent 已从官方 Agent 类型中移除
+> [!WARNING]
+> **更新说明（2026-07-31）：Workflow Agent 已从官方 Agent 类型中移除**
 > 本文写作时（2026-07-19 前后的资料），Foundry 还有 portal 可视化的 multi-agent workflows（本文称 Workflow Agent，public preview）。但据最新官方文档（[Agent Service Overview](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)，2026-07-09 更新）：
 >
 > 1. **Agent 类型只剩两类**——Prompt agents 与 Hosted agents。"Workflow Agent"不再作为一种 agent 类型出现在文档和 portal 中。
