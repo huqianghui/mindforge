@@ -79,7 +79,7 @@ related: "[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通u
 
 所以 RAFT 是「**RL 的数据哲学 + SFT 的更新机制**」：它消费和 RL 同样的三元组 `(prompt, response, reward)`，但 reward 只在**门口检票**（选哪些进训练集），进了门之后是标准监督学习——被选中的样本无论 reward 0.9 还是 0.6，对 loss 贡献一样。
 
-往中间补一档就连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**。越往右，reward 从「检票」一步步走进梯度核心。
+往中间补一档就连成光谱：**RAFT（硬 0/1 选择） → RWR（reward 当软权重） → PPO（reward 经 advantage 进每步梯度）**。越往右，reward 从「检票」一步步走进梯度核心。
 
 ## 四、RAFT 与 STaR：同一骨架的两个出处
 
@@ -116,17 +116,17 @@ STaR 在 CommonsenseQA 上做到与 **30× 大模型** 可比，核心贡献是�
 
 | RAFT 步骤 | agent-lightning 代码 | 备注 |
 |---|---|---|
-| ① Sample 采一批 | `enqueue_rollout(...)` `sft_algorithm.py:290`（每题一次） | **退化：K=1** |
-| ② Filter 按 reward 过滤 | `[r for r in all_records if r["reward"]>0]` `:400` | 二值 reward（像 STaR） |
-| ②' Rank 排序 | `sort(key=reward, reverse=True)` `:404` | 取 top-N 用；这里近乎空操作 |
+| ① Sample 采一批 | `enqueue_rollout(...)` `sft_algorithm.py`（每题一次） | **退化：K=1** |
+| ② Filter 按 reward 过滤 | `[r for r in all_records if r["reward"]>0]` | 二值 reward（像 STaR） |
+| ②' Rank 排序 | `sort(key=reward, reverse=True)` | 取 top-N 用；这里近乎空操作 |
 | ③ Fine-tune SFT | `unsloth_training(...)` 子进程 LoRA SFT | merged_16bit 存 version_n |
-| 迭代 while | `while max_iterations is None or ...` `:351` | 用户改成动态停 |
+| 迭代 while | `while max_iterations is None or ...` | 用户改成动态停 |
 
 **对得上，但 demo 把 RAFT 退化成了最朴素的版本**（§3.7 已诊断）：
 
-- **K=1 + temperature=0（greedy）**：`math_agent.py:140` 温度默认 0.0，每题只采一次——退化成 pass@1，**没有 RAFT 赖以工作的采样多样性**。论文是 K∈{8,16,32} + λ=1.0；
-- **二值 reward**：`compute_reward` 返回 0/1（`math_agent.py:145`），所以 `:404` 的 sort 几乎没用（留下的全是 1.0）——更像 STaR 而非用 reward model 的 RAFT；
-- **非累积**：`all_records` 每轮空列表重建（`:320`），不像论文那样可累积扩充数据集。
+- **K=1 + temperature=0（greedy）**：`math_agent.py` 温度默认 0.0，每题只采一次——退化成 pass@1，**没有 RAFT 赖以工作的采样多样性**。论文是 K∈{8,16,32} + λ=1.0；
+- **二值 reward**：`compute_reward` 返回 0/1（`math_agent.py`），所以 的 sort 几乎没用（留下的全是 1.0）——更像 STaR 而非用 reward model 的 RAFT；
+- **非累积**：`all_records` 每轮空列表重建，不像论文那样可累积扩充数据集。
 
 **这解释了 §3.7 实测的「慢爬」**：把 RAFT 退化成 K=1 greedy，就只能一阶一阶收割「贪心路径刚翻对」的题，丢了论文里 K 大 → 收敛快（10~12 轮）的核心红利。**要复现论文曲线，就得把 K 拧上去（temp 0.7~1.0 + 每题采 K 次）**——这正是复盘里说的「采样数才是数据增长主杠杆」。
 
@@ -149,7 +149,7 @@ STaR 在 CommonsenseQA 上做到与 **30× 大模型** 可比，核心贡献是�
 - **三步骨架 = 采样 → 按 reward 过滤排序 → SFT → 迭代**，STaR（2022，推理域、带 rationalization）是它的前身，agent-lightning 的 SFT 代码就是这套骨架的工程实现。
 - **demo 把 RAFT 退化成 K=1 greedy 二值 reward 非累积版**，丢了论文「K 大→收敛快」的红利，这正是慢爬的根因；复现论文曲线要拧 K（temp 0.7~1.0 + 每题采 K 次）。
 - **对已后训练的强模型仍适用**（且更易收割），但受自蒸馏天花板约束；社区里它以「rejection sampling fine-tuning」之名成了 DeepSeek-R1/Llama/Qwen 后训练 pipeline 的标准一档。
-- 在 agent-lightning 的阶梯里：**APO（不改权重，reward 选 prompt）→ RAFT（改权重，reward 选轨迹做 SFT）→ RL（reward 进梯度）**，RAFT 是承上启下的那一档。
+- 在 agent-lightning 的阶梯里：**APO（不改权重，reward 选 prompt） → RAFT（改权重，reward 选轨迹做 SFT） → RL（reward 进梯度）**，RAFT 是承上启下的那一档。
 
 ## 参考
 
