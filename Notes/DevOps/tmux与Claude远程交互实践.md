@@ -9,7 +9,8 @@ status: published
 
 # tmux 与 Claude 远程交互实践
 
-> [!abstract] 概要
+> [!NOTE]
+> **概要**
 > 本文以 macOS 作为服务器、iPhone 作为移动客户端，通过 tmux 实现 Claude Code CLI 的跨设备持久化交互，深入分析 tmux 的架构原理与实践使用场景。
 
 ## 背景：为什么需要 tmux？
@@ -18,7 +19,8 @@ status: published
 
 传统的 SSH 连接存在一个致命问题——**连接断开即会话丢失**。tmux 正是为解决这个问题而生的终端复用器（Terminal Multiplexer）。
 
-> [!tip] 核心价值
+> [!TIP]
+> **核心价值**
 > tmux 将终端会话与终端窗口解耦，使得会话可以在后台持续运行，随时从任何设备重新连接。
 
 ---
@@ -66,7 +68,8 @@ tmux Server 通过 **Unix Domain Socket** 与所有 Client 通信：
 tmux -S /tmp/my-custom-socket new-session
 ```
 
-> [!info] 为什么用 Unix Socket 而不是 TCP？
+> [!NOTE]
+> **为什么用 Unix Socket 而不是 TCP？**
 > Unix Domain Socket 只在本机通信，无需经过网络协议栈，性能更高、更安全。远程访问通过 SSH 隧道间接实现。
 
 ---
@@ -175,7 +178,8 @@ tmux send-keys -t claude-dev:main 'claude' Enter
 tmux new-session -s claude-dev 'claude'
 ```
 
-> [!example] 多窗口工作区示例
+> [!NOTE]
+> **多窗口工作区示例**
 > ```bash
 > # 创建完整的开发工作区
 > tmux new-session -d -s claude-dev -n claude
@@ -200,7 +204,8 @@ tmux new-session -s claude-dev 'claude'
 | **a]Shell** | 本地终端 + SSH，轻量 | 免费 |
 | **iSH** | 基于 Alpine Linux 的本地 Shell | 免费开源 |
 
-> [!recommendation] 推荐方案
+> [!TIP]
+> **推荐方案**
 > **Blink Shell + Mosh** 是移动端最佳组合。Mosh（Mobile Shell）专为不稳定网络设计，支持漫游和间歇性连接，完美适配手机网络切换场景。
 
 #### 2.2 SSH 连接配置
@@ -238,7 +243,8 @@ tmux attach -t claude-dev -r
 
 ### Step 3: 使用 Mosh 增强移动体验
 
-> [!warning] SSH 在移动网络下的痛点
+> [!WARNING]
+> **SSH 在移动网络下的痛点**
 > - Wi-Fi 与蜂窝网络切换导致连接断开
 > - 高延迟网络下输入响应迟钝
 > - IP 变化后需要重新连接
@@ -299,7 +305,8 @@ ps aux | grep tmux
 └────────────────────────────────────────────────────┘
 ```
 
-> [!important] 关键理解
+> [!IMPORTANT]
+> **关键理解**
 > tmux server 是 claude 进程的直接父进程，而非 SSH 或终端。因此：
 > - 关闭终端窗口 → claude 继续运行
 > - SSH 断开 → claude 继续运行
@@ -336,7 +343,8 @@ tmux new-session -t claude-dev -s iphone-view
 tmux attach -t claude-dev -r
 ```
 
-> [!example] 典型工作流
+> [!NOTE]
+> **典型工作流**
 > 1. **Mac 端**：在 `claude-dev` session 的 `claude` window 中与 Claude 对话
 > 2. **iPhone 端**：通过 Mosh + tmux attach 实时查看 Claude 的输出
 > 3. **场景**：让 Claude 执行一个耗时的代码重构任务，离开工位后在 iPhone 上监控进度
@@ -388,7 +396,8 @@ tmux kill-session -t <name>
 
 ## 安全考量
 
-> [!caution] 安全建议
+> [!CAUTION]
+> **安全建议**
 > 1. **SSH 密钥认证**：禁用密码登录，使用 Ed25519 密钥
 > 2. **防火墙**：仅允许信任网络的 SSH 连接
 > 3. **端口转发**：如需外网访问，使用 SSH 隧道或 Tailscale/ZeroTier 等 VPN
@@ -408,7 +417,8 @@ brew install tailscale
 mosh user@100.64.0.1 -- tmux attach -t claude-dev
 ```
 
-> [!success] Tailscale 的优势
+> [!TIP]
+> **Tailscale 的优势**
 > - 无需公网 IP 或端口映射
 > - 端到端加密（WireGuard 协议）
 > - 跨网络自动打洞（NAT Traversal）
@@ -443,5 +453,4 @@ tmux 在 Claude Code 远程交互场景中扮演着不可替代的角色：
 
 ---
 
-> [!quote]
 > "tmux is to terminal sessions what git is to code — it gives you the freedom to detach, branch, and reattach without losing context."
