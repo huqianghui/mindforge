@@ -215,7 +215,7 @@ APO 把"找最优 prompt"建模成 **beam search with textual gradients**（带�
 
 ### 坑 3：最优 prompt 跑完就丢了——示例脚本不打印
 
-`get_best_prompt()` 能取最优模板（`apo.py:245`），但示例 `main()` **没有调用它**，`trainer.fit()` 跑完结果就丢了。两种取法：
+`get_best_prompt()` 能取最优模板（`apo.py`），但示例 `main()` **没有调用它**，`trainer.fit()` 跑完结果就丢了。两种取法：
 
 - **从 `apo.log` 读**：grep `Seed prompt baseline score:` / `Beam leader score:` / `Best prompt updated|not updated`，history best = 其中最大值（本次 = v0 = 0.655）。
 - **改脚本取**：在 `trainer.fit(...)` 后加
@@ -255,7 +255,7 @@ print("best score:", algo._history_best_score)   # 分数是私有字段，只�
 >   ```
 >   装完版本号会变成 `0.3.1`（dev），此时才支持自定义模板参数。验证：`python -c "import agentlightning; print(agentlightning.__version__)"` 应为 `0.3.1`。
 
-**问题定位到代码行**：崩溃发生在 `room_selector.py:153` 的 `prompt_template.format(**task["task_input"])`——这是 rollout 函数体的**第一个动作**，在任何 LLM 调用之前。`task_input` 只有 6 个 key，模板里多一个 `{变量}` 就 `KeyError`、多一对裸 `{}` 就 `ValueError`。因为这行与输入数据无关，所以同一坏模板跑 10 条任务 = `Counter({'failed': 10})` 全挂，一次 LLM 都没调到。
+**问题定位到代码行**：崩溃发生在 `room_selector.py` 的 `prompt_template.format(**task["task_input"])`——这是 rollout 函数体的**第一个动作**，在任何 LLM 调用之前。`task_input` 只有 6 个 key，模板里多一个 `{变量}` 就 `KeyError`、多一对裸 `{}` 就 `ValueError`。因为这行与输入数据无关，所以同一坏模板跑 10 条任务 = `Counter({'failed': 10})` 全挂，一次 LLM 都没调到。
 
 **真因**：`apply_edit_model` 自由改写时引入了非法占位符/裸花括号。而默认的 `apply_edit_variant01.poml` 只说了一句 "Preserve placeholder variables inside curly brackets"，**没禁止新增占位符、也没禁止裸花括号**——这就是漏洞。
 
@@ -320,11 +320,11 @@ algo = APO[RoomSelectionTask](
 )
 ```
 
-源码 `self.apply_edit_prompt_files = apply_edit_prompt_files or APPLY_EDIT_PROMPT_FILES`（`apo.py:152`）——传进去就**完全顶替**默认的两个 variant；每次 apply edit 时 `random.choice(...)`（`apo.py:361`），列表里只放这一个文件就保证每次都用严格版。
+源码 `self.apply_edit_prompt_files = apply_edit_prompt_files or APPLY_EDIT_PROMPT_FILES`（`apo.py`）——传进去就**完全顶替**默认的两个 variant；每次 apply edit 时 `random.choice(...)`（`apo.py`），列表里只放这一个文件就保证每次都用严格版。
 
 ### 实践 2：渲染护栏——兜底（约束模型是软保证，~90%）
 
-约束模型偶尔仍会违规，所以在 `room_selector.py:153` 加一道护栏，让坏模板得 0 分被 beam search 自然淘汰，而不是崩成 None 污染统计：
+约束模型偶尔仍会违规，所以在 `room_selector.py` 加一道护栏，让坏模板得 0 分被 beam search 自然淘汰，而不是崩成 None 污染统计：
 
 ```python
 try:
@@ -341,8 +341,8 @@ except (KeyError, ValueError, IndexError):
 
 | 评分处 | 用多少数据 | 作用 |
 |---|---|---|
-| `_evaluate_and_select_beam`（`apo.py:719`） | **一个 batch**（`val_batch_size` 条） | 每轮给候选排序选 top `beam_width` |
-| `_update_best_prompt`（`apo.py:777`） | **全量 `val_dataset`** | 给 beam 冠军重打分，定 `_history_best_score` |
+| `_evaluate_and_select_beam`（`apo.py`） | **一个 batch**（`val_batch_size` 条） | 每轮给候选排序选 top `beam_width` |
+| `_update_best_prompt`（`apo.py`） | **全量 `val_dataset`** | 给 beam 冠军重打分，定 `_history_best_score` |
 
 - **轮内公平**：`val_batch = next(iterator)` 取一批，该轮所有候选**共用同一批**打分，候选间可比。
 - **跨轮不公平**：下一轮 `next()` 取**不同的**批次，round1 的 0.6 和 round2 的 0.5 不在同一批数据上算 → 不可比。这就是分数 0/1 摆动、"Best prompt not updated" 的来源。
@@ -350,8 +350,8 @@ except (KeyError, ValueError, IndexError):
 
 **结论——按数据集规模分两种策略**：
 
-- **数据集小（如本例 29 条）→ `val_batch_size` 设成等于数据集**。此时用 sub-batch **没有任何成本好处**，只会白白引入"每轮看不同子集"的噪声。设满 → 每轮都用全部数据 → 跨轮可比 → beam 选择稳定 → 摆动消失。
-- **数据集大（几百上千条）→ 不该设成全量**。每轮成本 = `候选数 × val_batch_size × 每条 rollout 的 LLM 调用`，全量太贵太慢。此时**故意用 batch < dataset 省成本**，代价是接受跨轮噪声；最佳实践是 batch 设得足够大（统计稳定），并清楚"真正的最优看全量重评的 `_history_best_score`，别拿轮内候选分当绝对真值"。
+- **数据集小（如本例 29 条） → `val_batch_size` 设成等于数据集**。此时用 sub-batch **没有任何成本好处**，只会白白引入"每轮看不同子集"的噪声。设满 → 每轮都用全部数据 → 跨轮可比 → beam 选择稳定 → 摆动消失。
+- **数据集大（几百上千条） → 不该设成全量**。每轮成本 = `候选数 × val_batch_size × 每条 rollout 的 LLM 调用`，全量太贵太慢。此时**故意用 batch < dataset 省成本**，代价是接受跨轮噪声；最佳实践是 batch 设得足够大（统计稳定），并清楚"真正的最优看全量重评的 `_history_best_score`，别拿轮内候选分当绝对真值"。
 
 > 一句话：`val_batch_size` 是为**大数据集省成本**而存在的采样旋钮。小数据集直接拉满到数据集大小换稳定性；大数据集再调小它控成本。
 
@@ -360,7 +360,7 @@ except (KeyError, ValueError, IndexError):
 `trainer.fit()` 跑完结果就丢了，在其后补：
 
 ```python
-best = algo.get_best_prompt()                       # 最优 PromptTemplate（apo.py:245）
+best = algo.get_best_prompt()                       # 最优 PromptTemplate（apo.py）
 print(best.template)
 print("best score:", algo._history_best_score)      # 私有字段，只能这样读
 ```
@@ -455,7 +455,7 @@ v2 在全集上一次 0.707、一次 0.503，差 0.2——已经设满 29 条，
 | 被选中值 vs 重评值落差 | v2：0.707 → 0.503 | "虚高"存在，落差(0.20) > 真实增益 |
 | 最终没守住 | `not updated, 0.690 vs 0.690` | 0.707 是假信号，回退种子 |
 
-**判断逻辑链**：若一个 prompt 的"提升幅度" < 同一 prompt"重测的摆动幅度"，该提升就无法与噪声区分。v2 号称比种子高 `0.707−0.690=0.017`，而种子自己重测就摆 0.10——**信噪比 < 1**，提升不可信。三轮连起来：负结果 → 0.707（虚高）→ 回退种子，诚实结论是 **APO 在这个 29 题噪声 benchmark 上还没稳健赢过种子**。
+**判断逻辑链**：若一个 prompt 的"提升幅度" < 同一 prompt"重测的摆动幅度"，该提升就无法与噪声区分。v2 号称比种子高 `0.707−0.690=0.017`，而种子自己重测就摆 0.10——**信噪比 < 1**，提升不可信。三轮连起来：负结果 → 0.707（虚高） → 回退种子，诚实结论是 **APO 在这个 29 题噪声 benchmark 上还没稳健赢过种子**。
 
 #### 4.4.2 那到底多少数据才"够"——有没有定论
 
