@@ -203,6 +203,28 @@ conversation.item.input_audio_transcription.completed
 
 - `create_response=false` **不影响数据采集**。VAD 仍然 commit buffer、仍然生成 user item、转写仍然跑。丢掉的只是自动生成这一步。
 - `interrupt_response` 与 `create_response` **相互独立**。应用节拍下打断仍然生效，用户在应用主动播报时开口会把播报截断；要不要在播报期间关打断，是应用节拍要顺带决定的事。
+
+> **⚠️ 2026-10-03 实测更正：在"音频走 WebSocket PCM"那条路上，`interrupt_response` 是空转的，而原因与打断逻辑无关。**
+>
+> 实测（无形象 persona，合成 WAV 让候选人的声音精确落在读题中途）：
+>
+> ```
+> 6249ms  response.done  status=completed
+> 6259ms  input_audio_buffer.speech_started     ← 10 毫秒后候选人开口
+> 6259→11379ms  候选人连续说了 5.1 秒 —— 这 5 秒里 Azure 一个事件都没有
+> ```
+>
+> 根因是**投递与播放的时间尺度完全不同**：Azure 在 **783 毫秒内投递了 4275 毫秒的音频**，并在候选人开口
+> 前 10 毫秒就把 response 标记为 `completed`。等客户端真正播到那一段时，Azure 眼里早就没有"正在进行的
+> response"可截断了——要截断的东西全在**客户端的播放队列**里，服务端碰不到。所以本文②"判起"那一行
+> 「取消正在播的 response」在这条路上不成立，`auto_truncate` 同理。
+>
+> **限定范围（没测到的不写成测到）：** 这条只对 WS PCM 下行成立。数字人在场时音频走 WebRTC 音轨，RTP 流
+> 由 Azure 持续推送、它随时可以停，机制不同，本文原文很可能在那条路上是对的——**但我没测那条**
+> （有形象时 `response.audio.delta` 一个都不发，这个实验在那条路上做不出来）。
+>
+> 产品侧的后果：要不要在候选人插话时掐掉已排队的音频，变成**纯客户端决定**。该项目的 owner 选择不掐
+> （2026-10-03）——听几秒两个声音比漏掉半道题可接受；转写不受影响，上行是候选人自己的麦克风。
 - Agent 模式的 `interim_response` **在应用节拍下不会出现**。它是服务端编排器在 Agent 推理耗时时推的填充语，没有 Agent 推理就没有填充，题间空白由应用自己填。
 - **不需要为了"应用全权控制"关掉整个 VAD**。关掉 `create_response` 就够了，保留 server VAD 还能白拿 `speech_stopped` 的时机和服务端转写。
 
