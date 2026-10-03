@@ -24,10 +24,10 @@ tags: [agent-lightning, APO, source-code, beam-search, multi-agent, bitter-lesso
 
 ## 一、源码全景：APO 就是一个类，beam search 是它的一段控制流
 
-整个 APO 算法，就 `apo.py` 一个文件、一个 `APO(Algorithm)` 类（`:81`）。它的唯一入口是 `run()`（`:809`）：
+整个 APO 算法，就 `apo.py` 一个文件、一个 `APO(Algorithm)` 类。它的唯一入口是 `run()`：
 
 ```
-APO(Algorithm)                          apo.py:81
+APO(Algorithm)                          apo.py
   └─ run()                              :809   唯一入口；beam search 外层循环在此
        ├─ _initialize_beam()            :512   取 seed prompt + 建数据集迭代器
        ├─ 初始验证（seed 打基线分）       :849-870
@@ -41,7 +41,7 @@ APO(Algorithm)                          apo.py:81
 
 **第一个要破除的误解：没有 `class BeamSearch`。** beam search 不是被 import、被实例化、被调用的"算法对象"，它是 `run()` 这段代码的**形状**：
 
-1. 维护一个固定大小的列表 `beam`（`:844` 初始化为 `[seed]`）；
+1. 维护一个固定大小的列表 `beam`（初始化为 `[seed]`）；
 2. 每轮做三件事——扩展（生成孩子）、打分、`sorted(...)[:beam_width]` 砍成 top-k。
 
 这就是 beam search 的全部。它被**织进 for 循环**，而非封装成模块。所以你在代码里"找不到 beam search"是正常的——**它不是一个东西，是一种循环写法**。
@@ -52,16 +52,16 @@ APO(Algorithm)                          apo.py:81
 
 你可以把 APO 的一轮迭代理解成 **try → score → critic → edit** 的循环。每个阶段在源码里的确切落点：
 
-| 概念阶段 | 源码方法 | 行号 | 实际做了什么 |
-|---------|---------|------|------------|
-| **try（执行/rollout）** | `evaluate_prompt_on_batch()` | `:430` | `update_resources` 挂 prompt（`:469`）→ 逐条 `enqueue_rollout`（`:473`）→ 轮询等 runner 跑完（`:478-494`）。**这步不调优化 LLM，是把任务推给 runner 进程** |
-| **score（打分）** | `get_rollout_results()` + 求均值 | `:391` / `:502` | `query_spans`（`:413`）取轨迹 → `find_final_reward`（`:417`）抽分 → 算平均（`:502`） |
-| **critic（文本梯度）** | `compute_textual_gradient()` | `:259` | `random.choice` 选批评模板（`:279`）→ POML 渲染（`:297`）→ 用 **gradient_model** 发 LLM 调用（`:310-314`）→ 得一段自然语言批评 |
-| **edit（改写）** | `textual_gradient_and_apply_edit()` 后半 | `:361-388` | `random.choice` 选改写模板（`:361`）→ POML 渲染（`:367`）→ 用 **apply_edit_model** 发 LLM 调用（`:376-381`）→ 得新 prompt |
+| 概念阶段 | 源码方法 | 实际做了什么 |
+| --------- | --------- | ------------ |
+| **try（执行/rollout）** | `evaluate_prompt_on_batch()` | `update_resources` 挂 prompt → 逐条 `enqueue_rollout` → 轮询等 runner 跑完。**这步不调优化 LLM，是把任务推给 runner 进程** |
+| **score（打分）** | `get_rollout_results()` + 求均值 | `query_spans`取轨迹 → `find_final_reward`抽分 → 算平均 |
+| **critic（文本梯度）** | `compute_textual_gradient()` | `random.choice` 选批评模板 → POML 渲染 → 用 **gradient_model** 发 LLM 调用 → 得一段自然语言批评 |
+| **edit（改写）** | `textual_gradient_and_apply_edit()` 后半 | `random.choice` 选改写模板 → POML 渲染 → 用 **apply_edit_model** 发 LLM 调用 → 得新 prompt |
 
 ### 2.1 发动机：`_generate_candidate_prompts` 的双层循环
 
-整个算法的核心在 `:577`，看它的双层循环（`:622` / `:637`）：
+整个算法的核心在，看它的双层循环（/）：
 
 ```python
 for (beam_idx, prompt) in parent_prompts:          # :622 遍历每个父 prompt
@@ -79,7 +79,7 @@ for (beam_idx, prompt) in parent_prompts:          # :622 遍历每个父 prompt
 
 ### 2.2 beam search 的"剪枝"就是一行 `sorted`
 
-`_evaluate_and_select_beam`（`:689`）只干两件事：
+`_evaluate_and_select_beam`只干两件事：
 
 ```python
 val_batch = next(val_dataset_iterator)          # :719 取一批验证数据（轮内候选共用，保证可比）
@@ -90,7 +90,7 @@ sorted_prompts = sorted(candidates, key=lambda x: x.score, reverse=True)  # :741
 selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = beam search 剪枝
 ```
 
-**`sorted(...)[:beam_width]`（`:741-742`）这一行，就是 beam search 区别于穷举（BFS）的全部秘密**：无论生成多少候选，只留分数最高的 `beam_width` 个，把指数爆炸压成线性（详见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4）。
+**`sorted(...)[:beam_width]`这一行，就是 beam search 区别于穷举（BFS）的全部秘密**：无论生成多少候选，只留分数最高的 `beam_width` 个，把指数爆炸压成线性（详见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4）。
 
 所以这个判断是准确的：**APO 算法 = 多次 `chat.completions.create()`（try 的 rollout、critic、edit）+ 一个 `sorted()`。** 仅此而已。
 
@@ -104,9 +104,9 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 
 | 经典范式 | APO 对应 | 代码 |
 |---------|---------|------|
-| **plan**（决定试什么） | critic + edit 生成候选 | `_generate_candidate_prompts` `:577` |
-| **execute**（执行） | runner 跑 rollout | `evaluate_prompt_on_batch` `:430`（推给 runner 进程） |
-| **verify**（验证、保留） | score + beam 剪枝 | `_evaluate_and_select_beam` `:689` |
+| **plan**（决定试什么） | critic + edit 生成候选 | `_generate_candidate_prompts` |
+| **execute**（执行） | runner 跑 rollout | `evaluate_prompt_on_batch`（推给 runner 进程） |
+| **verify**（验证、保留） | score + beam 剪枝 | `_evaluate_and_select_beam` |
 
 这个映射是成立的，参见 [Agent经典范式与人类问题处理模式的映射](../agent/Agent经典范式与人类问题处理模式的映射.md)。
 
@@ -116,9 +116,8 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 
 | | Critic | Editor |
 |---|---|---|
-| 代码 | `:310-314` | `:376-381` |
 | 区别仅在 | `model=self.gradient_model` | `model=self.apply_edit_model` |
-| 和 | POML 模板 `text_gradient_*.poml`（`:279`） | POML 模板 `apply_edit_*.poml`（`:361`） |
+| 和 | POML 模板 `text_gradient_*.poml` | POML 模板 `apply_edit_*.poml` |
 
 **没有 agent 类、没有 agent 实例、没有消息总线、没有 orchestrator/graph、没有每个 agent 各自的记忆。** "角色" = 一次带特定角色 prompt 的无状态 LLM 调用。
 
@@ -128,7 +127,7 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 |------|------------------------------------------|---------------|
 | agent 是什么 | 有状态对象（含 memory / tools / 角色） | 一次无状态 LLM 调用 |
 | 协作方式 | 消息传递 / 图编排 / 自由对话 | 函数顺序调用（critic 的输出直接当 edit 的输入参数） |
-| 谁决定流程 | orchestrator / graph / agent 自主 | 写死的 `for` 循环（`:637`） |
+| 谁决定流程 | orchestrator / graph / agent 自主 | 写死的 `for` 循环 |
 | 运行形态 | 多进程 / 多对话上下文 | 单进程、单线程顺序 await |
 
 > **结论**：APO 是"用 prompt 扮演角色"，不是"用对象封装 agent"。它比真多 agent 框架**轻得多**——没有编排开销、没有 agent 间通信、流程完全确定。这是优点（简单、可控、便宜），也是局限（不能让角色自主回溯、不能动态增减角色，对比 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4.2 里 ToT 那种"带自评估的搜索"——APO 故意不做，因为评估太贵）。
@@ -143,10 +142,10 @@ selected_prompts = sorted_prompts[:self.beam_width]   # :742  ★ 取 top-k = be
 
 | 看似一行的代码 | 真正难的部分 | 证据 |
 |---------------|------------|------|
-| `compute_textual_gradient` 一次 LLM 调用（`:310`） | **批评模板（POML）怎么写**——让 Critic 产出"有用且不带毒"的批评 | `text_gradient_*.poml`（`:69-73`）；系列01 §4.5：批评里写了正则 `{4}`/JSON，Editor 照抄进模板直接渲染崩 |
-| `sorted()[:beam_width]` 排个序（`:741`） | **排的是带噪声的分**——同 prompt 摆动 0.2，"sort + 取 max"在统计上系统性上偏（max-over-noise bias） | 系列01 §4.4；解药是 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4.3 的 bandit / UCB |
-| `evaluate_prompt_on_batch` 调一下（`:430`） | **reward / grader 怎么设计**——reward 是垃圾，优化越狠越垃圾 | grader 函数；系列01 §4.4"越优化越啰嗦反而掉分" |
-| `enqueue_rollout` 推个任务（`:473`） | **让这堆 LLM 调用真能并发、跨机、容错地大规模跑** | store + async 编排 + `TraceToMessages` adapter（`:414`）+ timeout（`:476`） |
+| `compute_textual_gradient` 一次 LLM 调用 | **批评模板（POML）怎么写**——让 Critic 产出"有用且不带毒"的批评 | `text_gradient_*.poml`；系列01 §4.5：批评里写了正则 `{4}`/JSON，Editor 照抄进模板直接渲染崩 |
+| `sorted()[:beam_width]` 排个序 | **排的是带噪声的分**——同 prompt 摆动 0.2，"sort + 取 max"在统计上系统性上偏（max-over-noise bias） | 系列01 §4.4；解药是 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md) §4.3 的 bandit / UCB |
+| `evaluate_prompt_on_batch` 调一下 | **reward / grader 怎么设计**——reward 是垃圾，优化越狠越垃圾 | grader 函数；系列01 §4.4"越优化越啰嗦反而掉分" |
+| `enqueue_rollout` 推个任务 | **让这堆 LLM 调用真能并发、跨机、容错地大规模跑** | store + async 编排 + `TraceToMessages` adapter+ timeout |
 
 > **一句话钉死**：APO 的"智能"不在 for 循环里，在那几个 `.poml` 模板里；APO 的"可靠性"不在 sorted 里，在 store 那套管道里。算法骨架几十行就能手写，但把它变成**能稳定提升 prompt 的东西**，卡点是三件事——**写对批评模板、设计对 reward、压住评估噪声**。这正是 [Agentic-Engineering——质量与成本的一体化优化](../Agentic-Engineering——质量与成本的一体化优化.md) 强调的：工程价值在"质量与成本的治理"，不在算法炫技。
 
@@ -173,7 +172,7 @@ agent-lightning 干的就一件事：**自动优化一个已有 agent，而不�
 1. **你有 agent + 可量化 reward + 数据集，想自动迭代优化**——这是设计靶心。手调 prompt 调不动了，想让强模型替你"诊断+改写"循环跑。
 2. **你想在多种优化方法间切换**——先 APO 试 prompt，发现 prompt 到顶了想上 RL 微调权重，不想重写 agent。method-agnostic 的解耦在这里值回票价。
 3. **评估很贵、要大规模并发/跨机/容错地跑 rollout**——store 把 algo（生产者）和 runner（消费者）解耦，runner 可水平扩展、跨机、崩了能重连（系列03 §3.2）。单机 100 条数据手写脚本够，上千条 × 多候选 × 多轮就需要这套管道。
-4. **离线批量优化**（不是线上 serving）——APO 是离线把 prompt 调好，产出一个固化的最优 prompt（`get_best_prompt()`，`:245`），再拿去线上用。
+4. **离线批量优化**（不是线上 serving）——APO 是离线把 prompt 调好，产出一个固化的最优 prompt（`get_best_prompt()`），再拿去线上用。
 
 ### 5.3 别用的场景（避坑）
 
@@ -190,9 +189,9 @@ agent-lightning 干的就一件事：**自动优化一个已有 agent，而不�
 
 ## 六、小结
 
-1. **这个判断是对的**：APO 算法 = 多次 LLM 调用（try 的 rollout + critic + edit）+ 一个 `sorted()[:beam_width]`（`apo.py:741`）。整个算法是一个 `APO` 类 + `run()` 里的一个 `for` 循环（`:873`）。
+1. **这个判断是对的**：APO 算法 = 多次 LLM 调用（try 的 rollout + critic + edit）+ 一个 `sorted()[:beam_width]`（`apo.py`）。整个算法是一个 `APO` 类 + `run()` 里的一个 `for` 循环。
 2. **beam search 不是模块，是循环形状**：维护定长 `beam` 列表，每轮 扩展→打分→top-k 剪枝。代码里找不到 `class BeamSearch` 是正常的。
-3. **try/score/critic/edit 的代码落点**：`evaluate_prompt_on_batch`（`:430`）/ `find_final_reward`（`:417`）/ `compute_textual_gradient`（`:259`）/ `textual_gradient_and_apply_edit`（`:361`）。
+3. **try/score/critic/edit 的代码落点**：`evaluate_prompt_on_batch`/ `find_final_reward`/ `compute_textual_gradient`/ `textual_gradient_and_apply_edit`。
 4. **多 agent 是虚拟的**：Critic/Editor 只是两次带不同 POML 模板和 model 参数的 `chat.completions.create`，没有 agent 对象、没有编排——比 LangGraph/AutoGen 轻得多，也少了自主回溯能力。
 5. **难度迁移**：算法平凡，真难点在 POML 批评模板、reward 设计、评估噪声治理——三件框架帮不上的事（呼应 Bitter Lesson）。
 6. **核心使用场景**：有 agent + reward + 数据、想自动迭代 / 想换优化方法 / 要大规模跑 rollout → 该用；一次性任务 / 没好 reward / 数据太小 / 要线上 serving → 别用。**选它是为了管道和方法可换，不是为了算法聪明。**
