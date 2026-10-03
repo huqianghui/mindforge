@@ -34,7 +34,7 @@ Click any node to inspect its claims, confidence scores, and connections. Filter
 | Claims（带证据的论断） | 747 |
 | 知识图谱 | 139 节点 / 485 关系 / 9 种关系类型 |
 
-> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-10-02。
+> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-10-03。
 <!-- STATS:END -->
 
 ### 1. 语义搜索（qmd）
