@@ -115,7 +115,7 @@ Voice unavailable: Avatar request was rate-limited. Retry after 7.0s. — you ca
 | **同时活跃的数字人会话** | **5** | `avatar_service_resource_exhausted` | **能**，立刻腾出位置 |
 | **每 60 秒新建连接** | **3** | `rate_limit_exceeded` | **不能**，只数创建次数 |
 
-![数字人会话两条限制叠加的时间线：速率 3 次/60 秒锚定创建时刻、关闭不退还；并发 5 关闭即释放；到 5 并发必须分两批约 2 分钟|780](../../asset/voicelive-avatar-rate-limit-timeline-2026-10-03.svg)
+![数字人会话两条限制叠加的时间线：速率 3 次/60 秒锚定创建时刻、关闭不退还；并发 5 关闭即释放；到 5 并发必须分两批约 2 分钟|900](../../asset/voicelive-avatar-rate-limit-timeline-2026-10-03.svg)
 
 ### 4.1 实验 A：并发上限 = 5
 
