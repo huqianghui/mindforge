@@ -155,7 +155,7 @@ description: 回答"要么回太多、要么静默"之间怎么走：create_resp
 **播出段（⑩~⑬）**：
 
 10. **播出**：数字人开口。自己的声音可能绕回麦克风，数字人场景要配 Live-Reference AEC（见 [系列07](Voice%20Live系列07：重复致谢排查——三次Thank%20you的三个开轮来源、转写指纹与编排层修法.md) 第四节）。
-11. **打断处理**（编排层，与门控独立）：播出中用户开口触发 `speech_started`，`interrupt_response` 截断播报，`auto_truncate` 把对话历史截到用户实际听到的位置。致谢或读题时要不要允许打断，是应用要显式决定的事。
+11. **打断处理**（编排层，与门控独立）：播出中用户开口触发 `speech_started`，`interrupt_response` 截断播报，`auto_truncate` 把对话历史截到用户实际听到的位置。致谢或读题时要不要允许打断，是应用要显式决定的事。**但在"音频走 WebSocket PCM"那条路上这一条实测不成立**：Azure 把整段音频在不到 1 秒内灌完并立刻把 response 标记 completed，客户端还要播几秒，于是服务端没有可截断的对象，截断只能由客户端自己做——见[系列06](Voice%20Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属.md) 的 2026-10-03 更正框（含限定范围：数字人那条 WebRTC 路未测）。
 12. **`response.done`**：assistant item 已追加进 conversation，下一轮推理模型看得见自己刚说过什么。日志核验点在这里：`response.created` 次数应严格等于门控放行次数。
 13. **状态机复位**（应用层）：本题 `acked` 标志从 false 翻到 true，只能翻一次——致谢上限是结构保证的。回到 LISTENING，门控链重新积累下一次判断。
 
