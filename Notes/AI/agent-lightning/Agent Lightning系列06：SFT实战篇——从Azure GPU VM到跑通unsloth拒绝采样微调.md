@@ -235,14 +235,14 @@ python sft_rollout_runners.py
 > ⏳ 实测待填：三进程各自的日志片段、store 队列状态、runner 与 algorithm 经 store 的交互节奏；与一键模式产出是否一致。
 
 > ✅ 实测踩坑表（本次真实遇到的，全在「装环境」阶段，训练本身零报错）：
->
-> | 报错 | 根因 | 解法 |
-> |------|------|------|
-> | `ModuleNotFoundError: No module named 'agents'` | math_agent 用 OpenAI Agents SDK，但包名不叫 `agents` | `pip install openai-agents`（import 名是 `agents`，包名是 `openai-agents`） |
-> | `FileNotFoundError: 'uvx'` | math_agent 用 `uvx mcp-server-calculator` 起计算器，但 README 没列 `uv` | `pip install uv`，再 `uvx mcp-server-calculator --help` 预热拉包 |
-> | `ValueError: Model path models/version_0 does not exist` | 漏了下基座模型 | `hf download unsloth/Qwen3-4B-Instruct-2507 --local-dir models/version_0` |
->
-> 这三个都是 README Requirements 没写全的「隐藏前置」——印证 §1.3 的装包清单要补 `openai-agents` / `uv` / `huggingface_hub`。A100 上没遇到 OOM、端口占用、vllm 起不来。
+
+| 报错 | 根因 | 解法 |
+|------|------|------|
+| `ModuleNotFoundError: No module named 'agents'` | math_agent 用 OpenAI Agents SDK，但包名不叫 `agents` | `pip install openai-agents`（import 名是 `agents`，包名是 `openai-agents`） |
+| `FileNotFoundError: 'uvx'` | math_agent 用 `uvx mcp-server-calculator` 起计算器，但 README 没列 `uv` | `pip install uv`，再 `uvx mcp-server-calculator --help` 预热拉包 |
+| `ValueError: Model path models/version_0 does not exist` | 漏了下基座模型 | `hf download unsloth/Qwen3-4B-Instruct-2507 --local-dir models/version_0` |
+
+这三个都是 README Requirements 没写全的「隐藏前置」——印证 §1.3 的装包清单要补 `openai-agents` / `uv` / `huggingface_hub`。A100 上没遇到 OOM、端口占用、vllm 起不来。
 
 ---
 
