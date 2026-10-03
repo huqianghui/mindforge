@@ -29,7 +29,7 @@ tags:
 
 | | SFT（`examples/unsloth/`） | RL（`examples/calc_x/`，VERL） |
 |---|---|---|
-| GPU | **16GB**（4-bit 量化 + LoRA，`unsloth_helper.py:38`） | **40GB** 起（README 明示） |
+| GPU | **16GB**（4-bit 量化 + LoRA，`unsloth_helper.py`） | **40GB** 起（README 明示） |
 | 依赖 | unsloth + trl，**无需 VERL**（README："You will not need VERL"） | 要装 VERL（出了名地难装）+ AutoGen + MCP |
 | 数据 | GSM-hard 前 64 条**已打包**进 `data_gsmhard.jsonl` | 要去 Google Drive 下 parquet 再解压 |
 | 稳定性 | 监督学习，确定性强、必收敛 | reward hacking / KL 发散 / 超参敏感 |
@@ -51,7 +51,7 @@ tags:
 | 训练样本从哪来 | 人工/外部标注 | 模型自己跑 rollout，reward 筛 top-k |
 | 流程 | 直接对标签做交叉熵模仿 | 生成 → 打分 → `sort by reward` 留 top → 微调 |
 
-`sft_algorithm.py:148` 一句注释把整件事说穿了："**use the reward to select the top triplets to train on**"。`:342` 再确认："**Trains the model on top-performing examples**"。
+`sft_algorithm.py` 一句注释把整件事说穿了："**use the reward to select the top triplets to train on**"。再确认："**Trains the model on top-performing examples**"。
 
 ### 1.2 `target` 是 ground-truth，但它喂的是 grader，不是 trainer
 
@@ -74,8 +74,8 @@ tags:
 
 源码铁证（`math_agent.py`）：
 
-- `:123` `reward = compute_reward(result.final_output, task["target"])` —— `target` **只进 grader**。
-- `:128/132` `compute_reward(result, target)`，`:145-146` 抽出数字后 `np.isclose(answer, target, rtol=1e-5)` → 命中给 `1.0`，否则 `0.0`。**精确匹配式 grader，reward 干净无噪声**。
+- `reward = compute_reward(result.final_output, task["target"])` —— `target` **只进 grader**。
+- `compute_reward(result, target)` 抽出数字后 `np.isclose(answer, target, rtol=1e-5)` → 命中给 `1.0`，否则 `0.0`。**精确匹配式 grader，reward 干净无噪声**。
 - 关键：**那个 `code` 字段从头到尾没被引用**。模型不抄 `code`，而是自己生成解法（rollout），grader 只比对最终数字对不对。
 
 > 所以准确说法是：**agent-lightning 的 SFT 需要 ground-truth 来"评分"，但不需要 ground-truth 来"模仿"。** `target` 是裁判手里的判分钥匙；模型交的卷子（reasoning + code）是它自己写的；只有满分卷被收进错题本，反过来让它再背一遍。`code` 是数据集自带、但本流程用不上的冗余字段。
@@ -86,10 +86,10 @@ tags:
 
 ## 二、源码全景：四步一迭代，外加那个熟悉的 `sorted`
 
-SFT 这条线的核心是 `sft_one_iter()`（`sft_algorithm.py:135`），它干四件事（`:150` docstring）：
+SFT 这条线的核心是 `sft_one_iter()`（`sft_algorithm.py`），它干四件事（docstring）：
 
 ```
-sft_one_iter()                              sft_algorithm.py:135
+sft_one_iter()                              sft_algorithm.py
   ├─ 1. rollout 收集轨迹                      :168
   │    ├─ vllm_server 起模型服务              :61   （本地起当前模型供 rollout）
   │    ├─ LLM proxy 地址写进 store            :190
@@ -106,7 +106,7 @@ sft_one_iter()                              sft_algorithm.py:135
 
 ### 2.1 那个熟悉的 `sorted`：SFT 的"算法"也是一行排序
 
-还记得系列 04 的结论吗——APO 的剪枝就是 `sorted(...)[:beam_width]`（`apo.py:741`）。**SFT 这条线的"算法"内核，同样是一行排序加切片**：
+还记得系列 04 的结论吗——APO 的剪枝就是 `sorted(...)[:beam_width]`（`apo.py`）。**SFT 这条线的"算法"内核，同样是一行排序加切片**：
 
 ```python
 random.shuffle(all_triplets)                                       # :293
@@ -114,13 +114,13 @@ all_triplets.sort(key=lambda x: x["reward"], reverse=True)         # :294  ★ �
 sliced_triplets = all_triplets[: max(1, int(len(all_triplets) * triplet_fraction))]  # :295  ★ 留 top fraction
 ```
 
-`TRAIN_TRIPLET_FRACTION = 0.5`（`:354`）——只保留 reward 最高的 **50%** 轨迹拿去训练。
+`TRAIN_TRIPLET_FRACTION = 0.5`——只保留 reward 最高的 **50%** 轨迹拿去训练。
 
 > 系列 04 的结论在 SFT 这条线照样成立：**SFT 的"算法"核心还是 `sort by reward` 取 top-k，区别只在 sort 完之后是「拿去微调」而不是「选 prompt」。** APO 排序选 prompt、SFT 排序筛轨迹——同一套 `sorted`，不同的下游消费。
 
 #### 2.1.1 一个被 demo 省掉的坑：只切比例，不设阈值
 
-这行 `sorted` 藏着一个**生产环境会咬人的坑**——它只按比例切，**没有任何 reward 阈值过滤**。源码只有一处守卫（`:291`）：空列表才报错；之后无条件 `sort` + 切 top `triplet_fraction`：
+这行 `sorted` 藏着一个**生产环境会咬人的坑**——它只按比例切，**没有任何 reward 阈值过滤**。源码只有一处守卫：空列表才报错；之后无条件 `sort` + 切 top `triplet_fraction`：
 
 ```python
 if len(all_triplets) == 0:           # :291  唯一守卫——空列表才 raise
@@ -141,7 +141,7 @@ GSM-hard 例子里没炸，靠两个前提兜底：① reward 是二值 0/1，�
 
 ### 2.2 两个工程细节
 
-- **label masking（三个字段各管什么）**：一条 HuggingFace 训练样本有 `input_ids / labels / attention_mask` 三个张量字段（`:44-57`），看 `:271-273` 的实例最直观：
+- **label masking（三个字段各管什么）**：一条 HuggingFace 训练样本有 `input_ids / labels / attention_mask` 三个张量字段，看 的实例最直观：
 
   ```
   input_ids:      [151644, 872, 198, 3838, 374, 279, 74024]   # 模型读到的 = prompt + response
@@ -150,18 +150,18 @@ GSM-hard 例子里没炸，靠两个前提兜底：① reward 是二值 0/1，�
   ```
 
   - `input_ids` = 模型**读什么**（完整 prompt+response，prompt 必须在，否则没上下文）；
-  - `labels` = 模型被**考什么**（`:276` `[-100]*len(prompt) + response`）。`-100` 是 PyTorch `CrossEntropyLoss` 的 `ignore_index`——**标 -100 的位置 loss 记 0**，所以只在 response token 上算 loss，模型只学「怎么答」不学「复述题」；
-  - `attention_mask` = 哪些位置是真 token vs padding（`:280` 这里全 1，padding 由后续 collator 补）。
+  - `labels` = 模型被**考什么**（`[-100]*len(prompt) + response`）。`-100` 是 PyTorch `CrossEntropyLoss` 的 `ignore_index`——**标 -100 的位置 loss 记 0**，所以只在 response token 上算 loss，模型只学「怎么答」不学「复述题」；
+  - `attention_mask` = 哪些位置是真 token vs padding（这里全 1，padding 由后续 collator 补）。
 
   一句话：**input_ids 是「看什么」，labels 是「考什么」，attention_mask 是「哪些位置真实存在」**——prompt masking 就是让「看」和「考」错开。
-- **reward 跨轮传播**：`reversed(triplets)`（`:254-256`）让一次 rollout 里**后面轮次的 reward 往前面的轮次传**。因为多轮 agent（如先调工具再总结）只有最后一轮才拿到 reward，前面几轮没有直接分——倒序遍历把最终 reward 赋给前置轮次，这样前面的推理步骤也能被纳入"正确轨迹"。
+- **reward 跨轮传播**：`reversed(triplets)`让一次 rollout 里**后面轮次的 reward 往前面的轮次传**。因为多轮 agent（如先调工具再总结）只有最后一轮才拿到 reward，前面几轮没有直接分——倒序遍历把最终 reward 赋给前置轮次，这样前面的推理步骤也能被纳入"正确轨迹"。
 
 ### 2.3 它是迭代自提升，不是一次性训练
 
-`sft_algorithm()`（`:332`）主循环 `MAX_ITERATIONS = 2`（`:351`）。**每一轮都用上一轮训出来的新模型**（`models/version_{n}`）去跑 rollout、再训成 `version_{n+1}`：
+`sft_algorithm()`主循环 `MAX_ITERATIONS = 2`。**每一轮都用上一轮训出来的新模型**（`models/version_{n}`）去跑 rollout、再训成 `version_{n+1}`：
 
 ```
-version_0（初始模型）→ rollout → 筛 top → 训练 → version_1
+version_0（初始模型） → rollout → 筛 top → 训练 → version_1
 version_1（更强）     → rollout → 筛 top → 训练 → version_2
 ```
 
@@ -189,7 +189,7 @@ version_1（更强）     → rollout → 筛 top → 训练 → version_2
                   └──喂 grader 判分◀────────┘ np.isclose(答案, target)
 ```
 
-**最终 SFT 记录的字段**（`HuggingFaceDatasetRecord`，`:44-57`）只有四个，没一个直接来自元数据集的原始字段：
+**最终 SFT 记录的字段**（`HuggingFaceDatasetRecord`）只有四个，没一个直接来自元数据集的原始字段：
 
 | SFT 字段           | 来源                                  | 作用                      |
 | ---------------- | ----------------------------------- | ----------------------- |
@@ -202,9 +202,9 @@ version_1（更强）     → rollout → 筛 top → 训练 → version_2
 
 ### 2.5 带工具调用（MCP / function-call）的 SFT 数据长什么样
 
-math_agent 实际是个**带工具的 agent**——它通过 MCP 调用计算器（`math_agent.py:96-120`，`MCPServerStdio` + `uvx mcp-server-calculator`），vLLM 也开了工具解析（`:69-70` `auto_tool_choice=True, tool_call_parser="hermes"`）。那么**工具调用步骤算 SFT 内容吗？** 算，但只算「模型自己生成的那部分」。
+math_agent 实际是个**带工具的 agent**——它通过 MCP 调用计算器（`math_agent.py`，`MCPServerStdio` + `uvx mcp-server-calculator`），vLLM 也开了工具解析（`auto_tool_choice=True, tool_call_parser="hermes"`）。那么**工具调用步骤算 SFT 内容吗？** 算，但只算「模型自己生成的那部分」。
 
-机制还是 `:275`——**每个 LLM 调用 = 一个 triplet**，`response` 是模型生成的、`prompt` 是喂给它的：
+机制还是——**每个 LLM 调用 = 一个 triplet**，`response` 是模型生成的、`prompt` 是喂给它的：
 
 | 内容 | 落在哪 | 算 loss? |
 |------|--------|---------|
@@ -237,11 +237,11 @@ Triplet B（拿到结果收尾这轮）
 
 ### 2.6 单轮记录 vs 多轮记录：拆分粒度与对最终模型的影响
 
-§2.5 的例子是**每轮一条**（称 A 法）：一次带工具的 rollout 切成 2 条独立 SFT 记录。源码确认（`sft_algorithm.py`）：`triplets = data_adapter.adapt(spans)`（`:242`）把一次 rollout 切成 `List[Triplet]`，`for triplet in reversed(triplets)`（`:256`）逐个 `all_triplets.append`（`:277`）——**N 轮 = N 条记录**。但「整段多轮拼成一条」（称 B 法，trl multi-turn SFT 常见）也合法。两种拆法对**最终模型效果**有没有差别？
+§2.5 的例子是**每轮一条**（称 A 法）：一次带工具的 rollout 切成 2 条独立 SFT 记录。源码确认（`sft_algorithm.py`）：`triplets = data_adapter.adapt(spans)`把一次 rollout 切成 `List[Triplet]`，`for triplet in reversed(triplets)`逐个 `all_triplets.append`——**N 轮 = N 条记录**。但「整段多轮拼成一条」（称 B 法，trl multi-turn SFT 常见）也合法。两种拆法对**最终模型效果**有没有差别？
 
 #### 先纠正一个问法：拆分在 adapter，不在模型
 
-模型 / `SFTTrainer` **不理解「轮次」**——它只吃 `{input_ids, labels, attention_mask}`，做标准 next-token + label mask，不知道这条是第几轮、是不是 tool_call。**要 A 还是 B 取决于 `TraceToTriplet` adapter（`:36/:242`）怎么切 trace**，不是模型内部能「自动拆成多步」。拆分是数据侧的事。
+模型 / `SFTTrainer` **不理解「轮次」**——它只吃 `{input_ids, labels, attention_mask}`，做标准 next-token + label mask，不知道这条是第几轮、是不是 tool_call。**要 A 还是 B 取决于 `TraceToTriplet` adapter怎么切 trace**，不是模型内部能「自动拆成多步」。拆分是数据侧的事。
 
 | | A. 每轮一条（agent-lightning 用） | B. 整段一条（trl multi-turn 常见） |
 |---|---|---|
@@ -252,7 +252,7 @@ Triplet B（拿到结果收尾这轮）
 
 #### 第一层：token 梯度等价——不影响「能不能学会」
 
-causal LM 的 loss 是**每个 response token 独立的交叉熵**，都以左侧为上下文。只要 A 法的轮2 记录把**真实的轮1+工具返回**放进 prompt（`:275` 确实如此），那「轮2 各 token 的梯度」在 A、B 里**完全相同**——同样 token、同样 `P(轮2 | 轮1, 工具结果)`。**所以 A 不破坏多步能力**：推理时模型本就逐轮自回归，A 训的正是每轮的条件分布。
+causal LM 的 loss 是**每个 response token 独立的交叉熵**，都以左侧为上下文。只要 A 法的轮2 记录把**真实的轮1+工具返回**放进 prompt（确实如此），那「轮2 各 token 的梯度」在 A、B 里**完全相同**——同样 token、同样 `P(轮2 | 轮1, 工具结果)`。**所以 A 不破坏多步能力**：推理时模型本就逐轮自回归，A 训的正是每轮的条件分布。
 
 > 真正决定多步能力的是**前缀是不是 on-policy**——A、B 都用模型自产轨迹当前缀（拒绝采样的天然属性），这比拆法重要得多。
 
@@ -272,7 +272,7 @@ token 梯度等价，不代表训练分布等价：
 
 - **短任务（2 轮数学）**：A/B 差异可忽略。
 - **长 agent 轨迹**：**B（多轮 packing + assistant-only mask）通常更优**——省算力、分布更忠实、不被长对话上采样带偏。
-- **agent-lightning 偏选 A**，不是因为训得更好，而是为了 **①与 RL 统一 triplet 表示（method-agnostic）②reward 跨轮传播需要 per-turn triplet**（`reversed`，`:254-256`）。这是为框架一致性付的工程税，不是为模型效果做的选择。
+- **agent-lightning 偏选 A**，不是因为训得更好，而是为了 **①与 RL 统一 triplet 表示（method-agnostic）②reward 跨轮传播需要 per-turn triplet**（`reversed`）。这是为框架一致性付的工程税，不是为模型效果做的选择。
 
 > 一句话：**A、B 在 token 梯度上等价，最终能力主要由 on-policy 前缀决定；差异在训练分布权重与算力——长轨迹选 B，要 RL/per-turn reward 选 A。**
 
@@ -318,7 +318,7 @@ reward 筛选正是用来**"无中生有地造出这个缺失的标签"**：① 
 
 ### 4.1 为什么不能把答错的也一起训练？
 
-因为 **SFT 的数学本质是"无条件最大化你喂进去的东西的似然"**——你喂什么它就拼命模仿什么。喂错误轨迹 = 主动教它学错。reward 就是那道门：只有"到达正确答案"的轨迹才放进去（`:294-295` 的 top-fraction 切片）。没有这道门，你就是在拿垃圾做 SFT。
+因为 **SFT 的数学本质是"无条件最大化你喂进去的东西的似然"**——你喂什么它就拼命模仿什么。喂错误轨迹 = 主动教它学错。reward 就是那道门：只有"到达正确答案"的轨迹才放进去（的 top-fraction 切片）。没有这道门，你就是在拿垃圾做 SFT。
 
 （进阶：有些方法*会*用负例——DPO/偏好学习、RL——那是把"对 vs 错"当对比信号。纯 SFT 只能见好样本。）
 
@@ -346,11 +346,11 @@ reward 筛选正是用来**"无中生有地造出这个缺失的标签"**：① 
 两者解决的问题不同：
 
 - **自蒸馏**：扩充"已会题"上的**稳定性**（pass@k → pass@1）。
-- **强→弱蒸馏**：扩充到"学生当前根本不会的题"。弱模型的死穴是**有些难题它采样 N 次全错（0 条正确轨迹）→ 自蒸馏一无所获**；换强模型去跑，能产出这些难题的正确轨迹，给弱模型提供**它自己造不出来的训练信号**。`target` 在这里验证强模型的轨迹确实对（避免把老师的错误也蒸馏进去）。
+- **强→弱蒸馏**：扩充到"学生当前根本不会的题"。弱模型的死穴是**有些难题它采样 N 次全错（0 条正确轨迹） → 自蒸馏一无所获**；换强模型去跑，能产出这些难题的正确轨迹，给弱模型提供**它自己造不出来的训练信号**。`target` 在这里验证强模型的轨迹确实对（避免把老师的错误也蒸馏进去）。
 
 reward 来源也对应两条路：
 
-- **有 ground-truth**（如本例 GSM-hard 的 `target`）→ 精确匹配 grader，客观、零噪声，**首选**。
+- **有 ground-truth**（如本例 GSM-hard 的 `target`） → 精确匹配 grader，客观、零噪声，**首选**。
 - **没 ground-truth** → 强模型当 LLM-as-judge 打分（主观，有噪声，要防 reward hacking，参见系列 04 §四）。
 
 ---
@@ -361,13 +361,13 @@ reward 来源也对应两条路：
 
 | 配置 | 值 | 源码 | 作用 |
 |------|----|----|------|
-| 4-bit 量化 | `load_in_4bit=True` | `:38` | 模型以 4bit 加载，省显存 |
-| LoRA rank | `r=32` | `:44` | 只训低秩适配器，不动全量权重 |
-| LoRA alpha | `lora_alpha=32` | `:54` | 缩放系数 |
-| max_seq_length | `4096` | `:37` | 序列长度上限 |
-| 学习率 | `2e-4`（长训练降到 `2e-5`） | `:69` | LoRA 典型 lr |
-| batch | `per_device_train_batch_size=2` | `:64` | 单卡小 batch |
-| 训练器 | `trl.SFTTrainer`（被 unsloth patch） | `:78` | 实际执行 SFT |
+| 4-bit 量化 | `load_in_4bit=True` | | 模型以 4bit 加载，省显存 |
+| LoRA rank | `r=32` | | 只训低秩适配器，不动全量权重 |
+| LoRA alpha | `lora_alpha=32` | | 缩放系数 |
+| max_seq_length | `4096` | | 序列长度上限 |
+| 学习率 | `2e-4`（长训练降到 `2e-5`） | | LoRA 典型 lr |
+| batch | `per_device_train_batch_size=2` | | 单卡小 batch |
+| 训练器 | `trl.SFTTrainer`（被 unsloth patch） | | 实际执行 SFT |
 
 **两种跑法**（与系列 03 的"三进程 vs 一键"一脉相承）：
 
@@ -381,7 +381,7 @@ python sft_algorithm.py           # 生产者：收集 → 筛 → 训练
 python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Trainer.fit
 ```
 
-方式 B 的 `UnslothSupervisedFinetuning(Algorithm)`（`sft_allinone.py:30`）在 `run()`（`:52`）里用 `self.get_store()/get_llm_proxy()/get_adapter()`（`:64-66`）拿脊柱组件，循环 `max_iterations`（`:100`，默认 2）调 `sft_one_iter`。**这正是系列 02 讲的接口规范——继承 `Algorithm` 实现 `run()`，框架注入依赖**。
+方式 B 的 `UnslothSupervisedFinetuning(Algorithm)`（`sft_allinone.py`）在 `run()`里用 `self.get_store()/get_llm_proxy()/get_adapter()`拿脊柱组件，循环 `max_iterations`（，默认 2）调 `sft_one_iter`。**这正是系列 02 讲的接口规范——继承 `Algorithm` 实现 `run()`，框架注入依赖**。
 
 ---
 
@@ -391,8 +391,8 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 
 | 方法 | reward 怎么被消费 | 源码标志 | 改 agent/reward 吗 |
 |------|------------------|---------|------------------|
-| **APO**（系列 01/04） | 排序选 **prompt** | `sorted(...)[:beam_width]`（`apo.py:741`） | 否 |
-| **SFT**（系列 05） | 排序筛 **轨迹**，top-k 拿去微调 | `all_triplets.sort(..., reverse=True)`（`sft_algorithm.py:294`） | 否 |
+| **APO**（系列 01/04） | 排序选 **prompt** | `sorted(...)[:beam_width]`（`apo.py`） | 否 |
+| **SFT**（系列 05） | 排序筛 **轨迹**，top-k 拿去微调 | `all_triplets.sort(..., reverse=True)`（`sft_algorithm.py`） | 否 |
 | **RL/VERL**（系列 07） | 当**梯度信号**直接进 policy gradient | reward 不排序，做反向传播 | 否 |
 
 你写好的那个 grader（返回 float），从 APO 切到 SFT 再切到 RL **一行都不用改**——变的只是算法侧怎么用这个分。
@@ -425,21 +425,21 @@ python sft_allinone.py            # UnslothSupervisedFinetuning(Algorithm) + Tra
 
 **RL 的代价**（系列07 详谈）：不稳定（reward hacking / KL 发散 / 超参敏感）、高显存（40GB+）、难装（VERL）、reward 噪声会被放大。
 
-> 完整升级顺序：**先 APO 调 prompt（不动权重，最便宜）→ 顶了上 SFT（拒绝采样自提升，正例，16GB）→ 再顶了上 RL（VERL，正负例 + 探索，40GB+）**。每一级都比上一级贵、强、难调。**method-agnostic 的兑现：这三级共享同一份 agent + grader + 数据集，换的只是 `algorithm/` 槽位。** 系列07 就接着把 SFT 留下的「负例信息」和「探索」这两块拼上。
+> 完整升级顺序：**先 APO 调 prompt（不动权重，最便宜） → 顶了上 SFT（拒绝采样自提升，正例，16GB） → 再顶了上 RL（VERL，正负例 + 探索，40GB+）**。每一级都比上一级贵、强、难调。**method-agnostic 的兑现：这三级共享同一份 agent + grader + 数据集，换的只是 `algorithm/` 槽位。** 系列07 就接着把 SFT 留下的「负例信息」和「探索」这两块拼上。
 
 ---
 
 ## 八、小结
 
 1. **核心结论**：agent-lightning 的 SFT 不是"喂标准答案让模型模仿"，而是**用 reward 当裁判，把模型自己写的、被验证正确的轨迹造成模仿标签**——拒绝采样微调（RAFT/STaR）。
-2. **`target` 是评分键，不是模仿 label**：`target` 喂给 grader 算 reward（`math_agent.py:123`，`np.isclose` 精确匹配），`code` 字段根本没被引用。**SFT 需要 ground-truth 评分，不需要 ground-truth 模仿。**
-3. **"算法"还是一行 sorted**：`all_triplets.sort(key=reward, reverse=True)` + 切 top 50%（`sft_algorithm.py:294-295`），与 APO 的 `sorted[:beam_width]` 对称——区别只在下游是「微调」还是「选 prompt」。
+2. **`target` 是评分键，不是模仿 label**：`target` 喂给 grader 算 reward（`math_agent.py`，`np.isclose` 精确匹配），`code` 字段根本没被引用。**SFT 需要 ground-truth 评分，不需要 ground-truth 模仿。**
+3. **"算法"还是一行 sorted**：`all_triplets.sort(key=reward, reverse=True)` + 切 top 50%（`sft_algorithm.py`），与 APO 的 `sorted[:beam_width]` 对称——区别只在下游是「微调」还是「选 prompt」。
 4. **答对了为什么还训练**：能答对 ≠ 稳定答对。自蒸馏把 pass@k 压成 pass@1，把 best-of-N 的搜索成本内化进权重。
 5. **为什么只挑高分不全量**：数据集只给最终答案不给解题过程，reward 是用来**造出缺失的输出标签**；且不能拿错误轨迹做 SFT（会教坏）；自生成正确轨迹是 on-policy，优于硬模仿 gold。
 6. **自蒸馏 vs 强→弱蒸馏**：区别只在 runner 配哪个模型——同模型=自蒸馏（扩稳定性），强模型跑=蒸馏（扩覆盖率，能教会学生本来不会的题）。
-7. **demo 的坑：只切比例不设阈值**（`:291-295`）——reward 全 0 也会取 top 50%，正确率 < 50% 时会用 0 分样本「凑满」污染训练集。生产应改阈值过滤（`reward > 0`）。
+7. **demo 的坑：只切比例不设阈值**——reward 全 0 也会取 top 50%，正确率 < 50% 时会用 0 分样本「凑满」污染训练集。生产应改阈值过滤（`reward > 0`）。
 8. **工具调用是 SFT 内容，但只算模型自产部分**：function_call 在 response（训练），工具返回在下轮 prompt（被 -100 盖住）。换工具 schema → 调用语法不迁移、推理模式部分迁移；**先把工具契约定稳再 SFT**。
-9. **单轮 vs 多轮记录**：agent-lightning 用 A 法（每轮一条，`:242/256/277`）。A、B 在 token 梯度上等价、不影响能不能学会；差异在训练分布权重与算力——长轨迹 B 更省更忠实，A 是为了与 RL 统一 triplet + reward 跨轮传播。拆分在 adapter 不在模型。
+9. **单轮 vs 多轮记录**：agent-lightning 用 A 法（每轮一条）。A、B 在 token 梯度上等价、不影响能不能学会；差异在训练分布权重与算力——长轨迹 B 更省更忠实，A 是为了与 RL 统一 triplet + reward 跨轮传播。拆分在 adapter 不在模型。
 10. **快速成功选 SFT**：16GB + 无需 VERL + 稳定收敛，是上手权重微调的最佳起点；顶了再上 RL（系列 07）。
 
 > 相关：[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（脊柱 + Algorithm 接口）、[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md)（生产者/消费者、一键 vs 三进程）、[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景](Agent%20Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景.md)（算法剖析对称篇）、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)、[The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](../../../paper/2026-03-21-The-Bitter-Lesson.md)、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
