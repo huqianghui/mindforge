@@ -60,10 +60,10 @@ tags: [agent-lightning, architecture, framework, rollout, reward, tracer, store,
 ### 2.1 `litagent` — 你的 agent，被 `@rollout` 包成函数
 
 - **职责**：把任意 agent 逻辑变成框架能调度的执行单元。
-- **关键**：`@rollout`（`litagent/decorator.py:465`）是**函数装饰器**，靠 `inspect.signature` 自动判型。硬性签名约束（`_validate_*_rollout_func`，`decorator.py:352/434`）：
+- **关键**：`@rollout`（`litagent/decorator.py`）是**函数装饰器**，靠 `inspect.signature` 自动判型。硬性签名约束（`_validate_*_rollout_func`，`decorator.py`）：
   - 第一个参数**必须叫 `task`**；
   - **必须**带 `llm`（自己建 client）**或** `prompt_template`（框架注入可调 prompt）之一；可选第三参 `rollout`（拿 metadata）。
-- 装饰后变成 `FunctionalLitAgent`（`decorator.py:94`），它继承 `LitAgent`——所以「函数式」只是「类式」的语法糖。
+- 装饰后变成 `FunctionalLitAgent`（`decorator.py`），它继承 `LitAgent`——所以「函数式」只是「类式」的语法糖。
 - **边界**：框架**不关心**你函数体里用 LangChain / OpenAI SDK / AutoGen / 裸写。它只认「签名 + 返回值」。所谓"零代码改动"实质是"包一层符合签名的函数"。
 
 ```python
@@ -78,21 +78,21 @@ def my_agent(task, prompt_template):
 ### 2.2 `runner` — 把 rollout 跑 N 次
 
 - **职责**：调度执行——并发跑多条 rollout、重试、超时、心跳、把结果回写 store。
-- **关键**：`LitAgentRunner`（`runner/agent.py:60`）。两个入口：`step()`（`agent.py:794`，单条，系列01 的 Step-0 验证用它）、`iter()`（`agent.py:737`，持续从 store 取任务跑）。
+- **关键**：`LitAgentRunner`（`runner/agent.py`）。两个入口：`step()`（`agent.py`，单条，系列01 的 Step-0 验证用它）、`iter()`（`agent.py`，持续从 store 取任务跑）。
 - **边界**：runner 是「生产者」——它产出 spans，写进 store；不做优化决策。**grader 返回的 float 在这里被转成 reward span**（见 §2.6）。
 
 ### 2.3 `tracer` — 把每次 LLM 调用抓成 OTel span
 
 - **职责**：可观测性。自动 instrument LLM 库，把每次调用记成 OpenTelemetry span。
-- **关键**：`AgentOpsTracer`（`tracer/agentops.py:32`）继承 `OtelTracer`，`instrument()` 调 `instrument_all()`——自动 patch `instrumentation/` 下的 openai/langchain/litellm/vllm。
+- **关键**：`AgentOpsTracer`（`tracer/agentops.py`）继承 `OtelTracer`，`instrument()` 调 `instrument_all()`——自动 patch `instrumentation/` 下的 openai/langchain/litellm/vllm。
 - **边界（重要，回答"能否与客户已有 trace 共存"）**：
   1. **共存**：底层是 OTel 标准，客户已有 OTel 体系就共享同一 `TracerProvider`，框架只多挂一个 `LightningSpanProcessor` 喂训练；
-  2. **只用客户的**：`instrument_managed=False`（`agentops.py:46/61`）关掉自动 patch，自己管 instrumentation；还能换 `tracer/otel.py`/`weave.py`/`dummy.py`；
+  2. **只用客户的**：`instrument_managed=False`（`agentops.py`）关掉自动 patch，自己管 instrumentation；还能换 `tracer/otel.py`/`weave.py`/`dummy.py`；
   3. **底线**：框架要训练，**必须能拿到 reward span**。trace 可以是客户那套，但 reward 信号得按框架格式 emit。
 
 ### 2.4 `store` — 训练的「控制平面」
 
-- **职责**：不只是存 trace，而是协调整个 rollout 生命周期。`base.py:104` docstring 自称 "persistent **control-plane** that coordinates training rollouts"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）之间的中枢。
+- **职责**：不只是存 trace，而是协调整个 rollout 生命周期。`base.py` docstring 自称 "persistent **control-plane** that coordinates training rollouts"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）之间的中枢。
 - **关键后端**（`store/__init__.py`，比初看到的多）：
   | 实现 | 文件 | 场景 |
   |------|------|------|
@@ -110,8 +110,8 @@ def my_agent(task, prompt_template):
 
 - **职责**：底层 spans 是一堆扁平 dotted attribute（如 `gen_ai.prompt.0.role`），adapter 把它们还原成结构化对象。
 - **两个方向**（`adapter/__init__.py`）：
-  - `TraceToMessages`（`messages.py`）→ `OpenAIMessages`（`{messages, tools}` OpenAI chat 格式，`messages.py:22`）。给 **APO 的 gradient_model** 读"agent 到底说了啥"。
-  - `TraceToTriplet` 系列（`triplet.py:767/831/944`）→ `List[Triplet]` 轨迹。给 **RL/SFT 训练**用。
+  - `TraceToMessages`（`messages.py`） → `OpenAIMessages`（`{messages, tools}` OpenAI chat 格式，`messages.py`）。给 **APO 的 gradient_model** 读"agent 到底说了啥"。
+  - `TraceToTriplet` 系列（`triplet.py`） → `List[Triplet]` 轨迹。给 **RL/SFT 训练**用。
 - **边界**：这是 **method-agnostic 的关键接缝**——同一份 trace，APO 用 messages 看对话，RL 用 triplet 取训练样本。换方法 = 换 adapter 出口，rollout 不动。
 
 ### 2.6 `reward` — grader 与 reward 的桥
@@ -119,31 +119,31 @@ def my_agent(task, prompt_template):
 - **职责**：把你的领域打分（grader 返回的 float）变成框架能读的标准信号。
 - **坑点澄清**：`agentlightning/reward.py` 本身是 **deprecated 转发层**（`from .emitter.reward import *`），**真实现在 `emitter/reward.py`**。
 - **grader→reward 两条路**（逻辑在 `runner/agent.py`）：
-  1. **隐式（最常用）**：`@rollout` 函数**直接 `return` 一个 float**（`float` 是合法 `RolloutRawResult`，`core.py:307`）。runner 在 `agent.py:294` 判 `isinstance(raw_result, (bool,int,float))` → `agent.py:304` 自动 `emit_reward(raw_result)`。
-  2. **显式**：函数体里调 `emit_reward(score)`（`emitter/reward.py:148`），或给 grader 加 `@reward` 装饰器——适合一次 rollout 发多维 reward。
-- **回读**：`find_final_reward(spans)`（`emitter/reward.py:307`）倒序找最后一个 reward span 取值，供算法排序/优化。
-- **一句话**：grader 算分 → `emit_reward` 把分写进 trace（一个 OTel span）→ `find_final_reward` 把分读回来。
+  1. **隐式（最常用）**：`@rollout` 函数**直接 `return` 一个 float**（`float` 是合法 `RolloutRawResult`，`core.py`）。runner 在 `agent.py` 判 `isinstance(raw_result, (bool,int,float))` → `agent.py` 自动 `emit_reward(raw_result)`。
+  2. **显式**：函数体里调 `emit_reward(score)`（`emitter/reward.py`），或给 grader 加 `@reward` 装饰器——适合一次 rollout 发多维 reward。
+- **回读**：`find_final_reward(spans)`（`emitter/reward.py`）倒序找最后一个 reward span 取值，供算法排序/优化。
+- **一句话**：grader 算分 → `emit_reward` 把分写进 trace（一个 OTel span） → `find_final_reward` 把分读回来。
 
 ### 2.7 `algorithm` — 可插拔的优化策略
 
 - **职责**：消费 store 里的 rollout 结果来优化（改 prompt 或改权重）。
-- **接口规范**（`algorithm/base.py:25`）：继承 `Algorithm`，实现 `run(train_dataset, val_dataset)`（`base.py:135`）；框架 fit 时注入依赖，run 里用 `self.get_store()`/`get_adapter()`/`get_initial_resources()`/`get_llm_proxy()` 拿脊柱组件。也可用 `@algo` 装饰器（`decorator.py`）写函数式，按关键字参数声明要哪些依赖。
+- **接口规范**（`algorithm/base.py`）：继承 `Algorithm`，实现 `run(train_dataset, val_dataset)`（`base.py`）；框架 fit 时注入依赖，run 里用 `self.get_store()`/`get_adapter()`/`get_initial_resources()`/`get_llm_proxy()` 拿脊柱组件。也可用 `@algo` 装饰器（`decorator.py`）写函数式，按关键字参数声明要哪些依赖。
 - **内置只有两个**（`algorithm/__init__.py` 仅 export）：**APO**（prompt）、**VERL**（RL 权重）+ `Baseline`/`FastAlgorithm` 工具类。
 - **边界**：算法是「消费者」，只通过 store 与 runner 解耦通信。**换算法不碰 rollout / reward**——这就是 method-agnostic 的兑现处。
 
 ### 2.8 `trainer` — 编排者
 
-- **职责**：把上面全部串起来。`Trainer`（`trainer/trainer.py:120`）持有 `algorithm / store / n_runners / execution_strategy / tracer / adapter / initial_resources`，把 store/adapter/resources 注入 algorithm，并把 telemetry 接回 store。
-- **默认装配**：store=`InMemoryLightningStore`、tracer=`AgentOpsTracer`、adapter=`TracerTraceToTriplet`（`trainer.py:9/19/20`）——所以最简用法不用显式传这些。
+- **职责**：把上面全部串起来。`Trainer`（`trainer/trainer.py`）持有 `algorithm / store / n_runners / execution_strategy / tracer / adapter / initial_resources`，把 store/adapter/resources 注入 algorithm，并把 telemetry 接回 store。
+- **默认装配**：store=`InMemoryLightningStore`、tracer=`AgentOpsTracer`、adapter=`TracerTraceToTriplet`（`trainer.py`）——所以最简用法不用显式传这些。
 
 ### 2.9 `types` — 数据契约
 
 模块之间流的是这几个 pydantic 模型（`types/core.py`、`types/resources.py`）：
-- `Rollout`（`core.py:174`）：一次「agent 在一个 task 上的完整执行」，含 `rollout_id/input/status/config` 重试配置；
-- `Attempt`（`core.py:136`）：一次 rollout 的一次尝试（可重试多个）；
-- `Triplet`（`core.py:69`）：`prompt/response/reward/metadata`——一个交互轮次（详见 §3.3）；
-- `PromptTemplate`（`resources.py:146`）：APO 优化的对象，作为 resource 注入；
-- `Dataset`（`core.py:376`，Protocol）：你的数据集契约。
+- `Rollout`（`core.py`）：一次「agent 在一个 task 上的完整执行」，含 `rollout_id/input/status/config` 重试配置；
+- `Attempt`（`core.py`）：一次 rollout 的一次尝试（可重试多个）；
+- `Triplet`（`core.py`）：`prompt/response/reward/metadata`——一个交互轮次（详见 §3.3）；
+- `PromptTemplate`（`resources.py`）：APO 优化的对象，作为 resource 注入；
+- `Dataset`（`core.py`，Protocol）：你的数据集契约。
 
 ---
 
@@ -152,20 +152,20 @@ def my_agent(task, prompt_template):
 ### 3.1 prompt 必须从 agent 里「抽出来」变成注入资源
 
 这是接入 APO 的**唯一强制改造**。看 example：
-- `room_selector.py:122` `@rollout def room_selector(task, prompt_template)`——prompt 不写死在函数里；
-- `:351` `prompt_template = prompt_template_baseline()`；`:357` `runner.step(task, resources={"main_prompt": prompt_template})`。
+- `room_selector.py` `@rollout def room_selector(task, prompt_template)`——prompt 不写死在函数里；
+- `prompt_template = prompt_template_baseline()`；`runner.step(task, resources={"main_prompt": prompt_template})`。
 
-机制：**APO 每轮生成新的 `PromptTemplate`，通过 resources 注入，agent 函数体不变，变的是注进来的 template**（`prompt_rollout` docstring，`decorator.py:391`："algorithms manage and optimize the prompt template, while agents consume the template"）。
+机制：**APO 每轮生成新的 `PromptTemplate`，通过 resources 注入，agent 函数体不变，变的是注进来的 template**（`prompt_rollout` docstring，`decorator.py`："algorithms manage and optimize the prompt template, while agents consume the template"）。
 
 > agent = `prompt + model + tool + knowledge`，APO 只动 prompt 一项，其余在函数体里固定。**客户 agent 若 prompt 写死，必须先重构成「baseline prompt template + 注入」**，否则 APO 没有可优化对象。
 
 ### 3.2 grader 与 reward 的关系（再强调）
 
-很多人卡在"为什么 `reward.py` 是空的"。答案：它是 deprecated shim，真逻辑在 `emitter/reward.py` + `runner/agent.py:294-304`。**grader 是你的领域打分函数（返回 float），reward 是这个 float 被 emit 成 OTel span 后框架能读到的标准信号**。转换器就是 runner 的「return float → 自动 emit_reward」。
+很多人卡在"为什么 `reward.py` 是空的"。答案：它是 deprecated shim，真逻辑在 `emitter/reward.py` + `runner/agent.py`。**grader 是你的领域打分函数（返回 float），reward 是这个 float 被 emit 成 OTel span 后框架能读到的标准信号**。转换器就是 runner 的「return float → 自动 emit_reward」。
 
 ### 3.3 为什么叫 `Triplet`（明明 4 个字段）
 
-`Triplet`（`core.py:69`）字段是 `prompt, response, reward, metadata`，docstring："Single interaction turn captured during reinforcement learning."
+`Triplet`（`core.py`）字段是 `prompt, response, reward, metadata`，docstring："Single interaction turn captured during reinforcement learning."
 - **核心三元是 `(prompt, response, reward)`**——RL 经典三件套（≈ state-action-reward / 输入-输出-反馈）。`metadata`（`default_factory=dict`）是附加杂物袋，不计入"三元"。**名字取自语义三元组，不是字段计数**。
 - **主要服务 RL/SFT 这条权重微调线**：adapter 把 trace 转成 `List[Triplet]` 喂训练。**APO 不直接用 Triplet**（它用 `TraceToMessages` 看对话）。
 - **层级关系**：
@@ -203,7 +203,7 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 > 这纠正了 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) 初版把 SFT 列为内置算法的说法。
 
-**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py:69`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是 [Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md) 的主题。
+**自定义算法长什么样**：`examples/apo/apo_custom_algorithm.py` 演示了不依赖 `APO` 类、自己写优化循环的写法——核心就一句 `await store.enqueue_rollout(...)`（`apo_custom_algorithm.py`），配合 `apo_custom_algorithm_trainer.py` 的「algorithm 进程 + runner 进程」分离模式。这套「store 居中、算法与执行解耦」的写法，是 [Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行](Agent%20Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行.md) 的主题。
 
 ---
 
@@ -244,7 +244,7 @@ Rollout（一个 task 的一次执行，可含多次重试 Attempt）
 
 ### 6.4 使用顺序口诀
 
-> **先 APO 探边界**（最便宜，看 prompt 能把分数压到哪）**→ APO 到顶且 pass@k>0 就上 SFT**（拒绝采样固化，16GB 可跑）**→ SFT 到顶或需要探索新策略才上 RL**（最贵，且要拿 SFT checkpoint 做 warmup）。每往上一级之前，都可以先用一次小 SFT 当「便宜探针」验证框架接线是否通畅（系列05 §〇），再决定值不值得往上爬。
+> **先 APO 探边界**（最便宜，看 prompt 能把分数压到哪）** → APO 到顶且 pass@k>0 就上 SFT**（拒绝采样固化，16GB 可跑）** → SFT 到顶或需要探索新策略才上 RL**（最贵，且要拿 SFT checkpoint 做 warmup）。每往上一级之前，都可以先用一次小 SFT 当「便宜探针」验证框架接线是否通畅（系列05 §〇），再决定值不值得往上爬。
 
 ---
 
