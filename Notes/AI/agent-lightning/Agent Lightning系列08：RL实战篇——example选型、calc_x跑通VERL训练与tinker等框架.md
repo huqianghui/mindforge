@@ -244,7 +244,7 @@ python calc_agent.py
 >
 > **单机无需跨机配置**：本例单机单卡，`ray start --head` 起的是 localhost 单节点「集群」，分布式通信全在本机进程间走共享内存/本地 TCP，不用配 head/worker 地址或端口。`--dashboard-host=0.0.0.0` 只是把 dashboard 暴露给 VM 外浏览器看。
 >
-> **为什么叫 `restart_ray.sh` 不是 start**：脚本先 `ray stop --force --grace-period 60` 杀残留 Ray 进程（RL 跑完常留僵尸 actor 占着 GPU 显存）→ `ps aux` 确认停干净 → `env RAY_DEBUG=legacy HYDRA_FULL_ERROR=1 VLLM_USE_V1=1 ray start --head` 起全新 head。三个环境变量分别是：vLLM v1 引擎、让 VERL 的 Hydra 配置报完整栈、旧版调试器。每次跑前清旧状态、释放显存。
+> **为什么叫 `restart_ray.sh` 不是 start**：脚本先 `ray stop --force --grace-period 60` 杀残留 Ray 进程（RL 跑完常留僵尸 actor 占着 GPU 显存） → `ps aux` 确认停干净 → `env RAY_DEBUG=legacy HYDRA_FULL_ERROR=1 VLLM_USE_V1=1 ray start --head` 起全新 head。三个环境变量分别是：vLLM v1 引擎、让 VERL 的 Hydra 配置报完整栈、旧版调试器。每次跑前清旧状态、释放显存。
 >
 > **边界（重要，别混淆两种「smoke」）**：Ray 只在**训练阶段**需要。步骤 3 的 `python calc_agent.py` debug 是纯本地 rollout 链路验证，**不需要 Ray**；从本步起，任何 `train_calc_agent.py`（哪怕 `--ci-fast` 只 1 step）都真走 VERL 训练，**必须先 `restart_ray.sh` 起 Ray**。
 
@@ -312,14 +312,14 @@ CLI 关键开关：`--ci`（minimal，20 step）、`--ci-fast`（1 step 冒烟�
 
 | 配置项 | 位置 | 值 |
 |--------|------|-----|
-| vLLM backend 开关 | `train_calc_agent.py:55` | `actor_rollout_ref.rollout.name = "vllm"` |
-| vLLM tool-call 解析 | `train_calc_agent.py:64` | hermes |
-| 默认模型 | `train_calc_agent.py:89` | `Qwen/Qwen2.5-1.5B-Instruct` |
-| 模型 CLI 覆盖 | `train_calc_agent.py:263` | `--model` |
-| LiteLLM proxy 本体 | `llm_proxy.py:1007` | `LLMProxy`（**不是 calc_x 手写启动的**） |
-| vLLM 地址注册进 LiteLLM | `daemon.py:457` | `AgentModeDaemon` 把 vLLM server 地址注册成 model list |
-| LiteLLM backend 名 | `daemon.py:463` | `hosted_vllm/<model>` |
-| 给 agent 用的 LLM resource | `daemon.py:519` | runner 从 store 拿到的 `main_llm` |
+| vLLM backend 开关 | `train_calc_agent.py` | `actor_rollout_ref.rollout.name = "vllm"` |
+| vLLM tool-call 解析 | `train_calc_agent.py` | hermes |
+| 默认模型 | `train_calc_agent.py` | `Qwen/Qwen2.5-1.5B-Instruct` |
+| 模型 CLI 覆盖 | `train_calc_agent.py` | `--model` |
+| LiteLLM proxy 本体 | `llm_proxy.py` | `LLMProxy`（**不是 calc_x 手写启动的**） |
+| vLLM 地址注册进 LiteLLM | `daemon.py` | `AgentModeDaemon` 把 vLLM server 地址注册成 model list |
+| LiteLLM backend 名 | `daemon.py` | `hosted_vllm/<model>` |
+| 给 agent 用的 LLM resource | `daemon.py` | runner 从 store 拿到的 `main_llm` |
 
 > **LiteLLM 不是你启动的 actor**，是 OpenAI-compatible 请求路径里的客户端/代理库。日志里 `model=hosted_vllm/Qwen/Qwen2.5-1.5B-Instruct` + `Cannot connect to host 10.0.0.4:<port>` 就是这条映射：`agent → LiteLLM proxy → hosted_vllm/Qwen/... → vLLM backend http://10.0.0.4:<port>/v1/`。
 
@@ -349,14 +349,14 @@ VERL.run()
 
 AgentLightningTrainer.fit()
   ├─ AgentModeDaemon.start()
-  ├─ set_up_data_and_server(..., async_rollout_manager.server_addresses)  # daemon.py:590
-  ├─ LiteLLM LLMProxy 注册 vLLM backend   # daemon.py:457/463
+  ├─ set_up_data_and_server(..., async_rollout_manager.server_addresses)  # daemon.py
+  ├─ LiteLLM LLMProxy 注册 vLLM backend   # daemon.py
   └─ store 里 enqueue rollouts + main_llm resource
 
 Runner
   ├─ 拉取 rollout
-  ├─ 执行 @agl.rollout 的 calc_agent()    # calc_agent.py:105
-  ├─ AutoGen OpenAIChatCompletionClient 请求 llm.endpoint  # calc_agent.py:78/88
+  ├─ 执行 @agl.rollout 的 calc_agent()    # calc_agent.py
+  ├─ AutoGen OpenAIChatCompletionClient 请求 llm.endpoint  # calc_agent.py
   ├─ LiteLLM proxy 转发到 vLLM
   ├─ MCP calculator tool
   ├─ emit_reward
@@ -365,7 +365,7 @@ Runner
 
 > **关键认识**：训练时 agent 用的 LLM **不是** `calc_agent.py` 里 `_llm_from_env()` 那个外部 `OPENAI_BASE_URL`（那是步骤 3 debug 用的），而是 **runner 从 store 拿到的 `main_llm` resource**——指向 VERL 内部拉起的 vLLM server。这就是为什么步骤 3（外部 Azure 端点）能通、但步骤 4（内部 vLLM）连不上：两条 LLM 链路完全不同。
 
-**③ vLLM server 地址的来源**：rollout 连的 `backend_llm_server_addresses`（即 `10.0.0.4:<port>`）**由 VERL trainer 侧创建 vLLM async server 后，通过 `set_up_data_and_server(..., server_addresses, ...)` 传进 daemon**（`daemon.py:590`），再注册给 LiteLLM。也就是说 **VERL 已认定 server 在该端口、并把地址交给了 litellm**——当前的 `Cannot connect` 报错，本质是「地址已注册、但那个 vLLM actor 的 HTTP server 没在该端口真正 listen」。
+**③ vLLM server 地址的来源**：rollout 连的 `backend_llm_server_addresses`（即 `10.0.0.4:<port>`）**由 VERL trainer 侧创建 vLLM async server 后，通过 `set_up_data_and_server(..., server_addresses, ...)` 传进 daemon**（`daemon.py`），再注册给 LiteLLM。也就是说 **VERL 已认定 server 在该端口、并把地址交给了 litellm**——当前的 `Cannot connect` 报错，本质是「地址已注册、但那个 vLLM actor 的 HTTP server 没在该端口真正 listen」。
 
 ---
 
@@ -415,11 +415,11 @@ Runner
   ```
   ModuleNotFoundError: No module named 'verl.workers.fsdp_workers'
   ```
-  报错出在 `agentlightning/verl/entrypoint.py:128`：
+  报错出在 `agentlightning/verl/entrypoint.py`：
   ```python
   from verl.workers.fsdp_workers import ActorRolloutRefWorker, AsyncActorRolloutRefWorker, CriticWorker
   ```
-  - **根因链**：`torch-gpu-stable` 组在 `pyproject.toml` 里 pin 的是 `verl>=0.6.0`，而 `uv.lock` 里 verl 只有 **0.5.0 和 0.8.0**（没有 0.6.0/0.7.0）→ `--frozen` 下 `>=0.6.0` 只能解析到 **0.8.0** → **verl 0.8.0 删除了 `verl.workers.fsdp_workers` 模块**，而 agentlightning 0.3.1 的 entrypoint 仍 import 它 → 必崩。
+  - **根因链**：`torch-gpu-stable` 组在 `pyproject.toml` 里 pin 的是 `verl>=0.6.0`，而 `uv.lock` 里 verl 只有 **0.5.0 和 0.8.0**（没有 0.6.0/0.7.0） → `--frozen` 下 `>=0.6.0` 只能解析到 **0.8.0** → **verl 0.8.0 删除了 `verl.workers.fsdp_workers` 模块**，而 agentlightning 0.3.1 的 entrypoint 仍 import 它 → 必崩。
   - **实测各版本 `fsdp_workers.py` 是否存在**（curl verl 各 tag 该文件）：**v0.5.0 / v0.6.0 / v0.7.0 都有（HTTP 200），v0.8.0 已删（404）**。即 agentlightning 0.3.1 兼容 verl ≤0.7.0。
   - **为什么 CI 抓不到**：CI 的 `examples-calc-x.yml` 也走 `--group torch-gpu-stable`，但 **CI 机器没有 GPU、从不真起 VERL 训练循环**，这条 import 在 CI 里根本不执行——只有在 A100 上真跑训练才触发。所以这是「lockfile + group pin 配置 bug」，靠 CI 绿灯发现不了。
   - **最终解法（钉 verl 0.7.0，保住新栈，优于整体降级 legacy）**：不走 `torch-gpu-legacy`（那是 verl 0.5.0 + torch 2.7.0 + vllm 0.9.2 整套降级），而是**把 verl 钉在「仍保留 `fsdp_workers` 的最高版本」0.7.0**，同时保住 stable 的新栈（torch 2.8.0 / vllm 0.11.0 / flash-attn 2.8.3.post1）。跑通的对齐版本（见 fork 的 `requirements-freeze-calcx-aligned.txt`）：
