@@ -95,7 +95,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 | `model` | 无 | **必填** `vasa-1` | 声明驱动的生成模型（版本化） |
 | `character` | lisa / harry / meg / jeff / lori / max 等 | adrian / amara / anika 等 **30 个** Talking heads | 一边是素材库索引，一边是照片索引 |
 | `style` | 有（casual-sitting 等，= 某段实拍素材变体） | **没有** | photo 无素材库，style 无物可指 |
-| `scene` | 无 | zoom / position / rotation / amplitude | 姿态是生成的，用连续参数控制，语义上取代 style |
+| `scene` | 无 | zoom / position_x / position_y / rotation_x,y,z / amplitude | 姿态是生成的，用连续参数控制，语义上取代 style。**`zoom` 已实测有效（2026-10-03）**：`zoom<1` 缩小，默认构图是头到下巴的特写，0.78 得到头肩像（露出肩膀与衣服）——这是让面试页与编辑器缩略图构图一致的唯一杠杆，项目已按 0.78 落地 |
 | `video.crop` / `background` / `bitrate` | 支持（绿幕色/背景图替换、裁剪竖屏） | 文档示例仅 codec + resolution | 源素材 1080p 级 vs 源生成 512×512 |
 | `customized` | true = 自定义 video 头像 | true = 自定义 photo 头像 | 自定义 photo 头像需一张照片 + 约 1 分钟 consent 音频 |
 
@@ -178,7 +178,7 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 
 | 方案 | 单会话下行（视频） | 100 并发经中继的下行总量 | 上行（音频） |
 |---|---:|---:|---:|
-| Video 头像，默认 1080p H.264 | 实测均值约 1.5~2.4 Mbps，静音期突发 3~4 Mbps（Azure 默认 bitrate 2000000、gop_size 10） | 约 150~240 Mbps | 24 kHz PCM16 原始 0.38 Mbps，含 base64 与 JSON 封装实测 0.54~0.68 Mbps；级联模式可降 16 kHz 至约 0.36~0.45 Mbps（[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 4.5.1），两类相同 |
+| Video 头像，默认 1080p H.264 | 实测均值约 1.5~2.4 Mbps（Azure 默认 bitrate 2000000、gop_size 10）。~~静音期突发 3~4 Mbps~~ **已作废**：两次复测均未复现，读题期与静音期基本持平（各约 1.6~1.8 Mbps），差别在帧率 / 每帧字节而非总码率，见[系列12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 第三节的复现失败与终止说明 | 约 150~240 Mbps | **16 kHz PCM16（项目现状）实测 0.256 Mbps payload / 约 0.242 Mbps 线路**；改前（每 8 ms 一条 base64+JSON）是 0.391 / 约 0.285 Mbps，24 kHz 时代含封装 0.54~0.68 Mbps。payload 与线路两个数不同是因为这条 WebSocket 协商了 permessage-deflate，base64 文本能压到 73%、裸 PCM 只压到 95%。详见 [系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 4.5.1，两类头像相同 |
 | Photo 头像，512×512 | 实测约 0.5~0.85 Mbps（下限档，不再往下降） | 约 50~85 Mbps | 同上 |
 
 默认下两者只差约 2.4 倍（645 对 1548 kbps），不是一个数量级——真正拉开差距靠 `video.bitrate` 上限而不是换角色；而弱网下的真正差异在可解码性：1% 丢包时 1080p 一帧都解不出来、512×512 照常播，见[系列12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)。把它写进选型时要带三个限定：
