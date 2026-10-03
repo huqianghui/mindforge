@@ -31,7 +31,7 @@ tags: [agent-lightning, custom-algorithm, store, producer-consumer, trainer, APO
 
 ### 1.1 它用一个"假算法"故意把 APO 抽走
 
-打开 `apo_custom_algorithm.py:46-50`，所谓的"优化算法"长这样：
+打开 `apo_custom_algorithm.py`，所谓的"优化算法"长这样：
 
 ```python
 prompt_candidates = [
@@ -41,7 +41,7 @@ prompt_candidates = [
 ]
 ```
 
-三个**写死的** prompt，挨个跑一遍、各打一次分，最后 `max` 选最高分（`:98`）。**这里没有文本梯度、没有 Critic/Editor、没有 beam search、没有任何迭代生成**——它连"优化"都算不上，本质是个**穷举三选一**。
+三个**写死的** prompt，挨个跑一遍、各打一次分，最后 `max` 选最高分。**这里没有文本梯度、没有 Critic/Editor、没有 beam search、没有任何迭代生成**——它连"优化"都算不上，本质是个**穷举三选一**。
 
 > 所以你的直觉完全正确：这个例子**没有修改 APO，也没有修改 beam search**。真正的 APO 内核（`algorithm/apo/apo.py` 里的文本梯度 + `_evaluate_and_select_beam` 的 top-k 剪枝，见 [Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)）在这个文件里**根本没被引用**。作者是**故意**把 APO 这个复杂优化器整个替换成一个三行的占位 stub。
 
@@ -57,17 +57,17 @@ prompt_candidates = [
 
 ## 二、5 个 store 动作 = 算法接入契约
 
-把 `apo_algorithm(*, store)`（`:42`）那个 for 循环里的样板逐行抠出来，会发现**任何算法接入框架都只需要做这 5 件事**：
+把 `apo_algorithm(*, store)`那个 for 循环里的样板逐行抠出来，会发现**任何算法接入框架都只需要做这 5 件事**：
 
-| # | 动作 | 源码 | 干什么 | 类比 |
-|---|------|------|--------|------|
-| 1 | `store.add_resources(resources)` | `:65` | 把这一轮要试的 prompt 挂到 store 上（包成 `PromptTemplate`，`:62`） | 把考题贴到公告栏 |
-| 2 | `store.enqueue_rollout(input=..., mode="train")` | `:69` | 推一个任务进队列，等 runner 来领 | 把试卷投进收件箱 |
-| 3 | `store.wait_for_rollouts(rollout_ids=[...], timeout=...)` | `:76` | 轮询等 runner 把这个任务跑完（最多等 30 秒，`:75`） | 等学生交卷 |
-| 4 | `store.query_spans(rollout_id)` | `:86` | 取回这次执行的完整轨迹（OpenTelemetry spans） | 收回答题卡 |
-| 5 | `agl.find_final_reward(spans)` | `:92` | 从轨迹里抽出那个数值分数 | 从答题卡上读出得分 |
+| # | 动作 | 干什么 | 类比 |
+| --- | ------ | -------- | ------ |
+| 1 | `store.add_resources(resources)` | 把这一轮要试的 prompt 挂到 store 上（包成 `PromptTemplate`） | 把考题贴到公告栏 |
+| 2 | `store.enqueue_rollout(input=..., mode="train")` | 推一个任务进队列，等 runner 来领 | 把试卷投进收件箱 |
+| 3 | `store.wait_for_rollouts(rollout_ids=[...], timeout=...)` | 轮询等 runner 把这个任务跑完（最多等 30 秒） | 等学生交卷 |
+| 4 | `store.query_spans(rollout_id)` | 取回这次执行的完整轨迹（OpenTelemetry spans） | 收回答题卡 |
+| 5 | `agl.find_final_reward(spans)` | 从轨迹里抽出那个数值分数 | 从答题卡上读出得分 |
 
-拿到 reward 后，算法自己决定怎么用——这个例子是 `prompt_and_rewards.append(...)`（`:95`）攒起来，最后 `max` 选优（`:98`）。**"怎么选"是算法的自由，框架不管**。
+拿到 reward 后，算法自己决定怎么用——这个例子是 `prompt_and_rewards.append(...)`攒起来，最后 `max` 选优。**"怎么选"是算法的自由，框架不管**。
 
 > 关键认知：这 5 个动作就是 [Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md) 讲的 **store-centric 控制平面**的全部 API 面。算法只通过 store 和外界打交道，**完全不知道 runner 是谁、在哪、用什么模型**。这就是 method-agnostic 的工程基础——换算法（APO→RL→SFT）只是换这 5 个动作之间的逻辑，runner 和 agent 代码一字不动。
 
@@ -86,10 +86,10 @@ prompt_candidates = [
 └─────────────┘   （读回结果）                    └──────────┘                     └──────────────┘
 ```
 
-- **algo = 生产者**（`apo_algorithm`，`:42`）：它 `enqueue_rollout`（`:69`）往队列里推任务，并通过 `add_resources`（`:65`）设定"这一轮用哪个 prompt"。**它生产任务，但不执行任务。**
-- **runner = 消费者**（`apo_runner`，`:154`）：`runner.iter()`（`:161`）不断从 store 拉任务、执行 `apo_rollout`（调 gpt-4.1-nano，`:107`）、再用 `llm_judge`（`:127`）打分，把结果（spans）写回 store。**它执行任务，但不决定试什么。**
+- **algo = 生产者**（`apo_algorithm`）：它 `enqueue_rollout`往队列里推任务，并通过 `add_resources`设定"这一轮用哪个 prompt"。**它生产任务，但不执行任务。**
+- **runner = 消费者**（`apo_runner`）：`runner.iter()`不断从 store 拉任务、执行 `apo_rollout`（调 gpt-4.1-nano）、再用 `llm_judge`打分，把结果（spans）写回 store。**它执行任务，但不决定试什么。**
 
-你之前问"对应的就是设置的 prompt？"——**对**。生产者设的那个 prompt，就是 `prompt_candidates` 里当前这一个，通过 `add_resources` 包成 `PromptTemplate` 注入（`:62-65`）；消费者在 `apo_rollout` 里用 `prompt_template.format(any_question=task)`（`:110`）把它填进真正的 LLM 调用。
+你之前问"对应的就是设置的 prompt？"——**对**。生产者设的那个 prompt，就是 `prompt_candidates` 里当前这一个，通过 `add_resources` 包成 `PromptTemplate` 注入；消费者在 `apo_rollout` 里用 `prompt_template.format(any_question=task)`把它填进真正的 LLM 调用。
 
 ### 3.2 为什么非要拆成两个进程
 
@@ -122,9 +122,9 @@ python apo_custom_algorithm.py runner
 python apo_custom_algorithm.py algo
 ```
 
-`main()`（`:164`）里 `store = agl.LightningStoreClient("http://localhost:4747")`（`:165`）——注意这是个 **Client**，连的是终端 1 那个独立 store 服务。argparse 的 `mode` 参数（`:167`，choices=`["algo","runner"]`）决定这个进程当生产者还是消费者。
+`main()`里 `store = agl.LightningStoreClient("http://localhost:4747")`——注意这是个 **Client**，连的是终端 1 那个独立 store 服务。argparse 的 `mode` 参数（，choices=`["algo","runner"]`）决定这个进程当生产者还是消费者。
 
-⚠️ **时序坑**：算法侧 `wait_for_rollouts` 最多等 30 秒（`:75` 的 `for _ in range(30)`），等不到就 `RuntimeError`（`:81`）。所以 **runner 必须先于或同时于 algo 起来**，否则任务没人消费、算法直接报错。
+⚠️ **时序坑**：算法侧 `wait_for_rollouts` 最多等 30 秒（的 `for _ in range(30)`），等不到就 `RuntimeError`。所以 **runner 必须先于或同时于 algo 起来**，否则任务没人消费、算法直接报错。
 
 ### 4.2 方式 B：Trainer 一键（`apo_custom_algorithm_trainer.py`）
 
@@ -134,22 +134,22 @@ python apo_custom_algorithm.py algo
 python apo_custom_algorithm_trainer.py
 ```
 
-它做的事（`:41-44`）：
+它做的事：
 
 ```python
 trainer = Trainer(n_workers=1, algorithm=apo_algorithm_usable_in_trainer)
 trainer.fit(apo_rollout)
 ```
 
-`@algo` 装饰器（`:29`）把 `apo_algorithm` 包成 Trainer 能识别的算法对象（等价于 `algo(apo_algorithm)`，`:36`），`fit(apo_rollout)` 把 rollout 函数交给 Trainer。**Trainer 在进程内部同时拉起 store、algo、runner 三者**——文件头的 docstring 写得很直白："This is equivalent to the following three commands in parallel"（`:10-16`）。
+`@algo` 装饰器把 `apo_algorithm` 包成 Trainer 能识别的算法对象（等价于 `algo(apo_algorithm)`），`fit(apo_rollout)` 把 rollout 函数交给 Trainer。**Trainer 在进程内部同时拉起 store、algo、runner 三者**——文件头的 docstring 写得很直白："This is equivalent to the following three commands in parallel"。
 
 ### 4.3 关键：Trainer 自带 store，不用单独起 `agl store`
 
 这是你最关心的疑问。答案在 `trainer/trainer.py`：
 
-- 构造时 `self.store = self._make_store(store, self.strategy)`（`:232`）；
-- `_make_store` 的注释明说 **"By default, it's always a in-memory store"**（`:296`）；
-- 默认工厂 `default_store_factory = lambda: InMemoryLightningStore(...)`（`:300`）。
+- 构造时 `self.store = self._make_store(store, self.strategy)`；
+- `_make_store` 的注释明说 **"By default, it's always a in-memory store"**；
+- 默认工厂 `default_store_factory = lambda: InMemoryLightningStore(...)`。
 
 所以 **Trainer 会自己造一个进程内的 InMemoryLightningStore，不需要你另开 `agl store`**。
 
@@ -158,9 +158,9 @@ trainer.fit(apo_rollout)
 | A 三进程手动 | 3 | **要** | 独立服务（4747） | 学习链路、跨机/多 runner 扩展 |
 | B Trainer 一键 | 1 | **不要** | Trainer 进程内（内存） | 本地快速验证、单机调试 |
 
-⚠️ **不要混用**：如果你已经开着 `agl store`，再跑 trainer，trainer 会**无视外部 store、自己另起内存 store**（除非显式配 `ClientServerExecutionStrategy` 把 store 暴露成服务，`:299/:319`）。外部那个不会报错，但白开了，还容易让你对"结果在哪看"产生混乱。**跑 trainer 前先把三进程那套关掉。**
+⚠️ **不要混用**：如果你已经开着 `agl store`，再跑 trainer，trainer 会**无视外部 store、自己另起内存 store**（除非显式配 `ClientServerExecutionStrategy` 把 store 暴露成服务）。外部那个不会报错，但白开了，还容易让你对"结果在哪看"产生混乱。**跑 trainer 前先把三进程那套关掉。**
 
-> 进阶：`_make_store`（`:293`）的第二个分支显示——只有当 `strategy` 是 `ClientServerExecutionStrategy`（`:299`）时，store 才会是线程安全/可被外部连接的版本。也就是说，**单机用内存 store（默认），分布式才升级成 client/server**。这与 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) §1 讲的部署形态一脉相承。
+> 进阶：`_make_store`的第二个分支显示——只有当 `strategy` 是 `ClientServerExecutionStrategy`时，store 才会是线程安全/可被外部连接的版本。也就是说，**单机用内存 store（默认），分布式才升级成 client/server**。这与 [Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md) §1 讲的部署形态一脉相承。
 
 ---
 
@@ -168,7 +168,7 @@ trainer.fit(apo_rollout)
 
 ### 5.1 前置：API Key
 
-无论哪种方式，`apo_rollout`（`:105`）和 `llm_judge`（`:128`）都用 `AsyncOpenAI()` 调 gpt-4.1-nano。**跑之前必须配好凭证**：
+无论哪种方式，`apo_rollout`和 `llm_judge`都用 `AsyncOpenAI()` 调 gpt-4.1-nano。**跑之前必须配好凭证**：
 
 - 公有 OpenAI：`export OPENAI_API_KEY=sk-...`
 - Azure OpenAI：需改用 `AsyncAzureOpenAI` 并配 endpoint/deployment（系列01 §1.4 的 deployment 表给过映射）。
@@ -197,12 +197,12 @@ trainer.fit(apo_rollout)
 
 ### 5.3 常见"卡住"信号与排查
 
-| 现象 | 位置 | 原因 / 排查 |
-|------|------|------------|
-| algo 报 `RuntimeError: Expected a completed rollout...` | `:81` | 30 秒没等到结果 → runner 没消费成功。去 runner 终端看红字，**最常见是 API Key / Azure endpoint 没配好** |
-| algo 报 `Rollout ... did not succeed. Status: ...` | `:85` | rollout 跑了但失败 → 看 runner 侧异常栈 |
-| runner 终端一直静默 | — | runner 没起来或起晚了（算法只等 30 秒）。三进程方式务必 **runner 先起** |
-| `Judge returned no content` / score=0.0 | `:144/:151` | judge 模型没返回合法数字 → 多为模型/配额问题 |
+| 现象 | 原因 / 排查 |
+| ------ | ------------ |
+| algo 报 `RuntimeError: Expected a completed rollout...` | 30 秒没等到结果 → runner 没消费成功。去 runner 终端看红字，**最常见是 API Key / Azure endpoint 没配好** |
+| algo 报 `Rollout ... did not succeed. Status: ...` | rollout 跑了但失败 → 看 runner 侧异常栈 |
+| runner 终端一直静默 | runner 没起来或起晚了（算法只等 30 秒）。三进程方式务必 **runner 先起** |
+| `Judge returned no content` / score=0.0 | judge 模型没返回合法数字 → 多为模型/配额问题 |
 
 ---
 
@@ -237,9 +237,9 @@ for round in range(beam_rounds):
 
 1. **例子的观点不是 APO，是「接入契约」**：`apo_custom_algorithm.py` 用一个写死 3 个 prompt 的穷举 stub **故意替换掉整个 APO 优化器**，目的是把"算法 ↔ store 的契约"单独暴露出来。
 2. **APO/beam 一字未改**——你的直觉对的。真 APO 内核（文本梯度 + beam search）在这个文件里根本没被引用，作者是有意做减法。
-3. **接入契约 = 5 个 store 动作**：`add_resources`（贴 prompt）→ `enqueue_rollout`（推任务）→ `wait_for_rollouts`（等结果）→ `query_spans`（取轨迹）→ `find_final_reward`（读分数）。任何算法只要会这 5 步就能接入。
+3. **接入契约 = 5 个 store 动作**：`add_resources`（贴 prompt） → `enqueue_rollout`（推任务） → `wait_for_rollouts`（等结果） → `query_spans`（取轨迹） → `find_final_reward`（读分数）。任何算法只要会这 5 步就能接入。
 4. **algo=生产者、runner=消费者**：algo 推任务+设 prompt（不执行），runner 拉任务+跑 LLM+打分（不决策），靠 store 这块黑板异步解耦——好处是 runner 可横向扩展、可跨机、可故障隔离。
-5. **三进程 vs Trainer 一键**：手动三进程要 `agl store`（靠 4747 通信）；Trainer **自带内存 store**（`trainer/trainer.py:300`），一条命令搞定，**不用单独起 store**。两者别混用。
+5. **三进程 vs Trainer 一键**：手动三进程要 `agl store`（靠 4747 通信）；Trainer **自带内存 store**（`trainer/trainer.py`），一条命令搞定，**不用单独起 store**。两者别混用。
 6. **从玩具到真 APO**：只换 for 循环里的"产生+选择候选"逻辑，框架那 5 个动作不动——这就是 method-agnostic 的落地证明。
 
 > 相关：[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析](Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)（实践接线 + beam search 内核）、[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计](Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)（数据流脊柱 + 控制反转）、[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比](Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)（APO 算法本体）、[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南](Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南.md)
