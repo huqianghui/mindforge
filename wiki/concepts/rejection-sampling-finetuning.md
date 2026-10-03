@@ -48,7 +48,7 @@ related:
 - **置信度**：0.9
 - **状态**：stale
 
-> 最大的认知误区：以为 agent-lightning 的 SFT 是喂标准答案让模型模仿。真相是它**没有理想输出序列**——数据集只给"最终答案"（如 GSM-hard 的 `target = -9867630`）和一个 grader，不给"解题过程"。要区分两种 ground-truth：**任务的标准答案（评分键）**喂给 grader 算 reward（`math_agent.py:123` 用 `np.isclose` 精确匹配，干净无噪声）；**模型输出的标准答案（模仿 label）**则没有预先给。模型自己跑 rollout 生成 response → grader 用 target 验证为正确 → 把这些"经认证正确"的自产轨迹留下当 SFT 对。数据集自带的 `code` 解法字段从头到尾没被引用，是冗余死字段。一句话：**需要 ground-truth 来评分，不需要 ground-truth 来模仿。**
+> 最大的认知误区：以为 agent-lightning 的 SFT 是喂标准答案让模型模仿。真相是它**没有理想输出序列**——数据集只给"最终答案"（如 GSM-hard 的 `target = -9867630`）和一个 grader，不给"解题过程"。要区分两种 ground-truth：**任务的标准答案（评分键）**喂给 grader 算 reward（`math_agent.py` 用 `np.isclose` 精确匹配，干净无噪声）；**模型输出的标准答案（模仿 label）**则没有预先给。模型自己跑 rollout 生成 response → grader 用 target 验证为正确 → 把这些"经认证正确"的自产轨迹留下当 SFT 对。数据集自带的 `code` 解法字段从头到尾没被引用，是冗余死字段。一句话：**需要 ground-truth 来评分，不需要 ground-truth 来模仿。**
 
 ### Claim: "算法"内核还是一行 sorted——与 APO 对称，区别只在下游消费
 
@@ -58,7 +58,7 @@ related:
 - **置信度**：0.9
 - **状态**：stale
 
-> SFT 这条线的"算法"内核是 `all_triplets.sort(key=lambda x: x["reward"], reverse=True)` + 切 top fraction（`sft_algorithm.py:294-295`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑（2026-07-18 标记 outdated）**：读源码时曾推断 demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT。**该子结论已被实跑证据推翻**，见下方新 Claim（引用 [[sft-rejection-sampling-hands-on]] 实跑日志）：demo 实际按 `reward > 0` 阈值过滤，不存在此坑。
+> SFT 这条线的"算法"内核是 `all_triplets.sort(key=lambda x: x["reward"], reverse=True)` + 切 top fraction（`sft_algorithm.py`，默认留 top 50%），与 APO 的 `sorted(...)[:beam_width]` 对称——同一套 sorted，区别只在 sort 完之后是「拿去微调」而非「选 prompt」。这是 method-agnostic 的兑现：同一份 grader/reward，APO 排序选 prompt、SFT 排序筛轨迹、RL 当梯度信号，grader 一行不改只换算法侧消费方式。**生产坑（2026-07-18 标记 outdated）**：读源码时曾推断 demo 只按比例切、不设 reward 阈值——若某轮所有 rollout 都答错（reward 全 0）照样取前 50%，等于拿 0 分垃圾做 SFT。**该子结论已被实跑证据推翻**，见下方新 Claim（引用 [[sft-rejection-sampling-hands-on]] 实跑日志）：demo 实际按 `reward > 0` 阈值过滤，不存在此坑。
 
 ### Claim: demo 实际按阈值过滤（`reward > 0`），"零阈值切比例"的生产坑推断被实跑日志推翻
 
@@ -88,7 +88,7 @@ related:
 - **置信度**：0.8
 - **状态**：stale
 
-> 因为 runner 的 rollout 模型与算法侧的训练目标模型解耦（生产者/消费者分离），同一套框架支持两种形态：**rollout 模型 == 被训模型** → 自我提升、自举 = STaR/RAFT/ReST（自蒸馏，扩充"已会题"的稳定性）；**更强模型跑 rollout、训更弱模型** → 强→弱知识转移 = 拒绝采样蒸馏（扩覆盖率，能教会学生本来不会的题）。弱模型的死穴是有些难题采样 N 次全错（0 条正确轨迹）→ 自蒸馏一无所获；换强模型去跑能产出这些难题的正确轨迹，target 在此验证强模型轨迹确实对（避免把老师的错误也蒸馏进去）。reward 来源两条路：有 ground-truth → 精确匹配 grader（客观零噪声，首选）；没有 → 强模型当 LLM-as-judge（主观有噪声，要防 reward hacking）。
+> 因为 runner 的 rollout 模型与算法侧的训练目标模型解耦（生产者/消费者分离），同一套框架支持两种形态：**rollout 模型 == 被训模型** → 自我提升、自举 = STaR/RAFT/ReST（自蒸馏，扩充"已会题"的稳定性）；**更强模型跑 rollout、训更弱模型** → 强→弱知识转移 = 拒绝采样蒸馏（扩覆盖率，能教会学生本来不会的题）。弱模型的死穴是有些难题采样 N 次全错（0 条正确轨迹） → 自蒸馏一无所获；换强模型去跑能产出这些难题的正确轨迹，target 在此验证强模型轨迹确实对（避免把老师的错误也蒸馏进去）。reward 来源两条路：有 ground-truth → 精确匹配 grader（客观零噪声，首选）；没有 → 强模型当 LLM-as-judge（主观有噪声，要防 reward hacking）。
 
 ### Claim: RAFT = RL 的数据哲学 + SFT 的更新机制，reward 只"检票"不进梯度
 
@@ -98,7 +98,7 @@ related:
 - **置信度**：0.9
 - **状态**：stale
 
-> RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批）→ Rank/Filter（用 reward 过滤出高分子集）→ Fine-tune（在子集上 SFT）→ 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择）→ RWR（reward 当软权重）→ PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。
+> RAFT（Reward rAnked FineTuning, 2023, LMFlow 团队）是个对齐框架，目标和 RLHF 的 PPO 一样（让输出对齐某 reward），但用 SFT 方式实现而非策略梯度。三步迭代：Sample（从当前模型采一批） → Rank/Filter（用 reward 过滤出高分子集） → Fine-tune（在子集上 SFT） → 重复直到收敛。相对 PPO 的卖点：更稳更鲁棒（无训练不稳定、不需要 value model/critic）、超参少好调（几乎只有 K 和温度 λ）、数据生成与模型更新解耦（可并行缓存分布式）。本质分界：reward 在 RAFT 里只做**接受/拒绝的过滤阈值**，选完即弃、无信用分配、纯 CE loss 无 reward 项、不用负样本；PPO 里 reward 是嵌进梯度的学习信号（算 advantage 逐 token 缩放梯度、用负样本）。补一档连成光谱：**RAFT（硬 0/1 选择） → RWR（reward 当软权重） → PPO（reward 经 advantage 进每步梯度）**，越往右 reward 越走进梯度核心。STaR（2022）是它的推理域前身——二值 reward + 带 rationalization 兜底（失败题给答案当 hint 反向造 rationale）。
 
 ### Claim: demo 把 RAFT 退化成 K=1 greedy 二值 reward 非累积版，丢了"K 大→收敛快"红利
 
