@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="820" viewBox="0 0 1480 820" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .title { font-size: 21px; font-weight: 700; fill: #f1f5f9; }
+    .sub { font-size: 13px; fill: #94a3b8; }
+    .lane-t { font-size: 16px; font-weight: 700; fill: #e2e8f0; }
+    .lane-s { font-size: 13px; fill: #94a3b8; }
+    .lane-m { font-size: 13px; fill: #cbd5e1; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+    .box-t { font-size: 15px; font-weight: 700; fill: #f1f5f9; text-anchor: middle; }
+    .box-s { font-size: 13px; fill: #cbd5e1; text-anchor: middle; }
+    .seg-l { font-size: 13px; fill: #fbbf24; text-anchor: middle; }
+    .audio { stroke: #2dd4bf; stroke-width: 2.5; fill: none; }
+    .text { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .think { animation: breathe 2.4s ease-in-out infinite; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.55; } 50% { stroke-opacity: 1; } }
+  </style>
+  <defs>
+    <marker id="aA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+  </defs>
+
+  <rect width="1480" height="820" rx="18" fill="#0f172a"/>
+  <text x="40" y="50" class="title">Voice Live 给会话挂「大脑」的三条路径：音频走直通还是级联，由连接参数决定</text>
+  <text x="40" y="76" class="sub">青绿实线 = 音频　琥珀虚线 = 文本　｜　原生与 Agent 路径没有 profile；profile 只在 BYOM 路径存在，它选「想」这一步的上游协议，协议定了，音频路径也随之定了</text>
+
+  <!-- lane separators -->
+  <line x1="40" y1="255" x2="1440" y2="255" stroke="#1e293b" stroke-width="1"/>
+  <line x1="40" y1="415" x2="1440" y2="415" stroke="#1e293b" stroke-width="1"/>
+  <line x1="40" y1="575" x2="1440" y2="575" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- ===== Lane 1: native ===== -->
+  <text x="40" y="150" class="lane-t">① 原生 / 内置</text>
+  <text x="40" y="173" class="lane-m">model=&lt;name&gt;</text>
+  <text x="40" y="195" class="lane-s">按 region 开通 · Azure 全托管</text>
+  <text x="40" y="214" class="lane-s">不在本 region 清单 → not supported</text>
+
+  <line x1="390" y1="170" x2="478" y2="170" class="audio" marker-end="url(#aA)"/>
+  <line x1="1250" y1="170" x2="1338" y2="170" class="audio" marker-end="url(#aA)"/>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" repeatCount="indefinite" path="M390,170 L1340,170"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M390,170 L1340,170"/></circle>
+
+  <rect x="290" y="125" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="340" y="165" class="box-t">麦克风</text><text x="340" y="188" class="box-s">候选人</text>
+  <rect x="480" y="125" width="770" height="90" rx="10" fill="#1e293b" stroke="#34d399" stroke-width="2" class="think"/>
+  <text x="865" y="160" class="box-t">Voice Live（Azure 预部署模型，全托管）</text>
+  <text x="865" y="186" class="box-s">听 · 想 · 说 · avatar 全在 Azure 侧完成；无需你部署、无需容量规划</text>
+  <rect x="1340" y="125" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="1390" y="165" class="box-t">扬声器</text><text x="1390" y="188" class="box-s">候选人</text>
+
+  <!-- ===== Lane 2: BYOM realtime (passthrough) ===== -->
+  <text x="40" y="310" class="lane-t">② BYOM · 直通</text>
+  <text x="40" y="333" class="lane-m">profile=…openai-realtime</text>
+  <text x="40" y="355" class="lane-s">音频几乎直达你的 realtime 部署</text>
+  <text x="40" y="374" class="lane-s">Voice Live 只做转接与 avatar 增强</text>
+
+  <line x1="390" y1="330" x2="478" y2="330" class="audio" marker-end="url(#aA)"/>
+  <line x1="660" y1="330" x2="748" y2="330" class="audio" marker-end="url(#aA)"/>
+  <line x1="980" y1="330" x2="1068" y2="330" class="audio" marker-end="url(#aA)"/>
+  <line x1="1250" y1="330" x2="1338" y2="330" class="audio" marker-end="url(#aA)"/>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" repeatCount="indefinite" path="M390,330 L1340,330"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M390,330 L1340,330"/></circle>
+
+  <rect x="290" y="285" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="340" y="325" class="box-t">麦克风</text><text x="340" y="348" class="box-s">候选人</text>
+  <rect x="480" y="285" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="570" y="322" class="box-t">Voice Live</text><text x="570" y="346" class="box-s">转接 · avatar 增强</text>
+  <rect x="750" y="285" width="230" height="90" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="2" class="think"/>
+  <text x="865" y="322" class="box-t">你的 realtime 部署</text><text x="865" y="346" class="box-s">听 · 想 · 说 一体（语音原生）</text>
+  <rect x="1070" y="285" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="1160" y="322" class="box-t">Voice Live</text><text x="1160" y="346" class="box-s">转接 · avatar</text>
+  <rect x="1340" y="285" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="1390" y="325" class="box-t">扬声器</text><text x="1390" y="348" class="box-s">候选人</text>
+
+  <!-- ===== Lane 3: BYOM cascaded ===== -->
+  <text x="40" y="470" class="lane-t">② BYOM · 级联</text>
+  <text x="40" y="493" class="lane-m">profile=…chat-completion</text>
+  <text x="40" y="512" class="lane-m">　　　　 …anthropic-messages</text>
+  <text x="40" y="534" class="lane-s">听 / 说留在 Voice Live，只把「想」</text>
+  <text x="40" y="553" class="lane-s">以文本形式交给你的模型</text>
+
+  <line x1="390" y1="490" x2="478" y2="490" class="audio" marker-end="url(#aA)"/>
+  <line x1="660" y1="490" x2="748" y2="490" class="text" marker-end="url(#aT)"/>
+  <text x="705" y="476" class="seg-l">文本</text>
+  <line x1="980" y1="490" x2="1068" y2="490" class="text" marker-end="url(#aT)"/>
+  <text x="1025" y="476" class="seg-l">文本</text>
+  <line x1="1250" y1="490" x2="1338" y2="490" class="audio" marker-end="url(#aA)"/>
+  <circle r="5" fill="#2dd4bf">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M390,490 L1340,490"/>
+    <animate attributeName="fill" calcMode="discrete" keyTimes="0;0.284;0.716" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="5" fill="#2dd4bf">
+    <animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M390,490 L1340,490"/>
+    <animate attributeName="fill" calcMode="discrete" keyTimes="0;0.284;0.716" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.2s" begin="1.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <rect x="290" y="445" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="340" y="485" class="box-t">麦克风</text><text x="340" y="508" class="box-s">候选人</text>
+  <rect x="480" y="445" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="570" y="482" class="box-t">Voice Live</text><text x="570" y="506" class="box-s">STT（听）· VAD</text>
+  <rect x="750" y="445" width="230" height="90" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="2" class="think"/>
+  <text x="865" y="482" class="box-t">你的 chat / Claude 部署</text><text x="865" y="506" class="box-s">只接「想」这一步</text>
+  <rect x="1070" y="445" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="1160" y="482" class="box-t">Voice Live</text><text x="1160" y="506" class="box-s">TTS（说）· avatar</text>
+  <rect x="1340" y="445" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="1390" y="485" class="box-t">扬声器</text><text x="1390" y="508" class="box-s">候选人</text>
+
+  <!-- ===== Lane 4: Agent ===== -->
+  <text x="40" y="630" class="lane-t">③ Agent</text>
+  <text x="40" y="653" class="lane-m">agent_name / project_name</text>
+  <text x="40" y="675" class="lane-s">没有 profile；模型、指令、工具、</text>
+  <text x="40" y="694" class="lane-s">知识库都配在 Foundry Agent 上</text>
+  <text x="40" y="713" class="lane-s">架构上同样是级联</text>
+
+  <line x1="390" y1="650" x2="478" y2="650" class="audio" marker-end="url(#aA)"/>
+  <line x1="660" y1="650" x2="748" y2="650" class="text" marker-end="url(#aT)"/>
+  <text x="705" y="636" class="seg-l">文本</text>
+  <line x1="980" y1="650" x2="1068" y2="650" class="text" marker-end="url(#aT)"/>
+  <text x="1025" y="636" class="seg-l">文本</text>
+  <line x1="1250" y1="650" x2="1338" y2="650" class="audio" marker-end="url(#aA)"/>
+  <circle r="5" fill="#2dd4bf">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M390,650 L1340,650"/>
+    <animate attributeName="fill" calcMode="discrete" keyTimes="0;0.284;0.716" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle r="5" fill="#2dd4bf">
+    <animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M390,650 L1340,650"/>
+    <animate attributeName="fill" calcMode="discrete" keyTimes="0;0.284;0.716" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.2s" begin="1.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <rect x="290" y="605" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="340" y="645" class="box-t">麦克风</text><text x="340" y="668" class="box-s">候选人</text>
+  <rect x="480" y="605" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="570" y="642" class="box-t">Voice Live</text><text x="570" y="666" class="box-s">STT（听）· VAD</text>
+  <rect x="750" y="605" width="230" height="90" rx="10" fill="#1e293b" stroke="#f472b6" stroke-width="2" class="think"/>
+  <text x="865" y="642" class="box-t">Foundry Agent</text><text x="865" y="666" class="box-s">模型 + 工具 + 知识库 ·「想」</text>
+  <rect x="1070" y="605" width="180" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <text x="1160" y="642" class="box-t">Voice Live</text><text x="1160" y="666" class="box-s">TTS（说）· avatar</text>
+  <rect x="1340" y="605" width="100" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="1390" y="645" class="box-t">扬声器</text><text x="1390" y="668" class="box-s">候选人</text>
+
+  <!-- legend -->
+  <line x1="40" y1="770" x2="100" y2="770" class="audio"/><text x="112" y="775" class="sub" style="fill:#e2e8f0">音频</text>
+  <line x1="170" y1="770" x2="230" y2="770" class="text"/><text x="242" y="775" class="sub" style="fill:#e2e8f0">文本</text>
+  <rect x="300" y="762" width="40" height="16" rx="4" fill="none" stroke="#34d399" stroke-width="2"/><text x="350" y="775" class="sub" style="fill:#e2e8f0">Azure 托管的模型</text>
+  <rect x="490" y="762" width="40" height="16" rx="4" fill="none" stroke="#a78bfa" stroke-width="2"/><text x="540" y="775" class="sub" style="fill:#e2e8f0">你在 Foundry 里部署的模型（BYOM）</text>
+  <rect x="770" y="762" width="40" height="16" rx="4" fill="none" stroke="#f472b6" stroke-width="2"/><text x="820" y="775" class="sub" style="fill:#e2e8f0">你托管的 Foundry Agent</text>
+  <text x="1010" y="775" class="sub">呼吸脉冲框 = 「想」实际发生的位置</text>
+</svg>

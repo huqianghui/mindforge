@@ -164,6 +164,8 @@ conversation.item.input_audio_transcription.completed
 
 两种模式的分野在连接 URL 上就定了：`?model=gpt-realtime` 是模型模式，`?agent_id=…&project_id=…` 是 Agent 模式（Speech 资源不支持 Agent 模式，需 Foundry 资源）。官方文档对 Agent 模式只有一句硬约束："The `instructions` property isn't supported when you're using a custom agent"。把这句话沿五关展开：
 
+> 2026-10-05 补：模型模式还有一个 BYOM 变体，`?model=<你的 deployment>&profile=byom-…`，接你自己在 Foundry 里部署的模型（含 Claude）；三条接入路径见[系列 14](Voice%20Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开.md)。
+
 | 控制点 | 模型模式 | Agent 模式 |
 |---|---|---|
 | ① ② ③ ④ 音频与 VAD 全部参数 | 客户端 `session.update` | 客户端 `session.update`，也可预置在 Agent metadata 的 `microsoft.voice-live.configuration` 里（512 字符分块存储） |

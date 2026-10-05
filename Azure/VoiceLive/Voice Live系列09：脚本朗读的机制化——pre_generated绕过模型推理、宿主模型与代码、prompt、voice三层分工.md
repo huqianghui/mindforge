@@ -115,6 +115,8 @@ Voice Live 的会话身份就是"一个模型 + 一组语音能力"。建连 URL
 
 顺带一提，`model=` 只接受该区域原生的 Voice Live 模型（swedencentral 上是 gpt-5-mini / gpt-4o / gpt-4.1-mini 等），自己部署的 deployment 名不算。系列03 提过"region 可用性才是真分水岭"，这是它在模型字段上的另一面。
 
+> 2026-10-05 补：这句只对原生路径成立。自己部署的 deployment 名配上 `profile=byom-…` 就能接（BYOM 路径不查 region 预部署清单），三条接入路径与实测见[系列 14](Voice%20Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开.md)。
+
 ### 4.2 那这个模型现在还干什么
 
 在 linear / judged / external 会话里，它**一句话都不生成**。剩下三件事：
