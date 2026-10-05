@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-03",
+  "generated_at": "2026-10-05",
   "stats": {
     "nodes": 139,
     "links": 485,
     "orphan_links_removed": 2,
-    "claims": 747,
+    "claims": 749,
     "categories": 13
   },
   "nodes": [
@@ -7436,8 +7436,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.79,
+      "claims_count": 8,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Turn-Taking 不等于端点检测",
@@ -7501,6 +7501,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "`pre_generated_assistant_message` 读题\"算不算一个 turn\"要按三种\"轮\"分开看：作**生成轮次（response）**算——仍是一次 `response.create`，事件流照常、同一时刻只能有一个活跃 response 的约束照常、\"`response.created` 次数等于读题次数\"的验证标准照常，只是模型推理空转、`input_tokens` 为 0；作**对话历史里的 assistant 轮**算——以一条 `role: assistant` 的 message item 落进 conversation，与模型自己生成的回答无区别；作**语音轮（`turn_detection` 里的 turn）**不算——那个 turn 指用户这一段话的起止。中途把整段内容交给模型时历史主线是完整的（system item、每次读出的题目与 nudge、候选人每段转写），不在历史里的有四类：per-turn `instructions`（只在那一个 response 内生效）、后端 judge 的判断过程（只有被说出的 nudge 进了历史）、被打断截掉的部分（`auto_truncate` 截到用户实际听到的位置，`pre_generated` 被打断同样如此）、重连之前的一切（新会话历史清零，要延续得用 `conversation.item.create` 回放）。一个实际风险：**历史完整正是 prompt 约束读法漂掉的原因**——到中后段这段历史看起来就是一场进行中的面试，模型一旦拿到自由轮次第一反应很可能是出下一题或致谢；切回自由轮次时要在 `response.create` 上带明确的 per-turn `instructions`（模型模式）或先塞一条 system item 说明\"接下来是自由问答，不要再出题\"（两种模式都可），不要指望它从历史里自己读懂阶段切换。这是本页\"Turn-Taking ≠ 端点检测\"的又一层：端点之外的\"轮\"本身就不是一个对象。"
+        },
+        {
+          "statement": "打断（barge-in）在「音频走 WebSocket PCM」下行上服务端无可截断对象——Azure 在不到 1 秒内灌完整段音频并立刻 `completed`，`interrupt_response` / `auto_truncate` 空转，截断只能由客户端播放队列决定",
+          "source": "Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属",
+          "first_seen": "2026-10-03",
+          "last_updated": "2026-10-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "实测时序：`response.done status=completed` 后 10 ms 候选人开口触发 `speech_started`，随后连续说 5.1 秒 Azure 没有任何事件。根因是**投递与播放的时间尺度不同**——Azure 在 783 ms 内投递了 4275 ms 的音频，候选人开口时服务端眼里早已没有\"正在进行的 response\"，要截断的内容全在**客户端播放队列**里，服务端碰不到。所以「取消正在播的 response」这一判起动作在 WS PCM 路上不成立。限定范围：数字人在场时音频走 WebRTC 音轨、RTP 由 Azure 持续推送可随时停，机制不同，原结论在那条路上很可能成立但未测（有形象时不发 `response.audio.delta`，实验做不出来）。产品侧后果是「候选人插话要不要掐掉已排队音频」变成纯客户端决定，该项目选择不掐（重叠最多约 4 秒，听两个声音比漏半道题可接受）。"
         }
       ]
     },
@@ -7844,7 +7853,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 21,
+      "claims_count": 22,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -7977,7 +7986,7 @@
           "statement": "S2S 与混合式的真开关是 voice 配置字段而非模型选择——\"架构决策降级为配置项\"在输出侧再次上演",
           "source": "Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估",
           "first_seen": "2026-09-19",
-          "last_updated": "2026-09-25",
+          "last_updated": "2026-10-05",
           "confidence": 0.75,
           "status": "active",
           "evidence": "四条路线（级联/混合/S2S/全双工）中，gpt-realtime 配 azure-custom voice 即滑入混合式（Speech-LLM + Azure TTS），解锁 viseme/avatar；纯 openai 原生音色锁死纯语音——数字人的 viseme 闸门由 voice 配置决定。GPT-Live-1（全双工）把判停/打断/附和原生化，吃掉平台\"轮次机器\"。产品组问答五点：① GPT-Live-1×avatar 是结构性难题（viseme 控制面缺失，\"换嘴\"退路对全双工不成立）；② gpt-live-1 尚未上线 Voice Live（当前 gpt-realtime 2.1/1.5）；③ \"prompt agent + gpt-live-1\"走 Voice Live 可行；④ 中文轮次判断产品组自己打问号需实测；⑤ **更正记录：\"Agent 选不到 gpt-realtime\"确认是 bug 且已于 2026-09 修复，非解耦设计**——此前系列02 曾按\"解耦设计结果\"解读，已原地更正；本页解耦/三模式/会话绑定三条 Claim 不以\"bug=设计\"为核心论断、不受影响；Agent+gpt-realtime 组合当前可用，为选型光谱左端新增可用组合点。落地量化：$0.05/分钟按秒计、按并发会话数限流、只支持音频+文本无图像。"
@@ -8019,13 +8028,13 @@
           "evidence": "读题三代路径：第一代 `conversation.item.create(role=assistant)` + 裸 `response.create`（隐式 prompt 约束，模型把 assistant item 当\"我已说过\"回 Understood 或自己编题）→ 第二代 per-turn `instructions` 带 \"say ONLY this, verbatim\"（显式 prompt 约束，gpt-4o 可靠、换 gpt-5-mini 后中后段按对话历史惯性\"出下一题\"）→ 第三代 `response.create { response: { pre_generated_assistant_message } }`（**机制约束**，文本根本不进模型、不可能改写；API 参考原文 \"bypassing model inference for text generation\"，三个 API 版本都有，`role` 必须 assistant、单个 text 部分）。实测要点：事件流与普通 response 一样（`response.created → audio_transcript.delta/done → response.done`，avatar 模式下音频走 WebRTC），现有按 response id 的送达确认一行没改；`response.done.usage.input_tokens: 0`、只计 TTS 输出音频 token，读题环节模型输入成本归零；文本仍进对话历史，后续真正的模型回合知道数字人说过这句——这也正是第二代读法漂掉的原因，切回自由轮次要显式带 per-turn `instructions`（模型模式）或先塞 system item 声明阶段切换，不要指望模型从历史里读懂。**堵口子要用协议级开关而非 prompt**：候选人停顿后自动回复 `create_response: false`；前端\"我答完了\"后的裸 `response.create` 在线性模式不发；嘴型会话（external / linear / judged）**不挂 Agent** 走模型模式——Agent 模式拒绝 per-turn `instructions`（\"Overriding instructions in response.create is not supported\"）且 agent 自己的指令会赢过任何 assistant item，实测一次读题被 agent 变成一句 \"Thank you.\"，是系列06\"第三行下 Agent 模式是负资产\"的现场版；读题用 `pre_generated`。**送达确认要看内容**：运行时把 `audio_transcript.done` 转写与题目归一化比对（TTS 读法下永不该触发、触发即回归），测试时抓 WS 帧断言 `pre_generated_assistant_message.content[0].text` 等于卡片题目——系列07 管次数、本条管内容。**模型是会话宿主不是脑子**：建连 URL 必须带 `model=<区域原生模型>` 或 `agent_name`，没有\"纯 TTS 会话\"类型，VAD / STT / TTS / avatar 都挂在模型会话上；嘴型会话里它一句不生成，只当宿主、当保险丝（reader prompt 作 system item 注入，万一误发裸 `response.create` 也只读稿不发挥）、真正用到它的只剩编辑器 Playground；彻底不配模型要换成 Speech 服务的实时 TTS avatar 并自建 VAD / STT，即退回自建级联流水线，对\"题库驱动 + 要听 + 偶尔 judge 出声\"不划算。**代码与 prompt 的分工原则**：能用机制绝不用 prompt，prompt 只管模型生成的字——题目一字不差（`pre_generated`）/ 不插话（`create_response=false`）/ 不追问（judge verdict 集合由代码给，`follow_up` 直接不认）/ nudge 不变相提问（疑问句守卫）/ 不泄露评分（judge prompt 不放 rubric）/ 何时说（状态机 + 计时器）归机制；用词、耐心、是否致谢归 prompt。三种\"嘴\"：linear / judged / external 都走 `pre_generated` TTS，只有 Playground 让 Voice Live 内模型\"想\"；judged 模式的 LLM 在**后端**出结构化 verdict。**字与声是两层**：prompt 碰不到语音层——语速、表现力 / 情绪、发音走 `session.voice`（`name` / `temperature` 0~1 表现力 / `rate` \"0.5\"~\"1.5\" / `style` / `prosody` / `custom_lexicon_url` / `custom_text_normalization_url`），是**会话级参数不是逐句 SSML**（`pre_generated` 文本是纯文本、不支持内联 `<speak>`，\"这题读慢一点\"要在两次读题之间 `session.update` 改 voice；情绪不能像 `express-as` 逐句指定）。两个陷阱：管理端的语音温度 / 语速旋钮只被旧构建器用到、实际会话构建器只传 `name` 与 `type`——调了没效果，修法接进去并用 live spec 断言 `session.updated` 回显；接上之后原本\"无害\"的输入范围要重审（超范围会让 `session.update` 被拒、整条语音通道 \"Voice unavailable\"，须 API 边界 + 编辑器范围 + 构建器 clamp 三处同做）。**`voice.type` 与模型是硬约束**（2026-10-01 原生 WebRTC 入口实测）：`azure-realtime` 只配 `azure-realtime-native`；`gpt-realtime` 配 `openai` / `azure-standard` / `azure-platform` / `azure-custom` / `custom` / `azure-personal` / `avatar-voice-sync` 七种但不含 native；配错报 `invalid_voice_type`，而失败形态是 `rtc.call.error` 回来但 SDP answer / PeerConnection / 出向音频全正常只是永远无回复——排查判据必须是业务信号（转写出现、`response.created`、下行 RTP 字节增长），不是 `connectionState === \"connected\"`。一句话：**Voice Live 里的模型是会话的宿主，脑子在后端，嘴用 TTS，说什么字由 prompt 管、怎么发声由 `session.voice` 管，而每一条\"以为在控制\"的路径都要抓 WS 帧证明它真的接上了。**"
         },
         {
-          "statement": "数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、唯一杠杆是建会话时 bitrate、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定\"关画面立即、开画面冷却\"",
+          "statement": "数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、静态杠杆只能建会话时定（bitrate，另有 resolution / crop / scene）、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定\"关画面立即、开画面冷却\"",
           "source": "Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音",
           "first_seen": "2026-09-30",
-          "last_updated": "2026-10-02",
+          "last_updated": "2026-10-04",
           "confidence": 0.85,
           "status": "active",
-          "evidence": "七条已确认事实：① Azure 发送端协商 REMB 并随接收端估计自动降码率（1080p 2382→718 kbps），应用不重复做；② 客户端 `b=AS` 被忽略、会话中 `session.update` 改 `avatar.video.bitrate` 被静默忽略，码率只能建会话时定；③ 1% 丢包 + RTT 约 600 ms 下 1080p 一帧解不出却仍吃约 1 Mbps（抖动缓冲 369 ms < RTT，NACK 迟到，GOP 报废），`freezeCount` 为 0 是假象，同档位 512×512 照片数字人照播；④ 画面与声音共用一条 RTP 传输，3% 丢包下 1080p 死前原始补偿率 31%、关视频轨后 2.5%、RTT 少 340 ms，两轮复现；⑤ 关画面留声音可行（保留 `m=video` 但 `a=inactive`，去掉 `m=video` 被拒）但只能建连时定；⑥ 麦克风上行 PCM16 24 kHz 加封装 540~680 kbps 在 300 kbps 上行下挤死自己的 SDP（自伤），降 16 kHz 消除且 A/B 词错误率均 0.0%；⑦ Azure 只下发 UDP 3478 TURN 无 TCP 候选，UDP 被封既无画面也无声音（avatar 模式下 WS 上不发 `response.audio.delta`），兜底是重建不带 avatar 的会话让 PCM 走 WS。**照片数字人的码率优势只约 2.4 倍**（645 vs 1548 kbps）而非一个数量级——修正系列05 / 11 口径，真正差异是每帧 1~2 包 vs 5 包以上带来的可解码性；1080p 还有说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵）。**前提是 RTT 约 300 ms 起**（亚洲到 Sweden Central），用户在区域附近则同样丢包率不触发——这就是同区域 Azure Virtual Desktop 跑浏览器演示效果更好的机制，选离用户最近的数字人区域比任何码率调优更有效。**两条硬约束**（落地才撞到）：`session.avatar.connect` 每会话只接受一次、中途不可重协商（再发 offer 回 \"WebRTC connection is in connected state\"），开关画面都要重建整条会话约 5 秒；avatar 会话创建有速率限制（约 20 秒内第三次被拒、要求 43 秒后重试），被拒会耗尽重连预算把会话打成\"语音不可用\"——与系列02 备忘的配额不是同一限制（单会话最长 60 分钟、数字人说话态 30 分钟 / 空闲 5 分钟、每资源 30 新连接/分钟；移动端 iOS Safari autoplay 与蓝牙回声不在已验证范围）。由此降级必须不对称：关画面立即、开画面冷却 60 秒且失败门槛 45→90→180 翻倍。实施形态（P0~P4 全自动、A~E 五级网络基线、免阈值主触发、六轮真机实践）归方法页 [[weak-network-adaptive-degradation]]；ICE 候选与直连 / 中继拓扑归 [[realtime-protocol-selection]]。五条明确不做：不给用户选网络档位、不自己实现码率自适应、不用 `b=AS`、不用冻结次数当健康指标、上行不改走 WebRTC（官方 WebRTC 模式不支持 avatar）。"
+          "evidence": "七条已确认事实：① Azure 发送端协商 REMB 并随接收端估计自动降码率（1080p 2382→718 kbps），应用不重复做；② 客户端 `b=AS` 被忽略、会话中 `session.update` 改 `avatar.video.bitrate` 被静默忽略，码率只能建会话时定；③ 1% 丢包 + RTT 约 600 ms 下 1080p 一帧解不出却仍吃约 1 Mbps（抖动缓冲 369 ms < RTT，NACK 迟到，GOP 报废），`freezeCount` 为 0 是假象，同档位 512×512 照片数字人照播；④ 画面与声音共用一条 RTP 传输，3% 丢包下 1080p 死前原始补偿率 31%、关视频轨后 2.5%、RTT 少 340 ms，两轮复现；⑤ 关画面留声音可行（保留 `m=video` 但 `a=inactive`，去掉 `m=video` 被拒）但只能建连时定；⑥ 麦克风上行 PCM16 24 kHz 加封装 540~680 kbps 在 300 kbps 上行下挤死自己的 SDP（自伤），降 16 kHz 消除且 A/B 词错误率均 0.0%；⑦ Azure 只下发 UDP 3478 TURN 无 TCP 候选，UDP 被封既无画面也无声音（avatar 模式下 WS 上不发 `response.audio.delta`），兜底是重建不带 avatar 的会话让 PCM 走 WS。**照片数字人的码率优势只约 2.4 倍**（645 vs 1548 kbps）而非一个数量级——修正系列05 / 11 口径，真正差异是每帧 1~2 包 vs 5 包以上带来的可解码性；原「说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵）」结论**已于 2026-10-03 作废且不再复测**：两次复现均持平（约 1.6~1.8 Mbps），差别在读题期 12.5 fps / 每帧 17 KB 对静音期 25 fps / 每帧 8 KB，乘积持平，下游不再按静音期突发取值。「唯一杠杆是 bitrate」也已更正：SDK 生成模型里 `VideoParams` 还有 `resolution` / `crop`，`AvatarConfig.scene` 的 `zoom` 已实测有效（0.78 得头肩像）。**前提是 RTT 约 300 ms 起**（亚洲到 Sweden Central），用户在区域附近则同样丢包率不触发——这就是同区域 Azure Virtual Desktop 跑浏览器演示效果更好的机制，选离用户最近的数字人区域比任何码率调优更有效。**两条硬约束**（落地才撞到）：`session.avatar.connect` 每会话只接受一次、中途不可重协商（再发 offer 回 \"WebRTC connection is in connected state\"），开关画面都要重建整条会话约 5 秒；avatar 会话创建有速率限制（精测每滚动 60 秒最多新建 3 个、关闭不退还；早先「约 20 秒」是错误反推，2026-10-03 更正），被拒会耗尽重连预算把会话打成\"语音不可用\"——与系列02 备忘的配额不是同一限制（单会话最长 60 分钟、数字人说话态 30 分钟 / 空闲 5 分钟、每资源 30 新连接/分钟；移动端 iOS Safari autoplay 与蓝牙回声不在已验证范围）。由此降级必须不对称：关画面立即、开画面冷却 60 秒且失败门槛 45→90→180 翻倍。实施形态（P0~P4 全自动、A~E 五级网络基线、免阈值主触发、六轮真机实践）归方法页 [[weak-network-adaptive-degradation]]；ICE 候选与直连 / 中继拓扑归 [[realtime-protocol-selection]]。五条明确不做：不给用户选网络档位、不自己实现码率自适应、不用 `b=AS`、不用冻结次数当健康指标、上行不改走 WebRTC（官方 WebRTC 模式不支持 avatar）。"
         },
         {
           "statement": "Voice Live 的一组不一致是三条产品线的拼接缝——输入默认 24 kHz 是 Realtime 协议继承而非语音工程选择，WS 不收 Opus、WebRTC 模式不带 avatar 同一根源；对照 OpenAI Realtime 浏览器走 WebRTC Opus 弱网天然好，本方案更吃网络正因为数字人",
@@ -8035,6 +8044,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "三条不一致——\"Speech SDK 收 Opus 而 Voice Live 不收\"\"输入默认 24 kHz 而识别器原生 16 kHz\"\"浏览器 WebRTC 模式能压缩却带不了数字人\"——不是技术上的奇怪，是产品拼接的缝。Voice Live 由四块不同出身粘成：会话与事件协议来自 **OpenAI Realtime API**（为后端与电话集成设计：WebSocket、JSON、base64、pcm16 / G.711、24 kHz 默认）；识别 / VAD / 降噪 / TTS 来自 **Azure Speech 服务**（自有 SDK 面向客户端、收压缩输入、识别管线原生 16 kHz）；数字人来自 **Speech 的 TTS Avatar**（独立 WebRTC 媒体管线：avatar 媒体服务器 + ACS 中继，信令借道会话 WS，只出不进）；**Voice Live WebRTC 模式**（2026 新加，音频双向走 RTP、事件走 data channel）是另一条独立管线。读法：不收 Opus 是事件协议要与 Realtime 客户端兼容、音频枚举跟着 Realtime 走；24 kHz 默认同一根源（`pcm16` 在 Realtime 协议里定义上就是 24 kHz，.NET SDK 原话 \"default sampling rate (24kHz)\"，输入输出同一枚举、单改输入破坏对称）；WebRTC 模式不支持 avatar 是数字人自己有一条 WebRTC 管线、新模式是另一条、两条还没合并（官方 \"Avatar configurations are currently unsupported with side-band control\" 的 currently 表明微软自己也当待办）；浏览器直连数字人就得用为后端设计的 WS 上传 PCM 麦克风。对原生多模态模型（`gpt-realtime` / `gpt-live`）24 kHz 是对的（音频直接作 token 进出、模型在 24 kHz 上训练、合成自然度靠 12 kHz 以内高频）；级联配置（如 `gpt-5-mini`）输入先过 Azure 语音转文字、原生 16 kHz，多传的那段 Azure 自己丢掉——`input_audio_sampling_rate` 只接受 16000 / 24000 本身就说明 Azure 清楚级联用户不需要 24 kHz。对照 OpenAI 自己的 Realtime：WebSocket 给后端与电话（pcm16 / G.711 base64），WebRTC 给浏览器与移动端（Opus 几十 kbps、无视频），弱网表现天然好；本方案比 OpenAI 默认形态更吃网络正是因为数字人——上行被迫 WS 传 PCM、下行多一条 1080p 视频轨。时间线上是过渡态：先用 Realtime 协议把 Speech 能力与数字人挂上，再补面向浏览器的 WebRTC 模式，最后一步才是把数字人接进新模式。若将来换成原生音频模型，输入降 16 kHz 的结论要重新评估。"
+        },
+        {
+          "statement": "数字人走 Speech 的 avatar 配额而非 Voice Live 那张表，受两条独立限制——同时活跃 5（容量语言，关闭即释放）+ 每滚动 60 秒新建 3（限流语言，关闭不退还、窗口锚定创建时刻）；配额体系里没有可申请的 avatar 对象，Azure 侧观测不到被拒",
+          "source": "Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota",
+          "first_seen": "2026-10-03",
+          "last_updated": "2026-10-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "官方配额页明说 Voice Live 中的 avatar 遵循 *Real-time text-to-speech avatar* 一节（S0：新建 2 次/分钟、说话 30 分钟、空闲 5 分钟），所以同一资源上两套配额、数字人走更严那套，系列02 记的「30 新连接/分钟」是纯语音的。实测把它展开成**两条独立限制**：① 并发上限 5——第 6 个返回 `avatar_service_resource_exhausted`（\"maximum processing capacity\"，容量陈述），关掉 1 个立刻腾位；② 创建速率每滚动 60 秒 3 次（文档写 2）——第 4 个返回 `rate_limit_exceeded`（`invalid_request_error`，纯限流词汇），`Retry after` 的值是最老一次创建滚出 60 秒窗口的剩余时间（50 + 23 = 73 ≈ 12 + 60），三个全关后立刻再建仍被拒，**关闭不退还**。两条叠加得出操作规则：**5 并发能到但不能一下子到**，同一秒发起 5 个只有 3 个进得去，到 5 并发要分两批约 2 分钟，批量进场必须错开或排队。速率限制**按资源计已实测**（A 耗尽后同机同 IP 同凭据同订阅下 B 仍有完整额度），横向加资源有效；并发作用域未验。纯语音完全不碰这条限制，直连后端压到约 120 次/分钟、60 并发零失败未触顶——关掉数字人并发能力差 12 倍以上。**框架**：avatar 不是服务而是 Speech 的附属能力，因此 Foundry Quota 页无此行、Request quota 按钮无用、账户 usage API 为空、`Microsoft.Quota` 返回 BadRequest、区域 usages 287 项无一是 avatar，拒绝以带内 `error` 事件从 WS 回来而非 HTTP 4xx，Azure Monitor `ClientErrors` 为 0——**唯一观测点是自己的应用**。要提并发只能开支持票请求提高「并发数字人渲染会话数（当前 5）」这个服务端限制，规划时按固定约束对待。Foundry Quota 页上 `OpenAI.Standard.tts-hd` 的 3 RPM 是 Azure OpenAI 的 TTS 部署容量分配，与 avatar 的 3 次/60 秒毫无关系，也是「`voice.type` 别切 `openai`」的具体理由。实现层三类常见错：本地账本窗口与 Azure 不一致（一次观测推不出窗口长度）、账本只在内存跨不过刷新且配额是资源级、把限流当永久失败而不解析 `Retry after` 重试。"
         }
       ]
     },
@@ -9080,13 +9098,13 @@
           "evidence": "面试官的声音与画面共用一条 RTP 传输：office-bad 档 1080p 死前 31.3% / 30.7%（两轮）的音频是丢包隐藏算法合成的，音频丢包 505~525 个；同网络下保留 `m=video` 但 `a=inactive` 的纯音频变体 2.5%、音频丢包 66 个、全程 ICE connected，RTT 少的 340 ms 是自己的视频流在管道里排队造成的自伤延迟。**更正**：31% 与 2.5% 是含静音的原始比值（静音段被填充也计入分子），只统计有声段的可听补偿率在 1080p 上健康 0.3~0.5%、限速 21.9%，量级仍差一个数量级以上；核心结论另有三项与静音无关的证据：零帧解码却仍吃约 1 Mbps、音频丢包 505 对 66、RTT 876 对 534。下行音频本身是 Opus（已压缩），问题不在压缩而在**同车**；它压得也不够紧——协商成立体声约 130 kbps，一个说话的人头是单声道源，若能请求单声道 32 kbps 左右音频轨自身份额少四分之三（待查 Azure 侧是否可请求，浏览器可在 offer fmtp 请求 `stereo=0` / `useinbandfec=1`，与被忽略的 `b=AS` 不是同一机制）。**防误读**：关画面不是提速手段——好网络下带画面 / 关画面\"提交答案→声音可听\"中位 1069 vs 1076 ms（n=3），差 7 ms 在噪声内；网络好时视频在延迟上不要钱，纯音频的全部价值落在网络差的那一侧，这也回答了\"为什么不一直用纯音频\"。一次性代价：降级重建整条会话，从点下开关到声音回来约 4.9 秒。**纯音频不等于不死**：照片数字人纯音频仍在 46 秒掉线触发恢复，3% 丢包下 40 秒窗口方差很大——纯音频把\"听不清\"变成\"听得清\"，但没有让连接不死，纯音频降级与媒体层自愈两件事都要有。"
         },
         {
-          "statement": "两条 Azure 硬约束决定降级必须不对称——`session.avatar.connect` 每会话只接受一次（中途不可重协商，开关画面都要重建会话约 5 秒）、avatar 会话创建有速率限制（约 20 秒内第三次被拒并要求 43 秒后重试）；关画面立即、开画面冷却 60 秒且失败门槛翻倍",
+          "statement": "两条 Azure 硬约束决定降级必须不对称——`session.avatar.connect` 每会话只接受一次（中途不可重协商，开关画面都要重建会话约 5 秒）、avatar 会话创建有速率限制（精测每滚动 60 秒最多新建 3 个、关闭不退还；另有同时活跃最多 5 个的并发上限）；关画面立即、开画面冷却 60 秒且失败门槛翻倍",
           "source": "Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音",
           "first_seen": "2026-09-30",
           "last_updated": "2026-10-02",
           "confidence": 0.85,
           "status": "active",
-          "evidence": "第四节验证的是\"建连时就用 `a=inactive`\"，不是\"会话中途重协商\"，区别只有真机才暴露：连接健康时再发一次 offer，Azure 回 `WebRTC connection is in connected state` 拒绝，客户端事件全集里也没有任何断开或重协商事件——路 A（同连接只收音频）与路 B（重建不带 avatar 的会话）的差别由此缩小为\"重建时带不带 video 轨\"。速率限制的危险在连锁反应：被拒的请求会走完前端重连预算，最终让页面判定\"语音不可用\"切到纯文字，一次网络抖动反而把会话打死（与系列02 记的\"每分钟 30 个新连接\"不是同一限制，这条更紧且专门针对 avatar 会话；会话时长上限另有 60 / 30 / 5 分钟三档备忘）。两个方向代价不同：关画面是救场动作、晚一秒多听一秒合成音；开画面是锦上添花、每次消耗一次创建配额还可能再触发降级形成震荡。**一个自己引入的坑**：有意重启前要先摘掉旧连接的关闭回调，否则新连接流程已复位状态标志、旧 socket 关闭时其回调再触发一次重连，表现为每次切换开两个 avatar 会话、直接撞上速率限制——任何带自动重连的 WS 客户端在有意重启时都会遇到\"重连处理器也响了\"，切换前显式解绑是通用修法。"
+          "evidence": "第四节验证的是\"建连时就用 `a=inactive`\"，不是\"会话中途重协商\"，区别只有真机才暴露：连接健康时再发一次 offer，Azure 回 `WebRTC connection is in connected state` 拒绝，客户端事件全集里也没有任何断开或重协商事件——路 A（同连接只收音频）与路 B（重建不带 avatar 的会话）的差别由此缩小为\"重建时带不带 video 轨\"。速率限制的危险在连锁反应：被拒的请求会走完前端重连预算，最终让页面判定\"语音不可用\"切到纯文字，一次网络抖动反而把会话打死（与系列02 记的\"每分钟 30 个新连接\"不是同一限制，这条更紧；**2026-10-03 更正**：当时据此推断窗口约 20 秒是错误反推，精测为每滚动 60 秒 3 次、关闭不退还、窗口锚定创建时刻，另有并发 5 上限且关闭即释放——两条叠加意味着 5 并发不能一下子到、批量进场要错开，完整配额模型见 [[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]]且专门针对 avatar 会话；会话时长上限另有 60 / 30 / 5 分钟三档备忘）。两个方向代价不同：关画面是救场动作、晚一秒多听一秒合成音；开画面是锦上添花、每次消耗一次创建配额还可能再触发降级形成震荡。**一个自己引入的坑**：有意重启前要先摘掉旧连接的关闭回调，否则新连接流程已复位状态标志、旧 socket 关闭时其回调再触发一次重连，表现为每次切换开两个 avatar 会话、直接撞上速率限制——任何带自动重连的 WS 客户端在有意重启时都会遇到\"重连处理器也响了\"，切换前显式解绑是通用修法。"
         },
         {
           "statement": "触发信号——主触发免阈值（字节涨帧不涨），音频补偿率不做全局阈值（健康基线随数字人差一个数量级），次触发关闭、未来形状是与\"视频在吃带宽\"的合取且等真实案例；两个都差先关画面",
