@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-10-02"
+updated: "2026-10-04"
 tags:
   - wiki
   - concept
@@ -172,12 +172,14 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估]]
 - **首次出现**：2026-09-19
-- **最近更新**：2026-09-25
+- **最近更新**：2026-10-05
 - **置信度**：0.75
 - **状态**：active
 
 > 四条路线（级联/混合/S2S/全双工）中，gpt-realtime 配 azure-custom voice 即滑入混合式（Speech-LLM + Azure TTS），解锁 viseme/avatar；纯 openai 原生音色锁死纯语音——数字人的 viseme 闸门由 voice 配置决定。GPT-Live-1（全双工）把判停/打断/附和原生化，吃掉平台"轮次机器"。产品组问答五点：① GPT-Live-1×avatar 是结构性难题（viseme 控制面缺失，"换嘴"退路对全双工不成立）；② gpt-live-1 尚未上线 Voice Live（当前 gpt-realtime 2.1/1.5）；③ "prompt agent + gpt-live-1"走 Voice Live 可行；④ 中文轮次判断产品组自己打问号需实测；⑤ **更正记录："Agent 选不到 gpt-realtime"确认是 bug 且已于 2026-09 修复，非解耦设计**——此前系列02 曾按"解耦设计结果"解读，已原地更正；本页解耦/三模式/会话绑定三条 Claim 不以"bug=设计"为核心论断、不受影响；Agent+gpt-realtime 组合当前可用，为选型光谱左端新增可用组合点。落地量化：$0.05/分钟按秒计、按并发会话数限流、只支持音频+文本无图像。
 
+
+> 2026-10-05 补充（Voice Live 系列15 §5.1）：`session.voice` 是**会话级**开关，还决定逐字念题这一帧交给谁念。两条路线配置逐字段比对只差 EoU 检测器，`voice` 等其余字段相同，发送的 `pre_generated_assistant_message` 帧也相同，分叉全在服务端：voice 为 Azure 音色时两条路线都走 Azure TTS 出声；voice **缺失**时级联被 Azure 自动补 `azure-standard` 照样念、毫无症状，realtime 则音频归模型、没有 TTS 可用，把这帧渲染成 `response.text.delta`，无 audio 事件、不切说话态、**error 帧为 0**——一个只在 realtime 上暴露的静默失效点，症状来自 voice 却容易被归因到模型。修法不在发送侧而在检测侧：校验 Azure 回显 `session.updated` 里 voice 生效成了什么。两种规制互斥，而且是**协议层硬限制**：同一会话中途 `session.update` 把音色从 Azure 家族改成 OpenAI 家族被拒（`invalid_request_error`，`param=voice`，"Cannot update voice from AzureVoice to OpenAIVoice"），被拒后会话保持原音色、后续念题与模型轮都是同一个 Azure TTS 声音；构造不出"念题一个声、回答一个声"，数字人永远只有一条音频源、一条 viseme 流。反方向（开场模型音色、中途改 Azure）未测，按错误信息推测同样被拒。
 
 ### Claim: 两类数字人头像=两条合成路线——video 素材回放 + viseme 神经渲染嘴部，photo 单图 + VASA-1 逐帧生成整头；session 构造必须按头像类型分支
 
@@ -223,15 +225,15 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 读题三代路径：第一代 `conversation.item.create(role=assistant)` + 裸 `response.create`（隐式 prompt 约束，模型把 assistant item 当"我已说过"回 Understood 或自己编题）→ 第二代 per-turn `instructions` 带 "say ONLY this, verbatim"（显式 prompt 约束，gpt-4o 可靠、换 gpt-5-mini 后中后段按对话历史惯性"出下一题"）→ 第三代 `response.create { response: { pre_generated_assistant_message } }`（**机制约束**，文本根本不进模型、不可能改写；API 参考原文 "bypassing model inference for text generation"，三个 API 版本都有，`role` 必须 assistant、单个 text 部分）。实测要点：事件流与普通 response 一样（`response.created → audio_transcript.delta/done → response.done`，avatar 模式下音频走 WebRTC），现有按 response id 的送达确认一行没改；`response.done.usage.input_tokens: 0`、只计 TTS 输出音频 token，读题环节模型输入成本归零；文本仍进对话历史，后续真正的模型回合知道数字人说过这句——这也正是第二代读法漂掉的原因，切回自由轮次要显式带 per-turn `instructions`（模型模式）或先塞 system item 声明阶段切换，不要指望模型从历史里读懂。**堵口子要用协议级开关而非 prompt**：候选人停顿后自动回复 `create_response: false`；前端"我答完了"后的裸 `response.create` 在线性模式不发；嘴型会话（external / linear / judged）**不挂 Agent** 走模型模式——Agent 模式拒绝 per-turn `instructions`（"Overriding instructions in response.create is not supported"）且 agent 自己的指令会赢过任何 assistant item，实测一次读题被 agent 变成一句 "Thank you."，是系列06"第三行下 Agent 模式是负资产"的现场版；读题用 `pre_generated`。**送达确认要看内容**：运行时把 `audio_transcript.done` 转写与题目归一化比对（TTS 读法下永不该触发、触发即回归），测试时抓 WS 帧断言 `pre_generated_assistant_message.content[0].text` 等于卡片题目——系列07 管次数、本条管内容。**模型是会话宿主不是脑子**：建连 URL 必须带 `model=<区域原生模型>` 或 `agent_name`，没有"纯 TTS 会话"类型，VAD / STT / TTS / avatar 都挂在模型会话上；嘴型会话里它一句不生成，只当宿主、当保险丝（reader prompt 作 system item 注入，万一误发裸 `response.create` 也只读稿不发挥）、真正用到它的只剩编辑器 Playground；彻底不配模型要换成 Speech 服务的实时 TTS avatar 并自建 VAD / STT，即退回自建级联流水线，对"题库驱动 + 要听 + 偶尔 judge 出声"不划算。**代码与 prompt 的分工原则**：能用机制绝不用 prompt，prompt 只管模型生成的字——题目一字不差（`pre_generated`）/ 不插话（`create_response=false`）/ 不追问（judge verdict 集合由代码给，`follow_up` 直接不认）/ nudge 不变相提问（疑问句守卫）/ 不泄露评分（judge prompt 不放 rubric）/ 何时说（状态机 + 计时器）归机制；用词、耐心、是否致谢归 prompt。三种"嘴"：linear / judged / external 都走 `pre_generated` TTS，只有 Playground 让 Voice Live 内模型"想"；judged 模式的 LLM 在**后端**出结构化 verdict。**字与声是两层**：prompt 碰不到语音层——语速、表现力 / 情绪、发音走 `session.voice`（`name` / `temperature` 0~1 表现力 / `rate` "0.5"~"1.5" / `style` / `prosody` / `custom_lexicon_url` / `custom_text_normalization_url`），是**会话级参数不是逐句 SSML**（`pre_generated` 文本是纯文本、不支持内联 `<speak>`，"这题读慢一点"要在两次读题之间 `session.update` 改 voice；情绪不能像 `express-as` 逐句指定）。两个陷阱：管理端的语音温度 / 语速旋钮只被旧构建器用到、实际会话构建器只传 `name` 与 `type`——调了没效果，修法接进去并用 live spec 断言 `session.updated` 回显；接上之后原本"无害"的输入范围要重审（超范围会让 `session.update` 被拒、整条语音通道 "Voice unavailable"，须 API 边界 + 编辑器范围 + 构建器 clamp 三处同做）。**`voice.type` 与模型是硬约束**（2026-10-01 原生 WebRTC 入口实测）：`azure-realtime` 只配 `azure-realtime-native`；`gpt-realtime` 配 `openai` / `azure-standard` / `azure-platform` / `azure-custom` / `custom` / `azure-personal` / `avatar-voice-sync` 七种但不含 native；配错报 `invalid_voice_type`，而失败形态是 `rtc.call.error` 回来但 SDP answer / PeerConnection / 出向音频全正常只是永远无回复——排查判据必须是业务信号（转写出现、`response.created`、下行 RTP 字节增长），不是 `connectionState === "connected"`。一句话：**Voice Live 里的模型是会话的宿主，脑子在后端，嘴用 TTS，说什么字由 prompt 管、怎么发声由 `session.voice` 管，而每一条"以为在控制"的路径都要抓 WS 帧证明它真的接上了。**
 
-### Claim: 数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、唯一杠杆是建会话时 bitrate、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定"关画面立即、开画面冷却"
+### Claim: 数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、静态杠杆只能建会话时定（bitrate，另有 resolution / crop / scene）、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定"关画面立即、开画面冷却"
 
 - **来源**：[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]、[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
 - **首次出现**：2026-09-30
-- **最近更新**：2026-10-02
-- **置信度**：0.85（2026-09-30 真机四档 UDP 限速 + 落地回填 + 六轮端到端验证）
+- **最近更新**：2026-10-04
+- **置信度**：0.85（2026-09-30 真机四档 UDP 限速 + 落地回填 + 六轮端到端验证；2026-10-03 速率限制与可调字段两处更正）
 - **状态**：active
 
-> 七条已确认事实：① Azure 发送端协商 REMB 并随接收端估计自动降码率（1080p 2382→718 kbps），应用不重复做；② 客户端 `b=AS` 被忽略、会话中 `session.update` 改 `avatar.video.bitrate` 被静默忽略，码率只能建会话时定；③ 1% 丢包 + RTT 约 600 ms 下 1080p 一帧解不出却仍吃约 1 Mbps（抖动缓冲 369 ms < RTT，NACK 迟到，GOP 报废），`freezeCount` 为 0 是假象，同档位 512×512 照片数字人照播；④ 画面与声音共用一条 RTP 传输，3% 丢包下 1080p 死前原始补偿率 31%、关视频轨后 2.5%、RTT 少 340 ms，两轮复现；⑤ 关画面留声音可行（保留 `m=video` 但 `a=inactive`，去掉 `m=video` 被拒）但只能建连时定；⑥ 麦克风上行 PCM16 24 kHz 加封装 540~680 kbps 在 300 kbps 上行下挤死自己的 SDP（自伤），降 16 kHz 消除且 A/B 词错误率均 0.0%；⑦ Azure 只下发 UDP 3478 TURN 无 TCP 候选，UDP 被封既无画面也无声音（avatar 模式下 WS 上不发 `response.audio.delta`），兜底是重建不带 avatar 的会话让 PCM 走 WS。**照片数字人的码率优势只约 2.4 倍**（645 vs 1548 kbps）而非一个数量级——修正系列05 / 11 口径，真正差异是每帧 1~2 包 vs 5 包以上带来的可解码性；1080p 还有说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵）。**前提是 RTT 约 300 ms 起**（亚洲到 Sweden Central），用户在区域附近则同样丢包率不触发——这就是同区域 Azure Virtual Desktop 跑浏览器演示效果更好的机制，选离用户最近的数字人区域比任何码率调优更有效。**两条硬约束**（落地才撞到）：`session.avatar.connect` 每会话只接受一次、中途不可重协商（再发 offer 回 "WebRTC connection is in connected state"），开关画面都要重建整条会话约 5 秒；avatar 会话创建有速率限制（约 20 秒内第三次被拒、要求 43 秒后重试），被拒会耗尽重连预算把会话打成"语音不可用"——与系列02 备忘的配额不是同一限制（单会话最长 60 分钟、数字人说话态 30 分钟 / 空闲 5 分钟、每资源 30 新连接/分钟；移动端 iOS Safari autoplay 与蓝牙回声不在已验证范围）。由此降级必须不对称：关画面立即、开画面冷却 60 秒且失败门槛 45→90→180 翻倍。实施形态（P0~P4 全自动、A~E 五级网络基线、免阈值主触发、六轮真机实践）归方法页 [[weak-network-adaptive-degradation]]；ICE 候选与直连 / 中继拓扑归 [[realtime-protocol-selection]]。五条明确不做：不给用户选网络档位、不自己实现码率自适应、不用 `b=AS`、不用冻结次数当健康指标、上行不改走 WebRTC（官方 WebRTC 模式不支持 avatar）。
+> 七条已确认事实：① Azure 发送端协商 REMB 并随接收端估计自动降码率（1080p 2382→718 kbps），应用不重复做；② 客户端 `b=AS` 被忽略、会话中 `session.update` 改 `avatar.video.bitrate` 被静默忽略，码率只能建会话时定；③ 1% 丢包 + RTT 约 600 ms 下 1080p 一帧解不出却仍吃约 1 Mbps（抖动缓冲 369 ms < RTT，NACK 迟到，GOP 报废），`freezeCount` 为 0 是假象，同档位 512×512 照片数字人照播；④ 画面与声音共用一条 RTP 传输，3% 丢包下 1080p 死前原始补偿率 31%、关视频轨后 2.5%、RTT 少 340 ms，两轮复现；⑤ 关画面留声音可行（保留 `m=video` 但 `a=inactive`，去掉 `m=video` 被拒）但只能建连时定；⑥ 麦克风上行 PCM16 24 kHz 加封装 540~680 kbps 在 300 kbps 上行下挤死自己的 SDP（自伤），降 16 kHz 消除且 A/B 词错误率均 0.0%；⑦ Azure 只下发 UDP 3478 TURN 无 TCP 候选，UDP 被封既无画面也无声音（avatar 模式下 WS 上不发 `response.audio.delta`），兜底是重建不带 avatar 的会话让 PCM 走 WS。**照片数字人的码率优势只约 2.4 倍**（645 vs 1548 kbps）而非一个数量级——修正系列05 / 11 口径，真正差异是每帧 1~2 包 vs 5 包以上带来的可解码性；原「说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵）」结论**已于 2026-10-03 作废且不再复测**：两次复现均持平（约 1.6~1.8 Mbps），差别在读题期 12.5 fps / 每帧 17 KB 对静音期 25 fps / 每帧 8 KB，乘积持平，下游不再按静音期突发取值。「唯一杠杆是 bitrate」也已更正：SDK 生成模型里 `VideoParams` 还有 `resolution` / `crop`，`AvatarConfig.scene` 的 `zoom` 已实测有效（0.78 得头肩像）。**前提是 RTT 约 300 ms 起**（亚洲到 Sweden Central），用户在区域附近则同样丢包率不触发——这就是同区域 Azure Virtual Desktop 跑浏览器演示效果更好的机制，选离用户最近的数字人区域比任何码率调优更有效。**两条硬约束**（落地才撞到）：`session.avatar.connect` 每会话只接受一次、中途不可重协商（再发 offer 回 "WebRTC connection is in connected state"），开关画面都要重建整条会话约 5 秒；avatar 会话创建有速率限制（精测每滚动 60 秒最多新建 3 个、关闭不退还；早先「约 20 秒」是错误反推，2026-10-03 更正），被拒会耗尽重连预算把会话打成"语音不可用"——与系列02 备忘的配额不是同一限制（单会话最长 60 分钟、数字人说话态 30 分钟 / 空闲 5 分钟、每资源 30 新连接/分钟；移动端 iOS Safari autoplay 与蓝牙回声不在已验证范围）。由此降级必须不对称：关画面立即、开画面冷却 60 秒且失败门槛 45→90→180 翻倍。实施形态（P0~P4 全自动、A~E 五级网络基线、免阈值主触发、六轮真机实践）归方法页 [[weak-network-adaptive-degradation]]；ICE 候选与直连 / 中继拓扑归 [[realtime-protocol-selection]]。五条明确不做：不给用户选网络档位、不自己实现码率自适应、不用 `b=AS`、不用冻结次数当健康指标、上行不改走 WebRTC（官方 WebRTC 模式不支持 avatar）。
 
 ### Claim: Voice Live 的一组不一致是三条产品线的拼接缝——输入默认 24 kHz 是 Realtime 协议继承而非语音工程选择，WS 不收 Opus、WebRTC 模式不带 avatar 同一根源；对照 OpenAI Realtime 浏览器走 WebRTC Opus 弱网天然好，本方案更吃网络正因为数字人
 
@@ -243,12 +245,23 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 三条不一致——"Speech SDK 收 Opus 而 Voice Live 不收""输入默认 24 kHz 而识别器原生 16 kHz""浏览器 WebRTC 模式能压缩却带不了数字人"——不是技术上的奇怪，是产品拼接的缝。Voice Live 由四块不同出身粘成：会话与事件协议来自 **OpenAI Realtime API**（为后端与电话集成设计：WebSocket、JSON、base64、pcm16 / G.711、24 kHz 默认）；识别 / VAD / 降噪 / TTS 来自 **Azure Speech 服务**（自有 SDK 面向客户端、收压缩输入、识别管线原生 16 kHz）；数字人来自 **Speech 的 TTS Avatar**（独立 WebRTC 媒体管线：avatar 媒体服务器 + ACS 中继，信令借道会话 WS，只出不进）；**Voice Live WebRTC 模式**（2026 新加，音频双向走 RTP、事件走 data channel）是另一条独立管线。读法：不收 Opus 是事件协议要与 Realtime 客户端兼容、音频枚举跟着 Realtime 走；24 kHz 默认同一根源（`pcm16` 在 Realtime 协议里定义上就是 24 kHz，.NET SDK 原话 "default sampling rate (24kHz)"，输入输出同一枚举、单改输入破坏对称）；WebRTC 模式不支持 avatar 是数字人自己有一条 WebRTC 管线、新模式是另一条、两条还没合并（官方 "Avatar configurations are currently unsupported with side-band control" 的 currently 表明微软自己也当待办）；浏览器直连数字人就得用为后端设计的 WS 上传 PCM 麦克风。对原生多模态模型（`gpt-realtime` / `gpt-live`）24 kHz 是对的（音频直接作 token 进出、模型在 24 kHz 上训练、合成自然度靠 12 kHz 以内高频）；级联配置（如 `gpt-5-mini`）输入先过 Azure 语音转文字、原生 16 kHz，多传的那段 Azure 自己丢掉——`input_audio_sampling_rate` 只接受 16000 / 24000 本身就说明 Azure 清楚级联用户不需要 24 kHz。对照 OpenAI 自己的 Realtime：WebSocket 给后端与电话（pcm16 / G.711 base64），WebRTC 给浏览器与移动端（Opus 几十 kbps、无视频），弱网表现天然好；本方案比 OpenAI 默认形态更吃网络正是因为数字人——上行被迫 WS 传 PCM、下行多一条 1080p 视频轨。时间线上是过渡态：先用 Realtime 协议把 Speech 能力与数字人挂上，再补面向浏览器的 WebRTC 模式，最后一步才是把数字人接进新模式。若将来换成原生音频模型，输入降 16 kHz 的结论要重新评估。
 
+### Claim: 数字人走 Speech 的 avatar 配额而非 Voice Live 那张表，受两条独立限制——同时活跃 5（容量语言，关闭即释放）+ 每滚动 60 秒新建 3（限流语言，关闭不退还、窗口锚定创建时刻）；配额体系里没有可申请的 avatar 对象，Azure 侧观测不到被拒
+
+- **来源**：[[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]]、[[Quotas and limits for Azure Speech]]（官方配额页 avatar 一节）
+- **首次出现**：2026-10-03
+- **最近更新**：2026-10-04
+- **置信度**：0.8（实验 A/B/C + 作用域对照 + 纯语音压测，官方文档确认归属；并发作用域与 5 分钟空闲断开未验）
+- **状态**：active
+
+> 官方配额页明说 Voice Live 中的 avatar 遵循 *Real-time text-to-speech avatar* 一节（S0：新建 2 次/分钟、说话 30 分钟、空闲 5 分钟），所以同一资源上两套配额、数字人走更严那套，系列02 记的「30 新连接/分钟」是纯语音的。实测把它展开成**两条独立限制**：① 并发上限 5——第 6 个返回 `avatar_service_resource_exhausted`（"maximum processing capacity"，容量陈述），关掉 1 个立刻腾位；② 创建速率每滚动 60 秒 3 次（文档写 2）——第 4 个返回 `rate_limit_exceeded`（`invalid_request_error`，纯限流词汇），`Retry after` 的值是最老一次创建滚出 60 秒窗口的剩余时间（50 + 23 = 73 ≈ 12 + 60），三个全关后立刻再建仍被拒，**关闭不退还**。两条叠加得出操作规则：**5 并发能到但不能一下子到**，同一秒发起 5 个只有 3 个进得去，到 5 并发要分两批约 2 分钟，批量进场必须错开或排队。速率限制**按资源计已实测**（A 耗尽后同机同 IP 同凭据同订阅下 B 仍有完整额度），横向加资源有效；并发作用域未验。纯语音完全不碰这条限制，直连后端压到约 120 次/分钟、60 并发零失败未触顶——关掉数字人并发能力差 12 倍以上。**框架**：avatar 不是服务而是 Speech 的附属能力，因此 Foundry Quota 页无此行、Request quota 按钮无用、账户 usage API 为空、`Microsoft.Quota` 返回 BadRequest、区域 usages 287 项无一是 avatar，拒绝以带内 `error` 事件从 WS 回来而非 HTTP 4xx，Azure Monitor `ClientErrors` 为 0——**唯一观测点是自己的应用**。要提并发只能开支持票请求提高「并发数字人渲染会话数（当前 5）」这个服务端限制，规划时按固定约束对待。Foundry Quota 页上 `OpenAI.Standard.tts-hd` 的 3 RPM 是 Azure OpenAI 的 TTS 部署容量分配，与 avatar 的 3 次/60 秒毫无关系，也是「`voice.type` 别切 `openai`」的具体理由。实现层三类常见错：本地账本窗口与 Azure 不一致（一次观测推不出窗口长度）、账本只在内存跨不过刷新且配额是资源级、把限流当永久失败而不解析 `Retry after` 重试。
+
 ## 冲突与演进
 
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
 - 2026-09-12：注入四种语音要求分层 + viseme 工程细节 Claim（Blender 系列04，官方文档核对）——"viseme 时间轴"Claim 获得跨域（DCC 渲染端）工程续证；计算位置判据归口新页 [[compute-locus-spectrum]]。
 - 2026-09-16：注入 Voice Live 系列03 延迟工程 Claim（治本/治体感二分 + 端到端 5.6s/网关 70%）——"选型光谱与延迟瓶颈"Claim 获生产实测互证；对话轮次分解归口 [[turn-taking]]、首帧成本量化归口 [[compute-locus-spectrum]]、ICE 协议工程归口 [[realtime-protocol-selection]]。
 - 2026-10-02：注入 Voice Live 系列09（脚本朗读机制化 / 模型是会话宿主 / 字与声两层）、系列12（弱网七条事实 + 两条 Azure 硬约束）、系列01 4.5 增补（三条产品线拼接缝）三条 Claim；09-24 Claim 的"传声筒绕不开模型"加修正注（response 不一定调模型）。ICE 协议层压成一条 Claim 归 [[realtime-protocol-selection]]（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级阶梯归口方法页 [[weak-network-adaptive-degradation]]，采样率与编解码技术细节归 [[speech-technology-stack]]。系列00 导读为主题地图不含新内容，不注入。
+- 2026-10-04：注入 Voice Live 系列13（数字人配额与限流：两条独立限制 / 无可申请配额对象 / 按资源计）Claim；按系列12 2026-10-03 修订**更正 09-30 弱网 Claim 三处**——「约 20 秒速率限制」改为 60 秒窗口 3 次、「唯一杠杆 bitrate」改为另有 resolution / crop / scene.zoom、「静音期码率倒挂」作废。两个候选（`concurrency-vs-rate-limit` / `quota-object-vs-service-throttle`）单篇来源不建页，登记 HOLD。
 
 ## 关联概念
 
@@ -272,3 +285,6 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 开放问题 12（会话时长上限备忘）/ 13（终端边界）
 - [[Voice Live系列00：导读——主题地图、阅读顺序与已定决策速查]] — 系列导读：七张主题地图与已定决策速查（不含新内容，作系列入口）
 - [[2026-09-30-周三]] — 系列09~12 与 00 成文、弱网落地与实测回填的当日记录
+- [[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]] — 数字人配额与限流：文档值 vs 实测值、并发 5 与新建 3 次/60 秒、为何没有可申请的 quota
+- [[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 2026-10-03 修订：码率倒挂作废定稿、服务端可调字段清单更正（resolution / crop / scene.zoom）
+- [[2026-10-03-周六]] — 系列13 成文与回链的当日记录

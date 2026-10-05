@@ -1,7 +1,7 @@
 ---
 title: "话轮转换（Turn-Taking）"
 created: "2026-04-17"
-updated: "2026-10-02"
+updated: "2026-10-04"
 tags:
   - wiki
   - concept
@@ -100,6 +100,16 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 
 > `pre_generated_assistant_message` 读题"算不算一个 turn"要按三种"轮"分开看：作**生成轮次（response）**算——仍是一次 `response.create`，事件流照常、同一时刻只能有一个活跃 response 的约束照常、"`response.created` 次数等于读题次数"的验证标准照常，只是模型推理空转、`input_tokens` 为 0；作**对话历史里的 assistant 轮**算——以一条 `role: assistant` 的 message item 落进 conversation，与模型自己生成的回答无区别；作**语音轮（`turn_detection` 里的 turn）**不算——那个 turn 指用户这一段话的起止。中途把整段内容交给模型时历史主线是完整的（system item、每次读出的题目与 nudge、候选人每段转写），不在历史里的有四类：per-turn `instructions`（只在那一个 response 内生效）、后端 judge 的判断过程（只有被说出的 nudge 进了历史）、被打断截掉的部分（`auto_truncate` 截到用户实际听到的位置，`pre_generated` 被打断同样如此）、重连之前的一切（新会话历史清零，要延续得用 `conversation.item.create` 回放）。一个实际风险：**历史完整正是 prompt 约束读法漂掉的原因**——到中后段这段历史看起来就是一场进行中的面试，模型一旦拿到自由轮次第一反应很可能是出下一题或致谢；切回自由轮次时要在 `response.create` 上带明确的 per-turn `instructions`（模型模式）或先塞一条 system item 说明"接下来是自由问答，不要再出题"（两种模式都可），不要指望它从历史里自己读懂阶段切换。这是本页"Turn-Taking ≠ 端点检测"的又一层：端点之外的"轮"本身就不是一个对象。
 
+### Claim: 打断（barge-in）在「音频走 WebSocket PCM」下行上服务端无可截断对象——Azure 在不到 1 秒内灌完整段音频并立刻 `completed`，`interrupt_response` / `auto_truncate` 空转，截断只能由客户端播放队列决定
+
+- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]（2026-10-03 实测更正）
+- **首次出现**：2026-10-03
+- **最近更新**：2026-10-04
+- **置信度**：0.7（单项目实测，合成 WAV 精确落在读题中途；仅对 WS PCM 下行成立，数字人 WebRTC 音轨未测）
+- **状态**：active
+
+> 实测时序：`response.done status=completed` 后 10 ms 候选人开口触发 `speech_started`，随后连续说 5.1 秒 Azure 没有任何事件。根因是**投递与播放的时间尺度不同**——Azure 在 783 ms 内投递了 4275 ms 的音频，候选人开口时服务端眼里早已没有"正在进行的 response"，要截断的内容全在**客户端播放队列**里，服务端碰不到。所以「取消正在播的 response」这一判起动作在 WS PCM 路上不成立。限定范围：数字人在场时音频走 WebRTC 音轨、RTP 由 Azure 持续推送可随时停，机制不同，原结论在那条路上很可能成立但未测（有形象时不发 `response.audio.delta`，实验做不出来）。产品侧后果是「候选人插话要不要掐掉已排队音频」变成纯客户端决定，该项目选择不掐（重叠最多约 4 秒，听两个声音比漏半道题可接受）。
+
 ## 冲突与演进
 
 - 2026-04-11：首次系统定义 Turn-Taking 的深层机制。
@@ -120,3 +130,4 @@ Turn-Taking（话轮转换）是语音 Agent 中"最被低估也最关键"的技
 - [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — Turn Detection 与 Azure VAD 对比
 - [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — 对话轮次延迟分解与多轮稳定性生产实测（第六节）
 - [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 3.3 节"它算不算一个 turn"三分法与"中途交给模型时历史是否完整"
+- [[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]] — 2026-10-03 实测更正：WS PCM 下行上 `interrupt_response` 空转，截断只能客户端做
