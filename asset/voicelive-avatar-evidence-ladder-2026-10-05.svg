@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #f1f5f9; }
+    .sub { font-size: 13px; fill: #94a3b8; }
+    .n { font-size: 15px; font-weight: 700; fill: #f1f5f9; text-anchor: middle; }
+    .v { font-size: 13px; fill: #cbd5e1; text-anchor: middle; }
+    .ok { stroke: #2dd4bf; stroke-width: 3; fill: none; }
+    .warn { stroke: #fbbf24; stroke-width: 3; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .pulse { animation: breathe 1.6s ease-in-out infinite; }
+    .note { font-size: 13px; fill: #fbbf24; }
+    .note2 { font-size: 13px; fill: #94a3b8; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.45; } 50% { stroke-opacity: 1; } }
+  </style>
+  <defs>
+    <marker id="ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="wa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+  </defs>
+  <rect width="1400" height="460" rx="18" fill="#0f172a"/>
+  <text x="40" y="48" class="title">「gpt-realtime 自产音频能驱动数字人吗」的证据阶梯：走到第五级为止，第六级机器测不出</text>
+  <text x="40" y="74" class="sub">会话配置：realtime 模型 + avatar + 不设 Azure 音色（voice = openai/marin）+ 音频型 EoU　｜　青绿 = 已实测通过　琥珀脉冲 = 未证</text>
+
+  <!-- connectors -->
+  <line x1="220" y1="190" x2="258" y2="190" class="ok" marker-end="url(#ok)"/>
+  <line x1="440" y1="190" x2="478" y2="190" class="ok" marker-end="url(#ok)"/>
+  <line x1="660" y1="190" x2="698" y2="190" class="ok" marker-end="url(#ok)"/>
+  <line x1="880" y1="190" x2="918" y2="190" class="ok" marker-end="url(#ok)"/>
+  <line x1="1100" y1="190" x2="1138" y2="190" class="warn" marker-end="url(#wa)"/>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3s" repeatCount="indefinite" path="M40,190 L1120,190"/></circle>
+
+  <g>
+    <rect x="40" y="140" width="180" height="100" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="130" y="170" class="n">① 会话被接受</text><text x="130" y="195" class="v">session.updated</text><text x="130" y="216" class="v">avatar ice = 1</text>
+    <rect x="260" y="140" width="180" height="100" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="350" y="170" class="n">② SDP 握手完成</text><text x="350" y="195" class="v">offer → answer 597 ms</text><text x="350" y="216" class="v">video / audio 轨协商出</text>
+    <rect x="480" y="140" width="180" height="100" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="570" y="170" class="n">③ ICE 连上</text><text x="570" y="195" class="v">浏览器 pc_ice_connected</text><text x="570" y="216" class="v">（aiortc 脚本停在 checking）</text>
+    <rect x="700" y="140" width="180" height="100" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="790" y="170" class="n">④ 视频帧在流</text><text x="790" y="195" class="v">首帧早于 response.created</text><text x="790" y="216" class="v">317 ms</text>
+    <rect x="920" y="140" width="180" height="100" rx="12" fill="#1e293b" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="1010" y="170" class="n">⑤ 模型声音可听</text><text x="1010" y="195" class="v">totalAudioEnergy 增长</text><text x="1010" y="216" class="v">模型先于朗读请求开口</text>
+    <rect x="1140" y="140" width="220" height="100" rx="12" fill="#1e293b" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" class="pulse"/>
+    <text x="1250" y="170" class="n">⑥ 口型是否跟着词动</text><text x="1250" y="195" class="v" style="fill:#fbbf24">未证</text><text x="1250" y="216" class="v">待机动画也产帧，帧数分不出</text>
+  </g>
+
+  <text x="40" y="300" class="note">为什么停在第六级：avatar 是服务端渲染，帧在流 ≠ 口型在动嘴；自动化只能数帧、量能量，判口型只能靠人眼或 CV。</text>
+  <text x="40" y="328" class="note2">方法学：aiortc 脚本对已知能用的对照组同样 0 帧，说明装置不可信，于是不从中得出任何关于口型的结论；换浏览器后才拿到 ③④⑤。</text>
+  <text x="40" y="356" class="note2">对产品的影响：无。逐字念题必须走 Azure TTS（模型念 0/3、1/3），而只要走了 Azure TTS，数字人口型就由 viseme 驱动、已验证。</text>
+  <line x1="40" y1="392" x2="100" y2="392" class="ok"/><text x="112" y="397" class="sub" style="fill:#e2e8f0">已实测通过（浏览器端，1 次）</text>
+  <line x1="340" y1="392" x2="400" y2="392" class="warn"/><text x="412" y="397" class="sub" style="fill:#e2e8f0">未证，不下结论</text>
+  <text x="40" y="432" class="sub">数据来自同一浏览器端出声计时用例；realtime 仅跑 1 次，属指示性证据。</text>
+</svg>

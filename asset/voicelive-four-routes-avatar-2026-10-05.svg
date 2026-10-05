@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="880" viewBox="0 0 1480 880" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .title { font-size: 21px; font-weight: 700; fill: #f1f5f9; }
+    .sub { font-size: 13px; fill: #94a3b8; }
+    .lane-t { font-size: 16px; font-weight: 700; fill: #e2e8f0; }
+    .lane-s { font-size: 13px; fill: #94a3b8; }
+    .lane-ok { font-size: 13px; fill: #2dd4bf; }
+    .lane-warn { font-size: 13px; fill: #fbbf24; }
+    .lane-plan { font-size: 13px; fill: #64748b; }
+    .box-t { font-size: 15px; font-weight: 700; fill: #f1f5f9; text-anchor: middle; }
+    .box-s { font-size: 13px; fill: #cbd5e1; text-anchor: middle; }
+    .box-plan { fill: #94a3b8; }
+    .seg-l { font-size: 13px; fill: #fbbf24; text-anchor: middle; }
+    .pre-l { font-size: 13px; fill: #fbbf24; text-anchor: middle; }
+    .audio { stroke: #2dd4bf; stroke-width: 2.5; fill: none; }
+    .text { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .plan { stroke: #475569; stroke-width: 2.5; fill: none; stroke-dasharray: 6 8; }
+    .think { animation: breathe 2.4s ease-in-out infinite; }
+    .unverified { animation: breathe 1.6s ease-in-out infinite; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.5; } 50% { stroke-opacity: 1; } }
+  </style>
+  <defs>
+    <marker id="aA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+  </defs>
+  <rect width="1480" height="880" rx="18" fill="#0f172a"/>
+  <text x="40" y="50" class="title">四条路线里，数字人的口型由谁驱动：听 / 想 / 说 合并得越多，TTS 的 viseme 就越靠不住</text>
+  <text x="40" y="76" class="sub">青绿实线 = 音频　琥珀虚线 = 文本　｜　数字人是平台级输出，四条路线都能挂；但口型是否对词，取决于「说」这一步是不是 Azure TTS（只有 TTS 产 viseme 时间轴）</text>
+
+  <line x1="40" y1="262" x2="1440" y2="262" stroke="#1e293b"/>
+  <line x1="40" y1="442" x2="1440" y2="442" stroke="#1e293b"/>
+  <line x1="40" y1="622" x2="1440" y2="622" stroke="#1e293b"/>
+
+  <!-- Lane 4 cascaded cy=170 -->
+  <text x="40" y="150" class="lane-t">④ 级联式</text>
+  <text x="40" y="173" class="lane-s">Azure STT → chat 模型 → Azure TTS</text>
+  <text x="40" y="195" class="lane-s">EoU：文本型 ✓　音频型 ✓</text>
+  <text x="40" y="216" class="lane-ok">今天线上就是这条 · 数字人已验证</text>
+  <text x="1015" y="96" class="pre-l">题库文本 → pre_generated（绕过模型，逐字 3/3）</text>
+  <line x1="1015" y1="100" x2="1015" y2="123" class="text" marker-end="url(#aT)"/>
+  <line x1="380" y1="170" x2="448" y2="170" class="audio" marker-end="url(#aA)"/>
+  <line x1="620" y1="170" x2="688" y2="170" class="text" marker-end="url(#aT)"/>
+  <line x1="860" y1="170" x2="928" y2="170" class="text" marker-end="url(#aT)"/>
+  <line x1="1100" y1="170" x2="1228" y2="170" class="audio" marker-end="url(#aA)"/>
+  <text x="1164" y="154" class="sub" text-anchor="middle">音频 + viseme</text>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" repeatCount="indefinite" path="M380,170 L1230,170"/><animate attributeName="fill" calcMode="discrete" keyTimes="0;0.282;0.647" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.4s" repeatCount="indefinite"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M380,170 L1230,170"/><animate attributeName="fill" calcMode="discrete" keyTimes="0;0.282;0.647" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.4s" begin="1.7s" repeatCount="indefinite"/></circle>
+  <rect x="290" y="125" width="90" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/><text x="335" y="165" class="box-t">麦克风</text><text x="335" y="188" class="box-s">候选人</text>
+  <rect x="450" y="125" width="170" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><text x="535" y="162" class="box-t">听 · Azure STT</text><text x="535" y="186" class="box-s">产出作答转写</text>
+  <rect x="690" y="125" width="170" height="90" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="2" class="think"/><text x="775" y="162" class="box-t">想 · chat 模型</text><text x="775" y="186" class="box-s">如 gpt-5-mini</text>
+  <rect x="930" y="125" width="170" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><text x="1015" y="162" class="box-t">说 · Azure TTS</text><text x="1015" y="186" class="box-s">产 viseme 时间轴</text>
+  <rect x="1230" y="125" width="190" height="90" rx="10" fill="#1e293b" stroke="#f472b6" stroke-width="2"/><text x="1325" y="162" class="box-t">数字人</text><text x="1325" y="186" class="box-s">口型由 viseme 驱动 ✓</text>
+
+  <!-- Lane 3 hybrid cy=350 -->
+  <text x="40" y="330" class="lane-t">③ 混合式</text>
+  <text x="40" y="353" class="lane-s">realtime 当 Speech-LLM → Azure TTS</text>
+  <text x="40" y="375" class="lane-s">EoU：文本型 ✗　音频型 ✓</text>
+  <text x="40" y="396" class="lane-ok">实测可达 · 数字人已验证 · 更快</text>
+  <text x="1015" y="280" class="pre-l">题库文本 → pre_generated（realtime 会话上同样逐字 3/3）</text>
+  <line x1="1015" y1="284" x2="1015" y2="303" class="text" marker-end="url(#aT)"/>
+  <line x1="380" y1="350" x2="448" y2="350" class="audio" marker-end="url(#aA)"/>
+  <line x1="860" y1="350" x2="928" y2="350" class="text" marker-end="url(#aT)"/>
+  <line x1="1100" y1="350" x2="1228" y2="350" class="audio" marker-end="url(#aA)"/>
+  <text x="1164" y="334" class="sub" text-anchor="middle">音频 + viseme</text>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" repeatCount="indefinite" path="M380,350 L1230,350"/><animate attributeName="fill" calcMode="discrete" keyTimes="0;0.565;0.647" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.4s" repeatCount="indefinite"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M380,350 L1230,350"/><animate attributeName="fill" calcMode="discrete" keyTimes="0;0.565;0.647" values="#2dd4bf;#fbbf24;#2dd4bf" dur="3.4s" begin="1.7s" repeatCount="indefinite"/></circle>
+  <rect x="290" y="305" width="90" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/><text x="335" y="345" class="box-t">麦克风</text><text x="335" y="368" class="box-s">候选人</text>
+  <rect x="450" y="305" width="410" height="90" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="2" class="think"/><text x="655" y="342" class="box-t">听 + 想 · realtime 模型（Speech-LLM）</text><text x="655" y="366" class="box-s">直接理解音频，输出文本；作答转写由 azure-speech 并行产出</text>
+  <rect x="930" y="305" width="170" height="90" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/><text x="1015" y="342" class="box-t">说 · Azure TTS</text><text x="1015" y="366" class="box-s">产 viseme 时间轴</text>
+  <rect x="1230" y="305" width="190" height="90" rx="10" fill="#1e293b" stroke="#f472b6" stroke-width="2"/><text x="1325" y="342" class="box-t">数字人</text><text x="1325" y="366" class="box-s">口型由 viseme 驱动 ✓</text>
+
+  <!-- Lane 2 S2S cy=530 -->
+  <text x="40" y="510" class="lane-t">② 语音到语音</text>
+  <text x="40" y="533" class="lane-s">realtime 既听又想又说</text>
+  <text x="40" y="555" class="lane-s">EoU：文本型 ✗　音频型 ✓</text>
+  <text x="40" y="576" class="lane-warn">能连；丢逐字念题（模型念 0/3 · 1/3）</text>
+  <line x1="380" y1="530" x2="448" y2="530" class="audio" marker-end="url(#aA)"/>
+  <line x1="1100" y1="530" x2="1228" y2="530" class="audio" marker-end="url(#aA)"/>
+  <text x="1164" y="514" class="sub" text-anchor="middle">模型自产音频</text>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" repeatCount="indefinite" path="M380,530 L1230,530"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M380,530 L1230,530"/></circle>
+  <rect x="290" y="485" width="90" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/><text x="335" y="525" class="box-t">麦克风</text><text x="335" y="548" class="box-s">候选人</text>
+  <rect x="450" y="485" width="650" height="90" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="2" class="think"/><text x="775" y="522" class="box-t">听 + 想 + 说 · realtime 模型（voice.type = openai，如 marin）</text><text x="775" y="546" class="box-s">音频直出，没有 TTS，也就没有 viseme 时间轴</text>
+  <rect x="1230" y="485" width="190" height="90" rx="10" fill="#1e293b" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" class="unverified"/><text x="1325" y="516" class="box-t">数字人</text><text x="1325" y="538" class="box-s">帧在流、声可听 ✓</text><text x="1325" y="558" class="box-s" style="fill:#fbbf24">口型是否对词：未证</text>
+
+  <!-- Lane 1 full duplex cy=710 -->
+  <text x="40" y="690" class="lane-t" style="fill:#94a3b8">① 全双工</text>
+  <text x="40" y="713" class="lane-plan">GPT-Live-1 边说边听</text>
+  <text x="40" y="735" class="lane-plan">「轮次」与 EoU 概念消失</text>
+  <text x="40" y="756" class="lane-plan">Voice Live 侧仍标即将推出 · 待测</text>
+  <line x1="380" y1="702" x2="448" y2="702" class="plan" marker-end="url(#aP)"/>
+  <line x1="448" y1="718" x2="380" y2="718" class="plan" marker-end="url(#aP)"/>
+  <line x1="1100" y1="710" x2="1228" y2="710" class="plan" marker-end="url(#aP)"/>
+  <circle r="5" fill="#64748b"><animateMotion dur="4s" repeatCount="indefinite" path="M380,702 L1230,702"/></circle>
+  <rect x="290" y="665" width="90" height="90" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/><text x="335" y="705" class="box-t">麦克风</text><text x="335" y="728" class="box-s">候选人</text>
+  <rect x="450" y="665" width="650" height="90" rx="10" fill="#111827" stroke="#475569" stroke-width="2" stroke-dasharray="7 5"/><text x="775" y="702" class="box-t box-plan">GPT-Live-1 · 持续收音的同时持续出声</text><text x="775" y="726" class="box-s" style="fill:#64748b">推理与工具委派给后端；逐字念题与作答转写怎么落地，待模型上线后测</text>
+  <rect x="1230" y="665" width="190" height="90" rx="10" fill="#111827" stroke="#475569" stroke-width="2" stroke-dasharray="7 5"/><text x="1325" y="702" class="box-t box-plan">数字人</text><text x="1325" y="726" class="box-s" style="fill:#64748b">平台如何对齐口型：待测</text>
+
+  <!-- legend -->
+  <line x1="40" y1="830" x2="100" y2="830" class="audio"/><text x="112" y="835" class="sub" style="fill:#e2e8f0">音频</text>
+  <line x1="170" y1="830" x2="230" y2="830" class="text"/><text x="242" y="835" class="sub" style="fill:#e2e8f0">文本</text>
+  <line x1="300" y1="830" x2="360" y2="830" class="plan"/><text x="372" y="835" class="sub" style="fill:#e2e8f0">规划 / 待测</text>
+  <rect x="480" y="822" width="40" height="16" rx="4" fill="none" stroke="#f472b6" stroke-width="2"/><text x="530" y="835" class="sub" style="fill:#e2e8f0">数字人口型已验证</text>
+  <rect x="680" y="822" width="40" height="16" rx="4" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5"/><text x="730" y="835" class="sub" style="fill:#e2e8f0">画面在流但口型未证</text>
+  <text x="920" y="835" class="sub">呼吸脉冲框 = 「想」发生的位置；③ 与 ② 是同一个模型的两种 voice 接线</text>
+</svg>

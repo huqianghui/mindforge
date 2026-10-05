@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" font-family="-apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .title { font-size: 21px; font-weight: 700; fill: #f1f5f9; }
+    .sub { font-size: 13px; fill: #94a3b8; }
+    .col-t { font-size: 17px; font-weight: 700; fill: #e2e8f0; text-anchor: middle; }
+    .box-t { font-size: 15px; font-weight: 700; fill: #f1f5f9; }
+    .box-s { font-size: 13px; fill: #cbd5e1; }
+    .mono { font-size: 13px; fill: #cbd5e1; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+    .ok { font-size: 15px; font-weight: 700; fill: #2dd4bf; }
+    .warn { font-size: 15px; font-weight: 700; fill: #fbbf24; }
+    .bad { font-size: 15px; font-weight: 700; fill: #f87171; }
+    .note-ok { font-size: 13px; fill: #2dd4bf; }
+    .note-warn { font-size: 13px; fill: #fbbf24; }
+    .note-bad { font-size: 13px; fill: #f87171; }
+    .audio { stroke: #2dd4bf; stroke-width: 2.5; fill: none; }
+    .text { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .dead { stroke: #f87171; stroke-width: 2.5; fill: none; stroke-dasharray: 4 8; }
+    .neutral { stroke: #64748b; stroke-width: 2; fill: none; }
+    .pulse { animation: breathe 1.6s ease-in-out infinite; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes breathe { 0%,100% { stroke-opacity: 0.45; } 50% { stroke-opacity: 1; } }
+  </style>
+  <defs>
+    <marker id="aA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="aN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <marker id="aD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+  <rect width="1400" height="760" rx="18" fill="#0f172a"/>
+  <text x="40" y="50" class="title">同一帧逐字念题请求，音色缺失时两条管线的反应不同：级联自动补音色而掩盖，realtime 降级成文本而静默失声</text>
+  <text x="40" y="76" class="sub">青绿实线 = 音频　琥珀虚线 = 文本　红色点线 = 没有音频产出　｜　发送侧两条路线逐字相同，分叉只发生在服务端「这一帧交给谁念」</text>
+
+  <!-- step 1: request -->
+  <rect x="400" y="104" width="600" height="74" rx="12" fill="#1e293b" stroke="#475569"/>
+  <text x="700" y="132" class="box-t" text-anchor="middle">① 逐字念题请求：pre_generated_assistant_message</text>
+  <text x="700" y="158" class="box-s" text-anchor="middle">绕过模型推理，让服务端把题目原文原样 TTS 念出来 —— 两条路线发的帧逐字相同</text>
+  <line x1="700" y1="178" x2="700" y2="214" class="neutral" marker-end="url(#aN)"/>
+
+  <!-- step 2: decided by session.voice -->
+  <rect x="440" y="216" width="520" height="74" rx="12" fill="#1e293b" stroke="#475569" class="pulse"/>
+  <text x="700" y="244" class="box-t" text-anchor="middle">② 这一帧交给谁念，由会话级的 session.voice 决定</text>
+  <text x="700" y="270" class="box-s" text-anchor="middle">看 Azure 回显的 session.updated 里 voice 生效成了什么，而不是看自己发了什么</text>
+
+  <!-- split -->
+  <path d="M700,290 L700,318 L360,318 L360,350" class="neutral" marker-end="url(#aN)"/>
+  <path d="M700,290 L700,318 L1040,318 L1040,350" class="neutral" marker-end="url(#aN)"/>
+
+  <text x="360" y="378" class="col-t">级联（chat 模型）</text>
+  <text x="1040" y="378" class="col-t">语音到语音 / 混合式（realtime 模型）</text>
+
+  <!-- row A: voice set -->
+  <rect x="70" y="396" width="580" height="124" rx="12" fill="#0f2a28" stroke="#2dd4bf"/>
+  <text x="90" y="424" class="box-t">voice = azure-standard（正常发送）</text>
+  <text x="90" y="450" class="ok">✅ Azure TTS 合成 → 数字人开口</text>
+  <text x="90" y="476" class="mono">response.audio_transcript.delta · response.audio.done</text>
+  <text x="90" y="500" class="box-s">今天线上就是这条；口型随词变化</text>
+  <line x1="560" y1="458" x2="630" y2="458" class="audio" marker-end="url(#aA)"/>
+
+  <rect x="750" y="396" width="580" height="124" rx="12" fill="#0f2a28" stroke="#2dd4bf"/>
+  <text x="770" y="424" class="box-t">voice = azure-standard（正常发送）</text>
+  <text x="770" y="450" class="ok">✅ 同样走 Azure TTS → 数字人开口（混合式）</text>
+  <text x="770" y="476" class="mono">response.audio_transcript.delta · response.audio.done</text>
+  <text x="770" y="500" class="box-s">realtime 并不妨碍逐字念题 —— 嘴仍然是 Azure TTS</text>
+  <line x1="1240" y1="458" x2="1310" y2="458" class="audio" marker-end="url(#aA)"/>
+
+  <!-- row B: voice missing -->
+  <rect x="70" y="544" width="580" height="146" rx="12" fill="#2a2410" stroke="#fbbf24"/>
+  <text x="90" y="572" class="box-t">voice 缺失</text>
+  <text x="90" y="598" class="warn">✅ 仍然出声 —— Azure 自动补一个 TTS 音色</text>
+  <text x="90" y="624" class="mono">回显 voice = azure-standard（级联没有模型自带声音）</text>
+  <text x="90" y="648" class="note-warn">缺陷被完整掩盖：少发了 voice 也照样念，</text>
+  <text x="90" y="670" class="note-warn">"线上一切正常"，没有任何异常信号</text>
+  <line x1="560" y1="606" x2="630" y2="606" class="audio" marker-end="url(#aA)"/>
+
+  <rect x="750" y="544" width="580" height="146" rx="12" fill="#2a1414" stroke="#f87171"/>
+  <text x="770" y="572" class="box-t">voice 缺失</text>
+  <text x="770" y="598" class="bad">❌ 音频归模型自己 → 没有 TTS 可用 → 回文本</text>
+  <text x="770" y="624" class="mono">回显 voice = openai/&lt;模型音色&gt; · response.text.delta ×N</text>
+  <text x="770" y="648" class="note-bad">无 audio 事件、无切换到说话态，而且 error 帧为 0</text>
+  <text x="770" y="670" class="note-bad">服务端认为自己正常完成了一次响应：画面在动、一句话没说</text>
+  <line x1="1240" y1="606" x2="1310" y2="606" class="dead" marker-end="url(#aD)"/>
+
+  <text x="700" y="730" class="sub" text-anchor="middle">两种规制互斥：voice 是会话级的，配了 Azure 音色就全程 Azure TTS，删掉就全程模型自带音色 —— 构造不出「两个声音」，数字人永远只有一条音频源、一条 viseme 流</text>
+</svg>

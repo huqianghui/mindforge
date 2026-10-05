@@ -122,6 +122,8 @@ Viseme（视位素，visual + phoneme 的合成词）是 phoneme（音位素）�
 
 代价也要说清：**挂 avatar 就必然落在混合式接线上**，放弃的是模型原生音频的副语言表现力（它自己的笑声、语气起伏、audio token 直出的韵律），输出表现力上限变成 Azure TTS 的能力（HD Voice / Custom Voice + SSML；在 Voice Live 会话内这条上限通过 `session.voice` 的 `temperature` / `rate` / `custom_lexicon_url` 等会话级参数触达，逐句 SSML 不可用，见[系列09](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)）。数字人场景下，gpt-realtime 的端到端优势只保留在**输入侧**（直接理解音频、无转写级联），输出侧被 TTS 接管。
 
+> 2026-10-05 补：「挂 avatar 就必然落在混合式接线上」在会话配置层面不成立。实测 Azure 接受 avatar 配模型自己的声音并下发 ICE、画面在流；成立的是更弱的一句：要口型由 viseme 驱动、要逐字念题，才必须落在混合式。另外混合式要可达，EoU 必须用音频型实现。见[系列 15](Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)。
+
 ## 四、全双工 GPT-Live-1：发布事实与它吃掉的"轮次机器"
 
 ### 发布事实（2026-09-10，OpenAI API）
@@ -207,6 +209,8 @@ Voice Live 现有的很多平台能力——semantic VAD / EoU 判停、打断�
 2. **中文全双工实测**：判停准确率、误打断率、与 semantic VAD 的对照数据（第六节第 6 条的执行）。
 3. **全双工的可观测性**：没有"轮"之后，对话日志、延迟指标、内容安全的计量单位怎么定义？
 4. **成本精算**：$0.05/分钟 + 后端 token vs 混合式 audio-in token + TTS 字符计费，按"分钟通话成本"折算的真实差距。
+
+> 2026-10-05 补：以上四条连同逐字念题、输入转写、judge 静默触发等，已整理为八项待测清单与测法，见[系列 15 第九节](Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md#九gpt-live-1-的待测清单)。
 
 ## 参考
 

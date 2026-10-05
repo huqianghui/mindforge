@@ -361,6 +361,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 12：数字人弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音](Azure/VoiceLive/Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)
 - [Voice Live 系列 13：数字人配额与限流——文档值 vs 实测值、并发 5 与新建 3 次/分钟两条限制、为何没有可申请的 quota](Azure/VoiceLive/Voice%20Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota.md)
 - [Voice Live 系列 14：模型接入的三条路径——原生清单按 region 开通、BYOM 用 profile 选协议定直通或级联、推理模型与语音会话模型为何要拆开](Azure/VoiceLive/Voice%20Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开.md)
+- [Voice Live 系列 15：realtime 模型与数字人——四条路线再展开、EoU 两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1 待测清单](Azure/VoiceLive/Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)
 
 #### Azure/Foundary-Agent
 

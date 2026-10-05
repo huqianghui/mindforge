@@ -414,6 +414,7 @@ E 与 F 的服务器原始报文：
 ## 十二、待验
 
 1. **BYOM 直通未实测。** 本资源没有 realtime 类型的部署，`byom-azure-openai-realtime` 只测到了"协议不匹配会被抓"（F），没测到成功建连与直通延迟。
+   > 2026-10-05 补：已续测。BYOM realtime profile **有条件可用**，探针的最小会话是假绿灯，生产会话形状下必须把 EoU 换成音频型实现才被接受；原生 realtime 配 avatar 与 Azure 音色已跑通。见[系列 15](Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)。
 2. **anthropic messages profile 未实测。** 本资源没有 Claude 部署。
 3. **`foundry-resource-override` 跨资源未实测。**
 4. **`invalid_model` 的歧义无法由原生探测解开。** 要区分"region 没开"与"名字不存在"，得对照 Foundry 模型目录。
