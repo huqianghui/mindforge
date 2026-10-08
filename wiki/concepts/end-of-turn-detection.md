@@ -1,7 +1,7 @@
 ---
 title: "End-of-Turn Detection（话轮结束检测 / EOU）"
 created: "2026-09-25"
-updated: "2026-09-25"
+updated: "2026-10-08"
 tags:
   - wiki
   - concept
@@ -69,9 +69,20 @@ End-of-Turn / End-of-Utterance（EOU）检测回答"**这句话说完了没**"�
 
 > EOU 不是独立 session 字段，三种 VAD 类型都能挂。`threshold_level`：low/medium/high/default（default=medium；官方原话 "With a lower setting the probability the sentence is complete will be higher"——low 手快、high 保守）；`model` 二选一：`semantic_detection_v1` 仅英语、multilingual 十种语言，其他语言被忽略等于没配。字段名坑：早期 preview（2025-05-01）写 `threshold: 0.01`/`timeout: 2`（浮点/秒），GA 2026-04-10 是 `threshold_level`/`timeout_ms`——配错服务端可能静默忽略，按 api-version 对照 API Reference。Agent 模式可预置于 metadata `microsoft.voice-live.configuration`。生效核验：`session.updated` 回显 EOU 子对象 + `speech_stopped`→下一次 `speech_started` <3s 比例（误判完成率）下降。（官方 API Reference 原文核对）
 
+### Claim: Azure EoU 有两种实现、可达性不同——文本型（`semantic_detection_v1_multilingual`）工作在识别文本上、需要 Voice Live 自己的识别器、只在级联可用；音频型（`smart_end_of_turn_detection`）工作在输入音频流上、所有管线可用，是严格超集；分段行为实测等价，`timeout_ms` 调到 1000 判定延迟即持平
+
+- **来源**：[[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]]（第三节）
+- **首次出现**：2026-10-05
+- **最近更新**：2026-10-08
+- **置信度**：0.7（五组合可达性矩阵 + 分段对照，每种配置仅 1 次、真人录音未覆盖）
+- **状态**：active
+
+> realtime 在生产会话形状下被拒，报文明说 "Text-based end-of-utterance detection requires a local speech recognizer and is only supported on cascaded pipelines"——SDK 里 EoU 是两个类，此前用的是只有级联才有的文本型。同一会话只换 EoU：原生 `gpt-realtime-2.1` / `1.5` 与 BYOM realtime profile 文本型拒、音频型收；原生 chat 模型与 BYOM chat profile 两种都收。分段对照（20 ms 帧实时喂、模型固定 chat）：文本型声称的"更干净、更少碎片"优势没有出现，带 1.2 s 停顿的输入两边都切两段、转写逐字相同；音频型默认晚约 0.3～0.5 s，`timeout_ms` 1000 即持平（−0.16～+0.20 s），**700 反而合并成一段并推迟到 9 s、行为变质——不是越小越快**。坑：中文素材用 macOS `say` 合成两边都不干净，换成产品实际用的 Azure TTS 合成后持平，素材问题会伪装成被测对象的差异。决策：统一到音频型 @1000 ms、删掉文本型分支与为它存在的管线开关。本页首条 Claim"音频原生是新增不是替换"在 Azure 上获得具体形态：两种实现并存，但可达性让音频型成为默认。方法学：从一次失败推"realtime 不可能"是本轮连错三次的同一毛病，正确做法是把 SDK 同类型列全各测一次。
+
 ## 冲突与演进
 
 - 本页建立前，[[turn-taking]]"Turn-Taking≠端点检测"与 [[voice-activity-detection]]"Semantic VAD 只做 end-of-turn 检测"两条 Claim 已把 EOU 当前置概念使用——后者的对象是 OpenAI `semantic_vad`，与 Azure `azure_semantic_vad` 的范围区分见本页第二条 Claim（该页已同步做范围限定）。
+- 2026-10-08：注入 Voice Live 系列15 第三节「EoU 两种实现决定可达性」Claim——此前「realtime 用不了」的判断错在 EoU 实现选择，不在模型；首条 Claim 获 Azure 侧具体形态续证。
 
 ## 关联概念
 
@@ -82,3 +93,4 @@ End-of-Turn / End-of-Utterance（EOU）检测回答"**这句话说完了没**"�
 ## 来源日记
 
 - [[2026-09-23-周三]] — Voice Live 轮次控制讨论成文（VL06，09-24 拆出 VL08 应答门控篇）
+- [[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]] — 第三节：EoU 文本型 / 音频型两种实现、五组合可达性矩阵与分段等价实测

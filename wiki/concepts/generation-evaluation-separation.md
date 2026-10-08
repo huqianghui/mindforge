@@ -1,7 +1,7 @@
 ---
 title: "生成-评估分离（Generation-Evaluation Separation）"
 created: "2026-04-17"
-updated: "2026-10-02"
+updated: "2026-10-08"
 tags:
   - wiki
   - concept
@@ -169,6 +169,8 @@ related:
 
 > 本页 09-25"judge 与 speaker 分离的第四域实例"的落地形态：judged 模式里 LLM 在**后端**（文本模型 chat 调用、reasoning 关闭）拿候选人的草稿转写只回答一个问题"这句话是不是说完了"，产出的 nudge 文本再作普通文本走 `pre_generated` TTS 播出——**Voice Live 里的模型仍然一句不生成**。LLM 的自由度被限制在一个可以单元测试、可以 eval、可以加守卫的 JSON 输出里，而不是直接对着候选人开口；系列08 内容三档里 nudge 走"受约束生成"档，但生成发生在后端、经代码校验、再以 `pre_generated` 播出，于是那一档原本"模型说什么就播什么、没有否决权"的短板消失——否决权在校验代码手里。judge prompt 与代码的配合写法：**有序检查再给结论**（reasoning 关闭的小模型直接问"要不要说话"会把停顿当"还在说"，让它先引用"最后几个词"再判"是否说完"最后才给 verdict，顺序本身就是约束）；**允许的 verdict 由代码给**（prompt 写 "Allowed verdicts right now: wait, nudge."，parse 时不在集合内一律 `wait` 并发 error 事件，prompt 与代码引用同一份集合）；**不给它不需要的信息**（nudge 不需要 rubric 就不放——模型看不见的东西无从泄露，少一段上下文等于少一种泄露少一份 token）；**输出形状再过一遍代码**（长度上限、泄露守卫、疑问句守卫，任一不过就静音，"宁可不说，不可说错"）；**persona prompt 在前、契约在后并声明覆盖**（管理员可改语气改不动规则）。配套原则表"能用机制绝不用 prompt，prompt 只管模型生成的字"归 [[architecture-constraint-over-agent-learning]]。
 
+> 2026-10-08 补充（Voice Live 系列14 第九节）："为什么不把 judge 的模型直接接到 `create_response`"给出三道独立的墙——题从哪来变了（题库逐字 vs 模型自编）、`create_response` 是单布尔表达不出"只判决、绝不即兴"的窄合同、结构化契约 / 引用检查 / 泄漏守卫 / 超时转 `wait` 一条自由语音 turn 全给不了。即 judge "用模型"与 `create_response` "用模型"不是同一个杠杆，判断与开口是刻意分开而非"能复用却没复用"。
+
 ### Claim: 测量工具的可观测性纪律（弱网域续证）——六轮里五轮无效全在测试工具而非被测逻辑；转向点是让工具报告它测到了什么而不只是通过或失败；限速范围要与生产拓扑一致；实测锚点与推导区间分开标；"有没有声音"用瞬时量不用累积计数器
 
 - **来源**：[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
@@ -219,3 +221,4 @@ related:
 - [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — 生成归 LLM、判断归 typed 决策层；两层校准（模型域实例）
 - [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 第五节代码与 prompt 分工、5.3 judge prompt 与代码配合（语音轮次域落地形态）
 - [[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 第二节测量方法与方法学坑、7.5 六轮五轮无效的工具教训、7.6 实测锚点与推导区间分开标
+- [[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]] — 第九节：judge 用模型与 create_response 用模型不是同一个杠杆

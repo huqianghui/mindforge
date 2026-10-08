@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-10-04"
+updated: "2026-10-08"
 tags:
   - wiki
   - concept
@@ -255,6 +255,26 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 官方配额页明说 Voice Live 中的 avatar 遵循 *Real-time text-to-speech avatar* 一节（S0：新建 2 次/分钟、说话 30 分钟、空闲 5 分钟），所以同一资源上两套配额、数字人走更严那套，系列02 记的「30 新连接/分钟」是纯语音的。实测把它展开成**两条独立限制**：① 并发上限 5——第 6 个返回 `avatar_service_resource_exhausted`（"maximum processing capacity"，容量陈述），关掉 1 个立刻腾位；② 创建速率每滚动 60 秒 3 次（文档写 2）——第 4 个返回 `rate_limit_exceeded`（`invalid_request_error`，纯限流词汇），`Retry after` 的值是最老一次创建滚出 60 秒窗口的剩余时间（50 + 23 = 73 ≈ 12 + 60），三个全关后立刻再建仍被拒，**关闭不退还**。两条叠加得出操作规则：**5 并发能到但不能一下子到**，同一秒发起 5 个只有 3 个进得去，到 5 并发要分两批约 2 分钟，批量进场必须错开或排队。速率限制**按资源计已实测**（A 耗尽后同机同 IP 同凭据同订阅下 B 仍有完整额度），横向加资源有效；并发作用域未验。纯语音完全不碰这条限制，直连后端压到约 120 次/分钟、60 并发零失败未触顶——关掉数字人并发能力差 12 倍以上。**框架**：avatar 不是服务而是 Speech 的附属能力，因此 Foundry Quota 页无此行、Request quota 按钮无用、账户 usage API 为空、`Microsoft.Quota` 返回 BadRequest、区域 usages 287 项无一是 avatar，拒绝以带内 `error` 事件从 WS 回来而非 HTTP 4xx，Azure Monitor `ClientErrors` 为 0——**唯一观测点是自己的应用**。要提并发只能开支持票请求提高「并发数字人渲染会话数（当前 5）」这个服务端限制，规划时按固定约束对待。Foundry Quota 页上 `OpenAI.Standard.tts-hd` 的 3 RPM 是 Azure OpenAI 的 TTS 部署容量分配，与 avatar 的 3 次/60 秒毫无关系，也是「`voice.type` 别切 `openai`」的具体理由。实现层三类常见错：本地账本窗口与 Azure 不一致（一次观测推不出窗口长度）、账本只在内存跨不过刷新且配额是资源级、把限流当永久失败而不解析 `Retry after` 重试。
 
+### Claim: 给会话挂「大脑」有且只有三条路径——原生 `model=` 只认按 region 预部署的清单、BYOM 用 `profile` 选上游协议并随之定死直通或级联、Agent 三件套无 profile 且架构上是级联；"not supported in this region" 与 "Bring Your Own Model" 是两扇门而非矛盾
+
+- **来源**：[[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]]
+- **首次出现**：2026-10-05
+- **最近更新**：2026-10-08
+- **置信度**：0.8（同资源原生 / BYOM 建连探测 + 官方 BYOM 专页与博客原话对照）
+- **状态**：active
+
+> 三条路径是三组互斥的连接参数：① 原生 `model=<name>`，Azure 预部署全托管，清单是全局"支持"清单、开通按 region，文档领先 rollout（两次探测相隔 12 天就有模型从拒到收），能不能用要对目标资源实测；② BYOM `model=<你的 deployment>` + `profile`，模型在自己的 Foundry 资源里（普通 Speech 资源不支持，跨资源加 `foundry-resource-override`，chat / anthropic 模式需 managed identity 有 deployment 权限），**不查** region 清单；③ Agent 三件套（`agent_name` / `agent_version` / `project_name`），大脑与编排配在 Foundry 侧。**profile 不是配置档案而是集成模式**：它只作用在"想"这一步，选 Voice Live 用哪套上游协议调你的 deployment——`byom-azure-openai-realtime` 音频直通、`byom-azure-openai-chat-completion` 与 `byom-foundry-anthropic-messages` 级联（Voice Live 保留 STT / TTS / avatar，只把"想"以文本交出去）；协议定了音频路径就定了，"原生 Realtime vs 级联"的取舍在 BYOM 里变成一个 profile 开关。不能从部署名推断（名字是任意字符串、直通还是级联是主动架构选择、跨厂商协议是硬差异），一个 Responses API 也统一不掉三条（realtime 被**传输物理**隔开——要双向流式音频 WebSocket 而非 request/response；anthropic 被**厂商边界**隔开），所以 profile 短期不会消失。决定性证据：原生路径被拒的三个模型恰是文档点名"支持但未预部署、请走 BYOM"的三个；同名同资源原生拒、BYOM 通；BYOM 建连不校验部署名，但校验 profile 与协议匹配。方法学：`invalid_model` 区分不了"region 没开"与"名字不存在"，结论只写到证据能支持的那一步。
+
+### Claim: 一个「模型」字段承载两种互不兼容的语义是 region 报错的根因——judge、打分、agent 底层模型都吃自有 deployment，唯独 Voice Live 原生 `model=` 不吃；修法是拆成「推理模型」与「语音会话模型」，而 realtime 能产文本却只走自己的 WS 协议，给拆分补上实测依据
+
+- **来源**：[[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]]（第七节）、[[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]]（第七节）
+- **首次出现**：2026-10-05
+- **最近更新**：2026-10-08
+- **置信度**：0.75（单产品配置链梳理 + 文本面逐个探测）
+- **状态**：active
+
+> 用到模型的四处里，三处（judge、评估打分、Foundry agent 底层模型）走 Foundry 的 deployment 寻址，自有 deployment 名是唯一正确填法；第四处 Voice Live 原生 `model=` 只认本 region 预部署清单。一个字段同时喂这四处，填自有 deployment 则 chat 侧全对、语音侧立刻 `invalid_model`——毛病不在"自有 deployment 不该用"，而在一个字段两种语义。修法：推理模型（judge / 打分 / agent 同步）与语音会话模型（独立模型名 + native / byom 开关 + profile）分开；原生下拉只列**对本资源实测 ACCEPTED** 的模型（文档清单会混进 region 没开的），保存前再实测复校。**嘴型会话不必为口径一致拖进 BYOM**：语音腿不推理（连不存在的部署名都能建连），换 BYOM 只换宿主与计费口径，却要付 Foundry 资源、权限、级联延迟的代价。系列15 补实测：realtime 部署经自己的 WS 协议 `modalities: ["text"]` 能返回精确 JSON，但 chat completions / Responses（HTTP 与 WS 模式）全部 unsupported——推理侧是一批并发 HTTP 调用，所以语音会话模型可以是 realtime（混合式）、推理模型不可以，"不是能力不够，是协议对不上"。顺带：部署 `capabilities` 里没有 realtime 正向标记（只是 `chat_completion` 为 false），BYOM realtime 下拉若复用 chat 清单会一个可选值都没有。
+
 ## 冲突与演进
 
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
@@ -262,6 +282,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - 2026-09-16：注入 Voice Live 系列03 延迟工程 Claim（治本/治体感二分 + 端到端 5.6s/网关 70%）——"选型光谱与延迟瓶颈"Claim 获生产实测互证；对话轮次分解归口 [[turn-taking]]、首帧成本量化归口 [[compute-locus-spectrum]]、ICE 协议工程归口 [[realtime-protocol-selection]]。
 - 2026-10-02：注入 Voice Live 系列09（脚本朗读机制化 / 模型是会话宿主 / 字与声两层）、系列12（弱网七条事实 + 两条 Azure 硬约束）、系列01 4.5 增补（三条产品线拼接缝）三条 Claim；09-24 Claim 的"传声筒绕不开模型"加修正注（response 不一定调模型）。ICE 协议层压成一条 Claim 归 [[realtime-protocol-selection]]（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级阶梯归口方法页 [[weak-network-adaptive-degradation]]，采样率与编解码技术细节归 [[speech-technology-stack]]。系列00 导读为主题地图不含新内容，不注入。
 - 2026-10-04：注入 Voice Live 系列13（数字人配额与限流：两条独立限制 / 无可申请配额对象 / 按资源计）Claim；按系列12 2026-10-03 修订**更正 09-30 弱网 Claim 三处**——「约 20 秒速率限制」改为 60 秒窗口 3 次、「唯一杠杆 bitrate」改为另有 resolution / crop / scene.zoom、「静音期码率倒挂」作废。两个候选（`concurrency-vs-rate-limit` / `quota-object-vs-service-throttle`）单篇来源不建页，登记 HOLD。
+- 2026-10-08：注入 Voice Live 系列14（三条模型接入路径 / profile=集成模式定直通或级联 / 推理模型与语音会话模型拆分）两条 Claim，第二条并入系列15 第七节 realtime 文本面实测；系列15 的 EoU 两种实现归口 [[end-of-turn-detection]]、realtime 可达性与路线结论归口 [[cascaded-vs-e2e-voice]]（10-05 已先注入 §5.1 voice 会话级补充）。
 
 ## 关联概念
 
@@ -288,3 +309,6 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - [[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]] — 数字人配额与限流：文档值 vs 实测值、并发 5 与新建 3 次/60 秒、为何没有可申请的 quota
 - [[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 2026-10-03 修订：码率倒挂作废定稿、服务端可调字段清单更正（resolution / crop / scene.zoom）
 - [[2026-10-03-周六]] — 系列13 成文与回链的当日记录
+- [[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]] — 模型接入三条路径：原生清单按 region、BYOM profile 定直通或级联、推理模型与语音会话模型拆开
+- [[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]] — realtime 与数字人：EoU 两种实现、文本驱动已验证、音频驱动证据边界、realtime 文本面只走 WS
+- [[2026-10-05-周一]] — 系列14/15 成文的当日记录
