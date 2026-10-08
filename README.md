@@ -362,6 +362,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 13：数字人配额与限流——文档值 vs 实测值、并发 5 与新建 3 次/分钟两条限制、为何没有可申请的 quota](Azure/VoiceLive/Voice%20Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota.md)
 - [Voice Live 系列 14：模型接入的三条路径——原生清单按 region 开通、BYOM 用 profile 选协议定直通或级联、推理模型与语音会话模型为何要拆开](Azure/VoiceLive/Voice%20Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开.md)
 - [Voice Live 系列 15：realtime 模型与数字人——四条路线再展开、EoU 两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1 待测清单](Azure/VoiceLive/Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)
+- [Voice Live 系列 16：传输层概念对齐——WebSocket 与 WebRTC 两条路径、ICE 两端对称与五件事、Opus 为何进不了 WS、用 webrtc-internals 验证](Azure/VoiceLive/Voice%20Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证.md)
 
 #### Azure/Foundary-Agent
 

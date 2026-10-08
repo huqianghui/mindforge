@@ -303,6 +303,7 @@ WebRTC 媒体走的是 RTP over UDP。先把 RTP 说清：**RTP 是 Real-time Tr
 ## 参考
 
 - 系列前篇：[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（根因、实测与"全量集→够用集"修法，本文是其协议层展开）、[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)（WS + WebRTC 双通道与 Avatar 连接时序）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（媒体流承载的是什么）
+- 传输层前置：[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证](Voice%20Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证.md)（四种传输组合、prflx 与两端对称、ICE 的五件事、Opus 与 WS 接口限制、浏览器验证步骤）
 - 系列后篇：[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)（把默认中继换成自己的 TURN：替换入口、coturn 要求、与 Azure 侧的关系）
 - 协议背景：[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 - [Interactive Connectivity Establishment (ICE): A Protocol for Network Address Translator (NAT) Traversal — RFC 8445](https://datatracker.ietf.org/doc/html/rfc8445)（候选类型、优先级、连通性检查、ICE-lite）

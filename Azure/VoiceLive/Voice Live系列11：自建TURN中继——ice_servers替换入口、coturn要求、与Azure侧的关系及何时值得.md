@@ -170,6 +170,7 @@ Azure 自带的中继是**零运维、已含在数字人分钟费里**的。自�
 
 ## 参考
 
+- 传输层前置：[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证](Voice%20Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证.md)（四种传输组合、prflx 与两端对称、ICE 的五件事、Opus 与 WS 接口限制、浏览器验证步骤）
 - 系列前篇：[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（直连优先、relay 保底的拓扑与 TURN 在做什么，本文是其部署延伸）、[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（ICE 门控，自建 TURN 后仍成立）、[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md)（两类头像的码率与中继容量预算）、[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工](Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)（"旋钮不等于生效"的回显断言模式）
 - [Voice Live API Reference — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-api-reference-2026-04-10)（`RealtimeAvatarConfig.ice_servers` 与 `RealtimeIceServer` 字段定义）
 - [Real-time synthesis for text to speech avatar — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech-avatar/real-time-synthesis-avatar)（"you can use your own" ICE server 说明与 relay token 接口）
