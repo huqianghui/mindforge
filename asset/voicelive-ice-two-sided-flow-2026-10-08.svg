@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #111c33; stroke: #1e293b; stroke-width: 1.5; }
+      .laneTitle { fill: #e2e8f0; font-size: 17px; font-weight: 700; }
+      .laneNote { fill: #94a3b8; font-size: 13px; }
+      .step { fill: #fbbf24; font-size: 15px; font-weight: 700; }
+      .label { fill: #e2e8f0; font-size: 15px; }
+      .small { fill: #cbd5e1; font-size: 13px; }
+      .muted { fill: #64748b; font-size: 13px; }
+      .cand { fill: #134e4a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .candRelay { fill: #1e293b; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .center { fill: #1e293b; stroke: #334155; stroke-width: 1.5; }
+      .win { fill: #422006; stroke: #fbbf24; stroke-width: 2; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+      .flowBack { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dashBack 1.2s linear infinite; }
+      .planned { stroke: #334155; stroke-width: 2; fill: none; stroke-dasharray: 6 6; }
+      .media { stroke: #fbbf24; stroke-width: 4; fill: none; stroke-dasharray: 14 8; animation: dash 0.9s linear infinite; }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      @keyframes dash { to { stroke-dashoffset: -36; } }
+      @keyframes dashBack { to { stroke-dashoffset: 36; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="700"/>
+  <text class="title" x="40" y="44">ICE 是两端对称的：各自收集候选 → 信令交换 → 两两配对 → 双向检测 → controlling 选定</text>
+  <text class="sub" x="40" y="70">一条路径 = 我的某个候选 × 对端的某个候选；relay 在“选择”上排最后，但和直连候选同时收集、同时检测</text>
+
+  <!-- lanes -->
+  <rect class="lane" x="30" y="95" width="300" height="580" rx="12"/>
+  <text class="laneTitle" x="50" y="125">浏览器（controlling）</text>
+  <text class="laneNote" x="50" y="147">发起 offer 的一方，有权 nominate</text>
+
+  <rect class="lane" x="870" y="95" width="300" height="580" rx="12"/>
+  <text class="laneTitle" x="890" y="125">Azure 媒体服务器</text>
+  <text class="laneNote" x="890" y="147">公网可达；ICE-lite 待 answer 定案</text>
+
+  <!-- step 1 candidates -->
+  <text class="step" x="365" y="125">① 各自收集候选（同时进行）</text>
+  <rect class="cand" x="50" y="165" width="260" height="36" rx="8"/>
+  <text class="label" x="64" y="189">host：本机网卡地址</text>
+  <rect class="cand" x="50" y="209" width="260" height="36" rx="8"/>
+  <text class="label" x="64" y="233">srflx：问 STUN 得到的映射</text>
+  <rect class="candRelay" x="50" y="253" width="260" height="36" rx="8"/>
+  <text class="label" x="64" y="277">relay：TURN 上分配的地址</text>
+
+  <rect class="cand" x="890" y="165" width="260" height="36" rx="8"/>
+  <text class="label" x="904" y="189">answer 候选：公网可达</text>
+  <rect class="candRelay" x="890" y="209" width="260" height="36" rx="8"/>
+  <text class="label" x="904" y="233">实测类型：srflx</text>
+
+  <rect class="center" x="365" y="165" width="470" height="124" rx="8"/>
+  <text class="label" x="381" y="192">STUN / TURN 服务器只负责“多找候选”</text>
+  <text class="small" x="381" y="218">没有服务器时只有 host，ICE 仍要选路、检测、保活</text>
+  <text class="small" x="381" y="242">配了 TURN 通常顺带拿到 srflx（TURN 是 STUN 的扩展）</text>
+  <text class="small" x="381" y="266">Voice Live 数字人：服务端在 ice_servers 里下发一台 TURN</text>
+  <!-- step 2 signaling -->
+  <text class="step" x="365" y="315">② 信令交换：WS 上一次性的 offer / answer</text>
+  <path class="flow" d="M 330 360 L 870 360"/>
+  <circle r="6" fill="#2dd4bf"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 330 360 L 870 360"/></circle>
+  <text class="small" x="440" y="343">offer：我的候选 → 对端的 remote candidates</text>
+  <path class="flowBack" d="M 870 385 L 330 385"/>
+  <circle r="6" fill="#2dd4bf"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 870 385 L 330 385"/></circle>
+  <text class="small" x="440" y="402">answer：对端的候选 → 我的 remote candidates</text>
+
+  <!-- step 3 pairs -->
+  <text class="step" x="365" y="445">③ 两端都把 local × remote 配成候选对</text>
+  <rect class="win pulse" x="365" y="460" width="470" height="38" rx="8"/>
+  <text class="label" x="381" y="485">srflx × 对端　直连（弱网探针实测 srflx ↔ srflx）</text>
+  <rect class="win pulse" x="365" y="506" width="470" height="36" rx="8"/>
+  <text class="label" x="381" y="530">relay × 对端　中继（UDP 通的网络上 4 次里 3 次胜出）</text>
+  <rect class="center" x="365" y="550" width="470" height="36" rx="8" stroke-dasharray="5 4"/>
+  <text class="label" x="381" y="574">host × 对端　必输（host 是局域网地址）</text>
+
+  <!-- step 4 checks -->
+  <text class="step" x="365" y="620">④ 双向 STUN 检测　⑤ controlling 选定 → DTLS-SRTP 媒体</text>
+  <path class="media" d="M 330 648 L 870 648"/>
+  <circle r="7" fill="#fbbf24"><animateMotion dur="1.6s" repeatCount="indefinite" path="M 870 648 L 330 648"/></circle>
+  <text class="small" x="440" y="670">选定后：约每 5 秒复核对端同意、定期保活、换网走 ICE restart</text>
+
+  <!-- side notes -->
+  <text class="small" x="50" y="330">没有 STUN 服务器也有 srflx 的替身：</text>
+  <text class="small" x="50" y="350">对端从检测包看到的源地址</text>
+  <text class="small" x="50" y="370">记为 prflx</text>
+  <text class="small" x="50" y="460">候选是“接收地址”：</text>
+  <text class="small" x="50" y="480">告诉对端往这里发</text>
+  <text class="small" x="50" y="520">host 与 srflx 背后是</text>
+  <text class="small" x="50" y="540">同一个本地 socket</text>
+  <text class="small" x="890" y="300">lite 还是 full：</text>
+  <text class="small" x="890" y="320">实测对端为 srflx 且主动检测，</text>
+  <text class="small" x="890" y="340">基本排除 lite，更像 full ICE</text>
+  <text class="small" x="890" y="360">lite 只给 host、只回应检测</text>
+  <text class="small" x="890" y="460">候选对优先级（RFC 8445）：</text>
+  <text class="small" x="890" y="480">2^32·min(G,D) + 2·max(G,D)</text>
+  <text class="small" x="890" y="500">+ (G&gt;D ? 1 : 0)</text>
+  <text class="small" x="890" y="530">主导项是 min：一端是 relay</text>
+  <text class="small" x="890" y="550">整对排序靠后，但排序靠后</text>
+  <text class="small" x="890" y="570">不等于实际很少胜出</text>
+  <text class="muted" x="890" y="605">G = controlling 方候选优先级</text>
+  <text class="muted" x="890" y="625">D = controlled 方候选优先级</text>
+</svg>
