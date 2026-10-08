@@ -110,7 +110,7 @@ related:
 
 ### Claim: ICE / STUN / TURN 速览——三类候选是三个视角的地址，一次性信令（Vanilla ICE）逼出门控，"够用集"捷径成立的前提是"两类候选同源"且 300 ms 收敛窗是规则一部分；TURN 不是联邦网络，自建只替换浏览器一侧、默认中继是默认答案
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]]、[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.8（RFC 8445 / 8489 / 8656 / 8838 核对 + 真机 SDP / `onicecandidate` 抓取；收敛窗 n=3 单一网络；自建 TURN 部分为文档核对尚未实施，0.7）
@@ -122,7 +122,7 @@ related:
 
 ### Claim: WebRTC 与 WebSocket 建连成本的差异本质是"对等"与"客户端-服务器"——WebRTC 在拓扑已退化为客户端-服务器时仍付 ICE 固定开销；TURN over TCP/443 是协议能力但 Azure 默认不下发 TCP 候选，"防火墙严格限 UDP → 只用 WebSocket"的选型条件获实测续证
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85
@@ -132,7 +132,7 @@ related:
 
 ### Claim: RTP / RTCP 与 UDP 的分工及弱网失效链——UDP 决定包怎么送到，RTP 决定包里是什么、何时播、丢了怎么知道；"丢了就丢了"是抖动缓冲 + FEC + 按需 NACK 而非放任；抖动缓冲 < RTT 时 NACK 迟到→GOP 报废，码率自适应调带宽不调包数；音视频同车则胖视频饿死音频；WebSocket 传 PCM 无 RTP 头，抖动直接变延迟累积
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85（RFC 3550 / 4585 核对 + getStats 真机实测）
@@ -157,5 +157,5 @@ related:
 - [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — ICE 门控快路径根因剖析与生产实测（Trickle vs Vanilla ICE、"全量集→够用集"）
 - [[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]] — 对等 vs 客户端-服务器、ICE 必要成本定位、RTP/RTCP 与 UDP 分工、relay 定位四处校正
 - [[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]] — TURN 非联邦、`ice_servers` 替换入口与六项要求、何时值得自建
-- [[Voice Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
+- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
 - [[2026-09-30-周三]] — 系列10/11/12 成文与"直连推翻 relay-only"修正记录
