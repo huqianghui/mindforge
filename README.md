@@ -358,7 +358,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 09：脚本朗读的机制化——pre_generated 绕过模型推理、宿主模型与代码、prompt、voice 三层分工](Azure/VoiceLive/Voice%20Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工.md)
 - [Voice Live 系列 10：ICE、STUN 与 TURN——数字人 WebRTC 建连的候选类型、一次性信令与直连优先、relay 保底拓扑](Azure/VoiceLive/Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)
 - [Voice Live 系列 11：自建 TURN 中继——ice_servers 替换入口、coturn 要求、与 Azure 侧的关系及何时值得](Azure/VoiceLive/Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)
-- [Voice Live 系列 12：数字人弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)
+- [Voice Live 系列 12：弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音](Azure/VoiceLive/Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)
 - [Voice Live 系列 13：数字人配额与限流——文档值 vs 实测值、并发 5 与新建 3 次/分钟两条限制、为何没有可申请的 quota](Azure/VoiceLive/Voice%20Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota.md)
 - [Voice Live 系列 14：模型接入的三条路径——原生清单按 region 开通、BYOM 用 profile 选协议定直通或级联、推理模型与语音会话模型为何要拆开](Azure/VoiceLive/Voice%20Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开.md)
 - [Voice Live 系列 15：realtime 模型与数字人——四条路线再展开、EoU 两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1 待测清单](Azure/VoiceLive/Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)

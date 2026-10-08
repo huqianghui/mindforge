@@ -1,5 +1,5 @@
 ---
-title: Voice Live 系列 12：数字人弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音
+title: Voice Live 系列 12：弱网表现——Azure 码率自适应实测、1080p 解码失效机制、胖视频饿死音频与关画面保声音
 created: 2026-09-30
 tags:
   - azure
