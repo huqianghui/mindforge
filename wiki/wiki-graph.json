@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-05",
+  "generated_at": "2026-10-08",
   "stats": {
     "nodes": 139,
     "links": 485,
     "orphan_links_removed": 2,
-    "claims": 749,
+    "claims": 753,
     "categories": 13
   },
   "nodes": [
@@ -2821,8 +2821,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.8,
+      "claims_count": 5,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "文本语义 EOU 有天花板但没有退役——音频原生是新增不是替换",
@@ -2859,6 +2859,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "EOU 不是独立 session 字段，三种 VAD 类型都能挂。`threshold_level`：low/medium/high/default（default=medium；官方原话 \"With a lower setting the probability the sentence is complete will be higher\"——low 手快、high 保守）；`model` 二选一：`semantic_detection_v1` 仅英语、multilingual 十种语言，其他语言被忽略等于没配。字段名坑：早期 preview（2025-05-01）写 `threshold: 0.01`/`timeout: 2`（浮点/秒），GA 2026-04-10 是 `threshold_level`/`timeout_ms`——配错服务端可能静默忽略，按 api-version 对照 API Reference。Agent 模式可预置于 metadata `microsoft.voice-live.configuration`。生效核验：`session.updated` 回显 EOU 子对象 + `speech_stopped`→下一次 `speech_started` <3s 比例（误判完成率）下降。（官方 API Reference 原文核对）"
+        },
+        {
+          "statement": "Azure EoU 有两种实现、可达性不同——文本型（`semantic_detection_v1_multilingual`）工作在识别文本上、需要 Voice Live 自己的识别器、只在级联可用；音频型（`smart_end_of_turn_detection`）工作在输入音频流上、所有管线可用，是严格超集；分段行为实测等价，`timeout_ms` 调到 1000 判定延迟即持平",
+          "source": "Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单",
+          "first_seen": "2026-10-05",
+          "last_updated": "2026-10-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "realtime 在生产会话形状下被拒，报文明说 \"Text-based end-of-utterance detection requires a local speech recognizer and is only supported on cascaded pipelines\"——SDK 里 EoU 是两个类，此前用的是只有级联才有的文本型。同一会话只换 EoU：原生 `gpt-realtime-2.1` / `1.5` 与 BYOM realtime profile 文本型拒、音频型收；原生 chat 模型与 BYOM chat profile 两种都收。分段对照（20 ms 帧实时喂、模型固定 chat）：文本型声称的\"更干净、更少碎片\"优势没有出现，带 1.2 s 停顿的输入两边都切两段、转写逐字相同；音频型默认晚约 0.3～0.5 s，`timeout_ms` 1000 即持平（−0.16～+0.20 s），**700 反而合并成一段并推迟到 9 s、行为变质——不是越小越快**。坑：中文素材用 macOS `say` 合成两边都不干净，换成产品实际用的 Azure TTS 合成后持平，素材问题会伪装成被测对象的差异。决策：统一到音频型 @1000 ms、删掉文本型分支与为它存在的管线开关。本页首条 Claim\"音频原生是新增不是替换\"在 Azure 上获得具体形态：两种实现并存，但可达性让音频型成为默认。方法学：从一次失败推\"realtime 不可能\"是本轮连错三次的同一毛病，正确做法是把 SDK 同类型列全各测一次。"
         }
       ]
     },
@@ -7853,7 +7862,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 22,
+      "claims_count": 24,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -8053,6 +8062,24 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "官方配额页明说 Voice Live 中的 avatar 遵循 *Real-time text-to-speech avatar* 一节（S0：新建 2 次/分钟、说话 30 分钟、空闲 5 分钟），所以同一资源上两套配额、数字人走更严那套，系列02 记的「30 新连接/分钟」是纯语音的。实测把它展开成**两条独立限制**：① 并发上限 5——第 6 个返回 `avatar_service_resource_exhausted`（\"maximum processing capacity\"，容量陈述），关掉 1 个立刻腾位；② 创建速率每滚动 60 秒 3 次（文档写 2）——第 4 个返回 `rate_limit_exceeded`（`invalid_request_error`，纯限流词汇），`Retry after` 的值是最老一次创建滚出 60 秒窗口的剩余时间（50 + 23 = 73 ≈ 12 + 60），三个全关后立刻再建仍被拒，**关闭不退还**。两条叠加得出操作规则：**5 并发能到但不能一下子到**，同一秒发起 5 个只有 3 个进得去，到 5 并发要分两批约 2 分钟，批量进场必须错开或排队。速率限制**按资源计已实测**（A 耗尽后同机同 IP 同凭据同订阅下 B 仍有完整额度），横向加资源有效；并发作用域未验。纯语音完全不碰这条限制，直连后端压到约 120 次/分钟、60 并发零失败未触顶——关掉数字人并发能力差 12 倍以上。**框架**：avatar 不是服务而是 Speech 的附属能力，因此 Foundry Quota 页无此行、Request quota 按钮无用、账户 usage API 为空、`Microsoft.Quota` 返回 BadRequest、区域 usages 287 项无一是 avatar，拒绝以带内 `error` 事件从 WS 回来而非 HTTP 4xx，Azure Monitor `ClientErrors` 为 0——**唯一观测点是自己的应用**。要提并发只能开支持票请求提高「并发数字人渲染会话数（当前 5）」这个服务端限制，规划时按固定约束对待。Foundry Quota 页上 `OpenAI.Standard.tts-hd` 的 3 RPM 是 Azure OpenAI 的 TTS 部署容量分配，与 avatar 的 3 次/60 秒毫无关系，也是「`voice.type` 别切 `openai`」的具体理由。实现层三类常见错：本地账本窗口与 Azure 不一致（一次观测推不出窗口长度）、账本只在内存跨不过刷新且配额是资源级、把限流当永久失败而不解析 `Retry after` 重试。"
+        },
+        {
+          "statement": "给会话挂「大脑」有且只有三条路径——原生 `model=` 只认按 region 预部署的清单、BYOM 用 `profile` 选上游协议并随之定死直通或级联、Agent 三件套无 profile 且架构上是级联；\"not supported in this region\" 与 \"Bring Your Own Model\" 是两扇门而非矛盾",
+          "source": "Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开",
+          "first_seen": "2026-10-05",
+          "last_updated": "2026-10-08",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "三条路径是三组互斥的连接参数：① 原生 `model=<name>`，Azure 预部署全托管，清单是全局\"支持\"清单、开通按 region，文档领先 rollout（两次探测相隔 12 天就有模型从拒到收），能不能用要对目标资源实测；② BYOM `model=<你的 deployment>` + `profile`，模型在自己的 Foundry 资源里（普通 Speech 资源不支持，跨资源加 `foundry-resource-override`，chat / anthropic 模式需 managed identity 有 deployment 权限），**不查** region 清单；③ Agent 三件套（`agent_name` / `agent_version` / `project_name`），大脑与编排配在 Foundry 侧。**profile 不是配置档案而是集成模式**：它只作用在\"想\"这一步，选 Voice Live 用哪套上游协议调你的 deployment——`byom-azure-openai-realtime` 音频直通、`byom-azure-openai-chat-completion` 与 `byom-foundry-anthropic-messages` 级联（Voice Live 保留 STT / TTS / avatar，只把\"想\"以文本交出去）；协议定了音频路径就定了，\"原生 Realtime vs 级联\"的取舍在 BYOM 里变成一个 profile 开关。不能从部署名推断（名字是任意字符串、直通还是级联是主动架构选择、跨厂商协议是硬差异），一个 Responses API 也统一不掉三条（realtime 被**传输物理**隔开——要双向流式音频 WebSocket 而非 request/response；anthropic 被**厂商边界**隔开），所以 profile 短期不会消失。决定性证据：原生路径被拒的三个模型恰是文档点名\"支持但未预部署、请走 BYOM\"的三个；同名同资源原生拒、BYOM 通；BYOM 建连不校验部署名，但校验 profile 与协议匹配。方法学：`invalid_model` 区分不了\"region 没开\"与\"名字不存在\"，结论只写到证据能支持的那一步。"
+        },
+        {
+          "statement": "一个「模型」字段承载两种互不兼容的语义是 region 报错的根因——judge、打分、agent 底层模型都吃自有 deployment，唯独 Voice Live 原生 `model=` 不吃；修法是拆成「推理模型」与「语音会话模型」，而 realtime 能产文本却只走自己的 WS 协议，给拆分补上实测依据",
+          "source": "Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开",
+          "first_seen": "2026-10-05",
+          "last_updated": "2026-10-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "用到模型的四处里，三处（judge、评估打分、Foundry agent 底层模型）走 Foundry 的 deployment 寻址，自有 deployment 名是唯一正确填法；第四处 Voice Live 原生 `model=` 只认本 region 预部署清单。一个字段同时喂这四处，填自有 deployment 则 chat 侧全对、语音侧立刻 `invalid_model`——毛病不在\"自有 deployment 不该用\"，而在一个字段两种语义。修法：推理模型（judge / 打分 / agent 同步）与语音会话模型（独立模型名 + native / byom 开关 + profile）分开；原生下拉只列**对本资源实测 ACCEPTED** 的模型（文档清单会混进 region 没开的），保存前再实测复校。**嘴型会话不必为口径一致拖进 BYOM**：语音腿不推理（连不存在的部署名都能建连），换 BYOM 只换宿主与计费口径，却要付 Foundry 资源、权限、级联延迟的代价。系列15 补实测：realtime 部署经自己的 WS 协议 `modalities: [\"text\"]` 能返回精确 JSON，但 chat completions / Responses（HTTP 与 WS 模式）全部 unsupported——推理侧是一批并发 HTTP 调用，所以语音会话模型可以是 realtime（混合式）、推理模型不可以，\"不是能力不够，是协议对不上\"。顺带：部署 `capabilities` 里没有 realtime 正向标记（只是 `chat_completion` 为 false），BYOM realtime 下拉若复用 chat 清单会一个可选值都没有。"
         }
       ]
     },
@@ -9186,8 +9213,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 5,
-      "avg_confidence": 0.79,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "端到端模型尚未达到企业生产可用",
@@ -9233,6 +9260,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "本决策 07-21 Claim 说 Voice Live 把级联与端到端统一在同一 API 后、切换成本降到配置级；系列09 补上这枚硬币的另一面：**会话身份就是\"一个模型 + 一组语音能力\"**，建连 URL 必须带 `model=<区域原生模型>`（swedencentral 上如 gpt-5-mini / gpt-4o / gpt-4.1-mini，自己部署的 deployment 名不算——\"region 可用性才是真分水岭\"在模型字段上的另一面）或 `agent_name`，没有\"纯 TTS 会话\"这种类型。所以即使应用一次都不让模型\"想\"（读题全走 `pre_generated`），会话也要有个模型坐在那里——它是会话的**宿主**，不是应用在用的功能。在嘴型会话里它只剩三件事：当宿主（承载 VAD / STT / TTS / avatar）、当保险丝（reader prompt 作 system item 注入，万一哪条代码路径误发裸 `response.create` 也按\"只读稿、不追问\"行事）、真正用到它的只剩编辑器 Playground。对照系列06 控制权矩阵\"应用开轮 + 应用给现成文本\"这一行会话内模型价值为零的判断没变，变的是\"零价值但拆不掉\"的原因：不是\"文本必须经它复述\"，而是\"会话必须有个宿主\"。**想彻底不配模型，可以，但换产品**：Azure Speech 服务的实时 TTS avatar（Speech SDK avatar synthesis，WebRTC 出音视频）是纯 TTS 加数字人、不涉及任何 LLM，代价是听（STT + VAD）要自己另接 Speech 的识别服务、轮次管理自己写——这就回到了系列01 的级联流水线，dialog manager、句子缓冲、打断都要自己拼；一条连接变多条，延迟与状态同步自理；已踩平的 Voice Live 坑（首读被 avatar 握手切掉、cancel-then-speak、重连状态）要在新管线上重来一遍。对\"题库驱动 + 需要听候选人 + 偶尔 judge 出声\"的场景，留在 Voice Live、把模型当宿主更省：读题走 TTS、模型输入成本归零、架构不变；系列06 7.3\"省掉模型这 0.6 s 不值这个改动\"的账不用算了——推理开销已被 `pre_generated` 省掉且不用换产品。"
+        },
+        {
+          "statement": "本产品落在「混合式」而非「语音到语音」的真正原因是逐字念题必须走 Azure TTS——逐字念题不能押在模型的指令跟随上，靠 `pre_generated` 机制保证；realtime 宿主上文本驱动数字人已验证；此前\"realtime 用不了\"错在 EoU 实现而非路线本身",
+          "source": "Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单",
+          "first_seen": "2026-10-05",
+          "last_updated": "2026-10-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "数字人是平台级输出，四条路线都能挂，但口型由谁驱动取决于\"说\"落在哪——只有 Azure TTS 产 viseme 时间轴。题库文本经 `pre_generated_assistant_message` 走 Azure TTS，在级联与 realtime 宿主上都逐字一致（realtime 宿主耗时 1.4 s 对级联 1.8 s，指示性）。让模型自己念则取决于指令跟随：assistant item 方式两个受测模型都 0/3（把题目当对话输入去回答）；`response.instructions` 要求逐字念，`gpt-realtime-2.1` 1/3、`gpt-5-mini` 3/3——这是两个具体模型各 3 次的指令跟随样本，**不推广为\"realtime 类比 chat 类更易念错\"**，换模型或版本结论可能变。决策含义与模型无关：逐字念题是硬需求，不能寄托在任何模型的指令跟随上，所以留在 `pre_generated`（零推理、3/3）；只要走 Azure TTS 数字人就顺带成立，因此 realtime 配 Azure 音色的混合式可行、纯语音到语音（声音归模型）不合适。此前判断 realtime 不可用，是生产会话用了只在级联可用的文本型 EoU，换音频型后 realtime 整列可达（见 [[end-of-turn-detection]]）。组合原则：speech in 由模型定、speech out 由 `voice` 的家族定、建会话那一刻定死。"
         }
       ]
     },
