@@ -16,7 +16,7 @@ description: 一句 Azure 原样返回的「Avatar request was rate-limited. Ret
 
 # Voice Live 系列 13：数字人配额与限流——文档值 vs 实测值、并发 5 与新建 3 次/分钟两条限制、为何没有可申请的 quota
 
-> 系列导读与主题地图见[系列 00](Voice%20Live系列00：导读——主题地图、阅读顺序与已定决策速查.md)。本文接[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 7.4 节顺手记下的那条「avatar 会话创建有速率限制」，把它从一句备注展开成完整的配额模型，并更正那里写错的窗口长度。
+> 系列导读与主题地图见[系列 00](Voice%20Live系列00：导读——主题地图、阅读顺序与已定决策速查.md)。本文接[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 7.4 节顺手记下的那条「avatar 会话创建有速率限制」，把它从一句备注展开成完整的配额模型，并更正那里写错的窗口长度。
 
 **触发本文的现场报错**：
 
@@ -104,7 +104,7 @@ Voice unavailable: Avatar request was rate-limited. Retry after 7.0s. — you ca
 
 两个都落在 60 秒窗口内，自洽。
 
-> **更正[系列 12 7.4](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却) 的一条旧结论。** 那里写「约 20 秒内第三次请求被拒」，并据此把客户端的窗口设成了 20 秒。那是**错误的反推**：观测只说明三次请求挨得很近，**推不出窗口长度**。文档的 60 秒才是窗口，20 秒这个数从来没有证据支持。
+> **更正[系列 12 7.4](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却) 的一条旧结论。** 那里写「约 20 秒内第三次请求被拒」，并据此把客户端的窗口设成了 20 秒。那是**错误的反推**：观测只说明三次请求挨得很近，**推不出窗口长度**。文档的 60 秒才是窗口，20 秒这个数从来没有证据支持。
 
 ## 四、实测：两条独立的限制
 
@@ -354,7 +354,7 @@ Voice unavailable: Avatar request was rate-limited. Retry after 7.0s. — you ca
 | 开始面试 + 语音作答 | **1**（实测） | 上面 |
 | 「重新开始」 | 再 1 | 重建会话 |
 | 刷新、新标签页 | 再 1 | 且绕过内存账本 |
-| 媒体模式切换（关画面 / 开画面） | 再 1 | Azure 不支持会话中途重协商，切换 = 重建会话（[系列 12 7.4](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却)） |
+| 媒体模式切换（关画面 / 开画面） | 再 1 | Azure 不支持会话中途重协商，切换 = 重建会话（[系列 12 7.4](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却)） |
 | **关闭会话** | **不退还** | 限的是「每分钟**新建**数」 |
 
 **结论：配额是按生产形态定的，不是按开发形态。** 真实候选人开一次、保持最多 30 分钟，3 次/分钟很宽裕；而开发时「开面试看一眼 → 重新开始 → 再看 → 同时开后台试听对比」一分钟内凑三次毫不费力。这正是本文开头那次报错的现场动作：`Retry after 7.0s`，最老那次连接在 53 秒前。
@@ -431,4 +431,4 @@ Voice unavailable: Avatar request was rate-limited. Retry after 7.0s. — you ca
 - [Quotas and limits for Azure Speech](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-services-quotas-and-limits)：Real-time text-to-speech avatar 一节与「Voice Live 中的 avatar 遵循该节」归属说明
 - [Real-time synthesis for text to speech avatar](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech-avatar/real-time-synthesis-avatar)：5 分钟空闲 / 30 分钟连接断开
 - [Increase the limit of concurrent users in Speech Services avatar](https://learn.microsoft.com/en-us/answers/questions/2258596/increase-the-limit-of-concurrent-users-in-speech-s)：社区问答，提并发限制需开支持票
-- 系列内：[系列 12 7.4](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却) 首次记下该限制（窗口长度已由本文更正）；[系列 02 第九节](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md#九开放问题待验证后续讨论) 会话时长上限备忘；[系列 05 第七节](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md#七功能与价格该推荐哪一类) 两类头像的带宽与并发
+- 系列内：[系列 12 7.4](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md#74-落地补记两条-azure-硬约束与不对称冷却) 首次记下该限制（窗口长度已由本文更正）；[系列 02 第九节](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md#九开放问题待验证后续讨论) 会话时长上限备忘；[系列 05 第七节](Voice%20Live系列05：两类数字人头像——viseme驱动的Video%20Avatar与VASA-1生成的Photo%20Avatar.md#七功能与价格该推荐哪一类) 两类头像的带宽与并发

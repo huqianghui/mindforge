@@ -15,7 +15,7 @@ description: 系列03、10、11、12 各自从一个具体问题切进传输层�
 
 # Voice Live 系列 16：传输层概念对齐——WebSocket 与 WebRTC 两条路径、ICE 两端对称与五件事、Opus 为何进不了 WS、用 webrtc-internals 验证
 
-> 系列导读与主题地图见[系列 00](Voice%20Live系列00：导读——主题地图、阅读顺序与已定决策速查.md)。**本文是传输层的前置篇**：编号排在后面，是因为它成文晚，阅读时建议放在[系列 03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)、[系列 10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)、[系列 11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)、[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 之前读。系列10 已讲过的候选三类型、SDP 候选行格式、门控与一次性信令，本文只引用不重复。
+> 系列导读与主题地图见[系列 00](Voice%20Live系列00：导读——主题地图、阅读顺序与已定决策速查.md)。**本文是传输层的前置篇**：编号排在后面，是因为它成文晚，阅读时建议放在[系列 03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)、[系列 10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)、[系列 11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)、[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 之前读。系列10 已讲过的候选三类型、SDP 候选行格式、门控与一次性信令，本文只引用不重复。
 
 **触发本文的追问**：ICE、STUN、TURN、relay 是数字人引入的吗？纯语音还有吗？语音也能走 WebRTC，那还有吗？没有 STUN、TURN 服务器，为什么还要 ICE？Opus 为什么只有 WebRTC 能用？
 
@@ -48,7 +48,7 @@ description: 系列03、10、11、12 各自从一个具体问题切进传输层�
 
 麦克风的 `getUserMedia` 两种模式都会调用；`new RTCPeerConnection` 只在数字人这条路径上出现。这条区别后面验证时会用到（第八节）。
 
-**一个例外**（文档）：avatar 有个 `output_protocol` 字段，可选 `webrtc`（默认）或 `websocket`。选 `websocket` 时数字人视频也走 WS，整条链路就没有 ICE 了。代价与可用性见[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 可调字段表里的待验项。
+**一个例外**（文档）：avatar 有个 `output_protocol` 字段，可选 `webrtc`（默认）或 `websocket`。选 `websocket` 时数字人视频也走 WS，整条链路就没有 ICE 了。代价与可用性见[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 可调字段表里的待验项。
 
 ### 2.3 语音也可以走 WebRTC
 
@@ -91,7 +91,7 @@ description: 系列03、10、11、12 各自从一个具体问题切进传输层�
 | 延迟 | 直连，最低 | 多绕一跳 |
 | 成本 | 几乎为零 | 带宽成本高，所以要凭据 |
 
-连 Azure 时的特殊之处（推断）：Azure 媒体服务器公网可达，客户端在对称 NAT 后主动发包过去，对端也能通过 prflx 学到地址并回包，所以真正离不开 TURN 的主要是"出站 UDP 被封"。但这条推断不能读成"relay 很少被用到"：[系列 10 4.4](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md#44-修复为什么成立因为我们知道了谁会赢) 在一台 UDP 并未被封的开发机上连测 3 次，**两次胜出的是 relay/udp**，一次是 srflx/udp；[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的弱网探针则测到 srflx ↔ srflx 直连；本文 8.5 的截图又是一次 relay(udp) 胜出，浏览器到 TURN 走的就是 UDP，可见 UDP 并没被封。直连可行时 relay 为什么仍会胜出，原因未查明（合计 4 次、同类开发网络），列入第九节待验。
+连 Azure 时的特殊之处（推断）：Azure 媒体服务器公网可达，客户端在对称 NAT 后主动发包过去，对端也能通过 prflx 学到地址并回包，所以真正离不开 TURN 的主要是"出站 UDP 被封"。但这条推断不能读成"relay 很少被用到"：[系列 10 4.4](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md#44-修复为什么成立因为我们知道了谁会赢) 在一台 UDP 并未被封的开发机上连测 3 次，**两次胜出的是 relay/udp**，一次是 srflx/udp；[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的弱网探针则测到 srflx ↔ srflx 直连；本文 8.5 的截图又是一次 relay(udp) 胜出，浏览器到 TURN 走的就是 UDP，可见 UDP 并没被封。直连可行时 relay 为什么仍会胜出，原因未查明（合计 4 次、同类开发网络），列入第九节待验。
 
 ## 四、两端对称：local candidate 与 remote candidate
 
@@ -154,7 +154,7 @@ a=candidate:2 1 tcp 1076302079 20.50.12.34 40000 typ host tcptype passive
 
 开源实现里，mediasoup 只支持 ICE-lite（用 announced address 宣告公网 IP）；Janus 两种都支持，可切成 lite，并有 1:1 NAT 映射配置；Jitsi Videobridge 用 full ICE，通过 STUN 或静态映射拿到公网地址。
 
-**放到 Azure 上看**：[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的探针测到的路径是 srflx ↔ srflx，即**对端候选是 srflx**。这更像上表第三行"full ICE 服务器在 1:1 NAT 后"，而不像标准的 lite（通常只给 `typ host`）。所以 Azure 数字人媒体服务器**有可能不是 ICE-lite**，若如此，两端都会主动做检测，"Azure 只应答、浏览器包办选路"不成立，第三节"relay 为什么常胜出"也要按两端都在检测来分析。8.5 的截图给了第二条证据：浏览器**收到**对端 12 次 STUN 检测请求并逐一回应，说明对端在主动发检测，而 lite 一端不主动发起检测，这与 lite 不符。两条证据合起来，**基本可以排除 ICE-lite**，Azure 更像云上 1:1 NAT 后的 full ICE；最终以 SDP answer 里没有 `a=ice-lite` 定案（8.2）。
+**放到 Azure 上看**：[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的探针测到的路径是 srflx ↔ srflx，即**对端候选是 srflx**。这更像上表第三行"full ICE 服务器在 1:1 NAT 后"，而不像标准的 lite（通常只给 `typ host`）。所以 Azure 数字人媒体服务器**有可能不是 ICE-lite**，若如此，两端都会主动做检测，"Azure 只应答、浏览器包办选路"不成立，第三节"relay 为什么常胜出"也要按两端都在检测来分析。8.5 的截图给了第二条证据：浏览器**收到**对端 12 次 STUN 检测请求并逐一回应，说明对端在主动发检测，而 lite 一端不主动发起检测，这与 lite 不符。两条证据合起来，**基本可以排除 ICE-lite**，Azure 更像云上 1:1 NAT 后的 full ICE；最终以 SDP answer 里没有 `a=ice-lite` 定案（8.2）。
 
 ### 4.4 候选对的优先级由两端一起决定
 
@@ -195,7 +195,7 @@ UDP 只是最底层。WebRTC 在上面叠了一整套为实时媒体设计的协
 
 和语音产品直接相关的三点：
 
-1. **弱网表现差别最大。** 重传要等一个 RTT 以上，卡顿近似等于丢包数 × RTT，正是 TCP 队头阻塞（[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 在约 300 ms RTT 下实测）。WebRTC 不等重传，丢包表现为音质轻微下降而不是卡住。
+1. **弱网表现差别最大。** 重传要等一个 RTT 以上，卡顿近似等于丢包数 × RTT，正是 TCP 队头阻塞（[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 在约 300 ms RTT 下实测）。WebRTC 不等重传，丢包表现为音质轻微下降而不是卡住。
 2. **打断（barge-in）会重新有意义。** 实测 Azure 在 WS PCM 下行上不到 1 秒就把一整段回复的音频推完并标记完成，所以 `interrupt_response` 没有可截断的对象（[系列 08](Voice%20Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM%20judge、两段式提交与频率策略.md)）。WebRTC 按实时速度推，服务端知道播到哪儿，打断和截断才有意义（推断，待在 WebRTC 音轨路对照实测）。
 3. **架构会变，这一条最需要权衡。** WebRTC 时媒体在浏览器和 Azure 之间**直连**，不经过后端。后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 等职责都要重新设计，后端只剩签发临时 token 和信令，控制靠 side-band WS（文档：Azure Realtime 的 SDP 应答带 `Location` 头，可以用来再连一条控制 WS）。
 
@@ -305,7 +305,7 @@ pc.onicecandidate = e => e.candidate && console.log(e.candidate.type, e.candidat
 await pc.setLocalDescription(await pc.createOffer());
 ```
 
-`iceTransportPolicy: "relay"` 让浏览器只收集 relay 候选。打出 `relay` 候选就说明 TURN 分配成功、这个网络能走中继；一条都没有就说明连 TURN 都不通，这个网络里数字人画面没有保底。这只测"浏览器到 TURN"这一段，不测 TURN 到 Azure 媒体服务器；客户网络基线的完整测法见[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 第七节。
+`iceTransportPolicy: "relay"` 让浏览器只收集 relay 候选。打出 `relay` 候选就说明 TURN 分配成功、这个网络能走中继；一条都没有就说明连 TURN 都不通，这个网络里数字人画面没有保底。这只测"浏览器到 TURN"这一段，不测 TURN 到 Azure 媒体服务器；客户网络基线的完整测法见[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 第七节。
 
 ### 8.5 一次实测：怎么读这张 webrtc-internals 截图
 
@@ -324,7 +324,7 @@ await pc.setLocalDescription(await pc.createOffer());
 | Bytes sent / received | 18 247 / 13 422 941 | 下行约 13 MB 是数字人的视频加音频；上行只有十几 KB，是 RTCP 与检测包。**麦克风不走这条连接**，上行音频在 WebSocket 上（第二节、[系列 01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)） |
 | STUN requests sent / responses received | 27 / 27 | 浏览器发出的检测与保活全部有回应 |
 | STUN requests received / responses sent | 12 / 12 | **对端也在主动发检测**，ICE-lite 一端不会这样做（4.3） |
-| RTT | 0.262 s | 经 TURN 中转后的往返时延，跨区域开发机上与[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 记的约 300 ms 同一量级 |
+| RTT | 0.262 s | 经 TURN 中转后的往返时延，跨区域开发机上与[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 记的约 300 ms 同一量级 |
 
 这一张图回答了本文的三个问题：relay 在 UDP 通的网络上也会胜出；对端以 srflx 公布并主动检测，基本不是 ICE-lite；数字人这条 WebRTC 连接只承载下行。下面的 Event log 从 `transceiverAdded(video)`、`transceiverAdded(audio)` 到 `createOffer`、`setLocalDescription`，就是第二节那套一次性信令在浏览器侧的时间线；继续往下展开 `setRemoteDescription` 即可看到 SDP answer，用来给 ICE-lite 定案。
 
@@ -359,7 +359,7 @@ setInterval(() => console.log("bufferedAmount", ws.bufferedAmount), 500);
 
 它只反映**上行**、只反映本机发送缓冲；下行卡没卡，要看 Messages 里帧的到达间隔，或者到传输层看。
 
-**弱网时 DevTools 只能看到"帧到晚了"，看不出为什么。** 要证明是 TCP 重传造成的队头阻塞（[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的"卡顿约等于丢包数乘 RTT"），得到传输层：
+**弱网时 DevTools 只能看到"帧到晚了"，看不出为什么。** 要证明是 TCP 重传造成的队头阻塞（[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md) 的"卡顿约等于丢包数乘 RTT"），得到传输层：
 
 1. 用导出 TLS 密钥的方式启动一个独立的 Chrome（macOS 上 `open` 不传环境变量，要直接起二进制）：
 
@@ -397,7 +397,7 @@ setInterval(() => console.log("bufferedAmount", ws.bufferedAmount), 500);
 
 ## 参考
 
-- 系列内：[系列 10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（候选三类型、门控、一次性信令、只下发一台 TURN）、[系列 11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)（自建 TURN）、[系列 12](Voice%20Live系列12：数字人弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)（弱网实测与客户网络基线）、[系列 03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（ICE 门控延迟）、[系列 01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)（双通道、上行 WebRTC 与数字人互斥、采样率与成帧）
+- 系列内：[系列 10](Voice%20Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑.md)（候选三类型、门控、一次性信令、只下发一台 TURN）、[系列 11](Voice%20Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得.md)（自建 TURN）、[系列 12](Voice%20Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音.md)（弱网实测与客户网络基线）、[系列 03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)（ICE 门控延迟）、[系列 01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)（双通道、上行 WebRTC 与数字人互斥、采样率与成帧）
 - 协议背景：[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型](../../Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 - [Voice Live API reference — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-api-reference-2026-04-10)（`ice_servers`、`output_protocol`、`session.avatar.connect`、音频格式）
 - [How to use the Voice Live API — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to)
