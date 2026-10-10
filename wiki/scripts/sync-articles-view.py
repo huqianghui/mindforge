@@ -3,7 +3,7 @@
 
 GitHub strips scripts from Markdown, so "Expand all" cannot toggle <details> in
 place. Instead README links to ARTICLES.md (same tree, every <details> open) and
-"Collapse all" links back to README, whose tree is collapsed by default.
+"Collapse all" re-renders README, whose tree is collapsed by default.
 
 Usage: python3 wiki/scripts/sync-articles-view.py
 """
@@ -17,8 +17,15 @@ ARTICLES_FILE = VAULT_ROOT / "ARTICLES.md"
 
 EXPAND_BTN = "asset/articles-expand-all-2026-10-10.svg"
 COLLAPSE_BTN = "asset/articles-collapse-all-2026-10-10.svg"
+SEARCH_BTN = "asset/articles-search-2026-10-10.svg"
+SEARCH_URL = "https://huqianghui.github.io/mindforge/articles/"
+# Collapse must force GitHub to re-render the README. A link to the current URL only scrolls, so it
+# points at tree/…/README.md, which GitHub redirects to blob/…/README.md: the address you land on
+# never equals the link, so every click re-renders with all <details> closed.
+COLLAPSE_URL = "https://github.com/huqianghui/mindforge/tree/main/README.md"
 NAV = (f'<p><a href="ARTICLES.md#articles"><img src="{EXPAND_BTN}" alt="Expand all" height="34"></a>'
-       f'&nbsp;<a href="README.md#articles"><img src="{COLLAPSE_BTN}" alt="Collapse all" height="34"></a></p>')
+       f'&nbsp;<a href="{COLLAPSE_URL}"><img src="{COLLAPSE_BTN}" alt="Collapse all" height="34"></a>'
+       f'&nbsp;<a href="{SEARCH_URL}"><img src="{SEARCH_BTN}" alt="Search" height="34"></a></p>')
 
 
 def articles_body(readme: str) -> str:
@@ -50,7 +57,7 @@ def sync_articles_view() -> None:
         f"{NAV}\n\n"
         f"{body}\n\n"
         "---\n\n"
-        "[← Back to README](README.md)\n"
+        f"[← Back to README]({COLLAPSE_URL})\n"
     )
     if not ARTICLES_FILE.exists() or ARTICLES_FILE.read_text(encoding="utf-8") != out:
         ARTICLES_FILE.write_text(out, encoding="utf-8")

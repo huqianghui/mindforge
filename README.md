@@ -67,7 +67,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ## Articles
 
-<p><a href="ARTICLES.md#articles"><img src="asset/articles-expand-all-2026-10-10.svg" alt="Expand all" height="34"></a>&nbsp;<a href="README.md#articles"><img src="asset/articles-collapse-all-2026-10-10.svg" alt="Collapse all" height="34"></a></p>
+<p><a href="ARTICLES.md#articles"><img src="asset/articles-expand-all-2026-10-10.svg" alt="Expand all" height="34"></a>&nbsp;<a href="https://github.com/huqianghui/mindforge/tree/main/README.md"><img src="asset/articles-collapse-all-2026-10-10.svg" alt="Collapse all" height="34"></a>&nbsp;<a href="https://huqianghui.github.io/mindforge/articles/"><img src="asset/articles-search-2026-10-10.svg" alt="Search" height="34"></a></p>
 
 <!-- 目录按文件夹逐级折叠（<details> 嵌套）。新文章加到对应文件夹 <details> 的列表里；新文件夹新增一个 <details> 块，保持 <summary> 后与 </blockquote> 前各留一个空行。 -->
 

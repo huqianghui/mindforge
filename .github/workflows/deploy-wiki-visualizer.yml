@@ -5,6 +5,12 @@ on:
     branches: [main]
     paths:
       - 'wiki/**'
+      - 'README.md'
+      - 'Notes/**'
+      - 'Azure/**'
+      - 'paper/**'
+      - 'book/**'
+      - 'product/**'
       - '.github/workflows/deploy-wiki-visualizer.yml'
   workflow_dispatch:
 
@@ -46,6 +52,9 @@ jobs:
         run: |
           mkdir -p _site/wiki
           cp -r wiki/visualizer/dist/* _site/wiki/
+
+      - name: Build articles search page
+        run: python3 wiki/scripts/build-articles-search.py _site/articles
 
       - uses: actions/upload-pages-artifact@v3
         with:
