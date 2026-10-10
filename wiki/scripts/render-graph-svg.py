@@ -26,8 +26,8 @@ VAULT_ROOT = WIKI_ROOT.parent
 GRAPH_FILE = WIKI_ROOT / "wiki-graph.json"
 DEFAULT_OUT = VAULT_ROOT / "asset" / "wiki-knowledge-graph-2026-10-10.svg"
 
-W, H = 1640, 1140
-GX0, GY0, GX1, GY1 = 30, 110, 1170, 930  # graph viewport (screen == world at overview)
+W, H = 1640, 1170
+GX0, GY0, GX1, GY1 = 30, 110, 1610, 940  # graph viewport (screen == world at overview)
 GW, GH = GX1 - GX0, GY1 - GY0
 SEED = 7
 TOUR_SIZE = 4          # how many of the largest communities the camera visits
@@ -101,7 +101,7 @@ def assign_communities(nodes, links, cats):
 
 def layout(nodes, links, comm, ncomm, radius_of):
     sizes = Counter(comm.values())
-    scale = math.sqrt(0.27 * GW * GH / (math.pi * sum(sizes.values())))
+    scale = math.sqrt(0.30 * GW * GH / (math.pi * sum(sizes.values())))
     rc = {c: max(38, scale * math.sqrt(sizes[c])) for c in range(ncomm)}
 
     # Community-level spring layout, then push apart until circles don't overlap.
@@ -114,7 +114,7 @@ def layout(nodes, links, comm, ncomm, radius_of):
             cg.add_edge(a, b, weight=w + 1)
     pos = nx.spring_layout(cg, seed=SEED, weight="weight", k=1.6, iterations=300)
     cx, cy = (GX0 + GX1) / 2, (GY0 + GY1) / 2
-    P = {c: [cx + pos[c][0] * 420, cy + pos[c][1] * 300] for c in pos}
+    P = {c: [cx + pos[c][0] * GW * 0.37, cy + pos[c][1] * GH * 0.37] for c in pos}
     for _ in range(3000):
         moved = False
         for a in P:
@@ -137,6 +137,17 @@ def layout(nodes, links, comm, ncomm, radius_of):
             P[c][1] = min(max(P[c][1], GY0 + rc[c] + 30), GY1 - rc[c] - 30)
         if not moved:
             break
+    # stretch each axis so the packed communities fill the viewport (only ever expands)
+    bx0 = min(P[c][0] - rc[c] for c in P); bx1 = max(P[c][0] + rc[c] for c in P)
+    by0 = min(P[c][1] - rc[c] for c in P); by1 = max(P[c][1] + rc[c] for c in P)
+    tx0, tx1, ty0, ty1 = GX0 + 30, GX1 - 30, GY0 + 40, GY1 - 50
+    sx = max(1.0, (tx1 - tx0) / (bx1 - bx0)); sy = max(1.0, (ty1 - ty0) / (by1 - by0))
+    for c in P:  # map circle centres so the outermost edges land on the target box
+        P[c][0] = P[c][0] + (sx - 1) * (P[c][0] - (bx0 + bx1) / 2) + ((tx0 + tx1) - (bx0 + bx1)) / 2
+        P[c][1] = P[c][1] + (sy - 1) * (P[c][1] - (by0 + by1) / 2) + ((ty0 + ty1) - (by0 + by1)) / 2
+    for c in P:
+        P[c][0] = min(max(P[c][0], GX0 + rc[c] + 10), GX1 - rc[c] - 10)
+        P[c][1] = min(max(P[c][1], GY0 + rc[c] + 30), GY1 - rc[c] - 40)
     for a in P:
         for b in P:
             if a < b and math.dist(P[a], P[b]) < rc[a] + rc[b]:
@@ -544,62 +555,36 @@ def main():
             x = GX0 + 40 + (GW - 80) * t0 / D
             a(f'<circle cx="{x:.1f}" cy="{GY1 - 28.5}" r="4" fill="{ccolor[key]}"/>')
 
-    # ================= right panel =================
-    px = 1200
-    a(f'<rect x="{px}" y="{GY0}" width="{W - px - 30}" height="{GH}" rx="12" fill="#0f172a" stroke="#1e293b"/>')
-    y = GY0 + 38
-    a(f'<text x="{px + 22}" y="{y}" font-size="18" font-weight="700" fill="#e2e8f0">镜头巡游</text>')
-    a(f'<text x="{px + 108}" y="{y}" font-size="13" fill="#64748b">规模最大的社区 · 沿最短路径导航</text>')
-    for i, c in enumerate(tour):
-        yy = y + 34 + i * 38
-        a(f'<rect x="{px + 18}" y="{yy - 22}" width="{W - px - 66}" height="32" rx="8" fill="{ccolor[c]}" fill-opacity="0.16" '
-          f'stroke="{ccolor[c]}" opacity="0">{opacity_anim(intervals("focus", c), D, fade=0.4)}</rect>')
-        a(f'<circle cx="{px + 36}" cy="{yy - 6}" r="7" fill="{ccolor[c]}"/>')
-        a(f'<text x="{px + 52}" y="{yy - 1}" font-size="15" fill="#e2e8f0">{escape(cats[c]["name"])}</text>')
-        a(f'<text x="{W - 60}" y="{yy - 1}" font-size="13" fill="#94a3b8" text-anchor="end">'
-          f'{escape(short_title(nodes[anchor[c]]["title"]))}</text>')
-    y += 34 + len(tour) * 38 + 18
-
-    a(f'<text x="{px + 22}" y="{y}" font-size="18" font-weight="700" fill="#e2e8f0">节点类型</text>')
-    a(f'<text x="{px + 108}" y="{y}" font-size="13" fill="#64748b">颜色 = 社区 · 大小 = Claims 数量</text>')
-    y += 32
-    for i, (t, lab) in enumerate([("concept", "概念"), ("method", "方法"), ("decision", "决策")]):
-        x = px + 32 + i * 120
-        a(node_shape(t, x, y - 5, 8, "#cbd5e1"))
-        a(f'<text x="{x + 16}" y="{y}" font-size="15" fill="#cbd5e1">{lab}</text>')
-    y += 44
-
-    a(f'<text x="{px + 22}" y="{y}" font-size="18" font-weight="700" fill="#e2e8f0">类型化关系</text>')
-    a(f'<text x="{px + 128}" y="{y}" font-size="13" fill="#64748b">光点 = 跨社区桥接</text>')
-    y += 12
+    # ================= legend row =================
+    ly = GY1 + 40
+    x = 36
+    a(f'<text x="{x}" y="{ly}" font-size="15" font-weight="700" fill="#e2e8f0">节点类型</text>')
+    x += 80
+    for t, lab in (("concept", "概念"), ("method", "方法"), ("decision", "决策")):
+        a(node_shape(t, x + 8, ly - 5, 7, "#cbd5e1"))
+        a(f'<text x="{x + 22}" y="{ly}" font-size="14" fill="#cbd5e1">{lab}</text>')
+        x += 66
+    note = "颜色 = 社区 · 大小 = Claims 数量"
+    a(f'<text x="{x}" y="{ly}" font-size="13" fill="#64748b">{note}</text>')
+    x += text_width(note, 13) + 40
+    a(f'<line x1="{x - 20}" y1="{ly - 14}" x2="{x - 20}" y2="{ly + 3}" stroke="#334155"/>')
+    a(f'<text x="{x}" y="{ly}" font-size="15" font-weight="700" fill="#e2e8f0">类型化关系</text>')
+    x += 96
     for k, rt in enumerate(RELATION_COLORS):
-        col, row = k % 2, k // 2
-        x, yy = px + 22 + col * 190, y + 18 + row * 26
-        a(f'<line x1="{x}" y1="{yy - 5}" x2="{x + 26}" y2="{yy - 5}" stroke="{RELATION_COLORS[rt]}" stroke-width="3" stroke-linecap="round" '
-          f'class="flow" style="animation-duration:{2 + k * 0.2:.1f}s"/>')
-        a(f'<text x="{x + 34}" y="{yy}" font-size="13" fill="#cbd5e1">{RELATION_LABELS[rt]}</text>')
-        a(f'<text x="{x + 66}" y="{yy}" font-size="13" fill="#64748b">{rt}</text>')
-    y += 18 + math.ceil(len(RELATION_COLORS) / 2) * 26 + 24
-
-    a(f'<text x="{px + 22}" y="{y}" font-size="18" font-weight="700" fill="#e2e8f0">Live Graph 功能</text>')
-    feats = [("#2dd4bf", "点击节点", "查看 Claims、置信度、出入边"),
-             ("#fbbf24", "类型筛选", "按节点类型 / 关系类型过滤"),
-             ("#60a5fa", "关键词搜索", "定位概念并高亮其邻域"),
-             ("#f472b6", "Claim 生命周期", "active / conflicting / stale"),
-             ("#a78bfa", "qmd 语义搜索", "BM25 + 向量 + LLM 重排")]
-    for k, (col, t1, t2) in enumerate(feats):
-        yy = y + 20 + k * 38
-        a(f'<rect x="{px + 22}" y="{yy - 4}" width="4" height="32" rx="2" fill="{col}" class="tw" style="animation-delay:{k * 0.6:.1f}s"/>')
-        a(f'<text x="{px + 36}" y="{yy + 10}" font-size="14" font-weight="700" fill="#e2e8f0">{t1}</text>')
-        a(f'<text x="{px + 36}" y="{yy + 27}" font-size="13" fill="#94a3b8">{t2}</text>')
-    if y + 20 + len(feats) * 38 > GY1:
-        print("warn: right panel overflows", file=sys.stderr)
+        a(f'<line x1="{x}" y1="{ly - 5}" x2="{x + 24}" y2="{ly - 5}" stroke="{RELATION_COLORS[rt]}" stroke-width="3" '
+          f'stroke-linecap="round" class="flow" style="animation-duration:{2 + k * 0.2:.1f}s"/>')
+        a(f'<text x="{x + 30}" y="{ly}" font-size="14" fill="#cbd5e1">{RELATION_LABELS[rt]}</text>')
+        x += 30 + text_width(RELATION_LABELS[rt], 14) + 22
+    note = "光点 = 跨社区桥接"
+    a(f'<text x="{x}" y="{ly}" font-size="13" fill="#64748b">{note}</text>')
+    if x + text_width(note, 13) > W - 36:
+        print("warn: legend row overflows", file=sys.stderr)
 
     # ================= bottom pipeline =================
     steps = [("原始素材", "文章 · 日记"), ("知识提取", "/extract-knowledge"),
              ("Wiki 页面", "概念 · 方法 · 决策 · Claims"), ("维护演进", "/evolve-wiki · 冲突检测"),
              ("图谱导出", "export-graph.py → JSON"), ("Live Graph", "GitHub Pages 交互图")]
-    by = GY1 + 112
+    by = GY1 + 152
     a(f'<text x="36" y="{by - 56}" font-size="18" font-weight="700" fill="#e2e8f0">编译流水线</text>')
     a(f'<text x="140" y="{by - 56}" font-size="13" fill="#64748b">知识只编译一次并持续保鲜，而非每次查询重新推导</text>')
     n = len(steps)
