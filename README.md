@@ -7,7 +7,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ## Wiki Knowledge Graph
 
-<img width="1640" alt="Mindforge Wiki 知识图谱：社区聚类、类型化关系与编译流水线" src="asset/wiki-knowledge-graph-2026-10-10.svg" />
+<a href="https://huqianghui.github.io/mindforge/wiki/"><img width="1640" alt="Mindforge Wiki 知识图谱：社区聚类、类型化关系与编译流水线" src="asset/wiki-knowledge-graph-2026-10-10.svg" /></a>
 
 **[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
 
