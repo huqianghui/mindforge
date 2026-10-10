@@ -7,7 +7,7 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ## Wiki Knowledge Graph
 
-<img width="1707" alt="LLM-wiki" src="wiki/LLM-wiki.png" />
+<img width="1640" alt="Mindforge Wiki 知识图谱：社区聚类、类型化关系与编译流水线" src="asset/wiki-knowledge-graph-2026-10-10.svg" />
 
 **[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
 
@@ -53,7 +53,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - **在线**：[View Live Graph](https://huqianghui.github.io/mindforge/wiki/) —— 力导向交互图，点节点看 Claims / 置信度 / 关联，支持类型筛选与关键词搜索
 - **数据源**：`wiki/wiki-graph.json`（节点 + 关系 + 分类）；可视化前端在 `wiki/visualizer/`
-- **重新生成**：`python3 wiki/scripts/export-graph.py`（扫描 concepts/methods/decisions 重建 JSON）
+- **重新生成**：`python3 wiki/scripts/export-graph.py`（扫描 concepts/methods/decisions 重建 JSON）；顶部动态总览图由 `python3 wiki/scripts/render-graph-svg.py` 从该 JSON 渲染
 
 ### 3. 阅读 Wiki
 
