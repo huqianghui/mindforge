@@ -67,19 +67,34 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ## Articles
 
-### Notes/AI
+<!-- 目录按文件夹逐级折叠（<details> 嵌套）。新文章加到对应文件夹 <details> 的列表里；新文件夹新增一个 <details> 块，保持 <summary> 后与 </blockquote> 前各留一个空行。 -->
+
+<details>
+<summary><b>Notes</b> — 技术长文与笔记</summary>
+<blockquote>
+
+<details>
+<summary><b>AI</b></summary>
+<blockquote>
 
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
 - [去除AI味：从语言指纹到人机文本边界的消融](Notes/AI/去除AI味：从语言指纹到人机文本边界的消融.md)
 
-### Notes/AI/AI-coporation
+<details>
+<summary>AI-coporation</summary>
+<blockquote>
 
 - [与AI相处之道——从工具依赖到认知伙伴](Notes/AI/AI-coporation/与AI相处之道——从工具依赖到认知伙伴.md)
 - [与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑](Notes/AI/AI-coporation/与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑.md)
 - [构建AI Native CSU Team——从One Person Team到组织进化的实践思考](Notes/AI/AI-coporation/构建AI%20Native%20CSU%20Team——从One%20Person%20Team到组织进化的实践思考.md)
 - [FDE 职业进化论——AI 时代前线部署工程师的个人突围与团队重构](Notes/AI/AI-coporation/FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构.md)
 
-### Notes/AI/Context-Engineering
+</blockquote>
+</details>
+
+<details>
+<summary>Context-Engineering</summary>
+<blockquote>
 
 - [Context Engineering vs MCP — Full Series](Notes/AI/Context-Engineering/Context%20Engineering%20vs%20MCP/Context%20Engineering%20vs%20MCP%20-%20MOC.md)
 - [A Survey of Context Engineering for Large Language Models 读书笔记](Notes/AI/Context-Engineering/A%20Survey%20of%20Context%20Engineering%20for%20Large%20Language%20Models/A%20Survey%20of%20Context%20Engineering%20for%20LargeLanguage%20Models%20读书笔记.md)
@@ -87,7 +102,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [MCP vs CLI — 为什么开发者在重新审视 MCP](Notes/AI/Context-Engineering/MCP%20vs%20CLI%20—%20为什么开发者在重新审视%20MCP.md)
 - [Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例](Notes/AI/Context-Engineering/Context7：让%20AI%20Agent%20实时获取最新文档的%20MCP%20Server——以%20Azure%20文档为例.md)
 
-### Notes/AI/Claude-Code
+</blockquote>
+</details>
+
+<details>
+<summary>Claude-Code</summary>
+<blockquote>
 
 - [Claude Code 系列 01：核心概念与设计哲学解析——从 Agent Loop 到 Harness 工程的实践地图](Notes/AI/Claude-Code/Claude%20Code系列01：核心概念与设计哲学解析.md)
 - [Claude Code 系列 02：learn-claude-code——打开 Coding Agent 黑盒](Notes/AI/Claude-Code/Claude%20Code系列02：learn-claude-code——打开Coding%20Agent黑盒.md)
@@ -98,7 +118,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Claude Code 系列 07：Harness 分层架构——从 50 万行源码到社区框架的控制论解读](Notes/AI/Claude-Code/Claude%20Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读.md)
 - [Harness 实践案例：从一次 Memory 失效到记忆治理体系](Notes/AI/Claude-Code/Harness实践案例：从一次Memory失效到记忆治理体系.md)
 
-### Notes/AI/agent
+</blockquote>
+</details>
+
+<details>
+<summary>agent</summary>
+<blockquote>
 
 - [OpenCLI——万物皆可 CLI 的结构化革命](Notes/AI/agent/OpenCLI——万物皆可CLI的结构化革命.md)
 - [从 Google 五种 Skill Pattern 到 Agent Runtime——Skill、MCP 与 Agent 的统一架构](Notes/AI/agent/从Google五种Skill%20Pattern到Agent%20Runtime——Skill、MCP与Agent的统一架构.md)
@@ -112,7 +137,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态](Notes/AI/agent/AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态.md)
 - [Agent Harness 五平台对比——DeepSeek Harness、pi、Codex、OpenHands 与 Goose 的架构哲学与场景选择](Notes/AI/agent/Agent%20Harness五平台对比——DeepSeek%20Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择.md)
 
-### Notes/AI/computer-use
+</blockquote>
+</details>
+
+<details>
+<summary>computer-use</summary>
+<blockquote>
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路.md)
 - [Computer Use 与 Browser Use 系列二：Codex 浏览器运行时解剖——从 bundled plugin 看 Agent 浏览器控制的工程设计](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)
@@ -123,7 +153,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Computer Use 与 Browser Use 系列七：Web Search 与浏览器操作的分界——信息获取三级梯、执行位置与成本转移](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)
 - [Computer Use 与 Browser Use 系列八：Jev × Codex 实践——把动作判断交给 System One 模型的受控对照、费用账与 skill 优先级结论](Notes/AI/computer-use/Computer%20Use与Browser%20Use系列八：Jev×Codex实践——把动作判断交给System%20One模型的受控对照、费用账与skill优先级结论.md)
 
-### Notes/AI/agent-lightning
+</blockquote>
+</details>
+
+<details>
+<summary>agent-lightning</summary>
+<blockquote>
 
 - [Agent Lightning 系列 01：用 APO 做 Prompt Tuning——Azure 实践与 beam search 算法解析](Notes/AI/agent-lightning/Agent%20Lightning系列01：用APO做Prompt%20Tuning——Azure实践与beam%20search算法解析.md)
 - [Agent Lightning 系列 02：框架全景与脊柱拆解——9 大模块与 method-agnostic 设计](Notes/AI/agent-lightning/Agent%20Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计.md)
@@ -138,37 +173,72 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Prompt 优化成熟度阶梯——从 vibe check、LLM-judge 到数据闭环：APO 与 SkillOpt 前置篇](Notes/AI/agent-lightning/Prompt优化成熟度阶梯——从vibe%20check、LLM-judge到数据闭环：APO与SkillOpt前置篇.md)
 - [Agent Lightning 算法深解：APO = 文本梯度 + Beam Search，以及与其他搜索策略的对比](Notes/AI/agent-lightning/Agent%20Lightning算法深解：APO=文本梯度+Beam%20Search，以及与其他搜索策略的对比.md)
 
-### Notes/AI/evaluation
+</blockquote>
+</details>
+
+<details>
+<summary>evaluation</summary>
+<blockquote>
 
 - [Evaluator 概念全景——从 rubric 词源到 Judge、Strategy、Criteria 三层评估模型](Notes/AI/evaluation/Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型.md)
 - [从 Evaluator 到 Reward Function——评估信号如何变成 APO 与强化学习的训练信号](Notes/AI/evaluation/从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号.md)
 
-### Notes/AI/ms-swift
+</blockquote>
+</details>
+
+<details>
+<summary>ms-swift</summary>
+<blockquote>
 
 - [ms-swift 全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比](Notes/AI/ms-swift/ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比.md)
 
-### Notes/AI/SkillOpt
+</blockquote>
+</details>
+
+<details>
+<summary>SkillOpt</summary>
+<blockquote>
 
 - [SkillOpt 系列 01：源码篇——主要模块拆解与六阶段执行流剖析](Notes/AI/SkillOpt/SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析.md)
 - [SkillOpt 系列 02：快速上手——AML + Azure OpenAI 跑通 SearchQA 最小实验](Notes/AI/SkillOpt/SkillOpt系列02：快速上手——AML+Azure%20OpenAI跑通SearchQA最小实验.md)
 - [SkillOpt 系列 03：实战篇——video2frames 提示词调优，从 agent-lightning APO 移植到 SkillOpt](Notes/AI/SkillOpt/SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning%20APO移植到SkillOpt.md)
 - [SkillOpt 系列 04：APO × SkillOpt 联合展望——先探索后精修的两段式管道与选型算账方法](Notes/AI/SkillOpt/SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法.md)
 
-### Notes/AI/Loop-Engineering
+</blockquote>
+</details>
+
+<details>
+<summary>Loop-Engineering</summary>
+<blockquote>
 
 - [Loop Engineering 概念澄清——内循环、外循环与 Harness Engineering 的边界](Notes/AI/Loop-Engineering/Loop%20Engineering概念澄清——内循环、外循环与Harness%20Engineering的边界.md)
 - [Loop Engineering 实践——把个人知识库改造成一个外循环系统](Notes/AI/Loop-Engineering/Loop%20Engineering实践——把个人知识库改造成一个外循环系统.md)
 
-### Notes/AI/Graph-Engineering
+</blockquote>
+</details>
+
+<details>
+<summary>Graph-Engineering</summary>
+<blockquote>
 
 - [Graph Engineering 全景解析——编排图、循环网络与类型化知识图的三重含义](Notes/AI/Graph-Engineering/Graph%20Engineering全景解析——编排图、循环网络与类型化知识图的三重含义.md)
 
-### Notes/AI/spec-kit
+</blockquote>
+</details>
+
+<details>
+<summary>spec-kit</summary>
+<blockquote>
 
 - [Spec Kit 系列 00：SDD、TDD 与 V-Model 融合——从 Red-Green-Refactor 到规格与验证双轨演进](Notes/AI/spec-kit/Spec%20Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进.md)
 - [Spec Kit 系列 01：初步整体认识——SDD 十命令工作流、Scope 粒度与协作扩展](Notes/AI/spec-kit/Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)
 
-### Notes/AI/vibe-coding
+</blockquote>
+</details>
+
+<details>
+<summary>vibe-coding</summary>
+<blockquote>
 
 - [系列01：全面系统的了解 Harness Engineering 的来龙去脉](Notes/AI/vibe-coding/Vibe%20Coding系列01：全面系统的了解Harness%20Engineering的来龙去脉.md)
 - [系列02：架构师视角的 AI Harness Engineering 最佳实践](Notes/AI/vibe-coding/Vibe%20Coding系列02：架构师视角的AI%20Harness%20Engineering最佳实践.md)
@@ -187,17 +257,32 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [系列13：控制论如何指导 Harness Engineering——用 Regulation 和 Requisite Variety 让 Vibe Coding 变得可控](Notes/AI/vibe-coding/Vibe%20Coding系列13：控制论如何指导Harness%20Engineering——用Regulation和Requisite%20Variety让Vibe%20Coding变得可控.md)
 - [系列14：Harness 框架的 Skill 化收敛——从 Agent、Command、Hook 全家桶到纯 Skill 的架构简化](Notes/AI/vibe-coding/Vibe%20Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化.md)
 
-### Notes/AI/voice
+</blockquote>
+</details>
+
+<details>
+<summary>voice</summary>
+<blockquote>
 
 - [Speech 技术全景——从音频处理基础到 Turn-Taking 的深层机制](Notes/AI/voice/Speech技术全景——从音频处理基础到Turn-Taking的深层机制.md)
 - [Speech Out 深入——Grapheme、Phoneme、G2P、Lexicon 与 SSML 的工程解析](Notes/AI/voice/Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析.md)
 - [WebSocket 与 WebRTC 深度对比——从 Azure Voice Live API 看实时通信协议选型](Notes/AI/voice/WebSocket与WebRTC深度对比——从Azure%20Voice%20Live%20API看实时通信协议选型.md)
 
-### Notes/AI/RAG
+</blockquote>
+</details>
+
+<details>
+<summary>RAG</summary>
+<blockquote>
 
 - [qmd 与 Microsoft Foundry IQ 的 RAG 能力对比——从个人知识库到企业级检索](Notes/AI/RAG/qmd与Microsoft%20Foundry%20IQ的RAG能力对比——从个人知识库到企业级检索.md)
 
-### Notes/AI/inference
+</blockquote>
+</details>
+
+<details>
+<summary>inference</summary>
+<blockquote>
 
 - [线性注意力时代的推理架构 · 之一——Transformer / Mamba / GDN 与 Hybrid 架构](Notes/AI/inference/线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md)
 - [线性注意力时代的推理架构 · 之二——为什么 Hybrid 模型难做 Prefix Caching](Notes/AI/inference/线性注意力时代的推理架构之二——为什么Hybrid模型难做PrefixCaching.md)
@@ -206,26 +291,54 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms](Notes/AI/inference/Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure.md)
 - [国内大模型新一轮架构与价格优化——Qwen3.8-Flash 与 GLM-5.3-Flash 的六层降本解剖](Notes/AI/inference/国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖.md)
 
-### Notes/AI/hardware
+</blockquote>
+</details>
+
+<details>
+<summary>hardware</summary>
+<blockquote>
 
 - [OpenAI Jalapeño 推理芯片——从 ASIC 基础到首测数据解读的 AI 推理硬件全景](Notes/AI/hardware/OpenAI%20Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景.md)
 
-### Notes/AI/Design-Tools
+</blockquote>
+</details>
+
+<details>
+<summary>Design-Tools</summary>
+<blockquote>
 
 - [Pencil 设计工具与 Claude Code 快速上手指南](Notes/AI/Design-Tools/Pencil设计工具与Claude%20Code快速上手指南.md)
 - [在 Obsidian 中用 Excalidraw 与 Draw.io 绘制 Azure 架构图实战指南](Notes/AI/Design-Tools/在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南.md)
 
-### Notes/DevOps
+</blockquote>
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary>DevOps</summary>
+<blockquote>
 
 - [tmux 与 Claude 远程交互实践](Notes/DevOps/tmux与Claude远程交互实践.md)
 
-### Notes/FinOps
+</blockquote>
+</details>
+
+<details>
+<summary>FinOps</summary>
+<blockquote>
 
 - [FinOps 系列 01：从 token 价格到任务完成花费——指标转向与 AI 使用边界](Notes/FinOps/FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界.md)
 - [FinOps 系列 02：数据飞轮与 RSI——三层嵌套循环与一个贯穿指标](Notes/FinOps/FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标.md)
 - [FinOps 系列 03：落地提纲——从使用洞见到优化、监控、评估闭环（活文档）](Notes/FinOps/FinOps系列03：落地提纲——从使用洞见到优化、监控、评估闭环（活文档）.md)
 
-### Notes/Embodied AI
+</blockquote>
+</details>
+
+<details>
+<summary>Embodied AI</summary>
+<blockquote>
 
 具身智能系列按五条主线组织，总导读（含阅读地图）：
 
@@ -266,7 +379,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [落地实践系列 02：自动驾驶与世界模型的路线交汇——传感器之争、数据飞轮与世界基础模型](Notes/Embodied%20AI/落地实践系列02：自动驾驶与世界模型的路线交汇——传感器之争、数据飞轮与世界基础模型.md)
 - [落地实践系列 03：分层选型决策——世界模型、VLA 与空间智能的技术栈选择指南](Notes/Embodied%20AI/落地实践系列03：分层选型决策——世界模型、VLA与空间智能的技术栈选择指南.md)
 
-### Notes/tool
+</blockquote>
+</details>
+
+<details>
+<summary><b>tool</b></summary>
+<blockquote>
 
 - [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](Notes/tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md)
 - [使用 Skill-Creator 融合多个 PPT Skill 打造 CSA 专属演示工具](Notes/tool/使用Skill-Creator融合多个PPT%20Skill打造CSA专属演示工具.md)
@@ -275,14 +393,21 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
 
-### Notes/tool/3D-blender
+<details>
+<summary>3D-blender</summary>
+<blockquote>
 
 - [Blender 系列01：为什么是 Blender——GPT-6-astra 发布演示的 3D 工具选型与 Unreal Engine 对比](Notes/tool/3D-blender/Blender系列01：为什么是Blender——GPT-6-astra发布演示的3D工具选型与Unreal%20Engine对比.md)
 - [Blender 系列02：三种操作入口与官方 MCP 安装——三组件架构、本地进程原理与 SDK 版本兼容实录](Notes/tool/3D-blender/Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录.md)
 - [Blender 系列03：虎式坦克实战——从一句话需求到 8 秒开火动画的完整链路与工程解剖](Notes/tool/3D-blender/Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖.md)
 - [Blender 系列04：人物面试动画实战——47 骨骼程序化表演、TTS 配音与音量包络口型同步](Notes/tool/3D-blender/Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步.md)
 
-### Notes/tool/codex
+</blockquote>
+</details>
+
+<details>
+<summary>codex</summary>
+<blockquote>
 
 - [Codex Desktop 系列01：接入 Azure OpenAI GPT-6——bundled CLI 版本锁定、model catalog schema 与分层排错](Notes/tool/codex/Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)
 - [Codex Desktop 系列02：gpt-5.4-mini 与三条暗线——全局配置菜单、退休元数据与自动审批调用链](Notes/tool/codex/Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md)
@@ -292,59 +417,117 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Codex Desktop 系列06：ModelInfo 字段值手册——unified_exec、code_mode、Ultra 档与治理字段的源码级解读](Notes/tool/codex/Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 - [Codex Desktop 系列07：用 Jev 做 Auto 模型与推理强度路由——七模型与 effort 的判断设计、与规则匹配和轻量 LLM 路由的区别、性能准确缓存的平衡](Notes/tool/codex/Codex%20Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡.md)
 
-### Notes/tool/image&container
+</blockquote>
+</details>
+
+<details>
+<summary>image&container</summary>
+<blockquote>
 
 - [Skopeo 实战——不装 Docker 的镜像搬运：定位、核心能力与 Mac ARM 离线分发场景](Notes/tool/image&container/Skopeo实战——不装Docker的镜像搬运：定位、核心能力与Mac%20ARM离线分发场景.md)
 - [OCI 镜像工具生态——crane、regctl、ORAS、Cosign 的分工补位与镜像供应链全景](Notes/tool/image&container/OCI镜像工具生态——crane、regctl、ORAS、Cosign的分工补位与镜像供应链全景.md)
 
-### Notes/tool/notes
+</blockquote>
+</details>
+
+<details>
+<summary>notes</summary>
+<blockquote>
 
 - [Notion 学习笔记——核心概念、AI Agent 能力与 Obsidian-Claude Code 协作架构](Notes/tool/notes/Notion学习笔记——核心概念、AI%20Agent能力与Obsidian-Claude%20Code协作架构.md)
 - [cmux 使用笔记——从 Ghostty 增强到 AI Agent 终端的实践](Notes/tool/notes/cmux使用笔记——从Ghostty增强到AI%20Agent终端的实践.md)
 
-### Notes/tool/Orca
+</blockquote>
+</details>
+
+<details>
+<summary>Orca</summary>
+<blockquote>
 
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](Notes/tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 - [Orca 使用笔记二——Computer Use 桌面控制与 Codex CLI 补位实践](Notes/tool/Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)
 
-### Notes/tool/picture
+</blockquote>
+</details>
+
+<details>
+<summary>picture</summary>
+<blockquote>
 
 - [动态 SVG 全景——原理、元素分类、生态限制与 Lottie 等替代方案对比](Notes/tool/picture/动态SVG全景——原理、元素分类、生态限制与Lottie等替代方案对比.md)
 - [从 Canvas 音波球到云端数字人——浏览器动态内容的计算光谱（动态 SVG 下篇）](Notes/tool/picture/从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）.md)
 
-### Notes/tool/rtk
+</blockquote>
+</details>
+
+<details>
+<summary>rtk</summary>
+<blockquote>
 
 - [RTK 系列 01：RTK（Rust Token Killer）——AI Coding Agent 的 Token 压缩利器](Notes/tool/rtk/RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
 - [RTK 系列 02：源码深度解析——从 CLI 代理到 Token 压缩的工程实现](Notes/tool/rtk/RTK系列02：源码深度解析——从CLI代理到Token压缩的工程实现.md)
 - [RTK 系列 03：个性化优化引擎——基于 Session 数据的智能调优](Notes/tool/rtk/RTK系列03：个性化优化引擎——基于Session数据的智能调优.md)
 - [Rust 开发环境与 Cargo 构建指南](Notes/tool/rtk/Rust开发环境与Cargo构建指南.md)
 
-### Notes/tool/Caveman
+</blockquote>
+</details>
+
+<details>
+<summary>Caveman</summary>
+<blockquote>
 
 - [Caveman 深度解析——LLM Token 压缩的 Prompt Engineering 之道](Notes/tool/Caveman/Caveman深度解析——LLM%20Token压缩的Prompt%20Engineering之道.md)
 - [Caveman 与 RTK 对比——两种互补的 LLM Token 优化方案](Notes/tool/Caveman/Caveman与RTK对比——两种互补的LLM%20Token优化方案.md)
 
-### Notes/pkc
+</blockquote>
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary>pkc</summary>
+<blockquote>
 
 - [PKC 系列 01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践](Notes/pkc/PKC系列01：从日记到知识库——Obsidian%20×%20oh-my-claudecode%20×%20LLM%20Wiki%20的个人知识编译实践.md)
 - [PKC 系列 02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统](Notes/pkc/PKC系列02：个人知识编译器进化——从三层知识模型到持续迭代的知识系统.md)
 
-### Azure
+</blockquote>
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary><b>Azure</b> — Azure 云平台</summary>
+<blockquote>
 
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
 
-#### Azure/AzureOpenAI
+<details>
+<summary>AzureOpenAI</summary>
+<blockquote>
 
 - [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Azure/AzureOpenAI/Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md)
 - [Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具](Azure/AzureOpenAI/Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)
 - [Prompt Cache 系列 03：Luna 图文实测——1899 次请求的 Benchmark 与 Chat API 零读取异常](Azure/AzureOpenAI/Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
 
-#### Azure/fabricIQ
+</blockquote>
+</details>
+
+<details>
+<summary>fabricIQ</summary>
+<blockquote>
 
 - [Microsoft Fabric IQ 与本体论（Ontology）研究](Azure/fabricIQ/Microsoft%20Fabric%20IQ与本体论（Ontology）研究.md)
 - [Microsoft Fabric IQ 本体（Ontology）管理功能实操解析](Azure/fabricIQ/Microsoft%20Fabric%20IQ本体（Ontology）管理功能实操解析.md)
 
-#### Azure/VoiceLive
+</blockquote>
+</details>
+
+<details>
+<summary>VoiceLive</summary>
+<blockquote>
 
 - [Voice Live 系列 00：导读——主题地图、阅读顺序与已定决策速查](Azure/VoiceLive/Voice%20Live系列00：导读——主题地图、阅读顺序与已定决策速查.md)
 - [Voice Live 系列 01：Agent 实现架构——从级联流水线到 Azure Voice Live API](Azure/VoiceLive/Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)
@@ -364,20 +547,38 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Voice Live 系列 15：realtime 模型与数字人——四条路线再展开、EoU 两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1 待测清单](Azure/VoiceLive/Voice%20Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单.md)
 - [Voice Live 系列 16：传输层概念对齐——WebSocket 与 WebRTC 两条路径、ICE 两端对称与五件事、Opus 为何进不了 WS、用 webrtc-internals 验证](Azure/VoiceLive/Voice%20Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证.md)
 
-#### Azure/Foundary-Agent
+</blockquote>
+</details>
+
+<details>
+<summary>Foundary-Agent</summary>
+<blockquote>
 
 - [Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型](Azure/Foundary-Agent/Foundry%20Agent%20全面对比：Prompt%20Agent、Hosted%20Agent%20与%20Workflow%20Agent%20的能力、治理与场景选型.md)
 - [Foundry Toolbox 与 Skills 深度解析：Prompt Agent 与 Hosted Agent 的 Skill 支持、执行环境与 Harness 控制权](Azure/Foundary-Agent/Foundry%20Toolbox与Skills深度解析：Prompt%20Agent与Hosted%20Agent的Skill支持、执行环境与Harness控制权.md)
 - [Entra Agent ID 双层身份模型：Agent Blueprint 与 Agent Identity 的认证授权分离设计](Azure/Foundary-Agent/Entra%20Agent%20ID双层身份模型：Agent%20Blueprint与Agent%20Identity的认证授权分离设计.md)
 
-### book
+</blockquote>
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary><b>book</b> — 读书笔记</summary>
+<blockquote>
 
 - [本体论（Ontology）：从哲学根基到计算机科学的概念迁移](book/本体论（Ontology）：从哲学根基到计算机科学的概念迁移.md)
 - [西方本体论的当代转折](book/西方本体论的当代转折.md)
 - [控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习](book/控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习.md)
 - [控制论与科学方法论——从控制论到 AI Agent 设计方法论](book/控制论与科学方法论——从控制论到AI%20Agent设计方法论.md)
 
-### product
+</blockquote>
+</details>
+
+<details>
+<summary><b>product</b> — 产品分析</summary>
+<blockquote>
 
 - [Palantir Ontology：从哲学本体论到企业操作系统的工程实践](product/Palantir%20Ontology：从哲学本体论到企业操作系统的工程实践.md)
 - [Palantir 数据本体论（Ontology）：从概念到产品的深度解析](product/Palantir数据本体论（Ontology）：从概念到产品的深度解析.md)
@@ -385,7 +586,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [摄像头 ReID 人物识别——证明系统随使用越来越准的评估基准与流程设计](product/摄像头ReID人物识别——证明系统随使用越来越准的评估基准与流程设计.md)
 - [TypeSafe Jev：System One 模型、RLCD 与校准决策——从聊天模型到软件可直接消费的决策原语](product/TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语.md)
 
-### paper
+</blockquote>
+</details>
+
+<details>
+<summary><b>paper</b> — 论文精读</summary>
+<blockquote>
 
 - [How AI Impacts Skill Formation — 读书笔记与质疑](paper/2026-03-18-How-AI-Impacts-Skill-Formation.md)
 - [The Bitter Lesson — 算力终将胜出，对 AI Agent 工程的启示](paper/2026-03-21-The-Bitter-Lesson.md)
@@ -401,6 +607,9 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [LifeSkill——「边行动边学习」的参数化路径，兼论它「理论在线、工程离线」的真相](paper/2026-07-07-LifeSkill-边行动边学习的参数化路径.md)
 - [A Global Workspace in Language Models——J-space、Jacobian Lens 与"模型正在想什么"的可干预对象](paper/2026-07-23-A-Global-Workspace-in-Language-Models-J-space论文解读.md)
 - [Dream-RSI 论文初读——探索历史即 replay simulator：三阶段 RSI 循环、与 SkillOpt 的同构分工及三层学习位置](paper/2026-09-22-Dream-RSI-递归自我改进论文初读.md)
+
+</blockquote>
+</details>
 
 ---
 
