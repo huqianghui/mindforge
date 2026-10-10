@@ -4,7 +4,7 @@
 
 ## Articles
 
-<p><a href="ARTICLES.md#articles"><img src="asset/articles-expand-all-2026-10-10.svg" alt="Expand all" height="34"></a>&nbsp;<a href="https://github.com/huqianghui/mindforge/tree/main/README.md"><img src="asset/articles-collapse-all-2026-10-10.svg" alt="Collapse all" height="34"></a>&nbsp;<a href="https://huqianghui.github.io/mindforge/articles/"><img src="asset/articles-search-2026-10-10.svg" alt="Search" height="34"></a></p>
+<p><a href="https://huqianghui.github.io/mindforge/articles/"><img src="asset/articles-search-2026-10-10.svg" alt="Search" height="34"></a></p>
 
 <details open>
 <summary><b>Notes</b> — 技术长文与笔记</summary>
@@ -550,4 +550,4 @@
 
 ---
 
-[← Back to README](https://github.com/huqianghui/mindforge/tree/main/README.md)
+[← Back to README](README.md)
