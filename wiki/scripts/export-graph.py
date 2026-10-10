@@ -408,6 +408,13 @@ def main():
     # Sync the README overview table with the freshly computed stats
     update_readme_stats(all_nodes, output["stats"])
 
+    # Regenerate ARTICLES.md (the "Expand all" view of README's Articles tree)
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("sync_articles_view", Path(__file__).with_name("sync-articles-view.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.sync_articles_view()
+
     # Print summary
     print(f"Exported wiki graph to {OUTPUT_FILE}")
     print(f"  Nodes: {len(all_nodes)} (concepts: {sum(1 for n in all_nodes if n['type']=='concept')}, "

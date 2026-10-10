@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="34" viewBox="0 0 124 34" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0.5" y="0.5" width="123" height="33" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <path d="M15 12 l5 5 l5 -5" fill="none" stroke="#57606a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 18 l5 5 l5 -5" fill="none" stroke="#57606a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="34" y="22" font-size="14" font-weight="600" fill="#24292f">Expand all</text>
+</svg>
