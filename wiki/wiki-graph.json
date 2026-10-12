@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-08",
+  "generated_at": "2026-10-12",
   "stats": {
-    "nodes": 139,
-    "links": 485,
+    "nodes": 140,
+    "links": 488,
     "orphan_links_removed": 2,
-    "claims": 753,
+    "claims": 761,
     "categories": 13
   },
   "nodes": [
@@ -4187,6 +4187,90 @@
       ]
     },
     {
+      "id": "ice-nat-traversal",
+      "type": "concept",
+      "title": "ICE NAT Traversal",
+      "summary": "ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前回答\"双方到底用哪一对地址互发 UDP 包\"的机制：两端各自收集候选（host / srflx / relay，外加检测中学到的 prflx）、经信令交换、两两配对、并行发 STUN 检测、由 controlling 一方选定一对，之后持续做对端同意与保活。STUN 与 TURN 服务器只负责\"多找候选\"（srflx / relay），ICE 本身无论有无服务器都要跑——WebRTC 没有\"跳过 ICE\"的模式。\n\n这套机制**属于 WebRTC 而不属于数字人**：在 Voice Live 里只有数字人默认走 WebRTC，所以看起来像数字人带进来的。本页收齐 Voice Live 系列10（候选类型与一次性信令门控）、系列11（自建 TURN）、系列16（两端对称、五件事、ICE-lite 判定与验证方法）的协议层知识；协议选型（WS vs WebRTC 何时选谁）留在 [[realtime-protocol-selection]]，弱网降级实施归 [[weak-network-adaptive-degradation]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "webrtc",
+        "ice",
+        "networking",
+        "voice-agent"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 7,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "ICE / STUN / TURN 属于 WebRTC 而不属于数字人——纯语音 WS 四者全无，语音改走 WebRTC 则 ICE 必有、STUN / TURN 取决于服务端下发；不配 TURN 能通但无 relay 保底",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "四种组合：语音 · WebSocket（无 ICE / STUN / TURN，443 WSS 通即可）；语音 · WebRTC（OpenAI Realtime 官方示例 `new RTCPeerConnection()` 不配 iceServers——连公网媒体服务器往往能通，但出站 UDP 被封即建连失败，无保底）；数字人 · WebRTC（Voice Live 默认，`session.updated` 的 `session.avatar.ice_servers` 下发一台兼做 STUN 的 TURN）；数字人 · WebSocket（avatar `output_protocol: websocket`，整条链路又没有 ICE）。Voice Live 语音也能经 `rtc.call.sdp.create` 走 WebRTC，但今天与 avatar 互斥（side-band control 下不支持 avatar）。判别指纹：麦克风 `getUserMedia` 两种模式都有，`new RTCPeerConnection` 只在数字人路径出现——webrtc-internals 里\"有 getUserMedia、PeerConnections 为空\"即纯语音会话。"
+        },
+        {
+          "statement": "ICE / STUN / TURN 速览——三类候选是三个视角的地址，一次性信令（Vanilla ICE）逼出门控，\"够用集\"捷径成立的前提是\"两类候选同源\"且 300 ms 收敛窗是规则一部分；TURN 不是联邦网络，自建只替换浏览器一侧、默认中继是默认答案",
+          "source": "Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑",
+          "first_seen": "2026-09-30",
+          "last_updated": "2026-10-11",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "**三类候选**：**host** 本机网卡（局域网门牌，零往返，只有同局域网对端能用）/ **srflx** STUN 反射出的公网出口（小区大门，一次 UDP 往返，要 NAT 放行入向）/ **relay** TURN 分配的中继端口（邮局信箱，谁都寄得到、多一跳）。STUN（RFC 8489）只\"照镜子\"产出 srflx；TURN（RFC 8656）在其上加 Allocate / Permission，承载全部媒体产出 relay，要带宽与短期 HMAC 凭据。SDP 里每个候选一行 `a=candidate:… typ host|srflx|relay`，`priority` 量级 host 2.1e9 > srflx 1.7e9 > relay 4e7。**门控为什么存在**：Trickle ICE（RFC 8838）的前提是信令通道能反复双向传；Azure 数字人 offer 经 `session.avatar.connect` 只发一次、没有补发消息，退回 Vanilla ICE——一个包必须自带所有会用到的候选，发前必须等\"胜出者进包\"。\"先到先得\"不成立：先到的 host 恰恰必输。\"等 `complete`\"是教科书解，但 `complete` 的语义是\"所有网卡都了结\"，被悬着的 VPN 网卡绑架到 8 秒兜底。**捷径的前提**：Azure 只下发一台兼做 STUN 的 TURN，srflx 与 relay 来自同一次往返、host 必输，胜出者只可能是这两类之一；relay 稳定晚约 140 ms（n=3），300 ms 收敛窗兜住的是同一次往返内两个候选的到达间隔，不是冗余保险；`iceTransportPolicy: \"relay\"` 不是解——门控的关键是\"不等最坏的网卡\"而非\"少收集\"。ICE 的必要成本只有几百毫秒加一次到中继的往返，那 7.6 秒是等待策略不是 ICE。**TURN 非联邦**（系列11）：一台 TURN 只做转发，自建 TURN（如 coturn）通过 `session.avatar.ice_servers` 传入即原样回显、只替换浏览器一侧的中继，前提是你的 TURN 能出向到达 Azure answer 里的候选；六项要求（公网可达 UDP 3478 + TCP/TLS 443、短期 HMAC 凭据后端现算、允许对端为 Azure 公网地址、按并发 × 码率预留配额、放在两端之间、真实证书）、三处验证（`session.updated` 回显、`getStats()` 选中对的 relay 地址、TURN 日志）。**默认中继零运维且含在分钟费里**，只在出向白名单只允许自家域名 / 合规要求媒体经自有基础设施 / 客户离 Azure 中继接入点很远三种情况下值得自建。  本条 2026-10-02 曾压缩收入 [[realtime-protocol-selection]]（用户当时裁决暂不建本页）；2026-10-11 用户读完系列16 后解除 HOLD，原样迁回本页。"
+        },
+        {
+          "statement": "候选是\"接收地址\"不是源地址；host 与 srflx 共用同一个本地 socket（base）；prflx 是对端从检测包学到的地址；STUN 与 TURN 候选同时收集——\"直连优先、relay 保底\"是选择顺序而非时间顺序",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "候选写在 SDP 里告诉对端\"往这里发，我收得到\"。srflx 只是 host 那个 socket 经 NAT 后在外面\"看起来\"的地址；relay 的 base 在 TURN 服务器上，数据先封装交给 TURN 代发。**prflx（peer reflexive）**：对称 NAT 下发往不同目的地址会分配不同外网端口，STUN 服务器看到的地址对对端没用；对端收到检测包后把实际看到的源地址记为新候选——这是\"不配 STUN 服务器也能通\"的原因之一。STUN 与 TURN 不是二选一：ICE 一开始同时收集各类候选、配对后并行检测，不是 STUN 失败才试 TURN；TURN 是 STUN 的扩展，Allocate 应答本身带公网映射，配 TURN 通常顺带拿到 srflx——这正是 Azure 只下发一台 TURN 的原因。离不开 TURN 的情形：两端都在对称 NAT 后、出站 UDP 被封（企业网 / 部分 VPN / 酒店，TURN 走 TCP 或 TLS 443）、只允许 HTTP 代理出网。连 Azure 这类公网媒体服务器时，真正离不开 TURN 的主要是\"出站 UDP 被封\"（推断）。STUN 与 TURN 的代价不对称：STUN 回答一个小请求后不参与，TURN 全程转发所有媒体、带宽成本高所以要凭据。"
+        },
+        {
+          "statement": "ICE 两端对称——一条路径 = 我的候选 × 对端的候选，controlling 方 nominate；候选对优先级由 min(G, D) 主导，所以只要一端是 relay 整对就排后，但排序只决定\"都通时选谁\"，实测 UDP 通的网络上 relay 4 次胜出 3 次",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "完整过程：两端各自收集候选 → 经信令交换（我的成为对端的 remote candidates，反之亦然）→ 两端都把 local × remote 两两配成 candidate pair → 两端都发 STUN 检测 → controlling 一方 nominate，之后走 DTLS-SRTP。controlling 通常是发 offer 的一方，Voice Live 数字人上即浏览器。组合语义：host↔host 同局域网或双方公网；srflx/prflx↔host 我在 NAT 后、对端公网；srflx↔srflx 双方 NAT 后打洞成功；relay↔任意 我这边走 TURN。Voice Live 数字人上浏览器 host 是局域网地址，**host 必输**。优先级公式 `pair priority = 2^32 × min(G, D) + 2 × max(G, D) + (G > D ? 1 : 0)`（G = controlling 方候选优先级）——\"直连优先、relay 保底\"的数学体现。但实测：系列10 三次中两次 relay/udp 胜出、系列16 webrtc-internals 截图再一次 relay(udp) 胜出（local `0x37e1fff` 远低于 remote `0x64ffffff`），而浏览器到 TURN 走的就是 UDP，UDP 并未被封。**\"保底\"是排序语义，不等于很少用到**；排序靠后照样胜出与公式不矛盾，原因待查（检测完成先后 / nomination 时机 / srflx 那一对实际不通），且须把对端的检测与 nomination 一起算进去。"
+        },
+        {
+          "statement": "ICE 的五件事与 STUN / TURN 服务器无关——选路、连通性检测（学 prflx）、对端同意（consent freshness）、保活、换网（ICE restart）；STUN、TURN 服务器只用来多找候选，ICE 是验证并维持路径的机制",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "\"没有 STUN 服务器\"不等于\"没有 STUN 协议\"。① **选路**：一台电脑有多个出口（Wi-Fi、有线、VPN、IPv4、IPv6），每个都是 host 候选，要逐一检测选最好的；② **连通性检测**：浏览器直接向对端候选发 STUN Binding Request（用 STUN 协议，不经 STUN 服务器），对端从包里学到映射地址（prflx）并回包；③ **对端同意（RFC 7675）**：浏览器绝不向没回应过 ICE 检测的地址发媒体，约每 5 秒复核一次——否则网页 JS 就能让浏览器向任意 IP 发 UDP 洪泛；ufrag / pwd 认证检测包，DTLS 握手与之绑定；④ **保活**：UDP 无连接，NAT 映射会过期；⑤ **换网**：Wi-Fi 切 4G 时 ICE restart 换路，不必重建会话。这回答了\"一端明明是服务器、没有 STUN / TURN 服务器为什么还要 ICE\"——安全（consent）与移动性（restart）这两件事 WebSocket 由 TCP 连接语义天然承担，UDP 上必须由 ICE 显式做。"
+        },
+        {
+          "statement": "ICE-lite（只公布 host、只应答、固定 controlled、SDP 带 `a=ice-lite`）是给始终公网可达一端的精简实现；云上 1:1 NAT 的 full ICE 服务器会公布 srflx——Azure 数字人对端候选实测为 srflx 且主动发 12 次检测，基本排除 ICE-lite",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "full ICE（浏览器）收集 host / srflx / relay、主动检测、与 lite 对接时一定 controlling；ICE-lite（媒体服务器）只列网卡上绑定的地址、不问 STUN 不申请 TURN、不主动发检测只回应。lite 够用的原因：客户端在 NAT 后无所谓，它主动发检测过来，服务器从包里看到真实源地址（prflx）照着回即可；前提是必须真的公网可达。lite 常加一条 `tcptype passive` 的 host 候选（ICE-TCP，RFC 6544）给 UDP 被封的客户端兜底。**云上特例**：网卡只有内网 IP、公网 IP 是平台 1:1 NAT 映射——lite 服务器配\"对外宣告地址\"把公网 IP 当 host 写（对端看到 `typ host`），full ICE 服务器经 STUN 或静态映射得公网 srflx（对端看到 `typ srflx`）。开源对照：mediasoup 只支持 lite（announced address）、Janus 两种都支持并有 1:1 NAT 配置、Jitsi Videobridge 用 full ICE。**Azure 判定**：系列12 探针测到 srflx ↔ srflx、系列16 截图对端 `srflx` 且\"STUN requests received / responses sent = 12 / 12\"——lite 一端不主动发起检测，两条证据合起来 Azure 更像云上 1:1 NAT 后的 full ICE。推论：若如此，\"Azure 只应答、浏览器包办选路\"不成立，relay 胜出问题必须按两端都在检测分析。"
+        },
+        {
+          "statement": "验证 ICE 实际走了哪条路只看 nominated 候选对两端的 candidateType——webrtc-internals / getStats 几分钟内可读；TURN 可达性用 `iceTransportPolicy: \"relay\"` 单独探测，不必开整场会话",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "步骤：**先**开 `chrome://webrtc-internals` 并保持打开，同一窗口（非无痕）另开会话，等画面出现不关不刷新；Stats Tables 找 `nominated: true` 且 `state: succeeded` 的 `candidate-pair`，顺 `localCandidateId` / `remoteCandidateId` 看两端 `candidateType`——**只要一端是 relay，媒体就经过 TURN**，`relayProtocol` 说明到 TURN 走 udp / tcp / tls；Event log 的 `setRemoteDescription` 是 SDP answer，看 `a=ice-lite` 与对端候选类型。空 dump（`getUserMedia: []` 且 `PeerConnections: {}`）说明导出时无会话：已结束 / 刷新过 / 在别的 profile / 没开数字人 / 弱网降级或撞创建速率限制后 PeerConnection 已关。拿得到 `RTCPeerConnection` 实例时用 `getStats()` 打印选中对的两端类型与 `currentRoundTripTime`。**TURN 可达性探针**：用一次 `session.updated` 拿到的临时 `ice_servers` 建 `new RTCPeerConnection({ iceServers, iceTransportPolicy: \"relay\" })` + `createDataChannel` + `createOffer`，打出 relay 候选即中继可用，一条都没有即该网络数字人画面无保底；只测浏览器到 TURN 一段。一次截图读出的事实：Azure 只下发 `turn:relay.communication.microsoft.com:3478`、`bundlePolicy: max-bundle` 故只一对候选对；下行约 13 MB、上行十几 KB——**数字人这条 WebRTC 连接只承载下行，麦克风在 WebSocket 上**；经 TURN 的 RTT 0.262 s 与弱网实测约 300 ms 同量级。"
+        }
+      ]
+    },
+    {
       "id": "intelligent-dictation",
       "type": "concept",
       "title": "Intelligent Dictation",
@@ -5973,15 +6057,6 @@
           "evidence": "\"双通道两条路径职责严格解耦\"的术语精确化：avatar 模式下全部输出（音频+视频）统一走 WebRTC 保证 AV 同步，WS 只承载上行麦克风与控制面；**媒体面始终 browser↔Azure 直连、控制面始终经后端**——uplink 音频 WebRTC 化后，后端是收缩为\"纯控制面\"而非被绕过（弱网收益判断依据）。传输层对两类数字人头像完全相同（同一 ICE/SDP 握手、H.264）：系列03 的 ICE 门控与预热占位策略对 photo 头像直接复用，photo 逐帧生成发生在 Azure 侧 GPU、不引入客户端时序新环节。代价面（VL07 生产实证）：音频播放路径分叉（WS audio delta vs WebRTC 视频流音轨）导致服务端 AEC 参考信号失配——双通道架构的副作用，需 Live-Reference AEC 补偿。"
         },
         {
-          "statement": "ICE / STUN / TURN 速览——三类候选是三个视角的地址，一次性信令（Vanilla ICE）逼出门控，\"够用集\"捷径成立的前提是\"两类候选同源\"且 300 ms 收敛窗是规则一部分；TURN 不是联邦网络，自建只替换浏览器一侧、默认中继是默认答案",
-          "source": "Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑",
-          "first_seen": "2026-09-30",
-          "last_updated": "2026-10-02",
-          "confidence": 0.8,
-          "status": "active",
-          "evidence": "**ICE 是什么**（RFC 8445）：WebRTC 建连前要解决 WebSocket 从不面对的问题——双方到底用哪一对地址互发 UDP 包；ICE 就是\"收集候选、两边交换、逐对试通、选出一对能用的\"这套流程，没有\"跳过 ICE\"的模式。三类候选的区别在地址从哪个视角看到：**host** 本机网卡（局域网门牌，零往返，只有同局域网对端能用）/ **srflx** STUN 反射出的公网出口（小区大门，一次 UDP 往返，要 NAT 放行入向）/ **relay** TURN 分配的中继端口（邮局信箱，谁都寄得到、多一跳）。STUN（RFC 8489）只\"照镜子\"产出 srflx；TURN（RFC 8656）在其上加 Allocate / Permission，承载全部媒体产出 relay，要带宽与短期 HMAC 凭据。SDP 里每个候选一行 `a=candidate:… typ host|srflx|relay`，`priority` 量级 host 2.1e9 > srflx 1.7e9 > relay 4e7；ICE 按优先级逐对发探测，第一对通且优先级最高者胜出——**到达顺序不在考虑里**。**门控为什么存在**：Trickle ICE（RFC 8838）offer 先发候选陆续补，前提是信令通道能反复双向传；Azure 数字人 offer 是经 `session.avatar.connect` 只发一次的 blob、没有补发消息，退回 Vanilla ICE——一个包必须自带所有会用到的候选，发前必须等\"胜出者进包\"。\"先到先得\"不成立：能不能用要对方一起试过才知道；先到的 host 恰恰必输；一次性信令没有后补机会。所以\"等 `complete`\"是教科书解（官方参考实现亦如此），只是 `complete` 的语义是\"所有网卡都了结\"，被悬着的 VPN 网卡绑架到 8 秒兜底。**捷径的前提**：Azure 只下发一台兼做 STUN 的 TURN，srflx 与 relay 来自同一次往返、host 必输，胜出者只可能是这两类之一；但两者并非同时到——relay 稳定晚约 140 ms（n=3，两次胜出者正是窗内才到的 relay），所以 300 ms 收敛窗兜住的是同一次往返内两个候选的到达间隔，不是冗余保险。换多 STUN / TURN 或 host 可胜出的服务端，捷径失效；通用 SDK 不写死部署事实是对的；`iceTransportPolicy: \"relay\"` 不是解——VPN 网卡上的 relay 申请一样悬着，门控的关键是\"不等最坏的网卡\"而非\"少收集\"。ICE 的必要成本只有几百毫秒加一次到中继的往返，那 7.6 秒是等待策略不是 ICE。**TURN 非联邦**（系列11）：一台 TURN 只做转发，对端只是一个公网 `IP:端口`；自建 TURN（如 coturn）通过 `session.avatar.ice_servers` 传入即原样回显、只替换浏览器一侧的中继，Azure 侧不变也不需要知道，唯一前提是你的 TURN 能出向到达 Azure 在 answer 里给的候选（打印 `a=candidate` 行确认地址段）。六项要求：公网可达（UDP 3478 + TCP/TLS 443）、短期 HMAC 凭据后端现算、允许对端为 Azure 公网地址、按并发 × 码率预留配额、放在两端之间、真实证书；验证三处：`session.updated` 回显、`getStats()` 选中 candidate-pair 的 relay 地址、TURN 日志。**默认中继零运维且含在分钟费里**，只在出向白名单只允许自家域名 / 合规要求媒体经自有基础设施 / 客户离 Azure 中继接入点很远三种情况下值得自建，代价是带宽、证书、容量可用性、凭据四项运维。  本条是 Voice Live 系列10 / 11 的压缩版：extract 曾自主建独立概念页 ice-nat-traversal，2026-10-02 用户裁决暂不建（尚未读懂）、撤回，内容压入本页；读懂后若要独立成页，按 LOOP_STATE HOLD 10-02 分区复核。"
-        },
-        {
           "statement": "WebRTC 与 WebSocket 建连成本的差异本质是\"对等\"与\"客户端-服务器\"——WebRTC 在拓扑已退化为客户端-服务器时仍付 ICE 固定开销；TURN over TCP/443 是协议能力但 Azure 默认不下发 TCP 候选，\"防火墙严格限 UDP → 只用 WebSocket\"的选型条件获实测续证",
           "source": "Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑",
           "first_seen": "2026-09-30",
@@ -5998,6 +6073,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "RTP（RFC 3550）是承载音视频本身的应用层协议，不负责送达（那是 UDP 的事），负责\"让对方知道这段字节是什么、该什么时候播\"：12 字节起的头含 sequence number（发现丢包与乱序，只\"发现\"不自动重传）、timestamp（采样时钟，抖动缓冲靠它对齐）、payload type（Opus / H.264 / VP8）、SSRC（区分同连接的音频轨与视频轨）、marker（一帧最后一个包）；成对的 RTCP 由接收端周期报告丢包率 / 抖动 / RTT，发送端据此调码率或触发关键帧，NACK 与 PLI 也是 RTCP 消息；WebRTC 默认 RTP/RTCP 复用同一 UDP 端口并强制 DTLS-SRTP。本页 05 月\"WebSocket 传音频五缺陷\"Claim 的机制续证：WS 那条管道把 PCM 字节直接放进 WebSocket 帧，没有 RTP 头、没有时间戳对齐与丢包恢复，全靠 TCP 保序，抖动直接变成延迟累积；数字人那条 WebRTC 管道里音视频都是 RTP 包（这也是 avatar 模式下 WS 上看不到 `response.audio.delta` 的原因）。\"丢了就丢了\"的准确说法是**放弃\"全部到达且有序\"换\"到了的立刻能用\"**：抖动缓冲吸收乱序与抖动、FEC 用冗余包就地恢复、按需 NACK 只对来得及的帧请求重传，要避开的是 TCP 队头阻塞。**弱网失效链**（系列12 实测）：接收端抖动缓冲目标是 Chrome 按到达抖动、帧大小波动与 RTT 运行时算出的（实测约 369 ms，取向低延迟），服务端没有任何对应参数；RTT 609 ms > 369 ms 时 NACK 重传回来已过播放时刻、整帧丢弃，H.264 P 帧依赖前帧则整个 GOP 不可解——1080p 一帧 5 个以上 RTP 包（载荷约 1200 字节）丢一个即死、0 fps 却仍吃约 1 Mbps，512×512 一帧 1~2 包照播；REMB 码率自适应只改\"每秒多少比特\"这一个旋钮，不改分辨率 / 帧率 / GOP / 抖动缓冲，所以**自适应回答的是\"管子够不够粗\"，1080p 遇到的是\"信拆成几页寄、丢一页补寄来不及\"**。音频与视频同一条传输时胖视频把管道占满、音频包跟着丢和迟到（3% 丢包下 31% 原始补偿率，关视频轨后 2.5%）。编解码侧：Opus 在 RTP / SDP 里永远写 48000（RFC 7587 时钟标签），内部按内容选带宽档（NB 8k / WB 16k / SWB 24k / FB 48k），\"Opus 48 kHz\"与\"该不该用 16 kHz\"不是同一个问题；值得质疑的是协商成立体声约 130 kbps（人头是单声道源，常规语音 Opus 24~48 kbps），浏览器可在 offer fmtp 请求 `stereo=0` / `useinbandfec=1` / `maxaveragebitrate`，发送端通常尊重——与被忽略的 `b=AS` 不是同一机制。"
+        },
+        {
+          "statement": "WebRTC 与 WebSocket 的差别远不止 UDP 换 TCP——丢包、编码、抖动缓冲、拥塞控制、发送节奏、媒体经不经过后端全都不同；最大的取舍是媒体直连后后端只剩签发 token 与信令，可观测性也随之不对称",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "逐项：丢包（WS 是 TCP 重传 + 队头阻塞；WebRTC 跳过由 PLC 补）、编码（PCM16 裸音频 vs Opus 约 32 kbps 带 FEC / DTX）、抖动缓冲与播放（应用自写 AudioWorklet 队列 vs 浏览器内置）、拥塞控制（只有 TCP 不感知媒体 vs RTCP 反馈 + 带宽估计）、加密（TLS vs DTLS-SRTP）、**发送节奏**（服务端能推多快推多快 vs 按实时速度）、事件通道（同一条 WS vs DataChannel 或 side-band WS）。与语音产品直接相关的三点：① 弱网差别最大——卡顿近似丢包数 × RTT；② **打断重新有意义**——WS PCM 下行上 Azure 不到 1 秒推完整段回复并标完成，`interrupt_response` 无可截断对象，WebRTC 按实时速度推、服务端知道播到哪才能截断（推断）；③ **架构会变**——媒体在浏览器与 Azure 间直连不经后端，后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 都要重新设计，控制靠 side-band WS（Azure Realtime 的 SDP 应答带 `Location` 头可再连控制 WS）。**可观测性不对称同源**：WebRTC 的拥塞 / 抖动 / 丢包 / RTT 在浏览器里，所以有 webrtc-internals；WS 的重传、RTT、拥塞窗口在 OS TCP 栈里，浏览器自己也看不到，只能分层——DevTools Network → WS → Messages 看帧（能直接看到下行音频不到 1 秒涌完紧跟 `response.done`）、`chrome://net-export` 看握手与代理、Wireshark（`SSLKEYLOGFILE` 解 wss，过滤 `tcp.analysis.retransmission`）或 `ss -ti` 看重传与 RTT、页面读 `ws.bufferedAmount` 当上行拥塞信号（持续上涨 = 上行跟不上、帧在本地排队，只反映上行）。一句话：webrtc-internals ≈ WS Messages + Wireshark，中间用 `bufferedAmount` 当带宽估计。"
         }
       ]
     },
@@ -7063,8 +7147,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
-      "avg_confidence": 0.76,
+      "claims_count": 13,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "实时语音 Agent 涉及三层技术栈",
@@ -7173,6 +7257,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "prompt 只能影响模型生成出来的字；读题走 `pre_generated` 时连字都不是模型生成的，prompt 对\"语气\"毫无作用。语音层由会话的 `voice` 对象控制（`session.update`）：`name` 选声音（600 多种神经语音，HD 语音更有表现力）、`temperature` 0~1 表现力 / 情绪起伏（HD 语音生效，即 FAQ 里的 voice temperature）、`rate` \"0.5\"~\"1.5\" 语速（字符串）、`style` 说话风格、`prosody`（pitch / rate / volume 的 SSML 式值如 `+10%` / `-2st` / `-6dB`，2026-04-10 及之后 API 参考）、`custom_lexicon_url`（发音词典，格式同 SSML lexicon，\"SLA\"\"OKR\"这类缩写怎么念——与本页 G2P / Lexicon Claim 的机制同源）、`custom_text_normalization_url`（数字日期读法）。两个限制：**它们是会话级参数不是逐句 SSML**——`pre_generated` 文本是纯文本，文档未声明支持内联 `<speak>` / `<prosody>`，\"这题读慢一点\"的路径是在两次读题之间 `session.update` 改 voice（切换延迟待 live 验证）；**情绪不能像 SSML `express-as` 逐句指定**，只能靠 `temperature` + `style` + 选一个本身有情绪特征的声音。系列04\"输出表现力上限是 Azure TTS（HD Voice / Custom Voice + SSML）\"的上限说法不变，但在 Voice Live 会话内触达它的手段是 `voice` 参数。实践教训：管理端的语音温度 / 语速旋钮只被旧的构建器用到、实际会话构建器只传 `name` 与 `type`——\"以为在控制，其实那条路径根本没接上\"，只有抓 WS 帧断言 `session.updated` 回显的 `voice.temperature` / `voice.rate` 才知道生效没有；接上之后原本\"无害\"的输入范围（温度 0~2、语速 0.5~2）要重审，超范围会让 `session.update` 被拒、整条语音通道 \"Voice unavailable\"。**`voice.type` 与模型是硬约束**：`azure-realtime` 只配 `azure-realtime-native`；`gpt-realtime` 配 `openai` / `azure-standard` / `azure-platform` / `azure-custom` / `custom` / `azure-personal` / `avatar-voice-sync`（不含 native）；配错报 `invalid_voice_type`，失败形态是 `rtc.call.error` 回来而 SDP answer / PeerConnection / 出向音频全正常只是永远无回复，排查判据必须用业务信号。"
+        },
+        {
+          "statement": "Opus 是编码格式而非 WebRTC 专属，\"只有 WebRTC 能用 Opus\"是 Voice Live WS 接口限制——WS 输入只收 pcm16 / G.711；只想省带宽可只在浏览器到后端一段用 Opus，想消除卡顿则必须换 WebRTC",
+          "source": "Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证",
+          "first_seen": "2026-10-08",
+          "last_updated": "2026-10-11",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Opus（RFC 6716，开源免专利费，WebRTC 强制支持 RFC 7874）由 SILK（线性预测，低码率语音）与 CELT（MDCT，音乐 / 低延迟）融合，加 Hybrid 档（低频 SILK + 高频 CELT），编码器按码率与内容自动切换无需重协商；码率 6~510 kbps、语音 16~32 kbps 已清晰，帧长默认 20 ms，算法延迟约 26.5 ms（低延迟模式约 5 ms）；实时特性：带内 FEC、DTX、PLC、VBR，Opus 1.5 加神经网络深度 PLC 与 DRED（冗余约 1 秒）。**带宽差 10 倍以上**：PCM16 上行 16 kHz 256 kbps / 下行 24 kHz 384 kbps vs Opus 约 24~32 kbps；permessage-deflate 对裸 PCM 只压到 95%。WebRTC 路径上 Opus 只用在浏览器到 Azure 一段，Azure 解码成 PCM 再交给模型，模型\"听到\"的与走 WS 时一样。Opus 与传输无关（`.opus` / `.ogg` / `.webm`、`MediaRecorder`、WebCodecs `AudioEncoder` 编出的帧完全可以走 WS），限制在 Voice Live WS 接口：输入 `pcm16` / `g711_ulaw` / `g711_alaw`，输出另加 `pcm16_8000hz` / `pcm16_16000hz`。接口为何如此（推断）：面向服务端对服务端与电话场景、TCP 已把丢包变重传使 FEC / PLC 用不上、Opus 包在字节流上需额外帧边界约定——与\"三条产品线拼接缝\"同源。**方向选择**：浏览器 ──Opus(WS)──▶ 后端解码 ──pcm16(WS)──▶ Azure，用户侧带宽降到约十分之一，代价是后端每路编解码、每帧多约 20 ms 打包延迟、Safari WebCodecs 兼容性待测，且**不解决 TCP 队头阻塞**；G.711 64 kbps 原生支持但 8 kHz 窄带影响识别，面试类场景不推荐；要消除卡顿只有 UDP 能避开队头阻塞，必须换 WebRTC 并接受媒体不经后端。本页 10-02\"WS 上行只收 pcm16 / G.711 无 Opus\"Claim 的根因澄清：是接口限制而非编码与传输绑定。"
         }
       ]
     },
@@ -10826,6 +10919,24 @@
       "description": "推理架构选型与级联/端到端管线选型同属\"为约束选架构\"的工程决策family"
     },
     {
+      "source": "ice-nat-traversal",
+      "target": "realtime-protocol-selection",
+      "relation_type": "grounds",
+      "description": "ICE 的固定开销与 UDP 依赖是\"WS vs WebRTC\"选型条件（限 UDP → 只用 WS、建连成本差异）的协议层根据"
+    },
+    {
+      "source": "ice-nat-traversal",
+      "target": "weak-network-adaptive-degradation",
+      "relation_type": "grounds",
+      "description": "候选类型即客户网络分段测点、UDP 封锁无画无声是降级决策表的输入"
+    },
+    {
+      "source": "ice-nat-traversal",
+      "target": "voice-live-agent",
+      "relation_type": "part-of",
+      "description": "数字人 WebRTC 下行通道的建连层"
+    },
+    {
       "source": "llm-as-a-judge",
       "target": "generation-evaluation-separation",
       "relation_type": "implements",
@@ -12660,6 +12771,7 @@
         "grapheme-to-phoneme",
         "intelligent-dictation",
         "realtime-protocol-selection",
+        "ice-nat-traversal",
         "compute-locus-spectrum",
         "viseme",
         "end-of-turn-detection"
