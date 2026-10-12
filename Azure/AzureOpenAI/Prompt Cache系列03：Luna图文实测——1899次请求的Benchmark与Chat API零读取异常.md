@@ -227,8 +227,6 @@ tags: [Azure-OpenAI, prompt-cache, gpt-5.6-luna, benchmark, 多模态, 异常排
 - lookup 边界 latest 50 vs 80 的文档表述差异——待官方澄清；
 - GPT-5.6+ key 语义（计量隔离、"usage 报 miss 而非物理 miss"）未做专门实验与账单验证。
 
-> 原始素材（测试脚本、逐次请求/响应证据、静态 HTML 报告、官方文档快照及抓取凭据）存于本 vault 的 `inbox/codex/2026-09-13-luna-prompt-cache-materials/`（本地素材目录，不入 git）。主入口：`luna-cache-validation/index.html`（可离线交互筛选与下钻）、`report_data.json`（规范化全量数据）、`diagnostics-20260913/`（9/13 诊断补测）。
-
 ## 关联阅读
 
 - [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md) — 机制背景：缓存位置、路由与命中的概率本质
