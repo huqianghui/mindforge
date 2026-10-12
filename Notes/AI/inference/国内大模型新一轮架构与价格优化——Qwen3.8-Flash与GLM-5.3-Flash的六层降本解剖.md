@@ -10,7 +10,7 @@ tags: [inference, architecture, moe, sparse-attention, gated-deltanet, hybrid-at
 >
 > 本文按"六层降本"拆解两款 Flash 模型的架构优化如何传导为降价空间，并给出比"每百万 token 单价"更准确的选型口径：**每成功任务成本**。架构地基（GDN、Hybrid 注意力、prefix caching 失效问题）见 [线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构](线性注意力时代的推理架构之一——Transformer-Mamba-GDN与Hybrid架构.md) 及其系列；GLM 推理栈基于 SGLang 的背景见 [SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)。
 >
-> 素材来源：Codex 侧对 YouTube 视频《DeepSeek竟然也遭遇斩杀线》NotebookLM 转写稿的分析，关键数字已对照 Qwen / 智谱 / DeepSeek 官方技术报告与价格页核验。厂商基准不等于实际业务环境结果。
+> 素材来源：YouTube 视频《DeepSeek竟然也遭遇斩杀线》，关键数字已对照 Qwen / 智谱 / DeepSeek 官方技术报告与价格页核验。厂商基准不等于实际业务环境结果。
 
 ![六层成本优化传导链|760](../../../asset/llm-cost-optimization-layers-2026-08-31.svg)
 
