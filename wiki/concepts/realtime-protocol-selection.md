@@ -1,7 +1,7 @@
 ---
 title: "Realtime Protocol Selection"
 created: "2026-05-24"
-updated: "2026-10-02"
+updated: "2026-10-11"
 tags:
   - wiki
   - concept
@@ -108,18 +108,6 @@ related:
 
 > "双通道两条路径职责严格解耦"的术语精确化：avatar 模式下全部输出（音频+视频）统一走 WebRTC 保证 AV 同步，WS 只承载上行麦克风与控制面；**媒体面始终 browser↔Azure 直连、控制面始终经后端**——uplink 音频 WebRTC 化后，后端是收缩为"纯控制面"而非被绕过（弱网收益判断依据）。传输层对两类数字人头像完全相同（同一 ICE/SDP 握手、H.264）：系列03 的 ICE 门控与预热占位策略对 photo 头像直接复用，photo 逐帧生成发生在 Azure 侧 GPU、不引入客户端时序新环节。代价面（VL07 生产实证）：音频播放路径分叉（WS audio delta vs WebRTC 视频流音轨）导致服务端 AEC 参考信号失配——双通道架构的副作用，需 Live-Reference AEC 补偿。
 
-### Claim: ICE / STUN / TURN 速览——三类候选是三个视角的地址，一次性信令（Vanilla ICE）逼出门控，"够用集"捷径成立的前提是"两类候选同源"且 300 ms 收敛窗是规则一部分；TURN 不是联邦网络，自建只替换浏览器一侧、默认中继是默认答案
-
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
-- **首次出现**：2026-09-30
-- **最近更新**：2026-10-02
-- **置信度**：0.8（RFC 8445 / 8489 / 8656 / 8838 核对 + 真机 SDP / `onicecandidate` 抓取；收敛窗 n=3 单一网络；自建 TURN 部分为文档核对尚未实施，0.7）
-- **状态**：active
-
-> **ICE 是什么**（RFC 8445）：WebRTC 建连前要解决 WebSocket 从不面对的问题——双方到底用哪一对地址互发 UDP 包；ICE 就是"收集候选、两边交换、逐对试通、选出一对能用的"这套流程，没有"跳过 ICE"的模式。三类候选的区别在地址从哪个视角看到：**host** 本机网卡（局域网门牌，零往返，只有同局域网对端能用）/ **srflx** STUN 反射出的公网出口（小区大门，一次 UDP 往返，要 NAT 放行入向）/ **relay** TURN 分配的中继端口（邮局信箱，谁都寄得到、多一跳）。STUN（RFC 8489）只"照镜子"产出 srflx；TURN（RFC 8656）在其上加 Allocate / Permission，承载全部媒体产出 relay，要带宽与短期 HMAC 凭据。SDP 里每个候选一行 `a=candidate:… typ host|srflx|relay`，`priority` 量级 host 2.1e9 > srflx 1.7e9 > relay 4e7；ICE 按优先级逐对发探测，第一对通且优先级最高者胜出——**到达顺序不在考虑里**。**门控为什么存在**：Trickle ICE（RFC 8838）offer 先发候选陆续补，前提是信令通道能反复双向传；Azure 数字人 offer 是经 `session.avatar.connect` 只发一次的 blob、没有补发消息，退回 Vanilla ICE——一个包必须自带所有会用到的候选，发前必须等"胜出者进包"。"先到先得"不成立：能不能用要对方一起试过才知道；先到的 host 恰恰必输；一次性信令没有后补机会。所以"等 `complete`"是教科书解（官方参考实现亦如此），只是 `complete` 的语义是"所有网卡都了结"，被悬着的 VPN 网卡绑架到 8 秒兜底。**捷径的前提**：Azure 只下发一台兼做 STUN 的 TURN，srflx 与 relay 来自同一次往返、host 必输，胜出者只可能是这两类之一；但两者并非同时到——relay 稳定晚约 140 ms（n=3，两次胜出者正是窗内才到的 relay），所以 300 ms 收敛窗兜住的是同一次往返内两个候选的到达间隔，不是冗余保险。换多 STUN / TURN 或 host 可胜出的服务端，捷径失效；通用 SDK 不写死部署事实是对的；`iceTransportPolicy: "relay"` 不是解——VPN 网卡上的 relay 申请一样悬着，门控的关键是"不等最坏的网卡"而非"少收集"。ICE 的必要成本只有几百毫秒加一次到中继的往返，那 7.6 秒是等待策略不是 ICE。**TURN 非联邦**（系列11）：一台 TURN 只做转发，对端只是一个公网 `IP:端口`；自建 TURN（如 coturn）通过 `session.avatar.ice_servers` 传入即原样回显、只替换浏览器一侧的中继，Azure 侧不变也不需要知道，唯一前提是你的 TURN 能出向到达 Azure 在 answer 里给的候选（打印 `a=candidate` 行确认地址段）。六项要求：公网可达（UDP 3478 + TCP/TLS 443）、短期 HMAC 凭据后端现算、允许对端为 Azure 公网地址、按并发 × 码率预留配额、放在两端之间、真实证书；验证三处：`session.updated` 回显、`getStats()` 选中 candidate-pair 的 relay 地址、TURN 日志。**默认中继零运维且含在分钟费里**，只在出向白名单只允许自家域名 / 合规要求媒体经自有基础设施 / 客户离 Azure 中继接入点很远三种情况下值得自建，代价是带宽、证书、容量可用性、凭据四项运维。
->
-> 本条是 Voice Live 系列10 / 11 的压缩版：extract 曾自主建独立概念页 ice-nat-traversal，2026-10-02 用户裁决暂不建（尚未读懂）、撤回，内容压入本页；读懂后若要独立成页，按 LOOP_STATE HOLD 10-02 分区复核。
-
 ### Claim: WebRTC 与 WebSocket 建连成本的差异本质是"对等"与"客户端-服务器"——WebRTC 在拓扑已退化为客户端-服务器时仍付 ICE 固定开销；TURN over TCP/443 是协议能力但 Azure 默认不下发 TCP 候选，"防火墙严格限 UDP → 只用 WebSocket"的选型条件获实测续证
 
 - **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
@@ -140,11 +128,22 @@ related:
 
 > RTP（RFC 3550）是承载音视频本身的应用层协议，不负责送达（那是 UDP 的事），负责"让对方知道这段字节是什么、该什么时候播"：12 字节起的头含 sequence number（发现丢包与乱序，只"发现"不自动重传）、timestamp（采样时钟，抖动缓冲靠它对齐）、payload type（Opus / H.264 / VP8）、SSRC（区分同连接的音频轨与视频轨）、marker（一帧最后一个包）；成对的 RTCP 由接收端周期报告丢包率 / 抖动 / RTT，发送端据此调码率或触发关键帧，NACK 与 PLI 也是 RTCP 消息；WebRTC 默认 RTP/RTCP 复用同一 UDP 端口并强制 DTLS-SRTP。本页 05 月"WebSocket 传音频五缺陷"Claim 的机制续证：WS 那条管道把 PCM 字节直接放进 WebSocket 帧，没有 RTP 头、没有时间戳对齐与丢包恢复，全靠 TCP 保序，抖动直接变成延迟累积；数字人那条 WebRTC 管道里音视频都是 RTP 包（这也是 avatar 模式下 WS 上看不到 `response.audio.delta` 的原因）。"丢了就丢了"的准确说法是**放弃"全部到达且有序"换"到了的立刻能用"**：抖动缓冲吸收乱序与抖动、FEC 用冗余包就地恢复、按需 NACK 只对来得及的帧请求重传，要避开的是 TCP 队头阻塞。**弱网失效链**（系列12 实测）：接收端抖动缓冲目标是 Chrome 按到达抖动、帧大小波动与 RTT 运行时算出的（实测约 369 ms，取向低延迟），服务端没有任何对应参数；RTT 609 ms > 369 ms 时 NACK 重传回来已过播放时刻、整帧丢弃，H.264 P 帧依赖前帧则整个 GOP 不可解——1080p 一帧 5 个以上 RTP 包（载荷约 1200 字节）丢一个即死、0 fps 却仍吃约 1 Mbps，512×512 一帧 1~2 包照播；REMB 码率自适应只改"每秒多少比特"这一个旋钮，不改分辨率 / 帧率 / GOP / 抖动缓冲，所以**自适应回答的是"管子够不够粗"，1080p 遇到的是"信拆成几页寄、丢一页补寄来不及"**。音频与视频同一条传输时胖视频把管道占满、音频包跟着丢和迟到（3% 丢包下 31% 原始补偿率，关视频轨后 2.5%）。编解码侧：Opus 在 RTP / SDP 里永远写 48000（RFC 7587 时钟标签），内部按内容选带宽档（NB 8k / WB 16k / SWB 24k / FB 48k），"Opus 48 kHz"与"该不该用 16 kHz"不是同一个问题；值得质疑的是协商成立体声约 130 kbps（人头是单声道源，常规语音 Opus 24~48 kbps），浏览器可在 offer fmtp 请求 `stereo=0` / `useinbandfec=1` / `maxaveragebitrate`，发送端通常尊重——与被忽略的 `b=AS` 不是同一机制。
 
+### Claim: WebRTC 与 WebSocket 的差别远不止 UDP 换 TCP——丢包、编码、抖动缓冲、拥塞控制、发送节奏、媒体经不经过后端全都不同；最大的取舍是媒体直连后后端只剩签发 token 与信令，可观测性也随之不对称
+
+- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **首次出现**：2026-10-08
+- **最近更新**：2026-10-11
+- **置信度**：0.75（对比表与工具为文档查证；WS 下行不到 1 秒推完为实测；WebRTC 音轨上打断生效为推断，待对照实测）
+- **状态**：active
+
+> 逐项：丢包（WS 是 TCP 重传 + 队头阻塞；WebRTC 跳过由 PLC 补）、编码（PCM16 裸音频 vs Opus 约 32 kbps 带 FEC / DTX）、抖动缓冲与播放（应用自写 AudioWorklet 队列 vs 浏览器内置）、拥塞控制（只有 TCP 不感知媒体 vs RTCP 反馈 + 带宽估计）、加密（TLS vs DTLS-SRTP）、**发送节奏**（服务端能推多快推多快 vs 按实时速度）、事件通道（同一条 WS vs DataChannel 或 side-band WS）。与语音产品直接相关的三点：① 弱网差别最大——卡顿近似丢包数 × RTT；② **打断重新有意义**——WS PCM 下行上 Azure 不到 1 秒推完整段回复并标完成，`interrupt_response` 无可截断对象，WebRTC 按实时速度推、服务端知道播到哪才能截断（推断）；③ **架构会变**——媒体在浏览器与 Azure 间直连不经后端，后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 都要重新设计，控制靠 side-band WS（Azure Realtime 的 SDP 应答带 `Location` 头可再连控制 WS）。**可观测性不对称同源**：WebRTC 的拥塞 / 抖动 / 丢包 / RTT 在浏览器里，所以有 webrtc-internals；WS 的重传、RTT、拥塞窗口在 OS TCP 栈里，浏览器自己也看不到，只能分层——DevTools Network → WS → Messages 看帧（能直接看到下行音频不到 1 秒涌完紧跟 `response.done`）、`chrome://net-export` 看握手与代理、Wireshark（`SSLKEYLOGFILE` 解 wss，过滤 `tcp.analysis.retransmission`）或 `ss -ti` 看重传与 RTT、页面读 `ws.bufferedAmount` 当上行拥塞信号（持续上涨 = 上行跟不上、帧在本地排队，只反映上行）。一句话：webrtc-internals ≈ WS Messages + Wireshark，中间用 `bufferedAmount` 当带宽估计。
+
 ## 冲突与演进
 
 - **2026-08-16**：全部 6 条 Claims 证据停在 2026-05-24，距今 84 天超过 60 天线，维护标 stale，等新证据复核（复核素材已见 08-09 loop-weekly 语音三连发条目）。
 - **2026-09-16**：注入 Voice Live 系列03 ICE 门控 Claim（"全量集→够用集"）——页面获得首条生产实测级 WebRTC 协议工程续证，脱离全 stale 状态；sufficient-set-waiting 按裁决不独立建页，原则收入本条。
 - **2026-10-02**：ICE 门控 Claim 的"relay-only"前提按系列12 探针实测加修正注（直连优先、relay 保底，成立理由改为"两类候选同源 + 收敛窗是规则一部分"）；注入系列10 / 11 / 12 三条 Claim（ICE / STUN / TURN 速览；对等 vs 客户端-服务器的建连成本本质 + Azure 只下发 UDP TURN 对"限 UDP → 只用 WS"选型条件的续证；RTP/RTCP 分工与弱网失效链对"WS 传音频五缺陷"的机制续证）。ICE / STUN / TURN 协议层压成一条速览 Claim 收入本页（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级实施归 [[weak-network-adaptive-degradation]]。
+- **2026-10-11**：用户读完 Voice Live 系列16 后解除 ice-nat-traversal HOLD——ICE / STUN / TURN 速览 Claim 迁出至 [[ice-nat-traversal]]（本页只留选型层）；注入系列16 一条 Claim（WebRTC 与 WS 的全维度差别、媒体直连后的后端职责重设计、可观测性不对称与 WS 分层工具）。
 
 ## 关联概念
 
@@ -159,3 +158,4 @@ related:
 - [[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]] — TURN 非联邦、`ice_servers` 替换入口与六项要求、何时值得自建
 - [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
 - [[2026-09-30-周三]] — 系列10/11/12 成文与"直连推翻 relay-only"修正记录
+- [[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]] — WebRTC vs WS 全维度对比、媒体直连的架构代价、WS 分层观测工具；ICE 部分归 [[ice-nat-traversal]]

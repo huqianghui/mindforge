@@ -512,7 +512,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Prompt Cache 系列 01：两代缓存框架——GPT-5.6 前后的机制、计费与路由差异](Azure/AzureOpenAI/Prompt%20Cache系列01：两代缓存框架——GPT-5.6前后的机制、计费与路由差异.md)
 - [Prompt Cache 系列 02：GPT-5.6 显式断点与 Cache Write 计费——从断点槽位到诊断工具](Azure/AzureOpenAI/Prompt%20Cache系列02：GPT-5.6显式断点与Cache%20Write计费——从断点槽位到诊断工具.md)
-- [Prompt Cache 系列 03：Luna 图文实测——1899 次请求的 Benchmark 与 Chat API 零读取异常](Azure/AzureOpenAI/Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
+- [Prompt Cache 系列 03：Luna 图文实测——1899 次历史请求与 Chat 图片缓存修复复测（10/12 更新）](Azure/AzureOpenAI/Prompt%20Cache系列03：Luna图文实测——1899次请求的Benchmark与Chat%20API零读取异常.md)
 
 </blockquote>
 </details>
