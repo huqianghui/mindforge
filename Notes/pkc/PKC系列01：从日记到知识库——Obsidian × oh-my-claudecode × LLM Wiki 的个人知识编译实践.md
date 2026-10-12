@@ -42,7 +42,7 @@ tags: [obsidian, oh-my-claudecode, llm-wiki, knowledge-management, personal-know
 
 ### 1.3 本质问题
 
-用 ChatGPT 的话说：
+一句话概括：
 
 > 你现在是一个 **AI-enhanced journaling system**，不是 **knowledge system**。
 > 
@@ -124,7 +124,7 @@ OMC 是为 **task execution**（任务执行）设计的，不是为 **knowledge
 
 ### 4.1 架构定位
 
-从 ChatGPT 讨论中得到一个精准定位：
+一个精准定位：
 
 > 不是 AI-enhanced journaling system，
 > 而是 **Personal Knowledge Compiler**（带时间维度的个人知识编译器）。

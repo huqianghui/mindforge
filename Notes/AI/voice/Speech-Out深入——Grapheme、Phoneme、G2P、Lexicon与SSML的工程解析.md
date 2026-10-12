@@ -569,4 +569,3 @@ Content-Type: application/ssml+xml
 - [W3C PLS（Pronunciation Lexicon Specification）](https://www.w3.org/TR/pronunciation-lexicon/)
 - [Azure Speech Service - SSML 文档](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup)
 - [Azure Speech Service - Custom Lexicon](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-pronunciation#custom-lexicon)
-- [ChatGPT 原始讨论](https://chatgpt.com/share/69f31ccb-094c-8323-a34b-9ac9a8563bb7)

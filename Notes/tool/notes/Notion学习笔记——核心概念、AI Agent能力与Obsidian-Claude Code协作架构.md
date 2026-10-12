@@ -245,7 +245,6 @@ claude mcp add notion \
 
 ---
 
-> 参考来源：[ChatGPT 对话——Notion Agent 学习笔记](https://chatgpt.com/share/69bf9af9-61e8-8010-9549-019192f564ce)
 
 ## 相关文章
 

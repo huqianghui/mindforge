@@ -244,7 +244,7 @@ java -jar code-maat.jar -l gitlog.log -c git2 -a coupling
 
 ### 6.4 下一步：ArchUnit + LLM
 
-ChatGPT 讨论中提到一个有趣的前沿方向：**ArchUnit 的规则是人写的，还是模型生成的？**
+一个有趣的前沿方向：**ArchUnit 的规则是人写的，还是模型生成的？**
 
 这指向两种可能的演进路径：
 

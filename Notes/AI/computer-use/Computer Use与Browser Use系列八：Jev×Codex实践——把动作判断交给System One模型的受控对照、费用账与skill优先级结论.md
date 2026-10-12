@@ -18,7 +18,7 @@ description: 一次从"拿到 Jev API key"到"受控对照实测"的完整实践
 
 > 本篇是实践记录，接在 [系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md) 的场景路由表和 [系列六](Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md) 的 Codex skill 调用链之后，回答一个具体问题：把 Codex 在 UI 操作里"下一步做什么"的判断交给 TypeSafe 的 Jev，省不省时间、省不省钱、准不准，以及能不能因此把 Jev 对应的两个 skill 设为以后 browser use、computer use 的优先选择。Jev 是什么、RLCD 与校准见 [TypeSafe Jev：System One 模型、RLCD 与校准决策](../../../product/TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语.md)。
 >
-> 数据来自 2026-09-27 一次完整的 Codex 会话与实验记录（8 次正式受控测试、4 次早期试跑、102 次已记录 API 调用）。所有金额是按公开单价的估算，不是账单。
+> 数据来自 2026-09-27 的一组实验（8 次正式受控测试、4 次早期试跑、102 次已记录 API 调用）。所有金额是按公开单价的估算，不是账单。
 
 ---
 

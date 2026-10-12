@@ -13,7 +13,7 @@ description: 从"Agent 页面选不到 gpt-realtime"这个困惑入手，梳理 
 
 # Voice Live 系列 02：架构演进——与 Agent Service 解耦后的合作模式与组合选型
 
-> 本文源于一次实际困惑的排查讨论（[与 ChatGPT 的完整讨论](https://chatgpt.com/share/6a5c24ec-5e68-83ec-9a8d-c5ad209bd815)，2026-07-19）：Azure AI Agent 是否仍可以通过 Voice Live API 使用 gpt-realtime？为什么 Agent 创建页面选不到 gpt-realtime 了？
+> Azure AI Agent 是否仍可以通过 Voice Live API 使用 gpt-realtime？为什么 Agent 创建页面选不到 gpt-realtime 了？
 > 实现层架构细节（WebSocket + WebRTC 双通道、Avatar、连接时序）见 [Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)。
 > **2026-09-19 更新**：本文最初"Agent 选不到 gpt-realtime 是解耦设计"的因果解读已由 Speech 产品组更正——该现象是 **bug 且已修复**（见第一节更新框与第八节小结第 1 条）；全双工模型 gpt-live-1 的相关新信息见第九节开放问题 10/11，完整影响评估见 [Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)。
 
@@ -302,7 +302,6 @@ Voice Live 支持的模型分为两大类，**本质是端到端 speech-to-speec
 
 ## 参考
 
-- [与 ChatGPT 的讨论：Azure AI Agent 与 Voice Live API 的解耦](https://chatgpt.com/share/6a5c24ec-5e68-83ec-9a8d-c5ad209bd815)（2026-07-19）
 - [Voice Live API Overview — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live)
 - [How to use the Voice Live API — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to)
 - [Quickstart: Voice Agent with Foundry Agent Service — Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)

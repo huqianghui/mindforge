@@ -15,7 +15,7 @@ description: 从一次 avatar_verification_failed 校验失败入手，讲清 Vo
 
 # Voice Live 系列 05：两类数字人头像——viseme 驱动的 Video Avatar 与 VASA-1 生成的 Photo Avatar
 
->数字人选 Adrian 时会话直接被 Azure 拒绝（`avatar_verification_failed`），排查后发现根因是**把 photo 头像按 video 头像的 schema 发送**。顺着这个错误往下挖，牵出两类头像在合成技术路线上的根本分岔——而分岔点恰好是之前讨论过的 viseme（[phoneme/viseme/grapheme/morpheme 词族讨论](https://chatgpt.com/share/6ab3379b-7020-83ec-bd26-9673b14441d9)）。
+>数字人选 Adrian 时会话直接被 Azure 拒绝（`avatar_verification_failed`），排查后发现根因是**把 photo 头像按 video 头像的 schema 发送**。顺着这个错误往下挖，牵出两类头像在合成技术路线上的根本分岔——而分岔点恰好是 viseme。
 > 系列前篇：[系列01](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md) 讲 WebSocket + WebRTC 双通道与 Avatar 连接时序；[系列03](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md) 讲数字人出场延迟的云上实测；[系列04](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md) 提出"viseme 是数字人的准入闸门"。本文把镜头从"谁能驱动数字人"转向**数字人本身**：两类头像各是怎么被合成出来的。
 
 ---
@@ -227,6 +227,5 @@ VASA-1 出自 Microsoft Research 的 NeurIPS 2024 Oral 论文 [VASA-1: Lifelike 
 - [Azure AI Voice Live API: what's new and the pricing announcement — Microsoft Tech Community](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/azure-ai-voice-live-api-what%E2%80%99s-new-and-the-pricing-announcement/4428687)（2025-07；标准头像 $0.50/min、自定义头像 $0.60/min + 训练/hosting 费结构）
 - [Azure Speech in Foundry Tools pricing](https://azure.microsoft.com/en-us/pricing/details/speech/)（当前计费结构：Voice Live avatar 走 TTS interactive avatar (real-time) 每分钟计量；photo avatar 单列一次性 creation 费、无 hosting）
 - [Advancing Speech Innovation with Azure Speech in Microsoft Foundry — Microsoft Tech Community](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/advancing-speech-innovation-with-azure-speech-in-microsoft-foundry/4471461)（Ignite 2025：Photo Avatar public preview）
-- [phoneme/viseme/grapheme/morpheme 词族讨论](https://chatgpt.com/share/6ab3379b-7020-83ec-bd26-9673b14441d9)（viseme 概念与词源铺垫）
 - 系列前篇：[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API](Voice%20Live系列01：Agent实现架构——从级联流水线到Azure%20Voice%20Live%20API.md)、[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)、[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略](Voice%20Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略.md)、[Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估](Voice%20Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估.md)
 - 相关笔记：[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步](../../Notes/tool/3D-blender/Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步.md)（viseme 驱动口型的客户端工程实现，与 video 头像服务端做的事同构）

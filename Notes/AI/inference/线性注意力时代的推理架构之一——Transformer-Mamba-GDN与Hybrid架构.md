@@ -99,4 +99,3 @@ S_t = g_t · S_{t-1} + k_t ⊗ [ β_t · (v_t − (g_t · S_{t-1})ᵀ k_t) ]
 - [Nemotron-H 论文 arXiv:2504.03624](https://arxiv.org/abs/2504.03624)
 - [Sebastian Raschka: LLM Architecture Gallery — Hybrid Attention](https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/)
 - [Qwen3-Next 官方博客](https://qwen.ai/blog?id=4074cca80393150c248e508aa62983f9cb7d27cd)
-- 起点讨论：与 ChatGPT 的分析对话 [share 链接](https://chatgpt.com/share/6a38ad86-8f38-83ec-98d5-66e4b9831fc6)

@@ -2,12 +2,11 @@
 title: AutoResearch 概念澄清——与 Ralph Loop 和 AutoML 的本质区别
 created: 2026-03-24
 tags: [autoresearch, karpathy, automl, ralph-loop, agent-loop, self-improving-ai, evolutionary-search, hill-climbing, agent-runtime]
-source: https://chatgpt.com/share/69c27b63-2164-8010-b7c5-72a14905cd10
 ---
 
 # AutoResearch 概念澄清——与 Ralph Loop 和 AutoML 的本质区别
 
-Karpathy 的 [autoresearch](https://github.com/karpathy/autoresearch) 引发了广泛讨论，但很多人把它和 Ralph Loop、AutoML 混为一谈。本文基于与 ChatGPT 的深度讨论，厘清三者的本质差异和各自定位。
+Karpathy 的 [autoresearch](https://github.com/karpathy/autoresearch) 引发了广泛讨论，但很多人把它和 Ralph Loop、AutoML 混为一谈。本文厘清三者的本质差异和各自定位。
 
 ---
 
@@ -187,7 +186,6 @@ AutoResearch 的真正价值不在于它做出了什么研究成果，而在于�
 - [AutoResearch, and the Loopy Era of AI（视频）](https://www.youtube.com/watch?v=kwSVtQ7dziU)
 - [Continually Self-Improving AI（论文）](https://arxiv.org/html/2603.18073v1)
 - [Andrej Karpathy loop autonomous AI agents future（Fortune）](https://fortune.com/2026/03/17/andrej-karpathy-loop-autonomous-ai-agents-future/)
-- [ChatGPT 讨论记录](https://chatgpt.com/share/69c27b63-2164-8010-b7c5-72a14905cd10)
 
 ## 相关文章
 

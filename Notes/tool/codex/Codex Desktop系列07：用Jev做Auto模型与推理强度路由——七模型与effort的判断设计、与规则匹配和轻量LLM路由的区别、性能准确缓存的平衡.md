@@ -17,7 +17,7 @@ description: 在 Codex 模型菜单里加一个 Auto / Jev 入口，由本机网
 
 > 前六篇拆的是 Codex Desktop 的模型目录、bundled CLI、Computer Use 与 ModelInfo 字段。本篇在模型菜单里加一个自己的 **Auto / Jev**，让 [TypeSafe 的 Jev](../../../product/TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语.md) 根据任务上下文选模型和推理强度。它与 [CodexSaver](../CodexSaver深度解析——基于MCP的模型路由Token成本优化.md) 是两条路：CodexSaver 由 agent 主动把子任务派给廉价模型，这里在 provider 层做透明路由，Codex 本身不知道后面换了谁。
 >
-> 数据与代码来自 2026-09-27 三段 Codex 会话与项目文档。阈值与兜底表是策略参数不是校准结果；价格字段为空，全文不报告节省金额。
+> 数据与代码来自 2026-09-27 的实验与项目文档。阈值与兜底表是策略参数不是校准结果；价格字段为空，全文不报告节省金额。
 
 ---
 

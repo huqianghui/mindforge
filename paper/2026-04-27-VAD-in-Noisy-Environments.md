@@ -190,7 +190,7 @@ $$\text{SNR}_{\text{dB}} = 10 \log_{10}\left(\frac{P_{\text{sig}}}{P_{\text{nois
 
 ## 五、Semantic VAD 与打断机制：系统级拆解
 
-> 基于与 ChatGPT 的[深度讨论](https://chatgpt.com/share/69f00061-3198-8321-ba47-45ec827c73a8)，厘清一个常见误解：**Semantic VAD ≠ 打断能力**。
+> 厘清一个常见误解：**Semantic VAD ≠ 打断能力**。
 
 ### 5.1 关键纠正：Semantic VAD 只做 End-of-Turn 检测
 
@@ -281,4 +281,3 @@ TTS（streaming output）
 4. Self-Attentive VAD (Jo et al., 2021)
 5. OpenAI Realtime API VAD Guide — Server VAD vs Semantic VAD
 6. Azure Cognitive Services — Semantic Endpointing
-7. [ChatGPT 讨论：Semantic VAD 与打断机制的系统级拆解](https://chatgpt.com/share/69f00061-3198-8321-ba47-45ec827c73a8)

@@ -15,7 +15,7 @@ tags:
 
 # Claude Code 系列 07：Harness 分层架构——从 50 万行源码到社区框架的控制论解读
 
-> 基于 [Claude Code 源码解读](https://zhuanlan.zhihu.com/p/2022442135182406883) 的数据分析、与 [ChatGPT 的架构讨论](https://chatgpt.com/share/69e190d7-b99c-8320-bd8a-959797e49d8c)，以及本系列前六篇和 Vibe Coding 系列的积累，重新审视一个核心问题：**Claude Code 已经是一个 50 万行的成熟 Harness，为什么社区框架依然层出不穷？它们各自在控制 AI 的哪一部分？**
+> 基于 [Claude Code 源码解读](https://zhuanlan.zhihu.com/p/2022442135182406883) 的数据分析，以及本系列前六篇和 Vibe Coding 系列的积累，重新审视一个核心问题：**Claude Code 已经是一个 50 万行的成熟 Harness，为什么社区框架依然层出不穷？它们各自在控制 AI 的哪一部分？**
 
 ---
 

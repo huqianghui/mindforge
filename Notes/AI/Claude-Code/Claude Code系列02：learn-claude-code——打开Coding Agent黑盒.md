@@ -361,5 +361,3 @@ Claude Code 的实际设计也遵循这一原则：subagent 之间零共享，�
 ## 参考资料
 
 - [learn-claude-code GitHub](https://github.com/shareAI-lab/learn-claude-code) — Claude Code 逆向工程与教学项目
-- [ChatGPT 讨论：Model vs Agent 辩论](https://chatgpt.com/share/69be14db-1ec8-8010-9130-111d936b969f) — 六轮深度对话
-- [ChatGPT 讨论：Agent 与 Model 的关系](https://chatgpt.com/share/69be14f4-0624-8010-9529-96f2be2b9ef2) — 生产视角的反思

@@ -12,7 +12,7 @@ tags:
 
 # Claude Code 系列 01：核心概念与设计哲学解析
 
-> 基于 [ShareAI 教程](https://learn.shareai.run/en/)的系统学习、与 [ChatGPT 的讨论](https://chatgpt.com/share/69e0c10c-f858-8322-9b25-b8f4d5d21964)以及日常使用经验，梳理 Claude Code 的核心概念、实现机制、设计权衡，以及贯穿整个系统的设计潜台词。
+> 基于 [ShareAI 教程](https://learn.shareai.run/en/)的系统学习以及日常使用经验，梳理 Claude Code 的核心概念、实现机制、设计权衡，以及贯穿整个系统的设计潜台词。
 
 ---
 
@@ -212,7 +212,7 @@ Memory 是 Claude Code 中最容易产生误解的部分。它不是一个"数�
 - 模型**不一定会参考**——只是被注入了 context，不意味着会被使用
 - 容易膨胀成"垃圾堆"——不定期清理会充满过时信息
 
-**ChatGPT 讨论的精准定位**：
+**精准定位**：
 
 > MEMORY.md 是一个"自动生成的知识 dump + 初级索引"——不是可靠的长期记忆系统。
 
@@ -237,7 +237,7 @@ Backend 代码必须遵循以下规范...
 - **有条件 Rule**（带 `paths:`）：仅当模型读取/编辑匹配路径的文件时才加载
 - **无条件 Rule**（无 `paths:`）：启动时直接加载，等价于 CLAUDE.md 的扩展
 
-**关键现实**（ChatGPT 讨论的核心洞察）：
+**关键现实**：
 
 > **Rule 的触发取决于模型是否去读取了匹配路径的文件——而不是 Rule 本身的存在。**
 
@@ -493,8 +493,7 @@ Session 启动
 ## 参考资料
 
 1. [ShareAI — Learn Claude Code（19 章节教程）](https://learn.shareai.run/en/)
-2. [ChatGPT 讨论：Claude Code Memory 机制](https://chatgpt.com/share/69e0c10c-f858-8322-9b25-b8f4d5d21964)
-3. [Meta-Harness: End-to-End Optimization of Model Harnesses](https://arxiv.org/abs/2603.28052)
-4. Martin Fowler 网站（Birgitta Böckeler）— Harness 分类框架、Guides vs Sensors
-5. HumanLayer Blog — Terminal Bench 2.0、Harness 配置表面分析
-6. [ShareAI GitHub — learn-claude-code 教学仓库](https://github.com/shareAI-lab/learn-claude-code)
+2. [Meta-Harness: End-to-End Optimization of Model Harnesses](https://arxiv.org/abs/2603.28052)
+3. Martin Fowler 网站（Birgitta Böckeler）— Harness 分类框架、Guides vs Sensors
+4. HumanLayer Blog — Terminal Bench 2.0、Harness 配置表面分析
+5. [ShareAI GitHub — learn-claude-code 教学仓库](https://github.com/shareAI-lab/learn-claude-code)

@@ -154,4 +154,4 @@ python3 codex_smoke.py --live                 # 隔离的 ephemeral Codex 读临
 
 ## 许可证
 
-MIT，见 `LICENSE`。代码在作者与 Codex 的协作会话中写成，按原样提供。
+MIT，见 `LICENSE`。按原样提供。

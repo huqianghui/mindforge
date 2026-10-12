@@ -72,7 +72,7 @@ Jacobian Lens（J-lens）把问题反过来问：
 
 ---
 
-## 5. 讨论——四个追问（与 ChatGPT 的讨论整理）
+## 5. 讨论——四个追问
 
 ### 5.1 J-space 和 embedding 语义关联、attention 关联的本质区别是什么？
 

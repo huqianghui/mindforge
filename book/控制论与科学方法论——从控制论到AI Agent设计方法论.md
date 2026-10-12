@@ -6,7 +6,7 @@ tags: [cybernetics, methodology, agent, harness-engineering, feedback, control-t
 
 # 控制论与科学方法论——从控制论到 AI Agent 设计方法论
 
-> 本文基于金观涛、华国凡《控制论与科学方法论》阅读笔记，结合与 ChatGPT 讨论，探索控制论核心概念在 AI Agent 设计与 Harness Engineering 中的迁移应用。
+> 本文基于金观涛、华国凡《控制论与科学方法论》阅读笔记，探索控制论核心概念在 AI Agent 设计与 Harness Engineering 中的迁移应用。
 >
 > 前置阅读：[控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习](控制论相关概念澄清——Cybernetics、Harness、强化学习与在线学习.md)（先厘清控制论、RL、优化、在线学习四个概念的本质区别）
 >
@@ -446,7 +446,6 @@ Meta-Regulator（二阶控制论目标：regulate the regulator）
 ## 参考
 
 - 金观涛、华国凡，《控制论与科学方法论》
-- ChatGPT 讨论记录：[控制论与 Agent 设计方法论](https://chatgpt.com/share/69e1f4d4-0afc-839e-a912-86dc98db6a5d)
 
 ## 延伸阅读
 

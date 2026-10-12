@@ -495,7 +495,6 @@ OMC 的编排引擎（how to coordinate）
 ## 参考来源
 
 - [oh-my-claude-code 官方文档](https://omc.vibetip.help/docs)
-- [ChatGPT 对话——OMC 命令解析与深度分析](https://chatgpt.com/share/69d74e40-a0b0-8321-88e6-504d994a6755)
 - [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) — 112+ AI Agent Persona Library
 - [Agency Agents: Transform Your IDE into a Multi-Agent AI Studio](https://yuv.ai/blog/agency-agents) — 第三方深度评测
 - [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) — Agent Harness 性能优化系统（147K+ stars）

@@ -16,7 +16,7 @@ description: 全面对比 Microsoft Foundry 中的 Agent 类型——Prompt Agen
 
 # Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型
 
-> 本文源于一次架构选型讨论（与 ChatGPT 的讨论，2026-07-19）：在 Microsoft Foundry 里建 Agent 时，Prompt Agent、Hosted Agent、Workflow Agent 到底差在哪？什么场景该用哪个？
+> 在 Microsoft Foundry 里建 Agent 时，Prompt Agent、Hosted Agent、Workflow Agent 到底差在哪？什么场景该用哪个？
 > 姊妹篇（语音入口视角）：[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型](../VoiceLive/Voice%20Live系列02：架构演进——与Agent%20Service解耦后的合作模式与组合选型.md)。
 
 > [!WARNING]
@@ -312,7 +312,6 @@ RAG 问答、FAQ、企业搜索、CRM 助手、Voice Agent（挂 Voice Live）�
 
 ## 参考
 
-- 与 ChatGPT 的讨论：Prompt Agent vs Hosted Agent 十维对比（2026-07-19）
 - [What is Microsoft Foundry Agent Service? — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)（2026-07-09 更新版：仅两类 agent 类型，Skill support 双 Yes，2026-07-31 更新说明的主要依据）
 - [Build a workflow in Microsoft Foundry (Preview) — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow)（含 2026-12-01 退役声明与迁移指南）
 - [Microsoft Foundry portal general availability overview — Microsoft Learn](https://learn.microsoft.com/en-us/azure/foundry/concepts/general-availability)（明确禁止对 Workflows 新建生产依赖）

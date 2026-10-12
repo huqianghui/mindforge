@@ -219,4 +219,3 @@ CLI 是计算世界最古老也最持久的接口形式。在 AI Agent 时代，
 - [Why CLI Tools Are Beating MCP for AI Agents — Jannik Reinhard](https://jannikreinhard.com/2026/02/22/why-cli-tools-are-beating-mcp-for-ai-agents/)
 - [CLI Based AI Agent: Tool Calling with CLI — Vishal Mysore](https://medium.com/@visrow/cli-based-ai-agent-tool-calling-with-cli-19d773add372)
 - [CLI vs MCP: Which Interface Should Your AI Agent Use? — CLIfor.ai](https://www.clifor.ai/compare/cli-vs-mcp)
-- [ChatGPT 讨论：OpenCLI 与浏览器自动化区别](https://chatgpt.com/share/69c14622-b044-8010-8842-b49546d74479)

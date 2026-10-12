@@ -13,7 +13,7 @@ tags:
 
 # Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进
 
-> 本文是 Spec Kit 系列的第 00 篇——在进入工具细节（[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展](Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)）之前，先把方法论层面的问题讨论清楚：SDD 到底革了什么命？TDD 在 Coding Agent 时代去哪了？两者如何在 V-Model 中融合？内容基于三个来源：与 ChatGPT 的讨论、Spec Kit 官方方法论文章 [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)，以及社区扩展 [spec-kit-v-model](https://github.com/leocamello/spec-kit-v-model)（后两者已通读原文核对）。
+> 本文是 Spec Kit 系列的第 00 篇——在进入工具细节（[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展](Spec%20Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展.md)）之前，先把方法论层面的问题讨论清楚：SDD 到底革了什么命？TDD 在 Coding Agent 时代去哪了？两者如何在 V-Model 中融合？内容参考 Spec Kit 官方方法论文章 [spec-driven.md](https://github.com/github/spec-kit/blob/main/spec-driven.md)，以及社区扩展 [spec-kit-v-model](https://github.com/leocamello/spec-kit-v-model)（后两者已通读原文核对）。
 
 ## 一、SDD 的核心主张：Power Inversion（权力反转）
 
@@ -74,7 +74,7 @@ Agent 时代：      Spec → Acceptance Tests → Planning → Implementation
 
 ## 三、Agent 时代的四类 Test-Driven 框架
 
-那么有没有框架在 Agent 时代延续"测试驱动"这条线？讨论中梳理出四类方向（论文名与细节转述自讨论，未逐篇核对原文，此处作为路线图参考）：
+那么有没有框架在 Agent 时代延续"测试驱动"这条线？可以梳理出四类方向（论文名与细节未逐篇核对原文，此处作为路线图参考）：
 
 ### 第一类：Acceptance-Test Driven（最有前景）
 

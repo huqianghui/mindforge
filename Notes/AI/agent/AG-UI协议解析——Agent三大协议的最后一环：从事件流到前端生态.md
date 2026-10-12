@@ -12,7 +12,7 @@ tags:
 
 # AG-UI 协议解析——Agent 三大协议的最后一环：从事件流到前端生态
 
-> 源起：阅读 Azure AI Foundry 文档时看到 "custom protocols (webhooks, voice, AG-UI)" 这一表述，其中 AG-UI 是三大 Agent 协议（MCP、A2A、AG-UI）中我最陌生的一个。本文基于 [与 ChatGPT 的讨论](https://chatgpt.com/share/6a6af04b-04e4-83ec-9a75-6043e9c97483) 整理，梳理 AG-UI 的定位、分层设计与生态现状，为后续可能的 AG-UI 开发做准备。
+> 源起：阅读 Azure AI Foundry 文档时看到 "custom protocols (webhooks, voice, AG-UI)" 这一表述，其中 AG-UI 是三大 Agent 协议（MCP、A2A、AG-UI）中我最陌生的一个。本文梳理 AG-UI 的定位、分层设计与生态现状，为后续可能的 AG-UI 开发做准备。
 
 ## 一、AG-UI 在 Agent 协议栈中的位置
 

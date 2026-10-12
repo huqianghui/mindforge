@@ -158,5 +158,4 @@ llama.cpp 给每个并发槽位（slot）维护一份**独立的循环状态**�
 - [llama.cpp Discussion #19264: Enable Partial Prompt Cache Reuse for Recurrent Models via State Checkpointing](https://github.com/ggml-org/llama.cpp/discussions/19264)
 - [mlx-lm Issue #980: Prefix cache reuse is broken for hybrid-architecture models](https://github.com/ml-explore/mlx-lm/issues/980)
 - vLLM issues [#43587](https://github.com/vllm-project/vllm/issues/43587)、[#36493](https://github.com/vllm-project/vllm/issues/36493)、[#40696](https://github.com/vllm-project/vllm/issues/40696)、tracking [#26201](https://github.com/vllm-project/vllm/issues/26201)
-- 起点讨论：与 ChatGPT 的分析对话 [share 链接](https://chatgpt.com/share/6a38ad86-8f38-83ec-98d5-66e4b9831fc6)
 - 深入对比：[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先](SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先.md)

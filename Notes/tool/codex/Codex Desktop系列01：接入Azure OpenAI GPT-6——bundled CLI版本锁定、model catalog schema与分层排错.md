@@ -14,7 +14,7 @@ tags:
 
 > 系列导航：本篇 ｜ [系列02：mini 与三条暗线](Codex%20Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链.md) ｜ [系列03：bundled 与三版本号](Codex%20Desktop系列03：bundled的真正含义与三版本号——Apple%20Bundle概念、同源不同发行版与com.openai.codex血缘.md) ｜ [系列04：Computer Use 藏身之处](Codex%20Desktop系列04：Computer%20Use藏身之处——openai-bundled%20plugin、SkyComputerUse%20native%20helper与分发链.md) ｜ [系列05：模型条目装下整个 harness](Codex%20Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界.md) ｜ [系列06：ModelInfo 字段值手册](Codex%20Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读.md)
 
-> 素材来源：2026-09-05 与 ChatGPT 的排错讨论（[原始对话](https://chatgpt.com/share/6a9b7f01-9cb0-83ec-82af-f630abed4fe8)）。GPT-6 当天在 Azure OpenAI 上线，目标是让 Codex Desktop 用上自己的 Azure deployment。
+> 2026-09-05，GPT-6 当天在 Azure OpenAI 上线，目标是让 Codex Desktop 用上自己的 Azure deployment。
 
 ## 引言：一个口子和一句话教训
 
@@ -182,7 +182,6 @@ GPT-6 打通之后的第二轮战役——让 `gpt-5.4-mini` 也显示并可用�
 
 ## 参考
 
-- [原始排错对话（ChatGPT share）](https://chatgpt.com/share/6a9b7f01-9cb0-83ec-82af-f630abed4fe8)
 - [openai/codex 仓库](https://github.com/openai/codex)
 - [Codex rust-v0.153.1 官方 models.json](https://raw.githubusercontent.com/openai/codex/rust-v0.153.1/codex-rs/models-manager/models.json)
 - [openai/codex#38934 — model_catalog_json schema 必须匹配 bundled CLI 版本](https://github.com/openai/codex/issues/38934)

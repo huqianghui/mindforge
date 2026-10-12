@@ -39,7 +39,7 @@ Core rules that apply everywhere:
 - **Frontmatter 是 YAML**：`title` / `description` 等值里**禁止**出现英文冒号加空格（`: `）、行首 `#` 或 ` #`，否则 GitHub（Ruby Psych）整页报 "mapping values are not allowed"。代码类表述改写为无冒号形式（如 `iceTransportPolicy 设为 relay`）或改用中文冒号。写完可用 `python3 /tmp/fm_check.py` 类脚本（PyYAML 解析全部进 git 的 md frontmatter）自检。
 - **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Claude Code 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
 - **进 git 的文章默认脱敏**：文章是"技术探讨"，不是项目日志。**禁止**写入真实业务原文（面试题目、客户对话、persona 名）、软件版本号（v0.x.y）、PR/issue 号、代码路径与内部函数/文件名、"bug / 生产事故 / 真实面试" 叙事、指向内部报告的分享链接；一律改成通用示例与相对表述（"第一代/当前"、"会话构建器"、"一个案例"）。**用户提供的素材含这些信息也不得照抄**——确需保留时**必须先与用户确认**再落盘。
-- **进 git 的文章只写信息和内容，不写个人内部操作与流程**（2026-10-12 用户要求）：**禁止**出现素材怎么来的、怎么流转的这类工作流描述——如"经 `inbox/codex` 交接"、"Codex 侧对……的分析"、"由某某会话落盘"、指向本地素材目录（`inbox/`、`output/` 等不进 git 的路径）的说明或链接。**禁止**任何在 GitHub repo 上打不开的链接（本地附件、gitignore 路径、绝对路径）。素材出处只写对读者有用的外部来源（公开视频/文档/仓库）；文章主题本身就是工作流（如 Loop Engineering、PKC 系列）时不受此限。
+- **进 git 的文章只写信息和内容，不写个人内部操作与流程**（2026-10-12 用户要求）：**禁止**出现素材怎么来的、怎么流转的这类工作流描述——如"经 `inbox/codex` 交接"、"Codex 侧对……的分析"、"由某某会话落盘"、"与 ChatGPT 的讨论"、"与 Codex（某模型）的实操记录"、"基于与 AI 的深度讨论整理"、ChatGPT share 原始对话链接、指向本地素材目录（`inbox/`、`output/` 等不进 git 的路径）的说明或链接。**禁止**任何在 GitHub repo 上打不开的链接（本地附件、gitignore 路径、绝对路径）。素材出处只写对读者有用的外部来源（公开视频/文档/仓库）；文章主题本身就是工作流（如 Loop Engineering、PKC 系列）时不受此限。
 - **私人内容永远不进 git**：`daily-work-item/`（含其 `asset/`）与 `personal-journal/` 整目录**永远禁止**提交到 git/GitHub。**禁止** `git add -f` 绕过 `.gitignore`——它就是隐私边界。即使用户说"commit & push"，也只提交非私人路径，**不得**把私人目录列为提交选项。L1 三重 gate：`.git/hooks/pre-commit`（拦截暂存）+ `.git/hooks/pre-push`（扫描待推送 commit）+ `.claude/hooks/guard-private-journal.sh`（拦截 `git add -f`/`--no-verify` 及涉私人目录的 git 变更命令）。
 
 ## Agent Routing
