@@ -153,7 +153,9 @@ OpenFreeMap官方说明公共实例无需注册或API key。本案例保留了Op
 
 本次在Studio的 **Render on the server** 界面发起渲染，选择H.264、ANGLE图形后端、并发1。虽然按钮位于内置浏览器，实际渲染位置是本机Node.js / 无头Chromium。这对应系列02的服务端路径；不能因为“在浏览器里点击”就称为WebCodecs客户端渲染。
 
-![Codex 应用左侧对话、右侧内置浏览器打开 Remotion Studio 预览|900](../../../asset/remotion-codex-in-app-browser-studio-2026-10-13.png)
+![整个制作流程都在 Codex 中完成：左侧对话驱动修改，右侧内置浏览器预览 Remotion Studio|900](../../../asset/remotion-codex-in-app-browser-studio-2026-10-13.png)
+
+整个流程都在 Codex 中完成：左侧对话提出需求与修改意见，Codex 改写代码；右侧内置浏览器打开本地 Remotion Studio，实时预览、拖动时间轴并发起渲染，无需切换到系统浏览器或其他工具。
 
 先用末段2秒验证3D与地图，再导出完整36秒主片。导出完成后，用 FFmpeg 把 MP4 转成文章用的动图。先转成 GIF（800 像素宽、10fps、256 色）时体积约 35MB：地图瓦片细节多，GIF 的压缩效率很低。改为 animated WebP（900 像素宽、12fps、无限循环）后约 6MB，画质反而更好，GitHub 与 Obsidian 都能直接播放。原作品没有音轨，动图本身也不支持声音。
 
