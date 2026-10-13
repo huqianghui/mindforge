@@ -67,22 +67,22 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ## Articles
 
-<p><a href="https://huqianghui.github.io/mindforge/articles/"><img src="asset/articles-search-2026-10-10.svg" alt="Search" height="34"></a></p>
+<p><a href="ARTICLES.md#articles"><img src="asset/articles-expand-all-2026-10-10.svg" alt="Expand all" height="34"></a>&nbsp;<a href="https://huqianghui.github.io/mindforge/articles/"><img src="asset/articles-search-2026-10-10.svg" alt="Search" height="34"></a></p>
 
-<!-- 目录按文件夹逐级嵌套（<details open> 默认展开）。新文章加到对应文件夹 <details open> 的列表里；新文件夹新增一个 <details open> 块，保持 <summary> 后与 </blockquote> 前各留一个空行。 -->
+<!-- 目录按文件夹逐级折叠（<details> 嵌套）。新文章加到对应文件夹 <details> 的列表里；新文件夹新增一个 <details> 块，保持 <summary> 后与 </blockquote> 前各留一个空行。 -->
 
-<details open>
+<details>
 <summary><b>Notes</b> — 技术长文与笔记</summary>
 <blockquote>
 
-<details open>
+<details>
 <summary><b>AI</b></summary>
 <blockquote>
 
 - [Agentic Engineering——质量与成本的一体化优化](Notes/AI/Agentic-Engineering——质量与成本的一体化优化.md)
 - [去除AI味：从语言指纹到人机文本边界的消融](Notes/AI/去除AI味：从语言指纹到人机文本边界的消融.md)
 
-<details open>
+<details>
 <summary>AI-coporation</summary>
 <blockquote>
 
@@ -94,7 +94,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Context-Engineering</summary>
 <blockquote>
 
@@ -107,7 +107,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Claude-Code</summary>
 <blockquote>
 
@@ -123,7 +123,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>agent</summary>
 <blockquote>
 
@@ -142,7 +142,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>computer-use</summary>
 <blockquote>
 
@@ -158,7 +158,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>agent-lightning</summary>
 <blockquote>
 
@@ -178,7 +178,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>evaluation</summary>
 <blockquote>
 
@@ -188,7 +188,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>ms-swift</summary>
 <blockquote>
 
@@ -197,7 +197,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>SkillOpt</summary>
 <blockquote>
 
@@ -209,7 +209,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Loop-Engineering</summary>
 <blockquote>
 
@@ -219,7 +219,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Graph-Engineering</summary>
 <blockquote>
 
@@ -228,7 +228,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>spec-kit</summary>
 <blockquote>
 
@@ -238,7 +238,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>vibe-coding</summary>
 <blockquote>
 
@@ -262,7 +262,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>voice</summary>
 <blockquote>
 
@@ -273,7 +273,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>RAG</summary>
 <blockquote>
 
@@ -282,7 +282,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>inference</summary>
 <blockquote>
 
@@ -296,7 +296,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>hardware</summary>
 <blockquote>
 
@@ -305,7 +305,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Design-Tools</summary>
 <blockquote>
 
@@ -318,7 +318,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>DevOps</summary>
 <blockquote>
 
@@ -327,7 +327,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>FinOps</summary>
 <blockquote>
 
@@ -338,7 +338,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Embodied AI</summary>
 <blockquote>
 
@@ -384,7 +384,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary><b>tool</b></summary>
 <blockquote>
 
@@ -395,7 +395,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Dev Tunnels 实践——本地服务暴露公网调试 Azure AI Search Skillset](Notes/tool/Dev%20Tunnels实践——本地服务暴露公网调试Azure%20AI%20Search%20Skillset.md)
 - [POML 深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景](Notes/tool/POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景.md)
 
-<details open>
+<details>
 <summary>3D-blender</summary>
 <blockquote>
 
@@ -407,7 +407,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>codex</summary>
 <blockquote>
 
@@ -422,7 +422,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>image&container</summary>
 <blockquote>
 
@@ -432,7 +432,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>notes</summary>
 <blockquote>
 
@@ -442,7 +442,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Orca</summary>
 <blockquote>
 
@@ -452,7 +452,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>picture</summary>
 <blockquote>
 
@@ -462,7 +462,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>remotion</summary>
 <blockquote>
 
@@ -471,7 +471,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>rtk</summary>
 <blockquote>
 
@@ -483,7 +483,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Caveman</summary>
 <blockquote>
 
@@ -496,7 +496,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>pkc</summary>
 <blockquote>
 
@@ -509,13 +509,13 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary><b>Azure</b> — Azure 云平台</summary>
 <blockquote>
 
 - [Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践](Azure/Azure%20Copilot%20生态全景：Skills、MCP%20Server%20与%20Copilot%20Agents%20的协作实践.md)
 
-<details open>
+<details>
 <summary>AzureOpenAI</summary>
 <blockquote>
 
@@ -526,7 +526,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>fabricIQ</summary>
 <blockquote>
 
@@ -536,7 +536,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>VoiceLive</summary>
 <blockquote>
 
@@ -561,7 +561,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary>Foundary-Agent</summary>
 <blockquote>
 
@@ -575,7 +575,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary><b>book</b> — 读书笔记</summary>
 <blockquote>
 
@@ -587,7 +587,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary><b>product</b> — 产品分析</summary>
 <blockquote>
 
@@ -600,7 +600,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 </blockquote>
 </details>
 
-<details open>
+<details>
 <summary><b>paper</b> — 论文精读</summary>
 <blockquote>
 
