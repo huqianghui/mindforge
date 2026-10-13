@@ -398,6 +398,15 @@
 </details>
 
 <details open>
+<summary>remotion</summary>
+<blockquote>
+
+- [Remotion 系列01：Agent Skills、交互式播放与帧号驱动渲染](Notes/tool/remotion/Remotion系列01：Agent%20Skills、交互式播放与帧号驱动渲染.md)
+
+</blockquote>
+</details>
+
+<details open>
 <summary>rtk</summary>
 <blockquote>
 

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Generate ARTICLES.md — the fully expanded view of README's Articles tree.
 
-GitHub strips scripts from Markdown, so "Expand all" cannot toggle <details> in
-place. Instead README links to ARTICLES.md (same tree, every <details> open); README
-itself stays collapsed by default.
+README's Articles tree is expanded by default (<details open>), so README itself
+no longer links here; ARTICLES.md is kept as a standalone copy of the same tree.
 
 Usage: python3 wiki/scripts/sync-articles-view.py
 """
@@ -15,12 +14,10 @@ VAULT_ROOT = Path(__file__).resolve().parent.parent.parent
 README_FILE = VAULT_ROOT / "README.md"
 ARTICLES_FILE = VAULT_ROOT / "ARTICLES.md"
 
-EXPAND_BTN = "asset/articles-expand-all-2026-10-10.svg"
 SEARCH_BTN = "asset/articles-search-2026-10-10.svg"
 SEARCH_URL = "https://huqianghui.github.io/mindforge/articles/"
 SEARCH_LINK = f'<a href="{SEARCH_URL}"><img src="{SEARCH_BTN}" alt="Search" height="34"></a>'
-README_NAV = (f'<p><a href="ARTICLES.md#articles"><img src="{EXPAND_BTN}" alt="Expand all" height="34"></a>'
-              f'&nbsp;{SEARCH_LINK}</p>')
+README_NAV = f'<p>{SEARCH_LINK}</p>'
 ARTICLES_NAV = f'<p>{SEARCH_LINK}</p>'
 NAV_MARK = "articles-search-2026"  # every nav row contains the Search button
 
