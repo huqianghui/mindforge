@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" width="1200" height="460" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .t { font-size: 15px; fill: #cbd5e1; }
+    .s { font-size: 13px; fill: #94a3b8; }
+    .h { font-size: 18px; fill: #e2e8f0; font-weight: 600; }
+    .bad { fill: #fbbf24; }
+    .okt { fill: #2dd4bf; }
+    .badt { fill: #fbbf24; }
+    .flow { stroke: #2dd4bf; stroke-width: 3; stroke-dasharray: 10 14; animation: dash 1.8s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -48; } }
+    .pulse { animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: .9; } 50% { opacity: .3; } }
+  </style>
+  <rect width="1200" height="460" rx="14" fill="#0f172a"/>
+  <text x="28" y="36" class="h">导出视频时的两种动画驱动方式：一段 1 秒淡入，30fps 导出，每帧截图约耗时 0.2 秒</text>
+  <text x="28" y="60" class="s">截图引擎逐帧"渲染 → 截图 → 编码"，单帧耗时远大于 1/30 秒；动画进度取自哪个时间源，决定了导出画面是否正确</text>
+
+  <!-- columns: x = 260 + i * 165 -->
+  <g class="t" text-anchor="middle">
+    <text x="260" y="92">第 0 帧</text><text x="425" y="92">第 1 帧</text><text x="590" y="92">第 2 帧</text>
+    <text x="755" y="92">第 3 帧</text><text x="920" y="92">第 4 帧</text><text x="1085" y="92">第 5 帧</text>
+  </g>
+  <line x1="230" y1="104" x2="1120" y2="104" stroke="#475569" stroke-width="2"/>
+  <line x1="230" y1="104" x2="1120" y2="104" class="flow" opacity=".6"/>
+  <g fill="#475569">
+    <circle cx="260" cy="104" r="4"/><circle cx="425" cy="104" r="4"/><circle cx="590" cy="104" r="4"/>
+    <circle cx="755" cy="104" r="4"/><circle cx="920" cy="104" r="4"/><circle cx="1085" cy="104" r="4"/>
+  </g>
+  <circle r="7" fill="#fbbf24" opacity=".9">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M260,104 L1085,104"/>
+  </circle>
+
+  <text x="28" y="126" class="s">实际时钟（截图时刻）</text>
+  <text x="28" y="144" class="s">视频时间（帧号 ÷ fps）</text>
+  <g class="s" text-anchor="middle">
+    <text x="260" y="126">0.0 s</text><text x="425" y="126">0.2 s</text><text x="590" y="126">0.4 s</text>
+    <text x="755" y="126">0.6 s</text><text x="920" y="126">0.8 s</text><text x="1085" y="126">1.0 s</text>
+    <text x="260" y="144">0.000 s</text><text x="425" y="144">0.033 s</text><text x="590" y="144">0.067 s</text>
+    <text x="755" y="144">0.100 s</text><text x="920" y="144">0.133 s</text><text x="1085" y="144">0.167 s</text>
+  </g>
+
+  <line x1="28" y1="158" x2="1172" y2="158" stroke="#1e293b"/>
+
+  <!-- Lane A: clock-driven -->
+  <text x="28" y="196" class="h" fill="#fbbf24" style="fill:#fbbf24">时钟驱动</text>
+  <text x="28" y="218" class="s">进度 = 时钟流逝 ÷ 时长</text>
+  <g stroke="#fbbf24" stroke-width="1.5">
+    <rect x="232" y="170" width="56" height="56" rx="6" class="bad" fill-opacity="0"/>
+    <rect x="397" y="170" width="56" height="56" rx="6" class="bad" fill-opacity=".2"/>
+    <rect x="562" y="170" width="56" height="56" rx="6" class="bad" fill-opacity=".4"/>
+    <rect x="727" y="170" width="56" height="56" rx="6" class="bad" fill-opacity=".6"/>
+    <rect x="892" y="170" width="56" height="56" rx="6" class="bad" fill-opacity=".8"/>
+    <rect x="1057" y="170" width="56" height="56" rx="6" class="bad" fill-opacity="1"/>
+  </g>
+  <g class="t" text-anchor="middle">
+    <text x="260" y="250" class="okt">0% ✓</text>
+    <text x="425" y="250" class="badt">20%（应为 3%）</text>
+    <text x="590" y="250" class="badt">40%（应为 7%）</text>
+    <text x="755" y="250" class="badt">60%（应为 10%）</text>
+    <text x="920" y="250" class="badt">80%（应为 13%）</text>
+    <text x="1085" y="250" class="badt">100%（应为 17%）</text>
+  </g>
+
+  <line x1="28" y1="266" x2="1172" y2="266" stroke="#1e293b"/>
+
+  <!-- Lane B: frame-driven -->
+  <text x="28" y="306" class="h" style="fill:#2dd4bf">帧号驱动</text>
+  <text x="28" y="328" class="s">进度 = (帧号 ÷ fps) ÷ 时长</text>
+  <g stroke="#2dd4bf" stroke-width="1.5" fill="#2dd4bf">
+    <rect x="232" y="280" width="56" height="56" rx="6" fill-opacity="0"/>
+    <rect x="397" y="280" width="56" height="56" rx="6" fill-opacity=".033"/>
+    <rect x="562" y="280" width="56" height="56" rx="6" fill-opacity=".067"/>
+    <rect x="727" y="280" width="56" height="56" rx="6" fill-opacity=".1"/>
+    <rect x="892" y="280" width="56" height="56" rx="6" fill-opacity=".133"/>
+    <rect x="1057" y="280" width="56" height="56" rx="6" fill-opacity=".167"/>
+  </g>
+  <g class="t okt" text-anchor="middle">
+    <text x="260" y="360">0% ✓</text><text x="425" y="360">3% ✓</text><text x="590" y="360">7% ✓</text>
+    <text x="755" y="360">10% ✓</text><text x="920" y="360">13% ✓</text><text x="1085" y="360">17% ✓</text>
+  </g>
+
+  <line x1="28" y1="380" x2="1172" y2="380" stroke="#1e293b"/>
+  <circle cx="36" cy="405" r="6" fill="#fbbf24" class="pulse"/>
+  <text x="52" y="410" class="t">时钟驱动：1 秒的淡入在导出视频中 5 帧（约 0.17 秒）即完成；单帧耗时波动时动画忽快忽慢，每次导出结果不同</text>
+  <circle cx="36" cy="433" r="6" fill="#2dd4bf"/>
+  <text x="52" y="438" class="t">帧号驱动：画面只取决于帧号，与截图耗时无关；任意一帧可独立计算，因此能拆分到多台机器并行渲染</text>
+</svg>
