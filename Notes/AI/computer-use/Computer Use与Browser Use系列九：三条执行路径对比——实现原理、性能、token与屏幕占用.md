@@ -126,7 +126,7 @@ Token 消耗包括工具说明、任务与历史上下文、状态观察、模�
 
 之前的 `Codex auth token is unavailable` 已不再出现，但没有隔离具体修改，也没有抓取 identity／site_status 网络链路或独立核验模型请求目的地。不能据此宣布仅登录即可修复所有 custom-provider 环境。
 
-Issue #21710 是官方仓库中的用户报告，不是维护者确认的通用产品要求。2026-10-06 的用户后续报告涉及保留 ChatGPT 登录、将 provider 改用 env_key 并增加 requires_openai_auth，以及额外处理代理；不是通用配置建议。本轮成功现象已作为补充评论提交。
+官方仓库中的相关 issue 是一份用户报告，不是维护者确认的通用产品要求。2026-10-06 的用户后续报告涉及保留 ChatGPT 登录、将 provider 改用 env_key 并增加 requires_openai_auth，以及额外处理代理；不是通用配置建议。
 
 ## 八、日常选择与后续测量
 
