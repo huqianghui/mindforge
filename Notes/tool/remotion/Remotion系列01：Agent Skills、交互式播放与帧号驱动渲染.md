@@ -31,28 +31,22 @@ tags:
 
 ## 起步：项目脚手架与 Agent Skills
 
-社区中常见的起步方式是三条命令：
+社区中常见的起步命令有三条，分属两个框架。
+
+**Remotion**
 
 ```bash
-# 为 coding agent 安装框架相关的 skills，二选一或同时安装
-npx skills add remotion-dev/skills
-npx skills add heygen-com/hyperframes
-
-# 初始化项目
-npx create-video@latest
+npx skills add remotion-dev/skills   # 安装 Remotion 官方 Agent Skills
+npx create-video@latest              # 初始化 Remotion 项目（不含 skills）
 ```
 
-需要注意，这三条命令分属两个框架，作用也不相同：
+**HyperFrames**
 
-| 命令 | 作用 | 所属框架 |
-|---|---|---|
-| `npx skills add remotion-dev/skills` | 安装 Remotion 官方 Agent Skills，向 agent 注入时间轴、素材与 composition 的编写规范 | Remotion |
-| `npx skills add heygen-com/hyperframes` | 安装 HyperFrames 的 Agent Skills | HyperFrames |
-| `npx create-video@latest` | 交互式选择模板并生成 Remotion 项目，**不包含** skill 安装 | Remotion |
+```bash
+npx skills add heygen-com/hyperframes   # 安装 HyperFrames Agent Skills
+```
 
-`create-video` 是 Remotion 官方的项目脚手架（由 Remotion 作者维护），`npm init video` 与 `bun create video` 是它的另外两种调用方式；其中 `bun create video` 的初始化流程会询问是否一并安装 Remotion skills。Skills 本身是独立的包，按 [Agent Skills](https://www.remotion.dev/docs/ai/skills) 开放标准组织，可用于 Claude Code、Codex、Cursor 等 agent。
-
-因此，若选择 HyperFrames 路线，不应使用 `create-video` 初始化项目，而应使用 HyperFrames 自己的 CLI（`hyperframes` 包，负责创建、预览、lint 与渲染 composition）。
+`create-video` 是 Remotion 官方脚手架，也可以用 `bun create video` 调用，后者会询问是否一并安装 skills。HyperFrames 不使用 `create-video`，项目的创建与渲染由 `hyperframes` CLI 完成。两套 skills 均遵循 [Agent Skills](https://www.remotion.dev/docs/ai/skills) 开放标准，可同时安装，适用于 Claude Code、Codex、Cursor 等 agent。
 
 ## 技术栈：React 与纯 HTML
 
