@@ -118,15 +118,27 @@ Token 消耗包括工具说明、任务与历史上下文、状态观察、模�
 
 视频任务应分别验收页面结构、真实像素和录屏。先前操作 Data Nexus 时出现过结构变化与原生截图画面不一致；后来取得新截图。结构读成功不能代替截图或连续录屏成功。
 
-## 七、认证：分工独立，不代表实现没有耦合
+## 七、认证：账号身份与 model provider 分开
 
-桌面 OpenAI／ChatGPT 身份、网站 Cookie／SSO 身份和 Azure OpenAI 模型凭据用途不同。但 Browser Use 的具体实现可能依赖桌面身份检查，并受当前 provider 的认证配置影响。
+桌面 OpenAI／ChatGPT 身份、网站 Cookie／SSO 身份和 Azure OpenAI 模型凭据用途不同，但 Browser Use 的实现与桌面身份之间存在耦合。
 
-2026-10-13 本轮，菜单显示 OpenAI／ChatGPT 账号（Free）与 Azure OpenAI provider 同时存在。Chrome Browser Use 成功命名会话、列出标签页、接管用户页、读取标题与 URL、提取渲染文本，并导航到 example.com 得到标题“Example Domain”。这些浏览器操作使用官方 Chrome Browser Use 路径。
+**问题。** 官方仓库中的一份用户报告（见参考链接）指出：Chrome Browser Use 访问远程网址前，会先以 ChatGPT 身份请求一次 `site_status` 预检，判断目标站点是否允许访问。Codex Desktop 处于 API key／custom provider 模式时，这一预检拿不到可用的 ChatGPT token，浏览器操作在目标页面加载之前即失败，表现为 `Codex auth token is unavailable` 或 "Browser Use cannot determine if ... is allowed"。本例此前同样遇到该报错，且在 `nameSession()` 等首个浏览器操作时就已失败。
 
-之前的 `Codex auth token is unavailable` 已不再出现，但没有隔离具体修改，也没有抓取 identity／site_status 网络链路或独立核验模型请求目的地。不能据此宣布仅登录即可修复所有 custom-provider 环境。
+**处理。** 在 Codex Desktop 中登录 OpenAI／ChatGPT 账号（Free 档即可），模型 provider 保持 Azure OpenAI 不变，然后重启 Desktop。账号菜单随后同时显示账号、Free 档与 Azure OpenAI，即用户身份与 model provider 已经分离：
 
-官方仓库中的相关 issue 是一份用户报告，不是维护者确认的通用产品要求。2026-10-06 的用户后续报告涉及保留 ChatGPT 登录、将 provider 改用 env_key 并增加 requires_openai_auth，以及额外处理代理；不是通用配置建议。
+![Codex Desktop 账号菜单同时显示 ChatGPT 账号（Free）与 Azure OpenAI provider|360](../../../asset/codex-desktop-chatgpt-account-azure-provider-2026-10-13.png)
+
+**结果。** 报错不再出现。Chrome Browser Use 依次完成命名会话、列出标签页、接管用户页并读取标题与 URL、提取渲染文本，以及导航到 example.com 并读到标题 "Example Domain"，全程使用官方 Chrome Browser Use 路径。这一 macOS 下的可用配置已补充到该 issue 的评论中（见参考链接）。
+
+**结论：认证与 model provider 分开。** ChatGPT 账号承担桌面身份，供 Browser Use 的站点预检使用；Azure OpenAI 承担模型推理与计费。两者可以在同一个 Desktop 中共存，不必为了使用 Browser Use 而把模型切回 OpenAI。
+
+| 职责 | 使用的凭据 |
+|---|---|
+| Browser Use 站点预检（`site_status`） | OpenAI／ChatGPT 账号（Free 档即可） |
+| 模型推理与计费 | Azure OpenAI provider |
+| 目标网站自身的登录态 | Chrome Profile 中的 Cookie／SSO |
+
+本次验证没有隔离出具体生效的改动，也没有抓取身份检查与 `site_status` 的网络链路，或独立核验模型请求的目的地，因此不宜推广为所有 custom provider 环境的通用修复。同一 issue 中另有用户报告了 Windows 下的处理方式（保留 ChatGPT 登录、provider 改用 `env_key` 并增加 `requires_openai_auth`、额外处理代理），可作参照。
 
 ## 八、日常选择与后续测量
 
@@ -149,4 +161,4 @@ Token 消耗包括工具说明、任务与历史上下文、状态观察、模�
 - [Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论](Computer%20Use%E4%B8%8EBrowser%20Use%E7%B3%BB%E5%88%97%E5%85%AB%EF%BC%9AJev%C3%97Codex%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94%E6%8A%8A%E5%8A%A8%E4%BD%9C%E5%88%A4%E6%96%AD%E4%BA%A4%E7%BB%99System%20One%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8F%97%E6%8E%A7%E5%AF%B9%E7%85%A7%E3%80%81%E8%B4%B9%E7%94%A8%E8%B4%A6%E4%B8%8Eskill%E4%BC%98%E5%85%88%E7%BA%A7%E7%BB%93%E8%AE%BA.md)
 - [Chrome Browser Use remote navigation depends on ChatGPT auth and breaks in API-key/custom-provider mode](https://github.com/openai/codex/issues/21710)
 - [Windows 用户的认证与网络处理后续报告](https://github.com/openai/codex/issues/21710#issuecomment-6012021227)
-- [本轮 macOS、OpenAI 登录与 Azure provider 共存验证评论](https://github.com/openai/codex/issues/21710#issuecomment-6139534638)
+- [macOS 下 ChatGPT 账号与 Azure OpenAI provider 共存的验证评论](https://github.com/openai/codex/issues/21710#issuecomment-6139534638)
