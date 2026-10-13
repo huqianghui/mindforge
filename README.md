@@ -317,6 +317,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 ### Notes/tool/remotion
 
 - [Remotion 系列01：Agent Skills、交互式播放与帧号驱动渲染](Notes/tool/remotion/Remotion系列01：Agent%20Skills、交互式播放与帧号驱动渲染.md)
+- [Remotion 系列02：快速上手——Codex 工作流、PPT 动画对照、五层功能与渲染方式](Notes/tool/remotion/Remotion系列02：快速上手——Codex工作流、PPT动画对照、五层功能与渲染方式.md)
 
 ### Notes/tool/rtk
 
