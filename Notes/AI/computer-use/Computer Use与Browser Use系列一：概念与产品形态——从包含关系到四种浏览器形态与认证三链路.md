@@ -1,5 +1,5 @@
 ---
-title: Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路
+title: Computer Use与Browser Use系列一：概念与产品形态——从概念分层到四种浏览器形态与认证三链路
 created: 2026-08-29
 tags:
   - AI
@@ -11,38 +11,42 @@ tags:
   - Harness
 ---
 
-# Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路
+# Computer Use与Browser Use系列一：概念与产品形态——从概念分层到四种浏览器形态与认证三链路
 
 > 系列一讲清概念与产品形态；[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)解剖 Codex 的浏览器运行时；[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)讲如何自己实现；[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)讲产品化路径；[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)记录最佳实践与日常使用习惯（实战日志，持续更新）；[系列六](Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)实测 Codex CLI 与 App 的能力分界与第三方生态补位；[系列七](Computer%20Use与Browser%20Use系列七：Web%20Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移.md)厘清 Web Search 与浏览器操作的分界、信息获取三级梯与成本转移。
 
 ## 引言：一个常见的误解
 
-大多数人（包括我最初）对 Computer Use 和 Browser Use 的直觉理解是：**两种并列的能力**——一个操作电脑，一个操作浏览器。实测中我用 Codex 完成了一次浏览器任务（读取已登录网站的结构化页面信息），Codex 自己也先给出了"这次用的是 Browser Use，不是 Computer Use"的回答。
+一次读取已登录网站的任务，既可以在产品记录里归类到 Computer use，也可以在技术上使用 Browser Use。这两个名称出现在同一任务中，并不矛盾，但不能据此推导统一的技术包含关系。
 
-但产品界面的截图显示，这次任务被归类在 **Computer Use** 之下。追问之后，正确的关系浮出水面：
+在本次产品界面中，Chrome 集成被放在 Computer use 设置栏目下。技术上，本次任务使用 Browser Use 读取和操作网页，并通过 Chrome integration 扩展接入用户已有的 Chrome。**产品栏目、操作能力与接入方式属于不同维度，不应建立“Computer Use → Chrome integration → Browser Use”的三层包含关系。**
 
-```
-Computer Use（产品里的总类目：控制 GUI 的能力）
-└─ Chrome integration（通过扩展连接用户已有的 Chrome）
-   └─ Browser Use（读取网页结构、导航、提取内容的操作方式）
-```
+| 维度 | 本次对应内容 |
+|---|---|
+| 产品设置栏目 | Computer use：管理电脑与浏览器控制相关设置 |
+| 操作能力 | Browser Use：读取和操作浏览器页面 |
+| 浏览器接入方式 | Chrome integration：通过扩展连接用户的 Chrome |
+| 观察方式 | DOM、无障碍树、页面文本、截图 |
+| 会话环境 | 所连接的 Chrome Profile 与网站登录会话 |
 
-**Browser Use 没有消失，但它不是与 Computer Use 并列的顶层功能，而是 Computer Use 之下更适合网页的一种操作方式。** 这个认知纠偏是理解整个体系的起点。
+**本次任务的准确描述是“通过 Chrome integration 使用 Browser Use”。** Browser Use 也可以接入内置／独立浏览器，或使用其他获准的浏览器连接方式，因此它不依赖 Chrome integration。
+
+“Computer Use”有两种常见用法：在产品界面中，它可以是电脑与浏览器控制的设置栏目；在技术讨论中，它也常特指通过操作系统接口控制桌面的能力。下文比较操作方式时，使用“原生桌面 Computer Use”明确后一种含义。
 
 ## 一、两种操作方式的本质区别
 
-虽然归属上是包含关系，但两种操作方式的技术路径确实不同：
+这里需要区分三个维度：**Computer Use / Browser Use 描述控制范围与操作方式；Chrome integration 描述如何接入浏览器；截图 / DOM / AX 描述如何观察界面。** 产品设置中的归类不能直接转换为技术上的能力层级。
 
-| | Browser Use（结构化操作） | Computer Use（视觉操作） |
+| | Browser Use（浏览器页面控制） | 原生桌面 Computer Use（操作系统 GUI 控制） |
 |---|---|---|
-| 工作方式 | 读取网页的结构化内容（DOM、无障碍树、标题、按钮、链接、表格） | 像人一样看屏幕截图、移动鼠标、按键点击 |
-| 擅长场景 | 查信息、填网页、筛选列表、读取页面数据 | 桌面软件、Canvas 类界面、没有可读结构的界面 |
-| 稳定性与效率 | 更快、更准确 | 更通用，但受窗口位置、布局变化影响 |
-| 可操作范围 | 浏览器标签页 | 整个电脑界面（浏览器 + 原生应用） |
+| 工作方式 | 通过浏览器接口读取 DOM、无障碍树、文本或截图，并执行页面动作 | 通过操作系统辅助功能树、窗口／屏幕截图和输入接口观察与操作 |
+| 擅长场景 | 查信息、填网页、筛选列表、读取页面数据 | 桌面软件、系统窗口、跨应用流程 |
+| 稳定性与效率 | 普通语义控件适合结构化定位，通常减少观察轮次 | AX 语义操作可降低位置依赖；坐标操作更受焦点与布局影响 |
+| 可操作范围 | 浏览器页面与后端暴露的浏览器能力 | 授权范围内的电脑界面（浏览器与原生应用） |
 
-一句话概括：**Browser Use 是"理解网页后操作网页"，Computer Use 是"像人一样操作屏幕"。** 当两者都可用时，网页任务优先走结构化路径；遇到桌面应用或网页无法提供结构化内容时，才回退到视觉路径。
+**两条路径都可以混合结构化与视觉观察。** Computer Use 不等于每一步纯截图点坐标；Browser Use 也可以看截图处理 Canvas、图表和视觉布局。网页缺少结构时，可先使用浏览器内的视觉动作，不必立即切换到系统桌面控制。
 
-实测中读取网站页面信息时，Agent 通过 DOM snapshot 拿到的是带语义的结构树（`link`、`heading`、`button` 及其文本），而不是靠截图猜按钮位置——这正是结构化路径又快又稳的原因。
+实测中读取网站信息时，Agent 通过 DOM snapshot 获得带语义的结构树（`link`、`heading`、`button` 及其文本）。这可以减少定位歧义，但复杂页面仍需验证内容完整性与实际渲染结果；不能据此推导所有任务都更快、更准确。
 
 ## 二、四种浏览器形态
 
@@ -72,7 +76,9 @@ Codex 桌面应用自带的浏览器，作为侧边面板与聊天并排显示�
 
 适合：需要既有登录状态、已有标签页、浏览器扩展或本机浏览器环境的任务。
 
-一个容易误判的点：**画中画不代表启动了"浏览器模拟器"或 headless 浏览器**。证据链是——它能访问你已有的登录态、画中画显示的是真实页面、任务记录显示 "Used Chrome integration"。headless 浏览器是独立、不可见、没有你现有登录会话的自动化浏览器，与此完全不同。
+一个容易误判的点：**画中画是预览形态，不能单凭它判断浏览器是否 headless 或使用哪个 Profile。** 本次接入外部 Chrome 的依据是实际连接的浏览器、已有标签页及任务记录中的 Chrome integration。
+
+**Headless / headed 与 Profile 是独立维度。** Headless 描述是否显示浏览器窗口；Profile 描述 Cookie、登录会话、扩展等环境。Headless 浏览器可以使用持久化 Profile 或预置的认证状态，并非必然没有登录态；是否能够连接或复用某个现有 Profile，取决于工具、浏览器版本、配置与产品限制。Codex 的 `@Browser` 独立 Profile 与 `@Chrome` 用户 Profile 边界，应按具体产品约定理解。
 
 ### 形态 3：Side chat（Chrome 里的扩展侧栏）
 
@@ -178,6 +184,12 @@ Chrome 当前网页
 
 对企业用户的意义：如果公司用 Microsoft Entra ID 登录 ChatGPT 企业工作区，那是链路①的身份；它不是 Azure OpenAI 资源的 API 凭据，不会自动让扩展调用你的 Azure 部署——链路③需要在桌面应用单独配置。
 
+### 2026-10-13 补充：认证分工与运行时耦合
+
+三条身份链路用途不同，不代表产品实现完全解耦。本轮菜单显示 OpenAI／ChatGPT 账号登录与 Azure OpenAI provider 同时存在，Chrome Browser Use 成功列出标签页、读取页面文本并导航到 example.com。之前的 `Codex auth token is unavailable` 不再出现，但未隔离具体配置修改，也未独立核验模型请求目标或身份检查网络链路。
+
+[Issue #21710](https://github.com/openai/codex/issues/21710) 是官方仓库中的用户报告，讨论显示当前 provider 的认证配置可能影响 Browser Use 可取得的身份。不能把“有 Azure 凭据”当作桌面身份，也不能将本轮结果外推为“登录 OpenAI 即可修复所有环境”。详细证据与边界见系列九。
+
 ## 六、Claude 侧的对照
 
 同样的能力版图，Anthropic 侧的形态选择不同，正好呼应 [Agent = Model + Harness——从 VS Code Copilot 博客看第一方绑定与多模型适配的路线之争](../../tool/Agent=Model+Harness——从VS%20Code%20Copilot博客看第一方绑定与多模型适配的路线之争.md) 的判断——**浏览器能力是 harness 的一部分，各家把它焊进 harness 的方式反映了产品路线**：
@@ -194,10 +206,10 @@ Chrome 当前网页
 
 ## 七、小结
 
-1. **包含关系**：Browser Use 是 Computer Use 之下更适合网页的操作方式，不是并列功能
-2. **两种路径**：结构化（DOM/语义，快而稳）vs 视觉（截图/坐标，通用兜底）；网页任务优先结构化
+1. **三个维度**：Computer use 设置栏目、Browser Use 操作能力与 Chrome integration 接入方式应分别理解；本次是通过 Chrome integration 使用 Browser Use
+2. **范围与观察分开**：原生桌面控制与浏览器控制都可以使用语义和截图；普通网页优先结构化，视觉任务按需要读取像素
 3. **四种形态**：内置浏览器（侧边面板）、外部 Chrome 接管（画中画）、side chat（扩展侧栏）、browser comments（页面批注）——本质是"独立 Profile vs 你的 Profile"两种会话边界
-4. **三条认证链路**：ChatGPT 身份、网站登录态、模型 provider 各自独立；实测确认 side chat 复用桌面应用的 Azure OpenAI 配置
+4. **三条认证链路**：ChatGPT 身份、网站登录态、模型 provider 用途不同，实现可能耦合；历史 side chat 与本轮浏览器验证需要分别看待
 5. **形态是 UI，边界是契约**：画中画/侧边栏是呈现细节，`@Browser`/`@Chrome` 的 Profile 边界才是稳定语义
 
 系列二将深入 Codex bundled browser plugin 的内部：browser binding、tab 生命周期、三套操作 API 的分层哲学，以及那份网上几乎找不到二手资料的安全确认策略四级分类。
@@ -208,3 +220,7 @@ Chrome 当前网页
 - [Browser extension 官方文档](https://learn.chatgpt.com/docs/chrome-extension)
 - [Computer Use 官方文档](https://learn.chatgpt.com/docs/computer-use)
 - [Computer use API 指南](https://developers.openai.com/api/docs/guides/tools-computer-use)
+
+## 延伸阅读
+
+- [系列九：三条执行路径对比——实现原理、性能、token 与屏幕占用](Computer%20Use%E4%B8%8EBrowser%20Use%E7%B3%BB%E5%88%97%E4%B9%9D%EF%BC%9A%E4%B8%89%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84%E5%AF%B9%E6%AF%94%E2%80%94%E2%80%94%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E3%80%81%E6%80%A7%E8%83%BD%E3%80%81token%E4%B8%8E%E5%B1%8F%E5%B9%95%E5%8D%A0%E7%94%A8.md)：集中比较原生桌面、独立／内置浏览器、Chrome 扩展路径，区分工程判断与实测。
