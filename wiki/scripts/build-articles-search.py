@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the Articles search page for GitHub Pages.
 
-Parses README's Articles tree (nested <details>) to learn which folder each
+Parses README's Articles list (`### Notes/AI/...` headings) to learn which folder each
 article sits in, enriches every entry with frontmatter tags, the first body
 paragraph and the H2 headings, and writes a single self-contained index.html
 with client-side search + folder filters.
@@ -22,7 +22,7 @@ REPO_BLOB = "https://github.com/huqianghui/mindforge/blob/main/"
 REPO_URL = "https://github.com/huqianghui/mindforge"
 GRAPH_URL = "https://huqianghui.github.io/mindforge/wiki/"
 
-RE_SUMMARY = re.compile(r"<summary>(.*?)</summary>")
+RE_HEADING = re.compile(r"^#{3,4}\s+(.+?)\s*$")
 RE_LINK = re.compile(r"^- \[(.+?)\]\(([^)\s]+)\)\s*(.*)$")
 RE_GROUP = re.compile(r"^\*\*(.+?)\*\*\s*$")
 
@@ -32,16 +32,9 @@ def parse_tree(readme: str):
     end = readme.index("\n---\n", start)
     stack, group, items, descs = [], "", [], {}
     for line in readme[start:end].split("\n"):
-        m = RE_SUMMARY.search(line)
+        m = RE_HEADING.match(line)
         if m:
-            raw = re.sub(r"<[^>]+>", "", m.group(1))
-            name, _, desc = raw.partition(" — ")
-            stack.append(name.strip())
-            descs["/".join(stack)] = desc.strip()
-            group = ""
-            continue
-        if line.strip() == "</details>":
-            stack.pop()
+            stack = m.group(1).split("/")
             group = ""
             continue
         m = RE_GROUP.match(line.strip())
