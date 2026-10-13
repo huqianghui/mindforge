@@ -307,3 +307,7 @@ orca tab list --json
 - 本系列：[系列二](Computer%20Use与Browser%20Use系列二：Codex浏览器运行时解剖——从bundled%20plugin看Agent浏览器控制的工程设计.md)（browser binding 协议与 runtime 引导）、[系列三](Computer%20Use与Browser%20Use系列三：自己实现——action%20loop协议、双执行器路线与跨平台adapter矩阵.md)（action loop 与执行后端实现）、[系列四](Computer%20Use与Browser%20Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计.md)（可审计性与安全设计）、[系列五](Computer%20Use与Browser%20Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验.md)（场景路由表）
 - [Orca 使用笔记——多 Agent 编排 IDE 与 Mobile 跨网络远程互动](../../tool/Orca/Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动.md)
 - [Orca使用笔记二——Computer Use桌面控制与Codex CLI补位实践](../../tool/Orca/Orca使用笔记二——Computer%20Use桌面控制与Codex%20CLI补位实践.md)
+
+## 执行路径对比
+
+- [系列九：三条执行路径对比——实现原理、性能、token 与屏幕占用](Computer%20Use%E4%B8%8EBrowser%20Use%E7%B3%BB%E5%88%97%E4%B9%9D%EF%BC%9A%E4%B8%89%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84%E5%AF%B9%E6%AF%94%E2%80%94%E2%80%94%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E3%80%81%E6%80%A7%E8%83%BD%E3%80%81token%E4%B8%8E%E5%B1%8F%E5%B9%95%E5%8D%A0%E7%94%A8.md)。

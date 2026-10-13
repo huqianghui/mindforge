@@ -226,3 +226,7 @@ Microsoft Scout 则演示了第三种形态——**自己不长执行器，整�
 - [Improved web search in Copilot on github.com（GitHub Changelog 2026-02-25，model-native web search 名单与 Bing 兜底）](https://github.blog/changelog/2026-02-25-improved-web-search-in-copilot-on-github-com)
 - [Announcing Microsoft Web IQ（Bing Search Blog 2026-06，面向外部 AI 系统的 grounding API 套件）](https://blogs.bing.com/search/June-2026/Announcing-Microsoft-Web-IQ)
 - [Exa、Tavily 与 Context7——AI Agent 搜索三剑客的定位与 MCP 配置实践](../agent/Exa、Tavily与Context7——AI%20Agent搜索三剑客的定位与MCP配置实践.md)
+
+## 执行路径对比
+
+- [系列九：三条执行路径对比——实现原理、性能、token 与屏幕占用](Computer%20Use%E4%B8%8EBrowser%20Use%E7%B3%BB%E5%88%97%E4%B9%9D%EF%BC%9A%E4%B8%89%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84%E5%AF%B9%E6%AF%94%E2%80%94%E2%80%94%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E3%80%81%E6%80%A7%E8%83%BD%E3%80%81token%E4%B8%8E%E5%B1%8F%E5%B9%95%E5%8D%A0%E7%94%A8.md)。

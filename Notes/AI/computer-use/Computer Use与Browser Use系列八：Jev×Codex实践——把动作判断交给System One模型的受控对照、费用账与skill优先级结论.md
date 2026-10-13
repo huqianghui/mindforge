@@ -208,3 +208,7 @@ Jev 组 token 总数是 Astra 组的约 1.9 倍，但 Jev 输入每百万 $0.042
 - [系列六：Codex CLI 与 App 的能力分界——同一套 Skill、两条调用链](Computer%20Use与Browser%20Use系列六：Codex%20CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位.md)
 - [FinOps 系列 01：从 token 价格到任务完成花费](../../FinOps/FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界.md)
 - wiki：[Harness 质量门控](../../../wiki/concepts/harness-quality-gate.md)、[Computer Use](../../../wiki/concepts/computer-use.md)
+
+## 执行路径对比
+
+- [系列九：三条执行路径对比——实现原理、性能、token 与屏幕占用](Computer%20Use%E4%B8%8EBrowser%20Use%E7%B3%BB%E5%88%97%E4%B9%9D%EF%BC%9A%E4%B8%89%E6%9D%A1%E6%89%A7%E8%A1%8C%E8%B7%AF%E5%BE%84%E5%AF%B9%E6%AF%94%E2%80%94%E2%80%94%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E3%80%81%E6%80%A7%E8%83%BD%E3%80%81token%E4%B8%8E%E5%B1%8F%E5%B9%95%E5%8D%A0%E7%94%A8.md)。
