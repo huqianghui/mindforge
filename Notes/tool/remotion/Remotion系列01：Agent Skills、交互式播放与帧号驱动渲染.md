@@ -1,5 +1,5 @@
 ---
-title: Remotion系列01：Remotion与HyperFrames对比——技术栈、Agent Skills、交互式播放与帧号驱动渲染
+title: Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染
 created: 2026-10-13
 tags:
   - remotion
@@ -12,7 +12,7 @@ tags:
   - agent-skills
 ---
 
-# Remotion 系列01：Remotion 与 HyperFrames 对比——技术栈、Agent Skills、交互式播放与帧号驱动渲染
+# Remotion 系列01：Agent Skills、交互式播放与帧号驱动渲染
 
 > 系列导航：本篇
 >

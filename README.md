@@ -466,7 +466,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 <summary>remotion</summary>
 <blockquote>
 
-- [Remotion 系列01：Remotion 与 HyperFrames 对比——技术栈、Agent Skills、交互式播放与帧号驱动渲染](Notes/tool/remotion/Remotion系列01：Remotion与HyperFrames对比——技术栈、Agent%20Skills、交互式播放与帧号驱动渲染.md)
+- [Remotion 系列01：Agent Skills、交互式播放与帧号驱动渲染](Notes/tool/remotion/Remotion系列01：Agent%20Skills、交互式播放与帧号驱动渲染.md)
 
 </blockquote>
 </details>
