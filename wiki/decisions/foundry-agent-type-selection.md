@@ -56,13 +56,13 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **验证方式**：官方文档核对 + 实际项目选型验证
 - **当前状态**：文档验证（基于官方文档与产品页逐条核对），自身项目实践待补充
-- **验证证据**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **验证证据**：[[Foundry-Agent三种形态对比与选型]]
 
 ## Claims
 
 ### Claim: 选型主线唯一——是否需要自己控制 Agent Runtime
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -72,7 +72,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: 治理分层——身份层三者同源，分水岭在内容层
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -82,7 +82,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: Voice Live 与两类 Agent 的组合方向相反
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -92,7 +92,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: Hosted Agent 有一组不可忽视的硬约束
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -102,7 +102,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -112,7 +112,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: 成本模型——调用侧计费两类相同，container compute 买的是"改 harness 的权力"
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -122,7 +122,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: Workflow Agent 已于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-31
 - **最近更新**：2026-08-16
 - **置信度**：0.85
@@ -132,7 +132,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: Hosted Agent 运行时经济学——Session/Conversation 双 ID 生命周期脱节、per-session 计费无摊薄、冷启动无 benchmark
 
-- **来源**：[[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]]
+- **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -142,7 +142,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### Claim: 反向判据：何时不该挂 Agent——"应用开轮 + 现成文本逐字读"下 Agent 价值为零且 Agent 模式是负资产
 
-- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **来源**：[[Voice-Live系列06：轮次控制的五道关卡]]
 - **首次出现**：2026-09-24
 - **最近更新**：2026-09-25
 - **置信度**：0.8
@@ -165,5 +165,5 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ## 来源
 
-- [[Foundry Agent 全面对比：Prompt Agent、Hosted Agent 与 Workflow Agent 的能力、治理与场景选型]] — 三类型能力、治理与场景选型全景（2026-07-19）
-- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — Skill 支持文档矛盾、harness 控制权、成本模型（2026-07-30）
+- [[Foundry-Agent三种形态对比与选型]] — 三类型能力、治理与场景选型全景（2026-07-19）
+- [[Foundry-Toolbox与Skills解析]] — Skill 支持文档矛盾、harness 控制权、成本模型（2026-07-30）

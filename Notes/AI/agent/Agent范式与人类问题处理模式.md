@@ -1,0 +1,99 @@
+---
+title: Agent 范式与人类问题处理模式
+created: 2026-03-25
+tags: [AI, Agent, ReAct, Plan-and-Solve, Reflection, 认知模式, Claude-Code]
+---
+
+# Agent 范式与人类问题处理模式
+
+## 引言
+
+智能体（Agent）的设计并非凭空而来——它本质上是对人类解决问题方式的模拟与形式化。业界涌现的多种 Agent 架构范式，恰好对应了人类在不同场景下自然采用的认知策略。理解这种映射关系，能帮助我们穿透复杂框架的迷雾，回归 Agent 设计的第一性原理。
+
+## 传统智能体 vs LLM 驱动的智能体
+
+在讨论范式之前，先厘清一个根本性的变化。LLM 的出现，让智能体从"确定性的规则执行者"进化为"概率性的推理决策者"：
+
+![传统智能体与LLM智能体对比](../../../asset/agent-vs-llm-agent.png)
+
+传统智能体的能力源于工程师的显式编程与知识构建，行为模式确定且有边界；LLM 智能体则通过海量数据预训练获得隐式的世界模型与涌现能力，以更灵活、更通用的方式应对复杂任务。
+
+## Agent 的核心循环：感知-思考-行动
+
+无论采用哪种范式，Agent 的基本运作都遵循一个循环：
+
+![Agent核心循环](../../../asset/agent-loop.png)
+
+**Perception（感知）** → **Thought（思考，含 Planning 和 Tool Selection）** → **Action（行动）** → **Observation（观察环境变化）** → 回到感知。
+
+这个循环与人类处理问题的基本认知过程高度一致：我们观察环境、思考对策、采取行动、观察结果、再调整策略。区别在于，不同的范式对这个循环的组织方式不同——正如人类在不同场景下会选择不同的问题处理策略。
+
+## 三种经典范式与人类认知模式的映射
+
+### 1. ReAct（边想边做）→ 人类的试错迭代模式
+
+**Agent 范式**：ReAct（Reason + Act）由 Yao 等人于 2022 年提出，将推理与行动显式结合，形成 **Thought → Action → Observation** 的循环。智能体边想边做，每一步的观察结果都会修正下一步的思考。
+
+**人类对应**：这就是我们日常最常用的问题处理方式——"试试看"。比如调试代码时，我们会：想一下可能的原因 → 加个日志或改一行代码 → 看结果 → 再想下一步。不需要完整的计划，靠的是每一步的反馈来推进。
+
+**核心公式**：
+
+$$\left(th_t,a_t\right)=\pi\left(q,(a_1,o_1),\ldots,(a_{t-1},o_{t-1})\right)$$
+
+每个时间步的思考和行动，都基于问题和之前所有的行动-观察历史。
+
+**适用场景**：需要外部知识的查询任务、需要精确计算的任务、与 API 交互的任务。
+
+**开发者工具体现**：Claude Code 的日常交互就是典型的 ReAct——用户提问，Agent 思考需要读哪些文件、执行什么命令，观察结果后再决定下一步。
+
+### 2. Plan-and-Solve（三思而后行）→ 人类的系统规划模式
+
+**Agent 范式**：智能体先生成一个完整的行动计划，然后严格按计划执行。先全局思考，再分步落地。
+
+**人类对应**：这是我们处理复杂项目时的方式——做一个重要功能之前，先画架构图、写技术方案、列出步骤，然后按部就班执行。不会上来就写代码。
+
+**适用场景**：任务结构清晰、步骤可预测、对执行顺序有要求的场景。
+
+**开发者工具体现**：Claude Code 的 Plan Mode（`/plan`）就是这种范式的实现——先探索代码库、设计方案，用户审批后再执行。Superpowers 的 Spec-Delta 工作流也是先生成规范再编码。
+
+### 3. Reflection（复盘反思）→ 人类的自我批判模式
+
+**Agent 范式**：赋予智能体"反思"能力，通过自我批判和修正来优化结果。Agent 完成一轮输出后，会审视自己的结果，发现不足并自行改进。
+
+**人类对应**：这是我们做 Code Review、写完文章后重新审读、考试后检查答案的过程。不满足于第一次的结果，主动寻找问题并改进。
+
+**适用场景**：对输出质量要求高、需要多轮优化的任务，如代码审查、文章写作、方案设计。
+
+**开发者工具体现**：Superpowers 的 code-reviewer agent 就是 Reflection 范式的典型应用——自动审查代码并提出改进建议。Claude Code 在测试失败后自动分析原因并修复，也体现了反思循环。
+
+## 范式选择：与人类决策的类比
+
+| 场景 | 人类策略 | Agent 范式 | 开发者工具示例 |
+|------|----------|-----------|---------------|
+| 快速查个信息 | 边想边搜 | ReAct | Claude Code 日常对话 |
+| 重构一个模块 | 先设计后动手 | Plan-and-Solve | Claude Code Plan Mode |
+| 优化代码质量 | 写完再审查 | Reflection | Superpowers Code Review |
+| 复杂项目开发 | 规划+迭代+复盘 | 组合使用 | GSD + Superpowers 工作流 |
+
+实际上，成熟的 Agent 系统往往**组合使用**多种范式——就像人类处理复杂问题时，会在规划、执行、反思之间灵活切换。Claude Code 就是一个很好的例子：它在简单任务上用 ReAct 快速响应，在复杂任务上切换到 Plan Mode 先规划再执行，在代码出错时自动进入 Reflection 循环。
+
+## 穿透框架迷雾
+
+理解了这三种基本范式与人类认知的映射关系，我们就不会被 LangChain、LlamaIndex、AutoGen 等框架的复杂抽象所迷惑。所有框架做的事情，本质上就是：
+
+1. **定义循环结构**——Thought-Action-Observation 的组织方式
+2. **管理上下文**——历史轨迹的积累与传递
+3. **处理异常**——输出格式解析、工具调用失败重试、死循环防护
+
+掌握了范式原理，你就能从框架的"使用者"转变为 Agent 应用的"创造者"——当标准组件无法满足需求时，你有能力深度定制乃至从零构建。
+
+## 参考资源
+
+- [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) — Agent 从第一性原理出发的系统教程
+- [shareAI-lab/learn-claude-code](https://github.com/shareAI-lab/learn-claude-code) — Claude Code 学习资源
+- Yao et al., "ReAct: Synergizing Reasoning and Acting in Language Models" (2022)
+
+## 相关文章
+
+- [从 Skill Pattern 到 Agent Runtime](从Skill-Pattern到Agent-Runtime.md) — Agent 技能模式分类
+- [Agent-Reach 与 OpenCLI](Agent-Reach与OpenCLI.md) — Agent 框架实践路线

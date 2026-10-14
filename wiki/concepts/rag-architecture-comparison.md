@@ -26,7 +26,7 @@ related:
 
 ### Claim: qmd 与 Foundry IQ 定位不同
 
-- **来源**：[[qmd与Microsoft Foundry IQ的RAG能力对比——从个人知识库到企业级检索]]
+- **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -36,7 +36,7 @@ related:
 
 ### Claim: Fabric IQ 与 Foundry IQ 互补
 
-- **来源**：[[qmd与Microsoft Foundry IQ的RAG能力对比——从个人知识库到企业级检索]]
+- **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ related:
 
 ### Claim: 知识图谱是个人与企业 RAG 的关键差距
 
-- **来源**：[[qmd与Microsoft Foundry IQ的RAG能力对比——从个人知识库到企业级检索]]
+- **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -75,5 +75,5 @@ related:
 
 ## 来源日记
 
-- [[qmd与Microsoft Foundry IQ的RAG能力对比——从个人知识库到企业级检索]] — RAG 对比分析
+- [[qmd与Foundry-IQ的RAG能力对比]] — RAG 对比分析
 - [[2026-04-12-周日]] — Azure 企业级 LLM Wiki 架构方案探索

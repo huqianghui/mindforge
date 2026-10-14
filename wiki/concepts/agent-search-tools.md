@@ -26,7 +26,7 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 
 ### Claim: 三大搜索工具互补而非可替代
 
-- **来源**：[[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]]
+- **来源**：[[Agent搜索三剑客：Exa、Tavily与Context7]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -36,7 +36,7 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 
 ### Claim: Agent 需要结构化内容而非链接列表
 
-- **来源**：[[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]]
+- **来源**：[[Agent搜索三剑客：Exa、Tavily与Context7]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 
 ### Claim: Exa MCP Server 只是协议适配器
 
-- **来源**：[[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]]
+- **来源**：[[Agent搜索三剑客：Exa、Tavily与Context7]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -64,4 +64,4 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 
 ## 来源日记
 
-- [[Exa、Tavily与Context7——AI Agent搜索三剑客的定位与MCP配置实践]] — 搜索工具对比与配置
+- [[Agent搜索三剑客：Exa、Tavily与Context7]] — 搜索工具对比与配置

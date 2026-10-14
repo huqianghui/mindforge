@@ -30,7 +30,7 @@ Ephemeral Environment（临时环境）是一种按需创建、用完销毁的�
 
 ### Claim: 测试环境隔离有三个粒度层级——Testcontainers < docker-compose < Ephemeral Environment
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -40,7 +40,7 @@ Ephemeral Environment（临时环境）是一种按需创建、用完销毁的�
 
 ### Claim: Signadot MCP Server 允许 AI Agent 自动创建沙箱环境
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.5
@@ -50,7 +50,7 @@ Ephemeral Environment（临时环境）是一种按需创建、用完销毁的�
 
 ### Claim: 测试环境即代码（Test Environment as Code）有五个核心原则
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7

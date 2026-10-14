@@ -36,7 +36,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ### Claim: Codex Desktop 是三元组合的 runtime distribution——三版本号互相独立，排查一律问包内二进制
 
-- **来源**：[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]、[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]
+- **来源**：[[Codex-Desktop系列03：bundled的真正含义]]、[[Codex-Desktop系列04：Computer-Use藏身之处]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.85（本机实测 + codesign 验证 + 官方 issue 佐证）
@@ -46,7 +46,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ### Claim: 第三方 provider 接入是"逐层可撬性"问题——目录层可替换、工具层不可补、治理层必须显式覆盖，评估要按层给答案
 
-- **来源**：[[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]]、[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]
+- **来源**：[[Codex-Desktop系列01：接入Azure-OpenAI-GPT-6]]、[[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.85（Azure GPT-6/mini 全链路实测验收）
@@ -56,7 +56,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ### Claim: gpt-6-astra 条目显示 Computer Use 是最强模型档的发力方向——治理与运行时围绕最新模型配齐
 
-- **来源**：[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **来源**：[[Codex-Desktop系列04：Computer-Use藏身之处]]、[[Codex-Desktop系列06：ModelInfo字段手册]]
 - **首次出现**：2026-09-06
 - **最近更新**：2026-09-06
 - **置信度**：0.75
@@ -93,7 +93,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ### Claim: provider 层是可撬的第三个接入操作面——目录别名 + 本机回环网关可在 Codex 不知情的情况下做透明模型路由；项目级 config 覆盖全局是菜单"选中即回退"的根因
 
-- **来源**：[[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]]
+- **来源**：[[Codex-Desktop系列07：用Jev做模型与推理强度路由]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -116,10 +116,10 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ## 来源日记
 
-- [[Codex Desktop系列01：接入Azure OpenAI GPT-6——bundled CLI版本锁定、model catalog schema与分层排错]] — 目录层可撬性、版本锁定、分层排错
-- [[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]] — 全局配置、退休元数据、审批调用链三条暗线
-- [[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]] — 三元组合公式、三版本号、血缘
-- [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — 分发链、cua_node、两种 plugins 目录
-- [[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]] — 九层解剖（论断归口 codesign）
-- [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 源码级字段核实、cua_repl、治理字段
-- [[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]] — auto-jev 目录别名、回环网关与 launchd 生命周期、安装器三处改动与回滚、项目级 config 覆盖全局的菜单回退根因
+- [[Codex-Desktop系列01：接入Azure-OpenAI-GPT-6]] — 目录层可撬性、版本锁定、分层排错
+- [[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]] — 全局配置、退休元数据、审批调用链三条暗线
+- [[Codex-Desktop系列03：bundled的真正含义]] — 三元组合公式、三版本号、血缘
+- [[Codex-Desktop系列04：Computer-Use藏身之处]] — 分发链、cua_node、两种 plugins 目录
+- [[Codex-Desktop系列05：模型条目里的Harness]] — 九层解剖（论断归口 codesign）
+- [[Codex-Desktop系列06：ModelInfo字段手册]] — 源码级字段核实、cua_repl、治理字段
+- [[Codex-Desktop系列07：用Jev做模型与推理强度路由]] — auto-jev 目录别名、回环网关与 launchd 生命周期、安装器三处改动与回滚、项目级 config 覆盖全局的菜单回退根因

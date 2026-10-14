@@ -1,5 +1,5 @@
 ---
-title: tmux与Claude远程交互实践
+title: tmux 与 Claude 远程交互实践
 aliases:
   - tmux-claude-remote
 tags: [tmux, claude, remote, devops, terminal, multiplexer]

@@ -25,7 +25,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: SDD 的核心是 Power Inversion——代码服务于规格
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -35,7 +35,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: 模板即约束——SDD 用七种模板手法把方法论编译进 AI 工作流
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -45,7 +45,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: Constitution 是项目级不可变原则，Test-First 不可协商
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -55,7 +55,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: V-Model 双轨——每层规格配对测试规格，用确定性脚本验证追溯
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -65,7 +65,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: SDD 的角色分工是"AI 起草，人类拍板，脚本验证，Git 记账"
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -75,7 +75,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ### Claim: 行业采用呈三层模型
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.6
@@ -94,5 +94,5 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ## 来源日记
 
-- [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — SDD/TDD/V-Model 融合方法论（2026-07-20）
-- [[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]] — SDD 在 spec-kit 中的工程落地（2026-07-20）
+- [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — SDD/TDD/V-Model 融合方法论（2026-07-20）
+- [[Spec-Kit系列01：整体认识]] — SDD 在 spec-kit 中的工程落地（2026-07-20）

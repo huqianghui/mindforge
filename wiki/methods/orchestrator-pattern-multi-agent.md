@@ -85,7 +85,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 ### Claim: OpenClaw Gateway 不参与任务编排，编排完全由 Orchestrator Agent 负责
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -95,7 +95,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 ### Claim: OpenClaw 支持嵌套 Sub-Agent（最深 5 层，推荐 2 层）
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -105,7 +105,7 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 ### Claim: sessions_spawn 是非阻塞调用，立即返回 accepted 状态
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -129,4 +129,4 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 ## 来源
 
-- [[hermes-agent-vs-openclaw]] — Hermes Agent vs OpenClaw 深度技术对比文章
+- [[Hermes-Agent与OpenClaw对比]] — Hermes Agent vs OpenClaw 深度技术对比文章

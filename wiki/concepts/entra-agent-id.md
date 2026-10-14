@@ -30,7 +30,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: Agent Blueprint 承担四职责——模板、凭据持有者、容器、创建入口
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
@@ -40,7 +40,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: Agent Identity 是无自有凭据的特殊 service principal——FIC-only 认证、始终单租户
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
@@ -50,7 +50,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: 完整 Token 流程三阶段——认证走 Blueprint，中间有代表资格检查，资源授权基于 Agent Identity
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
@@ -60,7 +60,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: 1:N 工厂模型的六层设计动机——本质是大规模 Agent 的 Workload Identity 治理，不是新 App
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -72,7 +72,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: Foundry 身份创建时序——项目不建、首 agent 建共享对、publish 建专属对且 RBAC 不继承
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]（第六节，官方 Foundry agent-identity 概念文档 2026-07-31 版）
+- **来源**：[[Entra-Agent-ID的双层身份模型]]（第六节，官方 Foundry agent-identity 概念文档 2026-07-31 版）
 - **首次出现**：2026-08-04
 - **最近更新**：2026-08-04
 - **置信度**：0.8
@@ -82,7 +82,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: 实测偏差——portal New agent 创建即得专属 blueprint 对，早于文档的"publish 才建"
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]（2026-08-04 Sweden Central 真实项目实测）
+- **来源**：[[Entra-Agent-ID的双层身份模型]]（2026-08-04 Sweden Central 真实项目实测）
 - **首次出现**：2026-08-04
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -92,7 +92,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: Blueprint Authentication 属 Entra OAuth 层，与 Azure RBAC 是两套授权体系
 
-- **来源**：[[Entra Agent ID双层身份模型：Agent Blueprint与Agent Identity的认证授权分离设计]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8

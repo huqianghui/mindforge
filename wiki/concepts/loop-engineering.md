@@ -32,7 +32,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: Loop Engineering 一词指着内循环与外循环两个不同高度的对象
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
@@ -42,7 +42,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 外循环的最小内核是"自动发现 + workflow + 重复 + 跨轮记忆"，自动发现是分水岭
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
@@ -52,7 +52,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 循环的形状由它的验证信号来源决定，且验证应主动"左移"
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
@@ -62,7 +62,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: Loop Engineering 横切了 Harness 的边界——一半是旧（内循环），一半是新（外循环）
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
@@ -72,7 +72,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: Ralph Loop 是外循环里"单任务执行"那一格的一种可插拔实现
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
@@ -82,7 +82,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: cron job 与 dynamic workflow 是两根正交的轴——WHEN vs HOW
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
@@ -92,7 +92,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: Loop Engineering 的核心是 operator→designer 的角色跃迁
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
@@ -102,7 +102,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 外循环已收敛成成熟落地栈，五团队独立得出"瓶颈是基础设施，不是智能"
 
-- **来源**：[[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]]
+- **来源**：[[Loop-Engineering概念澄清]]
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.75
@@ -112,7 +112,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 外循环的安全总纲是"管道自动化，判断留给人"——按 verifier 强弱分级自治
 
-- **来源**：[[Loop Engineering实践——把个人知识库改造成一个外循环系统]]
+- **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
 - **最近更新**：2026-06-16
 - **置信度**：0.8
@@ -122,7 +122,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 无人值守的外循环要三个互相独立的部件——触发器 ≠ 记忆 ≠ trace
 
-- **来源**：[[Loop Engineering实践——把个人知识库改造成一个外循环系统]]
+- **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
 - **最近更新**：2026-06-16
 - **置信度**：0.8
@@ -132,7 +132,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 瓶颈是基础设施不是智能——外循环补的是无状态控制器的"身体"
 
-- **来源**：[[Loop Engineering实践——把个人知识库改造成一个外循环系统]]
+- **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
 - **最近更新**：2026-06-16
 - **置信度**：0.8
@@ -142,7 +142,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 单循环有四个结构性死法，解法全部是拓扑性的——设计单位从单循环升级为循环的网络
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
@@ -152,7 +152,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 拓扑买来复杂度但买不来与现实的接触——循环之图必须有图外的锚点，持久的轴是 ungrounded vs grounded
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
@@ -162,7 +162,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 图不总是更省——单轮通过率低于约 50% 时并行图比顺序循环更贵，该盯的指标是 cost per successful completion
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.75
@@ -172,7 +172,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ### Claim: 适合做成外循环的工作流有三个特征
 
-- **来源**：[[Loop Engineering实践——把个人知识库改造成一个外循环系统]]
+- **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
 - **最近更新**：2026-06-16
 - **置信度**：0.75
@@ -198,8 +198,8 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 ## 来源日记
 
-- [[Loop Engineering概念澄清——内循环、外循环与Harness Engineering的边界]] — 内/外循环双高度、最小内核方程、verifier 谱系、与 Harness/Ralph 的边界、cron vs dynamic workflow
-- [[Loop Engineering实践——把个人知识库改造成一个外循环系统]] — 把外循环装到 PKC 上：管道自动化判断留人、三件套、5loop×3phase、瓶颈是基础设施
-- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 单循环四死法与拓扑解法、锚点论（ungrounded vs grounded）、决策矩阵与成本红线
+- [[Loop-Engineering概念澄清]] — 内/外循环双高度、最小内核方程、verifier 谱系、与 Harness/Ralph 的边界、cron vs dynamic workflow
+- [[Loop-Engineering实践：知识库外循环]] — 把外循环装到 PKC 上：管道自动化判断留人、三件套、5loop×3phase、瓶颈是基础设施
+- [[Graph-Engineering的三重含义]] — 单循环四死法与拓扑解法、锚点论（ungrounded vs grounded）、决策矩阵与成本红线
 - [[2026-06-15-周一]] — 了解和学习 Loop Engineering（概念澄清）
 - [[2026-06-16-周二]] — Loop Engineering 实践：把知识库改造成外循环系统

@@ -27,7 +27,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ### Claim: Skill 与 Tool 本质不同
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ### Claim: 五种 Skill Patterns 构成分层控制模型
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -47,7 +47,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ### Claim: Skill Pattern 和 Agent Pattern 是两个正交系统
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -57,7 +57,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ### Claim: Inversion 模式是需求分析和架构设计阶段的关键模式
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -67,7 +67,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ### Claim: Skill 的核心价值是让模型"看到正确信息"
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -87,4 +87,4 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 ## 来源日记
 
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — Google 五种 Skill Pattern 全面解析
+- [[从Skill-Pattern到Agent-Runtime]] — Google 五种 Skill Pattern 全面解析

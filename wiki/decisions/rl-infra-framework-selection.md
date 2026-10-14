@@ -76,7 +76,7 @@ related_methods: []
 
 ### Claim: 三框架是抽象层谱系而非替代关系——TRL 算法工具 / OpenRLHF 工程框架 / VERL 基础设施
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -86,7 +86,7 @@ related_methods: []
 
 ### Claim: Agent RL 几乎必然选 VERL 类架构——被本质决定而非偏好
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -96,7 +96,7 @@ related_methods: []
 
 ### Claim: VERL→Slime 迁移取决于三个信号——规模/MoE、瓶颈定位、架构同构性
 
-- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.75
@@ -114,5 +114,5 @@ related_methods: []
 
 ## 来源
 
-- [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — 三框架谱系对比（§三）、选型建议（§3.7）、agent-lightning 选 VERL 逻辑（§四）、替代方案与替换成本（§六）
-- [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — VERL vs Slime 架构级对比、迁移决策 checklist 与三信号（§六）、架构同构性（§五）
+- [[Agent-Lightning系列07：强化学习与VERL入门]] — 三框架谱系对比（§三）、选型建议（§3.7）、agent-lightning 选 VERL 逻辑（§四）、替代方案与替换成本（§六）
+- [[Slime与VERL架构对比]] — VERL vs Slime 架构级对比、迁移决策 checklist 与三信号（§六）、架构同构性（§五）

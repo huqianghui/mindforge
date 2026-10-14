@@ -1,0 +1,212 @@
+---
+title: Voice Live 系列 00：导读
+created: 2026-09-30
+tags:
+  - azure
+  - voice-agent
+  - voice-live-api
+  - avatar
+  - index
+description: Voice Live 数字人语音 Agent 系列的导读页，不含新内容。系列按"撞到的问题"成文而非按主题成章，本页补上按主题检索的入口：上行音频、下行音频、视频、传输与 ICE、轮次控制与读题、延迟工程与部署区域、路线与选型七张主题地图，每个引用都是可点击的章节链接（GitHub 锚点格式）；附首次阅读顺序、活文档与待验清单入口、已定决策与不做项速查。新增文章时在此加行即可
+---
+
+# Voice Live 系列 00：导读
+
+> 这个系列每一篇对应一个真实撞到的问题：出场慢 8 秒、三次 Thank you、读题被改写、弱网卡死。文章保留"现象、根因、修法、修正"的推理顺序，所以按时间成文，不按主题成章。代价是想查"音频相关的所有结论"时要翻好几篇。本页只做一件事：按主题把入口列出来，各篇保持原样。每个引用都链接到具体章节，锚点按 GitHub 的标题 slug 规则生成，在 GitHub 上点击直达章节；在 Obsidian 中会打开对应文件（Obsidian 的标题锚点格式不同，不定位到节）。本页不含新内容，新增文章时加一行即可。
+
+---
+
+## 一、主题地图
+
+### 上行音频：麦克风到 Azure
+
+| 问题 | 去哪里看 |
+|---|---|
+| 采集参数：24 kHz、PCM16、单声道、AudioWorklet、base64 走 WS | [01 4.5](Voice-Live系列01：Agent实现架构.md#45-音频参数) |
+| 为什么默认 24 kHz 而识别器原生 16 kHz，级联模式能否降 16 kHz，怎么改；已落地并 A/B 验证词错误率无差异 | [01 4.5.1](Voice-Live系列01：Agent实现架构.md#451-为什么输入默认-24-khz级联模式能不能降到-16-khz) |
+| 为什么上行不压缩：WS 应用层协议只收 pcm16 / G.711，四种格式代价表 | [01 4.5.1](Voice-Live系列01：Agent实现架构.md#451-为什么输入默认-24-khz级联模式能不能降到-16-khz) |
+| 上行成帧：为什么是每 8 ms 一条（render quantum 恒 128 帧）、40 ms 批 + 二进制把 391 降到 256 kbps payload、消息数 125→25/秒、词错误率 0.0% 不变 | [01 4.5.4](Voice-Live系列01：Agent实现架构.md#454-上行成帧同一份音频怎么从-391-kbps-降到-256-kbps2026-10-03-实测落地) |
+| `interrupt_response` 在 WS PCM 下行上是**空转**的：Azure 783 ms 灌完 4275 ms 音频并立刻 completed，服务端没有可截断的对象，截断只能客户端做（数字人的 WebRTC 路未测） | [06 打断更正](Voice-Live系列06：轮次控制的五道关卡.md#五能组合出的七种使用形态) |
+| payload 不等于线路字节：这条 WS 开着 permessage-deflate，base64 压到 73%、裸 PCM 只压到 95%；线路 285→242 kbps、静默期 15.0→3.4 kbps | [01 4.5.4](Voice-Live系列01：Agent实现架构.md#454-上行成帧同一份音频怎么从-391-kbps-降到-256-kbps2026-10-03-实测落地) |
+| 「只收 base64、不能发二进制」只约束 Azure 那一跳；到自建后端那一跳的 33% 可以不付 | [01 4.5.4](Voice-Live系列01：Agent实现架构.md#454-上行成帧同一份音频怎么从-391-kbps-降到-256-kbps2026-10-03-实测落地) |
+| 转写中间结果：Voice Live 不发 `transcription.delta`（azure-speech 与 mai-transcribe 各实测 0 帧），但同资源同音频用 Speech SDK 有 14 条 interim、中位 102 ms；请求 schema 无开关；两个易误认的字段；Entra 必需与 `REGION=global` 的坑 | [01 4.5.3](Voice-Live系列01：Agent实现架构.md#453-转写的中间结果speech-sdk-给voice-live-不给2026-10-02-对照实测) |
+| 这些不一致从哪来：Realtime 协议、Speech 服务、TTS Avatar、新 WebRTC 模式的拼接缝；对照 OpenAI Realtime 的 WS / WebRTC 分工 | [01 4.5.2](Voice-Live系列01：Agent实现架构.md#452-为什么会有这些不一致三条产品线的拼接缝) |
+| 上行 600 kbps 在窄上行下挤死自己的 SDP | [12 5.5](Voice-Live系列12：数字人弱网表现.md#55-麦克风上行会把自己挤死) |
+| 服务端降噪、回声消除字段归层；会话中不可改采样率 | [06 一](Voice-Live系列06：轮次控制的五道关卡.md#一先分层这些功能到底是谁的)、[06 2.2](Voice-Live系列06：轮次控制的五道关卡.md#22-五道关卡) |
+| 数字人回声进麦：默认 AEC 参考对不上，Live-Reference AEC | [07 四](Voice-Live系列07：重复致谢排查.md#四数字人场景下回声更容易漏) |
+| 浏览器 AEC / NS / AGC 是采集约束，与传输无关 | [WebSocket 与 WebRTC 对比 五](../../Notes/AI/voice/WebSocket与WebRTC深度对比.md#五为什么-voice-live-api-一开始用-websocket-传音频) |
+
+### 下行音频：数字人的声音
+
+| 问题 | 去哪里看 |
+|---|---|
+| avatar 模式下声音走 WebRTC 音轨而不是 WS，WS 上看不到 response.audio.delta | [03 六](Voice-Live系列03：数字人出场延迟优化.md#六对话轮次延迟说完话--回复返回单并发多轮实测)；[12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路) |
+| Opus 是什么、48 kHz 为何只是时钟标签、上行为机器下行为人 | [12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路) |
+| 下行压缩了但三点：Opus、130 kbps 立体声偏高、与视频同车被饿死 | [12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路)、[12 5.3](Voice-Live系列12：数字人弱网表现.md#53-胖视频流会饿死同一条连接上的音频)、[12 六](Voice-Live系列12：数字人弱网表现.md#六决定性对照关画面留声音) |
+| 音频轨待查：带内 FEC、单声道、RED | [12 6.1](Voice-Live系列12：数字人弱网表现.md#61-服务端-avatar-可调项复核没有接收端缓冲参数但有三个未验证的字段) |
+| 语速、表现力、发音走 session.voice，不是 SSML | [09 六](Voice-Live系列09：脚本朗读的机制化.md#六怎么发声是另一层语速表现力发音靠-sessionvoice不靠-prompt也不是-ssml) |
+| 无 avatar 兜底时下行回到 PCM 走 WS，output_audio_format 的 16k / 8k 变体 | [01 4.5.1](Voice-Live系列01：Agent实现架构.md#451-为什么输入默认-24-khz级联模式能不能降到-16-khz)；[12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路) |
+
+### 视频：数字人的画面
+
+| 问题 | 去哪里看 |
+|---|---|
+| 两类头像的合成路线：viseme 驱动 vs VASA-1 生成，schema 对照 | [05 二](Voice-Live系列05：两类数字人头像.md#二本质区分素材回放-vs-单图生成viseme-是分界线)、[05 三](Voice-Live系列05：两类数字人头像.md#三model-vasa-1-是什么一个实时音频驱动的人脸生成模型)、[05 四](Voice-Live系列05：两类数字人头像.md#四两套-schema-逐字段对照) |
+| 带宽与并发：默认码率只差 2.4 倍，真正差异在弱网可解码性 | [05 七 带宽与并发](Voice-Live系列05：两类数字人头像.md#带宽与并发photo-默认码率更低但那是分辨率的副产品且差距比预想小)；[12 一](Voice-Live系列12：数字人弱网表现.md#一结论先行) |
+| 服务端可调项（**已修正**：bitrate 不是唯一，SDK 里还有 crop / resolution / gop_size，另有 AvatarConfig.scene；`scene.zoom` 已实测有效）、codec 仅 h264、无接收端缓冲参数 | [12 三](Voice-Live系列12：数字人弱网表现.md#三第一阶段无限速基线与四个前提逐项验证)、[12 6.1](Voice-Live系列12：数字人弱网表现.md#61-服务端-avatar-可调项复核没有接收端缓冲参数但有三个未验证的字段) |
+| 1080p 在 1% 丢包下一帧都解不出：抖动缓冲小于 RTT，NACK 迟到，GOP 报废；冻结次数会骗人 | [12 5.2](Voice-Live系列12：数字人弱网表现.md#52-但自适应救不了-1080p丢包-1-时它一帧都解不出来)、[12 5.2.1](Voice-Live系列12：数字人弱网表现.md#521-为什么自适应救不了它调的是带宽杀死-1080p-的是包数与时序) |
+| 像素到比特到包数的换算，为什么最后只看每帧包数 | [12 5.2.2](Voice-Live系列12：数字人弱网表现.md#522-1080p-与-512512-之间的换算像素--比特--包数) |
+| Azure 码率自适应确实生效但救不了 1080p；说话与静音的码率倒挂 | [12 三](Voice-Live系列12：数字人弱网表现.md#三第一阶段无限速基线与四个前提逐项验证)、[12 5.1](Voice-Live系列12：数字人弱网表现.md#51-azure-确实会自适应降码率方向正确幅度也够) |
+| 关画面保声音：m=video 保留但 a=inactive；只能建连时定，中途切换要重建会话 | [12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路)、[12 六](Voice-Live系列12：数字人弱网表现.md#六决定性对照关画面留声音)、[12 7.4](Voice-Live系列12：数字人弱网表现.md#74-落地补记两条-azure-硬约束与不对称冷却) |
+| 说明页预热、截帧占位、首读等首帧的门 | [03 5.2](Voice-Live系列03：数字人出场延迟优化.md#52-第二层说明页预热把等待藏进阅读时间)、[03 5.3](Voice-Live系列03：数字人出场延迟优化.md#53-第三层人物形象截帧占位体感归零)、[03 一](Voice-Live系列03：数字人出场延迟优化.md#一现象数字人要十几秒才出现) |
+| 客户端自渲染数字人（viseme 时间轴）作为卡通与弱网的替代 | [04 三](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md#三真开关是-voice-配置不是模型选择数字人的-viseme-闸门)；[05 四](Voice-Live系列05：两类数字人头像.md#四两套-schema-逐字段对照) |
+
+### 传输：WebRTC、ICE、TURN
+
+| 问题 | 去哪里看 |
+|---|---|
+| 双通道架构：WS 信令 + WebRTC 媒体，连接时序 | [01 4.2](Voice-Live系列01：Agent实现架构.md#42-双通道并行websocket--webrtc)、[01 4.4](Voice-Live系列01：Agent实现架构.md#44-连接建立时序)；[WebSocket 与 WebRTC 对比 三](../../Notes/AI/voice/WebSocket与WebRTC深度对比.md#三voice-live-api-的双通道架构) |
+| 先对齐概念：ICE / STUN / TURN 属于 WebRTC 而非数字人，纯语音 WS 没有；四种传输组合；`output_protocol: websocket` 的例外 | [16 一](Voice-Live系列16：传输层概念对齐.md#一结论先行)、[16 二](Voice-Live系列16：传输层概念对齐.md#二voice-live-的两条传输路径与四种组合) |
+| prflx、候选是接收地址、STUN 与 TURN 同时收集；两端对称、controlling / ICE-lite、候选对优先级；relay 排序靠后但实测常胜出 | [16 三](Voice-Live系列16：传输层概念对齐.md#三候选再对齐四个容易混的点)、[16 四](Voice-Live系列16：传输层概念对齐.md#四两端对称local-candidate-与-remote-candidate) |
+| ICE 是什么，host / srflx / relay，STUN 与 TURN，SDP 候选行 | [10 一](Voice-Live系列10：ICE、STUN与TURN.md#一ice-是什么webrtc-建连的必经阶段)、[10 二](Voice-Live系列10：ICE、STUN与TURN.md#二三类候选hostsrflxrelay-各是什么) |
+| 为什么需要门控，为什么不能先到先得，一次性信令 | [10 三](Voice-Live系列10：ICE、STUN与TURN.md#三门控是什么offer-发出去之前的一道等待)、[10 四](Voice-Live系列10：ICE、STUN与TURN.md#四为什么不能先到先得三层原因与修复前方案的来历)；[03 三](Voice-Live系列03：数字人出场延迟优化.md#三根因ice-gathering-complete-在多网卡环境下永远不来) |
+| 拓扑真相：只下发一台兼做 STUN 的 TURN，能直连就直连，relay 保底（修正了 relay-only） | [10 4.4](Voice-Live系列10：ICE、STUN与TURN.md#44-修复为什么成立因为我们知道了谁会赢)、[10 5.3](Voice-Live系列10：ICE、STUN与TURN.md#53-azure-为什么只下发一台-turn却又允许直连)、[10 六](Voice-Live系列10：ICE、STUN与TURN.md#六relay-具体在做什么azure-额外提供了一台中继器)；[12 三](Voice-Live系列12：数字人弱网表现.md#三第一阶段无限速基线与四个前提逐项验证) |
+| 300 ms 收敛窗是规则的一部分而非余量：srflx 与 relay 相隔约 140 ms 到达，胜出者常是窗内才到的 relay（修正了「几乎同时到达」） | [10 4.4](Voice-Live系列10：ICE、STUN与TURN.md#44-修复为什么成立因为我们知道了谁会赢) |
+| 为什么 WebSocket 不需要 ICE，RTP / RTCP 是什么 | [10 七](Voice-Live系列10：ICE、STUN与TURN.md#七为什么-websocket-没有这个问题)、[10 8.1](Voice-Live系列10：ICE、STUN与TURN.md#81-udp-的理由对但丢了就丢了不是放任) |
+| 没有 STUN / TURN 服务器为什么还要 ICE（五件事）；WebRTC 与 WS 不只 UDP 换 TCP；Opus 为何进不了 Voice Live 的 WS | [16 五](Voice-Live系列16：传输层概念对齐.md#五没有-stunturn-服务器为什么还要-ice)、[16 六](Voice-Live系列16：传输层概念对齐.md#六webrtc-与-websocket不只是-tcp-换成-udp)、[16 七](Voice-Live系列16：传输层概念对齐.md#七opus为什么看起来只有-webrtc-能用) |
+| 浏览器里验证：webrtc-internals 看 nominated 候选对、getStats、`iceTransportPolicy: "relay"` 测 TURN 可达；一张实测截图怎么读；WebSocket 侧按层看（DevTools Messages / Wireshark / `bufferedAmount`） | [16 八](Voice-Live系列16：传输层概念对齐.md#八在浏览器里几分钟验证) |
+| 自建 TURN：ice_servers 入口、coturn 要求、与 Azure 侧关系、何时值得 | [11](Voice-Live系列11：自建TURN中继.md) |
+| 企业安全客户端（如 Global Secure Access）下数字人无画无声：UDP 端口被钉死在首个对端，ICE 直连与 relay 同断；流量全过程、为什么下发 IP 与强制 relay 都绕不开 | [17 一](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#一结论先行)、[17 三](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#三流量全过程同一个端口三个对端)、[17 四](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#四为什么应用侧绕不开) |
+| 连不上时在 Chrome 里怎么查：PC 关闭后 dump 为空、getStats 钩子、WebRTC verbose 日志的三条关键行、同一 socket 多目标对照、直连 Voice Live 复现 | [17 五](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#五chrome-侧怎么验证) |
+| 数字人改走 WebSocket 下发（`output_protocol: websocket`）：分片 MP4、h264 加 AAC 同一路、无 ICE，已实测可用 | [17 六](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#六绕开-ice数字人改走-websocket-下发)、[12 6.1](Voice-Live系列12：数字人弱网表现.md#61-服务端-avatar-可调项复核没有接收端缓冲参数但有三个未验证的字段) |
+| UDP 被封则无画无声；重连与媒体层自愈 | [12 一](Voice-Live系列12：数字人弱网表现.md#一结论先行)、[12 5.4](Voice-Live系列12：数字人弱网表现.md#54-媒体死亡后自愈生效但有几秒空窗)；[09 5.4](Voice-Live系列09：脚本朗读的机制化.md#54-前端协议层要防的几个坑都踩过) |
+| 上行改走 WebRTC 为何暂不可行 | [01 4.5.2](Voice-Live系列01：Agent实现架构.md#452-为什么会有这些不一致三条产品线的拼接缝)；[12 7.3](Voice-Live系列12：数字人弱网表现.md#73-明确不做的) |
+
+### 轮次控制与读题
+
+| 问题 | 去哪里看 |
+|---|---|
+| 一个轮次的五道关卡，create_response 与 response.create，Model / Agent 模式控制权 | [06](Voice-Live系列06：轮次控制的五道关卡.md) |
+| 重复开轮的三个来源与转写指纹 | [07 二](Voice-Live系列07：重复致谢排查.md#二三个开轮来源)、[07 三](Voice-Live系列07：重复致谢排查.md#三三种触发源的转写指纹) |
+| 判停与开轮之间的四个判断：EOU、LLM judge、两段式提交、频率策略 | [08](Voice-Live系列08：应答门控.md) |
+| 逐字读题：pre_generated 直接 TTS，宿主模型的角色，代码与 prompt 分工 | [09](Voice-Live系列09：脚本朗读的机制化.md) |
+| 全双工 GPT-Live-1 对轮次机器的影响 | [04 四](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md#四全双工-gpt-live-1发布事实与它吃掉的轮次机器)、[04 五](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md#五数字人方案影响评估与产品组答疑的五个落点) |
+| EoU 两种实现：文本型只在级联可用、音频型到处可用；五组合矩阵；分段行为实测等价、timeout 1000 持平、700 变质；中文素材坑 | [15 三](Voice-Live系列15：realtime模型与数字人.md#三eou-有两种实现文本型只在级联可用)、[15 3.1](Voice-Live系列15：realtime模型与数字人.md#31-两种-eou-的分段行为实测等价判定延迟可调回持平) |
+| 一次会话的全链路图：浏览器、代理、会话装配、两条管线、说与数字人、推理腿；两条管线只差一个检测器 | [15 3.2](Voice-Live系列15：realtime模型与数字人.md#32-一次会话的全链路两条管线只差一个检测器) |
+
+### 延迟工程与部署区域
+
+| 问题 | 去哪里看 |
+|---|---|
+| 出场 16 秒的分解、ICE 门控 8 秒根因、三层优化、云上多轮统计 | [03 二](Voice-Live系列03：数字人出场延迟优化.md#二延迟测试先分解再定位)、[03 三](Voice-Live系列03：数字人出场延迟优化.md#三根因ice-gathering-complete-在多网卡环境下永远不来)、[03 四](Voice-Live系列03：数字人出场延迟优化.md#四洞见把等待目标从全量集改成够用集)、[03 五](Voice-Live系列03：数字人出场延迟优化.md#五优化三层策略--部署位置) |
+| 对话轮次延迟：说完话到回复约 1.5 秒的分段，外部网关占 70% | [03 六](Voice-Live系列03：数字人出场延迟优化.md#六对话轮次延迟说完话--回复返回单并发多轮实测) |
+| 「数字人开口」实测：Azure 确认读题 → 真正听见 806 ms；点击 → 听见第一题 5993 ms 的八段分解；avatar 模式比直连组到可听多约 0.6 秒 | [03 6.1](Voice-Live系列03：数字人出场延迟优化.md#61-补测azure-确认读题--候选人真正听见2026-10-01) |
+| 逐轮延迟：第二、三轮不退化（1071/1069/1067 ms）；关画面不会让每轮更快（中位 1069 vs 1076 ms） | [03 6.1](Voice-Live系列03：数字人出场延迟优化.md#61-补测azure-确认读题--候选人真正听见2026-10-01)、[12 7.5.1](Voice-Live系列12：数字人弱网表现.md#751-防误读关画面不是提速手段2026-10-01-实测) |
+| 可听性判据：为什么不能用 `totalSamplesReceived` 或「`totalAudioEnergy` 有增长」，三种错法各自怎么失效 | [03 6.2](Voice-Live系列03：数字人出场延迟优化.md#62-方法学不能用音频计数器涨了判断开口)、[12 二](Voice-Live系列12：数字人弱网表现.md#二测量方法) |
+| 五条可迁移的延迟工程经验 | [03 七](Voice-Live系列03：数字人出场延迟优化.md#七总结五条可迁移的延迟工程经验) |
+| RTT 约 300 ms 是弱网结论的前提，同区域 AVD 演示效果好的机制，区域选择 | [12 5.6](Voice-Live系列12：数字人弱网表现.md#56-所有结论的前提rtt-约-300-ms-起区域距离比丢包率更决定结果) |
+| 按客户网络分级选区域、形象与码率：A 级同区域才推荐视频数字人，跨洲用照片数字人或同区域 AVD | [12 7.6](Voice-Live系列12：数字人弱网表现.md#76-给客户的网络基线与配置推荐先测三个数再对号入座) |
+| 弱网测试方法：getStats 探针、OS 层只限 UDP、四档限速、方法学坑 | [12 二](Voice-Live系列12：数字人弱网表现.md#二测量方法) |
+| 自适应设计 P0 到 P4 与明确不做的 | [12 七](Voice-Live系列12：数字人弱网表现.md#七自适应设计建议) |
+| 落地撞到的两条硬约束：avatar.connect 每会话只接受一次、会话创建速率限制；不对称冷却与翻倍退避的自动恢复；两级触发判决与重启时摘旧回调的坑 | [12 7.4](Voice-Live系列12：数字人弱网表现.md#74-落地补记两条-azure-硬约束与不对称冷却) |
+| 弱网自适应实测回填：第 16 秒主触发关画面、64 秒后开回且真实解码；补偿率基线随数字人差一个量级、次触发关闭与合取形状；被否决的恢复被记成已发生致画面永不回来；31% 为含静音原始比值 | [12 7.5](Voice-Live系列12：数字人弱网表现.md#75-实测回填端到端触发验证阈值标定的答案与恢复失同步的坑) |
+| 客户网络基线：UDP 门 + RTT / 丢包 / 下行三个数定 A 到 E 五级，每级的起始形态与配置项；分段测点（后端到 Voice Live 端点、STUN/TURN、媒体服务器、上行）；待补台架测试；RTT 对端与四类端点来源、可用与不可用的网络命令、三个现成脚本 | [12 7.6](Voice-Live系列12：数字人弱网表现.md#76-给客户的网络基线与配置推荐先测三个数再对号入座)、[12 7.6.4](Voice-Live系列12：数字人弱网表现.md#764-分段测点坏的是哪一段)、[12 7.6.6](Voice-Live系列12：数字人弱网表现.md#766-rtt-测的是谁端点从哪来命令与现成脚本) |
+
+### 配额、限流与容量
+
+| 问题 | 去哪里看 |
+|---|---|
+| 数字人走 Speech 的 avatar 配额而非 Voice Live 那张表；文档值 vs 实测值全表；关掉数字人并发能力差 12 倍以上 | [13 一](Voice-Live系列13：数字人配额与限流.md#一速查文档值-vs-实测值)、[13 三](Voice-Live系列13：数字人配额与限流.md#三文档怎么写同一个资源上两套配额数字人走更严的那套) |
+| avatar 不是服务而是 Speech 的附属能力：Quota 页无此行、Request quota 无用、usage API 为空、拒绝走带内 error 的同一根源 | [13 二](Voice-Live系列13：数字人配额与限流.md#二先立框架avatar-不是一个服务是-speech-的附属能力) |
+| 两条独立限制：并发 5（关闭即释放）、新建 3 次/60 秒（关闭不退还、窗口锚定创建时刻）；实验 A/B/C | [13 四](Voice-Live系列13：数字人配额与限流.md#四实测两条独立的限制) |
+| 5 个并发能到但不能一下子到：到 5 并发分两批约 2 分钟；5 人同时点开始只有 3 人进得去 | [13 4.5](Voice-Live系列13：数字人配额与限流.md#45-操作规则5-个并发能到但不能一下子到) |
+| 速率限制按资源计已实测，横向加资源有效；并发作用域待验 | [13 4.6](Voice-Live系列13：数字人配额与限流.md#46-作用域按资源已实测) |
+| 纯语音压到 120 次/分钟、60 并发零失败未触顶 | [13 4.7](Voice-Live系列13：数字人配额与限流.md#47-纯语音的上限压到-120-次分钟仍未触及) |
+| 为什么有两条限制：并发是容量语言、速率是限流语言；撤回的动机猜测 | [13 五](Voice-Live系列13：数字人配额与限流.md#五为什么会有这两个限制证据与推理分开标) |
+| Azure 侧观测不到被拒事件，唯一观测点是自己的应用 | [13 六](Voice-Live系列13：数字人配额与限流.md#六怎么查看azure-侧看不到) |
+| SKU 与 quota：287 项配额无 avatar，没有可申请的对象；工单该写「并发数字人渲染会话数，当前 5」；3 RPM 的 tts-hd 是 Azure OpenAI 的，与此无关 | [13 七](Voice-Live系列13：数字人配额与限流.md#七sku-是什么该申请什么-quota答案是没有可申请的-quota-对象) |
+| 实现层三类错：本地窗口与 Azure 不一致、账本只在内存、把限流当永久失败 | [13 八](Voice-Live系列13：数字人配额与限流.md#八实现层最容易犯的三类错) |
+| 一次面试只花 1 次；各动作花费表；生产形态容量（同时 5 人、每分钟开始 3 人、30 人要排队）；测试期节奏 | [13 九](Voice-Live系列13：数字人配额与限流.md#九一次面试到底花几次1-次) |
+| 30 分钟说话 / 5 分钟空闲两个硬时限 | [13 十](Voice-Live系列13：数字人配额与限流.md#十顺带确认的两个硬时限) |
+
+### 模型接入：原生、BYOM 与 Agent
+
+| 问题 | 去哪里看 |
+|---|---|
+| 「not supported in this region」与「Bring Your Own Model」为什么不矛盾：两扇门 | [14 一](Voice-Live系列14：模型接入的三条路径.md#一结论先行两句话说的是两扇门) |
+| 给会话挂大脑的三条路径与参数；原生与 Agent 路径没有 profile；三条路径的音频流向图 | [14 二](Voice-Live系列14：模型接入的三条路径.md#二一个会话的大脑有三种接法) |
+| 原生清单是全局的、开通按 region；三个「支持但未预部署」模型；文档领先 rollout | [14 三](Voice-Live系列14：模型接入的三条路径.md#三原生路径清单是全局的开通是按-region-的) |
+| BYOM 的 profile 是集成模式而非配置档案；三种 profile 与直通 / 级联；Foundry 资源与 managed identity 两条硬约束 | [14 四](Voice-Live系列14：模型接入的三条路径.md#四byom-路径profile-选协议协议定音频走直通还是级联) |
+| 为什么不能从部署名推断协议；为什么一个 Responses API 统一不掉三条（传输物理与厂商边界） | [14 4.4](Voice-Live系列14：模型接入的三条路径.md#44-三个最常被追问的点) |
+| Agent 路径参数与命名漂移；agent 是编排层不是模型，架构上是级联；一个产品里两种模式并存与运行期真实调用链 | [14 五](Voice-Live系列14：模型接入的三条路径.md#五agent-路径没有-profile大脑在-foundry-侧) |
+| 实测：原生 20 收 3 拒、gpt-6 一代全拒、invalid_model 歧义；BYOM 六条探测，同名同资源原生拒 BYOM 通，建连不校验部署名 | [14 六](Voice-Live系列14：模型接入的三条路径.md#六实测同一资源上原生与-byom-的边界swedencentral2026-10-05) |
+| 管理端一个模型字段喂三处用途是 region 报错根因；四条解析链；拆成推理模型与语音会话模型；为什么嘴型会话不拖进 BYOM | [14 七](Voice-Live系列14：模型接入的三条路径.md#七管理端那一个模型字段到底在喂谁) |
+| agent / model / prompt / avatar / VAD / voice 分属连接选择、大脑、语音三层 | [14 八](Voice-Live系列14：模型接入的三条路径.md#八agent--model--prompt--avatar--vad--voice-分别落在哪一层) |
+| judge 用模型与 create_response 用模型不是同一个杠杆：判决 vs 台词，三道墙 | [14 九](Voice-Live系列14：模型接入的三条路径.md#九judge-已经用了一个模型为什么不把它接到-create_response) |
+| 换大脑的一句话决策树 | [14 十](Voice-Live系列14：模型接入的三条路径.md#十一句话决策树) |
+
+### 路线与选型
+
+| 问题 | 去哪里看 |
+|---|---|
+| 级联流水线 vs 端到端原生模型 | [01 二](Voice-Live系列01：Agent实现架构.md#二两种架构路线)、[01 三](Voice-Live系列01：Agent实现架构.md#三级联流水线深度解析salesforce-论文) |
+| 与 Agent Service 的三种合作模式，直连 Realtime 还是 Voice Live，模型组合 | [02 三](Voice-Live系列02：解耦Agent-Service后的架构演进.md#三与-agent-的三种合作模式)、[02 四](Voice-Live系列02：解耦Agent-Service后的架构演进.md#四选型光谱直连-gpt-realtime-api还是-voice-live)、[02 五](Voice-Live系列02：解耦Agent-Service后的架构演进.md#五模型组合原生-realtime-vs-级联性能与能力的取舍)、[02 六](Voice-Live系列02：解耦Agent-Service后的架构演进.md#六功能组合voice-live-提供的语音增强层)、[02 七](Voice-Live系列02：解耦Agent-Service后的架构演进.md#七组合选型速查功能与性能对照) |
+| 四条路线与全双工，数字人方案影响评估 | [04](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md) |
+| 两类头像该推荐哪一类，价格 | [05 七](Voice-Live系列05：两类数字人头像.md#七功能与价格该推荐哪一类) |
+| 四条路线按听 / 想 / 说 拆开：口型由谁驱动、EoU 前提、本产品可达性；数字人是平台级输出与路线无关 | [15 二](Voice-Live系列15：realtime模型与数字人.md#二四条路线再展开听想说分别在哪数字人的口型由谁驱动) |
+| realtime 配 Azure 音色就是混合式：逐字念题成立且更快；浏览器端延迟分段与级联对比 | [15 四](Voice-Live系列15：realtime模型与数字人.md#四文本驱动数字人已验证而且在-realtime-会话上更快) |
+| 模型自己念题会飘，是否逐字取决于指令跟随（受测 gpt-realtime-2.1 1/3、gpt-5-mini 3/3，只代表这两个模型）；「不行」与「会飘」是两个问题 | [15 五](Voice-Live系列15：realtime模型与数字人.md#五gpt-realtime-自己念题不是不行是容易飘取决于指令跟随) |
+| 模型自产音频驱动数字人的证据阶梯：帧在流、声可听，口型是否对词未证 | [15 六](Voice-Live系列15：realtime模型与数字人.md#六gpt-realtime-自产音频驱动数字人证据走到第五级) |
+| realtime 能产文本但只走自己的协议，HTTP 与 Responses 全拒；judge 与打分留 chat 模型 | [15 七](Voice-Live系列15：realtime模型与数字人.md#七realtime-能产文本但-judge-与打分留在-chat-模型) |
+| 「realtime 不用 STT 不用 TTS」的两个后果：失去逐字念题与作答转写；可行的路是混合式 | [15 八](Voice-Live系列15：realtime模型与数字人.md#八realtime-不用-stt-也不用-tts这条需求的两个后果) |
+| GPT-Live-1 八项待测清单与测法 | [15 九](Voice-Live系列15：realtime模型与数字人.md#九gpt-live-1-的待测清单) |
+
+## 二、首次阅读顺序
+
+- **只想看懂架构**：[01](Voice-Live系列01：Agent实现架构.md) → [02](Voice-Live系列02：解耦Agent-Service后的架构演进.md) → [06](Voice-Live系列06：轮次控制的五道关卡.md)。
+- **要做数字人延迟与弱网**：先读传输层前置 [16](Voice-Live系列16：传输层概念对齐.md)，再 [03](Voice-Live系列03：数字人出场延迟优化.md) → [10](Voice-Live系列10：ICE、STUN与TURN.md) → [12](Voice-Live系列12：数字人弱网表现.md)，需要自建中继再看 [11](Voice-Live系列11：自建TURN中继.md)。
+- **要做轮次与读题**：[06](Voice-Live系列06：轮次控制的五道关卡.md) → [07](Voice-Live系列07：重复致谢排查.md) → [08](Voice-Live系列08：应答门控.md) → [09](Voice-Live系列09：脚本朗读的机制化.md)。
+- **要选模型或接自带模型**：[14](Voice-Live系列14：模型接入的三条路径.md)，背景先看 [02 五](Voice-Live系列02：解耦Agent-Service后的架构演进.md#五模型组合原生-realtime-vs-级联性能与能力的取舍) 与 [09 四](Voice-Live系列09：脚本朗读的机制化.md#四不走-llm-了为什么建连还必须配模型能不配吗)。
+- **要做选型汇报**：[02](Voice-Live系列02：解耦Agent-Service后的架构演进.md) → [04](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md) → [05](Voice-Live系列05：两类数字人头像.md)，realtime 与数字人、全双工待测再看 [15](Voice-Live系列15：realtime模型与数字人.md)。
+
+## 三、活文档与待验清单入口
+
+- [02 九](Voice-Live系列02：解耦Agent-Service后的架构演进.md#九开放问题待验证后续讨论)：系列级开放问题，13 条，含会话时长上限备忘与终端边界。
+- [04 八](Voice-Live系列04：GPT-Live-1对数字人方案的影响.md#八开放问题)：GPT-Live-1 上线 Voice Live 后要核的事项。
+- [12 六](Voice-Live系列12：数字人弱网表现.md#六决定性对照关画面留声音)、[12 6.1](Voice-Live系列12：数字人弱网表现.md#61-服务端-avatar-可调项复核没有接收端缓冲参数但有三个未验证的字段)：压到 500 kbps 能否恢复可解码、gop_size、output_protocol websocket、output_audit_audio、Opus 带内 FEC 与单声道。
+- [11 5.2](Voice-Live系列11：自建TURN中继.md#52-唯一的实际前提你的-turn-能出向到达-azure-的-answer-候选)：answer 候选地址段，写客户出向白名单用。
+- [01 4.5.1](Voice-Live系列01：Agent实现架构.md#451-为什么输入默认-24-khz级联模式能不能降到-16-khz) 末：24 与 16 kHz 转写 A/B 已验证（词错误率均 0.0%）。
+- [12 7.4](Voice-Live系列12：数字人弱网表现.md#74-落地补记两条-azure-硬约束与不对称冷却) 末两项已在 [12 7.5](Voice-Live系列12：数字人弱网表现.md#75-实测回填端到端触发验证阈值标定的答案与恢复失同步的坑) 回填：端到端触发已验证、次触发保持关闭。仍待验："1080p 压到 500 kbps 是否恢复可解码"（12 六）、6.1 三个字段、"画面可解码但声音单独变差"的真实案例出现后再启用合取式次触发。
+- [03 6.1](Voice-Live系列03：数字人出场延迟优化.md#61-补测azure-确认读题--候选人真正听见2026-10-01) 已补测「数字人开口」增量（806 ms），03 六 第 4 条的"仍待测"随之关闭。该值两类形象均已测（amira 806 ms、lisa 988 ms，差约 180 ms，不可跨形象套用）。**本轮新增待验**：ICE 候选到达间隔为 n=3 单一网络，换网络环境值得复测；预热实际替候选人省下多少（探针是立刻点击的最坏情况）未测；无 avatar 回退（音频走 WS 的 PCM）已证实有声音但延迟未测；纯音频走原生 WebRTC 接口尚未实现，故未测。
+- [12 7.6.5](Voice-Live系列12：数字人弱网表现.md#765-待补的台架测试)：七项待补台架测试——同区域小 RTT 下 1080p 实证、1080p 压 500 k 可解码性、照片数字人 300 k 存活、上行下限扫描、纯音频下行与丢包下限、3 分钟窗口、分段探针脚本。
+
+- [13 十二](Voice-Live系列13：数字人配额与限流.md#十二待验与待办)：并发 5 的作用域是否按资源；5 分钟空闲断开的实际表现与重连是否撞新建额度；实现层三件事（窗口 60 秒、限流解析 Retry after 重试、限流专用日志）
+- [14 十二](Voice-Live系列14：模型接入的三条路径.md#十二待验)：BYOM 直通与 anthropic profile 未实测（本资源无 realtime / Claude 部署）；foundry-resource-override 跨资源；invalid_model 歧义需对照 Foundry 模型目录；BYOM 下五道关卡控制权是否与原生一致；级联延迟增量；region 清单变化节奏与 6 小时缓存是否合适
+- [15 十一](Voice-Live系列15：realtime模型与数字人.md#十一待验)：模型自产音频下口型是否对词（录屏人眼 / CV）；realtime 延迟同日各 3 次；音频型 EoU @1000 持平重复确认、700 变质机理；真人录音；GPT-Live-1 八项（[15 九](Voice-Live系列15：realtime模型与数字人.md#九gpt-live-1-的待测清单)）
+- [17 九](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#九待验)：企业安全客户端 UDP 端口钉死的复现与反馈、WebSocket 下发数字人的弱网表现与首帧延迟、自建 TURN over TLS 能否绕开。
+- [16 九](Voice-Live系列16：传输层概念对齐.md#九待验)：最终选中候选对类型多网络复测（补系列10 的 n=3）；直连可行时 relay 为何仍胜出；answer 是否 `a=ice-lite`（对端为 srflx 且主动检测，已基本排除 lite）；封 UDP 后 TURN 的 TCP / TLS 能否恢复画面；语音 WebRTC 是否下发 TURN；WebRTC 音轨路上打断是否生效。
+
+## 四、已定决策与不做项速查
+
+| 决策 | 理由所在 |
+|---|---|
+| 不做思考过渡语遮蔽网关延迟 | [03 六](Voice-Live系列03：数字人出场延迟优化.md#六对话轮次延迟说完话--回复返回单并发多轮实测) |
+| 不自己实现码率自适应，Azure 已做 | [12 5.1](Voice-Live系列12：数字人弱网表现.md#51-azure-确实会自适应降码率方向正确幅度也够)、[12 7.3](Voice-Live系列12：数字人弱网表现.md#73-明确不做的) |
+| 不用 SDP b=AS 压码率，不用冻结次数当健康指标 | [12 三](Voice-Live系列12：数字人弱网表现.md#三第一阶段无限速基线与四个前提逐项验证)、[12 5.2](Voice-Live系列12：数字人弱网表现.md#52-但自适应救不了-1080p丢包-1-时它一帧都解不出来) |
+| 不给用户选网络档位，降级全自动 | [12 7.2](Voice-Live系列12：数字人弱网表现.md#72-p0-到-p4全部自动)、[12 7.3](Voice-Live系列12：数字人弱网表现.md#73-明确不做的) |
+| 关画面立即、开画面等 60 秒冷却；自动恢复失败门槛翻倍，两次失败后本场纯音频 | [12 7.4](Voice-Live系列12：数字人弱网表现.md#74-落地补记两条-azure-硬约束与不对称冷却) |
+| 音频补偿率次触发关闭、不按数字人配阈值表，只留免阈值主触发；两个都差先关画面且关画面永不等待；再启用做成与视频带宽合取并等真实案例 | [12 7.5](Voice-Live系列12：数字人弱网表现.md#75-实测回填端到端触发验证阈值标定的答案与恢复失同步的坑) |
+| 客户网络先测三个数对号入座，分级只定起始形态不替代运行时降级；A 级视频数字人为推导值待实证 | [12 7.6](Voice-Live系列12：数字人弱网表现.md#76-给客户的网络基线与配置推荐先测三个数再对号入座) |
+| WebRTC 数字人建连失败时降级为新建会话并改 `output_protocol: websocket`；ICE 断开后的恢复也必须新建会话（`session.avatar.connect` 每会话只接受一次） | [17 七](Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md#七应对与两条前端改进)、[12 四](Voice-Live系列12：数字人弱网表现.md#四通道结构与关画面保声音的两条路) |
+| 上行暂不改走 WebRTC，等该模式支持 avatar | [01 4.5.2](Voice-Live系列01：Agent实现架构.md#452-为什么会有这些不一致三条产品线的拼接缝)；[12 7.3](Voice-Live系列12：数字人弱网表现.md#73-明确不做的) |
+| 上行按 40 ms 批、我们这一跳发二进制裸 PCM（Azure 那一跳格式不变）；能力位协商而非假设，旧后端自动回退 base64 | [01 4.5.4](Voice-Live系列01：Agent实现架构.md#454-上行成帧同一份音频怎么从-391-kbps-降到-256-kbps2026-10-03-实测落地) |
+| 关 permessage-deflate 必须排在二进制之后：先关会让上行从 285 涨回 391 kbps（倒退 37%） | [01 4.5.4](Voice-Live系列01：Agent实现架构.md#454-上行成帧同一份音频怎么从-391-kbps-降到-256-kbps2026-10-03-实测落地) |
+| 候选人插话时**不**掐掉已排队的面试官音频（重叠最多约 4 秒）：听两个声音比漏掉半道题可接受；`flushPlayback` 只用于会话拆除 | [06 打断更正](Voice-Live系列06：轮次控制的五道关卡.md#五能组合出的七种使用形态) |
+| 「静音期码率倒挂」结论作废、且不再复测（两次反例 + 帧率/每帧字节的自洽解释） | [12 三](Voice-Live系列12：数字人弱网表现.md#三第一阶段无限速基线与四个前提逐项验证) |
+| 自建 TURN 只在出向白名单、合规路径、地理接入三种情况下做 | [11 六](Voice-Live系列11：自建TURN中继.md#六什么时候值得自建) |
+| 读题用 pre_generated 直接 TTS，能用机制绝不用 prompt | [09 三](Voice-Live系列09：脚本朗读的机制化.md#三怎么直接-tts不让模型回复)、[09 五](Voice-Live系列09：脚本朗读的机制化.md#五既要精确读题又要保留部分-llm-生成代码和-prompt-怎么分工) |
+| 数字人场景 H.264 保持默认，不换编码 | [12 6.1](Voice-Live系列12：数字人弱网表现.md#61-服务端-avatar-可调项复核没有接收端缓冲参数但有三个未验证的字段) |
+| 数字人的并发 5 / 新建 3 次/60 秒当**固定行为约束**对待，不当可申请扩容的配额；超过 5 并发只走提并发限制工单或横向加资源 | [13 二](Voice-Live系列13：数字人配额与限流.md#二先立框架avatar-不是一个服务是-speech-的附属能力)、[13 7.3](Voice-Live系列13：数字人配额与限流.md#73-结论没有-quota-名字可以填) |
+| 批量进场必须错开或排队（每 20 秒放一个）；密集测试关掉数字人或再开一个资源；`voice.type` 不切 `openai`（会落到 3 RPM） | [13 4.5](Voice-Live系列13：数字人配额与限流.md#45-操作规则5-个并发能到但不能一下子到)、[13 9.2](Voice-Live系列13：数字人配额与限流.md#92-测试期的可持续节奏)、[13 7.4](Voice-Live系列13：数字人配额与限流.md#74-不要把那个-3-rpm-和-avatar-的-3-混为一谈) |
+| 推理模型与语音会话模型拆成两个配置，原字段不再喂 Voice Live；候选人面试的语音腿**不**切 BYOM（嘴不推理，换 BYOM 只换宿主与计费口径却要付资源、权限、延迟代价）；原生模式下拉只列对本资源实测 ACCEPTED 的模型，保存前复校 | [14 7.3](Voice-Live系列14：模型接入的三条路径.md#73-修法拆成推理模型与语音会话模型)、[14 6.3](Voice-Live系列14：模型接入的三条路径.md#63-byom-路径探测) |
+| EoU 统一到音频型 @1000 ms，删掉文本型分支与管线开关（分段行为实测等价，realtime 自动可用）；逐字念题无论宿主模型都留在 pre_generated 走 Azure TTS（模型念 1/3）；语音模型可设 realtime 但走混合式（保留 Azure TTS 与输入转写），不走语音到语音行 | [15 3.1](Voice-Live系列15：realtime模型与数字人.md#31-两种-eou-的分段行为实测等价判定延迟可调回持平)、[15 五](Voice-Live系列15：realtime模型与数字人.md#五gpt-realtime-自己念题不是不行是容易飘取决于指令跟随)、[15 八](Voice-Live系列15：realtime模型与数字人.md#八realtime-不用-stt-也不用-tts这条需求的两个后果) |

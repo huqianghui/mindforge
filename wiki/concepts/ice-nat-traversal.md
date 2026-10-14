@@ -31,7 +31,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: ICE / STUN / TURN 属于 WebRTC 而不属于数字人——纯语音 WS 四者全无，语音改走 WebRTC 则 ICE 必有、STUN / TURN 取决于服务端下发；不配 TURN 能通但无 relay 保底
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.8（Microsoft Learn / RFC 查证 + 系列01 上行 WebRTC 实测；Voice Live 语音 WebRTC 是否下发 TURN 未查证）
@@ -41,7 +41,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: ICE / STUN / TURN 速览——三类候选是三个视角的地址，一次性信令（Vanilla ICE）逼出门控，"够用集"捷径成立的前提是"两类候选同源"且 300 ms 收敛窗是规则一部分；TURN 不是联邦网络，自建只替换浏览器一侧、默认中继是默认答案
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice-Live系列10：ICE、STUN与TURN]]、[[Voice-Live系列11：自建TURN中继]]、[[Voice-Live系列12：数字人弱网表现]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-11
 - **置信度**：0.8（RFC 8445 / 8489 / 8656 / 8838 核对 + 真机 SDP / `onicecandidate` 抓取；收敛窗 n=3 单一网络；自建 TURN 部分为文档核对尚未实施，0.7）
@@ -53,7 +53,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: 候选是"接收地址"不是源地址；host 与 srflx 共用同一个本地 socket（base）；prflx 是对端从检测包学到的地址；STUN 与 TURN 候选同时收集——"直连优先、relay 保底"是选择顺序而非时间顺序
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.8（RFC 8445 查证；对称 NAT 下靠 prflx 连公网服务器为推断）
@@ -63,7 +63,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: ICE 两端对称——一条路径 = 我的候选 × 对端的候选，controlling 方 nominate；候选对优先级由 min(G, D) 主导，所以只要一端是 relay 整对就排后，但排序只决定"都通时选谁"，实测 UDP 通的网络上 relay 4 次胜出 3 次
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]、[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]、[[Voice-Live系列10：ICE、STUN与TURN]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.7（公式为 RFC 8445 原文；胜出统计 n=4 同类开发网络，relay 为何胜出原因未查明）
@@ -73,7 +73,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: ICE 的五件事与 STUN / TURN 服务器无关——选路、连通性检测（学 prflx）、对端同意（consent freshness）、保活、换网（ICE restart）；STUN、TURN 服务器只用来多找候选，ICE 是验证并维持路径的机制
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.85（RFC 8445 / RFC 7675 查证）
@@ -83,7 +83,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: ICE-lite（只公布 host、只应答、固定 controlled、SDP 带 `a=ice-lite`）是给始终公网可达一端的精简实现；云上 1:1 NAT 的 full ICE 服务器会公布 srflx——Azure 数字人对端候选实测为 srflx 且主动发 12 次检测，基本排除 ICE-lite
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]、[[Voice-Live系列12：数字人弱网表现]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.7（两条独立实测证据；最终以 SDP answer 无 `a=ice-lite` 定案，尚未抓取）
@@ -93,7 +93,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 ### Claim: 验证 ICE 实际走了哪条路只看 nominated 候选对两端的 candidateType——webrtc-internals / getStats 几分钟内可读；TURN 可达性用 `iceTransportPolicy: "relay"` 单独探测，不必开整场会话
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.8（MDN 查证 + 一次真机截图逐项解读）
@@ -116,7 +116,7 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 ## 来源日记
 
 - [[2026-10-08-周四]] — 进一步了解 WebRTC 协议，成文系列16 并补 ICE-lite / webrtc-internals 截图解读 / WS 分层工具
-- [[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]] — 候选三类型、一次性信令与门控、只下发一台 TURN
-- [[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]] — TURN 非联邦、自建六项要求与三处验证
-- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — srflx↔srflx 直连实测
-- [[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]] — 核心来源
+- [[Voice-Live系列10：ICE、STUN与TURN]] — 候选三类型、一次性信令与门控、只下发一台 TURN
+- [[Voice-Live系列11：自建TURN中继]] — TURN 非联邦、自建六项要求与三处验证
+- [[Voice-Live系列12：数字人弱网表现]] — srflx↔srflx 直连实测
+- [[Voice-Live系列16：传输层概念对齐]] — 核心来源

@@ -30,7 +30,7 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 
 ### Claim: ArchUnit 不是测试框架，而是借用 JUnit 运行环境的静态分析规则引擎
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
@@ -40,7 +40,7 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 
 ### Claim: Vibe Coding 时代架构腐蚀加速，架构约束从可选变为刚需
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -50,7 +50,7 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 
 ### Claim: 完整架构质量体系需要四层协作——从格式到约束到分析到 AI Review
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -60,7 +60,7 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 
 ### Claim: Baseline MCP Server 是专为 Vibe Coding 时代设计的架构门禁
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.5

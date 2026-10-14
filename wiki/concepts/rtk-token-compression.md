@@ -60,7 +60,7 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 
 ### Claim: RTK 与 Caveman 完全互补，可同时启用覆盖全链路 token 优化
 
-- **来源**：[[Caveman与RTK对比——两种互补的LLM Token优化方案]]
+- **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -70,7 +70,7 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 
 ### Claim: RTK 四大过滤策略实现确定性压缩
 
-- **来源**：[[Caveman与RTK对比——两种互补的LLM Token优化方案]]
+- **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7

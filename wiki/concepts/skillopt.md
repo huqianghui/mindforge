@@ -65,7 +65,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: 代码骨架 = environment-agnostic 的六阶段主循环，接新任务只写 EnvAdapter
 
-- **来源**：[[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]]
+- **来源**：[[SkillOpt系列01：源码篇]]
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.85
@@ -75,7 +75,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: 冒烟配置只验证"管路通"不验证"效果"——sel 太小时真帮到也显示打平被拒
 
-- **来源**：[[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]]
+- **来源**：[[SkillOpt系列02：快速上手]]
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.85
@@ -85,7 +85,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: APO 摆动 vs SkillOpt 稳定源自三层机制叠加——门控只是最后一道闸，且门控不消灭噪声只换其表现形式
 
-- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.85
@@ -95,7 +95,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: 机制稳 ≠ 效果赢——100 任务无污染配对对决：SkillOpt 增益未泛化（gate 过拟合 val）、APO 边缘胜出、任务天花板 soft ≤ +0.02
 
-- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.85
@@ -105,7 +105,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: SkillOpt × Dream-RSI 同构分工——procedural knowledge vs search behavior，真实 rollout vs 离线 replay
 
-- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **来源**：[[2026-09-22-Dream-RSI]]
 - **首次出现**：2026-09-22
 - **最近更新**：2026-09-25
 - **置信度**：0.6
@@ -115,7 +115,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 ### Claim: best_skill.md 是 RSI"积累能力本身"这类资产的具体形态；bad-case 挖掘循环同构于 Jev 企业侧校准回流——优化对象从 skill 文本换成决策模型 + confidence + workflow 策略
 
-- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]、[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[FinOps系列02：数据飞轮与RSI]]、[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-26
 - **最近更新**：2026-09-28
 - **置信度**：0.65
@@ -143,9 +143,9 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 ## 来源日记
 
 - [[2026-07-01-SkillOpt]] — 论文精读：四大机件、三 split、快慢两层循环、选择门 vs 梯度、与竞品"缺哪块"式对比
-- [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]] — 8 包职责、六阶段代码映射、EnvAdapter 契约、三 memory 代码落点、optimizer/target 双通道
-- [[SkillOpt系列02：快速上手——AML+Azure OpenAI跑通SearchQA最小实验]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
-- [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 三层机制对比、真实客户任务移植、reward 双指标分工、静默 skip 事故、100 任务配对对决
-- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — 探索/精修互补性、两段式管道、三个数算账判断式、reward v2 改良方案
-- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — best_skill.md 作 RSI 能力资产形态、资产折旧（2026-09-26）
-- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — bad-case 挖掘循环与 SkillOpt/APO 同构（2026-09-27）
+- [[SkillOpt系列01：源码篇]] — 8 包职责、六阶段代码映射、EnvAdapter 契约、三 memory 代码落点、optimizer/target 双通道
+- [[SkillOpt系列02：快速上手]] — AML CPU + Azure OpenAI runbook、`--limit N --train_size N` 成对踩坑、冒烟只测管路的深挖
+- [[SkillOpt系列03：提示词调优实战]] — 三层机制对比、真实客户任务移植、reward 双指标分工、静默 skip 事故、100 任务配对对决
+- [[SkillOpt系列04：APO与SkillOpt联合展望]] — 探索/精修互补性、两段式管道、三个数算账判断式、reward v2 改良方案
+- [[FinOps系列02：数据飞轮与RSI]] — best_skill.md 作 RSI 能力资产形态、资产折旧（2026-09-26）
+- [[TypeSafe-Jev：可校准的决策原语]] — bad-case 挖掘循环与 SkillOpt/APO 同构（2026-09-27）

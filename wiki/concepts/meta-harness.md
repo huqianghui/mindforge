@@ -34,7 +34,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: Meta-Harness 给出了比业界主流更精确的 Harness 定义
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -44,7 +44,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: 实际存在两层 Harness——Platform Harness 和 User Harness
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -54,7 +54,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: 完整执行 trace 是不可替代的诊断信号
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.9
@@ -64,7 +64,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: Harness 优化本质上是一个搜索问题
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -74,7 +74,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: Meta-Harness 落地存在三种路径
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -84,7 +84,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 ### Claim: 全量评测体制溶解"哪些改动敏感"的判断题——门禁从守护 harness 变为驱动 harness
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
@@ -113,4 +113,4 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 - [[2026-04-16-周四]] — 研读 Meta-Harness 论文并撰写解读文章
 - [[2026-04-15-周三]] — 今天主任务中首次提及 Meta-Harness 论文
-- [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — 选择性评测 vs 全量评测的经济学对比、门禁演化推演（守护→驱动）、SkillOpt gate 同构印证
+- [[Agent=Model+Harness]] — 选择性评测 vs 全量评测的经济学对比、门禁演化推演（守护→驱动）、SkillOpt gate 同构印证

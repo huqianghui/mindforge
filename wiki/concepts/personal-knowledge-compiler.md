@@ -26,7 +26,7 @@ related:
 
 ### Claim: 日记存在写入与消费的结构错配
 
-- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -36,7 +36,7 @@ related:
 
 ### Claim: LLM Wiki 模型——LLM 是维护者不是问答者
 
-- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ related:
 
 ### Claim: 知识碎片化问题及解法
 
-- **来源**：[[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
+- **来源**：[[PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -86,7 +86,7 @@ related:
 
 ### Claim: 一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引——实体消解从构造上解决、索引成本为零
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
@@ -96,7 +96,7 @@ related:
 
 ### Claim: PKC 站在全球空白的 gap 中——typed edges + 时间演替都在做，缺的是类型化边 linter 与 typed vs untyped 检索 eval
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.75
@@ -106,7 +106,7 @@ related:
 
 ### Claim: 获取前端与编译后端分离——Codex 管拿回来、Claude Code 管知识化，交接走落盘协议
 
-- **来源**：[[Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验]]
+- **来源**：[[Computer-Use与Browser-Use系列五：最佳实践]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -116,7 +116,7 @@ related:
 
 ### Claim: Spatial Memory 的数据库式消费与"编译一次、持续查询"同构——知识编译原则的空间域实例
 
-- **来源**：[[空间智能系列02：显式与隐式空间表达——VGGT、3DGS到空间记忆的五层抽象与选用边界]]
+- **来源**：[[空间智能系列02：显式与隐式空间表达]]
 - **首次出现**：2026-09-20
 - **最近更新**：2026-09-25
 - **置信度**：0.65
@@ -136,6 +136,6 @@ related:
 
 ## 来源日记
 
-- [[PKC系列01：从日记到知识库——Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践文章
+- [[PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]] — PKC 实践文章
 - [[2026-04-13-周一]] — 四层知识模型演进、五项高维度改进实施
-- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — wikilink vault=80% GraphRAG 索引、实体消解从构造上解决、linter+eval 全球空白 gap
+- [[Graph-Engineering的三重含义]] — wikilink vault=80% GraphRAG 索引、实体消解从构造上解决、linter+eval 全球空白 gap

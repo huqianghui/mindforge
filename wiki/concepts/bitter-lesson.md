@@ -66,7 +66,7 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 ### Claim: 职业版 Bitter Lesson——操作性知识被模型能力吞噬，问题定义/约束设计/跨域迁移存活
 
-- **来源**：[[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]]
+- **来源**：[[FDE职业进化论]]
 - **首次出现**：2026-05-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -76,7 +76,7 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 
 ### Claim: 金字塔 algorithms < compute < data < doing the right task 把 Bitter Lesson 再推一层——连方法都不是关键，关键是选对要解的任务；FLAN lesson 与"Bitterest lesson"是两个例证
 
-- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]
+- **来源**：[[FinOps系列02：数据飞轮与RSI]]
 - **首次出现**：2026-09-26
 - **最近更新**：2026-09-28
 - **置信度**：0.65
@@ -97,5 +97,5 @@ Rich Sutton 的元原则：利用计算的通用方法（search + learning）最
 ## 来源日记
 
 - [[2026-03-21-The-Bitter-Lesson]] — 论文精读笔记
-- [[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]] — 职业层投射：三元能力存活（2026-05-30）
-- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — 金字塔四层与三层循环对齐、FLAN lesson、Bitterest lesson、资产折旧推论（2026-09-26）
+- [[FDE职业进化论]] — 职业层投射：三元能力存活（2026-05-30）
+- [[FinOps系列02：数据飞轮与RSI]] — 金字塔四层与三层循环对齐、FLAN lesson、Bitterest lesson、资产折旧推论（2026-09-26）

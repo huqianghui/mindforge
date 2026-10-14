@@ -31,7 +31,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 广义 Computer Use ⊃ Browser Use——操作 UI 层而非 API 层；Chrome integration 是接入方式而非中间层，狭义"原生桌面 Computer Use"与 Browser Use 是并列执行路径
 
-- **来源**：[[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]、[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **来源**：[[Computer-Use与Browser-Use系列一：概念与产品形态]]、[[Computer-Use与Browser-Use系列九：三条执行路径对比]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-10-14
 - **置信度**：0.8
@@ -43,7 +43,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 包含关系之外的正交维度——产品栏目、操作能力、接入方式、观察方式分开理解，产品设置里的归类不等于技术层级；headless/headed 与 Profile 也是两个独立维度
 
-- **来源**：[[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]（2026-10-13 重写）、[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **来源**：[[Computer-Use与Browser-Use系列一：概念与产品形态]]（2026-10-13 重写）、[[Computer-Use与Browser-Use系列九：三条执行路径对比]]
 - **首次出现**：2026-10-13
 - **最近更新**：2026-10-14
 - **置信度**：0.8
@@ -53,7 +53,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: action loop 是 agent loop 在 GUI 操作域的实例化——协议层/翻译层/执行层分离，官方只给协议不给执行器
 
-- **来源**：[[Computer Use与Browser Use系列三：自己实现——action loop协议、双执行器路线与跨平台adapter矩阵]]
+- **来源**：[[Computer-Use与Browser-Use系列三：自己实现]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -63,7 +63,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 语义操作优先、坐标操作兜底——Codex 与 Orca 两个独立实现同构收敛
 
-- **来源**：[[Computer Use与Browser Use系列二：Codex浏览器运行时解剖——从bundled plugin看Agent浏览器控制的工程设计]]
+- **来源**：[[Computer-Use与Browser-Use系列二：Codex浏览器运行时]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-29
 - **置信度**：0.7
@@ -73,7 +73,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: Skill 是说明书、Runtime 才是手脚——CLI/App 共享 Skill 发现机制但执行 runtime 不对等
 
-- **来源**：[[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]]
+- **来源**：[[Computer-Use与Browser-Use系列六：Codex-CLI与App的分界]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-29
 - **置信度**：0.7
@@ -83,7 +83,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 执行位置决定能力归属——Computer Use / Browser Use / Web Search 三例同构，能力越贴近本地状态补位越只能在客户端
 
-- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-30
 - **最近更新**：2026-08-30
 - **置信度**：0.7
@@ -93,7 +93,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 服务端工具断供要分两层判断——端点层有无执行器 × harness 层肯不肯发声明，断供点越上游可补位层越少
 
-- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-30
 - **最近更新**：2026-09-04
 - **置信度**：0.85
@@ -103,7 +103,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 判定工具执行位置的五条指纹需多条交叉——弹本地权限恰证执行器在本地；管道决定能力下限、模型性格决定实际走几级梯
 
-- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.8
@@ -113,7 +113,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: UI 层天然残缺、数据层天然完整——DOM 虚拟化是页面性质而非工具缺陷
 
-- **来源**：[[Computer Use与Browser Use系列五：最佳实践与日常使用习惯——场景路由表、内容获取链路与实战经验]]
+- **来源**：[[Computer-Use与Browser-Use系列五：最佳实践]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -123,7 +123,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 产品化路线是"可审计智能 RPA"——模型提议、策略放行、执行器落地三权分立
 
-- **来源**：[[Computer Use与Browser Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计]]
+- **来源**：[[Computer-Use与Browser-Use系列四：产品化]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-29
 - **置信度**：0.7
@@ -133,7 +133,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 断供框架的第三层是治理层——harness 的隐藏模型调用跟 provider 走，接第三方要盘点全部模型调用而非只主模型
 
-- **来源**：[[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **来源**：[[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]]、[[Codex-Desktop系列06：ModelInfo字段手册]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.85（二进制逆向 + 源码常量实锤 + 修复推断确认——"配置意图 + 404 消失"而非抓包实测；404 归因于 codex-auto-review 系"源码选择逻辑 + luna 已部署仍需 override"两条证据推出，错误信息本身不回传模型名）
@@ -143,7 +143,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树疑似紧耦合（推测）
 
-- **来源**：[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]、[[Codex Desktop系列03：bundled的真正含义与三版本号——Apple Bundle概念、同源不同发行版与com.openai.codex血缘]]
+- **来源**：[[Codex-Desktop系列04：Computer-Use藏身之处]]、[[Codex-Desktop系列03：bundled的真正含义]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.75（①② 本机路径验证 + 公开 issue 佐证；③ 为推测未直接验证——2026-09-12 按系列04 事实性修订软化）
@@ -153,7 +153,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: DCC 域实证——Computer Use 适合做"眼睛"不适合做"手"，批量制作交给应用 API
 
-- **来源**：[[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]]、[[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]]
+- **来源**：[[Blender系列02：操作入口与官方MCP安装]]、[[Blender系列03：虎式坦克实战]]
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.75（实测三故障 + 后台路径独立验证）
@@ -163,7 +163,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: structured output 的收益模型在物理控制域翻转——格式合法性收益不成立、物理合法性才是诉求；FAST 修正：离散可行但代价在推理侧；同一权衡三次跨尺度重现
 
-- **来源**：[[VLA系列01：VLA输出架构演进——从动作token到扩散动作头]]、[[VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互]]、[[空间智能系列03：3D内容生产的两条路线——Agent操作Blender与神经3D生成的分工]]、[[空间智能系列04：神经3D生成的开源版图——HY-World 2.0可探索世界、TRELLIS.2高保真资产与Marble对照]]
+- **来源**：[[VLA系列01：输出架构演进]]、[[VLA系列04：π0、FAST与Hi-Robot]]、[[空间智能系列03：3D内容生产的两条路线]]、[[空间智能系列04：神经3D生成的开源版图]]
 - **首次出现**：2026-09-17
 - **最近更新**：2026-09-25
 - **置信度**：0.7
@@ -173,7 +173,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 单变量受控对照：同一执行器只换判断模型，DOM 型网页任务判断延迟约为 LLM 的 1/8、任务耗时 −58~66%、公开价费用 −90~96%、成功率同为 4/4——但探索轮曾因三处口径不一致得出相反结论
 
-- **来源**：[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]
+- **来源**：[[Computer-Use与Browser-Use系列八：Jev与Codex实践]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -183,7 +183,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: Jev skill 是"条件默认"不是"优先选择"——DOM 可观察/目标明确/有程序化验收/动作可逆的网页任务默认 jev-browser；纯视觉、跨 App、有 stakes 动作与用户点名各有归口；桌面 Computer Use 尚无有效数据
 
-- **来源**：[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]
+- **来源**：[[Computer-Use与Browser-Use系列八：Jev与Codex实践]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -193,7 +193,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 三条执行路径没有固定的速度与 token 排名——总耗时常由模型判断与循环轮次主导，token 由观察策略而非接入方式决定；"Chrome 扩展更省"、"Computer Use 最费"都不能预设
 
-- **来源**：[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **来源**：[[Computer-Use与Browser-Use系列九：三条执行路径对比]]
 - **首次出现**：2026-10-13
 - **最近更新**：2026-10-13
 - **置信度**：0.65
@@ -203,7 +203,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ### Claim: 账号身份与 model provider 要分开配置——Chrome Browser Use 访问远程网址前有一次以 ChatGPT 身份发起的站点预检，纯 API key / custom provider 模式下会在页面加载前失败；登录 ChatGPT 账号（Free 档即可）并保留 Azure OpenAI provider 后实测恢复
 
-- **来源**：[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **来源**：[[Computer-Use与Browser-Use系列九：三条执行路径对比]]
 - **首次出现**：2026-10-13
 - **最近更新**：2026-10-13
 - **置信度**：0.65
@@ -232,11 +232,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - [[2026-08-29-周六]] — 系列一~六成文 + Orca 补位实测（网易云音乐）
 - [[2026-08-30-周日]] — 系列七成文（web search 分界）+ 社区补位生态调研（open-computer-use / cua / UI-TARS）
-- [[Codex Desktop系列02：gpt-5.4-mini与三条暗线——全局配置菜单、退休元数据与自动审批调用链]] — 审批链路 404 排查与 override 修复实测、三种权限模式验证纪律
-- [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — 分发链解剖：plugin payload 路径、reconciliation 机制、三个边界证据
-- [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 审批模型常量与 override 代码路径、治理四件套字段、retirement_at Informational
-- [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — 三入口分工表、Computer Use 三故障实录
-- [[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]] — "眼睛不做手"结论的来源实操
-- [[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]] — 2026-10-13 重写：产品栏目/操作能力/接入方式三维度、headless 与 Profile 独立、撤回包含关系
-- [[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]] — 六维度拆分、三路径多维对比、性能与 token 测量纪律、屏幕占用三问、认证与 provider 分开的实测
-- [[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]] — API/skill/执行器三层、两种接法、两 skill 与分层互斥、口径修正与单变量实验、结果表与 6 秒分解、桌面阻塞、条件默认结论与四个实验
+- [[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]] — 审批链路 404 排查与 override 修复实测、三种权限模式验证纪律
+- [[Codex-Desktop系列04：Computer-Use藏身之处]] — 分发链解剖：plugin payload 路径、reconciliation 机制、三个边界证据
+- [[Codex-Desktop系列06：ModelInfo字段手册]] — 审批模型常量与 override 代码路径、治理四件套字段、retirement_at Informational
+- [[Blender系列02：操作入口与官方MCP安装]] — 三入口分工表、Computer Use 三故障实录
+- [[Blender系列03：虎式坦克实战]] — "眼睛不做手"结论的来源实操
+- [[Computer-Use与Browser-Use系列一：概念与产品形态]] — 2026-10-13 重写：产品栏目/操作能力/接入方式三维度、headless 与 Profile 独立、撤回包含关系
+- [[Computer-Use与Browser-Use系列九：三条执行路径对比]] — 六维度拆分、三路径多维对比、性能与 token 测量纪律、屏幕占用三问、认证与 provider 分开的实测
+- [[Computer-Use与Browser-Use系列八：Jev与Codex实践]] — API/skill/执行器三层、两种接法、两 skill 与分层互斥、口径修正与单变量实验、结果表与 6 秒分解、桌面阻塞、条件默认结论与四个实验

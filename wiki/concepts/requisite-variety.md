@@ -29,7 +29,7 @@ related:
 
 ### Claim: V_Regulator ≥ V_Disturbance——调节器多样性必须匹配扰动多样性
 
-- **来源**：[[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]]
+- **来源**：[[Vibe-Coding系列13：控制论指导Harness-Engineering]]
 - **首次出现**：2026-07-12
 - **最近更新**：2026-08-04
 - **置信度**：0.8
@@ -39,7 +39,7 @@ related:
 
 ### Claim: 定律决定 FDE 的存在条件——内部 Regulator 有 variety 天花板，外部调节器天然更丰富
 
-- **来源**：[[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]]
+- **来源**：[[FDE职业进化论]]
 - **首次出现**：2026-05-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -49,7 +49,7 @@ related:
 
 ### Claim: 只要扰动不停止，调节就不会"完成"——Regulation 是持续过程而非一次性交付
 
-- **来源**：[[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]]
+- **来源**：[[FDE职业进化论]]
 - **首次出现**：2026-05-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -59,7 +59,7 @@ related:
 
 ### Claim: 调节器复杂度应匹配模型不确定性——模型变强后外层调节器降复杂度，说服替代强制
 
-- **来源**：[[Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化]]
+- **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -81,5 +81,5 @@ related:
 
 ## 来源日记
 
-- [[Vibe Coding系列13：控制论如何指导Harness Engineering——用Regulation和Requisite Variety让Vibe Coding变得可控]] — Regulation vs Optimization、定律的 Harness 侧应用
-- [[FDE职业进化论——AI时代前线部署工程师的个人突围与团队重构]] — 定律的组织/商业侧应用：FDE 存在条件三推论
+- [[Vibe-Coding系列13：控制论指导Harness-Engineering]] — Regulation vs Optimization、定律的 Harness 侧应用
+- [[FDE职业进化论]] — 定律的组织/商业侧应用：FDE 存在条件三推论

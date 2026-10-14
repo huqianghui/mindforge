@@ -26,7 +26,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: MCP 存在严重 context 膨胀问题
 
-- **来源**：[[MCP vs CLI — 为什么开发者在重新审视 MCP]]
+- **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -36,7 +36,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: CLI 方式 token 效率极高
 
-- **来源**：[[MCP vs CLI — 为什么开发者在重新审视 MCP]]
+- **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: 社区出现"回归 CLI"趋势
 
-- **来源**：[[MCP vs CLI — 为什么开发者在重新审视 MCP]]
+- **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -56,7 +56,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: MCP 与 CLI 应共存互补
 
-- **来源**：[[MCP vs CLI — 为什么开发者在重新审视 MCP]]
+- **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -66,7 +66,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: Azure Skills 是 MCP/CLI 共存互补的最佳实战案例
 
-- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-05-14
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -76,7 +76,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: WebMCP 把工具集成的选型从 MCP/CLI 二元扩展为三层——自家页面场景的最优解
 
-- **来源**：[[Computer Use与Browser Use系列四：产品化——可审计智能RPA、Extension-Plugin-WebMCP三层选型与安全设计]]
+- **来源**：[[Computer-Use与Browser-Use系列四：产品化]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.7
@@ -86,7 +86,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: MCP 的非典型用法——同一产品内部 CLI↔native helper 的解耦协议
 
-- **来源**：[[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]]
+- **来源**：[[Codex-Desktop系列04：Computer-Use藏身之处]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.7
@@ -96,7 +96,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ### Claim: MCP 不贡献效率只贡献连接——效率来自它背后的应用 API；运行方式与分发方式是两个层面
 
-- **来源**：[[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]]
+- **来源**：[[Blender系列02：操作入口与官方MCP安装]]
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.75（本机安装实录 + 官方手册核对）
@@ -118,7 +118,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ## 来源日记
 
-- [[MCP vs CLI — 为什么开发者在重新审视 MCP]] — MCP 与 CLI 对比分析
-- [[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]] — Azure Skills 的 MCP/CLI 分工实证
-- [[Codex Desktop系列04：Computer Use藏身之处——openai-bundled plugin、SkyComputerUse native helper与分发链]] — MCP 作同产品内 CLI↔native helper 解耦协议的非典型用法
-- [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — MCP 效率归因辨析与运行/分发两层面
+- [[MCP-vs-CLI：重新审视MCP]] — MCP 与 CLI 对比分析
+- [[Azure-Copilot生态：Skills、MCP与Agents的协作]] — Azure Skills 的 MCP/CLI 分工实证
+- [[Codex-Desktop系列04：Computer-Use藏身之处]] — MCP 作同产品内 CLI↔native helper 解耦协议的非典型用法
+- [[Blender系列02：操作入口与官方MCP安装]] — MCP 效率归因辨析与运行/分发两层面

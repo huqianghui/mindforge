@@ -98,7 +98,7 @@ related_methods: []
 
 ### Claim: 留用样本数 80→86 是自举飞轮转动的直接实证
 
-- **来源**：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]
+- **来源**：[[Agent-Lightning系列06：SFT实战]]
 - **首次出现**：2026-06-26
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -108,7 +108,7 @@ related_methods: []
 
 ### Claim: train_loss 下降不能当「变强」的证据，只能确认没崩
 
-- **来源**：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]
+- **来源**：[[Agent-Lightning系列06：SFT实战]]
 - **首次出现**：2026-06-26
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -118,7 +118,7 @@ related_methods: []
 
 ### Claim: 当前 demo 用阈值过滤 reward>0，不是固定切 50%
 
-- **来源**：[[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]]
+- **来源**：[[Agent-Lightning系列06：SFT实战]]
 - **首次出现**：2026-06-26
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -146,5 +146,5 @@ related_methods: []
 
 ## 来源
 
-- [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] — 环境搭建、dry-run、一键/三进程跑、输出解读、holdout 评测设计
-- [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] — SFT 原理（sft_one_iter 四步、A 法逐轮记录）
+- [[Agent-Lightning系列06：SFT实战]] — 环境搭建、dry-run、一键/三进程跑、输出解读、holdout 评测设计
+- [[Agent-Lightning系列05：SFT路线剖析]] — SFT 原理（sft_one_iter 四步、A 法逐轮记录）

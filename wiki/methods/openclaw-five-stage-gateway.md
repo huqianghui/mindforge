@@ -79,7 +79,7 @@ related_methods: []
 
 ### Claim: Agent 本质上是一个循环，不是单次推理
 
-- **来源**：[[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]]
+- **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -89,7 +89,7 @@ related_methods: []
 
 ### Claim: 生产 Agent 网关需要五个递进阶段
 
-- **来源**：[[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]]
+- **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -114,4 +114,4 @@ related_methods: []
 
 ## 来源
 
-- [[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]] — claw0 架构解读
+- [[OpenClaw架构解读]] — claw0 架构解读

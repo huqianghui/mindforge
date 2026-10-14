@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #e2e8f0; }
+    .lane { font-size: 17px; font-weight: 700; }
+    .node { font-size: 15px; font-weight: 600; fill: #0f172a; }
+    .nodeL { font-size: 15px; font-weight: 600; fill: #e2e8f0; }
+    .sub { font-size: 13px; fill: #334155; }
+    .subL { font-size: 13px; fill: #94a3b8; }
+    .note { font-size: 13px; fill: #cbd5e1; }
+    .bad { font-size: 13px; fill: #fca5a5; }
+    .ok { stroke: #2dd4bf; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+    .redir { stroke: #fbbf24; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+    .intent { stroke: #f87171; stroke-width: 2.5; fill: none; stroke-dasharray: 5 7; opacity: 0.8; }
+    .pulse { animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes dash { to { stroke-dashoffset: -36; } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  </style>
+  <defs>
+    <marker id="aT" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aA" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="aR" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+  <rect width="1200" height="700" fill="#0b1220"/>
+  <text x="40" y="42" class="title">同一个本地 UDP 端口要和三个对端通信：GSA 关闭与开启对比</text>
+
+  <!-- ===== Panel 1: GSA off ===== -->
+  <text x="40" y="88" class="lane" fill="#2dd4bf">GSA 关闭：每个包按自己写的目标地址走</text>
+  <rect x="40" y="150" width="200" height="70" rx="10" fill="#2dd4bf"/>
+  <text x="140" y="181" text-anchor="middle" class="node">浏览器 UDP 端口 P</text>
+  <text x="140" y="203" text-anchor="middle" class="sub">ICE 只用这一个端口</text>
+
+  <rect x="820" y="104" width="330" height="48" rx="10" fill="#2dd4bf"/>
+  <text x="985" y="134" text-anchor="middle" class="node">① TURN：STUN 拿 srflx ✓</text>
+  <rect x="820" y="162" width="330" height="48" rx="10" fill="#2dd4bf"/>
+  <text x="985" y="192" text-anchor="middle" class="node">② 备用 TURN：Allocate 拿 relay ✓</text>
+  <rect x="820" y="220" width="330" height="48" rx="10" fill="#2dd4bf"/>
+  <text x="985" y="250" text-anchor="middle" class="node">③ 媒体服务器：连通检查 ✓</text>
+
+  <path class="ok" d="M240 175 C 500 175, 560 128, 812 128" marker-end="url(#aT)"/>
+  <path class="ok" d="M240 185 L 812 186" marker-end="url(#aT)"/>
+  <path class="ok" d="M240 195 C 500 195, 560 244, 812 244" marker-end="url(#aT)"/>
+  <circle r="5" fill="#99f6e4"><animateMotion dur="2.4s" repeatCount="indefinite" path="M240 185 L 812 186"/></circle>
+  <text x="40" y="300" class="note">约 1 秒内 connected；三个对端各自回包，回包来源与请求目标一致，WebRTC 校验通过</text>
+
+  <!-- ===== Panel 2: GSA on ===== -->
+  <line x1="40" y1="330" x2="1160" y2="330" stroke="#1e293b" stroke-width="2"/>
+  <text x="40" y="372" class="lane" fill="#f87171">GSA 开启：端口 P 被钉死在第一个对端</text>
+
+  <rect x="40" y="440" width="200" height="70" rx="10" fill="#2dd4bf"/>
+  <text x="140" y="471" text-anchor="middle" class="node">浏览器 UDP 端口 P</text>
+  <text x="140" y="493" text-anchor="middle" class="sub">同一个端口</text>
+
+  <rect class="pulse" x="330" y="430" width="230" height="90" rx="10" fill="#fbbf24"/>
+  <text x="445" y="465" text-anchor="middle" class="node">GSA 网络扩展</text>
+  <text x="445" y="487" text-anchor="middle" class="sub">按第一个包锁定对端</text>
+  <text x="445" y="506" text-anchor="middle" class="sub">之后的包都送去那里</text>
+
+  <rect x="820" y="392" width="330" height="48" rx="10" fill="#2dd4bf"/>
+  <text x="985" y="422" text-anchor="middle" class="node">① TURN（第一个对端）✓</text>
+  <rect x="820" y="458" width="330" height="48" rx="10" fill="#1e293b" stroke="#f87171" stroke-dasharray="6 6"/>
+  <text x="985" y="488" text-anchor="middle" class="nodeL">② 备用 TURN ✗ 收不到</text>
+  <rect x="820" y="524" width="330" height="48" rx="10" fill="#1e293b" stroke="#f87171" stroke-dasharray="6 6"/>
+  <text x="985" y="554" text-anchor="middle" class="nodeL">③ 媒体服务器 ✗ 收不到</text>
+
+  <path class="ok" d="M240 475 L 322 475" marker-end="url(#aT)"/>
+  <!-- intended paths (red, never arrive) -->
+  <path class="intent" d="M560 482 L 812 482" marker-end="url(#aR)"/>
+  <path class="intent" d="M560 500 C 680 500, 700 548, 812 548" marker-end="url(#aR)"/>
+  <!-- actual: everything goes to TURN -->
+  <path class="redir" d="M560 455 C 680 455, 700 416, 812 416" marker-end="url(#aA)"/>
+  <circle r="5" fill="#fde68a"><animateMotion dur="2.4s" repeatCount="indefinite" path="M240 475 L 322 475 M560 455 C 680 455, 700 416, 812 416"/></circle>
+  <text x="600" y="400" class="note">写给 ①②③ 的包实际都到 ①</text>
+
+  <text x="40" y="610" class="bad">② 发往备用 TURN 的 Allocate 被送回 ①，回复来源对不上 → relay 拿不到</text>
+  <text x="40" y="634" class="bad">③ 发往媒体服务器的连通检查被送到 ①，回复被当作无关响应丢弃 → respRecv=0，约 15 秒后 ICE failed</text>
+  <text x="40" y="664" class="note">直连（③）与 relay 保底（②）同时失效；TCP 与 WebSocket 一条连接只对一个对端，不受影响</text>
+</svg>

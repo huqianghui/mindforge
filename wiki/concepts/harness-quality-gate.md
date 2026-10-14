@@ -46,7 +46,7 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 
 ### Claim: 架构质量门禁应扩展为四层体系——从 Lint 到 AI Review
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -56,7 +56,7 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 
 ### Claim: 质量门禁延伸到运行时决策门控——"该不该执行"从布尔开关变成带校准 confidence 的阈值策略，策略函数至少三个输入：校准后概率、错误成本、人工复核成本
 
-- **来源**：[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]、[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]
+- **来源**：[[TypeSafe-Jev：可校准的决策原语]]、[[Computer-Use与Browser-Use系列八：Jev与Codex实践]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.7
@@ -79,5 +79,5 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - [[2026-04-11-周六]] — Harness 工程质量门禁体系的完整 5 维度设计
 - [[2026-04-12-周日]] — 追踪任务延续
 - [[2026-04-23-周四]] — Vibe Coding 系列11 深化：四层架构质量门禁、AI 辅助 Review 层
-- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — 生成与门控分离、confidence 阈值作交接点、阈值带错误成本三输入（2026-09-27）
-- [[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]] — 执行器入口的步数/时长/低置信度交回与独立验收器、有 stakes 动作人工确认（2026-09-27）
+- [[TypeSafe-Jev：可校准的决策原语]] — 生成与门控分离、confidence 阈值作交接点、阈值带错误成本三输入（2026-09-27）
+- [[Computer-Use与Browser-Use系列八：Jev与Codex实践]] — 执行器入口的步数/时长/低置信度交回与独立验收器、有 stakes 动作人工确认（2026-09-27）

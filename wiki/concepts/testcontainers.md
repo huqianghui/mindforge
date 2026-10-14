@@ -56,7 +56,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 ### Claim: docker-compose 是静态环境，Testcontainers 是动态环境——设计目标不同
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
@@ -66,7 +66,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 ### Claim: Testcontainers 已被 Docker 收购（AtomicJar），支持 12 种语言，成为容器化集成测试事实标准
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
@@ -76,7 +76,7 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 ### Claim: 推荐测试分层：Unit(mock) → Integration(Testcontainers) → E2E(Playwright+TC)
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7

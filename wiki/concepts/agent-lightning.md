@@ -35,7 +35,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 框架是一条 9 模块数据流脊柱 + 控制反转
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -45,7 +45,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: method-agnostic 的接缝是 adapter——换算法不动 agent
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -55,7 +55,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: @rollout 包函数不包实例；prompt 必须抽成注入资源
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -65,7 +65,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: store 是训练的控制平面，不只是 trace 存储
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -75,7 +75,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 三级优化阶梯 APO → SFT → RL，SFT 是微调权重最便宜稳的入口
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -85,7 +85,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 内置算法只有 APO + VERL，SFT 走自定义算法扩展点
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -95,7 +95,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: store 居中解耦——算法与执行靠 5 个 store 动作做生产者消费者
 
-- **来源**：[[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]]
+- **来源**：[[Agent-Lightning系列03：自定义算法与Trainer集成]]
 - **首次出现**：2026-06-26
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -105,7 +105,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 算法本质 = LLM 调用 + sorted，"多 agent 协作"是虚拟角色
 
-- **来源**：[[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]]
+- **来源**：[[Agent-Lightning系列04：APO源码剖析]]
 - **首次出现**：2026-06-26
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -115,7 +115,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 对 VERL 是架构锁定而非简单依赖——Agent RL 是系统问题
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]、[[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]、[[Agent-Lightning系列08：RL实战]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-07-03
 - **置信度**：0.85
@@ -125,7 +125,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: 数据流飞轮在哲学上与 Slime 同构，反比所绑的 VERL 更近
 
-- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.75
@@ -135,7 +135,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ### Claim: dsh session log（单一事实源 + trajectory 视图）是真实工作负载轨迹采集的候选前端——APO→SFT→RL 阶梯最缺的一环
 
-- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]、[[2026-09-02-周三]]
+- **来源**：[[Agent-Harness五平台对比]]、[[2026-09-02-周三]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.5
@@ -161,12 +161,12 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ## 来源日记
 
-- [[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]] — 9 模块脊柱、控制反转、method-agnostic 接缝、store 选型、三级阶梯、客户接入 playbook
-- [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] — APO 单点接线与 beam search 内核
-- [[Agent Lightning系列03：自定义算法与Trainer集成——5个store动作、生产者消费者与一键运行]] — 5 个 store 动作、algo/runner 生产者消费者分工
-- [[Agent Lightning系列04：APO源码剖析——算法=LLM调用+sorted、虚拟多agent真相与核心使用场景]] — 算法=LLM调用+sorted、虚拟多 agent 真相
-- [[Agent Lightning系列05：SFT路线剖析——reward不喂答案而造标签、拒绝采样微调与自蒸馏真相]] — SFT 内核：拒绝采样造标签、自蒸馏
-- [[Agent Lightning系列06：SFT实战篇——从Azure GPU VM到跑通unsloth拒绝采样微调]] — SFT 实战：Azure GPU VM + unsloth 跑通
-- [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — RL 这一级绑定 VERL 的选型逻辑与架构锁定本质
-- [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — agent-lightning 飞轮与 Slime 数据流同构、不同层的殊途同归
-- [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]] — calc_x 首跑暴露架构锁定的版本窗口（0.3.1↔verl≤0.7.0）
+- [[Agent-Lightning系列02：框架全景]] — 9 模块脊柱、控制反转、method-agnostic 接缝、store 选型、三级阶梯、客户接入 playbook
+- [[Agent-Lightning系列01：用APO做Prompt-Tuning]] — APO 单点接线与 beam search 内核
+- [[Agent-Lightning系列03：自定义算法与Trainer集成]] — 5 个 store 动作、algo/runner 生产者消费者分工
+- [[Agent-Lightning系列04：APO源码剖析]] — 算法=LLM调用+sorted、虚拟多 agent 真相
+- [[Agent-Lightning系列05：SFT路线剖析]] — SFT 内核：拒绝采样造标签、自蒸馏
+- [[Agent-Lightning系列06：SFT实战]] — SFT 实战：Azure GPU VM + unsloth 跑通
+- [[Agent-Lightning系列07：强化学习与VERL入门]] — RL 这一级绑定 VERL 的选型逻辑与架构锁定本质
+- [[Slime与VERL架构对比]] — agent-lightning 飞轮与 Slime 数据流同构、不同层的殊途同归
+- [[Agent-Lightning系列08：RL实战]] — calc_x 首跑暴露架构锁定的版本窗口（0.3.1↔verl≤0.7.0）

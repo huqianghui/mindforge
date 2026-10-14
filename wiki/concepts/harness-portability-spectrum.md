@@ -29,7 +29,7 @@ related:
 
 ### Claim: 离模型越近越可移植——skill/MCP 高、prompt 中、subagent/hook/command 低
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -39,7 +39,7 @@ related:
 
 ### Claim: skill 是唯一跨 harness 可移植的资产载体——Superpowers 多宿主 bootstrap 实证
 
-- **来源**：[[Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化]]
+- **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -49,7 +49,7 @@ related:
 
 ### Claim: 可移植性有两个维度——文本可发现性 ≠ runtime 可执行性
 
-- **来源**：[[Computer Use与Browser Use系列六：Codex CLI与App的能力分界——同一套Skill、两条调用链与第三方生态补位]]
+- **来源**：[[Computer-Use与Browser-Use系列六：Codex-CLI与App的分界]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -59,7 +59,7 @@ related:
 
 ### Claim: 纯文本资产的维护成本低一个量级——收敛到 skill 后测试从"跑代码"变成"eval campaign"
 
-- **来源**：[[Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化]]
+- **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -69,7 +69,7 @@ related:
 
 ### Claim: "搬家工具"成为产品类目——切换成本真实存在但正在被工程化消解，可流动的只有可移植层
 
-- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]
+- **来源**：[[Agent-Harness五平台对比]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.75

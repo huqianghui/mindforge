@@ -35,7 +35,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: VERL = Volcano Engine RL，ByteDance Seed Team 发起、HybridFlow 的开源实现
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.9
@@ -45,7 +45,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: 三大核心特征——HybridFlow 控制器、training/rollout 解耦、Ray 集群调度
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -55,7 +55,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: agent-lightning 对 VERL 是架构锁定，而非简单依赖
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -65,7 +65,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: 最大瓶颈在 rollout 而非训练，理想态是 rollout/training overlap
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
@@ -75,7 +75,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: SFT 与 RL 是两个独立入口，RL 冷启动靠配置 `model.path` 而非自动 SFT
 
-- **来源**：[[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -85,7 +85,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: verl 0.8.0 删除 `verl.workers.fsdp_workers`，agentlightning 0.3.1 须锁 verl ≤0.7.0——`uv sync --frozen` 保证"按锁装"不保证"能跑通"
 
-- **来源**：[[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]
+- **来源**：[[Agent-Lightning系列08：RL实战]]
 - **首次出现**：2026-07-03
 - **最近更新**：2026-07-03
 - **置信度**：0.9
@@ -95,7 +95,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: 训练期有两条独立 LLM 通路——debug 走外部 `OPENAI_BASE_URL`、训练走 store 注入的内部 vLLM
 
-- **来源**：[[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]]
+- **来源**：[[Agent-Lightning系列08：RL实战]]
 - **首次出现**：2026-07-03
 - **最近更新**：2026-07-03
 - **置信度**：0.8
@@ -105,7 +105,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ### Claim: verl 与 ms-swift/LLaMA-Factory 是"改权重"的两个量级——同名 GRPO 不同赛道，按训练规模选型
 
-- **来源**：[[ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]]
+- **来源**：[[ms-swift全景|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
@@ -130,7 +130,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 ## 来源日记
 
-- [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — VERL 命名出身、三大特征、TRL/OpenRLHF 对比、选型逻辑、标准架构数据流
-- [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — VERL 的 Controller+Workers 范式、Ray 底座、组件选型对比
-- [[Agent Lightning系列08：RL实战篇——example选型、calc_x跑通VERL训练与tinker等框架]] — calc_x 首跑 VERL 训练的真实断点：verl 0.8.0 fsdp_workers 缺失、版本锁定、两条 LLM 通路、GRPO 默认配置印证系列07
-- [[ms-swift全景——魔搭一站式微调推理框架：命令体系、数据格式与同类框架对比|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — 轻量微调赛道对照：ms-swift/LLaMA-Factory vs verl 的量级分野与选型判据
+- [[Agent-Lightning系列07：强化学习与VERL入门]] — VERL 命名出身、三大特征、TRL/OpenRLHF 对比、选型逻辑、标准架构数据流
+- [[Slime与VERL架构对比]] — VERL 的 Controller+Workers 范式、Ray 底座、组件选型对比
+- [[Agent-Lightning系列08：RL实战]] — calc_x 首跑 VERL 训练的真实断点：verl 0.8.0 fsdp_workers 缺失、版本锁定、两条 LLM 通路、GRPO 默认配置印证系列07
+- [[ms-swift全景|ms-swift全景：魔搭一站式微调推理框架的命令体系、数据格式与同类框架对比]] — 轻量微调赛道对照：ms-swift/LLaMA-Factory vs verl 的量级分野与选型判据

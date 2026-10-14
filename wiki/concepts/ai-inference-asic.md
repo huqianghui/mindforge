@@ -30,7 +30,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: 推理芯片 vs 训练芯片不是 ISA 划界而是电路/算子/系统/经济四层联合优化目标的差异
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -40,7 +40,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: benchmark 工作点读数法——1.9× 与 104× 不矛盾，它们是吞吐—延迟曲线上不同工作点的读数
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -50,7 +50,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: per-kW vs per-chip 度量口径即立场——电力成为数据中心第一约束时能效是新竞争维度
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.7
@@ -60,7 +60,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: "begin deploying" ≠ 大规模量产——芯片交付十阶段的位置判断
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -70,7 +70,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: co-design 逻辑下沉到硬件层——模型+推理软件栈+芯片同司联合优化，且 AI 开始加速芯片设计本身
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-09-12
 - **置信度**：0.8
@@ -80,7 +80,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ### Claim: 国产芯片侧的 co-design 实证——架构×硬件联合设计把国产加速器拉近 NVIDIA 水平；"3 倍端到端"与"训练 1/9"都要先还原口径
 
-- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.75
@@ -103,4 +103,4 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 ## 来源日记
 
 - [[2026-08-26-周三]] — Jalapeño 文章成文（官方首测结果解读）
-- [[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]] — 国产芯片 co-design 实证、"3 倍/1-9"口径澄清
+- [[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]] — 国产芯片 co-design 实证、"3 倍/1-9"口径澄清

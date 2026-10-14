@@ -225,4 +225,4 @@ cargo test --all         # 运行全部测试
 - [Rust 官方文档](https://doc.rust-lang.org/book/)
 - [Cargo 手册](https://doc.rust-lang.org/cargo/)
 - [RTK GitHub 仓库](https://github.com/rtk-ai/rtk)
-- [RTK 系列 01：RTK——AI Coding Agent 的 Token 压缩利器](RTK系列01：RTK（Rust%20Token%20Killer）——AI%20Coding%20Agent的Token压缩利器.md)
+- [RTK 系列 01：RTK——AI Coding Agent 的 Token 压缩利器](RTK系列01：Rust-Token-Killer简介.md)

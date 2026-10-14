@@ -36,7 +36,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: APO ≠ beam search——是「文本梯度 + beam search」的完整方法
 
-- **来源**：[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]
+- **来源**：[[Agent-Lightning算法深解：APO]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-25
 - **置信度**：0.9
@@ -46,7 +46,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: 文本梯度 = Critic 写、Editor 改，因 prompt 离散不可微而借 LLM 模拟方向信号
 
-- **来源**：[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]
+- **来源**：[[Agent-Lightning算法深解：APO]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-25
 - **置信度**：0.85
@@ -56,7 +56,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: APO 选 beam search 的首要理由是评估成本，不是它最优
 
-- **来源**：[[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]]
+- **来源**：[[Agent-Lightning算法深解：APO]]
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-25
 - **置信度**：0.85
@@ -66,7 +66,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: 真正瓶颈是 reward 设计 + 评估噪声 + 数据量，不是选哪个框架
 
-- **来源**：[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+- **来源**：[[Prompt优化工具选型]]
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.85
@@ -76,7 +76,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: APO 的 critic/editor 元提示词全部用 POML 写成——表示层与优化层正交互补
 
-- **来源**：[[POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景]]
+- **来源**：[[POML深度解析]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.85
@@ -86,7 +86,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: APO 与 SkillOpt 结构性互补——先探索后精修的两段式管道，衔接接口就是一个文本文件
 
-- **来源**：[[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
+- **来源**：[[SkillOpt系列04：APO与SkillOpt联合展望]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.7
@@ -96,7 +96,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: 评估信号消费强度沿 APO→SFT→RL 阶梯逐级升高——前置评估投资越发不可省略
 
-- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **来源**：[[从Evaluator到Reward-Function]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -106,7 +106,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: APO 是成熟度阶梯 L2 的起点——迁移两前提：可量化 reward + 30~50 条数据起步
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -116,7 +116,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ### Claim: 语感类主观评估的降噪三件套——pairwise 差分、BARS 锚定样例、受控改写实验
 
-- **来源**：[[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]]
+- **来源**：[[与AI相处之道二：内容工程师]]
 - **首次出现**：2026-07-28
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -145,12 +145,12 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ## 来源日记
 
-- [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]] — reward/噪声/数据量是真瓶颈、工具对比
-- [[Agent Lightning算法深解：APO=文本梯度+Beam Search，以及与其他搜索策略的对比]] — APO≠beam search、文本梯度 Critic→Editor、搜索策略谱系对比
-- [[Agent Lightning系列01：用APO做Prompt Tuning——Azure实践与beam search算法解析]] — beam search 内核、三参数三阶段、实践踩坑与噪声复盘
-- [[POML深度解析——微软提示词标记语言：功能全景、模板语言对比与使用场景]] — APO 元提示词全用 POML 写成（critic/editor 变体文件）、PromptTemplate 三引擎、表示层/优化层正交
-- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — 探索/精修结构性互补、两段式管道衔接、五份互斥切分、三个数判断式
-- [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — 100 任务配对对决 APO 边缘胜出、三层机制对比（自由改写+相对重排是摆动直接来源）
-- [[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]] — 评估信号消费强度 APO→SFT→RL 阶梯、前置评估投资逐级不可省略
-- [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] — L2 迁移两前提、数据量阈值、降噪优先于扩量
-- [[与AI相处之道二——内容工程师：把只可意会的品味编译成AI可执行的逻辑]] — 语感类主观评估降噪三件套（pairwise/BARS/受控改写实验）
+- [[Prompt优化工具选型]] — reward/噪声/数据量是真瓶颈、工具对比
+- [[Agent-Lightning算法深解：APO]] — APO≠beam search、文本梯度 Critic→Editor、搜索策略谱系对比
+- [[Agent-Lightning系列01：用APO做Prompt-Tuning]] — beam search 内核、三参数三阶段、实践踩坑与噪声复盘
+- [[POML深度解析]] — APO 元提示词全用 POML 写成（critic/editor 变体文件）、PromptTemplate 三引擎、表示层/优化层正交
+- [[SkillOpt系列04：APO与SkillOpt联合展望]] — 探索/精修结构性互补、两段式管道衔接、五份互斥切分、三个数判断式
+- [[SkillOpt系列03：提示词调优实战]] — 100 任务配对对决 APO 边缘胜出、三层机制对比（自由改写+相对重排是摆动直接来源）
+- [[从Evaluator到Reward-Function]] — 评估信号消费强度 APO→SFT→RL 阶梯、前置评估投资逐级不可省略
+- [[Prompt优化成熟度阶梯]] — L2 迁移两前提、数据量阈值、降噪优先于扩量
+- [[与AI相处之道二：内容工程师]] — 语感类主观评估降噪三件套（pairwise/BARS/受控改写实验）

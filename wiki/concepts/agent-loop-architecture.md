@@ -26,7 +26,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: Agent Loop 核心只需 30 行 Python
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -36,7 +36,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: Tool Dispatch 模式——添加新工具只需往 dispatch map 加一行
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: TodoWrite 是 harness "行为纠偏"能力的首次展现
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -56,7 +56,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: learn-claude-code 的 12 session 分三梯队
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -66,7 +66,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: action loop 是 agent loop 在 GUI 操作域的实例化——观察对象换成屏幕状态、动作换成 UI 事件
 
-- **来源**：[[Computer Use与Browser Use系列三：自己实现——action loop协议、双执行器路线与跨平台adapter矩阵]]
+- **来源**：[[Computer-Use与Browser-Use系列三：自己实现]]
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -76,7 +76,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: agent loop 的物理域实例化——分层多频率控制回路：三档频率来自时间尺度分离，五个本质分野
 
-- **来源**：[[机器人系统系列02：Agent循环的物理形态——分层多频率控制回路与五个本质分野]]、[[落地实践系列03：分层选型决策——世界模型、VLA与空间智能的技术栈选择指南]]、[[VLA系列04：π0、FAST与Hi Robot——流匹配动作专家、频域动作分词与分层交互]]、[[VLA系列05：π0.5、知识绝缘与实时分块——开放世界泛化、梯度隔离与异步执行]]
+- **来源**：[[机器人系统系列02：Agent循环的物理形态]]、[[落地实践系列03：分层选型决策]]、[[VLA系列04：π0、FAST与Hi-Robot]]、[[VLA系列05：π0.5与实时分块]]
 - **首次出现**：2026-09-18
 - **最近更新**：2026-09-25
 - **置信度**：0.7
@@ -87,7 +87,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ### Claim: agent loop 不是什么——exploration policy/搜索编排不在现有 coding agent 的 harness 里
 
-- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **来源**：[[2026-09-22-Dream-RSI]]
 - **首次出现**：2026-09-22
 - **最近更新**：2026-09-25
 - **置信度**：0.6
@@ -106,4 +106,4 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 ## 来源日记
 
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — Agent Loop 架构完整拆解
+- [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — Agent Loop 架构完整拆解

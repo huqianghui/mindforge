@@ -74,7 +74,7 @@ related_methods: []
 
 ### Claim: SGLang 领先是设计基因（prefix-centric）而非团队速度
 
-- **来源**：[[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]]
+- **来源**：[[SGLang与vLLM的基因之争]]
 - **首次出现**：2026-06-22
 - **最近更新**：2026-06-22
 - **置信度**：0.85
@@ -84,7 +84,7 @@ related_methods: []
 
 ### Claim: benchmark 解读先辨工作点——峰值吞吐、最低 TBT、matched TBT 三读数各有语境
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.75
@@ -94,7 +94,7 @@ related_methods: []
 
 ### Claim: 六层降本归因拆分——架构定长期价格下限、推理系统定可售吞吐、限时折扣定短期市场价；选型口径应升级为"每成功任务成本"
 
-- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.8
@@ -104,7 +104,7 @@ related_methods: []
 
 ### Claim: GLM-5.3-Flash 基于 SGLang 的专用引擎 + EPD 分离架构——"SGLang 基因领先"获生产级强续证
 
-- **来源**：[[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]]
+- **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.8
@@ -125,6 +125,6 @@ related_methods: []
 ## 来源
 
 - [[2026-06-22-周一]] — llama.cpp vs SGLang 支持对比、客户场景落地分步处理、收益预期
-- [[SGLang与vLLM的基因之争——为什么PrefixSharing×Hybrid这条线SGLang领先]] — token-centric vs prefix-centric 基因、RadixAttention 时间线、MambaRadixCache 本质
-- [[线性注意力时代的推理架构之三——vLLM与SGLang支持对比与调优]] — 框架支持对比与调优、压测计划
-- [[国内大模型新一轮架构与价格优化——Qwen3.8-Flash与GLM-5.3-Flash的六层降本解剖]] — 六层降本归因拆分、每成功任务成本口径、GLM 基于 SGLang 的专用引擎与 EPD 分离
+- [[SGLang与vLLM的基因之争]] — token-centric vs prefix-centric 基因、RadixAttention 时间线、MambaRadixCache 本质
+- [[线性注意力时代的推理架构之三：vLLM与SGLang]] — 框架支持对比与调优、压测计划
+- [[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]] — 六层降本归因拆分、每成功任务成本口径、GLM 基于 SGLang 的专用引擎与 EPD 分离

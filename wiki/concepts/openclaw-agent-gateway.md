@@ -30,7 +30,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: Agent 本质上是一个循环，不是单次推理
 
-- **来源**：[[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]]
+- **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -40,7 +40,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: 生产 Agent 网关需要五个递进阶段
 
-- **来源**：[[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]]
+- **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -50,7 +50,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: Channel、Peer、Session 是三个常混淆的不同概念
 
-- **来源**：[[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]]
+- **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -60,7 +60,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: OpenClaw 多 Agent 协作采用 Orchestrator Pattern，Gateway 不参与编排
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -70,7 +70,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: 单个 Agent Node 内可通过 sessions_spawn 包含多个 Sub-Agent（嵌套最深 5 层）
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -80,7 +80,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ### Claim: OpenClaw 支持 Persistent Agents 和 Sub-Agents 两种多 Agent 模式
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
@@ -104,5 +104,5 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 ## 来源日记
 
-- [[OpenClaw架构解读——从claw0教学仓库理解AI Agent网关的核心设计]] — claw0 架构解读
-- [[hermes-agent-vs-openclaw]] — Hermes vs OpenClaw 深度技术对比
+- [[OpenClaw架构解读]] — claw0 架构解读
+- [[Hermes-Agent与OpenClaw对比]] — Hermes vs OpenClaw 深度技术对比

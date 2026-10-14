@@ -30,7 +30,7 @@ related:
 
 ### Claim: Context 不等于 State——这是所有 Context 爆炸的根因
 
-- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]
+- **来源**：[[Vibe-Coding系列05：大项目落地困局]]
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.9
@@ -40,7 +40,7 @@ related:
 
 ### Claim: Selection Layer 是当前 Harness 工具生态的最大瓶颈
 
-- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]
+- **来源**：[[Vibe-Coding系列05：大项目落地困局]]
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -50,7 +50,7 @@ related:
 
 ### Claim: 文档式加载 vs 能力式加载是范式分界线
 
-- **来源**：[[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]]
+- **来源**：[[Vibe-Coding系列05：大项目落地困局]]
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -70,4 +70,4 @@ related:
 
 ## 来源日记
 
-- [[Vibe Coding系列05：大项目落地困局——从Context爆炸到Skill Runtime的范式迁移]] — Section 三 Context Projection 的完整定义
+- [[Vibe-Coding系列05：大项目落地困局]] — Section 三 Context Projection 的完整定义

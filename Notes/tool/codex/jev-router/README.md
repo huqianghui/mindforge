@@ -2,7 +2,7 @@
 
 在 Codex 的模型菜单里加一个 **Auto / Jev** 条目。选中它之后，请求先到本机一个回环网关，由 [TypeSafe Jev](https://typesafe.ai) 做一次 typed 判断，确定性代码据此在七个 Azure OpenAI 部署与四档推理强度之间选一个组合并绑定到当前任务，再把原请求转发给 Azure。Codex 本身不知道后面换了模型。
 
-设计背景与实测边界见文章 [Codex Desktop 系列07：用 Jev 做 Auto 模型与推理强度路由](../Codex%20Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡.md)。本目录是文章对应的完整实现，约 1,800 行 Python，只用标准库。
+设计背景与实测边界见文章 [Codex Desktop 系列07：用 Jev 做 Auto 模型与推理强度路由](../Codex-Desktop系列07：用Jev做模型与推理强度路由.md)。本目录是文章对应的完整实现，约 1,800 行 Python，只用标准库。
 
 > 状态说明：任务级绑定、七模型路由、同回合缓存复用、CLI 与菜单入口已在作者环境实测；任务分层兜底（task-profile-v2）与模型加 effort 联合选择（joint-effort-v3）已实现并通过 62 项离线测试，但需要重载网关进程才生效。所有阈值是策略参数，尚未用代表性任务集校准。价格字段为空时禁止纯成本降档，因此本项目不报告任何节省金额。
 
@@ -30,7 +30,7 @@
 ### 前置条件
 
 - macOS，Python 3.11 以上（只用标准库）。
-- Codex Desktop 已通过自定义 model catalog 接入 Azure OpenAI，即 `~/.codex/config.toml` 里有 `[model_providers.azure]` 与 `model_catalog_json`。做法见 [Codex Desktop 系列01](../Codex%20Desktop系列01：接入Azure%20OpenAI%20GPT-6——bundled%20CLI版本锁定、model%20catalog%20schema与分层排错.md)。
+- Codex Desktop 已通过自定义 model catalog 接入 Azure OpenAI，即 `~/.codex/config.toml` 里有 `[model_providers.azure]` 与 `model_catalog_json`。做法见 [Codex Desktop 系列01](../Codex-Desktop系列01：接入Azure-OpenAI-GPT-6.md)。
 - 环境变量 `TYPESAFE_API_KEY` 与 `AZURE_OPENAI_API_KEY` 已写入 `~/.zshrc`。网关用 `--load-zshrc` 在子进程里加载它们，不把值写进任何文件。
 - 七个候选模型在你的 Azure 资源里都有部署；没有的在 `config.json` 里把该模型 `enabled` 设为 `false`。
 

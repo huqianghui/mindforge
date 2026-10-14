@@ -47,7 +47,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: Azure MCP Server 覆盖 35+ 服务 200+ 工具
 
-- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: AI Shell (aish) 已归档，az copilot 命令不存在
 
-- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -67,7 +67,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: Azure Skills 三层架构——"脑"（Skills）+"眼"（MCP）+"手"（CLI）
 
-- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-05-14
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -77,7 +77,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: Azure Skills 预编排工具路由而非让 Agent 自行选择
 
-- **来源**：[[Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践]]
+- **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-05-14
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -87,7 +87,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: AG-UI 是 Foundry "custom protocols" 之一——Microsoft Agent Framework 已宣布支持
 
-- **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
+- **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -97,7 +97,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: Foundry Agents 侧 Skill 加载三路径均未文档化打通——toolbox 不可变版本 + 显式 publish 是治理特征
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -107,7 +107,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 ### Claim: Copilot → Cowork → Super App 是人在环里位置的三次后移；微软定价已按此分档——席位价留在辅助档，Cowork 起按 Copilot Credits 计任务四项输入，但按量 ≠ 按结果；新版 Copilot 统一入口是"借 C 端 agent 形态提升企业渗透"
 
-- **来源**：[[FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界]]
+- **来源**：[[FinOps系列01：从token价格到任务花费]]
 - **首次出现**：2026-09-26
 - **最近更新**：2026-09-28
 - **置信度**：0.7
@@ -131,6 +131,6 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - [[2026-04-12-周日]] — 追踪任务延续
 - [[2026-04-13-周一]] — 追踪任务延续；Microsoft Skills 学习任务
 - [[2026-05-14-周四]] — 深入学习 Azure Skills 三层架构和工具路由机制
-- [[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]] — AG-UI 属 Foundry custom protocols、MAF 已支持（2026-07-30）
-- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — toolbox 治理、skill 三路径不通、Copilot Studio 三 harness（2026-07-30）
-- [[FinOps系列01：从token价格到任务完成花费——指标转向与AI使用边界]] — 三阶段 = 人在环位置三次后移、微软定价分档表、按量≠按结果、C 端思路引到 B 端、三类使用洞见能给什么（2026-09-26）
+- [[AG-UI协议解析]] — AG-UI 属 Foundry custom protocols、MAF 已支持（2026-07-30）
+- [[Foundry-Toolbox与Skills解析]] — toolbox 治理、skill 三路径不通、Copilot Studio 三 harness（2026-07-30）
+- [[FinOps系列01：从token价格到任务花费]] — 三阶段 = 人在环位置三次后移、微软定价分档表、按量≠按结果、C 端思路引到 B 端、三类使用洞见能给什么（2026-09-26）

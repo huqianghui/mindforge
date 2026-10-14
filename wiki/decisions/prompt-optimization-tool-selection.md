@@ -63,7 +63,7 @@ related_methods: []
 
 ### Claim: 纯 prompt 调优首选 DSPy，不推荐 agent-lightning
 
-- **来源**：[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+- **来源**：[[Prompt优化工具选型]]
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.8
@@ -73,7 +73,7 @@ related_methods: []
 
 ### Claim: 先解决 reward + 噪声 + 数据量，框架只是引擎不是方向盘
 
-- **来源**：[[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]]
+- **来源**：[[Prompt优化工具选型]]
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.85
@@ -83,7 +83,7 @@ related_methods: []
 
 ### Claim: APO vs SkillOpt 场景选型有六行决策表——含"都不跑"判据 δ_remain ≤ δ_min
 
-- **来源**：[[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]]
+- **来源**：[[SkillOpt系列04：APO与SkillOpt联合展望]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.8
@@ -93,7 +93,7 @@ related_methods: []
 
 ### Claim: 选型前先判成熟度层级——L1 手动工具与 L2 数据闭环工具是上下游而非竞品
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -109,6 +109,6 @@ related_methods: []
 
 ## 来源
 
-- [[Prompt优化工具选型——DSPy、TextGrad、AdalFlow与agent-lightning的决策指南]] — 决策结论、工具对比、典型场景路径、真瓶颈
-- [[SkillOpt系列04：APO×SkillOpt联合展望——先探索后精修的两段式管道与选型算账方法]] — APO vs SkillOpt 六行场景选型决策表、"都不跑"判据、两条通用纪律
-- [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] — L0/L1/L2 前置分层、L1 与 L2 是上下游非竞品（2026-07-30）
+- [[Prompt优化工具选型]] — 决策结论、工具对比、典型场景路径、真瓶颈
+- [[SkillOpt系列04：APO与SkillOpt联合展望]] — APO vs SkillOpt 六行场景选型决策表、"都不跑"判据、两条通用纪律
+- [[Prompt优化成熟度阶梯]] — L0/L1/L2 前置分层、L1 与 L2 是上下游非竞品（2026-07-30）

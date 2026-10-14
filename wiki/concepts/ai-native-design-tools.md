@@ -25,7 +25,7 @@ AI-Native 设计工具正在改变设计-开发协作模式。Pencil 的核心�
 
 ### Claim: Pencil 通过 MCP 实现 AI 主导设计
 
-- **来源**：[[Pencil设计工具与Claude Code快速上手指南]]
+- **来源**：[[Pencil设计工具上手指南]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -35,7 +35,7 @@ AI-Native 设计工具正在改变设计-开发协作模式。Pencil 的核心�
 
 ### Claim: Excalidraw 与 Draw.io 互补
 
-- **来源**：[[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]]
+- **来源**：[[在Obsidian中绘制Azure架构图]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -53,5 +53,5 @@ AI-Native 设计工具正在改变设计-开发协作模式。Pencil 的核心�
 
 ## 来源日记
 
-- [[Pencil设计工具与Claude Code快速上手指南]] — Pencil 实践
-- [[在Obsidian中用Excalidraw与Draw.io绘制Azure架构图实战指南]] — 绘图工具对比
+- [[Pencil设计工具上手指南]] — Pencil 实践
+- [[在Obsidian中绘制Azure架构图]] — 绘图工具对比

@@ -24,7 +24,7 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 
 ### Claim: Notion Agent 是自动化执行器而非自主 agent
 
-- **来源**：[[Notion学习笔记——核心概念、AI Agent能力与Obsidian-Claude Code协作架构]]
+- **来源**：[[Notion学习笔记]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -34,7 +34,7 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 
 ### Claim: Notion 不会成为 Agent OS
 
-- **来源**：[[Notion学习笔记——核心概念、AI Agent能力与Obsidian-Claude Code协作架构]]
+- **来源**：[[Notion学习笔记]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -44,7 +44,7 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 
 ### Claim: MCP 是 Notion 的关键变量
 
-- **来源**：[[Notion学习笔记——核心概念、AI Agent能力与Obsidian-Claude Code协作架构]]
+- **来源**：[[Notion学习笔记]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.5
@@ -62,4 +62,4 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 
 ## 来源日记
 
-- [[Notion学习笔记——核心概念、AI Agent能力与Obsidian-Claude Code协作架构]] — Notion AI 定位分析
+- [[Notion学习笔记]] — Notion AI 定位分析

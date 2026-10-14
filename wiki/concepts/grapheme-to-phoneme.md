@@ -33,7 +33,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 
 ### Claim: G2P 有三种实现方式，工程最常用 Hybrid 方案
 
-- **来源**：[[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]]
+- **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -43,7 +43,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 
 ### Claim: Lexicon 是 G2P 的 Override 层而非普通词典
 
-- **来源**：[[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]]
+- **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -53,7 +53,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 
 ### Claim: Realtime 场景应构建 Pronunciation Control Layer 而非依赖 SSML
 
-- **来源**：[[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]]
+- **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -63,7 +63,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 
 ### Claim: G2P 控制能力决定 Voice Agent "做大之后会不会崩"
 
-- **来源**：[[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]]
+- **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -85,4 +85,4 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 ## 来源日记
 
 - [[2026-04-30-周四]] — Speech 调研完成，产出 Speech Out 深入文章
-- [[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]] — 完整 G2P 工程解析
+- [[Speech-Out深入：从G2P到SSML]] — 完整 G2P 工程解析

@@ -26,7 +26,7 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 ### Claim: Command / Skill / Agent 三层扩展各有定位
 
-- **来源**：[[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]]
+- **来源**：[[Claude-Code系列04：Command、Skill与Agent]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -36,7 +36,7 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 ### Claim: Plugin 是 Coding Agent 从"工具"走向"平台"的关键拐点
 
-- **来源**：[[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]]
+- **来源**：[[Claude-Code系列06：Plugin生态与开发]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 ### Claim: Plugin 是分发单元不是运行时单元
 
-- **来源**：[[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]]
+- **来源**：[[Claude-Code系列06：Plugin生态与开发]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -56,7 +56,7 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 ### Claim: 扩展机制经历三次演进
 
-- **来源**：[[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]]
+- **来源**：[[Claude-Code系列06：Plugin生态与开发]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -74,5 +74,5 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 ## 来源日记
 
-- [[Claude Code系列04：扩展三剑客——Command、Skill与Agent的区别与协作]] — Command/Skill/Agent 三层解析
-- [[Claude Code系列06：Plugin生态调研——协议、最佳实践与自定义plugin开发]] — Plugin 生态与演进
+- [[Claude-Code系列04：Command、Skill与Agent]] — Command/Skill/Agent 三层解析
+- [[Claude-Code系列06：Plugin生态与开发]] — Plugin 生态与演进

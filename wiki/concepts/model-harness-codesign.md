@@ -31,7 +31,7 @@ related:
 
 ### Claim: Agent = Model + Harness——模型是引擎，harness 是整辆车
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.85
@@ -41,7 +41,7 @@ related:
 
 ### Claim: 多模型适配成本是 per-model prompt × tool × 会话管理的笛卡尔积——"The harness is the product"
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.85
@@ -51,7 +51,7 @@ related:
 
 ### Claim: 第一方绑定的结构性优势在训练时对齐——接口层差异可推理时适配，能力层差异不能
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.8
@@ -71,7 +71,7 @@ related:
 
 ### Claim: MCP 把工具异构的接入成本转换为治理成本，而治理恰是第一方占优的领域
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.8
@@ -81,7 +81,7 @@ related:
 
 ### Claim: 垂直一体化与水平生态将长期共存——多模型路线的生态位是选择权、路由红利与评测护城河
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.75
@@ -91,7 +91,7 @@ related:
 
 ### Claim: 多 agent 编排的路线对垒是"显式图 vs 隐式图"——图的运维才是护城河，历史经验站在显式一边
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
@@ -101,7 +101,7 @@ related:
 
 ### Claim: co-design 下沉到硅层——模型+软件栈+芯片同司联合优化；服务端工具全家桶是第一方绑定的隐性福利
 
-- **来源**：[[OpenAI Jalapeño推理芯片——从ASIC基础到首测数据解读的AI推理硬件全景]]
+- **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-09-12
 - **置信度**：0.8
@@ -111,7 +111,7 @@ related:
 
 ### Claim: 搜索挂载点决定覆盖面——挂推理 API 随模型走、挂应用入口只随入口走；能力归属跟请求落点走、不跟产品形态走
 
-- **来源**：[[Computer Use与Browser Use系列七：Web Search与浏览器操作的分界——信息获取三级梯、执行位置与成本转移]]
+- **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-30
 - **最近更新**：2026-09-04
 - **置信度**：0.8
@@ -121,7 +121,7 @@ related:
 
 ### Claim: 多模型阵营内部按"可分解程度"再分层——插件化/自改源码/SDK 分层/协议标准化四种"可拆"实现
 
-- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]
+- **来源**：[[Agent-Harness五平台对比]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.7
@@ -131,7 +131,7 @@ related:
 
 ### Claim: Codex 的 harness 是按模型条目实例化的——Model/Harness 边界不是一条线而是一张按模型索引的表，co-design 证据从论断层升级到字段层
 
-- **来源**：[[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]]、[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **来源**：[[Codex-Desktop系列05：模型条目里的Harness]]、[[Codex-Desktop系列06：ModelInfo字段手册]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.8（九层解剖与 alias 归一化为 rust-v0.153.1 源码逐字段核实；alias"化石"的历史归因为推测、shell_type 例证与官方源存在快照不一致——2026-09-12 按系列05/06 事实性修订降级）
@@ -141,7 +141,7 @@ related:
 
 ### Claim: 工具调用形态是一条 Direct → CodeMode → CodeModeOnly 光谱——能力做成「更多的工具」vs 做成「一种语言」
 
-- **来源**：[[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]]
+- **来源**：[[Codex-Desktop系列06：ModelInfo字段手册]]
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.8
@@ -170,8 +170,8 @@ related:
 
 ## 来源日记
 
-- [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — 核心来源：harness 三职责、per-model 适配成本清单、第一方绑定推论、MCP 治理成本、五个反方论点
+- [[Agent=Model+Harness]] — 核心来源：harness 三职责、per-model 适配成本清单、第一方绑定推论、MCP 治理成本、五个反方论点
 - [[2026-07-10-周五]] — ChatGPT Work 发布调研：Codex 并入 ChatGPT 桌面 app，Work/Codex 双模式，印证第一方绑定判断
-- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 显式图 vs 隐式图路线对垒、"图的运维才是护城河"教训、模型写图的新特征
-- [[Codex Desktop系列05：一个模型条目装下整个harness——从gpt-6-astra展开配置看Model与Harness的真实边界]] — gpt-6-astra 条目九层解剖：per-model harness 实例化的直接证据
-- [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — rust-v0.153.1 源码逐字段核实：alias 化石、tool_mode 光谱、Ultra 语义、审批模型常量
+- [[Graph-Engineering的三重含义]] — 显式图 vs 隐式图路线对垒、"图的运维才是护城河"教训、模型写图的新特征
+- [[Codex-Desktop系列05：模型条目里的Harness]] — gpt-6-astra 条目九层解剖：per-model harness 实例化的直接证据
+- [[Codex-Desktop系列06：ModelInfo字段手册]] — rust-v0.153.1 源码逐字段核实：alias 化石、tool_mode 光谱、Ultra 语义、审批模型常量

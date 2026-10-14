@@ -86,7 +86,7 @@ related_methods:
 
 ### Claim: 分层依据是评估信号的成熟度，不是改写算法——核心差异在"回路由谁闭合"
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -96,7 +96,7 @@ related_methods:
 
 ### Claim: L1 与 L2 是流水线上下游而非竞品——bad case 从 L1 就开始攒
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -106,7 +106,7 @@ related_methods:
 
 ### Claim: 迁移两前提——可量化 reward + 数据过阈值（<10 留 L1 / 30-50 可试 / 100+ 稳定）
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -116,7 +116,7 @@ related_methods:
 
 ### Claim: prompt-optimizer 是 L1 典型实现——meta-prompt 模板驱动单次改写，模板分语言不分模型
 
-- **来源**：[[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]]
+- **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -126,7 +126,7 @@ related_methods:
 
 ### Claim: 阶梯是数据飞轮中圈的优化环节：L0→L2 每上一级人的参与从"人改人看"退到"人定评估集、算法闭合回路"；L1 用 RLHF 式主观分、L2 才可能接 RLVR 式客观分；L2→RSI 的迁移阈值尚未知
 
-- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]
+- **来源**：[[FinOps系列02：数据飞轮与RSI]]
 - **首次出现**：2026-09-26
 - **最近更新**：2026-09-28
 - **置信度**：0.65
@@ -152,5 +152,5 @@ related_methods:
 
 ## 来源
 
-- [[Prompt优化成熟度阶梯——从vibe check、LLM-judge到数据闭环：APO与SkillOpt前置篇]] — 三层阶梯、迁移阈值、prompt-optimizer 机制、system/user prompt 分工（2026-07-30）
-- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — 中圈定义、阶梯与人退出程度、L1/L2 对应 RLHF/RLVR 式信号、L2→RSI 阈值开放问题、资产折旧（2026-09-26）
+- [[Prompt优化成熟度阶梯]] — 三层阶梯、迁移阈值、prompt-optimizer 机制、system/user prompt 分工（2026-07-30）
+- [[FinOps系列02：数据飞轮与RSI]] — 中圈定义、阶梯与人退出程度、L1/L2 对应 RLHF/RLVR 式信号、L2→RSI 阈值开放问题、资产折旧（2026-09-26）

@@ -30,7 +30,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: Evaluator 有三个正交维度——Judge（谁评）× Strategy（怎么评）× Criteria（评什么），不应压成一棵树
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -40,7 +40,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: Judge 四种实现各有定位——Human 是校准锚点、Rule/Metric 零噪声优先、Reward Model 与 LLM Judge 边界正在收敛
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -50,7 +50,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: 产品层与研究层是两套话语——Rubric Evaluator = LLM Judge + Rubric + Prompt Template + Scoring Logic
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
@@ -60,7 +60,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: Judge Reliability 八类偏差是 reward 噪声 σ_noise 的具体来源——研究重心已从"怎么打分"转向"分能不能信"
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -70,7 +70,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: 评估策略与下游 Optimizer 有天然配对——选评估策略时就已经在选优化路线
 
-- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **来源**：[[从Evaluator到Reward-Function]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -80,7 +80,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: judge 的时延与知识边界决定其在实时链路中的位置——EOU 洗触发、judge 做决策；视频域新实例：物理合理性判官
 
-- **来源**：[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]、[[世界模型系列05：像素路线与Cosmos——扩散与自回归双轨WFM、预训练到后训练的场景分工及全模态Cosmos 3]]
+- **来源**：[[Voice-Live系列08：应答门控]]、[[世界模型系列05：像素路线与Cosmos]]
 - **首次出现**：2026-09-24
 - **最近更新**：2026-09-25
 - **置信度**：0.75
@@ -90,7 +90,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 ### Claim: 左栏开放式生成没有 ground truth 只能靠 LLM judge——它是 RLHF 的推理时版本；右栏任务优先接程序化验证器，judge 退为兜底；typed 决策模型是同一判断层的另一种实现
 
-- **来源**：[[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]]、[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[FinOps系列02：数据飞轮与RSI]]、[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-26
 - **最近更新**：2026-09-28
 - **置信度**：0.7
@@ -112,5 +112,5 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 ## 来源日记
 
 - [[2026-08-03-周一]] — rubric 与 evaluator 概念梳理主任务，概念篇 + 链路篇两篇成文
-- [[FinOps系列02：数据飞轮与RSI——三层嵌套循环与一个贯穿指标]] — 左栏无 ground truth 靠 judge、右栏 RLVR 式验证器、judge = RLHF 推理时版本
-- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — LLM 自报 confidence 字段无训练目标约束；与 System One 模型的判断层对照
+- [[FinOps系列02：数据飞轮与RSI]] — 左栏无 ground truth 靠 judge、右栏 RLVR 式验证器、judge = RLHF 推理时版本
+- [[TypeSafe-Jev：可校准的决策原语]] — LLM 自报 confidence 字段无训练目标约束；与 System One 模型的判断层对照

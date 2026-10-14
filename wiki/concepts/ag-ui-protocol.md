@@ -27,7 +27,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ### Claim: 三大协议分工——MCP 向下连工具、A2A 横向连 Agent、AG-UI 向上连 UI
 
-- **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
+- **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -37,7 +37,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ### Claim: 三层设计——协议 / 传输（有意不绑定）/ SDK；关心 Client 而非 View Library
 
-- **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
+- **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -47,7 +47,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ### Claim: 生态缺口在 Frontend SDK 层——Backend 可互换已基本做到，`@ag-ui/react` 类框架适配层缺失
 
-- **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
+- **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -57,7 +57,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ### Claim: Voice Agent 本质也是一种 UI——interrupt/partial transcript/barge-in 可放进 AG-UI Event Flow
 
-- **来源**：[[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]]
+- **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-09-12
 - **置信度**：0.8
@@ -78,4 +78,4 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ## 来源日记
 
-- [[AG-UI协议解析——Agent三大协议的最后一环：从事件流到前端生态]] — 三大协议定位、三层设计、生态缺口、Foundry 关系（2026-07-30）
+- [[AG-UI协议解析]] — 三大协议定位、三层设计、生态缺口、Foundry 关系（2026-07-30）

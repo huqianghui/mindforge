@@ -30,7 +30,7 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ### Claim: graph engineering 一词裂成三个互相竞争的含义，只有"知识图"含义有十年研究与独立基准背书
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.85
@@ -40,7 +40,7 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ### Claim: 与 LangGraph 时代的本质区别是图的作者从开发者变成模型——画图成本坍缩到零，图的生命周期从项目级缩到任务级
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
@@ -50,7 +50,7 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ### Claim: 何时上图的判据——3+ 个独立验证步骤 + 复杂条件路由；治理五要点以可观测性为不可妥协项
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.75
@@ -60,7 +60,7 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ### Claim: 成本红线与失败模式的量化边界（归口详见 loop-engineering / wiki-over-rag 两页）
 
-- **来源**：[[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]]
+- **来源**：[[Graph-Engineering的三重含义]]
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.75
@@ -82,5 +82,5 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ## 来源日记
 
-- [[Graph Engineering全景解析——编排图、循环网络与类型化知识图的三重含义]] — 核心来源：词源考据、三含义拆分、模型写图、决策矩阵、治理要点、GraphRAG 基准综述
+- [[Graph-Engineering的三重含义]] — 核心来源：词源考据、三含义拆分、模型写图、决策矩阵、治理要点、GraphRAG 基准综述
 - [[2026-08-07-周五]] — graph engineering 研究成文记录

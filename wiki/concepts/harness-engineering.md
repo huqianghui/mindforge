@@ -32,7 +32,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集
 
-- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
+- **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
@@ -42,7 +42,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 三家公司独立演化出同一套 Harness 设计范式
 
-- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
+- **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
@@ -52,7 +52,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Agent 的两种典型失败模式是系统设计问题而非模型能力问题
 
-- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
+- **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -62,7 +62,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 级联失败是 Harness Engineering 出现的核心驱动力
 
-- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
+- **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
@@ -72,7 +72,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: OpenAI 的 Harness Engineering 五大支柱
 
-- **来源**：[[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]]
+- **来源**：[[Vibe-Coding系列02：架构师视角的Harness实践|Vibe Coding系列02]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -82,7 +82,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Agent 的智能来自 model，可靠性来自 harness
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
@@ -92,7 +92,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: "Agent = Model, Not Framework" 是一个工程立场
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -102,7 +102,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Meta-Harness 论文给出了更精确的 Harness 定义——聚焦信息管道
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -112,7 +112,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Harness 优化可被自动化为搜索问题
 
-- **来源**：[[2026-04-16-Meta-Harness论文解读与实践思考]]
+- **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -122,7 +122,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 控制论是 Harness Engineering 的理论根基——三层控制模型
 
-- **来源**：[[控制论与科学方法论——从控制论到AI Agent设计方法论]]
+- **来源**：[[控制论与科学方法论]]
 - **首次出现**：2026-04-17
 - **最近更新**：2026-07-06
 - **置信度**：0.85
@@ -132,7 +132,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Claude Code 的 98.7% 代码都是 Harness
 
-- **来源**：[[Claude Code系列07：Harness分层架构——从50万行源码到社区框架的控制论解读]]
+- **来源**：[[Claude-Code系列07：Harness分层架构]]
 - **首次出现**：2026-04-17
 - **最近更新**：2026-07-06
 - **置信度**：0.9
@@ -142,7 +142,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 多模型 harness 必须自建三层评测体系——离线 benchmark → PR 门禁 → 生产 A/B
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.85
@@ -152,7 +152,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: Agent 行为回归是传统 CI 测不出的新回归类别——今天的门禁靠作者自我申报触发
 
-- **来源**：[[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]]
+- **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.85
@@ -162,7 +162,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: InkOS 在 AI 小说创作领域独立发现了 Harness Engineering 的核心范式——跨领域验证
 
-- **来源**：[[InkOS深度感想——AI小说创作中的Harness Engineering范式]]
+- **来源**：[[InkOS：AI小说创作中的Harness]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
@@ -172,7 +172,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: AI Agent 创作存在三种范式——纯多 Agent / Agent+微调 / Harness 驱动
 
-- **来源**：[[InkOS深度感想——AI小说创作中的Harness Engineering范式]]
+- **来源**：[[InkOS：AI小说创作中的Harness]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -182,7 +182,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: V-Model 双轨把"凡可确定性计算的绝不交给 LLM"应用到合规领域
 
-- **来源**：[[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]]
+- **来源**：[[Spec-Kit系列00：SDD、TDD与V-Model融合]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -192,7 +192,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-09-12
 - **置信度**：0.8
@@ -202,7 +202,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 选 harness 就是选行为语义——Copilot Studio 三 harness 并存；扩展机制"离模型越近越可移植"
 
-- **来源**：[[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]]
+- **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -242,7 +242,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端
 
-- **来源**：[[Vibe Coding系列14：Harness框架的Skill化收敛——从Agent、Command、Hook全家桶到纯Skill的架构简化]]
+- **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.8
@@ -252,7 +252,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: 编排接入别家 agent 的镜像两式——dsh "loop 内挂 sub-agent" vs OpenHands "loop 外包住执行体"
 
-- **来源**：[[Agent Harness五平台对比——DeepSeek Harness、pi、Codex、OpenHands与Goose的架构哲学与场景选择]]
+- **来源**：[[Agent-Harness五平台对比]]
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.7
@@ -262,7 +262,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ### Claim: harness 的职责边界——单轨执行器不含搜索编排：并行候选、分支比较、预算分配在 harness 之外
 
-- **来源**：[[2026-09-22-Dream-RSI-递归自我改进论文初读]]
+- **来源**：[[2026-09-22-Dream-RSI]]
 - **首次出现**：2026-09-22
 - **最近更新**：2026-09-25
 - **置信度**：0.6
@@ -298,13 +298,13 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ## 来源日记
 
-- [[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]] — Harness Engineering 概念首次系统阐述
-- [[Vibe Coding系列02：架构师视角的AI Harness Engineering最佳实践|Vibe Coding系列02]] — OpenAI 五大支柱详解
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
+- [[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]] — Harness Engineering 概念首次系统阐述
+- [[Vibe-Coding系列02：架构师视角的Harness实践|Vibe Coding系列02]] — OpenAI 五大支柱详解
+- [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
 - [[2026-04-16-周四]] — Meta-Harness 论文解读，补充精确 Harness 定义和自动化优化
 - [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 98.7% 是 Harness
 - [[2026-04-23-周四]] — InkOS 跨领域验证：AI 小说创作中的 Harness Engineering 范式、三种 AI 创作范式总结
-- [[Agent=Model+Harness——从VS Code Copilot博客看第一方绑定与多模型适配的路线之争]] — VS Code 三层评测体系、agent 行为回归门禁、`~requires-eval-assessment` 自我申报实证、L1/L2/L3 分层约束
-- [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）
-- [[Foundry Toolbox与Skills深度解析：Prompt Agent与Hosted Agent的Skill支持、执行环境与Harness控制权]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）
+- [[Agent=Model+Harness]] — VS Code 三层评测体系、agent 行为回归门禁、`~requires-eval-assessment` 自我申报实证、L1/L2/L3 分层约束
+- [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）
+- [[Foundry-Toolbox与Skills解析]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）
 - [[2026-08-10-周一]] — Harness vs Agent Runtime 正交辨析（面向 model / 面向 infra、两个边界测试）；Copilot Studio 三 harness GA 与"选 harness 即选 runtime"（2026-08-10）

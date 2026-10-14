@@ -37,7 +37,7 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 ### Claim: 准确的说法不是"把 decoding 并行化"，而是输出原语从 token 换成 typed decision——由此几个性质是构造上成立的
 
-- **来源**：[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -47,7 +47,7 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 ### Claim: 与 reasoning 模型八维对照——关系是组合而非替代，confidence 阈值是交接点
 
-- **来源**：[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -57,7 +57,7 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 ### Claim: 为什么不是"LLM 换一个分类头"——四件事：运行时答案空间、原生并行多问题、校准拿不到、去自回归即去测试时算力
 
-- **来源**：[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.7
@@ -67,7 +67,7 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 ### Claim: 企业今天就能搭简版验证"决策层单独拆出来"是否成立——LLM 约束单步解码读选项 logit + 自有标签 temperature scaling，固定任务可直接微调 encoder
 
-- **来源**：[[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]]
+- **来源**：[[TypeSafe-Jev：可校准的决策原语]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.65
@@ -77,7 +77,7 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 ### Claim: 实践位置——UI 动作判断与模型/effort 路由；Jev 只判断不执行、不看图、不授权，确定性代码守边界
 
-- **来源**：[[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]]、[[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]]
+- **来源**：[[Computer-Use与Browser-Use系列八：Jev与Codex实践]]、[[Codex-Desktop系列07：用Jev做模型与推理强度路由]]
 - **首次出现**：2026-09-27
 - **最近更新**：2026-09-28
 - **置信度**：0.75
@@ -105,6 +105,6 @@ System One 模型是一类**不生成文本、只对调用方运行时声明的�
 
 - [[2026-09-26-周六]] — FinOps 系列 02 确认 TypeSafe 演讲出处，注明其为 Jev 预热与讲者立场
 - [[2026-09-27-周日]] — 主任务"熟悉和使用 Jev 模型"：概念篇 + 两篇实践篇成文，jev-router 代码随文提交
-- [[TypeSafe-Jev：System-One模型、RLCD与校准决策——从聊天模型到软件可直接消费的决策原语]] — 第一节 System One 与 reasoning 模型分界、1.5 为什么不是换分类头、第五节判断与保留
-- [[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]] — API/skill/执行器三层分清、两种接法
-- [[Codex Desktop系列07：用Jev做Auto模型与推理强度路由——七模型与effort的判断设计、与规则匹配和轻量LLM路由的区别、性能准确缓存的平衡]] — Jev 只判断的角色边界、四个 typed 问题
+- [[TypeSafe-Jev：可校准的决策原语]] — 第一节 System One 与 reasoning 模型分界、1.5 为什么不是换分类头、第五节判断与保留
+- [[Computer-Use与Browser-Use系列八：Jev与Codex实践]] — API/skill/执行器三层分清、两种接法
+- [[Codex-Desktop系列07：用Jev做模型与推理强度路由]] — Jev 只判断的角色边界、四个 typed 问题

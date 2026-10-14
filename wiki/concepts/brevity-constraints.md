@@ -32,7 +32,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 ### Claim: 简洁约束可逆转大小模型的性能排序
 
-- **来源**：[[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]]
+- **来源**：[[2026-04-29-简洁约束逆转模型性能层级]]
 - **首次出现**：2026-04-29
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -42,7 +42,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 ### Claim: 简洁约束仅适用于 ~7.7% 的 inverse scaling 问题
 
-- **来源**：[[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]]
+- **来源**：[[2026-04-29-简洁约束逆转模型性能层级]]
 - **首次出现**：2026-04-29
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -52,7 +52,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 ### Claim: 简洁约束与 Reasoning Model 范式存在根本矛盾
 
-- **来源**：[[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]]
+- **来源**：[[2026-04-29-简洁约束逆转模型性能层级]]
 - **首次出现**：2026-04-29
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -62,7 +62,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 ### Claim: RADAR（IRT-based Router）为 Problem-Aware Routing 提供可落地方案
 
-- **来源**：[[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]]
+- **来源**：[[2026-04-29-简洁约束逆转模型性能层级]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -85,4 +85,4 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 - [[2026-04-28-周二]] — 论文首次出现在 Caveman 研究中
 - [[2026-04-29-周三]] — 精读论文，撰写详细笔记
-- [[2026-04-29-Brevity-Constraints-Reverse-Performance-Hierarchies]] — 完整论文笔记
+- [[2026-04-29-简洁约束逆转模型性能层级]] — 完整论文笔记

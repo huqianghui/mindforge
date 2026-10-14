@@ -38,7 +38,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: 基础能量 VAD 无法区分思考停顿和说完了
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -48,7 +48,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: Silero VAD 实现轻量级高效 VAD
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -58,7 +58,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: 深度学习 VAD 分化为三条路径——Personal VAD / CNN+Attention / NAS-VAD
 
-- **来源**：[[2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
+- **来源**：[[2026-04-27-噪声环境下的VAD与语义端点检测|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -68,7 +68,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: OpenAI semantic_vad 只做 end-of-turn 检测，不等于打断能力（范围限定：指 OpenAI 模型内置 semantic_vad）
 
-- **来源**：[[2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
+- **来源**：[[2026-04-27-噪声环境下的VAD与语义端点检测|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
 - **首次出现**：2026-04-27
 - **最近更新**：2026-09-25
 - **置信度**：0.8
@@ -80,7 +80,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: 完整 Voice Agent 打断需要 6 个必要组件协同
 
-- **来源**：[[2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
+- **来源**：[[2026-04-27-噪声环境下的VAD与语义端点检测|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -90,7 +90,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: VAD 与关键词唤醒（KWS）是互补不可替代的两种技术
 
-- **来源**：[[2026-04-27-VAD-in-Noisy-Environments|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
+- **来源**：[[2026-04-27-噪声环境下的VAD与语义端点检测|VAD 技术全景——从噪声环境论文到工业级语义端点检测]]
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -100,7 +100,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 ### Claim: 同名"semantic VAD"两家语义不同——Azure azure_semantic_vad 管起止检测的噪音鲁棒性，EOU 另配；打断是编排层策略开关，与判停/开轮正交
 
-- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **来源**：[[Voice-Live系列06：轮次控制的五道关卡]]、[[Voice-Live系列07：重复致谢排查]]、[[Voice-Live系列08：应答门控]]
 - **首次出现**：2026-09-23
 - **最近更新**：2026-09-25
 - **置信度**：0.8

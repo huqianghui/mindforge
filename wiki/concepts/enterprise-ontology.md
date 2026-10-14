@@ -28,7 +28,7 @@ related:
 
 ### Claim: 企业数据物理统一但语义碎片化
 
-- **来源**：[[Microsoft Fabric IQ与本体论（Ontology）研究]]
+- **来源**：[[Microsoft-Fabric-IQ与本体论]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -38,7 +38,7 @@ related:
 
 ### Claim: Fabric IQ 是微软首次正式采用"Ontology"
 
-- **来源**：[[Microsoft Fabric IQ与本体论（Ontology）研究]]
+- **来源**：[[Microsoft-Fabric-IQ与本体论]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -48,7 +48,7 @@ related:
 
 ### Claim: Ontology 将数据从"可查询"升级为"可理解、可推理、可行动"
 
-- **来源**：[[Microsoft Fabric IQ本体（Ontology）管理功能实操解析]]
+- **来源**：[[Fabric-IQ本体管理实操]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.8
@@ -58,7 +58,7 @@ related:
 
 ### Claim: Palantir Ontology 是操作语义层而非数据库
 
-- **来源**：[[Palantir Ontology：从哲学本体论到企业操作系统的工程实践]]
+- **来源**：[[Palantir-Ontology的工程实践]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -68,7 +68,7 @@ related:
 
 ### Claim: DDD 是"蓝图思维"，Palantir Ontology 超越纯数据建模
 
-- **来源**：[[Palantir数据本体论（Ontology）：从概念到产品的深度解析]]
+- **来源**：[[Palantir数据本体论：从概念到产品]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.8
@@ -78,7 +78,7 @@ related:
 
 ### Claim: Ontology 为 AI/ML 模型提供结构化语义基础
 
-- **来源**：[[Palantir数据本体论（Ontology）：从概念到产品的深度解析]]
+- **来源**：[[Palantir数据本体论：从概念到产品]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -88,7 +88,7 @@ related:
 
 ### Claim: Fabric IQ Graph 是真正的 LPG 图数据库引擎——Ontology 做语义路由层、Graph 做计算层
 
-- **来源**：[[Microsoft Fabric IQ与本体论（Ontology）研究]]
+- **来源**：[[Microsoft-Fabric-IQ与本体论]]
 - **首次出现**：2026-07-24
 - **最近更新**：2026-08-04
 - **置信度**：0.75
@@ -106,7 +106,7 @@ related:
 
 ## 来源日记
 
-- [[Microsoft Fabric IQ与本体论（Ontology）研究]] — Fabric IQ Ontology
-- [[Microsoft Fabric IQ本体（Ontology）管理功能实操解析]] — 实操解析
-- [[Palantir Ontology：从哲学本体论到企业操作系统的工程实践]] — Palantir 实践
-- [[Palantir数据本体论（Ontology）：从概念到产品的深度解析]] — 深度解析
+- [[Microsoft-Fabric-IQ与本体论]] — Fabric IQ Ontology
+- [[Fabric-IQ本体管理实操]] — 实操解析
+- [[Palantir-Ontology的工程实践]] — Palantir 实践
+- [[Palantir数据本体论：从概念到产品]] — 深度解析

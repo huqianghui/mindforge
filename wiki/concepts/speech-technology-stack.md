@@ -27,7 +27,7 @@ related:
 
 ### Claim: 实时语音 Agent 涉及三层技术栈
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -37,7 +37,7 @@ related:
 
 ### Claim: 基础能量 VAD 无法区分思考停顿和说完了
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -47,7 +47,7 @@ related:
 
 ### Claim: VAD barge-in 支持对自然对话体验至关重要
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ related:
 
 ### Claim: Speech Out 层核心是 G2P 转换与发音控制体系
 
-- **来源**：[[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]]
+- **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -67,7 +67,7 @@ related:
 
 ### Claim: 音频前处理链有严格执行顺序
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -77,7 +77,7 @@ related:
 
 ### Claim: Semantic VAD 本质是 Turn-Taking Policy 的接口壳而非独立 VAD 模块
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
@@ -87,7 +87,7 @@ related:
 
 ### Claim: 语音输入产品经历三代范式演进——从准确转录到智能听写
 
-- **来源**：[[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]]
+- **来源**：[[Typeless深度解析]]
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -97,7 +97,7 @@ related:
 
 ### Claim: 音量包络驱动是"简化口型同步"与"精细口型同步"的分界——只认音量不认发音
 
-- **来源**：[[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]]
+- **来源**：[[Blender系列04：人物面试动画实战]]
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.75（实测实现 + 局限逐项分析）
@@ -107,7 +107,7 @@ related:
 
 ### Claim: 检测器与策略开关的分离在 Voice Live schema 中显式化——"Semantic VAD 是 Turn-Taking Policy 接口壳"的生产级续证
 
-- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **来源**：[[Voice-Live系列06：轮次控制的五道关卡]]
 - **首次出现**：2026-09-23
 - **最近更新**：2026-09-25
 - **置信度**：0.8
@@ -118,7 +118,7 @@ related:
 
 ### Claim: AEC 的参考信号从哪来是数字人场景的隐藏维度——服务端默认参考失配，需 Live-Reference AEC
 
-- **来源**：[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]
+- **来源**：[[Voice-Live系列07：重复致谢排查]]
 - **首次出现**：2026-09-24
 - **最近更新**：2026-09-25
 - **置信度**：0.8
@@ -128,7 +128,7 @@ related:
 
 ### Claim: 采样率与编解码按方向分——上行为机器听（识别器原生 16 kHz，8 kHz 以内信息足够），下行为人听（TTS 24 kHz 保 8~12 kHz 亮度）；Voice Live 输入默认 24 kHz 是协议继承，级联配置降 16 kHz 省三分之一上行且转写无差异；WS 上行只收 pcm16 / G.711 无 Opus，Opus 48 kHz 只是时钟标签
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]（4.5.1，2026-09-30）、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]（§四）
+- **来源**：[[Voice-Live系列01：Agent实现架构]]（4.5.1，2026-09-30）、[[Voice-Live系列12：数字人弱网表现]]（§四）
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.8（官方文档核对 + 16 kHz A/B 实测词错误率 0.0%）
@@ -138,7 +138,7 @@ related:
 
 ### Claim: Speech Out 层的"声"与 LLM 层的"字"是两套控制面——语速、表现力 / 情绪、发音走 `session.voice` 会话级参数而非逐句 SSML；旋钮不等于生效要靠回显断言；`voice.type` 与模型是硬约束，配错静默失败
 
-- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]
+- **来源**：[[Voice-Live系列09：脚本朗读的机制化]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.8（`azure-ai-voicelive` SDK 与 API 参考核对；回显断言实测；`voice.type` 允许清单 2026-10-01 实测）
@@ -148,7 +148,7 @@ related:
 
 ### Claim: Opus 是编码格式而非 WebRTC 专属，"只有 WebRTC 能用 Opus"是 Voice Live WS 接口限制——WS 输入只收 pcm16 / G.711；只想省带宽可只在浏览器到后端一段用 Opus，想消除卡顿则必须换 WebRTC
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.8（RFC 6716 / 7874 与 API 参考 2025-10-01 至 2026-06-01-preview 查证；接口设计动机与第一段 Opus 方案为推断，未实施）
@@ -173,12 +173,12 @@ related:
 
 ## 来源日记
 
-- [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] — 技术全景
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — VAD barge-in
-- [[Speech-Out深入——Grapheme、Phoneme、G2P、Lexicon与SSML的工程解析]] — Speech Out 层 G2P 深入分析
-- [[Typeless深度解析——AI语音输入如何超越传统Speech-to-Text]] — 语音输入三代演进与智能听写
-- [[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]] — 音量包络口型同步实现与简化/精细分界
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 4.5.1 输入采样率 24 kHz vs 16 kHz（协议继承 / 语音工程 / 四种上行格式代价表，2026-09-30 增补）
-- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — §四 Opus 与 PCM、48 kHz 时钟标签、上行为机器下行为人、立体声 130 kbps
-- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 第六节 `session.voice` 参数表与两个限制、旋钮未接入陷阱、`voice.type` 允许清单
-- [[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]] — §七 Opus 三种模式、与 PCM16 带宽差、WS 接口格式限制与第一段 Opus 方案
+- [[Speech技术全景]] — 技术全景
+- [[Voice-Live系列01：Agent实现架构]] — VAD barge-in
+- [[Speech-Out深入：从G2P到SSML]] — Speech Out 层 G2P 深入分析
+- [[Typeless深度解析]] — 语音输入三代演进与智能听写
+- [[Blender系列04：人物面试动画实战]] — 音量包络口型同步实现与简化/精细分界
+- [[Voice-Live系列01：Agent实现架构]] — 4.5.1 输入采样率 24 kHz vs 16 kHz（协议继承 / 语音工程 / 四种上行格式代价表，2026-09-30 增补）
+- [[Voice-Live系列12：数字人弱网表现]] — §四 Opus 与 PCM、48 kHz 时钟标签、上行为机器下行为人、立体声 130 kbps
+- [[Voice-Live系列09：脚本朗读的机制化]] — 第六节 `session.voice` 参数表与两个限制、旋钮未接入陷阱、`voice.type` 允许清单
+- [[Voice-Live系列16：传输层概念对齐]] — §七 Opus 三种模式、与 PCM16 带宽差、WS 接口格式限制与第一段 Opus 方案

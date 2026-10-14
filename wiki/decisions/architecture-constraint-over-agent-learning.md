@@ -58,7 +58,7 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ### Claim: 四层防线是代码复用的真正解法
 
-- **来源**：[[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]]
+- **来源**：[[Vibe-Coding系列07：Coding-Agent时代的代码复用|Vibe Coding系列07]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -68,7 +68,7 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ### Claim: 语音轮次域实例——"不要主动追问"从提示词约束变为结构性不可能（by construction 而非 by instruction）
 
-- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **来源**：[[Voice-Live系列06：轮次控制的五道关卡]]、[[Voice-Live系列07：重复致谢排查]]、[[Voice-Live系列08：应答门控]]
 - **首次出现**：2026-09-23
 - **最近更新**：2026-09-25
 - **置信度**：0.85
@@ -78,7 +78,7 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ### Claim: 语音脚本朗读域实例——读题三代路径从 prompt 约束（隐式 assistant item / 显式 verbatim instructions）到机制约束（`pre_generated` 文本不进模型）；换模型后 prompt 约束漂移实证 by instruction 的脆弱；配套"能用机制绝不用 prompt"原则表与协议级开关
 
-- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]
+- **来源**：[[Voice-Live系列09：脚本朗读的机制化]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85（gpt-4o → gpt-5-mini 切换后真实会话中读题被改写 / 编题；`pre_generated` 实测 `input_tokens: 0`）
@@ -97,5 +97,5 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 
 ## 来源
 
-- [[Vibe Coding系列07：Coding Agent时代的代码复用——从架构约束到Plugin协作的实践指南|Vibe Coding系列07]] — 代码复用问题深度分析
-- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 读题三代路径（prompt 约束→机制约束）、代码与 prompt 分工原则表、决策清单五问
+- [[Vibe-Coding系列07：Coding-Agent时代的代码复用|Vibe Coding系列07]] — 代码复用问题深度分析
+- [[Voice-Live系列09：脚本朗读的机制化]] — 读题三代路径（prompt 约束→机制约束）、代码与 prompt 分工原则表、决策清单五问

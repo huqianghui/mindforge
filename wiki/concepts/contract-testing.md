@@ -27,7 +27,7 @@ Contract Testing（契约测试）是验证微服务间 API 接口是否一致�
 
 ### Claim: 契约测试与集成测试互补——前者验证接口一致性，后者验证真实协作
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -37,7 +37,7 @@ Contract Testing（契约测试）是验证微服务间 API 接口是否一致�
 
 ### Claim: PactFlow AI 能从 OpenAPI spec 自动生成契约测试
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.5

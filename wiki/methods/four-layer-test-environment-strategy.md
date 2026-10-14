@@ -79,7 +79,7 @@ related_methods:
 
 ### Claim: Testcontainers 的核心价值不是"更方便启动 Docker"，而是让每个测试拥有自己的 infrastructure
 
-- **来源**：[[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]]
+- **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
@@ -103,4 +103,4 @@ related_methods:
 
 ## 来源
 
-- [[Vibe Coding系列12：测试环境即代码——从Testcontainers到Ephemeral Environment的Harness实践]] — 四层测试环境策略完整设计
+- [[Vibe-Coding系列12：测试环境即代码]] — 四层测试环境策略完整设计

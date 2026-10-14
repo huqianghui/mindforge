@@ -25,7 +25,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ### Claim: 十命令四阶段——SDD 方法论被编译成命令序列
 
-- **来源**：[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
+- **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -35,7 +35,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ### Claim: checklist 是"Unit tests for English"
 
-- **来源**：[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
+- **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -45,7 +45,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ### Claim: Constitution 是 Workflow 层项目记忆，与 System Prompt 层是层级错配关系
 
-- **来源**：[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
+- **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -55,7 +55,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ### Claim: Active Feature 是隐式状态，Feature=Branch=Worktree=Agent Session
 
-- **来源**：[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
+- **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -65,7 +65,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ### Claim: Scope 粒度——一个 User Value 一个 Spec，Task 约等于可独立提 PR 单元
 
-- **来源**：[[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]]
+- **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -84,5 +84,5 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 ## 来源日记
 
-- [[Spec Kit系列01：初步整体认识——SDD十命令工作流、Scope粒度与协作扩展]] — 十命令工作流与协作扩展（2026-07-20）
-- [[Spec Kit系列00：SDD、TDD与V-Model融合——从Red-Green-Refactor到规格与验证双轨演进]] — Constitution 与 V-Model 扩展背景（2026-07-20）
+- [[Spec-Kit系列01：整体认识]] — 十命令工作流与协作扩展（2026-07-20）
+- [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — Constitution 与 V-Model 扩展背景（2026-07-20）

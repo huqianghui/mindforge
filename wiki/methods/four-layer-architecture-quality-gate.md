@@ -78,7 +78,7 @@ related_methods:
 
 ### Claim: ArchUnit 只覆盖 Layer 2 的一部分，完整架构质量需要四层协作
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -102,4 +102,4 @@ related_methods:
 
 ## 来源
 
-- [[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]] — 四层门禁完整设计
+- [[Vibe-Coding系列11：架构测试全景]] — 四层门禁完整设计

@@ -27,7 +27,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: LLM 性能限制通常是上下文问题而非模型缺陷
 
-- **来源**：[[Context Engineering vs. Model Context Protocol]]
+- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: Context Engineering 是 Prompt Engineering 的正式演进
 
-- **来源**：[[Context Engineering vs. Model Context Protocol]]
+- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -47,7 +47,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: Context window 应被视为 LLM 的"RAM"
 
-- **来源**：[[Context Engineering vs. Model Context Protocol]]
+- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -57,7 +57,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: Context Engineering 是"操作系统"，MCP 是"USB-C 接口"
 
-- **来源**：[[04 - A Comparative Framework]]
+- **来源**：[[04-A-Comparative-Framework]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -67,7 +67,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: MCP 标准化为未来 AI "App Store" 生态奠基
 
-- **来源**：[[05 - Strategic Implications and Future Outlook]]
+- **来源**：[[05-Strategic-Implications-and-Future-Outlook]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
@@ -77,7 +77,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: AI 的可持续竞争优势来自上下文环境而非模型本身
 
-- **来源**：[[05 - Strategic Implications and Future Outlook]]
+- **来源**：[[05-Strategic-Implications-and-Future-Outlook]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.8
@@ -97,6 +97,6 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ## 来源日记
 
-- [[Context Engineering vs. Model Context Protocol]] — CE vs MCP 关系辨析
-- [[04 - A Comparative Framework]] — 操作系统与 USB-C 比喻
-- [[05 - Strategic Implications and Future Outlook]] — 战略展望
+- [[Context-Engineering-vs-Model-Context-Protocol]] — CE vs MCP 关系辨析
+- [[04-A-Comparative-Framework]] — 操作系统与 USB-C 比喻
+- [[05-Strategic-Implications-and-Future-Outlook]] — 战略展望

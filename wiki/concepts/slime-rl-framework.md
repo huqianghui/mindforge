@@ -34,7 +34,7 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 ### Claim: 核心哲学是训练与采样彻底解耦、用 Data Buffer 连成数据流闭环
 
-- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -44,7 +44,7 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 ### Claim: 技术选型 = Megatron（训练）+ SGLang（推理）+ Ray（轻量调度）
 
-- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
@@ -54,7 +54,7 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 ### Claim: 适合 MoE/超大模型与高吞吐 Agent RL，不适合已在 HF/vLLM 体系或需多 backend 的团队
 
-- **来源**：[[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]]
+- **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.75
@@ -76,5 +76,5 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 ## 来源日记
 
-- [[Slime vs VERL 深度架构对比——数据流哲学、组件选型与训练推理栈分层]] — Slime 定位/哲学/选型/动机、Slime vs VERL 架构级对比、迁移决策
-- [[Agent Lightning系列07：强化学习与VERL入门——RL基础、三大框架架构对比与agent-lightning的选型逻辑]] — §六把 Slime 列为 VERL 主要替代品
+- [[Slime与VERL架构对比]] — Slime 定位/哲学/选型/动机、Slime vs VERL 架构级对比、迁移决策
+- [[Agent-Lightning系列07：强化学习与VERL入门]] — §六把 Slime 列为 VERL 主要替代品

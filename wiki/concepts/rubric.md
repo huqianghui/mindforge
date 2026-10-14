@@ -30,7 +30,7 @@ Rubric（评分细则）是评估体系中"评什么、怎么给分"的结构化
 
 ### Claim: Rubric 词源 ruber→rubrica→红字标题→评分细则——"红字"隐喻权威规则，读音 /ˈruː.brɪk/
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
@@ -40,7 +40,7 @@ Rubric（评分细则）是评估体系中"评什么、怎么给分"的结构化
 
 ### Claim: Rubric ⊃ Criteria——维度+等级+锚点描述的完整体系，价值在把打分变成可执行可重复的操作
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -50,7 +50,7 @@ Rubric（评分细则）是评估体系中"评什么、怎么给分"的结构化
 
 ### Claim: Rubric 是 judge 的配置而非 judge 本身——换 rubric 即得到不同评估器
 
-- **来源**：[[Evaluator概念全景——从rubric词源到Judge、Strategy、Criteria三层评估模型]]
+- **来源**：[[Evaluator概念全景]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -60,7 +60,7 @@ Rubric（评分细则）是评估体系中"评什么、怎么给分"的结构化
 
 ### Claim: Rubric as Reward 呈三阶段趋势线——从评估报表到进入训练循环再到 rubric 本身被优化
 
-- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **来源**：[[从Evaluator到Reward-Function]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
@@ -70,7 +70,7 @@ Rubric（评分细则）是评估体系中"评什么、怎么给分"的结构化
 
 ### Claim: Rubric 进训练循环带来 reward hacking 新形态——四类防御只提高 hack 难度，不消除（Goodhart）
 
-- **来源**：[[从Evaluator到Reward-Function——评估信号如何变成APO与强化学习的训练信号]]
+- **来源**：[[从Evaluator到Reward-Function]]
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7

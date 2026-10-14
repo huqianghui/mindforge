@@ -26,7 +26,7 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 
 ### Claim: OpenCLI 是 CLI 的 OpenAPI
 
-- **来源**：[[OpenCLI——万物皆可CLI的结构化革命]]
+- **来源**：[[OpenCLI：万物皆可CLI]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -36,7 +36,7 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 
 ### Claim: OpenCLI 解决 Agent 调用 CLI 的标准化缺失
 
-- **来源**：[[OpenCLI——万物皆可CLI的结构化革命]]
+- **来源**：[[OpenCLI：万物皆可CLI]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -46,7 +46,7 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 
 ### Claim: OpenCLI 分离描述与执行
 
-- **来源**：[[OpenCLI——万物皆可CLI的结构化革命]]
+- **来源**：[[OpenCLI：万物皆可CLI]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -56,7 +56,7 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 
 ### Claim: Agent-Reach 与 OpenCLI 在不同层面解决问题
 
-- **来源**：[[Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线]]
+- **来源**：[[Agent-Reach与OpenCLI]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -75,5 +75,5 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 
 ## 来源日记
 
-- [[OpenCLI——万物皆可CLI的结构化革命]] — OpenCLI 规范解析
-- [[Agent-Reach与OpenCLI——命令编排型Agent框架的两条路线]] — 两条路线对比
+- [[OpenCLI：万物皆可CLI]] — OpenCLI 规范解析
+- [[Agent-Reach与OpenCLI]] — 两条路线对比

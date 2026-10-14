@@ -29,7 +29,7 @@ related:
 
 ### Claim: method-agnostic 的定义是「换方法只换槽位，agent 与 reward 不改」
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.9
@@ -39,7 +39,7 @@ related:
 
 ### Claim: 接缝是 adapter——同一份 trace，不同算法用不同消费方式
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.9
@@ -49,7 +49,7 @@ related:
 
 ### Claim: store（控制平面）是 method-agnostic 能成立的物理基础
 
-- **来源**：[[Agent Lightning系列02：框架全景与脊柱拆解——9大模块与method-agnostic设计]]
+- **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.85

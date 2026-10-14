@@ -28,7 +28,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 两种主流架构——级联管线与端到端
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -38,7 +38,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 低延迟关键在于组件重叠执行
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -48,7 +48,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 语音不是"界面层"那么简单
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -58,7 +58,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 端到端模型尚未达到企业生产可用
 
-- **来源**：[[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]]
+- **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -68,7 +68,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Voice Agent 的真正难点在 Agent 而非语音
 
-- **来源**：[[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]]
+- **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -78,7 +78,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Azure Voice Live API 走全托管端到端路线
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -88,7 +88,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Voice Live API 采用 WebSocket + WebRTC 双通道架构
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -98,7 +98,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 从 WebSocket-only 到双通道是产品成熟度驱动的必然升级
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -108,7 +108,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Voice Live 与 Agent Service 解耦后发生模型归属反转
 
-- **来源**：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -118,7 +118,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Voice Live 挂 Agent 是会话级绑定 + 服务端编排，不是 function call
 
-- **来源**：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
@@ -128,7 +128,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 选型是一条光谱，延迟瓶颈在模型和工具而非 Voice Live 这层壳
 
-- **来源**：[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.7
@@ -138,7 +138,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器
 
-- **来源**：[[从Canvas音波球到云端数字人——浏览器动态内容的计算光谱（动态SVG下篇）]]
+- **来源**：[[浏览器动态内容的计算光谱]]
 - **首次出现**：2026-08-26
 - **最近更新**：2026-09-25
 - **置信度**：0.85
@@ -150,7 +150,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 四种语音要求各有专属控制面——提示词表达表演意图、语音接口生成声音、声音自带的时间数据驱动嘴型
 
-- **来源**：[[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]]
+- **来源**：[[Blender系列04：人物面试动画实战]]
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.8（OpenAI/Azure Speech 官方文档核对，方案未实跑接入）
@@ -160,7 +160,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 延迟工程的治本/治体感二分——技术等待与感知等待分离；对话面端到端每轮 ≈5.6s、外部网关占 70%
 
-- **来源**：[[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]]
+- **来源**：[[Voice-Live系列03：数字人出场延迟优化]]
 - **首次出现**：2026-09-14
 - **最近更新**：2026-09-16
 - **置信度**：0.8（真实生产环境多轮实测：出场 n=11、对话轮 5 session×3 轮 + 直连对照、brain RTT n=20）
@@ -170,7 +170,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: S2S 与混合式的真开关是 voice 配置字段而非模型选择——"架构决策降级为配置项"在输出侧再次上演
 
-- **来源**：[[Voice Live系列04：四条路线与全双工——GPT-Live-1对数字人方案的影响评估]]
+- **来源**：[[Voice-Live系列04：GPT-Live-1对数字人方案的影响]]
 - **首次出现**：2026-09-19
 - **最近更新**：2026-10-05
 - **置信度**：0.75
@@ -183,7 +183,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 两类数字人头像=两条合成路线——video 素材回放 + viseme 神经渲染嘴部，photo 单图 + VASA-1 逐帧生成整头；session 构造必须按头像类型分支
 
-- **来源**：[[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar]]
+- **来源**：[[Voice-Live系列05：两类数字人头像]]
 - **首次出现**：2026-09-23
 - **最近更新**：2026-09-25
 - **置信度**：0.85
@@ -194,7 +194,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: session 字段三层归属与开轮/生成两关分离——Agent 模式下 create_response 从调节器退化为总闸
 
-- **来源**：[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **来源**：[[Voice-Live系列06：轮次控制的五道关卡]]
 - **首次出现**：2026-09-23
 - **最近更新**：2026-09-25
 - **置信度**：0.8
@@ -205,7 +205,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Agent 的价值=交给它的内容决定权；重复回应=开轮关卡放行次数，与提示词无关——转写指纹排查法与 response.created 验证标准
 
-- **来源**：[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]、[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]、[[Voice Live系列06：轮次控制的五道关卡——create_response、response.create与Model、Agent模式的控制权归属]]
+- **来源**：[[Voice-Live系列07：重复致谢排查]]、[[Voice-Live系列08：应答门控]]、[[Voice-Live系列06：轮次控制的五道关卡]]
 - **首次出现**：2026-09-24
 - **最近更新**：2026-10-02
 - **置信度**：0.85
@@ -217,7 +217,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 脚本朗读的机制化——`pre_generated_assistant_message` 让 response 不调模型，读题从 prompt 约束变机制约束；模型是会话宿主与保险丝而非脑子；字与声是两层，旋钮不等于生效
 
-- **来源**：[[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]]
+- **来源**：[[Voice-Live系列09：脚本朗读的机制化]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85（photo avatar + gpt-5-mini 实测 `input_tokens: 0`、首字 0.26~0.35 s；2026-10-01 `voice.type` 允许清单由 Azure 报错原文给出）
@@ -227,7 +227,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 数字人弱网表现的事实清单与两条 Azure 硬约束——Azure 已做码率自适应、静态杠杆只能建会话时定（bitrate，另有 resolution / crop / scene）、1080p 一帧解不出仍吃带宽、胖视频饿死同车音频、关画面保声音、上行自伤、UDP 封锁无画无声；`session.avatar.connect` 每会话一次与 avatar 创建速率限制决定"关画面立即、开画面冷却"
 
-- **来源**：[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]、[[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]]
+- **来源**：[[Voice-Live系列12：数字人弱网表现]]、[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-04
 - **置信度**：0.85（2026-09-30 真机四档 UDP 限速 + 落地回填 + 六轮端到端验证；2026-10-03 速率限制与可调字段两处更正）
@@ -237,7 +237,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: Voice Live 的一组不一致是三条产品线的拼接缝——输入默认 24 kHz 是 Realtime 协议继承而非语音工程选择，WS 不收 Opus、WebRTC 模式不带 avatar 同一根源；对照 OpenAI Realtime 浏览器走 WebRTC Opus 弱网天然好，本方案更吃网络正因为数字人
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]（2026-09-30 新增 4.5.1 / 4.5.2）
+- **来源**：[[Voice-Live系列01：Agent实现架构]]（2026-09-30 新增 4.5.1 / 4.5.2）
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.75（基于文档与观察行为的推断，文章自标微软未公开说明；16 kHz 降采样已 A/B 实测）
@@ -247,7 +247,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 数字人走 Speech 的 avatar 配额而非 Voice Live 那张表，受两条独立限制——同时活跃 5（容量语言，关闭即释放）+ 每滚动 60 秒新建 3（限流语言，关闭不退还、窗口锚定创建时刻）；配额体系里没有可申请的 avatar 对象，Azure 侧观测不到被拒
 
-- **来源**：[[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]]、[[Quotas and limits for Azure Speech]]（官方配额页 avatar 一节）
+- **来源**：[[Voice-Live系列13：数字人配额与限流]]、[[Quotas and limits for Azure Speech]]（官方配额页 avatar 一节）
 - **首次出现**：2026-10-03
 - **最近更新**：2026-10-04
 - **置信度**：0.8（实验 A/B/C + 作用域对照 + 纯语音压测，官方文档确认归属；并发作用域与 5 分钟空闲断开未验）
@@ -257,7 +257,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 给会话挂「大脑」有且只有三条路径——原生 `model=` 只认按 region 预部署的清单、BYOM 用 `profile` 选上游协议并随之定死直通或级联、Agent 三件套无 profile 且架构上是级联；"not supported in this region" 与 "Bring Your Own Model" 是两扇门而非矛盾
 
-- **来源**：[[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]]
+- **来源**：[[Voice-Live系列14：模型接入的三条路径]]
 - **首次出现**：2026-10-05
 - **最近更新**：2026-10-08
 - **置信度**：0.8（同资源原生 / BYOM 建连探测 + 官方 BYOM 专页与博客原话对照）
@@ -267,7 +267,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 一个「模型」字段承载两种互不兼容的语义是 region 报错的根因——judge、打分、agent 底层模型都吃自有 deployment，唯独 Voice Live 原生 `model=` 不吃；修法是拆成「推理模型」与「语音会话模型」，而 realtime 能产文本却只走自己的 WS 协议，给拆分补上实测依据
 
-- **来源**：[[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]]（第七节）、[[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]]（第七节）
+- **来源**：[[Voice-Live系列14：模型接入的三条路径]]（第七节）、[[Voice-Live系列15：realtime模型与数字人]]（第七节）
 - **首次出现**：2026-10-05
 - **最近更新**：2026-10-08
 - **置信度**：0.75（单产品配置链梳理 + 文本面逐个探测）
@@ -294,21 +294,21 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ## 来源日记
 
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景
-- [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级实践
-- [[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]] — WebRTC 双通道架构
-- [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 解耦后三种合作模式与选型光谱
-- [[Blender系列04：人物面试动画实战——47骨骼程序化表演、TTS配音与音量包络口型同步]] — 四种语音要求分层、两条 API 路线与 viseme 同步工程规则
-- [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — 出场延迟分解与三层优化、对话轮次与外部网关实测
-- [[Voice Live系列09：脚本朗读的机制化——pre_generated绕过模型推理、宿主模型与代码、prompt、voice三层分工]] — 脚本朗读机制化：`pre_generated` 三代路径、宿主模型、代码 / prompt / voice 三层分工、`voice.type` 硬约束
-- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 数字人弱网实测：码率自适应、1080p 失效、胖视频饿死音频、关画面保声音、两条硬约束、客户网络基线
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 4.5.1 输入采样率 24 kHz 的来历、4.5.2 三条产品线拼接缝（2026-09-30 增补）
-- [[Voice Live系列02：架构演进——与Agent Service解耦后的合作模式与组合选型]] — 开放问题 12（会话时长上限备忘）/ 13（终端边界）
-- [[Voice Live系列00：导读——主题地图、阅读顺序与已定决策速查]] — 系列导读：七张主题地图与已定决策速查（不含新内容，作系列入口）
+- [[Voice-Live系列01：Agent实现架构]] — 架构全景
+- [[2026-04-06-企业级实时语音Agent]] — 企业级实践
+- [[WebSocket与WebRTC深度对比]] — WebRTC 双通道架构
+- [[Voice-Live系列02：解耦Agent-Service后的架构演进]] — 解耦后三种合作模式与选型光谱
+- [[Blender系列04：人物面试动画实战]] — 四种语音要求分层、两条 API 路线与 viseme 同步工程规则
+- [[Voice-Live系列03：数字人出场延迟优化]] — 出场延迟分解与三层优化、对话轮次与外部网关实测
+- [[Voice-Live系列09：脚本朗读的机制化]] — 脚本朗读机制化：`pre_generated` 三代路径、宿主模型、代码 / prompt / voice 三层分工、`voice.type` 硬约束
+- [[Voice-Live系列12：数字人弱网表现]] — 数字人弱网实测：码率自适应、1080p 失效、胖视频饿死音频、关画面保声音、两条硬约束、客户网络基线
+- [[Voice-Live系列01：Agent实现架构]] — 4.5.1 输入采样率 24 kHz 的来历、4.5.2 三条产品线拼接缝（2026-09-30 增补）
+- [[Voice-Live系列02：解耦Agent-Service后的架构演进]] — 开放问题 12（会话时长上限备忘）/ 13（终端边界）
+- [[Voice-Live系列00：导读]] — 系列导读：七张主题地图与已定决策速查（不含新内容，作系列入口）
 - [[2026-09-30-周三]] — 系列09~12 与 00 成文、弱网落地与实测回填的当日记录
-- [[Voice Live系列13：数字人配额与限流——文档值vs实测值、并发5与新建3次每分钟两条限制、为何没有可申请的quota]] — 数字人配额与限流：文档值 vs 实测值、并发 5 与新建 3 次/60 秒、为何没有可申请的 quota
-- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — 2026-10-03 修订：码率倒挂作废定稿、服务端可调字段清单更正（resolution / crop / scene.zoom）
+- [[Voice-Live系列13：数字人配额与限流]] — 数字人配额与限流：文档值 vs 实测值、并发 5 与新建 3 次/60 秒、为何没有可申请的 quota
+- [[Voice-Live系列12：数字人弱网表现]] — 2026-10-03 修订：码率倒挂作废定稿、服务端可调字段清单更正（resolution / crop / scene.zoom）
 - [[2026-10-03-周六]] — 系列13 成文与回链的当日记录
-- [[Voice Live系列14：模型接入的三条路径——原生清单按region开通、BYOM用profile选协议定直通或级联、推理模型与语音会话模型为何要拆开]] — 模型接入三条路径：原生清单按 region、BYOM profile 定直通或级联、推理模型与语音会话模型拆开
-- [[Voice Live系列15：realtime模型与数字人——四条路线再展开、EoU两种实现决定可达性、文本驱动已验证与音频驱动的证据边界、GPT-Live-1待测清单]] — realtime 与数字人：EoU 两种实现、文本驱动已验证、音频驱动证据边界、realtime 文本面只走 WS
+- [[Voice-Live系列14：模型接入的三条路径]] — 模型接入三条路径：原生清单按 region、BYOM profile 定直通或级联、推理模型与语音会话模型拆开
+- [[Voice-Live系列15：realtime模型与数字人]] — realtime 与数字人：EoU 两种实现、文本驱动已验证、音频驱动证据边界、realtime 文本面只走 WS
 - [[2026-10-05-周一]] — 系列14/15 成文的当日记录

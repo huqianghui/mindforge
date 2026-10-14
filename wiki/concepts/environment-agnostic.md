@@ -29,7 +29,7 @@ Environment-agnostic 指训练/优化框架把"任务环境"完全隔离到单�
 
 ### Claim: 接新任务只写 EnvAdapter——trainer 零修改零 fork，所有框架要客户提供的东西本质相同：数据、执行、打分
 
-- **来源**：[[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]]、[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **来源**：[[SkillOpt系列01：源码篇]]、[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-15
 - **置信度**：0.85
@@ -39,7 +39,7 @@ Environment-agnostic 指训练/优化框架把"任务环境"完全隔离到单�
 
 ### Claim: 环境契约有隐式/显式两种形状——取舍是上手成本 vs 可排查性，交付客户长期维护选显式
 
-- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.8
@@ -49,7 +49,7 @@ Environment-agnostic 指训练/优化框架把"任务环境"完全隔离到单�
 
 ### Claim: 显式契约也有暗面——接口之外的隐式要求会静默退化，"接口实现完"≠"数据流追通过"
 
-- **来源**：[[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]]
+- **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.85
@@ -68,5 +68,5 @@ Environment-agnostic 指训练/优化框架把"任务环境"完全隔离到单�
 
 ## 来源日记
 
-- [[SkillOpt系列01：源码篇——主要模块拆解与六阶段执行流剖析]] — EnvAdapter 四个 abstract 方法、六阶段主循环回调消费环境、与 method-agnostic 的同构关系
-- [[SkillOpt系列03：实战篇——video2frames提示词调优，从agent-lightning APO移植到SkillOpt]] — video2frames 移植实证：组合根模式、五文件显式契约取舍、conversation.json 隐式契约静默 skip 事故
+- [[SkillOpt系列01：源码篇]] — EnvAdapter 四个 abstract 方法、六阶段主循环回调消费环境、与 method-agnostic 的同构关系
+- [[SkillOpt系列03：提示词调优实战]] — video2frames 移植实证：组合根模式、五文件显式契约取舍、conversation.json 隐式契约静默 skip 事故

@@ -27,7 +27,7 @@ Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building E
 
 ### Claim: 适应度函数是将架构关注点转化为可自动执行检查的思维方式
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
@@ -37,7 +37,7 @@ Fitness Functions（架构适应度函数）是 Neal Ford 等人在《Building E
 
 ### Claim: ArchUnitTS 明确定位为 TypeScript 适应度函数框架
 
-- **来源**：[[Vibe Coding系列11：架构测试全景——从ArchUnit到AI辅助架构Review的工具链实践]]
+- **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7

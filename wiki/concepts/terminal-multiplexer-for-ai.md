@@ -36,7 +36,7 @@ related: []
 
 ### Claim: Orca 遥控执行模型——手机是遥控器，执行永远在电脑
 
-- **来源**：[[Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动]]
+- **来源**：[[Orca使用笔记：多Agent编排与远程互动]]
 - **首次出现**：2026-07-25
 - **最近更新**：2026-08-04
 - **置信度**：0.7
@@ -46,7 +46,7 @@ related: []
 
 ### Claim: cmux 是 GUI 终端而非纯终端
 
-- **来源**：[[cmux使用笔记——从Ghostty增强到AI Agent终端的实践]]
+- **来源**：[[cmux使用笔记]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -56,7 +56,7 @@ related: []
 
 ### Claim: cmux 架构是 GUI App > Socket API > CLI
 
-- **来源**：[[cmux使用笔记——从Ghostty增强到AI Agent终端的实践]]
+- **来源**：[[cmux使用笔记]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.5
@@ -74,5 +74,5 @@ related: []
 ## 来源日记
 
 - [[tmux与Claude远程交互实践]] — tmux 实践
-- [[cmux使用笔记——从Ghostty增强到AI Agent终端的实践]] — cmux 实践
-- [[Orca使用笔记——多Agent编排IDE与Mobile跨网络远程互动]] — 遥控执行模型、Tailscale 跨网、worktree 隔离与 fan-out（2026-07-25）
+- [[cmux使用笔记]] — cmux 实践
+- [[Orca使用笔记：多Agent编排与远程互动]] — 遥控执行模型、Tailscale 跨网、worktree 隔离与 fan-out（2026-07-25）

@@ -24,7 +24,7 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 ### Claim: Context7 解决 LLM 使用过时 API 的问题
 
-- **来源**：[[Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例]]
+- **来源**：[[Context7：实时获取最新文档的MCP-Server]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -34,7 +34,7 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 ### Claim: 架构极简——仅 2 个工具
 
-- **来源**：[[Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例]]
+- **来源**：[[Context7：实时获取最新文档的MCP-Server]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -44,7 +44,7 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 ### Claim: 支持版本特定查询和数千库文档
 
-- **来源**：[[Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例]]
+- **来源**：[[Context7：实时获取最新文档的MCP-Server]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -62,4 +62,4 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 ## 来源日记
 
-- [[Context7：让 AI Agent 实时获取最新文档的 MCP Server——以 Azure 文档为例]] — Context7 使用实践
+- [[Context7：实时获取最新文档的MCP-Server]] — Context7 使用实践

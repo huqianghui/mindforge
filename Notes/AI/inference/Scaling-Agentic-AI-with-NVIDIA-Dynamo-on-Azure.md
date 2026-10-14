@@ -1,5 +1,5 @@
 ---
-title: Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms
+title: Scaling Agentic AI with NVIDIA Dynamo on Azure
 created: 2026-05-13
 tags:
   - NVIDIA
@@ -12,7 +12,7 @@ tags:
   - agentic-ai
 ---
 
-# Scaling Agentic AI with NVIDIA Dynamo on Azure AI Platforms
+# Scaling Agentic AI with NVIDIA Dynamo on Azure
 
 ## Agentic Workload 特征与痛点
 

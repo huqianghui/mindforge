@@ -34,7 +34,7 @@ related:
 
 ### Claim: 级联流水线是实时交互系统的本质结构
 
-- **来源**：[[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]]
+- **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-06
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -44,7 +44,7 @@ related:
 
 ### Claim: 判断模块化的标准——能否单独替换
 
-- **来源**：[[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]]
+- **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-17
 - **置信度**：0.9
@@ -54,7 +54,7 @@ related:
 
 ### Claim: 级联失败是 Harness Engineering 出现的核心驱动力
 
-- **来源**：[[Vibe Coding系列01：全面系统的了解Harness Engineering的来龙去脉|Vibe Coding系列01]]
+- **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-02
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -78,5 +78,5 @@ related:
 
 ## 来源日记
 
-- [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — Section 七 级联流水线完整架构
-- [[Speech技术全景——从音频处理基础到Turn-Taking的深层机制]] — Section 三 级联 vs 端到端两种架构路线
+- [[2026-04-06-企业级实时语音Agent]] — Section 七 级联流水线完整架构
+- [[Speech技术全景]] — Section 三 级联 vs 端到端两种架构路线

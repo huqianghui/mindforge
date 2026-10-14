@@ -33,7 +33,7 @@ related:
 
 ### Claim: advantage = 减掉状态基线后的「相对好坏」，与 reward/return 的绝对性相区分
 
-- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **来源**：[[2026-07-06-CL-RL全景与JitRL]]
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.9
@@ -43,7 +43,7 @@ related:
 
 ### Claim: 减基线的意义是 variance reduction——抵消「状态本身有多容易」这个公共偏置
 
-- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **来源**：[[2026-07-06-CL-RL全景与JitRL]]
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
@@ -53,7 +53,7 @@ related:
 
 ### Claim: 用不用 advantage 是 Harness 与 RL 的分水岭——reward 用法光谱
 
-- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]
+- **来源**：[[2026-07-06-CL-RL全景与JitRL]]
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.8
@@ -63,7 +63,7 @@ related:
 
 ### Claim: 同一个 advantage 语言，多种实现空间——进梯度 vs 进 logits
 
-- **来源**：[[2026-07-06-JitRL-无梯度测试时RL论文解读]]、[[2026-07-07-LifeSkill-边行动边学习的参数化路径]]
+- **来源**：[[2026-07-06-CL-RL全景与JitRL]]、[[2026-07-07-LifeSkill]]
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.8
@@ -73,7 +73,7 @@ related:
 
 ## 冲突与演进
 
-- 2026-07-07：从 [[2026-07-06-JitRL-无梯度测试时RL论文解读]] 抽取，把散落在 RAFT（reward 当过滤阈值）、skillopt（分数当门控信号）、reinforcement-learning（GRPO 组内相对优势）里的 advantage 相关论据归口成独立原子概念页，补齐 RL cluster 缺失的基础构造页。
+- 2026-07-07：从 [[2026-07-06-CL-RL全景与JitRL]] 抽取，把散落在 RAFT（reward 当过滤阈值）、skillopt（分数当门控信号）、reinforcement-learning（GRPO 组内相对优势）里的 advantage 相关论据归口成独立原子概念页，补齐 RL cluster 缺失的基础构造页。
 
 ## 关联概念
 
@@ -85,5 +85,5 @@ related:
 
 ## 来源日记
 
-- [[2026-07-06-JitRL-无梯度测试时RL论文解读]] — 第四节 reward/return/value/advantage 四量辨析、减基线的 variance reduction、reward 用法光谱
-- [[2026-07-07-LifeSkill-边行动边学习的参数化路径]] — advantage 的非参数（JitRL）vs 参数化（GRPO/PPO）实现对照
+- [[2026-07-06-CL-RL全景与JitRL]] — 第四节 reward/return/value/advantage 四量辨析、减基线的 variance reduction、reward 用法光谱
+- [[2026-07-07-LifeSkill]] — advantage 的非参数（JitRL）vs 参数化（GRPO/PPO）实现对照

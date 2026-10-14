@@ -33,7 +33,7 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 
 ### Claim: ReAct 对应人类"试错迭代"认知模式
 
-- **来源**：[[Agent经典范式与人类问题处理模式的映射]]
+- **来源**：[[Agent范式与人类问题处理模式]]
 - **首次出现**：2026-03-25
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -43,7 +43,7 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 
 ### Claim: ReAct 是 Agent Loop 的最小完备形式
 
-- **来源**：[[Agent经典范式与人类问题处理模式的映射]]
+- **来源**：[[Agent范式与人类问题处理模式]]
 - **首次出现**：2026-03-25
 - **最近更新**：2026-04-17
 - **置信度**：0.8
@@ -53,7 +53,7 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 
 ### Claim: ReAct 的 Skill 组合可由 Google 五种 Pattern 解构
 
-- **来源**：[[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]]
+- **来源**：[[从Skill-Pattern到Agent-Runtime]]
 - **首次出现**：2026-04-17
 - **最近更新**：2026-04-17
 - **置信度**：0.7
@@ -74,5 +74,5 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 
 ## 来源日记
 
-- [[Agent经典范式与人类问题处理模式的映射]] — ReAct 范式完整定义与人类认知对应
-- [[从Google五种Skill Pattern到Agent Runtime——Skill、MCP与Agent的统一架构]] — ReAct 与 Skill Pattern 的组合关系
+- [[Agent范式与人类问题处理模式]] — ReAct 范式完整定义与人类认知对应
+- [[从Skill-Pattern到Agent-Runtime]] — ReAct 与 Skill Pattern 的组合关系

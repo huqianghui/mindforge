@@ -31,7 +31,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ### Claim: Hermes Skill 自动生成基于工具调用计数器（每 15 次），非 cron 定时
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -41,7 +41,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ### Claim: Curator 系统管理 Agent 自动创建的 Skill 生命周期（active → stale → archived）
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -51,7 +51,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ### Claim: Hermes 支持手动触发 Skill 生成（skill_manage 工具 + CLI + 对话指令）
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -61,7 +61,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ### Claim: Hermes 的 Skill Validation（自动化质量检查）尚未完善（Issue #416）
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
@@ -71,7 +71,7 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ### Claim: Hermes 采用单体持久进程架构，与 OpenClaw 的 Gateway+Node 分布式架构形成对比
 
-- **来源**：[[hermes-agent-vs-openclaw]]
+- **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
@@ -94,4 +94,4 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ## 来源日记
 
-- [[hermes-agent-vs-openclaw]] — Hermes Agent vs OpenClaw 深度技术对比文章
+- [[Hermes-Agent与OpenClaw对比]] — Hermes Agent vs OpenClaw 深度技术对比文章

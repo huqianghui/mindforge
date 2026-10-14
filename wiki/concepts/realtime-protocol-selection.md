@@ -28,7 +28,7 @@ related:
 
 ### Claim: WebSocket 是控制总线，WebRTC 是实时传输通道
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.9
@@ -38,7 +38,7 @@ related:
 
 ### Claim: SDP 是"协商格式"而非通信协议，WebSocket 是其传输渠道
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.9
@@ -48,7 +48,7 @@ related:
 
 ### Claim: 双通道架构中两条路径职责严格解耦
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -58,7 +58,7 @@ related:
 
 ### Claim: WebSocket 传音频有五个结构性缺陷
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -68,7 +68,7 @@ related:
 
 ### Claim: 协议选型决策框架——场景驱动而非技术偏好
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
@@ -78,7 +78,7 @@ related:
 
 ### Claim: 渐进式架构升级是通用设计原则
 
-- **来源**：[[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]]
+- **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.7
@@ -88,7 +88,7 @@ related:
 
 ### Claim: ICE 门控快路径——等待目标从"全量集"收窄到"够用集"：对服务端行为有确定性知识时，等待条件可以收窄（兜底保留）
 
-- **来源**：[[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]]
+- **来源**：[[Voice-Live系列03：数字人出场延迟优化]]
 - **首次出现**：2026-09-14
 - **最近更新**：2026-10-02
 - **置信度**：0.8（真实项目根因排查 + 生产环境 9/9 轮实测验证）
@@ -100,7 +100,7 @@ related:
 
 ### Claim: 媒体面/控制面的术语精确化与双通道的代价面——uplink 音频 WebRTC 化后后端收缩为"纯控制面"；音频播放路径分叉导致服务端 AEC 参考失配
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]（2026-09 双通道章节修订）、[[Voice Live系列05：两类数字人头像——viseme驱动的Video Avatar与VASA-1生成的Photo Avatar]]、[[Voice Live系列07：重复致谢排查——三次Thank you的三个开轮来源、转写指纹与编排层修法]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]（2026-09 双通道章节修订）、[[Voice-Live系列05：两类数字人头像]]、[[Voice-Live系列07：重复致谢排查]]
 - **首次出现**：2026-09-19
 - **最近更新**：2026-09-25
 - **置信度**：0.75
@@ -110,7 +110,7 @@ related:
 
 ### Claim: WebRTC 与 WebSocket 建连成本的差异本质是"对等"与"客户端-服务器"——WebRTC 在拓扑已退化为客户端-服务器时仍付 ICE 固定开销；TURN over TCP/443 是协议能力但 Azure 默认不下发 TCP 候选，"防火墙严格限 UDP → 只用 WebSocket"的选型条件获实测续证
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice-Live系列10：ICE、STUN与TURN]]、[[Voice-Live系列12：数字人弱网表现]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85
@@ -120,7 +120,7 @@ related:
 
 ### Claim: RTP / RTCP 与 UDP 的分工及弱网失效链——UDP 决定包怎么送到，RTP 决定包里是什么、何时播、丢了怎么知道；"丢了就丢了"是抖动缓冲 + FEC + 按需 NACK 而非放任；抖动缓冲 < RTT 时 NACK 迟到→GOP 报废，码率自适应调带宽不调包数；音视频同车则胖视频饿死音频；WebSocket 传 PCM 无 RTP 头，抖动直接变延迟累积
 
-- **来源**：[[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]]、[[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]]
+- **来源**：[[Voice-Live系列10：ICE、STUN与TURN]]、[[Voice-Live系列12：数字人弱网表现]]
 - **首次出现**：2026-09-30
 - **最近更新**：2026-10-02
 - **置信度**：0.85（RFC 3550 / 4585 核对 + getStats 真机实测）
@@ -130,7 +130,7 @@ related:
 
 ### Claim: WebRTC 与 WebSocket 的差别远不止 UDP 换 TCP——丢包、编码、抖动缓冲、拥塞控制、发送节奏、媒体经不经过后端全都不同；最大的取舍是媒体直连后后端只剩签发 token 与信令，可观测性也随之不对称
 
-- **来源**：[[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]]
+- **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
 - **最近更新**：2026-10-11
 - **置信度**：0.75（对比表与工具为文档查证；WS 下行不到 1 秒推完为实测；WebRTC 音轨上打断生效为推断，待对照实测）
@@ -152,10 +152,10 @@ related:
 ## 来源日记
 
 - [[2026-05-22-周五]] — 整理 WebSocket 与 WebRTC 深度对比文章
-- [[WebSocket与WebRTC深度对比——从Azure Voice Live API看实时通信协议选型]] — 核心来源
-- [[Voice Live系列03：数字人出场延迟优化——ICE门控根因、实测分解与预热占位策略]] — ICE 门控快路径根因剖析与生产实测（Trickle vs Vanilla ICE、"全量集→够用集"）
-- [[Voice Live系列10：ICE、STUN与TURN——数字人WebRTC建连的候选类型、一次性信令与直连优先relay保底拓扑]] — 对等 vs 客户端-服务器、ICE 必要成本定位、RTP/RTCP 与 UDP 分工、relay 定位四处校正
-- [[Voice Live系列11：自建TURN中继——ice_servers替换入口、coturn要求、与Azure侧的关系及何时值得]] — TURN 非联邦、`ice_servers` 替换入口与六项要求、何时值得自建
-- [[Voice Live系列12：弱网表现——Azure码率自适应实测、1080p解码失效机制、胖视频饿死音频与关画面保声音]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
+- [[WebSocket与WebRTC深度对比]] — 核心来源
+- [[Voice-Live系列03：数字人出场延迟优化]] — ICE 门控快路径根因剖析与生产实测（Trickle vs Vanilla ICE、"全量集→够用集"）
+- [[Voice-Live系列10：ICE、STUN与TURN]] — 对等 vs 客户端-服务器、ICE 必要成本定位、RTP/RTCP 与 UDP 分工、relay 定位四处校正
+- [[Voice-Live系列11：自建TURN中继]] — TURN 非联邦、`ice_servers` 替换入口与六项要求、何时值得自建
+- [[Voice-Live系列12：数字人弱网表现]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
 - [[2026-09-30-周三]] — 系列10/11/12 成文与"直连推翻 relay-only"修正记录
-- [[Voice Live系列16：传输层概念对齐——WebSocket与WebRTC两条路径、ICE两端对称与五件事、Opus为何进不了WS、用webrtc-internals验证]] — WebRTC vs WS 全维度对比、媒体直连的架构代价、WS 分层观测工具；ICE 部分归 [[ice-nat-traversal]]
+- [[Voice-Live系列16：传输层概念对齐]] — WebRTC vs WS 全维度对比、媒体直连的架构代价、WS 分层观测工具；ICE 部分归 [[ice-nat-traversal]]

@@ -30,7 +30,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Agent 和 Subagent 是同一个东西的两面
 
-- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -40,7 +40,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Subagent Context 与主 session 完全隔离
 
-- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -50,7 +50,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: "Process isolation gives context isolation for free"
 
-- **来源**：[[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]]
+- **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -60,7 +60,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Teammate 是具有名字、收件箱和独立 Agent Loop 的长期协作者
 
-- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -70,7 +70,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ### Claim: Claude Code 形成三层 Agent 架构——Subagent / Runtime Task / Teammate
 
-- **来源**：[[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]]
+- **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
@@ -92,6 +92,6 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 ## 来源日记
 
-- [[Claude Code系列03：Agent、Subagent与Teammate架构解析——从一次性委派到长期协作]] — 架构解析（含 Teammate 详解）
-- [[Claude Code系列02：learn-claude-code——打开Coding Agent黑盒|learn-claude-code]] — 进程隔离洞察
+- [[Claude-Code系列03：Agent、Subagent与Teammate]] — 架构解析（含 Teammate 详解）
+- [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — 进程隔离洞察
 - [[2026-04-16-周四]] — 再次学习 Claude Code 原理，Teammate 概念补充

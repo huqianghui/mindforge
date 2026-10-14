@@ -78,7 +78,7 @@ AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、�
 
 ### Claim: 三层优化覆盖 token 消耗全链路，联合节省 ~78%
 
-- **来源**：[[Caveman与RTK对比——两种互补的LLM Token优化方案]]
+- **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -88,7 +88,7 @@ AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、�
 
 ### Claim: RTK 的绝对节省量远大于 Caveman
 
-- **来源**：[[Caveman与RTK对比——两种互补的LLM Token优化方案]]
+- **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
@@ -121,4 +121,4 @@ AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、�
 
 - [[2026-04-28-周二]] — 首次研究 Caveman 与 RTK
 - [[2026-04-30-周四]] — 叠加测试，产出对比文章
-- [[Caveman与RTK对比——两种互补的LLM Token优化方案]] — 系统性对比与联合使用分析
+- [[Caveman与RTK对比]] — 系统性对比与联合使用分析

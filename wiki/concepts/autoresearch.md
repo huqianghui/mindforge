@@ -27,7 +27,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ### Claim: AutoResearch 是受控搜索空间中的自动化爬坡
 
-- **来源**：[[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]]
+- **来源**：[[AutoResearch概念澄清]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -37,7 +37,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ### Claim: Ralph Loop 与 AutoResearch 的核心区别是选择机制
 
-- **来源**：[[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]]
+- **来源**：[[AutoResearch概念澄清]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -47,7 +47,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ### Claim: AutoResearch vs AutoML 的区别在搜索空间动态性
 
-- **来源**：[[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]]
+- **来源**：[[AutoResearch概念澄清]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -57,7 +57,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ### Claim: 五约束设计模式是最可复用的模式
 
-- **来源**：[[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]]
+- **来源**：[[AutoResearch概念澄清]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
@@ -67,7 +67,7 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ### Claim: AutoResearch 结构映射到 Agent Runtime
 
-- **来源**：[[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]]
+- **来源**：[[AutoResearch概念澄清]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
@@ -87,4 +87,4 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 
 ## 来源日记
 
-- [[AutoResearch概念澄清——与Ralph-Loop和AutoML的本质区别]] — 概念辨析与架构映射
+- [[AutoResearch概念澄清]] — 概念辨析与架构映射

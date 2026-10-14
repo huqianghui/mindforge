@@ -68,7 +68,7 @@ related_methods: []
 
 ### Claim: 低延迟关键在于组件重叠执行
 
-- **来源**：[[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]]
+- **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -78,7 +78,7 @@ related_methods: []
 
 ### Claim: 端到端模型尚未达到企业生产可用
 
-- **来源**：[[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]]
+- **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -88,7 +88,7 @@ related_methods: []
 
 ### Claim: Dialog Manager 是被 Voice Live 默认配置折叠掉的一层——应答门控把它重新展开为显式状态机
 
-- **来源**：[[Voice Live系列08：应答门控——判停与开轮之间的四个判断：EOU、LLM judge、两段式提交与频率策略]]
+- **来源**：[[Voice-Live系列08：应答门控]]
 - **首次出现**：2026-09-24
 - **最近更新**：2026-09-25
 - **置信度**：0.75
@@ -114,5 +114,5 @@ related_methods: []
 
 ## 来源
 
-- [[Voice Live系列01：Agent实现架构——从级联流水线到Azure Voice Live API]] — 架构全景
-- [[2026-04-06-Building-Enterprise-Realtime-Voice-Agents]] — 企业级实践
+- [[Voice-Live系列01：Agent实现架构]] — 架构全景
+- [[2026-04-06-企业级实时语音Agent]] — 企业级实践
