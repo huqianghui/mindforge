@@ -160,6 +160,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[realtime-protocol-selection]] — 实时通信协议选型：Control Plane vs Data Plane 分离
 - [[ice-nat-traversal]] — ICE NAT 穿透：候选两端对称、五件事、ICE-lite 判定与 webrtc-internals 验证
 - [[compute-locus-spectrum]] — 计算位置光谱：内容复杂度 × 实时性来源决定画面计算发生在哪里（文档内 → 本地 JS/GPU → 云端 GPU 推流）
+- [[frame-driven-rendering]] — 帧号驱动渲染：进度 =（帧号 ÷ fps）÷ 时长，离线导出的时间源，推出帧段并行与确定性；时钟驱动库可经 seek 收编
+- [[clock-driven-rendering]] — 时钟驱动渲染：以系统时钟算进度，实时场景（设备帧率不一、无总帧数、需与真实世界同步）的正确解，离线导出时失效
 - [[viseme]] — Viseme（视觉音素）：phoneme 多对一收敛的最小口型单位，TTS→数字人口型驱动的时间轴协议
 - [[end-of-turn-detection]] — EOU（话轮结束检测）：介于 VAD 与 turn-taking 之间的独立层，三代方法谱系（静音阈值→文本语义→音频原生）
 
@@ -244,6 +246,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[personal-knowledge-compiler-workflow]] — 日记到知识库编译流程
 - [[gsd-five-step-workflow]] — GSD 五步开发工作流
 - [[reward-design-three-inputs]] — Reward 设计三份输入与两本账分家：验收分不动、优化 reward 按信噪比设计、盲选反推权重
+- [[programmatic-video]] — 程序化视频：Remotion / HyperFrames 选型 + agent 工作流（帧和顺序写分镜 → 五层功能 → 内置浏览器预览闭环 → 选渲染位置导出 → WebP 嵌入）
 
 ### Layered Strategy（分层策略）
 
