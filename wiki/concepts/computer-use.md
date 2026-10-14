@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-09-28"
+updated: "2026-10-14"
 tags:
   - wiki
   - concept
@@ -23,19 +23,31 @@ related:
 
 ## 摘要
 
-Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。它与 Browser Use 是包含关系——Browser Use 是 Computer Use 在浏览器域的子集。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把"用户已经会用的业务界面"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。
+Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。"Computer Use"有两种用法：产品界面里是电脑与浏览器控制的设置栏目，技术讨论里常特指通过操作系统接口控制桌面（原生桌面 Computer Use）；Browser Use 是浏览器页面控制能力，Chrome integration 是接入用户浏览器的方式——产品栏目、操作能力、接入方式、观察方式是正交维度，不构成技术上的包含层级（2026-10-13 系列一重写纠正了早期"Computer Use ⊃ Browser Use"的说法）。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把"用户已经会用的业务界面"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。
 
 本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。
 
 ## Claims
 
+### Claim: 产品栏目、操作能力、接入方式、观察方式是正交维度——"通过 Chrome integration 使用 Browser Use"不等于 Computer Use ⊃ Chrome integration ⊃ Browser Use；headless/headed 与 Profile 也是两个独立维度
+
+- **来源**：[[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]（2026-10-13 重写）、[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **首次出现**：2026-10-13
+- **最近更新**：2026-10-13
+- **置信度**：0.8
+- **状态**：active
+
+> 同一次读取已登录网站的任务，产品记录里归在 Computer use 栏目下、技术上用的是 Browser Use、接入方式是 Chrome integration 扩展——三个名称同时出现并不矛盾，但**产品设置中的归类不能直接转换为技术上的能力层级**。拆成六个维度：控制范围（原生桌面 / 浏览器页面）、浏览器接入（独立或内置 / 扩展连接 / 受控 CDP）、观察方式（DOM / AX / 截图）、动作方式（语义控件 / 页面命令 / 坐标与按键）、会话边界（独立 Profile / 用户现有 Profile）、显示形态（headed / headless / 面板 / 预览）。这些维度可组合：Browser Use 不依赖 Chrome integration（也可接内置或独立浏览器）；**两条路径都可以混合结构化与视觉观察**——原生桌面 Computer Use 不等于每步截图点坐标（AX 可读时按语义操作），Browser Use 也可看截图处理 Canvas，网页缺结构时先用浏览器内的视觉动作、不必立即切到系统桌面控制。易混点：画中画是预览形态，不能据此判断是否 headless 或用了哪个 Profile；headless 浏览器可以带持久化 Profile 或预置认证状态，并非必然无登录态。
+
 ### Claim: Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界
 
 - **来源**：[[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-29
-- **置信度**：0.8
-- **状态**：active
+- **最近更新**：2026-10-14
+- **置信度**：0.4
+- **状态**：outdated
+
+> ⚠️ 2026-10-14 标记 outdated：系列一 10-13 重写撤回了"包含关系"——它把产品设置栏目的归类误当成技术能力层级，已由上一条"正交维度"Claim 取代。"四种浏览器形态的本质差异是 Profile 边界"仍成立，但 Profile 只是会话边界这一维，与显示形态（headless/headed）独立；"认证三链路相互独立"也被修正为"用途不同、实现可能耦合"（见系列九认证 Claim）。原文如下：
 
 > Computer Use 是广义 GUI 操作能力（桌面应用 + 浏览器），Browser Use 是其浏览器子集。Codex 侧四种浏览器形态（内置 `@Browser`、Chrome extension `@Chrome`、Playwright、Orca 内嵌 Browser）的本质差异是 **Profile 边界**——是否复用用户真实浏览器的登录态。认证三链路（桌面应用 provider / 扩展继承 / 独立会话）相互独立，Azure OpenAI provider 实测可用。
 
@@ -179,6 +191,26 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 > 三层分清：API（`POST /v1/systemone`，不接受截图，不能替换 Codex 通用模型）/ skill 指导（官方 `typesafe-ai` skill 装了不等于每步 UI 决策都经过 Jev）/ UI 执行器（`browser-use/jev-ultrafast` 读 DOM 一次选动作与目标；`awlevin/typesafe-computer-use` OCR + 辅助功能树；skill 名字本身不提供互斥，执行器才需要锁）。"事后询问"（Codex 已决定再让 Jev 判一次）纯增加请求只会更慢，"接管循环"才是提速来源。两个新 skill `jev-browser` / `jev-desktop`：允许自动选择、执行前告知、低置信度交回、`receipt.json`/`result.json` + 独立 `verified_success`（不直接接受模型 DONE）；任务文件只放目标与验收不放凭据；互斥分层——两 Jev 入口全机锁（程序强制）/ 与系统工具 `native-begin`/`native-end` 预约（协作式）/ OS 级不存在不能宣称。路由规则：网页纯视觉/canvas/iframe/跨站点长流程→系统 Browser（Jev 不看截图、跨 origin 停止交回）；macOS 应用→系统 Computer Use（jev-desktop 待 Accessibility 权限修复后重测）；付款/删除/不可撤销提交→任一执行器都走人工确认（错误成本主导与判断模型无关，见 [[cost-per-task]]）；用户点名最高优先级。桌面无成绩原因：系统侧 ScreenCaptureKit -3811 两次、Jev Desktop 缺 Accessibility 权限（22.4 s 是启动失败耗时非成绩），未改权限未重启掩盖。confidence 不是正确率，`min_confidence: 0.4` 未用结果标签校准（[[confidence-calibration]]）。升级为优先选择还差四个实验：桌面复测、难任务集、三臂对照加 Codex 原生批量规划、writer 优化两组同步。
 
+### Claim: 三条执行路径没有固定的速度与 token 排名——总耗时常由模型判断与循环轮次主导，token 由观察策略而非接入方式决定；"Chrome 扩展更省"、"Computer Use 最费"都不能预设
+
+- **来源**：[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **首次出现**：2026-10-13
+- **最近更新**：2026-10-13
+- **置信度**：0.65
+- **状态**：active
+
+> 比较对象是原生桌面 Computer Use、独立/内置浏览器 Browser Use、Chrome 扩展 Browser Use 三条路径。**性能**：总耗时 = 初始化与认证 + 页面加载 + 各轮（观察 + 模型判断 + 动作执行 + 等待验收）+ 清理；结构化网页一次拿到多个控件、减少轮次，桌面路径可能多出窗口定位与焦点管理，扩展多一个连接认证环节但可省登录准备——但同样精简的状态、同一模型与动作策略下不能预设排名；系列八只换判断模型就让耗时降 58~66%，说明判断环节常是主导项（那是判断模型对照，不是路径对照）。**Token**：成本来自工具说明、历史上下文、状态观察、输出与推理 usage；每步整张截图、每步完整 DOM/AX 树都贵，局部读取、差量观察与句柄复用、导出文件按需读取才省——精简 AX 的桌面操作可能比反复读巨大 DOM 更省。**测量纪律**："通常高效"是工程趋势不是测量；字符数不是 token；token 总数不能代替任务成本（系列八 Jev 组 token 约 1.9 倍但费用更低）；要排名须同模型、同任务、同初始状态与视口、同验收，把冷启动/执行/验收/清理分别计时并记录成功率、重试、观察次数、截图与 DOM 大小、usage 与前台占用时长；启动失败不能当性能成绩。**屏幕占用**拆三问：前台要求、显示器占用、全局输入占用——后台可操作不等于零屏幕占用或同页并发安全，结构读成功也不能代替截图或连续录屏成功。证据边界：未做三条路径同条件基准测试，属工程判断 + 历史实验引用。
+
+### Claim: 账号身份与 model provider 要分开配置——Chrome Browser Use 访问远程网址前有一次以 ChatGPT 身份发起的站点预检，纯 API key / custom provider 模式下会在页面加载前失败；登录 ChatGPT 账号（Free 档即可）并保留 Azure OpenAI provider 后实测恢复
+
+- **来源**：[[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]]
+- **首次出现**：2026-10-13
+- **最近更新**：2026-10-13
+- **置信度**：0.65
+- **状态**：active
+
+> 官方仓库的一份用户报告指出，Chrome Browser Use 访问远程网址前会以 ChatGPT 身份请求一次 `site_status` 预检判断站点是否允许访问；Codex Desktop 处于 API key / custom provider 模式时拿不到可用 token，在首个浏览器操作（如命名会话）就报 `Codex auth token is unavailable`。本例处理：在 Desktop 登录 ChatGPT 账号（Free 档），provider 保持 Azure OpenAI，重启后账号菜单同时显示账号、Free 档与 Azure OpenAI；随后命名会话、列标签页、接管用户页读标题与 URL、提取渲染文本、导航 example.com 全部成功。职责三分：站点预检用 ChatGPT 账号、模型推理与计费用 Azure OpenAI、目标网站登录态用 Chrome Profile 的 Cookie/SSO。这是"断供框架治理层"（隐藏调用跟 provider 走）的同族现象：**harness 里还有不走模型 provider 的隐藏身份依赖**，接第三方 provider 时要盘点的不只是模型调用，还有身份调用。证据边界：未隔离具体生效的改动、未抓取身份检查与预检网络链路、未独立核验模型请求目的地，不宜推广为所有 custom provider 环境的通用修复；Windows 侧另有用户报告的不同处理方式。
+
 ## 冲突与演进
 
 - 2026-08-30：建页。系列一~七 + Orca 使用笔记二共 8 篇（2026-08-29~30 成文）提供完整素材；browser-use 不单独建页（包含关系即本页第一条 Claim）；action-loop、semantic-first-coordinate-fallback 按"避免同批次碎片化"作页内 Claims 收入。
@@ -186,6 +218,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - 2026-09-06：注入 Codex Desktop 系列02/03/04/06 两条新 Claim——治理层断供（审批链路是第二条隐藏模型调用链，断供框架从两层扩展为工具层/目录层/治理层序列，源码常量实锤 + 实测修复闭环）与分发链解剖（分发态 App bundle / 运行态用户目录、feature flag ≠ payload、签名权限进程树不可拆整体）。confirmation_policies 源码原文为"四级确认分类"Claim（系列四）提供第一方源码印证。
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正两处——分发链 Claim 的"签名/TCC/进程树不可拆整体"软化为"疑似紧耦合（推测，未直接验证）"并降置信度 0.8→0.75；治理层 Claim 补证据边界（修复为推断确认非抓包、404 归因为两证据推理）。同日注入 Blender DCC 域实证 Claim（三入口分工、Computer Use 三故障、"眼睛不做手"）。
 - 2026-09-28：注入系列八两条 Claim——首次把"下一步做什么"的判断从通用 LLM 换成 typed 决策模型做单变量受控对照，并给出 Jev skill 的条件默认路由规则；系列五场景路由表因此新增"判断模型"这一维。方法层归口 [[decision-policy-executor-split]]。
+- 2026-10-14：系列一 10-13 重写撤回"Computer Use ⊃ Browser Use 包含关系"——首条 Claim 标 outdated（置信度 0.8→0.4），新增"正交维度"Claim 取代；摘要同步改写。同日注入系列九两条 Claim：三条执行路径无固定性能/token 排名（测量纪律）与账号身份/model provider 分开（Browser Use 站点预检依赖 ChatGPT 身份，"认证三链路相互独立"修正为"用途不同、实现可能耦合"）。
 
 ## 关联概念
 
@@ -204,4 +237,6 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - [[Codex Desktop系列06：ModelInfo字段值手册——unified_exec、code_mode、Ultra档与治理字段的源码级解读]] — 审批模型常量与 override 代码路径、治理四件套字段、retirement_at Informational
 - [[Blender系列02：三种操作入口与官方MCP安装——三组件架构、本地进程原理与SDK版本兼容实录]] — 三入口分工表、Computer Use 三故障实录
 - [[Blender系列03：虎式坦克实战——从一句话需求到8秒开火动画的完整链路与工程解剖]] — "眼睛不做手"结论的来源实操
+- [[Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路]] — 2026-10-13 重写：产品栏目/操作能力/接入方式三维度、headless 与 Profile 独立、撤回包含关系
+- [[Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用]] — 六维度拆分、三路径多维对比、性能与 token 测量纪律、屏幕占用三问、认证与 provider 分开的实测
 - [[Computer Use与Browser Use系列八：Jev×Codex实践——把动作判断交给System One模型的受控对照、费用账与skill优先级结论]] — API/skill/执行器三层、两种接法、两 skill 与分层互斥、口径修正与单变量实验、结果表与 6 秒分解、桌面阻塞、条件默认结论与四个实验
