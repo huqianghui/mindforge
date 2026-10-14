@@ -1787,7 +1787,7 @@
       "id": "computer-use",
       "type": "concept",
       "title": "Computer Use",
-      "summary": "Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。\"Computer Use\"有两种用法：产品界面里是电脑与浏览器控制的设置栏目，技术讨论里常特指通过操作系统接口控制桌面（原生桌面 Computer Use）；Browser Use 是浏览器页面控制能力，Chrome integration 是接入用户浏览器的方式——产品栏目、操作能力、接入方式、观察方式是正交维度，不构成技术上的包含层级（2026-10-13 系列一重写纠正了早期\"Computer Use ⊃ Browser Use\"的说法）。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把\"用户已经会用的业务界面\"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。\n\n本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。",
+      "summary": "Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。广义的 Computer Use 是一切 GUI 控制，浏览器也是 GUI，因此它**包含** Browser Use——Browser Use 是 Computer Use 在浏览器域的子集；狭义的\"原生桌面 Computer Use\"特指通过操作系统接口控制桌面，此时它与 Browser Use 是**并列的两条执行路径**。Chrome integration 是接入用户浏览器的方式，不是两者之间的一层；产品栏目、操作能力、接入方式、观察方式另作正交维度理解（2026-10-13 系列一重写的澄清）。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把\"用户已经会用的业务界面\"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。\n\n本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。",
       "tags": [
         "wiki",
         "concept",
@@ -1799,25 +1799,25 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 18,
-      "avg_confidence": 0.73,
+      "avg_confidence": 0.75,
       "claims": [
         {
-          "statement": "产品栏目、操作能力、接入方式、观察方式是正交维度——\"通过 Chrome integration 使用 Browser Use\"不等于 Computer Use ⊃ Chrome integration ⊃ Browser Use；headless/headed 与 Profile 也是两个独立维度",
-          "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
-          "first_seen": "2026-10-13",
-          "last_updated": "2026-10-13",
-          "confidence": 0.8,
-          "status": "active",
-          "evidence": "同一次读取已登录网站的任务，产品记录里归在 Computer use 栏目下、技术上用的是 Browser Use、接入方式是 Chrome integration 扩展——三个名称同时出现并不矛盾，但**产品设置中的归类不能直接转换为技术上的能力层级**。拆成六个维度：控制范围（原生桌面 / 浏览器页面）、浏览器接入（独立或内置 / 扩展连接 / 受控 CDP）、观察方式（DOM / AX / 截图）、动作方式（语义控件 / 页面命令 / 坐标与按键）、会话边界（独立 Profile / 用户现有 Profile）、显示形态（headed / headless / 面板 / 预览）。这些维度可组合：Browser Use 不依赖 Chrome integration（也可接内置或独立浏览器）；**两条路径都可以混合结构化与视觉观察**——原生桌面 Computer Use 不等于每步截图点坐标（AX 可读时按语义操作），Browser Use 也可看截图处理 Canvas，网页缺结构时先用浏览器内的视觉动作、不必立即切到系统桌面控制。易混点：画中画是预览形态，不能据此判断是否 headless 或用了哪个 Profile；headless 浏览器可以带持久化 Profile 或预置认证状态，并非必然无登录态。"
-        },
-        {
-          "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
+          "statement": "广义 Computer Use ⊃ Browser Use——操作 UI 层而非 API 层；Chrome integration 是接入方式而非中间层，狭义\"原生桌面 Computer Use\"与 Browser Use 是并列执行路径",
           "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
           "first_seen": "2026-08-29",
           "last_updated": "2026-10-14",
-          "confidence": 0.4,
-          "status": "outdated",
-          "evidence": "⚠️ 2026-10-14 标记 outdated：系列一 10-13 重写撤回了\"包含关系\"——它把产品设置栏目的归类误当成技术能力层级，已由上一条\"正交维度\"Claim 取代。\"四种浏览器形态的本质差异是 Profile 边界\"仍成立，但 Profile 只是会话边界这一维，与显示形态（headless/headed）独立；\"认证三链路相互独立\"也被修正为\"用途不同、实现可能耦合\"（见系列九认证 Claim）。原文如下："
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Computer Use 是广义 GUI 操作能力（桌面应用 + 浏览器），Browser Use 是其浏览器子集。Codex 侧四种浏览器形态（内置 `@Browser`、Chrome extension `@Chrome`、Playwright、Orca 内嵌 Browser）的本质差异是 **Profile 边界**——是否复用用户真实浏览器的登录态。认证三链路（桌面应用 provider / 扩展继承 / 独立会话）相互独立，Azure OpenAI provider 实测可用。"
+        },
+        {
+          "statement": "包含关系之外的正交维度——产品栏目、操作能力、接入方式、观察方式分开理解，产品设置里的归类不等于技术层级；headless/headed 与 Profile 也是两个独立维度",
+          "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "本条是对上一条包含关系的补充而非替代：包含关系回答\"控制范围谁大\"，正交维度回答\"怎么接入、怎么观察、用谁的会话\"。同一次读取已登录网站的任务，产品记录里归在 Computer use 栏目下、技术上用的是 Browser Use、接入方式是 Chrome integration 扩展——三个名称同时出现并不矛盾，但**产品设置中的归类不能直接转换为技术上的能力层级**。拆成六个维度：控制范围（原生桌面 / 浏览器页面）、浏览器接入（独立或内置 / 扩展连接 / 受控 CDP）、观察方式（DOM / AX / 截图）、动作方式（语义控件 / 页面命令 / 坐标与按键）、会话边界（独立 Profile / 用户现有 Profile）、显示形态（headed / headless / 面板 / 预览）。这些维度可组合：Browser Use 不依赖 Chrome integration（也可接内置或独立浏览器）；**两条路径都可以混合结构化与视觉观察**——原生桌面 Computer Use 不等于每步截图点坐标（AX 可读时按语义操作），Browser Use 也可看截图处理 Canvas，网页缺结构时先用浏览器内的视觉动作、不必立即切到系统桌面控制。易混点：画中画是预览形态，不能据此判断是否 headless 或用了哪个 Profile；headless 浏览器可以带持久化 Profile 或预置认证状态，并非必然无登录态。"
         },
         {
           "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——协议层/翻译层/执行层分离，官方只给协议不给执行器",
