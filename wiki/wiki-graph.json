@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-12",
+  "generated_at": "2026-10-14",
   "stats": {
-    "nodes": 140,
-    "links": 488,
+    "nodes": 143,
+    "links": 496,
     "orphan_links_removed": 2,
-    "claims": 761,
+    "claims": 778,
     "categories": 13
   },
   "nodes": [
@@ -1530,6 +1530,53 @@
       ]
     },
     {
+      "id": "clock-driven-rendering",
+      "type": "concept",
+      "title": "Clock-Driven Rendering",
+      "summary": "时钟驱动渲染是以**系统时钟**为时间源计算每一帧画面的方式：动画进度 =（当前时钟 − 动画开始时刻）÷ 动画时长。浏览器每次屏幕刷新回调（`requestAnimationFrame`）时读一次时钟，算出\"此刻应该是什么样\"再绘制。GSAP、CSS 动画 / transition、默认模式下的 Lottie、Three.js 的渲染循环（`THREE.Clock`）与 React Three Fiber 的 `useFrame()` 都属于这一类。\n\n它是**实时渲染**（网页、App 界面、游戏）的正确选择——保证动画在真实时间中的时长在所有设备上一致；但在**离线导出**视频时失效，因为截图引擎生成一帧的耗时远大于一帧的视频时长。程序化视频框架因此必须把时钟驱动的库收编为 [[frame-driven-rendering]]（帧号驱动）。两者不是优劣之分，而是对\"正确\"的定义不同：实时场景要求时长正确，离线场景要求每帧正确。",
+      "tags": [
+        "wiki",
+        "concept",
+        "rendering",
+        "animation",
+        "realtime"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "时钟驱动以\"已经过去多少真实时间\"为公共参照——主流网页动画库与 3D 渲染循环的默认时间源",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "进度 =（当前时钟 − 动画开始时刻）÷ 动画时长。GSAP 的补间与时间轴、CSS 动画 / transition、默认模式的 Lottie 都按此计算；Three.js 本质是渲染器而非动画库，不提供补间与时间轴，动画写在渲染循环里——每次 `requestAnimationFrame` 读 `THREE.Clock.getElapsedTime()` 更新物体变换后重绘，R3F 的 `useFrame()` 同样以每次刷新的时间差驱动。因此 Three.js 在这几类库中对时钟依赖最深，接入视频框架时要替换的正是这个渲染循环。"
+        },
+        {
+          "statement": "时钟驱动是实时场景的正确解——设备帧率不统一、没有\"总帧数\"、必须与真实世界同步三条理由",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "① **设备帧率不统一且不稳定**：刷新率 60/120/144Hz 不等，负载高时还会掉帧；若规定\"60 帧完成淡入\"，同一动画在 120fps 设备上缩短为 0.5 秒、30fps 设备上延长为 2 秒。时钟驱动保证总时长不变，性能只影响流畅度。早期游戏把速度绑定 CPU 循环次数、在快机器上失控，是帧数绑定速度的典型教训，此后游戏引擎普遍改用 delta time。② **实时场景不存在总帧数**：动画由用户操作随时触发、可并行、可被打断，不共享一条从第 0 帧开始的时间轴。③ **需要与真实世界同步**：音频、视频播放与用户输入按真实时间发生，动画要与之对齐只能共享同一时钟。"
+        },
+        {
+          "statement": "时钟驱动在离线导出时失效——单帧生成耗时远大于帧时长，导致动画提前完成、速度随画面复杂度波动、结果不可复现且无法拆分并行",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "导出 30fps 视频时第 N 帧应对应第 N/30 秒，但截图引擎\"渲染 → 截图 → 编码\"单帧可达 200ms 以上，远大于 33ms。以 1 秒淡入为例，时钟驱动下动画在第 5 帧（视频时间约 0.17 秒）即已完成。单帧耗时随画面复杂度波动，动画速度随之忽快忽慢，每次导出结果也不一致；且时钟驱动的动画必须从头顺序播放，无法把帧段分给多台机器并行渲染。同类失效在 Remotion 实践中出现在多个层面：CSS `transition` 由浏览器按真实时间过渡（不应使用）；地图库的 `flyTo()` 按真实时钟播放相机动画（须改为每帧算出相机状态再绘制）。"
+        }
+      ]
+    },
+    {
       "id": "code-reuse-in-agent-era",
       "type": "concept",
       "title": "Code Reuse in Agent Era",
@@ -1650,7 +1697,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
+      "claims_count": 9,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -1724,6 +1771,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "第 ④ 层（云端 GPU 渲染推流）的层内判据在 09-25 收了并发单位成本与资产结构，弱网实测补上第三个：**可解码性由每帧包数决定**。三步换算：① 像素数纯几何——1920×1080 对 512×512 是 7.9 倍（照片数字人输出画布也可以是 1080p，512×512 是 VASA-1 生成的人头本身的分辨率，放进大画布后周围是静态背景）；② 像素到每帧比特取决于画面里有多少东西在变——H.264 P 帧只编相对上一帧的变化，1080p 视频数字人是真人实拍素材回放（半身、衣服褶皱、背景噪点都在变），照片数字人只有一个头在动、画布其余静止压缩后几乎为零，所以实测码率只差 2.4 倍（1548 vs 645 kbps）而非 8 倍——**修正系列05 / 11\"照片数字人码率低一个数量级\"的说法**；每 10 帧一个关键帧（`gop_size=10`）比 P 帧大很多倍，\"平均\"掩盖了这点；③ 每帧字节到每帧包数——RTP 载荷上限约 1200 字节，7.7 KB 拆 6~7 包、5.3 KB 拆 4~5 包、照片数字人 P 帧 1~2 KB 即 1~2 包（关键帧两边都是多包）。**为什么最后只看包数**：丢包按包随机发生，一帧包越多\"至少丢一个\"概率越高，而只要丢一个、在 RTT 大于抖动缓冲的条件下这一帧就必死；1% 丢包下 5 包帧完整到达约 95%、2 包帧约 98%，看似差不多，但 GOP 内任一帧死整段报废、10 帧连乘后差距拉开，再加丢包往往成串，实测就成了一个 0 fps、一个 18~37 fps。整条链：像素数决定\"有多少东西可能要编码\"，画面变化量决定\"实际编了多少比特\"，比特除帧率除包大小决定\"一帧几个包\"，包数决定\"丢包时这一帧活不活\"——8 倍像素差落到弱网上是\"每帧 5 包对 1~2 包\"的差别，这才是起作用的单位。真正拉开两类头像带宽差距的是建会话时的 `video.bitrate` 上限（1080p 设 500 k→460 kbps、照片设 300 k→276 kbps），不是换角色；1080p 还有说话 / 静音码率倒挂（静音期 2.5~3.5 Mbps 最贵，照片数字人无此现象）。对本光谱的含义：第 ④ 层把像素生产搬到云端的代价不止首帧成本（09-16 Claim），还有一条随用户到区域 RTT 单调恶化的\"传输可解码性\"成本——而 ①~③ 层在本地算像素，没有这一项。"
+        },
+        {
+          "statement": "程序化视频为光谱补\"离线逐帧端\"——同在本地 JS/GPU 涂像素，实时播放与离线导出的区别是时间源而非计算位置；渲染位置要与图形技术、操作入口分开判断",
+          "source": "Remotion系列02：快速上手——Codex工作流、PPT动画对照、五层功能与渲染方式",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Remotion / HyperFrames 的画面计算落在第 ③ 层（本地 JS/GPU 涂像素：DOM、Canvas、WebGL），但目标不是实时显示而是导出文件——无头浏览器逐帧截图后由 FFmpeg 编码。这给光谱加了一个正交维度：**同一层内，实时播放用时钟、离线导出用帧号**（见 [[frame-driven-rendering]] / [[clock-driven-rendering]]），离线时单帧耗时不限，所以可拆帧段并行到云函数（Lambda）——计算位置可以从本机挪到云端而画面不变，这是第 ④ 层云端推流做不到的（推流必须实时）。判断渲染位置有两个易混点：① **图形技术不等于渲染位置**——WebGL/WebGPU 在服务端无头 Chromium 中同样可用，只是硬件加速取决于环境；② **操作入口不等于渲染位置**——在内置浏览器的 Studio 里点 Render on the server，实际是本机 Node.js + 无头 Chromium，属服务端；真正的客户端渲染是 WebCodecs 在用户浏览器里编码（仅支持部分 HTML 元素）。跨工具分工实例：Blender 只负责生成可编辑的 GLB 资产，主片 1080 帧的 3D 画面由浏览器经 MapLibre + Three.js 共享 WebGL context 实时光栅化后截图——与 Blender 系列\"本地 DCC 离线渲染成片\"是同一资产在不同位面的两种用法。"
         }
       ]
     },
@@ -1731,7 +1787,7 @@
       "id": "computer-use",
       "type": "concept",
       "title": "Computer Use",
-      "summary": "Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。它与 Browser Use 是包含关系——Browser Use 是 Computer Use 在浏览器域的子集。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把\"用户已经会用的业务界面\"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。\n\n本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。",
+      "summary": "Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察屏幕/页面状态（截图、DOM、Accessibility Tree），执行点击、输入、滚动等人类动作。\"Computer Use\"有两种用法：产品界面里是电脑与浏览器控制的设置栏目，技术讨论里常特指通过操作系统接口控制桌面（原生桌面 Computer Use）；Browser Use 是浏览器页面控制能力，Chrome integration 是接入用户浏览器的方式——产品栏目、操作能力、接入方式、观察方式是正交维度，不构成技术上的包含层级（2026-10-13 系列一重写纠正了早期\"Computer Use ⊃ Browser Use\"的说法）。这条能力路线的价值在于绕开 API 对接（SaaS 接口变更、跨部门审批），把\"用户已经会用的业务界面\"直接当作 agent 的操作对象；代价是维护对象从 API 契约变成页面语义。\n\n本概念的核心工程认知有三条主线：① **action loop 协议**——模型提议动作、handler 翻译执行、重新观察验证的循环，是 agent loop 在 GUI 操作域的实例化；② **Skill 是说明书、Runtime 才是手脚**——工具/Skill 声明处处可见，但执行 runtime 决定能力归属（Codex CLI vs App 的能力分界实证）；③ **执行位置决定补位形态**——能力越贴近用户本地状态（登录态、桌面、系统权限），缺位时越只能在客户端补。",
       "tags": [
         "wiki",
         "concept",
@@ -1742,17 +1798,26 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 15,
-      "avg_confidence": 0.76,
+      "claims_count": 18,
+      "avg_confidence": 0.73,
       "claims": [
+        {
+          "statement": "产品栏目、操作能力、接入方式、观察方式是正交维度——\"通过 Chrome integration 使用 Browser Use\"不等于 Computer Use ⊃ Chrome integration ⊃ Browser Use；headless/headed 与 Profile 也是两个独立维度",
+          "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "同一次读取已登录网站的任务，产品记录里归在 Computer use 栏目下、技术上用的是 Browser Use、接入方式是 Chrome integration 扩展——三个名称同时出现并不矛盾，但**产品设置中的归类不能直接转换为技术上的能力层级**。拆成六个维度：控制范围（原生桌面 / 浏览器页面）、浏览器接入（独立或内置 / 扩展连接 / 受控 CDP）、观察方式（DOM / AX / 截图）、动作方式（语义控件 / 页面命令 / 坐标与按键）、会话边界（独立 Profile / 用户现有 Profile）、显示形态（headed / headless / 面板 / 预览）。这些维度可组合：Browser Use 不依赖 Chrome integration（也可接内置或独立浏览器）；**两条路径都可以混合结构化与视觉观察**——原生桌面 Computer Use 不等于每步截图点坐标（AX 可读时按语义操作），Browser Use 也可看截图处理 Canvas，网页缺结构时先用浏览器内的视觉动作、不必立即切到系统桌面控制。易混点：画中画是预览形态，不能据此判断是否 headless 或用了哪个 Profile；headless 浏览器可以带持久化 Profile 或预置认证状态，并非必然无登录态。"
+        },
         {
           "statement": "Computer Use ⊃ Browser Use——操作 UI 层而非 API 层，四种浏览器形态的本质是 Profile 边界",
           "source": "Computer Use与Browser Use系列一：概念与产品形态——从包含关系到四种浏览器形态与认证三链路",
           "first_seen": "2026-08-29",
-          "last_updated": "2026-08-29",
-          "confidence": 0.8,
-          "status": "active",
-          "evidence": "Computer Use 是广义 GUI 操作能力（桌面应用 + 浏览器），Browser Use 是其浏览器子集。Codex 侧四种浏览器形态（内置 `@Browser`、Chrome extension `@Chrome`、Playwright、Orca 内嵌 Browser）的本质差异是 **Profile 边界**——是否复用用户真实浏览器的登录态。认证三链路（桌面应用 provider / 扩展继承 / 独立会话）相互独立，Azure OpenAI provider 实测可用。"
+          "last_updated": "2026-10-14",
+          "confidence": 0.4,
+          "status": "outdated",
+          "evidence": "⚠️ 2026-10-14 标记 outdated：系列一 10-13 重写撤回了\"包含关系\"——它把产品设置栏目的归类误当成技术能力层级，已由上一条\"正交维度\"Claim 取代。\"四种浏览器形态的本质差异是 Profile 边界\"仍成立，但 Profile 只是会话边界这一维，与显示形态（headless/headed）独立；\"认证三链路相互独立\"也被修正为\"用途不同、实现可能耦合\"（见系列九认证 Claim）。原文如下："
         },
         {
           "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——协议层/翻译层/执行层分离，官方只给协议不给执行器",
@@ -1879,6 +1944,24 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "三层分清：API（`POST /v1/systemone`，不接受截图，不能替换 Codex 通用模型）/ skill 指导（官方 `typesafe-ai` skill 装了不等于每步 UI 决策都经过 Jev）/ UI 执行器（`browser-use/jev-ultrafast` 读 DOM 一次选动作与目标；`awlevin/typesafe-computer-use` OCR + 辅助功能树；skill 名字本身不提供互斥，执行器才需要锁）。\"事后询问\"（Codex 已决定再让 Jev 判一次）纯增加请求只会更慢，\"接管循环\"才是提速来源。两个新 skill `jev-browser` / `jev-desktop`：允许自动选择、执行前告知、低置信度交回、`receipt.json`/`result.json` + 独立 `verified_success`（不直接接受模型 DONE）；任务文件只放目标与验收不放凭据；互斥分层——两 Jev 入口全机锁（程序强制）/ 与系统工具 `native-begin`/`native-end` 预约（协作式）/ OS 级不存在不能宣称。路由规则：网页纯视觉/canvas/iframe/跨站点长流程→系统 Browser（Jev 不看截图、跨 origin 停止交回）；macOS 应用→系统 Computer Use（jev-desktop 待 Accessibility 权限修复后重测）；付款/删除/不可撤销提交→任一执行器都走人工确认（错误成本主导与判断模型无关，见 [[cost-per-task]]）；用户点名最高优先级。桌面无成绩原因：系统侧 ScreenCaptureKit -3811 两次、Jev Desktop 缺 Accessibility 权限（22.4 s 是启动失败耗时非成绩），未改权限未重启掩盖。confidence 不是正确率，`min_confidence: 0.4` 未用结果标签校准（[[confidence-calibration]]）。升级为优先选择还差四个实验：桌面复测、难任务集、三臂对照加 Codex 原生批量规划、writer 优化两组同步。"
+        },
+        {
+          "statement": "三条执行路径没有固定的速度与 token 排名——总耗时常由模型判断与循环轮次主导，token 由观察策略而非接入方式决定；\"Chrome 扩展更省\"、\"Computer Use 最费\"都不能预设",
+          "source": "Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "比较对象是原生桌面 Computer Use、独立/内置浏览器 Browser Use、Chrome 扩展 Browser Use 三条路径。**性能**：总耗时 = 初始化与认证 + 页面加载 + 各轮（观察 + 模型判断 + 动作执行 + 等待验收）+ 清理；结构化网页一次拿到多个控件、减少轮次，桌面路径可能多出窗口定位与焦点管理，扩展多一个连接认证环节但可省登录准备——但同样精简的状态、同一模型与动作策略下不能预设排名；系列八只换判断模型就让耗时降 58~66%，说明判断环节常是主导项（那是判断模型对照，不是路径对照）。**Token**：成本来自工具说明、历史上下文、状态观察、输出与推理 usage；每步整张截图、每步完整 DOM/AX 树都贵，局部读取、差量观察与句柄复用、导出文件按需读取才省——精简 AX 的桌面操作可能比反复读巨大 DOM 更省。**测量纪律**：\"通常高效\"是工程趋势不是测量；字符数不是 token；token 总数不能代替任务成本（系列八 Jev 组 token 约 1.9 倍但费用更低）；要排名须同模型、同任务、同初始状态与视口、同验收，把冷启动/执行/验收/清理分别计时并记录成功率、重试、观察次数、截图与 DOM 大小、usage 与前台占用时长；启动失败不能当性能成绩。**屏幕占用**拆三问：前台要求、显示器占用、全局输入占用——后台可操作不等于零屏幕占用或同页并发安全，结构读成功也不能代替截图或连续录屏成功。证据边界：未做三条路径同条件基准测试，属工程判断 + 历史实验引用。"
+        },
+        {
+          "statement": "账号身份与 model provider 要分开配置——Chrome Browser Use 访问远程网址前有一次以 ChatGPT 身份发起的站点预检，纯 API key / custom provider 模式下会在页面加载前失败；登录 ChatGPT 账号（Free 档即可）并保留 Azure OpenAI provider 后实测恢复",
+          "source": "Computer Use与Browser Use系列九：三条执行路径对比——实现原理、性能、token与屏幕占用",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "官方仓库的一份用户报告指出，Chrome Browser Use 访问远程网址前会以 ChatGPT 身份请求一次 `site_status` 预检判断站点是否允许访问；Codex Desktop 处于 API key / custom provider 模式时拿不到可用 token，在首个浏览器操作（如命名会话）就报 `Codex auth token is unavailable`。本例处理：在 Desktop 登录 ChatGPT 账号（Free 档），provider 保持 Azure OpenAI，重启后账号菜单同时显示账号、Free 档与 Azure OpenAI；随后命名会话、列标签页、接管用户页读标题与 URL、提取渲染文本、导航 example.com 全部成功。职责三分：站点预检用 ChatGPT 账号、模型推理与计费用 Azure OpenAI、目标网站登录态用 Chrome Profile 的 Cookie/SSO。这是\"断供框架治理层\"（隐藏调用跟 provider 走）的同族现象：**harness 里还有不走模型 provider 的隐藏身份依赖**，接第三方 provider 时要盘点的不只是模型调用，还有身份调用。证据边界：未隔离具体生效的改动、未抓取身份检查与预检网络链路、未独立核验模型请求目的地，不宜推广为所有 custom provider 环境的通用修复；Windows 侧另有用户报告的不同处理方式。"
         }
       ]
     },
@@ -3281,6 +3364,62 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "传统 8 人团队按技术层分工（前端/后端/数据/DevOps），协调成本高；AI Native 团队 2-3 个 AI-Augmented Senior FDE 各负责一个客户域端到端，AI Agent 覆盖技术层执行，协调通过 Spec + Contract。配套条件：个人 PKC 汇入团队级知识飞轮（知识必须\"编译\"才是资产；Harness 是共享 IP 不是个人收藏；新人通过 Harness 快速达到资深质量线）。大部分团队卡在 Mitchell Hashimoto 六步的第 1-2 步——从问答式到委托式是认知模式跃迁，**不教工具，教范式**。"
+        }
+      ]
+    },
+    {
+      "id": "frame-driven-rendering",
+      "type": "concept",
+      "title": "Frame-Driven Rendering",
+      "summary": "帧号驱动渲染是以**帧号**为时间源计算每一帧画面的方式：动画进度 =（帧号 ÷ fps）÷ 动画时长。它不读系统时钟，引擎请求第 N 帧时，画面直接定位到视频时间 N/fps 应有的状态——这一帧截图花 0.2 秒还是 2 秒都不影响结果。整段视频因此可以理解为一个**从帧号到画面的纯函数**，类似定格动画：两次拍摄之间可以从容调整，但每一格的位移严格按分镜。\n\n它是**离线渲染**（视频导出、电影特效、Blender 渲染）的时间源，与面向实时场景的 [[clock-driven-rendering]] 相对。Remotion 让开发者直接以帧号编写动画（`useCurrentFrame()` + `interpolate()` / `spring()`），HyperFrames 则先暂停各动画库的时钟、再由 adapter 按帧 seek。由\"任意帧可独立计算\"推出两项工程性质：可拆帧段**并行渲染**，以及**确定性**（同一输入同一输出，可用于 CI 与回归测试）。代价是约束外溢：实时交互状态、按真实时间播放的 API、异步加载的资源都必须先改造成\"给定帧号能算出状态\"。",
+      "tags": [
+        "wiki",
+        "concept",
+        "rendering",
+        "animation",
+        "programmatic-video"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.78,
+      "claims": [
+        {
+          "statement": "实时渲染与离线渲染对\"正确\"的定义不同，决定了各自的时间源——实时要时长正确用时钟，离线要每帧正确用帧号",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "视频播放始终以帧和 fps 为单位，分歧只在**生成**阶段每一帧依据什么时间来计算。实时渲染（网页、App、游戏）要求动画在真实时间中的时长正确，适用系统时钟；离线渲染（电影特效、Blender、视频导出）要求每一帧画面正确、计算耗时不限，适用帧号。帧号驱动的公式是：进度 =（帧号 ÷ fps）÷ 动画时长。Remotion 中组件通过 `useCurrentFrame()` 取帧号，再用 `interpolate()`（数值映射）或 `spring()`（按帧号算出的弹簧物理，可超调）计算这一帧的属性值，因此\"视频 = 帧号 → 画面的函数\"。"
+        },
+        {
+          "statement": "任意帧可独立计算推出两项工程性质——帧段并行渲染与确定性输出",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "每一帧只依赖帧号（和输入参数），不依赖前一帧何时生成，所以可以把不同帧段分配给多台机器并行渲染——Remotion Lambda 与 `@hyperframes/aws-lambda` 都基于这一性质；时钟驱动的动画必须从头顺序播放，无法拆分。同一性质也给出确定性（HyperFrames 文档：\"same input, same frames, same output\"），使渲染结果可以进入 CI 与回归测试。"
+        },
+        {
+          "statement": "时钟驱动的库可以被收编为帧号驱动——前提是库内部本就是\"给定时间点算画面\"，两条收编范式是原生帧号 API 与暂停时钟后按帧 seek",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "GSAP、Lottie、Three.js 内部都是\"根据给定时间点计算画面\"，该时间点既可取自系统时钟，也可由外部指定，这是收编可行的原因。**Remotion 范式**：自有帧号 API + 主流库官方集成包——`@remotion/gsap` 内部创建暂停的时间轴按当前帧 seek，`@remotion/lottie` 按帧号控制，`@remotion/three` 基于 R3F 的 `<ThreeCanvas />` 让 `useCurrentFrame()` 在三维画布内可用（动画应以帧号计算而非写在 `useFrame()`）；其余库需自写\"帧号 → seek\"衔接。**HyperFrames 范式**：不规定动画写法，adapter 层统一接管各库时间轴——GSAP 时间轴以 `paused: true` 创建并注册到 `window.__timelines`，Lottie 实例注册到 `window.__hfLottie`，GPU adapter 监听 `hf-seek` 事件按 seek 时间重绘，自定义运行时实现 `FrameAdapter`（`getDurationFrames()` / `seekFrame()`）。后者与\"面向 agent\"的定位一致：LLM 本就熟悉 GSAP 与 CSS 常规写法，无需掌握帧号编程模型。证据边界：依据官方文档与运行时类型定义，adapter 对各库的支持完整度未实测。"
+        },
+        {
+          "statement": "帧号驱动的约束会外溢到交互、真实时间 API 与异步资源三处——交互状态不能直接导出，按真实时间播放的 API 要改成逐帧算状态，异步资源要显式阻塞导出截图",
+          "source": "Remotion系列03：简单实践篇——从洛杉矶飞到上海，用地图与3D地标完成一段视频",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "① **交互**：实时交互产生的状态无法直接导出为固定视频，常见做法是交互版只在网页播放，需要导出时把用户操作记录为参数、再做一次参数化渲染（系列01）。② **真实时间 API**：不能让地图自己按真实时钟播放 `flyTo()`，每帧先由帧号算出路线进度、相机中心与 zoom，再把截取的路线与相机状态交给地图绘制；CSS `transition` 同理不应使用（系列02/03）。③ **异步资源**：地图瓦片、3D 模型加载未就绪时截图会缺内容，导出时用 `delayRender` 与地图 idle 同步；但 `delayRender` 只约束导出截图，**不会暂停 Studio 预览播放**，预览跳帧后短暂缺瓦片属正常（系列03 实操）。三处的共同点：凡是\"状态由真实时间或外部事件推进\"的环节，都要先改造成\"给定帧号能算出状态\"。"
         }
       ]
     },
@@ -8840,6 +8979,81 @@
       ]
     },
     {
+      "id": "programmatic-video",
+      "type": "method",
+      "title": "Programmatic Video",
+      "summary": "程序化视频是**用代码描述画面、由渲染引擎逐帧导出视频**的生产方式，适合模板化、数据驱动和批量生产：同一套版式替换文案与素材即可产出成百上千条视频。coding agent 普及后它多了一个用途——agent 根据自然语言需求直接编写视频工程。当前两条主流开源路线是 **Remotion**（React 组件描述画面，生态成熟）与 **HyperFrames**（HeyGen 开源，纯 HTML/CSS/JS + 数据属性，\"Built for agents\"）。两者渲染原理相近（无头浏览器逐帧截图 + FFmpeg 编码），差异在编写方式、动画库接入方式与嵌入式播放能力。\n\n本页把工具选型与一条可复现的 agent 工作流放在一起：选型 → 起项目 → 用帧和顺序写分镜 → 按五层功能实现 → 内置浏览器预览闭环 → 选渲染位置导出 → 后处理嵌入。整条工作流的理论前提是 [[frame-driven-rendering]]：导出时画面只能由帧号决定，这也解释了各框架的 API 设计、动画库接入方式，以及交互状态为何不能直接导出。",
+      "tags": [
+        "wiki",
+        "method",
+        "programmatic-video",
+        "remotion",
+        "hyperframes",
+        "codex"
+      ],
+      "category": "",
+      "method_type": "workflow",
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "Remotion 与 HyperFrames 的差异在编写方式、动画库接入与嵌入播放器，不在渲染原理——前者让开发者写帧号，后者让 adapter 收编常规写法",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "两者产物都是视频文件，渲染都是无头浏览器逐帧截图 + FFmpeg（Remotion 用无头 Chromium，HyperFrames 用基于 Puppeteer 的可 seek 页面捕获引擎），分布式渲染各有 Lambda 方案。Remotion 是\"视频是帧号的函数\"的 React 组件，自带帧号动画 API；HyperFrames 的 composition 是带数据属性的 HTML 文件，无需构建即可在浏览器预览，不规定动画写法。两套 skills 都遵循 Agent Skills 开放标准，可同时安装给 Claude Code、Codex、Cursor 等 agent。证据：两者官方文档与仓库说明（2026-10-13），未做同任务对照实测。"
+        },
+        {
+          "statement": "\"交互式视频\"要先拆成参数化与实时交互两类——视频文件本身不能响应输入，实时交互本质是\"以视频形态呈现的网页\"，靠嵌入式播放器实现",
+          "source": "Remotion系列01：Agent Skills、交互式播放与帧号驱动渲染",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "参数化视频：用户先提交输入，系统据此生成定制视频，视频不可交互（Remotion `inputProps` + 服务端批量渲染，HyperFrames 数据驱动生成 HTML，能力相当）。实时交互：画面随操作即时变化，必须在浏览器实时运行。播放器对比——Remotion Player 是 React 组件，composition 直接渲染在宿主页面，`inputProps` 实时传入有文档保障；HyperFrames Player 是 Web Component，composition 在 Shadow DOM 内的沙箱 iframe 中运行，宿主不限框架，有 `play/pause/seek`、区间播放与 `disable-click-to-play`，但传入用户输入的 `setRuntimeData()` 文档只列名称、无参数与示例，跨域只能用播放器 API。结论：由宿主控制播放两者都行（HyperFrames 更轻）；用户输入实时改画面 Remotion 更确定；交互状态都无法直接导出，需记录为参数再做一次参数化渲染。"
+        },
+        {
+          "statement": "PPT 是在时间轴上配置动画，程序化视频是用代码定义画面随帧号变化的规律——由此得到数据驱动、参数化复用、AI 可生成、可版本管理四项优势",
+          "source": "Remotion系列02：快速上手——Codex工作流、PPT动画对照、五层功能与渲染方式",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "概念可直接映射：飞入/浮入 → `translateX/Y`，放大 → `scale`，淡入 → `opacity`，持续/开始时间 → 帧区间（`durationInFrames`、`from`），平滑开始结束 → `Easing`，弹跳 → `spring()`，动画顺序 → `<Sequence>`，幻灯片切换 → `<TransitionSeries>`。区别在本质：100 根柱子的图表一个循环即可依次错开入场；同一模板换文案数据配色批量产出；动画就是代码，agent 可直接生成、修改、复查；工程进 Git 改动可追溯可评审。易混点：CSS `transition` 按真实时间过渡不应使用，场景转场由 `@remotion/transitions` 实现。"
+        },
+        {
+          "statement": "渲染要分三个维度看——图形技术、渲染位置、输出方式；WebGL/WebGPU 不等于客户端渲染，在浏览器界面里点渲染也不等于客户端渲染",
+          "source": "Remotion系列02：快速上手——Codex工作流、PPT动画对照、五层功能与渲染方式",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "图形技术回答\"画面怎么画\"（DOM/CSS、SVG、Canvas 2D、WebGL、WebGPU）；渲染位置回答\"在哪里算出每一帧\"（用户浏览器 vs 本机/服务器/云函数）；输出方式回答\"如何编码\"（Studio、CLI、Node API、Lambda）。服务端渲染时 Chromium 同样能用 WebGL 绘制，只是硬件加速取决于运行环境。服务端用 FFmpeg 编码、功能完整；客户端用 WebCodecs、无需服务器但仅支持部分 HTML 元素。系列03 实证：在内置浏览器的 Studio 里点 **Render on the server**，实际渲染位置是本机 Node.js + 无头 Chromium，属于服务端路径——不能因为\"在浏览器里点击\"就称为客户端渲染。普通文字、图片、图表、转场用 React + CSS 即可，只有 3D 场景或大规模粒子才值得引入 WebGL/WebGPU。"
+        },
+        {
+          "statement": "写动画前先判断变化来自物体运动、相机运动还是场景切换——空间关系错了，动画再流畅也破坏叙事",
+          "source": "Remotion系列03：简单实践篇——从洛杉矶飞到上海，用地图与3D地标完成一段视频",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "地图旅行案例最初让地图淡出、再让独立的东方明珠模型逐段\"长出来\"，看起来有动画却破坏了地理叙事——塔本来就一直在那里。最终把模型固定在地图坐标上，把\"物体入场\"改成\"镜头靠近\"：模型尺寸不随帧号变化，每帧只更新地图相机，塔自然从远处的小物体变成可辨认的建筑。同理，主片没有用 `<Sequence>` 换场，而是在同一地图场景里移动相机保持空间连续——五层功能不是每层都要用满，按叙事需要取舍。单案例经验，置信度按单次实操计。"
+        },
+        {
+          "statement": "Remotion 不是 MIT 许可——个人与 3 人以内公司免费商用，4 人以上组织需 Company License",
+          "source": "Remotion系列02：快速上手——Codex工作流、PPT动画对照、五层功能与渲染方式",
+          "first_seen": "2026-10-13",
+          "last_updated": "2026-10-13",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Company License 分按席位计费的 Remotion for Creators（本地编码与 prompt 制作视频）与按渲染次数计费的 Remotion for Automators（视频编辑器、prompt-to-video 等自动化产品），另有 Enterprise License；HyperFrames 为 Apache 2.0。选型时授权是硬约束而非偏好项。价格与条款以官方授权页为准。"
+        }
+      ]
+    },
+    {
       "id": "prompt-optimization-maturity-ladder",
       "type": "method",
       "title": "Prompt Optimization Maturity Ladder",
@@ -10199,6 +10413,24 @@
       "description": "tmux 持久会话与 Session 记忆互补"
     },
     {
+      "source": "clock-driven-rendering",
+      "target": "frame-driven-rendering",
+      "relation_type": "contrasts",
+      "description": "同一个\"给定时间点算画面\"的库，时间点取自系统时钟还是外部指定的帧号；实时场景要时长正确、离线场景要每帧正确"
+    },
+    {
+      "source": "clock-driven-rendering",
+      "target": "programmatic-video",
+      "relation_type": "constrains",
+      "description": "网页动画库与 3D 渲染循环默认时钟驱动，进入视频框架前必须暂停时钟、改为按帧 seek，限定了程序化视频的动画写法与库接入方式"
+    },
+    {
+      "source": "clock-driven-rendering",
+      "target": "compute-locus-spectrum",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
       "source": "code-reuse-in-agent-era",
       "target": "harness-engineering",
       "relation_type": "part-of",
@@ -10707,6 +10939,18 @@
       "target": "ai-adoption-six-step-evolution",
       "relation_type": "uses",
       "description": "Mitchell Hashimoto 六步模型映射到 FDE 团队的管理动作"
+    },
+    {
+      "source": "frame-driven-rendering",
+      "target": "clock-driven-rendering",
+      "relation_type": "contrasts",
+      "description": "同一个\"给定时间点算画面\"的库，时间点由外部帧号指定还是取自系统时钟；离线要每帧正确、实时要时长正确"
+    },
+    {
+      "source": "frame-driven-rendering",
+      "target": "compute-locus-spectrum",
+      "relation_type": "extends",
+      "description": "为计算位置光谱补上\"时间源\"这一维：同在本地 GPU 涂像素，实时播放用时钟、离线导出用帧号"
     },
     {
       "source": "framework-selection",
@@ -12371,6 +12615,24 @@
       "description": "判断式给出\"停\"时，矛头指回 reward 结构——两本账分家与 reward v2 是让判断式翻转为\"值得跑\"的对症改造"
     },
     {
+      "source": "programmatic-video",
+      "target": "frame-driven-rendering",
+      "relation_type": "uses",
+      "description": "整条工作流以帧号为唯一时间源：分镜按帧区间写、动画按帧号算、导出可并行且确定"
+    },
+    {
+      "source": "programmatic-video",
+      "target": "compute-locus-spectrum",
+      "relation_type": "uses",
+      "description": "用计算位置判据决定渲染位置（服务端 vs 客户端）与图形技术（CSS 足够 vs 上 WebGL/WebGPU），并区分 Blender 离线资产与浏览器实时光栅化"
+    },
+    {
+      "source": "programmatic-video",
+      "target": "feedback-loop",
+      "relation_type": "implements",
+      "description": "\"agent 写代码 → 内置浏览器播放 → 按画面发现问题 → 改代码\"是反馈闭环在视频生产域的实例"
+    },
+    {
       "source": "prompt-optimization-maturity-ladder",
       "target": "automatic-prompt-optimization",
       "relation_type": "uses",
@@ -12773,6 +13035,8 @@
         "realtime-protocol-selection",
         "ice-nat-traversal",
         "compute-locus-spectrum",
+        "frame-driven-rendering",
+        "clock-driven-rendering",
         "viseme",
         "end-of-turn-detection"
       ]
