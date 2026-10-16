@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-14",
+  "generated_at": "2026-10-16",
   "stats": {
     "nodes": 143,
     "links": 496,
     "orphan_links_removed": 2,
-    "claims": 778,
+    "claims": 781,
     "categories": 13
   },
   "nodes": [
@@ -4341,7 +4341,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.78,
       "claims": [
         {
@@ -4406,6 +4406,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "步骤：**先**开 `chrome://webrtc-internals` 并保持打开，同一窗口（非无痕）另开会话，等画面出现不关不刷新；Stats Tables 找 `nominated: true` 且 `state: succeeded` 的 `candidate-pair`，顺 `localCandidateId` / `remoteCandidateId` 看两端 `candidateType`——**只要一端是 relay，媒体就经过 TURN**，`relayProtocol` 说明到 TURN 走 udp / tcp / tls；Event log 的 `setRemoteDescription` 是 SDP answer，看 `a=ice-lite` 与对端候选类型。空 dump（`getUserMedia: []` 且 `PeerConnections: {}`）说明导出时无会话：已结束 / 刷新过 / 在别的 profile / 没开数字人 / 弱网降级或撞创建速率限制后 PeerConnection 已关。拿得到 `RTCPeerConnection` 实例时用 `getStats()` 打印选中对的两端类型与 `currentRoundTripTime`。**TURN 可达性探针**：用一次 `session.updated` 拿到的临时 `ice_servers` 建 `new RTCPeerConnection({ iceServers, iceTransportPolicy: \"relay\" })` + `createDataChannel` + `createOffer`，打出 relay 候选即中继可用，一条都没有即该网络数字人画面无保底；只测浏览器到 TURN 一段。一次截图读出的事实：Azure 只下发 `turn:relay.communication.microsoft.com:3478`、`bundlePolicy: max-bundle` 故只一对候选对；下行约 13 MB、上行十几 KB——**数字人这条 WebRTC 连接只承载下行，麦克风在 WebSocket 上**；经 TURN 的 RTT 0.262 s 与弱网实测约 300 ms 同量级。"
+        },
+        {
+          "statement": "\"relay 保底\"有一个隐含前提——浏览器的同一个本地 UDP 端口能分别到达多个对端；SSE 客户端把端口钉死在首个对端时，直连与 relay 在同一个原因上一起断，应用侧（下发 IP、强制 relay）都绕不开",
+          "source": "Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析",
+          "first_seen": "2026-10-14",
+          "last_updated": "2026-10-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "ICE 用**一个本地端口**同时和三个对端通信：TURN（STUN 拿 srflx、Allocate）、TURN 以 `300 Try-Alternate` 重定向的备用服务器（拿 relay）、媒体服务器（连通检查）。Chrome 对每个回包核对两件事：事务 ID 对得上、**回包来自请求发往的那个地址**（RFC 8445 的防伪造要求）。macOS 透明代理把应用的一个 UDP socket 当作一条\"流\"交给扩展，Global Secure Access 扩展按第一个数据报的目标建流、做一次转发决定、自建 socket 并 `connect` 到该目标——之后同一应用 socket 发往任何地址的包都送到首个对端，回包也显示来自它。后果：发往备用 TURN 的 Allocate 被送回原 TURN、回包源不符被丢 → **没有 relay**；连通检查被送到 TURN、当无关响应丢弃 → `reqSent` 一直涨、`respRecv=0`，约 15 秒 `ice=failed`，DTLS 从未开始。这和\"relay 是企业网保底\"不矛盾：常见企业网问题是\"出向 UDP 到媒体服务器被挡、TURN 可达\"，保底接得住；这次是**端口语义被改**，保底依赖的前提不成立。应用侧无效：后端把 ICE 域名解析成 IP 下发无效（钉死与地址是否合成无关）；`iceTransportPolicy: \"relay\"` 无效（绕不开 300 重定向）；GSA 策略里配 bypass 也不一定有效（bypass 的 UDP 流同样由扩展代发、照样钉死）。**测量纪律**：每个目标新开 socket 的系统层 STUN 测试天然绕开钉死、会全部正常而误判\"网络没问题\"，必须用**同一个 socket 依次发往多个目标**的对照（发往无服务 IP 也收到回复 = 包被转发给首个对端，而非仅回包地址被改写）。凡\"一个端口对多个对端\"的 UDP 都在影响面内（浏览器 WebRTC、P2P/NAT 穿越、mesh VPN），一对一的 TCP 与单服务器 UDP 不受影响——所以\"看视频没问题、开视频会议就有问题\"。"
         }
       ]
     },
@@ -6120,8 +6129,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
-      "avg_confidence": 0.81,
+      "claims_count": 12,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "WebSocket 是控制总线，WebRTC 是实时传输通道",
@@ -6202,7 +6211,7 @@
           "last_updated": "2026-10-02",
           "confidence": 0.85,
           "status": "active",
-          "evidence": "WebSocket 没有配对问题不是因为更聪明，而是它**放弃了对等**：一方必须是公网可达服务器，连接方向固定（客户端发起，NAT 天然允许出向 TCP + 回包）、地址已知（DNS 名），\"双工\"建在这条单向发起的连接之上——HTTP / gRPC / MQTT 全都如此。WebRTC 为 peer-to-peer 媒体设计，两端都可能在 NAT 后、谁也不能\"被连\"、走哪条路取决于双方 NAT 类型，所以必须 ICE（收集候选 → 交换 → 同时互发探测打洞 → 选胜出者）；它走 UDP 又让 NAT 映射更短命、规则更杂。Azure 数字人\"一端明明是服务器\"却仍要 ICE，是因为 WebRTC 没有\"跳过 ICE\"的模式——媒体服务器公网可达、能直连就直连，同时给一台 TURN 保底（企业网对 UDP 极不友好），走 TURN 并回落 TCP/443 时做的事本质上和 WebSocket 一模一样（客户端出向连已知地址、媒体在隧道里双向走），但协议机器照走，ICE 的必要成本只有几百毫秒加一次到中继的往返。对本页选型框架的续证：\"防火墙严格限 UDP → 只用 WebSocket\"这条 05 月条件在 Azure 数字人上成立得更硬——Azure 默认下发的 `ice_servers` 只有 `turn:…:3478` UDP、没有 `?transport=tcp` 候选，客户端也不能自加（凭据是 Azure 的），Chromium 禁用非代理 UDP 时 avatar 连接 60 秒从未 connected；UDP 封死则既无画面也无声音，唯一兜底是重建不带 avatar 的会话让音频以 PCM 回到 WebSocket（可用 `output_audio_format` 的 `pcm16_16000hz` / G.711 变体压码率）。媒体面 / 控制面续证：ICE 候选类型本身即是客户网络的分段测点——只有 host 候选 = UDP 门没过；srflx↔srflx = 直连；含 relay = 中继且 RTT 多一跳；选中候选对的 `currentRoundTripTime` 才是到媒体服务器的真实 RTT（无固定域名、不能事先 ping），到中继的 STUN RTT 不代表区域 RTT（本机 80 ms vs 区域 TCP 建连 252 ms）。"
+          "evidence": "WebSocket 没有配对问题不是因为更聪明，而是它**放弃了对等**：一方必须是公网可达服务器，连接方向固定（客户端发起，NAT 天然允许出向 TCP + 回包）、地址已知（DNS 名），\"双工\"建在这条单向发起的连接之上——HTTP / gRPC / MQTT 全都如此。WebRTC 为 peer-to-peer 媒体设计，两端都可能在 NAT 后、谁也不能\"被连\"、走哪条路取决于双方 NAT 类型，所以必须 ICE（收集候选 → 交换 → 同时互发探测打洞 → 选胜出者）；它走 UDP 又让 NAT 映射更短命、规则更杂。Azure 数字人\"一端明明是服务器\"却仍要 ICE，是因为 WebRTC 没有\"跳过 ICE\"的模式——媒体服务器公网可达、能直连就直连，同时给一台 TURN 保底（企业网对 UDP 极不友好），走 TURN 并回落 TCP/443 时做的事本质上和 WebSocket 一模一样（客户端出向连已知地址、媒体在隧道里双向走），但协议机器照走，ICE 的必要成本只有几百毫秒加一次到中继的往返。对本页选型框架的续证：\"防火墙严格限 UDP → 只用 WebSocket\"这条 05 月条件在 Azure 数字人上成立得更硬——Azure 默认下发的 `ice_servers` 只有 `turn:…:3478` UDP、没有 `?transport=tcp` 候选，客户端也不能自加（凭据是 Azure 的），Chromium 禁用非代理 UDP 时 avatar 连接 60 秒从未 connected；UDP 封死则既无画面也无声音，唯一兜底是重建不带 avatar 的会话让音频以 PCM 回到 WebSocket（可用 `output_audio_format` 的 `pcm16_16000hz` / G.711 变体压码率）。〔**2026-10-16 更正**：\"唯一兜底\"已不成立——系列17 实测 avatar 设 `output_protocol: websocket` 后数字人音视频经 WS 下发、无 ICE，数字人在 UDP 不可用时也能保留，见下一条 Claim。〕媒体面 / 控制面续证：ICE 候选类型本身即是客户网络的分段测点——只有 host 候选 = UDP 门没过；srflx↔srflx = 直连；含 relay = 中继且 RTT 多一跳；选中候选对的 `currentRoundTripTime` 才是到媒体服务器的真实 RTT（无固定域名、不能事先 ping），到中继的 STUN RTT 不代表区域 RTT（本机 80 ms vs 区域 TCP 建连 252 ms）。"
         },
         {
           "statement": "RTP / RTCP 与 UDP 的分工及弱网失效链——UDP 决定包怎么送到，RTP 决定包里是什么、何时播、丢了怎么知道；\"丢了就丢了\"是抖动缓冲 + FEC + 按需 NACK 而非放任；抖动缓冲 < RTT 时 NACK 迟到→GOP 报废，码率自适应调带宽不调包数；音视频同车则胖视频饿死音频；WebSocket 传 PCM 无 RTP 头，抖动直接变延迟累积",
@@ -6221,6 +6230,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "逐项：丢包（WS 是 TCP 重传 + 队头阻塞；WebRTC 跳过由 PLC 补）、编码（PCM16 裸音频 vs Opus 约 32 kbps 带 FEC / DTX）、抖动缓冲与播放（应用自写 AudioWorklet 队列 vs 浏览器内置）、拥塞控制（只有 TCP 不感知媒体 vs RTCP 反馈 + 带宽估计）、加密（TLS vs DTLS-SRTP）、**发送节奏**（服务端能推多快推多快 vs 按实时速度）、事件通道（同一条 WS vs DataChannel 或 side-band WS）。与语音产品直接相关的三点：① 弱网差别最大——卡顿近似丢包数 × RTT；② **打断重新有意义**——WS PCM 下行上 Azure 不到 1 秒推完整段回复并标完成，`interrupt_response` 无可截断对象，WebRTC 按实时速度推、服务端知道播到哪才能截断（推断）；③ **架构会变**——媒体在浏览器与 Azure 间直连不经后端，后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 都要重新设计，控制靠 side-band WS（Azure Realtime 的 SDP 应答带 `Location` 头可再连控制 WS）。**可观测性不对称同源**：WebRTC 的拥塞 / 抖动 / 丢包 / RTT 在浏览器里，所以有 webrtc-internals；WS 的重传、RTT、拥塞窗口在 OS TCP 栈里，浏览器自己也看不到，只能分层——DevTools Network → WS → Messages 看帧（能直接看到下行音频不到 1 秒涌完紧跟 `response.done`）、`chrome://net-export` 看握手与代理、Wireshark（`SSLKEYLOGFILE` 解 wss，过滤 `tcp.analysis.retransmission`）或 `ss -ti` 看重传与 RTT、页面读 `ws.bufferedAmount` 当上行拥塞信号（持续上涨 = 上行跟不上、帧在本地排队，只反映上行）。一句话：webrtc-internals ≈ WS Messages + Wireshark，中间用 `bufferedAmount` 当带宽估计。"
+        },
+        {
+          "statement": "数字人也可以只走 WebSocket——avatar `output_protocol: websocket` 把音视频合成一路分片 MP4 经 `response.video.delta` 下发、整条链路无 ICE；\"UDP 不可用 → 只用 WS\"从\"放弃数字人\"变为\"数字人改 WS 下发\"，代价是 TCP 队头阻塞、约多 30% 流量、前端改 MSE",
+          "source": "Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析",
+          "first_seen": "2026-10-14",
+          "last_updated": "2026-10-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "实测：`session.updated` 回显 `ice_servers: null`、`output_protocol: \"websocket\"`；下行事件 `response.video.delta`（`codec: \"h264\"`），delta 是 base64 编码的**分片 MP4**（开头 `ftyp iso5`），可直接拼接；视频 h264 1920×1080 25 fps 约 2.16 Mbps，音频 AAC 16 kHz 单声道约 17 kbps **与视频在同一个 MP4 里**、没有单独的 `response.audio.delta`；拼接后时长与经过时间一致，首个分片在会话建立后约 0.9 秒到达。代价：base64 + JSON 包装让原始约 6.7 MB 变约 8.7 MB（+30%，1080p 线路上约 2.8 Mbps，可配合降分辨率/码率）；TCP 丢包有队头阻塞，没有 WebRTC 的抖动缓冲、NACK、FEC 与发送端码率自适应；播放改用 `MediaSource` + `SourceBuffer` 追加 fMP4，声音也从这一路出来，现有 WebRTC 音轨链路要改。对本页选型框架的意义：WebRTC 的价值（弱网韧性、按实时速度推送）依然成立，所以**默认走 WebRTC、建连失败才降级到 WS 下发**，而不是反过来；\"限 UDP → 只用 WS\"这条条件的适用对象从纯语音扩展到数字人。为什么 WS 在企业安全客户端下不受影响：TCP 一条连接只对一个对端，本来就是一对一，端口语义被改也碰不到它（见 [[ice-nat-traversal]] 的端口钉死 Claim）。"
         }
       ]
     },
@@ -8094,7 +8112,7 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 24,
+      "claims_count": 25,
       "avg_confidence": 0.79,
       "claims": [
         {
@@ -8312,6 +8330,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "用到模型的四处里，三处（judge、评估打分、Foundry agent 底层模型）走 Foundry 的 deployment 寻址，自有 deployment 名是唯一正确填法；第四处 Voice Live 原生 `model=` 只认本 region 预部署清单。一个字段同时喂这四处，填自有 deployment 则 chat 侧全对、语音侧立刻 `invalid_model`——毛病不在\"自有 deployment 不该用\"，而在一个字段两种语义。修法：推理模型（judge / 打分 / agent 同步）与语音会话模型（独立模型名 + native / byom 开关 + profile）分开；原生下拉只列**对本资源实测 ACCEPTED** 的模型（文档清单会混进 region 没开的），保存前再实测复校。**嘴型会话不必为口径一致拖进 BYOM**：语音腿不推理（连不存在的部署名都能建连），换 BYOM 只换宿主与计费口径，却要付 Foundry 资源、权限、级联延迟的代价。系列15 补实测：realtime 部署经自己的 WS 协议 `modalities: [\"text\"]` 能返回精确 JSON，但 chat completions / Responses（HTTP 与 WS 模式）全部 unsupported——推理侧是一批并发 HTTP 调用，所以语音会话模型可以是 realtime（混合式）、推理模型不可以，\"不是能力不够，是协议对不上\"。顺带：部署 `capabilities` 里没有 realtime 正向标记（只是 `chat_completion` 为 false），BYOM realtime 下拉若复用 chat 清单会一个可选值都没有。"
+        },
+        {
+          "statement": "数字人 WebRTC 建连失败的降级与 ICE 断开后的恢复都必须新建会话——`session.avatar.connect` 在 ICE 从未连通时再发同样被拒，\"WebRTC connection is in connected state\" 的意思是\"本会话已 connect 过\"而不是\"ICE 连上了\"；降级目标是新会话改 `output_protocol: websocket`",
+          "source": "Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析",
+          "first_seen": "2026-10-14",
+          "last_updated": "2026-10-16",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "现象签名：数字人无画无声，但候选人说话能被转写、模型文字回复正常——因为两条通道里坏的只有 avatar WebRTC（画面与声音两条 RTP 轨；avatar 模式下 Azure 不在 WS 上发 `response.audio.delta`），TCP 上的 WS（上行、转写、文字、SDP 信令）正常；服务端 T+23~40 秒收到 `webrtc_connection_invalid`（`avatar_rate_limited=False`，不是限流），随后 `close_reason=azure_stream_ended` 循环重连。对 10-02「每会话 connect 一次」硬约束的补充：**ICE 从未连通时也只接受一次**，在原会话上重建 PeerConnection、重发 offer 的恢复逻辑会被全部拒绝；每次新建会话又消耗 avatar 新建限流（每滚动 60 秒 3 次），恢复被进一步推迟。前端两条改进：① 先走 WebRTC，ICE 若干秒内未进 `connected` 或候选对持续 `respRecv=0` → **新建会话**并把 avatar 改为 `output_protocol: websocket`（多数用户仍享 WebRTC，企业安全客户端下用户也能看到数字人）；② 检测到 ICE 停在 `checking` 且 `respRecv=0` 或拿不到 relay 候选时直接提示\"网络安全客户端可能阻止了音视频连接\"并走降级，不静默等 40 秒。复现不必依赖业务账号：用 Entra token 直连 Voice Live 开带 avatar 的会话，Python 走 WS 信令、Playwright 起的 Chrome 跑 WebRTC，`client_sdp` / `server_sdp` 都是 base64 编码的 `{type, sdp}` JSON。归属补充：Voice Live 下发的 TURN（`relay.communication.microsoft.com`）借用的是 Azure Communication Services 的中继，与 Teams/Skype 共用一套中继基础设施——企业网络策略对 Teams 媒体的处理会波及数字人。"
         }
       ]
     },
