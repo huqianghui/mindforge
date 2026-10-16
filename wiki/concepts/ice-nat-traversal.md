@@ -1,7 +1,7 @@
 ---
 title: "ICE NAT Traversal"
 created: "2026-10-11"
-updated: "2026-10-11"
+updated: "2026-10-16"
 tags:
   - wiki
   - concept
@@ -101,11 +101,22 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 > 步骤：**先**开 `chrome://webrtc-internals` 并保持打开，同一窗口（非无痕）另开会话，等画面出现不关不刷新；Stats Tables 找 `nominated: true` 且 `state: succeeded` 的 `candidate-pair`，顺 `localCandidateId` / `remoteCandidateId` 看两端 `candidateType`——**只要一端是 relay，媒体就经过 TURN**，`relayProtocol` 说明到 TURN 走 udp / tcp / tls；Event log 的 `setRemoteDescription` 是 SDP answer，看 `a=ice-lite` 与对端候选类型。空 dump（`getUserMedia: []` 且 `PeerConnections: {}`）说明导出时无会话：已结束 / 刷新过 / 在别的 profile / 没开数字人 / 弱网降级或撞创建速率限制后 PeerConnection 已关。拿得到 `RTCPeerConnection` 实例时用 `getStats()` 打印选中对的两端类型与 `currentRoundTripTime`。**TURN 可达性探针**：用一次 `session.updated` 拿到的临时 `ice_servers` 建 `new RTCPeerConnection({ iceServers, iceTransportPolicy: "relay" })` + `createDataChannel` + `createOffer`，打出 relay 候选即中继可用，一条都没有即该网络数字人画面无保底；只测浏览器到 TURN 一段。一次截图读出的事实：Azure 只下发 `turn:relay.communication.microsoft.com:3478`、`bundlePolicy: max-bundle` 故只一对候选对；下行约 13 MB、上行十几 KB——**数字人这条 WebRTC 连接只承载下行，麦克风在 WebSocket 上**；经 TURN 的 RTT 0.262 s 与弱网实测约 300 ms 同量级。
 
+### Claim: "relay 保底"有一个隐含前提——浏览器的同一个本地 UDP 端口能分别到达多个对端；SSE 客户端把端口钉死在首个对端时，直连与 relay 在同一个原因上一起断，应用侧（下发 IP、强制 relay）都绕不开
+
+- **来源**：[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]、[[Global-Secure-Access：微软SSE的设计与实时媒体问题]]
+- **首次出现**：2026-10-14
+- **最近更新**：2026-10-16
+- **置信度**：0.8（同一台 macOS 设备实测复现 + 同 socket 多目标对照 + GSA 客户端日志佐证；Windows 客户端未测）
+- **状态**：active
+
+> ICE 用**一个本地端口**同时和三个对端通信：TURN（STUN 拿 srflx、Allocate）、TURN 以 `300 Try-Alternate` 重定向的备用服务器（拿 relay）、媒体服务器（连通检查）。Chrome 对每个回包核对两件事：事务 ID 对得上、**回包来自请求发往的那个地址**（RFC 8445 的防伪造要求）。macOS 透明代理把应用的一个 UDP socket 当作一条"流"交给扩展，Global Secure Access 扩展按第一个数据报的目标建流、做一次转发决定、自建 socket 并 `connect` 到该目标——之后同一应用 socket 发往任何地址的包都送到首个对端，回包也显示来自它。后果：发往备用 TURN 的 Allocate 被送回原 TURN、回包源不符被丢 → **没有 relay**；连通检查被送到 TURN、当无关响应丢弃 → `reqSent` 一直涨、`respRecv=0`，约 15 秒 `ice=failed`，DTLS 从未开始。这和"relay 是企业网保底"不矛盾：常见企业网问题是"出向 UDP 到媒体服务器被挡、TURN 可达"，保底接得住；这次是**端口语义被改**，保底依赖的前提不成立。应用侧无效：后端把 ICE 域名解析成 IP 下发无效（钉死与地址是否合成无关）；`iceTransportPolicy: "relay"` 无效（绕不开 300 重定向）；GSA 策略里配 bypass 也不一定有效（bypass 的 UDP 流同样由扩展代发、照样钉死）。**测量纪律**：每个目标新开 socket 的系统层 STUN 测试天然绕开钉死、会全部正常而误判"网络没问题"，必须用**同一个 socket 依次发往多个目标**的对照（发往无服务 IP 也收到回复 = 包被转发给首个对端，而非仅回包地址被改写）。凡"一个端口对多个对端"的 UDP 都在影响面内（浏览器 WebRTC、P2P/NAT 穿越、mesh VPN），一对一的 TCP 与单服务器 UDP 不受影响——所以"看视频没问题、开视频会议就有问题"。
+
 ## 冲突与演进
 
 - **2026-10-02**：extract 首次自主建本页（5 Claims），用户以"暂时不建，没怎么看懂"撤回，内容压成一条速览 Claim 收入 [[realtime-protocol-selection]]，登记 LOOP_STATE HOLD。
 - **2026-10-11**：用户读完 Voice Live 系列16（传输层概念对齐前置篇）后解除 HOLD 建页——速览 Claim 原样迁回本页，新增系列16 的六条 Claim（归属 WebRTC 非数字人 / 候选四个易混点 / 两端对称与优先级公式 / 五件事 / ICE-lite 判定 / 验证方法）。修正一处旧认知：10-02 速览里"Azure 只应答、浏览器包办选路"的隐含假设，被"对端主动发检测、基本非 lite"推翻。
 - **待验**（系列16 第九节）：relay 在直连可行时为何胜出；SDP answer 是否 `a=ice-lite`；封 UDP 后经 TURN TCP / TLS 能否恢复画面；Voice Live 语音 WebRTC 是否下发 TURN。
+- **2026-10-16**：注入系列17 + GSA 产品页的"端口钉死"Claim——给"直连优先、relay 保底"补上隐含前提（同一端口可分别到达多个对端），并补一条测量纪律（同 socket 多目标对照）。排查过程中两条中间解释被推翻：①"Chrome 解析不了 TURN 域名"——`701` / `-105` 只出现在 IPv6 端口，是 GSA 不处理 IPv6 的噪声；②"回包源地址与合成 IP 不一致"——只能解释一次现象，同 socket 对照才定位机制。新待验：钉死是否有空闲超时、Windows（LWF 驱动）是否同样、自建不做重定向的 TURN over TLS 443 能否绕开。
 
 ## 关联概念
 
@@ -120,3 +131,6 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 - [[Voice-Live系列11：自建TURN中继]] — TURN 非联邦、自建六项要求与三处验证
 - [[Voice-Live系列12：数字人弱网表现]] — srflx↔srflx 直连实测
 - [[Voice-Live系列16：传输层概念对齐]] — 核心来源
+- [[2026-10-14-周三]] — 诊断 GSA 下数字人无画无声，成文系列17 与 GSA 产品页
+- [[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]] — 端口钉死、同 socket 多目标对照、Chrome 侧验证工具箱
+- [[Global-Secure-Access：微软SSE的设计与实时媒体问题]] — 透明代理按 socket 建流、客户端日志证据、影响面

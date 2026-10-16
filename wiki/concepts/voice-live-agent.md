@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-10-08"
+updated: "2026-10-16"
 tags:
   - wiki
   - concept
@@ -275,6 +275,16 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 用到模型的四处里，三处（judge、评估打分、Foundry agent 底层模型）走 Foundry 的 deployment 寻址，自有 deployment 名是唯一正确填法；第四处 Voice Live 原生 `model=` 只认本 region 预部署清单。一个字段同时喂这四处，填自有 deployment 则 chat 侧全对、语音侧立刻 `invalid_model`——毛病不在"自有 deployment 不该用"，而在一个字段两种语义。修法：推理模型（judge / 打分 / agent 同步）与语音会话模型（独立模型名 + native / byom 开关 + profile）分开；原生下拉只列**对本资源实测 ACCEPTED** 的模型（文档清单会混进 region 没开的），保存前再实测复校。**嘴型会话不必为口径一致拖进 BYOM**：语音腿不推理（连不存在的部署名都能建连），换 BYOM 只换宿主与计费口径，却要付 Foundry 资源、权限、级联延迟的代价。系列15 补实测：realtime 部署经自己的 WS 协议 `modalities: ["text"]` 能返回精确 JSON，但 chat completions / Responses（HTTP 与 WS 模式）全部 unsupported——推理侧是一批并发 HTTP 调用，所以语音会话模型可以是 realtime（混合式）、推理模型不可以，"不是能力不够，是协议对不上"。顺带：部署 `capabilities` 里没有 realtime 正向标记（只是 `chat_completion` 为 false），BYOM realtime 下拉若复用 chat 清单会一个可选值都没有。
 
+### Claim: 数字人 WebRTC 建连失败的降级与 ICE 断开后的恢复都必须新建会话——`session.avatar.connect` 在 ICE 从未连通时再发同样被拒，"WebRTC connection is in connected state" 的意思是"本会话已 connect 过"而不是"ICE 连上了"；降级目标是新会话改 `output_protocol: websocket`
+
+- **来源**：[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]、[[Global-Secure-Access：微软SSE的设计与实时媒体问题]]
+- **首次出现**：2026-10-14
+- **最近更新**：2026-10-16
+- **置信度**：0.8（企业安全客户端设备实测：原会话重发 3 次全部被拒；WS 下发实测可用）
+- **状态**：active
+
+> 现象签名：数字人无画无声，但候选人说话能被转写、模型文字回复正常——因为两条通道里坏的只有 avatar WebRTC（画面与声音两条 RTP 轨；avatar 模式下 Azure 不在 WS 上发 `response.audio.delta`），TCP 上的 WS（上行、转写、文字、SDP 信令）正常；服务端 T+23~40 秒收到 `webrtc_connection_invalid`（`avatar_rate_limited=False`，不是限流），随后 `close_reason=azure_stream_ended` 循环重连。对 10-02「每会话 connect 一次」硬约束的补充：**ICE 从未连通时也只接受一次**，在原会话上重建 PeerConnection、重发 offer 的恢复逻辑会被全部拒绝；每次新建会话又消耗 avatar 新建限流（每滚动 60 秒 3 次），恢复被进一步推迟。前端两条改进：① 先走 WebRTC，ICE 若干秒内未进 `connected` 或候选对持续 `respRecv=0` → **新建会话**并把 avatar 改为 `output_protocol: websocket`（多数用户仍享 WebRTC，企业安全客户端下用户也能看到数字人）；② 检测到 ICE 停在 `checking` 且 `respRecv=0` 或拿不到 relay 候选时直接提示"网络安全客户端可能阻止了音视频连接"并走降级，不静默等 40 秒。复现不必依赖业务账号：用 Entra token 直连 Voice Live 开带 avatar 的会话，Python 走 WS 信令、Playwright 起的 Chrome 跑 WebRTC，`client_sdp` / `server_sdp` 都是 base64 编码的 `{type, sdp}` JSON。归属补充：Voice Live 下发的 TURN（`relay.communication.microsoft.com`）借用的是 Azure Communication Services 的中继，与 Teams/Skype 共用一套中继基础设施——企业网络策略对 Teams 媒体的处理会波及数字人。
+
 ## 冲突与演进
 
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。
@@ -283,6 +293,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - 2026-10-02：注入 Voice Live 系列09（脚本朗读机制化 / 模型是会话宿主 / 字与声两层）、系列12（弱网七条事实 + 两条 Azure 硬约束）、系列01 4.5 增补（三条产品线拼接缝）三条 Claim；09-24 Claim 的"传声筒绕不开模型"加修正注（response 不一定调模型）。ICE 协议层压成一条 Claim 归 [[realtime-protocol-selection]]（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级阶梯归口方法页 [[weak-network-adaptive-degradation]]，采样率与编解码技术细节归 [[speech-technology-stack]]。系列00 导读为主题地图不含新内容，不注入。
 - 2026-10-04：注入 Voice Live 系列13（数字人配额与限流：两条独立限制 / 无可申请配额对象 / 按资源计）Claim；按系列12 2026-10-03 修订**更正 09-30 弱网 Claim 三处**——「约 20 秒速率限制」改为 60 秒窗口 3 次、「唯一杠杆 bitrate」改为另有 resolution / crop / scene.zoom、「静音期码率倒挂」作废。两个候选（`concurrency-vs-rate-limit` / `quota-object-vs-service-throttle`）单篇来源不建页，登记 HOLD。
 - 2026-10-08：注入 Voice Live 系列14（三条模型接入路径 / profile=集成模式定直通或级联 / 推理模型与语音会话模型拆分）两条 Claim，第二条并入系列15 第七节 realtime 文本面实测；系列15 的 EoU 两种实现归口 [[end-of-turn-detection]]、realtime 可达性与路线结论归口 [[cascaded-vs-e2e-voice]]（10-05 已先注入 §5.1 voice 会话级补充）。
+- 2026-10-16：注入 Voice Live 系列17 一条 Claim（降级与恢复都必须新建会话、`connected state` 提示的真实语义、降级到 `output_protocol: websocket`）。10-02 弱网 Claim 末尾的"UDP 封锁无画无声"仍成立（对 WebRTC 下发而言），但兜底不再只有"放弃 avatar"——数字人可改 WS 下发（[[realtime-protocol-selection]]）；端口钉死机制归口 [[ice-nat-traversal]]。
 
 ## 关联概念
 
@@ -298,6 +309,8 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - [[2026-04-06-企业级实时语音Agent]] — 企业级实践
 - [[WebSocket与WebRTC深度对比]] — WebRTC 双通道架构
 - [[Voice-Live系列02：解耦Agent-Service后的架构演进]] — 解耦后三种合作模式与选型光谱
+- [[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]] — 降级与恢复必须新建会话、WS 下发数字人实测
+- [[2026-10-14-周三]] — 诊断企业安全客户端下数字人无画无声
 - [[Blender系列04：人物面试动画实战]] — 四种语音要求分层、两条 API 路线与 viseme 同步工程规则
 - [[Voice-Live系列03：数字人出场延迟优化]] — 出场延迟分解与三层优化、对话轮次与外部网关实测
 - [[Voice-Live系列09：脚本朗读的机制化]] — 脚本朗读机制化：`pre_generated` 三代路径、宿主模型、代码 / prompt / voice 三层分工、`voice.type` 硬约束

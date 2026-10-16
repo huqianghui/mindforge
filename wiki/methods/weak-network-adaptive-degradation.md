@@ -7,7 +7,7 @@ aliases:
   - "Network Grade A-E Baseline"
   - "关画面保声音"
 created: "2026-10-02"
-updated: "2026-10-04"
+updated: "2026-10-16"
 tags:
   - wiki
   - method
@@ -88,6 +88,7 @@ related_methods:
 | **C**：RTT 300~500 ms，丢包 0.5~1%，下行 1.5~4 Mbps | 照片数字人，`video.bitrate` 压到 300 k | 实测：照片数字人 24 fps 但冻结 19~29 秒 / 39 秒；1080p 在 1% 丢包下 0 fps 仍吃 1 Mbps，主触发十几秒内就会关掉它，以它起步等于白花一次重建。300 k 减少冻结为推导 |
 | **D**：丢包 ≥ 3%，或 RTT ≥ 600 ms，或下行 < 1 Mbps | 纯音频起步（avatar 会话、视频轨 `inactive`） | 实测：照片数字人也在 42 秒媒体死亡；纯音频把 31% 原始补偿压到 2.5%，但不保证连接不死，靠媒体层自愈 |
 | **E**：UDP 3478 不可达 | 纯音频走 WebSocket（不带 avatar） | 无论其余指标多好；Azure 只下发 UDP 中继无 TCP 候选 |
+| **E′**：UDP 能通但端口语义被改（企业安全客户端，如 Global Secure Access 把端口钉死在首个对端：ICE 停在 `checking`、`respRecv=0`、无 relay 候选） | **新建会话**，avatar 改 `output_protocol: websocket`（分片 MP4 经 WS 下发） | 2026-10-14 实测可用；系统层"每目标一个 socket"的测试全通会误判为 A~D，须用同 socket 多目标对照识别。E 级同样可先试此路保留数字人，弱网表现待按本方法重测 |
 
 **触发信号的选择**：
 
@@ -162,6 +163,8 @@ related_methods:
 
 > 上行限到 300 kbps（无丢包）两轮均失败：能建起会话的那轮 ICE 收集从平时 1 秒拖到 4.3 秒，`session.avatar.connect` 发出后 SDP 应答等不到，30 秒超时——不是网络慢，是麦克风流把上行占满，携带数 KB SDP 的事件排在几百个音频帧后面发不出去，这是自伤不是环境限制。16 kHz 落地：前后端各一处常量，后端把生效采样率回显在连接确认事件里供前端比对防两边漂移；用同一段录音做假麦克风在 24 与 16 kHz 会话下各转写一遍，词错误率都是 0.0%、整句逐字一致（假麦克风 WAV 是 48 kHz 是文件采样率不是会话参数，`input_audio_sampling_rate` 只有 16000 / 24000 两档）。上行独立于形态，A 到 E 任何一级都一律 16 kHz。UDP 封锁：Chromium 策略禁用非代理 UDP 后 avatar 连接 60 秒内从未 connected；avatar 模式下 WS 上不发 `response.audio.delta`，所以准确描述是"用户能被听到和转写，数字人既无画面也无声音"，兜底是重建不带 avatar 的会话让 PCM 走 WebSocket（P4），交付手册同时写明放行 UDP 3478。
 
+> **2026-10-16 更正**（[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]）：标题里"兜底只能放弃 avatar"已不成立——avatar `output_protocol: websocket` 实测把音视频合成一路分片 MP4 经 WS 下发、无 ICE，UDP 不可用时数字人也能保留；代价是 TCP 队头阻塞、约多 30% 流量、前端改 MSE，且没有 WebRTC 的抖动缓冲 / NACK / FEC / 码率自适应，弱网表现需重测。"UDP 被封则无画无声"对 WebRTC 下发仍成立。
+
 ## 实践记录
 
 ### Practice: 2026-09-30 — 题库驱动语音数字人产品的弱网落地（六轮限速真机）
@@ -190,3 +193,4 @@ related_methods:
 - [[Voice-Live系列10：ICE、STUN与TURN]] — RTP/RTCP 与 UDP 的分工、媒体层自愈
 - [[Voice-Live系列11：自建TURN中继]] — Azure 只下发 UDP TURN 的部署含义
 - [[2026-09-30-周三]] — 落地回填、实测回填与客户网络基线三段的当日记录
+- [[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]] — E′ 级（端口语义被改）识别与 WS 下发兜底实测

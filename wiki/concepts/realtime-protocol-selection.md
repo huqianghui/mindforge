@@ -1,7 +1,7 @@
 ---
 title: "Realtime Protocol Selection"
 created: "2026-05-24"
-updated: "2026-10-11"
+updated: "2026-10-16"
 tags:
   - wiki
   - concept
@@ -116,7 +116,7 @@ related:
 - **置信度**：0.85
 - **状态**：active
 
-> WebSocket 没有配对问题不是因为更聪明，而是它**放弃了对等**：一方必须是公网可达服务器，连接方向固定（客户端发起，NAT 天然允许出向 TCP + 回包）、地址已知（DNS 名），"双工"建在这条单向发起的连接之上——HTTP / gRPC / MQTT 全都如此。WebRTC 为 peer-to-peer 媒体设计，两端都可能在 NAT 后、谁也不能"被连"、走哪条路取决于双方 NAT 类型，所以必须 ICE（收集候选 → 交换 → 同时互发探测打洞 → 选胜出者）；它走 UDP 又让 NAT 映射更短命、规则更杂。Azure 数字人"一端明明是服务器"却仍要 ICE，是因为 WebRTC 没有"跳过 ICE"的模式——媒体服务器公网可达、能直连就直连，同时给一台 TURN 保底（企业网对 UDP 极不友好），走 TURN 并回落 TCP/443 时做的事本质上和 WebSocket 一模一样（客户端出向连已知地址、媒体在隧道里双向走），但协议机器照走，ICE 的必要成本只有几百毫秒加一次到中继的往返。对本页选型框架的续证："防火墙严格限 UDP → 只用 WebSocket"这条 05 月条件在 Azure 数字人上成立得更硬——Azure 默认下发的 `ice_servers` 只有 `turn:…:3478` UDP、没有 `?transport=tcp` 候选，客户端也不能自加（凭据是 Azure 的），Chromium 禁用非代理 UDP 时 avatar 连接 60 秒从未 connected；UDP 封死则既无画面也无声音，唯一兜底是重建不带 avatar 的会话让音频以 PCM 回到 WebSocket（可用 `output_audio_format` 的 `pcm16_16000hz` / G.711 变体压码率）。媒体面 / 控制面续证：ICE 候选类型本身即是客户网络的分段测点——只有 host 候选 = UDP 门没过；srflx↔srflx = 直连；含 relay = 中继且 RTT 多一跳；选中候选对的 `currentRoundTripTime` 才是到媒体服务器的真实 RTT（无固定域名、不能事先 ping），到中继的 STUN RTT 不代表区域 RTT（本机 80 ms vs 区域 TCP 建连 252 ms）。
+> WebSocket 没有配对问题不是因为更聪明，而是它**放弃了对等**：一方必须是公网可达服务器，连接方向固定（客户端发起，NAT 天然允许出向 TCP + 回包）、地址已知（DNS 名），"双工"建在这条单向发起的连接之上——HTTP / gRPC / MQTT 全都如此。WebRTC 为 peer-to-peer 媒体设计，两端都可能在 NAT 后、谁也不能"被连"、走哪条路取决于双方 NAT 类型，所以必须 ICE（收集候选 → 交换 → 同时互发探测打洞 → 选胜出者）；它走 UDP 又让 NAT 映射更短命、规则更杂。Azure 数字人"一端明明是服务器"却仍要 ICE，是因为 WebRTC 没有"跳过 ICE"的模式——媒体服务器公网可达、能直连就直连，同时给一台 TURN 保底（企业网对 UDP 极不友好），走 TURN 并回落 TCP/443 时做的事本质上和 WebSocket 一模一样（客户端出向连已知地址、媒体在隧道里双向走），但协议机器照走，ICE 的必要成本只有几百毫秒加一次到中继的往返。对本页选型框架的续证："防火墙严格限 UDP → 只用 WebSocket"这条 05 月条件在 Azure 数字人上成立得更硬——Azure 默认下发的 `ice_servers` 只有 `turn:…:3478` UDP、没有 `?transport=tcp` 候选，客户端也不能自加（凭据是 Azure 的），Chromium 禁用非代理 UDP 时 avatar 连接 60 秒从未 connected；UDP 封死则既无画面也无声音，唯一兜底是重建不带 avatar 的会话让音频以 PCM 回到 WebSocket（可用 `output_audio_format` 的 `pcm16_16000hz` / G.711 变体压码率）。〔**2026-10-16 更正**："唯一兜底"已不成立——系列17 实测 avatar 设 `output_protocol: websocket` 后数字人音视频经 WS 下发、无 ICE，数字人在 UDP 不可用时也能保留，见下一条 Claim。〕媒体面 / 控制面续证：ICE 候选类型本身即是客户网络的分段测点——只有 host 候选 = UDP 门没过；srflx↔srflx = 直连；含 relay = 中继且 RTT 多一跳；选中候选对的 `currentRoundTripTime` 才是到媒体服务器的真实 RTT（无固定域名、不能事先 ping），到中继的 STUN RTT 不代表区域 RTT（本机 80 ms vs 区域 TCP 建连 252 ms）。
 
 ### Claim: RTP / RTCP 与 UDP 的分工及弱网失效链——UDP 决定包怎么送到，RTP 决定包里是什么、何时播、丢了怎么知道；"丢了就丢了"是抖动缓冲 + FEC + 按需 NACK 而非放任；抖动缓冲 < RTT 时 NACK 迟到→GOP 报废，码率自适应调带宽不调包数；音视频同车则胖视频饿死音频；WebSocket 传 PCM 无 RTP 头，抖动直接变延迟累积
 
@@ -138,12 +138,23 @@ related:
 
 > 逐项：丢包（WS 是 TCP 重传 + 队头阻塞；WebRTC 跳过由 PLC 补）、编码（PCM16 裸音频 vs Opus 约 32 kbps 带 FEC / DTX）、抖动缓冲与播放（应用自写 AudioWorklet 队列 vs 浏览器内置）、拥塞控制（只有 TCP 不感知媒体 vs RTCP 反馈 + 带宽估计）、加密（TLS vs DTLS-SRTP）、**发送节奏**（服务端能推多快推多快 vs 按实时速度）、事件通道（同一条 WS vs DataChannel 或 side-band WS）。与语音产品直接相关的三点：① 弱网差别最大——卡顿近似丢包数 × RTT；② **打断重新有意义**——WS PCM 下行上 Azure 不到 1 秒推完整段回复并标完成，`interrupt_response` 无可截断对象，WebRTC 按实时速度推、服务端知道播到哪才能截断（推断）；③ **架构会变**——媒体在浏览器与 Azure 间直连不经后端，后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 都要重新设计，控制靠 side-band WS（Azure Realtime 的 SDP 应答带 `Location` 头可再连控制 WS）。**可观测性不对称同源**：WebRTC 的拥塞 / 抖动 / 丢包 / RTT 在浏览器里，所以有 webrtc-internals；WS 的重传、RTT、拥塞窗口在 OS TCP 栈里，浏览器自己也看不到，只能分层——DevTools Network → WS → Messages 看帧（能直接看到下行音频不到 1 秒涌完紧跟 `response.done`）、`chrome://net-export` 看握手与代理、Wireshark（`SSLKEYLOGFILE` 解 wss，过滤 `tcp.analysis.retransmission`）或 `ss -ti` 看重传与 RTT、页面读 `ws.bufferedAmount` 当上行拥塞信号（持续上涨 = 上行跟不上、帧在本地排队，只反映上行）。一句话：webrtc-internals ≈ WS Messages + Wireshark，中间用 `bufferedAmount` 当带宽估计。
 
+### Claim: 数字人也可以只走 WebSocket——avatar `output_protocol: websocket` 把音视频合成一路分片 MP4 经 `response.video.delta` 下发、整条链路无 ICE；"UDP 不可用 → 只用 WS"从"放弃数字人"变为"数字人改 WS 下发"，代价是 TCP 队头阻塞、约多 30% 流量、前端改 MSE
+
+- **来源**：[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]
+- **首次出现**：2026-10-14
+- **最近更新**：2026-10-16
+- **置信度**：0.75（GSA 开启的同一台机器实测一次 25 秒会话；弱网表现、端到端延迟、打断停止速度未测）
+- **状态**：active
+
+> 实测：`session.updated` 回显 `ice_servers: null`、`output_protocol: "websocket"`；下行事件 `response.video.delta`（`codec: "h264"`），delta 是 base64 编码的**分片 MP4**（开头 `ftyp iso5`），可直接拼接；视频 h264 1920×1080 25 fps 约 2.16 Mbps，音频 AAC 16 kHz 单声道约 17 kbps **与视频在同一个 MP4 里**、没有单独的 `response.audio.delta`；拼接后时长与经过时间一致，首个分片在会话建立后约 0.9 秒到达。代价：base64 + JSON 包装让原始约 6.7 MB 变约 8.7 MB（+30%，1080p 线路上约 2.8 Mbps，可配合降分辨率/码率）；TCP 丢包有队头阻塞，没有 WebRTC 的抖动缓冲、NACK、FEC 与发送端码率自适应；播放改用 `MediaSource` + `SourceBuffer` 追加 fMP4，声音也从这一路出来，现有 WebRTC 音轨链路要改。对本页选型框架的意义：WebRTC 的价值（弱网韧性、按实时速度推送）依然成立，所以**默认走 WebRTC、建连失败才降级到 WS 下发**，而不是反过来；"限 UDP → 只用 WS"这条条件的适用对象从纯语音扩展到数字人。为什么 WS 在企业安全客户端下不受影响：TCP 一条连接只对一个对端，本来就是一对一，端口语义被改也碰不到它（见 [[ice-nat-traversal]] 的端口钉死 Claim）。
+
 ## 冲突与演进
 
 - **2026-08-16**：全部 6 条 Claims 证据停在 2026-05-24，距今 84 天超过 60 天线，维护标 stale，等新证据复核（复核素材已见 08-09 loop-weekly 语音三连发条目）。
 - **2026-09-16**：注入 Voice Live 系列03 ICE 门控 Claim（"全量集→够用集"）——页面获得首条生产实测级 WebRTC 协议工程续证，脱离全 stale 状态；sufficient-set-waiting 按裁决不独立建页，原则收入本条。
 - **2026-10-02**：ICE 门控 Claim 的"relay-only"前提按系列12 探针实测加修正注（直连优先、relay 保底，成立理由改为"两类候选同源 + 收敛窗是规则一部分"）；注入系列10 / 11 / 12 三条 Claim（ICE / STUN / TURN 速览；对等 vs 客户端-服务器的建连成本本质 + Azure 只下发 UDP TURN 对"限 UDP → 只用 WS"选型条件的续证；RTP/RTCP 分工与弱网失效链对"WS 传音频五缺陷"的机制续证）。ICE / STUN / TURN 协议层压成一条速览 Claim 收入本页（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级实施归 [[weak-network-adaptive-degradation]]。
 - **2026-10-11**：用户读完 Voice Live 系列16 后解除 ice-nat-traversal HOLD——ICE / STUN / TURN 速览 Claim 迁出至 [[ice-nat-traversal]]（本页只留选型层）；注入系列16 一条 Claim（WebRTC 与 WS 的全维度差别、媒体直连后的后端职责重设计、可观测性不对称与 WS 分层工具）。
+- **2026-10-16**：注入系列17 一条 Claim（avatar `output_protocol: websocket` 实测可用），**更正** 10-02 Claim 里"UDP 封死唯一兜底是重建不带 avatar 的会话"——数字人可经 WS 以分片 MP4 下发保留，选型从"放弃数字人"变为"默认 WebRTC、建连失败降级 WS 下发"。
 
 ## 关联概念
 
@@ -159,3 +170,4 @@ related:
 - [[Voice-Live系列12：数字人弱网表现]] — srflx↔srflx 直连实测、UDP-only TURN 与 UDP 封锁行为、弱网失效链与音视频同车、Opus 时钟标签
 - [[2026-09-30-周三]] — 系列10/11/12 成文与"直连推翻 relay-only"修正记录
 - [[Voice-Live系列16：传输层概念对齐]] — WebRTC vs WS 全维度对比、媒体直连的架构代价、WS 分层观测工具；ICE 部分归 [[ice-nat-traversal]]
+- [[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]] — avatar 走 WS 下发实测、TCP 一对一不受端口钉死影响
