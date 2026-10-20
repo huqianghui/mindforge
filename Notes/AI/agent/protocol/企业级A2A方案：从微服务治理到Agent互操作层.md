@@ -40,7 +40,7 @@ tags:
 
 以下全部按 **A2A 1.0** 规范书写，示例为讲解用的精简版，生产实现以所选版本的完整 Schema 校验。
 
-![A2A 一次完整协作时序|900](../../../asset/a2a-task-sequence-2026-10-20.svg)
+![A2A 一次完整协作时序|900](../../../../asset/a2a-task-sequence-2026-10-20.svg)
 
 ### 2.1 发现：Agent Card
 
@@ -307,7 +307,7 @@ A2A 定义了 Task 的状态模型，但**不负责持久化执行**。Research 
 
 ## 五、企业级 A2A 方案
 
-![企业级 A2A 分层架构|900](../../../asset/a2a-enterprise-architecture-2026-10-20.svg)
+![企业级 A2A 分层架构|900](../../../../asset/a2a-enterprise-architecture-2026-10-20.svg)
 
 ### 5.1 四个新增组件
 
@@ -354,4 +354,4 @@ A2A 定义了 Task 的状态模型，但**不负责持久化执行**。Research 
 - [A2A Backward Compatibility 讨论](https://github.com/a2aproject/A2A/discussions/1416)
 - [Nacos Agent 管理（A2A Registry）](https://nacos.io/docs/latest/manual/user/ai/agent-registry) 与 [Nacos 3.1.0 发布说明](https://nacos.io/en/blog/release-310)
 - [A2A Registry - 服务注册与发现（AgentScope Runtime）](https://runtime.agentscope.io/zh/a2a_registry.html)
-- 相关文章：[AG-UI 协议解析](AG-UI协议解析.md)、[Foundry Agent 三种形态对比与选型](../../../Azure/Foundary-Agent/Foundry-Agent三种形态对比与选型.md)
+- 相关文章：[AG-UI 协议解析](AG-UI协议解析.md)、[A2UI 协议解析](A2UI协议解析.md)、[Foundry Agent 三种形态对比与选型](../../../../Azure/Foundary-Agent/Foundry-Agent三种形态对比与选型.md)
