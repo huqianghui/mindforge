@@ -112,6 +112,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [Hermes Agent 与 OpenClaw 对比](Notes/AI/agent/Hermes-Agent与OpenClaw对比.md)
 - [AG-UI 协议解析](Notes/AI/agent/AG-UI协议解析.md)
 - [Agent Harness 五平台对比](Notes/AI/agent/Agent-Harness五平台对比.md)
+- [企业级 A2A 方案：从微服务治理到 Agent 互操作层](Notes/AI/agent/企业级A2A方案：从微服务治理到Agent互操作层.md)
 
 ### Notes/AI/computer-use
 

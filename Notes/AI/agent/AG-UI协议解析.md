@@ -224,3 +224,4 @@ Microsoft Agent Framework 已宣布支持 AG-UI，整个生态串起来就是：
 
 - [从 Skill Pattern 到 Agent Runtime](从Skill-Pattern到Agent-Runtime.md) — MCP 在 Agent 架构中的位置
 - [Foundry Toolbox 与 Skills 解析](../../../Azure/Foundary-Agent/Foundry-Toolbox与Skills解析.md) — Azure Foundry Hosted Agent 的执行环境
+- [企业级 A2A 方案：从微服务治理到 Agent 互操作层](企业级A2A方案：从微服务治理到Agent互操作层.md) — A2A 报文解剖（1.0）、与微服务治理的对照及企业落地方案
