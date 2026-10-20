@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 900" width="1240" height="900" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .bg { fill: #0f172a; }
+    .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
+    .sub { fill: #94a3b8; font-size: 14px; }
+    .actor { fill: #1e293b; stroke: #2dd4bf; stroke-width: 2; }
+    .actorTxt { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .actorSub { fill: #94a3b8; font-size: 13px; }
+    .life { stroke: #475569; stroke-width: 2; stroke-dasharray: 6 6; }
+    .msg { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.6s linear infinite; }
+    .ret { stroke: #5eead4; stroke-width: 2; fill: none; stroke-dasharray: 4 6; animation: flow 2s linear infinite; }
+    .act { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.4s linear infinite; }
+    .opt { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 6 8; }
+    .lbl { fill: #e2e8f0; font-size: 15px; }
+    .code { fill: #5eead4; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .codeA { fill: #fbbf24; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .ev { fill: #c4b5fd; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+    .note { fill: #94a3b8; font-size: 13px; }
+    .lbl, .code, .codeA, .ev, .note { paint-order: stroke; stroke: #0f172a; stroke-width: 6px; stroke-linejoin: round; }
+    .step { fill: #0f172a; stroke: #2dd4bf; stroke-width: 2; }
+    .stepA { fill: #0f172a; stroke: #fbbf24; stroke-width: 2; }
+    .stepTxt { fill: #2dd4bf; font-size: 13px; font-weight: 700; }
+    .stepTxtA { fill: #fbbf24; font-size: 13px; font-weight: 700; }
+    .render { fill: #134e4a; fill-opacity: 0.55; stroke: #2dd4bf; stroke-width: 2; }
+    .renderTxt { fill: #e2e8f0; font-size: 13px; }
+    .renderH { fill: #5eead4; font-size: 14px; font-weight: 700; }
+    .bar { fill: #2dd4bf; animation: grow 2.4s ease-out infinite; transform-origin: left; transform-box: fill-box; }
+    .divider { stroke: #fbbf24; stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.6; }
+    .divTxt { fill: #fbbf24; font-size: 14px; font-weight: 600; paint-order: stroke; stroke: #0f172a; stroke-width: 6px; }
+    @keyframes flow { to { stroke-dashoffset: -36; } }
+    @keyframes grow { 0% { transform: scaleX(0.05); } 40%,100% { transform: scaleX(1); } }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5eead4"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+  </defs>
+  <rect class="bg" width="1240" height="900" rx="12"/>
+  <text class="title" x="40" y="44">"展示 Top 10 用户额度的柱状图"：AG-UI + Agent + MCP + A2UI 端到端</text>
+  <text class="sub" x="40" y="70">按 A2UI v0.9 写法；紫色 = AG-UI 事件，青绿 = A2UI / MCP 消息，琥珀 = 用户交互回路</text>
+
+  <!-- actors -->
+  <rect class="actor" x="50" y="92" width="240" height="62" rx="10"/>
+  <text class="actorTxt" x="170" y="119" text-anchor="middle">前端应用</text>
+  <text class="actorSub" x="170" y="141" text-anchor="middle">AG-UI Client + A2UI Renderer</text>
+  <rect class="actor" x="420" y="92" width="220" height="62" rx="10"/>
+  <text class="actorTxt" x="530" y="119" text-anchor="middle">Agent Runtime</text>
+  <text class="actorSub" x="530" y="141" text-anchor="middle">理解意图 · 选组件</text>
+  <rect class="actor" x="740" y="92" width="200" height="62" rx="10"/>
+  <text class="actorTxt" x="840" y="119" text-anchor="middle">MCP Server</text>
+  <text class="actorSub" x="840" y="141" text-anchor="middle">受控业务工具</text>
+  <rect class="actor" x="1010" y="92" width="190" height="62" rx="10"/>
+  <text class="actorTxt" x="1105" y="119" text-anchor="middle">额度数据</text>
+  <text class="actorSub" x="1105" y="141" text-anchor="middle">API / 数仓</text>
+  <line class="life" x1="170" y1="154" x2="170" y2="860"/>
+  <line class="life" x1="530" y1="154" x2="530" y2="860"/>
+  <line class="life" x1="840" y1="154" x2="840" y2="860"/>
+  <line class="life" x1="1105" y1="154" x2="1105" y2="860"/>
+
+  <!-- 1 -->
+  <circle class="step" cx="28" cy="190" r="13"/><text class="stepTxt" x="28" y="195" text-anchor="middle">1</text>
+  <path class="msg" d="M170,190 L526,190" marker-end="url(#arr)"/>
+  <text class="lbl" x="184" y="180">自然语言请求（AG-UI RunAgentInput）</text>
+  <!-- 2 -->
+  <circle class="step" cx="28" cy="236" r="13"/><text class="stepTxt" x="28" y="241" text-anchor="middle">2</text>
+  <path class="ret" d="M530,236 L174,236" marker-end="url(#arrR)"/>
+  <text class="ev" x="196" y="226">RUN_STARTED · TOOL_CALL_START</text>
+  <!-- 3 -->
+  <circle class="step" cx="28" cy="282" r="13"/><text class="stepTxt" x="28" y="287" text-anchor="middle">3</text>
+  <path class="msg" d="M530,282 L836,282" marker-end="url(#arr)"/>
+  <text class="code" x="544" y="272">tools/call query_top_ai_users</text>
+  <text class="note" x="544" y="302">limit 10 · sort_by used_quota</text>
+  <!-- 4 -->
+  <circle class="step" cx="28" cy="342" r="13"/><text class="stepTxt" x="28" y="347" text-anchor="middle">4</text>
+  <path class="msg" d="M840,342 L1101,342" marker-end="url(#arr)"/>
+  <text class="note" x="852" y="332">鉴权 + 参数校验后执行查询</text>
+  <path class="ret" d="M1105,388 L534,388" marker-end="url(#arrR)"/>
+  <text class="lbl" x="640" y="378">Top 10 行数据（DB 排序与截断）</text>
+  <!-- 5 -->
+  <circle class="step" cx="28" cy="420" r="13"/><text class="stepTxt" x="28" y="425" text-anchor="middle">5</text>
+  <path class="ret" d="M530,420 L174,420" marker-end="url(#arrR)"/>
+  <text class="code" x="196" y="410">createSurface { surfaceId, catalogId }</text>
+  <path class="ret" d="M530,456 L174,456" marker-end="url(#arrR)"/>
+  <text class="code" x="196" y="446">updateComponents [ Card, Text, BarChart ]</text>
+  <path class="ret" d="M530,492 L174,492" marker-end="url(#arrR)"/>
+  <text class="code" x="196" y="482">updateDataModel { path: /users, value }</text>
+  <text class="note" x="196" y="512">A2UI 消息经 AG-UI 事件流承载</text>
+
+  <!-- 6 renderer box -->
+  <circle class="step" cx="28" cy="560" r="13"/><text class="stepTxt" x="28" y="565" text-anchor="middle">6</text>
+  <rect class="render" x="56" y="530" width="300" height="140" rx="8"/>
+  <text class="renderH" x="70" y="552">Renderer：Catalog 校验 → 映射</text>
+  <text class="renderTxt" x="70" y="574">BarChart → EnterpriseBarChart</text>
+  <rect class="bar" x="70" y="586" width="250" height="12" rx="3"/>
+  <rect class="bar" x="70" y="604" width="220" height="12" rx="3" style="animation-delay:0.15s"/>
+  <rect class="bar" x="70" y="622" width="190" height="12" rx="3" style="animation-delay:0.3s"/>
+  <rect class="bar" x="70" y="640" width="160" height="12" rx="3" style="animation-delay:0.45s"/>
+  <!-- 7 -->
+  <circle class="step" cx="28" cy="694" r="13"/><text class="stepTxt" x="28" y="699" text-anchor="middle">7</text>
+  <path class="ret" d="M530,694 L174,694" marker-end="url(#arrR)"/>
+  <text class="ev" x="380" y="684">TEXT_MESSAGE_* · RUN_FINISHED</text>
+
+  <!-- interaction loop -->
+  <line class="divider" x1="40" y1="726" x2="1200" y2="726"/>
+  <text class="divTxt" x="560" y="745">用户在图表上选"上海团队"</text>
+  <circle class="stepA" cx="28" cy="780" r="13"/><text class="stepTxtA" x="28" y="785" text-anchor="middle">8</text>
+  <path class="act" d="M170,780 L526,780" marker-end="url(#arrA)"/>
+  <text class="codeA" x="184" y="770">action { name, surfaceId, context }</text>
+  <path class="opt" d="M530,800 L836,800"/>
+  <text class="note" x="560" y="820">再查 MCP（同 3–4）</text>
+  <circle class="stepA" cx="28" cy="840" r="13"/><text class="stepTxtA" x="28" y="845" text-anchor="middle">9</text>
+  <path class="ret" d="M530,840 L174,840" marker-end="url(#arrR)"/>
+  <text class="code" x="196" y="866">只发 updateDataModel，图表就地刷新</text>
+  <text class="note" x="900" y="780">纯本地排序 / 切换：</text>
+  <text class="note" x="900" y="800">Renderer 自己处理，不必回 Agent</text>
+
+  <!-- particles -->
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="2s" repeatCount="indefinite" path="M170,190 L526,190"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M530,282 L836,282"/></circle>
+  <circle r="5" fill="#5eead4"><animateMotion dur="2.2s" begin="0.8s" repeatCount="indefinite" path="M530,456 L174,456"/></circle>
+  <circle r="5" fill="#fbbf24"><animateMotion dur="1.8s" repeatCount="indefinite" path="M170,780 L526,780"/></circle>
+</svg>
