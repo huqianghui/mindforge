@@ -19,6 +19,7 @@ tags:
 - **四个核心概念**：Surface（一块独立管理的 UI 区域）、Component（扁平列表 + id 引用的组件树）、Catalog（客户端允许 Agent 使用的组件契约）、Data Model（与结构分离、按路径绑定的数据）。再加上 Renderer 回传给 Agent 的 Action。
 - **Renderer 是协议运行时，不是组件库**：它要解析消息、管理 Surface 生命周期、处理增量更新和数据绑定、路由用户操作；企业现有的 View Library / Design System 只是它最底层的组件实现。**有组件库 ≠ 有 A2UI Renderer**。
 - **A2UI 管"画什么"，AG-UI 管"怎么交互"**：AG-UI 是 Agent 与前端之间的事件协议（运行生命周期、文本流、工具调用、状态同步），也是 A2UI 消息的主要承载通道之一；MCP 则在另一条链路上为 Agent 提供业务数据。
+- **三个协议发起方不同**：A2UI 和 A2A 由 Google 发起，AG-UI 由 CopilotKit 发起，后来都以开放协议形式发展；A2A 已捐赠给 Linux Foundation。常见组合是 AG-UI + A2UI 先行，需要跨系统调用独立 Agent 时再引入 A2A。
 - **版本现状**：生产稳定版是 **v0.9.1**，v1.0 处于 Candidate；官方 React / Lit / Angular / Flutter Renderer 均已稳定支持 v0.9.1，对 v1.0 的支持还在规划中。v0.8 的消息名与现在完全不同，读旧资料要注意。
 
 ## 一、A2UI 要解决什么问题
@@ -286,9 +287,35 @@ A2UI 本身与传输无关，任何能发 JSON 的通道都可以：
 
 也就是说，用 CopilotKit 这类 AG-UI 实现时，A2UI 嵌入事件流已经有现成的集成，不用自己设计封装格式；自研 Agent 后端时才需要明确 A2UI 走 AG-UI 自定义事件还是独立通道，并约定好状态同步规则。**装了 AG-UI 不等于有了 A2UI Renderer，反之亦然**。
 
-## 六、安全与企业落地
+## 六、A2UI、AG-UI、A2A 的发起方与组合
 
-### 6.1 安全：A2UI 让约束更容易落地，但不自动保证安全
+### 6.1 发起方与生态
+
+三个协议常被一起提起，但**并不是同一家公司开发的**：
+
+| 协议 | 发起方 | 核心用途 | 当前生态特点 |
+|---|---|---|---|
+| A2UI（Agent-to-User Interface） | Google | Agent 如何声明式地描述 UI | Google 发起，CopilotKit 与开源社区参与贡献 |
+| A2A（Agent2Agent） | Google | 不同 Agent 之间如何通信、协作 | 2025 年 6 月捐赠给 Linux Foundation，现归属其下的 Agentic AI Foundation（与 MCP 同一基金会），开放治理 |
+| AG-UI（Agent-User Interaction） | CopilotKit | Agent 如何与前端应用交互 | 开放协议，已集成 LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等 Agent 框架 |
+
+### 6.2 三者如何配合
+
+![Agent 协议组合方式|900](../../../../asset/agent-protocols-combination-2026-10-20.svg)
+
+以一个企业 AI 应用为例：React 前端通过 **AG-UI** 与主 Agent 交互；主 Agent 通过 **A2A** 委派独立维护的财务 Agent，通过 **MCP** 访问企业 API；拿到业务数据后，主 Agent 生成 **A2UI** 描述，交给前端的 A2UI Renderer 渲染成动态界面。
+
+这只是一种组合方式：A2UI 不一定经 AG-UI 传输（也可以走 A2A，或自定义通道；REST、WebSocket、SSE 的官方绑定目前仍在规划或提案阶段），A2A 也不只用于图中这种调用。
+
+一句话区分：**A2UI 描述界面应该是什么样子；AG-UI 处理 Agent 与用户应用之间的交互；A2A 处理 Agent 之间的通信与协作；MCP 处理 Agent 对工具与数据的调用。**
+
+### 6.3 选型建议
+
+前端动态 UI 与 Agent 交互是同一个应用内部的问题，**AG-UI + A2UI 是值得优先评估的组合**；只有当需要跨系统、跨团队调用独立运行的 Agent 时，再引入 A2A（企业侧的 A2A 落地见 [企业级 A2A 方案](企业级A2A方案：从微服务治理到Agent互操作层.md)）。这样可以避免把动态 UI、前端交互和 Agent 间通信混成一个问题。
+
+## 七、安全与企业落地
+
+### 7.1 安全：A2UI 让约束更容易落地，但不自动保证安全
 
 - **组件白名单**：只渲染 Catalog 内的组件，未知组件拒绝或受控降级。如果企业自己往 Catalog 里放了 `ExecuteCommand` 这种组件，协议也救不了。
 - **展示 ≠ 授权**：要分清三件事——Agent 能不能展示这个按钮、当前用户能不能看到它、当前用户能不能真正执行操作。**点击按钮只证明用户触发了一个 UI 操作，不证明他有权执行业务操作**；"按钮不显示"也不能当授权机制，恶意客户端可以直接构造请求。后端必须独立校验身份、权限和业务规则。
@@ -298,7 +325,7 @@ A2UI 本身与传输无关，任何能发 JSON 的通道都可以：
 - **Prompt Injection**：A2UI 限制了组件和交互能力，能减少一部分风险，但无法单独解决注入问题；工具调用的独立授权、敏感操作的人工确认、输出校验与审计仍然需要。
 - **生成侧也要约束**：向模型提供 Catalog 及其语义，要求结构化输出，后端先做 Schema 与 Catalog 校验再下发。关键业务 UI 可以由确定性代码生成结构，模型只负责组件选择与内容组织。
 
-### 6.2 企业 Agent 平台中的定位
+### 7.2 企业 Agent 平台中的定位
 
 把 A2UI 当成**动态 UI 协议层，而不是前端平台的替代品**。几条落地原则：
 
@@ -308,7 +335,7 @@ A2UI 本身与传输无关，任何能发 JSON 的通道都可以：
 4. **协议版本统一管理**：全平台锁定一个 A2UI 版本，不允许各团队各用各的消息结构。
 5. **评估 UI 质量，而不只是回答质量**：组件选择是否正确、数据是否绑定到正确字段、非法组件是否被拒绝、action 是否路由正确、错误与超时处理、多屏幕尺寸显示、无障碍、UI 操作是否遵循授权规则。
 
-### 6.3 适合与暂不适合的场景
+### 7.3 适合与暂不适合的场景
 
 | 适合优先尝试 | 暂不建议 |
 |---|---|
@@ -330,4 +357,5 @@ A2UI 本身与传输无关，任何能发 JSON 的通道都可以：
 - [Renderers (Client Libraries)](https://a2ui.org/reference/renderers/)、[Actions](https://a2ui.org/concepts/actions/)、[Transports](https://a2ui.org/concepts/transports/)
 - [A2UI v0.9: What's New in Google's Generative UI Spec](https://www.copilotkit.ai/blog/a2ui-whats-new-in-google-generative-ui-spec)
 - [AG-UI Events](https://docs.ag-ui.com/concepts/events) 与 [ag-ui-protocol/ag-ui](https://github.com/ag-ui-protocol/ag-ui)
+- [Linux Foundation Launches the Agent2Agent Protocol Project](https://www.linuxfoundation.org/press/linux-foundation-launches-the-agent2agent-protocol-project-to-enable-secure-intelligent-communication-between-ai-agents) 与 [Agentic AI Foundation](https://aaif.io)
 - 相关文章：[AG-UI 协议解析](AG-UI协议解析.md)、[企业级 A2A 方案：从微服务治理到 Agent 互操作层](企业级A2A方案：从微服务治理到Agent互操作层.md)

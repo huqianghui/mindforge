@@ -31,6 +31,8 @@ tags:
 | **A2A** | **Agent ↔ Agent** | **Agent Card、Message、Task、Artifact** | **销售 Agent 委派研究 Agent** |
 | AG-UI | Agent ↔ 用户界面 | Event 流 | 前端渲染 Agent 的流式输出与交互 |
 
+发起方并不相同：A2A 与 A2UI 由 Google 发起，AG-UI 由 CopilotKit 发起。A2A 于 2025 年 4 月发布，同年 6 月捐赠给 Linux Foundation，现归属 Agentic AI Foundation（与 MCP 同一基金会），保持厂商中立的开放治理。三者的组合方式见 [A2UI 协议解析](A2UI协议解析.md)。
+
 两条边界值得记住：
 
 - **A2A 的前提是"对方是一个独立的 Agent"**，内部用什么框架、什么模型、调了哪些工具都不暴露（opaque）。如果几个步骤由同一团队开发、共享状态、延迟敏感，框架内部编排往往更简单，不必拆成 A2A 调用。
@@ -351,6 +353,7 @@ A2A 定义了 Task 的状态模型，但**不负责持久化执行**。Research 
 - [a2aproject/A2A](https://github.com/a2aproject/A2A)：规范与数据模型（`a2a.proto` 为规范性来源）
 - 官方 SDK：[a2a-python](https://github.com/a2aproject/a2a-python)、[a2a-java](https://github.com/a2aproject/a2a-java)、[a2a-js](https://github.com/a2aproject/a2a-js)、[a2a-go](https://github.com/a2aproject/a2a-go)、[a2a-dotnet](https://github.com/a2aproject/a2a-dotnet)、[a2a-rs](https://github.com/a2aproject/a2a-rs)
 - 协议测试：[A2A Inspector](https://github.com/a2aproject/a2a-inspector)、[A2A Technology Compatibility Kit](https://github.com/a2aproject/a2a-tck)
+- [Linux Foundation Launches the Agent2Agent Protocol Project](https://www.linuxfoundation.org/press/linux-foundation-launches-the-agent2agent-protocol-project-to-enable-secure-intelligent-communication-between-ai-agents) 与 [Agentic AI Foundation](https://aaif.io)
 - [A2A Backward Compatibility 讨论](https://github.com/a2aproject/A2A/discussions/1416)
 - [Nacos Agent 管理（A2A Registry）](https://nacos.io/docs/latest/manual/user/ai/agent-registry) 与 [Nacos 3.1.0 发布说明](https://nacos.io/en/blog/release-310)
 - [A2A Registry - 服务注册与发现（AgentScope Runtime）](https://runtime.agentscope.io/zh/a2a_registry.html)
