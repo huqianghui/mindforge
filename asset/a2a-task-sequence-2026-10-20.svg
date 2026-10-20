@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .bg { fill: #0f172a; }
+    .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
+    .sub { fill: #94a3b8; font-size: 14px; }
+    .actor { fill: #1e293b; stroke: #2dd4bf; stroke-width: 2; }
+    .actorTxt { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .actorSub { fill: #94a3b8; font-size: 13px; }
+    .life { stroke: #475569; stroke-width: 2; stroke-dasharray: 6 6; }
+    .msg { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.6s linear infinite; }
+    .ret { stroke: #5eead4; stroke-width: 2; fill: none; stroke-dasharray: 4 6; animation: flow 2s linear infinite; }
+    .opt { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 6 8; }
+    .lbl { fill: #e2e8f0; font-size: 15px; }
+    .code { fill: #fbbf24; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .codeT { fill: #5eead4; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .note { fill: #94a3b8; font-size: 13px; }
+    .optTxt { fill: #94a3b8; font-size: 14px; }
+    .step { fill: #0f172a; stroke: #2dd4bf; stroke-width: 2; }
+    .stepTxt { fill: #2dd4bf; font-size: 13px; font-weight: 700; }
+    .work { fill: #fbbf24; fill-opacity: 0.18; stroke: #fbbf24; stroke-width: 2; animation: pulse 1.8s ease-in-out infinite; }
+    .workNote { fill: #e2e8f0; font-size: 13px; }
+    .workTxt { fill: #fbbf24; font-size: 14px; font-weight: 600; }
+    .lbl, .code, .codeT, .note, .optTxt { paint-order: stroke; stroke: #0f172a; stroke-width: 6px; stroke-linejoin: round; }
+    @keyframes flow { to { stroke-dashoffset: -36; } }
+    @keyframes pulse { 0%,100% { fill-opacity: 0.12; } 50% { fill-opacity: 0.38; } }
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5eead4"/></marker>
+    <marker id="arrO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1200" height="760" rx="12"/>
+  <text class="title" x="40" y="44">A2A 一次完整协作：发现 → 提交 → 任务生命周期 → 产物</text>
+  <text class="sub" x="40" y="70">按 A2A 1.0 规范；Sales Agent 委派市场研究给 Research Agent</text>
+
+  <!-- actors -->
+  <rect class="actor" x="60" y="96" width="220" height="62" rx="10"/>
+  <text class="actorTxt" x="170" y="124" text-anchor="middle">Sales Agent</text>
+  <text class="actorSub" x="170" y="146" text-anchor="middle">A2A Client</text>
+  <rect class="actor" x="490" y="96" width="220" height="62" rx="10"/>
+  <text class="actorTxt" x="600" y="124" text-anchor="middle">Agent Catalog</text>
+  <text class="actorSub" x="600" y="146" text-anchor="middle">Registry（如 Nacos）</text>
+  <rect class="actor" x="920" y="96" width="220" height="62" rx="10"/>
+  <text class="actorTxt" x="1030" y="124" text-anchor="middle">Research Agent</text>
+  <text class="actorSub" x="1030" y="146" text-anchor="middle">A2A Server</text>
+  <line class="life" x1="170" y1="158" x2="170" y2="680"/>
+  <line class="life" x1="600" y1="158" x2="600" y2="680"/>
+  <line class="life" x1="1030" y1="158" x2="1030" y2="680"/>
+
+  <!-- 1 search catalog -->
+  <circle class="step" cx="40" cy="196" r="14"/><text class="stepTxt" x="40" y="201" text-anchor="middle">1</text>
+  <path class="msg" d="M170,196 L596,196" marker-end="url(#arr)"/>
+  <text class="lbl" x="185" y="186">按 Skill / 标签 / 权限检索候选 Agent</text>
+  <path class="ret" d="M600,222 L174,222" marker-end="url(#arrR)"/>
+  <text class="note" x="380" y="242" text-anchor="middle">返回 Agent Card（已过权限过滤）</text>
+
+  <!-- 2 well-known (alt) -->
+  <circle class="step" cx="40" cy="276" r="14"/><text class="stepTxt" x="40" y="281" text-anchor="middle">2</text>
+  <path class="opt" d="M170,276 L1026,276" marker-end="url(#arrO)"/>
+  <text class="optTxt" x="185" y="266">或直连：GET /.well-known/agent-card.json（小规模 / PoC）</text>
+
+  <!-- 3 SendMessage -->
+  <circle class="step" cx="40" cy="336" r="14"/><text class="stepTxt" x="40" y="341" text-anchor="middle">3</text>
+  <path class="msg" d="M170,336 L1026,336" marker-end="url(#arr)"/>
+  <text class="code" x="185" y="326">SendStreamingMessage  { message: { role: ROLE_USER, parts: [...] } }</text>
+  <text class="note" x="185" y="358">Header：A2A-Version 1.0 ｜ Authorization Bearer ｜ traceparent</text>
+
+  <!-- 4 task submitted/working -->
+  <circle class="step" cx="40" cy="414" r="14"/><text class="stepTxt" x="40" y="419" text-anchor="middle">4</text>
+  <path class="ret" d="M1030,414 L174,414" marker-end="url(#arrR)"/>
+  <text class="codeT" x="440" y="404">{ task: { id, contextId, state: TASK_STATE_SUBMITTED } }</text>
+  <rect class="work" x="960" y="434" width="140" height="120" rx="8"/>
+  <text class="workTxt" x="1030" y="478" text-anchor="middle">WORKING</text>
+  <text class="workNote" x="1030" y="502" text-anchor="middle">检索 / MCP 工具</text>
+  <text class="workNote" x="1030" y="522" text-anchor="middle">/ 再委派</text>
+
+  <!-- 5 statusUpdate -->
+  <circle class="step" cx="40" cy="470" r="14"/><text class="stepTxt" x="40" y="475" text-anchor="middle">5</text>
+  <path class="ret" d="M958,470 L174,470" marker-end="url(#arrR)"/>
+  <text class="codeT" x="200" y="460">SSE：{ statusUpdate: { state: TASK_STATE_WORKING } }</text>
+
+  <!-- 6 artifactUpdate -->
+  <circle class="step" cx="40" cy="530" r="14"/><text class="stepTxt" x="40" y="535" text-anchor="middle">6</text>
+  <path class="ret" d="M958,530 L174,530" marker-end="url(#arrR)"/>
+  <text class="codeT" x="200" y="520">SSE：{ artifactUpdate: { artifact: { parts: [ text, data ] } } }</text>
+
+  <!-- 7 completed -->
+  <circle class="step" cx="40" cy="590" r="14"/><text class="stepTxt" x="40" y="595" text-anchor="middle">7</text>
+  <path class="ret" d="M1030,590 L174,590" marker-end="url(#arrR)"/>
+  <text class="codeT" x="200" y="580">SSE：{ statusUpdate: { state: TASK_STATE_COMPLETED } } → 流关闭</text>
+
+  <!-- 8 fallback -->
+  <circle class="step" cx="40" cy="650" r="14"/><text class="stepTxt" x="40" y="655" text-anchor="middle">8</text>
+  <path class="opt" d="M170,650 L1026,650" marker-end="url(#arrO)"/>
+  <text class="optTxt" x="185" y="640">断线兜底：GetTask(id) 取权威状态 ｜ SubscribeToTask 重新订阅 ｜ Push 通知到受控端点</text>
+
+  <text class="note" x="60" y="724">实线流动 = 主路径　　灰色虚线 = 可选 / 兜底路径　　琥珀脉冲 = 任务执行中（与最初那次 HTTP 请求的生命周期解耦）</text>
+
+  <!-- particles -->
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="2.4s" repeatCount="indefinite" path="M170,336 L1026,336"/></circle>
+  <circle r="5" fill="#5eead4"><animateMotion dur="2.4s" begin="0.8s" repeatCount="indefinite" path="M958,530 L174,530"/></circle>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="1.6s" repeatCount="indefinite" path="M170,196 L596,196"/></circle>
+</svg>

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
+  <style>
+    .bg { fill: #0f172a; }
+    .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
+    .sub { fill: #94a3b8; font-size: 14px; }
+    .reuse { fill: #134e4a; fill-opacity: 0.45; stroke: #2dd4bf; stroke-width: 2; }
+    .new { fill: #78350f; fill-opacity: 0.35; stroke: #fbbf24; stroke-width: 2.5; }
+    .newBand { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 8 6; animation: pulse 2.2s ease-in-out infinite; }
+    .agent { fill: #1e293b; stroke: #94a3b8; stroke-width: 2; }
+    .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .hNew { fill: #fbbf24; font-size: 17px; font-weight: 700; }
+    .hReuse { fill: #5eead4; font-size: 17px; font-weight: 700; }
+    .t { fill: #cbd5e1; font-size: 13px; }
+    .tag { fill: #fbbf24; font-size: 13px; }
+    .flow { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 8 8; animation: flow 1.4s linear infinite; }
+    .side { stroke: #475569; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+    .a2a { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .a2aTxt { fill: #fbbf24; font-size: 13px; font-weight: 600; }
+    .leg { fill: #94a3b8; font-size: 13px; }
+    @keyframes flow { to { stroke-dashoffset: -32; } }
+    @keyframes pulse { 0%,100% { stroke-opacity: 0.45; } 50% { stroke-opacity: 1; } }
+  </style>
+  <rect class="bg" width="1200" height="860" rx="12"/>
+  <text class="title" x="40" y="44">企业级 A2A 方案：在微服务治理之上加一层 Agent 互操作层</text>
+  <text class="sub" x="40" y="70">青绿 = 复用现有微服务基础设施　　琥珀 = A2A 落地需要新增或适配的部分</text>
+
+  <!-- L1 apps -->
+  <rect class="reuse" x="40" y="94" width="820" height="60" rx="10"/>
+  <text class="h" x="60" y="121">体验层</text>
+  <text class="t" x="60" y="142">员工门户 / Teams / 面向客户的应用 / 业务系统内嵌入口（UI 侧可用 AG-UI）</text>
+
+  <!-- L2 gateway -->
+  <rect class="reuse" x="40" y="180" width="820" height="96" rx="10"/>
+  <text class="hReuse" x="60" y="208">Enterprise API Gateway（复用）</text>
+  <text class="t" x="60" y="232">TLS 终止 / OAuth·JWT 校验 / 限流配额 / 网络访问控制 / 路由与负载均衡 / 访问日志</text>
+  <rect class="new" x="60" y="242" width="780" height="24" rx="6"/>
+  <text class="tag" x="72" y="259">+ A2A 适配：SSE 长连接与超时 ｜ A2A-Version 头 ｜ tenant 透传 ｜ 身份上下文与 traceparent 透传</text>
+
+  <!-- L3 interoperability -->
+  <rect class="newBand" x="30" y="300" width="840" height="200" rx="12"/>
+  <text class="hNew" x="50" y="328">Agent Interoperability Layer（新增）</text>
+  <rect class="new" x="50" y="344" width="196" height="140" rx="8"/>
+  <text class="h" x="64" y="370">Agent Catalog</text>
+  <text class="t" x="64" y="394">Agent Card 存储</text>
+  <text class="t" x="64" y="414">Skill / 模态检索</text>
+  <text class="t" x="64" y="434">版本 / Owner / 环境</text>
+  <text class="t" x="64" y="454">可见性与权限过滤</text>
+  <text class="t" x="64" y="474">（Nacos 原生 / 自建）</text>
+  <rect class="new" x="256" y="344" width="196" height="140" rx="8"/>
+  <text class="h" x="270" y="370">准入与签名</text>
+  <text class="t" x="270" y="394">Inspector / TCK</text>
+  <text class="t" x="270" y="414">协议一致性门禁</text>
+  <text class="t" x="270" y="434">Card JWS 签名校验</text>
+  <text class="t" x="270" y="454">安全与质量另行验收</text>
+  <rect class="new" x="462" y="344" width="196" height="140" rx="8"/>
+  <text class="h" x="476" y="370">A2A Router</text>
+  <text class="t" x="476" y="394">按 Agent / Skill /</text>
+  <text class="t" x="476" y="414">tenant 解析目标</text>
+  <text class="t" x="476" y="434">多版本 interface 选择</text>
+  <text class="t" x="476" y="454">（可内嵌于 Gateway）</text>
+  <rect class="new" x="668" y="344" width="186" height="140" rx="8"/>
+  <text class="h" x="682" y="370">Agent 级策略</text>
+  <text class="t" x="682" y="394">谁能调谁</text>
+  <text class="t" x="682" y="414">委派链与 Token 交换</text>
+  <text class="t" x="682" y="434">跨 Agent 调用审计</text>
+  <text class="t" x="682" y="454">配额与成本归属</text>
+
+  <!-- L4 agents -->
+  <text class="h" x="40" y="540">各业务部门自主交付的 Agent（框架不限：Agent Framework / LangGraph / Spring AI Alibaba …）</text>
+  <rect class="agent" x="40" y="556" width="190" height="64" rx="10"/>
+  <text class="h" x="135" y="594" text-anchor="middle">Sales Agent</text>
+  <rect class="agent" x="250" y="556" width="190" height="64" rx="10"/>
+  <text class="h" x="345" y="594" text-anchor="middle">Research Agent</text>
+  <rect class="agent" x="460" y="556" width="190" height="64" rx="10"/>
+  <text class="h" x="555" y="594" text-anchor="middle">Pricing Agent</text>
+  <rect class="agent" x="670" y="556" width="190" height="64" rx="10"/>
+  <text class="h" x="765" y="594" text-anchor="middle">Report Agent</text>
+  <path class="a2a" d="M230,588 L250,588"/>
+  <path class="a2a" d="M440,588 L460,588"/>
+  <path class="a2a" d="M650,588 L670,588"/>
+  <text class="a2aTxt" x="40" y="646">Agent ↔ Agent：A2A（Message / Task / Artifact）</text>
+
+  <!-- L5 tools -->
+  <rect class="reuse" x="40" y="666" width="820" height="60" rx="10"/>
+  <text class="h" x="60" y="692">Agent ↔ 工具：MCP / REST（复用）</text>
+  <text class="t" x="60" y="713">Tool Gateway：参数校验、业务规则、敏感操作审批——权限在这里落实，而不是写在 prompt 里</text>
+  <rect class="reuse" x="40" y="746" width="820" height="56" rx="10"/>
+  <text class="h" x="60" y="772">企业系统</text>
+  <text class="t" x="60" y="792">SAP / Salesforce / 数据库 / 内部业务 API</text>
+
+  <!-- right column -->
+  <rect class="reuse" x="900" y="94" width="260" height="708" rx="12"/>
+  <text class="hReuse" x="920" y="124">现有平台服务（复用）</text>
+  <text class="h" x="920" y="166">服务实例发现</text>
+  <text class="t" x="920" y="188">Nacos / Consul / Eureka</text>
+  <text class="t" x="920" y="208">K8s Service</text>
+  <text class="h" x="920" y="252">身份与密钥</text>
+  <text class="t" x="920" y="274">OIDC / mTLS / 工作负载身份</text>
+  <text class="t" x="920" y="294">Token Exchange（RFC 8693）</text>
+  <text class="h" x="920" y="338">可观测性</text>
+  <text class="t" x="920" y="360">OpenTelemetry / 日志 / 指标</text>
+  <text class="tag" x="920" y="380">+ Task ID、模型调用、成本</text>
+  <text class="h" x="920" y="424">持久化执行</text>
+  <text class="t" x="920" y="446">Temporal / Durable Functions</text>
+  <text class="t" x="920" y="466">Camunda</text>
+  <text class="tag" x="920" y="486">+ Task 状态与工作流关联</text>
+  <text class="h" x="920" y="530">消息与存储</text>
+  <text class="t" x="920" y="552">消息队列 / 数据库</text>
+  <text class="t" x="920" y="572">Task Store 持久化</text>
+  <text class="h" x="920" y="616">评估与发布</text>
+  <text class="t" x="920" y="638">CI/CD 质量门禁</text>
+  <text class="t" x="920" y="658">灰度发布与回滚</text>
+
+  <!-- flows -->
+  <path class="flow" d="M450,154 L450,180"/>
+  <path class="flow" d="M450,276 L450,300"/>
+  <path class="flow" d="M450,500 L450,520"/>
+  <path class="flow" d="M450,548 L450,556"/>
+  <path class="flow" d="M450,620 L450,630"/>
+  <path class="flow" d="M450,654 L450,666"/>
+  <path class="flow" d="M450,726 L450,746"/>
+  <path class="side" d="M870,400 L900,400"/>
+  <path class="side" d="M860,228 L900,228"/>
+  <path class="side" d="M860,696 L900,696"/>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" repeatCount="indefinite" path="M450,154 L450,746"/></circle>
+
+  <text class="leg" x="40" y="838">原则：不重建注册中心、网关、IAM 与可观测性；只补 Agent 语义（能力目录、协议适配、Agent 级授权与审计）</text>
+</svg>
