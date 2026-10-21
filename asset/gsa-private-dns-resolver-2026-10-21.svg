@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <style>
+    .title { font-size: 20px; font-weight: 700; fill: #e2e8f0; }
+    .lane { font-size: 17px; font-weight: 700; }
+    .node { font-size: 15px; font-weight: 600; fill: #0f172a; }
+    .nodeL { font-size: 15px; font-weight: 600; fill: #e2e8f0; }
+    .sub { font-size: 13px; fill: #334155; }
+    .subL { font-size: 13px; fill: #94a3b8; }
+    .note { font-size: 13px; fill: #cbd5e1; }
+    .bad { font-size: 13px; fill: #fca5a5; }
+    .ok { stroke: #2dd4bf; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+    .dead { stroke: #f87171; stroke-width: 2.5; fill: none; stroke-dasharray: 5 7; opacity: 0.85; }
+    .pulse { animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes dash { to { stroke-dashoffset: -36; } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+  </style>
+  <defs>
+    <marker id="aT" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aR" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+  <rect width="1200" height="760" fill="#0b1220"/>
+  <text x="40" y="42" class="title">macOS 上 GSA Private Access 的 DNS 接管：三种状态下 xxx.openai.azure.com 怎么解析</text>
+
+  <!-- ===== Lane 1: normal ===== -->
+  <text x="40" y="88" class="lane" fill="#2dd4bf">① Private 通道 Connected：按后缀截获，交给 connector 解析</text>
+  <rect x="40" y="108" width="170" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="125" y="136" text-anchor="middle" class="node">应用查 DNS</text>
+  <text x="125" y="157" text-anchor="middle" class="sub">curl / SDK / 浏览器</text>
+  <rect x="260" y="108" width="200" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="360" y="136" text-anchor="middle" class="node">/etc/resolver 规则</text>
+  <text x="360" y="157" text-anchor="middle" class="sub">openai.azure.com 等后缀</text>
+  <rect x="510" y="108" width="190" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="605" y="136" text-anchor="middle" class="node">6.6.255.254</text>
+  <text x="605" y="157" text-anchor="middle" class="sub">扩展内的虚拟 DNS</text>
+  <rect x="750" y="108" width="180" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="840" y="136" text-anchor="middle" class="node">Private 通道</text>
+  <text x="840" y="157" text-anchor="middle" class="sub">→ connector</text>
+  <rect x="980" y="108" width="180" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="1070" y="136" text-anchor="middle" class="node">返回 6.6.x.x</text>
+  <text x="1070" y="157" text-anchor="middle" class="sub">流量随后进隧道</text>
+  <path d="M210,140 L256,140" class="ok" marker-end="url(#aT)"/>
+  <path d="M460,140 L506,140" class="ok" marker-end="url(#aT)"/>
+  <path d="M700,140 L746,140" class="ok" marker-end="url(#aT)"/>
+  <path d="M930,140 L976,140" class="ok" marker-end="url(#aT)"/>
+  <circle r="5" fill="#ccfbf1"><animateMotion dur="2.4s" repeatCount="indefinite" path="M125,140 L1070,140"/></circle>
+  <text x="40" y="200" class="note">可用。私有资源由 connector 在 VNet 内解析出私网地址；公网资源也被同一条后缀规则截获，从 connector 一侧出去（推断）。</text>
+  <text x="40" y="222" class="note">实测代价：每个新连接多约 1.1 至 1.3 秒，TLS 握手从约 110 ms 涨到 860 至 1020 ms。</text>
+
+  <!-- ===== Lane 2: broken ===== -->
+  <text x="40" y="282" class="lane" fill="#f87171">② Private 通道断开，规则没撤：所有命中后缀的域名解析超时</text>
+  <rect x="40" y="302" width="170" height="64" rx="10" fill="#1e293b" stroke="#f87171" stroke-width="2"/>
+  <text x="125" y="330" text-anchor="middle" class="nodeL">应用查 DNS</text>
+  <text x="125" y="351" text-anchor="middle" class="subL">同一个域名</text>
+  <rect x="260" y="302" width="200" height="64" rx="10" fill="#1e293b" stroke="#f87171" stroke-width="2"/>
+  <text x="360" y="330" text-anchor="middle" class="nodeL">/etc/resolver 规则</text>
+  <text x="360" y="351" text-anchor="middle" class="subL">仍然在磁盘上</text>
+  <rect x="510" y="302" width="190" height="64" rx="10" fill="#1e293b" stroke="#f87171" stroke-width="2" class="pulse"/>
+  <text x="605" y="330" text-anchor="middle" class="nodeL">6.6.255.254</text>
+  <text x="605" y="351" text-anchor="middle" class="subL">无人应答</text>
+  <rect x="750" y="302" width="410" height="64" rx="10" fill="#7f1d1d" class="pulse"/>
+  <text x="955" y="330" text-anchor="middle" class="nodeL">Resolving timed out</text>
+  <text x="955" y="351" text-anchor="middle" class="subL" style="fill:#fecaca">Playground 与 SDK 一起报网络错误</text>
+  <path d="M210,334 L256,334" class="dead" marker-end="url(#aR)"/>
+  <path d="M460,334 L506,334" class="dead" marker-end="url(#aR)"/>
+  <path d="M700,334 L746,334" class="dead" marker-end="url(#aR)"/>
+  <text x="40" y="394" class="bad">dig 直接问公司 DNS 能秒回，curl 走系统解析器却超时：分歧点就在这些按后缀生效的 resolver 文件。</text>
+  <text x="40" y="416" class="bad">不是缓存，刷新 DNS 缓存无效；这种状态下点 Disable，规则也没有被撤掉。</text>
+
+  <!-- ===== Lane 3: cleaned ===== -->
+  <text x="40" y="476" class="lane" fill="#2dd4bf">③ 规则被撤掉（重新连上后正常关闭，或手动删除）：回落到普通 DNS 直连</text>
+  <rect x="40" y="496" width="170" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="125" y="524" text-anchor="middle" class="node">应用查 DNS</text>
+  <text x="125" y="545" text-anchor="middle" class="sub">同一个域名</text>
+  <rect x="260" y="496" width="200" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="360" y="524" text-anchor="middle" class="node">默认 resolver</text>
+  <text x="360" y="545" text-anchor="middle" class="sub">公司或公网 DNS</text>
+  <rect x="510" y="496" width="190" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="605" y="524" text-anchor="middle" class="node">跟完 CNAME 链</text>
+  <text x="605" y="545" text-anchor="middle" class="sub">返回公网 IP</text>
+  <rect x="750" y="496" width="410" height="64" rx="10" fill="#2dd4bf"/>
+  <text x="955" y="524" text-anchor="middle" class="node">直连 Azure 区域端点</text>
+  <text x="955" y="545" text-anchor="middle" class="sub">公网资源可用；只开 private endpoint 的资源不可达</text>
+  <path d="M210,528 L256,528" class="ok" marker-end="url(#aT)"/>
+  <path d="M460,528 L506,528" class="ok" marker-end="url(#aT)"/>
+  <path d="M700,528 L746,528" class="ok" marker-end="url(#aT)"/>
+  <circle r="5" fill="#ccfbf1"><animateMotion dur="2s" repeatCount="indefinite" path="M125,528 L955,528"/></circle>
+
+  <!-- ===== Footer: why parent suffix ===== -->
+  <rect x="40" y="602" width="1120" height="128" rx="12" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+  <text x="64" y="634" class="lane" fill="#e2e8f0">为什么规则里既有 privatelink.openai.azure.com，又有父域名 openai.azure.com</text>
+  <text x="64" y="664" class="note">本机解析器只是 stub，递归 DNS 会自己把 xxx.openai.azure.com → xxx.privatelink.openai.azure.com 这条 CNAME 链跟完，</text>
+  <text x="64" y="688" class="note">只把最终结果交回来，本机没有机会再查一次 privatelink。要让私网地址生效，必须从入口的父域名开始就交给 connector 解析，</text>
+  <text x="64" y="712" class="note">代价是同一后缀下的公网资源也被一并截获：通道一断，这一整类服务同时解析失败。</text>
+</svg>
