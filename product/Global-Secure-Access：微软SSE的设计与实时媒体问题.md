@@ -9,12 +9,12 @@ tags:
   - networking
   - webrtc
   - udp
-description: 介绍 Microsoft Global Secure Access（Entra Internet Access 与 Private Access）这款 SSE 产品——定位、四个流量转发 profile 及评估顺序、与 Conditional Access 的集成、Windows 与 macOS 客户端截获流量的不同方式（LWF 驱动与透明应用代理）、DNS 接管与合成 IP、回落与源 IP。再以一个数字人 WebRTC 无画无声的案例，说明它在 UDP 尤其是"一个端口对多个对端"的实时媒体流量上的问题——macOS 客户端把每个本地 UDP 端口钉死在首个对端，ICE 的直连与 relay 同时失效；分析这更像 UDP 代理的实现局限而非刻意的安全策略，列出会受影响的协议与应用，给出面向 IT 的部署建议和面向应用开发者的应对。
+description: 介绍 Microsoft Global Secure Access（Entra Internet Access 与 Private Access）这款 SSE 产品——定位、四个流量转发 profile 及评估顺序、与 Conditional Access 的集成、Windows 与 macOS 客户端截获流量的不同方式（LWF 驱动与透明应用代理）、DNS 接管与合成 IP、回落与源 IP。再以一个数字人 WebRTC 无画无声的案例，说明它在 UDP 尤其是"一个端口对多个对端"的实时媒体流量上的问题——macOS 客户端把每个本地 UDP 端口钉死在首个对端，ICE 的直连与 relay 同时失效；分析这更像 UDP 代理的实现局限而非刻意的安全策略，列出会受影响的协议与应用，给出面向 IT 的部署建议和面向应用开发者的应对。第二个案例是 Azure OpenAI 等一整类 Azure 服务同时报网络错误——macOS 客户端把 Private Access 的 DNS 后缀写成 /etc/resolver 文件、指向扩展内的虚拟 DNS，Private 通道断开而规则没撤时，命中后缀的域名全部解析超时；说明后缀清单为什么要连父域名一起截、恢复与手动清理方法，并实测经 Private 通道访问公网 Azure OpenAI 每个新连接多约 1.1 至 1.3 秒，主要花在 TLS 握手上。
 ---
 
 # Global Secure Access：微软 SSE 的设计与实时媒体问题
 
-> 本文分两部分：前半部分介绍 Global Secure Access（下称 GSA）的产品设计，以官方文档为准；后半部分是一次实际排查中遇到的 UDP 实时媒体问题，以及由此延伸的分析和部署建议。排查细节见 [Voice Live 系列 17：Global Secure Access 下数字人的网络问题解析](../Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md)。
+> 本文分两部分：前半部分介绍 Global Secure Access（下称 GSA）的产品设计，以官方文档为准；后半部分是实际排查中遇到的两个问题，一是 UDP 实时媒体（第五至七节），二是 Private Access 的 DNS 规则残留与性能开销（第八节），以及由此延伸的分析和部署建议。排查细节见 [Voice Live 系列 17：Global Secure Access 下数字人的网络问题解析](../Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md)。
 >
 > 标注约定：**（文档）** 来自 Microsoft Learn；**（实测）** 在开启 GSA 的 macOS 设备上复现过；**（推断）** 由现象推出，未证实。
 
@@ -68,6 +68,7 @@ macOS 的透明应用代理是苹果 Network Extension 框架提供的能力：�
 - macOS 客户端会**绕过系统的安全 DNS**（DoH、DoT），以便按 FQDN 执行转发策略；Windows 和移动端则要求用户关闭安全 DNS（文档）。
 - 命中规则的域名，客户端返回一个**合成 IP**（实测是 `6.6.0.0/16` 段），发往这个地址的流量再被引入隧道。这个机制第三方分析里有详细描述（[Tunnel Vision: Breaking Microsoft Global Secure Access](https://ar0x.com/posts/what-is-gsa)）。
 - 在一个开启了 Internet Access 全量接管的租户下，实测**所有测试过的域名**都被解析成了合成 IP，包括 `example.com`。
+- macOS 上 Private Access 的 DNS 后缀，是以 `/etc/resolver/<后缀>` 文件的形式写进系统的，每个文件把一个后缀指向扩展内的虚拟 DNS `6.6.255.254`（实测）。这批文件在通道异常时可能残留，见第八节。
 
 ### 3.3 其他值得知道的行为（文档）
 
@@ -213,21 +214,132 @@ ICE 规范（[RFC 8445](https://www.rfc-editor.org/rfc/rfc8445)）要求，连�
 
 值得用来交叉验证的一点：**Teams 客户端的媒体也走 ICE。** 如果同一台设备上 Teams 通话正常，很可能是 Microsoft profile 对 Teams 媒体做了专门处理或者绕过。这也说明，"实时媒体绕过"本来就是预期的部署方式。
 
-## 八、给 IT 的部署建议
+## 八、案例二：一整类 Azure 服务同时报网络错误
+
+第一个案例是 UDP 的转发层出了问题；这个案例是 TCP 也躲不开的 **DNS 层**，在同一台 macOS 设备上遇到。
+
+### 8.1 现象
+
+Azure AI Foundry 门户能打开，但 Playground 一发消息就报网络错误；同一个 Azure OpenAI 资源用 SDK、curl 调用也一样失败。资源本身开着公网访问，没有配 IP 防火墙。
+
+### 8.2 定位：dig 能解析，系统解析器超时（实测）
+
+| 检查 | 结果 |
+|---|---|
+| `dig` 直接问公司 DNS | 秒回，解析出资源的公网 IP |
+| `curl` 访问资源端点 | `Resolving timed out`，卡在 DNS 这一步 |
+| `dscacheutil -q host -a name <端点>` | 挂满 60 秒才返回 |
+| 不在 GSA 后缀里的域名（如 `ai.azure.com`、`github.com`） | 正常 |
+| `curl --resolve` 跳过 DNS，直接指定公网 IP 调用模型 | HTTP 200，模型正常回复 |
+
+服务是好的，坏在本机的系统解析器。`dig` 和 `curl` 的分歧点在于：`dig` 直接问指定的 DNS 服务器，`curl` 走系统解析器，而系统解析器会先按域名后缀匹配 **scoped resolver**。`scutil --dns` 里能看到几十条这样的 resolver，`openai.azure.com`、`cognitiveservices.azure.com` 都在其中，全部指向 `6.6.255.254`。直接 `dig @6.6.255.254` 得到的是 `no servers could be reached`，本机也找不到任何 `6.6.x.x` 的接口。
+
+这些 resolver 来自 `/etc/resolver/` 目录：GSA 客户端为每个 Private Access 的 DNS 后缀写了一个文件，本例共 82 个，内容只有两行：
+
+```text
+domain openai.azure.com
+nameserver 6.6.255.254
+```
+
+`6.6.255.254` 是扩展内的虚拟 DNS。Private 通道正常时，扩展截获发往它的查询，经通道交给 connector 解析；**通道断了，规则文件却还在磁盘上**，命中这些后缀的查询就发给一个没人应答的地址，直到超时。
+
+![GSA Private Access 的 DNS 接管：三种状态下的解析路径|900](../asset/gsa-private-dns-resolver-2026-10-21.svg)
+
+### 8.3 后缀清单：为什么连父域名也要截
+
+后缀清单是管理员在 Private Access 里配置的"私有 DNS 后缀"（文档称 Private DNS），客户端照单写入。本例的清单里有三类：
+
+| 类别 | 例子 | 作用 |
+|---|---|---|
+| Azure Private Endpoint 的标准 DNS zone | `privatelink.openai.azure.com`、`privatelink.blob.core.windows.net`、`privatelink.vaultcore.azure.net` | 访问只开了 private endpoint 的 Azure 资源 |
+| 这些服务的父域名 | `openai.azure.com`、`cognitiveservices.azure.com`、`search.windows.net`、`azurewebsites.net` | 让上一类真正生效，见下文 |
+| 企业内网域名 | 内部 AD 域、内部系统的域名 | 传统 VPN 原来覆盖的那部分 |
+
+private endpoint 的解析过程是：`xxx.openai.azure.com` CNAME 到 `xxx.privatelink.openai.azure.com`，在链接了 Private DNS Zone 的 VNet 里解析成 `10.x` 私网地址，在公网上则解析成公网地址或解析不到。笔记本在 VNet 外，只能把查询交给 VNet 里的 connector 去解析。
+
+**只截 `privatelink.*` 不够**：本机解析器只是 stub，查询交给递归 DNS 后，递归 DNS 会自己把整条 CNAME 链跟完，只把最终结果交回来，本机没有机会再查一次 `privatelink` 那个名字。所以必须从入口的父域名开始就交给 connector。
+
+代价是：客户端无法事先区分某个 `xxx.openai.azure.com` 是私有资源还是公网资源，**同一后缀下的公网资源也一并被截获**。通道一断，Azure OpenAI、AI Services、Search、App Service 等一整类服务会同时解析失败，不管资源本身是不是公网的。
+
+### 8.4 恢复与手动清理（实测）
+
+| 操作 | `/etc/resolver` 规则 | 结果 |
+|---|---|---|
+| 通道已断开时点 Disable | 仍然在 | 继续超时；tunnel 停了，DNS 规则留着 |
+| 重启客户端，等各通道变为 Connected | 重新写入 | 恢复，端点解析为合成地址 `6.6.x.x` |
+| 各通道 Connected 时点 Disable | 全部清除 | 回落到普通 DNS，公网资源直连可用 |
+
+正常关闭时客户端会撤掉这批文件，通道异常时没有撤，可能是客户端处在异常状态、没走完清理流程（推断，未复现）。
+
+所以排查顺序是：**先重启客户端，看 Private 通道能不能变绿**。变绿了问题就没了；一直不绿又急着用公网资源，可以手动清理。注意只删内容指向 `6.6.255.254` 的文件，删前先备份：
+
+```bash
+sudo cp -Rp /etc/resolver ~/resolver-backup-$(date +%Y%m%d-%H%M)
+grep -l '6\.6\.255\.254' /etc/resolver/*                     # 先看会删哪些
+sudo grep -l '6\.6\.255\.254' /etc/resolver/* | sudo xargs rm -f
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+scutil --dns | grep -c 6.6.255.254                          # 应为 0
+```
+
+几点说明：
+- 这些是磁盘上的配置文件，不是缓存，**只刷新 DNS 缓存清不掉**。
+- 只在通道断开时清理。通道正常时删掉，私有资源会立刻不可达，要等客户端下次连接才会写回。
+- `*.edgediagnostic.globalsecureaccess.microsoft.com` 这几个文件不指向 `6.6.255.254`，是客户端自己做健康检查用的，上面的命令不会动它们。
+
+### 8.5 性能：经 Private 通道访问公网 Azure OpenAI 的开销（实测）
+
+通道恢复后，对同一个日本东部的 Azure OpenAI 资源做了对比，每种方式 10 次，每次都新建连接：一个不经过模型的轻量接口（列 models），以及一次短的 chat 调用；服务端耗时取自响应里的延迟字段，用来扣掉模型自身的时间。
+
+先要说明一点：**`--resolve` 指定公网 IP 也没有绕开 GSA。** 客户端日志显示，发往这个公网 IP 的连接同样进了 Private 通道：
+
+```text
+Destination IP/Port: 20.191.x.x/443  FQDN: N/A  Channel name: Private
+Destination IP/Port: 6.6.x.x/443     FQDN: <端点>  Channel name: Private
+```
+
+也就是说，Private Access 除了按 DNS 后缀截获，**还按 IP 段截获**，跳过 DNS 只绕开了 DNS 这一层。要拿到真正的直连基线，只能在各通道正常的状态下点 Disable 再测，这时规则会被清除（8.4）。
+
+Chat 调用（中位数 / P90，单位 ms）：
+
+| 阶段 | 经 GSA，按域名进 | 经 GSA，按 IP 进 | 直连（GSA 已关） |
+|---|---|---|---|
+| DNS | 5 / **1305** | 0（已指定 IP） | 6 / 8 |
+| TCP | 85 / 87 | 84 / 86 | 43 / 44 |
+| TLS | **1020 / 1100** | **861 / 866** | 108 / 119 |
+| 首字节 | 1778 / 2349 | 1753 / 2413 | 1449 / 1776 |
+| 服务端耗时 | 982 | 1096 | 1057 |
+| 首字节减服务端耗时 | 808 | 682 | 365 |
+| **总计** | **2950 / 4052** | **2692 / 3365** | **1623 / 1938** |
+
+轻量接口的总计：经 GSA 1513 至 1766 ms，直连 423 至 453 ms。
+
+读法：
+1. **模型没有变慢。** 三种方式的服务端耗时都在 1.0 至 1.1 秒，差距全部来自网络。
+2. **每个新连接多约 1.1 至 1.3 秒，大头在 TLS 握手**，从约 110 ms 涨到 860 至 1020 ms；请求往返也多了约 300 至 440 ms。
+3. **按域名进入时，DNS 有约 1.3 秒的固定抖动**：10 次里有 3 次落在 1301 至 1344 ms，其余只有个位数毫秒。数值高度集中，更像一次超时后重试，而不是随机的网络波动（推断）。P90 主要是被它拉高的。
+4. **TCP 只多约 40 ms，TLS 却多了约 750 ms**，说明 TCP 握手在离本机较近的边缘就完成了，而 TLS 和数据要沿边缘、connector、Azure 区域这条长路径走完；按 TLS 和请求往返多出的时间折算，经通道的一个完整往返约 400 ms，而直连约 44 ms，流量很可能被绕到了离资源很远的地方（推断，要看资源诊断日志里的来源 IP 才能确认）。
+5. **对应用的影响**：SDK 一般复用连接，DNS 和 TLS 只在建连时付一次，但每个请求仍多约 300 至 400 ms 的往返。对流式输出、实时语音这类看首字节的场景影响明显；而对公网资源来说，这部分开销换不来任何访问能力。
+
+样本各 10 次，适合判断量级，具体数字会有波动。
+
+## 九、给 IT 的部署建议
 
 1. **实时媒体不经过 GSA 扩展。** 按 Microsoft 365 网络原则，延迟敏感的实时媒体应绕过代理和 VPN；对第三方实时媒体也一样。要注意：客户端日志显示，GSA 策略里判为 bypass 的 UDP 流，仍然由扩展自己建 socket、connect 到首个目标后发出（5.5 节），照样会钉死。所以只在转发 profile 里配 bypass，不一定能解决一对多 UDP 的问题。这类应用要么完全不被扩展截获，要么等 GSA 修复按五元组区分 UDP 流；在此之前，应用侧准备 TCP 降级是最稳的。需要排除的目标示例：ACS/Teams 中继（`relay.communication.microsoft.com`、`*.relay.skype.com`、`20.202.0.0/16` 的 UDP 3478 到 3481），以及相应媒体服务器的地址段。另外要检查 Private Access 规则有没有意外覆盖这些中继域名，本例中继就是被 Private 通道接管的。
 2. **全量接管 Internet Access 之前，先列出 UDP 依赖。** 既然 Internet Access 不支持 UDP，任何依赖 UDP 的业务都要先确认路径，否则就会落进第四节说的"半接管"灰色地带。
 3. **保留用户的 Pause/Disable 按钮，或者提供明确的申请流程。** 遇到这类问题，用户需要一个临时的退路；暂停的理由本来就会被记录。
 4. **出问题时这样收集证据**：先在 Troubleshooting 页点 Get Policy 确认策略是最新的；用 Advanced Diagnostics 的 Traffic 页确认相关流的 Channel；再用 Export Logs 或 Collect Logs（开启 verbose 和网络抓包）导出日志、`systemextensionsctl list` 确认扩展状态、`scutil --dns` 看 resolver、用"同一个 socket 多目标"脚本复现（[系列 17](../Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md) 3.3 节），一起提交给微软支持。
+5. **Private Access 的 DNS 后缀尽量收窄。** 把 `openai.azure.com`、`cognitiveservices.azure.com` 这类父域名整段写进后缀，会把员工自己订阅下的公网资源也截进通道：多付约 1 秒的建连开销（8.5），通道一断还会整类解析失败（8.2）。能按资源写到具体主机名的，就不要写整个后缀。另外，最好开放用户单独关闭 Private Access 的权限，或者给出明确的申请流程。
 
-## 九、给应用开发者的建议
+## 十、给应用开发者的建议
 
 1. **不要假设企业网络下 UDP 语义完整。** SSE、DLP 这类客户端越来越普遍，UDP 能通不等于 WebRTC 能连。
 2. **准备一条只走 TCP 的降级路径。** 比如媒体改走 WebSocket 下发、TURN over TLS 443，或者纯音频走 WebSocket。降级的判断条件要明确：ICE 在几秒内没有进入 `connected`，或者候选对持续收不到回复。
 3. **把诊断做进产品。** 检测到"连通检查一直没有回复"时，直接提示"网络安全客户端可能阻止了音视频连接"，而不是让用户对着转圈等 40 秒。
 4. **排查时别被"每目标一个 socket"的测试骗了。** 系统层测试全通、浏览器里却连不上，就要怀疑端口语义被改了。
+5. **"一整类 Azure 服务同时报网络错误"先查 DNS。** 拿 `dig` 和 `dscacheutil` 做对照：前者通、后者超时，就看 `scutil --dns` 和 `/etc/resolver/` 里有没有指向 `6.6.255.254` 的规则，再看 GSA 的 Private 通道是不是绿的（8.2）。
+6. **测延迟时注意路径。** 开着 GSA 测出的建连时间可能比直连多出约 1 秒，而且 `--resolve` 指定 IP 也绕不开（8.5）。做性能基线前，先确认流量走的是哪条路径。
 
-## 十、待验与开放问题
+## 十一、待验与开放问题
 
 - [ ] Windows 客户端（LWF 驱动）是否有同样的端口钉死行为。
 - [ ] 钉死是否有空闲超时，超时后能否重新绑定到新的对端。
@@ -235,6 +347,9 @@ ICE 规范（[RFC 8445](https://www.rfc-editor.org/rfc/rfc8445)）要求，连�
 - [x] 中继 UDP 命中的通道与钉死的实现方式：客户端日志已证实（5.5 节，Private 通道、per-flow connect 到首个目标）。
 - [ ] "回包来源是真实 IP"那种表现与 bypass 流的对应关系，需要在复现时同步抓客户端日志。
 - [ ] 把这个行为反馈给 GSA 团队，确认是不是已知问题、有没有修复计划。
+- [ ] Private 通道断开时客户端为什么不撤掉 `/etc/resolver` 规则，能否稳定复现（8.4）。
+- [ ] 经 Private 通道访问公网 Azure 资源时的出口位置：在资源的诊断日志里看 `callerIpAddress`，验证 8.5 的绕路推断。
+- [ ] 按域名进入时约 1.3 秒的 DNS 抖动来自哪里，是不是 AAAA 查询超时（8.5）。
 
 ## 参考
 
