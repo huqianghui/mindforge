@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 580" width="1140" height="580" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="aR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .flow { stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -18; } }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+      .node { fill: #0f172a; stroke: #2dd4bf; stroke-width: 2; }
+      .lbl { fill: #e2e8f0; font-size: 15px; text-anchor: middle; }
+      .sub { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .note { font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect width="1140" height="580" fill="#020617"/>
+  <text x="570" y="36" fill="#f1f5f9" font-size="18" font-weight="600" text-anchor="middle">RSI 的两层循环：固定机制下的自我改进（L3）与改进机制本身的递归（L4）</text>
+
+  <!-- L5 planned box -->
+  <rect x="40" y="80" width="330" height="76" rx="10" fill="#0b1220" stroke="#334155" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="205" y="112" class="lbl" fill="#94a3b8" style="fill:#94a3b8">L5：改进能力跨领域迁移</text>
+  <text x="205" y="136" class="sub">换任务分布、换环境后仍然有效</text>
+  <line x1="370" y1="118" x2="478" y2="118" stroke="#334155" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#aG)"/>
+
+  <!-- Improvement mechanism I_t -->
+  <g class="pulse">
+    <rect x="480" y="72" width="390" height="92" rx="10" fill="#1c1406" stroke="#fbbf24" stroke-width="2.5"/>
+    <text x="675" y="104" class="lbl" style="fill:#fde68a">改进机制 I_t</text>
+    <text x="675" y="128" class="sub" style="fill:#fcd34d">诊断提示词 · 候选生成策略 · 接受规则</text>
+    <text x="675" y="149" class="sub" style="fill:#fcd34d">L3 中由人写死，L4 中由系统自己改写</text>
+  </g>
+  <!-- governs C and D -->
+  <line x1="590" y1="164" x2="590" y2="262" stroke="#fbbf24" stroke-width="1.6" stroke-dasharray="3 4"/>
+  <line x1="800" y1="164" x2="800" y2="262" stroke="#fbbf24" stroke-width="1.6" stroke-dasharray="3 4"/>
+  <text x="695" y="222" class="note" fill="#fcd34d" text-anchor="middle">支配下面两步</text>
+
+  <!-- Meta comparison box -->
+  <rect x="930" y="72" width="180" height="92" rx="10" fill="#1c1406" stroke="#fbbf24" stroke-width="2"/>
+  <text x="1020" y="102" class="lbl" style="fill:#fde68a">比较后继系统</text>
+  <text x="1020" y="126" class="sub" style="fill:#fcd34d">同起点 · 同预算</text>
+  <text x="1020" y="147" class="sub" style="fill:#fcd34d">独立任务上谁更好</text>
+  <path d="M930,118 L872,118" stroke="#fbbf24" stroke-width="2.5" fill="none" class="flow" marker-end="url(#aA)"/>
+  <text x="901" y="58" class="note" fill="#fbbf24" text-anchor="middle">I_t → I_t+1</text>
+
+  <!-- inner loop nodes -->
+  <rect x="40" y="264" width="170" height="72" rx="10" class="node"/>
+  <text x="125" y="296" class="lbl">执行任务</text>
+  <text x="125" y="318" class="sub">当前系统 S_t</text>
+
+  <rect x="260" y="264" width="180" height="72" rx="10" class="node"/>
+  <text x="350" y="296" class="lbl">收集轨迹</text>
+  <text x="350" y="318" class="sub">与真实结果</text>
+
+  <rect x="500" y="264" width="180" height="72" rx="10" class="node"/>
+  <text x="590" y="296" class="lbl">诊断</text>
+  <text x="590" y="318" class="sub">提出候选修改</text>
+
+  <rect x="710" y="264" width="180" height="72" rx="10" class="node"/>
+  <text x="800" y="296" class="lbl">执行候选并验证</text>
+  <text x="800" y="318" class="sub">验证集 · 重复运行</text>
+
+  <polygon points="1020,250 1090,300 1020,350 950,300" fill="#0f172a" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="1020" y="305" class="lbl">接受？</text>
+
+  <!-- forward arrows -->
+  <path d="M210,300 L258,300" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <path d="M440,300 L498,300" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <path d="M680,300 L708,300" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+  <path d="M890,300 L948,300" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#aT)"/>
+
+  <!-- meta feed: from decision up to compare box -->
+  <path d="M1020,250 L1020,166" stroke="#fbbf24" stroke-width="2" class="flow" marker-end="url(#aA)"/>
+  <text x="1030" y="214" class="note" fill="#fbbf24">累积的</text>
+  <text x="1030" y="232" class="note" fill="#fbbf24">改进结果</text>
+
+  <!-- reject path back to diagnose -->
+  <path d="M1000,336 L1000,400 L590,400 L590,338" stroke="#f87171" stroke-width="2.2" fill="none" class="flow" marker-end="url(#aR)"/>
+  <text x="795" y="390" class="note" fill="#fca5a5" text-anchor="middle">拒绝 → 保存失败证据，作为下一轮诊断的负面经验</text>
+
+  <!-- accept path back to execute -->
+  <path d="M1040,336 L1040,460 L125,460 L125,338" stroke="#2dd4bf" stroke-width="2.5" fill="none" class="flow" marker-end="url(#aT)"/>
+  <text x="580" y="450" class="note" fill="#5eead4" text-anchor="middle">接受 → 保存新版本 S_t+1（skill · prompt · 工具 · 权重），下一轮继承</text>
+
+  <!-- particles -->
+  <circle r="5" fill="#5eead4">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M125,300 L1020,300 L1040,336 L1040,460 L125,460 L125,338"/>
+  </circle>
+  <circle r="5" fill="#fde68a">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M1020,250 L1020,118 L872,118"/>
+  </circle>
+
+  <!-- legend -->
+  <line x1="60" y1="530" x2="110" y2="530" stroke="#2dd4bf" stroke-width="3" class="flow"/>
+  <text x="120" y="535" class="note" fill="#cbd5e1">L3 固定机制的自我改进循环</text>
+  <rect x="360" y="521" width="44" height="18" rx="4" fill="#1c1406" stroke="#fbbf24" stroke-width="2" class="pulse"/>
+  <text x="414" y="535" class="note" fill="#cbd5e1">L4 改写改进机制（有界领域内）</text>
+  <line x1="680" y1="530" x2="730" y2="530" stroke="#334155" stroke-width="3" stroke-dasharray="6 5"/>
+  <text x="740" y="535" class="note" fill="#cbd5e1">L5 跨领域通用（尚无可信实证）</text>
+</svg>

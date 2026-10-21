@@ -161,6 +161,10 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - [SkillOpt 系列 03：提示词调优实战](Notes/AI/SkillOpt/SkillOpt系列03：提示词调优实战.md)
 - [SkillOpt 系列 04：APO 与 SkillOpt 联合展望](Notes/AI/SkillOpt/SkillOpt系列04：APO与SkillOpt联合展望.md)
 
+### Notes/AI/Recursive-Self-Improvement
+
+- [RSI 系列 00：递归自我改进总览](Notes/AI/Recursive-Self-Improvement/RSI系列00：递归自我改进总览.md)
+
 ### Notes/AI/Loop-Engineering
 
 - [Loop Engineering 概念澄清](Notes/AI/Loop-Engineering/Loop-Engineering概念澄清.md)
