@@ -1,7 +1,7 @@
 ---
 title: "AG-UI 协议：Agent 三大协议的最后一环"
 created: "2026-08-04"
-updated: "2026-08-04"
+updated: "2026-10-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,8 @@ related:
   - "[[mcp-vs-cli]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[voice-live-agent]]"
+  - "[[a2a-protocol]]"
+  - "[[a2ui-protocol]]"
 ---
 
 # AG-UI 协议：Agent 三大协议的最后一环
@@ -65,17 +67,31 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 > Foundry 文档把 AG-UI 与 voice、webhook 并列为 "custom protocols"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。
 
+### Claim: 第四块拼图是 A2UI——A2UI 描述"画什么"，AG-UI 处理"怎么交互"并承载 A2UI 载荷；动态 UI 场景 AG-UI + A2UI 先行，跨系统调独立 Agent 再引入 A2A
+
+- **来源**：[[A2UI协议解析]]、[[企业级A2A方案：从微服务治理到Agent互操作层]]
+- **首次出现**：2026-10-20
+- **最近更新**：2026-10-24
+- **置信度**：0.7
+- **状态**：active
+
+> 发起方不同：A2A 与 A2UI 由 Google 发起，AG-UI 由 CopilotKit 发起（已集成 LangGraph、CrewAI、Microsoft Agent Framework、Google ADK）。组合示例：React 前端经 AG-UI 与主 Agent 交互，主 Agent 经 A2A 委派独立财务 Agent、经 MCP 访问企业 API，再生成 A2UI 描述交给前端 Renderer。CopilotKit 会自动把 A2UI 消息转成 AG-UI 事件；但"装了 AG-UI ≠ 有 A2UI Renderer"。两个边界：AG-UI 的 Tool Call 事件只是把调用过程展示给前端，≠ MCP，前端不应因收到 `TOOL_CALL_START` 就自己执行工具；AG-UI 的应用状态 ≠ A2UI 的 Data Model，不要默认完全同步。本页摘要里的"三大协议"由此扩为四协议。
+
 ## 冲突与演进
 
 - 2026-08-04：建页。单来源专文但内容完整（定位/分层/生态），且用户明确"为后续 AG-UI 开发做准备"——工程准备型页面。置信度 0.7~0.75（基于官方文档 + ChatGPT 讨论整理，未经自建项目验证）。
 - 2026-09-12：evolve-wiki 例行复核——"Voice Agent 本质也是一种 UI"Claim 直接引用 Foundry 官方文档原话，按官方文档置信度下限规则 0.7→0.8。
+- 2026-10-24：A2A 与 A2UI 独立建页，补"第四块拼图"Claim 与两条 `contrasts` 关联（A2UI 承载关系、AG-UI ≠ MCP、应用状态 ≠ Data Model 两个边界）。
 
 ## 关联概念
 
 - [[azure-copilot-ecosystem]] — `part-of` AG-UI 是 Foundry "custom protocols" 之一，Microsoft Agent Framework 已支持
 - [[mcp-vs-cli]] — `contrasts` MCP 解决 Agent 向下的工具集成，AG-UI 解决向上的 UI 集成——同为协议路线但方向相反
 - [[voice-live-agent]] — `extends` Voice UI 的事件需求（barge-in、partial transcript）可纳入 AG-UI 事件流，为语音层提供协议化出口
+- [[a2ui-protocol]] — `contrasts` AG-UI 管 Agent 与前端的事件交互，A2UI 管界面的声明式描述；AG-UI 是 A2UI 最常见的承载通道
+- [[a2a-protocol]] — `contrasts` AG-UI 向上连前端，A2A 横向连其他 Agent
 
 ## 来源日记
 
 - [[AG-UI协议解析]] — 三大协议定位、三层设计、生态缺口、Foundry 关系（2026-07-30）
+- [[A2UI协议解析]] — A2UI vs AG-UI 边界、AG-UI 事件分类、三协议发起方与组合（2026-10-20）
