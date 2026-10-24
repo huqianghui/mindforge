@@ -1,7 +1,7 @@
 ---
 title: "数据飞轮（Data Flywheel）"
 created: "2026-09-28"
-updated: "2026-09-28"
+updated: "2026-10-24"
 tags:
   - wiki
   - concept
@@ -15,7 +15,7 @@ aliases:
   - "飞轮效应"
 related:
   - "[[cost-per-task]]"
-  - "[[continual-self-improving-ai]]"
+  - "[[recursive-self-improvement]]"
   - "[[prompt-optimization-maturity-ladder]]"
   - "[[reinforcement-learning]]"
   - "[[bitter-lesson]]"
@@ -27,7 +27,7 @@ related:
 
 ## 摘要
 
-数据飞轮的经典画法是一个圈：使用产生数据，数据改进模型，模型改进带来更多使用。它回答的是**"为什么会越转越快"**——经济学与组织层面的描述，主语是产品或公司，默认人在环里（标注、评估、决定投资），积累的是数据与资本，时间常数以季度计。与它形状相同但主语不同的是 RSI（递归自我改进，见 [[continual-self-improving-ai]]）：回答"谁在推轮子、能不能把人拿掉"，主语是一个 agent 系统。一句话骨架："**数据飞轮是 RSI 的宏观影子，RSI 是数据飞轮去掉人之后的样子**"。
+数据飞轮的经典画法是一个圈：使用产生数据，数据改进模型，模型改进带来更多使用。它回答的是**"为什么会越转越快"**——经济学与组织层面的描述，主语是产品或公司，默认人在环里（标注、评估、决定投资），积累的是数据与资本，时间常数以季度计。与它形状相同但主语不同的是 RSI（递归自我改进，见 [[recursive-self-improvement]]）：回答"谁在推轮子、能不能把人拿掉"，主语是一个 agent 系统。一句话骨架："**数据飞轮是 RSI 的宏观影子，RSI 是数据飞轮去掉人之后的样子**"。
 
 本页把两者放回同一张图：**三层嵌套循环**——外圈经济飞轮（OpenAI《Building abundant intelligence》：成本下降→更多工作值得开展→采用带来收入与反馈→再投资）、中圈工程数据飞轮（使用洞见/遥测 → 评估 → 优化 → 部署，人还在环中，优化手段沿 [[prompt-optimization-maturity-ladder]] L0→L2 升级）、内圈 RSI（中圈的自动化版本，agent 对自身历史 replay 与策略选择）。三层之所以能嵌套不脱节，是因为 [[cost-per-task]] 在每层都能读：外圈读作单位经济学、中圈读作评估目标（reward = 成功率 / 成本）、内圈读作 RSI 的优化对象。而三层循环全部运行在"任务已选定"的前提下——金字塔底层 doing the right task 的杠杆大于飞轮与 RSI 本身。
 
@@ -87,12 +87,13 @@ related:
 
 - 2026-09-28：建页。前身是 2026-09-20 harvest 裁决"不建页"（通用商业术语 + 引用均在具身系列内部，L2→L4 飞轮裂缝素材归 [[world-model]] 与 [[reinforcement-learning]]），复核阈值"非具身系列独立深入引用"被 FinOps 系列 02 整篇专论命中，解除 HOLD 建页。具身域"L2→L4 数据飞轮裂缝"（L2 数据学的是 human driving distribution 而非"我该怎么开"，须插入 World Model+Simulation+RL 环节）已作 Claim 收入 [[reinforcement-learning]]，本页不重复，视为本页"飞轮不能纠正任务/分布选错"论断在自驾域的先例。
 - RSI 本身不独立建页（维持 2026-09-23 裁决），作 [[continual-self-improving-ai]] 的别名与 Claims；本页只收"飞轮 vs RSI"的对照关系与三层循环框架。
+- 2026-10-24：RSI 已独立建页 [[recursive-self-improvement]]（解除上条裁决），本页 RSI 指向与 `contrasts` 关联改到新页。
 - 待深入（系列 02 自列）：中圈到内圈的迁移阈值（L1→L2 有 30~50/100+ 条数据阈值，L2→RSI 是否有类似阈值或取决于 replay coverage）；人从环里退出的顺序（标注/评估/决策三角色哪个先退）；RSI 在 coding agent 之外右栏任务的 replay 可用性；三层之间的预算传递。
 
 ## 关联概念
 
 - [[cost-per-task]] — `uses` 任务完成花费是贯穿三层循环的同一把刻度（单位经济学 / 评估目标 / RSI 优化对象），也是迁栏阈值的来源
-- [[continual-self-improving-ai]] — `contrasts` RSI 是飞轮去掉人之后的样子：同一循环形状，主语从产品/公司换成 agent 系统，积累从数据资本换成能力本身，时间常数差两到三个量级
+- [[recursive-self-improvement]] — `contrasts` RSI 是飞轮去掉人之后的样子：同一循环形状，主语从产品/公司换成 agent 系统，积累从数据资本换成能力本身，时间常数差两到三个量级
 - [[reinforcement-learning]] — `uses` 内圈 RSI 几乎只能建立在 RLVR 式可验证信号之上；RLHF 式主观分对应左栏、在离线回放中无法重新获得
 - [[bitter-lesson]] — `extends` 金字塔 doing the right task 把 Bitter Lesson 再推一层：飞轮与 RSI 都不能纠正任务选错
 - [[skillopt]] — `uses` `best_skill.md` 是 RSI 积累"能力本身"这类资产的具体形态；bad-case mining 是中圈到内圈的同一循环

@@ -1,7 +1,7 @@
 ---
 title: "Continually Self-Improving AI"
 created: "2026-04-13"
-updated: "2026-09-28"
+updated: "2026-10-24"
 tags:
   - wiki
   - concept
@@ -15,9 +15,6 @@ aliases:
   - "持续自我改进 AI"
   - "EntiGraph"
   - "SBP"
-  - "RSI"
-  - "Recursive Self-Improvement"
-  - "递归自我改进"
 related:
   - "[[advantage-function]]"
   - "[[bitter-lesson]]"
@@ -103,31 +100,12 @@ related:
 
 > 非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责"现在就变聪明"，后台负责"慢慢真变强"，这是对"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）"这个根问题的工程回答：两者兼得。
 
-### Claim: RSI 不必动权重——三层学习位置 × 三层搜索位置的正交坐标，Dream-RSI 是"在搜索的第三层上做学习的第三层"
-
-- **来源**：[[2026-09-22-Dream-RSI]]
-- **首次出现**：2026-09-22
-- **最近更新**：2026-09-25
-- **置信度**：0.6
-- **状态**：active
-
-> 递归自我改进（RSI）的成立条件被放宽：不必动权重、甚至不训任何网络——**能改自己的探索策略代码、且能可靠评价改动**即成立。三层学习位置：Model 权重（fine-tuning）/ Skill 技能（SkillOpt）/ Search 搜索策略（Dream-RSI）；三层搜索位置：训练时 RL 真搜索 ✅ / 推理时单轨 CoT 非搜索（是摊销搜索——AlphaZero 类比：训练时 MCTS 搜、推理时策略网络一次前向是摊销产物；软回溯 vs 硬回溯、错误 token 留在 context 继续污染条件分布）/ 推理时外层显式编排 ✅（best-of-N→ToT→Dream-RSI）。这个正交坐标把本页既有的 CL-RL 四篇全景与 LifeSkill hybrid 架构放进更大定位图：技能层用完即消失的问题、参数化路径的成本，都是"学习位置"选择的后果。（论文初读，置信度留低）
-
-### Claim: RSI = Recursive Self-Improvement（用改进后的能力再改进自己），不是 recurrent 也不指"递归超级智能"；它是数据飞轮去掉人之后的样子，进内圈的判据是"写得出验证器"
-
-- **来源**：[[FinOps系列02：数据飞轮与RSI]]
-- **首次出现**：2026-09-25
-- **最近更新**：2026-09-28
-- **置信度**：0.7
-- **状态**：active
-
-> 术语澄清："recursively self-improving superintelligence"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮"轻"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以"哪些任务能进内圈"= "哪些任务写得出验证器"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。
-
 ## 冲突与演进
 
 - 2026-07-07：从 JitRL / LifeSkill 两篇论文解读补充 CL-RL 四篇全景（一刀切在改不改参数）、skill 内化（用完即消失）、hybrid 最优架构三条 Claim，把本页从 EntiGraph/SBP（离线合成语料）延伸到部署后持续学习的 test-time 前沿。
 - 2026-09-06：镜像冗余边清理——删除本页指向 [[reinforcement-learning]] 的 `uses` 行（对方页已声明 `extends`，有向关系单侧保留）。
 - 2026-09-28：注入 FinOps 系列 02 Claim——RSI 术语澄清 + 与数据飞轮三维对照 + "进内圈判据=写得出验证器"；RSI 作本页别名收入（维持 09-23 不独立建页裁决），[[data-flywheel]] 建页后本页承接"内圈"一侧。
+- 2026-10-24：[[recursive-self-improvement]] 独立建页（解除 RSI 别名 HOLD）。RSI / Recursive Self-Improvement / 递归自我改进三个别名移出；两条 RSI Claim（Dream-RSI 三层正交坐标、FinOps 02 术语澄清与飞轮对照）原样迁到新页。本页回到持续学习主题（EntiGraph/SBP、CL-RL 四篇、skill 内化、hybrid 架构）。
 
 ## 关联概念
 
@@ -139,4 +117,4 @@ related:
 ## 来源日记
 
 - [[2026-03-22-Continually-Self-Improving-AI]] — 论文精读
-- [[FinOps系列02：数据飞轮与RSI]] — RSI 定义与术语边界、飞轮 vs RSI 三维、内圈 = 中圈自动化版本、进内圈判据（2026-09-26）
+- [[FinOps系列02：数据飞轮与RSI]] — RSI 定义与术语边界、飞轮 vs RSI 三维、内圈 = 中圈自动化版本、进内圈判据（2026-09-26；相关 Claim 已于 2026-10-24 迁至 [[recursive-self-improvement]]）
