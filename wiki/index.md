@@ -88,6 +88,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[requisite-variety]] — 必要多样性定律：V_Regulator ≥ V_Disturbance，Harness 与 FDE 的存在条件
 - [[bitter-lesson]] — The Bitter Lesson：计算胜过人类知识的 70 年规律
 - [[continual-self-improving-ai]] — 持续自我改进 AI：EntiGraph、SBP
+- [[recursive-self-improvement]] — 递归自我改进（RSI）：S_t=(M,H,D,T)+改进机制 I_t，三种"变好"、两套五级分级、APO/SkillOpt/RRSI 多属 L3、五个验证问题
 - [[hermes-agent]] — Hermes Agent：自我改进 Agent 框架（Skill 自动生成 + Curator 生命周期管理）
 - [[agent-zero]] — Agent Zero：极端自主 Agent 框架，从反面论证 Harness 必要性
 - [[ai-skill-formation]] — AI 对技能形成的影响：放大器而非均衡器
@@ -147,6 +148,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[agent-search-tools]] — AI Agent 搜索三剑客：Exa / Tavily / Context7
 - [[opencli]] — OpenCLI：CLI 的 OpenAPI 标准化接口描述
 - [[ag-ui-protocol]] — AG-UI：Agent 三大协议的最后一环（MCP 向下、A2A 横向、AG-UI 向上连 UI）
+- [[a2a-protocol]] — A2A 协议：Agent 互操作层，补语义层（Agent Card / Task 生命周期 / Part·Artifact）复用微服务治理，0.3→1.0 破坏性改名，无统一 Registry API
+- [[a2ui-protocol]] — A2UI 协议：传界面描述而非界面代码，Surface / Catalog / Data Model，Renderer 是协议运行时，展示 ≠ 授权
 
 ### 语音与实时交互
 
@@ -188,6 +191,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[azure-copilot-ecosystem]] — Azure Copilot 生态：Agents、Skills、MCP Server
 - [[rag-architecture-comparison]] — RAG 架构对比：个人级 qmd vs 企业级 Foundry IQ
 - [[entra-agent-id]] — Entra Agent ID：Blueprint 管认证、Agent Identity 管授权与审计的 1:N 双层身份模型
+- [[global-secure-access]] — Global Secure Access（微软 SSE）：TCP 中心的 Web 网关、UDP 端口钉死、Private Access 的 /etc/resolver 规则残留与父域名截获、经通道每个新连接多约 1 秒
 
 ### 数据本体论（Ontology）
 

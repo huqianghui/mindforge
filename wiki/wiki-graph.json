@@ -1,13 +1,170 @@
 {
-  "generated_at": "2026-10-20",
+  "generated_at": "2026-10-24",
   "stats": {
-    "nodes": 143,
-    "links": 496,
+    "nodes": 147,
+    "links": 516,
     "orphan_links_removed": 2,
-    "claims": 781,
+    "claims": 806,
     "categories": 13
   },
   "nodes": [
+    {
+      "id": "a2a-protocol",
+      "type": "concept",
+      "title": "A2A Protocol",
+      "summary": "A2A（Agent2Agent）是 **Agent ↔ Agent** 方向的开放协议：一个独立的 Agent（内部框架、模型、工具都不暴露，opaque）通过 Agent Card 声明能力，调用方用 Message 提交工作、以 Task 跟踪生命周期、以 Artifact 拿回产物。Google 于 2025 年 4 月发布，同年 6 月捐赠给 Linux Foundation，现归属 Agentic AI Foundation（与 MCP 同一基金会）。在 Agent 协议栈里，MCP 向下连工具与数据、AG-UI 向上连前端、A2A 横向连其他 Agent；A2A 与 MCP 可以嵌套（被委派的 Agent 内部再用 MCP 调工具）。\n\nA2A 和微服务治理要解决的问题高度同构（发现、契约、调用、认证、追踪），所以企业里它**不是一套平行的新基础设施**，而是叠在注册中心、网关、IAM、OpenTelemetry 之上的 **Agent 互操作层**。它真正新增的是 Agent 语义的标准化——能力描述、带中断态的任务生命周期、多模态内容——而不是传输能力。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "protocol",
+        "microservices"
+      ],
+      "category": "Context 与工具集成",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 8,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "A2A 补的是语义层，协议层与治理层复用微服务——它是互操作层而非新基础设施",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三层看：协议层（怎么传消息、管任务）、语义层（消息/任务/模态/能力各代表什么）、治理层（认证、授权、路由、追踪、审计）。传统微服务在协议层和治理层都成熟，A2A 主要补语义层：不发明传输（JSON-RPC / gRPC / HTTP+JSON 三种绑定），`securitySchemes` 只声明认证要求、不颁发也不验证 Token。微服务\"表达不好\"的不是 Message、Task 这些概念本身——长任务大家都能做——而是 `INPUT_REQUIRED` / `AUTH_REQUIRED` 这种\"等对方\"的中间态每个团队各自定义、互不相通。A2A 的价值在于让跨团队、跨框架、跨厂商的 Agent 不必各自发明一套。"
+        },
+        {
+          "statement": "Agent Card 描述\"能做什么\"而非\"有哪些 endpoint\"——Skill 不是函数签名，Well-Known URI 不是发现算法",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Skill 只声明\"我能做竞争分析\"，不规定 `analyze(a, b)` 参数，调用方仍发 Message、输入由 Agent 自己理解；Skill 供其他 Agent **选择**，而不只是调用——这是它与 OpenAPI operation 不等价的地方。`/.well-known/agent-card.json` 只是约定入口，调用方仍须先知道域名，企业规模下靠 Registry/Catalog（规范把 Well-Known、Registry、预配置地址并列为三种发现方式）。认证后才给的信息放 Extended Agent Card。依据为 1.0 官方规范。"
+        },
+        {
+          "statement": "Task 的意义是生命周期与发起它的 HTTP 请求解耦——三个 ID 不能混，`GetTask` 是权威状态来源",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "JSON-RPC `id` 标识一次调用，`task.id` 标识一个工作单元，`contextId` 串起同一段协作的多轮消息与多个任务。八个状态里两个中断态（`INPUT_REQUIRED` / `AUTH_REQUIRED`）是 REST 最难自然表达的：任务没失败，只是在等对方，带同一 `taskId` + `contextId` 再发 `SendMessage` 即续上。取结果有轮询 / 流式（SSE，推的是任务状态与产物更新，≠ 模型 token 流）/ 推送三种；推送只做提醒，回调端点必须白名单（否则即 SSRF），权威状态仍以 `GetTask` + 持久化 Task 记录为准。Message 管交流、Task 管工作、Artifact 是产出（可同时给人看的文本和给下游 Agent 的结构化数据）。"
+        },
+        {
+          "statement": "A2A Task 不是工作流引擎，Agent Registry 不是服务实例发现——两组最容易混的边界",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "A2A 定义 Task 状态模型，但不负责持久化执行：Agent 崩溃后状态是否落库、能否恢复、哪些步骤可安全重试、副作用如何防重复，要由 Agent Runtime + Task Store + Temporal / Durable Functions / Camunda 解决——A2A 管交互契约，工作流引擎管持久化执行与恢复。同理，Registry 管能力与契约（一个 Agent 一张 Card），实例发现管运行实例与网络地址（一个 Agent 背后多个实例）。可观测性上也是两个时钟：Trace/Span 表达每次调用，Task ID 关联可能持续数分钟的生命周期，不能把整个 Task 当一个同步 Span。"
+        },
+        {
+          "statement": "协议层已成型、中间件层还在拼装——官方无统一 Registry API，企业应自定义一层薄 Registry 抽象防锁定",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "规范（1.0）、六种语言官方 SDK、Inspector 与 TCK 已就绪；Registry 方面 Nacos 3.1+ 原生支持 A2A Agent Card（检索仍以名称匹配为主，按 Skill 标签检索在规划中），Consul / Eureka 需挂元数据或在其上建 Catalog；Gateway 基本是\"现有网关 + A2A 适配\"（SSE 长连接、`A2A-Version` / `tenant` / `traceparent` 透传、Task ID 入日志），\"能代理 HTTP ≠ 支持 A2A\"。因为没有标准 Registry API，即使都\"支持 A2A\"不同产品也不能互换，建议自定义 `registerAgent / searchAgents / resolveEndpoint` 等企业接口，具体实现关进适配器。"
+        },
+        {
+          "statement": "读旧资料必看 0.3→1.0 的破坏性改名——0.3 客户端解析不了 1.0 的 Agent Card",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "方法名 `message/send` → `SendMessage` 等；去掉 `kind` 改按 JSON 成员名区分；三种 Part 统一为 `text` / `data` / `url` / `raw` 四选一；枚举改为 `TASK_STATE_*` / `ROLE_*`；顶层 `url` 搬进有序列表 `supportedInterfaces[]`（每项自带 binding 与 `protocolVersion`，这也是向后兼容方案：同时暴露 1.0 与 0.3 两个 interface）；新增原生 `tenant`、Agent Card JWS 签名、Device Code 与 PKCE，移除 implicit / password 流。部分托管平台仍只支持 0.3 方法名，选型时须逐个确认对端版本。"
+        },
+        {
+          "statement": "跨 Agent 调用至少三种身份——不得把用户 Token 原样转给下一个 Agent，发现能力与授权能力必须分开",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "用户、调用方 Agent 的工作负载身份、实际访问后端的执行身份要分别授权；代表用户时用 OAuth 2.0 Token Exchange 拿受众收窄的新 Token，工具调用前在策略执行层重新授权——\"prompt 里写了不要访问其他部门数据\"不是安全边界。Catalog 检索坚持\"注册中心检索 + 权限过滤 + 语义匹配\"，不把几百张 Card 丢给 LLM 自由挑：技术上最合适的 Agent 不代表调用方有权使用。准入门禁三者分开验收：协议兼容（TCK）≠ 安全合规 ≠ 业务质量。"
+        },
+        {
+          "statement": "值不值得上 A2A 看能否降低跨 Agent 集成与治理成本——同团队、共享状态、延迟敏感的步骤留在框架内编排",
+          "source": "企业级A2A方案：从微服务治理到Agent互操作层",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "调模型 API 不需要；一个 Agent 调 CRM/数据库优先 MCP 或普通 API；少量 Agent、同一团队维护未必需要；多个独立 Agent 跨团队、跨框架、跨厂商协作才值得。A2A 的前提是\"对方是一个独立的 Agent\"，为了用协议而拆多 Agent 只会多出延迟、成本、故障点。A2UI 一文给出同样的顺序：前端动态 UI 是同一应用内部问题，AG-UI + A2UI 先行，需要跨系统调用独立 Agent 时再引入 A2A。"
+        }
+      ]
+    },
+    {
+      "id": "a2ui-protocol",
+      "type": "concept",
+      "title": "A2UI Protocol",
+      "summary": "A2UI（Agent-to-User Interface，Google 发起）让 Agent 用**声明式 JSON 描述界面**，由客户端只用自己注册过的组件渲染，不执行任何来自 Agent 的代码。它介于\"前端写死页面\"和\"LLM 直接生成 HTML/JS\"之间——**Agent 决定需要什么界面，客户端决定哪些界面可以被安全地渲染和操作**。四个核心概念：Surface（一块独立管理的 UI 区域）、Component（扁平列表 + id 引用的组件树）、Catalog（客户端允许 Agent 使用的组件契约）、Data Model（与结构分离、按路径绑定的数据），外加 Renderer 回传给 Agent 的 Action。\n\n在四协议拼图中：A2UI 描述界面应该是什么样子，AG-UI 处理 Agent 与用户应用之间的交互（也是 A2UI 消息的主要承载通道），A2A 处理 Agent 之间的协作，MCP 处理 Agent 对工具与数据的调用。生产稳定版为 v0.9.1，v1.0 处于 Candidate。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "protocol",
+        "generative-ui"
+      ],
+      "category": "Context 与工具集成",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "A2UI 传界面描述而非界面代码——UI 灵活性由 Catalog 决定，安全审查重点从生成代码转到组件白名单与操作授权",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三种做法对比：传统前端灵活性取决于预先实现的页面；LLM 生成 HTML/JS 灵活但往往需要执行任意代码、需额外沙箱；A2UI 协议禁止执行任意代码，同一份描述交给各端 Renderer。Action 是\"声明一个操作名 + 上下文\"，组件也只能调用客户端预注册的 `functionCall`，Agent 无法注入新脚本。价值在\"换成按团队聚合\"\"改成折线图\"这类**动态组合 UI** 的场景；永远只有一个固定 Dashboard 的应用，直接写组件最简单。"
+        },
+        {
+          "statement": "结构与数据分离——组件扁平列表 + id 引用便于流式与局部更新，Data Model 改动只发数据不动结构",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "v0.9 消息：`createSurface`（强制 `catalogId`）、`updateComponents`、`updateDataModel`、`deleteSurface`，回传 `action`；v0.8 消息名完全不同（`beginRendering`、`surfaceUpdate`、`userAction`），不同版本示例不能混用。组件以邻接表形式下发，可逐个流式、局部更新而不必重发整棵树；用户输入只改本地 Data Model、不触发网络请求，直到 action 触发时 `context` 按 path 取值发回。Top 10 柱状图案例里\"只看上海团队\"只需再发 `updateDataModel`，图表就地刷新；排序切换这类纯展示交互留在前端，不必绕回 Agent。"
+        },
+        {
+          "statement": "Renderer 是协议运行时而非组件库——有组件库 ≠ 有 A2UI Renderer，协议追求交互语义互操作而非像素一致",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三层逻辑划分：Protocol Runtime（解析、校验、Surface 生命周期、按序增量更新）、Component Adapter（协议组件映射到框架组件、数据绑定、操作转 action）、View Library（企业 Design System 真正绘制）。官方 Web 实现把前两层共性抽成 `@a2ui/web_core`，React / Angular / Lit 复用——协议逻辑共享、UI 适配分开，减少 Renderer 间行为差异。已有 React 组件库的企业：选定协议版本 → 挑适合动态组合的组件定义自有 Catalog → 基于 web_core 写适配 → 建测试。A2UI 不要求重做组件，要求一层能理解协议的 Renderer。"
+        },
+        {
+          "statement": "展示 ≠ 授权——UI 的 Data Model 不是业务数据的权威来源，客户端回传的数据不可信",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "要分清三件事：Agent 能不能展示这个按钮、当前用户能不能看到它、当前用户能不能真正执行操作。点击按钮只证明用户触发了一个 UI 操作，\"按钮不显示\"也不能当授权机制；Data Model 里带回来的客户 ID 后端要重新校验。`sendDataModel` 开启后整个 Surface 数据模型随 action 发给 Agent 及中间编排层，不该让 Agent 看到的数据不要放进去。A2UI 限制了组件与交互能力，但不单独解决 Prompt Injection；Catalog 里若放了 `ExecuteCommand` 这类组件，协议也救不了。"
+        },
+        {
+          "statement": "A2UI 与传输无关，AG-UI 是最常见的承载——装了 AG-UI ≠ 有 A2UI Renderer，反之亦然",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "传输状态：A2A（扩展，稳定）、AG-UI（稳定，CopilotKit 自动把 A2UI 消息转成 AG-UI 事件）、MCP（v1.0 定义了绑定）、REST（规划中）、WebSocket/SSE（提案）。常见误解\"A2UI 只管 Agent→UI、AG-UI 管 UI→Agent\"不准确：A2UI 自己就定义了 action 回传。两个易混边界：AG-UI 的 Tool Call 事件只是把调用过程**展示**给前端，≠ MCP；AG-UI 的应用状态 ≠ A2UI 的 Data Model，不要默认完全同步。类比：A2UI 类似 HTML，Renderer 类似浏览器，AG-UI 是面向 Agent 应用的事件通信协议。"
+        }
+      ]
+    },
     {
       "id": "action-chunking",
       "type": "concept",
@@ -127,8 +284,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.75,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "三大协议分工——MCP 向下连工具、A2A 横向连 Agent、AG-UI 向上连 UI",
@@ -165,6 +322,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。"
+        },
+        {
+          "statement": "第四块拼图是 A2UI——A2UI 描述\"画什么\"，AG-UI 处理\"怎么交互\"并承载 A2UI 载荷；动态 UI 场景 AG-UI + A2UI 先行，跨系统调独立 Agent 再引入 A2A",
+          "source": "A2UI协议解析",
+          "first_seen": "2026-10-20",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "发起方不同：A2A 与 A2UI 由 Google 发起，AG-UI 由 CopilotKit 发起（已集成 LangGraph、CrewAI、Microsoft Agent Framework、Google ADK）。组合示例：React 前端经 AG-UI 与主 Agent 交互，主 Agent 经 A2A 委派独立财务 Agent、经 MCP 访问企业 API，再生成 A2UI 描述交给前端 Renderer。CopilotKit 会自动把 A2UI 消息转成 AG-UI 事件；但\"装了 AG-UI ≠ 有 A2UI Renderer\"。两个边界：AG-UI 的 Tool Call 事件只是把调用过程展示给前端，≠ MCP，前端不应因收到 `TOOL_CALL_START` 就自己执行工具；AG-UI 的应用状态 ≠ A2UI 的 Data Model，不要默认完全同步。本页摘要里的\"三大协议\"由此扩为四协议。"
         }
       ]
     },
@@ -2347,8 +2513,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.77,
+      "claims_count": 7,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "LLM 面临三个根本限制",
@@ -2412,24 +2578,6 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责\"现在就变聪明\"，后台负责\"慢慢真变强\"，这是对\"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）\"这个根问题的工程回答：两者兼得。"
-        },
-        {
-          "statement": "RSI 不必动权重——三层学习位置 × 三层搜索位置的正交坐标，Dream-RSI 是\"在搜索的第三层上做学习的第三层\"",
-          "source": "2026-09-22-Dream-RSI",
-          "first_seen": "2026-09-22",
-          "last_updated": "2026-09-25",
-          "confidence": 0.6,
-          "status": "active",
-          "evidence": "递归自我改进（RSI）的成立条件被放宽：不必动权重、甚至不训任何网络——**能改自己的探索策略代码、且能可靠评价改动**即成立。三层学习位置：Model 权重（fine-tuning）/ Skill 技能（SkillOpt）/ Search 搜索策略（Dream-RSI）；三层搜索位置：训练时 RL 真搜索 ✅ / 推理时单轨 CoT 非搜索（是摊销搜索——AlphaZero 类比：训练时 MCTS 搜、推理时策略网络一次前向是摊销产物；软回溯 vs 硬回溯、错误 token 留在 context 继续污染条件分布）/ 推理时外层显式编排 ✅（best-of-N→ToT→Dream-RSI）。这个正交坐标把本页既有的 CL-RL 四篇全景与 LifeSkill hybrid 架构放进更大定位图：技能层用完即消失的问题、参数化路径的成本，都是\"学习位置\"选择的后果。（论文初读，置信度留低）"
-        },
-        {
-          "statement": "RSI = Recursive Self-Improvement（用改进后的能力再改进自己），不是 recurrent 也不指\"递归超级智能\"；它是数据飞轮去掉人之后的样子，进内圈的判据是\"写得出验证器\"",
-          "source": "FinOps系列02：数据飞轮与RSI",
-          "first_seen": "2026-09-25",
-          "last_updated": "2026-09-28",
-          "confidence": 0.7,
-          "status": "active",
-          "evidence": "术语澄清：\"recursively self-improving superintelligence\"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮\"轻\"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以\"哪些任务能进内圈\"= \"哪些任务写得出验证器\"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。"
         }
       ]
     },
@@ -2633,7 +2781,7 @@
       "id": "data-flywheel",
       "type": "concept",
       "title": "数据飞轮（Data Flywheel）",
-      "summary": "数据飞轮的经典画法是一个圈：使用产生数据，数据改进模型，模型改进带来更多使用。它回答的是**\"为什么会越转越快\"**——经济学与组织层面的描述，主语是产品或公司，默认人在环里（标注、评估、决定投资），积累的是数据与资本，时间常数以季度计。与它形状相同但主语不同的是 RSI（递归自我改进，见 [[continual-self-improving-ai]]）：回答\"谁在推轮子、能不能把人拿掉\"，主语是一个 agent 系统。一句话骨架：\"**数据飞轮是 RSI 的宏观影子，RSI 是数据飞轮去掉人之后的样子**\"。\n\n本页把两者放回同一张图：**三层嵌套循环**——外圈经济飞轮（OpenAI《Building abundant intelligence》：成本下降→更多工作值得开展→采用带来收入与反馈→再投资）、中圈工程数据飞轮（使用洞见/遥测 → 评估 → 优化 → 部署，人还在环中，优化手段沿 [[prompt-optimization-maturity-ladder]] L0→L2 升级）、内圈 RSI（中圈的自动化版本，agent 对自身历史 replay 与策略选择）。三层之所以能嵌套不脱节，是因为 [[cost-per-task]] 在每层都能读：外圈读作单位经济学、中圈读作评估目标（reward = 成功率 / 成本）、内圈读作 RSI 的优化对象。而三层循环全部运行在\"任务已选定\"的前提下——金字塔底层 doing the right task 的杠杆大于飞轮与 RSI 本身。",
+      "summary": "数据飞轮的经典画法是一个圈：使用产生数据，数据改进模型，模型改进带来更多使用。它回答的是**\"为什么会越转越快\"**——经济学与组织层面的描述，主语是产品或公司，默认人在环里（标注、评估、决定投资），积累的是数据与资本，时间常数以季度计。与它形状相同但主语不同的是 RSI（递归自我改进，见 [[recursive-self-improvement]]）：回答\"谁在推轮子、能不能把人拿掉\"，主语是一个 agent 系统。一句话骨架：\"**数据飞轮是 RSI 的宏观影子，RSI 是数据飞轮去掉人之后的样子**\"。\n\n本页把两者放回同一张图：**三层嵌套循环**——外圈经济飞轮（OpenAI《Building abundant intelligence》：成本下降→更多工作值得开展→采用带来收入与反馈→再投资）、中圈工程数据飞轮（使用洞见/遥测 → 评估 → 优化 → 部署，人还在环中，优化手段沿 [[prompt-optimization-maturity-ladder]] L0→L2 升级）、内圈 RSI（中圈的自动化版本，agent 对自身历史 replay 与策略选择）。三层之所以能嵌套不脱节，是因为 [[cost-per-task]] 在每层都能读：外圈读作单位经济学、中圈读作评估目标（reward = 成功率 / 成本）、内圈读作 RSI 的优化对象。而三层循环全部运行在\"任务已选定\"的前提下——金字塔底层 doing the right task 的杠杆大于飞轮与 RSI 本身。",
       "tags": [
         "wiki",
         "concept",
@@ -3642,6 +3790,72 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "弱网自适应端到端验证六轮，前五轮失效原因全在工具：① 假麦克风音频文件路径是占位符，Chromium 静默接受不存在的文件、喂进去的是静音，前两轮什么都没测到；② 指标把静音当损伤（上一条的下游）——面试官沉默是常态，程序一直以为网络很糟、画面不敢开回来；③ 探针脚本在 ES module 环境下取自身路径的写法失效，落盘 JSON 根本没写出去；④ 最贵的一条：**没有钉住被测对象**——默认形象是照片数字人，它在丢包下解码毫无问题，主触发在这个配置下不可能开火，前五轮都在测一个不可能触发的条件，换成 1080p 后一轮定案。真正让局面转向的改动不是任何一个修复，而是**让工具报告它测到了什么**：每个采样窗口落一行 JSON、可听与原始补偿率并排打印、采样器每十个样本吐一次摘要。其他三条方法学：**限速范围要与生产拓扑一致**——第一次跑 office-tight 以下三档六轮全失败是因为限速包含了后端到 Azure 的 TCP，1% 丢包加 80 ms 让 TLS 握手过不去、会话根本没建，而生产上后端在 Azure 内、客户办公网只承载浏览器两条流，修正为视频档位只限 UDP；Chrome DevTools 限速只作用于 HTTP / WS 不影响 WebRTC UDP，必须 OS 层（dnctl + pfctl）。**实测锚点与推导区间分开标**——客户网络 A~E 五级里 A 级是推导值（亚洲机器做不出 150 ms 以下 RTT）、B~E 有实测锚点，\"未测过的不冒充测过\"，并附七项待补台架测试把推导列换成实测。**判断\"有没有声音\"不能用累积计数器**——补偿率回答\"到达的音频有多少是编出来的\"，回答不了\"此刻是否有人在说话\"，后者用瞬时 `audioLevel` 跨底噪判断（静音 0.0000~0.0010 vs 有声 0.09~0.47，两个数量级间隔），`totalSamplesReceived` 或\"`totalAudioEnergy` 有增长\"都会误判。另一条与本页\"数字绑定它的测量对象\"同构：第六节的 31% 是含静音的原始比值，更正后可听补偿率 21.9%，**原文数字保留并加注、不悄悄改**，核心结论另靠三项与静音无关的证据支撑。"
+        }
+      ]
+    },
+    {
+      "id": "global-secure-access",
+      "type": "concept",
+      "title": "Global Secure Access",
+      "summary": "Global Secure Access（GSA）是微软的 SSE（Security Service Edge）方案，在 Microsoft Entra 管理中心统一入口下包含 **Entra Internet Access**（基于身份的 SWG，替代出口代理）与 **Entra Private Access**（ZTNA，替代远程接入 VPN）。与传统 VPN / 出口代理最大的不同是把网络访问策略和身份绑定：每个连接都带着\"谁、什么设备、是否合规、风险多高\"的上下文，可直接写进 Conditional Access（如合规网络检查、通用租户限制）。流量由四个转发 profile 决定是否接管，评估顺序 Microsoft → Private Access → Internet Access，都不匹配则走本地网络。\n\n本页关心的是它作为**端点网络截获层**对应用的影响：macOS 客户端用系统扩展 + 透明应用代理截获流量、接管 DNS 并返回合成 IP。由此引出两类与应用开发直接相关的问题——UDP 一对多的端口语义被改写（WebRTC 直连与 relay 同断），以及 Private Access 的 DNS 后缀规则残留与经通道的建连开销（一整类 Azure 服务同时解析超时、每个新连接多约 1 秒）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "networking",
+        "zero-trust",
+        "sse",
+        "entra"
+      ],
+      "category": "Azure 与云平台",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "GSA 的 Internet Access 本质是以 TCP 为中心的 Web 网关——UDP 支持不完整，实时媒体按设计就不该经过 SSE 隧道",
+          "source": "Global-Secure-Access：微软SSE的设计与实时媒体问题",
+          "first_seen": "2026-10-14",
+          "last_updated": "2026-10-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "官方已知限制：Internet Access \"UDP isn't supported on this platform yet\"；Windows/macOS 上 QUIC 不支持、UDP 80/443 不能隧道；iOS 端\"播放高质量视频偶尔会卡顿\"。Microsoft 365 网络连接原则要求延迟敏感流量（含 Teams 媒体 UDP 3478~3481）绕过代理与 VPN。危险区是**半接管**：Internet Access 全量接管后 DNS 已被接管（实测所有测试域名都解析成 `6.6.0.0/16` 合成 IP），UDP 却处理不好。另两条容易被忽略的行为：IPv6 不进隧道；被隧道流量的源 IP 变成 GSA 边缘节点（STUN 返回的公网地址就是 GSA 出口段）。"
+        },
+        {
+          "statement": "UDP 端口钉死更像透明代理的实现局限而非刻意安全策略——判断受影响面只看\"是否一个本地 UDP 端口对多个对端\"",
+          "source": "Global-Secure-Access：微软SSE的设计与实时媒体问题",
+          "first_seen": "2026-10-14",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "macOS 透明代理按\"一个 socket 一条流\"交给扩展，GSA 扩展为每条流 connect 一个只对首个目标的 socket，数据报自带的目标地址被忽略（客户端日志实测）。三点理由判为实现局限：UDP 正确粒度是五元组而非 socket；刻意的安全措施应丢弃而不是把发给 B 的数据送给 A；文档本身承认 UDP 不完整。受影响：WebRTC 类浏览器应用、依赖 NAT 穿越的 P2P、mesh VPN（被接管时）；不受影响：所有 TCP、一 socket 只对一台服务器的 UDP、基于 HTTP 自适应流的视频点播与直播——所以\"看视频没问题、开视频会议有问题\"。WebRTC 按 RFC 8445 拒收非请求地址的回包，是第一时间暴露问题的那一方；多数 UDP 程序不校验，数据可能被送错对端而未察觉。策略里判为 bypass 的 UDP 流仍由扩展自建 socket 发出、照样钉死，只配 bypass 不一定解决。对 ICE 的具体影响见 [[ice-nat-traversal]]。仅 macOS 客户端一例，Windows（LWF 驱动）未测。"
+        },
+        {
+          "statement": "Private Access 在 macOS 上以 `/etc/resolver` 文件实现 DNS 接管——通道断开而规则未撤时，命中后缀的域名全部解析超时，只刷 DNS 缓存清不掉",
+          "source": "Global-Secure-Access：微软SSE的设计与实时媒体问题",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "客户端为每个 Private DNS 后缀写一个两行文件（`domain <后缀>` + `nameserver 6.6.255.254`），本例 82 个；`6.6.255.254` 是扩展内的虚拟 DNS，通道正常时由扩展截获查询经 connector 解析。现象签名：`dig` 直问公司 DNS 秒回，`curl` 卡在 `Resolving timed out`，`dscacheutil` 挂满 60 秒；不在后缀里的域名正常；`curl --resolve` 指公网 IP 返回 200——服务是好的，坏在系统解析器的 scoped resolver。恢复实测：通道已断时点 Disable 规则仍在、继续超时；重启客户端等通道 Connected 恢复；通道 Connected 时点 Disable 规则全部清除。为什么异常时不撤规则未复现（推断为客户端未走完清理流程）。手动清理只删指向 `6.6.255.254` 的文件且只在通道断开时做。"
+        },
+        {
+          "statement": "只截 `privatelink.*` 后缀不够，必须从父域名开始截——代价是同一后缀下的公网资源也被一并截获",
+          "source": "Global-Secure-Access：微软SSE的设计与实时媒体问题",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Private Endpoint 解析链：`xxx.openai.azure.com` CNAME 到 `xxx.privatelink.openai.azure.com`，在链接了 Private DNS Zone 的 VNet 里解析为私网地址。本机解析器只是 stub，查询交给递归 DNS 后由递归 DNS 跟完整条 CNAME 链只回最终结果，本机没有机会再查一次 `privatelink` 名字，所以入口父域名（`openai.azure.com`、`cognitiveservices.azure.com`、`search.windows.net`、`azurewebsites.net` 等）也要交给 VNet 里的 connector。客户端无法事先区分某个主机是私有还是公网资源，通道一断，Azure OpenAI、AI Services、Search、App Service 一整类服务同时解析失败。部署建议：后缀尽量收窄到具体主机名，开放用户单独关闭 Private Access 的权限或明确的申请流程。"
+        },
+        {
+          "statement": "经 Private 通道访问公网 Azure OpenAI 每个新连接多约 1.1~1.3 秒、大头在 TLS——`--resolve` 指 IP 也绕不开，因为 Private Access 还按 IP 段截获",
+          "source": "Global-Secure-Access：微软SSE的设计与实时媒体问题",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "同一日本东部资源每种方式 10 次、每次新建连接：chat 总计中位数经 GSA 按域名 2950 ms、按 IP 2692 ms、直连 1623 ms；服务端耗时三者都在 1.0~1.1 秒，**模型没有变慢，差距全在网络**。TLS 从约 110 ms 涨到 860~1020 ms，TCP 只多约 40 ms（TCP 握手在近端边缘完成，TLS 与数据沿边缘→connector→Azure 区域长路径走完，折算经通道一个完整往返约 400 ms vs 直连约 44 ms，绕路为推断）；按域名进入时 DNS 有约 1.3 秒的固定抖动（10 次中 3 次，疑似超时重试，推断）。客户端日志显示发往公网 IP 的连接同样进 Private 通道，跳过 DNS 只绕开 DNS 这一层，真正直连基线只能在通道正常时 Disable 再测。SDK 复用连接时建连开销只付一次，但每请求仍多约 300~400 ms 往返，对看首字节的流式输出与实时语音影响明显。样本少，适合判断量级。"
         }
       ]
     },
@@ -6239,6 +6453,99 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "实测：`session.updated` 回显 `ice_servers: null`、`output_protocol: \"websocket\"`；下行事件 `response.video.delta`（`codec: \"h264\"`），delta 是 base64 编码的**分片 MP4**（开头 `ftyp iso5`），可直接拼接；视频 h264 1920×1080 25 fps 约 2.16 Mbps，音频 AAC 16 kHz 单声道约 17 kbps **与视频在同一个 MP4 里**、没有单独的 `response.audio.delta`；拼接后时长与经过时间一致，首个分片在会话建立后约 0.9 秒到达。代价：base64 + JSON 包装让原始约 6.7 MB 变约 8.7 MB（+30%，1080p 线路上约 2.8 Mbps，可配合降分辨率/码率）；TCP 丢包有队头阻塞，没有 WebRTC 的抖动缓冲、NACK、FEC 与发送端码率自适应；播放改用 `MediaSource` + `SourceBuffer` 追加 fMP4，声音也从这一路出来，现有 WebRTC 音轨链路要改。对本页选型框架的意义：WebRTC 的价值（弱网韧性、按实时速度推送）依然成立，所以**默认走 WebRTC、建连失败才降级到 WS 下发**，而不是反过来；\"限 UDP → 只用 WS\"这条条件的适用对象从纯语音扩展到数字人。为什么 WS 在企业安全客户端下不受影响：TCP 一条连接只对一个对端，本来就是一对一，端口语义被改也碰不到它（见 [[ice-nat-traversal]] 的端口钉死 Claim）。"
+        }
+      ]
+    },
+    {
+      "id": "recursive-self-improvement",
+      "type": "concept",
+      "title": "Recursive Self-Improvement",
+      "summary": "RSI 指系统把经验和反馈变成**对自身的持久修改**，并且这些修改会影响**之后的改进怎么产生、怎么评估、怎么被选中**。可以把 agent 写成状态 $S_t = (M_t, H_t, D_t, T_t)$——模型、harness、数据系统、训练系统四个可改进对象——再加一个改进机制 $I_t$：$S_{t+1} = I_t(S_t, \\text{经验与反馈})$。$I_t$ 由人写定、保持不变时，系统是在固定机制里持续优化；只有 $I_t$ 本身被持久修改、且修改后的机制实际支配后续轮次，递归才发生在改进机制上。\n\n由此两条推论：权重更新不是 agent 自我改进的唯一途径（skill、工具、工作流、记忆都能承载学习结果）；权重更新也不自动意味着递归（按人定配方一直训练，改进机制可能从未变化）。读任何 self-improving 工作都先问五件事：改的是什么、凭什么改、改动存在哪里、下一轮继承什么、用什么实验能推翻它的提升主张。",
+      "tags": [
+        "wiki",
+        "concept",
+        "ai-research",
+        "self-improving",
+        "rsi",
+        "agent-harness"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 8,
+      "avg_confidence": 0.69,
+      "claims": [
+        {
+          "statement": "三种\"变好\"要分开——任务内修正、持久状态改进、改进机制本身被改进，只有第三种才是递归",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "数据分析 agent 例：修正 SQL 重跑得到正确报告、经验不进后续运行 = 任务内修正；从多次失败提炼\"关联前先查键唯一性\"写进 skill、下次继续用 = 持久状态改进（权重不变也算持续收益）；优化器发现\"只从失败日志追加规则会越积越冗余\"，把优化策略本身改为比较成败轨迹、每次少改、记录被否决方案，且新策略实际支配后续轮次 = 改进机制递归。The Last AI Built by Humans 区分**结构证据**（机制确实被修改并被下一轮使用）与**效果证据**（修改后的机制在可比预算下产生更强后继系统），两者需分别验证，有前者不等于有后者。"
+        },
+        {
+          "statement": "两套五级分级编号含义不同——阿里综述按\"能否提出/实施/验证/改写机制/跨领域\"，Last AI 按\"接管了生命周期里哪些决策\"",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "阿里 The Path to Recursive Self-Improving Agents：L1 人工改进 → L2 辅助改进（AI 给候选、人验证应用）→ L3 程序化自我改进（机制固定）→ L4 有界递归（限定领域内改写自身机制）→ L5 通用递归（跨领域迁移）；关键区分不在能不能\"建议\"改进，而在能否提出、应用、验证并最终修订改进机制。Last AI Built by Humans 五级：改进执行自主 / 改进策略自主 / 经验获取自主 / 环境适应自主 / 递归元改进。用法：先用第一套定位\"辅助 / 固定循环 / 机制递归\"，再用第二套查系统控制了哪些决策；不因某项目被称 L4 就跳过对其具体循环的分析。两者均为研究框架，非行业标准。"
+        },
+        {
+          "statement": "APO、SkillOpt、RRSI 主体大多落在 L3——改进机制由人设计，方法名带 self-improvement 不能代替\"运行时是否持久修改了改进机制\"的检查",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "三者都在冻结模型之外做文本 / harness 空间优化：APO 优化 prompt（textual gradient + beam search + bandit）；SkillOpt 优化 skill 文档（有预算的增删改 + 验证门控，被否决编辑作负面证据）；Google RRSI 优化更广的 harness（prompt、控制流、工具、记忆、上下文管理），同时约束候选的提出与选择。它们的反思提示词、编辑规则、接受门控都由人设计，按阿里分级属 L3，适合用来学\"如何建立可靠的改进循环\"。作者判断，置信度留中。"
+        },
+        {
+          "statement": "RRSI 把 harness 自我改进的过拟合拆成三种耦合行为，用正则化约束搜索——优化集提升能否带到陌生任务才是核心问题",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三种过拟合：编码 benchmark 特定模式、追逐评估噪声、累积不改善底层机制的复杂度。对应约束：编辑预算随轮次退火、保留搜索历史用于归因与引导探索、筛查 benchmark 特定修改、拒绝被噪声抬高或成本过高的改进、剪掉无贡献组件。论文报告演化集最高 +14.1 分、五个分布外 benchmark 最高 +4.7 分，产出 harness 比无正则演化少用约 30% policy token。演化集与分布外的差距本身就说明\"优化集越来越好\"不等于能力提升。数字来自论文自报，未复现。"
+        },
+        {
+          "statement": "判断 RSI 主张的五个验证问题——反馈真不真、是否偶然高分、验证集是否已参与搜索、收益来自能力还是更多计算、有没有损害旧能力",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "① 报告流畅 ≠ 计算正确，能用对账、测试、约束检查的尽量用；② 随机性会制造\"最佳版本\"，关键比较要重复运行并报波动（即 [[skillopt]] 门控分辨率要算的 σ）；③ 优化器反复依据同一验证集接受修改，该集合就间接参与了搜索，必须留未参与选择的测试集，最好再加分布外任务；④ 多调几次模型、多搜几个候选也能提高成功率，须报告调用数、token、时延与优化阶段总成本；⑤ 修好一个失败场景不代表总体变好，需回归任务。递归层面再加一项：**改进后的优化器与原优化器，在相同起点、相同预算、独立任务上，谁能产生更好的后继系统**——这才是在测\"更善于改进\"，而不是\"某个最终版本分数更高\"。"
+        },
+        {
+          "statement": "价值越来越多来自\"怎样挑选改进\"而非\"怎样生成改进\"——同时设计执行路径与改进路径，先检验外部能力层再决定是否训权重",
+          "source": "RSI系列00：递归自我改进总览",
+          "first_seen": "2026-10-21",
+          "last_updated": "2026-10-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "候选生成越来越便宜之后，决定系统能否真正积累能力的是：如何判断改动值得接受、如何保留负面经验、如何发现瓶颈已从 prompt 转到数据或模型、如何衡量单位预算的提升——RRSI 的正则化与 SkillOpt 的门控都在这一侧下功夫（与 [[generation-evaluation-separation]] 同向）。执行路径交付当前任务，改进路径把轨迹转成经过验证的持久更新；日志只有关联到任务结果、修改版本和成本时才是学习资源，须从一开始做进 trace 结构。失败若来自步骤遗漏、工具理解、上下文组织，先试 skill / harness；信息充分流程合理仍有稳定领域能力缺口，再比较更强模型、微调和蒸馏（与 [[prompt-optimization-maturity-ladder]] L0→L2 同向，是工程顺序建议而非\"外部 skill 必然优于训练\"）。作者有条件的方向判断。"
+        },
+        {
+          "statement": "RSI 不必动权重——三层学习位置 × 三层搜索位置的正交坐标，Dream-RSI 是\"在搜索的第三层上做学习的第三层\"",
+          "source": "2026-09-22-Dream-RSI",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "递归自我改进（RSI）的成立条件被放宽：不必动权重、甚至不训任何网络——**能改自己的探索策略代码、且能可靠评价改动**即成立。三层学习位置：Model 权重（fine-tuning）/ Skill 技能（SkillOpt）/ Search 搜索策略（Dream-RSI）；三层搜索位置：训练时 RL 真搜索 ✅ / 推理时单轨 CoT 非搜索（是摊销搜索——AlphaZero 类比：训练时 MCTS 搜、推理时策略网络一次前向是摊销产物；软回溯 vs 硬回溯、错误 token 留在 context 继续污染条件分布）/ 推理时外层显式编排 ✅（best-of-N→ToT→Dream-RSI）。这个正交坐标把本页既有的 CL-RL 四篇全景与 LifeSkill hybrid 架构放进更大定位图：技能层用完即消失的问题、参数化路径的成本，都是\"学习位置\"选择的后果。（论文初读，置信度留低）"
+        },
+        {
+          "statement": "RSI = Recursive Self-Improvement（用改进后的能力再改进自己），不是 recurrent 也不指\"递归超级智能\"；它是数据飞轮去掉人之后的样子，进内圈的判据是\"写得出验证器\"",
+          "source": "FinOps系列02：数据飞轮与RSI",
+          "first_seen": "2026-09-25",
+          "last_updated": "2026-09-28",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "术语澄清：\"recursively self-improving superintelligence\"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮\"轻\"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以\"哪些任务能进内圈\"= \"哪些任务写得出验证器\"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。"
         }
       ]
     },
@@ -9972,6 +10279,54 @@
   ],
   "links": [
     {
+      "source": "a2a-protocol",
+      "target": "ag-ui-protocol",
+      "relation_type": "contrasts",
+      "description": "同属 Agent 协议栈，A2A 横向连 Agent，AG-UI 向上连前端"
+    },
+    {
+      "source": "a2a-protocol",
+      "target": "mcp-vs-cli",
+      "relation_type": "contrasts",
+      "description": "MCP 管 Agent↔工具，A2A 管 Agent↔Agent；两者可嵌套（被委派的 Agent 内部用 MCP 调工具）"
+    },
+    {
+      "source": "a2a-protocol",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "跨 Agent 调用的工作负载身份与委派链需要独立的 Agent 身份体系承载"
+    },
+    {
+      "source": "a2a-protocol",
+      "target": "orchestrator-pattern-multi-agent",
+      "relation_type": "constrains",
+      "description": "只有跨团队/跨框架的独立 Agent 才值得拆成 A2A 调用，同团队的编排留在框架内"
+    },
+    {
+      "source": "a2a-protocol",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "untyped",
+      "description": ""
+    },
+    {
+      "source": "a2ui-protocol",
+      "target": "ag-ui-protocol",
+      "relation_type": "contrasts",
+      "description": "A2UI 管\"画什么\"（组件、结构、数据绑定），AG-UI 管\"怎么交互\"（运行生命周期、文本流、工具调用、状态同步），并承载 A2UI 载荷"
+    },
+    {
+      "source": "a2ui-protocol",
+      "target": "a2a-protocol",
+      "relation_type": "uses",
+      "description": "A2UI 可经 A2A 扩展传输，让远端 Agent 直接回 UI"
+    },
+    {
+      "source": "a2ui-protocol",
+      "target": "mcp-vs-cli",
+      "relation_type": "contrasts",
+      "description": "MCP 只交付经授权的业务数据、不决定 UI，A2UI 只描述界面、不取数"
+    },
+    {
       "source": "action-chunking",
       "target": "vision-language-action-model",
       "relation_type": "part-of",
@@ -10030,6 +10385,18 @@
       "target": "voice-live-agent",
       "relation_type": "extends",
       "description": "Voice UI 的事件需求（barge-in、partial transcript）可纳入 AG-UI 事件流，为语音层提供协议化出口"
+    },
+    {
+      "source": "ag-ui-protocol",
+      "target": "a2ui-protocol",
+      "relation_type": "contrasts",
+      "description": "AG-UI 管 Agent 与前端的事件交互，A2UI 管界面的声明式描述；AG-UI 是 A2UI 最常见的承载通道"
+    },
+    {
+      "source": "ag-ui-protocol",
+      "target": "a2a-protocol",
+      "relation_type": "contrasts",
+      "description": "AG-UI 向上连前端，A2A 横向连其他 Agent"
     },
     {
       "source": "agent-lightning",
@@ -10759,7 +11126,7 @@
     },
     {
       "source": "data-flywheel",
-      "target": "continual-self-improving-ai",
+      "target": "recursive-self-improvement",
       "relation_type": "contrasts",
       "description": "RSI 是飞轮去掉人之后的样子：同一循环形状，主语从产品/公司换成 agent 系统，积累从数据资本换成能力本身，时间常数差两到三个量级"
     },
@@ -11002,6 +11369,30 @@
       "target": "cost-per-task",
       "relation_type": "grounds",
       "description": "success 字段由接收方判定、验收口径与优化口径分开，是分离原则给 FinOps 度量设计的直接约束"
+    },
+    {
+      "source": "global-secure-access",
+      "target": "ice-nat-traversal",
+      "relation_type": "constrains",
+      "description": "macOS 客户端把 UDP 端口钉死在首个对端，破坏了\"relay 保底\"的隐含前提，直连与 relay 同断"
+    },
+    {
+      "source": "global-secure-access",
+      "target": "realtime-protocol-selection",
+      "relation_type": "constrains",
+      "description": "企业网络下 UDP 语义不完整，迫使实时媒体准备只走 TCP 的降级（WebSocket 下发 / TURN over TLS 443）"
+    },
+    {
+      "source": "global-secure-access",
+      "target": "weak-network-adaptive-degradation",
+      "relation_type": "constrains",
+      "description": "\"端口语义被改写\"是需要单独识别的一级降级触发条件（E′ 级：新会话 WS 下发）"
+    },
+    {
+      "source": "global-secure-access",
+      "target": "voice-live-agent",
+      "relation_type": "constrains",
+      "description": "经 Private 通道每个新连接多约 1 秒、每请求多约 300~400 ms，直接压缩实时语音的首字节预算"
     },
     {
       "source": "global-workspace-llm",
@@ -11668,6 +12059,42 @@
       "target": "voice-live-agent",
       "relation_type": "part-of",
       "description": "协议选型是 Voice Live Agent 架构的基础设施层决策"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "continual-self-improving-ai",
+      "relation_type": "extends",
+      "description": "RSI 在持续学习之上再加一层：被持续改进的不只是模型或 skill，还有改进机制本身"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "skillopt",
+      "relation_type": "uses",
+      "description": "SkillOpt 是 skill 层固定机制自我改进（L3）的代表，其门控与有界步长是改进路径的训练纪律"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "uses",
+      "description": "APO 是 prompt 层固定机制自我改进（L3）的代表"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "data-flywheel",
+      "relation_type": "contrasts",
+      "description": "飞轮默认人在环、积累数据与资本、季度级；RSI 目标人不在环、积累能力本身、小时到天级"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "generation-evaluation-separation",
+      "relation_type": "constrains",
+      "description": "评估门控必须独立于优化目标，否则系统可以通过改变计分方式制造提升"
+    },
+    {
+      "source": "recursive-self-improvement",
+      "target": "harness-engineering",
+      "relation_type": "extends",
+      "description": "把 harness（prompt、skill、工具、流程、记忆）作为可被自动改进的对象 $H$"
     },
     {
       "source": "reinforcement-learning",
@@ -12975,6 +13402,7 @@
         "requisite-variety",
         "bitter-lesson",
         "continual-self-improving-ai",
+        "recursive-self-improvement",
         "hermes-agent",
         "agent-zero",
         "ai-skill-formation",
@@ -13045,7 +13473,9 @@
         "context7",
         "agent-search-tools",
         "opencli",
-        "ag-ui-protocol"
+        "ag-ui-protocol",
+        "a2a-protocol",
+        "a2ui-protocol"
       ]
     },
     {
@@ -13101,7 +13531,8 @@
       "members": [
         "azure-copilot-ecosystem",
         "rag-architecture-comparison",
-        "entra-agent-id"
+        "entra-agent-id",
+        "global-secure-access"
       ]
     },
     {
