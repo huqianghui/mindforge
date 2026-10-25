@@ -83,7 +83,7 @@ Core rules that apply everywhere:
 
 **qmd** is a local hybrid search engine (BM25 + vector + LLM reranking). Collection `mindforge` indexes all `.md` files.
 - Search: `qmd query "search term"` or `qmd search "keyword" -c mindforge`
-- Re-index: `qmd embed`
+- Re-index: `qmd update && qmd embed`（`update` 重新扫描文件，新增/改名的文件才会进索引；只跑 `embed` 不会收录新文件）
 
 ## Knowledge Layer (LLM Wiki)
 
@@ -112,7 +112,7 @@ When adding new knowledge to the vault:
 2. **Create note** — write Markdown with proper frontmatter (`title`, `created`, `tags`)
 3. **Cross-reference** — add cross-links to related articles（进 git 的文章用相对路径 markdown 链接；非 git 内容才用 `[[wikilinks]]`）; check `README.md` for related topics
 4. **Update README** — add article link under the correct section
-5. **Refresh search** — run `qmd embed` to update the search index
+5. **Refresh search** — run `qmd update && qmd embed` to update the search index
 
 ## Operating Principles
 
