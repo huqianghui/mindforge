@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #111c31; stroke: #1e293b; }
+      .lh { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .lt { fill: #94a3b8; font-size: 13.5px; }
+      .axis { stroke: #334155; stroke-width: 2; }
+      .ok { fill: #2dd4bf; }
+      .bad { fill: #f87171; }
+      .lbl { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .note { fill: #cbd5e1; font-size: 13.5px; }
+      .noteAmber { fill: #fde68a; font-size: 13.5px; }
+      .noteRed { fill: #fca5a5; font-size: 13.5px; }
+      .lead { stroke: #64748b; stroke-width: 1; stroke-dasharray: 3 3; }
+      .mailRed { fill: #3b1414; stroke: #f87171; stroke-width: 1.8; }
+      .mailAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .quiet { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .bracket { fill: none; stroke: #fbbf24; stroke-width: 1.8; }
+      .scan { animation: blink 3s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+      @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="600" rx="16"/>
+  <text class="title" x="30" y="44">告警分层：一次超时不该变成两封邮件</text>
+  <text class="sub" x="30" y="72">每个圆点代表一轮 15 秒扫描；同一次短暂超时在旧规则和新规则下的结果不同</text>
+
+  <!-- lane 1 -->
+  <rect class="lane" x="20" y="96" width="1160" height="150" rx="10"/>
+  <text class="lh" x="36" y="128">旧规则</text>
+  <text class="lt" x="36" y="152">无心跳，或任意</text>
+  <text class="lt" x="36" y="172">一次修复失败</text>
+  <line class="axis" x1="220" y1="140" x2="1160" y2="140"/>
+  <g class="scan">
+    <circle class="ok" cx="240" cy="140" r="7"/><circle class="ok" cx="300" cy="140" r="7"/><circle class="ok" cx="360" cy="140" r="7"/>
+    <circle class="ok" cx="420" cy="140" r="7"/><circle class="bad" cx="480" cy="140" r="9"/><circle class="ok" cx="540" cy="140" r="7"/>
+    <circle class="ok" cx="600" cy="140" r="7"/><circle class="ok" cx="660" cy="140" r="7"/><circle class="ok" cx="720" cy="140" r="7"/>
+    <circle class="ok" cx="780" cy="140" r="7"/><circle class="ok" cx="840" cy="140" r="7"/><circle class="ok" cx="900" cy="140" r="7"/>
+    <circle class="ok" cx="960" cy="140" r="7"/><circle class="ok" cx="1020" cy="140" r="7"/><circle class="ok" cx="1080" cy="140" r="7"/>
+  </g>
+  <text class="lbl" x="466" y="122">✗</text>
+  <line class="lead" x1="480" y1="150" x2="480" y2="188"/>
+  <rect class="mailRed" x="420" y="188" width="200" height="44" rx="8"/>
+  <text class="noteRed" x="436" y="215">Fired 邮件（Sev1）</text>
+  <line class="lead" x1="1020" y1="150" x2="1020" y2="188"/>
+  <rect class="mailRed" x="930" y="188" width="200" height="44" rx="8"/>
+  <text class="noteRed" x="946" y="215">Resolved 邮件</text>
+  <text class="lt" x="650" y="215">下一轮已恢复，却仍发两封</text>
+
+  <!-- lane 2 -->
+  <rect class="lane" x="20" y="262" width="1160" height="150" rx="10"/>
+  <text class="lh" x="36" y="294">新规则</text>
+  <text class="lt" x="36" y="318">短暂故障</text>
+  <line class="axis" x1="220" y1="306" x2="1160" y2="306"/>
+  <g class="scan">
+    <circle class="ok" cx="240" cy="306" r="7"/><circle class="ok" cx="300" cy="306" r="7"/><circle class="ok" cx="360" cy="306" r="7"/>
+    <circle class="ok" cx="420" cy="306" r="7"/><circle class="bad" cx="480" cy="306" r="9"/><circle class="ok" cx="540" cy="306" r="7"/>
+    <circle class="ok" cx="600" cy="306" r="7"/><circle class="ok" cx="660" cy="306" r="7"/><circle class="ok" cx="720" cy="306" r="7"/>
+    <circle class="ok" cx="780" cy="306" r="7"/><circle class="ok" cx="840" cy="306" r="7"/><circle class="ok" cx="900" cy="306" r="7"/>
+    <circle class="ok" cx="960" cy="306" r="7"/><circle class="ok" cx="1020" cy="306" r="7"/><circle class="ok" cx="1080" cy="306" r="7"/>
+  </g>
+  <text class="lbl" x="466" y="288">✗</text>
+  <line class="lead" x1="480" y1="316" x2="480" y2="354"/>
+  <rect class="quiet" x="420" y="354" width="400" height="44" rx="8"/>
+  <text class="note" x="436" y="381">请求总共最多尝试 3 次；仍失败只记日志，不发信</text>
+  <text class="lt" x="850" y="381">失败次数不足 3、下一轮已成功</text>
+
+  <!-- lane 3 -->
+  <rect class="lane" x="20" y="428" width="1160" height="150" rx="10"/>
+  <text class="lh" x="36" y="460">新规则</text>
+  <text class="lt" x="36" y="484">持续故障</text>
+  <line class="axis" x1="220" y1="472" x2="1160" y2="472"/>
+  <g class="scan">
+    <circle class="ok" cx="240" cy="472" r="7"/><circle class="ok" cx="300" cy="472" r="7"/><circle class="ok" cx="360" cy="472" r="7"/>
+    <circle class="ok" cx="420" cy="472" r="7"/><circle class="bad" cx="480" cy="472" r="9"/><circle class="bad" cx="540" cy="472" r="9"/>
+    <circle class="bad" cx="600" cy="472" r="9"/><circle class="bad" cx="660" cy="472" r="9"/><circle class="bad" cx="720" cy="472" r="9"/>
+    <circle class="bad" cx="780" cy="472" r="9"/><circle class="bad" cx="840" cy="472" r="9"/><circle class="ok" cx="900" cy="472" r="7"/>
+    <circle class="ok" cx="960" cy="472" r="7"/><circle class="ok" cx="1020" cy="472" r="7"/><circle class="ok" cx="1080" cy="472" r="7"/>
+  </g>
+  <path class="bracket" d="M480,450 L480,442 L720,442 L720,450"/>
+  <text class="noteAmber" x="484" y="434">≥3 次、跨 ≥60 秒、期间无成功扫描</text>
+  <line class="lead" x1="720" y1="482" x2="720" y2="520"/>
+  <rect class="mailAmber" x="600" y="520" width="240" height="44" rx="8"/>
+  <text class="noteAmber" x="616" y="547">Fired 邮件：需要人工介入</text>
+  <line class="lead" x1="900" y1="482" x2="900" y2="520"/>
+  <rect class="quiet" x="870" y="520" width="280" height="44" rx="8"/>
+  <text class="note" x="886" y="547">恢复：Azure 留状态，不发信</text>
+</svg>
