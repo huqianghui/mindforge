@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.6; } }
+    .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; }
+    .halo { animation: pulse 2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1200" height="560" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="558" rx="17" fill="none" stroke="#1e293b"/>
+
+  <text x="40" y="46" font-size="21" font-weight="700" fill="#e2e8f0">从开发到分享：Managed Runtime 的发布链路</text>
+  <text x="1160" y="46" font-size="13" fill="#64748b" text-anchor="end">以 ms CLI 为例；Copilot Studio 把同样的步骤收进界面</text>
+
+  <!-- track -->
+  <path d="M170 165 H1010 Q1110 165 1110 270 Q1110 375 1010 375 H170" fill="none" stroke="#1e293b" stroke-width="7" stroke-linecap="round"/>
+  <path id="track" d="M170 165 H1010 Q1110 165 1110 270 Q1110 375 1010 375 H170" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow"/>
+  <circle r="7" fill="url(#particle)"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#track"/></animateMotion></circle>
+  <circle r="7" fill="url(#particle)"><animateMotion dur="6s" begin="3s" repeatCount="indefinite"><mpath href="#track"/></animateMotion></circle>
+
+  <!-- row 1 -->
+  <g>
+    <rect x="70" y="122" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="170" y="155" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">① 本地开发</text>
+    <text x="170" y="180" font-size="13" fill="#5eead4" text-anchor="middle">ms app dev</text>
+    <text x="170" y="236" font-size="13" fill="#94a3b8" text-anchor="middle">只在工作区，无平台调用</text>
+  </g>
+  <g>
+    <rect x="350" y="122" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="450" y="155" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">② 提交推送</text>
+    <text x="450" y="180" font-size="13" fill="#5eead4" text-anchor="middle">git push</text>
+    <text x="450" y="236" font-size="13" fill="#94a3b8" text-anchor="middle">推送本身不触发构建</text>
+  </g>
+  <g>
+    <rect x="630" y="122" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="730" y="155" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">③ 平台构建</text>
+    <text x="730" y="180" font-size="13" fill="#5eead4" text-anchor="middle">ms app build</text>
+    <text x="730" y="236" font-size="13" fill="#94a3b8" text-anchor="middle">构建命令要包含数据生成</text>
+  </g>
+  <g>
+    <rect x="910" y="122" width="200" height="86" rx="12" fill="#422006" stroke="#fbbf24" stroke-width="2"/>
+    <rect x="910" y="122" width="200" height="86" rx="12" fill="none" stroke="#fbbf24" stroke-width="8" class="halo"/>
+    <text x="1010" y="155" font-size="15" font-weight="700" fill="#fde68a" text-anchor="middle">④ Preview</text>
+    <text x="1010" y="180" font-size="13" fill="#fcd34d" text-anchor="middle">preview URL</text>
+    <text x="1010" y="236" font-size="13" fill="#fbbf24" text-anchor="middle">仅仓库有写权限者可见</text>
+  </g>
+
+  <!-- row 2 (right to left) -->
+  <g>
+    <rect x="910" y="332" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="1010" y="365" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">⑤ 上线</text>
+    <text x="1010" y="390" font-size="13" fill="#5eead4" text-anchor="middle">ms app deploy</text>
+    <text x="1010" y="446" font-size="13" fill="#94a3b8" text-anchor="middle">把成功的构建提升为 Live</text>
+  </g>
+  <g>
+    <rect x="630" y="332" width="200" height="86" rx="12" fill="#422006" stroke="#fbbf24" stroke-width="2"/>
+    <rect x="630" y="332" width="200" height="86" rx="12" fill="none" stroke="#fbbf24" stroke-width="8" class="halo"/>
+    <text x="730" y="365" font-size="15" font-weight="700" fill="#fde68a" text-anchor="middle">⑥ Live</text>
+    <text x="730" y="390" font-size="13" fill="#fcd34d" text-anchor="middle">live URL</text>
+    <text x="730" y="446" font-size="13" fill="#fbbf24" text-anchor="middle">固定快照，再 deploy 才更新</text>
+  </g>
+  <g>
+    <rect x="350" y="332" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="450" y="365" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">⑦ 分享</text>
+    <text x="450" y="390" font-size="13" fill="#5eead4" text-anchor="middle">ms app share</text>
+    <text x="450" y="446" font-size="13" fill="#94a3b8" text-anchor="middle">用户 / 组 · play 或 edit</text>
+  </g>
+  <g>
+    <rect x="70" y="332" width="200" height="86" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="170" y="365" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">⑧ 使用</text>
+    <text x="170" y="390" font-size="13" fill="#5eead4" text-anchor="middle">Entra 登录后打开</text>
+    <text x="170" y="446" font-size="13" fill="#94a3b8" text-anchor="middle">需对应许可，受租户策略约束</text>
+  </g>
+
+  <!-- footer notes -->
+  <line x1="40" y1="482" x2="1160" y2="482" stroke="#1e293b"/>
+  <text x="40" y="510" font-size="13" fill="#94a3b8">代码仓库：平台托管 Git 仓库，或 GitHub Enterprise Cloud 组织仓库；个人账号仓库、GitHub Enterprise Server、Azure DevOps 不支持绑定。</text>
+  <text x="40" y="534" font-size="13" fill="#94a3b8">琥珀色 = 两个 URL：Preview 不能随意分享，对最终用户分享的是 Live URL。</text>
+</svg>

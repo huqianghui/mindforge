@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <style>
+    @keyframes flowDash { to { stroke-dashoffset: -76; } }
+    @keyframes pulse { 0%,100% { opacity: 0.15; } 50% { opacity: 0.55; } }
+    .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; }
+    .halo { animation: pulse 2.2s ease-in-out infinite; }
+  </style>
+
+  <rect width="1200" height="700" rx="18" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1198" height="698" rx="17" fill="none" stroke="#1e293b"/>
+
+  <text x="40" y="46" font-size="21" font-weight="700" fill="#e2e8f0">Copilot Managed Runtime 分层结构</text>
+  <text x="1160" y="46" font-size="13" fill="#64748b" text-anchor="end">多个创作入口 → 同一种 SPA 产物 → 同一个托管宿主</text>
+
+  <!-- layer labels -->
+  <text x="40" y="84" font-size="13" fill="#64748b">① 创作入口</text>
+  <text x="40" y="234" font-size="13" fill="#64748b">② 产物</text>
+  <text x="40" y="344" font-size="13" fill="#64748b">③ 托管宿主（平台负责）</text>
+  <text x="40" y="534" font-size="13" fill="#64748b">④ 访问与数据</text>
+
+  <!-- ① authoring entries -->
+  <rect x="60" y="96" width="250" height="84" rx="12" fill="#422006" stroke="#fbbf24" stroke-width="2"/>
+  <rect x="60" y="96" width="250" height="84" rx="12" fill="none" stroke="#fbbf24" stroke-width="8" class="halo"/>
+  <text x="185" y="130" font-size="16" font-weight="700" fill="#fde68a" text-anchor="middle">Copilot Studio</text>
+  <text x="185" y="156" font-size="13" fill="#fcd34d" text-anchor="middle">Create apps · 自然语言或已有数据</text>
+
+  <rect x="340" y="96" width="250" height="84" rx="12" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+  <text x="465" y="130" font-size="16" font-weight="700" fill="#cbd5e1" text-anchor="middle">Copilot Cowork</text>
+  <text x="465" y="156" font-size="13" fill="#94a3b8" text-anchor="middle">在对话中让 coding agent 生成</text>
+
+  <rect x="620" y="96" width="250" height="84" rx="12" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+  <text x="745" y="130" font-size="16" font-weight="700" fill="#cbd5e1" text-anchor="middle">Copilot Code</text>
+  <text x="745" y="156" font-size="13" fill="#94a3b8" text-anchor="middle">云端编码会话</text>
+
+  <rect x="900" y="96" width="250" height="84" rx="12" fill="#111827" stroke="#334155" stroke-width="1.5"/>
+  <text x="1025" y="130" font-size="16" font-weight="700" fill="#cbd5e1" text-anchor="middle">ms CLI + SDK</text>
+  <text x="1025" y="156" font-size="13" fill="#94a3b8" text-anchor="middle">专业开发者 · 任意 IDE</text>
+
+  <!-- converge to artifact -->
+  <path id="p1" d="M185 180 L185 200 Q185 212 197 212 L590 212 Q600 212 600 222 L600 244" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrow)"/>
+  <path d="M465 180 L465 212" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow"/>
+  <path d="M745 180 L745 212" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow"/>
+  <path d="M1025 180 L1025 200 Q1025 212 1013 212 L610 212" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow"/>
+  <circle r="6" fill="url(#particle)"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+
+  <!-- ② artifact -->
+  <rect x="240" y="248" width="720" height="70" rx="12" fill="#042f2e" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="600" y="278" font-size="16" font-weight="700" fill="#99f6e4" text-anchor="middle">TypeScript / JavaScript 单页应用（SPA）的静态构建产物</text>
+  <text x="600" y="302" font-size="13" fill="#5eead4" text-anchor="middle">JS / CSS / 静态 JSON + 应用配置 + 由 Connector 生成的 models 与 services</text>
+
+  <path id="p2" d="M600 318 L600 352" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrow)"/>
+  <circle r="6" fill="url(#particle)"><animateMotion dur="1.2s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+
+  <!-- ③ host -->
+  <rect x="60" y="356" width="1090" height="140" rx="14" fill="#0b1f33" stroke="#38bdf8" stroke-width="2"/>
+  <text x="84" y="386" font-size="17" font-weight="700" fill="#bae6fd">Copilot Managed Runtime host</text>
+  <text x="1126" y="386" font-size="13" fill="#7dd3fc" text-anchor="end">应用作者不配置 DNS、证书、网络与扩缩容</text>
+
+  <rect x="84" y="404" width="190" height="70" rx="10" fill="#0f2a44" stroke="#0ea5e9"/>
+  <text x="179" y="434" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">Entra 身份</text>
+  <text x="179" y="456" font-size="13" fill="#7dd3fc" text-anchor="middle">登录与授权</text>
+
+  <rect x="290" y="404" width="190" height="70" rx="10" fill="#0f2a44" stroke="#0ea5e9"/>
+  <text x="385" y="434" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">Conditional Access</text>
+  <text x="385" y="456" font-size="13" fill="#7dd3fc" text-anchor="middle">沿用租户策略</text>
+
+  <rect x="496" y="404" width="190" height="70" rx="10" fill="#0f2a44" stroke="#0ea5e9"/>
+  <text x="591" y="434" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">DLP / ACP</text>
+  <text x="591" y="456" font-size="13" fill="#7dd3fc" text-anchor="middle">管控可用的 Connector</text>
+
+  <rect x="702" y="404" width="210" height="70" rx="10" fill="#0f2a44" stroke="#0ea5e9"/>
+  <text x="807" y="434" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">分享</text>
+  <text x="807" y="456" font-size="13" fill="#7dd3fc" text-anchor="middle">play / edit / 组织范围链接</text>
+
+  <rect x="928" y="404" width="198" height="70" rx="10" fill="#0f2a44" stroke="#0ea5e9"/>
+  <text x="1027" y="434" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">Admin center</text>
+  <text x="1027" y="456" font-size="13" fill="#7dd3fc" text-anchor="middle">应用清单、健康、使用</text>
+
+  <!-- ④ access & data -->
+  <path id="p3" d="M240 496 L240 542" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrow)"/>
+  <path id="p4" d="M640 496 L640 542" fill="none" stroke="#2dd4bf" stroke-width="2.5" class="flow" marker-end="url(#arrow)"/>
+  <path d="M1000 496 L1000 542" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrowGray)"/>
+  <circle r="6" fill="url(#particle)"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+  <circle r="6" fill="url(#particle)"><animateMotion dur="1.4s" begin="0.7s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+
+  <rect x="60" y="546" width="360" height="110" rx="12" fill="#111827" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="240" y="578" font-size="16" font-weight="700" fill="#e2e8f0" text-anchor="middle">用户入口</text>
+  <text x="240" y="604" font-size="13" fill="#94a3b8" text-anchor="middle">managedapps.cloud.microsoft</text>
+  <text x="240" y="628" font-size="13" fill="#94a3b8" text-anchor="middle">平台分配的 URL · 默认私有</text>
+
+  <rect x="450" y="546" width="380" height="110" rx="12" fill="#111827" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text x="640" y="578" font-size="16" font-weight="700" fill="#e2e8f0" text-anchor="middle">Connector（1500+）</text>
+  <text x="640" y="604" font-size="13" fill="#94a3b8" text-anchor="middle">SharePoint · SQL · Office 365 · Graph …</text>
+  <text x="640" y="628" font-size="13" fill="#94a3b8" text-anchor="middle">受连接身份、站点权限与 DLP 约束</text>
+
+  <rect x="860" y="546" width="290" height="110" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5" stroke-dasharray="7 6"/>
+  <text x="1005" y="578" font-size="16" font-weight="700" fill="#94a3b8" text-anchor="middle">自建 Azure 后端（可选）</text>
+  <text x="1005" y="604" font-size="13" fill="#64748b" text-anchor="middle">App Service / Container Apps</text>
+  <text x="1005" y="628" font-size="13" fill="#64748b" text-anchor="middle">复杂 API、AI 任务、批处理</text>
+
+  <text x="600" y="684" font-size="13" fill="#475569" text-anchor="middle">琥珀色 = 本文关注的 Copilot Studio 入口；虚线 = 平台之外、需要自己负责的部分</text>
+</svg>
