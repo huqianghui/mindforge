@@ -1,14 +1,16 @@
 ---
-title: Copilot Managed Runtime：Copilot Studio 应用的托管环境对比
+title: Copilot Managed Runtime 系列 01：托管环境对比与选型
 created: 2026-10-26
 description: Copilot Studio 等入口生成的应用运行在 Copilot Managed Runtime（Preview）上——平台托管 SPA 并接管 Entra 身份、分享与租户治理，代价是没有自有域名、后端靠 Connector、需额外许可；与 GitHub Pages、SharePoint、App Service、Container Apps 的定位、能力边界与选型对比
 tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platform, microsoft-365, sharepoint, app-service, container-apps, github-pages, entra-id, hosting, architecture-decision]
 ---
 
-# Copilot Managed Runtime：Copilot Studio 应用的托管环境对比
+# Copilot Managed Runtime 系列 01：托管环境对比与选型
 
 > [!IMPORTANT]
 > Copilot Managed Runtime 撰写时（2026-10）仍是 **Preview**。本文涉及的许可、仓库限制、域名能力都以当时的公开文档为准，落地前必须在目标租户实测。
+
+本篇讲**是什么、和谁比、怎么选**；一次完整的实际部署——认证链路、权限、发布步骤与踩坑——见 [系列 02：实战部署与权限解析](Copilot-Managed-Runtime系列02：实战部署与权限解析.md)。
 
 ## 结论先行
 
@@ -18,7 +20,7 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 - 选型的分界线很清楚：**公开站点 → GitHub Pages / Static Web Apps；内容协作 → SharePoint；企业内部交互应用 → Managed Runtime；自有后端与容器 → App Service / Container Apps**。复杂场景常是"Managed Runtime 前端 + Azure 后端"的组合。
 - 两个最容易踩的坑：**有 Microsoft 365 不等于能免费运行**（需 Power Apps Premium 或 Managed Application Copilot Credits）；**个人 GitHub 仓库不能直接绑定**（只支持 GitHub Enterprise Cloud 组织仓库或平台托管仓库）。
 
-> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 发布到 Teams、Microsoft 365 Copilot 等渠道，走的是另一套发布路径，不在本文范围；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
+> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 发布到 Teams、Microsoft 365 Copilot 等渠道，走的是另一套发布路径，不在本文范围；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
 
 ---
 
@@ -39,7 +41,7 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 
 ## 二、它是什么：四个入口、一种产物、一个宿主
 
-![Copilot Managed Runtime 分层结构|900](../asset/managed-runtime-architecture-2026-10-26.svg)
+![Copilot Managed Runtime 分层结构|900](../../asset/managed-runtime-architecture-2026-10-26.svg)
 
 官方把一个运行中的应用拆成三个逻辑组件：
 
@@ -90,26 +92,9 @@ managedapps.cloud.microsoft/apps/<app-id>        ← 宿主播放器（壳层、
 
 ## 四、发布链路：两个 URL 与两级权限
 
-![Managed Runtime 发布链路|900](../asset/managed-runtime-publish-flow-2026-10-26.svg)
+![Managed Runtime 发布链路|900](../../asset/managed-runtime-publish-flow-2026-10-26.svg)
 
-用 CLI 的典型流程：
-
-```bash
-npm install -g @microsoft/managed-apps-cli
-ms auth login
-
-ms app create hello-world --display-name "Hello World"   # 新项目
-# 或在已有 Web 项目里：ms app init --display-name "My App"
-
-ms app dev          # 本地运行
-git push            # 推送，不会自动触发构建
-ms app build        # 平台构建 → Preview URL
-ms app deploy       # 提升为 Live
-ms app share alice@contoso.com,bob@contoso.com
-ms app share dev-team@contoso.com --access edit
-```
-
-Copilot Studio 把同样的步骤收进界面：生成草稿 → 交互式预览 → 发布 → 分享。
+用 `ms` CLI 是 dev → push → build → deploy → share 五步；Copilot Studio 把同样的步骤收进界面（生成草稿 → 交互式预览 → 发布 → 分享）。具体命令、每一步用的是谁的身份与凭据，见 [系列 02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md)。选型时需要知道的是下面三张表。
 
 ### 两个 URL 的区别
 
@@ -208,7 +193,7 @@ CLI 会引导选择或创建 connection、选择 dataset（SharePoint 站点）�
 
 ## 八、怎么选
 
-![托管方式选型决策树|900](../asset/managed-runtime-decision-tree-2026-10-26.svg)
+![托管方式选型决策树|900](../../asset/managed-runtime-decision-tree-2026-10-26.svg)
 
 按需求反推，而不是按功能多少排序：
 
@@ -247,52 +232,9 @@ Azure App Service 或 Container Apps
 
 ---
 
-## 九、案例：公开知识图谱站点要不要迁过去
+## 九、从选型到落地
 
-以本仓库的 [Wiki 知识图谱](https://huqianghui.github.io/mindforge/wiki/)为例：它是 React + Vite 单页应用，用 2D/3D 力导向图（Three.js / WebGL）展示静态图谱 JSON，当前通过 GitHub Actions 发布到 GitHub Pages。
-
-**技术上完全适配**：SPA、Vite 构建、静态 JSON、WebGL、本地搜索——这些 Managed Runtime 都能托管。**变化在访问模型和构建链**：
-
-| 当前 GitHub Pages | 迁到 Managed Runtime 后 |
-|---|---|
-| 任何拿到 URL 的人可访问 | 需要 Entra 登录 + 应用权限 |
-| 个人 GitHub 仓库 | 个人仓库不能绑定，需平台仓库或 Enterprise Cloud 组织仓库 |
-| GitHub Actions 发布 Pages artifact | 平台 build / preview / deploy，或 Actions 外部 artifact 部署 |
-| 子路径 `/mindforge/wiki/` | Vite `base` 通常改回 `/`，需在 Preview 中核对资源路径 |
-| 内容默认公开 | 内容纳入租户权限与治理 |
-
-Vite 配置的差异：
-
-```ts
-// GitHub Pages：部署在仓库子路径下
-export default defineConfig({ plugins: [react()], base: '/mindforge/wiki/' })
-
-// Managed Runtime：通常从根路径加载，以平台实际规则为准
-export default defineConfig({ plugins: [react()], base: '/' })
-```
-
-另一个容易漏的点：图谱 JSON 不是 `vite build` 自己生成的，而是 CI 里先跑导出脚本、再复制到 `public/`。迁移时必须把这一步写进新的构建命令，否则发布出去的是旧数据或缺数据。
-
-**结论：不替换，而是并存。**
-
-| 路线 | 适合 |
-|---|---|
-| A：保留 GitHub Pages | 公开知识库、外部读者、SEO、零运维 |
-| B：另建企业版 Managed Runtime 应用 | 客户或内部员工的知识图谱、接入 SharePoint / SQL / Graph 数据、需要审计和受控访问 |
-
-两者共享前端组件和图谱模型，数据源、登录、权限和构建配置分开管理。
-
----
-
-## 十、上线前的最小验证
-
-不要一上来迁移完整应用，先在目标租户跑三个小实验：
-
-| 实验 | 目标 | 验收条件 |
-|---|---|---|
-| A 最小静态 SPA | 验证能发布不依赖 Connector 的 Vite 应用 | JS / CSS / JSON 都从托管域名加载；同租户另一账号需登录才能访问；无路径错误 |
-| B 构建链迁移 | 验证数据生成步骤能进平台构建 | 数据文件生成并进 `public/`；`base` 正确；路由刷新和深链接正常；WebGL 正常 |
-| C SharePoint Connector | 验证**租户策略和权限**，而不只是代码 | Connector 未被 DLP / ACP 拦截；连接身份明确；普通用户运行时能读写；管理员在 admin center 能看到应用与健康状态 |
+选型只回答"该不该用"。真正部署时还有几个本篇没展开、但会直接卡住进度的问题：CLI、git 与最终用户三条链路各用什么凭据；为什么不需要管理员审批也能发布到租户；公开静态站点迁过来要改哪些地方；平台构建对产物有哪些硬约束。这些放在 [系列 02：实战部署与权限解析](Copilot-Managed-Runtime系列02：实战部署与权限解析.md)，以一次把公开静态知识站点部署成企业内应用的完整过程为例。
 
 ---
 
@@ -312,5 +254,5 @@ export default defineConfig({ plugins: [react()], base: '/' })
 
 相关文章：
 
-- [Azure Copilot 生态：Skills、MCP 与 Agents 的协作](Azure-Copilot生态：Skills、MCP与Agents的协作.md)
-- [Foundry Agent 三种形态对比与选型](Foundary-Agent/Foundry-Agent三种形态对比与选型.md)
+- [Azure Copilot 生态：Skills、MCP 与 Agents 的协作](../Azure-Copilot生态：Skills、MCP与Agents的协作.md)
+- [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)
