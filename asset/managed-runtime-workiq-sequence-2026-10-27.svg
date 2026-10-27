@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="850" viewBox="0 0 1400 850" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="850" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="848" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">提示词落地问答：一次 Work IQ Copilot MCP 调用的完整时序</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">一个已上线看板应用的做法——数字由应用给，模型只负责组织语言；引用靠约定的输出协议</text>
+<rect x="10" y="96" width="180" height="48" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="100.0" y="123" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="middle">用户</text>
+<line x1="100" y1="144" x2="100" y2="720" stroke="#64748b" stroke-opacity=".5" stroke-dasharray="4 6"/>
+<rect x="210" y="96" width="180" height="48" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="300.0" y="123" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="middle">应用前端</text>
+<line x1="300" y1="144" x2="300" y2="720" stroke="#a78bfa" stroke-opacity=".5" stroke-dasharray="4 6"/>
+<rect x="420" y="96" width="180" height="48" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="510.0" y="123" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="middle">宿主 / API Hub</text>
+<line x1="510" y1="144" x2="510" y2="720" stroke="#38bdf8" stroke-opacity=".5" stroke-dasharray="4 6"/>
+<rect x="630" y="96" width="180" height="48" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="720.0" y="123" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="middle">Work IQ Copilot MCP</text>
+<line x1="720" y1="144" x2="720" y2="720" stroke="#2dd4bf" stroke-opacity=".5" stroke-dasharray="4 6"/>
+<rect x="830" y="96" width="180" height="48" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="920.0" y="123" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="middle">M365 Copilot</text>
+<line x1="920" y1="144" x2="920" y2="720" stroke="#fbbf24" stroke-opacity=".5" stroke-dasharray="4 6"/>
+<path id="p1" d="M108 170 H292" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<text x="114" y="160" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">提问</text>
+<rect x="294" y="194" width="12" height="24" rx="3" fill="#a78bfa"/>
+<text x="316" y="210" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">① 解析问题里的人、客户、团队 → 从快照取相关数据行</text>
+<rect x="294" y="234" width="12" height="24" rx="3" fill="#a78bfa"/>
+<text x="316" y="250" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">② 拼提示词（右侧结构）</text>
+<path id="p2" d="M308 300 H502" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="0.75s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<text x="314" y="290" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">③ Service.mcp_m365copilot(body) → http/send</text>
+<path id="p3" d="M518 350 H712" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="1.0s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<text x="524" y="340" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">④ POST /{connectionId}/servers/mcp_m365copilot</text>
+<path id="p4" d="M728 400 H912" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="1.25s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<text x="734" y="390" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">⑤ tools/call copilot_chat（以用户身份）</text>
+<path id="p5" d="M912 470 H728" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="1.5s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<text x="734" y="460" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">回答文本</text>
+<path id="p6" d="M712 510 H518" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="1.75s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<text x="524" y="500" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">JSON-RPC result.content[].text</text>
+<path id="p7" d="M502 550 H308" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="2.0s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<text x="314" y="540" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">返回</text>
+<rect x="294" y="584" width="12" height="24" rx="3" fill="#a78bfa"/>
+<text x="316" y="600" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">⑥ 校验 id、处理 JSON-RPC error</text>
+<rect x="294" y="624" width="12" height="24" rx="3" fill="#a78bfa"/>
+<text x="316" y="640" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">⑦ 解析最后一行 RELATED: id1, id2 → 术语链接</text>
+<path id="p8" d="M292 690 H108" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="2.75s" repeatCount="indefinite"><mpath href="#p8"/></animateMotion></circle>
+<text x="114" y="680" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">回答 + 可点的术语</text>
+<rect x="1080" y="96" width="290" height="640" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="1096" y="123" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">提示词结构</text>
+<text x="1096" y="147" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">角色：应用里的帮助助手</text>
+<text x="1096" y="171" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">约束：只依据下面的术语表</text>
+<text x="1096" y="195" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">与数据快照回答，不搜文件、</text>
+<text x="1096" y="219" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">邮件和网页</text>
+<text x="1096" y="243" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">输出：提问的语言；附英文</text>
+<text x="1096" y="267" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">标签；限长度；纯文本</text>
+<text x="1096" y="291" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">引用协议：最后一行</text>
+<text x="1096" y="315" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">RELATED: id1, id2</text>
+<text x="1096" y="339" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">GLOSSARY：带 id 的权威定义</text>
+<text x="1096" y="363" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">数据快照摘要（与页面、</text>
+<text x="1096" y="387" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">周报同源）</text>
+<text x="1096" y="411" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">本题相关数据行（①）</text>
+<text x="1096" y="435" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">最近几轮对话</text>
+<text x="1096" y="459" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">QUESTION</text>
+<text x="1096" y="483" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start"></text>
+<text x="1096" y="507" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">三个难题的解法：</text>
+<text x="1096" y="531" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无结构化引用 → 输出协议</text>
+<text x="1096" y="555" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">模型编数字 → 数字由应用给</text>
+<text x="1096" y="579" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">harness 调不了 → 直接调 M365</text>
+<text x="1096" y="603" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">Copilot，不建 agent</text>
+<text x="40" y="760" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">MCP Connector 在 managed app 里以普通 Connector 动作调用：body 由应用按 MCP JSON-RPC 格式自己组，可带 Mcp-Session-Id 头</text>
+<text x="40" y="786" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">页面明示"数字来自本期数据，定义来自 Copilot"：把模型的职责限制在解释与组织语言</text>
+<text x="40" y="812" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">代价：Work IQ API 单独计费；快照受提示词长度限制；依赖 Preview Connector</text>
+</svg>

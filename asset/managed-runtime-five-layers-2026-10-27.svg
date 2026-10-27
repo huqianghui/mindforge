@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="720" viewBox="0 0 1400 720" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="720" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="718" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">向内装、向外堵：五层保护分别挡住什么</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">iframe 把应用关进格子（向内），CSP 不许应用开后门（向外）——方向相反，目的相同</text>
+<rect x="40" y="100" width="820" height="72" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="56" y="127" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">① 认证在外层，token 不给应用</text>
+<text x="56" y="151" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">MSAL 登录在宿主；应用只拿到 getUser() 三个字段</text>
+<text x="880" y="130" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="start">挡住：应用代码窃取或滥用用户令牌</text>
+<path id="p1" d="M860 136 H872" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="0.8s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<rect x="58" y="184" width="784" height="72" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="74" y="211" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">② 应用文件也在认证后面</text>
+<text x="74" y="235" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">/ 与 /content/* 未登录 401，只有加载器空壳 200</text>
+<text x="880" y="214" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="start">挡住：知道网址就能看内容（GitHub Pages 的模式）</text>
+<path id="p2" d="M842 220 H872" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.3s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<rect x="76" y="268" width="748" height="72" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="92" y="295" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">③ 独立 usercontent 子域名</text>
+<text x="92" y="319" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">同源策略：读不到宿主与其他应用的 DOM、cookie</text>
+<text x="880" y="298" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="start">挡住：应用之间互读、碰平台主域 cookie</text>
+<path id="p3" d="M824 304 H872" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<rect x="94" y="352" width="712" height="72" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="110" y="379" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">④ iframe sandbox</text>
+<text x="110" y="403" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">没有 allow-top-navigation；allow 只开 mic / camera 等</text>
+<text x="880" y="382" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="start">挡住：把整页导走、伪造登录页钓鱼</text>
+<path id="p4" d="M806 388 H872" fill="none" stroke="#a78bfa" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_violet)"><animateMotion dur="0.8s" begin="0.8999999999999999s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<rect x="112" y="436" width="676" height="72" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="128" y="463" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">⑤ frame-ancestors 只允许宿主</text>
+<text x="128" y="487" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">用户看到应用时外面一定套着宿主</text>
+<text x="880" y="466" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="start">挡住：应用被嵌进第三方页面冒充</text>
+<path id="p5" d="M788 472 H872" fill="none" stroke="#a78bfa" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_violet)"><animateMotion dur="0.8s" begin="1.2s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<rect x="40" y="540" width="1320" height="150" rx="14" fill="#f87171" fill-opacity="0.04" stroke="#f87171" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="56" y="564" font-size="14" font-weight="700" fill="#f87171" text-anchor="start">向外：CSP 不许应用开后门 —— 如果允许，会立刻失控的三件事</text>
+<rect x="60" y="580" width="415" height="92" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="76" y="607" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">数据外流</text>
+<text x="76" y="631" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">业务数据塞进外部 iframe URL 或 postMessage</text>
+<text x="76" y="655" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">绕过 Connector、DLP 与管理员审核</text>
+<rect x="495" y="580" width="415" height="92" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="511" y="607" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">钓鱼</text>
+<text x="511" y="631" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">外部页面出现在"公司认证过的应用"里</text>
+<text x="511" y="655" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">用户误以为可信</text>
+<rect x="930" y="580" width="415" height="92" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="946" y="607" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">治理失效</text>
+<text x="946" y="631" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">管理员看到"只用了 SharePoint"</text>
+<text x="946" y="655" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">实际却在和任意网站通信</text>
+</svg>

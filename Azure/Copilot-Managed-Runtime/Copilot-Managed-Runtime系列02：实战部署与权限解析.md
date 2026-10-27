@@ -41,15 +41,16 @@ tags: [azure, copilot-managed-runtime, managed-apps, copilot-studio, entra-id, g
 
 这是实操时最直观的疑问：全程没有走任何审批，应用就出现在了企业租户里。
 
-| 问题 | 实际情况 |
-|---|---|
-| 用了谁的身份？ | 开发者自己的 Entra 工作账号。`ms auth login` 交互登录过一次，之后 CLI 静默续期令牌；`ms auth status` 可以看到当前账号 |
-| 为什么是这个租户？ | 账号属于哪个租户，应用就建在哪个租户。CLI 没有"选租户"这一步 |
-| 应用放在哪里？ | Power Platform 的某个环境里。`ms app init` 不带 `--environment-id` 时，CLI 自动选了一个该账号有创建权限的环境；要放进指定环境就显式传 `-e` |
-| 要不要先开通？ | 符合条件的商业租户自动获得 Managed Runtime，管理员一般无需单独安装或打开 |
-| 为什么没有审批？ | 新应用默认私有，影响面只有作者本人；分享出去之前，它对其他人不可见 |
-| 管理员怎么管？ | 事前：Conditional Access、DLP / ACP、分享限制；可启用 Managed DevOps 让 `deploy` 等待人工审批；可禁止外部 artifact 部署。事后：admin center 中的应用清单、健康与使用分析 |
-| 有没有前提？ | 账号本身要满足许可要求（Power Apps Premium 或 Managed Application Copilot Credits），且租户策略没有禁止 |
+| 问题        | 实际情况                                                                                                                       |
+| --------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 用了谁的身份？   | 开发者自己的 Entra 工作账号。`ms auth login` 交互登录过一次，之后 CLI 静默续期令牌；`ms auth status` 可以看到当前账号                                          |
+| 为什么是这个租户？ | 账号属于哪个租户，应用就建在哪个租户。CLI 没有"选租户"这一步                                                                                          |
+| 应用放在哪里？   | Power Platform 的某个环境里。`ms app init` 不带 `--environment-id` 时，CLI 自动选了一个该账号有创建权限的环境；要放进指定环境就显式传 `-e`                         |
+| 要不要先开通？   | 符合条件的商业租户自动获得 Managed Runtime，管理员一般无需单独安装或打开                                                                               |
+| 为什么没有审批？  | 新应用默认私有，影响面只有作者本人；分享出去之前，它对其他人不可见                                                                                          |
+| 管理员怎么管？   | 事前：Conditional Access、DLP / ACP、分享限制；可启用 Managed DevOps 让 `deploy` 等待人工审批；可禁止外部 artifact 部署。事后：admin center 中的应用清单、健康与使用分析 |
+| 有没有前提？    | 账号本身要满足许可要求（Power Apps Premium 或 Managed Application Copilot Credits），且租户策略没有禁止                                            |
+
 
 一句话：**平台把"发布"和"扩散"分开管**。发布到自己名下是低风险操作，默认放开；把应用分享给别人、让它访问企业数据，才是策略真正卡的地方。
 
@@ -171,7 +172,7 @@ ms app list                                        # 查看自己可访问的应
 | 改动 | 原因 | 做法 |
 |---|---|---|
 | Vite `base` | GitHub Pages 部署在仓库子路径下 | `base: '/'` |
-| 路由 | 应用跑在宿主的 iframe 里，不能假设服务端会把任意路径回退到 `index.html` | 用 hash 路由：`#/doc/<path>`、`#/graph` |
+| 路由 | 应用跑在宿主的 iframe 里，不能假设服务端会把任意路径回退到 `index.html` | 用 hash 路由：`#/doc/<path>`、`#/graph`（宿主还用 CSP 限制了应用能加载和连接的地址，所有依赖都要打包进来，见 [系列 03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)） |
 | 内容同步 | 构建只认应用目录里的文件 | 构建前用脚本把文章、图片、图谱数据复制进 `public/`，生成 `manifest.json` 映射原路径 |
 | 链接改写 | 文章里的相对链接、wikilink、图片路径都按原仓库目录写 | 渲染时把相对 `.md` 链接解析成 `#/doc/...`，图片按 manifest 换成同步后的文件，指向公开站点图谱的链接改成应用内 `#/graph` |
 
@@ -193,7 +194,8 @@ ms app list                                        # 查看自己可访问的应
 | 第一次 `git push` 被拒：fetch first | 平台托管仓库创建时自带一个只有 README 的初始提交 | `git pull --rebase` 后再推 |
 | `ms app build` 返回 400：`tree entry ... is a symbolic link, which is not allowed in flat archives` | 平台构建把仓库打成平面归档，不接受符号链接 | 换成真实文件；同步脚本里用复制而不是链接 |
 | 往符号链接路径 `cp` 文件，结果写到了仓库外 | `cp` 会跟随已有的符号链接写到目标位置 | 先删链接再复制，复制后 `find . -type l` 自检 |
-| `ms app build` 成功，但看不到 Preview URL | 当前 CLI 输出与 `ms app info` 都不打印 Preview 地址 | 自测用 `ms app dev` 本地运行，或直接 deploy 后用 Live 验证 |
+| `ms app build` 成功，但看不到 Preview URL | 当前 CLI 输出与 `ms app info` 都不打印 Preview 地址 | 用 `ms app play --mode preview [--branch x]` 直接打开；或 `ms app dev` 本地运行（详见 [系列 04](Copilot-Managed-Runtime系列04：SDK与数据接入.md)） |
+| 平台仓库普通推送被拒 | 平台 `main` 上有一个 GitHub 侧没有的提交（例如早期直接在平台仓库改过配置） | 只在一处开发，平台仓库当作镜像：`git push platform +main:refs/heads/main` 强制对齐后再 deploy |
 
 ---
 
@@ -209,6 +211,8 @@ ms app deploy
 ```
 
 想要"推送即发布"，可以把这四步放进 CI，参考官方的 GitHub Actions 部署文档；对个人仓库，只能用 `--repo none` 的外部 artifact 模式。
+
+源码同时要备份到 GitHub 时，一个顺手的做法是给应用仓库配两个远端：`github` 放源码与历史，`platform` 是平台托管仓库、只作构建来源。发布脚本依次做"同步 → 本地 build 验证 → 提交 → 推 `github` → 强制推 `platform` → `ms app deploy --commit <HEAD>`"。`ms.config.json` 必须在仓库树里（平台构建要读），里面只有应用、环境、仓库的标识，不含凭据，可以放心入库；加了 Connector 之后同理，见 [系列 04](Copilot-Managed-Runtime系列04：SDK与数据接入.md)。
 
 ---
 
@@ -239,4 +243,6 @@ ms app deploy
 相关文章：
 
 - [Copilot Managed Runtime 系列 01：托管环境对比与选型](Copilot-Managed-Runtime系列01：托管环境对比与选型.md)
+- [Copilot Managed Runtime 系列 03：宿主沙箱与安全边界](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)
+- [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)
 - [Entra Agent ID 的双层身份模型](../Foundary-Agent/Entra-Agent-ID的双层身份模型.md)

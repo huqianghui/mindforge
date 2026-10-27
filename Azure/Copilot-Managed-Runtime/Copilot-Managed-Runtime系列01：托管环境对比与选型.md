@@ -10,7 +10,18 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 > [!IMPORTANT]
 > Copilot Managed Runtime 撰写时（2026-10）仍是 **Preview**。本文涉及的许可、仓库限制、域名能力都以当时的公开文档为准，落地前必须在目标租户实测。
 
-本篇讲**是什么、和谁比、怎么选**；一次完整的实际部署——认证链路、权限、发布步骤与踩坑——见 [系列 02：实战部署与权限解析](Copilot-Managed-Runtime系列02：实战部署与权限解析.md)。
+## 系列导航
+
+| 篇 | 主题 | 回答什么 |
+|---|---|---|
+| **01** | 托管环境对比与选型 | 是什么、和谁比、怎么选 |
+| [02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md) | 实战部署与权限解析 | 一次完整部署：认证链路、权限、发布步骤与踩坑 |
+| [03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md) | 宿主沙箱与安全边界 | iframe、CSP、JSON-RPC：应用能做什么、不能做什么 |
+| [04](Copilot-Managed-Runtime系列04：SDK与数据接入.md) | SDK 与数据接入 | SDK 接口、加数据源、本地调试、构建期与运行期 |
+| [05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md) | 在应用里调用 AI 的几条路 | Copilot Studio agent、M365 Copilot、Azure OpenAI 怎么接、怎么选 |
+| [06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md) | 参考应用拆解与功能模式 | 一个已上线应用的九个可复用模式 |
+
+Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、agent / workflow / app 协作）见姊妹系列 [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)。
 
 ## 结论先行
 
@@ -20,7 +31,7 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 - 选型的分界线很清楚：**公开站点 → GitHub Pages / Static Web Apps；内容协作 → SharePoint；企业内部交互应用 → Managed Runtime；自有后端与容器 → App Service / Container Apps**。复杂场景常是"Managed Runtime 前端 + Azure 后端"的组合。
 - 两个最容易踩的坑：**有 Microsoft 365 不等于能免费运行**（需 Power Apps Premium 或 Managed Application Copilot Credits）；**个人 GitHub 仓库不能直接绑定**（只支持 GitHub Enterprise Cloud 组织仓库或平台托管仓库）。
 
-> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 发布到 Teams、Microsoft 365 Copilot 等渠道，走的是另一套发布路径，不在本文范围；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
+> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 跑在各自的 harness 上、发布到 Teams、Microsoft 365 Copilot 等渠道，见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
 
 ---
 
@@ -53,13 +64,13 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 
 不同角色的入口：
 
-| 角色 | 在哪里工作 | 做什么 |
-|---|---|---|
-| 最终用户 | `managedapps.cloud.microsoft` | 查找并打开自己有权限的应用 |
-| Maker | **Copilot Studio** | 打开 Preview 体验后在 Apps 中用自然语言或已有数据生成应用，预览、发布、分享 |
-| 业务用户 | Copilot Cowork / Copilot Code | 在对话里描述需求，由 coding agent 生成应用 |
-| 专业开发者 | `ms` CLI + SDK | 脚手架、编码、部署，可配合 AI 编码助手 |
-| 管理员 | Microsoft 365 admin center | 应用清单、运行健康、使用分析 |
+| 角色    | 在哪里工作                         | 做什么                                           |
+| ----- | ----------------------------- | --------------------------------------------- |
+| 最终用户  | `managedapps.cloud.microsoft` | 查找并打开自己有权限的应用                                 |
+| Maker | **Copilot Studio**            | 打开 Preview 体验后在 Apps 中用自然语言或已有数据生成应用，预览、发布、分享 |
+| 业务用户  | Copilot Cowork / Copilot Code | 在对话里描述需求，由 coding agent 生成应用                  |
+| 专业开发者 | `ms` CLI + SDK                | 脚手架、编码、部署，可配合 AI 编码助手                         |
+| 管理员   | Microsoft 365 admin center    | 应用清单、运行健康、使用分析                                |
 
 关键点：**创作入口再多，产物都是同一种 SPA 静态包，跑在同一个宿主里**。所以 Copilot Studio 生成的应用和手写的 React 应用，在运行能力和限制上没有本质差别——差别只在"怎么写出来"。
 
@@ -87,6 +98,8 @@ managedapps.cloud.microsoft/apps/<app-id>        ← 宿主播放器（壳层、
 | 部分业务数据文本直接出现在 bundle 里 | 至少一部分指标是**随发布产物携带的快照或预计算数据**，不是每次实时查库 |
 
 这解释了它"看起来像静态网站"：**托管的确实是静态资源，但入口前面多了一层由平台控制的身份与治理壳层**。同类看板完全可以复现——难点不在托管，而在业务指标语义、数据准备和页面设计。
+
+这层壳具体怎么隔离应用（两层 iframe、独立子域名、CSP、唯一出口 `http/send`）见 [系列 03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)；这类看板逐页的实现模式见 [系列 06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)。
 
 ---
 
@@ -152,7 +165,7 @@ managedapps.cloud.microsoft/apps/<app-id>        ← 宿主播放器（壳层、
 | 限制 | 撰写时现状 | 影响 | 应对 |
 |---|---|---|---|
 | 自有域名 | 平台分配 URL，未提供 custom / vanity domain | 不能给出 `insights.contoso.com` 这类地址 | 需要品牌域名就选 App Service / Static Web Apps |
-| 后端 | 只有 SPA + Connector | 复杂计算、向量检索、批处理、定时任务无处可放 | 外接 App Service / Container Apps，前端通过 Connector 或 API 调用 |
+| 后端 | 只有 SPA + Connector；CSP 禁止直连外部 API、嵌外部 iframe、用 Web Worker | 复杂计算、向量检索、批处理、定时任务无处可放 | 外接 App Service / Container Apps，经**自定义 Connector** 调用（见 [Copilot Studio 系列 02](../Copilot-Studio/Copilot-Studio系列02：Connector与连接.md)）；后台重活交给 workflow / agent 写表 |
 | 许可 | 开发者本地运行和终端用户运行都受 license enforcement | "有 M365 就能用"不成立 | 用户需 Power Apps Premium，或按 app launch + API call 消耗 Managed Application Copilot Credits（文档写每次 API call 0.1 credits） |
 | 可用性 | 符合条件的 commercial cloud 租户自动获得，无需单独开启 | 其他云环境、地区未必可用 | 项目启动前在目标租户验证 |
 | 仓库 | 只支持平台托管仓库或 GitHub Enterprise Cloud 组织仓库 | 个人仓库、Azure DevOps 项目不能直接绑定 | 见第四节替代方案 |
@@ -234,7 +247,15 @@ Azure App Service 或 Container Apps
 
 ## 九、从选型到落地
 
-选型只回答"该不该用"。真正部署时还有几个本篇没展开、但会直接卡住进度的问题：CLI、git 与最终用户三条链路各用什么凭据；为什么不需要管理员审批也能发布到租户；公开静态站点迁过来要改哪些地方；平台构建对产物有哪些硬约束。这些放在 [系列 02：实战部署与权限解析](Copilot-Managed-Runtime系列02：实战部署与权限解析.md)，以一次把公开静态知识站点部署成企业内应用的完整过程为例。
+选型只回答"该不该用"。后续几篇按落地顺序展开：
+
+| 遇到的问题 | 看哪篇 |
+|---|---|
+| CLI、git、最终用户三条链路各用什么凭据；为什么不需要审批也能发布；静态站点迁过来改哪里 | [系列 02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md) |
+| 为什么不能 `fetch` 外部 API、不能嵌网页聊天 | [系列 03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md) |
+| 怎么拿用户身份、读写 SharePoint / Dataverse、本地调试 | [系列 04](Copilot-Managed-Runtime系列04：SDK与数据接入.md) |
+| 怎么加一个"问 Copilot"面板 | [系列 05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md) |
+| 一个成熟的应用长什么样 | [系列 06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md) |
 
 ---
 
@@ -254,5 +275,6 @@ Azure App Service 或 Container Apps
 
 相关文章：
 
+- [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)
 - [Azure Copilot 生态：Skills、MCP 与 Agents 的协作](../Azure-Copilot生态：Skills、MCP与Agents的协作.md)
 - [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)

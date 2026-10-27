@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="600" viewBox="0 0 1400 600" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="600" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="598" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">数据在什么时候算：从构建期到运行期</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">越往左越快、越便宜、越稳定；只有依赖"当前用户"或 LLM 的才必须放到运行期走 Connector</text>
+<defs><linearGradient id="sp" x1="0" x2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset=".5" stop-color="#38bdf8"/><stop offset="1" stop-color="#fbbf24"/></linearGradient></defs>
+<rect x="60" y="112" width="1280" height="14" rx="7" fill="url(#sp)"/>
+<text x="60" y="104" font-size="14" font-weight="700" fill="#5eead4" text-anchor="start">构建期（deploy 那一刻固定）</text>
+<text x="1340" y="104" font-size="14" font-weight="700" fill="#fcd34d" text-anchor="end">运行期 + Connector（每次 0.1 Credits）</text>
+<rect x="60" y="160" width="300" height="150" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="76" y="187" font-size="16" font-weight="700" fill="#ccfbf1" text-anchor="start">构建期预计算</text>
+<text x="76" y="211" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">依赖全部正文或全量数据</text>
+<text x="76" y="235" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">字数、链接健康度、标签分布</text>
+<text x="76" y="259" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">业务指标、规则建议</text>
+<rect x="60" y="330" width="300" height="74" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="76" y="357" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">怎么做</text>
+<text x="76" y="381" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">写进静态 JSON 随应用发布</text>
+<rect x="60" y="424" width="300" height="74" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="76" y="451" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">注意</text>
+<text x="76" y="475" font-size="13" font-weight="400" fill="#cbd5e1" text-anchor="start">页面标明生成时间与源版本</text>
+<rect x="385" y="160" width="300" height="150" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="401" y="187" font-size="16" font-weight="700" fill="#e0f2fe" text-anchor="start">运行期 · 前端计算</text>
+<text x="401" y="211" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">只依赖一份小 JSON</text>
+<text x="401" y="235" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">分布、计数、筛选、钻取</text>
+<text x="401" y="259" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">图表联动</text>
+<rect x="385" y="330" width="300" height="74" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="401" y="357" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">怎么做</text>
+<text x="401" y="381" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">同域 fetch 即可，CSP 允许</text>
+<rect x="385" y="424" width="300" height="74" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="401" y="451" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">注意</text>
+<text x="401" y="475" font-size="13" font-weight="400" fill="#cbd5e1" text-anchor="start">Web Worker 被禁，重计算别放这</text>
+<rect x="710" y="160" width="300" height="150" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="726" y="187" font-size="16" font-weight="700" fill="#ede9fe" text-anchor="start">运行期 · 用户数据</text>
+<text x="726" y="211" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">阅读进度、收藏</text>
+<text x="726" y="235" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">审核决定、行动项状态</text>
+<text x="726" y="259" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">多人共享的判断</text>
+<rect x="710" y="330" width="300" height="74" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="726" y="357" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">怎么做</text>
+<text x="726" y="381" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">Dataverse / SharePoint Connector</text>
+<rect x="710" y="424" width="300" height="74" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="726" y="451" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">注意</text>
+<text x="726" y="475" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">按 objectId 过滤只是筛选，不是授权</text>
+<rect x="1035" y="160" width="300" height="150" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="1051" y="187" font-size="16" font-weight="700" fill="#fef3c7" text-anchor="start">运行期 · LLM</text>
+<text x="1051" y="211" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">问答、解释、总结</text>
+<text x="1051" y="235" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">需要即时回答</text>
+<rect x="1035" y="330" width="300" height="74" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1051" y="357" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">怎么做</text>
+<text x="1051" y="381" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Copilot Studio / Work IQ / Azure OpenAI</text>
+<rect x="1035" y="424" width="300" height="74" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="1051" y="451" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">注意</text>
+<text x="1051" y="475" font-size="13" font-weight="400" fill="#cbd5e1" text-anchor="start">数字由应用给，模型只组织语言</text>
+<text x="60" y="540" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">经验：一个已上线的看板应用把数据每周算好打包进 bundle，零 Connector、零调用费、秒开；只有共享状态和 AI 问答走 Connector。</text>
+</svg>

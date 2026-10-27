@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="900" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="898" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">宿主掌控所有边界：应用被关在中间一层，唯一出口是 http/send</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">两层 iframe + 独立 usercontent 子域名 + CSP + sandbox；应用拿不到 token，只能把请求交给宿主</text>
+<rect x="30" y="96" width="820" height="640" rx="14" fill="#64748b" fill-opacity="0.04" stroke="#64748b" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="120" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">用户浏览器</text>
+<rect x="50" y="130" width="780" height="590" rx="14" fill="#38bdf8" fill-opacity="0.04" stroke="#38bdf8" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="66" y="154" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="start">① 宿主播放器 play.managedapps.cloud.microsoft</text>
+<text x="816" y="154" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="end">MSAL 登录 · 持有 token · HostChrome</text>
+<rect x="70" y="170" width="740" height="530" rx="14" fill="#38bdf8" fill-opacity="0.04" stroke="#38bdf8" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="86" y="194" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="start">② Managed Host Loader /_platform/app/loader</text>
+<text x="796" y="194" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="end">公开空壳 · 200</text>
+<rect x="90" y="210" width="700" height="470" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="106" y="234" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">③ 应用 SPA · apps-&lt;appId&gt;….powerplatformusercontent.com</text>
+<text x="776" y="234" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="end">未登录访问 → 401</text>
+<rect x="110" y="250" width="320" height="250" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="126" y="277" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">CSP 拦下的（浏览器执行）</text>
+<text x="126" y="301" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ fetch 外部 API</text>
+<text x="126" y="325" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">   connect-src 'self'</text>
+<text x="126" y="349" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ 嵌入外部 iframe / 网页聊天</text>
+<text x="126" y="373" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">   frame-src 'self'</text>
+<text x="126" y="397" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ CDN 脚本、字体  ✗ Web Worker</text>
+<text x="126" y="421" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">   script/font-src 'self' · worker-src 'none'</text>
+<text x="126" y="445" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ 表单提交  ✗ 被别处嵌入</text>
+<text x="126" y="469" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">   form-action 'none' · frame-ancestors 仅宿主</text>
+<rect x="450" y="250" width="320" height="250" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="466" y="277" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">sandbox 与隔离</text>
+<text x="466" y="301" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">每个应用一个子域名：同源策略隔开</text>
+<text x="466" y="325" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">  读不到宿主与其他应用的 DOM、cookie</text>
+<text x="466" y="349" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">usercontent 域名：碰不到平台主域 cookie</text>
+<text x="466" y="373" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">sandbox 没有 allow-top-navigation</text>
+<text x="466" y="397" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">  不能把整页导走、伪造登录页</text>
+<text x="466" y="421" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">allow 只开 mic / camera / clipboard 等</text>
+<text x="466" y="445" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">getUser() 只给姓名、objectId、tenantId</text>
+<rect x="110" y="520" width="660" height="140" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6" class="pulse"/>
+<text x="126" y="547" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">应用代码 → SDK → JSON-RPC（postMessage）</text>
+<text x="126" y="571" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">app/getContext · auth/getUser · data/getAppConnections · challenge/consent</text>
+<text x="126" y="595" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">http/send（唯一的网络出口）· telemetry/* · function/*（尚未开放）· cowork/*（实验性）</text>
+<text x="126" y="619" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">应用能访问的外部世界 = ms.config.json 里登记的 Connector，一个都不多</text>
+<rect x="890" y="150" width="480" height="170" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="906" y="177" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">宿主的两条硬校验</text>
+<text x="906" y="201" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">类型定义标注 "Load-bearing for security"</text>
+<text x="906" y="225" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">1. 请求的 apiId 必须在应用已解析的连接里</text>
+<text x="906" y="249" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">2. URL origin 必须等于该连接的 runtimeUrl</text>
+<text x="906" y="273" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">两条都过才注入凭据并转发</text>
+<rect x="890" y="360" width="480" height="130" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="906" y="387" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">允许的目标只有两类</text>
+<text x="906" y="411" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">*.environment.api.powerplatform.com</text>
+<text x="906" y="435" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">  /appframework/apps/&lt;id&gt;/launch · logAppOpen</text>
+<text x="906" y="459" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">API Hub /&lt;connectionId&gt;/…（Connector 运行时）</text>
+<rect x="890" y="530" width="480" height="110" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="906" y="557" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">登记过的 Connector 后端</text>
+<text x="906" y="581" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">SharePoint · Dataverse · Copilot Studio</text>
+<text x="906" y="605" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">Work IQ · Azure OpenAI · 自定义 API</text>
+<rect x="890" y="660" width="480" height="120" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6" stroke-dasharray="6 5"/>
+<text x="906" y="687" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">将来的中间层 function/*</text>
+<text x="906" y="711" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">调用参数带 tenantId / userObjectId / appId</text>
+<text x="906" y="735" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">终止原因 isolate_crashed → 很可能是 V8 isolate</text>
+<text x="906" y="759" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">函数内 fetch 只许平台命名空间，其余 403</text>
+<path id="p1" d="M770 590 C850 590 850 235 886 235" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="2.2s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="850" cy="420" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="850" y="425" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">1</text>
+<path id="p2" d="M1130 320 V356" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.9s" begin="1.0s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<circle cx="1152" cy="340" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1152" y="345" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">2</text>
+<path id="p3" d="M1130 490 V526" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.9s" begin="1.5s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<circle cx="1152" cy="510" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1152" y="515" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">3</text>
+<text x="40" y="816" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 应用只能 postMessage 给宿主；宿主替它带上连接身份</text>
+<text x="40" y="842" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② 校验通过才转发到 Power Platform API 或 API Hub</text>
+<text x="40" y="868" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ API Hub 注入连接凭据后调用真正的后端</text>
+<text x="720" y="816" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">CSP 是网关下发的响应头，应用改不了，meta 标签只能更严</text>
+<text x="720" y="842" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">iframe 向内装应用、CSP 不许向外嵌：方向相反，目的相同——宿主掌控边界</text>
+</svg>

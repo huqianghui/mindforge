@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="540" viewBox="0 0 1400 540" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="540" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="538" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">九个可复用模式：七个不需要任何 Connector</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">带琥珀角标的两个只有 managed app 能做；再加上"只有登录的内部用户能看"，就是选 Managed Runtime 的理由</text>
+<rect x="40" y="100" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="56" y="127" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P1 · 构建期快照</text>
+<text x="56" y="151" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：每周指标打包进 bundle</text>
+<text x="56" y="175" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：同步脚本预计算字数、链接、标签</text>
+<text x="56" y="199" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="485" y="100" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="501" y="127" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P2 · 快照历史对比</text>
+<text x="501" y="151" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：指标卡"与上周比"</text>
+<text x="501" y="175" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：保留上次图谱，算新增节点 / 新过时论断</text>
+<text x="501" y="199" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="930" y="100" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="946" y="127" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P3 · 规则建议</text>
+<text x="946" y="151" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：优先核查、推荐动作</text>
+<text x="946" y="175" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：过时、低置信、成员过少的分类</text>
+<text x="946" y="199" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="40" y="240" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="56" y="267" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P4 · 共享筛选状态</text>
+<text x="56" y="291" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：六维筛选，点图即筛</text>
+<text x="56" y="315" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：分类 × 状态 × 置信度 × 时间</text>
+<text x="56" y="339" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="485" y="240" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="501" y="267" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P5 · 术语即数据</text>
+<text x="501" y="291" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：术语面板 + 下划线 + 提示词</text>
+<text x="501" y="315" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：知识图谱节点本身就是术语表</text>
+<text x="501" y="339" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="930" y="240" width="425" height="122" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="946" y="267" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="start">P6 · 共享状态表</text>
+<text x="946" y="291" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：行动项状态、异常值审核</text>
+<text x="946" y="315" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库："这条论断已复核 / 已过时"</text>
+<text x="946" y="339" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">需要 Connector：SharePoint</text>
+<rect x="1226" y="252" width="116" height="24" rx="12" fill="#fbbf24"/>
+<text x="1284" y="269" font-size="12" font-weight="700" fill="#1c1917" text-anchor="middle">仅 managed app</text>
+<rect x="40" y="380" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="56" y="407" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P7 · 浏览器原生能力</text>
+<text x="56" y="431" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：mailto、导出 Excel / PDF</text>
+<text x="56" y="455" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：导出洞察表、生成文章 PDF</text>
+<text x="56" y="479" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+<rect x="485" y="380" width="425" height="122" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="501" y="407" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="start">P8 · 提示词落地问答</text>
+<text x="501" y="431" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：Work IQ 调 M365 Copilot</text>
+<text x="501" y="455" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：检索文章段落 → RELATED 链回原文</text>
+<text x="501" y="479" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">需要 Connector：Work IQ Copilot MCP</text>
+<rect x="781" y="392" width="116" height="24" rx="12" fill="#fbbf24"/>
+<text x="839" y="409" font-size="12" font-weight="700" fill="#1c1917" text-anchor="middle">仅 managed app</text>
+<rect x="930" y="380" width="425" height="122" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="946" y="407" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">P9 · 版本与时效透明</text>
+<text x="946" y="431" font-size="13" font-weight="400" fill="#e2e8f0" text-anchor="start">参考应用：版本徽标、数据截止日</text>
+<text x="946" y="455" font-size="13" font-weight="400" fill="#a5f3fc" text-anchor="start">套到知识库：标出内容同步时间与源版本</text>
+<text x="946" y="479" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">无需 Connector · GitHub Pages 也能做</text>
+</svg>

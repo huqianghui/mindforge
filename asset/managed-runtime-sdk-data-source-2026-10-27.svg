@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="800" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="798" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">ms app add data-source 做的三件事，与运行时的调用路径</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">一条命令同时改租户、改配置、生成代码；调用时 SDK 不发网络请求，全部交给宿主</text>
+<rect x="30" y="96" width="1340" height="330" rx="14" fill="#fbbf24" fill-opacity="0.04" stroke="#fbbf24" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="120" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="start">开发时：ms app add data-source --connector &lt;id&gt; --as action --use-sso</text>
+<rect x="50" y="140" width="300" height="160" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="66" y="167" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">命令行</text>
+<text x="66" y="191" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms connector list --only-allowed</text>
+<text x="66" y="215" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms connector list-actions</text>
+<text x="66" y="239" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms app add data-source</text>
+<text x="66" y="263" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms app refresh / remove data-source</text>
+<rect x="420" y="130" width="300" height="120" rx="12" fill="#2a1220" stroke="#fb7185" stroke-width="1.6"/>
+<text x="436" y="157" font-size="15" font-weight="700" fill="#ffe4e6" text-anchor="start">① 租户里建连接</text>
+<text x="436" y="181" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">选用或新建一个连接</text>
+<text x="436" y="205" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">属于某个人的身份</text>
+<text x="436" y="229" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">对外可见的变更，先确认身份</text>
+<rect x="740" y="130" width="300" height="120" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="756" y="157" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">② 改 ms.config.json</text>
+<text x="756" y="181" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">connectionReferences 写入</text>
+<text x="756" y="205" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">apiId、connectionId、表名</text>
+<text x="756" y="229" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">只有标识，没有凭据 → 入库</text>
+<rect x="1060" y="130" width="290" height="120" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="1076" y="157" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">③ 生成 TypeScript</text>
+<text x="1076" y="181" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">dataSourcesInfo（喂给 getClient）</text>
+<text x="1076" y="205" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">每个动作 / 表一个 Service 类</text>
+<text x="1076" y="229" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">构建要用 → 入库</text>
+<rect x="420" y="276" width="930" height="128" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="436" y="303" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">先 git status 看清生成了什么，再决定 import 路径</text>
+<text x="436" y="327" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">Dataverse 表一次只能加一张；Connector 元数据变了用 refresh 重新生成</text>
+<text x="436" y="351" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">Azure OpenAI 这类 API key 连接：key 存在连接对象里，不会写进 ms.config.json；也不要写进代码或 appSettings</text>
+<text x="436" y="375" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">SSO Connector 在用户首次打开应用时可能被静默创建连接</text>
+<path id="p1" d="M350 190 H416" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<path id="p2" d="M720 190 H736" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.6s" begin="0.4s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<path id="p3" d="M1040 190 H1056" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.6s" begin="0.8s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<rect x="30" y="452" width="1340" height="250" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="476" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">运行时：只在宿主里能用（Live / Preview / ms app dev）</text>
+<rect x="50" y="496" width="236" height="92" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="66" y="523" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">应用代码</text>
+<text x="66" y="547" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">生成的 Service</text>
+<path id="p4" d="M286 542 H312" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.0s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<rect x="316" y="496" width="236" height="92" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="332" y="523" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">SDK</text>
+<text x="332" y="547" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">getClient().executeAsync</text>
+<path id="p5" d="M552 542 H578" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.3s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<rect x="582" y="496" width="236" height="92" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="598" y="523" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">宿主</text>
+<text x="598" y="547" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">http/send 校验</text>
+<path id="p6" d="M818 542 H844" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<rect x="848" y="496" width="236" height="92" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="864" y="523" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">API Hub</text>
+<text x="864" y="547" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">注入连接凭据</text>
+<path id="p7" d="M1084 542 H1110" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.8999999999999999s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<rect x="1114" y="496" width="236" height="92" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1130" y="523" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">Connector 后端</text>
+<text x="1130" y="547" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">SharePoint / Dataverse …</text>
+<rect x="50" y="604" width="640" height="84" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="66" y="631" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">返回值 IOperationResult&lt;T&gt;：不抛异常</text>
+<text x="66" y="655" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">{ success, data, error?, skipToken?, count? } —— 不查 success 就读 data，错误会在很远处才暴露</text>
+<rect x="710" y="604" width="640" height="84" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="726" y="631" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">纯 npm run dev（没有宿主）</text>
+<text x="726" y="655" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">SDK 调用失败或挂起：包一层"限时等待 → 返回 null → 显示需在宿主中运行"</text>
+<text x="40" y="730" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">getUser() 只有 fullName / objectId / tenantId；要邮箱部门加 Office 365 Users Connector</text>
+<text x="40" y="756" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">getContext() 给 appId、environmentId、sessionId；telemetry 能收到宿主推的加载与请求指标</text>
+<text x="720" y="730" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms app dev 起本地 config server，宿主加载本机 Vite 页面，SDK 与 Connector 在本地也能跑</text>
+<text x="720" y="756" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">ms app play --mode preview 打开 Preview（只对仓库有写权限的人有效）</text>
+</svg>

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="890" viewBox="0 0 1400 890" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="890" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="888" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">参考应用拆解：几乎不用平台能力的 managed app</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">只有"共享状态"和"AI 问答"走 Connector；其余全靠构建期快照与浏览器原生能力</text>
+<rect x="30" y="96" width="300" height="600" rx="14" fill="#64748b" fill-opacity="0.04" stroke="#64748b" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="120" font-size="14" font-weight="700" fill="#64748b" text-anchor="start">应用之外 · 每周一</text>
+<rect x="48" y="136" width="264" height="150" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="64" y="163" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">数据准备脚本</text>
+<text x="64" y="187" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">计算本周指标</text>
+<text x="64" y="211" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">与上周快照比较</text>
+<text x="64" y="235" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">跑规则产出建议</text>
+<rect x="48" y="316" width="264" height="110" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="64" y="343" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">周报邮件</text>
+<text x="64" y="367" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">同源数据</text>
+<text x="64" y="391" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">提示词里也引用它</text>
+<rect x="48" y="456" width="264" height="220" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="64" y="483" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">重新构建并部署</text>
+<text x="64" y="507" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">快照 + 术语表打包进 bundle</text>
+<text x="64" y="531" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">约 3.6 MB JS</text>
+<text x="64" y="555" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">页面写明"数据截至 / 刷新于"</text>
+<text x="64" y="579" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">标题旁"Live, version x.y"</text>
+<text x="64" y="603" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">+ What's new 横幅</text>
+<rect x="360" y="96" width="700" height="600" rx="14" fill="#a78bfa" fill-opacity="0.04" stroke="#a78bfa" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="376" y="120" font-size="14" font-weight="700" fill="#a78bfa" text-anchor="start">managed app（bundle 内）</text>
+<rect x="378" y="136" width="322" height="112" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="394" y="163" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">本周简报</text>
+<text x="394" y="187" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">指标卡 + 与上周比</text>
+<text x="394" y="211" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">优先核查 · 本周变化</text>
+<rect x="714" y="136" width="322" height="112" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="730" y="163" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">规划建议</text>
+<text x="730" y="187" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">规则结论 + 数据依据</text>
+<text x="730" y="211" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">+ 建议动作</text>
+<rect x="378" y="266" width="322" height="112" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="394" y="293" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">多维探索</text>
+<text x="394" y="317" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">六维筛选 · 点图即筛</text>
+<text x="394" y="341" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">月度堆叠 · 散点</text>
+<rect x="714" y="266" width="322" height="112" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="730" y="293" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">关系墙</text>
+<text x="730" y="317" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">同一份结论</text>
+<text x="730" y="341" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">换一种可视化</text>
+<rect x="378" y="400" width="322" height="130" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="394" y="427" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">共享筛选状态</text>
+<text x="394" y="451" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">所有图表、表格读同一份条件</text>
+<text x="394" y="475" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">点击图表 = 设置筛选</text>
+<text x="394" y="499" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">前端过滤内存快照</text>
+<rect x="714" y="400" width="322" height="130" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6" class="pulse"/>
+<text x="730" y="427" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">术语表（静态，带 id）</text>
+<text x="730" y="451" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">术语面板 + 搜索</text>
+<text x="730" y="475" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">正文指标名虚线下划线</text>
+<text x="730" y="499" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">问答提示词里的权威定义</text>
+<rect x="378" y="550" width="322" height="126" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="394" y="577" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">浏览器原生能力</text>
+<text x="394" y="601" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">mailto: 预填收件人 / 抄送 / 正文</text>
+<text x="394" y="625" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">SheetJS 导出 Excel</text>
+<text x="394" y="649" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">jsPDF + html2canvas 导出 PDF</text>
+<rect x="714" y="550" width="322" height="126" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="730" y="577" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">规则引擎</text>
+<text x="730" y="601" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">优先核查：行动 / 核查 / 备注三级</text>
+<text x="730" y="625" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">每条带"为什么"</text>
+<text x="730" y="649" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">负责人分派规则写在页面上</text>
+<rect x="1090" y="96" width="280" height="600" rx="14" fill="#fbbf24" fill-opacity="0.04" stroke="#fbbf24" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="1106" y="120" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="start">只有两个 Connector</text>
+<rect x="1106" y="136" width="248" height="240" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="1122" y="163" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">SharePoint</text>
+<text x="1122" y="187" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">行动项列表：状态、备注</text>
+<text x="1122" y="211" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">异常值审核列表：决定</text>
+<text x="1122" y="235" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">"状态对所有打开应用</text>
+<text x="1122" y="259" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">的人共享"</text>
+<text x="1122" y="283" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">异常值审核前不计入合计</text>
+<text x="1122" y="307" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">下次刷新脚本也能读到</text>
+<rect x="1106" y="400" width="248" height="180" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1122" y="427" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Work IQ Copilot MCP</text>
+<text x="1122" y="451" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">问答面板 → M365 Copilot</text>
+<text x="1122" y="475" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">以用户自己的身份</text>
+<text x="1122" y="499" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">RELATED 行关联回术语</text>
+<text x="1122" y="523" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">SSO，首次打开静默建连接</text>
+<rect x="1106" y="600" width="248" height="76" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="1122" y="627" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">计费可见</text>
+<text x="1122" y="651" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">reportApiConsumption</text>
+<path id="p1" d="M312 566 H374" fill="none" stroke="#64748b" stroke-width="2.3" class="flow" marker-end="url(#ar_gray)"/>
+<circle r="6" fill="url(#pt_gray)"><animateMotion dur="1.2s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="343" cy="596" r="12" fill="#0a0f1c" stroke="#64748b" stroke-width="1.6"/>
+<text x="343" y="601" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">1</text>
+<path id="p2" d="M1036 465 C1070 465 1070 490 1102 490" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="0.4s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<circle cx="1070" cy="440" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1070" y="445" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">2</text>
+<path id="p3" d="M1036 190 H1102" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="0.8s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<circle cx="1070" cy="170" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1070" y="175" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">3</text>
+<path id="p4" d="M1102 300 H1036" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="1.2s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<path id="p5" d="M1354 256 H1384 V712 H180 V680" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="3.4s" begin="1.5s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<circle cx="700" cy="712" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="700" y="717" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">4</text>
+<text x="718" y="717" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">人的判断回流到下一次刷新</text>
+<text x="40" y="752" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 每周一脚本算好数据和建议，打包进 bundle 重新部署：零 Connector、零调用费、秒开</text>
+<text x="40" y="778" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② 一份术语表同时服务面板、页面标注和问答提示词</text>
+<text x="40" y="804" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ 行动项状态与异常值审核写进 SharePoint 列表，所有人实时共享</text>
+<text x="40" y="830" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">④ 数据周更，人对数据的判断实时共享，并在下次刷新时被脚本读回——共享数据模式的最小版本</text>
+<text x="40" y="856" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">能用浏览器原生能力的就不用 Connector：mailto 代替 Outlook，前端导出代替 OneDrive / Excel Connector</text>
+</svg>
