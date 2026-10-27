@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 870" width="1400" height="870" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .act { fill: #2a1316; stroke: #f87171; stroke-width: 1.6; }
+      .chk { fill: #2a1b0e; stroke: #fb923c; stroke-width: 1.6; }
+      .note { fill: #0f1d33; stroke: #60a5fa; stroke-width: 1.6; }
+      .lane { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .lAct { fill: #fca5a5; font-size: 15px; font-weight: 700; }
+      .lChk { fill: #fdba74; font-size: 15px; font-weight: 700; }
+      .lNote { fill: #93c5fd; font-size: 15px; font-weight: 700; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .num { fill: #fde68a; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      .chip { fill: #1e293b; stroke: #64748b; stroke-width: 1; }
+      .tag { fill: #7f1d1d; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="870" rx="16"/>
+  <text class="title" x="30" y="44">建议页的规则引擎：十条固定规则、三个级别</text>
+  <text class="sub" x="30" y="72">阈值写成常量放在规则文件顶部；黄色数字是 2026-10-26 那份数据的实际结果</text>
+
+  <!-- ===== 左：输入 ===== -->
+  <rect class="zone" x="20" y="96" width="260" height="752" rx="12"/>
+  <text class="zl" x="36" y="122">输入（都是静态 JSON）</text>
+
+  <rect class="boxBlue" x="36" y="140" width="228" height="160" rx="10"/>
+  <text class="h15" x="50" y="166">知识图谱</text>
+  <text class="t" x="50" y="192">节点：类型、分类</text>
+  <text class="t" x="50" y="216">Claim：置信度、状态</text>
+  <text class="t" x="50" y="240">　　　来源、最后更新</text>
+  <text class="t" x="50" y="264">关系：算每个节点的度</text>
+  <text class="tGray" x="50" y="288">147 节点 · 806 Claim</text>
+
+  <rect class="boxBlue" x="36" y="320" width="228" height="140" rx="10"/>
+  <text class="h15" x="50" y="346">提交历史</text>
+  <text class="t" x="50" y="372">最后一次提交日期</text>
+  <text class="t" x="50" y="396">各期差距报告的建议</text>
+  <text class="t" x="50" y="420">是否"延续上期"</text>
+  <text class="tGray" x="50" y="444">wiki 页面首次提交日</text>
+
+  <rect class="box" x="36" y="480" width="228" height="352" rx="10"/>
+  <text class="h15" x="50" y="506">两条设计约束</text>
+  <text class="t" x="50" y="534">① 基准日期取数据里</text>
+  <text class="t" x="50" y="556">　 最晚的日期，不看今天</text>
+  <text class="tGray" x="50" y="580">　 → 同一份数据每次</text>
+  <text class="tGray" x="50" y="602">　 结果都相同，可复现</text>
+  <text class="t" x="50" y="638">② 整个引擎是纯函数</text>
+  <text class="tGray" x="50" y="662">　 输入图谱 + 历史，</text>
+  <text class="tGray" x="50" y="684">　 输出卡片数组；</text>
+  <text class="tGray" x="50" y="706">　 适合写第一批单元测试</text>
+  <text class="t" x="50" y="742">需要语义判断的规则</text>
+  <text class="t" x="50" y="766">不进引擎（见中间底部）</text>
+  <text class="tGray" x="50" y="800">规则 id 用于去重与测试</text>
+
+  <path class="flow" d="M280,470 L296,470" marker-end="url(#arr)"/>
+
+  <!-- ===== 中：三条泳道 ===== -->
+  <rect class="lane" x="300" y="96" width="712" height="300" rx="12"/>
+  <text class="lAct" x="316" y="122">行动 · 该改了</text>
+  <rect class="act" x="316" y="134" width="340" height="118" rx="10"/>
+  <text class="h15" x="330" y="160">高置信却已过时</text>
+  <text class="t" x="330" y="186">stale 且置信度 ≥ 0.8</text>
+  <text class="num" x="330" y="210">256 条 · 82 个节点 · 占全部 32%</text>
+  <text class="tGray" x="330" y="236">从 Claim 最多的节点开始复核</text>
+  <rect class="act" x="666" y="134" width="330" height="118" rx="10"/>
+  <text class="h15" x="680" y="160">大部分结论已过时的节点</text>
+  <text class="t" x="680" y="186">≥ 5 条 Claim 且 ≥ 80% stale</text>
+  <text class="num" x="680" y="210">23 个节点</text>
+  <text class="tGray" x="680" y="236">整页重写，而不是逐条修补</text>
+  <rect class="act" x="316" y="262" width="340" height="118" rx="10"/>
+  <text class="h15" x="330" y="288">整体过时的分类</text>
+  <text class="t" x="330" y="314">分类内 ≥ 80% 的 Claim 是 stale</text>
+  <text class="num" x="330" y="338">每个分类一张卡，带平均置信度</text>
+  <text class="tGray" x="330" y="364">先决定还关不关注：归档或集中更新</text>
+  <rect class="act" x="666" y="262" width="330" height="118" rx="10"/>
+  <text class="h15" x="680" y="288">一再沿袭的差距建议</text>
+  <text class="t" x="680" y="314">最新一期里写明"延续上期"的条目</text>
+  <text class="num" x="680" y="338">提过、但还没落地</text>
+  <text class="tGray" x="680" y="364">拆最小动作，或明确放弃</text>
+
+  <rect class="lane" x="300" y="410" width="712" height="172" rx="12"/>
+  <text class="lChk" x="316" y="436">核查 · 先确认</text>
+  <rect class="chk" x="316" y="448" width="222" height="118" rx="10"/>
+  <text class="h15" x="330" y="474">低置信度</text>
+  <text class="t" x="330" y="500">置信度 &lt; 0.6</text>
+  <text class="tGray" x="330" y="526">补一个独立来源</text>
+  <text class="tGray" x="330" y="550">再决定升或降</text>
+  <rect class="chk" x="548" y="448" width="222" height="118" rx="10"/>
+  <text class="h15" x="562" y="474">单一来源</text>
+  <text class="t" x="562" y="500">≥ 3 条 Claim 全部</text>
+  <text class="t" x="562" y="524">来自同一篇文章</text>
+  <text class="tGray" x="562" y="550">尚未交叉验证</text>
+  <rect class="chk" x="780" y="448" width="216" height="118" rx="10"/>
+  <text class="h15" x="794" y="474">未分类</text>
+  <text class="t" x="794" y="500">分类字段为空</text>
+  <text class="tGray" x="794" y="526">分类视图里看不到</text>
+  <text class="tGray" x="794" y="550">归不进去就新开分类</text>
+
+  <rect class="lane" x="300" y="596" width="712" height="172" rx="12"/>
+  <text class="lNote" x="316" y="622">提示 · 知道就好</text>
+  <rect class="note" x="316" y="634" width="222" height="118" rx="10"/>
+  <text class="h15" x="330" y="660">样本太少的分类</text>
+  <text class="t" x="330" y="686">≤ 2 个节点</text>
+  <text class="tGray" x="330" y="712">成熟度在这里不可比</text>
+  <text class="tGray" x="330" y="736">扩充或并入相近分类</text>
+  <rect class="note" x="548" y="634" width="222" height="118" rx="10"/>
+  <text class="h15" x="562" y="660">几乎孤立的节点</text>
+  <text class="t" x="562" y="686">关系数 ≤ 1</text>
+  <text class="tGray" x="562" y="712">补扩展 / 对比 / 使用</text>
+  <text class="tGray" x="562" y="736">跳到知识图谱查看</text>
+  <rect class="note" x="780" y="634" width="216" height="118" rx="10"/>
+  <text class="h15" x="794" y="660">最近 14 天学了什么</text>
+  <text class="t" x="794" y="686">新建页面 + 更新的 Claim</text>
+  <text class="tGray" x="794" y="712">以最后一次提交为"今天"</text>
+  <text class="tGray" x="794" y="736">趁新鲜补关系</text>
+
+  <rect class="boxGray" x="300" y="782" width="712" height="66" rx="10"/>
+  <text class="h15" x="316" y="808">不做：冲突 Claim</text>
+  <text class="tGray" x="316" y="832">两条结论是否矛盾需要语义判断，规则写不出来，留给接入 LLM 之后再做</text>
+
+  <path class="flow" d="M1012,300 L1036,300" marker-end="url(#arr)"/>
+
+  <!-- ===== 右：卡片结构 ===== -->
+  <rect class="zone" x="1040" y="96" width="340" height="752" rx="12"/>
+  <text class="zl" x="1056" y="122">每张卡的结构</text>
+
+  <rect class="box" x="1056" y="140" width="308" height="300" rx="10"/>
+  <rect class="tag" x="1070" y="156" width="44" height="24" rx="5"/>
+  <text x="1080" y="173" fill="#fecaca" font-size="13px" font-weight="600">行动</text>
+  <text class="h15" x="1124" y="174">标题</text>
+  <circle class="badge" cx="1076" cy="214" r="11"/><text class="bn" x="1076" y="219">1</text>
+  <text class="t" x="1094" y="219">依据：数字怎么说</text>
+  <circle class="badge" cx="1076" cy="254" r="11"/><text class="bn" x="1076" y="259">2</text>
+  <text class="t" x="1094" y="259">建议动作：该做什么</text>
+  <circle class="badge" cx="1076" cy="294" r="11"/><text class="bn" x="1076" y="299">3</text>
+  <rect class="chip" x="1094" y="282" width="110" height="24" rx="12"/>
+  <text class="tGray" x="1106" y="299">节点（N 条）</text>
+  <rect class="chip" x="1212" y="282" width="80" height="24" rx="12"/>
+  <text class="tGray" x="1224" y="299">还有 4 个</text>
+  <circle class="badge" cx="1076" cy="340" r="11"/><text class="bn" x="1076" y="345">4</text>
+  <rect x="1094" y="326" width="136" height="30" rx="6" fill="none" stroke="#38bdf8"/>
+  <text x="1106" y="346" fill="#7dd3fc" font-size="13.5px">在洞察中查看 →</text>
+  <text class="tGray" x="1070" y="392">卡片不给结论，只给依据</text>
+  <text class="tGray" x="1070" y="416">和下一步，判断留给人</text>
+
+  <rect class="boxGray" x="1056" y="456" width="308" height="376" rx="10"/>
+  <text class="h15" x="1070" y="482">编号说明</text>
+  <circle class="badge" cx="1078" cy="512" r="11"/><text class="bn" x="1078" y="517">1</text>
+  <text class="el" x="1096" y="517">依据必须能复现：</text>
+  <text class="el" x="1096" y="539">写清条数、占比、阈值</text>
+  <circle class="badge" cx="1078" cy="574" r="11"/><text class="bn" x="1078" y="579">2</text>
+  <text class="el" x="1096" y="579">动作是可执行的一两步，</text>
+  <text class="el" x="1096" y="601">不是"建议关注"</text>
+  <circle class="badge" cx="1078" cy="636" r="11"/><text class="bn" x="1078" y="641">3</text>
+  <text class="el" x="1096" y="641">涉及节点最多列 12 个，</text>
+  <text class="el" x="1096" y="663">点开即对应 wiki 页面</text>
+  <circle class="badge" cx="1078" cy="698" r="11"/><text class="bn" x="1078" y="703">4</text>
+  <text class="el" x="1096" y="703">带一组预设筛选跳到洞察页，</text>
+  <text class="el" x="1096" y="725">两个页面靠地址栏的筛选</text>
+  <text class="el" x="1096" y="747">参数串起来</text>
+  <text class="tGray" x="1070" y="790">不适合洞察页的卡片改为</text>
+  <text class="tGray" x="1070" y="814">跳到图谱或演进页</text>
+</svg>

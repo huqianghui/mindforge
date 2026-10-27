@@ -195,6 +195,8 @@ ms app list                                        # 查看自己可访问的应
 | `ms app build` 返回 400：`tree entry ... is a symbolic link, which is not allowed in flat archives` | 平台构建把仓库打成平面归档，不接受符号链接 | 换成真实文件；同步脚本里用复制而不是链接 |
 | 往符号链接路径 `cp` 文件，结果写到了仓库外 | `cp` 会跟随已有的符号链接写到目标位置 | 先删链接再复制，复制后 `find . -type l` 自检 |
 | `ms app build` 成功，但看不到 Preview URL | 当前 CLI 输出与 `ms app info` 都不打印 Preview 地址 | 用 `ms app play --mode preview [--branch x]` 直接打开；或 `ms app dev` 本地运行（详见 [系列 04](Copilot-Managed-Runtime系列04：SDK与数据接入.md)） |
+| `ms app deploy` 退出码 1，提示轮询构建状态时网络超时 | CLI 轮询超时，平台上的构建其实还在跑（一次较大的构建约 20 分钟） | 先 `ms app build-status --commit <sha>`，看到 Succeeded 后再 `ms app deploy --commit <sha>`，会直接用缓存的构建、几秒上线；不要急着重推提交 |
+| 第一次带 App state 的 deploy 返回 504 | 平台侧偶发 | 直接重试（见 [系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)） |
 | 平台仓库普通推送被拒 | 平台 `main` 上有一个 GitHub 侧没有的提交（例如早期直接在平台仓库改过配置） | 只在一处开发，平台仓库当作镜像：`git push platform +main:refs/heads/main` 强制对齐后再 deploy |
 
 ---

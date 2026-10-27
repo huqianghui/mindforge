@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxRed { fill: #2a1316; stroke: #f87171; stroke-width: 1.8; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneG { fill: #0c1d22; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneR { fill: #1a1015; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlG { fill: #5eead4; font-size: 16px; font-weight: 700; }
+      .zlR { fill: #fca5a5; font-size: 16px; font-weight: 700; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tRed { fill: #fca5a5; font-size: 13.5px; }
+      .tGreen { fill: #99f6e4; font-size: 13.5px; }
+      .mono { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowRed { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 5 6; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeRed { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      .elR { fill: #fecaca; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">阅读进度与收藏：同一个需求，两条存储路径</text>
+  <text class="sub" x="30" y="72">上：App state 走同源接口，平台按登录身份隔离，读写都通；下：Dataverse 走 Connector，写入动作被租户 DLP 屏蔽</text>
+
+  <!-- 应用 -->
+  <rect class="boxBlue" x="30" y="100" width="250" height="560" rx="12"/>
+  <text class="h15" x="46" y="128">managed app（浏览器）</text>
+  <text class="t" x="46" y="156">getUser() → objectId</text>
+  <text class="tGray" x="46" y="180">宿主外 3 秒超时视为匿名</text>
+  <rect class="boxGray" x="46" y="200" width="218" height="150" rx="8"/>
+  <text class="t" x="58" y="226">每人每篇一条记录</text>
+  <text class="mono" x="58" y="252">docPath（索引）</text>
+  <text class="mono" x="58" y="276">scroll 0–1</text>
+  <text class="mono" x="58" y="300">lastReadAt</text>
+  <text class="mono" x="58" y="324">favorite</text>
+  <text class="t" x="46" y="384">进度和收藏的主键</text>
+  <text class="t" x="46" y="408">都是（用户, 文章）</text>
+  <text class="tGray" x="46" y="432">所以合成一张表 / 一个集合</text>
+  <text class="t" x="46" y="476">本机 localStorage</text>
+  <text class="tGray" x="46" y="500">始终另存一份，云端</text>
+  <text class="tGray" x="46" y="524">不可用时如实标明</text>
+  <text class="tGray" x="46" y="548">"仅保存在本机"</text>
+
+  <!-- ===== App state ===== -->
+  <rect class="zoneG" x="310" y="100" width="1070" height="270" rx="12"/>
+  <text class="zlG" x="326" y="128">App state · 采用</text>
+
+  <rect class="box" x="326" y="146" width="250" height="200" rx="10"/>
+  <text class="h15" x="342" y="172">schema 跟源码入库</text>
+  <text class="mono" x="342" y="198">ms feature enable</text>
+  <text class="mono" x="342" y="220">  --name state</text>
+  <text class="mono" x="342" y="244">ms project state add …</text>
+  <text class="mono" x="342" y="268">ms project state</text>
+  <text class="mono" x="342" y="290">  generate-code</text>
+  <text class="tRed" x="342" y="322">perUser 没有命令行参数</text>
+
+  <rect class="box" x="606" y="146" width="250" height="200" rx="10"/>
+  <text class="h15" x="622" y="172">同源接口</text>
+  <text class="mono" x="622" y="198">/.ms/state/</text>
+  <text class="mono" x="622" y="220">  readingState/items</text>
+  <text class="mono" x="622" y="244">  ?scope=private</text>
+  <text class="t" x="622" y="276">符合 connect-src 'self'</text>
+  <text class="tGreen" x="622" y="300">不经 Connector · 不受 DLP</text>
+  <text class="tGreen" x="622" y="324">用户不需要授权连接</text>
+
+  <rect class="box" x="886" y="146" width="230" height="200" rx="10"/>
+  <text class="h15" x="902" y="172">平台强制隔离</text>
+  <text class="t" x="902" y="198">schema 手加</text>
+  <text class="mono" x="902" y="222">x-ms-ownership:</text>
+  <text class="mono" x="902" y="244">  perUser</text>
+  <text class="t" x="902" y="276">前端不传用户 ID</text>
+  <text class="t" x="902" y="300">也伪造不了</text>
+  <text class="tGray" x="902" y="324">每条带 @ms.scope</text>
+
+  <rect class="box" x="1146" y="146" width="218" height="200" rx="10"/>
+  <text class="h15" x="1162" y="172">线上实测</text>
+  <text class="mono" x="1162" y="198">GET  ?scope=… 200</text>
+  <text class="mono" x="1162" y="222">POST 收藏   201</text>
+  <text class="mono" x="1162" y="246">PUT  刷新后 200</text>
+  <text class="tGray" x="1162" y="276">刷新后走 PUT，说明</text>
+  <text class="tGray" x="1162" y="300">是从云端读回的 itemId</text>
+  <text class="tRed" x="1162" y="328">本地 dev 不提供接口</text>
+
+  <path class="flow" d="M280,246 L322,246" marker-end="url(#arr)"/>
+  <path class="flow" d="M576,246 L602,246" marker-end="url(#arr)"/>
+  <path class="flow" d="M856,246 L882,246" marker-end="url(#arr)"/>
+  <path class="flow" d="M1116,246 L1142,246" marker-end="url(#arr)"/>
+  <circle class="badge" cx="301" cy="226" r="11"/><text class="bn" x="301" y="231">1</text>
+  <circle class="badge" cx="589" cy="226" r="11"/><text class="bn" x="589" y="231">2</text>
+  <circle class="badge" cx="869" cy="226" r="11"/><text class="bn" x="869" y="231">3</text>
+  <circle class="badge" cx="1129" cy="226" r="11"/><text class="bn" x="1129" y="231">4</text>
+
+  <!-- ===== Dataverse ===== -->
+  <rect class="zoneR" x="310" y="390" width="1070" height="270" rx="12"/>
+  <text class="zlR" x="326" y="418">Dataverse 表 · 对比实验，被 DLP 挡住</text>
+
+  <rect class="boxGray" x="326" y="436" width="250" height="200" rx="10"/>
+  <text class="h15" x="342" y="462">先建发布者与解决方案</text>
+  <text class="t" x="342" y="488">Web API 幂等创建：</text>
+  <text class="t" x="342" y="512">发布者（前缀 mf）</text>
+  <text class="t" x="342" y="536">→ 解决方案</text>
+  <text class="t" x="342" y="560">→ 用户拥有的表</text>
+  <text class="tGray" x="342" y="590">令牌用 az account</text>
+  <text class="tGray" x="342" y="612">get-access-token 取</text>
+
+  <rect class="boxRed" x="606" y="436" width="250" height="200" rx="10"/>
+  <text class="h15" x="622" y="462">加数据源</text>
+  <text class="mono" x="622" y="488">ms app add data-source</text>
+  <text class="mono" x="622" y="510">  --connector</text>
+  <text class="mono" x="622" y="532">  commondataservice…</text>
+  <text class="tRed" x="622" y="564">Skipped 22 of 45 actions</text>
+  <text class="tRed" x="622" y="588">due to connector policy</text>
+  <text class="tGray" x="622" y="614">只剩 List / Get / Delete</text>
+
+  <rect class="boxRed" x="886" y="436" width="230" height="200" rx="10"/>
+  <text class="h15" x="902" y="462">宿主里实测</text>
+  <text class="mono" x="902" y="488">ListRecords   200</text>
+  <text class="mono" x="902" y="512">createRecord  404</text>
+  <text class="tGray" x="902" y="544">SDK 走表格型路径</text>
+  <text class="tGray" x="902" y="568">datasets/…/tables/…</text>
+  <text class="tGray" x="902" y="592">Dataverse 不提供</text>
+  <text class="tRed" x="902" y="618">写入只能走被屏蔽的动作</text>
+
+  <rect class="boxGray" x="1146" y="436" width="218" height="200" rx="10"/>
+  <text class="h15" x="1162" y="462">收尾</text>
+  <text class="t" x="1162" y="488">手工补回被屏蔽的</text>
+  <text class="t" x="1162" y="512">动作 = 绕过组织策略</text>
+  <text class="tRed" x="1162" y="536">→ 不做</text>
+  <text class="t" x="1162" y="568">remove data-source</text>
+  <text class="tGray" x="1162" y="592">免得用户授权一个</text>
+  <text class="tGray" x="1162" y="614">用不到的连接</text>
+
+  <path class="flowRed" d="M280,536 L322,536" marker-end="url(#arrRed)"/>
+  <path class="flowRed" d="M576,536 L602,536" marker-end="url(#arrRed)"/>
+  <path class="flowRed" d="M856,536 L882,536" marker-end="url(#arrRed)"/>
+  <path class="flowGray" d="M1116,536 L1142,536" marker-end="url(#arrGray)"/>
+  <circle class="badgeRed" cx="301" cy="516" r="11"/><text class="bn" x="301" y="521">5</text>
+  <circle class="badgeRed" cx="589" cy="516" r="11"/><text class="bn" x="589" y="521">6</text>
+  <circle class="badgeRed" cx="869" cy="516" r="11"/><text class="bn" x="869" y="521">7</text>
+  <circle class="badgeRed" cx="1129" cy="516" r="11"/><text class="bn" x="1129" y="521">8</text>
+
+  <!-- 图例 -->
+  <rect class="boxGray" x="30" y="684" width="1350" height="196" rx="12"/>
+  <text class="h15" x="50" y="712">编号说明</text>
+  <circle class="badge" cx="62" cy="742" r="11"/><text class="bn" x="62" y="747">1</text>
+  <text class="el" x="82" y="747">用 CLI 定义集合与字段，schema 和生成的强类型代码一起入库</text>
+  <circle class="badge" cx="62" cy="774" r="11"/><text class="bn" x="62" y="779">2</text>
+  <text class="el" x="82" y="779">请求发到应用自己的域名，不经宿主转发 Connector，所以 DLP 管不到它</text>
+  <circle class="badge" cx="62" cy="806" r="11"/><text class="bn" x="62" y="811">3</text>
+  <text class="el" x="82" y="811">不加 perUser 时集合是全体用户共享的——最容易踩的坑</text>
+  <circle class="badge" cx="62" cy="838" r="11"/><text class="bn" x="62" y="843">4</text>
+  <text class="el" x="82" y="843">只能部署后验证：先只推平台仓库部署，验证通过再推 GitHub</text>
+  <circle class="badgeRed" cx="722" cy="742" r="11"/><text class="bn" x="722" y="747">5</text>
+  <text class="elR" x="742" y="747">本例先建发布者与解决方案，表名和后来 agent 的 schema name 都带发布者前缀</text>
+  <circle class="badgeRed" cx="722" cy="774" r="11"/><text class="bn" x="722" y="779">6</text>
+  <text class="elR" x="742" y="779">自动建了 SSO 连接，但租户策略让生成器跳过所有写入动作</text>
+  <circle class="badgeRed" cx="722" cy="806" r="11"/><text class="bn" x="722" y="811">7</text>
+  <text class="elR" x="742" y="811">读能通，写返回 404：通用表格接口这条路对 Dataverse 不存在</text>
+  <circle class="badgeRed" cx="722" cy="838" r="11"/><text class="bn" x="722" y="843">8</text>
+  <text class="elR" x="742" y="843">表和建表脚本保留作对比；应用里移除这两个数据源</text>
+</svg>

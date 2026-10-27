@@ -81,6 +81,8 @@ tags: [copilot-managed-runtime, managed-apps, architecture-pattern, dashboard, s
 - **九个里七个不需要任何 Connector**，在 GitHub Pages 上也能做。它们的共同点是"把计算挪到构建期、把交互留在前端"。
 - **只有 P6 共享状态表和 P8 提示词落地问答需要 managed app**——再加上"只有登录的内部用户能看"，这三点就是选 Managed Runtime 的真正理由，和 [系列 01](Copilot-Managed-Runtime系列01：托管环境对比与选型.md) 的选型结论一致。
 
+这些模式后来在知识库应用上逐个落地了：构建期快照、规则引擎、共享筛选状态见 [系列 07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md)；P6 的"按用户状态"改用不经 Connector 的 App state 实现，见 [系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)；P8 的提示词落地问答见 [系列 09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)。
+
 > [!TIP]
 > 给自己的应用做功能规划时，按这个顺序问：这件事能不能在构建期算好？能不能用浏览器原生能力？能不能用一张共享表代替一条工作流？三个都不行，才考虑加 Connector。每多一个 Connector，用户首次打开就多一次授权，每次调用多 0.1 Credits。
 

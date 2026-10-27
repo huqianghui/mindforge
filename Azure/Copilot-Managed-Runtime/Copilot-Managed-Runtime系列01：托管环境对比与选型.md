@@ -20,6 +20,9 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 | [04](Copilot-Managed-Runtime系列04：SDK与数据接入.md) | SDK 与数据接入 | SDK 接口、加数据源、本地调试、构建期与运行期 |
 | [05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md) | 在应用里调用 AI 的几条路 | Copilot Studio agent、M365 Copilot、Azure OpenAI 怎么接、怎么选 |
 | [06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md) | 参考应用拆解与功能模式 | 一个已上线应用的九个可复用模式 |
+| [07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md) | 零 Connector 的分析页面 | 实践：构建期五个 JSON 撑起洞察、建议、统计、演进四页 |
+| [08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md) | 用 App state 保存用户数据 | 实践：阅读进度与收藏；Dataverse 被 DLP 挡住后改用 App state |
+| [09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md) | 本地检索加 Work IQ 的问答 | 实践：带结构化引用的问答，返回格式与实测耗时 |
 
 Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、agent / workflow / app 协作）见姊妹系列 [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)。
 
@@ -31,7 +34,7 @@ Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、a
 - 选型的分界线很清楚：**公开站点 → GitHub Pages / Static Web Apps；内容协作 → SharePoint；企业内部交互应用 → Managed Runtime；自有后端与容器 → App Service / Container Apps**。复杂场景常是"Managed Runtime 前端 + Azure 后端"的组合。
 - 两个最容易踩的坑：**有 Microsoft 365 不等于能免费运行**（需 Power Apps Premium 或 Managed Application Copilot Credits）；**个人 GitHub 仓库不能直接绑定**（只支持 GitHub Enterprise Cloud 组织仓库或平台托管仓库）。
 
-> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 跑在各自的 harness 上、发布到 Teams、Microsoft 365 Copilot 等渠道，见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
+> 范围说明：本文讨论的是 Copilot Studio **应用（app）** 的运行环境。Copilot Studio 的 **agent** 跑在各自的 harness 上、发布到 Teams、Microsoft 365 Copilot 等渠道，见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)；Azure 侧 agent 的托管形态可参考 [Foundry Agent 三种形态对比与选型](../Foundary-Agent/Foundry-Agent三种形态对比与选型.md)。
 
 ---
 

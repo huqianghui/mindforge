@@ -18,7 +18,7 @@ tags: [copilot-managed-runtime, managed-apps, sdk, connector, dataverse, typescr
 - **SDK 不直接发网络请求**，而是把请求交给宿主，由宿主带着连接身份调 Connector。所以 SDK 只在宿主里可用，纯 `npm run dev` 下要降级。
 - **`getUser()` 只有姓名、objectId、tenantId 三个字段**；**`DataClient` 不抛异常**，必须检查 `success`。
 - **`ms app add data-source` 一次做三件事**：在租户里建连接、改 `ms.config.json`、生成强类型 Service。配置文件和生成代码都要入库——里面只有标识，没有凭据。
-- **能构建期算的不放运行期**；按 `objectId` 过滤只是筛选，不是授权。
+- **能构建期算的不放运行期**；按 `objectId` 过滤只是筛选，不是授权——按用户保存数据优先考虑 App state 的 `perUser` 集合，由平台按登录身份隔离。
 
 ---
 
@@ -131,19 +131,22 @@ Managed Runtime 没有后端，所以"什么时候算"比"用什么算"更重要
 
 - **构建期预计算**——依赖全部正文或全量数据的东西（字数、链接健康度、标签分布、业务指标、规则建议），在构建前脚本里算好写进静态 JSON。结果在 deploy 那一刻固定，页面要标明生成时间和数据源版本。
 - **运行期前端计算**——只依赖一份小 JSON 的聚合、筛选、钻取，同域 `fetch` 即可。但 CSP 禁了 Web Worker，重计算别放这里。
-- **运行期用户数据**——依赖当前用户的东西（进度、收藏、审核决定），必须以用户身份经 Dataverse / SharePoint Connector 读写。
+- **运行期用户数据**——依赖当前用户的东西（进度、收藏、审核决定），以用户身份经 Dataverse / SharePoint Connector 读写，或存进平台托管的 App state。
 - **运行期 LLM**——问答、解释、总结，经 Connector 调用，见 [系列 05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
 
-越往左越快、越便宜、越稳定。一个已上线的看板应用把数据每周算好打包进 bundle、零 Connector、秒开，只有共享状态和 AI 问答走 Connector，见 [系列 06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)。
+越往左越快、越便宜、越稳定。一个已上线的看板应用把数据每周算好打包进 bundle、零 Connector、秒开，只有共享状态和 AI 问答走 Connector，见 [系列 06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)；同样的做法在一个知识库应用上的完整落地见 [系列 07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md)。
 
-### 4.1 个性化：用户身份 + Dataverse
+### 4.1 个性化：用户身份 + 按用户的数据
+
+> [!NOTE]
+> **2026-10-27 实践更新**：下面的 Dataverse 方案在一个企业租户里被 DLP 挡住了写入，最终改用 App state 实现，过程与对比见 [系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)。这里保留原设计，作为"数据要被 agent / workflow 共享时"的做法。
 
 以"阅读进度与收藏"为例：`getUser()` 拿到 `objectId`；在同一环境的 Dataverse 建两张表（阅读进度含用户 objectId、文档路径、滚动比例、最近阅读时间；收藏含用户 objectId、文档路径、备注）；每张表执行一次 `ms app add data-source ... --table <logical_name>`；打开文档时按用户和路径过滤查询，滚动停止后去抖写回。
 
 > [!CAUTION]
 > **按 `objectId` 过滤只是筛选，不是授权。** 前端传来的 `objectId` 可以伪造。要防止用户读写别人的记录，在 Dataverse 用"用户或团队拥有"的表和安全角色，让记录 owner 就是当前用户，由平台按连接身份判断权限。
 
-还有一个实验性选项 **App state**：`ms feature enable --name state` 开启后，用 `ms project state add/alter` 定义 schema、`generate-code` 生成强类型服务，由平台托管按用户 / 共享的数据，可以替代 Dataverse 做个性化。但它是实验性的，且不支持 `ms app dev`。建议先用 Dataverse 走通标准做法，再拿它做对比。
+还有一个实验性选项 **App state**：`ms feature enable --name state` 开启后，用 `ms project state add/alter` 定义 schema、`generate-code` 生成强类型服务，由平台托管按用户 / 共享的数据，可以替代 Dataverse 做个性化。它是实验性的，且不支持 `ms app dev`。按用户隔离要在 schema 里手加 `x-ms-ownership: perUser`（否则是全员共享）；它走同源 `/.ms/state`，不经 Connector、不受 Connector DLP 影响。数据只给这个应用用时选它，要和 agent、workflow 共享时选 Dataverse。
 
 ### 4.2 接自己的后端
 

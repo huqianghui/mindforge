@@ -44,12 +44,12 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 
 ### 2.1 建 agent 的要点
 
-1. **必须选 Standard harness**——从左下角 **…** → **Open classic experience** 切到经典体验创建。harness 创建后不能互转，原因见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)。
+1. **必须选 Standard harness**——在 Agents 页点 New agent 右侧的下拉箭头，选 "Other ways to build" 下的 **Agent（Standard）**；直接点按钮建出的是 GitHub Copilot harness。harness 创建后不能互转，原因见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)。
 2. **放在和应用相同的环境**最省事（`environmentId` 参数可以跨环境，但多一层排查）。
 3. **指令写清三件事**：只根据知识源回答；用什么语言回答；找不到就明确说"知识库里没有"，不要编。
 4. **关掉通用知识和 Web 搜索**，否则无法判断回答是否来自你的知识源。
 5. **认证选 "Authenticate with Microsoft"**，这样 Connector 调用时就是当前用户身份。
-6. **发布（Publish）**后才能被调用〔待实测：未发布草稿是否可调〕；记下 agent 的 schema name，作为 `Copilot` 参数。
+6. **发布（Publish）**后才能被调用〔待实测：未发布草稿是否可调〕；`Copilot` 参数填 agent 的 **schema name**（如 `mf_MindforgeAsk`），它在创建对话框里就定死、之后不能改，见 [Copilot Studio 系列 05](../Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)。
 
 知识源有三种做法：**公开网站**零维护、随站点更新，但依赖 Bing 索引、新内容有延迟；**上传文件**精确可控、可复现，但要手动或脚本重传；**SharePoint 文档库**是企业场景最常见的，权限跟随 SharePoint，但多一套同步。先用上传文件走通，再换公开网站对比回答质量和新鲜度。
 
@@ -115,6 +115,9 @@ export async function askAgent(message: string, conversationId?: string) {
 
 代价也很清楚：Work IQ API 单独按量计费，Power Apps Premium 不覆盖；提示词长度限制了快照大小；依赖 Preview Connector。
 
+> [!TIP]
+> **这条路线已在一个知识库应用上实际跑通**：检索全在前端做，引用由 `[n]` 与 RELATED 行约定。实测要注意三件事——回答文本要剥六层包装（`reply` 为空、真正内容在字符串化的 `rawResponse` 里）；每个用户首次调用要授权，之后每次 15–20 秒；`copilot_chat` 还有可选的 `agentId` 参数，可能是从应用进入 Copilot Chat agent 的入口。完整过程见 [系列 09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)。
+
 ---
 
 ## 五、路线 ③：Azure OpenAI Connector + 前端检索
@@ -164,5 +167,6 @@ export async function askAgent(message: string, conversationId?: string) {
 
 相关文章：
 
-- [Copilot Studio 系列 03：三种 Harness 对比与选型](../Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)
+- [Copilot Studio 系列 03：四种 Harness 对比与选型](../Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)
 - [Copilot Managed Runtime 系列 06：参考应用拆解与功能模式](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)
+- [Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)

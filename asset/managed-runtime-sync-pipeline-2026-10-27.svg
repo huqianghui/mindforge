@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 930" width="1400" height="930" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tAmber { fill: #fcd34d; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      .elA { fill: #fde68a; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="930" rx="16"/>
+  <text class="title" x="30" y="44">一份仓库、五个 JSON、七个页面：零后端的数据管道</text>
+  <text class="sub" x="30" y="72">左边在本机跑，中间随 bundle 发布，右边在浏览器里同源读取；只有问答页走 Connector（琥珀色）</text>
+
+  <!-- ===== 左：构建期 ===== -->
+  <rect class="zone" x="20" y="96" width="340" height="612" rx="12"/>
+  <text class="zl" x="36" y="122">构建期 · 本机同步脚本</text>
+
+  <rect class="box" x="40" y="140" width="300" height="140" rx="10"/>
+  <text class="h" x="56" y="168">公开知识库仓库</text>
+  <text class="t" x="56" y="194">git ls-files：被跟踪的才同步</text>
+  <text class="t" x="56" y="218">公开边界 = 应用的内容边界</text>
+  <text class="t" x="56" y="242">完整历史、不预取文件内容</text>
+  <text class="tGray" x="56" y="266">--filter=blob:none（演进页要时间）</text>
+
+  <rect class="box" x="40" y="320" width="300" height="170" rx="10"/>
+  <text class="h" x="56" y="348">同步主脚本</text>
+  <text class="t" x="56" y="374">取 6 个目录的 Markdown 与 README</text>
+  <text class="t" x="56" y="398">只复制正文引用到的图片</text>
+  <text class="t" x="56" y="422">文件名改为路径哈希前 12 位</text>
+  <text class="t" x="56" y="446">再调历史 / 统计 / 检索三个子脚本</text>
+  <text class="tGray" x="56" y="472">输出目录每次整个删除重建</text>
+
+  <rect class="box" x="40" y="530" width="300" height="160" rx="10"/>
+  <text class="h" x="56" y="558">发布脚本</text>
+  <text class="t" x="56" y="584">同步 → 本地构建 → lint</text>
+  <text class="t" x="56" y="608">推 GitHub 与平台仓库两个远端</text>
+  <text class="t" x="56" y="632">ms app deploy 上线</text>
+  <text class="tAmber" x="56" y="660">所有数字在 deploy 那一刻固定</text>
+
+  <path class="flow" d="M190,280 L190,316" marker-end="url(#arr)"/>
+  <path class="flow" d="M190,490 L190,526" marker-end="url(#arr)"/>
+  <circle class="badge" cx="214" cy="299" r="12"/><text class="bn" x="214" y="304">1</text>
+  <circle class="badge" cx="214" cy="509" r="12"/><text class="bn" x="214" y="514">3</text>
+
+  <!-- ===== 中：静态 JSON ===== -->
+  <rect class="zone" x="390" y="96" width="370" height="612" rx="12"/>
+  <text class="zl" x="406" y="122">静态 JSON · 随 bundle 一起发布</text>
+
+  <rect class="boxBlue" x="410" y="140" width="330" height="100" rx="10"/>
+  <text class="h15" x="426" y="166">manifest.json</text>
+  <text class="t" x="426" y="192">每篇原路径、标题、哈希文件名</text>
+  <text class="tGray" x="426" y="216">来源 commit → 页面左下角显示</text>
+
+  <rect class="boxBlue" x="410" y="252" width="330" height="100" rx="10"/>
+  <text class="h15" x="426" y="278">wiki-graph.json</text>
+  <text class="t" x="426" y="304">147 节点 · 516 关系 · 806 Claim</text>
+  <text class="tGray" x="426" y="328">由知识库自己的导出脚本生成</text>
+
+  <rect class="boxBlue" x="410" y="364" width="330" height="100" rx="10"/>
+  <text class="h15" x="426" y="390">history.json</text>
+  <text class="t" x="426" y="416">首次提交时间（跟随改名）、按周累计</text>
+  <text class="tGray" x="426" y="440">约 20 个图谱快照 · 12 期差距报告</text>
+
+  <rect class="boxBlue" x="410" y="476" width="330" height="100" rx="10"/>
+  <text class="h15" x="426" y="502">stats.json（约 100 KB）</text>
+  <text class="t" x="426" y="528">每篇字数、标签、链接、系列编号</text>
+  <text class="tGray" x="426" y="552">坏链按阅读器同一套规则解析</text>
+
+  <rect class="boxBlue" x="410" y="588" width="330" height="100" rx="10"/>
+  <text class="h15" x="426" y="614">search.json（约 530 KB）</text>
+  <text class="t" x="426" y="640">386 篇：标题、描述、标签、标题行</text>
+  <text class="tGray" x="426" y="664">只在问答页按需加载</text>
+
+  <path class="flow" d="M340,405 L404,405" marker-end="url(#arr)"/>
+  <circle class="badge" cx="372" cy="384" r="12"/><text class="bn" x="372" y="389">2</text>
+
+  <!-- ===== 右：运行期 ===== -->
+  <rect class="zone" x="790" y="96" width="590" height="612" rx="12"/>
+  <text class="zl" x="806" y="122">运行期 · 浏览器（同源 fetch，connect-src 'self'）</text>
+
+  <rect class="box" x="810" y="140" width="270" height="100" rx="10"/>
+  <text class="h15" x="826" y="166">文章导航</text>
+  <text class="t" x="826" y="192">读 manifest：目录树、标题搜索</text>
+  <text class="tGray" x="826" y="216">链接、wikilink、图片改写</text>
+
+  <rect class="box" x="1095" y="140" width="270" height="100" rx="10"/>
+  <text class="h15" x="1111" y="166">知识图谱</text>
+  <text class="t" x="1111" y="192">读 wiki-graph：相关性维度</text>
+  <text class="tGray" x="1111" y="216">按节点 / 关系类型筛选</text>
+
+  <rect class="box" x="810" y="252" width="270" height="100" rx="10"/>
+  <text class="h15" x="826" y="278">洞察</text>
+  <text class="t" x="826" y="304">前端把 Claim 展平后多维筛选</text>
+  <text class="tGray" x="826" y="328">筛选进地址栏 · 点柱即筛选</text>
+
+  <rect class="box" x="1095" y="252" width="270" height="100" rx="10"/>
+  <text class="h15" x="1111" y="278">建议</text>
+  <text class="t" x="1111" y="304">图谱 + 历史 → 固定规则出卡片</text>
+  <text class="tGray" x="1111" y="328">同一份数据每次结果相同</text>
+
+  <rect class="box" x="810" y="364" width="270" height="100" rx="10"/>
+  <text class="h15" x="826" y="390">统计</text>
+  <text class="t" x="826" y="416">读 stats：只做聚合与展示</text>
+  <text class="tGray" x="826" y="440">标明生成时间与来源 commit</text>
+
+  <rect class="box" x="1095" y="364" width="270" height="100" rx="10"/>
+  <text class="h15" x="1111" y="390">演进</text>
+  <text class="t" x="1111" y="416">读 history：知识之树、时间轴</text>
+  <text class="tGray" x="1111" y="440">图表库按需加载</text>
+
+  <rect class="boxAmber" x="810" y="490" width="555" height="96" rx="10"/>
+  <text class="hAmber" x="826" y="518">问答（唯一走 Connector 的页面）</text>
+  <text class="t" x="826" y="544">读 search.json 在本地检索 → 段落写进提示词 → Work IQ Copilot MCP</text>
+  <text class="tGray" x="826" y="568">详见系列 09；用户数据（收藏、进度）走同源 App state，见系列 08</text>
+
+  <rect class="boxGray" x="810" y="606" width="555" height="84" rx="10"/>
+  <text class="h15" x="826" y="634">CSP 的直接后果</text>
+  <text class="tGray" x="826" y="660">没有 Worker，重计算不能放运行期；外部 API 一律不可直连</text>
+
+  <path class="flow" d="M740,300 L804,300" marker-end="url(#arr)"/>
+  <circle class="badge" cx="772" cy="279" r="12"/><text class="bn" x="772" y="284">4</text>
+  <path class="flowAmber" d="M740,638 C770,638 770,540 804,540" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="776" cy="600" r="12"/><text class="bn" x="776" y="605">5</text>
+
+  <!-- ===== 图例 ===== -->
+  <rect class="boxGray" x="20" y="730" width="1360" height="180" rx="12"/>
+  <text class="h15" x="40" y="760">编号说明</text>
+  <circle class="badge" cx="52" cy="790" r="11"/><text class="bn" x="52" y="795">1</text>
+  <text class="el" x="72" y="795">完整历史克隆源仓库，只取 git 跟踪的文件；私有目录在源仓库就不入库，所以不会被同步出来</text>
+  <circle class="badge" cx="52" cy="822" r="11"/><text class="bn" x="52" y="827">2</text>
+  <text class="el" x="72" y="827">同步脚本一次写出五个 JSON：依赖全部正文或全部历史的计算（字数、链接健康度、首次提交时间、检索摘要）都在这里做完</text>
+  <circle class="badge" cx="52" cy="854" r="11"/><text class="bn" x="52" y="859">3</text>
+  <text class="el" x="72" y="859">发布脚本构建并部署；JSON 是 bundle 的一部分，数字在 deploy 时固定，页面要标明生成时间与来源 commit</text>
+  <circle class="badge" cx="52" cy="886" r="11"/><text class="bn" x="52" y="891">4</text>
+  <text class="el" x="72" y="891">六个页面同源 fetch 小 JSON，在前端做筛选、聚合、规则判断，不调用任何 Connector</text>
+  <circle class="badgeAmber" cx="902" cy="790" r="11"/><text class="bn" x="902" y="795">5</text>
+  <text class="elA" x="922" y="795">问答页先在本地检索，再经 Connector 调模型</text>
+</svg>

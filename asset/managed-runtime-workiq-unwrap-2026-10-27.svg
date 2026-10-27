@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .code { fill: #0f172a; stroke: #334155; stroke-width: 1.2; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tRed { fill: #fca5a5; font-size: 13.5px; }
+      .mono { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .monoG { fill: #64748b; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .monoA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .colh { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="860" rx="16"/>
+  <text class="title" x="30" y="44">Work IQ 的回答要剥六层才拿得到</text>
+  <text class="sub" x="30" y="72">左列是这一层是什么，中间是实测的样子，右列是怎么处理；任何一步解析失败都退回上一层的原文，不让界面报错</text>
+
+  <text class="colh" x="80" y="110">层</text>
+  <text class="colh" x="400" y="110">实测样子（节选）</text>
+  <text class="colh" x="1060" y="110">处理</text>
+
+  <!-- row 1 -->
+  <circle class="badge" cx="44" cy="160" r="12"/><text class="bn" x="44" y="165">1</text>
+  <rect class="box" x="70" y="126" width="300" height="76" rx="10"/>
+  <text class="h15" x="86" y="152">SDK 返回结构</text>
+  <text class="tGray" x="86" y="178">所有 Connector 调用都一样</text>
+  <rect class="code" x="390" y="126" width="650" height="76" rx="8"/>
+  <text class="mono" x="406" y="156">{ success: true, data: … }</text>
+  <text class="monoG" x="406" y="182">生成的 Service 声明返回 void，实际内容在 data 里</text>
+  <text class="t" x="1060" y="156">先查 success，失败直接报错</text>
+  <text class="tGray" x="1060" y="182">SDK 不抛异常</text>
+
+  <!-- row 2 -->
+  <circle class="badge" cx="44" cy="256" r="12"/><text class="bn" x="44" y="261">2</text>
+  <rect class="box" x="70" y="222" width="300" height="76" rx="10"/>
+  <text class="h15" x="86" y="248">传输格式</text>
+  <text class="tGray" x="86" y="274">可能是 JSON，也可能是 SSE</text>
+  <rect class="code" x="390" y="222" width="650" height="76" rx="8"/>
+  <text class="mono" x="406" y="252">event: message</text>
+  <text class="mono" x="406" y="278">data: {"jsonrpc":"2.0","id":"…","result":{…}}</text>
+  <text class="t" x="1060" y="252">是字符串就取最后一个</text>
+  <text class="t" x="1060" y="278">data: 行再 JSON.parse</text>
+
+  <!-- row 3 -->
+  <circle class="badge" cx="44" cy="352" r="12"/><text class="bn" x="44" y="357">3</text>
+  <rect class="box" x="70" y="318" width="300" height="76" rx="10"/>
+  <text class="h15" x="86" y="344">MCP JSON-RPC 响应</text>
+  <text class="tGray" x="86" y="370">工具调用的标准外壳</text>
+  <rect class="code" x="390" y="318" width="650" height="76" rx="8"/>
+  <text class="mono" x="406" y="348">result.content: [{ type: "text", text: "…" }]</text>
+  <text class="mono" x="406" y="374">result.isError · error.code / error.message</text>
+  <text class="t" x="1060" y="348">处理 error 与 isError</text>
+  <text class="t" x="1060" y="374">拼接所有 text 片段</text>
+
+  <!-- row 4 -->
+  <circle class="badge" cx="44" cy="448" r="12"/><text class="bn" x="44" y="453">4</text>
+  <rect class="box" x="70" y="414" width="300" height="76" rx="10"/>
+  <text class="h15" x="86" y="440">text 不是回答</text>
+  <text class="tGray" x="86" y="466">一段 JSON 再跟一行尾巴</text>
+  <rect class="code" x="390" y="414" width="650" height="76" rx="8"/>
+  <text class="mono" x="406" y="444">{"conversationId":"…","reply":"","rawResponse":"…",…}</text>
+  <text class="monoA" x="406" y="470">CorrelationId: …, TimeStamp: …</text>
+  <text class="t" x="1060" y="444">先删掉 CorrelationId 行</text>
+  <text class="t" x="1060" y="470">再解析外层 JSON</text>
+
+  <!-- row 5 -->
+  <circle class="badge" cx="44" cy="544" r="12"/><text class="bn" x="44" y="549">5</text>
+  <rect class="boxAmber" x="70" y="510" width="300" height="96" rx="10"/>
+  <text class="hAmber" x="86" y="536">reply 为空</text>
+  <text class="t" x="86" y="562">真正的内容在 rawResponse</text>
+  <text class="tGray" x="86" y="588">一个字符串化的会话对象</text>
+  <rect class="code" x="390" y="510" width="650" height="96" rx="8"/>
+  <text class="mono" x="406" y="540">"{&#92;u0022@odata.context&#92;u0022:&#92;u0022…copilotConversation&#92;u0022,</text>
+  <text class="mono" x="406" y="564"> … &#92;u0022messages&#92;u0022:[ … ]}"</text>
+  <text class="monoA" x="406" y="590">引号、中文、+、` 都被转义成 \uXXXX —— 看起来像乱码</text>
+  <text class="t" x="1060" y="540">再 JSON.parse 一次</text>
+  <text class="t" x="1060" y="564">转义就全部还原</text>
+  <text class="tRed" x="1060" y="590">别把它当乱码去修</text>
+
+  <!-- row 6 -->
+  <circle class="badge" cx="44" cy="660" r="12"/><text class="bn" x="44" y="665">6</text>
+  <rect class="box" x="70" y="626" width="300" height="96" rx="10"/>
+  <text class="h15" x="86" y="652">messages 数组</text>
+  <text class="t" x="86" y="678">第一条是我们发的提示词</text>
+  <text class="t" x="86" y="702">最后一条才是回答</text>
+  <rect class="code" x="390" y="626" width="650" height="96" rx="8"/>
+  <text class="monoG" x="406" y="656">[0] You are the help assistant … SOURCES [1] … QUESTION …</text>
+  <text class="mono" x="406" y="682">[n] 核心区别可以理解为：…… [1][2]</text>
+  <text class="mono" x="406" y="706">    RELATED: 1, 2, 3, 4</text>
+  <text class="t" x="1060" y="656">取最后一条 text</text>
+  <text class="t" x="1060" y="682">且不等于提示词的消息</text>
+  <text class="tGray" x="1060" y="706">再交给 RELATED 解析</text>
+
+  <path class="flow" d="M44,174 L44,240" marker-end="url(#arr)"/>
+  <path class="flow" d="M44,270 L44,336" marker-end="url(#arr)"/>
+  <path class="flow" d="M44,366 L44,432" marker-end="url(#arr)"/>
+  <path class="flow" d="M44,462 L44,528" marker-end="url(#arr)"/>
+  <path class="flow" d="M44,558 L44,644" marker-end="url(#arr)"/>
+
+  <rect class="boxGray" x="30" y="744" width="1340" height="96" rx="12"/>
+  <text class="h15" x="50" y="772">为什么要写成"每层失败就退回原文"</text>
+  <text class="t" x="50" y="800">这个格式是 Preview Connector 的实测结果，文档没有写，随时可能变。退回原文意味着：格式变了，用户看到的是一段没解析干净的文字，</text>
+  <text class="t" x="50" y="824">而不是一个空白回答或报错页——问题可见、功能不断。同理，RELATED 行缺失时照样列出全部检索结果。</text>
+</svg>
