@@ -355,6 +355,17 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Copilot Managed Runtime 系列 01：托管环境对比与选型](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列01：托管环境对比与选型.md)
 - [Copilot Managed Runtime 系列 02：实战部署与权限解析](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列02：实战部署与权限解析.md)
+- [Copilot Managed Runtime 系列 03：宿主沙箱与安全边界](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)
+- [Copilot Managed Runtime 系列 04：SDK 与数据接入](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列04：SDK与数据接入.md)
+- [Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)
+- [Copilot Managed Runtime 系列 06：参考应用拆解与功能模式](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)
+
+#### Azure/Copilot-Studio
+
+- [Copilot Studio 系列 01：产品全景与环境](Azure/Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)
+- [Copilot Studio 系列 02：Connector 与连接](Azure/Copilot-Studio/Copilot-Studio系列02：Connector与连接.md)
+- [Copilot Studio 系列 03：三种 Harness 对比与选型](Azure/Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)
+- [Copilot Studio 系列 04：Agent、Workflow 与 App 的协作](Azure/Copilot-Studio/Copilot-Studio系列04：Agent、Workflow与App的协作.md)
 
 #### Azure/AzureOpenAI
 
