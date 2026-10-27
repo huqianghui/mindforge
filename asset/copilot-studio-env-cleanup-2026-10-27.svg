@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="640" viewBox="0 0 1400 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#475569"/><stop offset="1" stop-color="#475569" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#475569"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="640" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="638" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">开发者环境的不活动清理时间线</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">以普通开发者环境 30 天阈值为例；开启 Managed Environment 的个人开发者环境阈值为 60 天，其后节奏相同</text>
+<line x1="80" y1="250" x2="1330" y2="250" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+<path id="axis" d="M80 250 H1330" fill="none" stroke="#2dd4bf" stroke-width="4" class="flow"/>
+<circle r="9" fill="url(#pt_amber)"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#axis"/></animateMotion></circle>
+<circle cx="80" cy="250" r="11" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="3"/>
+<text x="80" y="222" font-size="15" font-weight="700" fill="#2dd4bf" text-anchor="middle">第 0 天</text>
+<text x="80" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">最近一次活动</text>
+<circle cx="420" cy="250" r="11" fill="#0a0f1c" stroke="#fbbf24" stroke-width="3"/>
+<text x="420" y="222" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">第 23 天</text>
+<text x="420" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">警告邮件 ①</text>
+<circle cx="540" cy="250" r="11" fill="#0a0f1c" stroke="#fbbf24" stroke-width="3"/>
+<text x="540" y="222" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">第 27 天</text>
+<text x="540" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">警告邮件 ②</text>
+<circle cx="640" cy="250" r="11" fill="#0a0f1c" stroke="#f87171" stroke-width="3"/>
+<text x="640" y="222" font-size="15" font-weight="700" fill="#f87171" text-anchor="middle">第 30 天</text>
+<text x="640" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">自动禁用</text>
+<circle cx="1000" cy="250" r="11" fill="#0a0f1c" stroke="#f87171" stroke-width="3"/>
+<text x="1000" y="222" font-size="15" font-weight="700" fill="#f87171" text-anchor="middle">+15 天</text>
+<text x="1000" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">自动删除</text>
+<circle cx="1330" cy="250" r="11" fill="#0a0f1c" stroke="#475569" stroke-width="3"/>
+<text x="1330" y="222" font-size="15" font-weight="700" fill="#475569" text-anchor="middle">+7 天</text>
+<text x="1330" y="290" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">恢复窗口关闭</text>
+<rect x="80" y="120" width="340" height="40" rx="8" fill="#2dd4bf" fill-opacity=".12"/>
+<text x="250" y="146" font-size="14" font-weight="700" fill="#5eead4" text-anchor="middle">正常使用</text>
+<rect x="420" y="120" width="220" height="40" rx="8" fill="#fbbf24" fill-opacity=".14"/>
+<text x="530" y="146" font-size="14" font-weight="700" fill="#fcd34d" text-anchor="middle">倒计时：列表与详情页可见</text>
+<rect x="640" y="120" width="360" height="40" rx="8" fill="#f87171" fill-opacity=".14"/>
+<text x="820" y="146" font-size="14" font-weight="700" fill="#fca5a5" text-anchor="middle">已禁用：可重新启用</text>
+<rect x="1000" y="120" width="330" height="40" rx="8" fill="#64748b" fill-opacity=".18"/>
+<text x="1165" y="146" font-size="14" font-weight="700" fill="#cbd5e1" text-anchor="middle">已删除：7 天内可恢复</text>
+<path id="p1" d="M530 300 C530 360 80 360 80 290" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="3.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="196" cy="372" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="196" y="377" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">↺</text>
+<text x="214" y="377" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Trigger environment activity：几秒后"最近活动"刷新为今天</text>
+<rect x="60" y="420" width="420" height="150" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="76" y="447" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">算"活动"的</text>
+<text x="76" y="471" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">Power Apps / Automate / Copilot Studio 里的增删改查</text>
+<text x="76" y="495" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">操作 managed app、读写 Dataverse</text>
+<text x="76" y="519" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">测试或发布 agent、跑一次 workflow</text>
+<text x="76" y="543" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">由用户、制作者或管理员发起</text>
+<rect x="500" y="420" width="400" height="150" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="516" y="447" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">不算"活动"的</text>
+<text x="516" y="471" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">只打开首页</text>
+<text x="516" y="495" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">只打开解决方案浏览器、设计器</text>
+<text x="516" y="519" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">CoE 工具包的跨组织查询（2025-04 起）</text>
+<text x="516" y="543" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">以 admin center 显示的日期为准</text>
+<rect x="920" y="420" width="420" height="150" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="936" y="447" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">防止被清理</text>
+<text x="936" y="471" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">收到警告就点 Trigger environment activity</text>
+<text x="936" y="495" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">保持真实使用，而不是"看一眼"</text>
+<text x="936" y="519" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">源码进 Git、agent 用 Solutions 导出</text>
+<text x="936" y="543" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">长期给别人用的东西放 Production 环境</text>
+<text x="60" y="606" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">实测一次异常：详情页显示"不活动 0 天，3 天后禁用"，与文档阈值对不上——不要按文档推算，按页面倒计时处理。</text>
+</svg>

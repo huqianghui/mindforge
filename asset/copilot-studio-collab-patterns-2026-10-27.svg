@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="500" viewBox="0 0 1400 500" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="500" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="498" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">app 与 agent、workflow 互动的三种模式</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">官方主推 A；B 路很窄；C 没有直接入口，实际上回到 A</text>
+<rect x="40" y="100" width="420" height="200" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6" class="pulse"/>
+<text x="56" y="127" font-size="17" font-weight="700" fill="#ccfbf1" text-anchor="start">A · 共享数据（主推）</text>
+<text x="56" y="151" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">后台 workflow / agent 写表</text>
+<text x="56" y="175" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">app 读出来让人决定、写回</text>
+<text x="56" y="199" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">写回触发下一步 workflow</text>
+<rect x="40" y="320" width="420" height="116" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="56" y="347" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">适合</text>
+<text x="56" y="371" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">审批、工单、评审</text>
+<text x="56" y="395" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">报表、看板（或构建期预计算）</text>
+<text x="56" y="419" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">定期分析、生成报告文件</text>
+<text x="50" y="464" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">异步 · 可审计 · 人在回路 · 绕开 harness 限制</text>
+<rect x="490" y="100" width="420" height="200" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="506" y="127" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="start">B · app 同步调用 agent</text>
+<text x="506" y="151" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Connector → Standard agent ✓</text>
+<text x="506" y="175" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Work IQ MCP → M365 Copilot ✓</text>
+<text x="506" y="199" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">GitHub Copilot harness ✗ · iframe ✗</text>
+<rect x="490" y="320" width="420" height="116" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="506" y="347" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">适合</text>
+<text x="506" y="371" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">当场问答</text>
+<text x="506" y="395" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">术语解释（多数可预写）</text>
+<text x="500" y="464" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">一次性纯文本 · 无流式 · 每用户自建连接</text>
+<rect x="940" y="100" width="420" height="200" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="956" y="127" font-size="17" font-weight="700" fill="#cbd5e1" text-anchor="start">C · app 触发 workflow</text>
+<text x="956" y="151" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">没有"按钮直接调 workflow"的官方方式</text>
+<text x="956" y="175" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 改一行数据 → 行新增 / 修改触发器</text>
+<text x="956" y="199" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② 调 Standard agent，由它把 workflow 当工具</text>
+<rect x="940" y="320" width="420" height="116" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="956" y="347" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">适合</text>
+<text x="956" y="371" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">需要"点一下就跑"的动作</text>
+<text x="950" y="464" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">推荐 ①，本质就是模式 A 的回路</text>
+<rect x="56.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="93.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Workflow</text>
+<rect x="160.66666666666669" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="197.66666666666669" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Agent</text>
+<rect x="265.33333333333337" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="302.33333333333337" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">表</text>
+<rect x="370.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="407.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">App</text>
+<path id="p1" d="M130.0 248 H157.66666666666669" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<path id="p2" d="M234.66666666666669 248 H262.33333333333337" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.4s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<path id="p3" d="M339.33333333333337 248 H367.0" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.8s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<rect x="506.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="543.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">App</text>
+<rect x="610.6666666666666" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#38bdf8" stroke-width="1.4"/>
+<text x="647.6666666666666" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">宿主</text>
+<rect x="715.3333333333334" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#38bdf8" stroke-width="1.4"/>
+<text x="752.3333333333334" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Connector</text>
+<rect x="820.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="857.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Agent</text>
+<path id="p4" d="M580.0 248 H607.6666666666666" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<path id="p5" d="M684.6666666666666 248 H712.3333333333334" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.4s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<path id="p6" d="M789.3333333333334 248 H817.0" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.8s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<rect x="956.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.4"/>
+<text x="993.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">App</text>
+<rect x="1060.6666666666667" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="1097.6666666666667" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">改一行</text>
+<rect x="1165.3333333333333" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#94a3b8" stroke-width="1.4"/>
+<text x="1202.3333333333333" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">触发器</text>
+<rect x="1270.0" y="226" width="74" height="44" rx="9" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="1307.0" y="253" font-size="13" font-weight="600" fill="#e2e8f0" text-anchor="middle">Workflow</text>
+<path id="p7" d="M1030.0 248 H1057.6666666666667" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<path id="p8" d="M1134.6666666666667 248 H1162.3333333333333" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.4s" repeatCount="indefinite"><mpath href="#p8"/></animateMotion></circle>
+<path id="p9" d="M1239.3333333333333 248 H1267.0" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.8s" repeatCount="indefinite"><mpath href="#p9"/></animateMotion></circle>
+</svg>

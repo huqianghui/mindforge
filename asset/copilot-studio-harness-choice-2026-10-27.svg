@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="680" viewBox="0 0 1400 680" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="680" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="678" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">按任务的"重量"选 harness</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">短、路径能写清、要快要稳 → Standard；长、多步、多产出、能接受不确定 → GitHub Copilot</text>
+<defs><linearGradient id="spec" x1="0" x2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#fbbf24"/></linearGradient></defs>
+<rect x="80" y="130" width="1240" height="16" rx="8" fill="url(#spec)" opacity=".85"/>
+<text x="80" y="118" font-size="15" font-weight="700" fill="#5eead4" text-anchor="start">轻</text>
+<text x="1320" y="118" font-size="15" font-weight="700" fill="#fcd34d" text-anchor="end">重</text>
+<text x="640" y="168" font-size="15" font-weight="700" fill="#2dd4bf" text-anchor="end">选 Standard</text>
+<text x="760" y="168" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="start">选 GitHub Copilot</text>
+<text x="700" y="204" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">任务长度</text>
+<text x="640" y="204" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">短、步骤少、一个主要产出</text>
+<text x="760" y="204" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">长时间、多步骤、多个产出</text>
+<line x1="80" y1="216" x2="1320" y2="216" stroke="#1e293b"/>
+<text x="700" y="248" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">执行路径</text>
+<text x="640" y="248" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">能提前写清楚</text>
+<text x="760" y="248" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">写不清，边做边判断</text>
+<line x1="80" y1="260" x2="1320" y2="260" stroke="#1e293b"/>
+<text x="700" y="292" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">上下文</text>
+<text x="640" y="292" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">有边界的数据，topics / 变量里交接</text>
+<text x="760" y="292" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">大文件、大数据集，跨运行记忆</text>
+<line x1="80" y1="304" x2="1320" y2="304" stroke="#1e293b"/>
+<text x="700" y="336" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">可预测性</text>
+<text x="640" y="336" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">要求高</text>
+<text x="760" y="336" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">可接受路径不完全可预测</text>
+<line x1="80" y1="348" x2="1320" y2="348" stroke="#1e293b"/>
+<text x="700" y="380" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">延迟与费用</text>
+<text x="640" y="380" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">高并发、面向用户、要快</text>
+<text x="760" y="380" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">愿为推理质量多付延迟与 Credits</text>
+<line x1="80" y1="392" x2="1320" y2="392" stroke="#1e293b"/>
+<text x="700" y="424" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">被应用程序化调用</text>
+<text x="640" y="424" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">✓ 只能选它</text>
+<text x="760" y="424" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">✗ Connector 调不了</text>
+<line x1="80" y1="436" x2="1320" y2="436" stroke="#1e293b"/>
+<rect x="60" y="490" width="400" height="150" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="76" y="517" font-size="15" font-weight="700" fill="#fee2e2" text-anchor="start">反面一：简单任务用重 harness</text>
+<text x="76" y="541" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">多余推理、更长延迟、更多 Credits</text>
+<text x="76" y="565" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">结果并不更好</text>
+<text x="76" y="589" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">—— "想太多"</text>
+<rect x="480" y="490" width="400" height="150" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="496" y="517" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">反面二：能用的 Standard 不必迁移</text>
+<text x="496" y="541" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">迁移 = 重新架构</text>
+<text x="496" y="565" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">先定义任务、边界、评估标准</text>
+<text x="496" y="589" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">再把 topics / flows / 变量映射到</text>
+<text x="496" y="613" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">instructions、skills、tools、memory</text>
+<rect x="900" y="490" width="440" height="150" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="916" y="517" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">组合用法（官方推荐）</text>
+<text x="916" y="541" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">GitHub Copilot harness 定时在后台做重活</text>
+<text x="916" y="565" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">（整理数据、建表、打标签）结果写表</text>
+<text x="916" y="589" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">Standard agent 在前台高并发回答用户</text>
+<text x="916" y="613" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">每个 harness 用在最划算的地方</text>
+</svg>

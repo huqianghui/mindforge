@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="870" viewBox="0 0 1400 870" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="870" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="868" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">Connector、连接与连接引用：一个连接池，三种用法</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">类型 → 实例 → 声明；凭据只存在连接对象里，在 API Hub 这一跳才注入</text>
+<rect x="30" y="96" width="420" height="610" rx="14" fill="#38bdf8" fill-opacity="0.04" stroke="#38bdf8" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="120" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="start">定义与实例</text>
+<rect x="50" y="132" width="380" height="142" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="66" y="159" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Connector（类型）</text>
+<text x="66" y="183" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">一个 API 的定义：操作 / 表、参数、返回</text>
+<text x="66" y="207" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">认证方式：OAuth · API key · 服务主体</text>
+<text x="66" y="231" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">全平台一份 · 不会过期</text>
+<text x="66" y="255" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">ms connector list · New connection 目录</text>
+<rect x="50" y="302" width="380" height="166" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="66" y="329" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Connection（实例）</text>
+<text x="66" y="353" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">某人用某账号对 Connector 的一次登录</text>
+<text x="66" y="377" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">存凭据：OAuth 令牌 / API key</text>
+<text x="66" y="401" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">属于环境 · 会过期（红叉 + Reconnect）</text>
+<text x="66" y="425" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Power Apps 门户 → Connections</text>
+<text x="66" y="449" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">同一 Connector 可以有多个连接</text>
+<rect x="50" y="500" width="380" height="166" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="66" y="527" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">Connection reference（声明）</text>
+<text x="66" y="551" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">"我需要一个 X 类型的连接"</text>
+<text x="66" y="575" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">写在 ms.config.json 的 connectionReferences</text>
+<text x="66" y="599" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">只有 apiId / connectionId 等标识</text>
+<text x="66" y="623" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">Solutions 跨环境只带它，不带连接</text>
+<text x="66" y="647" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">导入时绑定目标环境的连接</text>
+<path id="p1" d="M240 274 V298" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="262" cy="286" r="12" fill="#0a0f1c" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="262" y="291" font-size="13" font-weight="700" fill="#38bdf8" text-anchor="middle">1</text>
+<path id="p2" d="M240 496 V472" fill="none" stroke="#a78bfa" stroke-width="2.3" class="flow" marker-end="url(#ar_violet)"/>
+<circle r="6" fill="url(#pt_violet)"><animateMotion dur="1.0s" begin="0.4s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<circle cx="262" cy="484" r="12" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="262" y="489" font-size="13" font-weight="700" fill="#a78bfa" text-anchor="middle">2</text>
+<rect x="490" y="96" width="880" height="250" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="506" y="120" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">同一个连接池 · 三种用法</text>
+<rect x="510" y="134" width="270" height="196" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="526" y="161" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">Managed App</text>
+<text x="526" y="185" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">生成的 TypeScript Service</text>
+<text x="526" y="209" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">ms app add data-source</text>
+<text x="526" y="233" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">永远用当前用户自己的连接</text>
+<text x="526" y="257" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">代码决定调哪个，确定</text>
+<rect x="796" y="134" width="270" height="196" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="812" y="161" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">Copilot Studio Agent</text>
+<text x="812" y="185" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">工具（agent 决定何时调）</text>
+<text x="812" y="209" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">或知识源（检索用）</text>
+<text x="812" y="233" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">作者身份 或 用户身份</text>
+<text x="812" y="257" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">事件触发器只能用作者凭据</text>
+<rect x="1082" y="134" width="270" height="196" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="1098" y="161" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Workflow</text>
+<text x="1098" y="185" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">流程里的一个步骤</text>
+<text x="1098" y="209" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">流程设计器添加动作</text>
+<text x="1098" y="233" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">通常用建流程的人的连接</text>
+<text x="1098" y="257" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">流程定义决定，确定</text>
+<path id="p3" d="M645 330 C645 370 430 370 434 370" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.6s" begin="0.2s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<circle cx="560" cy="372" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="560" y="377" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">3</text>
+<path id="p4" d="M931 330 V370 H434" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.8s" begin="0.5s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<path id="p5" d="M1217 330 V370 H434" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="2.0s" begin="0.8s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<rect x="490" y="404" width="880" height="302" rx="14" fill="#fbbf24" fill-opacity="0.04" stroke="#fbbf24" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="506" y="428" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="start">调用时的一跳一跳</text>
+<rect x="510" y="446" width="160" height="96" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="526" y="473" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">应用代码</text>
+<text x="526" y="497" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">生成的 Service</text>
+<rect x="680" y="446" width="160" height="96" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="696" y="473" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">SDK</text>
+<text x="696" y="497" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">executeAsync</text>
+<rect x="850" y="446" width="160" height="96" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="866" y="473" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">宿主 http/send</text>
+<text x="866" y="497" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">校验 apiId、URL</text>
+<rect x="1020" y="446" width="160" height="96" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="1036" y="473" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">API Hub</text>
+<text x="1036" y="497" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">注入连接凭据</text>
+<rect x="1190" y="446" width="160" height="96" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="1206" y="473" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">后端 API</text>
+<text x="1206" y="497" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">SharePoint 等</text>
+<path id="p6" d="M670 494 H676" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.9s" begin="0.0s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<path id="p7" d="M840 494 H846" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.9s" begin="0.3s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<path id="p8" d="M1010 494 H1016" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.9s" begin="0.6s" repeatCount="indefinite"><mpath href="#p8"/></animateMotion></circle>
+<path id="p9" d="M1180 494 H1186" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.9s" begin="0.8999999999999999s" repeatCount="indefinite"><mpath href="#p9"/></animateMotion></circle>
+<circle cx="930" cy="572" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="930" y="577" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">4</text>
+<text x="950" y="577" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">凭据不经过应用的浏览器上下文</text>
+<text x="510" y="612" font-size="13" font-weight="400" fill="#cbd5e1" text-anchor="start">能用上还要四个条件：Connector 类型一致 · 同一环境 · 连接健康 · 身份模式（End user credential 时每个用户都要建自己的连接）</text>
+<text x="510" y="650" font-size="14" font-weight="700" fill="#fcd34d" text-anchor="start">选 Connector 时看的属性</text>
+<rect x="510" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="577" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">表型 / 动作型</text>
+<rect x="653" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="720" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">SSO</text>
+<rect x="796" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="863" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">认证方式</text>
+<rect x="939" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="1006" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">可否共享</text>
+<rect x="1082" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="1149" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">Premium</text>
+<rect x="1225" y="662" width="135" height="32" rx="16" fill="#fbbf24" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".5"/>
+<text x="1292" y="683" font-size="13" font-weight="700" fill="#fde68a" text-anchor="middle">DLP isBlocked</text>
+<text x="40" y="746" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 连接是对某个 Connector 的登录实例；同一个 Connector 可以有很多连接</text>
+<text x="40" y="772" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② 应用和 Solutions 里只保存"连接引用"，运行时才指向具体连接</text>
+<text x="40" y="798" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ app、agent、workflow 用的是同一个环境里的同一个连接池——Copilot Studio 里建的连接会出现在 Power Apps 门户</text>
+<text x="40" y="824" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">④ 宿主校验通过后由 API Hub 注入凭据：应用代码、配置文件里都没有令牌</text>
+</svg>

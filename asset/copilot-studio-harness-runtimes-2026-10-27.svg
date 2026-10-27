@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="850" viewBox="0 0 1400 850" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="850" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="848" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">三种 harness：定义在同一处，执行在三套服务里</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">agent 定义都存在环境的 Dataverse；harness 决定它跑在哪、怎么计费、能从哪里被调用</text>
+<rect x="30" y="92" width="1340" height="56" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="700.0" y="119" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="middle">agent 定义：instructions · topics · tools · knowledge —— 存在环境的 Dataverse（调用路径里的 dataverse-backed）</text>
+<rect x="30" y="172" width="430" height="560" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="196" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">Standard harness</text>
+<rect x="48" y="212" width="394" height="124" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="64" y="239" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">经典运行时</text>
+<text x="64" y="263" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">前身 Power Virtual Agents</text>
+<text x="64" y="287" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">按 topics、触发条件、分支走</text>
+<text x="64" y="311" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">可配置经典 / 生成式编排</text>
+<rect x="48" y="372" width="394" height="96" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="64" y="399" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">计费</text>
+<text x="64" y="423" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">原有 Copilot Studio 许可</text>
+<text x="64" y="447" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">M365 Copilot 许可的内部用户豁免</text>
+<rect x="48" y="504" width="394" height="206" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="64" y="531" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">能从哪里调用</text>
+<text x="64" y="555" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Copilot Studio Connector</text>
+<text x="64" y="579" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">   ExecuteCopilotAsyncV2（managed app 可用）</text>
+<text x="64" y="603" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Direct Line、client SDK</text>
+<text x="64" y="627" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ workflow 的 agent 节点</text>
+<text x="64" y="651" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ SharePoint、Teams 等多数渠道</text>
+<path id="p1" d="M245 148 V208" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<path id="p2" d="M245 336 V368" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.3s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<path id="p3" d="M245 468 V500" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="0.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<rect x="485" y="172" width="430" height="560" rx="14" fill="#fbbf24" fill-opacity="0.04" stroke="#fbbf24" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="501" y="196" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="start">GitHub Copilot harness</text>
+<rect x="503" y="212" width="394" height="124" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="519" y="239" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Agentic Runtime</text>
+<text x="519" y="263" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">自己拆步骤、选工具、失败重试</text>
+<text x="519" y="287" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Bash 容器 + 文件系统、读写 Office/PDF</text>
+<text x="519" y="311" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Skills、Memory；只回流式（SSE）</text>
+<rect x="503" y="372" width="394" height="96" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="519" y="399" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">计费</text>
+<text x="519" y="423" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">构建、测试、评测、运行全按 Credits</text>
+<text x="519" y="447" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">M365 Copilot 许可不豁免</text>
+<rect x="503" y="504" width="394" height="206" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="519" y="531" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">能从哪里调用</text>
+<text x="519" y="555" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ Copilot Studio Connector</text>
+<text x="519" y="579" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">   没有对应操作，官方确认的已知限制</text>
+<text x="519" y="603" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ workflow 的 agent 节点</text>
+<text x="519" y="627" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Teams · M365 Copilot · Web app</text>
+<text x="519" y="651" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">… MCP / A2A（Preview）</text>
+<path id="p4" d="M700 148 V208" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.0s" begin="0.3s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<path id="p5" d="M700 336 V368" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.8s" begin="0.6s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<path id="p6" d="M700 468 V500" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.8s" begin="0.8999999999999999s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<rect x="940" y="172" width="430" height="560" rx="14" fill="#38bdf8" fill-opacity="0.04" stroke="#38bdf8" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="956" y="196" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="start">Copilot Chat harness</text>
+<rect x="958" y="212" width="394" height="124" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="974" y="239" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">M365 Copilot 编排器</text>
+<text x="974" y="263" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">Copilot Studio 只写配置</text>
+<text x="974" y="287" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">执行在 M365 Copilot 侧</text>
+<text x="974" y="311" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">给 Copilot Chat 挂企业知识，仅内部</text>
+<rect x="958" y="372" width="394" height="96" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="974" y="399" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">计费</text>
+<text x="974" y="423" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">包含在 M365 Copilot 许可</text>
+<text x="974" y="447" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">或按量</text>
+<rect x="958" y="504" width="394" height="206" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="974" y="531" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">能从哪里调用</text>
+<text x="974" y="555" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">— 不适用 Connector</text>
+<text x="974" y="579" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">   它扩展的是 M365 Copilot Chat</text>
+<text x="974" y="603" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">? Work IQ API 宣称可程序化调用</text>
+<path id="p7" d="M1155 148 V208" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="1.0s" begin="0.6s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<path id="p8" d="M1155 336 V368" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="0.8s" begin="0.8999999999999999s" repeatCount="indefinite"><mpath href="#p8"/></animateMotion></circle>
+<path id="p9" d="M1155 468 V500" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="0.8s" begin="1.2s" repeatCount="indefinite"><mpath href="#p9"/></animateMotion></circle>
+<circle cx="418" cy="526" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="418" y="531" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">1</text>
+<circle cx="873" cy="526" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="873" y="531" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">2</text>
+<circle cx="873" cy="618" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="873" y="623" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">3</text>
+<text x="40" y="766" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① managed app 里做问答必须建 Standard harness 的 agent，走 Copilot Studio Connector</text>
+<text x="40" y="792" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② GitHub Copilot harness 接不上 Connector：只回流式、无对应操作、应用又不能直连——三层都堵</text>
+<text x="40" y="818" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ 它的定位是"用户直接对话的助手"与"后台 workflow 的执行者"，不是给应用当 API 的后端</text>
+<text x="720" y="766" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">新建 agent 默认是 GitHub Copilot harness（2026-08 起）；创建后不能互转，要换只能重建</text>
+<text x="720" y="792" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">GitHub Copilot harness 只共享 GitHub Copilot 的 SDK 组件，数据不发往 GitHub Copilot 服务</text>
+<text x="720" y="818" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">它的沙箱是否每任务独占容器、能否出网，官方未公开</text>
+</svg>

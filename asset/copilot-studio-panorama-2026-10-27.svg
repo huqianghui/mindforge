@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#475569"/><stop offset="1" stop-color="#475569" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#475569"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="860" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="858" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">Copilot Studio 在 Power Platform 里的位置</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">三类构建物各有运行时，但共用同一块地基；治理分在两个 admin center</text>
+<rect x="30" y="92" width="1010" height="250" rx="14" fill="#38bdf8" fill-opacity="0.04" stroke="#38bdf8" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="116" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="start">产品层 · 造东西的地方</text>
+<rect x="50" y="130" width="170" height="96" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="66" y="157" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Power Apps</text>
+<text x="66" y="181" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">画布 / 模型驱动</text>
+<text x="66" y="205" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">兼管 Tables 与连接</text>
+<rect x="50" y="236" width="170" height="92" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="66" y="263" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Power Automate</text>
+<text x="66" y="287" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">云端流程、RPA</text>
+<text x="66" y="311" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">触发器 + 动作</text>
+<rect x="232" y="130" width="150" height="96" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="248" y="157" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Power Pages</text>
+<text x="248" y="181" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">对外门户</text>
+<text x="248" y="205" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">可匿名 / 外部身份</text>
+<rect x="232" y="236" width="150" height="92" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="248" y="263" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">Power BI</text>
+<text x="248" y="287" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">报表、语义模型</text>
+<text x="248" y="311" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">属于 Fabric</text>
+<rect x="396" y="118" width="628" height="214" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="412" y="142" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">Copilot Studio · 以 AI 为中心的构建界面</text>
+<rect x="414" y="152" width="190" height="166" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="430" y="179" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">Agent</text>
+<text x="430" y="203" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">会推理的助手</text>
+<text x="430" y="227" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">工具 + 知识源</text>
+<text x="430" y="251" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">Build → Tools</text>
+<rect x="616" y="152" width="190" height="166" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="632" y="179" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">Workflow</text>
+<text x="632" y="203" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">触发器 + 动作</text>
+<text x="632" y="227" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">可编排 agent</text>
+<text x="632" y="251" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">Copilot 节点调 M365</text>
+<rect x="818" y="152" width="190" height="166" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="834" y="179" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">App</text>
+<text x="834" y="203" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">自然语言生成</text>
+<text x="834" y="227" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">或 ms CLI 写代码</text>
+<text x="834" y="251" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">给人用的界面</text>
+<rect x="30" y="372" width="1010" height="170" rx="14" fill="#fbbf24" fill-opacity="0.04" stroke="#fbbf24" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="396" font-size="14" font-weight="700" fill="#fbbf24" text-anchor="start">运行时层 · 各不相同</text>
+<rect x="50" y="410" width="232" height="112" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="66" y="437" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">经典运行时</text>
+<text x="66" y="461" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Standard harness</text>
+<text x="66" y="485" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">前身 Power Virtual Agents</text>
+<text x="66" y="509" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">可被 Connector 调用 ✓</text>
+<rect x="296" y="410" width="232" height="112" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="312" y="437" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Agentic Runtime</text>
+<text x="312" y="461" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">GitHub Copilot harness</text>
+<text x="312" y="485" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Bash 容器、只回流式</text>
+<text x="312" y="509" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Connector 调不了 ✗</text>
+<rect x="542" y="410" width="232" height="112" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="558" y="437" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">M365 Copilot 编排器</text>
+<text x="558" y="461" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Copilot Chat harness</text>
+<text x="558" y="485" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Studio 只写配置</text>
+<text x="558" y="509" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">执行在 M365 侧</text>
+<rect x="788" y="410" width="232" height="112" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="804" y="437" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">Copilot Managed Runtime</text>
+<text x="804" y="461" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">托管 SPA + 治理壳</text>
+<text x="804" y="485" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">managedapps.cloud.microsoft</text>
+<text x="804" y="509" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">不是 Power Apps 播放器</text>
+<rect x="30" y="572" width="1010" height="150" rx="14" fill="#4ade80" fill-opacity="0.04" stroke="#4ade80" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="596" font-size="14" font-weight="700" fill="#4ade80" text-anchor="start">地基层 · Power Platform（大家共用）</text>
+<rect x="48" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="64" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">环境</text>
+<text x="64" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">隔离容器、区域</text>
+<rect x="212" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="228" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">Dataverse</text>
+<text x="228" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">agent 定义也在这</text>
+<rect x="376" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="392" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">Connector / 连接</text>
+<text x="392" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">同一个连接池</text>
+<rect x="540" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="556" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">DLP 数据策略</text>
+<text x="556" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">允许 / 阻止</text>
+<rect x="704" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="720" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">Solutions</text>
+<text x="720" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">打包与迁移</text>
+<rect x="868" y="612" width="152" height="92" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
+<text x="884" y="639" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="start">许可与容量</text>
+<text x="884" y="663" font-size="13" font-weight="400" fill="#86efac" text-anchor="start">Credits / Premium</text>
+<rect x="1070" y="92" width="300" height="630" rx="14" fill="#fb7185" fill-opacity="0.04" stroke="#fb7185" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="1086" y="116" font-size="14" font-weight="700" fill="#fb7185" text-anchor="start">两个 admin center</text>
+<rect x="1090" y="130" width="262" height="250" rx="12" fill="#2a1220" stroke="#fb7185" stroke-width="1.6"/>
+<text x="1106" y="157" font-size="15" font-weight="700" fill="#ffe4e6" text-anchor="start">Microsoft 365 admin center</text>
+<text x="1106" y="181" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Apps：managed app 清单</text>
+<text x="1106" y="205" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">运行健康、使用分析</text>
+<text x="1106" y="229" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Copilot → Cost management</text>
+<text x="1106" y="253" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Credits 消耗</text>
+<text x="1106" y="277" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">用户入口：</text>
+<text x="1106" y="301" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">managedapps.cloud.microsoft</text>
+<text x="1106" y="325" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">管理员不需被分享即可看到</text>
+<rect x="1090" y="420" width="262" height="284" rx="12" fill="#2a1220" stroke="#fb7185" stroke-width="1.6"/>
+<text x="1106" y="447" font-size="15" font-weight="700" fill="#ffe4e6" text-anchor="start">Power Platform admin center</text>
+<text x="1106" y="471" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Manage → Environments</text>
+<text x="1106" y="495" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">创建、类型、到期警告</text>
+<text x="1106" y="519" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Security → Data and privacy</text>
+<text x="1106" y="543" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Data policy（DLP）</text>
+<text x="1106" y="567" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Azure Virtual Network policies</text>
+<text x="1106" y="591" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">Environment groups</text>
+<text x="1106" y="615" font-size="13" font-weight="400" fill="#fda4af" text-anchor="start">普通账号打开策略页是空的</text>
+<path id="p1" d="M509 318 V406" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.4s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="530" cy="362" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="530" y="367" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">1</text>
+<path id="p2" d="M600 318 C600 360 410 360 410 406" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.8s" begin="0.3s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<circle cx="470" cy="352" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="470" y="357" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">2</text>
+<path id="p3" d="M913 318 V406" fill="none" stroke="#a78bfa" stroke-width="2.3" class="flow" marker-end="url(#ar_violet)"/>
+<circle r="6" fill="url(#pt_violet)"><animateMotion dur="1.4s" begin="0.6s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<circle cx="934" cy="362" r="12" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="934" y="367" font-size="13" font-weight="700" fill="#a78bfa" text-anchor="middle">3</text>
+<path id="p4" d="M520 522 V608" fill="none" stroke="#4ade80" stroke-width="2.3" class="flow" marker-end="url(#ar_green)"/>
+<circle r="6" fill="url(#pt_green)"><animateMotion dur="1.4s" begin="0.9s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<circle cx="541" cy="566" r="12" fill="#0a0f1c" stroke="#4ade80" stroke-width="1.6"/>
+<text x="541" y="571" font-size="13" font-weight="700" fill="#4ade80" text-anchor="middle">4</text>
+<path id="p5" d="M1086 560 H1046" fill="none" stroke="#fb7185" stroke-width="2.3" class="flow" marker-end="url(#ar_rose)"/>
+<circle r="6" fill="url(#pt_rose)"><animateMotion dur="1.2s" begin="1.2s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<circle cx="1060" cy="590" r="12" fill="#0a0f1c" stroke="#fb7185" stroke-width="1.6"/>
+<text x="1060" y="595" font-size="13" font-weight="700" fill="#fb7185" text-anchor="middle">5</text>
+<path id="p6" d="M1086 250 C1060 250 1060 466 1024 466" fill="none" stroke="#fb7185" stroke-width="2.3" class="flow" marker-end="url(#ar_rose)"/>
+<circle r="6" fill="url(#pt_rose)"><animateMotion dur="1.8s" begin="1.5s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<circle cx="1062" cy="330" r="12" fill="#0a0f1c" stroke="#fb7185" stroke-width="1.6"/>
+<text x="1062" y="335" font-size="13" font-weight="700" fill="#fb7185" text-anchor="middle">6</text>
+<text x="40" y="756" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① agent 按创建时选定的 harness 落到对应运行时，创建后不能互转</text>
+<text x="40" y="782" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② workflow 的 agent 节点可以调用 GitHub Copilot harness 的 agent</text>
+<text x="40" y="808" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ app 跑在 Copilot Managed Runtime，与 Power Apps 播放器无关</text>
+<text x="720" y="756" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">④ 三类构建物共用环境、Dataverse、Connector、DLP——共享的是地基，不是运行时</text>
+<text x="720" y="782" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">⑤ 环境、连接与 DLP 在 Power Platform admin center 管</text>
+<text x="720" y="808" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">⑥ managed app 清单、使用量与 Credits 在 Microsoft 365 admin center 看</text>
+</svg>

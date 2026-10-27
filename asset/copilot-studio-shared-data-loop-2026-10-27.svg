@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1424"/><stop offset="1" stop-color="#0a0f1c"/></linearGradient><radialGradient id="pt_teal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient><marker id="ar_teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/></marker><radialGradient id="pt_sky" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#38bdf8"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></radialGradient><marker id="ar_sky" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#38bdf8"/></marker><radialGradient id="pt_violet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#a78bfa"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient><marker id="ar_violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/></marker><radialGradient id="pt_amber" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><marker id="ar_amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker><radialGradient id="pt_gray" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#64748b"/><stop offset="1" stop-color="#64748b" stop-opacity="0"/></radialGradient><marker id="ar_gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><radialGradient id="pt_red" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#f87171"/><stop offset="1" stop-color="#f87171" stop-opacity="0"/></radialGradient><marker id="ar_red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f87171"/></marker><radialGradient id="pt_rose" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#fb7185"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient><marker id="ar_rose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fb7185"/></marker><radialGradient id="pt_green" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#4ade80"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient><marker id="ar_green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4ade80"/></marker></defs>
+<style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
+<rect width="1400" height="760" rx="18" fill="url(#bg)"/>
+<rect x="1" y="1" width="1398" height="758" rx="17" fill="none" stroke="#1e293b"/>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">共享数据回路：以多供应商投标评审为例</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">agent、workflow、app 互不调用，只读写同一张表；状态列是三方的契约（官方 Microsoft Mechanics 演示）</text>
+<rect x="30" y="96" width="760" height="520" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="46" y="120" font-size="14" font-weight="700" fill="#2dd4bf" text-anchor="start">后台 · 无人值守</text>
+<rect x="50" y="140" width="200" height="110" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="66" y="167" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">触发器</text>
+<text x="66" y="191" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">供应商邮件到达</text>
+<text x="66" y="215" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">或定时 / 数据变化</text>
+<rect x="290" y="130" width="470" height="150" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="306" y="157" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">Workflow</text>
+<text x="306" y="181" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">分类投标，依次交给几个 agent</text>
+<text x="306" y="205" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">需要人工判断时暂停，等状态变化</text>
+<text x="306" y="229" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">按状态推进：待审核 → 已批准 → 下一步</text>
+<rect x="290" y="310" width="225" height="150" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="306" y="337" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Agent A · B …</text>
+<text x="306" y="361" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">逐份分析投标</text>
+<text x="306" y="385" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">GitHub Copilot harness</text>
+<text x="306" y="409" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">读大文件、生成文档</text>
+<rect x="535" y="310" width="225" height="150" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="551" y="337" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">汇总 Agent</text>
+<text x="551" y="361" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">合并前面的结论</text>
+<text x="551" y="385" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">给出推荐</text>
+<text x="551" y="409" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">写成表里的新一行</text>
+<rect x="50" y="310" width="200" height="150" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="66" y="337" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">文件</text>
+<text x="66" y="361" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">生成的报告</text>
+<text x="66" y="385" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">放 SharePoint</text>
+<text x="66" y="409" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">表里存链接</text>
+<rect x="50" y="490" width="710" height="104" rx="12" fill="#111827" stroke="#64748b" stroke-width="1.6"/>
+<text x="66" y="517" font-size="15" font-weight="700" fill="#cbd5e1" text-anchor="start">为什么能绕开 harness 限制</text>
+<text x="66" y="541" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">app 从不直接调用 agent：后台用 GitHub Copilot harness 也没关系</text>
+<text x="66" y="565" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">不受 Connector 约 120 秒超时约束；用户打开 app 时看到的是已经算好的结果</text>
+<rect x="830" y="130" width="250" height="330" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6" class="pulse"/>
+<text x="846" y="157" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">Dataverse 表</text>
+<text x="846" y="181" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">或 SharePoint 列表</text>
+<text x="846" y="205" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start"></text>
+<text x="846" y="229" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">每一行 = 一份投标</text>
+<text x="846" y="253" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">推荐、理由、附件链接</text>
+<text x="846" y="277" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">负责人、时间</text>
+<text x="846" y="301" font-size="13" font-weight="400" fill="#fbbf24" text-anchor="start">状态列（契约）</text>
+<text x="846" y="325" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">· 待处理</text>
+<text x="846" y="349" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">· 待人工审核</text>
+<text x="846" y="373" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">· 已批准 / 已驳回</text>
+<rect x="1110" y="96" width="260" height="520" rx="14" fill="#a78bfa" fill-opacity="0.04" stroke="#a78bfa" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
+<text x="1126" y="120" font-size="14" font-weight="700" fill="#a78bfa" text-anchor="start">前台 · 有人操作</text>
+<rect x="1126" y="140" width="228" height="320" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="1142" y="167" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">Bid Management App</text>
+<text x="1142" y="191" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">Managed Runtime</text>
+<text x="1142" y="215" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">直接绑定这张表</text>
+<text x="1142" y="239" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start"></text>
+<text x="1142" y="263" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">筛选"待人工审核"</text>
+<text x="1142" y="287" font-size="13" font-weight="400" fill="#ede9fe" text-anchor="start">一屏对比、批准</text>
+<text x="1142" y="311" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start"></text>
+<text x="1142" y="335" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">以当前用户自己的</text>
+<text x="1142" y="359" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">权限读写</text>
+<rect x="1126" y="490" width="228" height="104" rx="12" fill="#1a1633" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="1142" y="517" font-size="15" font-weight="700" fill="#ede9fe" text-anchor="start">采购团队</text>
+<text x="1142" y="541" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">在一个共享视图里</text>
+<text x="1142" y="565" font-size="13" font-weight="400" fill="#c4b5fd" text-anchor="start">review 并 approve</text>
+<path id="p1" d="M250 195 H286" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
+<circle r="6" fill="url(#pt_sky)"><animateMotion dur="1.0s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<circle cx="268" cy="226" r="12" fill="#0a0f1c" stroke="#38bdf8" stroke-width="1.6"/>
+<text x="268" y="231" font-size="13" font-weight="700" fill="#38bdf8" text-anchor="middle">1</text>
+<path id="p2" d="M402 280 V306" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="0.3s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+<circle cx="420" cy="294" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="420" y="299" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">2</text>
+<path id="p3" d="M515 385 H531" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="0.6s" begin="0.6s" repeatCount="indefinite"><mpath href="#p3"/></animateMotion></circle>
+<path id="p4" d="M760 385 H826" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.2s" begin="0.9s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+<circle cx="793" cy="410" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="793" y="415" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">3</text>
+<path id="p5" d="M290 385 H254" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.0s" begin="0.9s" repeatCount="indefinite"><mpath href="#p5"/></animateMotion></circle>
+<path id="p6" d="M1084 240 H1122" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
+<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.0s" begin="1.3s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
+<circle cx="1103" cy="216" r="12" fill="#0a0f1c" stroke="#2dd4bf" stroke-width="1.6"/>
+<text x="1103" y="221" font-size="13" font-weight="700" fill="#2dd4bf" text-anchor="middle">4</text>
+<path id="p7" d="M1240 460 V486" fill="none" stroke="#a78bfa" stroke-width="2.3" class="flow" marker-end="url(#ar_violet)"/>
+<circle r="6" fill="url(#pt_violet)"><animateMotion dur="0.8s" begin="1.6s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
+<circle cx="1262" cy="474" r="12" fill="#0a0f1c" stroke="#a78bfa" stroke-width="1.6"/>
+<text x="1262" y="479" font-size="13" font-weight="700" fill="#a78bfa" text-anchor="middle">5</text>
+<path id="p8" d="M1122 420 H1084" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.0s" begin="2.0s" repeatCount="indefinite"><mpath href="#p8"/></animateMotion></circle>
+<circle cx="1103" cy="444" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="1103" y="449" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">6</text>
+<path id="p9" d="M955 126 V112 H640 V126" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
+<circle r="6" fill="url(#pt_amber)"><animateMotion dur="2.2s" begin="2.2s" repeatCount="indefinite"><mpath href="#p9"/></animateMotion></circle>
+<circle cx="800" cy="112" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
+<text x="800" y="117" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">7</text>
+<text x="40" y="650" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 邮件到达触发 workflow</text>
+<text x="40" y="676" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② workflow 把每份投标交给 agent 分析，重活在后台</text>
+<text x="40" y="702" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ 汇总 agent 给出推荐，"creates a record as a new row in Dataverse"</text>
+<text x="40" y="728" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">④ app 直接绑定这张表，按状态筛出"待人工审核"</text>
+<text x="720" y="650" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">⑤ 采购团队在 app 里对比、做决定</text>
+<text x="720" y="676" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">⑥ 决定写回状态列（app 用当前用户自己的权限）</text>
+<text x="720" y="702" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">⑦ 行被修改触发下一个 workflow：通知供应商、归档、进入合同流程</text>
+<text x="720" y="728" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">app 没有"被调用"的入口——它是给人用的界面，不是服务</text>
+</svg>
