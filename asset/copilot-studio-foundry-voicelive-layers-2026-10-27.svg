@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxPurple { fill: #1c1633; stroke: #a78bfa; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zone { fill: none; stroke: #a78bfa; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneB { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #c4b5fd; font-size: 14px; font-weight: 600; }
+      .zlB { fill: #7dd3fc; font-size: 14px; font-weight: 600; }
+      .layer { fill: #64748b; font-size: 13px; font-weight: 600; letter-spacing: 1px; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">三者不在同一层：渠道、语音、编排、治理四层上的分布</text>
+  <text class="sub" x="30" y="72">紫色 = Copilot Studio（SaaS），蓝色 = Foundry / Voice Live（PaaS）；编号是两边之间真实存在的接法，见底部图例</text>
+
+  <!-- ===== 渠道层 ===== -->
+  <text class="layer" x="1370" y="100" text-anchor="end">渠道层</text>
+  <rect class="box" x="30" y="110" width="320" height="80" rx="10"/>
+  <text class="h" x="46" y="140">电话 PSTN / SIP</text>
+  <text class="t" x="46" y="168">ACS 号码 · D365 Contact Center</text>
+
+  <rect class="box" x="370" y="110" width="320" height="80" rx="10"/>
+  <text class="h" x="386" y="140">M365 Copilot / Teams</text>
+  <text class="t" x="386" y="168">员工日常入口 · Agent Store</text>
+
+  <rect class="box" x="710" y="110" width="320" height="80" rx="10"/>
+  <text class="h" x="726" y="140">网页 / App / 数字人</text>
+  <text class="t" x="726" y="168">WebRTC 或 WebSocket 音视频</text>
+
+  <rect class="box" x="1050" y="110" width="320" height="80" rx="10"/>
+  <text class="h" x="1066" y="140">自有产品后端</text>
+  <text class="t" x="1066" y="168">Responses / Invocations 协议</text>
+
+  <!-- ===== 语音层 ===== -->
+  <text class="layer" x="1370" y="232" text-anchor="end">语音层</text>
+  <rect class="boxPurple" x="30" y="240" width="640" height="110" rx="10"/>
+  <text class="h" x="46" y="268">Copilot Studio 语音（IVR）</text>
+  <text class="t" x="46" y="294">basic voice：经典编排 + NLU，DTMF、转人工、答录机检测</text>
+  <text class="t" x="46" y="318">real-time voice：gpt-realtime 语音到语音，模型经 Foundry 提供</text>
+  <text class="tGray" x="46" y="340">仅 Standard harness · 面向电话渠道，数字消息渠道 Preview</text>
+
+  <rect class="boxBlue" x="710" y="240" width="660" height="110" rx="10"/>
+  <text class="h" x="726" y="268">Voice Live API（Foundry Tools · Speech）</text>
+  <text class="t" x="726" y="294">听 STT · 想 model / BYOM / agent 三选一 · 说 TTS · avatar</text>
+  <text class="t" x="726" y="318">semantic VAD · 降噪与回声消除 · interim response 过渡语</text>
+  <text class="tGray" x="726" y="340">按 pro / standard / lite 三档计费；自定义音色、数字人另计</text>
+
+  <!-- ===== 编排层 ===== -->
+  <text class="layer" x="1370" y="382" text-anchor="end">编排 / 大脑层</text>
+  <rect class="zone" x="30" y="390" width="640" height="200" rx="12"/>
+  <text class="zl" x="44" y="412">Copilot Studio · SaaS（Power Platform 环境）</text>
+
+  <rect class="boxPurple" x="45" y="425" width="195" height="115" rx="10"/>
+  <text class="h15" x="59" y="451">Copilot Chat</text>
+  <text class="t" x="59" y="476">扩展 M365 Copilot</text>
+  <text class="t" x="59" y="498">M365 编排器执行</text>
+  <text class="tGray" x="59" y="522">仅内部用户</text>
+
+  <rect class="boxPurple" x="252" y="425" width="200" height="115" rx="10"/>
+  <text class="h15" x="266" y="451">Standard harness</text>
+  <text class="t" x="266" y="476">topics + 生成式编排</text>
+  <text class="t" x="266" y="498">可被 Connector 调用</text>
+  <text class="tGray" x="266" y="522">渠道最全 · 支持语音</text>
+
+  <rect class="boxPurple" x="464" y="425" width="190" height="115" rx="10"/>
+  <text class="h15" x="478" y="451">GitHub Copilot</text>
+  <text class="t" x="478" y="476">自主拆解 · Bash 容器</text>
+  <text class="t" x="478" y="498">全程 Copilot Credits</text>
+  <text class="tGray" x="478" y="522">新建默认 · 不可互转</text>
+
+  <text class="tGray" x="44" y="572">同一 studio 还能造 workflow 与 app，三者主要靠共享 Dataverse 数据协作</text>
+
+  <rect class="zoneB" x="710" y="390" width="660" height="200" rx="12"/>
+  <text class="zlB" x="724" y="412">Foundry Agent Service · PaaS</text>
+
+  <rect class="boxBlue" x="725" y="425" width="310" height="115" rx="10"/>
+  <text class="h15" x="739" y="451">Prompt Agent（GA）</text>
+  <text class="t" x="739" y="476">声明式 instructions + tools + model</text>
+  <text class="t" x="739" y="498">Planner 黑盒 · 内容安全内置</text>
+  <text class="tGray" x="739" y="522">Voice Live agent 绑定的对象</text>
+
+  <rect class="boxBlue" x="1047" y="425" width="310" height="115" rx="10"/>
+  <text class="h15" x="1061" y="451">Hosted Agent（2026-07/08 GA）</text>
+  <text class="t" x="1061" y="476">自带代码容器 · 任意框架与模型</text>
+  <text class="t" x="1061" y="498">每 session 独立沙箱 · 闲置缩容</text>
+  <text class="tGray" x="1061" y="522">语音走 invocations_ws</text>
+
+  <text class="tGray" x="724" y="572">Foundry Workflows 2026-12-01 退役，多 agent 编排改由 Agent Framework 代码承担</text>
+
+  <!-- ===== 治理层 ===== -->
+  <text class="layer" x="1370" y="612" text-anchor="end">数据与治理层</text>
+  <rect class="boxPurple" x="30" y="620" width="420" height="100" rx="10"/>
+  <text class="h" x="46" y="648">Power Platform 地基</text>
+  <text class="t" x="46" y="674">Dataverse · Connector · DLP · Solutions</text>
+  <text class="t" x="46" y="698">Copilot Credits / M365 Copilot 许可</text>
+
+  <rect class="boxAmber" x="470" y="620" width="460" height="100" rx="10"/>
+  <text class="hAmber" x="486" y="648">共同的身份与治理面</text>
+  <text class="t" x="486" y="674">Entra Agent ID（blueprint + agent identity）</text>
+  <text class="t" x="486" y="698">Agent 365：注册表 · 访问控制 · 安全（GA）</text>
+
+  <rect class="boxBlue" x="950" y="620" width="420" height="100" rx="10"/>
+  <text class="h" x="966" y="648">Azure 地基</text>
+  <text class="t" x="966" y="674">订阅 · RBAC · VNet · Key Vault</text>
+  <text class="t" x="966" y="698">Foundry 模型目录 · 按量 / PTU 计费</text>
+
+  <!-- ===== flows ===== -->
+  <!-- ① phone -> CS voice -> Standard -->
+  <path class="flow" d="M190,190 L190,238" marker-end="url(#arr)"/>
+  <path class="flow" d="M400,350 L400,423" marker-end="url(#arr)"/>
+  <circle class="badge" cx="212" cy="214" r="12"/><text class="bn" x="212" y="219">①</text>
+
+  <!-- ② web/avatar -> Voice Live -> Prompt -->
+  <path class="flow" d="M870,190 L870,238" marker-end="url(#arr)"/>
+  <path class="flow" d="M1000,350 L1000,423" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1022" cy="372" r="12"/><text class="bn" x="1022" y="377">②</text>
+
+  <!-- ③ Hosted calls Voice Live inside container -->
+  <path class="flow" d="M1150,423 L1150,352" marker-end="url(#arr)"/>
+  <path class="flow" d="M1210,190 L1210,238" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1172" cy="372" r="12"/><text class="bn" x="1172" y="377">③</text>
+  <text class="tGray" x="1138" y="377" text-anchor="end">容器内调用</text>
+
+  <!-- ④ GHC -> Foundry agent -->
+  <path class="flowAmber" d="M654,482 L723,482" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="690" cy="460" r="12"/><text class="bn" x="690" y="465">④</text>
+
+  <!-- ⑤ Foundry agent publish to M365 -->
+  <path class="flowAmber" d="M725,440 L692,440 L692,215 L560,215 L560,192" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="626" cy="215" r="12"/><text class="bn" x="626" y="220">⑤</text>
+
+  <!-- ⑥ governance -->
+  <path class="flowGray" d="M560,620 L560,592" marker-end="url(#arrGray)"/>
+  <path class="flowGray" d="M840,620 L840,592" marker-end="url(#arrGray)"/>
+  <circle class="badge" cx="700" cy="606" r="12"/><text class="bn" x="700" y="611">⑥</text>
+
+  <!-- ===== legend ===== -->
+  <text class="lgH" x="30" y="762">图例（青色 = 同一平台内的接法，琥珀 = 跨平台的接法）</text>
+  <text class="lg" x="30" y="792">① 电话进线 → Copilot Studio 语音 → Standard agent；语音渠道只支持 Standard</text>
+  <text class="lg" x="30" y="820">② 网页、数字人 → Voice Live → Prompt Agent；agent 绑定，必须 Entra 认证</text>
+  <text class="lg" x="30" y="848">③ Hosted Agent 在容器里调 Voice Live；WebRTC 与电话桥接自己做</text>
+  <text class="lg" x="720" y="792">④ GitHub Copilot harness 把 Foundry agent 挂成 connected agent</text>
+  <text class="lg" x="720" y="820">⑤ Foundry agent 发布到 M365 Copilot / Teams，管理员审批后上架</text>
+  <text class="lg" x="720" y="848">⑥ 两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记管控</text>
+</svg>

@@ -350,6 +350,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - [Azure Copilot 生态：Skills、MCP 与 Agents 的协作](Azure/Azure-Copilot生态：Skills、MCP与Agents的协作.md)
 - [Azure 资源标签守护：事件订阅与定时扫描的自动修复](Azure/Azure资源标签守护：事件订阅与定时扫描的自动修复.md)
+- [Foundry Agent 与 Copilot Studio 的选型](Azure/Foundry-Agent与Copilot-Studio的选型.md)
 
 #### Azure/Copilot-Managed-Runtime
 

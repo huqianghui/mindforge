@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 830" width="1400" height="830" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .root { fill: #13213a; stroke: #2dd4bf; stroke-width: 2; }
+      .entry { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .q { fill: #111827; stroke: #94a3b8; stroke-width: 1.4; }
+      .leafP { fill: #1c1633; stroke: #a78bfa; stroke-width: 1.6; }
+      .leafB { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .hard { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tA { fill: #fde68a; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .qt { fill: #e2e8f0; font-size: 15px; text-anchor: middle; }
+      .mid { text-anchor: middle; }
+      .yn { fill: #5eead4; font-size: 13px; font-weight: 700; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="830" rx="16"/>
+  <text class="title" x="30" y="44">决策树：先问用户从哪里进来，再问大脑要不要自己控制</text>
+  <text class="sub" x="30" y="70">第一刀按入口分，因为入口决定了哪些产品根本不在候选里；琥珀框是硬约束或真实项目最常见的落点</text>
+
+  <rect class="root" x="500" y="92" width="400" height="48" rx="24"/>
+  <text class="h mid" x="700" y="122">这个 agent 的用户从哪里进来？</text>
+
+  <path class="flow" d="M700,140 L700,156 L175,156 L175,174" marker-end="url(#arr)"/>
+  <path class="flow" d="M700,156 L525,156 L525,174" marker-end="url(#arr)"/>
+  <path class="flow" d="M700,156 L875,156 L875,174" marker-end="url(#arr)"/>
+  <path class="flow" d="M700,156 L1225,156 L1225,174" marker-end="url(#arr)"/>
+
+  <!-- ===== column A: x 15..335 ===== -->
+  <rect class="entry" x="15" y="176" width="320" height="50" rx="10"/>
+  <text class="h mid" x="175" y="207">员工 · M365 Copilot / Teams</text>
+  <path class="flow" d="M175,226 L175,298" marker-end="url(#arr)"/>
+  <rect class="q" x="15" y="300" width="320" height="76" rx="10"/>
+  <text class="qt" x="175" y="331">要写代码、自控运行时</text>
+  <text class="qt" x="175" y="355">或用非微软模型？</text>
+
+  <path class="flow" d="M20,376 L20,470 L43,470" marker-end="url(#arr)"/>
+  <text class="yn" x="30" y="460">否</text>
+  <rect class="leafP" x="45" y="410" width="290" height="180" rx="10"/>
+  <text class="h15" x="59" y="436">Copilot Studio</text>
+  <text class="t" x="59" y="462">低代码 · Copilot Credits 计费</text>
+  <text class="t" x="59" y="488">短而稳、要被 app 调 → Standard</text>
+  <text class="t" x="59" y="514">长任务、多产出 → GitHub Copilot</text>
+  <text class="t" x="59" y="540">只挂企业知识 → Copilot Chat</text>
+  <text class="tGray" x="59" y="570">治理在 Power Platform 与 M365</text>
+
+  <path class="flow" d="M20,470 L20,665 L43,665" marker-end="url(#arr)"/>
+  <text class="yn" x="30" y="655">是</text>
+  <rect class="leafB" x="45" y="615" width="290" height="105" rx="10"/>
+  <text class="h15" x="59" y="641">Foundry agent 发布到 M365</text>
+  <text class="t" x="59" y="667">Prompt / Hosted 按第四列再分</text>
+  <text class="t" x="59" y="693">也可被 GitHub Copilot harness</text>
+  <text class="t" x="59" y="713">挂成 connected agent</text>
+
+  <!-- ===== column B: x 365..685 ===== -->
+  <rect class="entry" x="365" y="176" width="320" height="50" rx="10"/>
+  <text class="h mid" x="525" y="207">来电 · PSTN / SIP</text>
+  <path class="flow" d="M525,226 L525,298" marker-end="url(#arr)"/>
+  <rect class="q" x="365" y="300" width="320" height="76" rx="10"/>
+  <text class="qt" x="525" y="331">要标准 IVR（DTMF、转人工）</text>
+  <text class="qt" x="525" y="355">且以 D365 Contact Center 为底座？</text>
+
+  <path class="flow" d="M370,376 L370,470 L393,470" marker-end="url(#arr)"/>
+  <text class="yn" x="380" y="460">是</text>
+  <rect class="leafP" x="395" y="410" width="290" height="125" rx="10"/>
+  <text class="h15" x="409" y="436">Copilot Studio 语音 agent</text>
+  <text class="tA" x="409" y="462">只能建在 Standard harness 上</text>
+  <text class="t" x="409" y="488">real-time 用 gpt-realtime</text>
+  <text class="tGray" x="409" y="514">先核对数据处理地域要求</text>
+
+  <path class="flow" d="M370,470 L370,620 L393,620" marker-end="url(#arr)"/>
+  <text class="yn" x="380" y="610">否</text>
+  <rect class="leafB" x="395" y="565" width="290" height="125" rx="10"/>
+  <text class="h15" x="409" y="591">Voice Live + Foundry agent</text>
+  <text class="t" x="409" y="617">ACS 号码或 SIP direct routing 接入</text>
+  <text class="t" x="409" y="643">轮次、模型、音色都能调</text>
+  <text class="tGray" x="409" y="669">IVR 能力与转人工要自己补</text>
+
+  <!-- ===== column C: x 715..1035 ===== -->
+  <rect class="entry" x="715" y="176" width="320" height="50" rx="10"/>
+  <text class="h mid" x="875" y="207">网页 / App / 数字人</text>
+  <rect class="hard" x="715" y="238" width="320" height="44" rx="10"/>
+  <text class="hA mid" x="875" y="266">数字人渲染：只能 Azure Speech avatar</text>
+  <path class="flow" d="M875,226 L875,236" />
+  <path class="flow" d="M875,282 L875,298" marker-end="url(#arr)"/>
+  <rect class="q" x="715" y="300" width="320" height="76" rx="10"/>
+  <text class="qt" x="875" y="331">要不要逐轮控制对话？</text>
+  <text class="qt" x="875" y="355">（Voice Live 的三种构建方式）</text>
+
+  <path class="flow" d="M720,376 L720,450 L743,450" marker-end="url(#arr)"/>
+  <rect class="leafB" x="745" y="410" width="290" height="82" rx="10"/>
+  <text class="h15" x="759" y="436">不需要：Foundry 语音 agent</text>
+  <text class="t" x="759" y="460">Prompt Agent 打开 Voice mode</text>
+  <text class="t" x="759" y="482">只认 Prompt Agent · 必须 Entra</text>
+
+  <path class="flow" d="M720,450 L720,550 L743,550" marker-end="url(#arr)"/>
+  <rect class="leafB" x="745" y="510" width="290" height="82" rx="10"/>
+  <text class="h15" x="759" y="536">自控大脑：Hosted Agent 内调用</text>
+  <text class="t" x="759" y="560">自定义 planner / 记忆 / 跨模型</text>
+  <text class="tGray" x="759" y="582">WebRTC、重连、电话桥接自理</text>
+
+  <path class="flow" d="M720,550 L720,650 L743,650" marker-end="url(#arr)"/>
+  <rect class="hard" x="745" y="610" width="290" height="82" rx="10"/>
+  <text class="hA" x="759" y="636">需要：直接调 Voice Live API</text>
+  <text class="t" x="759" y="660">model / BYOM / 按会话选 agent</text>
+  <text class="tA" x="759" y="682">真实项目最常落在这里</text>
+
+  <!-- ===== column D: x 1065..1385 ===== -->
+  <rect class="entry" x="1065" y="176" width="320" height="50" rx="10"/>
+  <text class="h mid" x="1225" y="207">自有产品后端 · 外部客户</text>
+  <path class="flow" d="M1225,226 L1225,298" marker-end="url(#arr)"/>
+  <rect class="q" x="1065" y="300" width="320" height="76" rx="10"/>
+  <text class="qt" x="1225" y="331">需要自己控制</text>
+  <text class="qt" x="1225" y="355">Agent 运行时吗？</text>
+
+  <path class="flow" d="M1070,376 L1070,465 L1093,465" marker-end="url(#arr)"/>
+  <text class="yn" x="1080" y="455">否</text>
+  <rect class="leafB" x="1095" y="410" width="290" height="110" rx="10"/>
+  <text class="h15" x="1109" y="436">Prompt Agent</text>
+  <text class="t" x="1109" y="462">声明式 · 内容安全内置</text>
+  <text class="t" x="1109" y="488">Toolbox · MCP · A2A</text>
+  <text class="tGray" x="1109" y="510">80% 的企业场景落在这里</text>
+
+  <path class="flow" d="M1070,465 L1070,610 L1093,610" marker-end="url(#arr)"/>
+  <text class="yn" x="1080" y="600">是</text>
+  <rect class="leafB" x="1095" y="555" width="290" height="110" rx="10"/>
+  <text class="h15" x="1109" y="581">Hosted Agent</text>
+  <text class="t" x="1109" y="607">任意框架、任意模型</text>
+  <text class="t" x="1109" y="633">每 session 独立沙箱</text>
+  <text class="tGray" x="1109" y="655">内容安全与内层埋点自己补</text>
+
+  <!-- legend -->
+  <rect class="leafP" x="30" y="760" width="22" height="16" rx="3"/><text class="lg" x="60" y="773">落在 Copilot Studio</text>
+  <rect class="leafB" x="230" y="760" width="22" height="16" rx="3"/><text class="lg" x="260" y="773">落在 Foundry / Voice Live</text>
+  <rect class="hard" x="470" y="760" width="22" height="16" rx="3"/><text class="lg" x="500" y="773">硬约束或最常见落点</text>
+  <rect class="q" x="690" y="760" width="22" height="16" rx="3"/><text class="lg" x="720" y="773">判断问题</text>
+  <text class="lg" x="30" y="806">一个产品常同时落在多个叶子上：员工侧用 Copilot Studio，客户侧语音用 Voice Live + Foundry，两边由 Agent 365 统一登记</text>
+</svg>

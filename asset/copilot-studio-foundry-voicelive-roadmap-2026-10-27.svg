@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .band { fill: #0f1a2e; stroke: #1e293b; stroke-width: 1; }
+      .laneName { fill: #e2e8f0; font-size: 16px; font-weight: 700; }
+      .laneSub { fill: #94a3b8; font-size: 13px; }
+      .axis { stroke: #334155; stroke-width: 1; }
+      .mon { fill: #64748b; font-size: 13px; text-anchor: middle; }
+      .done { fill: none; stroke: #2dd4bf; stroke-width: 3; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
+      .plan { fill: none; stroke: #334155; stroke-width: 3; stroke-dasharray: 6 6; }
+      .nDone { fill: #0f766e; stroke: #5eead4; stroke-width: 2; }
+      .nCur { fill: #92400e; stroke: #fbbf24; stroke-width: 2.5; animation: pulse 2s ease-in-out infinite; }
+      .nPlan { fill: #1e293b; stroke: #64748b; stroke-width: 2; stroke-dasharray: 3 3; }
+      .lh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lhC { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .lhP { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .lt { fill: #cbd5e1; font-size: 13px; }
+      .ltP { fill: #94a3b8; font-size: 13px; }
+      .mid { text-anchor: middle; }
+      .today { stroke: #fbbf24; stroke-width: 1.6; stroke-dasharray: 4 4; }
+      .todayT { fill: #fbbf24; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .particle { fill: #5eead4; }
+      @keyframes dash { to { stroke-dashoffset: -32; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; r: 9; } 50% { stroke-opacity: 0.35; r: 12; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">2026 年三条产品线的关键节点</text>
+  <text class="sub" x="30" y="72">只列官方博客与文档中有日期的事件；琥珀 = 截至 10-27 正在落地，灰色虚线 = 已公布但未到的节点</text>
+
+  <!-- month axis: Mar=200 ... Dec=1226, step 114 -->
+  <g>
+    <line class="axis" x1="200" y1="100" x2="200" y2="700"/><text class="mon" x="200" y="96">3 月</text>
+    <line class="axis" x1="314" y1="100" x2="314" y2="700"/><text class="mon" x="314" y="96">4 月</text>
+    <line class="axis" x1="428" y1="100" x2="428" y2="700"/><text class="mon" x="428" y="96">5 月</text>
+    <line class="axis" x1="542" y1="100" x2="542" y2="700"/><text class="mon" x="542" y="96">6 月</text>
+    <line class="axis" x1="656" y1="100" x2="656" y2="700"/><text class="mon" x="656" y="96">7 月</text>
+    <line class="axis" x1="770" y1="100" x2="770" y2="700"/><text class="mon" x="770" y="96">8 月</text>
+    <line class="axis" x1="884" y1="100" x2="884" y2="700"/><text class="mon" x="884" y="96">9 月</text>
+    <line class="axis" x1="998" y1="100" x2="998" y2="700"/><text class="mon" x="998" y="96">10 月</text>
+    <line class="axis" x1="1112" y1="100" x2="1112" y2="700"/><text class="mon" x="1112" y="96">11 月</text>
+    <line class="axis" x1="1226" y1="100" x2="1226" y2="700"/><text class="mon" x="1226" y="96">12 月</text>
+  </g>
+
+  <!-- lane bands -->
+  <rect class="band" x="20" y="110" width="1360" height="140" rx="10" fill-opacity="0.6"/>
+  <rect class="band" x="20" y="260" width="1360" height="140" rx="10" fill-opacity="0.6"/>
+  <rect class="band" x="20" y="410" width="1360" height="140" rx="10" fill-opacity="0.6"/>
+  <rect class="band" x="20" y="560" width="1360" height="140" rx="10" fill-opacity="0.6"/>
+
+  <text class="laneName" x="34" y="176">Foundry</text><text class="laneSub" x="34" y="198">Agent Service</text>
+  <text class="laneName" x="34" y="326">Voice Live</text><text class="laneSub" x="34" y="348">语音层</text>
+  <text class="laneName" x="34" y="476">Copilot</text><text class="laneSub" x="34" y="498">Studio</text>
+  <text class="laneName" x="34" y="626">平台与</text><text class="laneSub" x="34" y="648">治理面</text>
+
+  <!-- today marker 10-27 -->
+  <line class="today" x1="1097" y1="104" x2="1097" y2="704"/>
+  <text class="todayT" x="1097" y="722">今天 10-27</text>
+
+  <!-- ===== Foundry lane y=180 ===== -->
+  <path id="fl" class="done" d="M200,180 L1097,180"/>
+  <path class="plan" d="M1097,180 L1240,180"/>
+  <circle class="particle" r="4"><animateMotion dur="5s" repeatCount="indefinite"><mpath href="#fl"/></animateMotion></circle>
+  <circle class="nDone" cx="254" cy="180" r="9"/>
+  <text class="lh" x="214" y="150">03-16 Agent Service GA</text>
+  <text class="lt" x="214" y="132">私网 · Voice Live · 评测</text>
+  <circle class="nDone" cx="542" cy="180" r="9"/>
+  <text class="lh mid" x="542" y="214">06-02 Build 2026</text>
+  <text class="lt mid" x="542" y="236">Toolboxes、Memory Preview</text>
+  <circle class="nDone" cx="740" cy="180" r="9"/>
+  <text class="lh mid" x="740" y="150">07/08 Hosted Agent GA</text>
+  <text class="lt mid" x="740" y="132">Toolboxes 同期 GA</text>
+  <circle class="nPlan" cx="1226" cy="180" r="9"/>
+  <text class="lhP mid" x="1226" y="214">12-01 Workflows 退役</text>
+  <text class="ltP mid" x="1226" y="236">迁往 Agent Framework</text>
+
+  <!-- ===== Voice Live lane y=330 ===== -->
+  <path id="vl" class="done" d="M200,330 L1097,330"/>
+  <path class="plan" d="M1097,330 L1240,330"/>
+  <circle class="particle" r="4"><animateMotion dur="5s" begin="1s" repeatCount="indefinite"><mpath href="#vl"/></animateMotion></circle>
+  <circle class="nDone" cx="254" cy="330" r="9"/>
+  <text class="lh" x="214" y="300">03 随 Agent Service GA</text>
+  <text class="lt" x="214" y="282">agent 绑定的语音入口</text>
+  <circle class="nDone" cx="542" cy="330" r="9"/>
+  <text class="lh mid" x="542" y="364">06 prompt agent 语音 GA</text>
+  <text class="lt mid" x="542" y="386">hosted + Voice Live Preview</text>
+  <circle class="nDone" cx="770" cy="330" r="9"/>
+  <text class="lh mid" x="770" y="300">08 hosted + Voice Live GA</text>
+  <text class="lt mid" x="770" y="282">容器内语音 · invocations_ws</text>
+  <circle class="nCur" cx="922" cy="330" r="9"/>
+  <text class="lhC mid" x="940" y="364">09-10 GPT-Live-1 全双工</text>
+  <text class="lt mid" x="940" y="386">OpenAI 已发布，Voice Live 待上线</text>
+
+  <!-- ===== Copilot Studio lane y=480 ===== -->
+  <path id="cl" class="done" d="M200,480 L1097,480"/>
+  <path class="plan" d="M1097,480 L1240,480"/>
+  <circle class="particle" r="4"><animateMotion dur="5s" begin="2s" repeatCount="indefinite"><mpath href="#cl"/></animateMotion></circle>
+  <circle class="nDone" cx="770" cy="480" r="9"/>
+  <text class="lh mid" x="700" y="450">08 新界面默认 GitHub Copilot harness</text>
+  <text class="lt mid" x="700" y="432">Skills · Memory · 不可与 Standard 互转</text>
+  <circle class="nDone" cx="900" cy="480" r="9"/>
+  <text class="lh mid" x="830" y="514">09 agent / workflow / app</text>
+  <text class="lt mid" x="830" y="536">一个 studio，Apps 仍是 Preview</text>
+  <circle class="nCur" cx="1010" cy="480" r="9"/>
+  <rect x="910" y="416" width="200" height="40" fill="#0d1727"/>
+  <text class="lhC mid" x="1010" y="450">10 real-time voice 电话</text>
+  <text class="lt mid" x="1010" y="432">Teams Phone Agent 计费上线</text>
+  <circle class="nCur" cx="1060" cy="480" r="9"/>
+  <rect x="1025" y="497" width="175" height="46" fill="#0d1727"/>
+  <text class="lhC mid" x="1110" y="514">10 挂接 Foundry agent</text>
+  <text class="lt mid" x="1110" y="536">MCP / A2A 渠道 Preview</text>
+
+  <!-- ===== Platform lane y=630 ===== -->
+  <path id="pl" class="done" d="M200,630 L1097,630"/>
+  <path class="plan" d="M1097,630 L1240,630"/>
+  <circle class="particle" r="4"><animateMotion dur="5s" begin="3s" repeatCount="indefinite"><mpath href="#pl"/></animateMotion></circle>
+  <circle class="nDone" cx="542" cy="630" r="9"/>
+  <text class="lh mid" x="542" y="600">06 Foundry 发布到 Teams / M365</text>
+  <text class="lt mid" x="542" y="582">计划 6 月 GA，管理员审批上架</text>
+  <circle class="nCur" cx="1040" cy="630" r="9"/>
+  <text class="lhC mid" x="960" y="600">截至 10 月 Agent 365 已 GA</text>
+  <text class="lt mid" x="960" y="582">两边 agent 统一登记、Entra 管控</text>
+  <circle class="nPlan" cx="1172" cy="630" r="9"/>
+  <text class="lhP mid" x="1210" y="664">11-17 Ignite 2026</text>
+  <text class="ltP mid" x="1210" y="686">下一个发布窗口</text>
+
+  <!-- legend -->
+  <circle class="nDone" cx="40" cy="760" r="8"/><text class="lg" x="56" y="765">已发生</text>
+  <circle class="nCur" cx="140" cy="760" r="8"/><text class="lg" x="156" y="765">正在落地（Preview 或刚上线）</text>
+  <circle class="nPlan" cx="390" cy="760" r="8"/><text class="lg" x="406" y="765">已公布未到</text>
+  <text class="lg" x="540" y="765">读法：Foundry 先把运行时做到 GA，Copilot Studio 在 Q4 开始借用 Foundry 的模型与 agent，治理面最后汇合</text>
+</svg>
