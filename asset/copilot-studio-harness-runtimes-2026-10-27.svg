@@ -3,8 +3,8 @@
 <style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
 <rect width="1400" height="850" rx="18" fill="url(#bg)"/>
 <rect x="1" y="1" width="1398" height="848" rx="17" fill="none" stroke="#1e293b"/>
-<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">三种 harness：定义在同一处，执行在三套服务里</text>
-<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">agent 定义都存在环境的 Dataverse；harness 决定它跑在哪、怎么计费、能从哪里被调用</text>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">内部三种 harness：定义在同一处，执行在三套服务里</text>
+<text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">agent 定义都存在环境的 Dataverse；harness 决定它跑在哪、怎么计费、能从哪里被调用（面向客户的第四种 Customer Conversation 见正文）</text>
 <rect x="30" y="92" width="1340" height="56" rx="12" fill="#0d2a18" stroke="#4ade80" stroke-width="1.6"/>
 <text x="700.0" y="119" font-size="15" font-weight="700" fill="#dcfce7" text-anchor="middle">agent 定义：instructions · topics · tools · knowledge —— 存在环境的 Dataverse（调用路径里的 dataverse-backed）</text>
 <rect x="30" y="172" width="430" height="560" rx="14" fill="#2dd4bf" fill-opacity="0.04" stroke="#2dd4bf" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
@@ -70,7 +70,7 @@
 <text x="974" y="531" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">能从哪里调用</text>
 <text x="974" y="555" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">— 不适用 Connector</text>
 <text x="974" y="579" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">   它扩展的是 M365 Copilot Chat</text>
-<text x="974" y="603" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">? Work IQ API 宣称可程序化调用</text>
+<text x="974" y="603" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">? Work IQ copilot_chat 的 agentId 参数（待实测）</text>
 <path id="p7" d="M1155 148 V208" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
 <circle r="6" fill="url(#pt_sky)"><animateMotion dur="1.0s" begin="0.6s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
 <path id="p8" d="M1155 336 V368" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>

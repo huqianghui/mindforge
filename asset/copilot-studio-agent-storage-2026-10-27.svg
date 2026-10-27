@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .row { fill: #0f172a; stroke: #334155; stroke-width: 1.2; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneSol { fill: #0c1d22; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zoneDef { fill: #12141c; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlG { fill: #5eead4; font-size: 15px; font-weight: 700; }
+      .zlD { fill: #94a3b8; font-size: 15px; font-weight: 700; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tAmber { fill: #fcd34d; font-size: 13.5px; }
+      .mono { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .monoG { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .monoD { fill: #94a3b8; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">agent 存在哪里：环境的 Dataverse 里的几行记录</text>
+  <text class="sub" x="30" y="72">Copilot Studio 没有自己的数据库；agent 是 bot 表的一行，topics、指令、知识源、工具是 botcomponent 表的行</text>
+
+  <rect class="zone" x="20" y="96" width="920" height="620" rx="12"/>
+  <text class="zl" x="36" y="122">一个环境 · Dataverse</text>
+
+  <!-- 自建解决方案 -->
+  <rect class="zoneSol" x="40" y="138" width="560" height="430" rx="12"/>
+  <text class="zlG" x="56" y="164">解决方案 Mindforge · 发布者 mindforge（前缀 mf）</text>
+
+  <rect class="box" x="60" y="182" width="520" height="96" rx="10"/>
+  <text class="h15" x="76" y="208">bot 表的一行 = 一个 agent</text>
+  <text class="t" x="76" y="234">显示名 Mindforge Ask（可改、可中文、可重名）</text>
+  <text class="monoG" x="76" y="260">schema name  mf_MindforgeAsk（唯一、不可改）</text>
+
+  <rect class="box" x="60" y="292" width="520" height="150" rx="10"/>
+  <text class="h15" x="76" y="318">botcomponent 表：新建时自带 14 行</text>
+  <rect class="row" x="76" y="332" width="488" height="26" rx="4"/>
+  <text class="mono" x="88" y="350">mf_MindforgeAsk.topic.ConversationStart</text>
+  <rect class="row" x="76" y="362" width="488" height="26" rx="4"/>
+  <text class="mono" x="88" y="380">mf_MindforgeAsk.topic.Fallback</text>
+  <rect class="row" x="76" y="392" width="488" height="26" rx="4"/>
+  <text class="mono" x="88" y="410">mf_MindforgeAsk.topic.Signin   …</text>
+  <text class="tGray" x="76" y="436">子组件名都以 schema name 开头——它不能改的原因之一</text>
+
+  <rect class="boxBlue" x="60" y="456" width="250" height="96" rx="10"/>
+  <text class="h15" x="76" y="482">用户拥有的表</text>
+  <text class="mono" x="76" y="508">mf_readingstate</text>
+  <text class="tGray" x="76" y="534">应用侧的对比实验留下的</text>
+
+  <rect class="boxGray" x="330" y="456" width="250" height="96" rx="10"/>
+  <text class="h15" x="346" y="482">还可以装进来</text>
+  <text class="tGray" x="346" y="508">flow、连接引用、</text>
+  <text class="tGray" x="346" y="532">环境变量、安全角色</text>
+
+  <!-- 默认解决方案 -->
+  <rect class="zoneDef" x="620" y="138" width="300" height="430" rx="12"/>
+  <text class="zlD" x="636" y="164">Default Solution</text>
+  <text class="tGray" x="636" y="190">不选解决方案时进这里</text>
+
+  <rect class="boxGray" x="636" y="206" width="268" height="72" rx="8"/>
+  <text class="t" x="650" y="230">显示名 cs-agent-demo01</text>
+  <text class="monoD" x="650" y="256">cr…_csagentdemo01_YqSL…</text>
+  <rect class="boxGray" x="636" y="290" width="268" height="72" rx="8"/>
+  <text class="t" x="650" y="314">显示名 代理（中文）</text>
+  <text class="monoD" x="650" y="340">cr…_KU0LYNlCqWa0…</text>
+  <rect class="boxGray" x="636" y="374" width="268" height="72" rx="8"/>
+  <text class="t" x="650" y="398">显示名 Agent / Agent 1 / …</text>
+  <text class="monoD" x="650" y="424">cr…_agent、cr…_agent1</text>
+  <text class="tAmber" x="636" y="476">中文名被换成随机串</text>
+  <text class="tGray" x="636" y="500">默认名重复，只能靠后缀区分</text>
+  <text class="tGray" x="636" y="524">前缀来自环境的默认发布者</text>
+  <text class="tGray" x="636" y="548">（实测是 cr 加几位字符）</text>
+
+  <rect class="boxGray" x="40" y="588" width="880" height="110" rx="10"/>
+  <text class="h15" x="56" y="614">Dataverse 白送的能力</text>
+  <text class="t" x="56" y="642">解决方案导出 / 导入（开发 → 测试 → 生产）· 安全角色 · 审计 · 备份还原 · 与 Power Automate、Power Apps 共用同一套组件</text>
+  <text class="tGray" x="56" y="670">实测方法：用 Dataverse Web API 查 bots 与 botcomponents 两个实体集，就能看到上面这些行</text>
+
+  <!-- 右：谁在用 schema name -->
+  <rect class="zone" x="960" y="96" width="420" height="620" rx="12"/>
+  <text class="zl" x="976" y="122">谁认 schema name</text>
+
+  <rect class="box" x="980" y="140" width="380" height="120" rx="10"/>
+  <text class="h15" x="996" y="166">Copilot Studio Connector</text>
+  <text class="mono" x="996" y="192">ExecuteCopilotAsyncV2(</text>
+  <text class="monoG" x="996" y="214">  Copilot: "mf_MindforgeAsk",</text>
+  <text class="mono" x="996" y="236">  { message, locale, … })</text>
+
+  <rect class="boxBlue" x="980" y="280" width="380" height="110" rx="10"/>
+  <text class="h15" x="996" y="306">解决方案搬运</text>
+  <text class="t" x="996" y="332">导入目标环境后逻辑名不变</text>
+  <text class="t" x="996" y="356">调用方代码不用改</text>
+  <text class="tGray" x="996" y="380">显示名可以各环境不同</text>
+
+  <rect class="boxBlue" x="980" y="410" width="380" height="110" rx="10"/>
+  <text class="h15" x="996" y="436">多个发布者同环境</text>
+  <text class="t" x="996" y="462">前缀把命名空间分开，</text>
+  <text class="t" x="996" y="486">不同团队的解决方案导入</text>
+  <text class="tGray" x="996" y="510">同一个环境也不会撞名</text>
+
+  <rect class="boxGray" x="980" y="540" width="380" height="158" rx="10"/>
+  <text class="h15" x="996" y="566">门户里改的是什么</text>
+  <text class="t" x="996" y="592">改显示名 → 改 bot 行的 name 列</text>
+  <text class="t" x="996" y="616">改指令 / topics → 改 botcomponent</text>
+  <text class="t" x="996" y="640">schema name → 没有入口</text>
+  <text class="tAmber" x="996" y="672">要换只能删掉重建</text>
+
+  <path class="flow" d="M580,200 C600,186 600,131 640,131 L920,131 C950,131 950,200 976,200" marker-end="url(#arr)"/>
+  <circle class="badge" cx="780" cy="131" r="12"/><text class="bn" x="780" y="136">1</text>
+
+  <!-- 图例 -->
+  <rect class="boxGray" x="20" y="736" width="1360" height="144" rx="12"/>
+  <text class="h15" x="40" y="764">读图要点</text>
+  <circle class="badge" cx="52" cy="794" r="11"/><text class="bn" x="52" y="799">1</text>
+  <text class="el" x="72" y="799">程序调用认的是 schema name，不是显示名，也不是门户 URL 里的 GUID；所以创建对话框里的那一项要一次填对</text>
+  <text class="t" x="40" y="832">· 选了自己的解决方案，agent 与同一项目的表、flow 在一个容器里，可以一起导出、一起删除</text>
+  <text class="t" x="40" y="860">· 两个名字的分工：显示名给人看（不唯一、可变、可中文），逻辑名给程序认（唯一、不可变、ASCII、带发布者前缀）</text>
+</svg>

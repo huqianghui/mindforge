@@ -10,7 +10,7 @@ tags: [copilot-studio, agent, workflow, managed-apps, dataverse, sharepoint, hum
 > [!IMPORTANT]
 > 资料截至 2026-10-27。文中区分〔官方〕（Microsoft Learn、官方博客与演示）、〔实测〕（抓包与 `ms connector list-actions`）和〔第三方〕（社区演示）。
 
-Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app 怎么和它们互动？[系列 03](Copilot-Studio系列03：三种Harness对比与选型.md) 已经说明 app 调不了 GitHub Copilot harness 的 agent，本篇给出绕开这个限制、也是官方主推的做法。
+Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app 怎么和它们互动？[系列 03](Copilot-Studio系列03：四种Harness对比与选型.md) 已经说明 app 调不了 GitHub Copilot harness 的 agent，本篇给出绕开这个限制、也是官方主推的做法。
 
 ## 结论先行
 
@@ -62,6 +62,9 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 ### 2.3 最小版本：连 workflow 都不需要
 
 一个已上线的内部分析看板应用〔实测〕把这个模式缩到了最小：数据每周刷新一次、打包进应用；用户对异常值的"审核决定"和行动项的"状态 / 备注"写进 SharePoint 列表，所有打开应用的人共享。**数据是周更的，人对数据的判断是实时共享的**，下次刷新时数据脚本也能读到这些判断。详细拆解见 [Copilot Managed Runtime 系列 06](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)。
+
+> [!NOTE]
+> **"共享"要放在 agent 和 workflow 都读得到的地方。** managed app 还有一个实验性的 App state，可以按用户或全员保存数据，走同源接口、不经 Connector、不受 DLP——做阅读进度这类"只给这个应用自己用"的数据很合适（[Copilot Managed Runtime 系列 08](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)）。但它的数据**只属于这个应用**，agent 和 workflow 读不到，所以不能承担本节的协作模式；要协作，还是 Dataverse 或 SharePoint 列表。
 
 ---
 

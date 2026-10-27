@@ -1,11 +1,11 @@
 ---
-title: Copilot Studio 系列 03：三种 Harness 对比与选型
+title: Copilot Studio 系列 03：四种 Harness 对比与选型
 created: 2026-10-27
-description: harness 是夹在 agent 配置与模型之间的运行时，决定能力、计费和能从哪里调用；Standard 规则驱动、跑在经典运行时、可被 Connector 调用，GitHub Copilot harness 自主拆解任务、带 Bash 容器、全程按 Credits 计费且 Connector 调不了，Copilot Chat 扩展 M365 Copilot；新建默认是 GitHub Copilot harness 且不能互转
-tags: [copilot-studio, harness, github-copilot-harness, agent, agentic-runtime, copilot-credits, power-platform, managed-apps]
+description: harness 是夹在 agent 配置与模型之间的运行时，决定能力、计费和能从哪里调用；Standard 规则驱动、跑在经典运行时、可被 Connector 调用，GitHub Copilot harness 自主拆解任务、带 Bash 容器、全程按 Credits 计费且 Connector 调不了，Copilot Chat 扩展 M365 Copilot，Customer Conversation 面向外部客户的语音与聊天；New agent 下拉菜单的四个入口各对应一种 harness，直接点按钮建出的是 GitHub Copilot harness，且不能互转
+tags: [copilot-studio, harness, customer-conversation, github-copilot-harness, agent, agentic-runtime, copilot-credits, power-platform, managed-apps]
 ---
 
-# Copilot Studio 系列 03：三种 Harness 对比与选型
+# Copilot Studio 系列 03：四种 Harness 对比与选型
 
 > [!IMPORTANT]
 > 资料截至 2026-10-27。harness 的渠道支持、计费、能否被程序调用都在 Preview 期快速变化；文中"运行在哪"的部分区分了官方确认、可观察到的事实和推断。
@@ -15,7 +15,8 @@ tags: [copilot-studio, harness, github-copilot-harness, agent, agentic-runtime, 
 ## 结论先行
 
 - **harness 是夹在"你配置的 agent"和"模型"之间的运行时**：什么时候调模型、塞哪些上下文、怎么解释返回、调哪个工具，都由它决定。模型负责推理，harness 负责组织推理。
-- **Standard** 按你写的 topics 和分支走，可预测；**GitHub Copilot** 给目标后自己拆步骤，带 Bash 容器和文件系统；**Copilot Chat** 只是给 M365 Copilot Chat 挂企业知识。
+- **Standard** 按你写的 topics 和分支走，可预测；**GitHub Copilot** 给目标后自己拆步骤，带 Bash 容器和文件系统；**Copilot Chat** 只是给 M365 Copilot Chat 挂企业知识；第四种 **Customer Conversation**（预览）面向外部客户，同一个 agent 接网站聊天和电话，答不了转人工。
+- **门户 New agent 下拉菜单的四个入口正好对应四种 harness**；直接点 New agent 按钮建出的是 GitHub Copilot harness，Standard 藏在 "Other ways to build" 的最后一项。
 - 两个必须记住的事实：**新建 agent 默认是 GitHub Copilot harness**；**harness 创建后不能互转**。
 - 选型按**任务的重量**：短、能写清、要快要稳 → Standard；长、多步、多产出 → GitHub Copilot。简单任务用重 harness 会"想太多"。
 - **从应用里程序化调用，只有 Standard 能走 Copilot Studio Connector。** GitHub Copilot harness 的定位是"用户直接对话的助手"和"后台 workflow 的执行者"。
@@ -44,6 +45,26 @@ tags: [copilot-studio, harness, github-copilot-harness, agent, agentic-runtime, 
 - **Copilot Chat**：包含在 M365 Copilot 许可内，或按量。
 
 费用规则在 Preview 期变化很快，动手前到 Microsoft 365 admin center → Copilot → Cost management 看租户的实际策略。
+
+### 1.2 第四种 harness 与门户里的入口
+
+> [!NOTE]
+> 本文最初按三种写。2026-10 的官方文档（Agents overview、Customer Conversation harness overview）已经列出**四种**，第四种是 **Customer Conversation harness**（预览）。上图只画了面向内部的三种。
+
+Agents 页 **New agent** 按钮右侧有个下拉箭头，展开后的菜单分两组：
+
+![New agent 下拉菜单：四个入口对应四种 harness|420](../../asset/copilot-studio-new-agent-menu-2026-10-27.png)
+
+| 菜单项（标签） | harness | 计费 | 能否经 Copilot Studio Connector 调用 |
+|---|---|---|---|
+| **Agent**（GitHub Copilot），"Optimize your business processes"下唯一一项，也是 New agent 按钮的默认动作 | GitHub Copilot | 菜单上有硬币图标：构建、测试、运行都按 Copilot Credits | ❌ |
+| **Customer Assist Agent**（Customer conversation） | Customer Conversation（预览） | 有硬币图标：Copilot Credits | 文档未提，待实测；它面向网站聊天和电话渠道 |
+| **Microsoft Copilot agent**（Copilot chat），点击后在新标签页打开 | Copilot Chat | 包含在 M365 Copilot 许可内 | ❌（运行在 Copilot Chat 里） |
+| **Agent**（Standard），"Other ways to build"下最后一项 | Standard | 列表里写着 "Included with your Microsoft 365 Copilot license at no additional credit cost"，Credit usage 显示 N/A | ✅ |
+
+**菜单上的小硬币图标就是"按 Credits 计费"的提示**；已有的 agent 用的是哪种 harness，看 Agents 列表的 **Powered by** 列，鼠标悬停会显示计费说明。首页的 Agent / Workflow / App 三张卡片也都标着 GitHub Copilot，要建 Standard，在首页点 **Other ways to build**，或者用上面的下拉菜单。
+
+**Customer Conversation 是不是"语音 harness"？** 不是专门的语音 harness，但它是唯一原生面向语音的：描述是 "Answer questions and resolve issues for your customers over chat and voice"，同一个 agent 既能挂到网站上聊天，也能分配电话号码接听来电，指令里可以分别写 Speech 和 Chat 两种模态的要求。架构上是一个主 agent 加若干专门的子 agent，每个子 agent 有自己的升级路径，答不了就转人工，像联络中心的不同队列；可调工具、知识、MCP，支持 skills 和 memory。它的定位是**面向外部客户的服务**，发布对象是网站和电话号码，不是给员工做内部助手的。列表里叫 "Voice Assistant" 之类名字的旧 agent，harness 仍要看 Powered by 列——名字只是名字。
 
 ---
 
@@ -77,7 +98,9 @@ GitHub Copilot harness 留给真正的重活，比如定时扫描知识库里过
 2. **协议层**——Agentic Runtime 只回流式，而 Connector 不能把流交给调用方、单次请求约 120 秒超时；
 3. **应用层**——managed app 又不能绕过 Connector 直接连。
 
-社区有自建自定义连接器调用 Agentic Runtime 的做法，但只解决了第一层。完整链路分析见 [Copilot Managed Runtime 系列 05](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
+社区有自建自定义连接器调用 Agentic Runtime 的做法，但只解决了第一层。
+
+**Copilot Chat agent 的 ❌ 也只指"不能经 Copilot Studio Connector 调用"。** 它是挂在 M365 Copilot Chat 里的声明式 agent，由 M365 Copilot 的编排器执行，不在 Copilot Studio 运行时里。程序进入 M365 Copilot 只有 Graph Copilot Chat API 一个入口，而 Work IQ Copilot MCP 的 `copilot_chat` 工具包装的正是它；这个工具有一个可选参数 `agentId`（"Agent ID for the Microsoft Copilot conversation"），按描述可以把问题交给指定的 Copilot Chat agent：应用 → Work IQ Connector → `copilot_chat`（带 agentId）→ Graph Chat API → 该 agent。支持哪类 agent、ID 从哪里取，还要实测。不带 agentId 的同一条链路已经在一个 managed app 里跑通，见 [Copilot Managed Runtime 系列 09](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)。完整链路分析见 [Copilot Managed Runtime 系列 05](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
 
 ### 3.2 GitHub Copilot harness 的发布渠道
 
@@ -130,6 +153,7 @@ GitHub Copilot harness 留给真正的重活，比如定时扫描知识库里过
 - [Microsoft Execution Containers](https://blogs.windows.com/windowsdeveloper/2026/10/07/microsoft-execution-containers-policy-driven-containment-for-ai-agents)
 - [BeyondTrust：Copilot Studio code interpreter 沙箱研究](https://www.beyondtrust.com/blog/entry/copilot-studio-sandbox-escape)
 - [Copilot Studio Agent Runtime 自定义连接器](https://troystaylor.com/power%20platform/custom%20connectors/mcp/2026-09-14-copilot-studio-agent-runtime-connector.html)
+- [Customer Conversation harness overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-experience/overview-customer-conversation)
 - [What's new in Copilot Studio, August 2026](https://www.microsoft.com/en-us/copilot/blog/copilot-studio/new-and-improved-github-copilot-harness-agent-skills-and-richer-context)
 
 相关文章：

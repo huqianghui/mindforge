@@ -33,7 +33,7 @@ tags: [copilot-studio, foundry, agent-service, voice-live-api, voice-agent, host
 
 **语音层**有两个，容易混。Copilot Studio 自己的语音能力面向电话 IVR，分 basic voice（经典编排 + NLU）和 real-time voice（语音到语音的 gpt-realtime，模型经 Foundry 提供），两者都只建在 Standard harness 上。Voice Live 则是一条独立的语音流水线，"听、想、说、avatar"一体，大脑有 model、BYOM、agent 三种接法（见 [Voice Live 系列 14](VoiceLive/Voice-Live系列14：模型接入的三条路径.md)）。
 
-**编排层**是"大脑和流程"在哪里跑。Copilot Studio 这一侧的关键概念是 **harness**——Standard、GitHub Copilot、Copilot Chat 三种，跑在三套不同的服务里、不能互转（[Copilot Studio 系列 03](Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)）。Foundry 这一侧的关键概念是 **agent 类型**——Prompt Agent（Foundry 替你运行）和 Hosted Agent（你写代码，Foundry 替你托管）。
+**编排层**是"大脑和流程"在哪里跑。Copilot Studio 这一侧的关键概念是 **harness**——Standard、GitHub Copilot、Copilot Chat，加上面向外部客户的 Customer Conversation 共四种，跑在不同的服务里、不能互转（[Copilot Studio 系列 03](Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。Foundry 这一侧的关键概念是 **agent 类型**——Prompt Agent（Foundry 替你运行）和 Hosted Agent（你写代码，Foundry 替你托管）。
 
 **治理层**两边各有地基：Power Platform 的环境、Dataverse、Connector、DLP，对应 Azure 的订阅、RBAC、VNet、Key Vault。中间是两边共用的 **Entra Agent ID** 和 **Agent 365**——这是 2026 年两边真正开始汇合的地方。
 
@@ -102,9 +102,9 @@ tags: [copilot-studio, foundry, agent-service, voice-live-api, voice-agent, host
 
 | 约束 | 违反时的后果 | 出处 |
 |---|---|---|
-| managed app 要**同步调用** Copilot Studio agent，只能用 Standard harness（`ExecuteCopilotAsyncV2`） | 调 GitHub Copilot harness agent 只拿到空或占位回复，官方确认是已知限制 | [CS 03](Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md) |
+| managed app 要**同步调用** Copilot Studio agent，只能用 Standard harness（`ExecuteCopilotAsyncV2`） | 调 GitHub Copilot harness agent 只拿到空或占位回复，官方确认是已知限制 | [CS 03](Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md) |
 | Copilot Studio 的语音能力（basic / real-time）**只在 Standard harness** 上 | GitHub Copilot harness 的 agent 无法接电话渠道 | Copilot Studio voice 文档 |
-| harness **创建后不能互转**，新建默认是 GitHub Copilot harness | 选错只能重建；要 Standard 得切回经典界面再建 | [CS 03](Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md) |
+| harness **创建后不能互转**，新建默认是 GitHub Copilot harness | 选错只能重建；要 Standard 得从 New agent 下拉菜单的 "Other ways to build" 里选 | [CS 03](Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md) |
 | GitHub Copilot harness 暂不支持 SharePoint、Direct Line、WhatsApp、联络中心等渠道 | 这些渠道只能用 Standard | GitHub Copilot harness 渠道文档 |
 | Copilot Studio 挂 Foundry agent：主 agent 必须是 GitHub Copilot harness；Foundry agent 要开启 Activity 协议与 `BotServiceRbac`；只支持新版 portal 的 agent | 旧版 portal 的 agent 返回 `404 - Version not found` | Add a Foundry agent as a connected agent |
 | Voice Live 的 **agent 绑定只认 Prompt Agent**，必须 Entra 认证，session `instructions` 不可用 | 指向 Hosted Agent 属未定义行为；用 key 认证连不上 | [Foundry 三形态 六](Foundary-Agent/Foundry-Agent三种形态对比与选型.md) |
@@ -271,7 +271,7 @@ Voice Live 自己就是一个构建入口——官方培训架构图把它画成
 
 相关文章：
 
-- [Copilot Studio 系列 03：三种 Harness 对比与选型](Copilot-Studio/Copilot-Studio系列03：三种Harness对比与选型.md)
+- [Copilot Studio 系列 03：四种 Harness 对比与选型](Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)
 - [Copilot Studio 系列 04：Agent、Workflow 与 App 的协作](Copilot-Studio/Copilot-Studio系列04：Agent、Workflow与App的协作.md)
 - [Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路](Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)
 - [Foundry Agent 三种形态对比与选型](Foundary-Agent/Foundry-Agent三种形态对比与选型.md)

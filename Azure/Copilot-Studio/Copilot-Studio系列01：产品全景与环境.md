@@ -16,8 +16,9 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 
 - **01 产品全景与环境**（本篇）——Copilot Studio 和 Power Platform 什么关系、环境是什么、入口都在哪
 - [02 Connector 与连接](Copilot-Studio系列02：Connector与连接.md)——一个连接池、三种用法；自定义 Connector
-- [03 三种 Harness 对比与选型](Copilot-Studio系列03：三种Harness对比与选型.md)——Standard、GitHub Copilot、Copilot Chat 跑在哪、能不能被调用
+- [03 四种 Harness 对比与选型](Copilot-Studio系列03：四种Harness对比与选型.md)——Standard、GitHub Copilot、Copilot Chat、Customer Conversation 跑在哪、能不能被调用
 - [04 Agent、Workflow 与 App 的协作](Copilot-Studio系列04：Agent、Workflow与App的协作.md)——共享数据、同步调用、触发 workflow
+- [05 Agent 的存储与标识](Copilot-Studio系列05：Agent的存储与标识.md)——agent 是 Dataverse 里的几行记录；Solution、发布者前缀与不可改的 schema name
 
 ## 结论先行
 
@@ -36,9 +37,9 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 
 **产品层**是"造东西的地方"。Power Apps、Power Automate、Power Pages、Power BI 是多年的经典产品；Copilot Studio 是其中以 AI 为中心的那个，2026 年起把 agent、workflow、app 放进了"一个 studio"，以自然语言描述为主、由 AI 生成，再按需改代码。
 
-**运行时层**是最容易被忽略、也最决定行为的一层。同样叫"agent"，Standard harness 跑在经典运行时（前身 Power Virtual Agents），GitHub Copilot harness 跑在另一套 Agentic Runtime，Copilot Chat harness 干脆由 M365 Copilot 自己的编排器执行；Copilot Studio 里生成的 app 跑在 Copilot Managed Runtime，**不是** Power Apps 播放器。运行时不同，能力、计费、能不能被调用就都不同——这是 [系列 03](Copilot-Studio系列03：三种Harness对比与选型.md) 的主题。
+**运行时层**是最容易被忽略、也最决定行为的一层。同样叫"agent"，Standard harness 跑在经典运行时（前身 Power Virtual Agents），GitHub Copilot harness 跑在另一套 Agentic Runtime，Copilot Chat harness 干脆由 M365 Copilot 自己的编排器执行，面向外部客户的 Customer Conversation harness 又是另一种；Copilot Studio 里生成的 app 跑在 Copilot Managed Runtime，**不是** Power Apps 播放器。运行时不同，能力、计费、能不能被调用就都不同——这是 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md) 的主题。
 
-**地基层**是大家共用的部分。能直接看到的证据有三处：同一个环境 ID 同时出现在 Copilot Studio 地址、Power Apps 门户地址和 managed app 的 `ms.config.json` 里；Copilot Studio 左下角 **…** 菜单直接链到 Solutions 和 Power Platform admin center；Standard agent 的调用路径带着 `/powervirtualagents/dataverse-backed/`，说明 agent 定义存在环境的 Dataverse 里。
+**地基层**是大家共用的部分。能直接看到的证据有三处：同一个环境 ID 同时出现在 Copilot Studio 地址、Power Apps 门户地址和 managed app 的 `ms.config.json` 里；Copilot Studio 左下角 **…** 菜单直接链到 Solutions 和 Power Platform admin center；Standard agent 的调用路径带着 `/powervirtualagents/dataverse-backed/`，说明 agent 定义存在环境的 Dataverse 里——它就是 `bot` 表的一行，见 [系列 05](Copilot-Studio系列05：Agent的存储与标识.md)。
 
 ### 容易混的三组
 
@@ -53,7 +54,7 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 
 ### 新旧两套界面
 
-2026-08 起 Copilot Studio 默认进入新版界面，左侧只有 **Home / Chat / Agents / Workflows / Apps**，新建 agent 默认是 GitHub Copilot harness。要建 Standard harness 的 agent，从左下角 **…** → **Open classic experience** 切回经典界面。两套界面的 agent 不能互转。
+2026-08 起 Copilot Studio 默认进入新版界面，左侧只有 **Home / Chat / Agents / Workflows / Apps**，新建 agent 默认是 GitHub Copilot harness——首页的 Agent / Workflow / App 三张卡片都标着 GitHub Copilot。要建 Standard harness 的 agent，在首页点 **Other ways to build**，或在 Agents 页点 New agent 右侧的下拉箭头选 **Agent（Standard）**；四个菜单项与四种 harness 的对应见 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md)。不同 harness 的 agent 不能互转。
 
 ---
 
