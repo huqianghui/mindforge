@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" width="1400" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; }
+      .cardR { fill: #2a1218; stroke: #f87171; stroke-width: 1.6; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fecaca; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .fBack { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 6 6; animation: dashR 1.6s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes dashR { to { stroke-dashoffset: 30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="880" rx="16"/>
+  <text class="title" x="30" y="44">第三种问答后端：经 Azure OpenAI Connector 直接调模型</text>
+  <text class="sub" x="30" y="72">检索与提示词和 Work IQ 后端完全相同，只换生成端；凭据在共享连接里，部署名是每次调用的参数</text>
+
+  <!-- zone app -->
+  <rect class="zone" x="24" y="94" width="330" height="500" rx="12"/>
+  <text class="zt" x="40" y="120">浏览器 · managed app</text>
+  <rect class="card" x="40" y="136" width="298" height="150" rx="9"/>
+  <circle class="num" cx="62" cy="160" r="11"/><text class="nt" x="62" y="165">1</text>
+  <text class="h" x="82" y="165">本地检索 + 拼提示词</text>
+  <text class="t" x="56" y="194">取 5 篇最相关文章的段落</text>
+  <text class="t" x="56" y="216">规则：ONLY from SOURCES，</text>
+  <text class="t" x="56" y="238">行内 [n]，最后一行 RELATED</text>
+  <text class="tG" x="56" y="266">与 Work IQ 后端同一份提示词</text>
+
+  <rect class="card" x="40" y="300" width="298" height="190" rx="9"/>
+  <circle class="num" cx="62" cy="324" r="11"/><text class="nt" x="62" y="329">2</text>
+  <text class="h" x="82" y="329">调生成的 Service</text>
+  <text class="m" x="56" y="358">ChatCompletions_Create_</text>
+  <text class="m" x="56" y="378">  2024Feb15Preview(</text>
+  <text class="m" x="72" y="400">requestBody,</text>
+  <text class="mT" x="72" y="422">deployment-id,</text>
+  <text class="mT" x="72" y="444">api-version)</text>
+  <text class="tG" x="56" y="474">body 只有 messages 一项</text>
+
+  <rect class="dim" x="40" y="504" width="298" height="74" rx="9"/>
+  <text class="t" x="56" y="530">代码里没有 key、没有 endpoint</text>
+  <text class="tG" x="56" y="556">只有部署名和 api-version</text>
+
+  <!-- zone host -->
+  <rect class="zone" x="380" y="94" width="330" height="500" rx="12"/>
+  <text class="zt" x="396" y="120">宿主 + API Hub · 共享连接</text>
+  <rect class="cardA pulse" x="396" y="136" width="298" height="168" rx="9"/>
+  <circle class="numA" cx="418" cy="160" r="11"/><text class="nt" x="418" y="165">3</text>
+  <text class="hA" x="438" y="165">allowedActions 白名单</text>
+  <text class="t" x="412" y="194">共享连接必须声明能调的动作</text>
+  <text class="mA" x="412" y="220">["ChatCompletions_</text>
+  <text class="mA" x="412" y="240">  Create_2024Feb15Preview"]</text>
+  <text class="t" x="412" y="268">ms app deploy 时校验；</text>
+  <text class="tG" x="412" y="290">ms app dev 不查，本地能跑</text>
+
+  <rect class="card" x="396" y="318" width="298" height="140" rx="9"/>
+  <circle class="num" cx="418" cy="342" r="11"/><text class="nt" x="418" y="347">4</text>
+  <text class="h" x="438" y="347">注入 key，拼地址</text>
+  <text class="t" x="412" y="376">key 只在 Power Platform 连接里</text>
+  <text class="m" x="412" y="402">https://&lt;资源名&gt;</text>
+  <text class="m" x="412" y="422">  .openai.azure.com/…</text>
+  <text class="tG" x="412" y="446">资源名来自连接参数</text>
+
+  <rect class="cardR" x="396" y="472" width="298" height="106" rx="9"/>
+  <text class="hR" x="412" y="498">踩坑：资源名填成完整网址</text>
+  <text class="t" x="412" y="524">地址被拼坏 → 502 BadGateway</text>
+  <text class="t" x="412" y="546">连接状态照样显示 Connected</text>
+  <text class="tR" x="412" y="568">只填资源名，不带 https://</text>
+
+  <!-- zone azure -->
+  <rect class="zone" x="736" y="94" width="310" height="500" rx="12"/>
+  <text class="zt" x="752" y="120">Azure OpenAI 资源</text>
+  <rect class="card" x="752" y="136" width="278" height="238" rx="9"/>
+  <circle class="num" cx="774" cy="160" r="11"/><text class="nt" x="774" y="165">5</text>
+  <text class="h" x="794" y="165">按 deployment-id 路由</text>
+  <text class="t" x="768" y="194">连接只认资源，不认部署</text>
+  <text class="t" x="768" y="224">同一条连接可调这个资源下</text>
+  <text class="t" x="768" y="246">的任何部署：</text>
+  <text class="mT" x="784" y="274">gpt-6.1-*  ← 当前用</text>
+  <text class="m" x="784" y="296">gpt-6-*</text>
+  <text class="m" x="784" y="318">gpt-5.6-*</text>
+  <text class="tG" x="768" y="352">页面切模型只需改参数</text>
+
+  <rect class="dim" x="752" y="388" width="278" height="190" rx="9"/>
+  <text class="h" x="768" y="414">计费与配额</text>
+  <text class="t" x="768" y="442">按 token 计费，记在资源</text>
+  <text class="t" x="768" y="464">所在订阅上</text>
+  <text class="t" x="768" y="494">应用分享出去，别人也用</text>
+  <text class="t" x="768" y="516">这把 key 和这份配额</text>
+  <text class="tG" x="768" y="546">不需要用户有 M365 Copilot</text>
+  <text class="tG" x="768" y="566">许可</text>
+
+  <!-- zone result -->
+  <rect class="zone" x="1072" y="94" width="304" height="500" rx="12"/>
+  <text class="zt" x="1088" y="120">返回 · 页面</text>
+  <rect class="card" x="1088" y="136" width="272" height="226" rx="9"/>
+  <circle class="num" cx="1110" cy="160" r="11"/><text class="nt" x="1110" y="165">6</text>
+  <text class="h" x="1130" y="165">标准 Chat 响应</text>
+  <text class="m" x="1104" y="196">choices[0]</text>
+  <text class="m" x="1104" y="216">  .message.content</text>
+  <text class="m" x="1104" y="242">model</text>
+  <text class="m" x="1104" y="268">usage.prompt_tokens</text>
+  <text class="m" x="1104" y="290">usage.completion_tokens</text>
+  <text class="t" x="1104" y="320">一层解析，不像 Work IQ</text>
+  <text class="t" x="1104" y="342">要剥六层包装</text>
+
+  <rect class="dim" x="1088" y="376" width="272" height="202" rx="9"/>
+  <text class="h" x="1104" y="402">页面显示</text>
+  <text class="t" x="1104" y="430">回答 + [n] 引用标签</text>
+  <text class="t" x="1104" y="452">耗时 · 后端 · 模型版本</text>
+  <text class="t" x="1104" y="474">输入 / 输出 token</text>
+  <text class="tA" x="1104" y="508">同一问题实测 4.6 秒</text>
+  <text class="tG" x="1104" y="534">content 为空时报出</text>
+  <text class="tG" x="1104" y="556">finish_reason</text>
+
+  <!-- flows -->
+  <path class="f" d="M338,240 C356,240 356,330 338,330" opacity="0"/>
+  <path class="f" d="M189,286 L189,300"/>
+  <path class="f" d="M338,400 C362,400 370,220 396,220"/>
+  <path class="f" d="M545,304 L545,318"/>
+  <path class="f" d="M694,400 C716,400 726,260 752,260"/>
+  <path class="f" d="M1030,250 C1052,250 1064,250 1088,250"/>
+  <path class="f" d="M1224,362 L1224,376"/>
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.4s" repeatCount="indefinite" path="M189,286 L189,300 L189,400 L338,400 C362,400 370,220 396,220 L545,220 L545,318 L545,400 L694,400 C716,400 726,260 752,260 L1030,250 C1052,250 1064,250 1088,250"/></circle>
+
+  <!-- comparison strip -->
+  <rect class="zone" x="24" y="612" width="1352" height="104" rx="12"/>
+  <text class="h" x="44" y="640">和 Work IQ 两种后端相比，少了什么、多了什么</text>
+  <text class="t" x="44" y="668">少了：M365 Copilot 编排、企业搜索 grounding、自动抓取提示词里的网址 → 快 3～8 倍，回答只依据 SOURCES</text>
+  <text class="t" x="44" y="696">多了：自己的 Azure 资源与 key 管理；身份从"每个用户自己"变成"共享一把 key"，治理要靠 allowedActions 与资源侧配额</text>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="732" width="1352" height="124" rx="12"/>
+  <text class="lg" x="44" y="760">① 检索结果和提示词三种后端共用，对比只差生成端　② 部署名与 api-version 是调用参数，不在连接里</text>
+  <text class="lg" x="44" y="788">③ API Key 连接可共享，平台要求声明 allowedActions；只放行 Chat Completions，别人借这条连接也调不了 Embeddings 等其他动作</text>
+  <text class="lg" x="44" y="816">④ key 由 API Hub 注入；资源名必须是裸名，连接不校验这个参数　⑤ 同一资源下的部署随便切</text>
+  <text class="lg" x="44" y="844">⑥ 标准 OpenAI 响应，带 model 与 usage；引用仍走 [n] + RELATED 协议，解析器与 Work IQ 后端共用</text>
+</svg>

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.8; }
+      .cardR { fill: #2a1218; stroke: #f87171; stroke-width: 1.6; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .hT { fill: #5eead4; font-size: 16px; font-weight: 600; }
+      .hR { fill: #fecaca; font-size: 16px; font-weight: 600; }
+      .hG { fill: #94a3b8; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .badge { font-size: 13px; font-weight: 700; }
+      .axis { stroke: #2dd4bf; stroke-width: 3; fill: none; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
+      .node { fill: #0b1220; stroke-width: 2.4; }
+      .nl { font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .lead { stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 3; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      @keyframes dash { to { stroke-dashoffset: -32; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">Azure OpenAI 连接：三种认证方式，和从建连接到上线的四道坎</text>
+  <text class="sub" x="30" y="72">connector 声明支持三种认证；在一个企业租户里实际只有 API Key 走得通，它又带来"共享连接"的一串约束</text>
+
+  <!-- auth options -->
+  <rect class="zone" x="24" y="92" width="1352" height="318" rx="12"/>
+  <text class="zt" x="44" y="118">认证方式三选一</text>
+
+  <rect class="cardR" x="44" y="134" width="420" height="258" rx="10"/>
+  <text class="hR" x="64" y="164">Microsoft Entra ID Integrated</text>
+  <text class="badge" x="390" y="164" fill="#f87171">✗ 建不了</text>
+  <text class="t" x="64" y="194">只要资源名；每个用户需有资源的</text>
+  <text class="t" x="64" y="216">Cognitive Services OpenAI User 角色</text>
+  <text class="tG" x="64" y="238">连接不共享，身份清楚 —— 理想选项</text>
+  <text class="t" x="64" y="270">实测：登录弹窗报</text>
+  <text class="mR" x="190" y="270">AADSTS50011</text>
+  <text class="t" x="64" y="292">connector 的第一方应用没登记回调地址</text>
+  <text class="t" x="64" y="314">请求进登录前就被应用配置校验拦下</text>
+  <text class="tR" x="64" y="342">换浏览器、清缓存、换账号都没用</text>
+  <text class="tG" x="64" y="372">另：登录走 /common，资源跨租户通常也被拒</text>
+
+  <rect class="card pulse" x="490" y="134" width="420" height="258" rx="10"/>
+  <text class="hT" x="510" y="164">API Key（采用）</text>
+  <text class="badge" x="836" y="164" fill="#2dd4bf">✓ 可行</text>
+  <text class="t" x="510" y="194">资源名 + key；key 只存在</text>
+  <text class="t" x="510" y="216">Power Platform 连接对象里</text>
+  <text class="tG" x="510" y="238">不进代码、不进 ms.config.json、不进仓库</text>
+  <text class="t" x="510" y="270">代价：连接是共享的</text>
+  <text class="t" x="510" y="292">应用分享出去，所有用户共用这把 key</text>
+  <text class="t" x="510" y="314">与这份配额，资源侧看不到是谁在调</text>
+  <text class="tA" x="510" y="342">→ 平台要求声明 allowedActions</text>
+  <text class="tG" x="510" y="372">ms.config.json 里该条目带 sharedConnectionId</text>
+
+  <rect class="dim" x="936" y="134" width="420" height="258" rx="10"/>
+  <text class="hG" x="956" y="164">Managed Identity</text>
+  <text class="badge" x="866" y="164" fill="#64748b" opacity="0"> </text>
+  <text class="badge" x="1252" y="164" fill="#64748b">— 不适用</text>
+  <text class="t" x="956" y="194">只适用于 Logic Apps</text>
+  <text class="tG" x="956" y="216">managed app 和 Power Apps 里不出现</text>
+  <text class="t" x="956" y="256">如果资源与账号不在同一租户：</text>
+  <text class="t" x="956" y="278">本机用 az 指定该租户的订阅取令牌</text>
+  <text class="t" x="956" y="300">可以直接调通——令牌直接由资源</text>
+  <text class="t" x="956" y="322">所在租户签发</text>
+  <text class="tR" x="956" y="350">connector 不能这样选租户</text>
+  <text class="tG" x="956" y="376">所以换了一个同租户的资源</text>
+
+  <!-- timeline -->
+  <rect class="zone" x="24" y="428" width="1352" height="320" rx="12"/>
+  <text class="zt" x="44" y="454">从建连接到上线：四道坎（时间顺序）</text>
+  <path class="axis" d="M90,510 L1310,510"/>
+  <circle r="6" fill="#2dd4bf"><animateMotion dur="5s" repeatCount="indefinite" path="M90,510 L1310,510"/></circle>
+
+  <circle class="node" cx="200" cy="510" r="20" stroke="#f87171"/><text class="nl" x="200" y="515" fill="#fca5a5">1</text>
+  <circle class="node" cx="530" cy="510" r="20" stroke="#f87171"/><text class="nl" x="530" y="515" fill="#fca5a5">2</text>
+  <circle class="node" cx="860" cy="510" r="20" stroke="#fbbf24"/><text class="nl" x="860" y="515" fill="#fcd34d">3</text>
+  <circle class="node" cx="1190" cy="510" r="20" stroke="#2dd4bf"/><text class="nl" x="1190" y="515" fill="#5eead4">4</text>
+
+  <text class="h" x="200" y="560" text-anchor="middle">建连接</text>
+  <text class="h" x="530" y="560" text-anchor="middle">第一次调用</text>
+  <text class="h" x="860" y="560" text-anchor="middle">ms app deploy</text>
+  <text class="h" x="1190" y="560" text-anchor="middle">线上首问</text>
+
+  <rect class="cardR" x="56" y="578" width="290" height="152" rx="9"/>
+  <text class="t" x="72" y="604">Entra 方式报 AADSTS50011</text>
+  <text class="t" x="72" y="628">→ 不是自己的配置问题，</text>
+  <text class="t" x="72" y="650">改用 API Key</text>
+  <text class="tG" x="72" y="682">判断依据：错误发生在</text>
+  <text class="tG" x="72" y="704">登录页之前、多浏览器一致</text>
+
+  <rect class="cardR" x="386" y="578" width="290" height="152" rx="9"/>
+  <text class="t" x="402" y="604">一直 502，内层 500</text>
+  <text class="t" x="402" y="628">换 api-version 也一样</text>
+  <text class="t" x="402" y="652">查连接参数：资源名填成了网址</text>
+  <text class="m" x="402" y="680">GET …/connections/&lt;id&gt;</text>
+  <text class="tG" x="402" y="704">connectionParametersSet.values</text>
+
+  <rect class="cardR" x="716" y="578" width="290" height="152" rx="9" style="fill:#2a1f0b;stroke:#fbbf24"/>
+  <text class="t" x="732" y="604">部署被拒：共享连接没有声明</text>
+  <text class="mA" x="732" y="628">allowedActions</text>
+  <text class="t" x="732" y="652">→ 只放行用到的那一个动作</text>
+  <text class="tG" x="732" y="682">ms app dev 不做这项检查，</text>
+  <text class="tG" x="732" y="704">本地能跑、部署才报错</text>
+
+  <rect class="card" x="1046" y="578" width="290" height="152" rx="9"/>
+  <text class="t" x="1062" y="604">宿主弹授权框：Azure OpenAI</text>
+  <text class="t" x="1062" y="626">（共享连接）+ Work IQ 两条</text>
+  <text class="t" x="1062" y="650">点 Allow 前的计时含等待：230 秒</text>
+  <text class="tT" x="1062" y="682">授权后线上实测 8.4 秒</text>
+  <text class="tG" x="1062" y="704">输入 5087 / 输出 179 token</text>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="764" width="1352" height="114" rx="12"/>
+  <text class="lg" x="44" y="792">❶ 错误发生在登录页之前 = 应用注册层面的问题，用户侧无解；先换认证方式，而不是反复重试</text>
+  <text class="lg" x="44" y="820">❷ 连接状态 Connected 只说明凭据有效，不校验资源名这类参数；502 先查连接的非机密参数</text>
+  <text class="lg" x="44" y="848">❸ 共享连接 = 别人也能借用，所以平台在部署时强制白名单　❹ 首问计时里混着授权等待，测延迟要看授权之后的数字</text>
+</svg>

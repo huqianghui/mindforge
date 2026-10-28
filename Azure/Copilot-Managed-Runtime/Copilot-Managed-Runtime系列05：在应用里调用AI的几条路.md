@@ -1,7 +1,7 @@
 ---
 title: Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路
 created: 2026-10-27
-description: managed app 不能直连外部 API 也不能嵌网页聊天，调用 AI 只能经 Connector；三条可行路线是 Standard agent（实测须发布到 M365 Copilot 后经 Work IQ 的 agentId 调用，Copilot Studio Connector 的回调式动作在浏览器里用不了）、Work IQ Copilot MCP 直调 M365 Copilot、Azure OpenAI Connector 加前端检索，GitHub Copilot harness 的 agent 在 Connector、协议、应用三层都被堵住；回答只有纯文本，引用靠在提示词里约定输出协议由应用自己解析；宿主里的 Cowork 流式通道仍是实验性
+description: managed app 不能直连外部 API 也不能嵌网页聊天，调用 AI 只能经 Connector；三条可行路线是 Standard agent（实测须发布到 M365 Copilot 后经 Work IQ 的 agentId 调用，Copilot Studio Connector 的回调式动作在浏览器里用不了）、Work IQ Copilot MCP 直调 M365 Copilot、Azure OpenAI Connector 加前端检索（实测只能用 API Key 共享连接、须声明 allowedActions，最快约 5 秒），GitHub Copilot harness 的 agent 在 Connector、协议、应用三层都被堵住；回答只有纯文本，引用靠在提示词里约定输出协议由应用自己解析；宿主里的 Cowork 流式通道仍是实验性
 tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copilot, azure-openai, connector, mcp, rag, prompt-engineering, citations]
 ---
 
@@ -11,7 +11,7 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 > 资料截至 2026-10-27。〔实测〕指对已部署应用的抓包、`ms connector list-actions` 结果和一个已上线参考应用的前端结构分析；〔待实测〕是文档没写清、需要在租户里验证的行为。
 
 > [!CAUTION]
-> **2026-10-28 实测更正**：下文路线 ① 原计划经 Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 调 Standard agent，**在 managed app 里走不通**——草稿 agent 被重定向到门户、被 CORS 拦截；已发布 agent 的这个动作要求回调地址 `notificationUrl`，不传返回 400。可行的做法是把 agent 发布到 Microsoft 365 Copilot，再经路线 ② 的 Work IQ `copilot_chat` 传 `agentId`。完整过程见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。第二节保留原计划作记录。
+> **2026-10-28 实测更正**：下文路线 ① 原计划经 Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 调 Standard agent，**在 managed app 里走不通**——草稿 agent 被重定向到门户、被 CORS 拦截；已发布 agent 的这个动作要求回调地址 `notificationUrl`，不传返回 400。可行的做法是把 agent 发布到 Microsoft 365 Copilot，再经路线 ② 的 Work IQ `copilot_chat` 传 `agentId`。完整过程见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。第二节保留原计划作记录。路线 ③ 也已实测跑通，见第五节末尾与 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 在 managed app 里加一个"问 Copilot"面板，听起来只是调个 API。但 [系列 03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md) 已经说明：应用不能 `fetch` 外部地址，不能嵌外部 iframe，唯一的出口是 Connector。本篇把能走通、走不通的路逐条摆出来。
 
@@ -36,7 +36,7 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 |---|---|---|---|
 | ① Standard agent | 原计划：每个用户自己的 Entra 连接；实测改走 Work IQ，用户身份 SSO | 靠输出协议 | 要另外建、发布并分享 agent；经 Work IQ 时同路线 ② 计费 |
 | ② Work IQ → M365 Copilot | 用户自己的身份，SSO | 靠输出协议 | Work IQ API 单独按量；Preview Connector |
-| ③ Azure OpenAI + 前端检索 | API key 连接，不支持 SSO，通常共享作者的连接 | 天然结构化 | token 计费；检索、评估都要自己做 |
+| ③ Azure OpenAI + 前端检索 | 实测只能用 API key 共享连接（Entra 方式报 AADSTS50011），须声明 allowedActions | 天然结构化 | token 计费；检索、评估都要自己做 |
 | ④ Cowork（实验性） | 需手工配置 token | — | 不稳定，SDK 未封装 |
 
 ---
@@ -135,6 +135,9 @@ export async function askAgent(message: string, conversationId?: string) {
 3. **引用天然结构化**：就是检索出来的那几块，可以精确跳到段落。
 
 注意 `worker-src 'none'`：向量检索只能在主线程做，数据量大时要分片或放构建期预计算。
+
+> [!NOTE]
+> **2026-10-28 实测**：问答页的第三种后端就是这条路线，同一问题 4.6 秒（Work IQ 15–26 秒、agent 25–36 秒）。四点和原计划不同或原计划没写到：Entra ID Integrated 连接建不出来（`AADSTS50011`），只能用 API Key；API Key 连接是共享连接，部署时必须在 `ms.config.json` 里声明 `allowedActions`；部署名是每次调用的参数，不在连接里；资源名只填裸名，填网址会 502。见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 和路线 ① 相比，这是"可控性换维护量"：知识更新要重新同步、重新部署，而不是改知识源；引用精确到段落，而不是解析文本；提示词、检索、排序全可控，而不是"指令 + 平台检索"的黑盒；但连接是 API key、通常共享作者身份，治理和评估也要自己做。
 

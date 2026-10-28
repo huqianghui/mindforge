@@ -35,7 +35,7 @@ tags: [copilot-managed-runtime, managed-apps, sdk, connector, dataverse, typescr
 执行后**先 `git status` 看清生成了哪些文件**，再决定 import 路径。Dataverse 表目前一次只能加一张，多张表要执行多次；Connector 元数据变了用 `ms app refresh data-source` 重新生成。
 
 > [!CAUTION]
-> Azure OpenAI 这类 API key 连接，key 存在连接对象里、不会写进 `ms.config.json`——但也**不要**把 key 写进代码或 `appSettings`。
+> Azure OpenAI 这类 API key 连接，key 存在连接对象里、不会写进 `ms.config.json`——但也**不要**把 key 写进代码或 `appSettings`。这类连接是**共享**的（条目里带 `sharedConnectionId`），部署时平台要求在条目里声明 `allowedActions` 白名单，`ms app dev` 不做这项检查，见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 ```bash
 # 动作型（Copilot Studio、Azure OpenAI、MCP Connector）

@@ -299,6 +299,7 @@
 - [Copilot Managed Runtime 系列 08：用 App state 保存用户数据](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)
 - [Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)
 - [Copilot Managed Runtime 系列 10：经 Work IQ 调用 Copilot Studio Agent](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)
+- [Copilot Managed Runtime 系列 11：用 Azure OpenAI Connector 直调模型](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)
 
 #### Azure/Copilot-Studio
 

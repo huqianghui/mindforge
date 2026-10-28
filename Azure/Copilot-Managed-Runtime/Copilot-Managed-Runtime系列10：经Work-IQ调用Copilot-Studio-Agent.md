@@ -179,7 +179,7 @@ start the answer with the line "知识库里没有相关内容，以下来自公
 
 什么时候值得用 agent 后端而不是直调本体：**需要固定或比较模型**、**希望资料外的问题有网页兜底**、**同一个回答者还要在 Teams 和 M365 Copilot 里给人直接用**。只要"严格只依据应用给的资料"，直调本体更快、少一个要维护的东西。
 
-路线图上剩下的对比是第三种后端：**Azure OpenAI Connector + 同一套前端检索**，检索不变、只换生成端，看"模型可选、更快"能换来多少。
+路线图上剩下的对比是第三种后端：**Azure OpenAI Connector + 同一套前端检索**，检索不变、只换生成端。已上线，同一问题 4.6 秒，三种后端的完整对比见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 ---
 
@@ -196,3 +196,4 @@ start the answer with the line "知识库里没有相关内容，以下来自公
 - [Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)
 - [Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)
 - [Copilot Studio 系列 06：Standard Agent 的配置与发布](../Copilot-Studio/Copilot-Studio系列06：Standard-Agent的配置与发布.md)
+- [Copilot Managed Runtime 系列 11：用 Azure OpenAI Connector 直调模型](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)

@@ -1,7 +1,7 @@
 ---
 title: Copilot Studio 系列 02：Connector 与连接
 created: 2026-10-27
-description: Connector 是 Power Platform 给 API 套的标准外壳，连接是某人对它的一次登录、保存凭据；app、agent、workflow 共用同一个连接池和同一套 DLP，区别在谁的身份去调、以什么形式调；企业租户九成 Connector 被阻止，选型先查允许列表；自定义 Connector 是接入自有后端的正规途径，但常被 DLP 拦下
+description: Connector 是 Power Platform 给 API 套的标准外壳，连接是某人对它的一次登录、保存凭据；app、agent、workflow 共用同一个连接池和同一套 DLP，区别在谁的身份去调、以什么形式调；企业租户九成 Connector 被阻止，选型先查允许列表；自定义 Connector 是接入自有后端的正规途径，但常被 DLP 拦下；API key 类共享连接在 managed app 里须声明 allowedActions 白名单
 tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connector, oauth, entra-id, managed-apps, mcp]
 ---
 
@@ -16,7 +16,8 @@ tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connec
 
 - **Connector 是类型，连接是实例。** Connector 是一个 API 的定义，全平台一份；连接是"某人用某账号登录了这个 Connector"，存着凭据，会过期，属于环境。
 - **app、agent、workflow 用的是同一个连接池。** 能不能用上，还要满足 Connector 类型一致、同环境、连接健康、身份模式四个条件。
-- **三种用法最关键的差别是身份**：managed app 永远用当前用户自己的连接；agent 可选作者身份或用户身份；workflow 通常用建流程的人的连接。
+- **三种用法最关键的差别是身份**：managed app 默认用当前用户自己的连接（API key 类共享连接例外，见 2.1）；agent 可选作者身份或用户身份；workflow 通常用建流程的人的连接。
+- **共享连接要配白名单。** API key 类连接（如 Azure OpenAI）是共享的，managed app 部署时必须声明 `allowedActions`，只放行用到的动作；连接显示 Connected 也不代表参数填对了。
 - **企业租户里九成以上的 Connector 被 DLP 阻止**，选型第一步是 `ms connector list --only-allowed`；第零步是"这件事能不能不用 Connector"。
 - **自定义 Connector 是接自己后端的正规途径**，但在管得严的企业租户里常被阻止，实验要换一个自己有管理员权限的租户。
 
@@ -45,7 +46,7 @@ tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connec
 
 图上方三张卡片里，用颜色标出的那一行就是身份：
 
-- **managed app 里每个用户只看得到自己有权限看的数据**，因为连接永远是用户自己的。
+- **managed app 里每个用户只看得到自己有权限看的数据**，因为连接是用户自己的——例外是 API key 类共享连接，所有用户共用作者的凭据（2.1）。
 - **agent 用"作者身份"时，所有用户都以作者的权限访问数据**——方便，但可能越权。
 
 > [!CAUTION]
@@ -68,6 +69,17 @@ tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connec
 **需要专门去 Power Apps 门户 → Connections 的情况**：一次看全部、修复过期连接、共享连接、删除连接、建自定义 Connector。红叉 + Reconnect 表示连接失效，常见原因是刷新令牌过期、改过密码、条件访问要求重新登录；失效的连接会让用到它的应用、agent、流程运行失败。
 
 为什么连接在制作者门户、不在 admin center？因为**连接是个人的，admin center 管的是规则**。好比手机上登录的微信账号是你自己的，公司 MDM 只管能不能装微信。
+
+### 2.1 共享连接：一个实测案例
+
+身份模型之外，还有一类连接是**作者建好、给所有用户共用**的——典型是 API key 认证的 Connector。拿 Azure OpenAI Connector 在一个企业租户里的实测为例：
+
+- **它声明的三种认证里，只有 API Key 能用。** Microsoft Entra ID Integrated 本该是首选（每人用自己的身份、连接不共享），但创建连接时登录弹窗报 `AADSTS50011`——connector 的第一方应用没登记回调地址，错误发生在输入账号之前，换浏览器、换账号都一样；Managed Identity 只适用于 Logic Apps。
+- **共享就要白名单。** managed app 用这条连接时，`ms.config.json` 里的条目带 `sharedConnectionId`；部署时平台要求声明 `allowedActions`，否则报 "Shared connection references without dataset tables must declare connector-level allowedActions"。只放行 Chat Completions，别人借这条连接就调不了 Embeddings 等其他动作。本地 `ms app dev` 不做这项检查。
+- **Connected 不等于参数正确。** 资源名填成完整网址时，连接状态照样是 Connected，调用却一直 502；用 Power Apps API 查连接的非机密参数（`properties.connectionParametersSet.values`）才看出来。
+- **模型不在连接里。** 连接只绑定资源，部署名是每次调用的参数，一条连接能调资源下的所有部署。
+
+完整过程见 [Copilot Managed Runtime 系列 11](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 各处添加 Connector 的入口：agent 在 **Build → Tools**（经典界面是 Tools → Add a tool，连接在 Settings → Connection settings）；workflow 在设计器里加一个动作；Copilot Studio 生成的 app 在左上角下拉的 **Data / Connections** 视图，或直接在对话里说"连接到某张表"；代码写的 managed app 用 `ms app add data-source`；允许 / 阻止则在 Power Platform admin center 的 Data policy（需管理员）。
 
@@ -106,7 +118,7 @@ tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connec
 图里那排属性标签（表型 / 动作型、SSO、认证方式、可否共享、Premium、DLP）就是选型时要逐个看的东西。按顺序问四个问题：
 
 1. **这件事能不能不用 Connector？** 构建期预计算、静态数据、`mailto:`、浏览器端导出都能替代一部分。一个已上线的内部看板应用只用了两个 Connector，其余全靠这些手段，见 [Copilot Managed Runtime 系列 06](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)。
-2. **有没有支持 SSO 的？** 用户首次使用一键同意甚至静默完成，身份也清楚。API key 类（如 Azure OpenAI）通常是作者建好连接再共享，所有用户共用一个身份。
+2. **有没有支持 SSO 的？** 用户首次使用一键同意甚至静默完成，身份也清楚。API key 类（如 Azure OpenAI）通常是作者建好连接再共享，所有用户共用一个身份，还要在应用里声明 `allowedActions`（见 2.1）。
 3. **是不是 Premium？** Premium 需要 Power Apps Premium 或按量 Copilot Credits，同意框里会标出。
 4. **会不会每次交互都调用？** managed app 每次 API 调用 0.1 Credits（Premium 用户计入每日请求额度）；Work IQ API 另外单独按量计费；还有每连接限流，例如 Copilot Studio Connector 每连接 300 次 / 60 秒。
 

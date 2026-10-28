@@ -24,6 +24,7 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 | [08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md) | 用 App state 保存用户数据 | 实践：阅读进度与收藏；Dataverse 被 DLP 挡住后改用 App state |
 | [09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md) | 本地检索加 Work IQ 的问答 | 实践：带结构化引用的问答，返回格式与实测耗时 |
 | [10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md) | 经 Work IQ 调用 Copilot Studio Agent | 实践：Copilot Studio Connector 为何走不通，改用 agentId 接入第二种问答后端 |
+| [11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md) | 用 Azure OpenAI Connector 直调模型 | 实践：第三种问答后端；API Key 共享连接、allowedActions 与三种后端实测对比 |
 
 Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、agent / workflow / app 协作）见姊妹系列 [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)。
 

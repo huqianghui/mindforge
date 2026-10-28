@@ -160,7 +160,7 @@ if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 路线图上的下一步是两种对比实验：
 
 1. **Copilot Studio Standard agent**：已作为问答页可切换的第二种后端上线。原计划经 Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 调用，实测走不通（回调式动作），改为发布到 M365 Copilot 后经本篇同一个 Work IQ 工具传 `agentId`，见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
-2. **Azure OpenAI Connector + 同一套前端检索**：检索不变，只换生成端，看"模型可选、更快"能换来多少。
+2. **Azure OpenAI Connector + 同一套前端检索**：已作为第三种后端上线，检索不变、只换生成端，同一问题 4.6 秒；连接只能用 API Key 共享连接、部署时要声明 `allowedActions`，见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
 另一个方向是把问答和其他页面串起来：洞察页的一条 Claim、建议页的一张卡片，都可以加"问 Copilot"入口，用 `#/ask?q=` 预填问题——[系列 07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md) 里规则引擎刻意不做的"这条结论还成立吗"，正好交给这里。
 
