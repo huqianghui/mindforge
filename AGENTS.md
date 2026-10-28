@@ -20,7 +20,8 @@ book/                     # Book notes and philosophy
 product/                  # Product analysis
 personal-journal/         # ⛔ Private — NEVER read or analyze
 wiki/                     # Personal Knowledge Wiki — see wiki/index.md for full structure
-README.md                 # Article navigation index (single source of truth for content listing)
+README.md                 # Repo landing page: site screenshots + usage guide (no article list)
+ARTICLES.md               # Article navigation index (single source of truth for content listing)
 ```
 
 ## Key Rules
@@ -28,7 +29,7 @@ README.md                 # Article navigation index (single source of truth for
 **Formatting details** (daily note structure, task syntax, link conventions) → see `.Codex/agents/obsidian-agent.md`
 
 Core rules that apply everywhere:
-- **Links**: 分场景——**进 git 的文章**（`Notes/` `Azure/` `paper/` `book/` `product/`、README）内部链接**必须**用相对路径 markdown 链接（空格编码 `%20`，如 `[标题](../../wiki/concepts/xxx.md)`），**禁止** `[[wikilink]]`（GitHub 不渲染）；`[[wikilinks]]` 仅用于不进 git 的内容（日记、personal-journal、inbox）和 `wiki/`（知识图谱脚本依赖 `[[]]` 语法解析关系，勿转换）。External links 用 `[content-title](url)`，链接文本必须用内容标题而非平台名。
+- **Links**: 分场景——**进 git 的文章**（`Notes/` `Azure/` `paper/` `book/` `product/`、README、ARTICLES.md）内部链接**必须**用相对路径 markdown 链接（空格编码 `%20`，如 `[标题](../../wiki/concepts/xxx.md)`），**禁止** `[[wikilink]]`（GitHub 不渲染）；`[[wikilinks]]` 仅用于不进 git 的内容（日记、personal-journal、inbox）和 `wiki/`（知识图谱脚本依赖 `[[]]` 语法解析关系，勿转换）。External links 用 `[content-title](url)`，链接文本必须用内容标题而非平台名。
 - **Images**: `![alt](relative-path)` with correct `../` depth to root `asset/`. **Never** use `![[filename.png]]` wikilink syntax (GitHub cannot render it).
 - **Language**: Chinese for body text, English for technical terms. Use `（）` and `—`.
 - **personal-journal/**: 私人日志目录。正常读写编辑**允许**（Codex 是日记工具），但**禁止**从中提取知识到 wiki，**禁止**提交到 git（L1 Hook + `.gitignore` 双重保护）。
@@ -60,7 +61,7 @@ Core rules that apply everywhere:
 - 文件名 `YYYY-MM-DD-主题短语.md`；frontmatter 含 `title` / `created` / `source: codex-chat` / `status: raw`
 - **完整保留问答结构**（用户问题用 `> ` 或 `## Q:` 区分），不做摘要压缩；链接、代码块、表格原样保留
 - 同主题多次讨论追加到同一文件，加 `## 追加 YYYY-MM-DD` 分隔
-- 该目录不进 git；成文、脱敏、README 导航由 Claude Code 侧的编译流程负责
+- 该目录不进 git；成文、脱敏、ARTICLES.md 导航由 Claude Code 侧的编译流程负责
 - 完整约定见 `inbox/codex/README.md`
 
 ## Tools
@@ -100,8 +101,8 @@ When adding new knowledge to the vault:
 
 1. **Collect** — save raw source into the appropriate directory
 2. **Create note** — write Markdown with proper frontmatter (`title`, `created`, `tags`)
-3. **Cross-reference** — add cross-links to related articles（进 git 的文章用相对路径 markdown 链接；非 git 内容才用 `[[wikilinks]]`）; check `README.md` for related topics
-4. **Update README** — add article link under the correct section
+3. **Cross-reference** — add cross-links to related articles（进 git 的文章用相对路径 markdown 链接；非 git 内容才用 `[[wikilinks]]`）; check `ARTICLES.md` for related topics
+4. **Update ARTICLES.md** — add article link under the correct section（README 不再列文章）
 5. **Refresh search** — run `qmd embed` to update the search index
 
 ## Operating Principles

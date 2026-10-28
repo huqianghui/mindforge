@@ -6,6 +6,7 @@ on:
     paths:
       - 'wiki/**'
       - 'README.md'
+      - 'ARTICLES.md'
       - 'Notes/**'
       - 'Azure/**'
       - 'paper/**'

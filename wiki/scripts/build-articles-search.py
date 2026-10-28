@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the Articles search page for GitHub Pages.
 
-Parses README's Articles list (`### Notes/AI/...` headings) to learn which folder each
+Parses the ARTICLES.md list (`### Notes/AI/...` headings) to learn which folder each
 article sits in, enriches every entry with frontmatter tags, the first body
 paragraph and the H2 headings, and writes a single self-contained index.html
 with client-side search + folder filters.
@@ -17,7 +17,7 @@ import urllib.parse
 from pathlib import Path
 
 VAULT_ROOT = Path(__file__).resolve().parent.parent.parent
-README_FILE = VAULT_ROOT / "README.md"
+ARTICLES_FILE = VAULT_ROOT / "ARTICLES.md"
 REPO_BLOB = "https://github.com/huqianghui/mindforge/blob/main/"
 REPO_URL = "https://github.com/huqianghui/mindforge"
 GRAPH_URL = "https://huqianghui.github.io/mindforge/wiki/"
@@ -28,8 +28,8 @@ RE_GROUP = re.compile(r"^\*\*(.+?)\*\*\s*$")
 
 
 def parse_tree(readme: str):
-    start = readme.index("## Articles\n")
-    end = readme.index("\n---\n", start)
+    start = readme.index("\n### ")
+    end = len(readme)
     stack, group, items, descs = [], "", [], {}
     for line in readme[start:end].split("\n"):
         m = RE_HEADING.match(line)
@@ -91,7 +91,7 @@ def read_meta(rel_href: str):
 
 def main():
     out_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else VAULT_ROOT / "_site" / "articles"
-    items, descs = parse_tree(README_FILE.read_text(encoding="utf-8"))
+    items, descs = parse_tree(ARTICLES_FILE.read_text(encoding="utf-8"))
     for it in items:
         it.update(read_meta(it["href"]))
         it["url"] = REPO_BLOB + it["href"]
@@ -192,7 +192,7 @@ const $ = s => document.querySelector(s);
 const q = $('#q'), rows = $('#rows'), list = $('#list'), count = $('#count'), reset = $('#reset');
 let folder = '';
 
-// folder tree: path -> direct child paths, in README order
+// folder tree: path -> direct child paths, in ARTICLES.md order
 const children = {'': []};
 for (const it of items) {
   const segs = it.folder.split('/');
