@@ -131,7 +131,7 @@ tags: [copilot-managed-runtime, managed-apps, build-time, static-json, rules-eng
 
 ## 六、回头看：为什么这四页都不需要 managed app
 
-这四个页面放在 GitHub Pages 上一样能跑——它们没有用到任何平台能力。把它们做在 managed app 里，价值在于**和需要平台能力的功能放在同一个应用里**：同一个登录身份下，洞察页的一条 Claim 可以收藏（[系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)），建议卡片可以一键提问（[系列 09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。
+这四个页面放在 GitHub Pages 上一样能跑——它们没有用到任何平台能力。现在它们连同文章导航已经同步到了 [公开站点](https://huqianghui.github.io/mindforge/wiki/#/insights)，与 managed app 版本功能一致；只有依赖平台的部分留在 managed app 里：问答要经 Work IQ Connector，阅读记录的跨设备同步要用 App state（公开站点上阅读进度和收藏只存在本机浏览器）。把它们做在 managed app 里，价值在于**和需要平台能力的功能放在同一个应用里**：同一个登录身份下，洞察页的一条 Claim 可以收藏（[系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)），建议卡片可以一键提问（[系列 09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。
 
 做功能规划时的顺序因此没变：**先问能不能构建期算好，再问能不能前端做，最后才加 Connector**。每多一个 Connector，用户首次打开就多一次授权、多一份 DLP 风险。
 

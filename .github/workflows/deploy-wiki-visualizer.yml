@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 演进页的提交历史与图谱快照需要完整 git 历史
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -39,10 +42,8 @@ jobs:
         working-directory: wiki/visualizer
         run: npm ci
 
-      - name: Copy graph data
-        run: |
-          rm -f wiki/visualizer/public/wiki-graph.json
-          cp wiki/wiki-graph.json wiki/visualizer/public/wiki-graph.json
+      - name: Sync content (articles, graph, history, stats)
+        run: python3 wiki/visualizer/scripts/sync-content.py
 
       - name: Build
         working-directory: wiki/visualizer

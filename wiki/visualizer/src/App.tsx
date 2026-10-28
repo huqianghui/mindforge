@@ -1,111 +1,88 @@
-import { useState, useCallback } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { theme } from './theme';
-import { useGraphData } from './hooks/useGraphData';
-import FilterBar from './components/FilterBar';
-import GraphViewer from './components/GraphViewer';
-import NodePanel from './components/NodePanel';
-import Legend from './components/Legend';
-import type { GraphNode } from './types';
+import GraphPage from './GraphPage';
+import DocsPage from './docs/DocsPage';
+import { HOME_DOC } from './docs/content';
+import './docs/markdown.css';
+
+// 图表库只在洞察页和演进页用到，单独拆包
+const TimelinePage = lazy(() => import('./timeline/TimelinePage'));
+const InsightsPage = lazy(() => import('./insights/InsightsPage'));
+const SuggestionsPage = lazy(() => import('./suggestions/SuggestionsPage'));
+const StatsPage = lazy(() => import('./stats/StatsPage'));
+
+type Route =
+  | { view: 'graph' }
+  | { view: 'insights' }
+  | { view: 'suggestions' }
+  | { view: 'stats' }
+  | { view: 'timeline' }
+  | { view: 'doc'; path: string; anchor?: string };
+
+// hash 路由：GitHub Pages 没有路径回退规则，hash 不依赖服务端
+function parseHash(hash: string): Route {
+  if (hash.startsWith('#/graph')) return { view: 'graph' };
+  if (hash.startsWith('#/insights')) return { view: 'insights' };
+  if (hash.startsWith('#/suggestions')) return { view: 'suggestions' };
+  if (hash.startsWith('#/stats')) return { view: 'stats' };
+  if (hash.startsWith('#/timeline')) return { view: 'timeline' };
+  const m = hash.match(/^#\/doc\/([^?]+)(?:\?a=(.*))?$/);
+  if (m) return { view: 'doc', path: decodeURIComponent(m[1]), anchor: m[2] ? decodeURIComponent(m[2]) : undefined };
+  return { view: 'doc', path: HOME_DOC };
+}
 
 export default function App() {
-  const {
-    graphData,
-    allNodes,
-    allLinks,
-    stats,
-    loading,
-    activeNodeTypes,
-    toggleNodeType,
-    activeRelationTypes,
-    toggleRelationType,
-  } = useGraphData();
+  const [route, setRoute] = useState<Route>(() => parseHash(window.location.hash));
 
-  const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
-  const [focusNodeId, setFocusNodeId] = useState<string | null>(null);
-
-  const handleNodeClick = useCallback((node: GraphNode) => {
-    setSelectedNode(node);
+  useEffect(() => {
+    const onChange = () => setRoute(parseHash(window.location.hash));
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
   }, []);
-
-  const handleClosePanel = useCallback(() => {
-    setSelectedNode(null);
-  }, []);
-
-  const handleSearchSelect = useCallback((nodeId: string) => {
-    setFocusNodeId(nodeId);
-  }, []);
-
-  const handleFocusHandled = useCallback(() => {
-    setFocusNodeId(null);
-  }, []);
-
-  const handleNavigate = useCallback(
-    (nodeId: string) => {
-      const node = graphData.nodes.find((n) => n.id === nodeId);
-      if (node) {
-        setSelectedNode(node);
-        setFocusNodeId(nodeId);
-      }
-    },
-    [graphData.nodes]
-  );
-
-  if (loading) {
-    return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            gap: 2,
-          }}
-        >
-          <CircularProgress />
-          <Typography>加载知识图谱数据...</Typography>
-        </Box>
-      </ThemeProvider>
-    );
-  }
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-        <FilterBar
-          stats={stats}
-          allNodes={allNodes}
-          activeNodeTypes={activeNodeTypes}
-          toggleNodeType={toggleNodeType}
-          activeRelationTypes={activeRelationTypes}
-          toggleRelationType={toggleRelationType}
-          onSearchSelect={handleSearchSelect}
-        />
-        <Box sx={{ display: 'flex', flex: 1, position: 'relative', overflow: 'hidden' }}>
-          <GraphViewer
-            graphData={graphData}
-            selectedNode={selectedNode}
-            onNodeClick={handleNodeClick}
-            focusNodeId={focusNodeId}
-            onFocusHandled={handleFocusHandled}
-            panelOpen={!!selectedNode}
-          />
-          <Legend />
-          <NodePanel
-            node={selectedNode}
-            allLinks={allLinks}
-            onClose={handleClosePanel}
-            onNavigate={handleNavigate}
-          />
+        <Box sx={{ display: 'flex', alignItems: 'center', px: 2, borderBottom: 1, borderColor: 'divider', bgcolor: '#fff' }}>
+          <Typography sx={{ fontWeight: 700, mr: 3 }}>Mindforge</Typography>
+          <Tabs value={route.view} sx={{ minHeight: 44, '& .MuiTab-root': { minHeight: 44 } }}>
+            <Tab value="doc" label="文章导航" component="a" href={`#/doc/${HOME_DOC}`} />
+            <Tab value="graph" label="知识图谱" component="a" href="#/graph" />
+            <Tab value="insights" label="洞察" component="a" href="#/insights" />
+            <Tab value="suggestions" label="建议" component="a" href="#/suggestions" />
+            <Tab value="stats" label="统计" component="a" href="#/stats" />
+            <Tab value="timeline" label="演进" component="a" href="#/timeline" />
+          </Tabs>
         </Box>
+        {route.view === 'graph' && <GraphPage />}
+        {route.view === 'insights' && (
+          <Suspense fallback={null}>
+            <InsightsPage />
+          </Suspense>
+        )}
+        {route.view === 'stats' && (
+          <Suspense fallback={null}>
+            <StatsPage />
+          </Suspense>
+        )}
+        {route.view === 'suggestions' && (
+          <Suspense fallback={null}>
+            <SuggestionsPage />
+          </Suspense>
+        )}
+        {route.view === 'timeline' && (
+          <Suspense fallback={null}>
+            <TimelinePage />
+          </Suspense>
+        )}
+        {route.view === 'doc' && <DocsPage path={route.path} anchor={route.anchor} />}
       </Box>
     </ThemeProvider>
   );

@@ -8,7 +8,9 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Tooltip from '@mui/material/Tooltip';
+import Link from '@mui/material/Link';
 import CloseIcon from '@mui/icons-material/Close';
+import { docHash, useContentIndex } from '../docs/content';
 import type { GraphNode, WikiLink } from '../types';
 import { NODE_COLORS, NODE_TYPE_LABELS, RELATION_COLORS, RELATION_TYPE_LABELS } from '../theme';
 
@@ -70,7 +72,10 @@ function RelationDescription({ text }: { text: string }) {
 }
 
 export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodePanelProps) {
+  const index = useContentIndex();
   if (!node) return null;
+
+  const pageDoc = index?.byStem.get(node.id);
 
   const outgoing = allLinks.filter((l) => l.source === node.id);
   const incoming = allLinks.filter((l) => l.target === node.id);
@@ -117,6 +122,12 @@ export default function NodePanel({ node, allLinks, onClose, onNavigate }: NodeP
         <Typography variant="body2" sx={{ mt: 1.5, color: 'text.secondary', lineHeight: 1.6 }}>
           {node.summary}
         </Typography>
+
+        {pageDoc && (
+          <Link href={docHash(pageDoc.path)} variant="body2" sx={{ display: 'inline-block', mt: 1 }}>
+            阅读完整页面 →
+          </Link>
+        )}
 
         <Box sx={{ display: 'flex', gap: 0.5, mt: 1, flexWrap: 'wrap' }}>
           {node.tags.map((t) => (

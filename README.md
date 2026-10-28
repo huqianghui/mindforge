@@ -7,9 +7,11 @@ This vault captures reading notes, technical deep-dives, and reflections from an
 
 ## Wiki Knowledge Graph
 
-<a href="https://huqianghui.github.io/mindforge/wiki/"><img width="1640" alt="Mindforge Wiki 知识图谱：社区聚类、类型化关系与编译流水线" src="asset/wiki-knowledge-graph-2026-10-10.svg" /></a>
+<a href="https://huqianghui.github.io/mindforge/wiki/#/graph"><img width="1640" alt="Mindforge Wiki 知识图谱：社区聚类、类型化关系与编译流水线" src="asset/wiki-knowledge-graph-2026-10-10.svg" /></a>
 
-**[View Live Graph](https://huqianghui.github.io/mindforge/wiki/)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
+**[View Live Graph](https://huqianghui.github.io/mindforge/wiki/#/graph)** — Interactive force-directed visualization of the personal knowledge wiki, covering concepts, methods, decisions, and their typed relations.
+
+The same site also has an article reader with a directory tree ([文章导航](https://huqianghui.github.io/mindforge/wiki/)), claim-level [洞察](https://huqianghui.github.io/mindforge/wiki/#/insights), rule-based [建议](https://huqianghui.github.io/mindforge/wiki/#/suggestions), [统计](https://huqianghui.github.io/mindforge/wiki/#/stats) and a git-history [演进](https://huqianghui.github.io/mindforge/wiki/#/timeline) page with a growing knowledge tree. Reading progress and favorites are kept in your browser only.
 
 Click any node to inspect its claims, confidence scores, and connections. Filter by node type, relation type, or search by keyword.
 
@@ -51,7 +53,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### 2. 浏览知识图谱
 
-- **在线**：[View Live Graph](https://huqianghui.github.io/mindforge/wiki/) —— 力导向交互图，点节点看 Claims / 置信度 / 关联，支持类型筛选与关键词搜索
+- **在线**：[View Live Graph](https://huqianghui.github.io/mindforge/wiki/#/graph) —— 力导向交互图，点节点看 Claims / 置信度 / 关联，支持类型筛选与关键词搜索；同一站点还有文章导航、洞察、建议、统计、演进五个页面（构建期由 `wiki/visualizer/scripts/sync-content.py` 从本仓库生成数据）
 - **数据源**：`wiki/wiki-graph.json`（节点 + 关系 + 分类）；可视化前端在 `wiki/visualizer/`
 - **重新生成**：`python3 wiki/scripts/export-graph.py`（扫描 concepts/methods/decisions 重建 JSON）；顶部动态总览图由 `python3 wiki/scripts/render-graph-svg.py` 从该 JSON 渲染
 
