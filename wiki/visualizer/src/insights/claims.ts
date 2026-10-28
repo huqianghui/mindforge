@@ -8,6 +8,8 @@ export interface ClaimRow {
   type: WikiNode['type'];
   category: string;
   tags: string[];
+  /** 关联这个节点的 gap 主题 slug（来自差距报告 trends 的 nodes） */
+  gaps: string[];
   statement: string;
   confidence: number;
   status: string;
@@ -19,7 +21,7 @@ export interface ClaimRow {
 
 export const UNCATEGORIZED = '未分类';
 
-export function flatten(graph: WikiGraph): ClaimRow[] {
+export function flatten(graph: WikiGraph, nodeGaps: Map<string, string[]> = new Map()): ClaimRow[] {
   return graph.nodes.flatMap((n) =>
     n.claims.map((c, i) => ({
       id: `${n.id}#${i}`,
@@ -28,6 +30,7 @@ export function flatten(graph: WikiGraph): ClaimRow[] {
       type: n.type,
       category: n.category || UNCATEGORIZED,
       tags: n.tags,
+      gaps: nodeGaps.get(n.id) ?? [],
       statement: c.statement,
       confidence: c.confidence,
       status: c.status,
@@ -44,12 +47,13 @@ export interface Filters {
   statuses: string[];
   categories: string[];
   tag: string | null;
+  gap: string | null; // gap 主题 slug
   month: string | null; // last_updated 的 YYYY-MM
   conf: [number, number];
   q: string;
 }
 
-export const EMPTY: Filters = { types: [], statuses: [], categories: [], tag: null, month: null, conf: [0, 1], q: '' };
+export const EMPTY: Filters = { types: [], statuses: [], categories: [], tag: null, gap: null, month: null, conf: [0, 1], q: '' };
 
 export function apply(rows: ClaimRow[], f: Filters, except?: keyof Filters): ClaimRow[] {
   const q = f.q.trim().toLowerCase();
@@ -59,6 +63,7 @@ export function apply(rows: ClaimRow[], f: Filters, except?: keyof Filters): Cla
       (except === 'statuses' || f.statuses.length === 0 || f.statuses.includes(r.status)) &&
       (except === 'categories' || f.categories.length === 0 || f.categories.includes(r.category)) &&
       (except === 'tag' || !f.tag || r.tags.includes(f.tag)) &&
+      (except === 'gap' || !f.gap || r.gaps.includes(f.gap)) &&
       (except === 'month' || !f.month || r.lastUpdated.startsWith(f.month)) &&
       (except === 'conf' || (r.confidence >= f.conf[0] && r.confidence <= f.conf[1])) &&
       (!q || r.statement.toLowerCase().includes(q) || r.nodeTitle.toLowerCase().includes(q)),
@@ -75,6 +80,7 @@ export function parseFilters(query: string): Filters {
     statuses: list('status'),
     categories: list('cat'),
     tag: p.get('tag'),
+    gap: p.get('gap'),
     month: p.get('month'),
     conf: conf.length === 2 && conf.every((x) => !Number.isNaN(x)) ? [conf[0], conf[1]] : [0, 1],
     q: p.get('q') ?? '',
@@ -87,6 +93,7 @@ export function stringifyFilters(f: Filters): string {
   if (f.statuses.length) p.set('status', f.statuses.join(','));
   if (f.categories.length) p.set('cat', f.categories.join(','));
   if (f.tag) p.set('tag', f.tag);
+  if (f.gap) p.set('gap', f.gap);
   if (f.month) p.set('month', f.month);
   if (f.conf[0] > 0 || f.conf[1] < 1) p.set('conf', `${f.conf[0]}-${f.conf[1]}`);
   if (f.q) p.set('q', f.q);

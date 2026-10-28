@@ -22,7 +22,8 @@ import {
 } from 'recharts';
 import { docHash, useContentIndex } from '../docs/content';
 import { NODE_COLORS, NODE_TYPE_LABELS, RELATION_COLORS, RELATION_TYPE_LABELS } from '../theme';
-import { useWikiGraph } from '../timeline/history';
+import { useHistory, useWikiGraph } from '../timeline/history';
+import { buildTopics, LINE_COLORS, reportsWithTrends, sortTopics, STATE_LABELS } from '../gaps/topics';
 import { apply, EMPTY, flatten, norm, parseFilters, stringifyFilters, toggle } from './claims';
 import type { ClaimRow, Filters } from './claims';
 
@@ -61,6 +62,7 @@ const confColor = (c: number) => (c >= 0.7 ? 'success' : c >= 0.5 ? 'warning' : 
 export default function InsightsPage() {
   const graph = useWikiGraph();
   const index = useContentIndex();
+  const { history } = useHistory();
   const [f, setF] = useState<Filters>(() => parseFilters(readQuery()));
   const [nodeId, setNodeId] = useState<string | null>(null);
 
@@ -70,7 +72,17 @@ export default function InsightsPage() {
     window.history.replaceState(null, '', `#/insights${q ? `?${q}` : ''}`);
   }, [f]);
 
-  const rows = useMemo(() => (graph ? flatten(graph) : []), [graph]);
+  // gap 主题 → 关联节点：来自每期报告 trends 的 nodes，按"持续 → 热度"排序
+  const gapTopics = useMemo(() => {
+    if (!history?.gapTopics) return [];
+    return sortTopics(buildTopics(reportsWithTrends(history), history.gapTopics));
+  }, [history]);
+  const nodeGaps = useMemo(() => {
+    const m = new Map<string, string[]>();
+    for (const t of gapTopics) for (const n of t.nodes) m.set(n.node, [...(m.get(n.node) ?? []), t.slug]);
+    return m;
+  }, [gapTopics]);
+  const rows = useMemo(() => (graph ? flatten(graph, nodeGaps) : []), [graph, nodeGaps]);
   const filtered = useMemo(() => apply(rows, f), [rows, f]);
   const set = (patch: Partial<Filters>) => { setF((prev) => ({ ...prev, ...patch })); setNodeId(null); };
 
@@ -112,6 +124,11 @@ export default function InsightsPage() {
     for (const l of graph.links) if (nodes.has(l.source) && nodes.has(l.target)) c.set(l.relation_type, (c.get(l.relation_type) ?? 0) + 1);
     return [...c.entries()].map(([k, n]) => ({ name: RELATION_TYPE_LABELS[k] ?? k, key: k, count: n })).sort((a, b) => b.count - a.count);
   }, [graph, filtered]);
+  const gapCounts = useMemo(() => {
+    const c = new Map<string, number>();
+    for (const r of apply(rows, f, 'gap')) for (const g of r.gaps) c.set(g, (c.get(g) ?? 0) + 1);
+    return c;
+  }, [rows, f]);
   const tags = useMemo(() => {
     const c = new Map<string, number>();
     for (const r of apply(rows, f, 'tag')) for (const t of r.tags) if (t !== 'wiki' && t !== r.type) c.set(t, (c.get(t) ?? 0) + 1);
@@ -130,6 +147,8 @@ export default function InsightsPage() {
   }, [filtered]);
   const docByTitle = useMemo(() => new Map(index?.docs.map((d) => [norm(d.title), d.path]) ?? []), [index]);
   const current = nodes.find((n) => n.id === nodeId) ?? null;
+  const gap = gapTopics.find((t) => t.slug === f.gap) ?? null;
+  const linked = gapTopics.filter((t) => t.nodes.length > 0);
 
   if (!graph || !index) {
     return <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress /></Box>;
@@ -142,6 +161,7 @@ export default function InsightsPage() {
     ...f.statuses.map((s) => `状态：${s}`),
     ...f.categories.map((c) => `分类：${c}`),
     ...(f.tag ? [`标签：${f.tag}`] : []),
+    ...(f.gap ? [`Gap 主题：${gapTopics.find((t) => t.slug === f.gap)?.label ?? f.gap}`] : []),
     ...(f.month ? [`更新月份：${f.month}`] : []),
     ...(f.conf[0] > 0 || f.conf[1] < 1 ? [`置信度：${f.conf[0].toFixed(2)}–${f.conf[1].toFixed(2)}`] : []),
     ...(f.q ? [`关键词：${f.q}`] : []),
@@ -174,6 +194,21 @@ export default function InsightsPage() {
               color={f.categories.includes(c.name) ? 'primary' : 'default'} variant={f.categories.includes(c.name) ? 'filled' : 'outlined'} />
           ))}
         </FilterGroup>
+        {linked.length > 0 && (
+          <FilterGroup label={`Gap 主题（${linked.length}/${gapTopics.length} 有关联页）`}>
+            {linked.map((t) => {
+              const on = f.gap === t.slug;
+              const color = LINE_COLORS[t.line] ?? LINE_COLORS.other;
+              return (
+                <Chip key={t.slug} size="small" label={`${t.label} ${gapCounts.get(t.slug) ?? 0}`}
+                  title={`${STATE_LABELS[t.state].label} · 出现 ${t.appearances.length} 期 · 关联 ${t.nodes.length} 页`}
+                  onClick={() => set({ gap: on ? null : t.slug })}
+                  variant={on ? 'filled' : 'outlined'}
+                  sx={{ borderColor: color, color: on ? '#fff' : color, bgcolor: on ? color : undefined }} />
+              );
+            })}
+          </FilterGroup>
+        )}
         <FilterGroup label="标签（前 24）">
           {tags.map(([t, n]) => (
             <Chip key={t} size="small" label={`${t} ${n}`} onClick={() => set({ tag: f.tag === t ? null : t })}
@@ -192,6 +227,20 @@ export default function InsightsPage() {
             {active.map((a) => <Chip key={a} size="small" label={a} variant="outlined" />)}
             <Button size="small" onClick={() => set(EMPTY)}>清除全部</Button>
           </Box>
+        )}
+
+        {gap && (
+          <Paper variant="outlined" sx={{ p: 1.5, mb: 2, borderLeft: 4, borderLeftColor: LINE_COLORS[gap.line] ?? LINE_COLORS.other }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>Gap 主题：{gap.label}</Typography>
+              <Chip size="small" label={STATE_LABELS[gap.state].label} sx={{ height: 18, fontSize: 11, color: '#fff', bgcolor: STATE_LABELS[gap.state].color }} />
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                出现 {gap.appearances.length} 期（{gap.firstSeen} → {gap.lastSeen}）· 连续 {gap.streak} 期 · 关联 {gap.nodes.length} 页
+              </Typography>
+              <Link href={`#/gaps?topic=${gap.slug}`} variant="caption" sx={{ ml: 'auto' }}>在差距追踪页看每期说法 →</Link>
+            </Box>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>最近一期：{gap.appearances.at(-1)!.trends.map((t) => t.title).join(' / ')}</Typography>
+          </Paper>
         )}
 
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 1.5, mb: 2.5 }}>
