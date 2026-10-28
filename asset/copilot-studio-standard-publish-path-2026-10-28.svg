@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 720" width="1400" height="720" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowR { stroke: #f87171; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .lead { stroke: #64748b; stroke-width: 1.2; fill: none; stroke-dasharray: 3 4; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .numR { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="720" rx="16"/>
+  <text class="title" x="30" y="44">发布一个 Standard agent：先有渠道，才有 Publish，才有 titleId</text>
+  <text class="sub" x="30" y="72">认证方式决定能选哪些渠道；勾上"在 Microsoft 365 Copilot 中可用"，agent 才成为 M365 Copilot 里能被 agentId 指到的 agent</text>
+
+  <rect class="zone" x="24" y="94" width="916" height="252" rx="12"/>
+  <text class="zt" x="40" y="120">Copilot Studio 门户</text>
+
+  <!-- 1 -->
+  <rect class="card" x="40" y="136" width="200" height="190" rx="9"/>
+  <circle class="num" cx="62" cy="160" r="11"/><text class="nt" x="62" y="165">1</text>
+  <text class="h" x="82" y="165">配置完成</text>
+  <text class="t" x="56" y="194">模型、指令、Web Search</text>
+  <text class="t" x="56" y="216">测试面板能答</text>
+  <text class="tA" x="56" y="248">Publish 仍是灰的</text>
+  <text class="tG" x="56" y="272">悬停提示：至少配置</text>
+  <text class="tG" x="56" y="294">一个渠道</text>
+
+  <!-- 2 -->
+  <rect class="card" x="264" y="136" width="200" height="190" rx="9"/>
+  <circle class="num" cx="286" cy="160" r="11"/><text class="nt" x="286" y="165">2</text>
+  <text class="h" x="306" y="165">Channels 页</text>
+  <text class="t" x="280" y="194">认证 = Microsoft</text>
+  <text class="t" x="280" y="216">→ 只剩 M365 and</text>
+  <text class="t" x="280" y="238">Teams、SharePoint</text>
+  <text class="tG" x="280" y="270">本租户 SharePoint 等</text>
+  <text class="tG" x="280" y="292">也被策略禁用，实际</text>
+  <text class="tG" x="280" y="314">只剩 M365 and Teams</text>
+
+  <!-- 3 -->
+  <rect class="hot" x="488" y="136" width="200" height="190" rx="9"/>
+  <circle class="numA" cx="510" cy="160" r="11"/><text class="nt" x="510" y="165">3</text>
+  <text class="hA" x="530" y="165">加 M365 渠道</text>
+  <text class="t" x="504" y="194">默认已勾选</text>
+  <text class="tA" x="504" y="216">Make agent available</text>
+  <text class="tA" x="504" y="238">in Microsoft 365</text>
+  <text class="tA" x="504" y="260">Copilot</text>
+  <text class="tG" x="504" y="292">界面一直转 "Turning</text>
+  <text class="tG" x="504" y="314">on Teams…"</text>
+
+  <!-- 4 -->
+  <rect class="card" x="712" y="136" width="212" height="190" rx="9"/>
+  <circle class="num" cx="734" cy="160" r="11"/><text class="nt" x="734" y="165">4</text>
+  <text class="h" x="754" y="165">Publish</text>
+  <text class="t" x="728" y="194">按钮变为可点</text>
+  <text class="t" x="728" y="216">发布成功后</text>
+  <text class="m" x="728" y="240">bots.publishedon</text>
+  <text class="t" x="728" y="262">有值——以它为准</text>
+  <text class="tG" x="728" y="294">改指令 / 模型后</text>
+  <text class="tG" x="728" y="316">要重新发布</text>
+
+  <path class="flow" d="M240,231 L264,231"/>
+  <path class="flow" d="M464,231 L488,231"/>
+  <path class="flow" d="M688,231 L712,231"/>
+
+  <!-- 5 M365 -->
+  <rect class="zone" x="964" y="94" width="412" height="252" rx="12"/>
+  <text class="zt" x="980" y="120">Microsoft 365 Copilot</text>
+  <rect class="card" x="980" y="136" width="380" height="190" rx="9"/>
+  <circle class="num" cx="1002" cy="160" r="11"/><text class="nt" x="1002" y="165">5</text>
+  <text class="h" x="1022" y="165">成为 Agent Store 里的一个 agent</text>
+  <text class="t" x="996" y="196">渠道面板 "See agent in Teams" 打开的链接：</text>
+  <text class="m" x="996" y="222">teams.microsoft.com/l/app/</text>
+  <text class="mT" x="996" y="244">?titleId=T_xxxxxxxx-xxxx-…</text>
+  <text class="t" x="996" y="276">这个 T_… 就是 Work IQ 的 agentId</text>
+  <text class="tG" x="996" y="304">默认只对作者可见</text>
+  <path class="flow" d="M924,231 L980,231"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3.6s" repeatCount="indefinite" path="M140,231 L1170,231"/></circle>
+
+  <!-- consumers -->
+  <rect class="zone" x="24" y="370" width="1352" height="184" rx="12"/>
+  <text class="zt" x="40" y="396">发布之后，谁能用到它</text>
+
+  <rect class="card" x="40" y="412" width="420" height="124" rx="9"/>
+  <circle class="num" cx="62" cy="436" r="11"/><text class="nt" x="62" y="441">6</text>
+  <text class="h" x="82" y="441">人：Teams / M365 Copilot 里对话</text>
+  <text class="t" x="56" y="470">分享给对方，或经管理员批准后</text>
+  <text class="t" x="56" y="492">更大范围可用</text>
+  <text class="tG" x="56" y="520">同一个 agent，不用另建</text>
+
+  <rect class="card" x="480" y="412" width="420" height="124" rx="9"/>
+  <circle class="num" cx="502" cy="436" r="11"/><text class="nt" x="502" y="441">7</text>
+  <text class="h" x="522" y="441">程序：Work IQ copilot_chat</text>
+  <text class="m" x="496" y="470">arguments: { message, agentId: "T_…" }</text>
+  <text class="t" x="496" y="496">以调用者身份经 Graph Copilot Chat API</text>
+  <text class="tG" x="496" y="522">managed app 实测可行（见 Managed Runtime 10）</text>
+
+  <rect class="bad" x="920" y="412" width="440" height="124" rx="9"/>
+  <circle class="numR" cx="942" cy="436" r="11"/><text class="nt" x="942" y="441">8</text>
+  <text class="hR" x="962" y="441">程序：Copilot Studio Connector</text>
+  <text class="m" x="936" y="470">ExecuteCopilotAsyncV2(schema name, …)</text>
+  <text class="tR" x="936" y="496">要求回调地址 notificationUrl</text>
+  <text class="tG" x="936" y="522">为 Power Automate 设计，浏览器前端收不到</text>
+
+  <path class="flow" d="M1100,326 C1100,360 250,360 250,412"/>
+  <path class="flow" d="M1140,326 C1140,370 690,370 690,412"/>
+  <path class="flowR" d="M820,326 C820,380 1140,380 1140,412"/>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="574" width="1352" height="130" rx="12"/>
+  <text class="lg" x="44" y="602">①→④ 是门户里的顺序约束：Publish 依赖渠道，渠道依赖认证方式。Microsoft 认证让调用天然带用户身份，代价是渠道只剩 M365 系</text>
+  <text class="lg" x="44" y="630">③ 的勾选是关键：勾上 agent 才进入 M365 Copilot，才有 agentId 能指到的那个 agent；界面转圈超过几分钟就刷新页面再看（实测 6 分钟后刷新已加好）</text>
+  <text class="lg" x="44" y="658">⑤ 的 titleId 与 ⑧ 用的 schema name 是两套标识：schema name 认的是 Dataverse 里的 bot 行，titleId 认的是 M365 里的 agent</text>
+  <text class="lg" x="44" y="686">⑥⑦ 共用发布结果；⑧ 不论草稿还是已发布都走不通——草稿被重定向到门户（CORS 拦截），已发布返回 400</text>
+</svg>

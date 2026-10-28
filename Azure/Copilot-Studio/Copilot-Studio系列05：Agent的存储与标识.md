@@ -1,7 +1,7 @@
 ---
 title: Copilot Studio 系列 05：Agent 的存储与标识
 created: 2026-10-27
-description: Copilot Studio 没有自己的数据库，agent 是环境 Dataverse 里 bot 表的一行，topics、指令、知识源是 botcomponent 表的行；所以解决方案、发布者前缀、安全角色、导出导入都是现成的；创建对话框里的 Solution 决定 agent 进哪个容器、带什么前缀，Schema name 是程序调用认的唯一逻辑名、创建后不能改，ExecuteCopilotAsyncV2 的 Copilot 参数填的就是它；附一个 Standard agent 从新建到被应用调用的七步与进度
+description: Copilot Studio 没有自己的数据库，agent 是环境 Dataverse 里 bot 表的一行，topics、指令、知识源是 botcomponent 表的行；所以解决方案、发布者前缀、安全角色、导出导入都是现成的；创建对话框里的 Solution 决定 agent 进哪个容器、带什么前缀，Schema name 是 Dataverse 里唯一的逻辑名、创建后不能改，Copilot Studio Connector 的 Copilot 参数填的就是它；附一个 Standard agent 从新建到被应用调用的七步实测（最后经 Work IQ 用 titleId 调用，而非 schema name）
 tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standard-harness, agent, copilot-studio-connector, power-platform]
 ---
 
@@ -17,7 +17,7 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 - **agent 存在环境的 Dataverse 里**：agent 是 `bot` 表的一行，topics、指令、知识源、工具是 `botcomponent` 表的行。这就是 [系列 01](Copilot-Studio系列01：产品全景与环境.md) 说的"共享地基"在存储上的样子。
 - **所以解决方案、安全角色、审计、备份、导出导入都是现成的**，和 Power Apps、Power Automate 的组件同一套机制。
 - **Solution** 决定 agent 装进哪个容器、名字带哪个发布者前缀。选自建的解决方案，agent 能和同项目的表、flow 一起导出或删除；不选就进 Default Solution。
-- **Schema name 是 agent 唯一、不可变的逻辑名**，形如 `<前缀>_<名字>`。程序调用认的就是它——Copilot Studio Connector `ExecuteCopilotAsyncV2` 的 `Copilot` 参数。**创建后不能改**，要换只能重建。
+- **Schema name 是 agent 唯一、不可变的逻辑名**，形如 `<前缀>_<名字>`。Copilot Studio Connector `ExecuteCopilotAsyncV2` 的 `Copilot` 参数认的就是它，解决方案导入也靠它。**创建后不能改**，要换只能重建。注意：经 Work IQ 调用发布到 M365 Copilot 的 agent 时，认的是另一个标识 titleId（[系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)）。
 - 显示名给人看（可重复、可改、可中文），逻辑名给程序认（唯一、不可变、ASCII、带前缀）。中文显示名会让逻辑名变成随机串。
 
 ---
@@ -53,7 +53,7 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 2. **名字里有中文时，schema name 会被换成随机串。** 想让逻辑名有意义，就先用英文名创建，之后再把显示名改成中文。
 
 > [!WARNING]
-> **schema name 是程序调用的接口契约。** 应用代码里写的是 `ExecuteCopilotAsyncV2("mf_MindforgeAsk", { message })`。删掉重建 agent 会换掉逻辑名（或者你得在新环境里重新起同一个名字），所有调用方都要跟着改。门户 URL 里的 GUID 和显示名都不是这个参数。
+> **schema name 是 Connector 调用与解决方案搬运的契约。** 经 Copilot Studio Connector 调用时写的是 `ExecuteCopilotAsyncV2("mf_MindforgeAsk", { message })`（Power Automate 里可用；managed app 里这个动作走不通，见 [系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)）。删掉重建 agent 会换掉逻辑名（或者你得在新环境里重新起同一个名字），所有调用方都要跟着改。门户 URL 里的 GUID 和显示名都不是这个参数。
 
 ### 2.1 为什么 schema name 不能改
 
@@ -72,21 +72,22 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 - **Select your agent's model**：Standard harness 也能选模型，默认是一个持续更新的聊天模型；实验性模型受预览条款约束。
 - **Instructions** 默认为空，Agent status 因此显示警告。要写清三件事：只根据知识源回答；用什么语言回答；找不到就明确说"知识库里没有"。
 - **Knowledge**：先用上传文件走通（可控、可复现），再换公开网站对比回答质量和新鲜度。
-- **Web Search 默认开着**，往下滚才看得到。要关掉，连同通用知识一起——否则无法判断回答到底来自哪里。
+- **Web Search 默认开着**，往下滚才看得到。agent 自己挂知识源时要关掉，连同通用知识一起——否则无法判断回答到底来自哪里；资料由应用写进消息时，可以开着当兜底，要求回答标明来源（[系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md) 就是这样配的）。
 
 ---
 
 ## 四、从新建到被应用调用
 
-![从新建到被应用调用：Standard agent 的七步|900](../../asset/copilot-studio-standard-agent-roadmap-2026-10-27.svg)
+![从新建到被应用调用：Standard agent 的七步（实测版）|900](../../asset/copilot-studio-standard-agent-roadmap-2026-10-27.svg)
 
-这个 agent 的用途是给 managed app 的问答页做第二种后端，和已经上线的 Work IQ 方案对比（[Copilot Managed Runtime 系列 09](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。七步里：
+这个 agent 的用途是给 managed app 的问答页做第二种后端，和已经上线的 Work IQ 方案对比（[Copilot Managed Runtime 系列 09](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。截至 2026-10-28 七步都已走完，和原计划有两处不同：
 
-- **①② 已完成，而且都不可逆**——harness 创建后不能互转，schema name 创建后不能改。所以它们最先做、最该确认。
-- **③ 进行中**：模型、指令、知识源，关掉 Web Search。
-- **④–⑦ 待做**：测试面板里看回答的引用长什么样、发布；认证选 "Authenticate with Microsoft"、把 agent 分享给应用的使用者；应用侧 `ms connector list-actions` 确认动作可用、`ms app add data-source` 加 Copilot Studio Connector；最后问答页用 `ExecuteCopilotAsyncV2` 调用。接入代码与上线前要想清楚的五件事见 [Copilot Managed Runtime 系列 05](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
+- **①② 不可逆**——harness 创建后不能互转，schema name 创建后不能改。所以它们最先做、最该确认。
+- **③ 的 Web Search 从"关掉"改成了"开着"**：资料由应用检索后写进消息，agent 不挂知识源；资料里没有答案时上网兜底，并在回答开头声明来自公开网络。
+- **④⑤ 在门户里**：测试面板的表现不等于真实调用；发布前必须先加渠道，并勾选"在 Microsoft 365 Copilot 中可用"。详见 [系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)。
+- **⑥ 原计划的 Copilot Studio Connector 走不通**：草稿被重定向到门户、被 CORS 拦截；已发布后 `ExecuteCopilotAsyncV2` 要求回调地址。**⑦ 改走 Work IQ**：同一个 `copilot_chat` 工具传 `agentId`，填的是 titleId 而不是 schema name。见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
 
-后四步跨两个产品：前两步在 Copilot Studio 门户，后两步在应用仓库。分享也要在两边各做一次——只分享应用、不分享 agent，问答会失败。
+分享仍然要在两边各做一次：应用分享给使用者，agent 也要对他们可见（分享或经管理员批准），否则问答会失败。
 
 ---
 
@@ -103,4 +104,5 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 
 - [Copilot Studio 系列 01：产品全景与环境](Copilot-Studio系列01：产品全景与环境.md)
 - [Copilot Studio 系列 03：四种 Harness 对比与选型](Copilot-Studio系列03：四种Harness对比与选型.md)
+- [Copilot Studio 系列 06：Standard Agent 的配置与发布](Copilot-Studio系列06：Standard-Agent的配置与发布.md)
 - [Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)

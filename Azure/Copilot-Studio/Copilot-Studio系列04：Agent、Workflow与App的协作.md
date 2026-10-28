@@ -16,7 +16,7 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 
 - **app 和 agent、workflow 之间最主要的协作方式不是"互相调用"，而是"共享同一份数据"。** 后台把结果写进 Dataverse（或 SharePoint），app 读出来让人决定，决定写回再触发下一步。
 - 这样做**绕开了所有 harness 限制**，异步不怕慢，每一步都可审计。
-- **app 同步调用 agent 也可以，但路很窄**：Copilot Studio Connector → Standard agent，或 Work IQ Copilot MCP 直调 M365 Copilot。
+- **app 同步调用 agent 也可以，但路很窄**：Work IQ Copilot MCP 直调 M365 Copilot，或经同一工具的 `agentId` 调发布到 M365 Copilot 的 Standard agent；Copilot Studio Connector 的回调式动作在浏览器前端里用不了。
 - **没有"app 按钮直接触发 workflow"的官方方式**，现实做法是 app 改一行数据、workflow 的行触发器启动。
 - 设计的关键是表里的**状态列**——它是三方之间的契约。
 
@@ -72,7 +72,7 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 
 用户在 app 里提问、当场要答案时，共享数据太慢，需要直接调用。能走通的只有两条：
 
-1. **Copilot Studio Connector `ExecuteCopilotAsyncV2` → Standard agent**〔官方〕：一次性返回纯文本、无流式；连接不可共享，每个用户自己建。
+1. **Copilot Studio Connector `ExecuteCopilotAsyncV2` → Standard agent**〔官方文档的做法，managed app 实测不可用〕：动作要求回调地址 `notificationUrl`，适合 Power Automate，浏览器前端收不到回调。实际可行的是把 agent 发布到 M365 Copilot，再走下一条的 `agentId`〔实测〕，见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
 2. **Work IQ Copilot MCP Connector → M365 Copilot**〔实测，已有应用在用〕：不用建 agent，以用户自己的身份调用；Work IQ API 单独按量计费。
 
 走不通的：同一 Connector 调 GitHub Copilot harness agent（官方确认的已知限制）；iframe 嵌入 agent 网页聊天（宿主 CSP `frame-src 'self'` 禁止〔实测〕）。宿主里还有一条实验性的 `cowork/streamPrompt` 流式通道，默认关闭、SDK 未封装。

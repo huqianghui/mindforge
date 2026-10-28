@@ -99,7 +99,7 @@ tags: [copilot-studio, power-platform, connector, connection, dlp, custom-connec
 > [!WARNING]
 > 被阻止、容易误以为能用的：`HTTP With Microsoft Entra ID`（v2，`shared_webcontentsv2`）、`Azure AI Foundry Agent Service`、自定义 Connector。preauthorized 版 HTTP Connector 虽然允许，但只能调用预先授权过的资源，**不是万能后端**。
 
-几个 AI Connector 的动作值得记一下：Copilot Studio Connector 有 `ExecuteCopilot`（只返回会话 ID）和 `ExecuteCopilotAsyncV2`（发消息并等待回答），外加 4 个评测操作；Work IQ Copilot MCP 只有一个 `mcp_m365copilot`，本质是一个提供 M365 Copilot 问答的 MCP 服务器；Azure OpenAI 是 Chat Completions、Embeddings 和 On Your Data 扩展。怎么从应用里用它们，见 [Copilot Managed Runtime 系列 05](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
+几个 AI Connector 的动作值得记一下：Copilot Studio Connector 有 `ExecuteCopilot`（只返回会话 ID）和 `ExecuteCopilotAsyncV2`（发消息并等待回答；"等待"靠必填的回调地址 `notificationUrl` 实现，适合 Power Automate，managed app 里用不了，见 [系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)），外加 4 个评测操作；Work IQ Copilot MCP 只有一个 `mcp_m365copilot`，本质是一个提供 M365 Copilot 问答的 MCP 服务器；Azure OpenAI 是 Chat Completions、Embeddings 和 On Your Data 扩展。怎么从应用里用它们，见 [Copilot Managed Runtime 系列 05](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)。
 
 ### 3.2 决策顺序
 

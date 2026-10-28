@@ -19,6 +19,7 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 - [03 四种 Harness 对比与选型](Copilot-Studio系列03：四种Harness对比与选型.md)——Standard、GitHub Copilot、Copilot Chat、Customer Conversation 跑在哪、能不能被调用
 - [04 Agent、Workflow 与 App 的协作](Copilot-Studio系列04：Agent、Workflow与App的协作.md)——共享数据、同步调用、触发 workflow
 - [05 Agent 的存储与标识](Copilot-Studio系列05：Agent的存储与标识.md)——agent 是 Dataverse 里的几行记录；Solution、发布者前缀与不可改的 schema name
+- [06 Standard Agent 的配置与发布](Copilot-Studio系列06：Standard-Agent的配置与发布.md)——配置存在哪段 YAML、测试面板与真实调用的差别、发布需要渠道、titleId
 
 ## 结论先行
 
