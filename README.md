@@ -41,9 +41,6 @@ The same site also has five more pages. Click a screenshot or title to open it.
 <a href="https://huqianghui.github.io/mindforge/wiki/#/timeline"><img src="asset/mindforge-site-tree-2026-10-27.png" alt="演进" /></a><br />
 <b><a href="https://huqianghui.github.io/mindforge/wiki/#/timeline">演进</a></b>：git-history timeline with a knowledge tree that grows day by day.
 </td>
-<td width="50%" valign="top">
-<b>阅读进度与收藏</b>：the article reader remembers where you stopped and which articles you starred. Both are kept in your browser only.
-</td>
 </tr>
 </table>
 
