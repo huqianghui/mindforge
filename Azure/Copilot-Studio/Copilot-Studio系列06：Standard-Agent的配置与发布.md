@@ -1,7 +1,7 @@
 ---
 title: Copilot Studio 系列 06：Standard Agent 的配置与发布
 created: 2026-10-28
-description: 以一个给知识库应用做问答后端的 Standard agent 为例，走完配置、测试与发布；模型、指令、Web Search 都存在 Dataverse 里同一行 botcomponent 的 YAML 中，程序化修改要直接改这段 YAML，模拟键入会把指令写成上千个按字符编号的键；测试面板走的是生成式回答流程，输出格式只部分生效；发布前必须先有渠道，Microsoft 认证下只剩 M365 系渠道，勾选在 Microsoft 365 Copilot 中可用后 agent 才有 titleId，这个 titleId 就是程序经 Work IQ 调用它的 agentId
+description: 以一个给知识库应用做问答后端的 Standard agent 为例，走完配置、测试与发布；模型、指令、Web Search 都存在 Dataverse 里同一行 botcomponent 的 YAML 中，程序化修改要直接改这段 YAML，模拟键入会把指令写成上千个按字符编号的键；测试面板走的是生成式回答流程，输出格式只部分生效；发布前必须先有渠道，Microsoft 认证下只剩 M365 系渠道，勾选在 Microsoft 365 Copilot 中可用后 agent 才有 titleId，人可以在 M365 Copilot 和 Teams 里直接用它；把 titleId 当 agentId 经 Work IQ 传入实测被忽略，浏览器里的应用调不到这个 agent
 tags: [copilot-studio, standard-harness, agent, publish, channels, microsoft-365-copilot, dataverse, web-search, bing-grounding, work-iq]
 ---
 
@@ -12,7 +12,7 @@ tags: [copilot-studio, standard-harness, agent, publish, channels, microsoft-365
 
 [系列 05](Copilot-Studio系列05：Agent的存储与标识.md) 讲了建 agent 时两件不可逆的事：选 harness、定 schema name。本篇接着往下走：**配置、测试、发布**，一直到这个 agent 能被别人、被程序用到为止。
 
-用来走这一遍的是一个具体需求：给一个个人知识库应用的问答页做第二种后端。应用自己检索出相关文章段落、拼进消息发给 agent；agent 负责组织回答，资料里没有答案时去公开网络查，并且说清楚哪些来自网络。应用侧怎么调用它，见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
+用来走这一遍的是一个具体需求：给一个个人知识库应用的问答页做第二种后端。应用自己检索出相关文章段落、拼进消息发给 agent；agent 负责组织回答，资料里没有答案时去公开网络查，并且说清楚哪些来自网络。最后的结果是：agent 配好、发布、在 M365 Copilot 里直接用都正常，**但应用调不到它**，过程见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
 
 ## 结论先行
 
@@ -21,7 +21,8 @@ tags: [copilot-studio, standard-harness, agent, publish, channels, microsoft-365
 - **知识源和 Web Search 怎么配，取决于资料从哪来。** 资料由应用检索后写进消息时，agent 不必挂知识源；Web Search 可以开着当兜底，前提是指令要求"标明来自公开网络"。
 - **测试面板不等于真实调用。** 测试面板里直接提问，走的是 Copilot Studio 自带的生成式回答流程，指令里的输出格式只部分生效；以真实调用路径的结果为准。
 - **没有渠道就不能发布。** Publish 按钮在配置好至少一个渠道之前是灰的；认证方式又决定了能选哪些渠道——Microsoft 认证下只剩 M365 系。
-- **勾选 "Make agent available in Microsoft 365 Copilot"**，agent 才成为 M365 Copilot 里的 agent，才有一个 `T_…` 形式的 **titleId**。程序经 Work IQ 调用它时，`agentId` 填的就是这个 titleId，不是 schema name。
+- **勾选 "Make agent available in Microsoft 365 Copilot"**，agent 才成为 M365 Copilot 里的 agent，才有一个 `T_…` 形式的 **titleId**，人才能在 M365 Copilot 和 Teams 里直接用它。
+- **发布之后，程序仍然调不到它。** Copilot Studio Connector 的动作是回调式，浏览器收不到；把 titleId 当 `agentId` 经 Work IQ 传入，调用成功但被忽略，回答来自 M365 Copilot 本体（[系列 07](Copilot-Studio系列07：如何确认是Agent在回答.md)）。
 
 ---
 
@@ -135,7 +136,7 @@ aISettings:
 
 ![添加 Microsoft 365 and Microsoft Teams 渠道：默认勾选在 Microsoft 365 Copilot 中可用|900](../../asset/copilot-studio-add-teams-channel-2026-10-28.png)
 
-面板里默认勾选了 **"Make agent available in Microsoft 365 Copilot"**——保留它。勾上之后，agent 发布到 M365 Copilot 的 Agent Store，成为 M365 Copilot 里的一个 agent；后面程序能经 Work IQ 调到它，全靠这一项。
+面板里默认勾选了 **"Make agent available in Microsoft 365 Copilot"**——保留它。勾上之后，agent 发布到 M365 Copilot 的 Agent Store，成为 M365 Copilot 里的一个 agent，用户可以在 M365 Copilot 网页、Teams 里直接打开它。（当初保留它还有一个理由：以为程序能经 Work IQ 的 `agentId` 调到它，复测证明不行。）
 
 几处实际遇到的情况：
 
@@ -153,9 +154,9 @@ aISettings:
 | 显示名 | Mindforge Ask | 门户里随时可改 | 人 |
 | schema name | `mf_MindforgeAsk` | 创建时定死，Dataverse `bot` 表 | Copilot Studio Connector 的 `Copilot` 参数、解决方案导入 |
 | 门户 URL 里的 GUID | `…/bots/<guid>` | `bot` 行的主键 | 门户页面、Dataverse Web API |
-| **titleId** | `T_xxxxxxxx-…` | 发布到 M365 Copilot 时生成 | M365 Copilot；Work IQ `copilot_chat` 的 `agentId` |
+| **titleId** | `T_xxxxxxxx-…` | 发布到 M365 Copilot 时生成 | M365 Copilot、Teams 的打开链接（Work IQ 的 `agentId` 收下但不生效） |
 
-前两套在 [系列 05](Copilot-Studio系列05：Agent的存储与标识.md) 讲过。调用方选哪条路，就要拿对应的那个标识——这一点在下一节会变得很关键。
+前两套在 [系列 05](Copilot-Studio系列05：Agent的存储与标识.md) 讲过。调用方选哪条路，就要拿对应的那个标识。titleId 最实用的地方是拼链接：M365 Copilot 网页地址带上 `?titleId=T_…`，就直接打开和这个 agent 的对话——应用调不到 agent 时，"把人带过去"就靠它。
 
 ---
 
@@ -164,13 +165,13 @@ aISettings:
 图的下半部分是三类使用方：
 
 1. **人**：在 Teams 或 M365 Copilot 里直接和它对话。同一个 agent，不用为不同入口另建。
-2. **程序，经 Work IQ**：Work IQ Copilot MCP 的 `copilot_chat` 工具带上 `agentId`（即 titleId），M365 Copilot 就把这一轮交给它，一次性返回回答。在一个 managed app 里实测可行。
+2. **程序，经 Work IQ**：Work IQ Copilot MCP 的 `copilot_chat` 工具带上 `agentId`（即 titleId）。**实测不生效**：调用成功、`agentId` 被原样回显，回答却来自 M365 Copilot 本体，agent 的指令、模型、Web Search 都没用上。曾一度判断"可行"，判错的原因与正确的验证方法见 [系列 07](Copilot-Studio系列07：如何确认是Agent在回答.md)。
 3. **程序，经 Copilot Studio Connector**：`ExecuteCopilotAsyncV2` 按 schema name 调用。**在浏览器前端里走不通**——这个动作要求一个回调地址 `notificationUrl`，是给 Power Automate 这类能被回调的调用方设计的；草稿 agent 则会被重定向到门户页面、被 CORS 拦下。
 
-第 3 条推翻了 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md) 最初"Standard 能经 Copilot Studio Connector 被应用调用"的判断，那里已经加了更正。完整的排查过程和第 2 条的接入代码，见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
+第 2、3 条合起来推翻了 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md) 最初"Standard 能被应用调用"的判断，那里已经加了更正：**能用到这个 agent 的只有人**，或者服务端的 Power Automate。浏览器里的应用要用它，只能经 workflow 异步中转。完整的排查过程见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
 
 > [!NOTE]
-> **费用**：Agents 列表里，Standard harness 的 agent 标注 "Included with your Microsoft 365 Copilot license at no additional credit cost"，Credit usage 显示 N/A。经 Work IQ 调用时，Work IQ API 本身另行按量计费。费用规则在 Preview 期变化快，以租户的 Cost management 为准。
+> **费用**：Agents 列表里，Standard harness 的 agent 标注 "Included with your Microsoft 365 Copilot license at no additional credit cost"，Credit usage 显示 N/A。用户在 M365 Copilot 里直接使用时，走的是用户的 Copilot 许可证。费用规则在 Preview 期变化快，以租户的 Cost management 为准。
 
 ---
 
@@ -186,4 +187,5 @@ aISettings:
 
 - [Copilot Studio 系列 03：四种 Harness 对比与选型](Copilot-Studio系列03：四种Harness对比与选型.md)
 - [Copilot Studio 系列 05：Agent 的存储与标识](Copilot-Studio系列05：Agent的存储与标识.md)
-- [Copilot Managed Runtime 系列 10：经 Work IQ 调用 Copilot Studio Agent](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)
+- [Copilot Studio 系列 07：如何确认是 Agent 在回答](Copilot-Studio系列07：如何确认是Agent在回答.md)
+- [Copilot Managed Runtime 系列 10：调用 Copilot Studio Agent 为何走不通](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)

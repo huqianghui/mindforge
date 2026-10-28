@@ -20,9 +20,9 @@
 <text x="64" y="447" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">M365 Copilot 许可的内部用户豁免</text>
 <rect x="48" y="504" width="394" height="206" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
 <text x="64" y="531" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">能从哪里调用</text>
-<text x="64" y="555" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Copilot Studio Connector</text>
-<text x="64" y="579" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">   ExecuteCopilotAsyncV2（managed app 可用）</text>
-<text x="64" y="603" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Direct Line、client SDK</text>
+<text x="64" y="555" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">⚠ Copilot Studio Connector（回调式）</text>
+<text x="64" y="579" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">   Power Automate 可用，浏览器里的应用不行</text>
+<text x="64" y="603" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ Direct Line、client SDK（managed app 的 CSP 挡住）</text>
 <text x="64" y="627" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ workflow 的 agent 节点</text>
 <text x="64" y="651" font-size="13" font-weight="400" fill="#5eead4" text-anchor="start">✓ SharePoint、Teams 等多数渠道</text>
 <path id="p1" d="M245 148 V208" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
@@ -70,7 +70,7 @@
 <text x="974" y="531" font-size="15" font-weight="700" fill="#e0f2fe" text-anchor="start">能从哪里调用</text>
 <text x="974" y="555" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">— 不适用 Connector</text>
 <text x="974" y="579" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start">   它扩展的是 M365 Copilot Chat</text>
-<text x="974" y="603" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">? Work IQ copilot_chat 的 agentId 参数（待实测）</text>
+<text x="974" y="603" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">✗ Work IQ copilot_chat 的 agentId：实测被忽略</text>
 <path id="p7" d="M1155 148 V208" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
 <circle r="6" fill="url(#pt_sky)"><animateMotion dur="1.0s" begin="0.6s" repeatCount="indefinite"><mpath href="#p7"/></animateMotion></circle>
 <path id="p8" d="M1155 336 V368" fill="none" stroke="#38bdf8" stroke-width="2.3" class="flow" marker-end="url(#ar_sky)"/>
@@ -83,7 +83,7 @@
 <text x="873" y="531" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">2</text>
 <circle cx="873" cy="618" r="12" fill="#0a0f1c" stroke="#fbbf24" stroke-width="1.6"/>
 <text x="873" y="623" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">3</text>
-<text x="40" y="766" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① managed app 里做问答必须建 Standard harness 的 agent，走 Copilot Studio Connector</text>
+<text x="40" y="766" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① Standard 能被 Power Automate 调用；浏览器里的 managed app 哪种 harness 都同步调不到（实测）</text>
 <text x="40" y="792" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">② GitHub Copilot harness 接不上 Connector：只回流式、无对应操作、应用又不能直连——三层都堵</text>
 <text x="40" y="818" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">③ 它的定位是"用户直接对话的助手"与"后台 workflow 的执行者"，不是给应用当 API 的后端</text>
 <text x="720" y="766" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">新建 agent 默认是 GitHub Copilot harness（2026-08 起）；创建后不能互转，要换只能重建</text>

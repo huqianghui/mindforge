@@ -1,7 +1,7 @@
 ---
 title: Copilot Studio 系列 05：Agent 的存储与标识
 created: 2026-10-27
-description: Copilot Studio 没有自己的数据库，agent 是环境 Dataverse 里 bot 表的一行，topics、指令、知识源是 botcomponent 表的行；所以解决方案、发布者前缀、安全角色、导出导入都是现成的；创建对话框里的 Solution 决定 agent 进哪个容器、带什么前缀，Schema name 是 Dataverse 里唯一的逻辑名、创建后不能改，Copilot Studio Connector 的 Copilot 参数填的就是它；附一个 Standard agent 从新建到被应用调用的七步实测（最后经 Work IQ 用 titleId 调用，而非 schema name）
+description: Copilot Studio 没有自己的数据库，agent 是环境 Dataverse 里 bot 表的一行，topics、指令、知识源是 botcomponent 表的行；所以解决方案、发布者前缀、安全角色、导出导入都是现成的；创建对话框里的 Solution 决定 agent 进哪个容器、带什么前缀，Schema name 是 Dataverse 里唯一的逻辑名、创建后不能改，Copilot Studio Connector 的 Copilot 参数填的就是它；附一个 Standard agent 从新建到发布、再尝试被应用调用的七步实测（Connector 与 Work IQ agentId 两条调用路都没走通）
 tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standard-harness, agent, copilot-studio-connector, power-platform]
 ---
 
@@ -14,10 +14,10 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 
 ## 结论先行
 
-- **agent 存在环境的 Dataverse 里**：agent 是 `bot` 表的一行，topics、指令、知识源、工具是 `botcomponent` 表的行。这就是 [系列 01](Copilot-Studio系列01：产品全景与环境.md) 说的"共享地基"在存储上的样子。
+- **agent 存在环境的 Dataverse 里**：agent 是 `bot` 表的一行，topics、指令、知识源、工具是 `botcomponent` 表的行。这就是 [系列 01](Copilot-Studio系列01：产品全景与环境.md) 说的"共享地基"在存储上的样子。**例外是 Copilot Chat 声明式 agent**：它不在 `bot` 表里，门户地址带 `agentBackend=cosmos`（[系列 07](Copilot-Studio系列07：如何确认是Agent在回答.md)）。
 - **所以解决方案、安全角色、审计、备份、导出导入都是现成的**，和 Power Apps、Power Automate 的组件同一套机制。
 - **Solution** 决定 agent 装进哪个容器、名字带哪个发布者前缀。选自建的解决方案，agent 能和同项目的表、flow 一起导出或删除；不选就进 Default Solution。
-- **Schema name 是 agent 唯一、不可变的逻辑名**，形如 `<前缀>_<名字>`。Copilot Studio Connector `ExecuteCopilotAsyncV2` 的 `Copilot` 参数认的就是它，解决方案导入也靠它。**创建后不能改**，要换只能重建。注意：经 Work IQ 调用发布到 M365 Copilot 的 agent 时，认的是另一个标识 titleId（[系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)）。
+- **Schema name 是 agent 唯一、不可变的逻辑名**，形如 `<前缀>_<名字>`。Copilot Studio Connector `ExecuteCopilotAsyncV2` 的 `Copilot` 参数认的就是它，解决方案导入也靠它。**创建后不能改**，要换只能重建。发布到 M365 Copilot 后 agent 还会有另一个标识 titleId，M365 Copilot 和 Teams 认它（[系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)）。
 - 显示名给人看（可重复、可改、可中文），逻辑名给程序认（唯一、不可变、ASCII、带前缀）。中文显示名会让逻辑名变成随机串。
 
 ---
@@ -80,12 +80,12 @@ tags: [copilot-studio, dataverse, solution, publisher, schema-name, alm, standar
 
 ![从新建到被应用调用：Standard agent 的七步（实测版）|900](../../asset/copilot-studio-standard-agent-roadmap-2026-10-27.svg)
 
-这个 agent 的用途是给 managed app 的问答页做第二种后端，和已经上线的 Work IQ 方案对比（[Copilot Managed Runtime 系列 09](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。截至 2026-10-28 七步都已走完，和原计划有两处不同：
+这个 agent 的用途是给 managed app 的问答页做第二种后端，和已经上线的 Work IQ 方案对比（[Copilot Managed Runtime 系列 09](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)）。截至 2026-10-28 七步都已走完，和原计划有两处不同，而且最后一步的结论在复测后被推翻：
 
 - **①② 不可逆**——harness 创建后不能互转，schema name 创建后不能改。所以它们最先做、最该确认。
 - **③ 的 Web Search 从"关掉"改成了"开着"**：资料由应用检索后写进消息，agent 不挂知识源；资料里没有答案时上网兜底，并在回答开头声明来自公开网络。
 - **④⑤ 在门户里**：测试面板的表现不等于真实调用；发布前必须先加渠道，并勾选"在 Microsoft 365 Copilot 中可用"。详见 [系列 06](Copilot-Studio系列06：Standard-Agent的配置与发布.md)。
-- **⑥ 原计划的 Copilot Studio Connector 走不通**：草稿被重定向到门户、被 CORS 拦截；已发布后 `ExecuteCopilotAsyncV2` 要求回调地址。**⑦ 改走 Work IQ**：同一个 `copilot_chat` 工具传 `agentId`，填的是 titleId 而不是 schema name。见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
+- **⑥ 原计划的 Copilot Studio Connector 走不通**：草稿被重定向到门户、被 CORS 拦截；已发布后 `ExecuteCopilotAsyncV2` 要求回调地址。**⑦ 改走 Work IQ**：同一个 `copilot_chat` 工具传 `agentId`（填 titleId 而不是 schema name），调用成功、格式也对，但复测证明 `agentId` 被忽略，回答来自 M365 Copilot 本体。agent 本身没问题，在 M365 Copilot、Teams 里直接用时指令生效；它只是不能被浏览器里的应用同步调用。判定方法见 [系列 07](Copilot-Studio系列07：如何确认是Agent在回答.md)，过程见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
 
 分享仍然要在两边各做一次：应用分享给使用者，agent 也要对他们可见（分享或经管理员批准），否则问答会失败。
 

@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #475569; stroke-width: 1.3; }
+      .good { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; }
+      .amb { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
+      .ghost { fill: #0f172a; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .row { fill: #111827; stroke: #334155; stroke-width: 1; }
+      .rowG { fill: #0d1f22; stroke: #115e59; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .th { fill: #94a3b8; font-size: 13.5px; font-weight: 600; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .fA { stroke: #fbbf24; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .fX { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">怎么确认"真是 agent 在答"：设想链路、判据与对照实验</text>
+  <text class="sub" x="30" y="72">同一个裸问题"澳大利亚的首都是哪里？"，四种调用方式；只有直接在 M365 Copilot 里打开 agent 时，才出现 agent 指令规定的 RELATED 行</text>
+
+  <!-- zone A: chain -->
+  <rect class="zone" x="24" y="92" width="1352" height="196" rx="12"/>
+  <text class="zt" x="40" y="118">① 设想的链路与实际的链路</text>
+  <rect class="card" x="40" y="134" width="230" height="136" rx="9"/>
+  <text class="h" x="56" y="160">managed app</text>
+  <text class="t" x="56" y="186">本地检索 + 提示词</text>
+  <text class="tG" x="56" y="210">SOURCES、[n]、RELATED</text>
+  <text class="tG" x="56" y="232">都写在提示词里</text>
+
+  <rect class="card" x="300" y="134" width="300" height="136" rx="9"/>
+  <text class="h" x="316" y="160">Work IQ Copilot MCP</text>
+  <text class="m" x="316" y="186">copilot_chat</text>
+  <text class="mT" x="316" y="210">{ message, agentId: "T_…" }</text>
+  <text class="tG" x="316" y="236">调用成功，外层回显 agentId</text>
+  <text class="tG" x="316" y="258">（任意编造的 id 也回显）</text>
+
+  <rect class="card" x="630" y="134" width="240" height="136" rx="9"/>
+  <text class="h" x="646" y="160">Graph Copilot Chat API</text>
+  <text class="t" x="646" y="186">进入 M365 Copilot</text>
+  <text class="t" x="646" y="210">的唯一程序入口</text>
+
+  <rect class="ghost" x="910" y="134" width="210" height="62" rx="9"/>
+  <text class="tG" x="926" y="160">设想：交给 agent</text>
+  <text class="tG" x="926" y="182">指令、模型、Web Search</text>
+
+  <rect class="amb" x="910" y="208" width="450" height="62" rx="9"/>
+  <text class="hA" x="926" y="234">实际：M365 Copilot 本体作答</text>
+  <text class="tA" x="926" y="256">agentId 被忽略，它照样会遵守提示词里的格式要求</text>
+
+  <rect class="ghost" x="1150" y="134" width="210" height="62" rx="9"/>
+  <text class="tG" x="1166" y="160">Mindforge Ask</text>
+  <text class="tG" x="1166" y="182">（Standard，未被调用）</text>
+
+  <path class="f" d="M270,202 L300,202"/>
+  <path class="f" d="M600,202 L630,202"/>
+  <path class="fX" d="M870,180 L910,165"/>
+  <path class="fX" d="M1120,165 L1150,165"/>
+  <path class="fA" d="M870,224 L910,239"/>
+  <circle r="5" fill="#fbbf24"><animateMotion dur="3s" repeatCount="indefinite" path="M270,202 L630,202 L870,224 L910,239"/></circle>
+
+  <!-- zone B: criteria -->
+  <rect class="zone" x="24" y="304" width="440" height="456" rx="12"/>
+  <text class="zt" x="40" y="330">② 判据：哪些特征能当证据</text>
+
+  <rect class="bad" x="40" y="346" width="408" height="118" rx="9"/>
+  <text class="hR" x="56" y="372">✗ 提示词本身要求的输出</text>
+  <text class="t" x="56" y="398">[n] 引用、RELATED 行、"知识库里没有</text>
+  <text class="t" x="56" y="420">相关内容，以下来自公开网络："开头句</text>
+  <text class="tR" x="56" y="448">本体读到同样的规则也会照做</text>
+
+  <rect class="bad" x="40" y="476" width="408" height="118" rx="9"/>
+  <text class="hR" x="56" y="502">✗ 返回里的旁证</text>
+  <text class="t" x="56" y="528">外层回显 agentId；引用了网页</text>
+  <text class="t" x="56" y="550">（不传 agentId 时本体同样查网页）</text>
+  <text class="tR" x="56" y="578">webSearchEnabled: false 也不代表不上网</text>
+
+  <rect class="good" x="40" y="606" width="408" height="138" rx="9"/>
+  <text class="hT" x="56" y="632">✓ 只有 agent 指令才会产生的特征</text>
+  <text class="t" x="56" y="658">问一个不带任何格式要求的裸问题</text>
+  <text class="t" x="56" y="680">agent 指令要求每个回答以 RELATED 行结尾</text>
+  <text class="tT" x="56" y="708">并设对照组：不传 agentId、</text>
+  <text class="tT" x="56" y="730">在 M365 Copilot 里直接用 agent</text>
+
+  <!-- zone C: matrix -->
+  <rect class="zone" x="488" y="304" width="888" height="456" rx="12"/>
+  <text class="zt" x="504" y="330">③ 对照实验：同一个裸问题</text>
+  <text class="th" x="520" y="364">调用方式</text>
+  <text class="th" x="820" y="364">回答特征</text>
+  <text class="th" x="1120" y="364">RELATED 行</text>
+  <text class="th" x="1250" y="364">谁在答</text>
+
+  <rect class="rowG" x="504" y="378" width="856" height="80" rx="8"/>
+  <text class="h" x="520" y="406">M365 Copilot 网页直接打开 agent</text>
+  <text class="tG" x="520" y="432">对照组：确认 agent 指令本身生效</text>
+  <text class="t" x="820" y="406">"澳大利亚的首都是堪培拉</text>
+  <text class="t" x="820" y="428">（Canberra）。"一句话</text>
+  <text class="tT" x="1120" y="418">✓ none</text>
+  <text class="hT" x="1250" y="418">agent</text>
+
+  <rect class="row" x="504" y="470" width="856" height="80" rx="8"/>
+  <text class="h" x="520" y="498">Work IQ + 短 titleId（3 次）</text>
+  <text class="tG" x="520" y="524">渠道面板取到的 T_…</text>
+  <text class="t" x="820" y="498">加粗、emoji、"很多人会</text>
+  <text class="t" x="820" y="520">误以为是悉尼…"</text>
+  <text class="tR" x="1120" y="510">✗ 无</text>
+  <text class="hA" x="1250" y="510">本体</text>
+
+  <rect class="row" x="504" y="562" width="856" height="80" rx="8"/>
+  <text class="h" x="520" y="590">Work IQ + 完整 id（2 次）</text>
+  <text class="tG" x="520" y="616">M365 网页里 agent 的长 id</text>
+  <text class="t" x="820" y="590">同上</text>
+  <text class="tR" x="1120" y="602">✗ 无</text>
+  <text class="hA" x="1250" y="602">本体</text>
+
+  <rect class="row" x="504" y="654" width="856" height="90" rx="8"/>
+  <text class="h" x="520" y="682">Work IQ 不传 agentId</text>
+  <text class="tG" x="520" y="708">对照组：基线</text>
+  <text class="t" x="820" y="682">与传 agentId 时</text>
+  <text class="t" x="820" y="704">无法区分</text>
+  <text class="tR" x="1120" y="694">✗ 无</text>
+  <text class="hA" x="1250" y="694">本体</text>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="776" width="1352" height="108" rx="12"/>
+  <text class="lg" x="44" y="804">① agentId 只被原样回显，回答仍由 M365 Copilot 本体生成；Standard agent 与 Copilot Chat（声明式）agent 结果相同</text>
+  <text class="lg" x="44" y="830">② 最初判断"可行"的两条证据（开头句、网页引用）都属于左侧红框：一条是提示词要求的，一条本体也会做</text>
+  <text class="lg" x="44" y="856">③ 判定要有两组对照：不传 agentId（看传了有没有差别）、直接用 agent（看 agent 指令是否真会产生该特征）</text>
+</svg>

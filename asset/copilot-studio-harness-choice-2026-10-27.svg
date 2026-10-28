@@ -32,7 +32,7 @@
 <text x="760" y="380" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">愿为推理质量多付延迟与 Credits</text>
 <line x1="80" y1="392" x2="1320" y2="392" stroke="#1e293b"/>
 <text x="700" y="424" font-size="14" font-weight="700" fill="#e2e8f0" text-anchor="middle">被应用程序化调用</text>
-<text x="640" y="424" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">✓ 只能选它</text>
+<text x="640" y="424" font-size="14" font-weight="400" fill="#99f6e4" text-anchor="end">✓ Power Automate 可调</text>
 <text x="760" y="424" font-size="14" font-weight="400" fill="#fcd34d" text-anchor="start">✗ Connector 调不了</text>
 <line x1="80" y1="436" x2="1320" y2="436" stroke="#1e293b"/>
 <rect x="60" y="490" width="400" height="150" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>

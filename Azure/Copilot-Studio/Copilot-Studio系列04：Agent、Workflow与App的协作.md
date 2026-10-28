@@ -16,7 +16,7 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 
 - **app 和 agent、workflow 之间最主要的协作方式不是"互相调用"，而是"共享同一份数据"。** 后台把结果写进 Dataverse（或 SharePoint），app 读出来让人决定，决定写回再触发下一步。
 - 这样做**绕开了所有 harness 限制**，异步不怕慢，每一步都可审计。
-- **app 同步调用 agent 也可以，但路很窄**：Work IQ Copilot MCP 直调 M365 Copilot，或经同一工具的 `agentId` 调发布到 M365 Copilot 的 Standard agent；Copilot Studio Connector 的回调式动作在浏览器前端里用不了。
+- **浏览器里的 app 同步调不到 Copilot Studio agent**（2026-10-28 实测）：Copilot Studio Connector 的动作是回调式的，Work IQ 的 `agentId` 被忽略。app 能同步调用的只有 M365 Copilot 本体（Work IQ）和模型部署（Azure OpenAI）；要用 agent，走"共享数据"模式经 workflow 中转。
 - **没有"app 按钮直接触发 workflow"的官方方式**，现实做法是 app 改一行数据、workflow 的行触发器启动。
 - 设计的关键是表里的**状态列**——它是三方之间的契约。
 
@@ -72,7 +72,7 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 
 用户在 app 里提问、当场要答案时，共享数据太慢，需要直接调用。能走通的只有两条：
 
-1. **Copilot Studio Connector `ExecuteCopilotAsyncV2` → Standard agent**〔官方文档的做法，managed app 实测不可用〕：动作要求回调地址 `notificationUrl`，适合 Power Automate，浏览器前端收不到回调。实际可行的是把 agent 发布到 M365 Copilot，再走下一条的 `agentId`〔实测〕，见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
+1. **Copilot Studio Connector `ExecuteCopilotAsyncV2` → Standard agent**〔官方文档的做法，managed app 实测不可用〕：动作要求回调地址 `notificationUrl`，适合 Power Automate，浏览器前端收不到回调。改为发布到 M365 Copilot 再走下一条的 `agentId`，复测证明 `agentId` 被忽略〔实测〕，见 [Copilot Managed Runtime 系列 10](../Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
 2. **Work IQ Copilot MCP Connector → M365 Copilot**〔实测，已有应用在用〕：不用建 agent，以用户自己的身份调用；Work IQ API 单独按量计费。
 
 走不通的：同一 Connector 调 GitHub Copilot harness agent（官方确认的已知限制）；iframe 嵌入 agent 网页聊天（宿主 CSP `frame-src 'self'` 禁止〔实测〕）。宿主里还有一条实验性的 `cowork/streamPrompt` 流式通道，默认关闭、SDK 未封装。
@@ -95,7 +95,7 @@ Copilot Studio 里 agent 能调 agent，workflow 能编排 agent——那 app �
 - **审批、工单、评审** → 模式 A：异步、可审计、人在回路。
 - **报表、看板、洞察** → 模式 A，或者干脆构建期预计算：结果可以提前算好。
 - **定期分析、生成报告文件** → 模式 A：GitHub Copilot harness agent 定时跑，结果写表，文件放 SharePoint，重活不受超时和 harness 调用限制。
-- **当场问答** → 模式 B：Standard agent，或 Work IQ 直调 M365 Copilot。
+- **当场问答** → 模式 B：Work IQ 直调 M365 Copilot，或 Azure OpenAI 直调模型；Copilot Studio agent 从浏览器里同步调不到，需要它时退回模式 A，接受半分钟以上的等待。
 - **术语解释** → 静态数据为主，必要时模式 B。
 
 一个具体组合是**每周知识体检**：GitHub Copilot harness 的 agent 定时读知识库里标为过时的论断，逐条判断是否仍成立，结果写进 Dataverse 表；app 的建议卡片页读这张表展示，用户点"确认 / 驳回"写回。"后台 AI 判断 + 前台人工确认 + 以用户身份读写企业数据"——这类能力是公开静态站点做不到的。

@@ -35,8 +35,8 @@
   </defs>
 
   <rect class="bg" width="1400" height="720" rx="16"/>
-  <text class="title" x="30" y="44">从 managed app 调 Copilot Studio agent：三次尝试</text>
-  <text class="sub" x="30" y="72">前两次都是官方 Code Apps 文档里的标准做法（Copilot Studio Connector），第三次绕道 Microsoft 365 Copilot</text>
+  <text class="title" x="30" y="44">从 managed app 调 Copilot Studio agent：三次尝试，三次都没调到</text>
+  <text class="sub" x="30" y="72">前两次都是官方 Code Apps 文档里的标准做法（Copilot Studio Connector），第三次绕道 Microsoft 365 Copilot——三次都失败，第三次失败得最像成功</text>
 
   <!-- lane 1 -->
   <rect class="laneR" x="24" y="92" width="1352" height="160" rx="12"/>
@@ -101,36 +101,36 @@
   <path class="fR" d="M942,348 L968,348"/>
 
   <!-- lane 3 -->
-  <rect class="laneT" x="24" y="444" width="1352" height="150" rx="12"/>
+  <rect class="laneR" x="24" y="444" width="1352" height="150" rx="12"/>
   <rect class="lab" x="40" y="460" width="200" height="118" rx="9"/>
-  <circle class="num" cx="62" cy="484" r="11"/><text class="nt" x="62" y="489">3</text>
-  <text class="hT" x="82" y="489">发布到 M365</text>
+  <circle class="numR" cx="62" cy="484" r="11"/><text class="nt" x="62" y="489">3</text>
+  <text class="hR" x="82" y="489">发布到 M365</text>
   <text class="t" x="56" y="518">Work IQ Copilot MCP</text>
-  <text class="mT" x="56" y="546">copilot_chat</text>
+  <text class="mR" x="56" y="546">copilot_chat</text>
 
   <rect class="step" x="266" y="476" width="330" height="86" rx="8"/>
   <text class="h" x="282" y="502">与 Work IQ 后端同一个 Connector</text>
   <text class="m" x="282" y="530">{ message, agentId: "T_…" }</text>
   <text class="tG" x="282" y="552">agentId = 渠道面板里的 titleId</text>
 
-  <rect class="step" x="622" y="476" width="330" height="86" rx="8"/>
-  <text class="h" x="638" y="502">Graph Copilot Chat API</text>
-  <text class="t" x="638" y="530">M365 Copilot 把这一轮交给</text>
-  <text class="t" x="638" y="552">agent「Mindforge Ask」</text>
+  <rect class="trap" x="622" y="476" width="330" height="86" rx="8"/>
+  <text class="hA" x="638" y="502">陷阱：看起来调通了</text>
+  <text class="tA" x="638" y="530">调用成功、外层原样回显 agentId</text>
+  <text class="tA" x="638" y="552">随手编的 T_&lt;GUID&gt; 也照样回显</text>
 
-  <rect class="good" x="978" y="476" width="382" height="86" rx="8"/>
-  <text class="hT" x="994" y="502">一次性返回回答 ✓</text>
-  <text class="t" x="994" y="530">结构与不带 agentId 时相同，外层回显 agentId</text>
-  <text class="tT" x="994" y="552">实测 31–36 秒；不需要额外授权</text>
+  <rect class="bad" x="978" y="476" width="382" height="86" rx="8"/>
+  <text class="hR" x="994" y="502">agentId 被忽略 ✗（复测更正）</text>
+  <text class="t" x="994" y="530">回答来自 M365 Copilot 本体，与不传时无法区分</text>
+  <text class="tR" x="994" y="552">agent 的指令、模型、Web Search 都没用上</text>
 
-  <path class="fT" d="M240,519 L266,519"/>
-  <path class="fT" d="M596,519 L622,519"/>
-  <path class="fT" d="M952,519 L978,519"/>
-  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M240,519 L978,519"/></circle>
+  <path class="fR" d="M240,519 L266,519"/>
+  <path class="fR" d="M596,519 L622,519"/>
+  <path class="fR" d="M952,519 L978,519"/>
+  <circle r="5" fill="#f87171"><animateMotion dur="3s" repeatCount="indefinite" path="M240,519 L978,519"/></circle>
 
   <!-- legend -->
   <rect class="lab" x="24" y="610" width="1352" height="96" rx="12"/>
   <text class="lg" x="44" y="638">① 先发布再测：草稿 agent 的失败被 SDK 包装成"成功但无数据"，最容易误判成指令或知识源的问题</text>
   <text class="lg" x="44" y="664">② 是动作本身的设计：回调式动作只适合 Power Automate 这类能被回调的调用方；不传回调地址就是 400，与权限、DLP 无关</text>
-  <text class="lg" x="44" y="690">③ 可行，是因为 Work IQ 的 copilot_chat 是"请求—等待—一次性返回"，和 managed app 的 Connector 形态一致；走不通的数据源随后从应用里移除</text>
+  <text class="lg" x="44" y="690">③ 最隐蔽：调用成功、格式也对，但格式是提示词要求的，本体也会照做；用裸问题对照才发现 agent 根本没接手</text>
 </svg>

@@ -298,8 +298,9 @@
 - [Copilot Managed Runtime 系列 07：零 Connector 的分析页面](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列07：零Connector的分析页面.md)
 - [Copilot Managed Runtime 系列 08：用 App state 保存用户数据](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)
 - [Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)
-- [Copilot Managed Runtime 系列 10：经 Work IQ 调用 Copilot Studio Agent](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)
+- [Copilot Managed Runtime 系列 10：调用 Copilot Studio Agent 为何走不通](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)
 - [Copilot Managed Runtime 系列 11：用 Azure OpenAI Connector 直调模型](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)
+- [Copilot Managed Runtime 系列 12：方案回顾与 Connector 接入清单](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md)
 
 #### Azure/Copilot-Studio
 
@@ -309,6 +310,7 @@
 - [Copilot Studio 系列 04：Agent、Workflow 与 App 的协作](Azure/Copilot-Studio/Copilot-Studio系列04：Agent、Workflow与App的协作.md)
 - [Copilot Studio 系列 05：Agent 的存储与标识](Azure/Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)
 - [Copilot Studio 系列 06：Standard Agent 的配置与发布](Azure/Copilot-Studio/Copilot-Studio系列06：Standard-Agent的配置与发布.md)
+- [Copilot Studio 系列 07：如何确认是 Agent 在回答](Azure/Copilot-Studio/Copilot-Studio系列07：如何确认是Agent在回答.md)
 
 #### Azure/AzureOpenAI
 

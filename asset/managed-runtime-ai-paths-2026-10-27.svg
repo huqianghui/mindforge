@@ -3,7 +3,7 @@
 <style>@keyframes flowDash { to { stroke-dashoffset: -76; } } .flow { stroke-dasharray: 18 20; animation: flowDash 1.6s linear infinite; } @keyframes pulse { 0%,100% { opacity: .6; } 50% { opacity: 1; } } .pulse { animation: pulse 2.2s ease-in-out infinite; }</style>
 <rect width="1400" height="900" rx="18" fill="url(#bg)"/>
 <rect x="1" y="1" width="1398" height="898" rx="17" fill="none" stroke="#1e293b"/>
-<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">在 managed app 里调用 AI：三条通路、一条实验通道、两条死路</text>
+<text x="36" y="46" font-size="22" font-weight="700" fill="#f1f5f9" text-anchor="start">在 managed app 里调用 AI：两条通路、一条实验通道、三条死路</text>
 <text x="36" y="72" font-size="14" font-weight="400" fill="#94a3b8" text-anchor="start">所有可行路线都经过宿主 http/send 和 API Hub，形态都是"请求—等待—一次性返回文本"</text>
 <rect x="30" y="96" width="330" height="600" rx="14" fill="#a78bfa" fill-opacity="0.04" stroke="#a78bfa" stroke-opacity="0.7" stroke-dasharray="7 6" stroke-width="1.4"/>
 <text x="46" y="120" font-size="14" font-weight="700" fill="#a78bfa" text-anchor="start">应用（浏览器里的 SPA）</text>
@@ -37,13 +37,12 @@
 <text x="416" y="355" font-size="13" font-weight="400" fill="#7dd3fc" text-anchor="start"></text>
 <text x="416" y="379" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">④ 实验性的 Cowork 通道</text>
 <text x="416" y="403" font-size="13" font-weight="400" fill="#fde68a" text-anchor="start">由宿主直连，不经 Connector</text>
-<rect x="700" y="110" width="670" height="130" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
-<text x="716" y="137" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">① Copilot Studio Connector → Standard agent</text>
-<text x="716" y="161" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">ExecuteCopilotAsyncV2 → { lastResponse, responses[], conversationId }</text>
-<text x="716" y="185" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">每个用户自己的 Entra 连接（不可共享）· 需同时分享应用与 agent</text>
-<text x="716" y="209" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">计费：Copilot Studio 消息 + 应用 API 调用 · 限流 300 次 / 60 秒/连接</text>
-<path id="p1" d="M650 200 C675 200 675 174 696 174" fill="none" stroke="#2dd4bf" stroke-width="2.3" class="flow" marker-end="url(#ar_teal)"/>
-<circle r="6" fill="url(#pt_teal)"><animateMotion dur="1.2s" begin="0.0s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+<rect x="700" y="110" width="670" height="130" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+<text x="716" y="137" font-size="15" font-weight="700" fill="#fecaca" text-anchor="start">✗ ① Copilot Studio agent（四种 harness 都同步调不到）</text>
+<text x="716" y="161" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">Copilot Studio Connector：ExecuteCopilotAsyncV2 必填回调地址 notificationUrl，浏览器收不到</text>
+<text x="716" y="185" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">改走 Work IQ copilot_chat + agentId：调用成功但 agentId 被忽略，回答来自本体</text>
+<text x="716" y="209" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">替代：workflow 异步中转（应用写表 → workflow 调 agent → 写回 → 轮询）</text>
+<path d="M650 200 C675 200 675 174 696 174" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5 5"/>
 <rect x="700" y="260" width="670" height="130" rx="12" fill="#0b2a2a" stroke="#2dd4bf" stroke-width="1.6"/>
 <text x="716" y="287" font-size="15" font-weight="700" fill="#ccfbf1" text-anchor="start">② Work IQ Copilot MCP → M365 Copilot</text>
 <text x="716" y="311" font-size="13" font-weight="400" fill="#99f6e4" text-anchor="start">MCP tools/call copilot_chat · SSO · 用户自己的身份</text>
@@ -72,5 +71,5 @@
 <text x="716" y="785" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">"Experimental — not part of the stable protocol"；默认关闭、需手工 token、SDK 未封装</text>
 <path id="p6" d="M525 676 V765 H696" fill="none" stroke="#fbbf24" stroke-width="2.3" class="flow" marker-end="url(#ar_amber)"/>
 <circle r="6" fill="url(#pt_amber)"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite"><mpath href="#p6"/></animateMotion></circle>
-<text x="40" y="846" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">新建 agent 默认是 GitHub Copilot harness——走 ① 时要在经典体验里建 Standard，否则只拿到空或占位回复</text>
+<text x="40" y="846" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">① 曾被误判为可行：Work IQ 对任意 agentId 都返回成功并原样回显，要用裸问题加对照组才看得出 agent 没有接手</text>
 </svg>

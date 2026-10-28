@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .cardT { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .cardS { fill: #0b1f33; stroke: #38bdf8; stroke-width: 1.6; }
+      .cardM { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 1.8; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 16px; font-weight: 700; }
+      .hS { fill: #bae6fd; font-size: 16px; font-weight: 700; }
+      .hM { fill: #ddd6fe; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .tS { fill: #7dd3fc; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tM { fill: #c4b5fd; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .lab { fill: #94a3b8; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .fT { stroke: #2dd4bf; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .fS { stroke: #38bdf8; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .fR { stroke: #f87171; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="860" rx="16"/>
+  <text class="title" x="30" y="44">同在 Copilot Studio 里建，Standard 与 Copilot Chat agent 是两种东西</text>
+  <text class="sub" x="30" y="72">存在哪、谁来执行、能配什么都不同；唯一相同的是：从浏览器里的应用都调不到，只能由人在 M365 Copilot 里直接用</text>
+
+  <!-- headers -->
+  <rect class="cardT" x="250" y="92" width="540" height="56" rx="10"/>
+  <text class="hT" x="270" y="126">Standard agent（例：Mindforge Ask）</text>
+  <rect class="cardS" x="830" y="92" width="540" height="56" rx="10"/>
+  <text class="hS" x="850" y="126">Copilot Chat 声明式 agent（例：Mindforge Ask Lite）</text>
+
+  <!-- row: storage -->
+  <text class="lab" x="128" y="200">存在哪</text>
+  <rect class="zone" x="24" y="164" width="1352" height="112" rx="10"/>
+  <text class="t" x="270" y="196">环境的 Dataverse：bot 表一行</text>
+  <text class="t" x="270" y="220">配置在 botcomponent 的 gpt.default YAML</text>
+  <text class="tT" x="270" y="248">有 schema name，可进解决方案导出导入</text>
+  <text class="t" x="850" y="196">门户地址带 agentBackend=cosmos</text>
+  <text class="tR" x="850" y="220">不在 Dataverse 的 bot 表里</text>
+  <text class="tG" x="850" y="248">系列 05 "agent 是 bot 表一行"对它不成立</text>
+
+  <!-- row: runtime -->
+  <text class="lab" x="128" y="320">谁来执行</text>
+  <rect class="zone" x="24" y="292" width="1352" height="112" rx="10"/>
+  <text class="t" x="270" y="324">Copilot Studio 经典运行时</text>
+  <text class="t" x="270" y="348">topics、触发、生成式编排</text>
+  <text class="tG" x="270" y="376">发布到 M365 渠道后也能在 M365 Copilot 里用</text>
+  <text class="t" x="850" y="324">M365 Copilot 的编排器</text>
+  <text class="t" x="850" y="348">Copilot Studio 只写配置，不执行</text>
+  <text class="tG" x="850" y="376">本质是给 M365 Copilot Chat 加一层指令与知识</text>
+
+  <!-- row: config -->
+  <text class="lab" x="128" y="448">能配什么</text>
+  <rect class="zone" x="24" y="420" width="1352" height="112" rx="10"/>
+  <text class="t" x="270" y="452">模型下拉：OpenAI、Anthropic 两族多个</text>
+  <text class="t" x="270" y="476">指令、知识源、Web Search、topics、工具</text>
+  <text class="tT" x="270" y="504">选模型是它相对 M365 Copilot 本体的主要收益</text>
+  <text class="t" x="850" y="452">Instructions、Knowledge、Capabilities、子 agent</text>
+  <text class="tR" x="850" y="476">没有选模型的地方，模型由 M365 Copilot 定</text>
+  <text class="tG" x="850" y="504">长处是挂 SharePoint、Teams、邮件等企业知识</text>
+
+  <!-- row: entry -->
+  <text class="lab" x="128" y="576">怎么用到</text>
+  <rect class="zone" x="24" y="548" width="1352" height="136" rx="10"/>
+  <rect class="cardM" x="250" y="562" width="540" height="108" rx="9"/>
+  <text class="hM" x="266" y="588">人：M365 Copilot / Teams 里直接对话 ✓</text>
+  <text class="m" x="266" y="614">m365.cloud.microsoft/chat/?titleId=T_…</text>
+  <text class="tG" x="266" y="642">渠道面板 "See agent in Teams" 的链接也带 titleId</text>
+  <rect class="cardM" x="830" y="562" width="540" height="108" rx="9"/>
+  <text class="hM" x="846" y="588">人：发布弹窗 "Go to Microsoft 365 Copilot" ✓</text>
+  <text class="m" x="846" y="614">copilot.cloud.microsoft/chat/resolve/T_…</text>
+  <text class="tG" x="846" y="642">同样有 titleId，同样只在 M365 Copilot 里跑</text>
+
+  <!-- row: programmatic -->
+  <rect class="bad" x="250" y="700" width="1120" height="64" rx="9"/>
+  <text class="hR" x="266" y="726">程序：浏览器里的 managed app ✗</text>
+  <text class="tR" x="266" y="750">Standard：Copilot Studio Connector 是回调式；两者经 Work IQ 传 titleId（短 id、完整 id 都试过）都被忽略，回答来自本体</text>
+  <text class="lab" x="128" y="738">程序调用</text>
+
+  <path class="fT" d="M520,148 L520,164"/>
+  <path class="fS" d="M1100,148 L1100,164"/>
+  <path class="fR" d="M520,670 L520,700"/>
+  <path class="fR" d="M1100,670 L1100,700"/>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="780" width="1352" height="64" rx="10"/>
+  <text class="lg" x="44" y="806">两者的 titleId 都是 T_ 开头、都能拼成 M365 Copilot 的打开链接；应用调不到 agent 时，"把人带过去"就靠这条链接</text>
+  <text class="lg" x="44" y="830">按 schema name 查 Dataverse 找不到 Copilot Chat agent 不是权限问题，它本来就不存在那里</text>
+</svg>

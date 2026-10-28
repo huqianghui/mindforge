@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .hT { fill: #5eead4; font-size: 16px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .hX { fill: #64748b; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tX { fill: #64748b; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tick { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+      .hop { stroke-width: 1.4; }
+      .hopT { fill: #0f2a2a; stroke: #2dd4bf; }
+      .hopA { fill: #2a1f0b; stroke: #fbbf24; }
+      .hopX { fill: #0f172a; stroke: #334155; stroke-dasharray: 5 4; }
+      .ht { fill: #e2e8f0; font-size: 13px; text-anchor: middle; }
+      .htX { fill: #64748b; font-size: 13px; text-anchor: middle; }
+      .barT { fill: #2dd4bf; }
+      .barA { fill: #fbbf24; }
+      .barX { fill: #334155; }
+      .card { fill: #13213a; stroke-width: 1.6; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .dl { fill: #cbd5e1; font-size: 13px; text-anchor: middle; }
+      .grow { animation: grow 2.4s ease-out infinite alternate; transform-box: fill-box; transform-origin: left center; }
+      .growU { animation: growU 2.4s ease-out infinite alternate; transform-box: fill-box; transform-origin: center bottom; }
+      @keyframes grow { from { transform: scaleX(0.15); } to { transform: scaleX(1); } }
+      @keyframes growU { from { transform: scaleY(0.2); } to { transform: scaleY(1); } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="980" rx="16"/>
+  <text class="title" x="30" y="44">同一个问题，两种后端：多一层编排，多十秒</text>
+  <text class="sub" x="30" y="72">两者共用同一份检索结果、同一套 [n] + RELATED 协议；曾经的第三种"Copilot Studio agent"后端经复测是假象，已移除</text>
+
+  <!-- hops -->
+  <rect class="zone" x="24" y="92" width="1352" height="300" rx="12"/>
+  <text class="zt" x="44" y="118">请求经过的层（从左到右）</text>
+
+  <text class="hT" x="44" y="168">Azure OpenAI</text>
+  <rect class="hop hopT" x="250" y="146" width="150" height="36" rx="6"/><text class="ht" x="325" y="169">应用检索</text>
+  <rect class="hop hopT" x="420" y="146" width="200" height="36" rx="6"/><text class="ht" x="520" y="169">Azure OpenAI connector</text>
+  <rect class="hop hopT" x="640" y="146" width="200" height="36" rx="6"/><text class="ht" x="740" y="169">部署（下拉框选择）</text>
+  <text class="tG" x="866" y="169">直达，一跳生成；返回模型版本与 token 用量</text>
+
+  <text class="hA" x="44" y="248">Work IQ</text>
+  <text class="tG" x="44" y="270">M365 Copilot 本体</text>
+  <rect class="hop hopA" x="250" y="226" width="150" height="36" rx="6"/><text class="ht" x="325" y="249">应用检索</text>
+  <rect class="hop hopA" x="420" y="226" width="200" height="36" rx="6"/><text class="ht" x="520" y="249">Work IQ connector</text>
+  <rect class="hop hopA" x="640" y="226" width="180" height="36" rx="6"/><text class="ht" x="730" y="249">Copilot 编排</text>
+  <rect class="hop hopA" x="840" y="226" width="200" height="36" rx="6"/><text class="ht" x="940" y="249">企业搜索 grounding</text>
+  <rect class="hop hopA" x="1060" y="226" width="140" height="36" rx="6"/><text class="ht" x="1130" y="249">自动模型</text>
+  <text class="tG" x="250" y="288">资料外的问题仍会引用网页（webSearchEnabled: false 也一样）；提示词里的网址已去掉，不再被抽成 grounding 文件</text>
+
+  <text class="hX" x="44" y="332">Copilot Studio</text>
+  <text class="tX" x="44" y="354">agent（已移除）</text>
+  <rect class="hop hopX" x="250" y="310" width="150" height="36" rx="6"/><text class="htX" x="325" y="333">应用检索</text>
+  <rect class="hop hopX" x="420" y="310" width="200" height="36" rx="6"/><text class="htX" x="520" y="333">Work IQ + agentId</text>
+  <rect class="hop hopX" x="640" y="310" width="180" height="36" rx="6"/><text class="htX" x="730" y="333">Copilot 编排</text>
+  <rect class="hop hopX" x="840" y="310" width="200" height="36" rx="6"/><text class="htX" x="940" y="333">agent（未接手）</text>
+  <text class="tR" x="1060" y="333">agentId 被忽略</text>
+  <text class="tX" x="250" y="372">实际 = Work IQ + "允许上网"的提示词；挂着 agent 的名字只会误导，详见系列 10</text>
+
+  <!-- latency -->
+  <rect class="zone" x="24" y="408" width="1352" height="230" rx="12"/>
+  <text class="zt" x="44" y="434">实测耗时（同一问题，授权之后，秒）</text>
+  <line class="grid" x1="250" y1="452" x2="250" y2="590"/>
+  <line class="grid" x1="530" y1="452" x2="530" y2="590"/>
+  <line class="grid" x1="810" y1="452" x2="810" y2="590"/>
+  <line class="grid" x1="1090" y1="452" x2="1090" y2="590"/>
+  <text class="tick" x="250" y="612">0</text>
+  <text class="tick" x="530" y="612">10</text>
+  <text class="tick" x="810" y="612">20</text>
+  <text class="tick" x="1090" y="612">30</text>
+  <text class="tick" x="1346" y="612">40</text>
+
+  <text class="hT" x="44" y="480">Azure OpenAI</text>
+  <rect x="250" y="464" width="112" height="24" rx="4" fill="#2dd4bf" opacity="0.18"/>
+  <rect class="barT grow" x="362" y="464" width="112" height="24" rx="4"/>
+  <text class="t" x="488" y="481">4–8 秒（典型 4.6 秒）</text>
+
+  <text class="hA" x="44" y="526">Work IQ</text>
+  <rect x="250" y="510" width="420" height="24" rx="4" fill="#fbbf24" opacity="0.18"/>
+  <rect class="barA grow" x="670" y="510" width="308" height="24" rx="4"/>
+  <text class="t" x="990" y="527">15–26 秒</text>
+
+  <text class="hX" x="44" y="572">已移除的 agent</text>
+  <rect x="250" y="556" width="700" height="24" rx="4" fill="#334155" opacity="0.25"/>
+  <rect class="barX" x="950" y="556" width="308" height="24" rx="4"/>
+  <text class="tX" x="1268" y="573">25–36 秒</text>
+
+  <!-- deployments -->
+  <rect class="zone" x="24" y="654" width="660" height="306" rx="12"/>
+  <text class="zt" x="44" y="680">同一条连接，8 个对话部署逐个调通（"只回答两个字：你好"）</text>
+  <line class="grid" x1="60" y1="900" x2="664" y2="900"/>
+  <line class="grid" x1="60" y1="840" x2="664" y2="840"/>
+  <line class="grid" x1="60" y1="780" x2="664" y2="780"/>
+  <line class="grid" x1="60" y1="720" x2="664" y2="720"/>
+  <text class="tG" x="44" y="905">0</text>
+  <text class="tG" x="44" y="845">2</text>
+  <text class="tG" x="44" y="785">4</text>
+  <text class="tG" x="44" y="725">6</text>
+  <rect class="barT growU" x="80" y="720" width="50" height="180" rx="3" opacity="0.55"/>
+  <rect class="barT growU" x="152" y="822" width="50" height="78" rx="3"/>
+  <rect class="barT growU" x="224" y="813" width="50" height="87" rx="3"/>
+  <rect class="barT growU" x="296" y="840" width="50" height="60" rx="3"/>
+  <rect class="barT growU" x="368" y="834" width="50" height="66" rx="3"/>
+  <rect class="barT growU" x="440" y="855" width="50" height="45" rx="3"/>
+  <rect class="barT growU" x="512" y="807" width="50" height="93" rx="3"/>
+  <rect class="barT growU" x="584" y="840" width="50" height="60" rx="3"/>
+  <text class="dl" x="105" y="712">6.0</text>
+  <text class="dl" x="177" y="814">2.6</text>
+  <text class="dl" x="249" y="805">2.9</text>
+  <text class="dl" x="321" y="832">2.0</text>
+  <text class="dl" x="393" y="826">2.2</text>
+  <text class="dl" x="465" y="847">1.5</text>
+  <text class="dl" x="537" y="799">3.1</text>
+  <text class="dl" x="609" y="832">2.0</text>
+  <text class="dl" x="141" y="922">GPT-6.1 ×2</text>
+  <text class="dl" x="321" y="922">GPT-6 ×3</text>
+  <text class="dl" x="537" y="922">GPT-5.6 ×3</text>
+  <text class="tG" x="60" y="946">第一根含冷启动；秒为单位。部署名是调用参数，连接只认资源</text>
+
+  <!-- trade-off cards -->
+  <rect class="zone" x="708" y="654" width="668" height="306" rx="12"/>
+  <text class="zt" x="728" y="680">选哪种</text>
+
+  <rect class="card" x="728" y="696" width="628" height="120" rx="9" stroke="#2dd4bf"/>
+  <text class="hT" x="746" y="724">默认 Azure OpenAI：快 3–5 倍，可复现，看得到用量</text>
+  <text class="t" x="746" y="752">每次调用选部署；不要求用户有 M365 Copilot；分享应用即可用</text>
+  <text class="tG" x="746" y="778">代价：key 由共享连接持有，配额和费用都算在资源所有者头上；</text>
+  <text class="tG" x="746" y="800">只看 SOURCES，不上网</text>
+
+  <rect class="card" x="728" y="828" width="628" height="116" rx="9" stroke="#fbbf24"/>
+  <text class="hA" x="746" y="856">Work IQ：没有 Azure 资源、用户都有 Copilot 许可证</text>
+  <text class="t" x="746" y="884">零配置，用户自己的身份（SSO），有企业 grounding</text>
+  <text class="tG" x="746" y="910">代价：不能选模型、最慢、只有回答文本；资料外的问题会</text>
+  <text class="tG" x="746" y="932">引用网页，"只依据 SOURCES"只能靠提示词约束</text>
+</svg>

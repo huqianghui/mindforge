@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 840" width="1400" height="840" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .phase { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="840" rx="16"/>
+  <text class="title" x="30" y="44">每接一个 Connector，按顺序过七关</text>
+  <text class="sub" x="30" y="72">每一关都对应一次真实踩坑；琥珀色两关是"本地能跑、上线才炸"或"看着正常、其实没通"的类型</text>
+
+  <!-- row 1 -->
+  <rect class="zone" x="24" y="92" width="1352" height="300" rx="12"/>
+  <text class="zt" x="40" y="118">接入期：加数据源、写调用</text>
+
+  <rect class="card" x="40" y="134" width="316" height="240" rx="9"/>
+  <circle class="num" cx="62" cy="158" r="11"/><text class="nt" x="62" y="163">1</text>
+  <text class="h" x="82" y="163">在不在白名单</text>
+  <text class="m" x="56" y="192">ms connector list</text>
+  <text class="m" x="56" y="212">  --only-allowed</text>
+  <text class="t" x="56" y="242">加数据源时留意输出里的</text>
+  <text class="tR" x="56" y="266">"Skipped N of M actions due to</text>
+  <text class="tR" x="56" y="288">your organization's connector policy"</text>
+  <text class="tG" x="56" y="320">被跳过的动作就是被 DLP 屏蔽了，</text>
+  <text class="tG" x="56" y="342">例如 Dataverse 的写入动作</text>
+
+  <rect class="card" x="376" y="134" width="316" height="240" rx="9"/>
+  <circle class="num" cx="398" cy="158" r="11"/><text class="nt" x="398" y="163">2</text>
+  <text class="h" x="418" y="163">返回类型别信</text>
+  <text class="t" x="392" y="192">生成的 Service 返回类型可能是</text>
+  <text class="t" x="392" y="214">void 或宽泛的 any</text>
+  <text class="tT" x="392" y="246">先在宿主里打印一次真实返回，</text>
+  <text class="tT" x="392" y="268">再写解析</text>
+  <text class="tG" x="392" y="300">Work IQ 声明 void，实际要剥</text>
+  <text class="tG" x="392" y="322">六层包装才拿到回答</text>
+
+  <rect class="cardA" x="712" y="134" width="316" height="240" rx="9"/>
+  <circle class="numA" cx="734" cy="158" r="11"/><text class="nt" x="734" y="163">3</text>
+  <text class="hA" x="754" y="163">连接参数不校验</text>
+  <text class="t" x="728" y="192">资源名填成完整网址，连接</text>
+  <text class="t" x="728" y="214">仍显示 Connected</text>
+  <text class="tR" x="728" y="242">调用却一直 502</text>
+  <text class="tT" x="728" y="274">出问题先用 Power Apps API 读</text>
+  <text class="tT" x="728" y="296">连接的非机密参数</text>
+  <text class="tG" x="728" y="328">Connected 只说明凭据有效</text>
+
+  <rect class="cardA" x="1048" y="134" width="312" height="240" rx="9"/>
+  <circle class="numA" cx="1070" cy="158" r="11"/><text class="nt" x="1070" y="163">4</text>
+  <text class="hA" x="1090" y="163">共享连接声明白名单</text>
+  <text class="t" x="1064" y="192">API Key 这类共享连接，部署时</text>
+  <text class="t" x="1064" y="214">必须在 ms.config.json 声明</text>
+  <text class="m" x="1064" y="240">allowedActions</text>
+  <text class="t" x="1064" y="266">只放用到的动作</text>
+  <text class="tR" x="1064" y="298">ms app dev 不查这一项：</text>
+  <text class="tR" x="1064" y="320">本地能跑不代表能部署</text>
+
+  <!-- row 2 -->
+  <rect class="zone" x="24" y="408" width="1352" height="276" rx="12"/>
+  <text class="zt" x="40" y="434">运行期与发布期：首次授权、宿主外、部署</text>
+
+  <rect class="card" x="40" y="450" width="420" height="216" rx="9"/>
+  <circle class="num" cx="62" cy="474" r="11"/><text class="nt" x="62" y="479">5</text>
+  <text class="h" x="82" y="479">首次授权会算进计时</text>
+  <text class="t" x="56" y="508">每个用户第一次调用时宿主弹授权框，</text>
+  <text class="t" x="56" y="530">挂起的那次调用计时包含等待授权的时间</text>
+  <text class="tR" x="56" y="560">一次 5 秒的调用被测成 230 秒</text>
+  <text class="tT" x="56" y="592">测性能只用授权之后的数字</text>
+  <text class="tG" x="56" y="622">用不上的数据源及时移除，</text>
+  <text class="tG" x="56" y="644">否则每个用户都要多同意一项</text>
+
+  <rect class="card" x="480" y="450" width="420" height="216" rx="9"/>
+  <circle class="num" cx="502" cy="474" r="11"/><text class="nt" x="502" y="479">6</text>
+  <text class="h" x="522" y="479">宿主外调用会悬空</text>
+  <text class="t" x="496" y="508">npm run dev、静态站点上，SDK 调用</text>
+  <text class="t" x="496" y="530">既不返回也不报错</text>
+  <text class="tT" x="496" y="562">必须有超时，或先判断"不在宿主"</text>
+  <text class="tG" x="496" y="594">问答页在宿主外只做检索，</text>
+  <text class="tG" x="496" y="616">并提示需要在宿主中运行，</text>
+  <text class="tG" x="496" y="638">而不是白屏或永远转圈</text>
+
+  <rect class="card" x="920" y="450" width="440" height="216" rx="9"/>
+  <circle class="num" cx="942" cy="474" r="11"/><text class="nt" x="942" y="479">7</text>
+  <text class="h" x="962" y="479">部署超时 ≠ 构建失败</text>
+  <text class="t" x="936" y="508">ms app deploy 轮询超时退出，</text>
+  <text class="t" x="936" y="530">平台上的构建仍在继续</text>
+  <text class="m" x="936" y="560">ms app build-status --commit &lt;sha&gt;</text>
+  <text class="t" x="936" y="590">Succeeded 后再 deploy 一次，</text>
+  <text class="t" x="936" y="612">直接用缓存的构建，几秒上线</text>
+  <text class="tG" x="936" y="644">不要为此重新推一个提交</text>
+
+  <!-- flows -->
+  <path class="f" d="M356,254 L376,254"/>
+  <path class="f" d="M692,254 L712,254"/>
+  <path class="f" d="M1028,254 L1048,254"/>
+  <path class="f" d="M1204,374 L1204,400 L420,400 L420,450"/>
+  <path class="f" d="M460,558 L480,558"/>
+  <path class="f" d="M900,558 L920,558"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="6s" repeatCount="indefinite" path="M198,254 L1204,254 L1204,374 L1204,400 L420,400 L420,558 L1140,558"/></circle>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="700" width="1352" height="124" rx="12"/>
+  <text class="lg" x="44" y="728">① ② 在写第一行调用代码之前做：先确认动作没被策略屏蔽、再看真实返回长什么样</text>
+  <text class="lg" x="44" y="754">③ ④ 是"状态显示正常但实际不通"的两类：连接参数无人校验；白名单只在部署时检查</text>
+  <text class="lg" x="44" y="780">⑤ ⑥ 是运行期体验：首次授权与宿主外环境都会让调用"卡住"，要在界面上给出可读的状态</text>
+  <text class="lg" x="44" y="806">⑦ 是发布期：CLI 的轮询失败与平台构建的成败是两件事，先查 build-status 再决定下一步</text>
+</svg>

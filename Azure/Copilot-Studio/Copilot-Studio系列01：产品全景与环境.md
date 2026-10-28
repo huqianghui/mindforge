@@ -20,6 +20,7 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 - [04 Agent、Workflow 与 App 的协作](Copilot-Studio系列04：Agent、Workflow与App的协作.md)——共享数据、同步调用、触发 workflow
 - [05 Agent 的存储与标识](Copilot-Studio系列05：Agent的存储与标识.md)——agent 是 Dataverse 里的几行记录；Solution、发布者前缀与不可改的 schema name
 - [06 Standard Agent 的配置与发布](Copilot-Studio系列06：Standard-Agent的配置与发布.md)——配置存在哪段 YAML、测试面板与真实调用的差别、发布需要渠道、titleId
+- [07 如何确认是 Agent 在回答](Copilot-Studio系列07：如何确认是Agent在回答.md)——一次误判与"指纹 + 两组对照"的验证方法；Copilot Chat 声明式 agent 与 Standard 的区别
 
 ## 结论先行
 

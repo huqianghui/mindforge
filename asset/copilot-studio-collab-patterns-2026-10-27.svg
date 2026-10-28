@@ -18,8 +18,8 @@
 <text x="50" y="464" font-size="13" font-weight="400" fill="#94a3b8" text-anchor="start">异步 · 可审计 · 人在回路 · 绕开 harness 限制</text>
 <rect x="490" y="100" width="420" height="200" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
 <text x="506" y="127" font-size="17" font-weight="700" fill="#fef3c7" text-anchor="start">B · app 同步调用 agent</text>
-<text x="506" y="151" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Connector → Standard agent ✓</text>
-<text x="506" y="175" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Work IQ MCP → M365 Copilot ✓</text>
+<text x="506" y="151" font-size="13" font-weight="400" fill="#fca5a5" text-anchor="start">Copilot Studio agent ✗（回调式 / agentId 被忽略）</text>
+<text x="506" y="175" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">Work IQ → M365 Copilot ✓ · Azure OpenAI ✓</text>
 <text x="506" y="199" font-size="13" font-weight="400" fill="#fcd34d" text-anchor="start">GitHub Copilot harness ✗ · iframe ✗</text>
 <rect x="490" y="320" width="420" height="116" rx="12" fill="#2a1f0a" stroke="#fbbf24" stroke-width="1.6"/>
 <text x="506" y="347" font-size="15" font-weight="700" fill="#fef3c7" text-anchor="start">适合</text>

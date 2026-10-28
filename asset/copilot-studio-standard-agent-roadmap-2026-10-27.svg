@@ -32,7 +32,7 @@
 
   <rect class="bg" width="1400" height="700" rx="16"/>
   <text class="title" x="34" y="44">从新建到被应用调用：Standard agent 的七步（实测版）</text>
-  <text class="sub" x="34" y="72">截至 2026-10-28 全部走完；红色虚线是计划中的路径实测走不通，第 ⑦ 步换成了经 Work IQ 调用</text>
+  <text class="sub" x="34" y="72">截至 2026-10-28 全部走完；红色虚线是计划中的路径实测走不通，第 ⑦ 步改走 Work IQ，复测也走不通</text>
 
   <line class="axisDone" x1="124" y1="140" x2="1004" y2="140"/>
   <line class="axisFail" x1="1004" y1="140" x2="1084" y2="140"/>
@@ -45,7 +45,7 @@
   <circle class="nDone" cx="700" cy="140" r="20"/><text class="bn" x="700" y="145">4</text>
   <circle class="nDone" cx="892" cy="140" r="20"/><text class="bn" x="892" y="145">5</text>
   <circle class="nFail" cx="1084" cy="140" r="20"/><text class="bn" x="1084" y="145">6</text>
-  <circle class="nWin" cx="1276" cy="140" r="20"/><text class="bn" x="1276" y="145">7</text>
+  <circle class="nFail" cx="1276" cy="140" r="20"/><text class="bn" x="1276" y="145">7</text>
 
   <!-- 1 -->
   <rect class="done" x="34" y="184" width="180" height="336" rx="10"/>
@@ -126,18 +126,18 @@
   <text class="tGray" x="1008" y="466">少一个授权项</text>
 
   <!-- 7 -->
-  <rect class="win" x="1186" y="184" width="180" height="336" rx="10"/>
-  <text class="hTeal" x="1200" y="210">Work IQ ✓</text>
+  <rect x="1186" y="184" width="180" height="336" rx="10" fill="#2a1215" stroke="#f87171" stroke-width="1.8"/>
+  <text class="hTeal" x="1200" y="210" fill="#fca5a5" style="fill:#fca5a5">Work IQ ✗</text>
   <text class="mono" x="1200" y="238">copilot_chat</text>
   <text class="t" x="1200" y="260">多传一个 agentId</text>
   <text class="t" x="1200" y="292">agentId = 渠道面板</text>
   <text class="t" x="1200" y="314">链接里的 titleId</text>
   <text class="monoTeal" x="1200" y="336">T_xxxxxxxx-…</text>
-  <text class="t" x="1200" y="368">同一条连接，</text>
-  <text class="t" x="1200" y="390">不用额外授权</text>
-  <text class="tGray" x="1200" y="422">实测 31–36 秒</text>
-  <text class="tGray" x="1200" y="444">（Work IQ 本体</text>
-  <text class="tGray" x="1200" y="466">15–26 秒）</text>
+  <text class="tRed" x="1200" y="368">调用成功、回显</text>
+  <text class="tRed" x="1200" y="390">agentId，但被忽略</text>
+  <text class="tGray" x="1200" y="422">回答来自 M365</text>
+  <text class="tGray" x="1200" y="444">Copilot 本体；裸问</text>
+  <text class="tGray" x="1200" y="466">题对照才看出来</text>
 
   <!-- legend -->
   <rect class="plan" x="34" y="544" width="1332" height="134" rx="12"/>
@@ -146,5 +146,5 @@
   <circle class="nDone" cx="60" cy="608" r="10"/>
   <text class="lg" x="80" y="613">④⑤ 都在 Copilot Studio 门户：测试面板的表现不等于经应用调用的表现；发布前必须先加渠道，渠道决定 agent 之后能从哪里被找到</text>
   <circle class="nFail" cx="60" cy="640" r="10"/>
-  <text class="lg" x="80" y="645">⑥ 是原计划（Copilot Studio Connector）实测走不通的一步；⑦ 绕道 Microsoft 365 Copilot：发布到 M365 后，agent 有了 titleId，Work IQ 能把一轮对话交给它</text>
+  <text class="lg" x="80" y="645">⑥ 是原计划（Copilot Studio Connector）实测走不通的一步；⑦ 绕道 M365 Copilot 传 titleId 作 agentId，也被忽略——agent 只能由人直接用，或经 workflow 调</text>
 </svg>

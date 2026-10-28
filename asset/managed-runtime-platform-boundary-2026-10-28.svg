@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .pill { fill: #13213a; stroke: #475569; stroke-width: 1.2; }
+      .pillT { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.4; }
+      .pillV { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 1.6; }
+      .q { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .site { fill: #13213a; stroke-width: 1.8; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .hV { fill: #ddd6fe; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .tV { fill: #c4b5fd; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .pt { fill: #e2e8f0; font-size: 13.5px; text-anchor: middle; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .fT { stroke: #2dd4bf; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .fV { stroke: #a78bfa; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .num { fill: #334155; stroke: #94a3b8; stroke-width: 1.6; }
+      .nt { fill: #f8fafc; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">一个功能该不该放进 managed app：只问一句</text>
+  <text class="sub" x="30" y="72">同一份内容发布成两个站点：静态站与 managed app 共享大部分页面，真正依赖平台的只有三类能力</text>
+
+  <!-- features -->
+  <rect class="zone" x="24" y="92" width="380" height="530" rx="12"/>
+  <text class="zt" x="40" y="118">① 应用里的功能</text>
+  <rect class="pillT" x="40" y="136" width="166" height="40" rx="20"/><text class="pt" x="123" y="161">文章导航</text>
+  <rect class="pillT" x="222" y="136" width="166" height="40" rx="20"/><text class="pt" x="305" y="161">知识图谱</text>
+  <rect class="pillT" x="40" y="188" width="166" height="40" rx="20"/><text class="pt" x="123" y="213">洞察</text>
+  <rect class="pillT" x="222" y="188" width="166" height="40" rx="20"/><text class="pt" x="305" y="213">建议</text>
+  <rect class="pillT" x="40" y="240" width="166" height="40" rx="20"/><text class="pt" x="123" y="265">统计</text>
+  <rect class="pillT" x="222" y="240" width="166" height="40" rx="20"/><text class="pt" x="305" y="265">演进</text>
+  <text class="tT" x="40" y="306">纯前端：数据构建期生成，运行期只读</text>
+
+  <rect class="pillV" x="40" y="336" width="348" height="40" rx="20"/><text class="pt" x="214" y="361">识别用户（右上角显示是谁）</text>
+  <rect class="pillV" x="40" y="388" width="348" height="40" rx="20"/><text class="pt" x="214" y="413">按用户保存进度、收藏，跨设备同步</text>
+  <rect class="pillV" x="40" y="440" width="348" height="40" rx="20"/><text class="pt" x="214" y="465">问答（生成端：Work IQ / Azure OpenAI）</text>
+  <text class="tV" x="40" y="508">依赖平台：身份、按用户存储、Connector</text>
+  <text class="tG" x="40" y="540">问答的检索部分仍是纯前端，</text>
+  <text class="tG" x="40" y="562">只有"生成回答"这一步离不开平台</text>
+  <text class="tG" x="40" y="594">图谱、洞察等页面两个站点都有</text>
+
+  <!-- question -->
+  <rect class="zone" x="428" y="92" width="400" height="530" rx="12"/>
+  <text class="zt" x="444" y="118">② 判定</text>
+  <rect class="q" x="444" y="200" width="368" height="150" rx="12"/>
+  <text class="hA" x="464" y="232">它需要知道"你是谁"吗？</text>
+  <text class="tA" x="464" y="262">或者需要一把不能放进前端的凭据吗？</text>
+  <text class="t" x="464" y="296">（模型 key、数据源连接）</text>
+  <text class="tG" x="464" y="328">两个都不需要 → 纯前端实现</text>
+
+  <rect class="pill" x="444" y="390" width="176" height="110" rx="10"/>
+  <text class="hT" x="460" y="418">都不需要</text>
+  <text class="t" x="460" y="446">两个站点都能用</text>
+  <text class="tG" x="460" y="472">零 Connector</text>
+  <rect class="pill" x="636" y="390" width="176" height="110" rx="10"/>
+  <text class="hV" x="652" y="418">需要其一</text>
+  <text class="t" x="652" y="446">放进 managed app</text>
+  <text class="tG" x="652" y="472">静态站给退路</text>
+
+  <path class="fT" d="M532,350 L532,390"/>
+  <path class="fV" d="M724,350 L724,390"/>
+  <path class="fT" d="M388,206 C416,206 420,270 444,270"/>
+  <path class="fV" d="M388,408 C416,408 420,300 444,300"/>
+
+  <!-- sites -->
+  <rect class="zone" x="852" y="92" width="524" height="530" rx="12"/>
+  <text class="zt" x="868" y="118">③ 两个站点上的样子</text>
+
+  <rect class="site" x="868" y="136" width="492" height="222" rx="10" stroke="#a78bfa"/>
+  <text class="hV" x="886" y="164">managed app（平台托管）</text>
+  <text class="t" x="886" y="194">识别用户：宿主的 getUser()</text>
+  <text class="t" x="886" y="220">按用户保存：App state，平台强制按用户隔离</text>
+  <text class="t" x="886" y="246">问答：Connector 调 Work IQ 或 Azure OpenAI，</text>
+  <text class="t" x="886" y="268">凭据在连接对象里，不进前端代码</text>
+  <text class="tG" x="886" y="300">代价：首次授权框、Preview 平台、</text>
+  <text class="tG" x="886" y="322">CSP 限制、只能在租户内分享</text>
+
+  <rect class="site" x="868" y="378" width="492" height="226" rx="10" stroke="#2dd4bf"/>
+  <text class="hT" x="886" y="406">静态站（GitHub Pages）的退路</text>
+  <text class="t" x="886" y="436">识别用户：无，只能匿名</text>
+  <text class="t" x="886" y="462">按用户保存：localStorage，只在本机</text>
+  <text class="t" x="886" y="488">问答：只能演示检索结果</text>
+  <text class="tR" x="886" y="518">真要回答就得自己有后端和密钥——</text>
+  <text class="tR" x="886" y="540">静态站放不了密钥</text>
+  <text class="tG" x="886" y="574">优势：公开访问、零授权、无平台依赖</text>
+
+  <path class="fV" d="M812,445 C836,445 840,246 868,246"/>
+  <path class="fT" d="M620,500 C640,600 840,600 868,560"/>
+  <circle r="5" fill="#a78bfa"><animateMotion dur="3s" repeatCount="indefinite" path="M388,408 C416,408 420,300 444,300 L724,350 L724,390 L812,445 C836,445 840,246 868,246"/></circle>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M388,206 C416,206 420,270 444,270 L532,350 L532,390 L620,500 C640,600 840,600 868,560"/></circle>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="638" width="1352" height="146" rx="12"/>
+  <text class="lg" x="44" y="666">① 九个功能里六个是纯前端，数据在构建期生成；只有身份、按用户存储、问答的生成端依赖平台</text>
+  <text class="lg" x="44" y="692">② 判定只看两件事："你是谁"和"不能放进前端的凭据"。二者都是静态站从根上给不了的东西</text>
+  <text class="lg" x="44" y="718">③ 依赖平台的功能在静态站上要有退路：匿名、本机存储、只演示检索；不要让它白屏或报错</text>
+  <text class="lg" x="44" y="744">反过来，纯前端的功能放进 managed app 也不该引入 Connector：每多一个数据源，用户就多一项授权</text>
+  <text class="lg" x="44" y="770">这条判定也解释了为什么问答是两站差别最大的页面：检索两边都能做，生成只能在有凭据的一侧</text>
+</svg>

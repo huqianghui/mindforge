@@ -1,7 +1,7 @@
 ---
 title: Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答
 created: 2026-10-27
-description: 在知识库 managed app 里落地带引用的问答——检索全在浏览器里做（英文词加中文二元组、idf 乘字段权重、取前 5 篇再挑段落），生成交给 Work IQ Copilot MCP 以用户身份调用的 Microsoft 365 Copilot，提示词约定行内编号与 RELATED 行，引用因此是结构化的；回答要剥六层包装，reply 为空、rawResponse 是转义过的字符串；首次授权约 74 秒、之后每次 15 到 20 秒；不需要建 Copilot Studio agent；CLI 部署超时不等于构建失败
+description: 在知识库 managed app 里落地带引用的问答——检索全在浏览器里做（英文词加中文二元组、idf 乘字段权重、取前 5 篇再挑段落），生成交给 Work IQ Copilot MCP 以用户身份调用的 Microsoft 365 Copilot，提示词约定行内编号与 RELATED 行，引用因此是结构化的；回答要剥六层包装，reply 为空、rawResponse 是转义过的字符串；首次授权约 74 秒、之后每次 15 到 20 秒；不需要建 Copilot Studio agent；工具会把提示词里的网址自动抽成 grounding 文件且会抽坏，拼 SOURCES 时应去掉网址；copilot_chat 的 agentId 参数实测被忽略；CLI 部署超时不等于构建失败
 tags: [copilot-managed-runtime, managed-apps, work-iq, m365-copilot, mcp, json-rpc, rag, retrieval, prompt-engineering, citations, connector]
 ---
 
@@ -21,6 +21,8 @@ tags: [copilot-managed-runtime, managed-apps, work-iq, m365-copilot, mcp, json-r
 - **引用靠输出协议**：段落带编号写进提示词，要求行内用 `[n]` 标注、最后一行写 `RELATED: 1, 3`。应用把编号渲染成原文链接，用到的和没用到的来源分开显示。
 - **回答要剥六层**：SDK 结构 → 可能是 SSE → JSON-RPC → 外层 JSON 加一行 CorrelationId → `reply` 为空、`rawResponse` 是字符串化的会话 → `messages` 的最后一条。每层失败都退回原文。
 - **耗时**：每个用户首次调用要授权，连同授权约 74 秒；之后每次 15–20 秒。
+- **提示词里别留网址**：`copilot_chat` 会把提示词里的网址自动抽成 grounding 文件，还会把 Markdown 的右括号吞进网址；资料正文已在 SOURCES 里，去掉网址只留链接文字。
+- **`agentId` 参数不生效**：传了也由 M365 Copilot 本体作答，不能借它调 Copilot Studio agent。
 - **CLI 部署超时不等于构建失败**，先查 `ms app build-status`。
 
 ---
@@ -113,7 +115,7 @@ const res = await WorkIQCopilotMCPService.mcp_m365copilot(undefined, {
 if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 ```
 
-`copilot_chat` 还有一个可选参数 `agentId`（"Agent ID for the Microsoft Copilot conversation"）。本篇的后端没有用它，由 M365 Copilot 本体作答。后来实测：把 Copilot Studio Standard agent 发布到 Microsoft 365 Copilot，再用它的 titleId 作 `agentId`，同一条链路就能把问题交给这个 agent——问答页的第二种后端就是这样接上的，见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
+`copilot_chat` 还有一个可选参数 `agentId`（"Agent ID for the Microsoft Copilot conversation"）。看上去可以借它把问题交给发布到 M365 Copilot 的 Copilot Studio agent，实测**不生效**：调用成功、`agentId` 被原样回显（随手编的也一样），回答却与不传时无法区分。怎么发现的、该怎么验证，见 [系列 10](Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
 
 ---
 
@@ -149,7 +151,41 @@ if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 
 ---
 
-## 七、和另外两种后端怎么比
+## 七、实验：提示词里的网址
+
+`copilot_chat` 返回的外层 JSON 里有两个字段 `fileUris` 和 `autoExtractedFileUris`。对照提示词可以看出，工具会把**提示词里出现的网址**取出来，当作 grounding 文件交给 Copilot。检索摘录里常带原文的外链，这会不会拖慢回答、把资料以外的内容混进来？
+
+做了一次对照：三个示例问题，同一份提示词，分"保留网址"和"去掉网址（只留链接文字）"两种，经 Work IQ 各调 2 轮，交替先后顺序以抵消缓存和时段的影响。
+
+| 问题 | 摘录中的网址 | 保留：耗时 / 被抽取 | 去掉：耗时 / 被抽取 |
+|---|---|---|---|
+| A2A 和 MCP 分别解决什么问题？ | 0 | 15.0、16.0 秒 / 0 | 14.9、15.9 秒 / 0 |
+| Voice Live 在弱网下表现如何？ | 0 | 20.2、17.4 秒 / 0 | 18.8、21.5 秒 / 0 |
+| Prompt Cache 新旧两代有什么区别？ | 5 | 20.4、16.3 秒 / **2** | 15.7、15.3 秒 / 0 |
+
+三点观察：
+
+- **只有摘录里真有网址时才会被抽取**，而且不是全抽：5 个里抽了 2 个。
+- **抽出来的网址有一个是坏的**，形如 `…/prompt-caching/diagnostics)）与`。工具按空白切网址，把 Markdown 链接的右括号和后面的中文都吞了进去——中文正文里网址后面紧跟标点、没有空格，是这种切法最容易出错的场景。
+- **去掉网址后第三题两次都快了一些**（平均 18.4 → 15.5 秒），但同一题前后两次本身就能差 4 秒，样本太少，不能说一定更快。回答长度与 `[n]` 引用数没有明显差别。
+
+**结论**：资料正文已经在 SOURCES 里，让 Copilot 再去抓外链没有好处，还可能把资料以外的内容混进回答。所以拼 SOURCES 时去掉网址、只留链接文字。这个处理放在两个后端共用的提示词构造里，Azure OpenAI 后端也顺带少了几个 token。
+
+> [!NOTE]
+> 与此相关的另一个现象：返回里 M365 Copilot 本体的 `webSearchEnabled` 显示为 `false`，但资料外的问题它照样会引用公开网页。"只依据 SOURCES"在这个后端上只能靠提示词约束，不能指望那个字段。
+
+---
+
+## 八、入口与计时
+
+问答页做完后，把它和其他页面串了起来：
+
+- **"问 Copilot →"入口**：洞察页每条 Claim、建议页每张卡片下方都有一个，跳到 `#/ask?q=<预填问题>`。**只预填、不自动发送**，用户可以先改问题或换后端。Claim 的入口还带上来源文章，把它固定为第一条资料——[系列 07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md) 里规则引擎刻意不做的"这条结论还成立吗"，交给这里回答。
+- **两段计时**：回答下方分开显示**检索**耗时（本地，通常几十毫秒）和**回答**耗时（connector + 后端模型）。几十毫秒对十几秒，一眼就知道优化该往哪里使劲。
+
+---
+
+## 九、和 Azure OpenAI 后端怎么比
 
 这条路线解决了"不建 agent、引用可控"，代价也清楚：
 
@@ -157,12 +193,12 @@ if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 - **要求每个用户都有 M365 Copilot**，Work IQ 的调用另外计费。
 - **依赖 Preview Connector**，返回格式可能变——所以第五节的"每层退回原文"不是过度防御。
 
-路线图上的下一步是两种对比实验：
+路线图上原本还有两种对比实验：
 
-1. **Copilot Studio Standard agent**：已作为问答页可切换的第二种后端上线。原计划经 Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 调用，实测走不通（回调式动作），改为发布到 M365 Copilot 后经本篇同一个 Work IQ 工具传 `agentId`，见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。
-2. **Azure OpenAI Connector + 同一套前端检索**：已作为第三种后端上线，检索不变、只换生成端，同一问题 4.6 秒；连接只能用 API Key 共享连接、部署时要声明 `allowedActions`，见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
+1. **Copilot Studio agent**：Copilot Studio Connector 是回调式动作，本篇这个工具的 `agentId` 又被忽略，从浏览器里调不到，问答页上曾经的 agent 切换项已移除，见 [系列 10](Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)。
+2. **Azure OpenAI Connector + 同一套前端检索**：已上线并成为默认后端，检索不变、只换生成端，同一问题 4.6 秒；连接只能用 API Key 共享连接、部署时要声明 `allowedActions`，见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)。
 
-另一个方向是把问答和其他页面串起来：洞察页的一条 Claim、建议页的一张卡片，都可以加"问 Copilot"入口，用 `#/ask?q=` 预填问题——[系列 07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md) 里规则引擎刻意不做的"这条结论还成立吗"，正好交给这里。
+两种后端怎么选、整套方案的回顾，见 [系列 12](Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md)。
 
 ---
 
@@ -178,4 +214,5 @@ if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 - [Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md)
 - [Copilot Managed Runtime 系列 06：参考应用拆解与功能模式](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)
 - [Copilot Studio 系列 05：Agent 的存储与标识](../Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)
-- [Copilot Managed Runtime 系列 10：经 Work IQ 调用 Copilot Studio Agent](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)
+- [Copilot Managed Runtime 系列 10：调用 Copilot Studio Agent 为何走不通](Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)
+- [Copilot Managed Runtime 系列 12：方案回顾与 Connector 接入清单](Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md)

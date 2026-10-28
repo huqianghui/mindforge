@@ -18,13 +18,14 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 | [02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md) | 实战部署与权限解析 | 一次完整部署：认证链路、权限、发布步骤与踩坑 |
 | [03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md) | 宿主沙箱与安全边界 | iframe、CSP、JSON-RPC：应用能做什么、不能做什么 |
 | [04](Copilot-Managed-Runtime系列04：SDK与数据接入.md) | SDK 与数据接入 | SDK 接口、加数据源、本地调试、构建期与运行期 |
-| [05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md) | 在应用里调用 AI 的几条路 | Copilot Studio agent、M365 Copilot、Azure OpenAI 怎么接、怎么选 |
+| [05](Copilot-Managed-Runtime系列05：在应用里调用AI的几条路.md) | 在应用里调用 AI 的几条路 | Copilot Studio agent、M365 Copilot、Azure OpenAI 能不能接、怎么选 |
 | [06](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md) | 参考应用拆解与功能模式 | 一个已上线应用的九个可复用模式 |
 | [07](Copilot-Managed-Runtime系列07：零Connector的分析页面.md) | 零 Connector 的分析页面 | 实践：构建期五个 JSON 撑起洞察、建议、统计、演进四页 |
 | [08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md) | 用 App state 保存用户数据 | 实践：阅读进度与收藏；Dataverse 被 DLP 挡住后改用 App state |
 | [09](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md) | 本地检索加 Work IQ 的问答 | 实践：带结构化引用的问答，返回格式与实测耗时 |
-| [10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md) | 经 Work IQ 调用 Copilot Studio Agent | 实践：Copilot Studio Connector 为何走不通，改用 agentId 接入第二种问答后端 |
-| [11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md) | 用 Azure OpenAI Connector 直调模型 | 实践：第三种问答后端；API Key 共享连接、allowedActions 与三种后端实测对比 |
+| [10](Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md) | 调用 Copilot Studio Agent 为何走不通 | 实践：三次尝试都失败；agentId 被忽略的误判与对照实验；仅剩的异步做法 |
+| [11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md) | 用 Azure OpenAI Connector 直调模型 | 实践：默认问答后端；API Key 共享连接、allowedActions、部署下拉框与两种后端对比 |
+| [12](Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md) | 方案回顾与 Connector 接入清单 | 回顾：问答后端与存储怎么选、Connector 七关、哪些功能离不开平台 |
 
 Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、agent / workflow / app 协作）见姊妹系列 [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)。
 

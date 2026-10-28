@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" width="1400" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .good { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2.2; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
+      .amb { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
+      .gray { fill: #111827; stroke: #475569; stroke-width: 1.6; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .ax { fill: #e2e8f0; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .axs { fill: #94a3b8; font-size: 13.5px; text-anchor: middle; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.65; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="880" rx="16"/>
+  <text class="title" x="30" y="44">确认"真是 agent 在答"：指纹 + 两组对照</text>
+  <text class="sub" x="30" y="72">适用于任何"多传一个参数就换了处理者"的接口；本例的待测路径是 Work IQ copilot_chat + agentId</text>
+
+  <!-- steps -->
+  <rect class="zone" x="24" y="92" width="1352" height="212" rx="12"/>
+  <text class="zt" x="40" y="118">四步</text>
+
+  <rect class="card" x="40" y="134" width="312" height="152" rx="9"/>
+  <circle class="num" cx="62" cy="158" r="11"/><text class="nt" x="62" y="163">1</text>
+  <text class="h" x="82" y="163">选一个指纹</text>
+  <text class="t" x="56" y="192">只有 agent 指令才会产生的输出</text>
+  <text class="tT" x="56" y="218">本例：每个回答以 RELATED 行结尾</text>
+  <text class="tG" x="56" y="246">最好事先刻意埋一个，</text>
+  <text class="tG" x="56" y="268">别等出了疑问再找</text>
+
+  <rect class="card" x="372" y="134" width="312" height="152" rx="9"/>
+  <circle class="num" cx="394" cy="158" r="11"/><text class="nt" x="394" y="163">2</text>
+  <text class="h" x="414" y="163">问一个裸问题</text>
+  <text class="t" x="388" y="192">消息里不带任何格式要求</text>
+  <text class="tT" x="388" y="218">本例："澳大利亚的首都是哪里？"</text>
+  <text class="tG" x="388" y="246">消息里有同样的要求，</text>
+  <text class="tG" x="388" y="268">指纹就失去区分力</text>
+
+  <rect class="card" x="704" y="134" width="312" height="152" rx="9"/>
+  <circle class="num" cx="726" cy="158" r="11"/><text class="nt" x="726" y="163">3</text>
+  <text class="h" x="746" y="163">三组同问</text>
+  <text class="t" x="720" y="192">A 直接用 agent（M365 网页）</text>
+  <text class="t" x="720" y="214">B 待测路径（传 agentId）</text>
+  <text class="t" x="720" y="236">C 基线（不传 agentId）</text>
+  <text class="tG" x="720" y="264">B 多跑几次，换几种 id 写法</text>
+
+  <rect class="card" x="1036" y="134" width="324" height="152" rx="9"/>
+  <circle class="num" cx="1058" cy="158" r="11"/><text class="nt" x="1058" y="163">4</text>
+  <text class="h" x="1078" y="163">按矩阵判读</text>
+  <text class="t" x="1052" y="192">先看 A：指纹是否真的会出现</text>
+  <text class="t" x="1052" y="214">再看 B：是否出现</text>
+  <text class="t" x="1052" y="236">C 用来确认 B 与本体有无差别</text>
+  <text class="tG" x="1052" y="264">本例落在矩阵右上格</text>
+
+  <path class="f" d="M352,210 L372,210"/>
+  <path class="f" d="M684,210 L704,210"/>
+  <path class="f" d="M1016,210 L1036,210"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M352,210 L1036,210"/></circle>
+
+  <!-- matrix -->
+  <rect class="zone" x="24" y="320" width="900" height="420" rx="12"/>
+  <text class="zt" x="40" y="346">判读矩阵</text>
+  <text class="ax" x="568" y="376">B 待测路径的回答里有指纹吗？</text>
+  <text class="axs" x="390" y="400">有</text>
+  <text class="axs" x="746" y="400">没有</text>
+  <text class="ax" x="120" y="520">A 直接用</text>
+  <text class="ax" x="120" y="542">agent 时</text>
+  <text class="ax" x="120" y="564">有指纹吗？</text>
+  <text class="axs" x="200" y="480">有</text>
+  <text class="axs" x="200" y="642">没有</text>
+
+  <rect class="good" x="232" y="412" width="318" height="146" rx="9"/>
+  <text class="hT" x="248" y="440">路由成功</text>
+  <text class="t" x="248" y="468">agent 真的接手了</text>
+  <text class="tG" x="248" y="496">再用 C 确认本体不会产生</text>
+  <text class="tG" x="248" y="518">同样的指纹</text>
+
+  <rect class="bad" x="586" y="412" width="322" height="146" rx="9"/>
+  <text class="hR" x="602" y="440">路径没把问题交给 agent</text>
+  <text class="tR" x="602" y="468">本例结论：agentId 被忽略</text>
+  <text class="t" x="602" y="496">B 与 C 无法区分，回答来自</text>
+  <text class="t" x="602" y="518">M365 Copilot 本体</text>
+
+  <rect class="amb" x="232" y="574" width="318" height="146" rx="9"/>
+  <text class="hA" x="248" y="602">指纹不可靠</text>
+  <text class="tA" x="248" y="630">A 没有却 B 有：多半是消息</text>
+  <text class="tA" x="248" y="652">或本体也会产生它</text>
+  <text class="tG" x="248" y="680">换一个指纹，或检查消息里</text>
+  <text class="tG" x="248" y="702">是否混入了同样的要求</text>
+
+  <rect class="gray" x="586" y="574" width="322" height="146" rx="9"/>
+  <text class="h" x="602" y="602">无法判断</text>
+  <text class="t" x="602" y="630">agent 指令本身没生效</text>
+  <text class="tG" x="602" y="658">先修 agent：确认已发布、</text>
+  <text class="tG" x="602" y="680">指令 YAML 没被写坏，再测</text>
+
+  <!-- not evidence -->
+  <rect class="zone" x="948" y="320" width="428" height="420" rx="12"/>
+  <text class="zt" x="964" y="346">不算证据的东西</text>
+  <rect class="gray" x="964" y="362" width="396" height="80" rx="9"/>
+  <text class="hR" x="980" y="390">✗ 提示词要求的输出</text>
+  <text class="t" x="980" y="416">格式、开头句、引用编号：本体也照做</text>
+  <rect class="gray" x="964" y="454" width="396" height="80" rx="9"/>
+  <text class="hR" x="980" y="482">✗ 回显的参数</text>
+  <text class="t" x="980" y="508">随手编的 id 也原样回显、照样成功</text>
+  <rect class="gray" x="964" y="546" width="396" height="80" rx="9"/>
+  <text class="hR" x="980" y="574">✗ "查了网页"</text>
+  <text class="t" x="980" y="600">本体也会；webSearchEnabled 不可信</text>
+  <rect class="gray" x="964" y="638" width="396" height="86" rx="9"/>
+  <text class="hR" x="980" y="666">✗ 更慢了</text>
+  <text class="t" x="980" y="692">多出的时间可能只因提示词允许上网</text>
+  <text class="tG" x="980" y="714">慢不等于多了一层</text>
+
+  <!-- legend -->
+  <rect class="zone" x="24" y="756" width="1352" height="108" rx="12"/>
+  <text class="lg" x="44" y="784">① 指纹要满足两点：agent 指令会稳定产生它；裸问题的消息与本体都不会产生它</text>
+  <text class="lg" x="44" y="810">② ③ 裸问题去掉了"提示词也要求同样格式"这个混杂因素；A 证明指纹有效，C 证明 B 与本体有无差别</text>
+  <text class="lg" x="44" y="836">④ 本例 A 有指纹、B 五次都没有、B 与 C 无法区分：落在右上格，结论是 agentId 被忽略</text>
+</svg>
