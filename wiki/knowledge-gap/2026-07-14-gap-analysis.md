@@ -9,6 +9,51 @@ stats: "81 concepts, 15 methods, 7 decisions, 426 claims"
 github_trending_date: "2026-07-14"
 arxiv_query_date: "2026-07-14"
 huggingface_query_date: "2026-07-14"
+trends:
+  - topic: agentic-rl
+    title: 'Agentic RL 与 Agent 专用模型'
+    priority: high
+    action: deep
+    signals: [hf, arxiv, github]
+    nodes: [verl, rl-infra-framework-selection]
+  - topic: pkc-competitors
+    title: '知识图谱式代码与记忆层'
+    priority: high
+    action: deep
+    signals: [github, arxiv]
+    nodes: [llm-wiki, personal-knowledge-compiler]
+  - topic: agent-eval
+    title: '评测哲学转向（模型与框架解耦、防对测试优化）'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+    nodes: [harness-engineering, meta-harness]
+  - topic: distillation
+    title: '蒸馏范式升级为 on-policy'
+    priority: medium
+    action: claim
+    signals: [hf]
+    nodes: [rejection-sampling-finetuning]
+  - topic: voice-agent
+    title: 'τ-Voice 量化语音 Agent 差距'
+    priority: high
+    action: deep
+    signals: [arxiv]
+  - topic: agent-safety
+    title: 'Agent Safety 部署规则安全'
+    priority: low
+    action: watch
+    signals: [arxiv]
+  - topic: local-inference
+    title: 'Hybrid Mamba-MoE 架构'
+    priority: low
+    action: watch
+    signals: [hf]
+  - topic: wiki-health
+    title: '方法页瓶颈与 stale 页处理'
+    priority: medium
+    action: claim
+    signals: [introspection]
 ---
 
 # 知识差距分析报告（2026-07-14）

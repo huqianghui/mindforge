@@ -14,6 +14,52 @@ github_trending_date: 2026-07-18
 arxiv_query_date: 2026-07-18
 huggingface_query_date: 2026-07-18
 baseline: 2026-07-14-gap-analysis
+trends:
+  - topic: self-evolving-agent
+    title: '多组件 Prompt/Skill 优化的耦合问题'
+    priority: high
+    action: deep
+    signals: [arxiv, github]
+    nodes: [automatic-prompt-optimization, skillopt]
+  - topic: pkc-competitors
+    title: '代码库与知识库图谱化、主动记忆注入'
+    priority: high
+    action: deep
+    signals: [github, arxiv]
+    nodes: [personal-knowledge-compiler]
+  - topic: agentic-rl
+    title: 'Agentic RL 基建化与异步训练'
+    priority: high
+    action: deep
+    signals: [hf, arxiv]
+  - topic: voice-agent
+    title: '原生全双工语音-动作模型与全双工 RL 对齐'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+    nodes: [cascaded-vs-e2e-voice]
+  - topic: model-harness-decoupling
+    title: 'Agent 专用模型分支下沉权重层'
+    priority: medium
+    action: claim
+    signals: [hf, github]
+    nodes: [model-harness-codesign]
+  - topic: local-inference
+    title: 'NVFP4 量化格式'
+    priority: medium
+    action: claim
+    signals: [hf]
+    nodes: [hybrid-inference-framework-selection]
+  - topic: agent-safety
+    title: 'Agent safety 与红队基准'
+    priority: low
+    action: watch
+    signals: [github, arxiv]
+  - topic: local-inference
+    title: '本地极限 MoE 推理与开源语音栈竞品'
+    priority: low
+    action: watch
+    signals: [github]
 ---
 
 # 知识差距分析报告（2026-07-18）

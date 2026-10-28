@@ -14,6 +14,52 @@ github_trending_date: 2026-09-12
 arxiv_query_date: 2026-09-12
 huggingface_query_date: 2026-09-12
 baseline: 2026-09-06-gap-analysis
+trends:
+  - topic: harness
+    title: 'Harness 安全进入攻击分类学与共进化防御阶段'
+    priority: high
+    action: deep
+    signals: [arxiv, github]
+    nodes: [meta-harness]
+  - topic: voice-agent
+    title: '语音全双工商业化拐点'
+    priority: high
+    action: deep
+    signals: [arxiv, hf]
+    nodes: [voice-live-agent, cascaded-vs-e2e-voice]
+  - topic: self-evolving-agent
+    title: 'Skill-RL 化浪潮'
+    priority: high
+    action: claim
+    signals: [arxiv]
+    nodes: [skillopt]
+  - topic: reward-design
+    title: 'Reward hacking 进入基准化阶段'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+  - topic: model-harness-decoupling
+    title: '第一方 harness 补位工具带成型'
+    priority: medium
+    action: claim
+    signals: [github]
+    nodes: [codex-desktop-architecture]
+  - topic: agent-memory
+    title: 'Agent memory 盲区第三期加码'
+    priority: medium
+    action: overview
+    signals: [github, arxiv]
+  - topic: agentic-rl
+    title: 'RL 环境合成成赛道'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+    nodes: [environment-agnostic, verl]
+  - topic: ai-design-tools
+    title: 'vibe 设计画布等早期信号'
+    priority: low
+    action: watch
+    signals: [github]
 ---
 
 # 知识差距分析报告（2026-09-12）

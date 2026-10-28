@@ -33,7 +33,22 @@ export interface GapSuggestion {
   title: string;
   priority: 'high' | 'medium' | 'low' | null;
   carried: boolean;
-  landed: { node: string; date: string }[];
+  landed: { node: string; date: string; path: string }[];
+}
+
+export type Priority = 'high' | 'medium' | 'low';
+export const PRIORITY_LABELS: Record<Priority, string> = { high: '🔴 高', medium: '🟡 中', low: '🟢 低' };
+export const PRIORITY_COLORS: Record<Priority, string> = { high: '#e53935', medium: '#f9a825', low: '#43a047' };
+
+/** 报告 frontmatter 的 trends：topic 取自 wiki/knowledge-gap/topics.yml，跨期按它归并 */
+export interface GapTrend {
+  topic: string;
+  title: string;
+  priority: Priority | null;
+  action: 'deep' | 'page' | 'claim' | 'overview' | 'watch' | null;
+  signals: string[];
+  /** landed：页面在这期报告之后才建出来 */
+  nodes: { node: string; date: string; path: string; landed: boolean }[];
 }
 
 export interface GapReport {
@@ -41,6 +56,12 @@ export interface GapReport {
   date: string;
   title: string;
   suggestions: GapSuggestion[];
+  trends?: GapTrend[];
+}
+
+export interface GapTopics {
+  lines: Record<string, string>;
+  topics: Record<string, { label: string; line: string }>;
 }
 
 export interface History {
@@ -52,6 +73,7 @@ export interface History {
   days: [string, number][];
   graph: GraphPoint[];
   gaps: GapReport[];
+  gapTopics?: GapTopics;
   /** path -> [首次提交日期, 修改次数] */
   docs: Record<string, [string, number]>;
 }

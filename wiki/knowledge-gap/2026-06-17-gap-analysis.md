@@ -9,6 +9,44 @@ stats: "67 concepts, 14 methods, 4 decisions, 324 claims, 489 relations"
 github_trending_date: 2026-06-17
 arxiv_query_date: 2026-06-17
 huggingface_query_date: 2026-06-17
+trends:
+  - topic: loop-engineering
+    title: 'Loop Engineering 工具化'
+    priority: high
+    action: claim
+    signals: [github, arxiv]
+    nodes: [loop-engineering]
+  - topic: voice-agent
+    title: '端到端语音冲击级联架构'
+    priority: high
+    action: deep
+    signals: [hf, arxiv]
+    nodes: [cascaded-vs-e2e-voice]
+  - topic: mcp
+    title: 'MCP 安全框架'
+    priority: high
+    action: page
+    signals: [arxiv, github]
+  - topic: agent-memory
+    title: 'Agent Memory 与持续学习'
+    priority: high
+    action: page
+    signals: [github, arxiv]
+  - topic: agent-eval
+    title: 'Coding Agent Benchmark 生态'
+    priority: medium
+    action: page
+    signals: [arxiv]
+  - topic: ai-design-tools
+    title: 'AI Design Agent'
+    priority: medium
+    action: watch
+    signals: [github]
+  - topic: local-inference
+    title: 'NVFP4 量化标准化'
+    priority: medium
+    action: overview
+    signals: [hf]
 ---
 
 # 知识差距分析报告（2026-06-17）

@@ -14,6 +14,51 @@ github_trending_date: 2026-10-25
 arxiv_query_date: 2026-10-25
 huggingface_query_date: 2026-10-25
 baseline: 2026-10-19-gap-analysis
+trends:
+  - topic: harness
+    title: 'Harness 递归自我优化进入大厂开源阶段'
+    priority: high
+    action: deep
+    signals: [github, arxiv, hf]
+    nodes: [recursive-self-improvement, harness-engineering]
+  - topic: agent-memory
+    title: 'Agent memory 第一次有了能直接用的评测结论'
+    priority: high
+    action: deep
+    signals: [arxiv, github, hf]
+    nodes: [claude-code-memory-system]
+  - topic: voice-agent
+    title: '全双工语音前台与后台 agent 有了真实部署'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+    nodes: [cascaded-vs-e2e-voice]
+  - topic: agent-eval
+    title: 'Coding agent 评测走向真实工作状态'
+    priority: medium
+    action: overview
+    signals: [arxiv]
+  - topic: local-inference
+    title: '本地 coding agent 的小激活 MoE 与 harness 即插即用'
+    priority: medium
+    action: overview
+    signals: [hf, github]
+    nodes: [model-routing]
+  - topic: industry-watch
+    title: 'AI clean-room 软件克隆潮'
+    priority: low
+    action: watch
+    signals: [github]
+  - topic: agent-safety
+    title: 'agentic misalignment 评测'
+    priority: low
+    action: watch
+    signals: [arxiv]
+  - topic: multi-agent
+    title: 'MAS 网络拓扑与共识'
+    priority: low
+    action: watch
+    signals: [arxiv]
 ---
 
 # 知识差距分析报告（2026-10-25）

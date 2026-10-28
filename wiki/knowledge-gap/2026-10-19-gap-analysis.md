@@ -14,6 +14,47 @@ github_trending_date: 2026-10-19
 arxiv_query_date: 2026-10-19
 huggingface_query_date: 2026-10-19
 baseline: 2026-09-12-gap-analysis
+trends:
+  - topic: voice-agent
+    title: '全双工语音 Agent 补齐工具调用与后台计算'
+    priority: high
+    action: deep
+    signals: [arxiv, github]
+    nodes: [cascaded-vs-e2e-voice]
+  - topic: agentic-rl
+    title: 'Agentic RL 的细粒度 credit assignment'
+    priority: high
+    action: deep
+    signals: [arxiv]
+  - topic: distillation
+    title: '多教师 on-policy distillation 成为后训练标配'
+    priority: high
+    action: claim
+    signals: [hf, arxiv]
+    nodes: [rejection-sampling-finetuning]
+  - topic: model-harness-decoupling
+    title: 'Harness 与 model 解耦变成日常产品'
+    priority: medium
+    action: claim
+    signals: [github]
+    nodes: [model-routing, model-harness-codesign]
+  - topic: agent-memory
+    title: 'Agent memory 连续第五期高热'
+    priority: medium
+    action: overview
+    signals: [github, arxiv]
+    nodes: [claude-code-memory-system]
+  - topic: agent-eval
+    title: '过度工程成为 coding agent 独立评测维度'
+    priority: medium
+    action: claim
+    signals: [arxiv, github]
+    nodes: [brevity-constraints]
+  - topic: harness
+    title: 'harness2 等内容未公开的新仓库'
+    priority: low
+    action: watch
+    signals: [github]
 ---
 
 # 知识差距分析报告（2026-10-19）

@@ -13,13 +13,18 @@ from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
 
+import yaml
+
 ARTICLE_ROOTS = ("Notes/", "Azure/", "paper/", "book/", "product/")
 NODE_DIRS = {"wiki/concepts/": "concept", "wiki/methods/": "method", "wiki/decisions/": "decision"}
 GAP_DIR = "wiki/knowledge-gap/"
+GAP_TOPICS = "wiki/knowledge-gap/topics.yml"
+RE_FRONTMATTER = re.compile(r"\A---\n(.*?\n)---\n", re.S)
 GRAPH = "wiki/wiki-graph.json"
 RE_ITEM = re.compile(r"^\s{0,3}\d+\.\s+(.+)$")
 RE_BOLD = re.compile(r"\*\*(.+?)\*\*")
-RE_SLUG = re.compile(r"`(?:wiki/(?:concepts|methods|decisions)/)?([a-z0-9][a-z0-9-]{2,})(?:\.md)?`")
+# `wiki/concepts/slug.md` or `slug` in backticks, or a [[slug]] / [[slug|alias]] wikilink
+RE_SLUG = re.compile(r"(?:`(?:wiki/(?:concepts|methods|decisions)/)?([a-z0-9][a-z0-9-]{2,})(?:\.md)?`|\[\[([a-z0-9][a-z0-9-]{2,})(?:\|[^\]]*)?\]\])")
 RE_PRIORITY = re.compile(r"🔴|🟡|🟢")
 
 
@@ -139,11 +144,11 @@ def suggestions(text: str, node_first: dict, report_day: str) -> list:
             title = (bold.group(1) if bold else re.split(r"（|——|：|\(", item)[0]).replace("`", "").strip()
             title = RE_PRIORITY.sub("", title).strip()
             landed = []
-            for slug in dict.fromkeys(RE_SLUG.findall(item)):
-                created = node_first.get(slug)
+            for slug in dict.fromkeys(a or b for a, b in RE_SLUG.findall(item)):
+                created, path = node_first.get(slug, (None, None))
                 # strictly after: a page committed together with the report already existed
                 if created and created > report_day:
-                    landed.append({"node": slug, "date": created})
+                    landed.append({"node": slug, "date": created, "path": path})
             prio = RE_PRIORITY.search(item)
             out.append({
                 "title": title[:80],
@@ -154,8 +159,33 @@ def suggestions(text: str, node_first: dict, report_day: str) -> list:
     return out
 
 
-def gap_reports(vault: Path, first: dict, nodes: dict) -> list:
-    node_first = {Path(p).stem: first[p] for p in nodes}
+def trends(text: str, node_first: dict, report_day: str, topics: dict) -> list:
+    """Structured trends from the report's front matter; nodes created after the report count as landed."""
+    m = RE_FRONTMATTER.match(text)
+    fm = (yaml.safe_load(m.group(1)) or {}) if m else {}
+    out = []
+    for t in fm.get("trends") or []:
+        if t.get("topic") not in topics:
+            print(f"history: unknown gap topic {t.get('topic')!r} in report {report_day}, skipped")
+            continue
+        linked = []
+        for slug in t.get("nodes") or []:
+            created, path = node_first.get(slug, (None, None))
+            if created:
+                linked.append({"node": slug, "date": created, "path": path, "landed": created > report_day})
+        out.append({
+            "topic": t["topic"],
+            "title": str(t.get("title", "")),
+            "priority": t.get("priority"),
+            "action": t.get("action"),
+            "signals": t.get("signals") or [],
+            "nodes": linked,
+        })
+    return out
+
+
+def gap_reports(vault: Path, first: dict, nodes: dict, topics: dict) -> list:
+    node_first = {Path(p).stem: (first[p], p) for p in nodes}
     reports = []
     for path in sorted(p for p in first if p.startswith(GAP_DIR) and p.endswith(".md")):
         f = vault / path
@@ -169,6 +199,7 @@ def gap_reports(vault: Path, first: dict, nodes: dict) -> list:
             "date": day,
             "title": h1.group(1).strip() if h1 else Path(path).stem,
             "suggestions": suggestions(text, node_first, day),
+            "trends": trends(text, node_first, day, topics),
         })
     return reports
 
@@ -178,7 +209,8 @@ def build(vault: Path, doc_paths: list, out: Path) -> None:
     articles = [p for p in doc_paths if p.startswith(ARTICLE_ROOTS) and p in first]
     nodes = {p: t for p in doc_paths for d, t in NODE_DIRS.items() if p.startswith(d) and p in first}
     graph = graph_snapshots(vault)
-    gaps = gap_reports(vault, first, nodes)
+    registry = yaml.safe_load((vault / GAP_TOPICS).read_text(encoding="utf-8")) if (vault / GAP_TOPICS).exists() else {}
+    gaps = gap_reports(vault, first, nodes, registry.get("topics") or {})
     history = {
         "firstCommit": min(commit_days),
         "lastCommit": max(commit_days),
@@ -194,6 +226,7 @@ def build(vault: Path, doc_paths: list, out: Path) -> None:
         "days": sorted(Counter(commit_days).items()),
         "graph": graph,
         "gaps": gaps,
+        "gapTopics": {"lines": registry.get("lines") or {}, "topics": registry.get("topics") or {}},
         # path -> [first commit date, number of commits touching it]
         "docs": {p: [first[p], edits[p]] for p in doc_paths if p in first},
     }

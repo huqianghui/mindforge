@@ -1,0 +1,78 @@
+# 知识差距主题表：每期报告 frontmatter 的 trends[].topic 必须取自这里。
+# slug 一旦启用就不改名——站点按 slug 跨期归并，改名会把同一主题拆成两条。
+# 新主题追加到对应 line 下；line 是主线分组，只用于站点上的分组和配色。
+
+lines:
+  voice: 语音
+  agent: Agent 架构
+  harness: Harness
+  rl: 训练与 RL
+  inference: 推理与部署
+  pkc: 知识管理
+  engineering: 工程质量
+  other: 其他
+
+topics:
+  voice-agent:
+    label: 全双工与端到端语音
+    line: voice
+  agent-memory:
+    label: Agent memory
+    line: agent
+  self-evolving-agent:
+    label: Agent 自进化与 Prompt/Skill 优化
+    line: agent
+  multi-agent:
+    label: Multi-Agent 协作与协议
+    line: agent
+  agent-tooling:
+    label: Agent CLI、Skill 与工具生态
+    line: agent
+  mcp:
+    label: MCP 与工具调用
+    line: agent
+  agent-safety:
+    label: Agent 安全与红队
+    line: agent
+  harness:
+    label: Harness 作为一等系统层
+    line: harness
+  model-harness-decoupling:
+    label: 模型与 Harness 解耦、Agent 专用模型
+    line: harness
+  agentic-rl:
+    label: Agentic RL 训练与基建
+    line: rl
+  reward-design:
+    label: 奖励设计与 Reward hacking
+    line: rl
+  distillation:
+    label: 蒸馏范式
+    line: rl
+  local-inference:
+    label: 本地推理、MoE 与量化
+    line: inference
+  pkc-competitors:
+    label: LLM Wiki 与知识图谱产品
+    line: pkc
+  rag-retrieval:
+    label: 检索与 RAG
+    line: pkc
+  context-engineering:
+    label: Context Engineering 方法论
+    line: engineering
+  agent-eval:
+    label: Agent 评测与代码质量
+    line: engineering
+  loop-engineering:
+    label: Loop Engineering
+    line: engineering
+  ai-design-tools:
+    label: AI 设计工具
+    line: other
+  wiki-health:
+    label: 知识库自身债务
+    line: other
+  industry-watch:
+    label: 行业事件与观望
+    line: other

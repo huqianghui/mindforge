@@ -6,6 +6,44 @@ stats: "65 concepts, 14 methods, 4 decisions, 306 claims, 459 relations"
 github_trending_date: 2026-05-24
 arxiv_query_date: 2026-05-24
 huggingface_query_date: 2026-05-24
+trends:
+  - topic: agent-safety
+    title: 'Multi-tool 编排与安全'
+    priority: high
+    action: deep
+    signals: [github, arxiv]
+  - topic: agent-eval
+    title: 'Coding Agent 质量与评估'
+    priority: high
+    action: page
+    signals: [github, arxiv]
+  - topic: agent-memory
+    title: 'Agent 记忆与持久化'
+    priority: medium
+    action: overview
+    signals: [github]
+    nodes: [claude-code-memory-system]
+  - topic: agent-tooling
+    title: 'gstack 开发套件'
+    priority: medium
+    action: overview
+    signals: [github]
+  - topic: ai-design-tools
+    title: 'Design Engineering for Agents'
+    priority: medium
+    action: claim
+    signals: [github]
+    nodes: [ai-native-design-tools]
+  - topic: agent-tooling
+    title: 'Agent 编排语言 Zerolang'
+    priority: low
+    action: watch
+    signals: [github]
+  - topic: local-inference
+    title: 'DeepSeek-V4-Pro 本地推理'
+    priority: medium
+    action: overview
+    signals: [github, hf]
 ---
 
 # Knowledge Gap Analysis — 2026-05-24

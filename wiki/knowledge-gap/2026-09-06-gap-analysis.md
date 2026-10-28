@@ -14,6 +14,51 @@ github_trending_date: 2026-09-06
 arxiv_query_date: 2026-09-06
 huggingface_query_date: 2026-09-06
 baseline: 2026-07-18-gap-analysis
+trends:
+  - topic: harness
+    title: 'Harness 成为一等系统层'
+    priority: high
+    action: deep
+    signals: [arxiv, github]
+    nodes: [harness-engineering, model-harness-codesign, meta-harness]
+  - topic: reward-design
+    title: 'Reward hacking 成为一等关注点'
+    priority: high
+    action: deep
+    signals: [arxiv]
+  - topic: industry-watch
+    title: 'NVIDIA 收购 HuggingFace'
+    priority: high
+    action: watch
+    signals: [hf]
+  - topic: distillation
+    title: '蒸馏范式演进双源兑现'
+    priority: medium
+    action: claim
+    signals: [arxiv, hf]
+    nodes: [rejection-sampling-finetuning]
+  - topic: pkc-competitors
+    title: 'PKC 竞品热度验证'
+    priority: medium
+    action: overview
+    signals: [github]
+  - topic: voice-agent
+    title: '语音 Agent 竞争转向底层上下文循环工程'
+    priority: medium
+    action: claim
+    signals: [arxiv, hf]
+    nodes: [voice-live-agent]
+  - topic: model-harness-decoupling
+    title: 'Agent 专用底座下沉权重层实证'
+    priority: medium
+    action: claim
+    signals: [hf]
+    nodes: [model-harness-codesign]
+  - topic: agent-tooling
+    title: 'DSH 卫星生态与 Hermes Agent'
+    priority: low
+    action: watch
+    signals: [github]
 ---
 
 # 知识差距分析报告（2026-09-06）

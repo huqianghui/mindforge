@@ -9,6 +9,34 @@ stats: "79 concepts, 15 methods, 7 decisions, 402 claims"
 github_trending_date: 2026-07-06
 arxiv_query_date: 2026-07-06
 huggingface_query_date: 2026-07-06
+trends:
+  - topic: self-evolving-agent
+    title: 'Agent 持续学习与无梯度 test-time RL'
+    priority: high
+    action: page
+    signals: [arxiv]
+  - topic: voice-agent
+    title: '全双工端到端语音（去 VAD 与 turn-taking 模块）'
+    priority: high
+    action: deep
+    signals: [arxiv, hf]
+    nodes: [cascaded-vs-e2e-voice]
+  - topic: reward-design
+    title: 'RLVR 细粒度奖励与 agentic verifier'
+    priority: medium
+    action: claim
+    signals: [arxiv]
+  - topic: pkc-competitors
+    title: 'LLM Wiki 产品化对标'
+    priority: medium
+    action: overview
+    signals: [github]
+    nodes: [personal-knowledge-compiler]
+  - topic: wiki-health
+    title: 'Stale 占比达 70%'
+    priority: medium
+    action: claim
+    signals: [introspection]
 ---
 
 # 知识差距分析报告（2026-07-06）

@@ -9,6 +9,71 @@ stats: "59 concepts, 12 methods, 4 decisions, 257 claims, 390 relations"
 github_trending_date: 2026-04-23
 arxiv_query_date: 2026-04-23
 huggingface_query_date: 2026-04-23
+trends:
+  - topic: agent-eval
+    title: 'Vibe Coding 代码漏洞率是人类的 9 倍'
+    priority: high
+    action: claim
+    signals: [arxiv]
+  - topic: mcp
+    title: 'MCP 安全与故障成为学术研究对象'
+    priority: high
+    action: page
+    signals: [github, arxiv]
+    nodes: [mcp-vs-cli]
+  - topic: agent-safety
+    title: 'Agent 多轮与工具安全'
+    priority: high
+    action: page
+    signals: [github, arxiv]
+  - topic: context-engineering
+    title: 'Context Engineering 方法论化与量化证据'
+    priority: high
+    action: claim
+    signals: [github, arxiv]
+    nodes: [context-engineering]
+  - topic: voice-agent
+    title: '全双工语音新架构（微轮次与双 Agent）'
+    priority: high
+    action: claim
+    signals: [arxiv, hf]
+  - topic: agent-tooling
+    title: 'Agent CLI 开源化'
+    priority: high
+    action: overview
+    signals: [github]
+    nodes: [openclaw-agent-gateway]
+  - topic: local-inference
+    title: 'GGUF 与 unsloth 量化工具链、MoE 化'
+    priority: high
+    action: overview
+    signals: [hf]
+  - topic: distillation
+    title: '推理蒸馏（Opus 到 Qwen）'
+    priority: medium
+    action: overview
+    signals: [hf]
+  - topic: agent-eval
+    title: 'Coding Agent 能力边界'
+    priority: high
+    action: overview
+    signals: [github, arxiv]
+  - topic: agent-memory
+    title: 'AI Memory 系统'
+    priority: medium
+    action: overview
+    signals: [github]
+  - topic: agent-tooling
+    title: 'Skill 生态爆发与供应链风险'
+    priority: medium
+    action: overview
+    signals: [github, arxiv]
+    nodes: [skill-hub-ecosystem]
+  - topic: wiki-health
+    title: 'Context 分类补方法页、单来源概念补第二来源'
+    priority: medium
+    action: claim
+    signals: [introspection]
 ---
 
 # 知识库差距分析报告 — 2026-04-23

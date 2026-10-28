@@ -6,6 +6,62 @@ tags:
   - knowledge-gap
   - analysis
 stats: "40 concepts, 8 methods, 150 claims"
+trends:
+  - topic: context-engineering
+    title: 'Prompt Engineering 系统化方法'
+    priority: high
+    action: deep
+    signals: [introspection]
+    nodes: [context-engineering]
+  - topic: agent-eval
+    title: 'Evaluation 与 Benchmarking 方法论'
+    priority: high
+    action: deep
+    signals: [introspection]
+  - topic: agent-safety
+    title: 'LLM 安全与对齐'
+    priority: medium
+    action: overview
+    signals: [introspection]
+  - topic: multi-agent
+    title: 'Multi-Agent 协作模式'
+    priority: high
+    action: deep
+    signals: [introspection]
+  - topic: agent-memory
+    title: '长期记忆与状态管理'
+    priority: medium
+    action: overview
+    signals: [introspection]
+  - topic: agent-eval
+    title: 'Agent 可观测性'
+    priority: medium
+    action: overview
+    signals: [introspection]
+    nodes: [harness-quality-gate]
+  - topic: rag-retrieval
+    title: '向量数据库、Chunking 与检索策略'
+    priority: medium
+    action: overview
+    signals: [introspection]
+    nodes: [rag-architecture-comparison]
+  - topic: pkc-competitors
+    title: 'Knowledge Graph 技术实现'
+    priority: low
+    action: overview
+    signals: [introspection]
+    nodes: [enterprise-ontology]
+  - topic: mcp
+    title: 'Tool Use 与 Function Calling 深度'
+    priority: high
+    action: deep
+    signals: [introspection]
+  - topic: multi-agent
+    title: 'Agent-to-Agent 协议'
+    priority: low
+    action: overview
+    signals: [introspection]
+    nodes: [a2a-protocol]
 ---
 
 # 知识库差距分析报告 — 2026-04-13

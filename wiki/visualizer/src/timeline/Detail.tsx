@@ -6,7 +6,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import CloseRounded from '@mui/icons-material/CloseRounded';
 import { docHash } from '../docs/content';
-import { graphAt } from './history';
+import { graphAt, PRIORITY_COLORS, PRIORITY_LABELS } from './history';
+import { ACTION_LABELS } from '../gaps/topics';
 import type { History } from './history';
 import { GROUP_BY_KEY } from './knowledge';
 import type { Entry } from './knowledge';
@@ -67,11 +68,40 @@ export default function Detail({ item, history, related, contributes, onSelect, 
       )}
       {item.gap && (
         <>
+          {(item.gap.report.trends?.length ?? 0) > 0 && (
+            <>
+              <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mt: 1.5, mb: 0.5 }}>本期趋势（{item.gap.report.trends!.length}）</Typography>
+              {item.gap.report.trends!.map((t, i) => (
+                <Box key={i} sx={{ mb: 0.6, pl: 1, borderLeft: 3, borderColor: t.priority ? PRIORITY_COLORS[t.priority] : 'divider' }}>
+                  <Typography variant="body2" sx={{ fontSize: 13 }}>{t.title}</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.3, alignItems: 'center' }}>
+                    <Chip size="small" component="a" href={`#/gaps?topic=${encodeURIComponent(t.topic)}`} clickable label={history.gapTopics?.topics[t.topic]?.label ?? t.topic} sx={{ height: 18, fontSize: 11 }} />
+                    {t.priority && <Box component="span" sx={{ color: PRIORITY_COLORS[t.priority], fontWeight: 700, fontSize: 11 }}>{PRIORITY_LABELS[t.priority]}</Box>}
+                    {t.action && <Box component="span" sx={{ color: 'text.secondary', fontSize: 11 }}>{ACTION_LABELS[t.action]}</Box>}
+                    {t.nodes.filter((n) => n.landed).map((n) => (
+                      <Chip key={n.node} size="small" label={`已落地 ${n.node} · ${n.date}`} onClick={() => onSelect(n.path)} sx={{ height: 18, fontSize: 11, bgcolor: '#e8f5e9' }} />
+                    ))}
+                  </Box>
+                </Box>
+              ))}
+            </>
+          )}
           <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', mt: 1.5, mb: 0.5 }}>本期建议（{item.gap.report.suggestions.length}）</Typography>
           {item.gap.report.suggestions.map((s, i) => (
-            <Typography key={i} variant="body2" sx={{ fontSize: 13, mb: 0.4, pl: 1, borderLeft: 2, borderColor: s.carried ? '#ffb74d' : 'divider' }}>
-              {s.title}{s.carried && <Box component="span" sx={{ color: '#ef6c00', fontSize: 11 }}> · 沿袭</Box>}
-            </Typography>
+            <Box key={i} sx={{ mb: 0.6, pl: 1, borderLeft: 2, borderColor: s.carried ? '#ffb74d' : 'divider' }}>
+              <Typography variant="body2" sx={{ fontSize: 13 }}>
+                {s.priority && <Box component="span" sx={{ color: PRIORITY_COLORS[s.priority], fontWeight: 700, fontSize: 11, mr: 0.5 }}>{PRIORITY_LABELS[s.priority]}</Box>}
+                {s.title}{s.carried && <Box component="span" sx={{ color: '#ef6c00', fontSize: 11 }}> · 沿袭</Box>}
+              </Typography>
+              {s.landed.length > 0 && (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.3 }}>
+                  {s.landed.map((l) => (
+                    <Chip key={l.node} size="small" label={`已落地 ${l.node} · ${l.date}`} onClick={() => onSelect(l.path)}
+                      sx={{ height: 18, fontSize: 11, bgcolor: '#e8f5e9' }} />
+                  ))}
+                </Box>
+              )}
+            </Box>
           ))}
         </>
       )}

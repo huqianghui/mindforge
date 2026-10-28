@@ -43,6 +43,10 @@ jobs:
         working-directory: wiki/visualizer
         run: npm ci
 
+      - name: Install Python dependencies
+        # history.py 解析差距报告 frontmatter 的 trends 与 topics.yml
+        run: pip install pyyaml
+
       - name: Sync content (articles, graph, history, stats)
         run: python3 wiki/visualizer/scripts/sync-content.py
 

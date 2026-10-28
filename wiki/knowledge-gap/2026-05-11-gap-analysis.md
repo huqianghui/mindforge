@@ -9,6 +9,60 @@ stats: "64 concepts, 14 methods, 4 decisions, 296 claims"
 github_trending_date: 2026-05-11
 arxiv_query_date: 2026-05-11
 huggingface_query_date: 2026-05-11
+trends:
+  - topic: agent-safety
+    title: 'Agent 安全论文集中爆发'
+    priority: high
+    action: page
+    signals: [arxiv]
+  - topic: mcp
+    title: 'MCP 生态学术化（177K 工具分析）'
+    priority: high
+    action: claim
+    signals: [arxiv]
+    nodes: [mcp-vs-cli]
+  - topic: ai-design-tools
+    title: 'AI Design Tools 爆发'
+    priority: high
+    action: claim
+    signals: [github]
+    nodes: [ai-native-design-tools]
+  - topic: local-inference
+    title: '本地大模型推理进入新阶段'
+    priority: high
+    action: overview
+    signals: [github, hf]
+  - topic: agent-eval
+    title: 'Coding Agent 代码退化与评估'
+    priority: high
+    action: claim
+    signals: [arxiv]
+  - topic: context-engineering
+    title: 'Context Engineering 学科化（五质量标准）'
+    priority: high
+    action: claim
+    signals: [arxiv]
+    nodes: [context-engineering]
+  - topic: agent-tooling
+    title: 'Browser Agent 工具'
+    priority: medium
+    action: watch
+    signals: [github]
+  - topic: distillation
+    title: '推理蒸馏可行性验证'
+    priority: medium
+    action: watch
+    signals: [hf]
+  - topic: voice-agent
+    title: 'TTS 模型爆发'
+    priority: medium
+    action: overview
+    signals: [hf]
+  - topic: wiki-health
+    title: 'Context 分类补方法页、存量概念补第二来源'
+    priority: medium
+    action: claim
+    signals: [introspection]
 ---
 
 # 知识库差距分析报告 — 2026-05-11
