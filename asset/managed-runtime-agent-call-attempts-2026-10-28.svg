@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 720" width="1400" height="720" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .laneR { fill: #1a0f14; stroke: #7f1d1d; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .laneT { fill: #0d1f22; stroke: #115e59; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .step { fill: #13213a; stroke: #475569; stroke-width: 1.3; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 2; }
+      .trap { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2s ease-in-out infinite; }
+      .good { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2.2; animation: pulse 2.4s ease-in-out infinite; }
+      .lab { fill: #111827; stroke: #334155; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .fR { stroke: #f87171; stroke-width: 2; fill: none; stroke-dasharray: 5 5; animation: dash 1.6s linear infinite; }
+      .fT { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.1s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numR { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="720" rx="16"/>
+  <text class="title" x="30" y="44">从 managed app 调 Copilot Studio agent：三次尝试</text>
+  <text class="sub" x="30" y="72">前两次都是官方 Code Apps 文档里的标准做法（Copilot Studio Connector），第三次绕道 Microsoft 365 Copilot</text>
+
+  <!-- lane 1 -->
+  <rect class="laneR" x="24" y="92" width="1352" height="160" rx="12"/>
+  <rect class="lab" x="40" y="108" width="200" height="128" rx="9"/>
+  <circle class="numR" cx="62" cy="132" r="11"/><text class="nt" x="62" y="137">1</text>
+  <text class="hR" x="82" y="137">草稿 agent</text>
+  <text class="t" x="56" y="166">Copilot Studio</text>
+  <text class="t" x="56" y="188">Connector</text>
+  <text class="mR" x="56" y="216">ExecuteCopilotAsyncV2</text>
+
+  <rect class="step" x="266" y="124" width="200" height="96" rx="8"/>
+  <text class="h" x="282" y="150">应用 → 宿主</text>
+  <text class="t" x="282" y="176">SDK 经 http/send</text>
+  <text class="t" x="282" y="198">交给宿主与 API Hub</text>
+
+  <rect class="step" x="492" y="124" width="264" height="96" rx="8"/>
+  <text class="h" x="508" y="150">Connector 运行时</text>
+  <text class="t" x="508" y="176">把请求重定向到门户里</text>
+  <text class="m" x="508" y="200">copilotstudio…/bots/&lt;id&gt;</text>
+
+  <rect class="bad" x="782" y="124" width="250" height="96" rx="8"/>
+  <text class="hR" x="798" y="150">浏览器跟随重定向</text>
+  <text class="tR" x="798" y="176">跨域，被 CORS 拦截</text>
+  <text class="tG" x="798" y="198">请求根本没到 agent</text>
+
+  <rect class="trap" x="1058" y="124" width="302" height="96" rx="8"/>
+  <text class="hA" x="1074" y="150">陷阱：SDK 不报错</text>
+  <text class="m" x="1074" y="176">{ success: true, data: null }</text>
+  <text class="tA" x="1074" y="200">看起来像"agent 返回了空"</text>
+
+  <path class="fR" d="M240,172 L266,172"/>
+  <path class="fR" d="M466,172 L492,172"/>
+  <path class="fR" d="M756,172 L782,172"/>
+  <path class="fR" d="M1032,172 L1058,172"/>
+
+  <!-- lane 2 -->
+  <rect class="laneR" x="24" y="268" width="1352" height="160" rx="12"/>
+  <rect class="lab" x="40" y="284" width="200" height="128" rx="9"/>
+  <circle class="numR" cx="62" cy="308" r="11"/><text class="nt" x="62" y="313">2</text>
+  <text class="hR" x="82" y="313">已发布 agent</text>
+  <text class="t" x="56" y="342">同一个动作，body</text>
+  <text class="m" x="56" y="366">{ message, locale }</text>
+  <text class="tG" x="56" y="392">Copilot = schema name</text>
+
+  <rect class="bad" x="266" y="300" width="250" height="96" rx="8"/>
+  <text class="hR" x="282" y="326">400</text>
+  <text class="mR" x="282" y="352">"Invalid request</text>
+  <text class="mR" x="282" y="374"> body"</text>
+
+  <rect class="step" x="542" y="300" width="400" height="96" rx="8"/>
+  <text class="h" x="558" y="326">查动作的 schema</text>
+  <text class="m" x="558" y="352">body.notificationUrl  必填</text>
+  <text class="t" x="558" y="376">x-ms-notification-url；响应只定义 201 Accepted</text>
+
+  <rect class="bad" x="968" y="300" width="392" height="96" rx="8"/>
+  <text class="hR" x="984" y="326">webhook 回调式等待</text>
+  <text class="t" x="984" y="352">完成后服务端 POST 到回调地址：Power</text>
+  <text class="tR" x="984" y="376">Automate 收得到，浏览器里的前端收不到</text>
+
+  <path class="fR" d="M240,348 L266,348"/>
+  <path class="fR" d="M516,348 L542,348"/>
+  <path class="fR" d="M942,348 L968,348"/>
+
+  <!-- lane 3 -->
+  <rect class="laneT" x="24" y="444" width="1352" height="150" rx="12"/>
+  <rect class="lab" x="40" y="460" width="200" height="118" rx="9"/>
+  <circle class="num" cx="62" cy="484" r="11"/><text class="nt" x="62" y="489">3</text>
+  <text class="hT" x="82" y="489">发布到 M365</text>
+  <text class="t" x="56" y="518">Work IQ Copilot MCP</text>
+  <text class="mT" x="56" y="546">copilot_chat</text>
+
+  <rect class="step" x="266" y="476" width="330" height="86" rx="8"/>
+  <text class="h" x="282" y="502">与 Work IQ 后端同一个 Connector</text>
+  <text class="m" x="282" y="530">{ message, agentId: "T_…" }</text>
+  <text class="tG" x="282" y="552">agentId = 渠道面板里的 titleId</text>
+
+  <rect class="step" x="622" y="476" width="330" height="86" rx="8"/>
+  <text class="h" x="638" y="502">Graph Copilot Chat API</text>
+  <text class="t" x="638" y="530">M365 Copilot 把这一轮交给</text>
+  <text class="t" x="638" y="552">agent「Mindforge Ask」</text>
+
+  <rect class="good" x="978" y="476" width="382" height="86" rx="8"/>
+  <text class="hT" x="994" y="502">一次性返回回答 ✓</text>
+  <text class="t" x="994" y="530">结构与不带 agentId 时相同，外层回显 agentId</text>
+  <text class="tT" x="994" y="552">实测 31–36 秒；不需要额外授权</text>
+
+  <path class="fT" d="M240,519 L266,519"/>
+  <path class="fT" d="M596,519 L622,519"/>
+  <path class="fT" d="M952,519 L978,519"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M240,519 L978,519"/></circle>
+
+  <!-- legend -->
+  <rect class="lab" x="24" y="610" width="1352" height="96" rx="12"/>
+  <text class="lg" x="44" y="638">① 先发布再测：草稿 agent 的失败被 SDK 包装成"成功但无数据"，最容易误判成指令或知识源的问题</text>
+  <text class="lg" x="44" y="664">② 是动作本身的设计：回调式动作只适合 Power Automate 这类能被回调的调用方；不传回调地址就是 400，与权限、DLP 无关</text>
+  <text class="lg" x="44" y="690">③ 可行，是因为 Work IQ 的 copilot_chat 是"请求—等待—一次性返回"，和 managed app 的 Connector 形态一致；走不通的数据源随后从应用里移除</text>
+</svg>

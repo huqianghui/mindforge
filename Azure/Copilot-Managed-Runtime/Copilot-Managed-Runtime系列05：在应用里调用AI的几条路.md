@@ -1,7 +1,7 @@
 ---
 title: Copilot Managed Runtime 系列 05：在应用里调用 AI 的几条路
 created: 2026-10-27
-description: managed app 不能直连外部 API 也不能嵌网页聊天，调用 AI 只能经 Connector；三条可行路线是 Copilot Studio Connector 调 Standard agent、Work IQ Copilot MCP 直调 M365 Copilot、Azure OpenAI Connector 加前端检索，GitHub Copilot harness 的 agent 在 Connector、协议、应用三层都被堵住；回答只有纯文本，引用靠在提示词里约定输出协议由应用自己解析；宿主里的 Cowork 流式通道仍是实验性
+description: managed app 不能直连外部 API 也不能嵌网页聊天，调用 AI 只能经 Connector；三条可行路线是 Standard agent（实测须发布到 M365 Copilot 后经 Work IQ 的 agentId 调用，Copilot Studio Connector 的回调式动作在浏览器里用不了）、Work IQ Copilot MCP 直调 M365 Copilot、Azure OpenAI Connector 加前端检索，GitHub Copilot harness 的 agent 在 Connector、协议、应用三层都被堵住；回答只有纯文本，引用靠在提示词里约定输出协议由应用自己解析；宿主里的 Cowork 流式通道仍是实验性
 tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copilot, azure-openai, connector, mcp, rag, prompt-engineering, citations]
 ---
 
@@ -10,11 +10,14 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 > [!IMPORTANT]
 > 资料截至 2026-10-27。〔实测〕指对已部署应用的抓包、`ms connector list-actions` 结果和一个已上线参考应用的前端结构分析；〔待实测〕是文档没写清、需要在租户里验证的行为。
 
+> [!CAUTION]
+> **2026-10-28 实测更正**：下文路线 ① 原计划经 Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 调 Standard agent，**在 managed app 里走不通**——草稿 agent 被重定向到门户、被 CORS 拦截；已发布 agent 的这个动作要求回调地址 `notificationUrl`，不传返回 400。可行的做法是把 agent 发布到 Microsoft 365 Copilot，再经路线 ② 的 Work IQ `copilot_chat` 传 `agentId`。完整过程见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)。第二节保留原计划作记录。
+
 在 managed app 里加一个"问 Copilot"面板，听起来只是调个 API。但 [系列 03](Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md) 已经说明：应用不能 `fetch` 外部地址，不能嵌外部 iframe，唯一的出口是 Connector。本篇把能走通、走不通的路逐条摆出来。
 
 ## 结论先行
 
-- **可行的三条路**：① Copilot Studio Connector 调 **Standard** agent；② Work IQ Copilot MCP 直调 **M365 Copilot**；③ Azure OpenAI Connector + 前端检索。形态都是"请求—等待—一次性返回文本"。
+- **可行的三条路**：① **Standard** agent（实测须发布到 M365 Copilot、经 Work IQ 的 `agentId` 调用，见 [系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)）；② Work IQ Copilot MCP 直调 **M365 Copilot**；③ Azure OpenAI Connector + 前端检索。形态都是"请求—等待—一次性返回文本"。
 - **走不通的**：GitHub Copilot harness 的 agent（三层全堵）；iframe 嵌网页聊天（CSP 禁止）。
 - **新建 agent 默认是 GitHub Copilot harness**，走 ① 时一不留神就建错，调用只拿到空的或占位的回复。
 - **回答里没有结构化引用**。可行做法是在提示词里**约定输出协议**（如最后一行 `RELATED: id1, id2`），由应用解析并渲染成应用内链接。
@@ -31,7 +34,7 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 
 | 路径 | 身份 | 引用 | 主要代价 |
 |---|---|---|---|
-| ① Standard agent | 每个用户自己的 Entra 连接（不可共享） | 只能解析文本 | Copilot Studio 消息计费；要另外建并分享 agent |
+| ① Standard agent | 原计划：每个用户自己的 Entra 连接；实测改走 Work IQ，用户身份 SSO | 靠输出协议 | 要另外建、发布并分享 agent；经 Work IQ 时同路线 ② 计费 |
 | ② Work IQ → M365 Copilot | 用户自己的身份，SSO | 靠输出协议 | Work IQ API 单独按量；Preview Connector |
 | ③ Azure OpenAI + 前端检索 | API key 连接，不支持 SSO，通常共享作者的连接 | 天然结构化 | token 计费；检索、评估都要自己做 |
 | ④ Cowork（实验性） | 需手工配置 token | — | 不稳定，SDK 未封装 |
@@ -40,6 +43,9 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 
 ## 二、路线 ①：Copilot Studio Connector 调 Standard agent
 
+> [!WARNING]
+> 本节是原计划，实测不可用（见文首更正）。2.1 的建 agent 要点仍然成立；2.2 的接入代码在 managed app 里拿不到回答。
+
 链路是：应用调用生成的 `MicrosoftCopilotStudioService.ExecuteCopilotAsyncV2(...)` → SDK 经 `http/send` 交给宿主 → 宿主校验后注入当前用户凭据 → API Hub 调 `/powervirtualagents/.../proactivecopilot/executeAsyncV2` → Copilot Studio 经典运行时一次性返回 `{ lastResponse, responses[], conversationId }`。每一跳都是"请求—等待—一次性响应"，所以能通。
 
 ### 2.1 建 agent 的要点
@@ -47,9 +53,9 @@ tags: [copilot-managed-runtime, managed-apps, copilot-studio, work-iq, m365-copi
 1. **必须选 Standard harness**——在 Agents 页点 New agent 右侧的下拉箭头，选 "Other ways to build" 下的 **Agent（Standard）**；直接点按钮建出的是 GitHub Copilot harness。harness 创建后不能互转，原因见 [Copilot Studio 系列 03](../Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)。
 2. **放在和应用相同的环境**最省事（`environmentId` 参数可以跨环境，但多一层排查）。
 3. **指令写清三件事**：只根据知识源回答；用什么语言回答；找不到就明确说"知识库里没有"，不要编。
-4. **关掉通用知识和 Web 搜索**，否则无法判断回答是否来自你的知识源。
+4. **agent 自己挂知识源时，关掉通用知识和 Web 搜索**，否则无法判断回答是否来自你的知识源；资料由应用检索后写进消息时，可以开着 Web 搜索当兜底，要求回答标明来自公开网络（[系列 10](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)）。
 5. **认证选 "Authenticate with Microsoft"**，这样 Connector 调用时就是当前用户身份。
-6. **发布（Publish）**后才能被调用〔待实测：未发布草稿是否可调〕；`Copilot` 参数填 agent 的 **schema name**（如 `mf_MindforgeAsk`），它在创建对话框里就定死、之后不能改，见 [Copilot Studio 系列 05](../Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)。
+6. **发布（Publish）**后才能被调用〔已实测：草稿会被重定向到门户页面〕，发布前必须先加渠道；`Copilot` 参数填 agent 的 **schema name**（如 `mf_MindforgeAsk`），它在创建对话框里就定死、之后不能改，见 [Copilot Studio 系列 05](../Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)。
 
 知识源有三种做法：**公开网站**零维护、随站点更新，但依赖 Bing 索引、新内容有延迟；**上传文件**精确可控、可复现，但要手动或脚本重传；**SharePoint 文档库**是企业场景最常见的，权限跟随 SharePoint，但多一套同步。先用上传文件走通，再换公开网站对比回答质量和新鲜度。
 
@@ -145,13 +151,13 @@ export async function askAgent(message: string, conversationId?: string) {
 
 ## 七、怎么选
 
-- **基于固定知识源问答，希望每个用户用自己的权限、能做评测** → ① Standard agent。
+- **想固定或比较模型、希望资料外的问题有网页兜底、同一个 agent 还要给 Teams 用户直接用** → ① Standard agent，发布到 M365 Copilot 后经 Work IQ `agentId` 调用。
 - **回答依赖应用里的数据，要求数字绝对准确，用户都有 M365 Copilot** → ② Work IQ + 提示词落地。
 - **要精确到段落的引用、完全可控的检索** → ③ Azure OpenAI + 前端检索。
 - **长任务、生成文件、多步推理** → 不要同步调用；GitHub Copilot harness agent 放后台，结果写表。
 - **流式输出** → 等 ④ 稳定。
 
-验收时逐条检查：agent 是 Standard 且已发布；`list-actions` 显示动作为 Allow；配置文件与生成代码已提交；纯 Vite 下问答页显示"需在宿主中运行"而不是白屏；多轮对话生效；至少一条引用能跳到应用内原文；用只有 play 权限的账号验证首次连接提示与失败提示。
+验收时逐条检查：agent 是 Standard、已发布且在 M365 Copilot 中可用；`list-actions` 显示动作为 Allow；配置文件与生成代码已提交；纯 Vite 下问答页显示"需在宿主中运行"而不是白屏；多轮对话生效；至少一条引用能跳到应用内原文；用只有 play 权限的账号验证首次连接提示与失败提示。
 
 ---
 
@@ -170,3 +176,4 @@ export async function askAgent(message: string, conversationId?: string) {
 - [Copilot Studio 系列 03：四种 Harness 对比与选型](../Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)
 - [Copilot Managed Runtime 系列 06：参考应用拆解与功能模式](Copilot-Managed-Runtime系列06：参考应用拆解与功能模式.md)
 - [Copilot Managed Runtime 系列 09：本地检索加 Work IQ 的问答](Copilot-Managed-Runtime系列09：本地检索加Work-IQ的问答.md)
+- [Copilot Managed Runtime 系列 10：经 Work IQ 调用 Copilot Studio Agent](Copilot-Managed-Runtime系列10：经Work-IQ调用Copilot-Studio-Agent.md)
