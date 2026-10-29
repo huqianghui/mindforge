@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" width="1440" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowR { stroke: #f87171; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+
+  <rect class="bg" width="1440" height="800" rx="16"/>
+  <text class="title" x="30" y="44">把文章库做成 Teams 里的知识库 agent：从导出到发布的六步</text>
+  <text class="sub" x="30" y="72">同一份文章，managed app 负责浏览与可视化，Copilot Studio agent 负责在 Teams 和 M365 Copilot 里问答；两者不互相调用</text>
+
+  <!-- zones -->
+  <rect class="zone" x="26" y="96" width="460" height="300" rx="12"/>
+  <text class="zt" x="42" y="122">本地：内容仓库</text>
+  <rect class="zone" x="494" y="96" width="686" height="300" rx="12"/>
+  <text class="zt" x="510" y="122">Copilot Studio：正式区域的开发者环境</text>
+  <rect class="zone" x="1188" y="96" width="226" height="300" rx="12"/>
+  <text class="zt" x="1204" y="122">Microsoft 365</text>
+
+  <!-- 1 -->
+  <rect class="card" x="40" y="138" width="200" height="240" rx="9"/>
+  <circle class="num" cx="62" cy="162" r="11"/><text class="nt" x="62" y="167">1</text>
+  <text class="h" x="82" y="167">文章库</text>
+  <text class="t" x="56" y="196">四百多篇 Markdown</text>
+  <text class="t" x="56" y="218">已同步进应用仓库</text>
+  <text class="t" x="56" y="240">与 managed app 用的</text>
+  <text class="t" x="56" y="262">是同一份内容</text>
+  <text class="tG" x="56" y="298">frontmatter 带日期</text>
+  <text class="tG" x="56" y="320">与 tags，冲突时按</text>
+  <text class="tG" x="56" y="342">日期较新的为准</text>
+
+  <!-- 2 -->
+  <rect class="card" x="268" y="138" width="204" height="240" rx="9"/>
+  <circle class="num" cx="290" cy="162" r="11"/><text class="nt" x="290" y="167">2</text>
+  <text class="h" x="310" y="167">导出知识文件</text>
+  <text class="t" x="284" y="196">每篇插入三行头：</text>
+  <text class="tT" x="284" y="218">文章 / 路径 / 原文链接</text>
+  <text class="t" x="284" y="240">相对链接改成 GitHub</text>
+  <text class="t" x="284" y="262">绝对地址</text>
+  <text class="t" x="284" y="284">另出 00-目录（按分类）</text>
+  <text class="t" x="284" y="306">哈希清单算出增删改</text>
+  <text class="tA" x="284" y="338">共 405 个、约 6 MB</text>
+  <text class="tG" x="284" y="360">文件名 = 路径，/ 换成 __</text>
+
+  <!-- 3 -->
+  <rect class="hot" x="508" y="138" width="208" height="240" rx="9"/>
+  <circle class="numA" cx="530" cy="162" r="11"/><text class="nt" x="530" y="167">3</text>
+  <text class="hA" x="550" y="167">分批上传</text>
+  <text class="t" x="524" y="196">Knowledge → Upload files</text>
+  <text class="tA" x="524" y="218">每批不超过约 45 个</text>
+  <text class="t" x="524" y="240">每批 30–45 秒，9 批</text>
+  <text class="tR" x="524" y="276">一次 405 个：412 后</text>
+  <text class="tR" x="524" y="298">自动重试全是 400</text>
+  <text class="tG" x="524" y="330">服务端行已写入、内容</text>
+  <text class="tG" x="524" y="352">为空，查 filedata_name</text>
+
+  <!-- 4 -->
+  <rect class="hot" x="736" y="138" width="208" height="240" rx="9"/>
+  <circle class="numA" cx="758" cy="162" r="11"/><text class="nt" x="758" y="167">4</text>
+  <text class="hA" x="778" y="167">等索引就绪</text>
+  <text class="t" x="752" y="196">In progress → Ready</text>
+  <text class="t" x="752" y="218">正式区域：单个文件</text>
+  <text class="t" x="752" y="240">约 5 分钟可检索</text>
+  <text class="tR" x="752" y="276">抢先体验区域：</text>
+  <text class="tR" x="752" y="298">一整晚都检索不到</text>
+  <text class="tG" x="752" y="330">新版界面可能显示</text>
+  <text class="tG" x="752" y="352">Unknown，以回答为准</text>
+
+  <!-- 5 -->
+  <rect class="card" x="964" y="138" width="202" height="240" rx="9"/>
+  <circle class="num" cx="986" cy="162" r="11"/><text class="nt" x="986" y="167">5</text>
+  <text class="h" x="1006" y="167">配置 agent</text>
+  <text class="t" x="980" y="196">Standard harness</text>
+  <text class="t" x="980" y="218">指令：只用知识文件</text>
+  <text class="t" x="980" y="240">[n] 引用 + 来源段落</text>
+  <text class="tA" x="980" y="268">Allow ungrounded：Off</text>
+  <text class="tA" x="980" y="290">Web Search：Off</text>
+  <text class="t" x="980" y="312">Fallback：固定拒答句</text>
+  <text class="tG" x="980" y="344">新建后实测两项可能</text>
+  <text class="tG" x="980" y="366">是开的，要逐项核对</text>
+
+  <!-- 6 -->
+  <rect class="card" x="1200" y="138" width="202" height="240" rx="9"/>
+  <circle class="num" cx="1222" cy="162" r="11"/><text class="nt" x="1222" y="167">6</text>
+  <text class="h" x="1242" y="167">发布</text>
+  <text class="t" x="1216" y="196">加 Teams + M365 渠道</text>
+  <text class="t" x="1216" y="218">保留 M365 Copilot 可用</text>
+  <text class="t" x="1216" y="240">Publish 后约 40 秒</text>
+  <text class="m" x="1216" y="262">publishedon 有值</text>
+  <text class="t" x="1216" y="292">Share 给用户或组</text>
+  <text class="tG" x="1216" y="324">改指令、换文件都要</text>
+  <text class="tG" x="1216" y="346">重新 Publish 才生效</text>
+
+  <!-- flows -->
+  <path class="flow" d="M240,258 L264,258" marker-end="url(#ar)"/>
+  <path class="flow" d="M472,258 L504,258" marker-end="url(#ar)"/>
+  <path class="flow" d="M716,258 L732,258" marker-end="url(#ar)"/>
+  <path class="flow" d="M944,258 L960,258" marker-end="url(#ar)"/>
+  <path class="flow" d="M1166,258 L1196,258" marker-end="url(#ar)"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="5s" repeatCount="indefinite" path="M240,258 L1200,258"/></circle>
+
+  <!-- bottom zone -->
+  <rect class="zone" x="26" y="414" width="1388" height="232" rx="12"/>
+  <text class="zt" x="42" y="440">为什么这个方向走得通，以及之后怎么维护</text>
+
+  <rect class="bad" x="40" y="456" width="440" height="172" rx="9"/>
+  <text class="hR" x="58" y="484">✗ managed app → agent（浏览器里同步调用）</text>
+  <text class="t" x="58" y="512">Copilot Studio Connector 的动作是回调式，</text>
+  <text class="t" x="58" y="534">浏览器收不到回调；Work IQ 收下 agentId</text>
+  <text class="t" x="58" y="556">却不生效，回答来自 M365 Copilot 本体</text>
+  <path class="flowR" d="M58,590 L200,590" marker-end="url(#arR)"/>
+  <text class="tR" x="214" y="595">四种 harness 都调不到</text>
+
+  <rect class="card" x="500" y="456" width="440" height="172" rx="9"/>
+  <text class="hG" x="518" y="484">✓ Teams 用户 → agent → 知识文件</text>
+  <text class="t" x="518" y="512">这是 Copilot Studio 的常规用法：人直接</text>
+  <text class="t" x="518" y="534">和 agent 对话，不经过 managed app，</text>
+  <text class="t" x="518" y="556">也就不受它的 CSP 和 Connector 限制</text>
+  <text class="tT" x="518" y="592">agent 和应用可以放在不同环境、不同区域</text>
+
+  <rect class="dim" x="960" y="456" width="440" height="172" rx="9"/>
+  <text class="h" x="978" y="484">↻ 内容更新：目前靠手工</text>
+  <text class="t" x="978" y="512">重新导出 → 按 added / changed / removed</text>
+  <text class="t" x="978" y="534">删旧文件、传新文件 → 再 Publish</text>
+  <text class="t" x="978" y="556">有文章增删时，00-目录 也要重传</text>
+  <text class="tG" x="978" y="592">下一步：换成 SharePoint 文档库自动同步</text>
+
+  <!-- legend -->
+  <text class="zt" x="30" y="680">图例</text>
+  <rect class="card" x="80" y="666" width="22" height="16" rx="3"/><text class="lg" x="110" y="680">青绿：照做即可的步骤</text>
+  <rect class="hot" x="290" y="666" width="22" height="16" rx="3"/><text class="lg" x="320" y="680">琥珀：③④ 是实际踩坑的两步，界面报错或状态都不可信，要查 Dataverse 或直接提问验证</text>
+  <rect class="bad" x="80" y="700" width="22" height="16" rx="3"/><text class="lg" x="110" y="714">红色虚线：前几篇已证实走不通的路</text>
+  <rect class="dim" x="420" y="700" width="22" height="16" rx="3"/><text class="lg" x="450" y="714">灰色虚线：现状的代价与后续规划</text>
+  <text class="lg" x="80" y="748">① 内容源　② 让 agent 只看文本也能给出原文链接　③④ 上传与索引　⑤ 让"资料外的问题"拒答而不是自由发挥　⑥ 发布后人才能在 Teams 里用到</text>
+</svg>

@@ -63,6 +63,9 @@ agent「Mindforge Ask」的指令大意是：只依据消息里的 SOURCES 作�
 | B | Work IQ + `agentId`（待测路径） | 要回答的问题：经这条路，agent 有没有接手 |
 | C | Work IQ，不传 `agentId` | 基线：B 与 M365 Copilot 本体有没有差别 |
 
+> [!WARNING]
+> **裸问题要确认不在 agent 的资料里。** 这道题后来被写进了记录本次实验的文章；当这批文章又成为另一个知识库 agent 的知识源时，它引用这篇答出了堪培拉——按知识库答，不算违规，但这道题从此不能再当"资料外的问题"用。给挂了知识源的 agent 选拒答题前，先在知识文件里搜一遍（[系列 08](Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md) 第五节）。
+
 B 不要只跑一次。本例 B 跑了五次，换了两种 id 写法：渠道面板链接里的短 titleId，以及 M365 Copilot 网页里这个 agent 的完整 id（titleId 后面再接一段 id）。
 
 ### 2.3 结果

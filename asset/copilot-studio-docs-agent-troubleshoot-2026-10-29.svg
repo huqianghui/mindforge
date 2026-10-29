@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flowR { stroke: #f87171; stroke-width: 2.2; fill: none; stroke-dasharray: 6 5; animation: dash 1.4s linear infinite; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .numR { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">上传与索引的两次排障：界面报错和状态栏都不可信</text>
+  <text class="sub" x="30" y="72">上半部分是一次提交 405 个文件的结果；下半部分是索引一直不完成，最后查到原因是环境所在区域</text>
+
+  <!-- lane A -->
+  <rect class="zone" x="24" y="92" width="1352" height="244" rx="12"/>
+  <text class="zt" x="40" y="118">A　上传：服务端写了一半，门户以为没写</text>
+
+  <rect class="bad" x="40" y="134" width="250" height="186" rx="9"/>
+  <circle class="numR" cx="62" cy="158" r="11"/><text class="nt" x="62" y="163">1</text>
+  <text class="hR" x="82" y="163">一次提交 405 个</text>
+  <text class="t" x="56" y="192">同一个上传对话框</text>
+  <text class="m" x="56" y="216">PUT …/botcomponents</text>
+  <text class="t" x="56" y="240">跑了约 115 秒后返回</text>
+  <text class="mR" x="56" y="266">412</text>
+  <text class="mR" x="56" y="288">DuplicateRecordsFound</text>
+
+  <rect class="bad" x="310" y="134" width="250" height="186" rx="9"/>
+  <circle class="numR" cx="332" cy="158" r="11"/><text class="nt" x="332" y="163">2</text>
+  <text class="hR" x="352" y="163">门户自动重试</text>
+  <text class="t" x="326" y="192">每次都是</text>
+  <text class="mR" x="326" y="216">400 ExportKeyInvalidCreate</text>
+  <text class="t" x="326" y="240">说某个文件的键已存在</text>
+  <text class="tR" x="326" y="272">界面：There was a problem</text>
+  <text class="tR" x="326" y="294">creating your knowledge…</text>
+
+  <rect class="hot" x="580" y="134" width="250" height="186" rx="9"/>
+  <circle class="numA" cx="602" cy="158" r="11"/><text class="nt" x="602" y="163">3</text>
+  <text class="hA" x="622" y="163">查 Dataverse</text>
+  <text class="t" x="596" y="192">405 行都在：</text>
+  <text class="m" x="596" y="216">componenttype = 14</text>
+  <text class="t" x="596" y="240">（Bot File Attachment）</text>
+  <text class="tA" x="596" y="266">但 filedata_name 全为空</text>
+  <text class="tG" x="596" y="294">Knowledge 页一个都不显示</text>
+
+  <rect class="card" x="850" y="134" width="250" height="186" rx="9"/>
+  <circle class="num" cx="872" cy="158" r="11"/><text class="nt" x="872" y="163">4</text>
+  <text class="h" x="892" y="163">清理后分批重传</text>
+  <text class="t" x="866" y="192">Web API 删掉 405 行</text>
+  <text class="t" x="866" y="216">每批 45 个，约 30 秒</text>
+  <text class="tT" x="866" y="240">9 批全部一次成功</text>
+  <text class="tG" x="866" y="272">不清理就重传，会继续撞</text>
+  <text class="tG" x="866" y="294">"键已存在"</text>
+
+  <rect class="card" x="1120" y="134" width="240" height="186" rx="9"/>
+  <text class="hG" x="1138" y="163">经验</text>
+  <text class="t" x="1138" y="192">报错不等于没写入</text>
+  <text class="t" x="1138" y="216">一行是否真的传完，</text>
+  <text class="t" x="1138" y="240">看 filedata_name</text>
+  <text class="t" x="1138" y="264">有没有值</text>
+  <text class="tG" x="1138" y="294">大批量一律拆小批</text>
+
+  <path class="flowR" d="M290,227 L306,227" marker-end="url(#arR)"/>
+  <path class="flowR" d="M560,227 L576,227" marker-end="url(#arR)"/>
+  <path class="flow" d="M830,227 L846,227" marker-end="url(#ar)"/>
+  <path class="flow" d="M1100,227 L1116,227" marker-end="url(#ar)"/>
+
+  <!-- lane B -->
+  <rect class="zone" x="24" y="352" width="1352" height="268" rx="12"/>
+  <text class="zt" x="40" y="378">B　索引：开关都对，换了区域才好</text>
+
+  <rect class="bad" x="40" y="394" width="250" height="210" rx="9"/>
+  <circle class="numR" cx="62" cy="418" r="11"/><text class="nt" x="62" y="423">1</text>
+  <text class="hR" x="82" y="423">两个多小时不完成</text>
+  <text class="t" x="56" y="452">405 个文件全是</text>
+  <text class="t" x="56" y="476">In progress</text>
+  <text class="t" x="56" y="500">测试面板检索返回</text>
+  <text class="mR" x="56" y="526">No information was</text>
+  <text class="mR" x="56" y="548">found that could help…</text>
+
+  <rect class="bad" x="310" y="394" width="250" height="210" rx="9"/>
+  <circle class="numR" cx="332" cy="418" r="11"/><text class="nt" x="332" y="423">2</text>
+  <text class="hR" x="352" y="423">打开 Dataverse search</text>
+  <text class="t" x="326" y="452">环境里原本是关的</text>
+  <text class="t" x="326" y="476">改开后管理中心显示 On</text>
+  <text class="t" x="326" y="500">文本检索状态 provisioned</text>
+  <text class="tR" x="326" y="532">再传一个带暗号的探针，</text>
+  <text class="tR" x="326" y="554">40 分钟后仍检索不到</text>
+
+  <rect class="hot" x="580" y="394" width="250" height="210" rx="9"/>
+  <circle class="numA" cx="602" cy="418" r="11"/><text class="nt" x="602" y="423">3</text>
+  <text class="hA" x="622" y="423">看环境的区域</text>
+  <text class="t" x="596" y="452">界面写 Preview (US)</text>
+  <text class="t" x="596" y="476">门户走 preview 子域名</text>
+  <text class="t" x="596" y="500">实际区域是</text>
+  <text class="mT" x="596" y="526">unitedstatesfirstrelease</text>
+  <text class="tA" x="596" y="554">抢先体验区，新功能先上</text>
+
+  <rect class="card" x="850" y="394" width="250" height="210" rx="9"/>
+  <circle class="num" cx="872" cy="418" r="11"/><text class="nt" x="872" y="423">4</text>
+  <text class="h" x="892" y="423">新建正式区域环境</text>
+  <text class="m" x="866" y="452">unitedstates</text>
+  <text class="t" x="866" y="476">开发者环境，约 20 秒建好</text>
+  <text class="t" x="866" y="500">只传一篇文章</text>
+  <text class="tT" x="866" y="532">约 5 分钟就能检索到</text>
+  <text class="tT" x="866" y="554">并带引用回答</text>
+
+  <rect class="card" x="1120" y="394" width="240" height="210" rx="9"/>
+  <text class="hG" x="1138" y="423">经验</text>
+  <text class="t" x="1138" y="452">状态栏不可信，</text>
+  <text class="t" x="1138" y="476">用暗号探针提问验证</text>
+  <text class="t" x="1138" y="500">先看区域，再查开关</text>
+  <text class="tG" x="1138" y="532">排查时改过的设置</text>
+  <text class="tG" x="1138" y="554">确认无关后改回原值</text>
+
+  <path class="flowR" d="M290,499 L306,499" marker-end="url(#arR)"/>
+  <path class="flowR" d="M560,499 L576,499" marker-end="url(#arR)"/>
+  <path class="flow" d="M830,499 L846,499" marker-end="url(#ar)"/>
+  <path class="flow" d="M1100,499 L1116,499" marker-end="url(#ar)"/>
+
+  <!-- bottom: decision for env -->
+  <rect class="zone" x="24" y="636" width="1352" height="96" rx="12"/>
+  <text class="h" x="42" y="664">由此带来的结构变化</text>
+  <text class="t" x="42" y="690">agent 搬到新环境，managed app 留在原环境。Teams 用户直接和 agent 对话，不经过应用，所以两者分开放没有影响。</text>
+  <text class="t" x="42" y="714">旧环境的 agent 删除，为排查打开的 Dataverse search 改回关闭。新环境里没有原来的解决方案，agent 放在默认解决方案里，schema 前缀随之不同。</text>
+
+  <!-- legend -->
+  <text class="zt" x="30" y="766">图例</text>
+  <rect class="bad" x="80" y="752" width="22" height="16" rx="3"/><text class="lg" x="110" y="766">红色：表面现象或无效的尝试</text>
+  <rect class="hot" x="340" y="752" width="22" height="16" rx="3"/><text class="lg" x="370" y="766">琥珀：找到真正状态或原因的那一步</text>
+  <rect class="card" x="660" y="752" width="22" height="16" rx="3"/><text class="lg" x="690" y="766">青绿：解决办法与可复用的经验</text>
+</svg>

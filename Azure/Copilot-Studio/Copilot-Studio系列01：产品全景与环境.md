@@ -21,6 +21,7 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 - [05 Agent 的存储与标识](Copilot-Studio系列05：Agent的存储与标识.md)——agent 是 Dataverse 里的几行记录；Solution、发布者前缀与不可改的 schema name
 - [06 Standard Agent 的配置与发布](Copilot-Studio系列06：Standard-Agent的配置与发布.md)——配置存在哪段 YAML、测试面板与真实调用的差别、发布需要渠道、titleId
 - [07 如何确认是 Agent 在回答](Copilot-Studio系列07：如何确认是Agent在回答.md)——一次误判与"指纹 + 两组对照"的验证方法；Copilot Chat 声明式 agent 与 Standard 的区别
+- [08 把文章库发布成 Teams 知识库 Agent](Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md)——知识文件怎么准备、分批上传、区域导致索引不完成、Fallback topic 拒答、发布到 Teams
 
 ## 结论先行
 

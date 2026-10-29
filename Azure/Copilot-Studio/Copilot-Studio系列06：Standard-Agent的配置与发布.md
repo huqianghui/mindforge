@@ -68,6 +68,8 @@ Overview 页的 **Select your agent's model** 是 Standard agent 也能选模型
 
 Web Search 用的是 Grounding with Bing Search，开关在 Overview 页往下滚才看得到；在 YAML 里就是 `gptCapabilities.webBrowsing: true`。
 
+agent 自己挂知识源的完整案例——四百多个上传文件、关掉 Allow ungrounded 与 Web Search、资料外问题由 Fallback topic 拒答——见 [系列 08](Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md)。
+
 ---
 
 ## 二、测试面板不等于真实调用
@@ -141,7 +143,8 @@ aISettings:
 几处实际遇到的情况：
 
 - **可见范围**：发布后 agent 只对作者自己可见，**分享给别人或经管理员批准**后，别人才能在 Teams 和 M365 Copilot 里用到。
-- **界面卡在 "Turning on Teams…"**：转了 6 分钟没有结束，刷新页面才发现渠道早已加好，Publish 也可以点了。
+- **界面卡在 "Turning on Teams…"**：转了 6 分钟没有结束，刷新页面才发现渠道早已加好，Publish 也可以点了。之后在另一个 agent 上重做，约 1 分钟就弹出 "Ready to publish?"。
+- **新版门户里 Channels 的位置**：不在左侧导航，在顶部标签的 "+2" 折叠菜单里；直接访问 `/channels` 路径是空白页。
 - **以数据为准**：发布成功后，Dataverse 里 `bot` 行的 `publishedon` 才有值。界面状态可疑时，查这一列。
 - **改了就要重发**：之后改指令、换模型，都要重新 Publish 才对 Teams、M365 Copilot 和程序调用生效。
 

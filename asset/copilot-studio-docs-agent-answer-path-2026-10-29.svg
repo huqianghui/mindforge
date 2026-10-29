@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 840" width="1400" height="840" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .dia { fill: #1e293b; stroke: #fbbf24; stroke-width: 2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowA { stroke: #fbbf24; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .strike { stroke: #f87171; stroke-width: 1.5; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="840" rx="16"/>
+  <text class="title" x="30" y="44">一次提问的两条路：检索命中走生成，检索为空直接进 Fallback</text>
+  <text class="sub" x="30" y="72">指令只作用于"生成"这一步；资料外的问题根本到不了生成，所以拒答句要写在 Fallback topic 里，而不是只写在指令里</text>
+
+  <rect class="zone" x="24" y="94" width="1352" height="476" rx="12"/>
+  <text class="zt" x="40" y="120">Standard harness 的经典运行时</text>
+
+  <!-- 1 question -->
+  <rect class="card" x="40" y="250" width="176" height="128" rx="9"/>
+  <circle class="num" cx="62" cy="274" r="11"/><text class="nt" x="62" y="279">1</text>
+  <text class="h" x="82" y="279">用户提问</text>
+  <text class="t" x="56" y="306">Teams 或</text>
+  <text class="t" x="56" y="328">M365 Copilot 里</text>
+  <text class="tG" x="56" y="356">不经过 managed app</text>
+
+  <!-- 2 retrieval -->
+  <rect class="card" x="246" y="232" width="214" height="164" rx="9"/>
+  <circle class="num" cx="268" cy="256" r="11"/><text class="nt" x="268" y="261">2</text>
+  <text class="h" x="288" y="261">检索知识文件</text>
+  <text class="t" x="262" y="288">问题改写成短查询</text>
+  <text class="t" x="262" y="310">在 404 篇 + 目录里</text>
+  <text class="t" x="262" y="332">取若干片段</text>
+  <text class="tA" x="262" y="364">整份目录几百行，</text>
+  <text class="tA" x="262" y="384">进不了上下文</text>
+
+  <!-- diamond -->
+  <polygon class="dia" points="550,262 612,314 550,366 488,314"/>
+  <text class="hA" x="550" y="310" text-anchor="middle">命中</text>
+  <text class="hA" x="550" y="330" text-anchor="middle">片段?</text>
+
+  <!-- 3 generation -->
+  <rect class="card" x="660" y="136" width="316" height="196" rx="9"/>
+  <circle class="num" cx="682" cy="160" r="11"/><text class="nt" x="682" y="165">3</text>
+  <text class="h" x="702" y="165">生成式回答：指令在这里生效</text>
+  <text class="t" x="676" y="194">只依据知识文件，不用模型常识和网页</text>
+  <text class="t" x="676" y="216">行内只写 [n]，结尾写"来源"段落</text>
+  <text class="t" x="676" y="238">链接照抄每篇头部的"原文"行</text>
+  <text class="t" x="676" y="260">按提问的语言回答</text>
+  <text class="t" x="676" y="282">文章有冲突时取日期较新的</text>
+  <text class="tG" x="676" y="314">Allow ungrounded = Off 是第二道保险</text>
+
+  <!-- 4 answer -->
+  <rect class="card" x="1010" y="136" width="352" height="196" rx="9"/>
+  <circle class="num" cx="1032" cy="160" r="11"/><text class="nt" x="1032" y="165">4</text>
+  <text class="h" x="1052" y="165">用户看到的回答</text>
+  <text class="t" x="1026" y="194">App state 和 Dataverse 的取舍……[1][2]</text>
+  <text class="hG" x="1026" y="226">来源</text>
+  <text class="m" x="1026" y="250">[1] 系列 08 … github.com/…</text>
+  <text class="m" x="1026" y="272">[2] 系列 12 … github.com/…</text>
+  <text class="tG" x="1026" y="306">英文问题则段落标题写 Sources</text>
+
+  <!-- 5 fallback -->
+  <rect class="hot" x="660" y="358" width="316" height="196" rx="9"/>
+  <circle class="numA" cx="682" cy="382" r="11"/><text class="nt" x="682" y="387">5</text>
+  <text class="hA" x="702" y="387">Fallback topic：不经过生成</text>
+  <text class="tG" x="676" y="414">默认：</text>
+  <text class="tR" x="676" y="436">I'm sorry, I'm not sure how to help…</text>
+  <line class="strike" x1="676" y1="431" x2="958" y2="431"/>
+  <text class="tR" x="676" y="458">连续 3 次后转"人工"</text>
+  <line class="strike" x1="676" y1="453" x2="810" y2="453"/>
+  <text class="tG" x="676" y="490">改成：一个 SendActivity，固定回</text>
+  <text class="tT" x="676" y="512">知识库里没有相关内容。/</text>
+  <text class="tT" x="676" y="534">Not in the Mindforge knowledge base.</text>
+
+  <!-- 6 refusal -->
+  <rect class="card" x="1010" y="358" width="352" height="196" rx="9"/>
+  <circle class="num" cx="1032" cy="382" r="11"/><text class="nt" x="1032" y="387">6</text>
+  <text class="h" x="1052" y="387">两类人看到的不一样</text>
+  <text class="t" x="1026" y="416">用户：Fallback 的那句固定拒答</text>
+  <text class="t" x="1026" y="446">制作者（测试面板）还会多看到</text>
+  <text class="mR" x="1026" y="470">No information was found that</text>
+  <text class="mR" x="1026" y="490">could help answer this.</text>
+  <text class="tG" x="1026" y="522">指令里写的拒答句在这条路上</text>
+  <text class="tG" x="1026" y="542">从来不会出现</text>
+
+  <!-- flows -->
+  <path class="flow" d="M216,314 L242,314" marker-end="url(#ar)"/>
+  <path class="flow" d="M460,314 L484,314" marker-end="url(#ar)"/>
+  <path class="flow" d="M550,262 L550,234 L656,234" marker-end="url(#ar)"/>
+  <text class="tT" x="562" y="226">是</text>
+  <path class="flowA" d="M550,366 L550,456 L656,456" marker-end="url(#arA)"/>
+  <text class="tA" x="562" y="420">否</text>
+  <path class="flow" d="M976,234 L1006,234" marker-end="url(#ar)"/>
+  <path class="flowA" d="M976,456 L1006,456" marker-end="url(#arA)"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3.6s" repeatCount="indefinite" path="M216,314 L550,314 L550,234 L1006,234"/></circle>
+  <circle r="5" fill="#fcd34d"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M216,314 L550,314 L550,456 L1006,456"/></circle>
+
+  <!-- bottom: three observations -->
+  <rect class="zone" x="24" y="588" width="1352" height="168" rx="12"/>
+  <text class="zt" x="40" y="614">实测中出现的三个现象</text>
+
+  <rect class="card" x="40" y="628" width="430" height="114" rx="9"/>
+  <text class="hG" x="58" y="654">✓ 已修：回答里混着内部引用标记</text>
+  <text class="t" x="58" y="680">目录类回答里出现 cite、turn…search… 残留</text>
+  <text class="t" x="58" y="702">指令加一句"引用只写 [n]，不要输出这类标记"</text>
+  <text class="tG" x="58" y="726">复测同类问题不再出现</text>
+
+  <rect class="hot" x="486" y="628" width="430" height="114" rx="9"/>
+  <text class="hA" x="504" y="654">⚠ 未解决：目录类问题列不全</text>
+  <text class="t" x="504" y="680">"某系列有哪些文章"：18 篇只列出 6 篇</text>
+  <text class="t" x="504" y="702">检索拿到的是目录的零散片段，不是整份</text>
+  <text class="tG" x="504" y="726">计划：按分类拆成多个小目录文件</text>
+
+  <rect class="hot" x="932" y="628" width="430" height="114" rx="9"/>
+  <text class="hA" x="950" y="654">⚠ 未解决：中文问题偶尔用英文回答</text>
+  <text class="t" x="950" y="680">指令写了"按提问的语言回答"</text>
+  <text class="t" x="950" y="702">同一次复测里仍出现，原因还没查清</text>
+  <text class="tG" x="950" y="726">测试面板与 Teams 里都要各看一次</text>
+
+  <!-- legend -->
+  <text class="zt" x="30" y="790">图例</text>
+  <rect class="card" x="80" y="776" width="22" height="16" rx="3"/><text class="lg" x="110" y="790">青绿：检索命中的正常路径 ①②③④</text>
+  <rect class="hot" x="420" y="776" width="22" height="16" rx="3"/><text class="lg" x="450" y="790">琥珀：检索为空的路径 ⑤⑥，以及仍开着的问题</text>
+  <text class="lg" x="80" y="822">④ 的"来源"段落和 ⑤ 的固定句都是只有这个 agent 才会产生的输出，可以直接当作"确实是它在答"的指纹</text>
+</svg>
