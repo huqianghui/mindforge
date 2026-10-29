@@ -192,6 +192,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[rag-architecture-comparison]] — RAG 架构对比：个人级 qmd vs 企业级 Foundry IQ
 - [[entra-agent-id]] — Entra Agent ID：Blueprint 管认证、Agent Identity 管授权与审计的 1:N 双层身份模型
 - [[global-secure-access]] — Global Secure Access（微软 SSE）：TCP 中心的 Web 网关、UDP 端口钉死、Private Access 的 /etc/resolver 规则残留与父域名截获、经通道每个新连接多约 1 秒
+- [[copilot-studio]] — Copilot Studio：Power Platform 上的 agent / workflow / app 构建产品；agent 是 Dataverse 行、配置在 YAML、浏览器 app 调不到 agent、指纹 + 对照验证、知识库 agent 的 Fallback 拒答与分批上传
+- [[copilot-managed-runtime]] — Copilot Managed Runtime：M365 企业内 SPA 托管；宿主中介沙箱、调 AI 只能经 Connector、App state perUser、Connector 七关、按路径缓存与深链不传入
 
 ### 数据本体论（Ontology）
 
@@ -297,3 +299,4 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang
 - [[rl-infra-framework-selection]] — Agent RL 基础设施框架选型：VERL vs Slime vs OpenRLHF vs TRL
 - [[foundry-agent-type-selection]] — Foundry Agent 三类型选型：Runtime 归属主线 + 治理分层
+- [[copilot-studio-harness-selection]] — Copilot Studio harness 选型：按任务重量选，建后不能互转，四种都不能被浏览器 app 同步调用
