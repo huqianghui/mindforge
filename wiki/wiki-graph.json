@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-28",
+  "generated_at": "2026-10-29",
   "stats": {
-    "nodes": 147,
-    "links": 516,
+    "nodes": 150,
+    "links": 527,
     "orphan_links_removed": 2,
-    "claims": 806,
+    "claims": 832,
     "categories": 13
   },
   "nodes": [
@@ -1145,7 +1145,7 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
+      "claims_count": 10,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -1228,6 +1228,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "2026-06-16 Copilot Cowork GA 转按量：M365 Copilot 席位 $30/用户/月不变覆盖 Chat 与应用内辅助；Cowork 任务执行在席位之上按 Copilot Credit 计量，每任务 credit 由模型使用/上下文检索/工具调用/运行时长四项决定，轻中重三档参考区间，管理员可设支出策略；GitHub Copilot 同年按量（理由：有用户一周跑几百个任务，固定席位价无法承受 agent 反复调用）；第三档 Autopilot 报道称与 Code 一同按量，待核实。两层意义：供给方定价确认了阶段分界（人是否逐条在环）；Credits 计量的是任务消耗的算力，失败与重试同样计费——客户从 Cowork 起为\"尝试\"付钱而非为\"完成\"付钱，成功任务数要使用方自己补，使用方 FinOps 由此从可选变必需（[[cost-per-task]]）。分发策略：新版 Copilot 应用把 Chat/Cowork/Search/Library/Agents 收进一个入口，形态上是消费级 agent 产品（聊天起手、单一入口、习惯养成），用 Office 企业用户基础先在 Copilot 层建习惯再向 Autopilot 延伸——C 端天然落左栏（RLHF 舒适区），B 端价值在右栏，所以这条策略解决采用不解决价值证明，ROI 责任推到 Cowork/Autopilot 档。三类使用洞见（GitHub Copilot / Copilot Studio / AI Foundry）都只给公式第一项，Cowork Credits 是唯一原生 task 粒度数据源。背景数字\"Office 商业账户 4.5 亿 / Copilot 付费渗透 <7%\"为二手数据未核实。（Computerworld 报道核订）"
+        },
+        {
+          "statement": "生态里补上了\"低代码构建\"与\"应用托管\"两层——Copilot Studio 造 agent / workflow / app，app 跑在 Copilot Managed Runtime 上；浏览器里的 app 调不到 agent，两者靠共享数据或\"人直接用 agent\"衔接",
+          "source": "Copilot-Studio系列01：产品全景与环境",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "两层的细节分别归口 [[copilot-studio]] 与 [[copilot-managed-runtime]]，harness 选型归口 [[copilot-studio-harness-selection]]。与本页既有的 Azure Copilot Agents / Skills / MCP 不同，这两层的地基是 Power Platform（环境、Dataverse、Connector、DLP），治理横跨 M365 与 Power Platform 两个 admin center；与 Foundry Agent Service 不在同一层（SaaS 构建产品 vs Azure agent 运行时）。"
         }
       ]
     },
@@ -2619,6 +2628,228 @@
       ]
     },
     {
+      "id": "copilot-managed-runtime",
+      "type": "concept",
+      "title": "Copilot Managed Runtime",
+      "summary": "Copilot Managed Runtime（Preview）是 Copilot Studio 的 Create apps、Copilot Cowork、Copilot Code 以及 `ms` CLI/SDK 写出的应用共同的运行环境，用户入口是 `managedapps.cloud.microsoft`。它是 Microsoft 365 侧的\"企业内部 SPA 托管 + 治理\"平台：替你承担 Entra 登录、按人/组分享、Conditional Access、DLP 与管理后台可见性；你放弃自有域名、任意后端运行时与网络层控制，后端只能经 Connector。它**不是** Azure Managed Applications，也不是 App Service / Container Apps 的包装层。\n\n本库的认识来自把一个个人知识库静态站点部署成 managed app 并做完六个阶段的路线图：零 Connector 的分析页面、App state 存个人数据、本地检索 + Work IQ / Azure OpenAI 的问答、尝试接 Copilot Studio agent 失败，以及部署后的内容缓存与深链问题。核心心智模型是**宿主中介沙箱**：应用被宿主装进 iframe、被 CSP 收紧到 self，唯一出口是交给宿主的 JSON-RPC。",
+      "tags": [
+        "wiki",
+        "concept",
+        "azure",
+        "copilot-managed-runtime",
+        "managed-apps",
+        "hosting"
+      ],
+      "category": "Azure 与云平台",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 10,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "Managed Runtime 是企业内部交互应用的托管层——平台承担身份、分享与治理，代价是没有自有域名、后端只能靠 Connector、需额外许可",
+          "source": "Copilot-Managed-Runtime系列01：托管环境对比与选型",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "选型分界：公开站点 → GitHub Pages / Static Web Apps；内容协作 → SharePoint；企业内部交互应用 → Managed Runtime；自有后端与容器 → App Service / Container Apps；复杂场景常是\"Managed Runtime 前端 + Azure 后端\"的组合。两个最容易踩的坑：有 M365 不等于能免费运行（需 Power Apps Premium 或 Managed Application Copilot Credits）；个人 GitHub 仓库不能直接绑定（只支持 GitHub Enterprise Cloud 组织仓库或平台托管仓库）。七维对比与决策树单篇来源，`internal-app-hosting-selection` 决策页未建（HOLD），表格留在原文。"
+        },
+        {
+          "statement": "平台把\"发布\"和\"扩散\"分开管——新应用默认私有、无需管理员审批是设计；三条认证链路各管一段，凭据都不进仓库",
+          "source": "Copilot-Managed-Runtime系列02：实战部署与权限解析",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "CLI → 平台 API（建应用记录、build、deploy、share）、git → 平台托管仓库、最终用户 → 应用；前两条决定能否发布，第三条决定谁能打开，都只用同一个 Entra 工作账号。治理靠事前策略（CA / DLP / 分享限制 / 可选部署审批）+ 事后可见。静态站点要改四处：Vite `base` 回根路径、hash 路由、内容同步成平台能接受的文件、站内链接改写成应用内路由。踩坑：Git Credential Manager 接管全局凭据、平台构建拒绝符号链接、`ms app deploy` 轮询超时不等于构建失败（先 `build-status`）。Preview，置信度打折。"
+        },
+        {
+          "statement": "宿主中介沙箱——应用被装进两层 iframe、放在独立 usercontent 子域名下，CSP 把 fetch / 外部 iframe / Worker / CDN 全部限制为 self，唯一出口是交给宿主的 JSON-RPC `http/send`",
+          "source": "Copilot-Managed-Runtime系列03：宿主沙箱与安全边界",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "宿主播放器（`play.managedapps.cloud.microsoft`，持有 token）→ 加载器 iframe（`…powerplatformusercontent.com/_platform/app/loader`，公开空壳）→ 应用 iframe。宿主校验 apiId 与连接的 runtimeUrl 后才注入凭据转发；应用文件本身在认证后面（未登录 401）。由此推出：不能嵌网页聊天（`frame-src 'self'`）、不能直连外部 API、不能用 Web Worker、依赖必须打包；应用能访问的外部世界就是 `ms.config.json` 里登记的 Connector。\"向内用 iframe 关住应用、向外用 CSP 不让应用开口子\"方向相反、目的相同。`host-mediated-sandbox` 通用模式未单独建页（HOLD）。"
+        },
+        {
+          "statement": "SDK 不直接发请求而是经宿主调 Connector——只在宿主里可用，宿主外调用既不返回也不报错；能在构建期算的不放运行期",
+          "source": "Copilot-Managed-Runtime系列04：SDK与数据接入",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "`getUser` 只给三个字段，`getContext()` 只有 appId、environmentId、sessionId；DataClient 不抛异常要查 `success`；`ms app add data-source` 一条命令做三件事（在租户建连接、改 `ms.config.json`、生成强类型代码，两者都要入库）。本地用 `ms app dev` 接宿主，纯 Vite 下要降级。知识库应用的洞察、建议、统计、演进四页零 Connector：同步脚本一次写出五个静态 JSON，前端只做筛选聚合，建议页是以数据自身日期为基准的固定阈值纯函数规则——所有数字在 deploy 时固定，页面须标明生成时间与来源版本。"
+        },
+        {
+          "statement": "在 managed app 里调 AI 只能经 Connector——Work IQ Copilot MCP 与 Azure OpenAI Connector 走得通，Copilot Studio agent 走不通；回答只有纯文本，引用靠提示词约定输出协议",
+          "source": "Copilot-Managed-Runtime系列05：在应用里调用AI的几条路",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "检索在浏览器里做（英文词 + 中文二元组、idf × 字段权重），提示词约定 SOURCES + 行内 `[n]` + `RELATED:` 行由应用解析。Work IQ：以用户身份调 M365 Copilot，回答要剥六层包装，首次授权约 74 秒、之后 15~20 秒，要求每人有 Copilot 许可证，提示词里的网址会被抽成 grounding 文件（要去掉）。Azure OpenAI：只能用 API Key 共享连接（Entra 连接报 AADSTS50011），部署名是每次调用的参数，同问题 4.6 秒、快 3~5 倍，成为默认后端。Copilot Studio agent：Connector 回调式、Work IQ `agentId` 被忽略，四种 harness 都调不到（详见 [[copilot-studio]]）。"
+        },
+        {
+          "statement": "只给本应用用的个人数据放 App state，要与 agent 或流程共享才用 Dataverse——App state 默认全员共享，必须手改 schema 加 perUser",
+          "source": "Copilot-Managed-Runtime系列08：用App-state保存用户数据",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Dataverse 原计划被租户 DLP 挡住：`ms app add data-source` 跳过全部写入动作，SDK 通用写入返回 404。App state 是实验性同源接口，不经 Connector、不受 DLP，按用户隔离由平台强制，但不加 `x-ms-ownership: perUser` 就是全员共享（A 的进度会被 B 覆盖）；本地 dev 不提供接口只能部署后验证；PUT 是整条覆盖，前端本机先写、云端去抖写。连带后果：App state 写得进去但触发不了 workflow，能触发 workflow 的 Dataverse 又写不进去——\"应用写表、workflow 调 agent\"的异步方案卡在存储上。不要手工把被屏蔽的动作补回数据源描述（等于绕过 DLP）。"
+        },
+        {
+          "statement": "每接一个 Connector 过七关——白名单、返回类型、连接参数、allowedActions、首次授权、宿主外悬空、部署超时；其中两关\"状态正常但其实不通\"",
+          "source": "Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "\"状态正常但不通\"的两关：Azure OpenAI 资源名填成完整网址时连接仍显示 Connected、调用一直 502；共享连接部署时平台强制要求 `allowedActions`，而 `ms app dev` 不查这项、本地能跑不代表能部署。其余：留意 \"Skipped N of M actions due to your organization's connector policy\"；生成的返回类型可能是 `void`/`any`，先在宿主里打印一次；首次授权的等待会算进计时；宿主外 SDK 调用悬空需超时判断。"
+        },
+        {
+          "statement": "判断一个功能要不要放进 managed app，只问它是否需要知道\"你是谁\"，或需要一把不能放进前端的凭据",
+          "source": "Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "同一知识库同时发布成 GitHub Pages 静态站与 managed app，真正依赖平台的只有识别用户（`getUser`）、按用户跨设备保存（App state）、问答（Connector）三类；其余纯前端，两站共用，并在静态站给出退路。反之，纯前端功能不该为\"在平台上\"而引入 Connector——每多一个数据源，每个用户就多一项授权。补充：用户本来就在 Teams 里时，另起一个知识库 agent 往往比把人引到应用里更顺手，两个出口共用同一份内容。"
+        },
+        {
+          "statement": "平台按路径缓存应用的静态文件——带内容哈希的代码会换新，固定路径的内容文件不会；内容 URL 要带内容同步版本号",
+          "source": "Copilot-Managed-Runtime系列13：静态内容缓存与深链限制",
+          "first_seen": "2026-10-29",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "一次部署同时新增页面与同步内容：导航里出现新页面（`index-<新哈希>.js` 已生效），但 `content/manifest.json` 路径未变、返回旧清单，新页面拿不到新数据——容易误判成同步没跑或构建失败。文章文件按路径取哈希命名，改了内容文件名也不变。解法：构建时读清单的 `generatedAt` 注入为常量，所有内容请求加 `?v=<同步时间>`；只改代码的部署 URL 不变、缓存照常有效。缓存在平台侧、规则不公开、开发者控制不了响应头。单次实测。"
+        },
+        {
+          "statement": "外层地址里的 hash 和查询串传不进宿主新建的 iframe——深链只能打开应用首页，改应用代码也绕不过去",
+          "source": "Copilot-Managed-Runtime系列13：静态内容缓存与深链限制",
+          "first_seen": "2026-10-29",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "`…/apps/<app>/#/doc/<路径>` 与 `?doc=<路径>` 两种都打开首页：加载器 iframe 的 src 只有 `…/_platform/app/loader?ms_embedderOrigin=…`，应用读到的 `location.hash` 为空，`getContext()` 也不带外层参数；应用在跨域子 iframe 里读不到父页面地址——这是隔离设计的一部分。应用内跳转不受影响（改的是应用自己 iframe 的 hash）。后果：对外链接（邮件、Teams、agent 回答的\"来源\"）一律指向公开原文；\"分享应用里的某一页\"做不到；需要可分享单页链接的场景，静态站或 SharePoint 更合适。"
+        }
+      ]
+    },
+    {
+      "id": "copilot-studio",
+      "type": "concept",
+      "title": "Copilot Studio",
+      "summary": "Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三类东西：**agent、workflow、app**。三者共享环境、Dataverse、Connector 与 DLP 这层地基，但运行时各不相同——agent 由所选 harness 决定跑在经典运行时、Agentic Runtime 还是 M365 Copilot 编排器里，app 跑在 [[copilot-managed-runtime]] 上。治理横跨 Microsoft 365 与 Power Platform 两个 admin center。\n\n它在本库的意义来自一次完整实践：给一个知识库 managed app 接 Copilot Studio agent 作问答后端，四种 harness 从浏览器里都同步调不到，期间一度误判\"可行\"；最后反过来，把同一批文章做成知识库 agent 发布到 Teams，由人直接使用。由此沉淀出三类知识：agent 的存储模型（Dataverse 行、YAML 配置）、调用边界（谁能调到 agent），以及\"怎么确认真是 agent 在答\"的验证方法。",
+      "tags": [
+        "wiki",
+        "concept",
+        "azure",
+        "copilot-studio",
+        "power-platform",
+        "agent"
+      ],
+      "category": "Azure 与云平台",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 10,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "Power Platform 是地基和管理平面，Copilot Studio 是盖在上面的一个产品——agent、workflow、app 共享地基，不共享运行时",
+          "source": "Copilot-Studio系列01：产品全景与环境",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "环境、Dataverse、Connector、DLP、Solutions 属于地基，所以 Copilot Studio、Power Apps、Power Automate 共用同一套 Connector 目录和数据策略。三类构建物像 Power Virtual Agents、Power Automate 流程、Power Apps 应用的新版，但运行时是新的。一个 managed app 的管理横跨两个 admin center：清单、使用量、Credits 在 M365 一侧，环境、连接、DLP 在 Power Platform 一侧。三者之间最主要的协作方式不是互相调用，而是**共享同一份数据**（后台 workflow 与 agent 写进 Dataverse/SharePoint，app 读出来让人决定，决定写回再触发下一步）；app 没有直接触发 workflow 的入口，靠改数据触发。"
+        },
+        {
+          "statement": "环境是租户内的隔离容器——开发者环境不活动会先禁用再删除；环境所在区域会影响功能可用性，抢先体验区不适合放给别人用的 agent",
+          "source": "Copilot-Studio系列01：产品全景与环境",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "个人开发者环境不占容量、自己能建，但长期不活动会被禁用再删除。区域实测：同一批上传文件，在 `unitedstatesfirstrelease`（抢先体验区，界面写 Preview (United States)、门户走 preview 子域名）的环境里一整晚都是 In progress、检索不到；新建 `unitedstates` 正式区域的开发者环境（BAP API 约 20 秒），单篇约 5 分钟可检索。打开 Dataverse search 不是解法。agent 可以和它服务的 app 放在不同环境、不同区域——人在 Teams 里直接用 agent，不经过 app。单租户单次对照，区域差异可能随时间消失。"
+        },
+        {
+          "statement": "一个连接池、三种用法——app、agent、workflow 共用连接与 DLP，区别在用谁的身份调；企业租户多数 Connector 被阻止，选型先查允许列表",
+          "source": "Copilot-Studio系列02：Connector与连接",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Connector 是 Power Platform 给 API 套的标准外壳，连接是某人对它的一次登录、保存凭据。实测 agent 用的连接就在 Power Platform 的连接池里。企业租户里约九成 Connector 被阻止；自定义 Connector 是接自有后端的正规途径，但常被 DLP 拦下。API key 类共享连接在 managed app 里须声明 `allowedActions` 白名单。"
+        },
+        {
+          "statement": "agent 没有自己的数据库——它是环境 Dataverse 里 `bot` 表的一行，指令、topic、知识文件是 `botcomponent` 行；程序化修改要直接改这些行，模拟键入会把 YAML 写坏",
+          "source": "Copilot-Studio系列05：Agent的存储与标识",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "所以解决方案、发布者前缀、安全角色、导出导入都是现成的；创建时的 Solution 决定前缀，schema name 是唯一逻辑名、创建后不能改。模型、指令、Web Search 存在 `<schema>.gpt.default` 这一行的 `data` 列（YAML，显示名 GPT Chat Latest 存为 `modelNameHint: GPT56Chat`）；Allow ungrounded 存在 `bots.configuration` 的 `aISettings.useModelKnowledge`。两次实测：浏览器自动化往指令编辑器粘贴/键入，YAML 变成上百到上千个按字符编号的键（`0: k`、`1: i`…），模型字段变 `{}`；直接 PATCH `data` 修好。延伸做法：把指令、topic、开关放进独立仓库，经 Dataverse Web API 写入，门户只看不改（agent-as-code）。例外：Copilot Chat 声明式 agent 不在 `bot` 表里（见下）。"
+        },
+        {
+          "statement": "发布依赖渠道、渠道依赖认证——Microsoft 认证下只剩 M365 系渠道；勾选\"在 M365 Copilot 中可用\"后 agent 才有 titleId，人才能在 Teams 和 M365 Copilot 里直接用它",
+          "source": "Copilot-Studio系列06：Standard-Agent的配置与发布",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Publish 按钮在配置至少一个渠道之前是灰的。titleId（`T_…`）是第三套标识（显示名、schema name、bot GUID 之外），用途是拼\"打开与该 agent 对话\"的链接，不是程序调用的 id。以 Dataverse `bots.publishedon` 有值为准判断发布成功；界面可能卡在 \"Turning on Teams…\"（一次 6 分钟、另一次约 1 分钟）。新版门户 Channels 在顶部标签 \"+2\" 菜单里，`/channels` 路径是空白页。索引没完成也能发布，但发布后检索不到任何内容。"
+        },
+        {
+          "statement": "浏览器里的 managed app 同步调不到任何 harness 的 agent；反方向——人在 Teams / M365 Copilot 里直接问 agent——是常规用法且不受 app 限制",
+          "source": "Copilot-Studio系列03：四种Harness对比与选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Copilot Studio Connector 的 `ExecuteCopilotAsyncV2` 是回调式（必填 `notificationUrl`，给 Power Automate 设计），草稿 agent 被重定向到门户、被 CORS 拦下而 SDK 仍报 success；Work IQ `copilot_chat` 的 `agentId` 收下并回显但不生效。GitHub Copilot harness 在 Connector、协议（只回流式）、应用三层都被堵住。唯一剩下的程序化路径是经 workflow 异步中转。反过来，把同一批文章做成 Standard 知识库 agent 发布到 Teams，用户直接对话，不经过 app 的 CSP 与 Connector——同一份内容于是有 app（浏览、可视化、个人数据）与 agent（聊天里问答）两个出口。"
+        },
+        {
+          "statement": "判断回答确实来自某个 agent，要用只有 agent 指令才会产生的指纹，问不带格式要求的裸问题，并设\"直接用 agent\"\"不经过 agent\"两组对照；挂了知识源的 agent，拒答测试题要先确认不在资料里",
+          "source": "Copilot-Studio系列07：如何确认是Agent在回答",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "误判过程：经 Work IQ 传 `agentId`，调用成功、格式正确、`agentId` 被回显、耗时变长，四条都\"对\"，但格式是调用方提示词要求的、回显对任意值成立、变慢可能只因允许上网——没有一条是只有 agent 才会产生的。复测用裸问题\"澳大利亚的首都\"：直接用 agent 时以 `RELATED: none` 结尾，经 Work IQ 五次都没有，与不传无法区分。最好建 agent 时就埋指纹。后续反例：这道题被写进记录实验的文章，文章又成了知识库 agent 的知识源，agent 引用它答出堪培拉——按知识库答不算违规，但题目从此失效；换题前先 `grep` 知识文件。方法本身属 [[generation-evaluation-separation]] 的\"验证陈述纪律\"在 agent 路由上的实例。"
+        },
+        {
+          "statement": "知识库 agent 要关掉 Allow ungrounded 与 Web Search，并把拒答句写进 Fallback topic——检索为空时不走生成，指令里的拒答句不会出现",
+          "source": "Copilot-Studio系列08：把文章库发布成Teams知识库Agent",
+          "first_seen": "2026-10-29",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Standard harness 两条路：检索命中 → 生成式回答（指令在这里生效，`[n]` + \"来源\"段落）；检索为空 → 直接进 Fallback topic，用户看到默认的 \"I'm sorry, I'm not sure how to help with that…\"（连续 3 次还转\"人工\"），制作者在测试面板另见 \"No information was found that could help answer this.\"。改法是 Fallback 只留一个 SendActivity 回固定句。默认值不可信：门户里 Web 开关新建显示 Off，另一环境新建的 agent 实测 `webBrowsing` 与 `useModelKnowledge` 都是 true，建完要到 Dataverse 核对。仍开着的问题：目录类问题只检索到目录片段（某系列 18 篇列出 6 篇）；中文问题偶尔用英文答；回答里曾混入 `cite…turn…search…` 内部标记（指令加一句后消失）。单 agent 实测。"
+        },
+        {
+          "statement": "上传文件类知识源一次提交几百个会在服务端留下空内容行——每批约 45 个，以 `filedata_name` 是否有值判断真的传完",
+          "source": "Copilot-Studio系列08：把文章库发布成Teams知识库Agent",
+          "first_seen": "2026-10-29",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "405 个文件一次提交：`PUT …/botcomponents` 约 115 秒后返回 412 `DuplicateRecordsFound`，门户自动重试全部 400 `ExportKeyInvalidCreate`；Dataverse 里 405 行 `componenttype = 14` 都在但 `filedata_name` 为空，Knowledge 页不显示。删行后每批 45 个、约 30~45 秒，9 批全成功。显示名截断到 100 字符（同系列长文件名会截成同名）。知识文件本身要自带出处（frontmatter 后插标题/路径/原文链接三行，相对链接改绝对地址），因为 agent 只看得到文本。手工重传是 Upload files 的代价，后续计划换 SharePoint 文档库。"
+        },
+        {
+          "statement": "Copilot Chat 声明式 agent 不是\"轻量版 Standard\"——它不在 Dataverse `bot` 表里、由 M365 Copilot 编排器执行、不能选模型",
+          "source": "Copilot-Studio系列07：如何确认是Agent在回答",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "门户地址带 `agentBackend=cosmos`，在 `bot` 表里查不到；配置页里没有选模型的地方；从 New agent 下拉选 Microsoft Copilot agent 会在新标签页打开不同编辑器。和 Standard 一样有 titleId，只能由人在 M365 Copilot 里经链接直接用，程序调不到。"
+        }
+      ]
+    },
+    {
       "id": "cost-per-task",
       "type": "concept",
       "title": "任务完成花费（Cost per Task）",
@@ -3380,8 +3611,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.83,
+      "claims_count": 4,
+      "avg_confidence": 0.81,
       "claims": [
         {
           "statement": "反馈闭环是区分线性工具链和控制系统的关键",
@@ -3409,6 +3640,15 @@
           "confidence": 0.8,
           "status": "stale",
           "evidence": "知识流不能是单向的（日记 → wiki）。实践反馈必须回流到知识库——应用方法后的成功/失败应更新 Claims 置信度，形成：日记 → 提取 → wiki → 应用 → 反馈 → wiki 的完整闭环。"
+        },
+        {
+          "statement": "云资源治理域实例——事件路径负责\"及时\"、定时扫描负责\"全\"，可靠性来自两路都读当前状态再比对修正，而非任一路单独保证；调节器只自动修它能安全修的，其余交给人",
+          "source": "Azure资源标签守护：事件订阅与定时扫描的自动修复",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-10-29",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Event Grid 事件让检查在资源变更后及时发生，定时扫描看到某一时刻的全量当前状态；两路都\"读真实状态 → 比对规则 → 修偏差\"，是 [[negative-feedback]] 在运维域的形态（期望状态调和）。修复要幂等：Merge 只提交需修正的键、已合规直接返回、写后再读、资源已删就结束不重建。执行边界：被策略禁用的 Key 认证只检测并交接、不自动改回；告警只把自动化解决不了的问题交给人——一次 6 秒超时 9 秒后自愈仍发了 Sev1 Fired + Resolved 两封邮件，改为状态型告警、持续未恢复才通知、恢复不发信。未知资源类型先报错而非静默跳过。单篇单实现（`reconciliation-loop` 独立建页 HOLD）。"
         }
       ]
     },
@@ -3653,7 +3893,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 15,
+      "claims_count": 16,
       "avg_confidence": 0.76,
       "claims": [
         {
@@ -3790,6 +4030,15 @@
           "confidence": 0.85,
           "status": "active",
           "evidence": "弱网自适应端到端验证六轮，前五轮失效原因全在工具：① 假麦克风音频文件路径是占位符，Chromium 静默接受不存在的文件、喂进去的是静音，前两轮什么都没测到；② 指标把静音当损伤（上一条的下游）——面试官沉默是常态，程序一直以为网络很糟、画面不敢开回来；③ 探针脚本在 ES module 环境下取自身路径的写法失效，落盘 JSON 根本没写出去；④ 最贵的一条：**没有钉住被测对象**——默认形象是照片数字人，它在丢包下解码毫无问题，主触发在这个配置下不可能开火，前五轮都在测一个不可能触发的条件，换成 1080p 后一轮定案。真正让局面转向的改动不是任何一个修复，而是**让工具报告它测到了什么**：每个采样窗口落一行 JSON、可听与原始补偿率并排打印、采样器每十个样本吐一次摘要。其他三条方法学：**限速范围要与生产拓扑一致**——第一次跑 office-tight 以下三档六轮全失败是因为限速包含了后端到 Azure 的 TCP，1% 丢包加 80 ms 让 TLS 握手过不去、会话根本没建，而生产上后端在 Azure 内、客户办公网只承载浏览器两条流，修正为视频档位只限 UDP；Chrome DevTools 限速只作用于 HTTP / WS 不影响 WebRTC UDP，必须 OS 层（dnctl + pfctl）。**实测锚点与推导区间分开标**——客户网络 A~E 五级里 A 级是推导值（亚洲机器做不出 150 ms 以下 RTT）、B~E 有实测锚点，\"未测过的不冒充测过\"，并附七项待补台架测试把推导列换成实测。**判断\"有没有声音\"不能用累积计数器**——补偿率回答\"到达的音频有多少是编出来的\"，回答不了\"此刻是否有人在说话\"，后者用瞬时 `audioLevel` 跨底噪判断（静音 0.0000~0.0010 vs 有声 0.09~0.47，两个数量级间隔），`totalSamplesReceived` 或\"`totalAudioEnergy` 有增长\"都会误判。另一条与本页\"数字绑定它的测量对象\"同构：第六节的 31% 是含静音的原始比值，更正后可听补偿率 21.9%，**原文数字保留并加注、不悄悄改**，核心结论另靠三项与静音无关的证据支撑。"
+        },
+        {
+          "statement": "agent 路由域实例——\"调用成功、格式正确、参数回显\"都不能证明某个 agent 接手了；要用只有它才会产生的指纹、问裸问题、设两组对照，且测试题要先确认不在被测方的资料里",
+          "source": "Copilot-Studio系列07：如何确认是Agent在回答",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "经 Work IQ 传 `agentId` 调 Copilot Studio agent 曾被判可行并上线：格式是调用方提示词要求的（生成方自己产出了\"证据\"）、`agentId` 对任意值回显、变慢另有解释——评估方读的全是生成方能伪造的信号。纠正法：选 agent 指令才会产生的指纹（`RELATED` 行）、去掉提示词里的格式要求、在\"直接用 agent / 待测路径 / 不经过 agent\"三处问并按矩阵判读，结论 `agentId` 被忽略。后续反例补一条纪律：被测方挂了知识源时，\"资料外问题\"可能已被写进资料（本库的实验记录又成了知识库 agent 的知识源，agent 合法答出），测试题要先 grep 知识文件。属\"有能力执行 vs 本次确实执行\"分开陈述的同族。"
         }
       ]
     },
@@ -9914,6 +10163,53 @@
       ]
     },
     {
+      "id": "copilot-studio-harness-selection",
+      "type": "decision",
+      "title": "Copilot Studio Harness Selection",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "copilot-studio",
+        "agent",
+        "harness"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 3,
+      "avg_confidence": 0.77,
+      "claims": [
+        {
+          "statement": "新建 agent 默认是 GitHub Copilot harness 且建后不能与 Standard 互转——harness 是建 agent 时唯一的不可逆选择",
+          "source": "Copilot-Studio系列03：四种Harness对比与选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "New agent 下拉菜单四个入口正好对应四种 harness：Agent（GitHub Copilot，按钮默认动作）、Customer Assist Agent（Customer Conversation）、Microsoft Copilot agent（Copilot Chat，新标签页打开）、Agent（Standard，\"Other ways to build\" 最后一项）；菜单上的小硬币图标即按 Credits 计费。已有 agent 看 Agents 列表的 Powered by 列。名字（如 \"Voice Assistant\"）不代表 harness。"
+        },
+        {
+          "statement": "按任务重量选——简单任务用重 harness 会\"想太多\"，能用的 Standard 不必迁移；重活放 GitHub Copilot harness 在后台跑，经共享数据与前台 Standard 解耦",
+          "source": "Copilot-Studio系列03：四种Harness对比与选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-10-29",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "官方判断原则是一条从轻到重的光谱：任务长度、执行路径能否提前写清、上下文有界还是大文件大数据、对可预测性的要求、延迟与费用承受度。迁移 = 重新架构（先定义任务、边界、评估标准，再把 topics / flows / 变量映射到 instructions、skills、tools、workflows、memory）。判断示例：企业内部\"基于知识库文章带引用回答\"→ Standard。"
+        },
+        {
+          "statement": "\"能否被应用同步调用\"对四种 harness 都是否——这一维不再区分选项，只决定集成方式（workflow 异步中转，或让人直接用 agent）",
+          "source": "Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通",
+          "first_seen": "2026-10-28",
+          "last_updated": "2026-10-29",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "最初 CS03 判为\"要被应用程序化调用只能选 Standard\"，10-28 复测推翻：Standard 的 Connector 动作要求回调地址、草稿 agent 被 CORS 拦下；Standard 与 Copilot Chat 发布后经 Work IQ 传 `agentId` 都被忽略；GitHub Copilot harness 三层堵死；Customer Conversation 渠道被 CSP 挡住（推断）。所以选型维度稳定为\"任务重量 / 计费 / 运行时\"三项，调用入口降为集成约束。"
+        }
+      ]
+    },
+    {
       "id": "foundry-agent-type-selection",
       "type": "decision",
       "title": "Foundry Agent 三类型选型：Prompt / Hosted / Workflow",
@@ -11065,6 +11361,54 @@
       "description": "契约测试是质量门禁测试层的一部分"
     },
     {
+      "source": "copilot-managed-runtime",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "part-of",
+      "description": "Managed Runtime 是微软 Copilot 生态里\"应用托管\"这一层"
+    },
+    {
+      "source": "copilot-managed-runtime",
+      "target": "copilot-studio-harness-selection",
+      "relation_type": "constrains",
+      "description": "应用只能经 Connector 出站且收不到回调，使\"能否被应用同步调用\"这一维对四种 harness 都是否"
+    },
+    {
+      "source": "copilot-managed-runtime",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "\"调用成功 ≠ agent 接手\"的判定沿用指纹 + 对照的验证纪律"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "part-of",
+      "description": "Copilot Studio 是微软 Copilot 生态里面向低代码构建的那一块"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "copilot-managed-runtime",
+      "relation_type": "uses",
+      "description": "Copilot Studio 用 Create apps 生成的应用跑在 Managed Runtime 上"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "contrasts",
+      "description": "Copilot Studio 是 Power Platform 上的 SaaS 构建产品，Foundry Agent Service 是 Azure 上的 agent 运行时，两者不在同一层"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "\"指纹 + 两组对照\"是验证陈述纪律在 agent 路由上的应用"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "copilot-studio-harness-selection",
+      "relation_type": "constrains",
+      "description": "新建默认 GitHub Copilot harness、建后不能互转，使 harness 选型成为建 agent 时的不可逆决策"
+    },
+    {
       "source": "cost-per-task",
       "target": "generation-evaluation-separation",
       "relation_type": "extends",
@@ -11303,6 +11647,12 @@
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "分离的评估环节是闭环的关键节点"
+    },
+    {
+      "source": "feedback-loop",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "标签守护的两路调和都以\"读当前状态 → 比对 → 修偏差\"的负反馈为单元"
     },
     {
       "source": "fitness-functions",
@@ -13267,6 +13617,18 @@
       "description": "基于此决策的实施方法"
     },
     {
+      "source": "copilot-studio-harness-selection",
+      "target": "harness-engineering",
+      "relation_type": "extends",
+      "description": "产品内多 harness 并存的实例：定义在同一处、执行在三套服务里、建后不能互转"
+    },
+    {
+      "source": "copilot-studio-harness-selection",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "contrasts",
+      "description": "同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线"
+    },
+    {
       "source": "hybrid-inference-framework-selection",
       "target": "prefix-caching",
       "relation_type": "addresses",
@@ -13532,7 +13894,9 @@
         "azure-copilot-ecosystem",
         "rag-architecture-comparison",
         "entra-agent-id",
-        "global-secure-access"
+        "global-secure-access",
+        "copilot-studio",
+        "copilot-managed-runtime"
       ]
     },
     {
