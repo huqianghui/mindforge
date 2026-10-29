@@ -1,7 +1,7 @@
 ---
 title: "Azure Copilot Ecosystem"
 created: "2026-04-11"
-updated: "2026-09-28"
+updated: "2026-10-29"
 tags:
   - wiki
   - concept
@@ -115,6 +115,16 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 > 2026-06-16 Copilot Cowork GA 转按量：M365 Copilot 席位 $30/用户/月不变覆盖 Chat 与应用内辅助；Cowork 任务执行在席位之上按 Copilot Credit 计量，每任务 credit 由模型使用/上下文检索/工具调用/运行时长四项决定，轻中重三档参考区间，管理员可设支出策略；GitHub Copilot 同年按量（理由：有用户一周跑几百个任务，固定席位价无法承受 agent 反复调用）；第三档 Autopilot 报道称与 Code 一同按量，待核实。两层意义：供给方定价确认了阶段分界（人是否逐条在环）；Credits 计量的是任务消耗的算力，失败与重试同样计费——客户从 Cowork 起为"尝试"付钱而非为"完成"付钱，成功任务数要使用方自己补，使用方 FinOps 由此从可选变必需（[[cost-per-task]]）。分发策略：新版 Copilot 应用把 Chat/Cowork/Search/Library/Agents 收进一个入口，形态上是消费级 agent 产品（聊天起手、单一入口、习惯养成），用 Office 企业用户基础先在 Copilot 层建习惯再向 Autopilot 延伸——C 端天然落左栏（RLHF 舒适区），B 端价值在右栏，所以这条策略解决采用不解决价值证明，ROI 责任推到 Cowork/Autopilot 档。三类使用洞见（GitHub Copilot / Copilot Studio / AI Foundry）都只给公式第一项，Cowork Credits 是唯一原生 task 粒度数据源。背景数字"Office 商业账户 4.5 亿 / Copilot 付费渗透 <7%"为二手数据未核实。（Computerworld 报道核订）
 
+### Claim: 生态里补上了"低代码构建"与"应用托管"两层——Copilot Studio 造 agent / workflow / app，app 跑在 Copilot Managed Runtime 上；浏览器里的 app 调不到 agent，两者靠共享数据或"人直接用 agent"衔接
+
+- **来源**：[[Copilot-Studio系列01：产品全景与环境]]、[[Copilot-Managed-Runtime系列01：托管环境对比与选型]]、[[Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单]]、[[Copilot-Studio系列08：把文章库发布成Teams知识库Agent]]
+- **首次出现**：2026-10-26
+- **最近更新**：2026-10-29
+- **置信度**：0.75
+- **状态**：active
+
+> 两层的细节分别归口 [[copilot-studio]] 与 [[copilot-managed-runtime]]，harness 选型归口 [[copilot-studio-harness-selection]]。与本页既有的 Azure Copilot Agents / Skills / MCP 不同，这两层的地基是 Power Platform（环境、Dataverse、Connector、DLP），治理横跨 M365 与 Power Platform 两个 admin center；与 Foundry Agent Service 不在同一层（SaaS 构建产品 vs Azure agent 运行时）。
+
 ## 冲突与演进
 
 - 2026-08-04：从 AG-UI 篇与 Foundry Toolbox/Skills 篇补充协议面（AG-UI 向上补齐）与 skill 治理面（toolbox 版本化、三路径不通、harness 实现权）两条新证据。
@@ -134,3 +144,4 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - [[AG-UI协议解析]] — AG-UI 属 Foundry custom protocols、MAF 已支持（2026-07-30）
 - [[Foundry-Toolbox与Skills解析]] — toolbox 治理、skill 三路径不通、Copilot Studio 三 harness（2026-07-30）
 - [[FinOps系列01：从token价格到任务花费]] — 三阶段 = 人在环位置三次后移、微软定价分档表、按量≠按结果、C 端思路引到 B 端、三类使用洞见能给什么（2026-09-26）
+- [[2026-10-29-周四]] — Copilot Studio 系列 01–08、Copilot Managed Runtime 系列 01–13 归口为两个新概念页
