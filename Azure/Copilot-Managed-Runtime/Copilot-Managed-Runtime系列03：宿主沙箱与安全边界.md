@@ -138,6 +138,7 @@ frame-ancestors 'self' https://*.powerapps.com
 - **重计算放构建期**，或主线程分片；不能靠 Web Worker。
 - **表单全部用 JS 提交。**
 - **深层路由优先用 hash 路由**：宿主不保证把任意路径回退到 `index.html`。实测也有应用用 `history.pushState` 路径路由，刷新深层路径是否回退未验证。
+- **外部深链到不了应用**：外层地址里的 `#/doc/…` 或 `?doc=…` 不会传进宿主新建的加载器 iframe，`getContext()` 也不带，发给别人的应用内链接总是打开首页（[系列 13](Copilot-Managed-Runtime系列13：静态内容缓存与深链限制.md) 第二节）。
 - **内容不会被搜索引擎收录**，也不能当公开资源被外部引用。
 
 ---

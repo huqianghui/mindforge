@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" width="1400" height="820" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowR { stroke: #f87171; stroke-width: 2.2; fill: none; stroke-dasharray: 6 5; animation: dash 1.4s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .numR { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="820" rx="16"/>
+  <text class="title" x="30" y="44">同一路径的内容文件被平台缓存：新代码读到旧数据</text>
+  <text class="sub" x="30" y="72">构建产物的 JS/CSS 文件名带内容哈希，天然换新；内容文件每次同步都沿用同一路径，必须自己在 URL 上带版本号</text>
+
+  <!-- top: what's in the bundle -->
+  <rect class="zone" x="24" y="94" width="1352" height="170" rx="12"/>
+  <text class="zt" x="40" y="120">一次部署里有两类文件</text>
+
+  <rect class="card" x="40" y="136" width="640" height="112" rx="9"/>
+  <text class="hG" x="58" y="162">代码：Vite 打包，文件名 = 内容哈希</text>
+  <text class="m" x="58" y="190">assets/index-3f9a….js　assets/index-b21c….css</text>
+  <text class="t" x="58" y="216">代码一改，文件名就变；index.html 引用新文件名，缓存不会挡路</text>
+  <text class="tG" x="58" y="238">所以部署后"新页面出现了"——这部分永远是新的</text>
+
+  <rect class="hot" x="700" y="136" width="660" height="112" rx="9"/>
+  <text class="hA" x="718" y="162">内容：同步脚本写出，路径固定</text>
+  <text class="m" x="718" y="190">content/manifest.json　content/d/&lt;路径哈希&gt;.md　wiki-graph.json</text>
+  <text class="t" x="718" y="216">文章名按"路径"取哈希，不是按内容：文章改了，文件名不变</text>
+  <text class="tA" x="718" y="238">清单、历史、图谱数据更是每次都叫同一个名字</text>
+
+  <!-- lane before -->
+  <rect class="zone" x="24" y="280" width="1352" height="200" rx="12"/>
+  <text class="zt" x="40" y="306">修之前：部署成功，新页面却显示旧数据</text>
+
+  <rect class="card" x="40" y="322" width="232" height="140" rx="9"/>
+  <circle class="num" cx="62" cy="346" r="11"/><text class="nt" x="62" y="351">1</text>
+  <text class="h" x="82" y="351">部署新版本</text>
+  <text class="t" x="56" y="378">新增一个页面</text>
+  <text class="t" x="56" y="400">同时同步了新内容</text>
+  <text class="tG" x="56" y="430">构建、部署都成功</text>
+
+  <rect class="card" x="300" y="322" width="232" height="140" rx="9"/>
+  <circle class="num" cx="322" cy="346" r="11"/><text class="nt" x="322" y="351">2</text>
+  <text class="h" x="342" y="351">新代码已生效</text>
+  <text class="t" x="316" y="378">导航里出现新页面</text>
+  <text class="m" x="316" y="402">index-&lt;新哈希&gt;.js</text>
+  <text class="tG" x="316" y="430">说明部署本身没问题</text>
+
+  <rect class="bad" x="560" y="322" width="250" height="140" rx="9"/>
+  <circle class="numR" cx="582" cy="346" r="11"/><text class="nt" x="582" y="351">3</text>
+  <text class="hR" x="602" y="351">请求清单</text>
+  <text class="mR" x="576" y="378">GET content/manifest.json</text>
+  <text class="t" x="576" y="402">路径与上个版本相同</text>
+  <text class="tR" x="576" y="430">平台按路径命中缓存</text>
+  <text class="tR" x="576" y="452">返回旧的清单</text>
+
+  <rect class="bad" x="838" y="322" width="250" height="140" rx="9"/>
+  <circle class="numR" cx="860" cy="346" r="11"/><text class="nt" x="860" y="351">4</text>
+  <text class="hR" x="880" y="351">新页面读旧数据</text>
+  <text class="t" x="854" y="378">新页面依赖的字段</text>
+  <text class="t" x="854" y="400">旧清单里没有</text>
+  <text class="tR" x="854" y="430">新页面拿不到新数据</text>
+
+  <rect class="dim" x="1116" y="322" width="244" height="140" rx="9"/>
+  <text class="h" x="1134" y="351">容易误判成</text>
+  <text class="t" x="1134" y="378">同步没跑、构建失败、</text>
+  <text class="t" x="1134" y="400">浏览器缓存</text>
+  <text class="tG" x="1134" y="430">判断依据：代码文件已是</text>
+  <text class="tG" x="1134" y="452">新哈希，清单却是旧的</text>
+
+  <path class="flow" d="M272,392 L296,392" marker-end="url(#ar)"/>
+  <path class="flowR" d="M532,392 L556,392" marker-end="url(#arR)"/>
+  <path class="flowR" d="M810,392 L834,392" marker-end="url(#arR)"/>
+  <path class="flowR" d="M1088,392 L1112,392" marker-end="url(#arR)"/>
+
+  <!-- lane after -->
+  <rect class="zone" x="24" y="496" width="1352" height="220" rx="12"/>
+  <text class="zt" x="40" y="522">修之后：同步一次，就换一批 URL</text>
+
+  <rect class="card" x="40" y="538" width="300" height="162" rx="9"/>
+  <circle class="num" cx="62" cy="562" r="11"/><text class="nt" x="62" y="567">1</text>
+  <text class="h" x="82" y="567">构建时读清单</text>
+  <text class="t" x="56" y="594">取清单里的同步时间</text>
+  <text class="mT" x="56" y="618">generatedAt</text>
+  <text class="t" x="56" y="642">作为常量注入前端代码</text>
+  <text class="tG" x="56" y="672">版本号跟着内容走，不跟代码走</text>
+
+  <rect class="card" x="368" y="538" width="330" height="162" rx="9"/>
+  <circle class="num" cx="390" cy="562" r="11"/><text class="nt" x="390" y="567">2</text>
+  <text class="h" x="410" y="567">每个内容请求带版本号</text>
+  <text class="mT" x="384" y="594">manifest.json?v=&lt;同步时间&gt;</text>
+  <text class="mT" x="384" y="616">d/&lt;哈希&gt;.md?v=&lt;同步时间&gt;</text>
+  <text class="mT" x="384" y="638">wiki-graph.json?v=&lt;同步时间&gt;</text>
+  <text class="tG" x="384" y="672">集中在两个取 URL 的函数里，不手拼</text>
+
+  <rect class="card" x="726" y="538" width="300" height="162" rx="9"/>
+  <circle class="num" cx="748" cy="562" r="11"/><text class="nt" x="748" y="567">3</text>
+  <text class="h" x="768" y="567">缓存键随之改变</text>
+  <text class="t" x="742" y="594">新同步 → 新 URL → 取到新内容</text>
+  <text class="t" x="742" y="616">没有同步、只改代码的部署</text>
+  <text class="t" x="742" y="638">URL 不变，缓存继续有效</text>
+  <text class="tT" x="742" y="672">既不过期，也不浪费缓存</text>
+
+  <rect class="dim" x="1054" y="538" width="306" height="162" rx="9"/>
+  <text class="h" x="1072" y="567">另外两种做法</text>
+  <text class="t" x="1072" y="594">按时间戳每次都换：</text>
+  <text class="tG" x="1072" y="616">缓存完全失效，几百篇文章</text>
+  <text class="tG" x="1072" y="638">每次打开都重新下载</text>
+  <text class="t" x="1072" y="666">内容寻址重命名所有文件：</text>
+  <text class="tG" x="1072" y="688">改动大，链接映射全要重算</text>
+
+  <path class="flow" d="M340,619 L364,619" marker-end="url(#ar)"/>
+  <path class="flow" d="M698,619 L722,619" marker-end="url(#ar)"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M340,619 L722,619"/></circle>
+
+  <!-- legend -->
+  <text class="zt" x="30" y="752">图例</text>
+  <rect class="card" x="80" y="738" width="22" height="16" rx="3"/><text class="lg" x="110" y="752">青绿：正常或修复后的路径</text>
+  <rect class="bad" x="320" y="738" width="22" height="16" rx="3"/><text class="lg" x="350" y="752">红色：命中旧缓存的请求</text>
+  <rect class="hot" x="560" y="738" width="22" height="16" rx="3"/><text class="lg" x="590" y="752">琥珀：问题的来源——路径固定的内容文件</text>
+  <rect class="dim" x="930" y="738" width="22" height="16" rx="3"/><text class="lg" x="960" y="752">灰色：误判方向与没选的做法</text>
+  <text class="lg" x="80" y="788">判断方法：打开开发者工具看内容请求的响应——清单里的同步时间早于本次同步，就是平台缓存；代码文件名已是新哈希，就排除了部署失败</text>
+</svg>

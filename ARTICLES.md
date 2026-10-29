@@ -301,6 +301,7 @@
 - [Copilot Managed Runtime 系列 10：调用 Copilot Studio Agent 为何走不通](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md)
 - [Copilot Managed Runtime 系列 11：用 Azure OpenAI Connector 直调模型](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md)
 - [Copilot Managed Runtime 系列 12：方案回顾与 Connector 接入清单](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md)
+- [Copilot Managed Runtime 系列 13：静态内容缓存与深链限制](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列13：静态内容缓存与深链限制.md)
 
 #### Azure/Copilot-Studio
 
@@ -311,6 +312,7 @@
 - [Copilot Studio 系列 05：Agent 的存储与标识](Azure/Copilot-Studio/Copilot-Studio系列05：Agent的存储与标识.md)
 - [Copilot Studio 系列 06：Standard Agent 的配置与发布](Azure/Copilot-Studio/Copilot-Studio系列06：Standard-Agent的配置与发布.md)
 - [Copilot Studio 系列 07：如何确认是 Agent 在回答](Azure/Copilot-Studio/Copilot-Studio系列07：如何确认是Agent在回答.md)
+- [Copilot Studio 系列 08：把文章库发布成 Teams 知识库 Agent](Azure/Copilot-Studio/Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md)
 
 #### Azure/AzureOpenAI
 

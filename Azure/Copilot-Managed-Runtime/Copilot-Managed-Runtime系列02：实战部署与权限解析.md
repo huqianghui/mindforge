@@ -212,6 +212,9 @@ git push
 ms app deploy
 ```
 
+> [!WARNING]
+> 平台按路径缓存静态文件。同步脚本写出的清单、文章、数据文件路径不变，只改内容时，部署后可能仍读到旧版本；内容请求要在 URL 上带同步版本号，见 [系列 13](Copilot-Managed-Runtime系列13：静态内容缓存与深链限制.md) 第一节。
+
 想要"推送即发布"，可以把这四步放进 CI，参考官方的 GitHub Actions 部署文档；对个人仓库，只能用 `--repo none` 的外部 artifact 模式。
 
 源码同时要备份到 GitHub 时，一个顺手的做法是给应用仓库配两个远端：`github` 放源码与历史，`platform` 是平台托管仓库、只作构建来源。发布脚本依次做"同步 → 本地 build 验证 → 提交 → 推 `github` → 强制推 `platform` → `ms app deploy --commit <HEAD>`"。`ms.config.json` 必须在仓库树里（平台构建要读），里面只有应用、环境、仓库的标识，不含凭据，可以放心入库；加了 Connector 之后同理，见 [系列 04](Copilot-Managed-Runtime系列04：SDK与数据接入.md)。

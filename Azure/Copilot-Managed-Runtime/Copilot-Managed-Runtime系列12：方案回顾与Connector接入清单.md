@@ -121,6 +121,8 @@ tags: [copilot-managed-runtime, managed-apps, retrospective, connector, checklis
 
 还开着的：
 
+- **Teams 侧的出口。** 应用调不到 agent，但同一批文章已另做成知识库 agent 发布到 Teams（[Copilot Studio 系列 08](../Copilot-Studio/Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md)）；目录类问题列不全、知识文件要手工重传，下一步换 SharePoint 文档库。部署后发现的内容缓存与深链两个问题见 [系列 13](Copilot-Managed-Runtime系列13：静态内容缓存与深链限制.md)。
+
 - **多轮对话。** 现在每次调用都是新会话，靠提示词里带最近两轮。Work IQ 返回了 `conversationId`，能否传回去续接会话，待实测。
 - **异步调 agent 的存储。** SharePoint 列表的写入在这个租户是否可用，决定了第一节的 workflow 方案能否起步。
 - **部署间的质量对比。** 下拉框让换模型变得很便宜，但目前只比了耗时和 token，回答质量要一组固定问题批量跑才有结论。

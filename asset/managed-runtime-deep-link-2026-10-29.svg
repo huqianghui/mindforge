@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
+      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .frame1 { fill: #0f1a2e; stroke: #64748b; stroke-width: 1.4; }
+      .frame2 { fill: #13213a; stroke: #64748b; stroke-width: 1.4; }
+      .frame3 { fill: #182a46; stroke: #2dd4bf; stroke-width: 1.6; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tG { fill: #94a3b8; font-size: 13.5px; }
+      .tA { fill: #fcd34d; font-size: 13.5px; }
+      .tR { fill: #fca5a5; font-size: 13.5px; }
+      .tT { fill: #5eead4; font-size: 13.5px; }
+      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowR { stroke: #f87171; stroke-width: 2.2; fill: none; stroke-dasharray: 6 5; animation: dash 1.4s linear infinite; }
+      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
+      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
+      .numR { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.6; }
+      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">外层地址里的 #/doc/… 到不了应用：深链只能指向应用首页</text>
+  <text class="sub" x="30" y="72">hash 属于外层宿主页；宿主新建 iframe 时只带自己的参数，应用读到的 location.hash 是空的，getContext() 里也没有</text>
+
+  <!-- left: link -->
+  <rect class="card" x="30" y="110" width="250" height="250" rx="9"/>
+  <circle class="num" cx="52" cy="134" r="11"/><text class="nt" x="52" y="139">1</text>
+  <text class="h" x="72" y="139">用户点开一个深链</text>
+  <text class="t" x="46" y="168">来自邮件、Teams、</text>
+  <text class="t" x="46" y="190">agent 回答里的链接</text>
+  <text class="m" x="46" y="222">play…/apps/&lt;app&gt;/</text>
+  <text class="mA" x="46" y="244">#/doc/&lt;文章路径&gt;</text>
+  <text class="tG" x="46" y="276">也试过查询串形式</text>
+  <text class="mA" x="46" y="298">?doc=&lt;文章路径&gt;</text>
+  <text class="tG" x="46" y="330">两种结果相同</text>
+
+  <!-- nested frames -->
+  <rect class="frame1" x="320" y="100" width="1056" height="400" rx="12"/>
+  <circle class="num" cx="344" cy="126" r="11"/><text class="nt" x="344" y="131">2</text>
+  <text class="h" x="364" y="131">宿主播放器　play.managedapps.cloud.microsoft</text>
+  <text class="t" x="364" y="156">外层地址栏里 hash 还在：</text>
+  <text class="mA" x="560" y="156">…/apps/&lt;app&gt;/#/doc/&lt;路径&gt;</text>
+  <text class="tG" x="900" y="156">登录、顶栏、持有 token</text>
+
+  <rect class="frame2" x="350" y="176" width="1006" height="300" rx="11"/>
+  <circle class="numA" cx="374" cy="202" r="11"/><text class="nt" x="374" y="207">3</text>
+  <text class="hA" x="394" y="207">宿主新建的 iframe（加载器）</text>
+  <text class="t" x="394" y="232">src 只有：</text>
+  <text class="mR" x="470" y="232">…powerplatformusercontent.com/_platform/app/loader?ms_embedderOrigin=…</text>
+  <text class="tR" x="394" y="256">外层的 #/doc/… 和 ?doc=… 都没有带进来</text>
+
+  <rect class="frame3" x="380" y="276" width="956" height="180" rx="10"/>
+  <circle class="num" cx="404" cy="302" r="11"/><text class="nt" x="404" y="307">4</text>
+  <text class="h" x="424" y="307">应用（Vite SPA，hash 路由）</text>
+
+  <rect class="bad" x="400" y="322" width="290" height="116" rx="8"/>
+  <text class="hR" x="416" y="346">读 location.hash</text>
+  <text class="mR" x="416" y="372">""（空）</text>
+  <text class="t" x="416" y="398">路由按默认值走</text>
+  <text class="tR" x="416" y="422">→ 总是打开首页 README</text>
+
+  <rect class="bad" x="706" y="322" width="300" height="116" rx="8"/>
+  <text class="hR" x="722" y="346">调 SDK getContext()</text>
+  <text class="m" x="722" y="372">app: { appId, environmentId }</text>
+  <text class="m" x="722" y="394">host: { sessionId }</text>
+  <text class="tR" x="722" y="422">没有外层地址，也没有参数</text>
+
+  <rect class="card" x="1022" y="322" width="298" height="116" rx="8"/>
+  <text class="hG" x="1038" y="346">应用内跳转不受影响</text>
+  <text class="t" x="1038" y="372">点击站内链接时，hash 由</text>
+  <text class="t" x="1038" y="394">应用自己的 iframe 改写</text>
+  <text class="tT" x="1038" y="422">只有"从外面带进来"不行</text>
+
+  <path class="flowR" d="M280,236 L316,236" marker-end="url(#arR)"/>
+  <circle r="5" fill="#fca5a5"><animateMotion dur="1.2s" repeatCount="indefinite" path="M280,236 L316,236"/></circle>
+
+  <!-- bottom: consequences -->
+  <rect class="zone" x="24" y="520" width="1352" height="200" rx="12"/>
+  <text class="zt" x="40" y="546">对设计的影响</text>
+
+  <rect class="card" x="40" y="562" width="420" height="142" rx="9"/>
+  <circle class="num" cx="62" cy="586" r="11"/><text class="nt" x="62" y="591">5</text>
+  <text class="h" x="82" y="591">对外链接指向公开原文</text>
+  <text class="t" x="56" y="618">Teams agent 的"来源"段落、邮件里的</text>
+  <text class="t" x="56" y="640">文章链接，一律给 GitHub 地址</text>
+  <text class="tG" x="56" y="670">谁都能打开，也能定位到章节锚点</text>
+
+  <rect class="dim" x="480" y="562" width="420" height="142" rx="9"/>
+  <circle class="numA" cx="502" cy="586" r="11"/><text class="nt" x="502" y="591">6</text>
+  <text class="h" x="522" y="591">分享应用里的某一页做不到</text>
+  <text class="t" x="496" y="618">筛选状态写进 hash 仍然有用：页面之间</text>
+  <text class="t" x="496" y="640">跳转时靠它传递筛选条件</text>
+  <text class="tG" x="496" y="670">但复制给别人，对方只会看到首页</text>
+
+  <rect class="dim" x="920" y="562" width="440" height="142" rx="9"/>
+  <circle class="numA" cx="942" cy="586" r="11"/><text class="nt" x="942" y="591">7</text>
+  <text class="h" x="962" y="591">改应用代码绕不过去</text>
+  <text class="t" x="936" y="618">信息在外层页面，应用读不到父页面地址</text>
+  <text class="t" x="936" y="640">（跨域），getContext() 也不带外层参数</text>
+  <text class="tG" x="936" y="670">要等平台提供深链支持</text>
+
+  <!-- legend -->
+  <text class="zt" x="30" y="756">图例</text>
+  <rect class="frame1" x="80" y="742" width="22" height="16" rx="3"/><text class="lg" x="110" y="756">三层嵌套框 = 浏览器里实际的页面结构 ②③④</text>
+  <rect class="bad" x="470" y="742" width="22" height="16" rx="3"/><text class="lg" x="500" y="756">红色：信息在这里丢失</text>
+  <rect class="card" x="700" y="742" width="22" height="16" rx="3"/><text class="lg" x="730" y="756">青绿：仍然可用的部分</text>
+  <rect class="dim" x="920" y="742" width="22" height="16" rx="3"/><text class="lg" x="950" y="756">灰色：受影响的设计</text>
+</svg>

@@ -26,6 +26,7 @@ tags: [azure, copilot-studio, copilot-managed-runtime, managed-apps, power-platf
 | [10](Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通.md) | 调用 Copilot Studio Agent 为何走不通 | 实践：三次尝试都失败；agentId 被忽略的误判与对照实验；仅剩的异步做法 |
 | [11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md) | 用 Azure OpenAI Connector 直调模型 | 实践：默认问答后端；API Key 共享连接、allowedActions、部署下拉框与两种后端对比 |
 | [12](Copilot-Managed-Runtime系列12：方案回顾与Connector接入清单.md) | 方案回顾与 Connector 接入清单 | 回顾：问答后端与存储怎么选、Connector 七关、哪些功能离不开平台 |
+| [13](Copilot-Managed-Runtime系列13：静态内容缓存与深链限制.md) | 静态内容缓存与深链限制 | 实践：新代码读到旧数据的缓存问题与版本号解法；外部深链为何只能打开首页 |
 
 Copilot Studio 本身（Power Platform 地基、环境、Connector、harness、agent / workflow / app 协作）见姊妹系列 [Copilot Studio 系列 01：产品全景与环境](../Copilot-Studio/Copilot-Studio系列01：产品全景与环境.md)。
 
