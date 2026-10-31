@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { contentUrl } from '../docs/content';
+import { contentUrl, publicUrl } from '../docs/content';
 import type { WikiGraph } from '../types';
 
 // 结构与 scripts/history.py 输出一致；所有日期都是 git commit 时间
@@ -87,7 +87,7 @@ let graphCached: Promise<WikiGraph> | null = null;
 export function useWikiGraph(): WikiGraph | null {
   const [graph, setGraph] = useState<WikiGraph | null>(null);
   useEffect(() => {
-    graphCached ??= fetch(`${import.meta.env.BASE_URL}wiki-graph.json`).then((res) => res.json());
+    graphCached ??= fetch(publicUrl('wiki-graph.json')).then((res) => res.json());
     graphCached.then(setGraph).catch((err) => console.error('Failed to load wiki-graph.json', err));
   }, []);
   return graph;

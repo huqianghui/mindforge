@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { WikiGraph, WikiNode, WikiLink, WikiCategory, WikiGraphStats, GraphNode, GraphLink, GraphData } from '../types';
 import { NODE_COLORS, RELATION_COLORS, getNodeSize } from '../theme';
+import { publicUrl } from '../docs/content';
 
 interface UseGraphDataReturn {
   graphData: GraphData;
@@ -26,7 +27,7 @@ export function useGraphData(): UseGraphDataReturn {
   );
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}wiki-graph.json`)
+    fetch(publicUrl('wiki-graph.json'))
       .then((res) => res.json())
       .then((data: WikiGraph) => {
         setRaw(data);
