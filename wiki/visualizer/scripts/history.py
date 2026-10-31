@@ -26,6 +26,7 @@ RE_BOLD = re.compile(r"\*\*(.+?)\*\*")
 # `wiki/concepts/slug.md` or `slug` in backticks, or a [[slug]] / [[slug|alias]] wikilink
 RE_SLUG = re.compile(r"(?:`(?:wiki/(?:concepts|methods|decisions)/)?([a-z0-9][a-z0-9-]{2,})(?:\.md)?`|\[\[([a-z0-9][a-z0-9-]{2,})(?:\|[^\]]*)?\]\])")
 RE_PRIORITY = re.compile(r"🔴|🟡|🟢")
+BULK_COMMIT = 40  # files changed; above this a commit is maintenance, not an edit to a topic
 
 
 def git(vault: Path, *args: str) -> str:
@@ -34,34 +35,60 @@ def git(vault: Path, *args: str) -> str:
     ).stdout
 
 
-def file_history(vault: Path) -> tuple[dict, dict, list]:
-    """First commit date and edit count per current path, following renames."""
+def file_history(vault: Path) -> tuple[dict, dict, list, dict]:
+    """First commit date, edit count and touched days per current path, following renames.
+
+    Touched days skip bulk commits (library-wide renames, link rewrites): they would mark
+    every topic as edited on the same day.
+    """
     log = git(vault, "log", "--format=@%cI", "--name-status", "-M50%")
-    canon, first, edits, commit_days = {}, {}, Counter(), []
+    canon, first, edits, commit_days, touched = {}, {}, Counter(), [], {}
 
     def resolve(p: str) -> str:
         while p in canon:
             p = canon[p]
         return p
 
-    day = None
-    # log is newest first: a rename "old -> new" means older entries for old belong to new
+    commits = []
     for line in log.splitlines():
         if line.startswith("@"):
-            day = line[1:11]
-            commit_days.append(day)
-            continue
-        if not line.strip():
-            continue
-        parts = line.split("\t")
-        if parts[0].startswith("R"):
-            key = resolve(parts[2])
-            canon[parts[1]] = key
-        else:
-            key = resolve(parts[-1])
-        edits[key] += 1
-        first[key] = day
-    return first, edits, commit_days
+            commits.append((line[1:11], []))
+        elif line.strip():
+            commits[-1][1].append(line.split("\t"))
+    # log is newest first: a rename "old -> new" means older entries for old belong to new
+    for day, changes in commits:
+        commit_days.append(day)
+        for parts in changes:
+            if parts[0].startswith("R"):
+                key = resolve(parts[2])
+                canon[parts[1]] = key
+            else:
+                key = resolve(parts[-1])
+            edits[key] += 1
+            first[key] = day
+            if len(changes) <= BULK_COMMIT:
+                touched.setdefault(key, set()).add(day)
+    return first, edits, commit_days, touched
+
+
+def topic_series(articles: list, first: dict, touched: dict) -> dict:
+    """Per directory, the days its direct articles were added or edited, oldest first:
+    [day, [file names added], [file names edited]].
+
+    A directory is a topic; only those active on at least two days form a line worth drawing.
+    """
+    per_dir = {}
+    for p in articles:
+        folder, _, name = p.rpartition("/")
+        days = per_dir.setdefault(folder, {})
+        # an article first committed in a bulk commit still counts as added that day
+        for d in touched.get(p, set()) | {first[p]}:
+            days.setdefault(d, ([], []))[0 if d == first[p] else 1].append(name)
+    return {
+        d: [[day, sorted(a), sorted(e)] for day, (a, e) in sorted(days.items())]
+        for d, days in sorted(per_dir.items())
+        if len(days) >= 2
+    }
 
 
 def monday(d: str) -> date:
@@ -205,7 +232,7 @@ def gap_reports(vault: Path, first: dict, nodes: dict, topics: dict) -> list:
 
 
 def build(vault: Path, doc_paths: list, out: Path) -> None:
-    first, edits, commit_days = file_history(vault)
+    first, edits, commit_days, touched = file_history(vault)
     articles = [p for p in doc_paths if p.startswith(ARTICLE_ROOTS) and p in first]
     nodes = {p: t for p in doc_paths for d, t in NODE_DIRS.items() if p.startswith(d) and p in first}
     graph = graph_snapshots(vault)
@@ -229,6 +256,8 @@ def build(vault: Path, doc_paths: list, out: Path) -> None:
         "gapTopics": {"lines": registry.get("lines") or {}, "topics": registry.get("topics") or {}},
         # path -> [first commit date, number of commits touching it]
         "docs": {p: [first[p], edits[p]] for p in doc_paths if p in first},
+        # topic directory -> [[day, [file names added], [file names edited]], ...]
+        "topics": topic_series(articles, first, touched),
     }
     out.write_text(json.dumps(history, ensure_ascii=False), encoding="utf-8")
     print(f"history: {len(commit_days)} commits, {len(graph)} graph snapshots, {len(gaps)} gap reports -> {out}")

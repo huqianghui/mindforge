@@ -28,6 +28,7 @@ import { graphAt, useHistory, useWikiGraph } from './history';
 import type { GapReport, History } from './history';
 import TimeAxis from './TimeAxis';
 import KnowledgeTree from './KnowledgeTree';
+import TopicLines from './TopicLines';
 
 const ARTICLE_COLOR = '#5c6bc0';
 const ACTIVE_COLOR = '#66bb6a';
@@ -235,7 +236,7 @@ export default function TimelinePage() {
   const { history, failed } = useHistory();
   const index = useContentIndex();
   const graph = useWikiGraph();
-  const [view, setView] = useState<'tree' | 'axis'>('tree');
+  const [view, setView] = useState<'tree' | 'axis' | 'topics'>('tree');
 
   if (failed) {
     return <Typography sx={{ p: 4 }}>缺少演进数据：运行 <code>python3 scripts/sync-content.py</code> 生成 history.json。</Typography>;
@@ -262,18 +263,23 @@ export default function TimelinePage() {
           title="知识怎样一天天长出来"
           note={view === 'tree'
             ? '知识之树：从一株小苗开始，每翻过一个有内容的日子（台历），树就长高、分叉一点；知识越多长得越快。叶子是文章与 wiki 节点，花是知识差距报告。鼠标移到树上会暂停，叶子换成知识的颜色，可以悬停、点选查看。'
-            : '时间轴：横轴是 commit 日期，每条泳道一类知识。点 ▶ 播放，或拖动滑块到任意一天。'}
+            : view === 'axis'
+              ? '时间轴：横轴是 commit 日期，每条泳道一类知识。点 ▶ 播放，或拖动滑块到任意一天。'
+              : '主题脉络：一个主题一条正弦波，所有主题共用第一天到最后一天的时间轴；都是标准的正弦波，文章多的主题波密一些；播放快慢跟着活跃度走，平静处走得快，文章处慢下来，有文章的日子是串在波上的圆点。鼠标移到波浪上会暂停，可以悬停、点选查看。「当下活跃」跟着播放只出现正在更新的一两个主题；「选择主题」单看一个主题的整条发展线。'}
         >
           <ToggleButtonGroup size="small" exclusive value={view} onChange={(_, v) => v && setView(v)} sx={{ mb: 1.5 }}>
             <ToggleButton value="tree" sx={{ textTransform: 'none', px: 2 }}>知识之树</ToggleButton>
             <ToggleButton value="axis" sx={{ textTransform: 'none', px: 2 }}>时间轴</ToggleButton>
+            <ToggleButton value="topics" sx={{ textTransform: 'none', px: 2 }}>主题脉络</ToggleButton>
           </ToggleButtonGroup>
           {!index || !graph ? (
             <CircularProgress size={24} />
           ) : view === 'tree' ? (
             <KnowledgeTree history={history} index={index} graph={graph} />
-          ) : (
+          ) : view === 'axis' ? (
             <TimeAxis history={history} index={index} graph={graph} />
+          ) : (
+            <TopicLines history={history} index={index} graph={graph} />
           )}
         </Section>
 

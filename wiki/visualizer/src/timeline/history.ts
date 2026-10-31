@@ -76,6 +76,8 @@ export interface History {
   gapTopics?: GapTopics;
   /** path -> [首次提交日期, 修改次数] */
   docs: Record<string, [string, number]>;
+  /** 目录（主题）-> [日期, 当天新增的文件名, 当天修改的文件名]，只含有两天以上改动的目录 */
+  topics?: Record<string, [string, string[], string[]][]>;
 }
 
 let cached: Promise<History> | null = null;
