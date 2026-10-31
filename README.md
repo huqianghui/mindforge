@@ -57,6 +57,10 @@ The whole knowledge base is published as a website: [huqianghui.github.io/mindfo
 <a href="https://huqianghui.github.io/mindforge/wiki/#/timeline"><img src="asset/mindforge-site-tree-2026-10-27.png" alt="演进" /></a><br />
 <b><a href="https://huqianghui.github.io/mindforge/wiki/#/timeline">演进</a></b>：git-history timeline with a knowledge tree that grows day by day.
 </td>
+<td width="50%" valign="top">
+<a href="https://huqianghui.github.io/mindforge/wiki/#/timeline"><img src="asset/mindforge-site-topics-2026-10-31.png" alt="主题脉络" /></a><br />
+<b><a href="https://huqianghui.github.io/mindforge/wiki/#/timeline">主题脉络</a></b>：the third view on 演进. Each topic (article directory) is a sine wave on one shared time axis, with a dot on each day it gained or changed articles. 当下活跃 shows only the topics updated during playback; 选择主题 replays one topic's whole history.
+</td>
 </tr>
 </table>
 
