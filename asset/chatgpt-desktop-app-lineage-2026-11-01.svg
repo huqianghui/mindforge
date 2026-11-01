@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 940" width="1240" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .pill { fill: #1e293b; stroke: #7dd3fc; stroke-width: 1.2; }
+      .zl { fill: #7dd3fc; font-size: 14px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .mono { fill: #a7f3d0; font-size: 13px; font-family: 'SF Mono', Menlo, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1240" height="940"/>
+  <text class="title" x="30" y="40">新版 ChatGPT Desktop 的血缘与层级</text>
+  <text class="sub" x="30" y="64">两个旧 app → 一个新 app + 一个 Classic；新 app 内是两级入口；只有 CLI 一元开源</text>
+
+  <!-- 上一代 -->
+  <rect class="boxGray" x="30" y="90" width="300" height="70" rx="10"/>
+  <text class="h15" x="50" y="118">旧 ChatGPT 桌面客户端</text>
+  <text class="tGray" x="50" y="142">原来做日常对话的那个 app</text>
+
+  <rect class="boxGray" x="520" y="90" width="300" height="70" rx="10"/>
+  <text class="h15" x="540" y="118">Codex Desktop（原 Codex app）</text>
+  <text class="tGray" x="540" y="142">原来专做编码 Agent 的 app</text>
+
+  <!-- ② 旧 ChatGPT → Classic -->
+  <path class="flowGray" d="M180,160 V206" marker-end="url(#arrGray)"/>
+  <circle cx="206" cy="184" r="12" class="badge"/><text class="bn" x="206" y="189">②</text>
+  <text class="tGray" x="226" y="189">改名</text>
+
+  <!-- ① Codex Desktop → ChatGPT.app -->
+  <path class="flow" d="M670,160 V206" marker-end="url(#arr)"/>
+  <circle cx="696" cy="184" r="12" class="badge"/><text class="bn" x="696" y="189">①</text>
+  <text class="t" x="716" y="189">升级即改名，bundle id 不变</text>
+
+  <!-- ChatGPT Classic -->
+  <rect class="boxBlue" x="30" y="210" width="300" height="320" rx="12"/>
+  <text class="h" x="50" y="240">ChatGPT Classic</text>
+  <text class="tGray" x="50" y="262">proprietary · 维护型</text>
+  <text class="t" x="50" y="298">· 上一代桌面客户端，改名保留</text>
+  <text class="t" x="50" y="324">· 可与新 ChatGPT.app 并存</text>
+  <text class="t" x="50" y="350">· 继续收到模型更新、bug 修复</text>
+  <text class="t" x="62" y="372">与安全补丁</text>
+  <text class="t" x="50" y="398">· 保留现有 Enterprise 能力</text>
+  <text class="t" x="50" y="424">· 不需要迁移</text>
+  <text class="t" x="50" y="460" style="fill:#fde68a">· 新的 Agent 功能可能</text>
+  <text class="t" x="62" y="482" style="fill:#fde68a">只出现在新 app</text>
+
+  <!-- ChatGPT.app zone -->
+  <rect class="zone" x="370" y="210" width="560" height="430" rx="14"/>
+  <text class="zl" x="390" y="238">ChatGPT.app（新一代统一桌面客户端，同一个 .app bundle）</text>
+  <text class="mono" x="390" y="262">bundle id: com.openai.codex</text>
+  <text class="tGray" x="640" y="262">· /Applications/Codex.app 为同一 bundle</text>
+
+  <!-- 第一级：产品选择器 -->
+  <text class="t" x="390" y="296">第一级 · 左上角产品选择器，只有两项</text>
+  <rect class="pill" x="560" y="306" width="110" height="30" rx="15"/>
+  <text class="h15" x="615" y="326" text-anchor="middle">ChatGPT</text>
+  <rect class="pill" x="690" y="306" width="110" height="30" rx="15"/>
+  <text class="h15" x="745" y="326" text-anchor="middle">Codex</text>
+
+  <!-- ChatGPT 卡 -->
+  <rect class="boxBlue" x="385" y="350" width="260" height="275" rx="12"/>
+  <text class="h" x="402" y="378">ChatGPT</text>
+  <text class="tGray" x="402" y="400">第二级 · 顶部 Chat / Work 切换</text>
+  <rect x="400" y="412" width="230" height="56" rx="8" fill="#0f1a2e" stroke="#38bdf8" stroke-width="1"/>
+  <text class="h15" x="414" y="436">Chat</text>
+  <text class="t" x="414" y="457">问答、搜索、头脑风暴</text>
+  <rect x="400" y="478" width="230" height="78" rx="8" fill="#0f1a2e" stroke="#38bdf8" stroke-width="1"/>
+  <text class="h15" x="414" y="502">Work</text>
+  <text class="t" x="414" y="523">Agent 模式：多步长任务、</text>
+  <text class="t" x="414" y="543">跨应用，交付文档/表格/站点</text>
+  <text class="tGray" x="402" y="580">Chat 与 Work 共用 Recents</text>
+  <text class="tGray" x="402" y="604">proprietary，无公开源码</text>
+
+  <!-- Codex 卡 -->
+  <rect class="boxBlue" x="660" y="350" width="255" height="275" rx="12"/>
+  <text class="h" x="677" y="378">Codex</text>
+  <text class="tGray" x="677" y="400">编码 Agent · 历史与 ChatGPT 分开</text>
+  <rect x="675" y="412" width="225" height="70" rx="8" fill="#0f1a2e" stroke="#38bdf8" stroke-width="1"/>
+  <text class="h15" x="689" y="436">bundled Computer Use</text>
+  <text class="t" x="689" y="457">proprietary native runtime</text>
+  <text class="tGray" x="689" y="475">（系列04 展开）</text>
+  <rect class="box" x="675" y="494" width="225" height="112" rx="8"/>
+  <text class="h15" x="689" y="518">bundled Codex CLI</text>
+  <text class="mono" x="689" y="540">Contents/Resources/codex</text>
+  <text class="t" x="689" y="562">开源仓库的一个配套 build</text>
+  <text class="t" x="689" y="586">版本以 codex --version 为准</text>
+
+  <!-- standalone CLI -->
+  <rect class="box" x="970" y="210" width="240" height="320" rx="12"/>
+  <text class="h" x="988" y="240">codex CLI（独立安装）</text>
+  <text class="tGray" x="988" y="262">开源 · standalone 发行版</text>
+  <text class="t" x="988" y="298">· 终端里装的那个 codex</text>
+  <text class="t" x="988" y="324">· 与 bundled CLI 同源，</text>
+  <text class="t" x="1000" y="346">不同发行通道</text>
+  <text class="t" x="988" y="372">· 版本号与 bundled 各自独立</text>
+  <text class="t" x="988" y="398">· 没有 App 环境层</text>
+  <text class="t" x="1000" y="420">（签名、Apple Events、</text>
+  <text class="t" x="1000" y="442">进程树），所以不能直接</text>
+  <text class="t" x="1000" y="464">复用 Desktop 的 Computer Use</text>
+
+  <!-- 开源仓库 -->
+  <rect class="box" x="640" y="690" width="400" height="70" rx="12"/>
+  <text class="h" x="660" y="720">openai/codex 开源仓库</text>
+  <text class="t" x="660" y="744">整个 bundle 里唯一有公开源码的一元</text>
+
+  <!-- ③ repo → bundled CLI -->
+  <path class="flow" d="M787,690 V612" marker-end="url(#arr)"/>
+  <circle cx="762" cy="660" r="12" class="badge"/><text class="bn" x="762" y="665">③</text>
+
+  <!-- ④ repo → standalone CLI -->
+  <path class="flow" d="M1040,725 H1090 V536" marker-end="url(#arr)"/>
+  <circle cx="1116" cy="640" r="12" class="badge"/><text class="bn" x="1116" y="645">④</text>
+
+  <!-- 图例 -->
+  <rect x="30" y="790" width="1180" height="130" rx="10" fill="#0d1729" stroke="#334155" stroke-width="1"/>
+  <circle cx="54" cy="814" r="11" class="badge"/><text class="bn" x="54" y="819">①</text>
+  <text class="lg" x="74" y="819">原 Codex Desktop 升级后直接变成 ChatGPT.app，bundle id 仍是 com.openai.codex，原 Codex 项目和对话应会保留</text>
+  <circle cx="54" cy="842" r="11" class="badge"/><text class="bn" x="54" y="847">②</text>
+  <text class="lg" x="74" y="847">原 ChatGPT 桌面客户端改名 ChatGPT Classic，新 app 另行安装，两者可以同时在 /Applications 里</text>
+  <circle cx="54" cy="870" r="11" class="badge"/><text class="bn" x="54" y="875">③</text>
+  <text class="lg" x="74" y="875">openai/codex 的一个配套 build 被打包进 app，供 Codex 一侧使用</text>
+  <circle cx="54" cy="898" r="11" class="badge"/><text class="bn" x="54" y="903">④</text>
+  <text class="lg" x="74" y="903">同一仓库的另一条发行通道：终端里独立安装的 codex CLI</text>
+
+  <rect x="800" y="860" width="22" height="14" rx="3" fill="#13213a" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text class="lg" x="830" y="872">开源</text>
+  <rect x="880" y="860" width="22" height="14" rx="3" fill="#10203a" stroke="#38bdf8" stroke-width="1.6"/>
+  <text class="lg" x="910" y="872">proprietary</text>
+  <rect x="1010" y="860" width="22" height="14" rx="3" fill="#111827" stroke="#475569" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text class="lg" x="1040" y="872">上一代 app</text>
+  <rect x="800" y="890" width="22" height="14" rx="3" fill="none" stroke="#38bdf8" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <text class="lg" x="830" y="902">虚线大框 = 同一个 .app bundle</text>
+</svg>

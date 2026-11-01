@@ -12,7 +12,7 @@ tags:
 
 # Codex Desktop 系列 03：bundled 的真正含义
 
-> 系列导航：[系列01：接入 Azure GPT-6](Codex-Desktop系列01：接入Azure-OpenAI-GPT-6.md) ｜ [系列02：mini 与三条暗线](Codex-Desktop系列02：gpt-5.4-mini与三条暗线.md) ｜ 本篇 ｜ [系列04：Computer Use 藏身之处](Codex-Desktop系列04：Computer-Use藏身之处.md) ｜ [系列05：模型条目装下整个 harness](Codex-Desktop系列05：模型条目里的Harness.md) ｜ [系列06：ModelInfo 字段值手册](Codex-Desktop系列06：ModelInfo字段手册.md)
+> 系列导航：[系列01：接入 Azure GPT-6](Codex-Desktop系列01：接入Azure-OpenAI-GPT-6.md) ｜ [系列02：mini 与三条暗线](Codex-Desktop系列02：gpt-5.4-mini与三条暗线.md) ｜ 本篇 ｜ [系列04：Computer Use 藏身之处](Codex-Desktop系列04：Computer-Use藏身之处.md) ｜ [系列05：模型条目装下整个 harness](Codex-Desktop系列05：模型条目里的Harness.md) ｜ [系列06：ModelInfo 字段值手册](Codex-Desktop系列06：ModelInfo字段手册.md) ｜ [系列07：用 Jev 做模型与推理强度路由](Codex-Desktop系列07：用Jev做模型与推理强度路由.md)
 
 > 系列01/02 里反复出现 "bundled CLI" 这个词，这一篇把它彻底吃透——bundle 是什么、三个版本号为什么并存、以及 ChatGPT.app 这个名字底下藏着的真实血缘。
 
@@ -112,17 +112,17 @@ Desktop 打包的是一个**与该 App 版本配套测试过的固定 build**—
 - **血缘证据**：`codesign -dv --verbose=4 /Applications/ChatGPT.app` 可以看到，这个名叫 ChatGPT 的 app，bundle identifier 仍然是 **`com.openai.codex`**——软件工程血缘上它就是原 Codex Desktop 的延续，改名合并了 Chat/Work 形态，而不是把两个 `.app` 拼起来。
 - **开源边界**：整个 bundle 里只有 Codex CLI 这一元对应开源仓库 openai/codex；ChatGPT/Work 客户端部分和 SkyComputerUse native helper 都是 proprietary，没有 `openai/chatgpt` 这样的公开 repo 可对源码。
 
-把三个名字的关系画清楚：
+"Chat + Work + Codex"容易读成三个并列入口，实际界面是**两级**：左上角的产品选择器只有 **ChatGPT** 和 **Codex** 两项，Work 不在这一级；
 
-```text
-ChatGPT Classic        ← 上一代 proprietary ChatGPT 桌面客户端（维护型）
-ChatGPT.app            ← 新一代 proprietary Desktop Shell（主线）
-  ├── ChatGPT / Work        （proprietary，无公开源码）
-  └── Codex
-       ├── bundled Codex CLI（开源，openai/codex 的配套 build）
-       └── bundled Computer Use（proprietary native runtime）
-codex CLI（独立安装）   ← openai/codex 开源项目的 standalone 发行版
-```
+![ChatGPT Desktop 左上角产品选择器只有 ChatGPT 与 Codex 两项|440](../../../asset/chatgpt-desktop-product-selector-2026-11-01.png)
+
+选中 ChatGPT 之后，页面顶部才出现 **Chat / Work** 切换，Work 是 ChatGPT 这一侧的 Agent 模式。Chat 和 Work 的对话一起出现在 Recents 里，Codex 的历史则单独一套（见官方的 [ChatGPT Work and Codex](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex)）。
+
+![选中 ChatGPT 后顶部出现 Chat 与 Work 切换|800](../../../asset/chatgpt-desktop-chat-work-tabs-2026-11-01.png)
+
+把几个名字的关系画清楚：
+
+![新版 ChatGPT Desktop 的血缘与层级|900](../../../asset/chatgpt-desktop-app-lineage-2026-11-01.svg)
 
 这一层也让组合公式更精确：三元组合里，**开源的只有中间那一元（CLI），且只是它的一个特定 build；壳与能力 payload 都是专有的**。所谓"Codex Desktop"在文件系统里没有独立血缘的 bundle——它是 `com.openai.codex` 这个 bundle 顶着 ChatGPT 的名字活着；不过 OpenAI 官方 troubleshooting 文档也提到保留了一个 `/Applications/Codex.app` 兼容路径，[openai/codex#31944](https://github.com/openai/codex/issues/31944) 证实这个 Codex.app 与 ChatGPT.app 是近乎相同的 bundle（同 identifier、同 SHA-256）——它是同一血脉的兼容化身，而不是另一条独立血缘。
 
@@ -140,4 +140,6 @@ codex CLI（独立安装）   ← openai/codex 开源项目的 standalone 发行
 - [Apple Developer 文档：Bundles and packages](https://developer.apple.com/documentation/foundation/bundles_and_packages)
 - [openai/codex 仓库](https://github.com/openai/codex)
 - [openai/codex#38934 — App version 与 Bundled CLI version 的区分](https://github.com/openai/codex/issues/38934)
+- [ChatGPT Work and Codex — OpenAI Help Center](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex)
+- [Moving to the new ChatGPT desktop app — OpenAI Help Center](https://help.openai.com/en/articles/20001276-moving-to-the-new-chatgpt-desktop-app)
 - 相关笔记：[Codex Desktop 系列 01：接入 Azure OpenAI GPT-6](Codex-Desktop系列01：接入Azure-OpenAI-GPT-6.md)｜[Codex Desktop 系列 04：Computer Use 藏身之处](Codex-Desktop系列04：Computer-Use藏身之处.md)｜[Agent = Model + Harness](../Agent=Model+Harness.md)
