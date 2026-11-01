@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .src { fill: #13213a; stroke: #94a3b8; stroke-width: 1.4; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxHi { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 2.4; animation: pulse 2.4s ease-in-out infinite; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
+      .h { fill: #7dd3fc; font-size: 17px; font-weight: 700; }
+      .hTeal { fill: #5eead4; font-size: 17px; font-weight: 700; }
+      .hAmber { fill: #fde68a; font-size: 17px; font-weight: 700; }
+      .hs { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 14px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .fl { fill: #a7f3d0; font-size: 13.5px; }
+      .wave { fill: none; stroke: #2dd4bf; stroke-width: 2.4; }
+      .legH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .leg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+    <clipPath id="grow"><rect x="510" y="470" width="380" height="70"><animate attributeName="width" values="0;380;380" keyTimes="0;0.8;1" dur="5s" repeatCount="indefinite"/></rect></clipPath>
+  </defs>
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">同一个网站里，SVG 和 Canvas 怎么分工</text>
+  <text class="sub" x="30" y="72">个人知识库站点的三处可视化：同一份数据，按"多少元素、要不要逐个交互、宿主跑不跑 JS"选渲染方式</text>
+
+  <rect class="src" x="420" y="96" width="560" height="72" rx="10"/>
+  <text class="hs" x="440" y="126">同一份数据</text>
+  <text class="t" x="440" y="152">知识图谱 JSON（150 节点 / 527 关系）+ 文章提交历史</text>
+
+  <rect class="boxBlue" x="30" y="230" width="420" height="320" rx="12"/>
+  <text class="h" x="50" y="264">知识图谱页 → Canvas</text>
+  <text class="t" x="50" y="298">· 力导向布局，每帧重算全部坐标</text>
+  <text class="t" x="50" y="324">· 150 节点、527 条边一起动</text>
+  <text class="t" x="50" y="350">· 整块重绘，比逐个改 DOM 便宜</text>
+  <text class="t" x="50" y="376">· 代价：节点不是 DOM 元素</text>
+  <text class="t" x="50" y="402">· 点击要自己做命中测试</text>
+  <text class="t" x="50" y="428">· AI 想看结果只能截图</text>
+  <path class="flow" d="M560 168 V190 H240 V226" marker-end="url(#arr)"/>
+  <circle class="badge" cx="392" cy="190" r="12"/><text class="bn" x="392" y="195">1</text>
+  <text class="fl" x="410" y="176">每帧算</text>
+  <rect class="boxHi" x="490" y="230" width="420" height="320" rx="12"/>
+  <text class="hTeal" x="510" y="264">演进页 → SVG</text>
+  <text class="t" x="510" y="298">· 主题脉络：每个目录一条正弦波</text>
+  <text class="t" x="510" y="324">· 数据算出 path 的 d 属性</text>
+  <text class="t" x="510" y="350">· clipPath 的宽度控制波的生长</text>
+  <text class="t" x="510" y="376">· 文章日子是串在波上的圆点</text>
+  <text class="t" x="510" y="402">· 透明大圆当热区，hover / click</text>
+  <text class="t" x="510" y="428">· 新点的光环用 CSS 动画</text>
+  <path class="flow" d="M700 168 V226" marker-end="url(#arr)"/>
+  <circle class="badge" cx="700" cy="198" r="12"/><text class="bn" x="700" y="203">2</text>
+  <text class="fl" x="718" y="203">按天算</text>
+  <rect class="boxAmber" x="950" y="230" width="420" height="320" rx="12"/>
+  <text class="hAmber" x="970" y="264">README → 自包含动态 SVG</text>
+  <text class="t" x="970" y="298">· GitHub 渲染 Markdown 时剥离 JS</text>
+  <text class="t" x="970" y="324">· 图谱坐标预先算好、写死</text>
+  <text class="t" x="970" y="350">· 镜头巡游交给 SMIL animate</text>
+  <text class="t" x="970" y="376">· 66 个动画元素，约 120 KB</text>
+  <text class="t" x="970" y="402">· 外包一层链接，点了进网站</text>
+  <text class="t" x="970" y="428">· 代价：只能看，不能交互</text>
+  <path class="flow" d="M840 168 V190 H1160 V226" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1008" cy="190" r="12"/><text class="bn" x="1008" y="195">3</text>
+  <text class="fl" x="1026" y="176">导出时算一次</text>
+  <path class="wave" clip-path="url(#grow)" d="M510 505.0 L514 509.3 L518 513.5 L522 517.3 L526 520.7 L530 523.4 L534 525.4 L538 526.6 L542 527.0 L546 526.5 L550 525.1 L554 523.0 L558 520.2 L562 516.7 L566 512.8 L570 508.6 L574 504.3 L578 500.0 L582 495.8 L586 492.1 L590 488.8 L594 486.2 L598 484.3 L602 483.2 L606 483.0 L610 483.7 L614 485.2 L618 487.4 L622 490.4 L626 493.9 L630 497.9 L634 502.1 L638 506.5 L642 510.8 L646 514.8 L650 518.5 L654 521.7 L658 524.2 L662 525.9 L666 526.9 L670 526.9 L674 526.1 L678 524.5 L682 522.1 L686 519.1 L690 515.5 L694 511.5 L698 507.2 L702 502.8 L706 498.5 L710 494.5 L714 490.9 L718 487.9 L722 485.5 L726 483.9 L730 483.1 L734 483.1 L738 484.1 L742 485.8 L746 488.3 L750 491.5 L754 495.2 L758 499.2 L762 503.5 L766 507.9 L770 512.1 L774 516.1 L778 519.6 L782 522.6 L786 524.8 L790 526.3 L794 527.0 L798 526.8 L802 525.7 L806 523.8 L810 521.2 L814 517.9 L818 514.2 L822 510.0 L826 505.7 L830 501.4 L834 497.2 L838 493.3 L842 489.8 L846 487.0 L850 484.9 L854 483.5 L858 483.0 L862 483.4 L866 484.6 L870 486.6 L874 489.3 L878 492.7 L882 496.5 L886 500.7 L890 505.0"/>
+  <circle cx="550" cy="525.1" r="6" fill="#2dd4bf" stroke="#fff" stroke-width="1.5" clip-path="url(#grow)"/>
+  <circle cx="660" cy="525.1" r="6" fill="#2dd4bf" stroke="#fff" stroke-width="1.5" clip-path="url(#grow)"/>
+  <circle cx="760" cy="501.4" r="6" fill="#2dd4bf" stroke="#fff" stroke-width="1.5" clip-path="url(#grow)"/>
+  <circle cx="840" cy="491.5" r="6" fill="#2dd4bf" stroke="#fff" stroke-width="1.5" clip-path="url(#grow)"/>
+  <line x1="181" y1="486" x2="342" y2="499" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="380" y1="478" x2="336" y2="530" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="300" y1="503" x2="178" y2="489" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="158" y1="530" x2="67" y2="478" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="263" y1="489" x2="214" y2="473" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="327" y1="519" x2="364" y2="519" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="141" y1="475" x2="355" y2="526" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="197" y1="530" x2="109" y2="474" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="278" y1="520" x2="171" y2="503" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="128" y1="516" x2="380" y2="508" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="129" y1="533" x2="257" y2="514" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="404" y1="525" x2="249" y2="530" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <line x1="275" y1="534" x2="370" y2="471" stroke="#38bdf8" stroke-opacity="0.35"/>
+  <circle cx="181" cy="486" r="3.5" fill="#7dd3fc"/>
+  <circle cx="249" cy="530" r="3.5" fill="#7dd3fc"/>
+  <circle cx="380" cy="478" r="3.5" fill="#7dd3fc"/>
+  <circle cx="370" cy="471" r="3.5" fill="#7dd3fc"/>
+  <circle cx="300" cy="503" r="3.5" fill="#7dd3fc"/>
+  <circle cx="342" cy="499" r="3.5" fill="#7dd3fc"/>
+  <circle cx="158" cy="530" r="3.5" fill="#7dd3fc"/>
+  <circle cx="336" cy="530" r="3.5" fill="#7dd3fc"/>
+  <circle cx="263" cy="489" r="3.5" fill="#7dd3fc"/>
+  <circle cx="178" cy="489" r="3.5" fill="#7dd3fc"/>
+  <circle cx="327" cy="519" r="3.5" fill="#7dd3fc"/>
+  <circle cx="67" cy="478" r="3.5" fill="#7dd3fc"/>
+  <circle cx="141" cy="475" r="3.5" fill="#7dd3fc"/>
+  <circle cx="214" cy="473" r="3.5" fill="#7dd3fc"/>
+  <circle cx="197" cy="530" r="3.5" fill="#7dd3fc"/>
+  <circle cx="364" cy="519" r="3.5" fill="#7dd3fc"/>
+  <circle cx="278" cy="520" r="3.5" fill="#7dd3fc"/>
+  <circle cx="355" cy="526" r="3.5" fill="#7dd3fc"/>
+  <circle cx="128" cy="516" r="3.5" fill="#7dd3fc"/>
+  <circle cx="109" cy="474" r="3.5" fill="#7dd3fc"/>
+  <circle cx="129" cy="533" r="3.5" fill="#7dd3fc"/>
+  <circle cx="171" cy="503" r="3.5" fill="#7dd3fc"/>
+  <circle cx="404" cy="525" r="3.5" fill="#7dd3fc"/>
+  <circle cx="380" cy="508" r="3.5" fill="#7dd3fc"/>
+  <circle cx="275" cy="534" r="3.5" fill="#7dd3fc"/>
+  <circle cx="257" cy="514" r="3.5" fill="#7dd3fc"/>
+  <rect x="980" y="472" width="360" height="66" rx="6" fill="none" stroke="#475569" stroke-dasharray="4 4"/>
+  <rect x="988" y="478" width="110" height="54" rx="5" fill="none" stroke="#fbbf24" stroke-width="2.2"><animate attributeName="x" values="988;1222;988" dur="6s" repeatCount="indefinite"/></rect>
+  <text class="tGray" x="980" y="462">镜头框沿预设路线巡游</text>
+
+  <line x1="30" y1="578" x2="1370" y2="578" stroke="#1e293b" stroke-width="1.2"/>
+  <text class="legH" x="30" y="606">怎么选（编号对应上方三条数据流）</text>
+  <circle class="badge" cx="42" cy="637" r="11"/><text class="bn" x="42" y="642">1</text>
+  <text class="leg" x="64" y="642">元素上千或每帧整体重算 → Canvas：性能优先，放弃"每个节点都是一个 DOM 元素"带来的便利</text>
+  <circle class="badge" cx="42" cy="677" r="11"/><text class="bn" x="42" y="682">2</text>
+  <text class="leg" x="64" y="682">元素几百个以内、要逐个 hover / click、想和 CSS 共用样式 → SVG：渲染结果本身就是结构化文本，</text>
+  <text class="leg" x="64" y="704">把 DOM 导出来 AI 就能直接读懂，改样式也只是改属性</text>
+  <circle class="badge" cx="42" cy="739" r="11"/><text class="bn" x="42" y="744">3</text>
+  <text class="leg" x="64" y="744">宿主不跑 JS（GitHub、Markdown 预览）→ 坐标预计算 + SMIL / CSS 动画的自包含 SVG，交互让位给"点进网站"</text>
+  <text class="tGray" x="64" y="776">高亮框 = 本文重点；底部小图分别示意力导向点云、正弦波随 clipPath 生长、镜头框巡游</text>
+</svg>

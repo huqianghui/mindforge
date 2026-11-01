@@ -191,6 +191,8 @@ PowerPoint（2019+/365）和 Keynote 都支持插入 SVG，但**只渲染静态�
 
 **下篇**：[浏览器动态内容的计算光谱](浏览器动态内容的计算光谱.md)——当动画无法预先写死（实时音频驱动的音波球）、甚至本地算不动（照片级数字人）时，计算如何一步步从文档移向本地 JS/GPU、再移向云端。
 
+**实践篇**：[SVG 实践：我和 AI 之间的视觉语言](SVG实践：我和AI之间的视觉语言.md)——把 SVG 当作人与 AI 的中间层，落到文章流程图、网页可视化、PPT 与视频三个场景。
+
 **参考资源**：
 - [MDN SVG 教程](https://developer.mozilla.org/en-US/docs/Web/SVG)（元素与属性权威参考）
 - [SVGO](https://github.com/svg/svgo)（SVG 优化器）

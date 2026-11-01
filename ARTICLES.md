@@ -257,6 +257,7 @@
 
 - [动态 SVG 全景](Notes/tool/picture/动态SVG全景.md)
 - [浏览器动态内容的计算光谱](Notes/tool/picture/浏览器动态内容的计算光谱.md)
+- [SVG 实践：我和 AI 之间的视觉语言](Notes/tool/picture/SVG实践：我和AI之间的视觉语言.md)
 
 ### Notes/tool/remotion
 

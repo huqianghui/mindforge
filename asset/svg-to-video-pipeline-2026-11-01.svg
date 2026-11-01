@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 780" width="1400" height="780" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxCur { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxBad { fill: #1f1315; stroke: #f87171; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .zone { fill: none; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 8 6; }
+      .zoneOn { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 14px; font-weight: 600; }
+      .zlGray { fill: #94a3b8; font-size: 14px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .bad { fill: #fca5a5; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .lt { fill: #fde68a; font-size: 13.5px; }
+      .fr { fill: #1e293b; stroke: #334155; stroke-width: 1; }
+      .frDone { fill: #134e4a; stroke: #2dd4bf; stroke-width: 1; }
+      .legH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .leg { fill: #cbd5e1; font-size: 13.5px; }
+      .legK { fill: #5eead4; font-size: 13.5px; font-weight: 700; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="780" rx="16"/>
+  <text class="title" x="30" y="44">动态 SVG 转 MP4：录屏 vs 逐帧渲染</text>
+  <text class="sub" x="30" y="72">PPT 不播放 SVG 动画，只能插视频；关键在于"谁掌握时钟"——录屏跟着真实时间拍，逐帧渲染自己拨时间再拍</text>
+
+  <rect class="zone" x="30" y="92" width="1340" height="150" rx="12"/>
+  <text class="zlGray" x="46" y="116">录屏：跟着实时时钟拍</text>
+  <rect class="boxGray" x="50" y="132" width="230" height="90" rx="10"/>
+  <text class="hGray" x="66" y="162">浏览器打开 SVG</text>
+  <text class="tGray" x="66" y="190">动画按真实时间在跑</text>
+  <rect class="boxGray" x="320" y="132" width="230" height="90" rx="10"/>
+  <text class="hGray" x="336" y="162">系统录屏 ⌘⇧5</text>
+  <text class="tGray" x="336" y="190">拍到什么算什么</text>
+  <rect class="boxGray" x="590" y="132" width="230" height="90" rx="10"/>
+  <text class="hGray" x="606" y="162">手剪首尾、导出</text>
+  <text class="tGray" x="606" y="190">凭肉眼找循环点</text>
+  <path class="flowGray" d="M280 177 H316" marker-end="url(#arrGray)"/>
+  <path class="flowGray" d="M550 177 H586" marker-end="url(#arrGray)"/>
+  <rect class="boxBad" x="870" y="124" width="480" height="106" rx="10"/>
+  <text class="bad" x="890" y="152">✗ 掉不掉帧取决于录制时的机器负载</text>
+  <text class="bad" x="890" y="178">✗ 首尾手剪，循环播放时接缝跳一下</text>
+  <text class="bad" x="890" y="204">✗ 分辨率受屏幕限制，每次结果都不一样</text>
+
+  <rect class="zoneOn" x="30" y="262" width="1340" height="318" rx="12"/>
+  <text class="zl" x="46" y="286">逐帧渲染：先冻结时钟，再一帧一帧拨（推荐）</text>
+
+  <rect class="box" x="50" y="304" width="200" height="140" rx="10"/>
+  <text class="h" x="64" y="334">① 打开文件</text>
+  <text class="t" x="64" y="362">headless Chromium</text>
+  <text class="t" x="64" y="386">直接打开 .svg 文件</text>
+  <text class="t" x="64" y="410">缩放因子 2，出 2x 画质</text>
+  <path class="flow" d="M250 374 H268" marker-end="url(#arr)"/>
+  <rect class="box" x="272" y="304" width="200" height="140" rx="10"/>
+  <text class="h" x="286" y="334">② 冻结时钟</text>
+  <text class="t" x="286" y="362">SMIL：pauseAnimations()</text>
+  <text class="t" x="286" y="386">CSS：getAnimations()</text>
+  <text class="t" x="286" y="410">逐个 pause()</text>
+  <path class="flow" d="M472 374 H490" marker-end="url(#arr)"/>
+  <rect class="boxCur" x="494" y="304" width="200" height="140" rx="10"/>
+  <text class="hAmber" x="508" y="334">③ 拨到第 i 帧</text>
+  <text class="t" x="508" y="362">t = i / fps</text>
+  <text class="t" x="508" y="386">setCurrentTime(t)</text>
+  <text class="t" x="508" y="410">a.currentTime = t×1000</text>
+  <path class="flow" d="M694 374 H712" marker-end="url(#arr)"/>
+  <rect class="box" x="716" y="304" width="200" height="140" rx="10"/>
+  <text class="h" x="730" y="334">④ 截图</text>
+  <text class="t" x="730" y="362">page.screenshot</text>
+  <text class="t" x="730" y="386">存成 00000.png …</text>
+  <text class="t" x="730" y="410">与机器快慢无关</text>
+  <path class="flow" d="M916 374 H934" marker-end="url(#arr)"/>
+  <rect class="box" x="938" y="304" width="200" height="140" rx="10"/>
+  <text class="h" x="952" y="334">⑤ 合成</text>
+  <text class="t" x="952" y="362">ffmpeg + libx264</text>
+  <text class="t" x="952" y="386">yuv420p 兼容 PPT</text>
+  <text class="t" x="952" y="410">宽高补成偶数</text>
+  <path class="flow" d="M1138 374 H1156" marker-end="url(#arr)"/>
+  <rect class="box" x="1160" y="304" width="200" height="140" rx="10"/>
+  <text class="h" x="1174" y="334">⑥ 进 PPT</text>
+  <text class="t" x="1174" y="362">插入视频</text>
+  <text class="t" x="1174" y="386">自动播放 + 循环</text>
+  <text class="t" x="1174" y="410">时长取周期整数倍</text>
+  <path class="flowAmber" d="M816 446 C816 492, 594 492, 594 450" marker-end="url(#arrAmber)"/>
+  <text class="lt" x="649" y="506">i + 1，直到第 N 帧</text>
+  <text class="tGray" x="50" y="538">帧序列</text>
+  <rect class="frDone" x="110" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="140" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="170" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="200" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="230" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="260" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="290" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="320" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="350" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="380" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="410" y="522" width="24" height="22" rx="3"/>
+  <rect class="frDone" x="440" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="470" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="500" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="530" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="560" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="590" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="620" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="650" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="680" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="710" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="740" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="770" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="800" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="830" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="860" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="890" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="920" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="950" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="980" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="1010" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="1040" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="1070" y="522" width="24" height="22" rx="3"/>
+  <rect class="fr" x="1100" y="522" width="24" height="22" rx="3"/>
+  <rect x="110" y="519" width="24" height="28" rx="4" fill="none" stroke="#fbbf24" stroke-width="2.4">
+    <animate attributeName="x" values="110;1100" dur="6s" repeatCount="indefinite"/>
+  </rect>
+  <text class="tGray" x="1140" y="538">0 … 119（4 秒 × 30 fps）</text>
+  <text class="tGray" x="110" y="566">每一帧都是"第 t 秒应有的样子"，不是"截图那一刻碰巧的样子"——同样输入，每次输出逐帧一致</text>
+
+  <line x1="30" y1="604" x2="1370" y2="604" stroke="#1e293b" stroke-width="1.2"/>
+  <text class="legH" x="30" y="632">要点</text>
+  <text class="legK" x="30" y="662">为什么拨得动</text>
+  <text class="leg" x="140" y="662">SMIL 有文档级时钟（SVG 根元素的 pauseAnimations / setCurrentTime），CSS @keyframes 在 Web Animations API 里</text>
+  <text class="leg" x="140" y="684">也是可写 currentTime 的对象——两套动画都能被脚本冻住并定位到任意时刻</text>
+  <text class="legK" x="30" y="714">实测</text>
+  <text class="leg" x="140" y="714">1160×540 的交付流程图，4 秒 120 帧，输出 2320×1080 MP4，本机全流程约 14 秒</text>
+  <text class="legK" x="30" y="744">拨不动的</text>
+  <text class="leg" x="140" y="744">JS 驱动（requestAnimationFrame）的动画不归这两个时钟管——那类内容改用 Remotion 这种帧号驱动的框架</text>
+</svg>
