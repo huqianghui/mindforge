@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 830" width="1400" height="830" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <radialGradient id="dot" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ecfeff"/><stop offset="60%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneG { fill: none; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 8 6; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxB { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 700; }
+      .zlG { fill: #94a3b8; font-size: 15px; font-weight: 700; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tg { fill: #94a3b8; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 13px; font-family: Menlo, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .legH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .leg { fill: #cbd5e1; font-size: 13.5px; }
+      .legK { fill: #5eead4; font-size: 13.5px; font-weight: 700; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="830" rx="16"/>
+  <text class="title" x="30" y="44">数字人画面里的 Canvas：不画画面，而是读画面</text>
+  <text class="sub" x="30" y="72">数字人由 &lt;video&gt; 播放；一块不显示的 Canvas 每隔一段时间从视频里抽一帧，读像素后做三件事</text>
+
+  <rect class="zoneG" x="30" y="92" width="270" height="470" rx="12"/>
+  <text class="zlG" x="46" y="118">页面上看到的</text>
+  <rect class="box" x="46" y="134" width="238" height="120" rx="10"/>
+  <text class="h" x="62" y="162">WebRTC 视频流</text>
+  <text class="t" x="62" y="188">服务端渲染好的数字人</text>
+  <text class="t" x="62" y="210">H.264 编码，浏览器解码</text>
+  <text class="t" x="62" y="232">声音走单独的 &lt;audio&gt;</text>
+  <path class="flow" d="M165 254 V290" marker-end="url(#arr)"/>
+  <rect class="box" x="46" y="294" width="238" height="150" rx="10"/>
+  <text class="h" x="62" y="322">&lt;video&gt; 元素</text>
+  <text class="t" x="62" y="348">真正显示数字人的地方</text>
+  <text class="t" x="62" y="370">静音播放，避免浏览器</text>
+  <text class="t" x="62" y="392">自动播放策略拦截</text>
+  <text class="code" x="62" y="424">drawImage(video, …)</text>
+  <text class="tg" x="46" y="490">Canvas 每次只把当前这一帧</text>
+  <text class="tg" x="46" y="512">缩小画进来，再读像素</text>
+
+  <rect class="zone" x="330" y="92" width="660" height="470" rx="12"/>
+  <text class="zl" x="346" y="118">离屏 Canvas：不挂在页面上，只用来读像素</text>
+
+  <rect class="boxB" x="350" y="134" width="620" height="128" rx="10"/>
+  <text class="h" x="368" y="164">① 黑屏检测</text>
+  <text class="t" x="368" y="192">每秒一次，缩到 32×18 再 getImageData（576 个像素）</text>
+  <text class="t" x="368" y="214">算平均亮度，≤ 8 记为一次空帧</text>
+  <text class="t" x="368" y="236">连续 3 次（约 3 秒）判定画面已失效</text>
+  <path id="r1" class="flowA" d="M970 198 H1026" marker-end="url(#arrA)"/>
+  <rect class="boxA" x="1030" y="134" width="340" height="128" rx="10"/>
+  <text class="hA" x="1048" y="164">画面失效时降级</text>
+  <text class="t" x="1048" y="192">先换成上次缓存的肖像</text><text class="t" x="1048" y="214">没有肖像就换成音波球</text>
+  <circle class="badge" cx="998" cy="180" r="11"/><text class="bn" x="998" y="185">1</text>
+  <rect class="boxB" x="350" y="274" width="620" height="128" rx="10"/>
+  <text class="h" x="368" y="304">② 背景取色（照片数字人）</text>
+  <text class="t" x="368" y="332">画面是 512×512 的方块，缩到 64×64 读像素</text>
+  <text class="t" x="368" y="354">只取左右边缘 3% 的列、上方 65% 的高度</text>
+  <text class="t" x="368" y="376">每个颜色通道取中位数，变化 ≥ 3 才更新</text>
+  <path id="r2" class="flow" d="M970 338 H1026" marker-end="url(#arr)"/>
+  <rect class="box" x="1030" y="274" width="340" height="128" rx="10"/>
+  <text class="h" x="1048" y="304">页面背景 = 画面边缘色</text>
+  <text class="t" x="1048" y="332">方块周围看不出色差</text><text class="t" x="1048" y="354">不会多出一圈淡淡的框</text>
+  <circle class="badge" cx="998" cy="320" r="11"/><text class="bn" x="998" y="325">2</text>
+  <rect class="boxB" x="350" y="414" width="620" height="128" rx="10"/>
+  <text class="h" x="368" y="444">③ 缓存静态肖像</text>
+  <text class="t" x="368" y="472">连上 2 秒后，先用 ① 确认这一帧不是黑的</text>
+  <text class="t" x="368" y="494">按宽 480 画进 Canvas，toDataURL 存 JPEG</text>
+  <text class="t" x="368" y="516">质量 0.75，写进浏览器本地存储</text>
+  <path id="r3" class="flow" d="M970 478 H1026" marker-end="url(#arr)"/>
+  <rect class="box" x="1030" y="414" width="340" height="128" rx="10"/>
+  <text class="h" x="1048" y="444">下次进入先显示肖像</text>
+  <text class="t" x="1048" y="472">连接期间就能看到人</text><text class="t" x="1048" y="494">实时画面到了再淡入覆盖</text>
+  <circle class="badge" cx="998" cy="460" r="11"/><text class="bn" x="998" y="465">3</text>
+  <path id="vin" class="flow" d="M284 369 H315 V198 H346"/>
+  <path class="flow" d="M315 369 V338 H346"/>
+  <path class="flow" d="M315 369 V478 H346"/>
+  <circle r="7" fill="url(#dot)"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#vin"/></animateMotion></circle>
+  <text class="zlG" x="1030" y="118">结果</text>
+
+  <line x1="30" y1="590" x2="1370" y2="590" stroke="#1e293b" stroke-width="1.2"/>
+  <text class="legH" x="30" y="618">为什么要读像素</text>
+  <text class="legK" x="30" y="650">①</text>
+  <text class="leg" x="54" y="650">"有帧在到"不等于"画面正常"：解码帧数在涨、字节在流、连接也没断，画面却可能是全黑的。</text>
+  <text class="leg" x="54" y="672">连接层的指标都看不出来，只能看帧里到底是什么；缩小后再读，每秒一次，不和视频解码抢主线程</text>
+  <text class="legK" x="30" y="706">②</text>
+  <text class="leg" x="54" y="706">页面请求的背景色经过 H.264 和 4:2:0 色度采样后会偏几个单位，CSS 直接填请求的颜色反而有色差；</text>
+  <text class="leg" x="54" y="728">从画面自己的边缘取色，和屏幕上实际显示的一致。肩膀碰到边缘、颜色分散时保留上一次的颜色</text>
+  <text class="legK" x="30" y="762">③</text>
+  <text class="leg" x="54" y="762">存之前必须先确认不是黑帧：肖像会在下次最先显示，存一张黑的，一次临时故障就成了永久黑屏。</text>
+  <text class="leg" x="54" y="784">WebRTC 的 MediaStream 帧不会"污染"画布，所以能读像素、能 toDataURL；跨域图片则不行</text>
+</svg>

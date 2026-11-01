@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 770" width="1400" height="770" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .q { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .root { fill: #13213a; stroke: #94a3b8; stroke-width: 1.6; }
+      .leafS { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.8; }
+      .leafC { fill: #10203a; stroke: #38bdf8; stroke-width: 1.8; }
+      .leafG { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 1.8; }
+      .leafR { fill: #111827; stroke: #64748b; stroke-width: 1.6; stroke-dasharray: 6 5; }
+      .hq { fill: #fde68a; font-size: 16px; font-weight: 700; text-anchor: middle; }
+      .hr { fill: #e2e8f0; font-size: 16px; font-weight: 700; text-anchor: middle; }
+      .hS { fill: #5eead4; font-size: 17px; font-weight: 700; }
+      .hC { fill: #7dd3fc; font-size: 17px; font-weight: 700; }
+      .hG { fill: #c4b5fd; font-size: 17px; font-weight: 700; }
+      .hR { fill: #cbd5e1; font-size: 17px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tg { fill: #94a3b8; font-size: 13.5px; }
+      .lab { fill: #fde68a; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .legH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .leg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="770" rx="16"/>
+  <text class="title" x="30" y="44">网页里的动态画面：什么时候才需要 Canvas</text>
+  <text class="sub" x="30" y="72">先问画面跟着什么在变，再问元素有多少；每个分支下面是我实际用过的例子</text>
+
+  <rect class="root" x="520" y="96" width="360" height="64" rx="12"/>
+  <text class="hr" x="700" y="134">要在网页里做一块动态画面</text>
+
+  <rect class="q" x="520" y="206" width="360" height="64" rx="12"/>
+  <text class="hq" x="700" y="244">画面是否跟着实时数据每帧在变？</text>
+  <path class="flow" d="M700 160 V202" marker-end="url(#arr)"/>
+
+  <rect class="leafR" x="960" y="96" width="410" height="150" rx="12"/>
+  <text class="hR" x="980" y="126">离屏 Canvas：只读像素</text>
+  <text class="t" x="980" y="156">· 数字人画面的黑屏检测</text>
+  <text class="t" x="980" y="180">· 照片数字人的背景取色</text>
+  <text class="t" x="980" y="204">· 缓存一帧静态肖像</text>
+  <text class="tg" x="980" y="230">画布不显示，画面本身由 &lt;video&gt; 播放</text>
+  <path class="flow" d="M880 128 H920 V171 H956" marker-end="url(#arr)"/>
+  <text class="lab" x="884" y="118">不画，只读</text>
+
+  <path class="flowA" d="M520 238 H260 V316" marker-end="url(#arrA)"/>
+  <text class="lab" x="300" y="228">否：只跟状态变</text>
+  <path class="flowA" d="M700 270 V316" marker-end="url(#arrA)"/>
+  <text class="lab" x="712" y="300">是</text>
+
+  <rect class="leafS" x="60" y="320" width="400" height="310" rx="12"/>
+  <text class="hS" x="80" y="352">CSS / SVG</text>
+  <text class="t" x="80" y="384">· 状态指示：只区分"在听""在说"</text>
+  <text class="t" x="96" y="406">这类状态，切换颜色和节奏，</text>
+  <text class="t" x="96" y="428">CSS 动画就够，JS 不用每帧参与</text>
+  <text class="t" x="80" y="460">· 演进页主题脉络：几百个圆点，</text>
+  <text class="t" x="96" y="482">每个都能单独 hover / click</text>
+  <text class="t" x="80" y="514">· 文章里的动态流程图</text>
+  <text class="tg" x="80" y="556">好处：元素自带交互、样式统一、</text>
+  <text class="tg" x="80" y="578">AI 能直接读写；动画可交给浏览器</text>
+  <text class="tg" x="80" y="600">自己播放，不占主线程</text>
+
+  <rect class="q" x="520" y="320" width="360" height="64" rx="12"/>
+  <text class="hq" x="700" y="358">元素有多少？要不要 3D？</text>
+  <path class="flow" d="M700 384 V466" marker-end="url(#arr)"/>
+  <text class="lab" x="712" y="430">数量适中，2D</text>
+  <path class="flow" d="M880 352 H1155 V466" marker-end="url(#arr)"/>
+  <text class="lab" x="960" y="342">数量很大，或者要 3D</text>
+
+  <rect class="leafC" x="500" y="470" width="400" height="160" rx="12"/>
+  <text class="hC" x="520" y="502">Canvas 2D</text>
+  <text class="t" x="520" y="532">· Foundry 的音波球：读实时音量，</text>
+  <text class="t" x="536" y="554">每帧按振幅重画波形</text>
+  <text class="t" x="520" y="584">· 知识图谱页：150 节点力导向，</text>
+  <text class="t" x="536" y="606">点中谁靠一块"影子画布"来算</text>
+
+  <rect class="leafG" x="940" y="470" width="430" height="160" rx="12"/>
+  <text class="hG" x="960" y="502">WebGL / WebGPU</text>
+  <text class="t" x="960" y="532">· Remotion 航线视频：MapLibre 用 WebGL</text>
+  <text class="t" x="976" y="554">画地图，Three.js 的 3D 地标作为图层</text>
+  <text class="t" x="976" y="576">共用同一个 WebGL 上下文和相机</text>
+  <text class="tg" x="960" y="610">本质上也是画在 &lt;canvas&gt; 上，只是用 GPU</text>
+
+  <line x1="30" y1="656" x2="1370" y2="656" stroke="#1e293b" stroke-width="1.2"/>
+  <text class="legH" x="30" y="684">选 Canvas 的代价</text>
+  <text class="leg" x="30" y="714">画出来只有像素：AI 和自动化工具看不见里面是什么，只能截图；点中了谁要自己算；离开运行 JS 的网页就是一片空白。</text>
+  <text class="leg" x="30" y="740">所以能用 CSS / SVG 表达的，不急着上 Canvas；画面真的要跟着实时数据或大量元素每帧在变，才值得付这个代价。</text>
+</svg>
