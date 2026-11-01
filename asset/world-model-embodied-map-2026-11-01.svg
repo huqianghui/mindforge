@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="950" viewBox="0 0 1400 950" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgEM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <marker id="aT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aY" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#facc15"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+  </defs>
+  <style>
+    @keyframes dashEM { to { stroke-dashoffset: -28; } }
+    @keyframes coreEM { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dashEM 1.2s linear infinite; }
+    .flowY { fill: none; stroke: #facc15; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dashEM 1.2s linear infinite; }
+    .flowG { fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 4 6; animation: dashEM 2s linear infinite; }
+    .core { animation: coreEM 2.6s ease-in-out infinite; }
+    .zl { font-size: 15px; font-weight: 600; }
+    .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+    .t { fill: #cbd5e1; font-size: 13.5px; }
+    .tG { fill: #94a3b8; font-size: 13.5px; }
+    .bn { fill: #0b1220; font-size: 13px; font-weight: 700; text-anchor: middle; }
+  </style>
+
+  <rect width="1400" height="950" rx="18" fill="url(#bgEM)"/>
+  <rect x="1" y="1" width="1398" height="948" rx="17" fill="none" stroke="#1e293b"/>
+  <text x="30" y="44" font-size="22" font-weight="700" fill="#f8fafc">以世界模型为主线读具身智能：五个子系列各管闭环的哪一段</text>
+  <text x="30" y="72" font-size="14" fill="#94a3b8">中间那个 s′ = f(s, a) 是主线；左边回答"世界现在什么样"，右边回答"该做什么"，底部是反馈和数据的来源。编号 ①–⑦ 是一次决策的数据流</text>
+
+  <!-- ===== Zone A：表示 ===== -->
+  <rect x="30" y="100" width="340" height="470" rx="14" fill="#120f24" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="10 6"/>
+  <text class="zl" x="48" y="128" fill="#c4b5fd">表示 · 世界现在是什么样</text>
+  <rect x="48" y="146" width="304" height="160" rx="10" fill="#1a1533" stroke="#a78bfa" stroke-width="1.5"/>
+  <text class="h" x="64" y="174">感知编码器：观测 o → 状态 s</text>
+  <text class="t" x="64" y="202">像素、深度、点云压成可计算的状态</text>
+  <text class="t" x="64" y="226">VGGT 前馈几何 · 3DGS 场景</text>
+  <text class="t" x="64" y="250">语义地图 · Spatial Memory</text>
+  <text class="tG" x="64" y="282">转过身去，杯子还在——这是状态的事</text>
+  <rect x="48" y="322" width="304" height="230" rx="10" fill="#141024" stroke="#6d5bb5" stroke-width="1.2"/>
+  <text class="h15" x="64" y="350" fill="#c4b5fd">空间智能系列</text>
+  <text class="t" x="64" y="380">01 状态 vs 状态转移</text>
+  <text class="t" x="64" y="406">02 显式与隐式空间表达</text>
+  <text class="t" x="64" y="432">03 3D 内容生产的两条路线</text>
+  <text class="t" x="64" y="458">04 神经 3D 生成的开源版图</text>
+  <text class="tG" x="64" y="492">显式 3D 路线在感知侧的展开，</text>
+  <text class="tG" x="64" y="514">也是世界模型的"输入端"</text>
+
+  <!-- ===== Zone B：预测 ===== -->
+  <rect x="400" y="100" width="600" height="470" rx="14" fill="#1a1607" stroke="#facc15" stroke-width="1.4" stroke-dasharray="10 6"/>
+  <text class="zl" x="418" y="128" fill="#fde68a">预测 · 如果我这么做，世界会怎样（世界模型系列）</text>
+  <rect class="core" x="430" y="146" width="540" height="160" rx="12" fill="#2a2208" stroke="#facc15" stroke-width="2.2"/>
+  <text x="450" y="182" font-size="20" font-weight="700" fill="#fde68a">转移模型　s′ = f(s, a)</text>
+  <text class="t" x="450" y="214">输入当前状态和一个动作，输出动作之后的世界</text>
+  <text class="t" x="450" y="240">对任务中立：条件里没有目标，输出里没有"好坏"</text>
+  <text class="t" x="450" y="266">两种用法：被规划器反复调用（③④），或当训练场（⑦）</text>
+  <text class="tG" x="450" y="292">01 讲清它是一个角色，不是一种架构</text>
+
+  <rect x="430" y="322" width="130" height="118" rx="10" fill="#221c08" stroke="#ca8a04" stroke-width="1.3"/>
+  <text class="h15" x="446" y="350">像素</text>
+  <text class="t" x="446" y="378">Genie · Cosmos</text>
+  <text class="tG" x="446" y="404">世界模型 05</text>
+  <text class="tG" x="446" y="426">逼真但会漂</text>
+  <rect x="567" y="322" width="130" height="118" rx="10" fill="#221c08" stroke="#ca8a04" stroke-width="1.3"/>
+  <text class="h15" x="583" y="350">潜空间</text>
+  <text class="t" x="583" y="378">V-JEPA 2</text>
+  <text class="tG" x="583" y="404">世界模型 04</text>
+  <text class="tG" x="583" y="426">省算力难验证</text>
+  <rect x="704" y="322" width="130" height="118" rx="10" fill="#221c08" stroke="#ca8a04" stroke-width="1.3"/>
+  <text class="h15" x="720" y="350">显式 3D</text>
+  <text class="t" x="720" y="378">Marble</text>
+  <text class="tG" x="720" y="404">空间智能 04</text>
+  <text class="tG" x="720" y="426">一致但数据贵</text>
+  <rect x="841" y="322" width="130" height="118" rx="10" fill="#221c08" stroke="#ca8a04" stroke-width="1.3"/>
+  <text class="h15" x="857" y="350">物理方程</text>
+  <text class="t" x="857" y="378">Isaac · MuJoCo</text>
+  <text class="tG" x="857" y="404">落地实践 03</text>
+  <text class="tG" x="857" y="426">可靠但难建模</text>
+
+  <rect x="430" y="456" width="540" height="96" rx="10" fill="#1d1808" stroke="#a16207" stroke-width="1.2"/>
+  <text class="h15" x="446" y="482">边界</text>
+  <text class="t" x="446" y="508">世界模型 02：和 LLM 差在动作条件化，不在是否自回归</text>
+  <text class="t" x="446" y="534">世界模型 03：和 RL 差在学的是 s′ 还是 a，判别看三要素</text>
+
+  <!-- ===== Zone C：决策与行动 ===== -->
+  <rect x="1030" y="100" width="340" height="470" rx="14" fill="#08182a" stroke="#38bdf8" stroke-width="1.4" stroke-dasharray="10 6"/>
+  <text class="zl" x="1048" y="128" fill="#7dd3fc">决策与行动 · 该做什么</text>
+  <rect x="1048" y="146" width="304" height="160" rx="10" fill="#0e2338" stroke="#38bdf8" stroke-width="1.5"/>
+  <text class="h" x="1064" y="174">规划器 + 评估器</text>
+  <text class="t" x="1064" y="202">采样一批候选动作，逐条问世界模型</text>
+  <text class="t" x="1064" y="226">评估器对后果打分（知道任务）</text>
+  <text class="t" x="1064" y="250">选最好那条的第一步去执行</text>
+  <text class="tG" x="1064" y="282">机器人系统 03：七个角色的分工</text>
+  <rect x="1048" y="322" width="304" height="118" rx="10" fill="#0b2422" stroke="#2dd4bf" stroke-width="1.5"/>
+  <text class="h" x="1064" y="350">VLA 策略：a = π(o, 指令)</text>
+  <text class="t" x="1064" y="378">VLA 01–03：动作头、扩散与分工</text>
+  <text class="t" x="1064" y="402">VLA 04–05：π 系列完整演进</text>
+  <text class="tG" x="1064" y="426">产生动作，世界模型消费动作</text>
+  <rect x="1048" y="456" width="304" height="96" rx="10" fill="#0e2338" stroke="#0284c7" stroke-width="1.2"/>
+  <text class="h15" x="1064" y="482">三层频率回路 · 硬件形态</text>
+  <text class="t" x="1064" y="508">机器人系统 02：0.1 / 10 / 1000 Hz</text>
+  <text class="t" x="1064" y="532">机器人系统 01：形态与生态</text>
+
+  <!-- ===== Zone D：真实世界与数据 ===== -->
+  <rect x="30" y="600" width="1340" height="160" rx="14" fill="#07190f" stroke="#34d399" stroke-width="1.4" stroke-dasharray="10 6"/>
+  <rect x="48" y="612" width="1304" height="52" rx="10" fill="#0c2417" stroke="#34d399" stroke-width="1.5"/>
+  <text class="h15" x="64" y="644">物理世界</text>
+  <text class="t" x="150" y="644">连续、有噪声、不可回滚——观测从这里来（①），动作落到这里（⑤），预测误差也从这里回流（⑥）</text>
+  <text class="zl" x="48" y="690" fill="#6ee7b7">落地实践系列</text>
+  <rect x="160" y="676" width="370" height="70" rx="10" fill="#0c2417" stroke="#34d399" stroke-width="1.2"/>
+  <text class="h15" x="176" y="702">01 · 数据飞轮与 VITRA</text>
+  <text class="t" x="176" y="728">人类视频转成机器人语料</text>
+  <rect x="550" y="676" width="400" height="70" rx="10" fill="#0c2417" stroke="#34d399" stroke-width="1.2"/>
+  <text class="h15" x="566" y="702">02 · 自动驾驶与世界模型</text>
+  <text class="t" x="566" y="728">驾驶数据天然带动作，最早跑通</text>
+  <rect x="970" y="676" width="382" height="70" rx="10" fill="#0c2417" stroke="#34d399" stroke-width="1.2"/>
+  <text class="h15" x="986" y="702">03 · 分层选型</text>
+  <text class="t" x="986" y="728">从哪一层入场、每层选什么</text>
+
+  <!-- ===== flows ===== -->
+  <!-- ① 真实世界 → 表示 -->
+  <line class="flow" x1="200" y1="610" x2="200" y2="556" marker-end="url(#aT)"/>
+  <circle cx="222" cy="585" r="11" fill="#2dd4bf"/><text class="bn" x="222" y="590">1</text>
+  <!-- ② 状态 s → 转移模型 -->
+  <line class="flow" x1="352" y1="226" x2="426" y2="226" marker-end="url(#aT)"/>
+  <circle cx="385" cy="206" r="11" fill="#2dd4bf"/><text class="bn" x="385" y="211">2</text>
+  <!-- ③ 候选动作 a ← 规划器 -->
+  <line class="flow" x1="1046" y1="196" x2="974" y2="196" marker-end="url(#aT)"/>
+  <circle cx="1015" cy="176" r="11" fill="#2dd4bf"/><text class="bn" x="1015" y="181">3</text>
+  <!-- ④ 预测后果 s′ → 规划器 -->
+  <line class="flowY" x1="974" y1="262" x2="1046" y2="262" marker-end="url(#aY)"/>
+  <circle cx="1015" cy="284" r="11" fill="#facc15"/><text class="bn" x="1015" y="289">4</text>
+  <!-- ⑤ 执行动作 → 真实世界 -->
+  <line class="flow" x1="1200" y1="554" x2="1200" y2="608" marker-end="url(#aT)"/>
+  <circle cx="1222" cy="585" r="11" fill="#2dd4bf"/><text class="bn" x="1222" y="590">5</text>
+  <!-- ⑥ 真实结果 vs 预测 → 修正世界模型 -->
+  <line class="flowY" x1="640" y1="610" x2="640" y2="556" marker-end="url(#aY)"/>
+  <circle cx="662" cy="585" r="11" fill="#facc15"/><text class="bn" x="662" y="590">6</text>
+  <!-- ⑦ 想象中训练 / 合成数据 → 策略 -->
+  <line class="flowG" x1="974" y1="400" x2="1046" y2="400" marker-end="url(#aG)"/>
+  <circle cx="1015" cy="380" r="11" fill="#94a3b8"/><text class="bn" x="1015" y="385">7</text>
+
+  <!-- ===== legend ===== -->
+  <rect x="30" y="780" width="1340" height="152" rx="14" fill="#0f172a" stroke="#1e293b"/>
+  <text class="t" x="52" y="812">① 传感器把真实世界变成观测，编码器压成状态 s</text>
+  <text class="t" x="52" y="840">② 状态 s 送进转移模型</text>
+  <text class="t" x="52" y="868">③ 规划器采样一批候选动作 a，逐条交给世界模型</text>
+  <text class="t" x="52" y="896">④ 世界模型返回每条动作的后果 s′，评估器打分、规划器选出最好的一步</text>
+  <text class="t" x="720" y="812">⑤ 选中的动作交给 VLA / 控制器，在三层频率回路里执行</text>
+  <text class="t" x="720" y="840">⑥ 真实结果和预测之差回流，持续修正世界模型</text>
+  <text class="t" x="720" y="868">⑦ 不进决策回路时，世界模型当训练场或数据工厂，喂给策略</text>
+  <text class="tG" x="720" y="896">色块对应子系列：紫=空间智能 · 金=世界模型 · 蓝=机器人系统 · 青=VLA · 绿=落地实践</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="680" viewBox="0 0 1400 680" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgMV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <marker id="axMV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <marker id="aMV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+  </defs>
+  <style>
+    @keyframes pulseMV { 0%,100% { opacity: 0.9; } 50% { opacity: 0.35; } }
+    @keyframes dashMV { to { stroke-dashoffset: -28; } }
+    .hot { animation: pulseMV 2.4s ease-in-out infinite; }
+    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dashMV 1.2s linear infinite; }
+    .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .t { fill: #cbd5e1; font-size: 13.5px; }
+    .tG { fill: #94a3b8; font-size: 13.5px; }
+    .lbR { fill: #fecaca; font-size: 14px; }
+    .lbB { fill: #bae6fd; font-size: 14px; }
+  </style>
+
+  <rect width="1400" height="680" rx="18" fill="url(#bgMV)"/>
+  <rect x="1" y="1" width="1398" height="678" rx="17" fill="none" stroke="#1e293b"/>
+  <text x="30" y="44" font-size="22" font-weight="700" fill="#f8fafc">Moravec 悖论：对人越容易的事，对机器往往越难</text>
+  <text x="30" y="72" font-size="14" fill="#94a3b8">Hans Moravec 1988 年的观察，到今天 LLM 时代反而更明显——考试和写代码先被攻下，叠衣服、拧瓶盖还没有</text>
+
+  <!-- ===== 左：难度倒置 ===== -->
+  <rect x="30" y="96" width="690" height="560" rx="14" fill="#0f172a" stroke="#1e293b"/>
+  <line x1="110" y1="590" x2="690" y2="590" stroke="#64748b" stroke-width="1.6" marker-end="url(#axMV)"/>
+  <line x1="110" y1="590" x2="110" y2="130" stroke="#64748b" stroke-width="1.6" marker-end="url(#axMV)"/>
+  <text class="tG" x="520" y="622">对人类的难度 →</text>
+  <text class="tG" x="54" y="124">对机器</text>
+  <text class="tG" x="54" y="144">的难度 ↑</text>
+  <line x1="120" y1="580" x2="670" y2="150" stroke="#475569" stroke-width="1.4" stroke-dasharray="6 6"/>
+  <text class="tG" x="455" y="345" transform="rotate(-38 455 345)">直觉以为的样子：人难的机器也难</text>
+
+  <!-- 人易机难 -->
+  <rect class="hot" x="128" y="150" width="270" height="200" rx="12" fill="#2a1215" stroke="#f87171" stroke-width="1.6"/>
+  <text class="h" x="146" y="178" fill="#fecaca">人易 · 机器难</text>
+  <circle cx="152" cy="206" r="5" fill="#f87171"/><text class="lbR" x="166" y="211">叠一件皱巴巴的衣服</text>
+  <circle cx="152" cy="236" r="5" fill="#f87171"/><text class="lbR" x="166" y="241">拧开一个没见过的瓶盖</text>
+  <circle cx="152" cy="266" r="5" fill="#f87171"/><text class="lbR" x="166" y="271">接住抛过来的球</text>
+  <circle cx="152" cy="296" r="5" fill="#f87171"/><text class="lbR" x="166" y="301">在乱糟糟的房间里找钥匙</text>
+  <circle cx="152" cy="326" r="5" fill="#f87171"/><text class="lbR" x="166" y="331">走过湿滑不平的台阶</text>
+
+  <!-- 人难机易 -->
+  <rect x="420" y="390" width="270" height="180" rx="12" fill="#0b1f33" stroke="#38bdf8" stroke-width="1.6"/>
+  <text class="h" x="438" y="418" fill="#bae6fd">人难 · 机器易</text>
+  <circle cx="444" cy="446" r="5" fill="#38bdf8"/><text class="lbB" x="458" y="451">国际象棋、围棋</text>
+  <circle cx="444" cy="476" r="5" fill="#38bdf8"/><text class="lbB" x="458" y="481">微积分、竞赛数学</text>
+  <circle cx="444" cy="506" r="5" fill="#38bdf8"/><text class="lbB" x="458" y="511">写代码、过律师考试</text>
+  <circle cx="444" cy="536" r="5" fill="#38bdf8"/><text class="lbB" x="458" y="541">把一篇论文翻译成英文</text>
+
+  <!-- ===== 右：为什么 ===== -->
+  <text class="h" x="760" y="124" fill="#f8fafc">为什么会倒过来：三个原因</text>
+
+  <rect x="760" y="140" width="610" height="110" rx="12" fill="#10203a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text class="h" x="778" y="168">① 进化时间不同</text>
+  <text class="t" x="778" y="196">感知和运动打磨了几亿年，已经内化成"不费力"的本能；</text>
+  <text class="t" x="778" y="220">抽象推理只有几万年，我们还能意识到它难，也写得出它的规则</text>
+
+  <rect x="760" y="262" width="610" height="110" rx="12" fill="#10203a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text class="h" x="778" y="290">② 数据形态不同</text>
+  <text class="t" x="778" y="318">文本是人已经压缩好的离散符号，互联网上现成就有；</text>
+  <text class="t" x="778" y="342">物理世界是连续、高维、带噪声的场，带动作的交互数据极少</text>
+
+  <rect x="760" y="384" width="610" height="110" rx="12" fill="#10203a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text class="h" x="778" y="412">③ 反馈方式不同</text>
+  <text class="t" x="778" y="440">文本答错了可以重写，评判可以靠人或模型打分；</text>
+  <text class="t" x="778" y="464">动作做错了不能回滚，评判来自物理后果，代价高且慢</text>
+
+  <line class="flow" x1="1065" y1="496" x2="1065" y2="528" marker-end="url(#aMV)"/>
+  <rect x="760" y="534" width="610" height="122" rx="12" fill="#0f2626" stroke="#2dd4bf" stroke-width="1.8"/>
+  <text class="h" x="778" y="562" fill="#5eead4">世界模型补的就是这一块</text>
+  <text class="t" x="778" y="590">从视频和交互里学"动作之后世界怎么变"（对应 ②），</text>
+  <text class="t" x="778" y="614">让试错先在模型里发生，真机只执行选好的那一步（对应 ③）</text>
+  <text class="tG" x="778" y="640">① 没有捷径：只能靠更多带动作的数据去补</text>
+</svg>

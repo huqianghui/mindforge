@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="740" viewBox="0 0 1400 740" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
+  <defs>
+    <linearGradient id="bgWL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1424"/>
+      <stop offset="1" stop-color="#0a0f1c"/>
+    </linearGradient>
+    <linearGradient id="pastWL" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <radialGradient id="ptWL" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ccfbf1"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <style>
+    @keyframes flowWL { to { stroke-dashoffset: -64; } }
+    @keyframes ringWL { 0%,100% { r: 13; opacity: 0.9; } 50% { r: 26; opacity: 0.15; } }
+    @keyframes cardWL { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    .flowWL { stroke-dasharray: 14 18; animation: flowWL 1.4s linear infinite; }
+    .ringWL { animation: ringWL 2s ease-out infinite; }
+    .nowCard { animation: cardWL 2.4s ease-in-out infinite; }
+    .card { fill: #10203a; stroke: #2dd4bf; stroke-width: 1.4; }
+    .yr { fill: #5eead4; font-size: 15px; font-weight: 700; }
+    .nm { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+    .t { fill: #cbd5e1; font-size: 13.5px; }
+    .tA { fill: #fde68a; font-size: 13.5px; }
+    .tG { fill: #94a3b8; font-size: 13.5px; }
+    .lab { fill: #e2e8f0; font-size: 15px; font-weight: 600; text-anchor: middle; }
+  </style>
+
+  <rect width="1400" height="740" rx="18" fill="url(#bgWL)"/>
+  <rect x="1" y="1" width="1398" height="738" rx="17" fill="none" stroke="#1e293b"/>
+  <text x="36" y="48" font-size="22" font-weight="700" fill="#f8fafc">世界模型八十年：从"脑内小模型"到产业基座</text>
+  <text x="36" y="76" font-size="14" fill="#94a3b8">同一个问题一路传下来——"如果我这么做，世界会怎样"；变的是模型从手写方程变成从数据学出来，再变成能被智能体反复调用的基础设施</text>
+
+  <!-- axis -->
+  <line x1="60" y1="370" x2="1350" y2="370" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+  <line x1="60" y1="370" x2="1230" y2="370" stroke="url(#pastWL)" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <line class="flowWL" x1="60" y1="370" x2="1230" y2="370" stroke="#5eead4" stroke-width="3"/>
+  <line x1="1230" y1="370" x2="1350" y2="370" stroke="#334155" stroke-width="3" stroke-dasharray="6 6"/>
+  <circle r="7" fill="url(#ptWL)">
+    <animateMotion dur="6s" repeatCount="indefinite" path="M60,370 L1230,370"/>
+  </circle>
+  <circle r="5" fill="url(#ptWL)">
+    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M60,370 L1230,370"/>
+  </circle>
+
+  <!-- leader lines -->
+  <g stroke="#2dd4bf" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.7">
+    <line x1="110" y1="300" x2="110" y2="358"/>
+    <line x1="270" y1="382" x2="270" y2="430"/>
+    <line x1="430" y1="300" x2="430" y2="358"/>
+    <line x1="590" y1="382" x2="590" y2="430"/>
+    <line x1="750" y1="300" x2="750" y2="358"/>
+    <line x1="910" y1="382" x2="910" y2="430"/>
+    <line x1="1070" y1="300" x2="1070" y2="358"/>
+  </g>
+  <line x1="1230" y1="384" x2="1230" y2="430" stroke="#fbbf24" stroke-width="1.4" stroke-dasharray="3 4"/>
+  <line x1="1312" y1="300" x2="1312" y2="362" stroke="#475569" stroke-width="1.2" stroke-dasharray="3 4"/>
+
+  <!-- nodes -->
+  <g fill="#0d1424" stroke="#2dd4bf" stroke-width="3">
+    <circle cx="110" cy="370" r="9"/><circle cx="270" cy="370" r="9"/><circle cx="430" cy="370" r="9"/>
+    <circle cx="590" cy="370" r="9"/><circle cx="750" cy="370" r="9"/><circle cx="910" cy="370" r="9"/>
+    <circle cx="1070" cy="370" r="9"/>
+  </g>
+  <circle class="ringWL" cx="1230" cy="370" r="13" fill="none" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="1230" cy="370" r="10" fill="#fbbf24"/>
+  <circle cx="1312" cy="370" r="7" fill="#0d1424" stroke="#475569" stroke-width="2" stroke-dasharray="3 3"/>
+
+  <!-- ① 1943 above -->
+  <rect class="card" x="40" y="110" width="290" height="190" rx="12"/>
+  <text class="yr" x="58" y="140">① 1943</text>
+  <text class="nm" x="58" y="166">心智模型（Craik）</text>
+  <text class="t" x="58" y="196">《解释的本质》：智能体脑内有一个</text>
+  <text class="t" x="58" y="218">"小规模的世界模型"</text>
+  <text class="t" x="58" y="246">行动之前，先在脑内排演几种做法</text>
+  <text class="t" x="58" y="268">的后果，再挑一个去做</text>
+
+  <!-- ② MPC below -->
+  <rect class="card" x="125" y="430" width="290" height="190" rx="12"/>
+  <text class="yr" x="143" y="460">② 1970s–90s</text>
+  <text class="nm" x="143" y="486">MPC · 前向模型</text>
+  <text class="t" x="143" y="516">工业控制用显式动力学方程</text>
+  <text class="t" x="143" y="538">往前推 N 步，只执行第一步</text>
+  <text class="t" x="143" y="566">机器人学预测下一刻传感器读数</text>
+  <text class="tG" x="143" y="594">模型是人写的，不是学出来的</text>
+
+  <!-- ③ Dyna above -->
+  <rect class="card" x="360" y="110" width="290" height="190" rx="12"/>
+  <text class="yr" x="378" y="140">③ 1990</text>
+  <text class="nm" x="378" y="166">Dyna（Sutton）</text>
+  <text class="t" x="378" y="196">策略学习的同时学一个环境模型</text>
+  <text class="t" x="378" y="218">预测 (s, a) → (s′, r)</text>
+  <text class="t" x="378" y="246">用模型生成的"想象经验"补充</text>
+  <text class="t" x="378" y="268">昂贵的真实交互</text>
+
+  <!-- ④ World Models below -->
+  <rect class="card" x="445" y="430" width="290" height="190" rx="12"/>
+  <text class="yr" x="463" y="460">④ 2018 · Ha &amp; Schmidhuber</text>
+  <text class="nm" x="463" y="486">World Models：V · M · C</text>
+  <text class="t" x="463" y="516">V 把画面压成几十维潜变量</text>
+  <text class="t" x="463" y="538">M 按动作预测下一个潜状态</text>
+  <text class="t" x="463" y="560">C 只是一个很小的控制器</text>
+  <text class="t" x="463" y="590">赛车游戏里，策略完全在"梦"里训练</text>
+
+  <!-- ⑤ Dreamer above -->
+  <rect class="card" x="665" y="110" width="275" height="190" rx="12"/>
+  <text class="yr" x="683" y="140">⑤ 2019–2023</text>
+  <text class="nm" x="683" y="166">Dreamer · MuZero</text>
+  <text class="t" x="683" y="196">RSSM 在潜空间里想象几百万步</text>
+  <text class="t" x="683" y="218">训练 actor-critic</text>
+  <text class="t" x="683" y="246">MuZero 让 reward / value 塑造模型</text>
+  <text class="t" x="683" y="268">DreamerV3 一套超参跨 150+ 任务</text>
+
+  <!-- ⑥ 2024 below -->
+  <rect class="card" x="765" y="430" width="290" height="190" rx="12"/>
+  <text class="yr" x="783" y="460">⑥ 2024</text>
+  <text class="nm" x="783" y="486">视频即世界</text>
+  <text class="t" x="783" y="516">Sora 自称"世界模拟器"</text>
+  <text class="t" x="783" y="538">Genie 从无标注视频学出潜在动作</text>
+  <text class="t" x="783" y="566">V-JEPA 不生成像素，只预测特征</text>
+  <text class="tG" x="783" y="594">"世界模型"从 RL 术语变成行业热词</text>
+
+  <!-- ⑦ 2025 above -->
+  <rect class="card" x="955" y="110" width="272" height="190" rx="12"/>
+  <text class="yr" x="971" y="140">⑦ 2025</text>
+  <text class="nm" x="971" y="166">四条路线并进</text>
+  <text class="t" x="971" y="194">Genie 3 实时可交互、分钟级一致</text>
+  <text class="t" x="971" y="216">Cosmos 开源 WFM 平台</text>
+  <text class="t" x="971" y="238">V-JEPA 2 零样本机器人规划</text>
+  <text class="t" x="971" y="260">Marble 生成可导出的 3D 世界</text>
+  <text class="t" x="971" y="282">SIMA 2 在 Genie 3 世界里自我改进</text>
+
+  <!-- ⑧ 2026 now below -->
+  <rect class="nowCard" x="1085" y="430" width="290" height="190" rx="12" fill="#2a1f0b" stroke="#fbbf24" stroke-width="2"/>
+  <text x="1103" y="460" font-size="15" font-weight="700" fill="#fbbf24">⑧ 2026 · 现在</text>
+  <text x="1103" y="486" font-size="16" font-weight="600" fill="#fde68a">从模型到基础设施</text>
+  <text class="tA" x="1103" y="516">LeCun 离开 Meta 创办 AMI Labs</text>
+  <text class="tA" x="1103" y="538">押注 JEPA 路线</text>
+  <text class="tA" x="1103" y="566">Waymo 驾驶 / 仿真 / 评估</text>
+  <text class="tA" x="1103" y="588">共用同一个基础模型</text>
+  <text class="tA" x="1103" y="610">Project Genie 面向用户开放</text>
+
+  <!-- future above -->
+  <rect x="1238" y="190" width="148" height="110" rx="12" fill="#111827" stroke="#475569" stroke-width="1.4" stroke-dasharray="6 5"/>
+  <text x="1254" y="218" font-size="15" font-weight="600" fill="#94a3b8">下一步？</text>
+  <text class="tG" x="1254" y="244">物理可信度</text>
+  <text class="tG" x="1254" y="266">怎么验证</text>
+  <text class="tG" x="1254" y="288">潜空间怎么审计</text>
+
+  <!-- legend -->
+  <rect x="36" y="650" width="1328" height="64" rx="12" fill="#0f172a" stroke="#1e293b"/>
+  <line x1="60" y1="682" x2="110" y2="682" stroke="#2dd4bf" stroke-width="3" class="flowWL"/>
+  <text class="t" x="120" y="687">已发生：模型从"手写方程"（①②）走到"从交互中学"（③④⑤），再到"从海量视频中学"（⑥⑦）</text>
+  <circle cx="900" cy="682" r="8" fill="#fbbf24"/>
+  <text class="t" x="916" y="687">当前：资本与产品化</text>
+  <line x1="1070" y1="682" x2="1120" y2="682" stroke="#475569" stroke-width="3" stroke-dasharray="6 6"/>
+  <text class="t" x="1130" y="687">未解决：可信与可审计</text>
+</svg>
