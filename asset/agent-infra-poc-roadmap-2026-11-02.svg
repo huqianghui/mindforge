@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .done { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .now { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2.2; animation: pulse 2.2s ease-in-out infinite; }
+      .plan { fill: #111827; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .hGray { fill: #cbd5e1; font-size: 16px; font-weight: 600; }
+      .lbl { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .lblAmber { fill: #fbbf24; font-size: 13px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lineDone { stroke: #2dd4bf; stroke-width: 4; stroke-dasharray: 12 8; animation: dash 1.2s linear infinite; }
+      .linePlan { stroke: #334155; stroke-width: 3; stroke-dasharray: 6 8; }
+      .nodeDone { fill: #0f766e; stroke: #5eead4; stroke-width: 2; }
+      .nodeNow { fill: #92400e; stroke: #fcd34d; stroke-width: 2.4; }
+      .nodePlan { fill: #1e293b; stroke: #475569; stroke-width: 2; }
+      .halo { fill: #fbbf24; opacity: 0.25; animation: breathe 1.8s ease-in-out infinite; }
+      .nl { fill: #f8fafc; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .tag { font-size: 14px; font-weight: 600; text-anchor: middle; }
+      @keyframes dash { to { stroke-dashoffset: -40; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+      @keyframes breathe { 0%,100% { opacity: 0.1; } 50% { opacity: 0.45; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="760" rx="16"/>
+  <text class="title" x="30" y="44">下一步：四个 PoC，每个都复用前一个的产物</text>
+  <text class="sub" x="30" y="72">青色为已完成，琥珀色为建议马上开始的一个，灰色为排在后面的；每个 PoC 都控制在一到几天的规模</text>
+
+  <!-- 时间轴 -->
+  <line class="lineDone" x1="150" y1="130" x2="420" y2="130"/>
+  <line class="linePlan" x1="420" y1="130" x2="1250" y2="130"/>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2s" repeatCount="indefinite" path="M150,130 L420,130"/>
+  </circle>
+
+  <circle class="nodeDone" cx="150" cy="130" r="18"/><text class="nl" x="150" y="135">✓</text>
+  <circle class="halo" cx="420" cy="130" r="30"/>
+  <circle class="nodeNow" cx="420" cy="130" r="18"/><text class="nl" x="420" y="135">1</text>
+  <circle class="nodePlan" cx="697" cy="130" r="18"/><text class="nl" x="697" y="135">2</text>
+  <circle class="nodePlan" cx="974" cy="130" r="18"/><text class="nl" x="974" y="135">3</text>
+  <circle class="nodePlan" cx="1250" cy="130" r="18"/><text class="nl" x="1250" y="135">4</text>
+
+  <text class="tag" x="150" y="174" fill="#5eead4">概念与选型</text>
+  <text class="tag" x="420" y="174" fill="#fde68a">执行面</text>
+  <text class="tag" x="697" y="174" fill="#cbd5e1">同一 agent 两种 runtime</text>
+  <text class="tag" x="974" y="174" fill="#cbd5e1">Substrate 超售</text>
+  <text class="tag" x="1250" y="174" fill="#cbd5e1">长任务续跑</text>
+
+  <!-- 卡片 0 -->
+  <rect class="done" x="30" y="196" width="240" height="420" rx="12"/>
+  <text class="h" x="46" y="224">已完成</text>
+  <text class="t" x="46" y="252">01 三层划分与自建路线</text>
+  <text class="t" x="46" y="276">02 Kubernetes 上的沙箱</text>
+  <text class="t" x="46" y="300">03 kagent 与 Substrate</text>
+  <text class="t" x="46" y="324">04 framework 与三层串联</text>
+  <text class="tGray" x="46" y="364">结论：三层可以分别选，</text>
+  <text class="tGray" x="46" y="386">能不能换取决于接口——</text>
+  <text class="tGray" x="46" y="408">镜像、协议、外置状态、</text>
+  <text class="tGray" x="46" y="430">身份与 trace</text>
+  <text class="tGray" x="46" y="470">还没验证过的：</text>
+  <text class="tGray" x="46" y="492">AKS 上的实际数字，</text>
+  <text class="tGray" x="46" y="514">以及同一份代码真的</text>
+  <text class="tGray" x="46" y="536">能不改就换 runtime</text>
+
+  <!-- 卡片 1 -->
+  <rect class="now" x="290" y="196" width="260" height="420" rx="12"/>
+  <text class="hAmber" x="306" y="224">PoC 1 · 执行面</text>
+  <text class="lblAmber" x="306" y="252">做什么</text>
+  <text class="t" x="306" y="274">AKS 开 Kata 节点池，</text>
+  <text class="t" x="306" y="296">装 agent-sandbox，</text>
+  <text class="t" x="306" y="318">配预热池与 router 鉴权</text>
+  <text class="lblAmber" x="306" y="350">量什么</text>
+  <text class="t" x="306" y="372">limits 与每节点沙箱数</text>
+  <text class="t" x="306" y="394">预热领取 vs 冷启动耗时</text>
+  <text class="t" x="306" y="416">出站按域名拦截是否生效</text>
+  <text class="lblAmber" x="306" y="448">产出</text>
+  <text class="t" x="306" y="470">一份可复用的沙箱模板</text>
+  <text class="t" x="306" y="492">和一组实测数字</text>
+  <text class="tGray" x="306" y="532">最小、最确定，</text>
+  <text class="tGray" x="306" y="554">后面三个都用得上</text>
+
+  <!-- 卡片 2 -->
+  <rect class="plan" x="570" y="196" width="254" height="420" rx="12"/>
+  <text class="hGray" x="586" y="224">PoC 2 · 换 runtime</text>
+  <text class="lbl" x="586" y="252">做什么</text>
+  <text class="t" x="586" y="274">用 MAF 写一个会跑</text>
+  <text class="t" x="586" y="296">Python 的分析 agent，</text>
+  <text class="t" x="586" y="318">同一镜像上 Hosted Agent</text>
+  <text class="t" x="586" y="340">和 kagent BYO Agent</text>
+  <text class="lbl" x="586" y="372">量什么</text>
+  <text class="t" x="586" y="394">要改多少代码与配置</text>
+  <text class="t" x="586" y="416">每会话冷启动与成本</text>
+  <text class="t" x="586" y="438">Agent ID 与 trace 是否一致</text>
+  <text class="lbl" x="586" y="470">产出</text>
+  <text class="t" x="586" y="492">给客户的托管与自建对比</text>
+  <text class="tGray" x="586" y="532">执行代码用 PoC 1 的沙箱</text>
+
+  <!-- 卡片 3 -->
+  <rect class="plan" x="844" y="196" width="260" height="420" rx="12"/>
+  <text class="hGray" x="860" y="224">PoC 3 · Substrate</text>
+  <text class="lbl" x="860" y="252">做什么</text>
+  <text class="t" x="860" y="274">AKS 上装 Substrate 与</text>
+  <text class="t" x="860" y="296">kagent SandboxAgent，</text>
+  <text class="t" x="860" y="318">快照用 S3 兼容存储</text>
+  <text class="lbl" x="860" y="350">量什么</text>
+  <text class="t" x="860" y="372">恢复延迟的分位数</text>
+  <text class="t" x="860" y="394">worker 数与会话数之比</text>
+  <text class="t" x="860" y="416">身份与凭据注入是否正确</text>
+  <text class="lbl" x="860" y="448">产出</text>
+  <text class="t" x="860" y="470">它在 Azure 上能不能用、</text>
+  <text class="t" x="860" y="492">离生产还差什么</text>
+  <text class="tGray" x="860" y="532">pre-1.0，结论有时效</text>
+
+  <!-- 卡片 4 -->
+  <rect class="plan" x="1124" y="196" width="246" height="420" rx="12"/>
+  <text class="hGray" x="1140" y="224">PoC 4 · 长任务续跑</text>
+  <text class="lbl" x="1140" y="252">做什么</text>
+  <text class="t" x="1140" y="274">用 Dapr Workflow 包</text>
+  <text class="t" x="1140" y="296">一个要等人审批的</text>
+  <text class="t" x="1140" y="318">多步 agent 任务</text>
+  <text class="lbl" x="1140" y="350">量什么</text>
+  <text class="t" x="1140" y="372">中途杀 pod 能否续上</text>
+  <text class="t" x="1140" y="394">已完成步骤是否重复</text>
+  <text class="t" x="1140" y="416">调用模型、浪费 token</text>
+  <text class="lbl" x="1140" y="448">产出</text>
+  <text class="t" x="1140" y="470">系列后续一篇，</text>
+  <text class="t" x="1140" y="492">补上持久执行这一维</text>
+
+  <!-- 底部 -->
+  <rect class="done" x="30" y="640" width="1340" height="96" rx="12"/>
+  <text class="h" x="50" y="670">为什么从执行面开始</text>
+  <text class="t" x="50" y="696">它不依赖任何 pre-1.0 项目，一两天能出结果；Kata 规格、预热池、出站拦截这几个数字，客户方案里马上用得上，</text>
+  <text class="t" x="50" y="720">而 PoC 2 要执行代码、PoC 3 要对比冷启动，都要先有这套沙箱作为基线</text>
+</svg>

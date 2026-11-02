@@ -188,7 +188,7 @@ spec:
 - **Azure 上要补的**：S3 兼容的快照存储、在 AKS 上的安装路径、microVM 类别需要的嵌套虚拟化节点规格，都要自己验证。
 - **跟进 kagent 的新 API**：主线迁移到 Substrate 会带来破坏性变更，API 提案还在讨论中，现在基于 v0.10.x 写的 CRD 将来要迁移。
 
-持久执行这一维——agent 在 Dapr Workflow 上怎么做到崩溃后从断点续跑——放到下一篇。
+持久执行这一维——agent 在 Dapr Workflow 上怎么做到崩溃后从断点续跑——留给后续的 PoC；Framework 层的对比和三层怎么串起来，见 [系列 04](../agent-framework/Agent基础设施系列04：Framework层与三层串联.md)。
 
 ## 相关阅读
 

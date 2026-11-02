@@ -62,6 +62,10 @@
 - [Agent 基础设施系列 02：Kubernetes 上的 Agent 沙箱](Notes/AI/agent/agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md)
 - [Agent 基础设施系列 03：kagent 与 Agent Substrate](Notes/AI/agent/agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)
 
+### Notes/AI/agent/agent-framework
+
+- [Agent 基础设施系列 04：Framework 层与三层串联](Notes/AI/agent/agent-framework/Agent基础设施系列04：Framework层与三层串联.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)

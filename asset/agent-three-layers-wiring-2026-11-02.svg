@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fde68a"/>
+      <stop offset="0.5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .chip { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneTeal { fill: none; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneV { fill: #0d1729; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zl { fill: #7dd3fc; font-size: 16px; font-weight: 600; }
+      .zlTeal { fill: #5eead4; font-size: 16px; font-weight: 600; }
+      .zlv { fill: #cbd5e1; font-size: 14px; font-weight: 600; }
+      .zq { fill: #94a3b8; font-size: 13.5px; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 14px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tAmber { fill: #fde68a; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.4; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .badgeGray { fill: #334155; stroke: #94a3b8; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="990" rx="16"/>
+  <text class="title" x="30" y="44">三层串起来：每层可以换，换得动靠的是层与层之间的接口</text>
+  <text class="sub" x="30" y="72">琥珀色小框是跨层的接口；①~⑤ 是几种典型组合，琥珀色虚线是下一步 PoC 要验证的"同一个 agent 换 runtime"</text>
+
+  <!-- ===== Platform ===== -->
+  <rect class="zone" x="30" y="92" width="1340" height="120" rx="12"/>
+  <text class="zl" x="48" y="116">Platform：谁来发现、授权、治理</text>
+  <rect class="box" x="48" y="128" width="312" height="70" rx="10"/>
+  <text class="h" x="64" y="154">Agent 365</text>
+  <text class="t" x="64" y="178">统一台账，可纳管第三方和自建 agent</text>
+  <rect class="box" x="376" y="128" width="312" height="70" rx="10"/>
+  <text class="h" x="392" y="154">Entra Agent ID</text>
+  <text class="t" x="392" y="178">Blueprint 管认证，Identity 管授权</text>
+  <rect class="box" x="704" y="128" width="312" height="70" rx="10"/>
+  <text class="h" x="720" y="154">agentgateway / APIM</text>
+  <text class="t" x="720" y="178">模型、MCP、A2A 流量统一过网关</text>
+  <rect class="box" x="1032" y="128" width="320" height="70" rx="10"/>
+  <text class="h" x="1048" y="154">OpenTelemetry → App Insights</text>
+  <text class="t" x="1048" y="178">按 agent 身份归集 trace 与成本</text>
+
+  <!-- 接口 1 -->
+  <rect class="chip" x="380" y="222" width="640" height="40" rx="20"/>
+  <text class="hAmber" x="700" y="248" text-anchor="middle">接口：agent 身份 · 网关路由 · OTel trace —— 自建和托管的 agent 都按这三样接入</text>
+
+  <!-- ===== Framework / Harness ===== -->
+  <rect class="zoneTeal" x="30" y="272" width="1340" height="236" rx="12"/>
+  <text class="zlTeal" x="48" y="296">Framework / Harness：agent 怎么想、怎么调工具</text>
+
+  <rect class="zoneV" x="48" y="310" width="520" height="182" rx="10"/>
+  <text class="zlv" x="64" y="334">代码框架：自己搭 harness</text>
+  <text class="t" x="64" y="360">Microsoft Agent Framework · LangGraph</text>
+  <text class="t" x="64" y="384">Google ADK · OpenAI Agents SDK · Dapr Agents</text>
+  <text class="tGray" x="64" y="414">harness 归你：loop、状态、编排、审批都能改</text>
+  <text class="tGray" x="64" y="438">产物是一个容器镜像，runtime 可以换</text>
+  <text class="tGray" x="64" y="462">代价：harness 的质量也归你</text>
+
+  <rect class="zoneV" x="584" y="310" width="380" height="182" rx="10"/>
+  <text class="zlv" x="600" y="334">现成 harness：拿来即用</text>
+  <text class="t" x="600" y="360">Claude Code · Codex · GitHub Copilot</text>
+  <text class="t" x="600" y="384">OpenClaw · Hermes · OpenHands · Goose</text>
+  <text class="tGray" x="600" y="414">行为由别人调好，靠 skill、MCP、</text>
+  <text class="tGray" x="600" y="438">hook 扩展；本身就是不可信执行环境</text>
+  <text class="tGray" x="600" y="462">适合整个跑进沙箱</text>
+
+  <rect class="boxGray" x="980" y="310" width="372" height="182" rx="10"/>
+  <text class="hGray" x="996" y="334">平台托管 harness：不能改</text>
+  <text class="tGray" x="996" y="360">Foundry Prompt Agent 运行时</text>
+  <text class="tGray" x="996" y="384">Copilot Studio Standard / Copilot Chat</text>
+  <text class="tGray" x="996" y="414">配置即 agent，上手最快</text>
+  <text class="tGray" x="996" y="438">新能力要等平台排期，只能跑在</text>
+  <text class="tGray" x="996" y="462">自家运行时上</text>
+
+  <!-- 接口 2 -->
+  <rect class="chip" x="240" y="518" width="920" height="40" rx="20"/>
+  <text class="hAmber" x="700" y="544" text-anchor="middle">接口：容器镜像 · 调用协议（Responses / Invocations / A2A / ACP）· 外置的状态存储 —— 守住这三样，runtime 就能换</text>
+
+  <!-- ===== Runtime ===== -->
+  <rect class="zone" x="30" y="568" width="1340" height="222" rx="12"/>
+  <text class="zl" x="470" y="592">Runtime：在哪跑、怎么隔离、怎么续</text>
+
+  <rect class="zoneV" x="48" y="628" width="520" height="146" rx="10"/>
+  <text class="zlv" x="64" y="652">托管</text>
+  <rect class="box" x="64" y="664" width="236" height="96" rx="8"/>
+  <text class="h" x="78" y="688">Foundry Hosted Agent</text>
+  <text class="t" x="78" y="712">per-session VM 沙箱</text>
+  <text class="t" x="78" y="734">闲置回收、恢复带状态</text>
+  <rect class="boxGray" x="316" y="664" width="236" height="96" rx="8"/>
+  <text class="hGray" x="330" y="688">平台自带运行时</text>
+  <text class="tGray" x="330" y="712">Prompt Agent、</text>
+  <text class="tGray" x="330" y="734">Copilot Studio</text>
+
+  <rect class="zoneV" x="584" y="628" width="768" height="146" rx="10"/>
+  <text class="zlv" x="600" y="652">自建（AKS）</text>
+  <rect class="box" x="600" y="664" width="236" height="96" rx="8"/>
+  <text class="h" x="614" y="688">kagent</text>
+  <text class="t" x="614" y="712">BYO / 声明式 Agent、</text>
+  <text class="t" x="614" y="734">SandboxAgent、AgentHarness</text>
+  <rect class="box" x="852" y="664" width="236" height="96" rx="8"/>
+  <text class="h" x="866" y="688">Kata + 沙箱编排</text>
+  <text class="t" x="866" y="712">agent-sandbox /</text>
+  <text class="t" x="866" y="734">OpenSandbox</text>
+  <rect class="box" x="1104" y="664" width="232" height="96" rx="8"/>
+  <text class="h" x="1118" y="688">Substrate · Dapr</text>
+  <text class="t" x="1118" y="712">actor 快照复用 /</text>
+  <text class="t" x="1118" y="734">持久执行</text>
+
+  <!-- ===== 组合流 ===== -->
+  <path class="flow" d="M180,492 L180,664" marker-end="url(#arr)"/>
+  <circle class="badge" cx="200" cy="610" r="12"/><text class="bn" x="200" y="615">①</text>
+  <path id="poc" class="flowAmber" d="M420,492 L420,612 L700,612 L700,664" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="560" cy="612" r="12"/><text class="bn" x="560" y="617">②</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2.8s" repeatCount="indefinite"><mpath href="#poc"/></animateMotion>
+  </circle>
+  <path class="flow" d="M880,492 L880,616 L1200,616 L1200,664" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1040" cy="616" r="12"/><text class="bn" x="1040" y="621">③</text>
+  <circle class="badgeGray" cx="1160" cy="300" r="12"/><text class="bn" x="1160" y="305">④</text>
+  <path class="flow" d="M18,712 L18,163 L48,163" marker-end="url(#arr)"/>
+  <circle class="badge" cx="18" cy="420" r="12"/><text class="bn" x="18" y="425">⑤</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="826">组合图例</text>
+  <text class="el" x="30" y="854">① 自己的 framework 代码打成镜像，交给 Foundry Hosted Agent 托管：framework 自选、runtime 托管</text>
+  <text class="el" x="30" y="880">② 同一个镜像不改代码部署到 AKS 上的 kagent（BYO Agent），执行代码交给 Kata 沙箱：runtime 也换成自己的</text>
+  <text class="el" x="30" y="906">③ Claude Code、OpenClaw 这类现成 harness 本身就是不可信环境，直接作为 AgentHarness 或 Substrate actor 整个跑进沙箱</text>
+  <text class="el" x="30" y="932">④ 平台托管 harness 只能跑在自家运行时上，换 runtime 就意味着换 harness</text>
+  <text class="el" x="30" y="958">⑤ 不管跑在哪，agent 都申请 Entra Agent ID、过网关、吐 OTel trace，在 Platform 层汇到同一张台账</text>
+</svg>
