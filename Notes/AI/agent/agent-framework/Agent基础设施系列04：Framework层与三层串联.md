@@ -62,6 +62,14 @@ Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copi
 
 Foundry 正好同时有两种情况：Prompt Agent 的 harness 就是 Foundry 托管的运行时，和 Copilot Studio 一样绑死；Hosted Agent 的 harness 是你容器里的代码，Foundry 只提供每个会话一个 VM 沙箱的执行环境。判断标准只有一个：**harness 是不是平台自己的代码**。是，就和 runtime 绑在一起；不是，runtime 只是宿主，两边可以各自选。
 
+### 一张图看清：每种选择把哪几层定死了
+
+把上面这些组合放进同一张矩阵，结论就很直观：**没有哪个产品是"没有这些层"，只是替你把其中几层定死了。**
+
+![各种选择在三层上的锁定矩阵|900](../../../../asset/agent-layer-lockin-matrix-2026-11-02.svg)
+
+给客户选平台和服务时，我会让他们先在这张图上找到自己的那一行，再看三件事：哪几格是琥珀色，也就是平台替你定死了；这几格里有没有你将来一定要改的东西，比如隔离强度、出站策略、换模型、换编排方式；以及 Platform 那一列能不能统一。Copilot Studio 和 Prompt Agent 适合"定死也没关系"的场景；一旦预见到要改 harness，就至少要走到 Hosted Agent 那一行；要改隔离和出站，就要走到自建。
+
 ## 二、五个代码框架怎么选
 
 | 框架 | 编排方式 | 状态与恢复 | 在这套栈里的位置 |

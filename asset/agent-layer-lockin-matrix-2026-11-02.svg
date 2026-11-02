@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="axis" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .hd { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
+      .lock { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
+      .free { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.4; }
+      .mix { fill: #10203a; stroke: #38bdf8; stroke-width: 1.4; }
+      .name { fill: #111827; stroke: #334155; stroke-width: 1.2; }
+      .can { fill: #111827; stroke: #334155; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .grp { fill: none; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 8 6; }
+      .gl { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .th { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .tq { fill: #94a3b8; font-size: 13px; }
+      .nm { fill: #e2e8f0; font-size: 14.5px; font-weight: 600; }
+      .nmSub { fill: #94a3b8; font-size: 13px; }
+      .tagL { fill: #fbbf24; font-size: 13px; font-weight: 700; }
+      .tagF { fill: #5eead4; font-size: 13px; font-weight: 700; }
+      .tagM { fill: #7dd3fc; font-size: 13px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1000" rx="16"/>
+  <text class="title" x="30" y="44">每种选择都有这三层，区别只是哪几层被平台定死了</text>
+  <text class="sub" x="30" y="72">琥珀色 = 平台定死，你只能配置；青色 = 你自己选，也要自己负责；蓝色 = 有默认或现成选项，可以替换；左侧色条从上到下，平台定死的层越来越少</text>
+
+  <!-- 表头 -->
+  <rect class="hd" x="60" y="92" width="250" height="56" rx="6"/>
+  <text class="th" x="76" y="126">选项</text>
+  <rect class="hd" x="318" y="92" width="300" height="56" rx="6"/>
+  <text class="th" x="334" y="116">Framework / Harness</text>
+  <text class="tq" x="334" y="138">agent 怎么想、怎么调工具</text>
+  <rect class="hd" x="626" y="92" width="300" height="56" rx="6"/>
+  <text class="th" x="642" y="116">Runtime</text>
+  <text class="tq" x="642" y="138">在哪跑、怎么隔离、怎么续</text>
+  <rect class="hd" x="934" y="92" width="200" height="56" rx="6"/>
+  <text class="th" x="950" y="116">Platform</text>
+  <text class="tq" x="950" y="138">身份、台账、治理</text>
+  <rect class="hd" x="1142" y="92" width="228" height="56" rx="6"/>
+  <text class="th" x="1158" y="116">你实际能动的</text>
+  <text class="tq" x="1158" y="138">在被定死的范围里</text>
+
+  <!-- 左侧轴 -->
+  <rect x="30" y="160" width="8" height="660" rx="4" fill="url(#axis)"/>
+
+  <!-- ===== Copilot Studio 组 ===== -->
+  <rect class="grp" x="52" y="158" width="1326" height="282" rx="10"/>
+  <text class="gl" x="1290" y="174">Copilot Studio</text>
+
+  <!-- row1 Standard -->
+  <rect class="name" x="60" y="184" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="208">Standard</text>
+  <text class="nmSub" x="76" y="230">harness 选项之一</text>
+  <rect class="lock" x="318" y="184" width="300" height="58" rx="6"/>
+  <text class="tagL" x="334" y="206">定死</text>
+  <text class="t" x="334" y="230">topics + 分支的规则驱动</text>
+  <rect class="lock" x="626" y="184" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="206">定死</text>
+  <text class="t" x="642" y="230">Power Platform 经典运行时</text>
+  <rect class="lock" x="934" y="184" width="200" height="58" rx="6"/>
+  <text class="tagL" x="950" y="206">定死</text>
+  <text class="t" x="950" y="230">Power Platform 环境</text>
+  <rect class="can" x="1142" y="184" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="208">topics、知识、</text>
+  <text class="t" x="1158" y="230">Connector、渠道</text>
+
+  <!-- row2 GitHub Copilot -->
+  <rect class="name" x="60" y="248" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="272">GitHub Copilot</text>
+  <text class="nmSub" x="76" y="294">新建 agent 的默认项</text>
+  <rect class="lock" x="318" y="248" width="300" height="58" rx="6"/>
+  <text class="tagL" x="334" y="270">定死</text>
+  <text class="t" x="334" y="294">现成的自主 loop</text>
+  <rect class="lock" x="626" y="248" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="270">定死</text>
+  <text class="t" x="642" y="294">Agentic Runtime + Bash 容器</text>
+  <rect class="lock" x="934" y="248" width="200" height="58" rx="6"/>
+  <text class="tagL" x="950" y="270">定死</text>
+  <text class="t" x="950" y="294">Power Platform 环境</text>
+  <rect class="can" x="1142" y="248" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="272">指令、skills、</text>
+  <text class="t" x="1158" y="294">工具、memory</text>
+
+  <!-- row3 Copilot Chat -->
+  <rect class="name" x="60" y="312" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="336">Copilot Chat</text>
+  <text class="nmSub" x="76" y="358">挂在 M365 Copilot 里</text>
+  <rect class="lock" x="318" y="312" width="300" height="58" rx="6"/>
+  <text class="tagL" x="334" y="334">定死</text>
+  <text class="t" x="334" y="358">M365 Copilot 的编排器</text>
+  <rect class="lock" x="626" y="312" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="334">定死</text>
+  <text class="t" x="642" y="358">M365 Copilot</text>
+  <rect class="lock" x="934" y="312" width="200" height="58" rx="6"/>
+  <text class="tagL" x="950" y="334">定死</text>
+  <text class="t" x="950" y="358">M365 租户</text>
+  <rect class="can" x="1142" y="312" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="336">指令、知识、动作</text>
+  <text class="tGray" x="1158" y="358">只给内部用户</text>
+
+  <!-- row4 Customer Conversation -->
+  <rect class="name" x="60" y="376" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="400">Customer Conversation</text>
+  <text class="nmSub" x="76" y="422">预览，面向外部客户</text>
+  <rect class="lock" x="318" y="376" width="300" height="58" rx="6"/>
+  <text class="tagL" x="334" y="398">定死</text>
+  <text class="t" x="334" y="422">主 agent + 子 agent + 转人工</text>
+  <rect class="lock" x="626" y="376" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="398">定死</text>
+  <text class="t" x="642" y="422">平台运行时（具体服务未核实）</text>
+  <rect class="lock" x="934" y="376" width="200" height="58" rx="6"/>
+  <text class="tagL" x="950" y="398">定死</text>
+  <text class="t" x="950" y="422">Power Platform 环境</text>
+  <rect class="can" x="1142" y="376" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="400">子 agent、知识、</text>
+  <text class="t" x="1158" y="422">升级路径、电话号码</text>
+
+  <!-- ===== Foundry 组 ===== -->
+  <rect class="grp" x="52" y="452" width="1326" height="154" rx="10"/>
+  <text class="gl" x="1316" y="468">Foundry</text>
+
+  <!-- row5 Prompt Agent -->
+  <rect class="name" x="60" y="478" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="502">Prompt Agent</text>
+  <text class="nmSub" x="76" y="524">Foundry 帮你运行</text>
+  <rect class="lock" x="318" y="478" width="300" height="58" rx="6"/>
+  <text class="tagL" x="334" y="500">定死</text>
+  <text class="t" x="334" y="524">Foundry 托管的工具调用循环</text>
+  <rect class="lock" x="626" y="478" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="500">定死</text>
+  <text class="t" x="642" y="524">Foundry Agent Service</text>
+  <rect class="mix" x="934" y="478" width="200" height="58" rx="6"/>
+  <text class="tagM" x="950" y="500">默认 + 可接入</text>
+  <text class="t" x="950" y="524">Entra Agent ID</text>
+  <rect class="can" x="1142" y="478" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="502">指令、模型、</text>
+  <text class="t" x="1158" y="524">工具与 MCP</text>
+
+  <!-- row6 Hosted Agent -->
+  <rect class="name" x="60" y="542" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="566">Hosted Agent</text>
+  <text class="nmSub" x="76" y="588">你写代码，Foundry 托管</text>
+  <rect class="free" x="318" y="542" width="300" height="58" rx="6"/>
+  <text class="tagF" x="334" y="564">你选</text>
+  <text class="t" x="334" y="588">MAF / LangGraph / Agents SDK</text>
+  <rect class="lock" x="626" y="542" width="300" height="58" rx="6"/>
+  <text class="tagL" x="642" y="564">定死</text>
+  <text class="t" x="642" y="588">per-session VM 沙箱</text>
+  <rect class="mix" x="934" y="542" width="200" height="58" rx="6"/>
+  <text class="tagM" x="950" y="564">默认 + 可接入</text>
+  <text class="t" x="950" y="588">Entra Agent ID</text>
+  <rect class="can" x="1142" y="542" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="566">agent 的全部代码</text>
+  <text class="tGray" x="1158" y="588">和容器镜像</text>
+
+  <!-- ===== 自建组 ===== -->
+  <rect class="grp" x="52" y="618" width="1326" height="218" rx="10"/>
+  <text class="gl" x="1284" y="634">自建（AKS）</text>
+
+  <!-- row7 kagent + MAF -->
+  <rect class="name" x="60" y="644" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="668">kagent BYO Agent</text>
+  <text class="nmSub" x="76" y="690">自己的 framework 代码</text>
+  <rect class="free" x="318" y="644" width="300" height="58" rx="6"/>
+  <text class="tagF" x="334" y="666">你选</text>
+  <text class="t" x="334" y="690">MAF / LangGraph / ADK 等</text>
+  <rect class="free" x="626" y="644" width="300" height="58" rx="6"/>
+  <text class="tagF" x="642" y="666">你选</text>
+  <text class="t" x="642" y="690">kagent + Kata 沙箱执行代码</text>
+  <rect class="free" x="934" y="644" width="200" height="58" rx="6"/>
+  <text class="tagF" x="950" y="666">你选</text>
+  <text class="t" x="950" y="690">可登记进 Agent 365</text>
+  <rect class="can" x="1142" y="644" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="668">全部，包括</text>
+  <text class="t" x="1158" y="690">隔离强度与出站策略</text>
+
+  <!-- row8 AgentHarness -->
+  <rect class="name" x="60" y="708" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="732">kagent AgentHarness</text>
+  <text class="nmSub" x="76" y="754">现成 harness 进沙箱</text>
+  <rect class="mix" x="318" y="708" width="300" height="58" rx="6"/>
+  <text class="tagM" x="334" y="730">选哪个现成的</text>
+  <text class="t" x="334" y="754">OpenClaw、Hermes、自定义镜像</text>
+  <rect class="free" x="626" y="708" width="300" height="58" rx="6"/>
+  <text class="tagF" x="642" y="730">你选</text>
+  <text class="t" x="642" y="754">Substrate（gVisor / microVM）</text>
+  <rect class="free" x="934" y="708" width="200" height="58" rx="6"/>
+  <text class="tagF" x="950" y="730">你选</text>
+  <text class="t" x="950" y="754">可登记进 Agent 365</text>
+  <rect class="can" x="1142" y="708" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="732">harness 的配置、</text>
+  <text class="t" x="1158" y="754">沙箱与网络</text>
+
+  <!-- row9 全自建 -->
+  <rect class="name" x="60" y="772" width="250" height="58" rx="6"/>
+  <text class="nm" x="76" y="796">完全自建</text>
+  <text class="nmSub" x="76" y="818">任意 framework + 自有平台</text>
+  <rect class="free" x="318" y="772" width="300" height="58" rx="6"/>
+  <text class="tagF" x="334" y="794">你选</text>
+  <text class="t" x="334" y="818">任意框架或自写 harness</text>
+  <rect class="free" x="626" y="772" width="300" height="58" rx="6"/>
+  <text class="tagF" x="642" y="794">你选</text>
+  <text class="t" x="642" y="818">任意容器平台</text>
+  <rect class="free" x="934" y="772" width="200" height="58" rx="6"/>
+  <text class="tagF" x="950" y="794">你选</text>
+  <text class="t" x="950" y="818">自有台账与网关</text>
+  <rect class="can" x="1142" y="772" width="228" height="58" rx="6"/>
+  <text class="t" x="1158" y="796">全部，运维也</text>
+  <text class="t" x="1158" y="818">全部归你</text>
+
+  <!-- ===== 读法 ===== -->
+  <text class="elh" x="30" y="874">怎么读这张表</text>
+  <text class="el" x="30" y="902">· 每一行都有 Framework、Runtime、Platform 三层，没有哪个产品是"没有这些层"，只是替你做了决定</text>
+  <text class="el" x="30" y="928">· 同一行里琥珀色的格子越多，上手越快、可控性越低；harness 一旦被定死，runtime 通常也一起被定死（Copilot Studio 的四种、Foundry Prompt Agent）</text>
+  <text class="el" x="30" y="954">· Hosted Agent 是唯一"harness 你选、runtime 定死"的组合；再往下，runtime 也交回给你，换来的是隔离、出站、成本都要自己管</text>
+  <text class="el" x="30" y="980">· Platform 一列大多可以统一：无论哪一行，agent 都可以有 Entra Agent ID、登记进 Agent 365，治理不必跟着 runtime 走</text>
+</svg>
