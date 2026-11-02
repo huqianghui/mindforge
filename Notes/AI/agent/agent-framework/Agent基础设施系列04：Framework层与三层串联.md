@@ -51,6 +51,17 @@ Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copi
 
 剩下的 Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation 都属于"只能配置"的那一类：harness 和 runtime 绑在一起，换 runtime 就要重写 agent。Copilot Studio 自己的"不能互转"就是这条规律的直接体现。
 
+### 不同的 harness 是不是对应不同的 runtime
+
+在 Copilot Studio 里是的：Standard 跑在 Power Platform 的经典运行时上，GitHub Copilot 跑在 Agentic Runtime 上，Copilot Chat 由 M365 Copilot 的编排器执行（Customer Conversation 跑在哪套服务上，我还没有核实）。原因是在这类平台里，"运行时"本身就是 harness 的实现——经典运行时就是按 topics 和分支走的那套逻辑，Agentic Runtime 就是自主 loop 的那套逻辑。选 harness 就等于选 runtime，所以创建后不能互转，能从哪里调用、怎么计费也跟着不同。
+
+自建或"自带 harness"的栈里，两者是解耦的。这里的 runtime 指执行环境——在哪跑、怎么隔离、怎么挂起和恢复，harness 只是跑在里面的一个进程：
+
+- **一个 runtime 托管多种 harness**：kagent 的 Harness 字段可以选 Go / Python ADK、Claude Code、Codex 或自定义镜像，都跑在同一套 kagent / Substrate 上；
+- **一种 harness 跑在多个 runtime 上**：Microsoft Agent Framework 写的 agent 打成镜像，既能上 Foundry Hosted Agent，也能上 AKS 的 kagent。
+
+Foundry 正好同时有两种情况：Prompt Agent 的 harness 就是 Foundry 托管的运行时，和 Copilot Studio 一样绑死；Hosted Agent 的 harness 是你容器里的代码，Foundry 只提供每个会话一个 VM 沙箱的执行环境。判断标准只有一个：**harness 是不是平台自己的代码**。是，就和 runtime 绑在一起；不是，runtime 只是宿主，两边可以各自选。
+
 ## 二、五个代码框架怎么选
 
 | 框架 | 编排方式 | 状态与恢复 | 在这套栈里的位置 |
