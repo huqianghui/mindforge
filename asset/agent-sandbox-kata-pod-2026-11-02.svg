@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxRed { fill: #2a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .vmA { fill: #17130a; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .vmB { fill: #0d1a24; stroke: #2dd4bf; stroke-width: 1.8; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .zlTeal { fill: #5eead4; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .hRed { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tAmber { fill: #fde68a; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tRed { fill: #fca5a5; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .flowRed { fill: none; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeGray { fill: #334155; stroke: #94a3b8; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .x { fill: #f87171; font-size: 22px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">AKS Pod Sandboxing：一个 Kata pod 的隔离边界与进出路径</text>
+  <text class="sub" x="30" y="72">琥珀色框是一个 pod VM 的边界；①~⑤ 依次是进站、调试、出站三类路径，红色表示走不通或被拒绝</text>
+
+  <!-- ===== 左侧：进站方 ===== -->
+  <text class="zl" x="30" y="112">进站方</text>
+  <rect class="box" x="30" y="300" width="230" height="104" rx="10"/>
+  <text class="h" x="46" y="326">sandbox-router</text>
+  <text class="t" x="46" y="350">按 X-Sandbox-ID 等请求头</text>
+  <text class="t" x="46" y="372">转发到对应沙箱的</text>
+  <text class="t" x="46" y="394">headless Service</text>
+
+  <rect class="boxGray" x="30" y="126" width="230" height="92" rx="10"/>
+  <text class="hGray" x="46" y="152">kubectl port-forward</text>
+  <text class="tGray" x="46" y="176">kubelet 在宿主 netns 里</text>
+  <text class="tGray" x="46" y="198">拨 127.0.0.1:端口</text>
+
+  <!-- ===== 中间：Kata 节点 ===== -->
+  <rect class="zone" x="290" y="96" width="800" height="604" rx="12"/>
+  <text class="zl" x="308" y="120">Kata 节点（Azure Linux · KataVmIsolation 节点池）</text>
+  <rect class="boxBlue" x="308" y="134" width="764" height="58" rx="8"/>
+  <text class="h" x="324" y="160">宿主层</text>
+  <text class="t" x="392" y="160">节点内核 · kubelet · containerd + Kata shim · 宿主网络命名空间</text>
+  <text class="tGray" x="324" y="182">节点自动带标签 kata-vm-isolation=true 与污点 kata=enabled:NoSchedule</text>
+
+  <!-- Pod VM A -->
+  <rect class="vmA" x="308" y="212" width="400" height="470" rx="12"/>
+  <text class="zlAmber" x="326" y="238">Pod VM A（独立 guest kernel）</text>
+  <text class="tAmber" x="326" y="262">内存固定为 pod 的 memory limit，未设则 512Mi</text>
+  <text class="tAmber" x="326" y="284">vCPU 按 CPU limit 向上取整到整核</text>
+
+  <rect class="box" x="326" y="302" width="364" height="96" rx="10"/>
+  <text class="h" x="342" y="328">agent / 工作负载容器</text>
+  <text class="t" x="342" y="352">监听 8080，跑在 guest 里，不在宿主 netns</text>
+  <text class="t" x="342" y="374">只拿到占位凭据，真实密钥不进 VM 内进程</text>
+
+  <rect class="box" x="326" y="412" width="364" height="82" rx="10"/>
+  <text class="h" x="342" y="438">执行器 / 工具进程</text>
+  <text class="t" x="342" y="462">运行模型生成的代码、shell、浏览器</text>
+  <text class="tGray" x="342" y="484">与 agent 容器共享同一个 VM</text>
+
+  <rect class="box" x="326" y="508" width="364" height="96" rx="10"/>
+  <text class="h" x="342" y="534">egress sidecar（可选）</text>
+  <text class="t" x="342" y="558">按域名白名单放行出站</text>
+  <text class="t" x="342" y="580">匹配规则后在请求上注入真实凭据</text>
+
+  <text class="tGray" x="326" y="630">同一 pod 的多个容器共享这一个 VM</text>
+  <text class="tGray" x="326" y="652">隔离单位是 pod，不是容器</text>
+
+  <!-- Pod VM B -->
+  <rect class="vmB" x="726" y="212" width="346" height="470" rx="12"/>
+  <text class="zlTeal" x="744" y="238">Pod VM B（另一个用户的沙箱）</text>
+  <rect class="box" x="744" y="262" width="310" height="96" rx="10"/>
+  <text class="h" x="760" y="288">agent 容器</text>
+  <text class="t" x="760" y="312">自己的内核、进程表、文件系统</text>
+  <text class="t" x="760" y="334">A 的逃逸只落在 A 的 VM 里</text>
+  <rect class="boxGray" x="744" y="380" width="310" height="128" rx="10"/>
+  <text class="hGray" x="760" y="406">这一层不负责的事</text>
+  <text class="tGray" x="760" y="430">谁有权用这个沙箱（应用鉴权）</text>
+  <text class="tGray" x="760" y="452">拿合法 token 做越权操作</text>
+  <text class="tGray" x="760" y="474">同集群内 pod 间的网络访问</text>
+  <text class="tGray" x="760" y="496">（交给 NetworkPolicy 与网关）</text>
+  <rect class="boxGray" x="744" y="530" width="310" height="128" rx="10"/>
+  <text class="hGray" x="760" y="556">Kata pod 的已知限制</text>
+  <text class="tGray" x="760" y="580">不支持 host network</text>
+  <text class="tGray" x="760" y="602">Defender for Containers 不评估</text>
+  <text class="tGray" x="760" y="624">Azure Files / 本地 SSD 的 IOPS</text>
+  <text class="tGray" x="760" y="646">可能达不到 runc 容器的上限</text>
+
+  <!-- ===== 右侧：出站目标 ===== -->
+  <text class="zl" x="1120" y="112">出站目标</text>
+  <rect class="box" x="1120" y="270" width="250" height="84" rx="10"/>
+  <text class="h" x="1136" y="296">模型端点</text>
+  <text class="t" x="1136" y="320">Foundry / Azure OpenAI</text>
+  <text class="t" x="1136" y="342">在白名单内</text>
+  <rect class="box" x="1120" y="380" width="250" height="84" rx="10"/>
+  <text class="h" x="1136" y="406">受控业务 API</text>
+  <text class="t" x="1136" y="430">只读接口，按路径授权</text>
+  <text class="t" x="1136" y="452">由代理注入凭据</text>
+  <rect class="boxRed" x="1120" y="530" width="250" height="84" rx="10"/>
+  <text class="hRed" x="1136" y="556">其他任意域名</text>
+  <text class="tRed" x="1136" y="580">不在白名单，连接被拒</text>
+  <text class="tRed" x="1136" y="602">外传数据的路被堵住</text>
+
+  <!-- ===== 路径 ===== -->
+  <!-- ① router → VM A agent -->
+  <path id="inPath" class="flow" d="M260,350 L326,350" marker-end="url(#arr)"/>
+  <circle class="badge" cx="284" cy="330" r="13"/><text class="bn" x="284" y="335">①</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#inPath"/></animateMotion>
+  </circle>
+  <!-- ② port-forward ✗ -->
+  <path class="flowRed" d="M260,163 L308,163" marker-end="url(#arrRed)"/>
+  <circle class="badgeGray" cx="284" cy="143" r="13"/><text class="bn" x="284" y="148">②</text>
+  <text class="x" x="284" y="196">✗</text>
+  <!-- ③ agent → sidecar -->
+  <path class="flow" d="M690,370 L700,370 L700,556 L690,556" marker-end="url(#arr)"/>
+  <circle class="badge" cx="700" cy="462" r="13"/><text class="bn" x="700" y="467">③</text>
+  <!-- ④ sidecar → 允许目标 -->
+  <path id="outPath" class="flow" d="M690,540 L716,540 L716,718 L1100,718 L1100,312 L1120,312" marker-end="url(#arr)"/>
+  <path class="flow" d="M1100,422 L1120,422" marker-end="url(#arr)"/>
+  <circle class="badge" cx="900" cy="718" r="13"/><text class="bn" x="900" y="723">④</text>
+  <circle r="6" fill="url(#particle)">
+    <animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#outPath"/></animateMotion>
+  </circle>
+  <!-- ⑤ → 其他域名 ✗ -->
+  <path class="flowRed" d="M1100,572 L1120,572" marker-end="url(#arrRed)"/>
+  <circle class="badgeGray" cx="1100" cy="620" r="13"/><text class="bn" x="1100" y="625">⑤</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="752">路径图例</text>
+  <text class="el" x="30" y="780">① 正常进站：请求先到 sandbox-router，按请求头找到沙箱的 headless Service，进入 guest 里的 8080 端口</text>
+  <text class="el" x="30" y="806">② port-forward 走不通：kubelet 在宿主网络命名空间里拨 127.0.0.1，而服务监听在 guest VM 里，连接被拒；调试改用 kubectl exec</text>
+  <text class="el" x="30" y="832">③ 出站先交给 egress sidecar：workload 用占位凭据发请求，sidecar 透明拦截</text>
+  <text class="el" x="30" y="858">④ 命中白名单与凭据绑定规则的请求被放行，sidecar 在请求头上注入真实凭据后转发</text>
+  <text class="el" x="30" y="884">⑤ 白名单之外的域名直接拒绝。注意 NetworkPolicy 只认 IP 和端口，按域名放行要靠 egress 代理或支持 FQDN 策略的 CNI</text>
+  <text class="tGray" x="30" y="918">验证隔离是否生效：分别在沙箱里执行 uname -r、在节点上看 kernelVersion，两者不同说明跑在独立 guest kernel 中</text>
+</svg>

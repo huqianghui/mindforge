@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxUsed { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2; }
+      .boxWarn { fill: #2a1215; stroke: #f87171; stroke-width: 1.4; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneAmber { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hRed { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 13.5px; font-family: Menlo, Consolas, monospace; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tRed { fill: #fecaca; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="980" rx="16"/>
+  <text class="title" x="30" y="44">agent-sandbox 的分工：平台团队备好模板和预热池，使用方只提 Claim</text>
+  <text class="sub" x="30" y="72">①~⑦ 是一个用户从领沙箱、对话到归还的完整过程；琥珀色是预热池正在补位的新 pod</text>
+
+  <!-- ===== 左：平台团队 ===== -->
+  <rect class="zone" x="30" y="96" width="380" height="520" rx="12"/>
+  <text class="zl" x="48" y="120">平台团队（集群管理员）</text>
+  <rect class="box" x="48" y="136" width="344" height="236" rx="10"/>
+  <text class="h" x="64" y="162">SandboxTemplate</text>
+  <text class="t" x="64" y="186">沙箱的 pod 蓝图，所有人共用</text>
+  <text class="code" x="64" y="214">runtimeClassName:</text>
+  <text class="code" x="80" y="236">kata-vm-isolation</text>
+  <text class="code" x="64" y="260">nodeSelector + toleration</text>
+  <text class="code" x="64" y="284">resources.limits</text>
+  <text class="code" x="64" y="308">networkPolicy（Managed）</text>
+  <text class="code" x="64" y="332">service: true</text>
+  <text class="tGray" x="64" y="358">limits 决定 Kata VM 的内存和 vCPU</text>
+
+  <rect class="box" x="48" y="392" width="344" height="100" rx="10"/>
+  <text class="h" x="64" y="418">SandboxWarmPool</text>
+  <text class="t" x="64" y="442">引用模板，常备 N 个已启动的沙箱</text>
+  <text class="t" x="64" y="464">可用 HPA / KEDA 按领取速率伸缩</text>
+
+  <rect class="box" x="48" y="512" width="344" height="88" rx="10"/>
+  <text class="h" x="64" y="538">sandbox-router</text>
+  <text class="t" x="64" y="562">唯一被允许访问沙箱的入口</text>
+  <text class="t" x="64" y="584">ClusterIP 对内，LoadBalancer 对外</text>
+
+  <!-- ===== 中：controller 与预热池 ===== -->
+  <rect class="box" x="450" y="96" width="460" height="72" rx="10"/>
+  <text class="h" x="466" y="122">agent-sandbox controller</text>
+  <text class="t" x="466" y="146">按模板建 Sandbox，处理 Claim 认领与池子补位</text>
+
+  <rect class="zoneAmber" x="450" y="188" width="460" height="300" rx="12"/>
+  <text class="zlAmber" x="468" y="212">预热池（都跑在 Kata 节点池上）</text>
+  <rect class="boxUsed" x="468" y="228" width="204" height="112" rx="10"/>
+  <text class="h" x="484" y="254">沙箱 pod 1</text>
+  <text class="t" x="484" y="278">已被 alice 的 Claim 认领</text>
+  <text class="t" x="484" y="300">独立 guest kernel</text>
+  <text class="tGray" x="484" y="322">附带 headless Service</text>
+  <rect class="box" x="688" y="228" width="204" height="112" rx="10"/>
+  <text class="h" x="704" y="254">沙箱 pod 2</text>
+  <text class="t" x="704" y="278">空闲，已启动待领</text>
+  <rect class="box" x="468" y="356" width="204" height="112" rx="10"/>
+  <text class="h" x="484" y="382">沙箱 pod 3</text>
+  <text class="t" x="484" y="406">空闲，已启动待领</text>
+  <rect class="boxAmber" x="688" y="356" width="204" height="112" rx="10"/>
+  <text class="hAmber" x="704" y="382">沙箱 pod 4</text>
+  <text class="t" x="704" y="406">补位中：调度、拉镜像、</text>
+  <text class="t" x="704" y="428">启动 VM</text>
+
+  <rect class="boxBlue" x="450" y="508" width="460" height="108" rx="10"/>
+  <text class="h" x="466" y="534">模板渲染出的 NetworkPolicy</text>
+  <text class="t" x="466" y="558">ingress 只允许 app=sandbox-router 访问 8080</text>
+  <text class="t" x="466" y="580">egress 只开 DNS（53）和 HTTPS（443）</text>
+  <text class="tGray" x="466" y="602">443 对所有 IP 放行，按域名收窄要另想办法</text>
+
+  <!-- ===== 右：使用方 ===== -->
+  <rect class="zone" x="950" y="96" width="420" height="520" rx="12"/>
+  <text class="zl" x="968" y="120">使用方（用户或 agent 进程）</text>
+  <rect class="box" x="968" y="136" width="384" height="100" rx="10"/>
+  <text class="h" x="984" y="162">Go / Python SDK</text>
+  <text class="t" x="984" y="186">建 Claim、等 Ready、拿到沙箱名</text>
+  <text class="t" x="984" y="208">复用时用 GetSandbox 绑回同一个 pod</text>
+
+  <rect class="box" x="968" y="256" width="384" height="100" rx="10"/>
+  <text class="h" x="984" y="282">SandboxClaim</text>
+  <text class="code" x="984" y="308">status.sandbox.name: pod-1</text>
+  <text class="t" x="984" y="332">删除 Claim 即归还沙箱</text>
+
+  <rect class="box" x="968" y="376" width="384" height="112" rx="10"/>
+  <text class="h" x="984" y="402">请求</text>
+  <text class="code" x="984" y="428">X-Sandbox-ID: pod-1</text>
+  <text class="code" x="984" y="452">X-Sandbox-Namespace / Port</text>
+  <text class="t" x="984" y="476">其他请求头原样透传给 agent</text>
+
+  <rect class="boxGray" x="968" y="508" width="384" height="92" rx="10"/>
+  <text class="h" x="984" y="534">休眠与恢复</text>
+  <text class="tGray" x="984" y="558">空闲时暂停释放算力，</text>
+  <text class="tGray" x="984" y="580">有网络请求时自动恢复</text>
+
+  <!-- ===== 流程 ===== -->
+  <!-- ① admin apply -->
+  <path class="flow" d="M392,180 L450,132" marker-end="url(#arr)"/>
+  <circle class="badge" cx="421" cy="146" r="13"/><text class="bn" x="421" y="151">①</text>
+  <!-- ② controller → pool -->
+  <path class="flow" d="M680,168 L680,188" marker-end="url(#arr)"/>
+  <circle class="badge" cx="700" cy="178" r="13"/><text class="bn" x="700" y="183">②</text>
+  <!-- ③ SDK → Claim -->
+  <path class="flow" d="M1160,236 L1160,256" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1180" cy="246" r="13"/><text class="bn" x="1180" y="251">③</text>
+  <!-- ④ Claim → controller adopts pod 1 -->
+  <path class="flow" d="M968,300 L930,300 L930,150 L910,150" marker-end="url(#arr)"/>
+  <path class="flow" d="M910,140 L930,140" stroke-opacity="0"/>
+  <circle class="badge" cx="930" cy="226" r="13"/><text class="bn" x="930" y="231">④</text>
+  <!-- ⑤ 补位 -->
+  <path class="flowAmber" d="M790,340 L790,356" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="810" cy="348" r="12"/><text class="bn" x="810" y="353">⑤</text>
+  <!-- ⑥ 请求 → router → pod 1 -->
+  <path id="reqPath" class="flow" d="M968,432 L940,432 L940,640 L220,640 L220,600" marker-end="url(#arr)"/>
+  <path class="flow" d="M392,556 L430,556 L430,284 L468,284" marker-end="url(#arr)"/>
+  <circle class="badge" cx="580" cy="640" r="13"/><text class="bn" x="580" y="645">⑥</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="3.4s" repeatCount="indefinite"><mpath href="#reqPath"/></animateMotion>
+  </circle>
+  <!-- ⑦ 归还 -->
+  <circle class="badge" cx="1330" cy="306" r="13"/><text class="bn" x="1330" y="311">⑦</text>
+
+  <!-- ===== 注意事项 ===== -->
+  <text class="elh" x="30" y="690">上生产前要补的三处</text>
+  <rect class="boxWarn" x="30" y="704" width="436" height="96" rx="10"/>
+  <text class="hRed" x="46" y="730">router 的鉴权</text>
+  <text class="tRed" x="46" y="754">示例里 ALLOW_UNAUTHENTICATED_ROUTER=true，</text>
+  <text class="tRed" x="46" y="776">公网 IP 等于开放代理；生产要配 Bearer token</text>
+  <rect class="boxWarn" x="482" y="704" width="436" height="96" rx="10"/>
+  <text class="hRed" x="498" y="730">CNI 必须支持 NetworkPolicy</text>
+  <text class="tRed" x="498" y="754">没有策略引擎的集群会静默忽略策略，</text>
+  <text class="tRed" x="498" y="776">建集群时选 Cilium、Calico 或 Azure NPM</text>
+  <rect class="boxWarn" x="934" y="704" width="436" height="96" rx="10"/>
+  <text class="hRed" x="950" y="730">状态和身份不在沙箱里</text>
+  <text class="tRed" x="950" y="754">pod 内存里的对话历史在重建时丢失；</text>
+  <text class="tRed" x="950" y="776">X-Owner 这类请求头不是安全边界</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="836">流程图例</text>
+  <text class="el" x="30" y="862">① 管理员 apply SandboxTemplate 和 SandboxWarmPool，一次配置，所有用户共用</text>
+  <text class="el" x="30" y="888">② controller 按模板预先建好 N 个 Kata 沙箱，每个带一个 headless Service</text>
+  <text class="el" x="30" y="914">③ 使用方通过 SDK 创建 SandboxClaim，不需要知道 RuntimeClass、节点池这些细节</text>
+  <text class="el" x="30" y="940">④ controller 从池里认领一个已启动的沙箱，把名字写回 Claim 的 status</text>
+  <text class="el" x="720" y="862">⑤ 预热池马上补建一个新 pod，维持目标数量</text>
+  <text class="el" x="720" y="888">⑥ 请求带 X-Sandbox-* 头经 router 转发到 pod 1，NetworkPolicy 只放行 router</text>
+  <text class="el" x="720" y="914">⑦ 用完删除 Claim 归还；需要保留现场时让它休眠，</text>
+  <text class="el" x="720" y="940">下次用 GetSandbox 绑回同一个沙箱</text>
+</svg>
