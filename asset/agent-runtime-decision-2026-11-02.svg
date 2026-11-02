@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zone { fill: none; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #5eead4; font-size: 16px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #cbd5e1; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .yes { fill: #5eead4; font-size: 14px; font-weight: 700; }
+      .no { fill: #94a3b8; font-size: 14px; font-weight: 700; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">一个 agent 该放在哪：托管、普通服务还是自建 runtime</text>
+  <text class="sub" x="30" y="72">先问两个问题分出三条路；走到自建这条路，再按实际需求从 ① 到 ⑤ 逐项叠加，用不到的不装</text>
+
+  <!-- 起点 -->
+  <rect class="boxBlue" x="560" y="96" width="280" height="50" rx="25"/>
+  <text class="h" x="700" y="127" text-anchor="middle">一个新 agent 准备上线</text>
+
+  <!-- Q1 -->
+  <rect class="boxAmber" x="470" y="176" width="460" height="74" rx="12"/>
+  <text class="hAmber" x="700" y="206" text-anchor="middle">会执行模型生成的代码，或要一个</text>
+  <text class="hAmber" x="700" y="230" text-anchor="middle">跨轮次保留文件和进程的工作区吗？</text>
+  <path class="flow" d="M700,146 L700,176" marker-end="url(#arr)"/>
+
+  <!-- Q1 否 -->
+  <path class="flowGray" d="M470,213 L230,213 L230,286" marker-end="url(#arrGray)"/>
+  <text class="no" x="350" y="203">否</text>
+  <rect class="boxGray" x="40" y="286" width="380" height="104" rx="12"/>
+  <text class="hGray" x="58" y="314">普通服务就够</text>
+  <text class="tGray" x="58" y="340">ACA / AKS 部署成 API，工具走受治理的网关</text>
+  <text class="tGray" x="58" y="362">鉴权、权限、审批放在服务端</text>
+  <text class="tGray" x="58" y="384">不是每个 agent 都需要沙箱平台</text>
+
+  <!-- Q2 -->
+  <path class="flow" d="M700,250 L700,290" marker-end="url(#arr)"/>
+  <text class="yes" x="712" y="276">是</text>
+  <rect class="boxAmber" x="470" y="290" width="460" height="74" rx="12"/>
+  <text class="hAmber" x="700" y="320" text-anchor="middle">要求运行时自主可控（数据、模型、harness</text>
+  <text class="hAmber" x="700" y="344" text-anchor="middle">都自己选），并且团队能运维 AKS 吗？</text>
+
+  <!-- Q2 否 -->
+  <path class="flowGray" d="M930,327 L1170,327 L1170,286" marker-end="url(#arrGray)"/>
+  <text class="no" x="1040" y="317">否</text>
+  <rect class="boxGray" x="980" y="160" width="380" height="126" rx="12"/>
+  <text class="hGray" x="998" y="188">托管路线</text>
+  <text class="tGray" x="998" y="214">Foundry Hosted Agent：容器、版本、身份、</text>
+  <text class="tGray" x="998" y="236">会话和 per-session 沙箱由平台代管</text>
+  <text class="tGray" x="998" y="258">只要代码执行：ACA Dynamic Sessions</text>
+  <text class="tGray" x="998" y="280">要长期工作区：ACA Sandboxes</text>
+
+  <!-- 自建 -->
+  <path id="selfPath" class="flow" d="M700,364 L700,428" marker-end="url(#arr)"/>
+  <text class="yes" x="712" y="400">是</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M700,96 L700,428"/>
+  </circle>
+
+  <rect class="zone" x="30" y="428" width="1340" height="260" rx="14"/>
+  <text class="zl" x="50" y="456">自建 runtime：Kata 节点池打底，按需求逐项叠加</text>
+
+  <rect class="box" x="50" y="474" width="246" height="196" rx="10"/>
+  <circle class="badge" cx="74" cy="500" r="13"/><text class="bn" x="74" y="505">①</text>
+  <text class="h" x="96" y="505">执行不可信代码</text>
+  <text class="t" x="66" y="534">agent-sandbox 或</text>
+  <text class="t" x="66" y="556">OpenSandbox</text>
+  <text class="t" x="66" y="578">pod 指定 Kata RuntimeClass</text>
+  <text class="tGray" x="66" y="610">要现成命令 / 文件 API、</text>
+  <text class="tGray" x="66" y="632">凭据代理时选 OpenSandbox</text>
+
+  <rect class="box" x="314" y="474" width="246" height="196" rx="10"/>
+  <circle class="badge" cx="338" cy="500" r="13"/><text class="bn" x="338" y="505">②</text>
+  <text class="h" x="360" y="505">用 CRD 管 agent</text>
+  <text class="t" x="330" y="534">kagent：Agent、模型、</text>
+  <text class="t" x="330" y="556">MCP 都写成 YAML</text>
+  <text class="t" x="330" y="578">进 Git、走 PR、GitOps 发布</text>
+  <text class="tGray" x="330" y="610">Harness 可换 ADK、</text>
+  <text class="tGray" x="330" y="632">Claude Code、Codex</text>
+
+  <rect class="box" x="578" y="474" width="246" height="196" rx="10"/>
+  <circle class="badge" cx="602" cy="500" r="13"/><text class="bn" x="602" y="505">③</text>
+  <text class="h" x="624" y="505">长任务崩溃续跑</text>
+  <text class="t" x="594" y="534">Dapr Workflow /</text>
+  <text class="t" x="594" y="556">Dapr Agents</text>
+  <text class="t" x="594" y="578">每步落状态，断点重放</text>
+  <text class="tGray" x="594" y="610">Diagrid 另有 LangGraph、</text>
+  <text class="tGray" x="594" y="632">MAF 等 framework 的集成</text>
+
+  <rect class="box" x="842" y="474" width="246" height="196" rx="10"/>
+  <circle class="badge" cx="866" cy="500" r="13"/><text class="bn" x="866" y="505">④</text>
+  <text class="h" x="888" y="505">agent 多且常空闲</text>
+  <text class="t" x="858" y="534">Agent Substrate</text>
+  <text class="t" x="858" y="556">actor 快照挂起，</text>
+  <text class="t" x="858" y="578">少量 worker 承载大量 agent</text>
+  <text class="tGray" x="858" y="610">pre-1.0、API 还会变，</text>
+  <text class="tGray" x="858" y="632">先做 PoC 不进生产</text>
+
+  <rect class="box" x="1106" y="474" width="246" height="196" rx="10"/>
+  <circle class="badge" cx="1130" cy="500" r="13"/><text class="bn" x="1130" y="505">⑤</text>
+  <text class="h" x="1152" y="505">统一治理</text>
+  <text class="t" x="1122" y="534">Entra Agent ID 给身份</text>
+  <text class="t" x="1122" y="556">agentgateway 管出入站</text>
+  <text class="t" x="1122" y="578">OpenTelemetry 留痕</text>
+  <text class="tGray" x="1122" y="610">需要统一台账时，</text>
+  <text class="tGray" x="1122" y="632">再登记进 Agent 365</text>
+
+  <!-- 底部说明 -->
+  <rect class="boxBlue" x="30" y="708" width="1340" height="72" rx="12"/>
+  <text class="h" x="50" y="736">三条路可以并存</text>
+  <text class="t" x="50" y="762">轻量 agent 放 Hosted Agent，需要执行面控制的放自建 runtime，普通 API 型 agent 就是普通服务；身份和台账统一收在 Entra 与 Agent 365</text>
+</svg>

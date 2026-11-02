@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1060" width="1400" height="1060" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .rowLabel { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneAmber { fill: none; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .zq { fill: #94a3b8; font-size: 13.5px; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .rl { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1060" rx="16"/>
+  <text class="title" x="30" y="44">Agent 基础设施分层：Platform、Agent 本身与 Runtime 的四个子层</text>
+  <text class="sub" x="30" y="72">青色框为开源自建选项，灰色虚线框为 Azure 托管的对照项；左侧 ①~⑥ 是一次任务自上而下穿过各层的顺序</text>
+
+  <!-- 左侧任务路径 -->
+  <path id="taskPath" class="flow" d="M70,182 L70,782"/>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="4.5s" repeatCount="indefinite"><mpath href="#taskPath"/></animateMotion>
+  </circle>
+  <circle class="badge" cx="70" cy="182" r="15"/><text class="bn" x="70" y="187">①</text>
+  <circle class="badge" cx="70" cy="322" r="15"/><text class="bn" x="70" y="327">②</text>
+  <circle class="badge" cx="70" cy="487" r="15"/><text class="bn" x="70" y="492">③</text>
+  <circle class="badge" cx="70" cy="585" r="15"/><text class="bn" x="70" y="590">④</text>
+  <circle class="badge" cx="70" cy="683" r="15"/><text class="bn" x="70" y="688">⑤</text>
+  <circle class="badge" cx="70" cy="782" r="15"/><text class="bn" x="70" y="787">⑥</text>
+
+  <!-- ===== Platform ===== -->
+  <rect class="zone" x="100" y="96" width="1280" height="142" rx="12"/>
+  <text class="zl" x="118" y="120">Agent Platform</text>
+  <text class="zq" x="250" y="120">判定问题：企业怎么发现、授权、治理、运营这些 agent？</text>
+
+  <rect class="box" x="110" y="134" width="303" height="94" rx="10"/>
+  <text class="h" x="126" y="160">注册与发现</text>
+  <text class="t" x="126" y="184">Agent 365 Registry（可纳管第三方）</text>
+  <text class="t" x="126" y="206">kagent UI · Dify / Langflow 门户</text>
+
+  <rect class="box" x="429" y="134" width="303" height="94" rx="10"/>
+  <text class="h" x="445" y="160">身份</text>
+  <text class="t" x="445" y="184">Entra Agent ID · Workload Identity</text>
+  <text class="t" x="445" y="206">SPIFFE（Dapr / Substrate 用）</text>
+
+  <rect class="box" x="748" y="134" width="303" height="94" rx="10"/>
+  <text class="h" x="764" y="160">网关与策略</text>
+  <text class="t" x="764" y="184">agentgateway：LLM / MCP / A2A</text>
+  <text class="t" x="764" y="206">APIM · NetworkPolicy · 审批</text>
+
+  <rect class="box" x="1067" y="134" width="303" height="94" rx="10"/>
+  <text class="h" x="1083" y="160">观测与成本</text>
+  <text class="t" x="1083" y="184">OpenTelemetry → App Insights</text>
+  <text class="t" x="1083" y="206">按 agent 归集 token / 算力成本</text>
+
+  <!-- ===== Agent 本身 ===== -->
+  <rect class="zone" x="100" y="252" width="1280" height="142" rx="12"/>
+  <text class="zl" x="118" y="276">Agent = Model + Harness</text>
+  <text class="zq" x="320" y="276">判定问题：agent 怎么思考、调工具、管状态？（Framework 用来搭 harness）</text>
+
+  <rect class="box" x="110" y="290" width="409" height="94" rx="10"/>
+  <text class="h" x="126" y="316">Agent Framework</text>
+  <text class="t" x="126" y="340">LangGraph · Microsoft Agent Framework</text>
+  <text class="t" x="126" y="362">Google ADK · OpenAI Agents SDK</text>
+
+  <rect class="box" x="535" y="290" width="409" height="94" rx="10"/>
+  <text class="h" x="551" y="316">现成的 Harness</text>
+  <text class="t" x="551" y="340">Claude Code · Codex · OpenClaw · Hermes</text>
+  <text class="t" x="551" y="362">kagent 里作为 Harness 字段可换</text>
+
+  <rect class="boxBlue" x="960" y="290" width="410" height="94" rx="10"/>
+  <text class="h" x="976" y="316">这一层管的是逻辑</text>
+  <text class="t" x="976" y="340">agent loop · 工具调用 · 编排</text>
+  <text class="t" x="976" y="362">Session / Memory / State 的抽象与 checkpoint</text>
+
+  <!-- ===== Runtime ===== -->
+  <rect class="zoneAmber" x="100" y="408" width="1280" height="424" rx="12"/>
+  <text class="zlAmber" x="118" y="432">Agent Runtime</text>
+  <text class="zq" x="248" y="432">判定问题：agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续？</text>
+
+  <!-- R4 -->
+  <rect class="rowLabel" x="110" y="446" width="180" height="82" rx="8"/>
+  <text class="rl" x="124" y="476">调度与生命周期</text>
+  <text class="tGray" x="124" y="500">Agent 当作什么</text>
+  <text class="tGray" x="124" y="520">来调度</text>
+  <rect class="box" x="306" y="446" width="344" height="82" rx="10"/>
+  <text class="h" x="322" y="472">kagent（CNCF Sandbox）</text>
+  <text class="t" x="322" y="496">Agent / ModelConfig / MCP 都是 CRD</text>
+  <text class="t" x="322" y="518">Controller + PostgreSQL 存会话</text>
+  <rect class="box" x="666" y="446" width="344" height="82" rx="10"/>
+  <text class="h" x="682" y="472">Agent Substrate（pre-1.0）</text>
+  <text class="t" x="682" y="496">大量 actor 复用少量 worker pod</text>
+  <text class="t" x="682" y="518">空闲时快照挂起，来请求再恢复</text>
+  <rect class="boxGray" x="1026" y="446" width="344" height="82" rx="10"/>
+  <text class="hGray" x="1042" y="472">对照：Foundry Hosted Agent</text>
+  <text class="tGray" x="1042" y="496">镜像 + 版本 + agent 身份 + 会话</text>
+  <text class="tGray" x="1042" y="518">per-session 沙箱，平台代管</text>
+
+  <!-- R3 -->
+  <rect class="rowLabel" x="110" y="544" width="180" height="82" rx="8"/>
+  <text class="rl" x="124" y="574">持久执行</text>
+  <text class="tGray" x="124" y="598">长任务崩了</text>
+  <text class="tGray" x="124" y="618">能不能续上</text>
+  <rect class="box" x="306" y="544" width="344" height="82" rx="10"/>
+  <text class="h" x="322" y="570">Dapr Workflow / Dapr Agents</text>
+  <text class="t" x="322" y="594">每步落状态，进程挂了从断点重放</text>
+  <text class="t" x="322" y="616">DurableAgent 1.0 已 GA</text>
+  <rect class="box" x="666" y="544" width="344" height="82" rx="10"/>
+  <text class="h" x="682" y="570">Dapr sidecar 构建块</text>
+  <text class="t" x="682" y="594">30+ 种 state store · pub/sub</text>
+  <text class="t" x="682" y="616">SPIFFE 身份 · 重试与熔断</text>
+  <rect class="boxGray" x="1026" y="544" width="344" height="82" rx="10"/>
+  <text class="hGray" x="1042" y="570">对照：framework 自带 checkpoint</text>
+  <text class="tGray" x="1042" y="594">能存能读，但故障检测、重试</text>
+  <text class="tGray" x="1042" y="616">和多副本调度要自己写</text>
+
+  <!-- R2 -->
+  <rect class="rowLabel" x="110" y="642" width="180" height="82" rx="8"/>
+  <text class="rl" x="124" y="672">沙箱编排</text>
+  <text class="tGray" x="124" y="696">按模板领一个</text>
+  <text class="tGray" x="124" y="716">工作环境</text>
+  <rect class="box" x="306" y="642" width="344" height="82" rx="10"/>
+  <text class="h" x="322" y="668">agent-sandbox（K8s SIG）</text>
+  <text class="t" x="322" y="692">Sandbox / Template / Claim</text>
+  <text class="t" x="322" y="714">WarmPool 预热 · 休眠与恢复</text>
+  <rect class="box" x="666" y="642" width="344" height="82" rx="10"/>
+  <text class="h" x="682" y="668">OpenSandbox</text>
+  <text class="t" x="682" y="692">命令 / 文件 API · 多语言 SDK</text>
+  <text class="t" x="682" y="714">egress 策略 · Credential Vault</text>
+  <rect class="boxGray" x="1026" y="642" width="344" height="82" rx="10"/>
+  <text class="hGray" x="1042" y="668">对照：ACA Sandboxes / Sessions</text>
+  <text class="tGray" x="1042" y="692">托管的沙箱组与会话池</text>
+  <text class="tGray" x="1042" y="714">快照、卷、出站策略由平台提供</text>
+
+  <!-- R1 -->
+  <rect class="rowLabel" x="110" y="740" width="180" height="82" rx="8"/>
+  <text class="rl" x="124" y="770">隔离原语</text>
+  <text class="tGray" x="124" y="794">墙有多厚</text>
+  <text class="tGray" x="124" y="814">（RuntimeClass）</text>
+  <rect class="boxAmber" x="306" y="740" width="344" height="82" rx="10"/>
+  <text class="hAmber" x="322" y="766">Kata · AKS Pod Sandboxing</text>
+  <text class="t" x="322" y="790">每个 pod 一个轻量 VM + 独立内核</text>
+  <text class="t" x="322" y="812">runtimeClassName: kata-vm-isolation</text>
+  <rect class="box" x="666" y="740" width="344" height="82" rx="10"/>
+  <text class="h" x="682" y="766">gVisor（runsc）</text>
+  <text class="t" x="682" y="790">用户态内核拦截系统调用</text>
+  <text class="t" x="682" y="812">开销小、密度高，kagent 默认用它</text>
+  <rect class="box" x="1026" y="740" width="344" height="82" rx="10"/>
+  <text class="h" x="1042" y="766">microVM</text>
+  <text class="t" x="1042" y="790">Firecracker / Cloud Hypervisor</text>
+  <text class="t" x="1042" y="812">OpenSandbox、Substrate 可选</text>
+
+  <!-- ===== Infra ===== -->
+  <rect class="boxGray" x="100" y="846" width="1280" height="56" rx="10"/>
+  <text class="hGray" x="118" y="880">基础设施</text>
+  <text class="tGray" x="210" y="880">AKS 节点池（Kata 池需 Azure Linux + 支持嵌套虚拟化的 Gen2 规格） · 模型推理（Foundry 模型 / 自托管 vLLM） · PostgreSQL / Redis / Blob</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="944">任务路径图例</text>
+  <text class="el" x="30" y="972">① 平台层：调用先过网关，核对 agent 身份与策略，同时记进观测</text>
+  <text class="el" x="30" y="998">② agent 本身：harness 跑 agent loop，Session / Memory 的逻辑写在 framework 里</text>
+  <text class="el" x="30" y="1024">③ 调度：kagent 读 Agent CRD 起 harness；agent 多且大多空闲时交给 Substrate 挂起和恢复</text>
+  <text class="el" x="720" y="972">④ 持久执行：长任务每一步写进 workflow 状态，进程崩了从断点续跑</text>
+  <text class="el" x="720" y="998">⑤ 沙箱编排：按模板从预热池领一个工作环境，用完或超时回收</text>
+  <text class="el" x="720" y="1024">⑥ 隔离：模型生成的代码跑在 Kata 的独立 guest kernel 里，碰不到节点内核</text>
+</svg>

@@ -53,6 +53,10 @@
 - [A2UI 协议解析](Notes/AI/agent/protocol/A2UI协议解析.md)
 - [企业级 A2A 方案：从微服务治理到 Agent 互操作层](Notes/AI/agent/protocol/企业级A2A方案：从微服务治理到Agent互操作层.md)
 
+### Notes/AI/agent/agent-platform
+
+- [Agent 基础设施系列 01：三层划分与自建路线](Notes/AI/agent/agent-platform/Agent基础设施系列01：三层划分与自建路线.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)

@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxInner { fill: #0f2a2a; stroke: #5eead4; stroke-width: 1.2; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneV { fill: #0d1729; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zoneAmber { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlv { fill: #94a3b8; font-size: 13.5px; }
+      .zlAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1010" rx="16"/>
+  <text class="title" x="30" y="44">在 AKS 上自建 Agent Runtime：参考组合与一次请求的数据流</text>
+  <text class="sub" x="30" y="72">编号 ①~⑦ 对应一次"用户提问 → agent 推理 → 执行生成代码 → 长任务续跑 → 留痕"的完整路径；琥珀色为不可信代码所在的 Kata 隔离区</text>
+
+  <!-- ===== 调用方 + 平台层 ===== -->
+  <rect class="box" x="30" y="114" width="180" height="78" rx="10"/>
+  <text class="h" x="46" y="142">调用方</text>
+  <text class="t" x="46" y="166">Web / Teams / 业务系统</text>
+
+  <rect class="zone" x="232" y="96" width="1138" height="112" rx="12"/>
+  <text class="zl" x="248" y="118">平台层（集群外或系统池）</text>
+  <rect class="box" x="250" y="128" width="262" height="70" rx="10"/>
+  <text class="h" x="266" y="154">agentgateway</text>
+  <text class="t" x="266" y="178">入站鉴权 · LLM / MCP / A2A 代理</text>
+  <rect class="box" x="530" y="128" width="262" height="70" rx="10"/>
+  <text class="h" x="546" y="154">Entra ID · Agent ID</text>
+  <text class="t" x="546" y="178">用户 token · 每个 agent 一个身份</text>
+  <rect class="box" x="810" y="128" width="262" height="70" rx="10"/>
+  <text class="h" x="826" y="154">OpenTelemetry</text>
+  <text class="t" x="826" y="178">trace / 指标 → App Insights</text>
+  <rect class="boxGray" x="1090" y="128" width="262" height="70" rx="10"/>
+  <text class="hGray" x="1106" y="154">可选：Agent 365</text>
+  <text class="tGray" x="1106" y="178">登记自建 agent，统一纳管</text>
+
+  <!-- ===== AKS 集群 ===== -->
+  <rect class="zone" x="30" y="224" width="1340" height="420" rx="12"/>
+  <text class="zl" x="48" y="248">AKS 集群</text>
+
+  <!-- 系统池 -->
+  <rect class="zoneV" x="50" y="262" width="400" height="368" rx="10"/>
+  <text class="zlv" x="66" y="284">系统节点池</text>
+  <rect class="box" x="70" y="300" width="360" height="92" rx="10"/>
+  <text class="h" x="86" y="326">kagent Controller + UI</text>
+  <text class="t" x="86" y="350">监听 Agent / ModelConfig / MCP CRD</text>
+  <text class="t" x="86" y="372">对外暴露 A2A、MCP、gRPC 接口</text>
+  <rect class="box" x="70" y="408" width="360" height="92" rx="10"/>
+  <text class="h" x="86" y="434">agent-sandbox Controller</text>
+  <text class="t" x="86" y="458">维护 Template / WarmPool / Claim</text>
+  <text class="t" x="86" y="480">sandbox-router 按会话转发流量</text>
+  <rect class="box" x="70" y="516" width="360" height="98" rx="10"/>
+  <text class="h" x="86" y="542">Dapr 控制面</text>
+  <text class="t" x="86" y="566">scheduler / placement</text>
+  <text class="t" x="86" y="588">给业务 pod 注入 sidecar</text>
+
+  <!-- agent 池 -->
+  <rect class="zoneV" x="470" y="262" width="420" height="368" rx="10"/>
+  <text class="zlv" x="486" y="284">agent 节点池（受信代码）</text>
+
+  <rect class="box" x="488" y="310" width="186" height="304" rx="10"/>
+  <text class="h" x="502" y="336">harness pod B</text>
+  <text class="t" x="502" y="362">Harness 字段选</text>
+  <text class="t" x="502" y="384">Claude Code / Codex</text>
+  <text class="t" x="502" y="414">数量多、大多空闲时</text>
+  <text class="t" x="502" y="436">改由 Substrate 把它</text>
+  <text class="t" x="502" y="458">当 actor 挂起和恢复</text>
+  <rect class="boxGray" x="502" y="486" width="158" height="112" rx="8"/>
+  <text class="hGray" x="514" y="512">Substrate</text>
+  <text class="tGray" x="514" y="536">worker 池复用</text>
+  <text class="tGray" x="514" y="558">快照存 Blob</text>
+  <text class="tGray" x="514" y="580">（pre-1.0）</text>
+
+  <rect class="box" x="690" y="310" width="186" height="304" rx="10"/>
+  <text class="h" x="704" y="336">harness pod A</text>
+  <text class="t" x="704" y="362">kagent Agent CRD</text>
+  <text class="t" x="704" y="384">Go / Python ADK</text>
+  <text class="t" x="704" y="406">或 MAF、LangGraph</text>
+  <text class="t" x="704" y="428">自带的 agent 镜像</text>
+  <rect class="boxInner" x="704" y="486" width="158" height="112" rx="8"/>
+  <text class="h" x="716" y="512">Dapr sidecar</text>
+  <text class="t" x="716" y="536">workflow 状态</text>
+  <text class="t" x="716" y="558">pub/sub · 重试</text>
+  <text class="t" x="716" y="580">SPIFFE mTLS</text>
+
+  <!-- Kata 池 -->
+  <rect class="zoneAmber" x="910" y="262" width="440" height="368" rx="10"/>
+  <text class="zlAmber" x="926" y="286">Kata 节点池（不可信代码）</text>
+  <text class="tGray" x="926" y="308">Azure Linux · KataVmIsolation · taint kata=enabled:NoSchedule</text>
+  <rect class="zoneV" x="926" y="320" width="408" height="128" rx="8"/>
+  <text class="zlv" x="940" y="342">SandboxWarmPool（预热，按 Claim 领取）</text>
+  <rect class="boxAmber" x="940" y="354" width="122" height="80" rx="8"/>
+  <text class="hAmber" x="954" y="380">沙箱 1</text>
+  <text class="t" x="954" y="404">已分配</text>
+  <text class="t" x="954" y="424">独立内核</text>
+  <rect class="box" x="1072" y="354" width="122" height="80" rx="8"/>
+  <text class="h" x="1086" y="380">沙箱 2</text>
+  <text class="t" x="1086" y="404">空闲待领</text>
+  <rect class="box" x="1204" y="354" width="122" height="80" rx="8"/>
+  <text class="h" x="1218" y="380">沙箱 3</text>
+  <text class="t" x="1218" y="404">空闲待领</text>
+  <rect class="box" x="926" y="470" width="408" height="70" rx="8"/>
+  <text class="h" x="942" y="496">egress 代理</text>
+  <text class="t" x="942" y="520">域名白名单 · 出站时注入凭据，沙箱只拿到占位符</text>
+  <text class="tGray" x="926" y="572">也可换成 OpenSandbox：BatchSandbox + execd</text>
+  <text class="tGray" x="926" y="594">命令 / 文件 API 和 Credential Vault 现成</text>
+  <text class="tGray" x="926" y="616">pod 级 VM 边界，同 pod 的容器共享一个 VM</text>
+
+  <!-- ===== Azure 托管服务 ===== -->
+  <rect class="zone" x="30" y="664" width="1340" height="112" rx="12"/>
+  <text class="zl" x="48" y="686">集群外的托管服务</text>
+  <rect class="box" x="48" y="698" width="252" height="66" rx="10"/>
+  <text class="h" x="64" y="724">PostgreSQL</text>
+  <text class="t" x="64" y="748">kagent 会话、任务、对话历史</text>
+  <rect class="box" x="318" y="698" width="302" height="66" rx="10"/>
+  <text class="h" x="334" y="724">Dapr state store</text>
+  <text class="t" x="334" y="748">Redis / Cosmos DB，workflow 断点</text>
+  <rect class="box" x="640" y="698" width="280" height="66" rx="10"/>
+  <text class="h" x="656" y="724">Foundry 模型</text>
+  <text class="t" x="656" y="748">或自托管 vLLM，都经网关出站</text>
+  <rect class="box" x="940" y="698" width="200" height="66" rx="10"/>
+  <text class="h" x="956" y="724">Blob</text>
+  <text class="t" x="956" y="748">产物、快照、审计</text>
+  <rect class="box" x="1160" y="698" width="192" height="66" rx="10"/>
+  <text class="h" x="1176" y="724">Key Vault</text>
+  <text class="t" x="1176" y="748">真实凭据只放这里</text>
+
+  <!-- ===== 数据流 ===== -->
+  <!-- ① 调用方 → 网关 -->
+  <path id="p1" class="flow" d="M210,153 L250,153" marker-end="url(#arr)"/>
+  <circle class="badge" cx="230" cy="134" r="12"/><text class="bn" x="230" y="139">①</text>
+  <!-- ② 网关 → controller → pod A -->
+  <path id="p2" class="flow" d="M380,198 L380,300" marker-end="url(#arr)"/>
+  <path class="flow" d="M430,330 L452,330 L452,298 L783,298 L783,310" marker-end="url(#arr)"/>
+  <circle class="badge" cx="400" cy="246" r="12"/><text class="bn" x="400" y="251">②</text>
+  <!-- ③ pod A → 模型 -->
+  <path class="flow" d="M780,614 L780,698" marker-end="url(#arr)"/>
+  <circle class="badge" cx="800" cy="656" r="12"/><text class="bn" x="800" y="661">③</text>
+  <!-- ④ pod A → 沙箱 1 -->
+  <path class="flowAmber" d="M876,394 L940,394" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="900" cy="376" r="12"/><text class="bn" x="900" y="381">④</text>
+  <!-- ⑤ 沙箱 → egress → Key Vault -->
+  <path class="flowAmber" d="M1000,434 L1000,470" marker-end="url(#arrAmber)"/>
+  <path class="flowAmber" d="M1256,540 L1256,698" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="1020" cy="452" r="12"/><text class="bn" x="1020" y="457">⑤</text>
+  <!-- ⑥ sidecar → state store -->
+  <path class="flow" d="M716,598 L716,640 L470,640 L470,698" marker-end="url(#arr)"/>
+  <circle class="badge" cx="600" cy="640" r="12"/><text class="bn" x="600" y="645">⑥</text>
+  <!-- ⑦ controller → PostgreSQL -->
+  <path class="flow" d="M70,346 L40,346 L40,654 L260,654 L260,698" marker-end="url(#arr)"/>
+  <circle class="badge" cx="40" cy="520" r="12"/><text class="bn" x="40" y="525">⑦</text>
+
+  <!-- 粒子 -->
+  <path id="mainPath" d="M210,153 L380,153 L380,330 L452,330 L452,298 L783,298 L783,394 L940,394" fill="none" stroke="none"/>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="4s" repeatCount="indefinite"><mpath href="#mainPath"/></animateMotion>
+  </circle>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="814">数据流图例</text>
+  <text class="el" x="30" y="842">① 请求先到 agentgateway，校验 Entra 用户 token，按策略决定能调哪个 agent</text>
+  <text class="el" x="30" y="868">② kagent Controller 按 Agent CRD 找到对应的 harness pod，通过 A2A 把任务交过去</text>
+  <text class="el" x="30" y="894">③ harness 调模型；模型流量同样走网关，配额、token 计量和内容过滤集中在一处</text>
+  <text class="el" x="30" y="920">④ 要执行模型生成的代码时，用 SandboxClaim 从 Kata 预热池领一个沙箱，经 sandbox-router 送入</text>
+  <text class="el" x="30" y="946">⑤ 沙箱出站只能走 egress 代理：不在白名单的域名直接拒绝，凭据由代理从 Key Vault 取来注入</text>
+  <text class="el" x="30" y="972">⑥ 长任务每完成一步，Dapr sidecar 把 workflow 状态写入 state store；pod 被驱逐后从断点继续</text>
+  <text class="el" x="30" y="998">⑦ 会话与对话历史由 Controller 写入 PostgreSQL；各环节 trace 汇总到 OpenTelemetry，需要时再把 agent 登记进 Agent 365</text>
+</svg>
