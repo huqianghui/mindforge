@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxCode { fill: #0f2a2a; stroke: #5eead4; stroke-width: 1.4; }
+      .boxWarn { fill: #2a1215; stroke: #f87171; stroke-width: 1.4; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneAmber { fill: none; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .zq { fill: #94a3b8; font-size: 13.5px; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .hRed { fill: #fca5a5; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tRed { fill: #fecaca; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .or { fill: #fde68a; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">Kata、agent-sandbox、OpenSandbox 的关系：上下两层，靠 runtimeClassName 接起来</text>
+  <text class="sub" x="30" y="72">左边是一次申请沙箱时各层依次做的事（①~④）；右边是几种组合各得到什么</text>
+
+  <!-- ===== 左：分层 ===== -->
+  <rect class="box" x="30" y="96" width="760" height="70" rx="10"/>
+  <text class="h" x="48" y="124">应用 / agent</text>
+  <text class="t" x="48" y="150">"给我一个沙箱"：通过 SDK、SandboxClaim 或 BatchSandbox 申请</text>
+
+  <rect class="zone" x="30" y="186" width="760" height="236" rx="12"/>
+  <text class="zl" x="48" y="210">沙箱编排层：管 pod 的控制器</text>
+  <text class="zq" x="300" y="210">决定 pod 什么时候建、给谁用、什么时候回收</text>
+  <rect class="box" x="48" y="224" width="330" height="112" rx="10"/>
+  <text class="h" x="64" y="250">agent-sandbox</text>
+  <text class="t" x="64" y="274">Template · WarmPool · Claim</text>
+  <text class="t" x="64" y="296">router 按请求头转发</text>
+  <text class="tGray" x="64" y="318">只管 pod，里面跑什么自己定</text>
+  <text class="or" x="410" y="286">或</text>
+  <rect class="box" x="442" y="224" width="330" height="112" rx="10"/>
+  <text class="h" x="458" y="250">OpenSandbox</text>
+  <text class="t" x="458" y="274">BatchSandbox · Pool · execd</text>
+  <text class="t" x="458" y="296">egress 策略 · Credential Vault</text>
+  <text class="tGray" x="458" y="318">管 pod，还提供执行与凭据能力</text>
+  <rect class="boxCode" x="48" y="350" width="724" height="56" rx="8"/>
+  <text class="t" x="64" y="376">两层唯一的接口：</text>
+  <text class="code" x="186" y="377">runtimeClassName: kata-vm-isolation</text>
+  <text class="tGray" x="64" y="398">它们不做隔离，只是把"用哪个运行时"写进 pod，交给下一层执行</text>
+
+  <rect class="boxBlue" x="30" y="442" width="760" height="74" rx="10"/>
+  <text class="h" x="48" y="470">Kubernetes</text>
+  <text class="t" x="48" y="496">调度器按 RuntimeClass 自带的 nodeSelector 把 pod 放到 Kata 节点；kubelet 交给 containerd</text>
+
+  <rect class="zoneAmber" x="30" y="536" width="760" height="190" rx="12"/>
+  <text class="zlAmber" x="48" y="560">隔离原语层：容器运行时</text>
+  <text class="zq" x="230" y="560">决定 pod 里的容器怎么跑，不认识 agent、会话和预热池</text>
+  <rect class="boxAmber" x="48" y="576" width="232" height="132" rx="10"/>
+  <text class="hAmber" x="64" y="602">Kata（AKS Pod Sandboxing）</text>
+  <text class="t" x="64" y="628">每个 pod 起一个轻量 VM</text>
+  <text class="t" x="64" y="650">独立 guest kernel</text>
+  <text class="tGray" x="64" y="676">任何指定了这个 RuntimeClass</text>
+  <text class="tGray" x="64" y="698">的 pod 都能用，不限于沙箱</text>
+  <rect class="box" x="294" y="576" width="232" height="132" rx="10"/>
+  <text class="h" x="310" y="602">gVisor</text>
+  <text class="t" x="310" y="628">用户态内核拦截系统调用</text>
+  <text class="t" x="310" y="650">更轻，隔离稍弱</text>
+  <text class="tGray" x="310" y="676">AKS 未内置，需自行安装</text>
+  <rect class="boxGray" x="540" y="576" width="232" height="132" rx="10"/>
+  <text class="hGray" x="556" y="602">runc（普通容器）</text>
+  <text class="tGray" x="556" y="628">共享节点内核</text>
+  <text class="tGray" x="556" y="650">不写 runtimeClassName</text>
+  <text class="tGray" x="556" y="672">时的默认值</text>
+
+  <!-- 左侧流程 -->
+  <path id="lp" class="flow" d="M14,131 L14,640" />
+  <circle r="6" fill="url(#particle)">
+    <animateMotion dur="3.6s" repeatCount="indefinite"><mpath href="#lp"/></animateMotion>
+  </circle>
+  <circle class="badge" cx="14" cy="131" r="11"/><text class="bn" x="14" y="136">①</text>
+  <circle class="badge" cx="14" cy="280" r="11"/><text class="bn" x="14" y="285">②</text>
+  <circle class="badge" cx="14" cy="479" r="11"/><text class="bn" x="14" y="484">③</text>
+  <circle class="badge" cx="14" cy="640" r="11"/><text class="bn" x="14" y="645">④</text>
+
+  <!-- ===== 右：组合 ===== -->
+  <text class="elh" x="830" y="112">几种组合各得到什么</text>
+  <rect class="boxWarn" x="830" y="128" width="540" height="104" rx="10"/>
+  <text class="hRed" x="846" y="154">只有 Kata</text>
+  <text class="tRed" x="846" y="178">Deployment 里写上 runtimeClassName 就能跑</text>
+  <text class="tRed" x="846" y="200">有墙，但预热池、按用户认领、空闲回收、</text>
+  <text class="tRed" x="846" y="222">路由都要自己写</text>
+  <rect class="box" x="830" y="248" width="540" height="104" rx="10"/>
+  <text class="h" x="846" y="274">agent-sandbox + Kata</text>
+  <text class="t" x="846" y="298">原生 CRD 管 pod 的领取与回收，Kata 提供 VM 边界</text>
+  <text class="t" x="846" y="320">执行接口、出站按域名控制、凭据要自己补</text>
+  <text class="tGray" x="846" y="342">适合：每个用户一个常驻 agent 进程</text>
+  <rect class="box" x="830" y="368" width="540" height="104" rx="10"/>
+  <text class="h" x="846" y="394">OpenSandbox + Kata</text>
+  <text class="t" x="846" y="418">在上一种基础上多了 execd、egress 策略与凭据注入</text>
+  <text class="t" x="846" y="440">代价是多一套 server 和 sidecar 要运维</text>
+  <text class="tGray" x="846" y="462">适合：后端借沙箱跑一段代码或一个 CLI agent</text>
+  <rect class="boxGray" x="830" y="488" width="540" height="104" rx="10"/>
+  <text class="hGray" x="846" y="514">任一编排层 + runc</text>
+  <text class="tGray" x="846" y="538">功能都在，只是隔离退回到普通容器级别</text>
+  <text class="tGray" x="846" y="560">适合可信代码或本地开发，不适合跑模型生成的代码</text>
+  <text class="tGray" x="846" y="582">（OpenSandbox 在 K8s 之外还能用 Docker、microVM）</text>
+  <rect class="boxBlue" x="830" y="608" width="540" height="118" rx="10"/>
+  <text class="h" x="846" y="634">一句话</text>
+  <text class="t" x="846" y="660">Kata 是墙体材料，agent-sandbox 和 OpenSandbox 是</text>
+  <text class="t" x="846" y="682">分房、退房、管门禁的物业；物业二选一，</text>
+  <text class="t" x="846" y="704">墙体材料可以换，两层之间只靠 runtimeClassName 衔接</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="770">流程图例</text>
+  <text class="el" x="30" y="798">① 应用申请沙箱，只说"要一个"，不关心底层用什么运行时</text>
+  <text class="el" x="30" y="824">② 编排层按模板创建 pod 对象，在 pod spec 里写上 runtimeClassName（这一步之前没有任何隔离发生）</text>
+  <text class="el" x="30" y="850">③ Kubernetes 按 RuntimeClass 把 pod 调度到 Kata 节点池，kubelet 交给 containerd</text>
+  <text class="el" x="30" y="876">④ containerd 调 Kata shim 启动一个轻量 VM，容器在 guest kernel 里运行；换成 gVisor 或 runc，上面三步完全不变</text>
+</svg>

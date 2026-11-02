@@ -78,7 +78,7 @@ Framework 写好了"存"的逻辑，但"数据库高可用吗、进程挂了谁�
 
 - **Kata Containers**：每个 pod 跑在一个轻量 VM 里，有自己的 guest kernel。AKS 把它做成了内置的 **Pod Sandboxing**：建节点池时指定 `--workload-runtime KataVmIsolation`（较早的集群上叫 `KataMshvVmIsolation`），系统会自动装好 Kata、注册 `kata-vm-isolation` 这个 RuntimeClass，不需要自己装 DaemonSet。要求是 Azure Linux 节点、支持嵌套虚拟化的 Gen2 规格（如 Dsv5）。
 - **gVisor**：用户态内核拦截系统调用，开销小、密度高，kagent 默认的 WorkerPool 用的就是它。
-- **microVM**：Firecracker 或 Cloud Hypervisor，OpenSandbox 和 Agent Substrate 都支持。
+- **直接管理的 microVM**：沙箱系统自己调用 Firecracker 或 Cloud Hypervisor 起 VM，OpenSandbox 和 Agent Substrate 都支持。Kata 底下其实也是这类 VMM，区别在于 VM 由 Kubernetes 经 Kata 来管，还是由沙箱系统直接管（详见系列 02）。
 
 这一层只决定"墙有多厚"，不管"房间怎么分配"。
 

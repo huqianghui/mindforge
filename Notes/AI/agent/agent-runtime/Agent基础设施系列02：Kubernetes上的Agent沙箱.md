@@ -26,7 +26,48 @@ description: 把 agent 沙箱拆成三件事——隔离原语（AKS Pod Sandbox
 2. **房间怎么分**：谁来按模板快速领一个环境、空闲时休眠、用完回收？—— agent-sandbox、OpenSandbox
 3. **门怎么管**：沙箱能连哪些地址、用什么凭据？—— NetworkPolicy、egress 代理、Credential Vault
 
-## 一、AKS 上的 Kata：开起来容易，规格要想清楚
+## 一、三者是什么关系
+
+Kata 和 agent-sandbox、OpenSandbox 不在同一层，也不是三选一。
+
+- **Kata 管"pod 里的容器怎么跑"。** 它是挂在 containerd 下面的容器运行时，凡是 pod spec 里写了 `runtimeClassName: kata-vm-isolation` 的 pod，都会被它放进一个轻量 VM 里运行。它不认识 agent，也不知道什么是会话、预热池、用户。
+- **agent-sandbox 和 OpenSandbox 管"pod 什么时候建、给谁用、什么时候回收"。** 它们是 Kubernetes 控制器：维护模板和预热池、处理认领、转发流量、到期回收，OpenSandbox 还附带执行 API 和凭据代理。它们自己不做任何隔离，只是在生成的 pod 模板里写上 `runtimeClassName`，把"用哪个运行时"交给下一层。
+
+所以两者是上下两层，中间只靠 `runtimeClassName` 这一个字段衔接：编排层二选一，运行时可以换成 Kata、gVisor 或普通的 runc，上面的流程完全不变。只用 Kata 也能跑——Deployment 里加一行 `runtimeClassName` 就有了 VM 边界——只是预热、认领、回收、路由都得自己写。
+
+![Kata、agent-sandbox、OpenSandbox 的分层关系|900](../../../../asset/sandbox-layers-relation-2026-11-02.svg)
+
+### Kata 到底是 VM 还是容器
+
+两者都是，看从哪一侧看。**对 Kubernetes 来说它是容器运行时**：实现的是和 runc 一样的 OCI / CRI 接口，pod、镜像、`kubectl logs`、`kubectl exec` 用法都不变，现有镜像不用改。**从物理上看它是 VM**：每个 pod 由一个 VMM（虚拟机监控器）启动一个精简的虚拟机，带自己的 guest kernel；VM 里跑一个 kata-agent，再由它在 guest 内部按普通容器的方式（namespace、cgroup）把 pod 的各个容器启动起来。
+
+也就是"容器的接口，VM 的边界"。一个 pod 对应一个 VM，pod 里的多个容器在这个 VM 里仍是普通容器，彼此之间只有容器级隔离——这就是后面反复提到"隔离单位是 pod"的原因。
+
+### microVM 是另一个选项吗
+
+不完全是。Kata 本身就是"轻量 VM"路线，它底下可以接不同的 VMM：QEMU、Cloud Hypervisor、Firecracker 都是 Kata 支持的后端，AKS 上的 Pod Sandboxing 跑在微软的 Hyper-V 之上。所以 Kata 和 Firecracker 不是并列的两种技术，前者是"把 VMM 包装成容器运行时"的那一层。
+
+真正的区别在于 **VM 由谁来管**：
+
+- **经 Kata 由 Kubernetes 管**：一个 pod 就是一个 VM，生命周期跟着 pod 走，调度、网络、存储都用 Kubernetes 原生的那一套。
+- **沙箱系统直接管 VMM**：OpenSandbox 的 Firecracker 运行时、Agent Substrate 的 microVM worker、E2B 这类托管沙箱，是自己调用 Firecracker 或 Cloud Hypervisor 起 VM。好处是能做 Kubernetes 不擅长的事——毫秒级从预热快照恢复、把整个 VM 的内存连同文件系统一起快照再挪到别的机器上恢复；代价是要多维护一套 VM 管理组件，在 AKS 上还依赖节点规格支持嵌套虚拟化。
+
+gVisor 是另一条路：不起 VM，而是用一个用户态内核拦截并实现系统调用，比 VM 更轻、启动更快，隔离强度介于普通容器和 VM 之间。
+
+### 调度单位一定是 pod 吗
+
+在 Kubernetes 里，pod 是最小的调度单位，所以默认答案是"一个沙箱一个 pod"——agent-sandbox 的一个 `Sandbox` 就是一个 pod，kagent 目前也是一个 agent 对应一个 Pod、Service 和 ServiceAccount。但 agent 的特点是大量、短时、大部分时间空闲，社区已经在往更细的粒度走，思路有几种：
+
+| 粒度 | 怎么做 | 隔离边界 | 代表 |
+|---|---|---|---|
+| 一个 agent / 沙箱一个 pod | pod 常驻或从预热池领取 | 容器或 Kata VM | agent-sandbox、kagent 默认 |
+| 一个 pod 托管很多会话 | 进程内按会话区分状态 | 只有逻辑隔离 | kagent 早期形态、Dapr virtual actor、会话池类服务 |
+| actor 与 pod 解耦 | 自己的控制面把 actor 调度到 worker pod，空闲时快照换出 | gVisor 或 microVM | Agent Substrate |
+| 进程内的代码沙箱 | 用 WebAssembly 之类的运行时跑代码片段 | 语言运行时级 | 适合短小的计算，系统调用和语言受限 |
+
+Agent Substrate 是最值得关注的一种：Kubernetes 只看到 WorkerPool 和 ActorTemplate，一个个 actor（逻辑上的 agent）不是 Kubernetes 对象，由它自己的控制面在 worker pod 之间调度、快照、恢复，Kubernetes 的 API server 不在这条热路径上。pod 退回成"执行 worker"，不再是 agent 的部署、身份和生命周期单位。这部分放到下一篇和 kagent 一起展开。
+
+## 二、AKS 上的 Kata：开起来容易，规格要想清楚
 
 AKS 把 Kata Containers 做成了内置的 **Pod Sandboxing**，开启方式就是建一个特定的节点池：
 
@@ -60,7 +101,7 @@ kubectl get nodes -L kubernetes.azure.com/kata-vm-isolation
 > [!WARNING]
 > Kata 的隔离单位是 **pod**：同一个 pod 里的 agent 容器、执行器、sidecar 共享一个 VM。如果 agent 进程本身是可信的、只有它生成的代码不可信，要考虑把执行器放进单独的沙箱 pod，而不是和 agent 塞在同一个 pod 里。
 
-## 二、agent-sandbox：平台团队备模板，使用方只提 Claim
+## 三、agent-sandbox：平台团队备模板，使用方只提 Claim
 
 有了墙，还得有人负责分配房间。agent 的工作区是单例、有状态、大部分时间空闲的，用 Deployment 和 StatefulSet 硬凑并不顺手。Kubernetes SIG Apps 的 agent-sandbox 专门做这件事，它本身不做隔离，只管理 pod，隔离交给 RuntimeClass。
 
@@ -131,7 +172,7 @@ spec:
 > [!IMPORTANT]
 > NetworkPolicy 只认 IP 和端口。上面模板里的 egress 规则放行的是"任意地址的 443"，模型生成的代码照样能把数据 POST 到任何 HTTPS 站点。要做到"只能访问模型端点和指定 API"，得靠支持 FQDN 策略的 CNI（如 Cilium 的 `toFQDNs`，在 AKS 上属于 Advanced Container Networking Services 的能力），或者像下面 OpenSandbox 那样用 egress 代理按域名放行。
 
-## 三、OpenSandbox：执行 API 和凭据代理都是现成的
+## 四、OpenSandbox：执行 API 和凭据代理都是现成的
 
 agent-sandbox 交给你的是"一个隔离好的 pod"，里面怎么执行命令、怎么读写文件，需要自己的 agent 镜像来提供。OpenSandbox 往上多做了一层，它更像一个工作区管理系统：应用后端通过 SDK（Python、Java/Kotlin、TypeScript、C#、Go）调用 lifecycle server，server 在 Kubernetes 上创建 `BatchSandbox`，controller 把它落成 pod；pod 里有 **execd** 提供命令执行、文件操作、代码运行的 API，SDK 经 ingress 网关访问它。同一套生命周期 API 在本地 Docker 和 Kubernetes 上都能用，开发阶段很方便。
 
@@ -207,7 +248,7 @@ sandbox.credential_vault.create(
 
 单副本的 `BatchSandbox` 可以设 `pause: true` 暂停：controller 创建 `SandboxSnapshot`，在源节点上跑一个 Job 把 rootfs 提交成镜像推到仓库（默认格式 `rootfs-v1`，也有带 VM 内存状态的 `qemu-v1`），然后删除 pod、释放池位；设回 `false` 就以同一个沙箱 ID 从快照镜像重建。要注意删除快照记录并不会删掉推上去的镜像，仓库的保留和清理策略要自己定，否则快照镜像会一直累积。
 
-## 四、两者怎么选
+## 五、两者怎么选
 
 | 维度 | agent-sandbox | OpenSandbox |
 |---|---|---|
@@ -227,7 +268,7 @@ sandbox.credential_vault.create(
 - **agent 是调用方，沙箱是它借来执行代码的工具**——比如后端起一个沙箱，让里面的 Claude Code 跑一个任务，跑完拿结果——用 OpenSandbox，execd 和 Credential Vault 省掉了大量胶水代码。
 - 两者都只是"房间管理"，墙都来自同一个 Kata 节点池；门禁则要额外设计，OpenSandbox 自带了一部分，agent-sandbox 要靠 FQDN 策略或独立的 egress 网关补齐。
 
-## 五、冷启动要拆开量
+## 六、冷启动要拆开量
 
 客户最常问的是"沙箱多快能起来"，而这个数字通常被说得很混。一次冷启动包括：调度、拉镜像、启动 Kata VM、初始化代理和证书、启动 harness，然后才轮到模型和工具执行。其中**镜像拉取往往是大头**——带浏览器和语言运行时的沙箱镜像动辄几个 GB，首次拉取几分钟很常见，和模型快慢毫无关系。
 
