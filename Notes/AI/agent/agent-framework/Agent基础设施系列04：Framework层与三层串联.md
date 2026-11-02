@@ -11,7 +11,7 @@ tags:
   - google-adk
   - kagent
   - poc
-description: 把之前分散写过的 Foundry Prompt Agent 与 Hosted Agent、Copilot Studio 的 harness、Claude Code 等现成 harness 归到 Framework 这一层——按 harness 归谁、能不能改分成代码框架、现成 harness、平台托管 harness 三类；对比 Microsoft Agent Framework、LangGraph、Google ADK、OpenAI Agents SDK、Dapr Agents；再把 Platform、Framework、Runtime 三层串起来，说明换得动靠的是镜像、协议、外置状态、身份与 trace 这几个接口；最后给出从执行面开始的四个 PoC
+description: 把之前分散写过的 Foundry Prompt Agent 与 Hosted Agent、Copilot Studio 的 harness、Claude Code 等现成 harness 归到 Framework 这一层——按 harness 归谁、能不能改分成代码框架、现成 harness、平台托管 harness 三类；对比 Microsoft Agent Framework、LangGraph、Google ADK、OpenAI Agents SDK、Dapr Agents，并说明什么时候直接选 GitHub Copilot SDK、Claude Agent SDK、OpenCode 等现成 harness；再把 Platform、Framework、Runtime 三层串起来，说明换得动靠的是镜像、协议、外置状态、身份与 trace 这几个接口；最后给出从执行面开始的四个 PoC
 ---
 
 # Agent 基础设施系列 04：Framework 层与三层串联
@@ -72,17 +72,55 @@ Foundry 正好同时有两种情况：Prompt Agent 的 harness 就是 Foundry �
 
 ## 二、五个代码框架怎么选
 
-| 框架 | 编排方式 | 状态与恢复 | 在这套栈里的位置 |
-|---|---|---|---|
-| Microsoft Agent Framework | agent + 代码级 workflow | AgentSession、workflow checkpoint | 微软栈首选，Hosted Agent 一等支持，承接 Foundry Workflows |
-| LangGraph | 图：节点 + 条件边 | Checkpointer + Store，可落 PostgreSQL | 编排最灵活，Hosted Agent 与 kagent BYO 都能跑 |
-| Google ADK | 多 agent + workflow agent | SessionService、MemoryService | kagent 声明式 agent 内部用的就是它的 Go / Python 实现 |
-| OpenAI Agents SDK | handoff + guardrail | session、内置 tracing | 轻量，Hosted Agent 支持 |
-| Dapr Agents | DurableAgent 跑在 Dapr Workflow 上 | 每步落 state store，断点重放 | 自带持久执行，长任务首选（仅 Python） |
+| 框架                        | 编排方式                            | 状态与恢复                              | 在这套栈里的位置                                     |
+| ------------------------- | ------------------------------- | ---------------------------------- | -------------------------------------------- |
+| Microsoft Agent Framework | agent + 代码级 workflow            | AgentSession、workflow checkpoint   | 微软栈首选，Hosted Agent 一等支持，承接 Foundry Workflows |
+| LangGraph                 | 图：节点 + 条件边                      | Checkpointer + Store，可落 PostgreSQL | 编排最灵活，Hosted Agent 与 kagent BYO 都能跑          |
+| Google ADK                | 多 agent + workflow agent        | SessionService、MemoryService       | kagent 声明式 agent 内部用的就是它的 Go / Python 实现     |
+| OpenAI Agents SDK         | handoff + guardrail             | session、内置 tracing                 | 轻量，Hosted Agent 支持                           |
+| Dapr Agents               | DurableAgent 跑在 Dapr Workflow 上 | 每步落 state store，断点重放               | 自带持久执行，长任务首选（仅 Python）                       |
 
 我的选择逻辑很简单：客户以微软栈为主、要上 Hosted Agent，先用 **Microsoft Agent Framework**；编排逻辑复杂、要精细控制状态图，用 **LangGraph**；长任务、要跨审批续跑，看 **Dapr Agents**，或者用 Diagrid 给已有框架加的持久执行集成。前提都一样：**状态存储外置**，不要把会话和 checkpoint 留在进程内存里，否则 runtime 一换就断。
 
-## 三、三层串起来
+## 三、选 framework 还是直接选一个 harness
+
+对大部分团队来说，直接选一个成熟的 harness 往往比用 framework 从头搭更省事：agent loop、上下文压缩、工具调用、权限、子 agent 这些最难调的部分，厂商已经用自己的评测体系打磨过了（见 [Agent = Model + Harness](../../../tool/Agent=Model+Harness.md)）。微软对 GitHub Copilot SDK 和 Microsoft Agent Framework 的说法很贴切：**harness SDK 是把一个能干活的 agent 放进你的应用，framework 是让你用 agent 搭出应用。** 两者并不互斥。
+
+**适合直接选 harness 的：**
+
+- 任务是开放式的多步工作：写代码、做数据分析、生成文档、排查运维问题，需要读写文件、跑命令；
+- 一个 agent 能独立把事情做完，不需要事先画好多个 agent 之间的拓扑；
+- 团队没有精力自己调 loop 和上下文策略，愿意接受 harness 的行为方式；
+- 能接受它按自己的节奏消耗 token——harness 会多想几步，简单任务用它反而"想太多"。
+
+**适合用 framework 自己搭的：**
+
+- 流程要确定、可审计：审批流、业务规则、合规节点，每一步做什么要能事先写清；
+- 多个 agent 之间有明确的分工和交接，需要显式的状态图和 human-in-the-loop；
+- 对延迟和单次成本很敏感：客服问答、语音对话这类每轮都要快、要省的场景；
+- 要做成一个标准化的服务，对外暴露 Responses 之类的端点，方便在不同 runtime 之间迁移。
+
+**两者组合**往往是最实用的：用 framework 搭外层的确定性流程，其中需要"自己想办法把活干完"的那一步交给一个 harness。比如 Microsoft Agent Framework 的 workflow 里某个节点调用 GitHub Copilot SDK 去写代码、跑分析；Copilot Studio 里让 GitHub Copilot harness 在后台定时做重活、Standard agent 在前台回答用户，也是同一个思路。
+
+harness 的用法也有三种，选之前先想清楚是哪一种：**交互式使用**（个人在终端或 IDE 里用）；**嵌入到应用里**（GitHub Copilot SDK 经 JSON-RPC 驱动 CLI 的 server 模式，Claude Agent SDK 直接提供 Python / TypeScript 接口）；**整个当成沙箱里的工作负载**（kagent AgentHarness、Substrate actor，见 [系列 03](../agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)）。
+
+### 几个 harness 怎么选
+
+| harness | 和模型的关系 | 怎么嵌入 | 我会在什么时候选 |
+|---|---|---|---|
+| GitHub Copilot SDK / CLI | Copilot 订阅内可切换多家模型 | Python、TypeScript、Go、.NET、Java、Rust SDK | 微软栈客户的默认选项；Copilot Studio 的 GitHub Copilot harness 与它共享底层技术，Hosted Agent 也支持 |
+| Claude Agent SDK / Claude Code | 第一方绑定 Claude | Python、TypeScript SDK | 模型选 Claude，要最强的长任务和代码能力 |
+| Codex | 第一方绑定 OpenAI | CLI、桌面 App、云端任务 | 以 GPT 为主，要 App、云端、移动端一体 |
+| OpenCode | 模型无关，接 75+ 家提供方 | 终端优先，多会话并行 | 要开源、多模型，不想被单一厂商绑定 |
+| OpenHands | 多模型 | SDK + 远程沙箱 + 云服务 | 无人值守的 issue→PR、定时任务、agent 评测 |
+| Goose | 多模型 | extension 即 MCP server，工作流写成 Recipe | 非编码的自动化，已有大量 MCP server 要复用 |
+| pi | 多模型 | 极简内核，SDK / RPC 模式 | 嵌进自己的产品、做上下文工程实验；没有权限系统，必须先容器化 |
+| DeepSeek Harness | 多模型，能把 Claude Code、Codex 当 sub-agent | 一切皆插件，loop 也可替换 | 编排多家 agent、采集轨迹做实验；developer preview，不进生产 |
+| OpenClaw / Hermes | 多模型 | 长时运行的 agent gateway | 个人或团队的常驻助手；kagent AgentHarness 直接支持 |
+
+选的时候有一条经验：**模型已经定了，先看这家的第一方 harness**——模型和 harness 在训练时就一起调过，体验通常最好；要多模型、要开源、要能改，就转向 OpenCode、OpenHands 这一侧，接受一定的能力损耗。各家的架构差异在 [Agent Harness 五平台对比](../Agent-Harness五平台对比.md) 里有更细的拆解。另外，skill 和 MCP 配置在各家 harness 之间基本可以搬，hook、plugin、subagent 的配置仍然各管各的——团队沉淀资产时，优先投在可移植的那一层。
+
+## 四、三层串起来
 
 ![Platform、Framework、Runtime 三层串联|900](../../../../asset/agent-three-layers-wiring-2026-11-02.svg)
 
@@ -93,7 +131,7 @@ Foundry 正好同时有两种情况：Prompt Agent 的 harness 就是 Foundry �
 
 反过来看，最容易被锁住的是平台托管 harness：它的 harness 和 runtime 是绑在一起的，换 runtime 就意味着重写 agent。这是给客户做选型时最值得提前讲清楚的一点。
 
-## 四、下一步：四个 PoC
+## 五、下一步：四个 PoC
 
 到这里，概念和选型已经梳理完了，但还有两件事没验证：AKS 上的实际数字，以及同一份代码是不是真能不改就换 runtime。接下来按这个顺序做：
 
