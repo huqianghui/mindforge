@@ -24,12 +24,32 @@ description: 把之前分散写过的 Foundry Prompt Agent 与 Hosted Agent、Co
 
 - **代码框架，自己搭 harness**：Microsoft Agent Framework、LangGraph、Google ADK、OpenAI Agents SDK、Dapr Agents。loop、状态、编排、审批都由你决定，产物是一个容器镜像。harness 的质量也归你。
 - **现成 harness，拿来即用**：Claude Code、Codex、GitHub Copilot、OpenClaw、Hermes、OpenHands、Goose。行为别人已经调好，靠 skill、MCP、hook 扩展（几家的路线差异见 [Agent Harness 五平台对比](../Agent-Harness五平台对比.md)）。它们本身会执行 shell 和代码，是不可信执行环境，适合整个放进沙箱。
-- **平台托管 harness，不能改**：Foundry Prompt Agent 的运行时、Copilot Studio 的 Standard 和 Copilot Chat harness（见 [Copilot Studio 系列 03](../../../../Azure/Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。配置即 agent，上手最快；新能力要等平台排期，也只能跑在自家运行时上。
+- **平台托管 harness，不能改**：Foundry Prompt Agent 的运行时，以及 Copilot Studio 里的大部分 harness（下一节单独对照）。配置即 agent，上手最快；新能力要等平台排期，也只能跑在自家运行时上。
 
 **Foundry Hosted Agent 在这里的位置**很清楚：它是"framework 自选、runtime 托管"。你用 Microsoft Agent Framework、LangGraph、OpenAI Agents SDK 等任意框架写 agent，打成镜像，Foundry 负责每个会话一个 VM 级沙箱、闲置回收与带状态恢复、Entra agent identity 和 Responses / Invocations 端点（细节见 [Foundry Agent 三种形态对比与选型](../../../../Azure/Foundary-Agent/Foundry-Agent三种形态对比与选型.md)）。客户说"不想只有 Hosted Agent"，本质是想把 runtime 这一半也换成自己的——framework 那一半其实已经是自选的了。
 
 > [!NOTE]
 > Foundry 的 Workflows 将于 2026-12-01 退役，官方指引是把多 agent 编排移回 Microsoft Agent Framework 的代码级 workflow。这也说明编排正在从"平台上的可视化产品"回到 framework 层。
+
+### Copilot Studio 的四种 harness 放在哪
+
+Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copilot Studio 系列 03](../../../../Azure/Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。四种 harness 的定义都存在 Dataverse 里，但执行分在三套不同的服务上，所以创建后不能互转。放到这里的分类里，它们并不都在同一格：
+
+| Copilot Studio harness | 实际是什么 | 对应本系列的哪一格 |
+|---|---|---|
+| Standard | 前身 Power Virtual Agents 的经典运行时，按 topics 和分支走 | 平台托管、只能配置，行为接近一条确定性的 workflow |
+| GitHub Copilot | Agentic Runtime 上的自主 agent loop，自己拆步骤，带 Bash 容器和文件系统 | **现成 harness + 平台托管的沙箱**：和把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一种形态，只是 runtime 由微软运营 |
+| Copilot Chat | 给 M365 Copilot 挂指令、知识和动作，执行者是 M365 Copilot 的编排器 | 严格说不是一个独立 harness，而是往别人的 harness 里加配置 |
+| Customer Conversation（预览） | 面向外部客户的聊天与电话，主 agent 加子 agent，答不了转人工 | 平台托管、只能配置，相当于联络中心场景的专用 harness |
+
+所以更准确的分法其实是两个维度：**harness 是自己搭的还是现成的**，**runtime 是自己运营的还是平台托管的**。四个组合各有代表：
+
+- 自己搭 + 自己运营：Microsoft Agent Framework 或 LangGraph 跑在 AKS 的 kagent 上；
+- 自己搭 + 平台托管：Foundry Hosted Agent；
+- 现成 harness + 自己运营：Claude Code、OpenClaw 作为 kagent AgentHarness 或 Substrate actor；
+- 现成 harness + 平台托管：Copilot Studio 的 GitHub Copilot harness。
+
+剩下的 Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation 都属于"只能配置"的那一类：harness 和 runtime 绑在一起，换 runtime 就要重写 agent。Copilot Studio 自己的"不能互转"就是这条规律的直接体现。
 
 ## 二、五个代码框架怎么选
 
