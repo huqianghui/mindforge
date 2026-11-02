@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .lane { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .laneGray { fill: #0d1320; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlTeal { fill: #5eead4; font-size: 16px; font-weight: 600; }
+      .zlGray { fill: #94a3b8; font-size: 16px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 13.5px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="980" rx="16"/>
+  <text class="title" x="30" y="44">kagent 的三种运行方式：从"一个 agent 一个 pod"到"一个会话一个 actor"</text>
+  <text class="sub" x="30" y="72">左列是旧的 Deployment 运行时，中列和右列跑在 Agent Substrate 上；①~⑥ 是 SandboxAgent 处理一轮对话的过程</text>
+
+  <!-- ===== 控制面 ===== -->
+  <rect class="zone" x="30" y="92" width="1340" height="158" rx="12"/>
+  <text class="zl" x="48" y="116">kagent 控制面</text>
+  <rect class="box" x="48" y="130" width="210" height="104" rx="10"/>
+  <text class="h" x="64" y="156">调用方</text>
+  <text class="t" x="64" y="180">kagent UI · CLI</text>
+  <text class="t" x="64" y="202">A2A / MCP 客户端</text>
+  <rect class="box" x="288" y="130" width="410" height="104" rx="10"/>
+  <text class="h" x="304" y="156">kagent controller</text>
+  <text class="t" x="304" y="180">监听 CRD，准备 agent 运行，管理会话</text>
+  <text class="t" x="304" y="202">对外暴露 A2A、MCP、gRPC 接口</text>
+  <text class="tGray" x="304" y="224">agent 之间也用 A2A 互相调用</text>
+  <rect class="box" x="728" y="130" width="400" height="104" rx="10"/>
+  <text class="h" x="744" y="156">CRD</text>
+  <text class="code" x="744" y="180">Agent · SandboxAgent · AgentHarness</text>
+  <text class="code" x="744" y="202">ModelConfig · AgentTemplate</text>
+  <text class="code" x="744" y="224">RemoteMCPServer · MCPServer</text>
+  <rect class="boxBlue" x="1158" y="130" width="196" height="104" rx="10"/>
+  <text class="h" x="1174" y="156">PostgreSQL</text>
+  <text class="t" x="1174" y="180">会话、任务、历史</text>
+  <text class="tGray" x="1174" y="202">供列表与查询</text>
+
+  <!-- ===== 三条运行路径 ===== -->
+  <!-- Lane 1 -->
+  <rect class="laneGray" x="30" y="276" width="420" height="440" rx="12"/>
+  <text class="zlGray" x="48" y="304">Agent（Deployment 运行时）</text>
+  <rect class="boxGray" x="48" y="322" width="384" height="112" rx="10"/>
+  <text class="hGray" x="64" y="348">每个 agent 一组常驻资源</text>
+  <text class="tGray" x="64" y="372">Pod + Service + ServiceAccount</text>
+  <text class="tGray" x="64" y="394">身份、网络策略、观测都按 pod 归属</text>
+  <text class="tGray" x="64" y="416">可加 Kata RuntimeClass 做 VM 隔离</text>
+  <rect class="boxGray" x="48" y="450" width="384" height="90" rx="10"/>
+  <text class="hGray" x="64" y="476">代价</text>
+  <text class="tGray" x="64" y="500">没人用时照样占内存和 CPU</text>
+  <text class="tGray" x="64" y="522">新建一个 agent 要走完整的 pod 调度</text>
+  <rect class="boxGray" x="48" y="556" width="384" height="142" rx="10"/>
+  <text class="hGray" x="64" y="582">现状</text>
+  <text class="tGray" x="64" y="606">kagent 已宣布主线改用 Substrate，</text>
+  <text class="tGray" x="64" y="628">这套运行时留在 release/v0.10.x 分支</text>
+  <text class="tGray" x="64" y="650">继续维护；新 API 会有破坏性变更</text>
+  <text class="tGray" x="64" y="676">今天的生产方案仍以它为主</text>
+
+  <!-- Lane 2 -->
+  <rect class="lane" x="470" y="276" width="440" height="440" rx="12"/>
+  <text class="zlTeal" x="488" y="304">SandboxAgent（声明式 agent）</text>
+  <rect class="boxBlue" x="488" y="322" width="404" height="66" rx="10"/>
+  <text class="h" x="504" y="348">golden snapshot</text>
+  <text class="t" x="504" y="372">每个 SandboxAgent 一份，首次生成约 60–90 秒</text>
+  <rect class="boxAmber" x="488" y="404" width="404" height="66" rx="10"/>
+  <text class="hAmber" x="504" y="430">会话请求到来</text>
+  <text class="t" x="504" y="454">为这个会话恢复出一个 actor，跑在 gVisor 里</text>
+  <rect class="box" x="488" y="486" width="404" height="66" rx="10"/>
+  <text class="h" x="504" y="512">actor 里跑 agent loop</text>
+  <text class="t" x="504" y="536">Go（默认）/ Python ADK 或 BYO，调模型与工具</text>
+  <rect class="box" x="488" y="568" width="404" height="66" rx="10"/>
+  <text class="h" x="504" y="594">回复后快照回对象存储</text>
+  <text class="t" x="504" y="618">actor 回到 Suspended，worker 立刻释放</text>
+  <rect class="boxBlue" x="488" y="650" width="404" height="52" rx="10"/>
+  <text class="t" x="504" y="682">会话历史：durableDir 里的 SQLite，元数据同步 PG</text>
+
+  <!-- Lane 3 -->
+  <rect class="lane" x="930" y="276" width="440" height="440" rx="12"/>
+  <text class="zlTeal" x="948" y="304">AgentHarness（长时运行的 coding agent）</text>
+  <rect class="box" x="948" y="322" width="404" height="88" rx="10"/>
+  <text class="h" x="964" y="348">现成的 harness</text>
+  <text class="t" x="964" y="372">OpenClaw、Hermes 这类 coding agent</text>
+  <text class="t" x="964" y="394">workloadImage 可换成自己的镜像</text>
+  <rect class="box" x="948" y="426" width="404" height="88" rx="10"/>
+  <text class="h" x="964" y="452">每个 harness 一个 ActorTemplate</text>
+  <text class="t" x="964" y="476">kagent 自动生成，按需创建 Actor</text>
+  <text class="t" x="964" y="498">只能跑在 Substrate 上</text>
+  <rect class="box" x="948" y="530" width="404" height="80" rx="10"/>
+  <text class="h" x="964" y="556">经 ACP 对话</text>
+  <text class="t" x="964" y="580">kagent UI 用 Agent Client Protocol 连它</text>
+  <rect class="boxGray" x="948" y="626" width="404" height="76" rx="10"/>
+  <text class="hGray" x="964" y="652">容量</text>
+  <text class="tGray" x="964" y="676">worker 至少 1 + 同时活跃的 harness 数</text>
+
+  <!-- ===== 底部：计算资源 ===== -->
+  <rect class="boxGray" x="30" y="736" width="420" height="62" rx="10"/>
+  <text class="hGray" x="48" y="762">普通节点池 / Kata 节点池</text>
+  <text class="tGray" x="48" y="784">一个 agent 固定占一个 pod</text>
+  <rect class="box" x="470" y="736" width="900" height="62" rx="10"/>
+  <text class="h" x="488" y="762">Substrate WorkerPool（如 kagent-default，gVisor worker）</text>
+  <text class="t" x="488" y="784">SandboxAgent 的会话 actor 和 AgentHarness 的 actor 共用这一池预热 worker</text>
+
+  <!-- ===== 流程 ===== -->
+  <path class="flow" d="M258,182 L288,182" marker-end="url(#arr)"/>
+  <circle class="badge" cx="273" cy="162" r="12"/><text class="bn" x="273" y="167">①</text>
+  <path id="p2" class="flow" d="M560,234 L560,262 L460,262 L460,437 L488,437" marker-end="url(#arr)"/>
+  <circle class="badge" cx="460" cy="350" r="12"/><text class="bn" x="460" y="355">②</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion>
+  </circle>
+  <path class="flow" d="M690,388 L690,404" marker-end="url(#arr)"/>
+  <circle class="badge" cx="712" cy="396" r="11"/><text class="bn" x="712" y="401">③</text>
+  <path class="flow" d="M690,470 L690,486" marker-end="url(#arr)"/>
+  <circle class="badge" cx="712" cy="478" r="11"/><text class="bn" x="712" y="483">④</text>
+  <path class="flow" d="M690,552 L690,568" marker-end="url(#arr)"/>
+  <circle class="badge" cx="712" cy="560" r="11"/><text class="bn" x="712" y="565">⑤</text>
+  <path class="flow" d="M892,676 L920,676 L920,262 L1256,262 L1256,234" marker-end="url(#arr)"/>
+  <circle class="badge" cx="920" cy="470" r="12"/><text class="bn" x="920" y="475">⑥</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="836">SandboxAgent 一轮对话</text>
+  <text class="el" x="30" y="862">① 用户在 UI 或经 A2A 发来一条消息，到达 kagent controller</text>
+  <text class="el" x="30" y="888">② controller 找到这个会话对应的 actor，没有就新建，经 Substrate 唤醒</text>
+  <text class="el" x="30" y="914">③ 新会话从 golden snapshot 恢复，老会话从自己上次的快照恢复</text>
+  <text class="el" x="720" y="862">④ actor 里的 ADK 跑完 agent loop：调模型、调 MCP 工具、生成回复</text>
+  <text class="el" x="720" y="888">⑤ 回复发出后 actor 被快照挂起，worker 马上能接下一个会话</text>
+  <text class="el" x="720" y="914">⑥ 会话历史写在 actor 的 durableDir 里，元数据同步到 PostgreSQL 供列表查询</text>
+  <text class="tGray" x="30" y="954">结果：一个 worker 可以依次服务许多会话；要的 worker 数取决于同时在"想"或"做"的会话数，而不是 agent 或会话的总数</text>
+</svg>

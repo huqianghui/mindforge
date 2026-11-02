@@ -60,6 +60,7 @@
 ### Notes/AI/agent/agent-runtime
 
 - [Agent 基础设施系列 02：Kubernetes 上的 Agent 沙箱](Notes/AI/agent/agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md)
+- [Agent 基础设施系列 03：kagent 与 Agent Substrate](Notes/AI/agent/agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)
 
 ### Notes/AI/computer-use
 

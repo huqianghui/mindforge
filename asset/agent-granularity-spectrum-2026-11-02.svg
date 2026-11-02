@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset="0.5" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
+      .boxHi { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2.2; animation: pulse 2.4s ease-in-out infinite; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hTeal { fill: #5eead4; font-size: 15px; font-weight: 600; }
+      .lbl { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .end { fill: #e2e8f0; font-size: 14px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">agent 的运行粒度：从"一个 agent 一个 pod"到进程内的 actor</text>
+  <text class="sub" x="30" y="72">越往右越轻、密度越高，但隔离也越弱；高亮的一列是 Agent Substrate 所在的位置</text>
+
+  <!-- 光谱轴 -->
+  <rect x="30" y="92" width="1340" height="8" rx="4" fill="url(#spec)"/>
+  <text class="end" x="30" y="124">重：隔离强，空闲也花钱</text>
+  <text class="end" x="1370" y="124" text-anchor="end">轻：密度高，隔离靠逻辑</text>
+
+  <!-- 五列 -->
+  <!-- col1 -->
+  <rect class="boxAmber" x="30" y="140" width="256" height="410" rx="12"/>
+  <text class="hAmber" x="46" y="168">一个 agent 一个 pod</text>
+  <text class="lbl" x="46" y="198">调度单位</text>
+  <text class="t" x="46" y="220">pod（常驻）</text>
+  <text class="lbl" x="46" y="252">空闲时占什么</text>
+  <text class="t" x="46" y="274">整份 CPU 与内存</text>
+  <text class="lbl" x="46" y="306">冷启动</text>
+  <text class="t" x="46" y="328">调度 + 拉镜像 + 启动，</text>
+  <text class="t" x="46" y="350">秒级到分钟级</text>
+  <text class="lbl" x="46" y="382">隔离</text>
+  <text class="t" x="46" y="404">容器，或 Kata VM</text>
+  <text class="lbl" x="46" y="436">代表</text>
+  <text class="t" x="46" y="458">kagent Deployment 运行时</text>
+  <text class="tGray" x="46" y="500">适合数量少、长期在线、</text>
+  <text class="tGray" x="46" y="522">要固定身份的 agent</text>
+
+  <!-- col2 -->
+  <rect class="box" x="302" y="140" width="256" height="410" rx="12"/>
+  <text class="h" x="318" y="168">预热池领沙箱</text>
+  <text class="lbl" x="318" y="198">调度单位</text>
+  <text class="t" x="318" y="220">pod（预先启动）</text>
+  <text class="lbl" x="318" y="252">空闲时占什么</text>
+  <text class="t" x="318" y="274">池里的空 pod；领走后</text>
+  <text class="t" x="318" y="296">到归还前一直占着</text>
+  <text class="lbl" x="318" y="328">领取</text>
+  <text class="t" x="318" y="350">毫秒级（已启动）</text>
+  <text class="lbl" x="318" y="382">隔离</text>
+  <text class="t" x="318" y="404">Kata VM / gVisor</text>
+  <text class="lbl" x="318" y="436">代表</text>
+  <text class="t" x="318" y="458">agent-sandbox、OpenSandbox</text>
+  <text class="tGray" x="318" y="500">快在"已经起好"，不在</text>
+  <text class="tGray" x="318" y="522">"空闲时不占"</text>
+
+  <!-- col3 -->
+  <rect class="boxHi" x="574" y="140" width="256" height="410" rx="12"/>
+  <text class="hTeal" x="590" y="168">actor 快照 + worker 复用</text>
+  <text class="lbl" x="590" y="198">调度单位</text>
+  <text class="t" x="590" y="220">actor（不是 K8s 对象）</text>
+  <text class="lbl" x="590" y="252">空闲时占什么</text>
+  <text class="t" x="590" y="274">只有对象存储里的快照</text>
+  <text class="lbl" x="590" y="306">唤醒</text>
+  <text class="t" x="590" y="328">官方称恢复 &lt; 400ms，</text>
+  <text class="t" x="590" y="350">目标 p95 100ms</text>
+  <text class="lbl" x="590" y="382">隔离</text>
+  <text class="t" x="590" y="404">gVisor / microVM</text>
+  <text class="lbl" x="590" y="436">代表</text>
+  <text class="t" x="590" y="458">Agent Substrate、</text>
+  <text class="t" x="590" y="480">kagent SandboxAgent</text>
+  <text class="tGray" x="590" y="522">pre-1.0，先做 PoC</text>
+
+  <!-- col4 -->
+  <rect class="boxBlue" x="846" y="140" width="256" height="410" rx="12"/>
+  <text class="h" x="862" y="168">进程内的 actor</text>
+  <text class="lbl" x="862" y="198">调度单位</text>
+  <text class="t" x="862" y="220">virtual actor / 会话对象</text>
+  <text class="lbl" x="862" y="252">空闲时占什么</text>
+  <text class="t" x="862" y="274">状态在 state store，</text>
+  <text class="t" x="862" y="296">内存里不常驻</text>
+  <text class="lbl" x="862" y="328">激活</text>
+  <text class="t" x="862" y="350">Dapr 称 &lt; 50ms</text>
+  <text class="lbl" x="862" y="382">隔离</text>
+  <text class="t" x="862" y="404">同进程，只有逻辑隔离</text>
+  <text class="lbl" x="862" y="436">代表</text>
+  <text class="t" x="862" y="458">Dapr Actors / Workflow</text>
+  <text class="tGray" x="862" y="500">一个 pod 承载成千上万个，</text>
+  <text class="tGray" x="862" y="522">只适合受信的 agent 逻辑</text>
+
+  <!-- col5 -->
+  <rect class="boxGray" x="1118" y="140" width="252" height="410" rx="12"/>
+  <text class="h" x="1134" y="168">进程内的代码沙箱</text>
+  <text class="lbl" x="1134" y="198">调度单位</text>
+  <text class="t" x="1134" y="220">一次函数调用</text>
+  <text class="lbl" x="1134" y="252">空闲时占什么</text>
+  <text class="t" x="1134" y="274">几乎不占</text>
+  <text class="lbl" x="1134" y="306">启动</text>
+  <text class="t" x="1134" y="328">毫秒级以下</text>
+  <text class="lbl" x="1134" y="382">隔离</text>
+  <text class="t" x="1134" y="404">语言运行时（如 Wasm）</text>
+  <text class="lbl" x="1134" y="436">代表</text>
+  <text class="t" x="1134" y="458">WebAssembly 运行时</text>
+  <text class="tGray" x="1134" y="500">语言、系统调用、依赖</text>
+  <text class="tGray" x="1134" y="522">都受限，只跑小片段</text>
+
+  <!-- ===== 拆分模式 ===== -->
+  <rect class="zone" x="30" y="580" width="1340" height="200" rx="12"/>
+  <text class="zl" x="48" y="606">常用的拆法：agent 本身走轻粒度，只有执行代码时才借一个重的沙箱</text>
+
+  <rect class="box" x="48" y="624" width="400" height="140" rx="10"/>
+  <text class="h" x="64" y="650">agent loop（受信）</text>
+  <text class="t" x="64" y="674">规划、调模型、调受治理的 API</text>
+  <text class="t" x="64" y="696">放在 actor 或进程内的会话里</text>
+  <text class="t" x="64" y="718">空闲时不占算力，来消息就唤醒</text>
+  <text class="tGray" x="64" y="744">Substrate actor 或 Dapr actor</text>
+
+  <rect class="boxAmber" x="560" y="624" width="400" height="140" rx="10"/>
+  <text class="hAmber" x="576" y="650">执行模型生成的代码（不可信）</text>
+  <text class="t" x="576" y="674">需要时从预热池领一个 Kata 沙箱</text>
+  <text class="t" x="576" y="696">跑完拿结果，归还或休眠</text>
+  <text class="t" x="576" y="718">不需要执行代码的轮次不碰沙箱</text>
+  <text class="tGray" x="576" y="744">agent-sandbox 或 OpenSandbox</text>
+
+  <rect class="boxBlue" x="1072" y="624" width="280" height="140" rx="10"/>
+  <text class="h" x="1088" y="650">结果</text>
+  <text class="t" x="1088" y="674">贵的 VM 只按"执行次数"</text>
+  <text class="t" x="1088" y="696">付费，不按"agent 个数"</text>
+  <text class="t" x="1088" y="718">agent 本身的密度由</text>
+  <text class="t" x="1088" y="740">轻粒度那一层决定</text>
+
+  <path class="flowAmber" d="M448,676 L560,676" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="504" cy="658" r="12"/><text class="bn" x="504" y="663">②</text>
+  <path class="flow" d="M560,722 L448,722" marker-end="url(#arr)"/>
+  <circle class="badge" cx="504" cy="742" r="12"/><text class="bn" x="504" y="747">③</text>
+  <path class="flow" d="M960,694 L1072,694" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1016" cy="676" r="12"/><text class="bn" x="1016" y="681">④</text>
+  <circle class="badge" cx="48" cy="624" r="12"/><text class="bn" x="48" y="629">①</text>
+  <circle r="6" fill="url(#particle)">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M448,676 L560,676"/>
+  </circle>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="818">拆分模式图例</text>
+  <text class="el" x="30" y="846">① 用户消息唤醒 agent：它是一个挂起的 actor 或进程内会话，唤醒是亚秒级甚至几十毫秒</text>
+  <text class="el" x="30" y="872">② 这一轮需要跑生成的代码时，agent 才去预热池领一个 Kata 沙箱，把代码和数据送进去</text>
+  <text class="el" x="30" y="898">③ 沙箱返回结果后归还；agent 继续推理，回复用户后再次挂起</text>
+  <text class="el" x="720" y="846">④ 两层分别扩缩：agent 层按会话数和活跃度，沙箱层按代码执行的并发</text>
+  <text class="tGray" x="720" y="872">数值都是各项目自己公布的，用之前要在自己的镜像、</text>
+  <text class="tGray" x="720" y="898">并发和网络条件下实测</text>
+</svg>

@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a5f3fc"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxSus { fill: #111827; stroke: #64748b; stroke-width: 1.2; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneV { fill: #0d1729; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .zlv { fill: #94a3b8; font-size: 13.5px; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .tAmber { fill: #fde68a; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1010" rx="16"/>
+  <text class="title" x="30" y="44">Agent Substrate：actor 不是 pod，worker 才是</text>
+  <text class="sub" x="30" y="72">①~⑦ 是一个挂起中的 actor 被请求唤醒、处理、再挂起的过程；琥珀色是此刻唯一在跑的 worker</text>
+
+  <!-- ===== 第一行 ===== -->
+  <rect class="box" x="30" y="100" width="200" height="120" rx="10"/>
+  <text class="h" x="46" y="126">调用方</text>
+  <text class="t" x="46" y="150">kagent controller</text>
+  <text class="t" x="46" y="172">或自己的应用</text>
+  <text class="tGray" x="46" y="198">请求头 ate-target-actor</text>
+
+  <rect class="box" x="260" y="100" width="250" height="120" rx="10"/>
+  <text class="h" x="276" y="126">atenet-router</text>
+  <text class="t" x="276" y="150">Envoy + ext_proc</text>
+  <text class="t" x="276" y="172">按 actor 名路由，不看 Host</text>
+  <text class="tGray" x="276" y="198">worker 满时先暂存请求</text>
+
+  <rect class="box" x="540" y="100" width="330" height="120" rx="10"/>
+  <text class="h" x="556" y="126">ate-api-server（控制面）</text>
+  <text class="t" x="556" y="150">调度器：给 actor 挑一个空闲 worker</text>
+  <text class="t" x="556" y="172">工作流引擎：恢复与挂起的多步编排</text>
+  <text class="tGray" x="556" y="198">每个 RPC 按 atespace 鉴权</text>
+
+  <rect class="boxBlue" x="900" y="100" width="220" height="56" rx="10"/>
+  <text class="h" x="916" y="124">PostgreSQL</text>
+  <text class="t" x="916" y="146">Actor 与 Worker 记录</text>
+  <rect class="boxBlue" x="900" y="164" width="220" height="56" rx="10"/>
+  <text class="h" x="916" y="188">ate-idp-server</text>
+  <text class="t" x="916" y="210">actor JWT 的验签公钥</text>
+
+  <rect class="boxBlue" x="1150" y="100" width="220" height="120" rx="10"/>
+  <text class="h" x="1166" y="126">atecontroller</text>
+  <text class="t" x="1166" y="150">按 WorkerPool 维护</text>
+  <text class="t" x="1166" y="172">worker 的 Deployment</text>
+  <text class="tGray" x="1166" y="198">低频操作留给 K8s</text>
+
+  <!-- ===== Kubernetes 集群 ===== -->
+  <rect class="zone" x="30" y="248" width="980" height="376" rx="12"/>
+
+  <!-- 节点 1 -->
+  <rect class="zoneV" x="48" y="284" width="470" height="300" rx="10"/>
+  <text class="zlv" x="64" y="304">节点 1</text>
+  <rect class="boxBlue" x="64" y="314" width="438" height="48" rx="8"/>
+  <text class="h" x="80" y="344">atelet（DaemonSet）</text>
+  <text class="t" x="240" y="344">快照上传下载、驱动恢复</text>
+  <rect class="box" x="64" y="376" width="211" height="104" rx="8"/>
+  <text class="h" x="78" y="402">worker A · IDLE</text>
+  <text class="t" x="78" y="426">ateworker + gVisor</text>
+  <text class="tGray" x="78" y="450">已预热，等分配</text>
+  <rect class="box" x="291" y="376" width="211" height="104" rx="8"/>
+  <text class="h" x="305" y="402">worker B · IDLE</text>
+  <text class="t" x="305" y="426">ateworker + gVisor</text>
+  <text class="tGray" x="305" y="450">已预热，等分配</text>
+  <rect class="boxGray" x="64" y="494" width="438" height="74" rx="8"/>
+  <text class="hGray" x="80" y="520">节点本地快照</text>
+  <text class="tGray" x="80" y="544">刚挂起的 actor 优先就地恢复，过一段时间才清掉</text>
+
+  <!-- 节点 2 -->
+  <rect class="zoneV" x="536" y="284" width="458" height="300" rx="10"/>
+  <text class="zlv" x="552" y="304">节点 2</text>
+  <rect class="boxBlue" x="552" y="314" width="426" height="48" rx="8"/>
+  <text class="h" x="568" y="344">atelet</text>
+  <rect class="boxAmber" x="552" y="376" width="205" height="104" rx="8"/>
+  <text class="hAmber" x="566" y="402">worker C · BUSY</text>
+  <text class="t" x="566" y="426">正在运行 actor-2</text>
+  <text class="tGray" x="566" y="450">一次只承载一个 actor</text>
+  <rect class="box" x="773" y="376" width="205" height="104" rx="8"/>
+  <text class="h" x="787" y="402">worker D · IDLE</text>
+  <text class="t" x="787" y="426">ateworker + microVM</text>
+  <text class="tGray" x="787" y="450">Kata + Cloud Hypervisor</text>
+  <text class="tGray" x="790" y="520">worker 数 = 同时活跃的</text>
+  <text class="tGray" x="790" y="542">actor 上限，不是 agent 总数</text>
+
+  <text class="zl" x="48" y="610">Kubernetes 只看得到 WorkerPool 和这些 worker pod</text>
+
+  <!-- ===== 右列：actor 记录 ===== -->
+  <text class="zl" x="1040" y="270">Actor 记录（不是 K8s 对象）</text>
+  <rect class="boxSus" x="1040" y="284" width="330" height="50" rx="8"/>
+  <text class="tGray" x="1056" y="314">actor-1 · SUSPENDED · 快照在对象存储</text>
+  <rect class="boxAmber" x="1040" y="344" width="330" height="50" rx="8"/>
+  <text class="tAmber" x="1056" y="374">actor-2 · RUNNING · 在 worker C 上</text>
+  <rect class="boxSus" x="1040" y="404" width="330" height="50" rx="8"/>
+  <text class="tGray" x="1056" y="434">actor-3 · SUSPENDED · 快照在节点 1</text>
+  <rect class="boxSus" x="1040" y="464" width="330" height="50" rx="8"/>
+  <text class="tGray" x="1056" y="494">actor-4 · SUSPENDED</text>
+  <rect class="boxGray" x="1040" y="524" width="330" height="100" rx="8"/>
+  <text class="t" x="1056" y="550">…… 几百上千个，挂起时不占 worker</text>
+  <text class="tGray" x="1056" y="574">官方演示：约 250 个有状态 actor</text>
+  <text class="tGray" x="1056" y="596">复用 8 个 worker pod</text>
+
+  <!-- ===== 底行 ===== -->
+  <rect class="box" x="30" y="652" width="620" height="110" rx="10"/>
+  <text class="h" x="46" y="678">对象存储（GCS 或 S3）</text>
+  <text class="t" x="46" y="702">golden snapshot：每个 ActorTemplate 一份，新 actor 从它起步</text>
+  <text class="t" x="46" y="726">每个 actor 自己的快照：内存 + 文件系统，zstd 压缩</text>
+  <text class="tGray" x="46" y="750">Azure 上要用 S3 兼容存储，Blob 目前不在内置插件里</text>
+  <rect class="box" x="680" y="652" width="330" height="100" rx="10"/>
+  <text class="h" x="696" y="678">atenet-egress</text>
+  <text class="t" x="696" y="702">出站默认拒绝</text>
+  <text class="t" x="696" y="726">在沙箱外注入凭据、签发 JWT</text>
+  <rect class="box" x="1040" y="652" width="330" height="100" rx="10"/>
+  <text class="h" x="1056" y="678">模型与外部 API</text>
+  <text class="t" x="1056" y="702">actor 进程里没有任何真实凭据</text>
+  <text class="tGray" x="1056" y="726">每个 actor 一张短期 SPIFFE 证书</text>
+
+  <!-- ===== 流程 ===== -->
+  <!-- ① 调用方 → router -->
+  <path class="flow" d="M230,160 L260,160" marker-end="url(#arr)"/>
+  <circle class="badge" cx="245" cy="140" r="12"/><text class="bn" x="245" y="145">①</text>
+  <!-- ② router → ateapi -->
+  <path class="flow" d="M510,160 L540,160" marker-end="url(#arr)"/>
+  <circle class="badge" cx="525" cy="140" r="12"/><text class="bn" x="525" y="145">②</text>
+  <!-- ③ ateapi → 节点 2 atelet -->
+  <path class="flow" d="M780,220 L780,314" marker-end="url(#arr)"/>
+  <circle class="badge" cx="800" cy="268" r="12"/><text class="bn" x="800" y="273">③</text>
+  <!-- ④ 对象存储 → 节点 2 worker C（恢复） -->
+  <path class="flow" d="M625,652 L625,480" marker-end="url(#arr)"/>
+  <circle class="badge" cx="645" cy="560" r="12"/><text class="bn" x="645" y="565">④</text>
+  <!-- ⑤ router → worker C -->
+  <path id="tunnel" class="flow" d="M400,220 L400,266 L680,266 L680,376" marker-end="url(#arr)"/>
+  <circle class="badge" cx="540" cy="266" r="12"/><text class="bn" x="540" y="271">⑤</text>
+  <circle r="7" fill="url(#particle)">
+    <animateMotion dur="2.8s" repeatCount="indefinite"><mpath href="#tunnel"/></animateMotion>
+  </circle>
+  <!-- ⑥ worker C → egress；挂起上传 -->
+  <path class="flow" d="M720,480 L720,652" marker-end="url(#arr)"/>
+  <circle class="badge" cx="740" cy="590" r="12"/><text class="bn" x="740" y="595">⑥</text>
+  <path class="flowAmber" d="M580,480 L580,652" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="560" cy="560" r="12"/><text class="bn" x="560" y="565">⑦</text>
+
+  <!-- ===== 图例 ===== -->
+  <text class="elh" x="30" y="792">流程图例</text>
+  <text class="el" x="30" y="820">① 调用方带上 ate-target-actor 请求头发请求，只需要知道 actor 名，不需要知道它此刻在哪</text>
+  <text class="el" x="30" y="846">② router 拦下请求，向控制面要这个 actor 的位置；actor 是挂起状态，就触发 ResumeActor</text>
+  <text class="el" x="30" y="872">③ 控制面从 WorkerPool 里原子地认领一个空闲 worker，通知那个节点的 atelet 去恢复</text>
+  <text class="el" x="30" y="898">④ atelet 取 actor 最近的快照（本节点有就用本地的，否则从对象存储下载），ateworker 在 worker 里恢复进程</text>
+  <text class="el" x="30" y="924">⑤ router 通过 mTLS 隧道把原请求送进 worker C；整个过程不经过 Kubernetes 调度器，也不拉镜像</text>
+  <text class="el" x="30" y="950">⑥ actor 的出站只能走 egress 网关，凭据在沙箱外注入</text>
+  <text class="el" x="30" y="976">⑦ 上层系统显式调用 SuspendActor：冻结进程、写快照、清空 worker 放回池子；Substrate 自己不会判断"空闲多久该挂起"</text>
+</svg>

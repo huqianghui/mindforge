@@ -190,7 +190,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 这个系列接下来按层展开：
 
 - [Agent 基础设施系列 02：Kubernetes 上的 Agent 沙箱](../agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md)——AKS Kata、agent-sandbox 与 OpenSandbox
-- Runtime：kagent 与 Agent Substrate——把 agent 当作 CRD 和 actor 来管
+- [Agent 基础设施系列 03：kagent 与 Agent Substrate](../agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)——把 agent 当作 CRD 和 actor 来管
 - Runtime：Dapr Agents——把持久执行做进运行时
 - Framework：LangGraph、Microsoft Agent Framework、Google ADK 对比
 

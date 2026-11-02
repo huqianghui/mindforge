@@ -65,7 +65,7 @@ gVisor 是另一条路：不起 VM，而是用一个用户态内核拦截并实�
 | actor 与 pod 解耦 | 自己的控制面把 actor 调度到 worker pod，空闲时快照换出 | gVisor 或 microVM | Agent Substrate |
 | 进程内的代码沙箱 | 用 WebAssembly 之类的运行时跑代码片段 | 语言运行时级 | 适合短小的计算，系统调用和语言受限 |
 
-Agent Substrate 是最值得关注的一种：Kubernetes 只看到 WorkerPool 和 ActorTemplate，一个个 actor（逻辑上的 agent）不是 Kubernetes 对象，由它自己的控制面在 worker pod 之间调度、快照、恢复，Kubernetes 的 API server 不在这条热路径上。pod 退回成"执行 worker"，不再是 agent 的部署、身份和生命周期单位。这部分放到下一篇和 kagent 一起展开。
+Agent Substrate 是最值得关注的一种：Kubernetes 只看到 WorkerPool 和 ActorTemplate，一个个 actor（逻辑上的 agent）不是 Kubernetes 对象，由它自己的控制面在 worker pod 之间调度、快照、恢复，Kubernetes 的 API server 不在这条热路径上。pod 退回成"执行 worker"，不再是 agent 的部署、身份和生命周期单位。这部分在 [系列 03](Agent基础设施系列03：kagent与Agent-Substrate.md) 里和 kagent 一起展开。
 
 ## 二、AKS 上的 Kata：开起来容易，规格要想清楚
 
