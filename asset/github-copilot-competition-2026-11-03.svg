@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 900" width="1360" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .plot { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .quad { fill: none; stroke: #334155; stroke-width: 1; stroke-dasharray: 4 6; }
+      .axis { stroke: #94a3b8; stroke-width: 1.6; }
+      .ax { fill: #94a3b8; font-size: 13px; }
+      .axh { fill: #cbd5e1; font-size: 14px; font-weight: 600; }
+      .ql { fill: #475569; font-size: 13px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .cardBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .cardGray { fill: #111827; stroke: #64748b; stroke-width: 1.4; }
+      .cardAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .good { fill: #5eead4; font-size: 13px; }
+      .bad { fill: #fca5a5; font-size: 13px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .panel { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .move { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
+      .dotA { fill: #fbbf24; }
+      .dotT { fill: #2dd4bf; }
+      .dotB { fill: #38bdf8; }
+      .dotG { fill: #94a3b8; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      @keyframes dash { to { stroke-dashoffset: -24; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1360" height="900" rx="16"/>
+  <text class="title" x="30" y="44">竞争定位：Copilot、Codex、Claude Code、Cursor 各站在哪</text>
+  <text class="sub" x="30" y="70">坐标是我的判断，不是测评分数；横轴看模型是否锁定单一厂商，纵轴看与代码平台、企业治理的绑定深度</text>
+
+  <!-- ===== 定位图 ===== -->
+  <rect class="plot" x="80" y="100" width="680" height="640" rx="10"/>
+  <line class="quad" x1="420" y1="100" x2="420" y2="740"/>
+  <line class="quad" x1="80" y1="420" x2="760" y2="420"/>
+  <line class="axis" x1="80" y1="760" x2="770" y2="760" marker-end="url(#arrGray)"/>
+  <line class="axis" x1="60" y1="740" x2="60" y2="96" marker-end="url(#arrGray)"/>
+  <text class="ax" x="80" y="784">单一模型厂商</text>
+  <text class="ax" x="640" y="784">多模型 + 路由</text>
+  <text class="axh" x="330" y="808">模型选择 →</text>
+  <text class="ax" x="20" y="736" transform="rotate(-90 20 736)">只是开发工具</text>
+  <text class="ax" x="20" y="250" transform="rotate(-90 20 250)">平台 + 治理一体</text>
+
+  <text class="ql" x="96" y="124">强 harness、深集成，但模型锁定</text>
+  <text class="ql" x="436" y="124">平台型：多模型 + 企业治理</text>
+  <text class="ql" x="96" y="728">单点工具</text>
+  <text class="ql" x="436" y="728">编辑器体验为中心</text>
+
+  <!-- Copilot -->
+  <rect class="cardAmber" x="470" y="150" width="270" height="138" rx="10"/>
+  <circle class="dotA" cx="486" cy="174" r="7"/>
+  <text class="hAmber" x="500" y="180">GitHub Copilot</text>
+  <text class="t" x="486" y="206">多厂商模型 + Fusion 路由</text>
+  <text class="t" x="486" y="228">GitHub 是代码与 PR 的落点</text>
+  <text class="t" x="486" y="250">GHE 策略、预算、metrics 一体</text>
+  <text class="tGray" x="486" y="274">Entra / Intune / Teams / Foundry 连通</text>
+
+  <!-- 运动箭头：Copilot 从"IDE 插件"移到平台 -->
+  <path class="move" d="M 735 620 C 748 520, 748 380, 700 296" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="744" cy="440" r="12"/><text class="bn" x="744" y="445">1</text>
+  <rect class="cardGray" x="530" y="624" width="216" height="58" rx="10"/>
+  <text class="tGray" x="544" y="648">早期 Copilot：IDE 补全插件</text>
+  <text class="tGray" x="544" y="670">（两三年前的位置）</text>
+
+  <!-- Claude Code -->
+  <rect class="cardBlue" x="100" y="190" width="290" height="138" rx="10"/>
+  <circle class="dotB" cx="116" cy="214" r="7"/>
+  <text class="h" x="130" y="220">Claude Code</text>
+  <text class="t" x="116" y="246">终端 / IDE / 桌面 / Web 多端</text>
+  <text class="t" x="116" y="268">Claude 模型，可经第三方云提供</text>
+  <text class="t" x="116" y="290">harness 质量常被当参照</text>
+  <text class="tGray" x="116" y="314">代码托管与 PR 流程靠集成</text>
+
+  <!-- Codex -->
+  <rect class="card" x="100" y="352" width="290" height="160" rx="10"/>
+  <circle class="dotT" cx="116" cy="376" r="7"/>
+  <text class="h" x="130" y="382">OpenAI Codex</text>
+  <text class="t" x="116" y="408">CLI、IDE 扩展、云端任务</text>
+  <text class="t" x="116" y="430">桌面端并入 ChatGPT 桌面 app</text>
+  <text class="t" x="116" y="452">Computer Use、浏览器、插件</text>
+  <text class="t" x="116" y="474">OpenAI 模型为主</text>
+  <text class="tGray" x="116" y="498">治理跟 ChatGPT 企业版走</text>
+
+  <!-- Cursor -->
+  <rect class="cardGray" x="430" y="470" width="270" height="118" rx="10"/>
+  <circle class="dotG" cx="446" cy="494" r="7"/>
+  <text class="h" x="460" y="500">Cursor</text>
+  <text class="t" x="446" y="526">自有编辑器，多模型可选</text>
+  <text class="t" x="446" y="548">后台 / 云端 agent</text>
+  <text class="tGray" x="446" y="572">代码平台与治理依赖外部</text>
+
+  <!-- ===== 右侧：Copilot 优劣 ===== -->
+  <rect class="panel" x="800" y="100" width="540" height="708" rx="12"/>
+  <text class="zl" x="820" y="128">Copilot 的长板与短板</text>
+
+  <rect class="card" x="820" y="146" width="500" height="292" rx="10"/>
+  <text class="h" x="838" y="174">长板</text>
+  <text class="good" x="838" y="202">✓ 产出天然落在 PR：review、rulesets、Actions 现成</text>
+  <text class="good" x="838" y="228">✓ 安全接得上：AI Scan、autofix、Dependabot 同平台</text>
+  <text class="good" x="838" y="254">✓ 多模型，Fusion 让"选模型"变成"选 effort"</text>
+  <text class="good" x="838" y="280">✓ 入口最全：IDE、CLI、app、Web、手机、聊天工具</text>
+  <text class="good" x="838" y="306">✓ 治理成体系：模型策略 API、managed settings、MDM</text>
+  <text class="good" x="838" y="332">✓ 度量最细：按 skill / MCP / agent 名字看用量</text>
+  <text class="good" x="838" y="358">✓ 采购简单：GHE Cloud 含 Copilot 访问，只管预算</text>
+  <text class="good" x="838" y="384">✓ harness 可复用：SDK、AHP、Foundry 托管同一套</text>
+  <text class="tGray" x="838" y="418">对已用 GitHub Enterprise + Microsoft 365 的组织，增量成本最低</text>
+
+  <rect class="cardGray" x="820" y="454" width="500" height="290" rx="10"/>
+  <text class="h" x="838" y="482">短板</text>
+  <text class="bad" x="838" y="510">✗ 名字和计费口径变化快：SDK 改名、改为 AI Credits</text>
+  <text class="bad" x="838" y="536">✗ "GA 产品里有预览功能"，对外沟通容易说错</text>
+  <text class="bad" x="838" y="562">✗ 席位不收钱但用量全计量，预算预测变成新难题</text>
+  <text class="bad" x="838" y="588">✗ Fusion 按实际调用的每个模型计费，单价不透明</text>
+  <text class="bad" x="838" y="614">✗ 不支持 GitHub Enterprise Server</text>
+  <text class="bad" x="838" y="640">✗ 遥测依赖客户端，代理 / 关遥测会少计</text>
+  <text class="bad" x="838" y="666">✗ 单项 harness 体验未必领先专注型产品</text>
+  <text class="bad" x="838" y="692">✗ 代码不在 GitHub 上时，平台优势大半消失</text>
+  <text class="tGray" x="838" y="726">这几条是我给客户讲方案时最常被追问的地方</text>
+
+  <text class="tGray" x="820" y="790">① 箭头：Copilot 这两年从"编辑器里的补全插件"走到"平台 + 治理"象限</text>
+
+  <!-- ===== 底部说明 ===== -->
+  <text class="h" x="30" y="842">怎么读这张图</text>
+  <text class="tGray" x="30" y="868">左上两家的优势在 agent 本身；Copilot 的优势在"agent 之外的一切"：代码托管、审查、安全、身份、预算、度量。选型时先问代码和身份在哪，再比 harness</text>
+</svg>

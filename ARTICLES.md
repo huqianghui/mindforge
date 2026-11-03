@@ -330,6 +330,10 @@
 - [Copilot Studio 系列 07：如何确认是 Agent 在回答](Azure/Copilot-Studio/Copilot-Studio系列07：如何确认是Agent在回答.md)
 - [Copilot Studio 系列 08：把文章库发布成 Teams 知识库 Agent](Azure/Copilot-Studio/Copilot-Studio系列08：把文章库发布成Teams知识库Agent.md)
 
+#### Azure/Github-Copilot
+
+- [GitHub Copilot 系列 01：产品全景与竞争格局](Azure/Github-Copilot/GitHub-Copilot系列01：产品全景与竞争格局.md)
+
 #### Azure/AzureOpenAI
 
 - [Prompt Cache 系列 01：两代缓存框架对比](Azure/AzureOpenAI/Prompt-Cache系列01：两代缓存框架对比.md)

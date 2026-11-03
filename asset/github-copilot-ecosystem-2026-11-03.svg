@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 0 1352 1060" width="1352" height="1060" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxGray { fill: #111827; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowBlue { fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 4 6; animation: dash 1.6s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .badgeBlue { fill: #075985; stroke: #7dd3fc; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .chip { fill: #1e293b; stroke: #475569; stroke-width: 1; }
+      .pv { fill: #fbbf24; font-size: 12px; }
+      .el { fill: #a7f3d0; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" x="-16" width="1352" height="1060" rx="16"/>
+  <text class="title" x="30" y="44">GitHub Copilot 体系全景（Universe 2026 之后）</text>
+  <text class="sub" x="30" y="70">四层：入口只是"窗口"，真正一致的是中间的 harness；执行位置可选；所有产出回到 GitHub 平台，被同一套策略、预算和遥测管住</text>
+
+  <!-- ===== 入口层 ===== -->
+  <rect class="zone" x="20" y="92" width="1280" height="190" rx="12"/>
+  <text class="zl" x="36" y="116">入口层 Surfaces —— 同一个 session 可以在这些入口之间接力</text>
+
+  <rect class="box" x="36" y="130" width="198" height="136" rx="10"/>
+  <text class="h" x="50" y="156">IDE 插件</text>
+  <text class="t" x="50" y="180">VS Code / JetBrains</text>
+  <text class="t" x="50" y="200">Visual Studio / Xcode 等</text>
+  <text class="t" x="50" y="220">补全 + NES + Agents 窗口</text>
+  <text class="tGray" x="50" y="244">Agent Host 关窗不断</text>
+
+  <rect class="box" x="246" y="130" width="198" height="136" rx="10"/>
+  <text class="h" x="260" y="156">Copilot CLI</text>
+  <text class="t" x="260" y="180">交互 / plan 模式</text>
+  <text class="t" x="260" y="200">-p 脚本化调用</text>
+  <text class="t" x="260" y="220">--cloud、/sandbox</text>
+  <text class="tGray" x="260" y="244">随 VS Code 一起安装</text>
+
+  <rect class="boxAmber" x="456" y="130" width="198" height="136" rx="10"/>
+  <text class="hAmber" x="470" y="156">Copilot app</text>
+  <text class="t" x="470" y="180">Projects 多 agent 编排</text>
+  <text class="t" x="470" y="200">Canvases、图像生成</text>
+  <text class="t" x="470" y="220">Computer Use 操作桌面</text>
+  <text class="pv" x="470" y="244">Projects / CU 为预览</text>
+
+  <rect class="box" x="666" y="130" width="198" height="136" rx="10"/>
+  <text class="h" x="680" y="156">github.com / Mobile</text>
+  <text class="t" x="680" y="180">sessions-first 云会话</text>
+  <text class="t" x="680" y="200">从 Issue / PR 直接派活</text>
+  <text class="t" x="680" y="220">语音、截图发起任务</text>
+  <text class="tGray" x="680" y="244">手机遥控本机 agent</text>
+
+  <rect class="box" x="876" y="130" width="198" height="136" rx="10"/>
+  <text class="h" x="890" y="156">Slack / Teams</text>
+  <text class="t" x="890" y="180">@GitHub 把讨论变任务</text>
+  <text class="t" x="890" y="200">线程即上下文</text>
+  <text class="t" x="890" y="220">共享会话需额外审批</text>
+  <text class="tGray" x="890" y="244">在云沙箱里执行</text>
+
+  <rect class="boxBlue" x="1086" y="130" width="198" height="136" rx="10"/>
+  <text class="h" x="1100" y="156">自建客户端 / 服务</text>
+  <text class="t" x="1100" y="180">Copilot SDK 嵌入应用</text>
+  <text class="t" x="1100" y="200">Agent Host Protocol</text>
+  <text class="t" x="1100" y="220">GitHub App 服务身份</text>
+  <text class="tGray" x="1100" y="244">用量记到组织名下</text>
+
+  <!-- ① 入口 → harness -->
+  <path class="flow" d="M 660 282 L 660 322" marker-end="url(#arr)"/>
+  <circle class="badge" cx="690" cy="302" r="12"/><text class="bn" x="690" y="307">1</text>
+
+  <!-- ===== Harness 层 ===== -->
+  <rect class="zone" x="20" y="326" width="1280" height="176" rx="12"/>
+  <text class="zl" x="36" y="350">Harness 层 —— Microsoft Copilot harness：VS Code、CLI、app 的新会话默认都跑在它上面</text>
+
+  <rect class="boxAmber" x="36" y="364" width="400" height="124" rx="10"/>
+  <text class="hAmber" x="52" y="390">Agent loop（Copilot harness）</text>
+  <text class="t" x="52" y="414">规划 → 调工具 → 读结果 → 继续，管理工作上下文</text>
+  <text class="t" x="52" y="436">权限审批：需要审批的工具调用先问人</text>
+  <text class="t" x="52" y="458">子 agent 委派、长任务续跑</text>
+  <text class="tGray" x="52" y="478">同一 harness 也作为 Foundry 托管服务开放</text>
+
+  <rect class="box" x="450" y="364" width="270" height="124" rx="10"/>
+  <text class="h" x="466" y="390">Copilot Fusion 模型编排</text>
+  <text class="t" x="466" y="414">选 effort 不选模型：</text>
+  <text class="t" x="466" y="436">Standard / High / Max</text>
+  <text class="t" x="466" y="458">Single、Cascade、Critique</text>
+  <text class="tGray" x="466" y="478">只用策略允许的模型</text>
+
+  <rect class="box" x="734" y="364" width="270" height="124" rx="10"/>
+  <text class="h" x="750" y="390">GitHub Intelligence</text>
+  <text class="t" x="750" y="414">Memory 跨会话记住约定</text>
+  <text class="t" x="750" y="436">Dreaming 定期整理记忆</text>
+  <text class="t" x="750" y="458">远程 / 语义代码搜索</text>
+  <text class="pv" x="750" y="478">Dreaming 为预览</text>
+
+  <rect class="box" x="1018" y="364" width="266" height="124" rx="10"/>
+  <text class="h" x="1034" y="390">扩展点</text>
+  <text class="t" x="1034" y="414">Skills / Custom agents</text>
+  <text class="t" x="1034" y="436">MCP / Connectors（云网关）</text>
+  <text class="t" x="1034" y="458">Plugins + 市场白名单</text>
+  <text class="tGray" x="1034" y="478">用量按名字进 metrics</text>
+
+  <!-- ② harness → 执行 -->
+  <path class="flow" d="M 660 502 L 660 542" marker-end="url(#arr)"/>
+  <circle class="badge" cx="690" cy="522" r="12"/><text class="bn" x="690" y="527">2</text>
+
+  <!-- ===== 执行层 ===== -->
+  <rect class="zone" x="20" y="546" width="1280" height="176" rx="12"/>
+  <text class="zl" x="36" y="570">执行层 —— 工具和命令真正跑在哪里（模型推理与工具隔离是两件事）</text>
+
+  <rect class="box" x="36" y="584" width="240" height="124" rx="10"/>
+  <text class="h" x="52" y="610">本地沙箱</text>
+  <text class="t" x="52" y="634">MXC 转成 OS 原生隔离</text>
+  <text class="t" x="52" y="656">限文件 / 网络 / 凭据</text>
+  <text class="t" x="52" y="678">企业可经 MDM 强制</text>
+  <text class="tGray" x="52" y="698">Win11 / macOS / Linux</text>
+
+  <rect class="box" x="290" y="584" width="240" height="124" rx="10"/>
+  <text class="h" x="306" y="610">远程 Agent Host</text>
+  <text class="t" x="306" y="634">另一台机器 / VM 上跑</text>
+  <text class="t" x="306" y="656">SSH、dev tunnel 接入</text>
+  <text class="t" x="306" y="678">--environment-host 注册</text>
+  <text class="tGray" x="306" y="698">机器关了 agent 就停</text>
+
+  <rect class="boxAmber" x="544" y="584" width="240" height="124" rx="10"/>
+  <text class="hAmber" x="560" y="610">云沙箱（默认）</text>
+  <text class="t" x="560" y="634">GitHub 托管 micro-VM</text>
+  <text class="t" x="560" y="656">快照 + 任意入口恢复</text>
+  <text class="t" x="560" y="678">无 1 小时总时长上限</text>
+  <text class="tGray" x="560" y="698">2026-11 起计入 Actions 额度</text>
+
+  <rect class="box" x="798" y="584" width="240" height="124" rx="10"/>
+  <text class="h" x="814" y="610">Actions runner</text>
+  <text class="t" x="814" y="634">Agentic Workflows</text>
+  <text class="t" x="814" y="656">copilot-setup-steps</text>
+  <text class="t" x="814" y="678">自托管 / ARC runner</text>
+  <text class="tGray" x="814" y="698">复用 runner 组与策略</text>
+
+  <rect class="boxBlue" x="1052" y="584" width="232" height="124" rx="10"/>
+  <text class="h" x="1068" y="610">Foundry Agent Service</text>
+  <text class="t" x="1068" y="634">同一 harness 托管运行</text>
+  <text class="t" x="1068" y="656">自定义 agent + skills</text>
+  <text class="t" x="1068" y="678">azd / 门户部署</text>
+  <text class="pv" x="1068" y="698">公开预览</text>
+
+  <!-- ③ 执行 → 平台 -->
+  <path class="flow" d="M 660 722 L 660 762" marker-end="url(#arr)"/>
+  <circle class="badge" cx="690" cy="742" r="12"/><text class="bn" x="690" y="747">3</text>
+
+  <!-- ===== 平台与治理层 ===== -->
+  <rect class="zone" x="20" y="766" width="1280" height="170" rx="12"/>
+  <text class="zl" x="36" y="790">平台与治理层 —— GitHub Enterprise Cloud：产出落成 PR / Issue，同时被策略、预算、遥测约束</text>
+
+  <rect class="box" x="36" y="804" width="300" height="118" rx="10"/>
+  <text class="h" x="52" y="830">代码平台（system of record）</text>
+  <text class="t" x="52" y="854">Issue / PR / Actions / rulesets</text>
+  <text class="t" x="52" y="876">Agent Merge、Copilot code review</text>
+  <text class="t" x="52" y="898">AI Scan、agentic autofix</text>
+
+  <rect class="box" x="350" y="804" width="300" height="118" rx="10"/>
+  <text class="h" x="366" y="830">策略与管控</text>
+  <text class="t" x="366" y="854">模型策略 REST API、Fusion 白名单</text>
+  <text class="t" x="366" y="876">managed settings 启动即拉取</text>
+  <text class="t" x="366" y="898">最低客户端版本、功能默认开关</text>
+
+  <rect class="boxAmber" x="664" y="804" width="300" height="118" rx="10"/>
+  <text class="hAmber" x="680" y="830">计费：AI Credits 预算</text>
+  <text class="t" x="680" y="854">GHE Cloud 含 Copilot 访问（洽谈渠道）</text>
+  <text class="t" x="680" y="876">用量从第一次请求开始计量</text>
+  <text class="t" x="680" y="898">预算为 0 时补全和 NES 仍可用</text>
+
+  <rect class="box" x="978" y="804" width="306" height="118" rx="10"/>
+  <text class="h" x="994" y="830">洞察</text>
+  <text class="t" x="994" y="854">usage metrics API / NDJSON 导出</text>
+  <text class="t" x="994" y="876">impact dashboard：agent-first 人群</text>
+  <text class="t" x="994" y="898">行业对比（opt-in）、仓库洞察</text>
+
+  <!-- ④ 治理回路：从平台层左侧向上约束 -->
+  <path class="flowBlue" d="M 28 850 L 10 850 L 10 200 L 30 200" marker-end="url(#arrBlue)"/>
+  <circle class="badgeBlue" cx="10" cy="520" r="12"/><text class="bn" x="10" y="525">4</text>
+  <!-- ⑤ 遥测回流：右侧从入口层/harness 流向洞察 -->
+  <path class="flowAmber" d="M 1300 200 L 1312 200 L 1312 862 L 1290 862" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="1312" cy="520" r="12"/><text class="bn" x="1312" y="525">5</text>
+
+  <!-- 粒子 -->
+  <circle r="4" fill="#5eead4">
+    <animateMotion dur="3.2s" repeatCount="indefinite" path="M 660 282 L 660 322 M 660 502 L 660 542"/>
+  </circle>
+  <circle r="4" fill="#5eead4">
+    <animateMotion dur="2.4s" repeatCount="indefinite" path="M 660 722 L 660 762"/>
+  </circle>
+  <circle r="4" fill="#fcd34d">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 1312 200 L 1312 862"/>
+  </circle>
+  <circle r="4" fill="#7dd3fc">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M 10 850 L 10 200"/>
+  </circle>
+
+  <!-- ===== 图例 ===== -->
+  <text class="h" x="30" y="966">编号说明</text>
+  <text class="el" x="30" y="992">① 任一入口发起或接续 session，交给同一个 harness</text>
+  <text class="el" x="460" y="992">② harness 选模型（Fusion）、取上下文（Memory / 代码搜索 / MCP），再派到执行环境</text>
+  <text class="el" x="30" y="1016">③ 执行结果以 PR、Issue artifact、review 评论的形式回到平台，由人审查合并</text>
+  <text class="el" x="660" y="1016">④ 策略、模型白名单、沙箱要求自上而下下发到客户端</text>
+  <text class="el" x="30" y="1040">⑤ 各入口与 harness 的遥测回流到 metrics 与 impact dashboard</text>
+  <text class="tGray" x="660" y="1040">琥珀色 = 本次大会的重心；蓝框 = 面向二次开发；"预览"字样标注非 GA 部分</text>
+</svg>
