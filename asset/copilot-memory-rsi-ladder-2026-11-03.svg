@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 880" width="1360" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .col { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .colNow { fill: #120f08; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .colGray { fill: #0b1220; stroke: #334155; stroke-width: 1.2; stroke-dasharray: 6 5; }
+      .lv { fill: #f8fafc; font-size: 18px; font-weight: 700; }
+      .lvd { fill: #94a3b8; font-size: 13px; }
+      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .cardB { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .cardG { fill: #111827; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hG { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .gate { fill: #5eead4; font-size: 13px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .axis { stroke: #94a3b8; stroke-width: 1.6; }
+      .ax { fill: #cbd5e1; font-size: 14px; font-weight: 600; }
+      .move { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
+      .el { fill: #a7f3d0; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -24; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1360" height="880" rx="16"/>
+  <text class="title" x="30" y="44">放到 RSI 分级上看：Copilot 的记忆系统在哪一级</text>
+  <text class="sub" x="30" y="70">分级沿用 RSI 系列 00 的第一套（提出 / 实施 / 验证 / 改写改进机制 / 跨领域）；琥珀卡片是 Copilot，青绿是研究方法，蓝色是我自己的做法</text>
+
+  <line class="axis" x1="30" y1="96" x2="1330" y2="96" marker-end="url(#arrGray)"/>
+  <text class="ax" x="1010" y="88">AI 接管的决策越来越多 →</text>
+
+  <!-- 列 -->
+  <rect class="col" x="30" y="110" width="250" height="600" rx="10"/>
+  <text class="lv" x="46" y="140">L1 人工改进</text>
+  <text class="lvd" x="46" y="164">人提出、人实施、人验证</text>
+
+  <rect class="col" x="290" y="110" width="250" height="600" rx="10"/>
+  <text class="lv" x="306" y="140">L2 辅助改进</text>
+  <text class="lvd" x="306" y="164">AI 提候选，人验证并应用</text>
+
+  <rect class="colNow" x="550" y="110" width="400" height="600" rx="10"/>
+  <text class="lv" x="566" y="140">L3 程序化自我改进</text>
+  <text class="lvd" x="566" y="164">提出、实施、验证都自动，机制由人设计且固定</text>
+
+  <rect class="col" x="960" y="110" width="200" height="600" rx="10"/>
+  <text class="lv" x="976" y="140">L4 有界递归</text>
+  <text class="lvd" x="976" y="164">改写改进机制本身</text>
+
+  <rect class="colGray" x="1170" y="110" width="160" height="600" rx="10"/>
+  <text class="lv" x="1186" y="140">L5 通用</text>
+  <text class="lvd" x="1186" y="164">跨领域迁移</text>
+
+  <!-- L1 -->
+  <rect class="cardB" x="44" y="186" width="222" height="132" rx="10"/>
+  <text class="h" x="58" y="212">手写指令文件</text>
+  <text class="t" x="58" y="238">copilot-instructions.md</text>
+  <text class="t" x="58" y="260">CLAUDE.md、AGENTS.md</text>
+  <text class="gate" x="58" y="292">门控：作者自己 + PR</text>
+
+  <rect class="cardA" x="44" y="334" width="222" height="132" rx="10"/>
+  <text class="hA" x="58" y="360">明确说"记住……"</text>
+  <text class="t" x="58" y="386">人决定记什么</text>
+  <text class="t" x="58" y="408">Copilot 只负责存</text>
+  <text class="gate" x="58" y="440">门控：人</text>
+
+  <!-- L2 -->
+  <rect class="cardA" x="304" y="186" width="222" height="154" rx="10"/>
+  <text class="hA" x="318" y="212">Dreaming 改文件</text>
+  <text class="t" x="318" y="238">分析历史会话后，对</text>
+  <text class="t" x="318" y="260">instructions / skills</text>
+  <text class="t" x="318" y="282">提 PR</text>
+  <text class="gate" x="318" y="314">门控：PR 评审</text>
+
+  <rect class="cardB" x="304" y="356" width="222" height="154" rx="10"/>
+  <text class="h" x="318" y="382">我的 memory-review</text>
+  <text class="t" x="318" y="408">定期审查 memory，</text>
+  <text class="t" x="318" y="430">建议把行为规则</text>
+  <text class="t" x="318" y="452">提权到 CLAUDE.md</text>
+  <text class="gate" x="318" y="484">门控：我确认</text>
+
+  <!-- L3 -->
+  <rect class="cardA" x="564" y="186" width="182" height="168" rx="10"/>
+  <text class="hA" x="578" y="212">Copilot Memory</text>
+  <text class="t" x="578" y="238">自动写入</text>
+  <text class="t" x="578" y="260">citations 核对</text>
+  <text class="t" x="578" y="282">投票 + 过期</text>
+  <text class="gate" x="578" y="314">门控：投票阈值</text>
+  <text class="tGray" x="578" y="336">效果信号：模型自评</text>
+
+  <rect class="cardA" x="756" y="186" width="182" height="168" rx="10"/>
+  <text class="hA" x="770" y="212">Dreaming 改记忆</text>
+  <text class="t" x="770" y="238">与 review 指引</text>
+  <text class="t" x="770" y="260">自动增删改</text>
+  <text class="t" x="770" y="282">不逐条审批</text>
+  <text class="gate" x="770" y="314">门控：未公开</text>
+  <text class="tGray" x="770" y="336">事后靠投票淘汰</text>
+
+  <rect class="card" x="564" y="370" width="182" height="150" rx="10"/>
+  <text class="h" x="578" y="396">SkillOpt</text>
+  <text class="t" x="578" y="422">轨迹反思出编辑</text>
+  <text class="t" x="578" y="444">有界步长</text>
+  <text class="gate" x="578" y="476">门控：验证集</text>
+  <text class="tGray" x="578" y="498">被拒编辑也留证</text>
+
+  <rect class="card" x="756" y="370" width="182" height="150" rx="10"/>
+  <text class="h" x="770" y="396">RRSI</text>
+  <text class="t" x="770" y="422">改整个 harness</text>
+  <text class="t" x="770" y="444">编辑预算退火</text>
+  <text class="gate" x="770" y="476">门控：正则化</text>
+  <text class="tGray" x="770" y="498">防过拟合与膨胀</text>
+
+  <rect class="card" x="564" y="536" width="374" height="156" rx="10"/>
+  <text class="h" x="578" y="562">Dream-RSI</text>
+  <text class="t" x="578" y="588">改的是探索策略；历史探索树变成回放仿真器</text>
+  <text class="t" x="578" y="610">成百上千个候选离线打分，不重跑真实执行</text>
+  <text class="gate" x="578" y="642">门控：回放评分择优，胜者才上线</text>
+  <text class="tGray" x="578" y="668">同样叫"dreaming"，这里的 dreaming 是离线评估</text>
+
+  <!-- L4 -->
+  <rect class="card" x="974" y="186" width="172" height="190" rx="10"/>
+  <text class="h" x="988" y="212">STOP / DGM</text>
+  <text class="t" x="988" y="238">改进程序修改</text>
+  <text class="t" x="988" y="260">自己的改进方式</text>
+  <text class="gate" x="988" y="292">门控：后继系统</text>
+  <text class="gate" x="988" y="314">在独立任务上比</text>
+  <text class="tGray" x="988" y="350">研究阶段</text>
+
+  <rect class="cardG" x="974" y="392" width="172" height="190" rx="10"/>
+  <text class="hG" x="988" y="418">Copilot 若到这里</text>
+  <text class="tGray" x="988" y="444">Dreaming 要能改</text>
+  <text class="tGray" x="988" y="466">自己的整理策略、</text>
+  <text class="tGray" x="988" y="488">投票规则，并证明</text>
+  <text class="tGray" x="988" y="510">改完更会整理</text>
+  <text class="tGray" x="988" y="548">目前没有迹象</text>
+
+  <!-- L5 -->
+  <rect class="cardG" x="1184" y="186" width="132" height="120" rx="10"/>
+  <text class="hG" x="1198" y="212">暂无</text>
+  <text class="tGray" x="1198" y="238">无公开系统</text>
+  <text class="tGray" x="1198" y="260">达到这一级</text>
+
+  <!-- 迁移箭头：同一个"记住"从 L1 到 L3 -->
+  <path class="move" d="M 155 466 L 155 630 L 545 630 L 545 290 L 558 290" marker-end="url(#arrA)"/>
+
+  <!-- 底部说明 -->
+  <text class="h" x="30" y="746">怎么读这张图</text>
+  <text class="el" x="30" y="772">• 同一个 Memory 功能横跨 L1 到 L3：用户说"记住"是 L1，agent 自己记、自己投票淘汰是 L3（琥珀虚线）</text>
+  <text class="el" x="30" y="798">• Dreaming 一半在 L2、一半在 L3：改仓库文件要人合 PR，改记忆和 review 指引不用</text>
+  <text class="el" x="30" y="824">• L3 内部的差别在门控：SkillOpt、RRSI、Dream-RSI 都有上线前的比较，Copilot 的门控是使用中的投票</text>
+  <text class="tGray" x="30" y="854">没有任何一项改写了"怎样整理记忆"这条机制本身，所以都不到 L4。分级是定位工具，不是打分</text>
+</svg>

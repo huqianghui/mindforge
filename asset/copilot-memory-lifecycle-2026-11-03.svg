@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 940" width="1360" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxRed { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; }
+      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .hRed { fill: #fecaca; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .warn { fill: #fca5a5; font-size: 13px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowRed { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .chip { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .el { fill: #a7f3d0; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1360" height="940" rx="16"/>
+  <text class="title" x="30" y="44">Copilot Memory 的生命周期：一条记忆怎样产生、被信任、被遗忘</text>
+  <text class="sub" x="30" y="70">记忆不是"存了就一直生效"：每次使用前对照代码核对，按投票决定还用不用，长期没被强化就过期</text>
+
+  <!-- ===== 第一行：产生 → 过滤 → 存储 → 检索 ===== -->
+  <rect class="box" x="30" y="100" width="290" height="200" rx="10"/>
+  <circle class="badge" cx="54" cy="126" r="12"/><text class="bn" x="54" y="131">1</text>
+  <text class="h" x="76" y="131">产生</text>
+  <text class="t" x="46" y="160">agent 干活时发现长期成立的事实</text>
+  <text class="t" x="46" y="184">用户明确说"记住……"</text>
+  <text class="t" x="46" y="208">Copilot CLI 批量导入</text>
+  <text class="tGray" x="46" y="240">作用域按"对谁成立"判断，</text>
+  <text class="tGray" x="46" y="262">不按"谁说的"；不确定就反问</text>
+  <text class="tGray" x="46" y="284">只有 root agent 能写</text>
+
+  <path class="flow" d="M 320 200 L 360 200" marker-end="url(#arr)"/>
+
+  <rect class="boxRed" x="364" y="100" width="290" height="200" rx="10"/>
+  <circle class="badge" cx="388" cy="126" r="12"/><text class="bn" x="388" y="131">2</text>
+  <text class="hRed" x="410" y="131">写入过滤</text>
+  <text class="t" x="380" y="160">检测到 token、key、凭据 → 拒绝</text>
+  <text class="t" x="380" y="184">含模型控制 token → 拒绝</text>
+  <text class="t" x="380" y="208">（防 prompt injection 写进记忆）</text>
+  <text class="tGray" x="380" y="240">按指令不存：敏感个人信息、</text>
+  <text class="tGray" x="380" y="262">机密、只对本次任务有效的指令</text>
+  <text class="warn" x="380" y="284">前两条是系统拦截，后两条靠模型</text>
+
+  <path class="flow" d="M 654 200 L 694 200" marker-end="url(#arr)"/>
+
+  <rect class="boxAmber" x="698" y="100" width="300" height="200" rx="10"/>
+  <circle class="badge" cx="722" cy="126" r="12"/><text class="bn" x="722" y="131">3</text>
+  <text class="hAmber" x="744" y="131">分两类存储</text>
+  <text class="t" x="714" y="160">仓库事实：citations 指向代码</text>
+  <text class="t" x="714" y="182">  对有读权限的协作者共享</text>
+  <text class="t" x="714" y="206">个人偏好：citations 引用原话</text>
+  <text class="t" x="714" y="228">  跟着人走，跨仓库生效</text>
+  <text class="tGray" x="714" y="258">字段：正文、主题、agent、模型、</text>
+  <text class="tGray" x="714" y="280">理由、投票数据、过期时间</text>
+
+  <path class="flow" d="M 998 200 L 1038 200" marker-end="url(#arr)"/>
+
+  <rect class="box" x="1042" y="100" width="288" height="200" rx="10"/>
+  <circle class="badge" cx="1066" cy="126" r="12"/><text class="bn" x="1066" y="131">4</text>
+  <text class="h" x="1088" y="131">检索进上下文</text>
+  <text class="t" x="1058" y="160">按与当前工作的相关性挑选</text>
+  <text class="t" x="1058" y="184">不是全部记忆都发给模型</text>
+  <text class="t" x="1058" y="208">票数高的更可能被选中</text>
+  <text class="tGray" x="1058" y="240">跨入口共用：cloud agent 学到的</text>
+  <text class="tGray" x="1058" y="262">事实，code review 也会用</text>
+  <text class="tGray" x="1058" y="284">fork 不继承仓库记忆</text>
+
+  <!-- 4 → 5 向下 -->
+  <path class="flow" d="M 1186 300 L 1186 352" marker-end="url(#arr)"/>
+
+  <!-- ===== 第二行：校验 ← 投票 ← 过期（右→左） ===== -->
+  <rect class="boxAmber" x="1042" y="356" width="288" height="200" rx="10"/>
+  <circle class="badge" cx="1066" cy="382" r="12"/><text class="bn" x="1066" y="387">5</text>
+  <text class="hAmber" x="1088" y="387">使用前校验</text>
+  <text class="t" x="1058" y="416">对照当前分支核对 citations</text>
+  <text class="t" x="1058" y="440">个人偏好：判断是否仍适用</text>
+  <text class="warn" x="1058" y="472">这是模型的判断，不是系统保证</text>
+  <text class="tGray" x="1058" y="500">一定要遵守的规则，写进</text>
+  <text class="tGray" x="1058" y="522">custom instructions，别靠记忆</text>
+
+  <path class="flow" d="M 1042 456 L 1002 456" marker-end="url(#arr)"/>
+
+  <rect class="box" x="698" y="356" width="300" height="200" rx="10"/>
+  <circle class="badge" cx="722" cy="382" r="12"/><text class="bn" x="722" y="387">6</text>
+  <text class="h" x="744" y="387">自动投票</text>
+  <text class="t" x="714" y="416">核对通过 → upvote，重置过期时间</text>
+  <text class="t" x="714" y="440">发现错误或过时 → downvote</text>
+  <text class="t" x="714" y="464">低于阈值 → 不再使用</text>
+  <text class="tGray" x="714" y="496">票数不对外显示，只能从设置页</text>
+  <text class="tGray" x="714" y="518">的排序看出效果；用户的正负</text>
+  <text class="tGray" x="714" y="540">评价能间接影响投票</text>
+
+  <path class="flow" d="M 698 456 L 658 456" marker-end="url(#arr)"/>
+
+  <rect class="box" x="364" y="356" width="290" height="200" rx="10"/>
+  <circle class="badge" cx="388" cy="382" r="12"/><text class="bn" x="388" y="387">7</text>
+  <text class="h" x="410" y="387">过期与删除</text>
+  <text class="t" x="380" y="416">默认 90 天没被强化就过期</text>
+  <text class="t" x="380" y="440">仓库事实可配 7~180 天</text>
+  <text class="t" x="380" y="464">组织与企业取较小值</text>
+  <text class="warn" x="380" y="496">只被检索、没被 upvote 不续期</text>
+  <text class="tGray" x="380" y="522">从列表消失 ≠ 已删除；</text>
+  <text class="tGray" x="380" y="544">不想再用要手动删</text>
+
+  <!-- 投票回路：6 → 4 -->
+  <path class="flowAmber" d="M 848 356 L 848 330 L 1110 330 L 1110 304" marker-end="url(#arrAmber)"/>
+  <circle class="badgeAmber" cx="980" cy="330" r="12"/><text class="bn" x="980" y="335">8</text>
+
+  <!-- 人工删除 -->
+  <rect class="chip" x="30" y="356" width="290" height="200" rx="10"/>
+  <text class="h" x="46" y="386">人的控制点</text>
+  <text class="t" x="46" y="414">个人设置里看 / 删个人偏好</text>
+  <text class="t" x="46" y="438">仓库设置里看 / 删仓库事实</text>
+  <text class="t" x="46" y="462">（需写权限）</text>
+  <text class="t" x="46" y="486">Business / Enterprise 管理员</text>
+  <text class="t" x="46" y="510">可批量导出、删除成员偏好</text>
+  <text class="warn" x="46" y="540">网页上不能直接新建或编辑单条</text>
+  <path class="flowRed" d="M 320 456 L 360 456" marker-end="url(#arrRed)"/>
+
+  <!-- ===== 底部：各入口的读写差异 ===== -->
+  <rect class="zone" x="20" y="586" width="1320" height="196" rx="12"/>
+  <text class="zl" x="36" y="612">各入口对记忆的读写并不一样</text>
+
+  <rect class="box" x="36" y="628" width="250" height="138" rx="10"/>
+  <text class="h" x="52" y="654">Copilot app / CLI 交互</text>
+  <text class="t" x="52" y="680">两类记忆都能读写</text>
+  <text class="t" x="52" y="702">写入前可能先请求批准</text>
+  <text class="tGray" x="52" y="730">app 里 Project 的 Memory</text>
+  <text class="tGray" x="52" y="752">是另一个功能，别混</text>
+
+  <rect class="box" x="298" y="628" width="250" height="138" rx="10"/>
+  <text class="h" x="314" y="654">CLI 程序化 / VS Code</text>
+  <text class="t" x="314" y="680">默认关闭</text>
+  <text class="t" x="314" y="702">-p 每次加 --enable-memory</text>
+  <text class="t" x="314" y="724">VS Code 要开本地设置</text>
+  <text class="tGray" x="314" y="752">子 agent 只读，不能写和投票</text>
+
+  <rect class="boxAmber" x="560" y="628" width="250" height="138" rx="10"/>
+  <text class="hAmber" x="576" y="654">cloud agent</text>
+  <text class="t" x="576" y="680">两类记忆都能读写</text>
+  <text class="warn" x="576" y="702">写入不请求批准</text>
+  <text class="tGray" x="576" y="730">Slack / Teams 发起的</text>
+  <text class="tGray" x="576" y="752">云会话同样适用</text>
+
+  <rect class="boxAmber" x="822" y="628" width="250" height="138" rx="10"/>
+  <text class="hAmber" x="838" y="654">code review / autofix</text>
+  <text class="t" x="838" y="680">只用仓库事实</text>
+  <text class="t" x="838" y="702">从不应用个人偏好</text>
+  <text class="warn" x="838" y="724">写入不请求批准</text>
+  <text class="tGray" x="838" y="752">个人偏好影响不了审查结果</text>
+
+  <rect class="boxBlue" x="1084" y="628" width="240" height="138" rx="10"/>
+  <text class="h" x="1100" y="654">Copilot SDK</text>
+  <text class="t" x="1100" y="680">建会话时可开启 Memory</text>
+  <text class="t" x="1100" y="702">没有列出、编辑、</text>
+  <text class="t" x="1100" y="724">删除记忆的 API</text>
+  <text class="tGray" x="1100" y="752">管理只能回到 GitHub 设置</text>
+
+  <!-- 粒子 -->
+  <circle r="4" fill="#5eead4"><animateMotion dur="5s" repeatCount="indefinite" path="M 320 200 L 360 200 M 654 200 L 694 200 M 998 200 L 1038 200"/></circle>
+  <circle r="4" fill="#5eead4"><animateMotion dur="4s" repeatCount="indefinite" path="M 1186 300 L 1186 352 M 1042 456 L 1002 456 M 698 456 L 658 456"/></circle>
+  <circle r="4" fill="#fcd34d"><animateMotion dur="3s" repeatCount="indefinite" path="M 848 356 L 848 330 L 1110 330 L 1110 304"/></circle>
+
+  <!-- ===== 图例 ===== -->
+  <text class="h" x="30" y="814">编号说明</text>
+  <text class="el" x="30" y="840">① 记忆是干活的副产品，不需要专门维护</text>
+  <text class="el" x="460" y="840">② 系统层只拦凭据和控制 token</text>
+  <text class="el" x="860" y="840">③ citations 是这套设计的锚点</text>
+  <text class="el" x="30" y="866">④ 检索按相关性和票数挑，进上下文的只是一部分</text>
+  <text class="el" x="460" y="866">⑤ 用之前再核一次，记忆可能已经过时</text>
+  <text class="el" x="860" y="866">⑥ 投票是唯一的"效果信号"</text>
+  <text class="el" x="30" y="892">⑦ 用过期实现遗忘：只有被验证过才续命</text>
+  <text class="el" x="460" y="892">⑧ 票数反过来影响下一次检索，形成在线强化回路</text>
+  <text class="tGray" x="30" y="922">红框 / 红字 = 安全边界或容易误解的地方；琥珀 = 本文重点</text>
+</svg>

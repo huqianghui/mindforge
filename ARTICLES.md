@@ -333,6 +333,7 @@
 #### Azure/Github-Copilot
 
 - [GitHub Copilot 系列 01：产品全景与竞争格局](Azure/Github-Copilot/GitHub-Copilot系列01：产品全景与竞争格局.md)
+- [GitHub Copilot 系列 02：Memory、Dreaming 与自我改进](Azure/Github-Copilot/GitHub-Copilot系列02：Memory、Dreaming与自我改进.md)
 
 #### Azure/AzureOpenAI
 
