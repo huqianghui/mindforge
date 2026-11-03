@@ -67,7 +67,7 @@
   <text class="hAmber" x="500" y="180">GitHub Copilot</text>
   <text class="t" x="486" y="206">多厂商模型 + Fusion 路由</text>
   <text class="t" x="486" y="228">GitHub 是代码与 PR 的落点</text>
-  <text class="t" x="486" y="250">GHE 策略、预算、metrics 一体</text>
+  <text class="t" x="486" y="250">GHE 策略、沙箱、metrics 一体</text>
   <text class="tGray" x="486" y="274">Entra / Intune / Teams / Foundry 连通</text>
 
   <!-- 运动箭头：Copilot 从"IDE 插件"移到平台 -->
@@ -116,16 +116,16 @@
   <text class="good" x="838" y="280">✓ 入口最全：IDE、CLI、app、Web、手机、聊天工具</text>
   <text class="good" x="838" y="306">✓ 治理成体系：模型策略 API、managed settings、MDM</text>
   <text class="good" x="838" y="332">✓ 度量最细：按 skill / MCP / agent 名字看用量</text>
-  <text class="good" x="838" y="358">✓ 采购简单：GHE Cloud 含 Copilot 访问，只管预算</text>
+  <text class="good" x="838" y="358">✓ 执行位置可选：本地 / 远程 / 云沙箱 / Actions</text>
   <text class="good" x="838" y="384">✓ harness 可复用：SDK、AHP、Foundry 托管同一套</text>
-  <text class="tGray" x="838" y="418">对已用 GitHub Enterprise + Microsoft 365 的组织，增量成本最低</text>
+  <text class="tGray" x="838" y="418">对已用 GitHub Enterprise + Entra / Intune 的组织最顺</text>
 
   <rect class="cardGray" x="820" y="454" width="500" height="290" rx="10"/>
   <text class="h" x="838" y="482">短板</text>
-  <text class="bad" x="838" y="510">✗ 名字和计费口径变化快：SDK 改名、改为 AI Credits</text>
+  <text class="bad" x="838" y="510">✗ 名字和形态变化快：SDK 改名、Chat 并入云会话</text>
   <text class="bad" x="838" y="536">✗ "GA 产品里有预览功能"，对外沟通容易说错</text>
-  <text class="bad" x="838" y="562">✗ 席位不收钱但用量全计量，预算预测变成新难题</text>
-  <text class="bad" x="838" y="588">✗ Fusion 按实际调用的每个模型计费，单价不透明</text>
+  <text class="bad" x="838" y="562">✗ 执行位置多，排查时先要弄清跑在哪</text>
+  <text class="bad" x="838" y="588">✗ Fusion 自动选模型，结果复现与调试变难</text>
   <text class="bad" x="838" y="614">✗ 不支持 GitHub Enterprise Server</text>
   <text class="bad" x="838" y="640">✗ 遥测依赖客户端，代理 / 关遥测会少计</text>
   <text class="bad" x="838" y="666">✗ 单项 harness 体验未必领先专注型产品</text>
@@ -136,5 +136,5 @@
 
   <!-- ===== 底部说明 ===== -->
   <text class="h" x="30" y="842">怎么读这张图</text>
-  <text class="tGray" x="30" y="868">左上两家的优势在 agent 本身；Copilot 的优势在"agent 之外的一切"：代码托管、审查、安全、身份、预算、度量。选型时先问代码和身份在哪，再比 harness</text>
+  <text class="tGray" x="30" y="868">左上两家的优势在 agent 本身；Copilot 的优势在"agent 之外的一切"：代码托管、审查、安全、身份、度量。选型时先问代码和身份在哪，再比 harness</text>
 </svg>

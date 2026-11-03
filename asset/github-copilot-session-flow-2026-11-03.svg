@@ -39,7 +39,7 @@
 
   <rect class="bg" width="1340" height="900" rx="16"/>
   <text class="title" x="30" y="44">一个任务的流转：从哪里发起、在哪里执行、怎样回到 PR</text>
-  <text class="sub" x="30" y="70">session 与执行位置解耦：入口只决定"在哪儿说话"，执行位置决定"能碰到什么、谁付钱、关机后还跑不跑"</text>
+  <text class="sub" x="30" y="70">session 与执行位置解耦：入口只决定"在哪儿说话"，执行位置决定"能碰到什么、用谁的身份、关机后还跑不跑"</text>
 
   <!-- ===== A 入口 ===== -->
   <rect class="zone" x="20" y="92" width="232" height="600" rx="12"/>
@@ -104,28 +104,28 @@
   <text class="h" x="658" y="158">本地沙箱（CLI / app / VS Code）</text>
   <text class="t" x="658" y="182">命令在本机跑，MXC 限文件、网络、凭据</text>
   <text class="fit" x="658" y="206">适合：要本机工具链、GUI、Computer Use</text>
-  <text class="bill" x="658" y="230">计费：沙箱免费，只算模型 AI Credits</text>
+  <text class="bill" x="658" y="230">限制：策略可经 MDM 强制，开发者不能削弱</text>
   <text class="tGray" x="658" y="250">合上电脑，任务就停</text>
 
   <rect class="box" x="642" y="272" width="372" height="128" rx="10"/>
   <text class="h" x="658" y="298">远程 Agent Host（自有机器 / VM）</text>
   <text class="t" x="658" y="322">SSH、dev tunnel 或 --environment-host</text>
   <text class="fit" x="658" y="346">适合：大算力、内网依赖、手机遥控</text>
-  <text class="bill" x="658" y="370">计费：自己的机器 + AI Credits</text>
+  <text class="bill" x="658" y="370">限制：机器、网络与依赖由自己维护</text>
   <text class="tGray" x="658" y="390">机器和 Agent Host 必须一直开着</text>
 
   <rect class="boxAmber" x="642" y="412" width="372" height="128" rx="10"/>
   <text class="hAmber" x="658" y="438">云沙箱（默认）</text>
   <text class="t" x="658" y="462">GitHub 托管 micro-VM，快照恢复，无 1 小时上限</text>
   <text class="fit" x="658" y="486">适合：长任务、离开电脑也要跑、多端接力</text>
-  <text class="bill" x="658" y="510">计费：2026-11 起扣 Actions 统一额度</text>
+  <text class="bill" x="658" y="510">隔离：每个 session 一台 micro-VM</text>
   <text class="tGray" x="658" y="530">用自托管 runner 时仍要走 Actions 环境</text>
 
   <rect class="box" x="642" y="552" width="372" height="128" rx="10"/>
   <text class="h" x="658" y="578">Actions（Automations / Agentic Workflows）</text>
   <text class="t" x="658" y="602">事件 / API 触发，Markdown 编译成 Actions</text>
   <text class="fit" x="658" y="626">适合：Issue 分流、CI 失败分析等团队流程</text>
-  <text class="bill" x="658" y="650">计费：AI Credits 记到仓库所属组织</text>
+  <text class="bill" x="658" y="650">安全：默认只读 + 防火墙 + safe outputs</text>
   <text class="tGray" x="658" y="670">动作署名为 Copilot，不是某个人</text>
 
   <!-- C → D -->
@@ -181,5 +181,5 @@
   <text class="el" x="30" y="824">③ 执行产出 draft PR 或 Issue artifact，而不是直接改主干</text>
   <text class="el" x="680" y="824">④ AI review 与 Agent Merge 处理机械问题，人只看判断性问题</text>
   <text class="el" x="30" y="850">⑤ PR 结果（agentic 用户的合并率等）进入 impact dashboard，反过来指导推广</text>
-  <text class="tGray" x="30" y="878">青绿 = 计费以外的适用条件；琥珀 = 计费口径。执行位置和入口不是一一绑定的：CLI 可以 --cloud，云会话也能从 VS Code 接着改</text>
+  <text class="tGray" x="30" y="878">青绿 = 适用场景；琥珀 = 隔离与限制。执行位置和入口不是一一绑定的：CLI 可以 --cloud，云会话也能从 VS Code 接着改</text>
 </svg>

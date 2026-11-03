@@ -1,16 +1,16 @@
 ---
 title: GitHub Copilot 系列 01：产品全景与竞争格局
 created: 2026-11-03
-description: Universe 2026 之后 GitHub Copilot 已经从 IDE 补全插件变成一套平台——入口有 IDE 插件、CLI、桌面 Copilot app、github.com 与 Mobile、Slack 与 Teams；中间是统一的 Copilot harness 与 Fusion 多模型编排；执行位置分本地沙箱、远程 Agent Host、云沙箱与 Actions；底座是 GitHub Enterprise 的策略、AI Credits 预算和 usage metrics。本文梳理各部分怎么配合、二次开发有哪几层、与 Codex、Claude Code、Cursor 相比的长板和短板
+description: Universe 2026 之后 GitHub Copilot 已经从 IDE 补全插件变成一套平台——入口有 IDE 插件、CLI、桌面 Copilot app、github.com 与 Mobile、Slack 与 Teams；中间是统一的 Copilot harness 与 Fusion 多模型编排；执行位置分本地沙箱、远程 Agent Host、云沙箱与 Actions；底座是 GitHub Enterprise 的代码平台、策略管控和 usage metrics。本文梳理各部分怎么配合、二次开发有哪几层、与 Codex、Claude Code、Cursor 相比的长板和短板
 tags: [github-copilot, github-universe, copilot-cli, copilot-app, copilot-sdk, copilot-harness, cloud-sandbox, computer-use, ai-credits, copilot-metrics, codex, claude-code, agent-harness]
 ---
 
 # GitHub Copilot 系列 01：产品全景与竞争格局
 
 > [!IMPORTANT]
-> 本文按 2026-11 初的公开资料整理。GitHub Universe 2026（10 月 28–29 日）发布了六十多项更新，其中不少是**公开预览**，名称和计费口径也还在调整，用之前以 [GitHub Changelog](https://github.blog/changelog/) 和官方文档为准。
+> 本文按 2026-11 初的公开资料整理。GitHub Universe 2026（10 月 28–29 日）发布了六十多项更新，其中不少是**公开预览**，名称和行为也还在调整，用之前以 [GitHub Changelog](https://github.blog/changelog/) 和官方文档为准。
 
-最近在整理 GitHub Copilot 的客户材料，Universe 2026 正好把整个产品重新摆了一遍。翻完大会的 changelog，我最大的感受是：再把 Copilot 当成"VS Code 里的一个插件"去讲，已经讲不清楚了。它现在是一套有分层的系统——好几个入口共用同一个 agent harness，工具可以在本机、自己的机器、GitHub 云沙箱或 Actions 里执行，产出统一回到 PR，再被 GitHub Enterprise 的策略、预算和度量管住。
+最近在整理 GitHub Copilot 的客户材料，Universe 2026 正好把整个产品重新摆了一遍。翻完大会的 changelog，我最大的感受是：再把 Copilot 当成"VS Code 里的一个插件"去讲，已经讲不清楚了。它现在是一套有分层的系统——好几个入口共用同一个 agent harness，工具可以在本机、自己的机器、GitHub 云沙箱或 Actions 里执行，产出统一回到 PR，再被 GitHub Enterprise 的策略和度量管住。
 
 这篇先把全景理清楚，后面的系列文章再逐块展开。
 
@@ -18,37 +18,11 @@ tags: [github-copilot, github-universe, copilot-cli, copilot-app, copilot-sdk, c
 
 ## 底座：GitHub Enterprise 与云端执行
 
-理解 Copilot 要从最下面一层开始，因为这次变化最大的恰恰是底座。
-
-### 计费从"席位"改成"预算"
-
-以前企业买 Copilot 要管两件事：买多少个席位，以及这些人用了多少 premium request。现在 [GitHub Enterprise 已包含 GitHub Copilot 访问](https://github.blog/changelog/2026-10-28-github-enterprise-now-includes-access-to-github-copilot)：GitHub Enterprise Cloud 的授权用户不再单独付 Copilot 席位费，没有 GHE 授权的人可以买 Copilot Standalone（每人每月 10 美元）。用量统一折成 **AI Credits**，从第一次请求开始按企业预算计量。
-
-这里有三处细节，讲给客户时最容易讲错：
-
-1. **"包含"不等于"免费用"**。这种模式不附带每席位的月度 AI Credits，所有计费用量都从预算里扣。
-2. **预算耗尽不会收回席位**。代码补全和 next edit suggestions（NES）在预算为零时仍可用；Copilot Chat、Copilot code review、Copilot in the cloud 需要有预算才能用。
-3. **适用范围有限**。目前只对通过 GitHub 或 Microsoft 客户团队洽谈的 Enterprise Cloud 客户开放，自助渠道分阶段推出；Copilot Business 和 Copilot Enterprise 继续卖。Copilot 也**不支持 GitHub Enterprise Server**。
-
-各计划的价格和额度（来自 [Plans for GitHub Copilot](https://docs.github.com/en/copilot/get-started/plans)）：
-
-| 计划 | 价格 | 每月 AI Credits | 面向 |
-|---|---|---|---|
-| Free / Student | 免费 | 少量额度 | 个人试用、学生 |
-| Pro | 10 美元/月 | 1,000 | 个人 |
-| Pro+ | 39 美元/月 | 3,900 | 重度个人用户 |
-| Max | 100 美元/月 | 10,000 | 持续高强度个人用户 |
-| Business | 19 美元/席位/月 | 1,900/人 | 组织，集中管理与策略 |
-| Enterprise | 39 美元/席位/月 | 3,900/人 | GHE Cloud 企业 |
-| Copilot access | GHE 授权用户 0 元；Standalone 10 美元/人/月 | 不含额度，全部计量 | 符合条件的企业 |
-
-所有计划都包含 Copilot CLI 和 Copilot app，差别在额度、模型和管控能力。
+理解 Copilot 要从最下面一层开始，因为这次变化最大的恰恰是执行底座：agent 不再只跑在开发者的编辑器里。
 
 ### 云沙箱：agent 的默认执行环境
 
 [新的 Copilot 云端体验](https://github.blog/changelog/2026-10-28-work-from-anywhere-with-a-new-connected-copilot-cloud-experience)把原来分开的 Copilot Chat 和 coding agent 合成了一个 **sessions-first** 的体验。每个 session 默认跑在 **cloud sandbox** 里——GitHub 托管的隔离 micro-VM，启动快，关闭时存快照，之后可以从任何入口恢复，也没有一小时总运行时长的限制。
-
-计费上，GitHub 把原来按分钟算的 Actions 额度改成了**按金额算的统一额度池**，标准 runner、云沙箱、larger runner（Team 和 Enterprise Cloud）都从这个池子里扣，各自按公布的单价扣减。云沙箱从 2026 年 11 月开始计费。
 
 有两个例外要注意：用了自托管 runner 或 `copilot-setup-steps.yml` 的仓库，session 仍然要用 Actions 作为执行环境；想用自己的机器或 VM，可以用 `copilot --environment-host` 把它注册成一个执行环境。
 
@@ -56,14 +30,14 @@ tags: [github-copilot, github-universe, copilot-cli, copilot-app, copilot-sdk, c
 
 个人 session 之外，Copilot 还有两条面向团队的自动化路线：
 
-- **[Copilot Automations](https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations)**：把触发条件、提示词、模型和工具组合成重复执行的工作，比如 Issue 一开就尝试复现、PR 标记 ready 时自动截图、监控报警时自动排查。共享 automation 对仓库的读权限用户可见、写权限用户可编辑；**AI Credits 记到仓库所属组织**而不是创建人；在 GitHub 上的动作署名为 Copilot。组织管理员要先开启"Allow use of Copilot cloud agent billed to the organization"策略。
+- **[Copilot Automations](https://github.blog/changelog/2026-10-28-build-shared-workflows-for-your-team-with-copilot-automations)**：把触发条件、提示词、模型和工具组合成重复执行的工作，比如 Issue 一开就尝试复现、PR 标记 ready 时自动截图、监控报警时自动排查。共享 automation 对仓库的读权限用户可见、写权限用户可编辑；用量归属仓库所属组织而不是创建人；在 GitHub 上的动作署名为 Copilot，不挂在某个人的身份下。
 - **[GitHub Agentic Workflows](https://github.blog/changelog/2026-10-28-github-agentic-workflows-generally-available)**：GitHub Next 的开源项目，用自然语言 Markdown 描述 Issue 分流、CI 失败分析、文档更新这类推理型任务，编译成标准 Actions YAML。它跑在你现有的 runner 组和策略下，可以用 Copilot，也可以换别的 coding agent。安全设计做得比较完整：默认只读权限、沙箱容器、Agent Workflow Firewall、safe outputs 校验、独立的威胁检测 job。
 
 两者的分界我是这样理解的：Automations 是产品化的功能，在 Copilot 设置里配置；Agentic Workflows 是"代码化"的，进仓库、走 PR 评审、能用自托管 runner，适合对执行环境有要求的团队。
 
 ## 五个入口：同一个 session，换个窗口而已
 
-上面的底座决定了"在哪执行、谁付钱"，入口只决定"在哪说话"。这次最重要的一点是 **session continuity**：手机上发起的任务，可以在 github.com 上接着看，在 Copilot app 或 VS Code 里继续改，所有入口看到的是同一份会话列表。
+上面的底座决定了"在哪执行、能碰到什么"，入口只决定"在哪说话"。这次最重要的一点是 **session continuity**：手机上发起的任务，可以在 github.com 上接着看，在 Copilot app 或 VS Code 里继续改，所有入口看到的是同一份会话列表。
 
 ![一个任务的流转：发起、执行与回到 PR|900](../../asset/github-copilot-session-flow-2026-11-03.svg)
 
@@ -138,7 +112,7 @@ JetBrains 这次补上了 Fusion、本地沙箱和 NES。IDE 侧有个容易忽�
 
 Fusion 内部按任务选择三种工作方式：单模型直接做（Single）；便宜模型先出稿，质量检查不过再升级到强模型（Cascade）；一个模型出稿、另一个模型挑错、原模型修改（Critique）。管理员能看到 Fusion 从哪些模型里挑，可以单独把某个模型排除出 Fusion 而不影响用户手选，也可以用 managed settings 把某个 effort 档设成默认。
 
-按 GitHub 自己公布的数据，Fusion Max 在 Artificial Analysis Coding Agent Index 上得 60 分，距离 Claude Code + Opus 5.5 Max 两分以内，平均每个任务的 API 成本和 token 都约为一半，耗时少约 40%。这是厂商自测，参考即可；但"按任务路由能省钱"这个方向本身没什么争议。计费上 Fusion 按它实际用到的每个模型、按各自标准单价收费，目前付费计划有限时 30% 折扣。
+按 GitHub 自己公布的数据，Fusion Max 在 Artificial Analysis Coding Agent Index 上得 60 分，距离 Claude Code + Opus 5.5 Max 两分以内，每个任务的 token 约为一半，耗时少约 40%。这是厂商自测，参考即可；但"简单步骤用小模型、难点再升级"这个方向本身没什么争议。代价是调试变难：同一个提示，这次和下次可能走了不同的模型组合。
 
 **[GitHub Intelligence](https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work)** 是上下文层：Memory（GA）跨会话、跨入口记住个人偏好和仓库约定；Dreaming（预览）定期回顾 session 来整理记忆，对仓库里已提交的 skills 和 instructions 的修改会以 PR 形式提出；代码搜索不需要本地 clone 就能跨仓库查找，包括按"代码做了什么"来找的语义搜索。
 
@@ -147,7 +121,7 @@ Fusion 内部按任务选择三种工作方式：单模型直接做（Single）�
 想在 Copilot 之上做自己的东西，我把它分成三层，投入和自由度依次递增：
 
 1. **定制 Copilot 本身**：写 skills、custom agents、接 MCP server 或 Connectors、做 plugin 并放进企业白名单市场。这一层不写宿主程序，改的是 Copilot 的行为。
-2. **把 Copilot 嵌进自己的程序**：用 Copilot SDK 在自己的应用或服务里调用同一个 harness。Universe 前一天发布的 [服务器到服务器认证](https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication) 让这件事真正可用于后台服务：给 GitHub App 授予只读的 Copilot Requests 组织权限，装到组织上，把短期的 installation token 交给 SDK，就能不依赖任何登录用户调用 Copilot，用量记到组织名下，组织的模型策略和预算同样生效，AI usage CSV 里用 `app_client_id` 区分是哪个 app。另外 VS Code 开放了 **Agent Host Protocol**，可以写自己的客户端接入 Agent Host，和 VS Code 共享同一个实时 session，有 TypeScript、Rust、Go、Kotlin、Swift 的客户端库。
+2. **把 Copilot 嵌进自己的程序**：用 Copilot SDK 在自己的应用或服务里调用同一个 harness。Universe 前一天发布的 [服务器到服务器认证](https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication) 让这件事真正可用于后台服务：给 GitHub App 授予只读的 Copilot Requests 组织权限，装到组织上，把短期的 installation token 交给 SDK，就能不依赖任何登录用户调用 Copilot，用量记到组织名下，组织的模型策略同样生效，用量报表里用 `app_client_id` 区分是哪个 app。另外 VS Code 开放了 **Agent Host Protocol**，可以写自己的客户端接入 Agent Host，和 VS Code 共享同一个实时 session，有 TypeScript、Rust、Go、Kotlin、Swift 的客户端库。
 3. **用托管的 harness 做自己的 agent**：[GitHub Copilot SDK 正在改名为 Microsoft Copilot SDK](https://github.blog/changelog/2026-10-28-github-copilot-sdk-is-becoming-microsoft-copilot-sdk)，对应的 harness 也成了微软跨产品共用的 agent 底座，并以 [Microsoft Copilot harness in Foundry](https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry/)（公开预览）的形式开放：在 Foundry Agent Service 里声明式地定义 agent，Microsoft 运行 agent loop 和沙箱，你提供 skills、工具和指令。部署可以用 azd，agent 定义和代码一起放进版本库。
 
 第三层的定义方式长这样（摘自 Foundry 的示例，`harness.type` 指定用 Copilot harness）：
@@ -193,7 +167,7 @@ research-brief:
 > [!TIP]
 > 这些数字有两个天然的盲区：明细依赖客户端遥测，关了遥测或代理拦截时会少计；github.com 和 GitHub Mobile 上的 Chat 不在 usage metrics 里。impact dashboard 显示的"agentic 用户合并率更高"是相关性，不能直接当成 Copilot 带来的生产力提升，给管理层汇报时最好配上开发者反馈和 PR 周期等其他证据。
 
-安全产品线也在往 agent 方向走：[AI Scan for repositories](https://github.blog/changelog/2026-10-28-ai-scan-for-repositories-in-public-preview)（预览）让 agent 扫描整个仓库的存量漏洞，包括 CodeQL 覆盖不到的语言；[Agentic autofix](https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability)（GA）把代码扫描告警指派给 Copilot，它改代码、重跑 CodeQL 确认告警关闭，再开 draft PR，一次最多处理 25 条告警。它们需要 GitHub Code Security 或 Advanced Security 授权，消耗的是 Code Security 预算里的 AI Credits 和 Actions 分钟数。
+安全产品线也在往 agent 方向走：[AI Scan for repositories](https://github.blog/changelog/2026-10-28-ai-scan-for-repositories-in-public-preview)（预览）让 agent 扫描整个仓库的存量漏洞，包括 CodeQL 覆盖不到的语言；[Agentic autofix](https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability)（GA）把代码扫描告警指派给 Copilot，它改代码、重跑 CodeQL 确认告警关闭，再开 draft PR，一次最多处理 25 条告警。代码扫描、依赖告警、修复 PR 都在同一个平台上，这是其他 coding agent 很难补齐的一块。
 
 ## 竞争格局
 
@@ -213,21 +187,21 @@ research-brief:
 
 **Codex 和 Claude Code 的强项在 agent 本身**。两家都是模型厂商自己做 harness，模型和 harness 一起调，单项 agent 体验常常是行业参照——GitHub 自己发布 Fusion 成绩时，拿来对比的也是 Claude Code。Codex 这次的变化是桌面端并入 ChatGPT 桌面 app，在 ChatGPT 和 Codex 之间切换，往"通用工作台"走；这和 Copilot app 把 Projects 扩展到无仓库工作，是同一个方向。
 
-**Copilot 的强项在 agent 之外的一切**：代码托管、PR 评审、Actions、安全扫描、身份、预算、度量都在同一个平台上。别家的 agent 写完代码要"推到 GitHub 开 PR"，Copilot 的 agent 本来就在 PR 里。对已经用 GitHub Enterprise 和 Microsoft 365 的组织，Copilot 的增量采购和治理成本最低，这次"GHE 包含 Copilot 访问"又进一步降低了门槛。
+**Copilot 的强项在 agent 之外的一切**：代码托管、PR 评审、Actions、安全扫描、身份、度量都在同一个平台上。别家的 agent 写完代码要"推到 GitHub 开 PR"，Copilot 的 agent 本来就在 PR 里。对已经用 GitHub Enterprise、Entra 和 Intune 的组织，身份、设备策略和审计都不用另起一套。
 
 **Cursor 的位置在编辑器体验**。它的用户粘性来自 IDE 本身，代码平台和企业治理依赖外部。
 
-所以给客户做选型时，我会先问两个问题：代码在哪里托管？身份和设备管理用什么？如果答案是 GitHub 和 Entra / Intune，Copilot 基本是默认选项，剩下的是哪些团队先用、预算怎么分。如果代码不在 GitHub 上，Copilot 的平台优势会少掉一大半，这时候就要回到 agent 本身的能力上去比。
+所以给客户做选型时，我会先问两个问题：代码在哪里托管？身份和设备管理用什么？如果答案是 GitHub 和 Entra / Intune，Copilot 基本是默认选项，剩下的是哪些团队先用、执行位置怎么选。如果代码不在 GitHub 上，Copilot 的平台优势会少掉一大半，这时候就要回到 agent 本身的能力上去比。
 
 几个短板也要讲清楚：
 
-- **变化太快**。SDK 刚改名，计费从 premium request 换成 AI Credits，coding agent 合进了 Copilot in the cloud。客户手里半年前的材料很多已经不对了。
-- **预算预测更难**。席位不收钱之后，成本全在用量上；Fusion 又按实际调用的每个模型计费，单个任务花多少钱事前很难估。Agentic Workflows 的 `gh aw forecast` 和 Automations 的成本上限是在补这个缺口，但目前还得靠试点期的实际数据来定预算。
+- **变化太快**。SDK 刚改名，Chat 和 coding agent 合进了 Copilot in the cloud，VS Code 的默认 harness 也换了一代。客户手里半年前的材料很多已经不对了。
+- **执行位置多，排查也多一层**。同一个 session 可能在本地沙箱、远程 Agent Host、云沙箱之间切换，出问题时先要弄清它当时跑在哪、受哪套沙箱策略约束。
 - **预览功能多**。Projects、Computer Use、Connectors、AI Scan for repositories、Dreaming、Foundry 里的 harness 都是预览，生产承诺要谨慎。
 - **覆盖有缺口**。GitHub Enterprise Server 用不了 Copilot；不基于 SDK 的 IDE 集成在 metrics 里拿不到细粒度数据。
 
 ## 怎么学这套东西
 
-六十多条公告不用逐条看。我自己是按这个顺序过的：先用这张全景图把四层分清楚，搞明白每个新名词属于哪一层；然后在一个测试仓库里走一遍完整流程——开 Issue、派给 Copilot、在云沙箱里跑、看它开的 PR、过 code review、合并，再到 usage metrics 里找到这次活动；最后再看治理：模型策略、managed settings、预算告警和 Automations 的计费归属。
+六十多条公告不用逐条看。我自己是按这个顺序过的：先用这张全景图把四层分清楚，搞明白每个新名词属于哪一层；然后在一个测试仓库里走一遍完整流程——开 Issue、派给 Copilot、在云沙箱里跑、看它开的 PR、过 code review、合并，再到 usage metrics 里找到这次活动；最后再看治理：模型策略、managed settings、沙箱策略和 MCP 白名单。
 
-走完这一遍，"Copilot 是什么"就不再是一份功能清单，而是能回答"先让哪些团队用、数据和权限怎么控、钱怎么管、怎么看效果"的一套方案。后面的系列文章会按这几块分别展开。
+走完这一遍，"Copilot 是什么"就不再是一份功能清单，而是能回答"先让哪些团队用、数据和权限怎么控、在哪执行、怎么看效果"的一套方案。后面的系列文章会按这几块分别展开。

@@ -40,7 +40,7 @@
 
   <rect class="bg" x="-16" width="1352" height="1060" rx="16"/>
   <text class="title" x="30" y="44">GitHub Copilot 体系全景（Universe 2026 之后）</text>
-  <text class="sub" x="30" y="70">四层：入口只是"窗口"，真正一致的是中间的 harness；执行位置可选；所有产出回到 GitHub 平台，被同一套策略、预算和遥测管住</text>
+  <text class="sub" x="30" y="70">四层：入口只是"窗口"，真正一致的是中间的 harness；执行位置可选；所有产出回到 GitHub 平台，被同一套策略和遥测管住</text>
 
   <!-- ===== 入口层 ===== -->
   <rect class="zone" x="20" y="92" width="1280" height="190" rx="12"/>
@@ -151,7 +151,7 @@
   <text class="t" x="560" y="634">GitHub 托管 micro-VM</text>
   <text class="t" x="560" y="656">快照 + 任意入口恢复</text>
   <text class="t" x="560" y="678">无 1 小时总时长上限</text>
-  <text class="tGray" x="560" y="698">2026-11 起计入 Actions 额度</text>
+  <text class="tGray" x="560" y="698">copilot --cloud 直接开</text>
 
   <rect class="box" x="798" y="584" width="240" height="124" rx="10"/>
   <text class="h" x="814" y="610">Actions runner</text>
@@ -173,7 +173,7 @@
 
   <!-- ===== 平台与治理层 ===== -->
   <rect class="zone" x="20" y="766" width="1280" height="170" rx="12"/>
-  <text class="zl" x="36" y="790">平台与治理层 —— GitHub Enterprise Cloud：产出落成 PR / Issue，同时被策略、预算、遥测约束</text>
+  <text class="zl" x="36" y="790">平台与治理层 —— GitHub Enterprise Cloud：产出落成 PR / Issue，同时被策略、沙箱要求、遥测约束</text>
 
   <rect class="box" x="36" y="804" width="300" height="118" rx="10"/>
   <text class="h" x="52" y="830">代码平台（system of record）</text>
@@ -188,10 +188,10 @@
   <text class="t" x="366" y="898">最低客户端版本、功能默认开关</text>
 
   <rect class="boxAmber" x="664" y="804" width="300" height="118" rx="10"/>
-  <text class="hAmber" x="680" y="830">计费：AI Credits 预算</text>
-  <text class="t" x="680" y="854">GHE Cloud 含 Copilot 访问（洽谈渠道）</text>
-  <text class="t" x="680" y="876">用量从第一次请求开始计量</text>
-  <text class="t" x="680" y="898">预算为 0 时补全和 NES 仍可用</text>
+  <text class="hAmber" x="680" y="830">身份与权限</text>
+  <text class="t" x="680" y="854">session 默认限一个组织，走 SSO</text>
+  <text class="t" x="680" y="876">无写权限的仓库自动只读</text>
+  <text class="t" x="680" y="898">GitHub App 服务身份（SDK）</text>
 
   <rect class="box" x="978" y="804" width="306" height="118" rx="10"/>
   <text class="h" x="994" y="830">洞察</text>
