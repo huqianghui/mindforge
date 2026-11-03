@@ -213,3 +213,4 @@ C 借鉴的是 RRSI 的原则；没有按其代码和配置运行，就只能称
 - [Agent Lightning 算法深解：APO](../agent-lightning/Agent-Lightning算法深解：APO.md) —— textual gradient 与 beam search
 - [Agent = Model + Harness](../../tool/Agent=Model+Harness.md) —— harness 的定义
 - [Continually Self-Improving AI](../../../wiki/concepts/continual-self-improving-ai.md) —— wiki 概念页
+- [GitHub Copilot 系列 02：Memory、Dreaming 与自我改进](../../../Azure/Github-Copilot/GitHub-Copilot系列02：Memory、Dreaming与自我改进.md) —— 用本篇框架拆一个产品：上下文层的 L1~L3，门控是线上投票

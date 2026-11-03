@@ -114,7 +114,7 @@ Fusion 内部按任务选择三种工作方式：单模型直接做（Single）�
 
 按 GitHub 自己公布的数据，Fusion Max 在 Artificial Analysis Coding Agent Index 上得 60 分，距离 Claude Code + Opus 5.5 Max 两分以内，每个任务的 token 约为一半，耗时少约 40%。这是厂商自测，参考即可；但"简单步骤用小模型、难点再升级"这个方向本身没什么争议。代价是调试变难：同一个提示，这次和下次可能走了不同的模型组合。
 
-**[GitHub Intelligence](https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work)** 是上下文层：Memory（GA）跨会话、跨入口记住个人偏好和仓库约定；Dreaming（预览）定期回顾 session 来整理记忆，对仓库里已提交的 skills 和 instructions 的修改会以 PR 形式提出；代码搜索不需要本地 clone 就能跨仓库查找，包括按"代码做了什么"来找的语义搜索。
+**[GitHub Intelligence](https://github.blog/changelog/2026-10-28-github-intelligence-puts-your-code-context-and-history-to-work)** 是上下文层：Memory（GA）跨会话、跨入口记住个人偏好和仓库约定；Dreaming（预览）定期回顾 session 来整理记忆，对仓库里已提交的 skills 和 instructions 的修改会以 PR 形式提出；代码搜索不需要本地 clone 就能跨仓库查找，包括按"代码做了什么"来找的语义搜索。Memory 和 Dreaming 的机制，以及它们和递归自我改进研究的关系，见 [系列 02：Memory、Dreaming 与自我改进](GitHub-Copilot系列02：Memory、Dreaming与自我改进.md)。
 
 ## 二次开发：从定制到嵌入，再到托管
 
