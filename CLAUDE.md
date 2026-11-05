@@ -142,6 +142,8 @@ When adding new knowledge to the vault:
    - **图**：必须是网上找的**真人实拍示范图**，**禁止自绘 SVG 充当动作示范**（2026-11-03 用户纠正）。先查开源图库 free-exercise-db（Unlicense，按 id 取 `exercises/<id>/0.jpg`、`1.jpg`），库里没有再查 Wikimedia Commons 等可复用授权图库（CC BY 类要在页面注明作者与许可）；存 `personal-journal/修行/asset/`，下载后用 Read 看图确认动作对得上
    - **视频**：YouTube（英文动作名 + form tutorial）与 B 站（中文动作名 + 动作教学）搜索链接并列，说明是搜索页、未逐个核对
 
+13. **wiki 知识提取/维护后自动 commit & push**（2026-11-05 用户要求："必须提交""下次这种都能自动 commit & push"）——`/extract-knowledge`、`/evolve-wiki` 及任何改动 `wiki/` 的知识编译完成后，**不问直接**提交并推送（只含 wiki 与本次改动的非私人文件），hook 重新生成的 `wiki-graph.json`/README 统计补 `chore` commit 一起推；收尾按 #10 只报 hash 与结果。不得把 wiki 改动留在工作区过夜。
+
 - **记忆提权**：Memory 中的行为规则（"必须/禁止"）应提权到 CLAUDE.md 或 Rules；背景知识留在 Memory。详见 `.claude/rules/memory-promotion.md`，使用 `/memory-review` 定期审查。
 
 
