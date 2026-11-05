@@ -1,7 +1,7 @@
 ---
 title: "Azure Copilot Ecosystem"
 created: "2026-04-11"
-updated: "2026-10-29"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -125,6 +125,16 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 > 两层的细节分别归口 [[copilot-studio]] 与 [[copilot-managed-runtime]]，harness 选型归口 [[copilot-studio-harness-selection]]。与本页既有的 Azure Copilot Agents / Skills / MCP 不同，这两层的地基是 Power Platform（环境、Dataverse、Connector、DLP），治理横跨 M365 与 Power Platform 两个 admin center；与 Foundry Agent Service 不在同一层（SaaS 构建产品 vs Azure agent 运行时）。
 
+### Claim: GitHub Copilot 已是四层系统而非编辑器插件——入口、harness、执行位置、治理；竞争上 Codex / Claude Code 强在 agent 本身，Copilot 强在 agent 之外的代码平台
+
+- **来源**：[[GitHub-Copilot系列01：产品全景与竞争格局]]
+- **首次出现**：2026-11-03
+- **最近更新**：2026-11-04
+- **置信度**：0.7
+- **状态**：active
+
+> 五个入口（Copilot app、CLI、IDE、github.com / Mobile、Slack / Teams）共享同一份 session 列表；VS Code、CLI、app 统一到同一个 Copilot harness；工具在本地沙箱、远程 Agent Host、GitHub 云沙箱（默认，托管隔离 micro-VM，关闭存快照）或 Actions 里执行；产出回到 PR，被 GHE 策略、模型策略 API、MDM 与 usage metrics 管住。二次开发三层：定制（skills / custom agents / MCP / plugin）→ 用 SDK 嵌进自己的程序（服务器到服务器认证让后台服务可用）→ 用托管 harness 做业务 agent（GitHub Copilot SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry）。竞争：Codex 与 Claude Code 是模型厂商自做 harness、共调出行业参照；Copilot 的 agent 本来就在 PR 里，身份、设备、审计不用另起；Cursor 强在编辑器体验。选型先问代码托管在哪、身份与设备管理用什么——是 GitHub + Entra / Intune 则 Copilot 基本是默认。短板：变化太快、执行位置多致排查多一层、预览功能多（产品 GA 不等于功能 GA）、GHES 不可用。
+
 ## 冲突与演进
 
 - 2026-08-04：从 AG-UI 篇与 Foundry Toolbox/Skills 篇补充协议面（AG-UI 向上补齐）与 skill 治理面（toolbox 版本化、三路径不通、harness 实现权）两条新证据。
@@ -145,3 +155,5 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - [[Foundry-Toolbox与Skills解析]] — toolbox 治理、skill 三路径不通、Copilot Studio 三 harness（2026-07-30）
 - [[FinOps系列01：从token价格到任务花费]] — 三阶段 = 人在环位置三次后移、微软定价分档表、按量≠按结果、C 端思路引到 B 端、三类使用洞见能给什么（2026-09-26）
 - [[2026-10-29-周四]] — Copilot Studio 系列 01–08、Copilot Managed Runtime 系列 01–13 归口为两个新概念页
+- [[2026-11-03-周二]] — GitHub Copilot 系列 01 成文：借 Universe 2026 梳理产品生态与竞争
+- [[GitHub-Copilot系列01：产品全景与竞争格局]] — 四层全景、五个入口、二次开发三层、治理与度量、竞争格局

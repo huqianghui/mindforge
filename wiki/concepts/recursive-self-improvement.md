@@ -1,7 +1,7 @@
 ---
 title: "Recursive Self-Improvement"
 created: "2026-10-24"
-updated: "2026-10-24"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -113,6 +113,26 @@ RSI 指系统把经验和反馈变成**对自身的持久修改**，并且这些
 
 > 术语澄清："recursively self-improving superintelligence"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮"轻"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以"哪些任务能进内圈"= "哪些任务写得出验证器"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。
 
+### Claim: 同一个产品的记忆系统会横跨 L1~L3——用户明示是 L1、AI 开 PR 人审是 L2、自写自验自淘汰是 L3，改进机制固定所以到不了 L4
+
+- **来源**：[[GitHub-Copilot系列02：Memory、Dreaming与自我改进]]
+- **首次出现**：2026-11-03
+- **最近更新**：2026-11-04
+- **置信度**：0.7
+- **状态**：active
+
+> GitHub Copilot：用户说"记住……"由人决定记什么 → L1；Dreaming 对 instructions / skills 开 PR、人审合并 → L2；Memory 自己发现、写入、用 citations 核对、投票淘汰，Dreaming 直接改记忆与 review 指引 → L3。改动全部在 S=(M,H,D,T) 的 H 的上下文层，不改模型、工具、控制流、训练数据；属"后续任务做得更好"，整理策略、投票规则、过期机制都是设计好的，运行中不被修改——要到 L4 需能修改自己的整理策略并证明"更会整理"。说明分级要按具体功能定位，不能给整个产品贴一个级别。
+
+### Claim: 同在 L3，研究方法与产品的分界是门控位置——研究方法上线前先在同批任务上与旧版本比较，产品先上线、靠使用中的投票评估
+
+- **来源**：[[GitHub-Copilot系列02：Memory、Dreaming与自我改进]]
+- **首次出现**：2026-11-03
+- **最近更新**：2026-11-04
+- **置信度**：0.65
+- **状态**：active
+
+> SkillOpt（有界编辑 + 验证集门控，被拒编辑留作负面证据）、RRSI（编辑预算退火、噪声筛查、成本拒绝、剪枝）、Dream-RSI（历史探索树变成回放仿真器，候选离线打分胜者上线）都在上线前比较；Copilot Memory 的门控是使用时核对 citations + 投票阈值 + 过期，没有固定任务集、也没有可回放环境，只能把线上使用本身当评估——务实，但五个验证问题中"验证集是否参与学习""收益来自能力还是更多计算""有没有损害旧能力"答不上来。同叫 dreaming：Dream-RSI 在梦里评估候选（"在梦里挑"），Copilot 在梦里整理上下文、不评估改动（"在梦里写"）。补门的办法：合并 Dreaming 的 PR 前用 Agentic Workflows 对固定任务跑回归。`online-vs-offline-self-improvement-gate` 未单独建页（2026-11-04 HOLD）。
+
 ## 冲突与演进
 
 - 2026-10-24：建页（用户 AskUserQuestion 裁决**解除 09-23 / 09-28 "RSI 作 continual-self-improving-ai 别名、不独立建页" HOLD**）。触发：RSI 系列 00 整篇专论（形式化、两套五级、APO/SkillOpt/RRSI 地图、五个验证问题），后续 01~04 将持续挂入。RSI / Recursive Self-Improvement / 递归自我改进三个别名从 [[continual-self-improving-ai]] 移到本页；该页原有的两条 RSI Claim（Dream-RSI 三层正交坐标、FinOps 02 术语澄清与飞轮对照）原样迁入本页，元数据不变。
@@ -133,3 +153,5 @@ RSI 指系统把经验和反馈变成**对自身的持久修改**，并且这些
 - [[RSI系列00：递归自我改进总览]] — 三种变好、$S_t$ 形式化、两套五级、APO/SkillOpt/RRSI 地图、五个验证问题、教学实验、三个方向判断（2026-10-21）
 - [[2026-09-22-Dream-RSI]] — 三层学习位置 × 三层搜索位置（2026-09-22，从 continual-self-improving-ai 迁入）
 - [[FinOps系列02：数据飞轮与RSI]] — RSI 术语澄清、飞轮对照、进内圈判据（2026-09-26，从 continual-self-improving-ai 迁入）
+- [[2026-11-03-周二]] — GitHub Copilot 系列 02 成文：Memory 与 Dreaming 放进 RSI 框架拆解
+- [[GitHub-Copilot系列02：Memory、Dreaming与自我改进]] — L1~L3 定位、门控对照表、两种 dreaming、五问检验

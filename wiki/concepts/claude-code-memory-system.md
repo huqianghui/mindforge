@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Memory System"
 created: "2026-04-13"
-updated: "2026-04-15"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -66,6 +66,16 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 > Agent 定义文件中配置 `memory:` 字段可获得独立记忆：`project`（提交到 git）、`local`（gitignored）、`user`（跨项目）。每个 Subagent 启动时加载自己的 MEMORY.md 前 200 行。适用于需要跨 Session 追踪状态的 Agent（如知识提取器追踪已处理的日记）。
 
+### Claim: 两家从不同方向得出同一分层——会过时、可被核对的事实放记忆，必须遵守的规则放进 git 里的指令文件；Dreaming 仓库定制是把"记忆提权"自动化
+
+- **来源**：[[GitHub-Copilot系列02：Memory、Dreaming与自我改进]]
+- **首次出现**：2026-11-03
+- **最近更新**：2026-11-04
+- **置信度**：0.8
+- **状态**：active
+
+> Claude Code 一侧：auto memory 以"可能相关、酌情参考"的语气注入，写在里面的行为规则会被忽略，所以行为规则要提权到 CLAUDE.md 或 rules。Copilot 一侧：官方文档明说存储的事实经模型判断后才使用、citations 核对不是系统保证，需要稳定执行的用 custom instructions。Copilot Dreaming 分析历史会话后对 instructions / skills 开 PR，就是把"记忆提权到指令文件"自动化，门控是 PR 人审；本库的 memory-review 定期审查并手动提权，相当于手工版 Dreaming，门控是本人。通用的记忆核对、投票、过期机制见 [[agent-memory-lifecycle]]。
+
 ## 冲突与演进
 
 （暂无）
@@ -80,3 +90,4 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 ## 来源日记
 
 - [[2026-04-13-周一]] — Claude Code 记忆全景文章创作、Memory 文件结构分析
+- [[GitHub-Copilot系列02：Memory、Dreaming与自我改进]] — Copilot 文档与 Claude Code 踩坑得出同一"事实 vs 规则"分层（2026-11-03）

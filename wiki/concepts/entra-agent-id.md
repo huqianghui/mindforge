@@ -1,7 +1,7 @@
 ---
 title: "Entra Agent ID（双层身份模型）"
 created: "2026-08-03"
-updated: "2026-08-04"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -100,6 +100,16 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 > Azure 存在两套授权体系：Entra Authorization（OAuth Scope / Application Permission，管 Graph 与 Entra 对象 API）和 Azure RBAC（Role Assignment，管 ARM 资源）。Blueprint Authentication 完全属于认证层（Entra + OAuth），不是 RBAC；Agent Identity 拿 Token 访问 Storage/Key Vault/AKS 时才进入 RBAC 管辖，检查对象同样是 Agent Identity 而非 Blueprint。
 
+### Claim: agent 身份的另一种实现——Agent Substrate 给每个 actor 一张短期 SPIFFE 证书、身份由运行时投射而非从环境变量读
+
+- **来源**：[[Agent基础设施系列03：kagent与Agent-Substrate]]
+- **首次出现**：2026-11-02
+- **最近更新**：2026-11-04
+- **置信度**：0.55
+- **状态**：active
+
+> 与 Entra Agent ID 的"Blueprint + Agent Identity、FIC-only"不同，Substrate 走工作负载身份路线：每个 actor 一张短期 SPIFFE 证书，egress 网关可按需签发带 actor 身份的 JWT，`ate-idp-server` 提供验签公钥便于与外部身份系统联邦；actor 进程本身不持有证书与 JWT，凭据在沙箱外注入。坑：环境变量在 golden snapshot 里冻结，从同一模板恢复的所有 actor 读到同一个值，身份必须从按 actor 投射的元数据文件读。缺口：入站只校验调用方 SPIFFE ID 是否在静态白名单，白名单内任何调用方都能访问任何 actor。自建 runtime 上的 agent 仍可映射到 Entra Agent ID 登记进 Agent 365（Runtime ↔ Platform 接口）。
+
 ## 冲突与演进
 
 - 2026-07-19：《Foundry Agent 全面对比》首次引入（身份层三类 Agent 同源：blueprint + per-agent service principal），当时单源 HOLD 不建页，论断收入 [[foundry-agent-type-selection]] 治理分层 Claim。
@@ -114,3 +124,4 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 ## 来源日记
 
 - [[2026-08-03-周一]] — 阅读 Foundry Agent Service 文档中 "Blueprint authentication" 一句引发的双层模型梳理，经 ChatGPT 讨论 + Microsoft Learn 官方文档核对成文
+- [[Agent基础设施系列03：kagent与Agent-Substrate]] — Substrate 的 per-actor SPIFFE 身份与环境变量冻结坑（2026-11-02）

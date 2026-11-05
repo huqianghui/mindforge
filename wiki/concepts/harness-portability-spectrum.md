@@ -1,7 +1,7 @@
 ---
 title: "Harness 可移植性分层"
 created: "2026-08-30"
-updated: "2026-09-04"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -77,6 +77,16 @@ related:
 
 > 2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——"搬家工具"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了"离模型越近越可移植"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。
 
+### Claim: harness 与 runtime 是否绑死只看一条——harness 是不是平台自己的代码；不是的话一个 runtime 可托管多种 harness、一种 harness 可跑在多个 runtime
+
+- **来源**：[[Agent基础设施系列04：Framework层与三层串联]]
+- **首次出现**：2026-11-02
+- **最近更新**：2026-11-04
+- **置信度**：0.7
+- **状态**：active
+
+> Copilot Studio 里选 harness 就是选 runtime（Standard 跑经典运行时、GitHub Copilot 跑 Agentic Runtime、Copilot Chat 由 M365 Copilot 编排器执行），因为在这类平台里"运行时"本身就是 harness 的实现，所以创建后不能互转、调用入口与计费也跟着不同。自建或自带 harness 的栈里两者解耦：kagent 的 Harness 字段可选 ADK、Claude Code、Codex 或自定义镜像（一 runtime 多 harness）；MAF 写的 agent 打成镜像既能上 Hosted Agent 也能上 kagent（一 harness 多 runtime）。Foundry 两种情况并存：Prompt Agent 绑死，Hosted Agent 只提供执行环境。本页其他 Claim 讲 harness 内资产（skill / MCP / hook）能否跨宿主，这条讲 harness 本身能否换宿主，两者叠加才是完整的锁定评估（锁定矩阵见 [[agent-infra-three-layers]]）。
+
 ## 冲突与演进
 
 - 2026-08-30：升格建页（用户裁决）。2026-08-04 HOLD 于 harness-engineering 页内 Claim；复核阈值"第 2 篇独立引用"被系列14（08-20）与 Computer Use 系列六（08-29）两次命中后解除。harness-engineering 页保留原始 Claim（Copilot Studio 证据），本页作分层判据的归口页并补 runtime 维度精确化。
@@ -92,3 +102,4 @@ related:
 
 - [[2026-08-20-周四]] — 系列14 成文（SDLC framework Skill 化收敛调查）
 - [[2026-08-29-周六]] — Computer Use 系列六成文（Skill 可见但 runtime 缺失实测）
+- [[Agent基础设施系列04：Framework层与三层串联]] — harness 是否平台代码决定与 runtime 是否绑死（2026-11-02）

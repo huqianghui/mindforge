@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -270,6 +270,16 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——"控制权在哪一层"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）
 
+### Claim: harness 按"归谁、能不能改"分三类，选 framework 还是直接选 harness 看任务形态——harness SDK 把能干活的 agent 放进应用，framework 让你用 agent 搭出应用
+
+- **来源**：[[Agent基础设施系列04：Framework层与三层串联]]、[[GitHub-Copilot系列01：产品全景与竞争格局]]
+- **首次出现**：2026-11-02
+- **最近更新**：2026-11-04
+- **置信度**：0.7
+- **状态**：active
+
+> 三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要"自己想办法干完"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是"harness 产品化"的实例。
+
 ## 冲突与演进
 
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
@@ -308,3 +318,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）
 - [[Foundry-Toolbox与Skills解析]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）
 - [[2026-08-10-周一]] — Harness vs Agent Runtime 正交辨析（面向 model / 面向 infra、两个边界测试）；Copilot Studio 三 harness GA 与"选 harness 即选 runtime"（2026-08-10）
+- [[Agent基础设施系列04：Framework层与三层串联]] — harness 归属三类、何时选 framework / harness、harness 用法与选型表（2026-11-02）

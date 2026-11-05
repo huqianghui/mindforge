@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-09-25
-stats: "111 concepts, 21 methods, 8 decisions, 761 claims"
+stats: "123 concepts, 22 methods, 9 decisions, 873 claims"
 tags:
   - wiki
   - index
@@ -73,6 +73,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[computer-use]] — Computer Use ⊃ Browser Use（广义包含；狭义原生桌面与 Browser Use 并列）：操作 UI 层的 agent 能力，action loop 协议 + Skill/Runtime 分离 + 执行位置决定补位形态
 - [[codex-desktop-architecture]] — Codex Desktop 架构机制：三元组合 runtime distribution、逐层可撬性、Computer Use 发力方向——harness 路线选择的活体实验（伞形索引页）
 - [[harness-portability-spectrum]] — Harness 可移植性分层："离模型越近越可移植"，skill/MCP 高、hook/command 低，可发现性≠可执行性
+- [[agent-infra-three-layers]] — Agent 基础设施三层：Framework / Runtime / Platform 按三问划分，Harness 是被托管的进程不单列一层；Runtime 四子层与锁定矩阵
+- [[agent-sandbox]] — Agent 沙箱：隔离原语 / 环境分配回收 / 出站与凭据三件事，Kata 隔离单位是 pod、凭据不进沙箱、冷启动拆开量
 - [[agent-paradigms]] — Agent 经典三范式：ReAct / Plan-and-Solve / Reflection
 - [[context-engineering]] — Context Engineering：从 Prompt Engineering 的正式演进
 - [[context-explosion]] — Context 爆炸：GSD/Superpowers/OpenSpec 的共同 scaling 瓶颈
@@ -165,6 +167,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[compute-locus-spectrum]] — 计算位置光谱：内容复杂度 × 实时性来源决定画面计算发生在哪里（文档内 → 本地 JS/GPU → 云端 GPU 推流）
 - [[frame-driven-rendering]] — 帧号驱动渲染：进度 =（帧号 ÷ fps）÷ 时长，离线导出的时间源，推出帧段并行与确定性；时钟驱动库可经 seek 收编
 - [[clock-driven-rendering]] — 时钟驱动渲染：以系统时钟算进度，实时场景（设备帧率不一、无总帧数、需与真实世界同步）的正确解，离线导出时失效
+- [[retained-vs-immediate-mode]] — 保留模式 vs 立即模式：SVG 记住图形、Canvas 只留像素，推出动画/交互/规模/清晰度/可携带性五项差别与对 AI 的友好度
 - [[viseme]] — Viseme（视觉音素）：phoneme 多对一收敛的最小口型单位，TTS→数字人口型驱动的时间轴协议
 - [[end-of-turn-detection]] — EOU（话轮结束检测）：介于 VAD 与 turn-taking 之间的独立层，三代方法谱系（静音阈值→文本语义→音频原生）
 
@@ -217,6 +220,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[ai-native-design-tools]] — AI 原生设计工具：Pencil / Excalidraw / Draw.io
 - [[terminal-multiplexer-for-ai]] — 终端复用器：tmux / cmux 与 AI 工作流
 - [[claude-code-memory-system]] — Claude Code 六层记忆与持久化体系
+- [[agent-memory-lifecycle]] — Agent 记忆生命周期：写入过滤、citations 核对、投票、未被强化即过期（只有 upvote 续期），子 agent 只读
 - [[rtk-token-compression]] — RTK（Rust Token Killer）：AI Coding Agent 的 Token 压缩中间件
 - [[caveman-token-compression]] — Caveman：Prompt Engineering 工程化的 LLM 输出 Token 压缩
 - [[model-routing]] — 模型路由：降 token 单价的正交优化轴（CodexSaver/MCP），昂贵模型判断+廉价模型执行

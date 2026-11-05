@@ -1,7 +1,7 @@
 ---
 title: "Copilot Studio Harness Selection"
 created: "2026-10-29"
-updated: "2026-10-29"
+updated: "2026-11-04"
 tags:
   - wiki
   - decision
@@ -103,6 +103,16 @@ Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"
 
 > 最初 CS03 判为"要被应用程序化调用只能选 Standard"，10-28 复测推翻：Standard 的 Connector 动作要求回调地址、草稿 agent 被 CORS 拦下；Standard 与 Copilot Chat 发布后经 Work IQ 传 `agentId` 都被忽略；GitHub Copilot harness 三层堵死；Customer Conversation 渠道被 CSP 挡住（推断）。所以选型维度稳定为"任务重量 / 计费 / 运行时"三项，调用入口降为集成约束。
 
+### Claim: 四种 harness 放进"harness 自己搭还是现成 × runtime 自己运营还是托管"矩阵并不在同一格——GitHub Copilot harness 是现成 harness + 平台托管沙箱，Copilot Chat 严格说不是独立 harness
+
+- **来源**：[[Agent基础设施系列04：Framework层与三层串联]]
+- **首次出现**：2026-11-02
+- **最近更新**：2026-11-04
+- **置信度**：0.65
+- **状态**：active
+
+> Standard：前身 PVA 的经典运行时，按 topics 与分支走，平台托管只能配置，接近确定性 workflow。GitHub Copilot：Agentic Runtime 上的自主 loop，带 Bash 容器与文件系统，与把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一形态，只是 runtime 由微软运营。Copilot Chat：往 M365 Copilot 编排器里加指令、知识与动作。Customer Conversation：联络中心场景的专用托管 harness。四种定义都存在 Dataverse，执行分在三套服务，所以不能互转——"选 harness 即选 runtime"的直接体现。组合用法：GitHub Copilot harness 后台定时做重活、Standard agent 前台答用户，与"framework 搭外层确定性流程、其中一步交给 harness"同一思路。
+
 ## 关联概念
 
 - [[harness-engineering]] — `extends` 产品内多 harness 并存的实例：定义在同一处、执行在三套服务里、建后不能互转
@@ -120,3 +130,4 @@ Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"
 - [[Copilot-Managed-Runtime系列05：在应用里调用AI的几条路]] — GitHub Copilot harness 三层被堵
 - [[Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通]] — 四种 harness 都调不到
 - [[Foundry-Agent与Copilot-Studio的选型]] — 与 Foundry Agent 的层级对比
+- [[Agent基础设施系列04：Framework层与三层串联]] — 四种 harness 在三层锁定矩阵中的位置（2026-11-02）

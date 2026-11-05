@@ -1,7 +1,7 @@
 ---
 title: "模型路由（Model Routing）"
 created: "2026-06-29"
-updated: "2026-09-28"
+updated: "2026-11-04"
 tags:
   - wiki
   - concept
@@ -91,6 +91,16 @@ related:
 
 > 规则（关键词/正则/长度）零延迟零费用完全可解释，但读不懂上下文、候选写死、无把握程度、漏写即误判且不知道；轻量 LLM 路由器可读上下文可给理由可思维链、数据不出租户，但输出要解析校验可能越界、自报置信数未被训练成与正确率对应（RLHF）、自回归秒级、同家族排自家可能有偏；typed 决策模型（[[system-one-model]]）封闭分布构造上不越界、confidence 是训练目标、单次前向 0.2~0.5 秒、输入 $0.042/M 输出免费，但不给理由、不做复杂推理、近期文字发往第三方需评估数据边界。落法：硬约束（用户手选、部署存在、effort 支持、不透明历史不迁移）留给规则，规则筛完 Jev 在合法候选里选；仅在 Jev uncertain 且任务判 demanding 时才值得 LLM 读更长上下文二次判断（当前未实现）。方法层展开见 [[decision-policy-executor-split]]。
 
+### Claim: 产品侧把路由做成"选 effort 不选模型"——Copilot Fusion 按任务在 Single / Cascade / Critique 三种工作方式里选，代价是同一提示两次可能走不同模型组合
+
+- **来源**：[[GitHub-Copilot系列01：产品全景与竞争格局]]
+- **首次出现**：2026-11-03
+- **最近更新**：2026-11-04
+- **置信度**：0.6
+- **状态**：active
+
+> 用户选 Standard / High / Max 三档 effort；Fusion 内部按任务选：单模型直接做（Single）、便宜模型先出稿质量检查不过再升级强模型（Cascade）、一个模型出稿另一个挑错原模型修改（Critique）。管理员可见候选模型池、可单独把某模型排除出 Fusion 而不影响用户手选、可用 managed settings 设默认档。厂商自测：Fusion Max 在 Coding Agent Index 上距 Claude Code + Opus 5.5 Max 两分以内、token 约一半、耗时少约 40%（无独立复现）。与"任务级绑定"一条呼应：路由对用户隐藏后，调试与复现成本上升。
+
 ## 冲突与演进
 
 - 2026-05-11：作为 Token 优化系列第三篇，确立路由是区别于压缩（Caveman/RTK）的正交优化轴。
@@ -111,3 +121,4 @@ related:
 - [[CodexSaver：基于MCP的模型路由]] — 三范式正交、判断/执行分级、MCP 平台无关、成本分析、风险边界、跨平台适配
 - [[Caveman与RTK对比]] — 压缩双工具的对比，路由作为正交第三范式的定位背景
 - [[Codex-Desktop系列07：用Jev做模型与推理强度路由]] — provider 层透明路由、任务级绑定、缓存总账算例、与规则匹配六维/轻量 LLM 八维对比、三类事实边界
+- [[GitHub-Copilot系列01：产品全景与竞争格局]] — Copilot Fusion：effort 三档与 Single / Cascade / Critique（2026-11-03）

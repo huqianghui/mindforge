@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-09-25"
+updated: "2026-11-04"
 tags:
   - wiki
   - decision
@@ -150,6 +150,16 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 > "谁开轮 × 谁给内容"2×2 控制权矩阵给本决策页补上缺失的反向判据（现页只讲组合方向）：**Agent 的价值 = 交给它的内容决定权**。VAD 自动开轮+模型自由生成=价值高；应用开轮+模型自由生成=中；应用开轮+现成文本逐字读=零——external API 与 bank linear 两种 persona 同在此行，挂 Agent 反而是负资产（丢 per-turn `instructions`、多一圈 Foundry runtime、无 `interim_response`），应走 `?model=` + 最小模型、Agent 字段留空；应用开轮+per-turn instructions 约束=模型模式独有档（Agent 模式失去 per-turn 参数化——"Voice Live 组合方向相反"Claim 的补充）。Agent 在语音场景的四个正向落点：分阶段混合、追问、内容无法预写、多 persona 共享同一 brain。产品配置启示：brain 类型应显式分三档 external-brain / foundry-agent / model+instructions。
 
+### Claim: Hosted Agent 已经是"framework 自选、runtime 托管"——客户说"不想只有 Hosted Agent"，本质是想把 runtime 这一半也换成自己的
+
+- **来源**：[[Agent基础设施系列04：Framework层与三层串联]]、[[Agent基础设施系列01：三层划分与自建路线]]
+- **首次出现**：2026-11-02
+- **最近更新**：2026-11-04
+- **置信度**：0.7
+- **状态**：active
+
+> Hosted Agent 用任意框架（MAF / LangGraph / OpenAI Agents SDK）写、打成镜像，Foundry 负责每会话 VM 级沙箱、闲置回收与带状态恢复、Entra agent identity 与 Responses / Invocations 端点。所以选型主线"是否需要自己控制 Agent Runtime"在三层划分下可以说得更准：framework 那一半已经自选，争议只在 Runtime 层；自建 runtime 的对照清单是 kagent CRD + GitOps、AKS Kata 节点池 + agent-sandbox / OpenSandbox、PostgreSQL / Dapr state store、Workload Identity → Entra Agent ID、kmcp + agentgateway、OTel → App Insights，换来数据与执行环境留在自己网络里、隔离与出站可按安全要求定制。与 Agent 365（Platform 层）不冲突。见 [[agent-infra-three-layers]]。
+
 ## 冲突与演进
 
 - **2026-08-30**：注入 08-20 文档修订的三组 Hosted 运行时经济学硬约束（双 ID 生命周期/per-session 计费/冷启动无 benchmark），"Hosted 硬约束表"证据面扩充。
@@ -167,3 +177,5 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - [[Foundry-Agent三种形态对比与选型]] — 三类型能力、治理与场景选型全景（2026-07-19）
 - [[Foundry-Toolbox与Skills解析]] — Skill 支持文档矛盾、harness 控制权、成本模型（2026-07-30）
+- [[Agent基础设施系列01：三层划分与自建路线]] — Hosted Agent 与 Agent 365 分属 Runtime 与 Platform 层、自建 runtime 对照表（2026-11-02）
+- [[Agent基础设施系列04：Framework层与三层串联]] — Hosted Agent 在锁定矩阵中的位置（2026-11-02）
