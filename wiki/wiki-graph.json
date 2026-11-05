@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-29",
+  "generated_at": "2026-11-05",
   "stats": {
-    "nodes": 150,
-    "links": 527,
+    "nodes": 154,
+    "links": 540,
     "orphan_links_removed": 2,
-    "claims": 832,
+    "claims": 873,
     "categories": 13
   },
   "nodes": [
@@ -335,6 +335,90 @@
       ]
     },
     {
+      "id": "agent-infra-three-layers",
+      "type": "concept",
+      "title": "Agent Infrastructure Three Layers",
+      "summary": "把 agent 的基础设施按三个问题分层：**Framework** 回答\"agent 怎么思考、调工具、管状态\"，**Runtime** 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"，**Platform** 回答\"企业怎么发现、授权、治理、运营这些 agent\"。Harness 是用 Framework 搭出来的成品，在 Runtime 眼里是一个被托管、可替换的进程，不单列一层。\n\n这套划分解决的是一个常见混乱：开源项目往往同时声称自己是其中两三层，客户听完反而更糊涂。它也补上了 wiki 之前缺的一侧——此前 [[harness-engineering]] 和 [[harness-portability-spectrum]] 只覆盖 harness 内部，这里讲 harness 跑在哪、被谁管。Runtime 层内部再拆成隔离原语、沙箱编排、持久执行、调度与生命周期四个子层，前两个子层的展开见 [[agent-sandbox]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "agent-platform",
+        "agent-framework"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 7,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "三层按三个问题划分；Framework 与 Runtime 的边界是\"逻辑 vs 设施\"，不是\"有没有 Session\"",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "LangGraph（Thread / Checkpointer / Store）、Google ADK（SessionService / MemoryService）、Microsoft Agent Framework（AgentSession / Context Provider）都原生提供 Session 与 State，所以看到\"Session 管理\"不能就归到 Runtime。真正的分界是：Framework 定义状态长什么样、什么时候存、怎么恢复；Runtime 提供让这些逻辑可靠的环境——存储在哪、进程被杀了谁拉起、两个用户的会话怎么隔离。判别法：问这个能力\"换一个 Runtime 还在不在\"——换集群仍成立的（状态结构、编排逻辑）属 Framework，换环境要重配的（存储、隔离、网络）属 Runtime。有官方文档支撑（三个框架的 API 名称可核对）。"
+        },
+        {
+          "statement": "Harness 不单列一层——Framework 是材料、Harness 是成品，Runtime 把它当作可替换的进程托管",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "用 LangGraph 写完 loop、规划、工具调用、审批就得到一个 harness；Claude Code、Codex 是别人搭好的 harness。最好的佐证来自 Runtime 一侧：kagent 的 Agent 资源有 Harness 字段，可选自带 Go / Python ADK、Claude Code、Codex 或自定义镜像；Agent Substrate 声明\"适配任何 framework 或 harness\"。Harness Engineering 是贯穿 Framework 与 Runtime 的工程方法，不是一个部署层次。与 [[harness-engineering]] 已有的\"framework 是 dev-time 工具包、harness 是 run-time 实体\"\"Harness 面向 model、Runtime 面向 infra\"两条 Claim 一致，这里补的是 Runtime 视角的证据。"
+        },
+        {
+          "statement": "Runtime 内部有四个子层——隔离原语、沙箱编排、持久执行、调度与生命周期，各自不互相替代",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "客户说\"自建 agent runtime\"时背后往往是四件不同的事：① **隔离原语**——墙有多厚（Kata / gVisor / 直接管理的 microVM）；② **沙箱编排**——怎么按模板领环境、休眠、回收（agent-sandbox / OpenSandbox）；③ **持久执行**——长任务崩了能不能续（Dapr Workflow，每步写 state store、断点重放）；④ **调度与生命周期**——agent 在集群里是什么对象（kagent CRD、Agent Substrate actor）。持久执行与隔离无关，是独立一维：framework 自带 checkpoint 只解决\"能存能读\"，故障检测、自动重放、多副本调度仍需 runtime 提供。Dapr 横跨两层：Dapr Agents 是 Framework，sidecar 与 workflow 引擎是 Runtime。按需叠加：只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。"
+        },
+        {
+          "statement": "Hosted Agent 是托管的 Runtime、Agent 365 是 Platform 控制面——两者不在同一层，自建 runtime 与 Agent 365 不冲突",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Foundry Hosted Agent 是\"framework 自选、runtime 托管\"：任意框架写的 agent 打成容器，平台负责镜像版本、agent 身份、会话存储、每会话一个 VM 级沙箱。Agent 365 是 Platform 层（统一注册表 + Entra Agent ID + Defender / Purview），它不运行 agent。所以跑在自己 AKS 上的 agent 照样能申请 Entra Agent ID、登记进 Agent 365。客户要的\"自主可控\"多数指 Runtime 这一层，而不是自己再造一个 Platform；三条路（Hosted Agent / 自建 runtime / API 型 agent 就是普通服务）可在同一企业并存，身份与台账统一收在 Entra 与 Agent 365。"
+        },
+        {
+          "statement": "每种选择都在三层上定死了几格——锁定看两个维度：harness 自己搭还是现成的、runtime 自己运营还是平台托管",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "\"没有哪个产品是没有这些层，只是替你把其中几层定死了。\"四个组合各有代表：自己搭 + 自己运营（MAF / LangGraph 跑在 kagent）、自己搭 + 平台托管（Foundry Hosted Agent）、现成 harness + 自己运营（Claude Code / OpenClaw 作为 kagent AgentHarness 或 Substrate actor）、现成 harness + 平台托管（Copilot Studio 的 GitHub Copilot harness）。其余\"只能配置\"的（Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation）harness 与 runtime 绑死，换 runtime 就要重写 agent。判断是否绑死只有一条：**harness 是不是平台自己的代码**。选型时先找到自己那一行，看被定死的格子里有没有将来一定要改的东西（隔离强度、出站策略、换模型、换编排）。"
+        },
+        {
+          "statement": "三层能不能换取决于层间接口——Framework↔Runtime 靠镜像、协议、外置状态；Runtime↔Platform 靠身份、网关、trace",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Framework ↔ Runtime：容器镜像、调用协议（Responses / Invocations / A2A / ACP）、外置的状态存储——守住这三样，同一份 agent 代码可在 Hosted Agent 与 AKS 上的 kagent 之间切换（\"状态存储外置，不要把会话和 checkpoint 留在进程内存里，否则 runtime 一换就断\"）。Runtime ↔ Platform：agent 身份（Entra Agent ID）、网关路由、OTel trace，并且 trace 要按逻辑 agent 身份而不是 pod 名归集。\"同一镜像不改就换 runtime\"尚未实测，待系列 04 的 PoC 2 验证后调整置信度。"
+        },
+        {
+          "statement": "先问两个问题再决定要不要沙箱平台——执行不执行模型生成的代码、Runtime 要不要自主可控",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多\"agent 平台\"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，\"用不到的不装\"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate pre-1.0 只做 PoC。"
+        }
+      ]
+    },
+    {
       "id": "agent-lightning",
       "type": "concept",
       "title": "Agent Lightning",
@@ -539,6 +623,81 @@
       ]
     },
     {
+      "id": "agent-memory-lifecycle",
+      "type": "concept",
+      "title": "Agent Memory Lifecycle",
+      "summary": "Agent 跨会话记忆不只是\"存下来、下次读\"，而是一条带信任与遗忘的生命周期：**产生 → 写入过滤 → 存储 → 按相关性检索 → 使用前核对 → 投票 → 未被强化即过期**。这套机制回答两个问题：一条记忆凭什么还能被信任（锚定到可核对的证据，并在每次使用中被重新验证），以及记忆库怎么不无限膨胀（过期只能靠再次验证续期）。\n\n目前的完整实现样本是 GitHub Copilot Memory（GA），加上 Copilot Dreaming（预览）在会话之外的离线整理。拿它对照 [[claude-code-memory-system]] 的分层与提权、以及 [[recursive-self-improvement]] 的分级与门控，可以看出 agent 记忆在可信度、遗忘、写权限、可审计性上的几种取舍。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "memory",
+        "self-improvement",
+        "github-copilot"
+      ],
+      "category": "知识管理与工具",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "记忆的信任来自\"使用前核对 + 投票\"，遗忘来自过期——只有 upvote 续期，单纯被检索不续期",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "每条记忆带正文、主题、产生它的 agent 与模型、存储理由、类型、投票数据、过期时间。检索按与当前工作的相关性挑、票数高者优先；挑中后被要求先对照当前分支核对 citations。核对通过 upvote、发现过时 downvote，低于阈值不再使用，闲置后删除。默认 90 天未强化过期，仓库事实可配 7~180 天（两级都配取较小值）。关键设计：**被检索不续期，被验证才续期**——一条记忆要活下去，必须在某次使用中被重新证明成立。合起来是一个在线强化回路：使用 → 核对 → 投票 → 影响下一次检索。官方文档支撑。"
+        },
+        {
+          "statement": "记忆按\"对谁成立\"分类而不是按\"谁说的\"——仓库事实团队共享、个人偏好跟人走，两者的 citations 指向不同",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "仓库事实（\"单测用 Vitest\"\"支付模块必须走 BillingGateway\"）的 citations 指向代码位置，对有读权限的协作者共享，只在有写权限的人工作时产生；个人偏好（\"改代码前先解释\"）的 citations 可能是用户原话，跨仓库生效。意图不清时反问作用域而不是猜。隔离边界：仓库事实不在组织内跨仓库共享、fork 不带走；code review 与 agentic autofix **只用仓库事实、从不用个人偏好**，个人习惯影响不了别人 PR 的审查。团队共享是单机记忆方案做不到的部分——一个人踩过的坑在整个团队的 agent 里生效。"
+        },
+        {
+          "statement": "写入过滤分两层——系统强制拦截凭据与模型控制 token，其余敏感内容只靠模型自觉",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "系统强制：检测到 token / key / 凭据的记忆直接拒绝；含已知模型控制 token 的记忆也拒绝，防 prompt injection 把恶意指令写进记忆长期驻留。模型自觉：敏感个人信息、机密、只对当前任务有效的临时指令是\"被指示不要存\"，没有系统保证。同理，使用时的 citations 核对也是模型判断而非系统保证——存下来的事实不能当作一定会被遵守的规则。设计记忆系统时要分清哪些是硬约束、哪些是软约束。"
+        },
+        {
+          "statement": "子 agent 只读记忆是记忆库的单写者约束——写与投票收归协调者，防局部视角污染",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Copilot CLI 里只有 root agent 能调 `store_memory` 与 `vote_memory`，子 agent 只有 `read_memories`。多 agent 并行时若每个子 agent 都能写、能投票，记忆库会被局部视角污染。与 Single-Writer 原则同构（本知识库对 `wiki/` 坚持单写者）。入口间的写权限也不对称：app 与 CLI 交互会话写入前可能请求批准；cloud agent 与 code review（含从 Slack / Teams 发起的云会话）写入不请求批准；CLI 程序化模式需 `--enable-memory`；SDK 能开启 Memory 但没有列出、编辑、删除记忆的 API。"
+        },
+        {
+          "statement": "会话中的在线强化与会话外的离线整理是两个回路——离线整理改上下文不改权重，关掉不等于回滚",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Copilot Dreaming 三类 dream：个人记忆整理（直接改个人记忆，不碰个人 instruction / skill 文件）、仓库定制（直接改仓库记忆 + 对 instructions / skills 开 PR，合并前不生效；读取范围包括 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md`）、code review 定制（只学已合并 PR 上被接受的反馈，内部更新、不落仓库文件）。前提是 session syncing——本地 CLI 与 app 会话要上传到 GitHub，合规评审要单独拎出。关掉 Dreaming 不撤销已做改动、不恢复被删记忆、不关闭已开 PR，没有\"撤销本次运行\"；真正可回滚的只有走 PR 的那一路，因为它在 git 里。"
+        },
+        {
+          "statement": "记忆方案的取舍在\"团队共享 + 自动遗忘\"与\"可见 + 可回滚\"之间——后端记忆不可 diff，文件记忆没有自动过期",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Copilot Memory + Dreaming：存 GitHub 后端、仓库事实团队共享、citations + 投票校验、90 天未强化过期、Dreaming 开 PR 提权，但票数与内部字段不可见、无 diff。Claude Code auto memory：本机文件、按项目个人、无系统校验、无自动过期、可读可 diff。本库的记忆治理（memory-review + 提权）：本机文件 + 进 git 的规则文件，agent 写人审，定期人工审查时删除，全部可 diff。两边各有对方做不到的：Copilot 胜在共享与遗忘，文件方案胜在可见与可回滚。"
+        }
+      ]
+    },
+    {
       "id": "agent-paradigms",
       "type": "concept",
       "title": "Agent Paradigms",
@@ -582,6 +741,109 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "定义循环结构（Thought-Action-Observation）、管理上下文（trajectory 累积）、处理异常（解析错误、重试、无限循环预防）。理解范式原理可以从框架\"用户\"进阶为 Agent\"创造者\"。"
+        }
+      ]
+    },
+    {
+      "id": "agent-sandbox",
+      "type": "concept",
+      "title": "Agent Sandbox",
+      "summary": "Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文件与进程工作区时使用的隔离执行环境。一旦 agent 要跑 pandas、shell、测试或 Chromium，问题就从\"模型答得好不好\"变成\"这段代码能碰到什么\"。\n\n沙箱可以拆成三件事来问：**墙有多厚**（隔离原语：Kata VM、gVisor、直接管理的 microVM）、**房间怎么分**（环境的分配与回收：模板、预热池、认领、归还）、**门怎么管**（出站与凭据：NetworkPolicy、egress 代理、凭据注入）。三件事分属不同组件，靠 `runtimeClassName` 这类窄接口衔接，不是几选一。它对应 [[agent-infra-three-layers]] 中 Runtime 层最下面两个子层。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "sandbox",
+        "kubernetes",
+        "security"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 9,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "沙箱拆成三件事——隔离原语、环境的分配与回收、出站与凭据；Kata 与 agent-sandbox / OpenSandbox 是上下两层，只靠 runtimeClassName 衔接",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Kata 管\"pod 里的容器怎么跑\"，不认识 agent、会话、预热池；agent-sandbox 和 OpenSandbox 是 Kubernetes 控制器，管\"pod 什么时候建、给谁用、什么时候回收\"，自己不做隔离，只在生成的 pod 模板里写上 `runtimeClassName`。所以编排层二选一，运行时可以换 Kata、gVisor 或 runc，上层流程不变。只用 Kata 也能跑（Deployment 加一行 runtimeClassName），只是预热、认领、回收、路由都得自己写。"
+        },
+        {
+          "statement": "Kata 是\"容器的接口、VM 的边界\"——隔离单位是 pod；与 microVM 的真正区别是 VM 由 Kubernetes 管还是由沙箱系统直接管",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "对 Kubernetes 来说 Kata 实现与 runc 相同的 OCI / CRI 接口，镜像与 kubectl 用法不变；物理上每个 pod 是一个带 guest kernel 的轻量 VM，pod 内多个容器只有容器级隔离——所以 agent 可信、生成代码不可信时，执行器要放进单独的沙箱 pod。Kata 底下可接 QEMU / Cloud Hypervisor / Firecracker，与 Firecracker 不是并列技术。经 Kata 由 Kubernetes 管：一 pod 一 VM，生命周期跟 pod 走；沙箱系统直接管 VMM（OpenSandbox Firecracker 运行时、Agent Substrate microVM worker、E2B）：能做毫秒级快照恢复、整 VM 内存连文件系统快照后跨机恢复，代价是多一套 VM 管理组件、依赖嵌套虚拟化。gVisor 用户态内核拦截系统调用，隔离强度介于容器与 VM 之间。VM 只挡内核逃逸，挡不住 agent 拿合法 token 做不该做的操作。"
+        },
+        {
+          "statement": "Kata 改变了容量与调试的算法——内存按 limit 固定（默认 512Mi）、CPU 向上取整、port-forward 不通",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "VM 内存取自 pod 的 memory limit，不设就是 512Mi，跑 Chromium / pandas 易 OOM；写大了就一直被 VM 占着，不像 runc 按实际用量挤占。CPU limit 决定 vCPU 数，`500m` 实际占 1 个 vCPU，估节点能放多少沙箱要按 VM 粒度算。kubelet 的 port-forward 进宿主网络命名空间拨 127.0.0.1，服务在 guest VM 里，连接被拒——调试改 `kubectl exec`，正式访问走 router 或 Service。另：不支持 host network，Defender for Containers 不评估 Kata pod。验证隔离生效：沙箱里 `uname -r` 与节点 kernelVersion 不同。官方文档支撑。"
+        },
+        {
+          "statement": "出站控制有两处静默失效——CNI 不支持时 NetworkPolicy 被忽略不报错；NetworkPolicy 只认 IP 与端口，放行 443 等于放行任意 HTTPS",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "集群没有策略引擎时，SandboxTemplate 渲染出的 NetworkPolicy 被静默忽略，隔离比以为的弱——建集群时就要选 Cilium / Calico / Azure NPM。即使生效，\"任意地址的 443\"仍让生成的代码能把数据 POST 到任何 HTTPS 站点；\"只能访问模型端点和指定 API\"需要 FQDN 策略（Cilium `toFQDNs`）或按域名放行的 egress 代理。同类陷阱：示例里用于区分用户的 `X-Owner` 请求头只是路由信息不是安全边界；router 示例默认 `ALLOW_UNAUTHENTICATED_ROUTER=true`，生产必须加鉴权。"
+        },
+        {
+          "statement": "凭据不进沙箱、由沙箱外的中介在出站时注入——两个独立平台的同一做法；注入点仍在可信计算基内，且不等于不能滥用授权",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "OpenSandbox Credential Vault：沙箱进程只拿到假值，egress sidecar 透明拦截 HTTPS，按 scheme / host / method / path 匹配绑定规则，**恰好命中一条**才注入真实认证头，命中多条视为歧义拒绝；vault 明文只写不可读。Agent Substrate：每个 actor 的身份证书、JWT、API key、云 token 都不在沙箱里，由 `atenet-egress` 在沙箱外注入。边界：① egress 必须 `dns+nft` 模式，只靠 DNS 时直连 IP 可绕过域名策略；② 不能与同 pod 的 Istio / Envoy 透明代理共存；③ vault 只在 sidecar 内存，暂停后恢复是空的，恢复流程必须显式\"重新注入凭据\"；④ 读不到 vault 失败关闭（小请求 503、流式断开），sidecar 成为出站数据面的可用性依赖。凭据没有从系统消失，绑定规则要按路径和方法收窄。此 Claim 是 `host-mediated-sandbox`（HOLD）泛化后的 `credential-out-of-sandbox`，Copilot Managed Runtime 的\"宿主是唯一出口\"是同一思路的第三个实例（机制为 iframe + CSP + JSON-RPC，见 [[copilot-managed-runtime]]）。"
+        },
+        {
+          "statement": "池化环境的归还策略决定会不会串号——多租户只能 Delete；池化 pod 不能按请求定制",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "OpenSandbox `recycleStrategy`：`Delete`（默认，每次从干净状态开始）、`Restart`（原地重启清进程状态）、`Noop`（原样放回，最快但上一个用户的文件和进程漏给下一个）。pod 在请求前已建好，entrypoint / env 在分配后以任务下发，volumes 与 networkPolicy 只能写进 Pool 模板——不同租户要不同出站策略就拆成不同 Pool。池子耗尽返回可重试的 429，调用方按可重试处理。批量场景（agent 评估、RL rollout）下\"一次申请 N 个\"的 API（BatchSandbox）比逐个 Claim 有优势（项目方自测数据，测法未必对等）。"
+        },
+        {
+          "statement": "冷启动要拆开量——预热池、镜像预拉取、快照恢复解决的是不同段，\"亚秒级\"不能与冷拉镜像直接比",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "端到端 = 调度 + 镜像拉取 + guest 启动 + 代理与证书初始化 + harness 启动 + 模型与工具执行，镜像拉取往往是大头（社区实践中约 2.8 GB 镜像首次拉取近 6 分钟，与推理快慢无关）。预热池让分配到毫秒级；预拉取只省拉取时间，VM 启动与初始化仍要付；休眠 / 快照恢复介于两者之间。评估要固定镜像、缓存状态、并发数和起止点，看分位数与失败率。预热池大小直接对应常驻成本：Kata 内存按 limit 固定占用，池里每多一个空闲沙箱就多占一份 limit。"
+        },
+        {
+          "statement": "把 agent 本身和它执行的代码分开选粒度——受信的 agent loop 走轻粒度，不可信代码按执行次数借 VM 沙箱",
+          "source": "Agent基础设施系列03：kagent与Agent-Substrate",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "运行粒度光谱：一 agent 一 pod（隔离直观、空闲也花钱）→ 预热池领沙箱（解决\"派得慢\"不解决\"空闲贵\"）→ actor 快照 + worker 复用（Agent Substrate，空闲只剩对象存储里一份快照，唯一同时解决两者且保持强隔离，代价是 pre-1.0）→ 进程内 actor（Dapr，密度最高但只有逻辑隔离）→ 进程内代码沙箱（Wasm，受限）。推荐拆法：规划、调模型、调受治理 API 的 agent loop 放 Dapr actor / 进程内会话 / Substrate actor；只有模型生成的代码需要 VM 级墙，按需从预热池领 Kata 沙箱、用完归还——最贵的 VM 按执行次数付费而不是按 agent 个数。例外：Claude Code、OpenClaw 这类\"整个 agent 就是不可信执行环境\"的 coding agent 适合整体放进沙箱。选 agent-sandbox 还是 OpenSandbox 也沿这条线：agent 自己是服务、只要一个隔离 pod → agent-sandbox；agent 是调用方、沙箱是借来执行代码的工具 → OpenSandbox（execd + Credential Vault 省胶水）。"
+        },
+        {
+          "statement": "actor 与执行单元分离——pod 仍是执行单元，但不再是 agent 的部署、身份、生命周期单元",
+          "source": "Agent基础设施系列03：kagent与Agent-Substrate",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "Agent Substrate 把 actor（有状态 agent 实例，多、大多挂起）与 worker（预启动的沙箱 pod，少）拆开：空闲时内存与文件系统快照进对象存储释放 worker，请求来了恢复到任意空闲 worker；低频基础设施配置（WorkerPool）留在 Kubernetes，高频实例状态放自己的 PostgreSQL，挂起恢复不经 API server。执行层面一个 worker 一次仍只承载一个 actor——要准备的 worker 数取决于**同时在忙**的 actor 数而不是 agent 总数。快照范围决定恢复后剩什么：MEMORY（进程从冻结处继续）vs VOLUMES / ROOTFS（只存文件、进程冷启动）。坑：挂起需上层显式调用；身份不能从环境变量读（golden snapshot 里冻结，所有 actor 读到同一值）；需 `wakeupProbe`。整套收益建立在 agent 实际\"忙\"的时间占比上，动手前先从 trace 量这个数。单一项目来源、pre-1.0，置信度保守。"
         }
       ]
     },
@@ -1145,7 +1407,7 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
+      "claims_count": 11,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -1237,6 +1499,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "两层的细节分别归口 [[copilot-studio]] 与 [[copilot-managed-runtime]]，harness 选型归口 [[copilot-studio-harness-selection]]。与本页既有的 Azure Copilot Agents / Skills / MCP 不同，这两层的地基是 Power Platform（环境、Dataverse、Connector、DLP），治理横跨 M365 与 Power Platform 两个 admin center；与 Foundry Agent Service 不在同一层（SaaS 构建产品 vs Azure agent 运行时）。"
+        },
+        {
+          "statement": "GitHub Copilot 已是四层系统而非编辑器插件——入口、harness、执行位置、治理；竞争上 Codex / Claude Code 强在 agent 本身，Copilot 强在 agent 之外的代码平台",
+          "source": "GitHub-Copilot系列01：产品全景与竞争格局",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "五个入口（Copilot app、CLI、IDE、github.com / Mobile、Slack / Teams）共享同一份 session 列表；VS Code、CLI、app 统一到同一个 Copilot harness；工具在本地沙箱、远程 Agent Host、GitHub 云沙箱（默认，托管隔离 micro-VM，关闭存快照）或 Actions 里执行；产出回到 PR，被 GHE 策略、模型策略 API、MDM 与 usage metrics 管住。二次开发三层：定制（skills / custom agents / MCP / plugin）→ 用 SDK 嵌进自己的程序（服务器到服务器认证让后台服务可用）→ 用托管 harness 做业务 agent（GitHub Copilot SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry）。竞争：Codex 与 Claude Code 是模型厂商自做 harness、共调出行业参照；Copilot 的 agent 本来就在 PR 里，身份、设备、审计不用另起；Cursor 强在编辑器体验。选型先问代码托管在哪、身份与设备管理用什么——是 GitHub + Entra / Intune 则 Copilot 基本是默认。短板：变化太快、执行位置多致排查多一层、预览功能多（产品 GA 不等于功能 GA）、GHES 不可用。"
         }
       ]
     },
@@ -1663,7 +1934,7 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
+      "claims_count": 5,
       "avg_confidence": 0.78,
       "claims": [
         {
@@ -1701,6 +1972,15 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "Agent 定义文件中配置 `memory:` 字段可获得独立记忆：`project`（提交到 git）、`local`（gitignored）、`user`（跨项目）。每个 Subagent 启动时加载自己的 MEMORY.md 前 200 行。适用于需要跨 Session 追踪状态的 Agent（如知识提取器追踪已处理的日记）。"
+        },
+        {
+          "statement": "两家从不同方向得出同一分层——会过时、可被核对的事实放记忆，必须遵守的规则放进 git 里的指令文件；Dreaming 仓库定制是把\"记忆提权\"自动化",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Claude Code 一侧：auto memory 以\"可能相关、酌情参考\"的语气注入，写在里面的行为规则会被忽略，所以行为规则要提权到 CLAUDE.md 或 rules。Copilot 一侧：官方文档明说存储的事实经模型判断后才使用、citations 核对不是系统保证，需要稳定执行的用 custom instructions。Copilot Dreaming 分析历史会话后对 instructions / skills 开 PR，就是把\"记忆提权到指令文件\"自动化，门控是 PR 人审；本库的 memory-review 定期审查并手动提权，相当于手工版 Dreaming，门控是本人。通用的记忆核对、投票、过期机制见 [[agent-memory-lifecycle]]。"
         }
       ]
     },
@@ -1719,8 +1999,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.78,
+      "claims_count": 4,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "时钟驱动以\"已经过去多少真实时间\"为公共参照——主流网页动画库与 3D 渲染循环的默认时间源",
@@ -1748,6 +2028,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "导出 30fps 视频时第 N 帧应对应第 N/30 秒，但截图引擎\"渲染 → 截图 → 编码\"单帧可达 200ms 以上，远大于 33ms。以 1 秒淡入为例，时钟驱动下动画在第 5 帧（视频时间约 0.17 秒）即已完成。单帧耗时随画面复杂度波动，动画速度随之忽快忽慢，每次导出结果也不一致；且时钟驱动的动画必须从头顺序播放，无法把帧段分给多台机器并行渲染。同类失效在 Remotion 实践中出现在多个层面：CSS `transition` 由浏览器按真实时间过渡（不应使用）；地图库的 `flyTo()` 按真实时钟播放相机动画（须改为每帧算出相机状态再绘制）。"
+        },
+        {
+          "statement": "时钟驱动的动态 SVG 可以改造成逐帧渲染——暂停 SMIL 与 CSS 动画、按帧设定时间后截图，解决录屏掉帧、首尾手剪与循环接缝",
+          "source": "SVG实践：我和AI之间的视觉语言",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "PPT 不播放 SVG 动画，只能插视频。录屏按真实时间拍，掉帧取决于当时电脑忙不忙，开头结尾要剪，循环接缝会跳。SVG 的两种动画都能用脚本控制时间：SMIL 由根元素统一计时，`pauseAnimations()` + `setCurrentTime(t)`；CSS `@keyframes` 用 `document.getAnimations()` 全取出逐个 `pause()` 再设 `currentTime`。Playwright 打开 SVG、按 2 倍设备像素比逐帧截图、ffmpeg 合成，脚本不到 30 行。本质是把时钟驱动的内容在导出时换成帧号驱动（见 [[frame-driven-rendering]]），正好绕开本页第三条 Claim 所说的离线导出失效。"
         }
       ]
     },
@@ -3433,8 +3722,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.77,
+      "claims_count": 8,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "Agent Blueprint 承担四职责——模板、凭据持有者、容器、创建入口",
@@ -3498,6 +3787,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "Azure 存在两套授权体系：Entra Authorization（OAuth Scope / Application Permission，管 Graph 与 Entra 对象 API）和 Azure RBAC（Role Assignment，管 ARM 资源）。Blueprint Authentication 完全属于认证层（Entra + OAuth），不是 RBAC；Agent Identity 拿 Token 访问 Storage/Key Vault/AKS 时才进入 RBAC 管辖，检查对象同样是 Agent Identity 而非 Blueprint。"
+        },
+        {
+          "statement": "agent 身份的另一种实现——Agent Substrate 给每个 actor 一张短期 SPIFFE 证书、身份由运行时投射而非从环境变量读",
+          "source": "Agent基础设施系列03：kagent与Agent-Substrate",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "与 Entra Agent ID 的\"Blueprint + Agent Identity、FIC-only\"不同，Substrate 走工作负载身份路线：每个 actor 一张短期 SPIFFE 证书，egress 网关可按需签发带 actor 身份的 JWT，`ate-idp-server` 提供验签公钥便于与外部身份系统联邦；actor 进程本身不持有证书与 JWT，凭据在沙箱外注入。坑：环境变量在 golden snapshot 里冻结，从同一模板恢复的所有 actor 读到同一个值，身份必须从按 actor 投射的元数据文件读。缺口：入站只校验调用方 SPIFFE ID 是否在静态白名单，白名单内任何调用方都能访问任何 actor。自建 runtime 上的 agent 仍可映射到 Entra Agent ID 登记进 Agent 365（Runtime ↔ Platform 接口）。"
         }
       ]
     },
@@ -4313,7 +4611,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 24,
+      "claims_count": 25,
       "avg_confidence": 0.78,
       "claims": [
         {
@@ -4531,6 +4829,15 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——\"控制权在哪一层\"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）"
+        },
+        {
+          "statement": "harness 按\"归谁、能不能改\"分三类，选 framework 还是直接选 harness 看任务形态——harness SDK 把能干活的 agent 放进应用，framework 让你用 agent 搭出应用",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要\"自己想办法干完\"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是\"harness 产品化\"的实例。"
         }
       ]
     },
@@ -4549,8 +4856,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.77,
+      "claims_count": 6,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "离模型越近越可移植——skill/MCP 高、prompt 中、subagent/hook/command 低",
@@ -4596,6 +4903,15 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——\"搬家工具\"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了\"离模型越近越可移植\"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。"
+        },
+        {
+          "statement": "harness 与 runtime 是否绑死只看一条——harness 是不是平台自己的代码；不是的话一个 runtime 可托管多种 harness、一种 harness 可跑在多个 runtime",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Copilot Studio 里选 harness 就是选 runtime（Standard 跑经典运行时、GitHub Copilot 跑 Agentic Runtime、Copilot Chat 由 M365 Copilot 编排器执行），因为在这类平台里\"运行时\"本身就是 harness 的实现，所以创建后不能互转、调用入口与计费也跟着不同。自建或自带 harness 的栈里两者解耦：kagent 的 Harness 字段可选 ADK、Claude Code、Codex 或自定义镜像（一 runtime 多 harness）；MAF 写的 agent 打成镜像既能上 Hosted Agent 也能上 kagent（一 harness 多 runtime）。Foundry 两种情况并存：Prompt Agent 绑死，Hosted Agent 只提供执行环境。本页其他 Claim 讲 harness 内资产（skill / MCP / hook）能否跨宿主，这条讲 harness 本身能否换宿主，两者叠加才是完整的锁定评估（锁定矩阵见 [[agent-infra-three-layers]]）。"
         }
       ]
     },
@@ -5628,8 +5944,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.79,
+      "claims_count": 7,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "压缩与路由是两条正交的 Token 优化轴",
@@ -5684,6 +6000,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "规则（关键词/正则/长度）零延迟零费用完全可解释，但读不懂上下文、候选写死、无把握程度、漏写即误判且不知道；轻量 LLM 路由器可读上下文可给理由可思维链、数据不出租户，但输出要解析校验可能越界、自报置信数未被训练成与正确率对应（RLHF）、自回归秒级、同家族排自家可能有偏；typed 决策模型（[[system-one-model]]）封闭分布构造上不越界、confidence 是训练目标、单次前向 0.2~0.5 秒、输入 $0.042/M 输出免费，但不给理由、不做复杂推理、近期文字发往第三方需评估数据边界。落法：硬约束（用户手选、部署存在、effort 支持、不透明历史不迁移）留给规则，规则筛完 Jev 在合法候选里选；仅在 Jev uncertain 且任务判 demanding 时才值得 LLM 读更长上下文二次判断（当前未实现）。方法层展开见 [[decision-policy-executor-split]]。"
+        },
+        {
+          "statement": "产品侧把路由做成\"选 effort 不选模型\"——Copilot Fusion 按任务在 Single / Cascade / Critique 三种工作方式里选，代价是同一提示两次可能走不同模型组合",
+          "source": "GitHub-Copilot系列01：产品全景与竞争格局",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "用户选 Standard / High / Max 三档 effort；Fusion 内部按任务选：单模型直接做（Single）、便宜模型先出稿质量检查不过再升级强模型（Cascade）、一个模型出稿另一个挑错原模型修改（Critique）。管理员可见候选模型池、可单独把某模型排除出 Fusion 而不影响用户手选、可用 managed settings 设默认档。厂商自测：Fusion Max 在 Coding Agent Index 上距 Claude Code + Opus 5.5 Max 两分以内、token 约一半、耗时少约 40%（无独立复现）。与\"任务级绑定\"一条呼应：路由对用户隐藏后，调试与复现成本上升。"
         }
       ]
     },
@@ -6721,8 +7046,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.69,
+      "claims_count": 10,
+      "avg_confidence": 0.68,
       "claims": [
         {
           "statement": "三种\"变好\"要分开——任务内修正、持久状态改进、改进机制本身被改进，只有第三种才是递归",
@@ -6795,6 +7120,24 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "术语澄清：\"recursively self-improving superintelligence\"是 intelligence explosion 讨论里的说法，其中 RSI 仍指过程非结果；工程含义以 Dream-RSI 为参照（探索 → 历史变 replay simulator → dreaming 选更好探索策略）。与 [[data-flywheel]] 的三维对照：人在不在环里（飞轮默认在，RSI 目标不在——agent 用自身轨迹当 replay simulator）、积累的是什么（飞轮积累数据与资本，RSI 积累能力本身：skill / 搜索策略 / prompt 配方，[[skillopt]] `best_skill.md` 即其形态，所以 RSI 比飞轮\"轻\"）、时间常数（季度 vs 小时/天，差两三个量级故可嵌套）。RSI 在 replay 中比较策略优劣几乎只能建立在 RLVR 式可验证信号上——主观分（LLM judge）在离线回放里无法重新获得——所以\"哪些任务能进内圈\"= \"哪些任务写得出验证器\"，反直觉地恰是 Too bad to be useful 那一栏（[[cost-per-task]]）。安全阀：cost per task 直接当 RSI 目标会 Goodhart，评估门控须独立于优化目标。待深入：L2→RSI 是否有类似 30~50/100+ 条的数据阈值或取决于 replay coverage；人退出环的顺序（标注/评估/决策哪个先退）与本页既有 Claims 需对照。"
+        },
+        {
+          "statement": "同一个产品的记忆系统会横跨 L1~L3——用户明示是 L1、AI 开 PR 人审是 L2、自写自验自淘汰是 L3，改进机制固定所以到不了 L4",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "GitHub Copilot：用户说\"记住……\"由人决定记什么 → L1；Dreaming 对 instructions / skills 开 PR、人审合并 → L2；Memory 自己发现、写入、用 citations 核对、投票淘汰，Dreaming 直接改记忆与 review 指引 → L3。改动全部在 S=(M,H,D,T) 的 H 的上下文层，不改模型、工具、控制流、训练数据；属\"后续任务做得更好\"，整理策略、投票规则、过期机制都是设计好的，运行中不被修改——要到 L4 需能修改自己的整理策略并证明\"更会整理\"。说明分级要按具体功能定位，不能给整个产品贴一个级别。"
+        },
+        {
+          "statement": "同在 L3，研究方法与产品的分界是门控位置——研究方法上线前先在同批任务上与旧版本比较，产品先上线、靠使用中的投票评估",
+          "source": "GitHub-Copilot系列02：Memory、Dreaming与自我改进",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "SkillOpt（有界编辑 + 验证集门控，被拒编辑留作负面证据）、RRSI（编辑预算退火、噪声筛查、成本拒绝、剪枝）、Dream-RSI（历史探索树变成回放仿真器，候选离线打分胜者上线）都在上线前比较；Copilot Memory 的门控是使用时核对 citations + 投票阈值 + 过期，没有固定任务集、也没有可回放环境，只能把线上使用本身当评估——务实，但五个验证问题中\"验证集是否参与学习\"\"收益来自能力还是更多计算\"\"有没有损害旧能力\"答不上来。同叫 dreaming：Dream-RSI 在梦里评估候选（\"在梦里挑\"），Copilot 在梦里整理上下文、不评估改动（\"在梦里写\"）。补门的办法：合并 Dreaming 的 PR 前用 Agentic Workflows 对固定任务跑回归。`online-vs-offline-self-improvement-gate` 未单独建页（2026-11-04 HOLD）。"
         }
       ]
     },
@@ -7084,6 +7427,72 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "必要多样性定律的动态推论：被调节系统（模型）的不确定性下降时，调节器（外层 harness 框架）应同步降低复杂度，否则旧约束变成死重。实证：早期框架用 command+hook 把弱模型\"锁\"在预设流程里，模型能力上来后硬编排成本收益倒挂——Superpowers 6.x 用 rationalization table（说服文本）替代强制机制，并以 eval campaign 实测文本效果（一处删减实测从 8/10 退化到 5/10 就重做）。这与\"Harness 需要持续演进\"推论同源：调节器复杂度是随被调节方差动态校准的量，不是一次性设计常数。"
+        }
+      ]
+    },
+    {
+      "id": "retained-vs-immediate-mode",
+      "type": "concept",
+      "title": "Retained Mode vs Immediate Mode",
+      "summary": "图形渲染的两种基本模式。**保留模式**（retained mode）由系统记住\"画了什么\"：SVG 的每个圆、每条线都是一个 DOM 节点，改一个属性浏览器就知道哪个元素变了。**立即模式**（immediate mode）只留下画出来的像素：Canvas 执行完 `ctx.arc()` 后浏览器并不记得那里有一个圆，要变化就擦掉整块画布、按新数据重画。\n\n这一个区别推出了 SVG 与 Canvas 在动画方式、交互命中、元素规模、清晰度、离开网页能否显示这五方面的差别，也是在网页里选择动态画面技术的根据。它还多出一个和 AI 协作相关的维度：保留模式的产物是 AI 能读能改的文本，立即模式的产物只有像素。",
+      "tags": [
+        "wiki",
+        "concept",
+        "rendering",
+        "svg",
+        "canvas",
+        "frontend"
+      ],
+      "category": "语音与实时交互",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "保留模式记住图形、立即模式只记住像素——由此推出动画、交互、规模、清晰度、可携带性五项差别",
+          "source": "Canvas实践：从数字人到知识图谱",
+          "first_seen": "2026-08-26",
+          "last_updated": "2026-11-04",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "① 动画：SVG 改属性即可；Canvas 每帧擦掉重算重画，靠 `requestAnimationFrame` 约 60 次 / 秒。② 交互：SVG 元素自带 hover / click；Canvas 只知道点了哪个像素，点中谁要自己算（常用\"影子画布\"——每个对象画成独一无二的颜色，按鼠标位置读像素反查）。③ 规模：SVG 每个图形是一个 DOM 节点，几千个同时动就卡；Canvas 画一百个点与几万个点都是重画同一块画布，开销稳定，\"整个画面每帧都变\"时没有 DOM diff 开销。④ 清晰度：SVG 矢量放大不糊；Canvas 是位图，高分屏要按 2 倍分辨率画。⑤ 可携带性：SVG 能存成文件进文章、PPT、GitHub；Canvas 离开运行 JS 的页面就是空白，只能导出 PNG 或录视频。WebGL / WebGPU 也画在 `<canvas>` 上，只是 `getContext()` 换了更强的画笔。三篇独立定义、浏览器标准行为可核对。"
+        },
+        {
+          "statement": "选择顺序看画面跟着什么变——只跟状态变用 CSS / SVG，跟实时数据每帧变才上 Canvas，元素极多或 3D 再上 WebGL",
+          "source": "Canvas实践：从数字人到知识图谱",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "音波球只区分\"在听 / 在说\"时 CSS 动画就够，浏览器自己播、JS 不用每帧参与；要让波形跟着真实音量起伏，就要每帧读 Web Audio 音量、每帧重画，这时才需要 Canvas（代价：JS 每秒约 60 次 + 远端 WebRTC 音频接入 Web Audio 多一条链路；不显示时 `cancelAnimationFrame` 停掉）。实践样本：演进页几百个点、每个都要响应鼠标、样式要与页面 CSS 一致 → SVG；知识图谱 150 节点 527 关系的力导向布局、还会增长 → Canvas 图谱库；地图与 3D 地标 → WebGL。只分析画面（黑屏检测、取色、截帧）用一块不显示的离屏 Canvas 读像素。"
+        },
+        {
+          "statement": "立即模式在数字人里的用法是\"读画面\"而不是\"画画面\"——连接层指标看不出帧里是什么，只能读像素",
+          "source": "Canvas实践：从数字人到知识图谱",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "数字人是服务端渲染的视频，经 WebRTC 由 `<video>` 播放；Canvas 是一块不挂到页面上的画布，用来抽帧读像素。实测案例：解码帧数在涨、字节在流、连接未断，画面却全黑——\"有帧在到\"不等于\"画面正常\"，自动恢复没有触发。做法：每秒把帧缩到 32×18 读平均亮度，≤ 8 记空帧、连续 3 次判定失效切备用画面（先缩小读几乎无开销、不逐帧抽以免与解码抢主线程、只判\"空不空\"不判\"够不够亮\"所以阈值不随数字人调）。同一手法用于取背景色（边缘列中位数，抵消 H.264 4:2:0 色偏）与缓存静态肖像（存前必须先过黑屏检测）。WebRTC 视频流不会污染画布，跨域图片会。实操验证。"
+        },
+        {
+          "statement": "保留模式对 AI 友好、立即模式对 AI 不友好——SVG 是 AI 能读能改、能 diff 的文本，Canvas 在 DOM 里只是空标签",
+          "source": "SVG实践：我和AI之间的视觉语言",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "SVG 对人是图、对 AI 是文本：坐标写在 `<rect x y>`、`<path d>` 里，AI 读得懂改得动，人用 `git diff` 逐行审——\"我看图提意见，AI 改文本，两边改同一个文件\"。反向缺口：AI 写 SVG 时看不到渲染结果，中文字宽、字体替换、`text-anchor` 会让估算偏差，所以每张图写完先 `rsvg-convert` 成 PNG 让 AI 看图核对。Canvas 画出来只有像素，Computer Use / Browser Use 碰到 Canvas 页读不到结构只能退回截图识别；对策是把读像素与判断逻辑分开，判断写成吃像素数组的纯函数，不起画布、不接视频流就能单测。"
+        },
+        {
+          "statement": "不能跑 JS 的环境只剩保留模式的声明式动画——GitHub README 与 PPT 的两种处理",
+          "source": "SVG实践：我和AI之间的视觉语言",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "GitHub 显示 README 时去掉 JS，Canvas 图谱是空白——把坐标提前算好写进 SVG，\"镜头巡游\"用 SMIL `<animate>` 实现（约 120 KB、66 个动画元素），外包链接跳到可交互版本。PowerPoint / Keynote 插入 SVG 只显示静态图形，SMIL 与 CSS 动画都不播：静态图按 2 倍分辨率转 PNG；动画逐帧渲染成 MP4（暂停全部动画、按帧设时间后截图，见 [[clock-driven-rendering]]）。只用 SMIL 与 CSS、不写 JS 的动态 SVG 在 Obsidian 与 GitHub 上都能直接播放。"
         }
       ]
     },
@@ -8912,7 +9321,7 @@
       "category": "具身智能（Embodied AI）",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
+      "claims_count": 11,
       "avg_confidence": 0.68,
       "claims": [
         {
@@ -8986,6 +9395,33 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "Dream-RSI 借 Dreamer 之名但沙箱不是学出来的：Dreamer/V-JEPA 2 泛化到未见状态、有模型偏差、需训练；replay simulator 精确回放、零偏差、免训练——代价是候选策略走进历史树未覆盖区域时 replay 给不出答案（既是便宜的原因也是天花板）。这是本页概念的首个系列外独立引用（\"四条路线之外的录像回放\"），也是\"世界模型判别三要素\"框架被用作对照轴的实例。VASA 线是另一个镜像：世界模型学环境动力学先验、VASA 学人类面部动力学先验——领域专用动力学先验对泛化视频模型有三个结构性优势（实时硬约束 170ms、单卡 40fps 并发成本、身份锁定架构保证）。（论文初读，置信度留低待精读复核）"
+        },
+        {
+          "statement": "Moravec 悖论说明 LLM 缺的是\"动作之后世界怎么变\"——进化时间、数据形态、反馈方式三层原因，世界模型补的正是这一块",
+          "source": "世界模型全景：读懂具身智能的主线",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "人觉得难的（下棋、智力测验）机器容易，人觉得不费力的感知与运动机器最难。三层原因：感知运动被打磨了几亿年已内化为本能，写不出规则；文本是人类替机器压缩好的离散符号，物理世界是连续高维带噪的场，带\"动作 → 后果\"标注的交互数据极少；文本答错可重写，动作做错不能回滚、评判来自又贵又慢的物理后果。结论不是\"LLM 不够大\"，而是 LLM 学的东西里缺了动力学——世界模型从视频和交互里学动力学，让试错先在模型里发生，真机只执行选好的那一步。LeCun（JEPA）、李飞飞（像素与体素取代 token）、Sutton（缺目标与环境对错信号）三种批评同出于此。与\"与 LLM 的分野\"一条互补：那条讲要回答的问题不同，这条讲为什么 LLM 路线本身补不上。"
+        },
+        {
+          "statement": "看路线分三层——范式层所有路线一致、表现层分歧在用什么表示世界、用途层决定路线选得对不对；选路线先问\"我需要它输出什么\"",
+          "source": "世界模型全景：读懂具身智能的主线",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "范式层：观测压成状态（Latent MDP）、学 P(s′|s,a)、提供可反复推演的模拟器——Dreamer、Genie 3、V-JEPA 2-AC 在这一层没有区别。表现层四种押注：像素（物理会从视频涌现，押错则永远读不出精确物理量、长时程漂移）、显式 3D（一致性由结构保证，被数据成本与算力拖住）、潜空间（决策只需抽象因果结构，内部不可见难评测）、物理方程（关键物理是硬约束，复杂对象建不了模）。用途层：训练场与数据工厂（SIMA 2 在 Genie 3 世界里自我改进）、在想象中规划（V-JEPA 2-AC MPC 式滚动）、可走进去的世界（Marble 导出游戏引擎）、高保真训练与验证（Isaac Lab）。选法：要可读物理量 → 显式 3D 或方程；要高频规划 → 潜空间；要海量逼真数据 → 像素。真实产品很少只选一条（Waymo、Marble + 物理仿真、Cosmos + 手写仿真器）。是对第一条\"角色不是架构\"Claim 的分层展开。"
+        },
+        {
+          "statement": "物理世界的幻觉更贵且不会自己暴露——能否进决策回路看真实闭环里的预测误差，评估器与验证器必须与世界模型分开",
+          "source": "世界模型全景：读懂具身智能的主线",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "LLM 的幻觉是编一段不存在的文字，世界模型的幻觉是编一个不存在的物理后果（估错摩擦系数、低估碰撞），在虚拟里不报错，下发执行器就是机械臂撞击、车辆失控。四类风险：物理幻觉（边界内自主、绕开模型的安全监视器、关键物理用方程兜底、上真机前回归）、潜空间不可审计（探针与闭环规划验证，评估器独立）、超真实合成内容让像素鉴伪失效（溯源与水印）、能力集中（开源基座对冲）。画面合理不等于物理正确，规划成功不等于表示可信。"
         }
       ]
     },
@@ -10177,8 +10613,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
-      "avg_confidence": 0.77,
+      "claims_count": 4,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "新建 agent 默认是 GitHub Copilot harness 且建后不能与 Standard 互转——harness 是建 agent 时唯一的不可逆选择",
@@ -10206,6 +10642,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "最初 CS03 判为\"要被应用程序化调用只能选 Standard\"，10-28 复测推翻：Standard 的 Connector 动作要求回调地址、草稿 agent 被 CORS 拦下；Standard 与 Copilot Chat 发布后经 Work IQ 传 `agentId` 都被忽略；GitHub Copilot harness 三层堵死；Customer Conversation 渠道被 CSP 挡住（推断）。所以选型维度稳定为\"任务重量 / 计费 / 运行时\"三项，调用入口降为集成约束。"
+        },
+        {
+          "statement": "四种 harness 放进\"harness 自己搭还是现成 × runtime 自己运营还是托管\"矩阵并不在同一格——GitHub Copilot harness 是现成 harness + 平台托管沙箱，Copilot Chat 严格说不是独立 harness",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Standard：前身 PVA 的经典运行时，按 topics 与分支走，平台托管只能配置，接近确定性 workflow。GitHub Copilot：Agentic Runtime 上的自主 loop，带 Bash 容器与文件系统，与把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一形态，只是 runtime 由微软运营。Copilot Chat：往 M365 Copilot 编排器里加指令、知识与动作。Customer Conversation：联络中心场景的专用托管 harness。四种定义都存在 Dataverse，执行分在三套服务，所以不能互转——\"选 harness 即选 runtime\"的直接体现。组合用法：GitHub Copilot harness 后台定时做重活、Standard agent 前台答用户，与\"framework 搭外层确定性流程、其中一步交给 harness\"同一思路。"
         }
       ]
     },
@@ -10223,8 +10668,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 9,
-      "avg_confidence": 0.79,
+      "claims_count": 10,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
@@ -10306,6 +10751,15 @@
           "confidence": 0.8,
           "status": "active",
           "evidence": "\"谁开轮 × 谁给内容\"2×2 控制权矩阵给本决策页补上缺失的反向判据（现页只讲组合方向）：**Agent 的价值 = 交给它的内容决定权**。VAD 自动开轮+模型自由生成=价值高；应用开轮+模型自由生成=中；应用开轮+现成文本逐字读=零——external API 与 bank linear 两种 persona 同在此行，挂 Agent 反而是负资产（丢 per-turn `instructions`、多一圈 Foundry runtime、无 `interim_response`），应走 `?model=` + 最小模型、Agent 字段留空；应用开轮+per-turn instructions 约束=模型模式独有档（Agent 模式失去 per-turn 参数化——\"Voice Live 组合方向相反\"Claim 的补充）。Agent 在语音场景的四个正向落点：分阶段混合、追问、内容无法预写、多 persona 共享同一 brain。产品配置启示：brain 类型应显式分三档 external-brain / foundry-agent / model+instructions。"
+        },
+        {
+          "statement": "Hosted Agent 已经是\"framework 自选、runtime 托管\"——客户说\"不想只有 Hosted Agent\"，本质是想把 runtime 这一半也换成自己的",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Hosted Agent 用任意框架（MAF / LangGraph / OpenAI Agents SDK）写、打成镜像，Foundry 负责每会话 VM 级沙箱、闲置回收与带状态恢复、Entra agent identity 与 Responses / Invocations 端点。所以选型主线\"是否需要自己控制 Agent Runtime\"在三层划分下可以说得更准：framework 那一半已经自选，争议只在 Runtime 层；自建 runtime 的对照清单是 kagent CRD + GitOps、AKS Kata 节点池 + agent-sandbox / OpenSandbox、PostgreSQL / Dapr state store、Workload Identity → Entra Agent ID、kmcp + agentgateway、OTel → App Insights，换来数据与执行环境留在自己网络里、隔离与出站可按安全要求定制。与 Agent 365（Platform 层）不冲突。见 [[agent-infra-three-layers]]。"
         }
       ]
     },
@@ -10695,6 +11149,42 @@
       "description": "AG-UI 向上连前端，A2A 横向连其他 Agent"
     },
     {
+      "source": "agent-infra-three-layers",
+      "target": "agent-sandbox",
+      "relation_type": "part-of",
+      "description": "Runtime 层的隔离原语与沙箱编排两个子层"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "harness-engineering",
+      "relation_type": "contrasts",
+      "description": "harness 是贯穿 Framework 与 Runtime 的工程方法，三层划分讲的是部署层次"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "harness-portability-spectrum",
+      "relation_type": "contrasts",
+      "description": "前者讲 harness 内部资产能否跨宿主迁移，本页讲 harness 被定在哪一层、能否换 runtime"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "grounds",
+      "description": "Prompt / Hosted 的分水岭正是 Runtime 层归属"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "copilot-studio-harness-selection",
+      "relation_type": "grounds",
+      "description": "Copilot Studio 四种 harness 落在锁定矩阵的不同格"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "Runtime ↔ Platform 接口的身份一环"
+    },
+    {
       "source": "agent-lightning",
       "target": "bitter-lesson",
       "relation_type": "implements",
@@ -10743,6 +11233,18 @@
       "description": "Agent Loop 是控制论负反馈机制的工程载体"
     },
     {
+      "source": "agent-memory-lifecycle",
+      "target": "claude-code-memory-system",
+      "relation_type": "contrasts",
+      "description": "前者靠分层与人工提权管理记忆，本页靠核对、投票、过期自动管理"
+    },
+    {
+      "source": "agent-memory-lifecycle",
+      "target": "recursive-self-improvement",
+      "relation_type": "part-of",
+      "description": "记忆生命周期是 RSI 中\"持久状态改进\"在上下文层的一种实现"
+    },
+    {
       "source": "agent-paradigms",
       "target": "agent-loop-architecture",
       "relation_type": "uses",
@@ -10759,6 +11261,18 @@
       "target": "skill-pattern",
       "relation_type": "contrasts",
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
+    },
+    {
+      "source": "agent-sandbox",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "Runtime 层的隔离原语与沙箱编排子层"
+    },
+    {
+      "source": "agent-sandbox",
+      "target": "copilot-managed-runtime",
+      "relation_type": "contrasts",
+      "description": "同为\"沙箱只有一个受控出口\"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据"
     },
     {
       "source": "agent-search-tools",
@@ -12585,6 +13099,24 @@
       "description": "Harness 的约束丰富度下限由任务扰动多样性决定"
     },
     {
+      "source": "retained-vs-immediate-mode",
+      "target": "compute-locus-spectrum",
+      "relation_type": "extends",
+      "description": "计算光谱讲画面在哪里算，本页补\"算完是图形对象还是像素\"这一维"
+    },
+    {
+      "source": "retained-vs-immediate-mode",
+      "target": "clock-driven-rendering",
+      "relation_type": "uses",
+      "description": "立即模式的实时动画默认由 `requestAnimationFrame` 的真实时钟驱动"
+    },
+    {
+      "source": "retained-vs-immediate-mode",
+      "target": "frame-driven-rendering",
+      "relation_type": "uses",
+      "description": "立即模式内容进视频要按帧号重画（Remotion 无头浏览器逐帧截图）"
+    },
+    {
       "source": "rtk-token-compression",
       "target": "caveman-token-compression",
       "relation_type": "contrasts",
@@ -13749,6 +14281,8 @@
         "computer-use",
         "codex-desktop-architecture",
         "harness-portability-spectrum",
+        "agent-infra-three-layers",
+        "agent-sandbox",
         "agent-paradigms",
         "context-engineering",
         "context-explosion",
@@ -13856,6 +14390,7 @@
         "compute-locus-spectrum",
         "frame-driven-rendering",
         "clock-driven-rendering",
+        "retained-vs-immediate-mode",
         "viseme",
         "end-of-turn-detection"
       ]
@@ -13929,6 +14464,7 @@
         "ai-native-design-tools",
         "terminal-multiplexer-for-ai",
         "claude-code-memory-system",
+        "agent-memory-lifecycle",
         "rtk-token-compression",
         "caveman-token-compression",
         "model-routing",
