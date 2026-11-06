@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneAmber { fill: #120f08; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxGray { fill: #111827; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .zl { fill: #7dd3fc; font-size: 17px; font-weight: 700; }
+      .path { fill: #94a3b8; font-size: 13px; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .ok { fill: #5eead4; font-size: 13px; }
+      .warn { fill: #fca5a5; font-size: 13px; }
+      .seen { fill: #fde68a; font-size: 13px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1010" rx="16"/>
+  <text class="title" x="40" y="46">Copilot Memory 与 Dreaming：四个设置位置，一个生效结果</text>
+  <text class="sub" x="40" y="72">上级划边界，下级只能在边界内选择；个人页面看到的是叠加后的结果，不是任何一层的原始选项</text>
+
+  <!-- Zone 1 Enterprise -->
+  <rect class="zone" x="30" y="95" width="320" height="455" rx="12"/>
+  <text class="zl" x="48" y="124">企业 Enterprise</text>
+  <text class="path" x="48" y="146">AI controls → Copilot →</text>
+  <text class="path" x="48" y="164">Configure features &amp; clients → Memory</text>
+  <rect class="box" x="45" y="180" width="290" height="96" rx="8"/>
+  <text class="h" x="58" y="203">Copilot Memory</text>
+  <text class="t" x="58" y="225">Enabled everywhere</text>
+  <text class="t" x="58" y="245">Let organizations decide</text>
+  <text class="t" x="58" y="265">Disabled everywhere</text>
+  <rect class="box" x="45" y="288" width="290" height="118" rx="8"/>
+  <text class="h" x="58" y="311">Dreaming（Preview）</text>
+  <text class="t" x="58" y="333">Let organizations decide：交给组织</text>
+  <text class="tGray" x="58" y="352">　首次选这项时组织默认关闭</text>
+  <text class="t" x="58" y="373">Enabled everywhere：组织关不掉</text>
+  <text class="t" x="58" y="394">Disabled everywhere：组织开不了</text>
+  <rect class="box" x="45" y="418" width="290" height="80" rx="8"/>
+  <text class="h" x="58" y="441">同页还要看</text>
+  <text class="t" x="58" y="462">Memory retention：7~180 天，默认 90</text>
+  <text class="t" x="58" y="483">CLI 会话上云：至少 View from cloud</text>
+  <text class="seen" x="48" y="530">我看到：Memory 全开，Dreaming 交给组织</text>
+
+  <!-- Zone 2 Organization -->
+  <rect class="zoneAmber" x="370" y="95" width="320" height="455" rx="12"/>
+  <text class="zl" x="388" y="124" style="fill:#fde68a">组织 Organization</text>
+  <text class="path" x="388" y="146">Settings → Copilot → Policies</text>
+  <text class="path" x="388" y="164">→ Memory（需组织 owner 权限）</text>
+  <rect class="box" x="385" y="180" width="290" height="96" rx="8"/>
+  <text class="h" x="398" y="203">Copilot Memory</text>
+  <text class="t" x="398" y="225">启用 / 关闭（受企业策略约束）</text>
+  <text class="t" x="398" y="245">Repository access：选哪些仓库</text>
+  <text class="tGray" x="398" y="265">　这份仓库清单就是 Dreaming 的范围</text>
+  <rect class="boxAmber" x="385" y="288" width="290" height="118" rx="8"/>
+  <text class="hAmber" x="398" y="311">Dreaming</text>
+  <text class="t" x="398" y="333">企业交给组织时才能选</text>
+  <text class="t" x="398" y="354">开启 = 覆盖上面选中的全部仓库</text>
+  <text class="warn" x="398" y="375">每次运行扣 AI credits</text>
+  <text class="tGray" x="398" y="394">　没产生改动的运行也算</text>
+  <rect class="box" x="385" y="418" width="290" height="80" rx="8"/>
+  <text class="h" x="398" y="441">多个组织给许可证</text>
+  <text class="t" x="398" y="462">取最严格的那个</text>
+  <text class="t" x="398" y="483">任一组织没开，个人就是 Disabled</text>
+  <text class="seen" x="388" y="530">我看到：无权限，侧栏没有 Copilot 入口</text>
+
+  <!-- Zone 3 Personal account -->
+  <rect class="zone" x="710" y="95" width="320" height="455" rx="12"/>
+  <text class="zl" x="728" y="124">个人账号 Account</text>
+  <text class="path" x="728" y="146">头像 → Settings → Copilot → Features</text>
+  <text class="path" x="728" y="164">（同一网址随登录账号变化）</text>
+  <rect class="box" x="725" y="180" width="290" height="96" rx="8"/>
+  <text class="h" x="738" y="203">Copilot Memory</text>
+  <text class="t" x="738" y="225">User and repository memories</text>
+  <text class="t" x="738" y="245">allowed 等几档，是个人偏好</text>
+  <text class="tGray" x="738" y="265">　上级禁用时偏好保留但不生效</text>
+  <rect class="box" x="725" y="288" width="290" height="118" rx="8"/>
+  <text class="h" x="738" y="311">Dreaming</text>
+  <text class="t" x="738" y="333">上级允许后显示为下拉框，</text>
+  <text class="t" x="738" y="354">还要自己选 Enabled</text>
+  <text class="t" x="738" y="375">被上级挡住时显示盾牌 + Disabled</text>
+  <text class="tGray" x="738" y="394">　和原因提示，不能点</text>
+  <rect class="box" x="725" y="418" width="290" height="80" rx="8"/>
+  <text class="h" x="738" y="441">Copilot → Memory</text>
+  <text class="t" x="738" y="462">只是记忆列表页，不是开关</text>
+  <text class="t" x="738" y="483">No memories found 说明不了策略</text>
+  <text class="seen" x="728" y="530">我看到：两个账号都是 Disabled</text>
+
+  <!-- Zone 4 Personal repo -->
+  <rect class="zone" x="1050" y="95" width="320" height="455" rx="12"/>
+  <text class="zl" x="1068" y="124">个人仓库 Repository</text>
+  <text class="path" x="1068" y="146">仓库 Settings → Copilot → Memory</text>
+  <text class="path" x="1068" y="164">（个人拥有的仓库才有 Dreaming 开关）</text>
+  <rect class="box" x="1065" y="180" width="290" height="96" rx="8"/>
+  <text class="h" x="1078" y="203">仓库事实</text>
+  <text class="t" x="1078" y="225">仓库 owner 可查看、删除</text>
+  <text class="t" x="1078" y="245">网页上不能新建或编辑单条</text>
+  <text class="tGray" x="1078" y="265">　组织仓库的范围由组织决定</text>
+  <rect class="box" x="1065" y="288" width="290" height="118" rx="8"/>
+  <text class="h" x="1078" y="311">仓库 Dreaming</text>
+  <text class="t" x="1078" y="333">仓库定制：改记忆，</text>
+  <text class="t" x="1078" y="354">instructions / skills 走 PR</text>
+  <text class="t" x="1078" y="375">code review 定制：内部指引直接改</text>
+  <text class="tGray" x="1078" y="394">　和个人记忆整理是两个开关</text>
+  <rect class="box" x="1065" y="418" width="290" height="80" rx="8"/>
+  <text class="h" x="1078" y="441">结果在哪看</text>
+  <text class="t" x="1078" y="462">Copilot app → Automations</text>
+  <text class="t" x="1078" y="483">→ Dreaming，运行由 GitHub 排期</text>
+  <text class="tGray" x="1068" y="530">本次未开通，没有运行记录</text>
+
+  <!-- flows to effective state -->
+  <path class="flow" d="M190,550 C190,600 500,600 560,628" marker-end="url(#arr)"/>
+  <path class="flowAmber" d="M530,550 L620,624" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M870,550 L780,624" marker-end="url(#arr)"/>
+  <path class="flow" d="M1210,550 C1210,600 900,600 840,628" marker-end="url(#arr)"/>
+  <circle class="badge" cx="300" cy="590" r="13"/><text class="bn" x="300" y="595">①</text>
+  <circle class="badgeAmber" cx="560" cy="585" r="13"/><text class="bn" x="560" y="590">②</text>
+  <circle class="badge" cx="840" cy="585" r="13"/><text class="bn" x="840" y="590">③</text>
+  <circle class="badge" cx="1100" cy="590" r="13"/><text class="bn" x="1100" y="595">④</text>
+
+  <rect class="boxAmber" x="430" y="632" width="540" height="110" rx="10"/>
+  <text class="hAmber" x="700" y="662" text-anchor="middle">生效状态：个人 Features 页上的那一行</text>
+  <text class="t" x="700" y="688" text-anchor="middle">Disabled + "Set by your organization or enterprise" → 被组织或企业挡住</text>
+  <text class="t" x="700" y="710" text-anchor="middle">Disabled + "Your organization(s) have not enabled…" → 许可证所属组织没开</text>
+  <text class="t" x="700" y="731" text-anchor="middle">下拉框可选 → 上级已放行，剩下的是自己打开 + 前提条件</text>
+
+  <!-- prerequisites -->
+  <rect class="boxGray" x="30" y="765" width="1340" height="96" rx="10"/>
+  <text class="h" x="50" y="792">前提条件（每类能力分别判断，缺一项那一类就不跑）</text>
+  <text class="t" x="50" y="818">● 合资格的付费计划，个人 Pro 暂不支持；带数据驻留的 GHE Cloud 不支持　● 策略允许 GPT-6.1 Sol　● 对应范围的 Memory 已开</text>
+  <text class="t" x="50" y="842">● 个人整理、仓库定制要会话上云；code review 定制要开 code review 及其预览功能，暂不支持自托管 runner　● 先开 Dreaming、后补前提的，要关一次再开</text>
+
+  <!-- legend -->
+  <text class="el" x="40" y="895">① 企业决定 Memory 与 Dreaming 的大边界：全开、全关，或把 Dreaming 交给各组织。企业从"全开"改成"交给组织"时，原先已开的组织保持开启。</text>
+  <text class="el" x="40" y="919">② 组织在企业给的空间里选，并用 Repository access 圈定仓库；这是我唯一没看到原始值的一层（琥珀色），也是本次 Disabled 的关键。</text>
+  <text class="el" x="40" y="943">③ 个人偏好永远不能越过上级，但上级放行后也不会替你打开；多来源许可证时还要选默认 billing entity。</text>
+  <text class="el" x="40" y="967">④ 个人拥有的仓库有自己的仓库 Dreaming 开关；组织仓库跟着组织策略走。四路汇到同一个生效结果，排查从这一行反推。</text>
+</svg>

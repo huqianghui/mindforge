@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1030" width="1400" height="1030" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxRed { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 15px; font-weight: 700; }
+      .hRed { fill: #fecaca; font-size: 15px; font-weight: 600; }
+      .hGray { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tGray { fill: #94a3b8; font-size: 13px; }
+      .lab { fill: #5eead4; font-size: 13px; font-weight: 600; }
+      .labA { fill: #fcd34d; font-size: 13px; font-weight: 600; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.6; stroke-dasharray: 8 6; animation: dash 1s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1030" rx="16"/>
+  <text class="title" x="40" y="46">Dreaming 显示 Disabled 时的排查顺序</text>
+  <text class="sub" x="40" y="72">从个人页面的生效结果往上反推；琥珀色是我这次实际走到的路径和卡住的位置</text>
+
+  <!-- Start -->
+  <rect class="boxAmber" x="450" y="92" width="500" height="62" rx="10"/>
+  <circle class="badgeAmber" cx="478" cy="123" r="13"/><text class="bn" x="478" y="128">①</text>
+  <text class="hAmber" x="710" y="118" text-anchor="middle">Settings → Copilot → Features</text>
+  <text class="t" x="710" y="141" text-anchor="middle">Dreaming 右侧是盾牌 + Disabled，下拉框不能点</text>
+
+  <!-- hints -->
+  <path class="flowAmber" d="M600,154 L420,192" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M800,154 L980,192" marker-end="url(#arr)"/>
+  <rect class="boxAmber" x="120" y="196" width="520" height="66" rx="10"/>
+  <circle class="badgeAmber" cx="146" cy="229" r="13"/><text class="bn" x="146" y="234">②</text>
+  <text class="hAmber" x="390" y="222" text-anchor="middle">提示 Set by your organization or enterprise</text>
+  <text class="t" x="390" y="246" text-anchor="middle">企业托管账号上看到的；挡住它的是组织或企业，没说是哪一层</text>
+  <rect class="box" x="760" y="196" width="520" height="66" rx="10"/>
+  <text class="h" x="1020" y="222" text-anchor="middle">提示 Your organization(s) have not enabled…</text>
+  <text class="t" x="1020" y="246" text-anchor="middle">个人账号上看到的；没说是哪个组织，多个组织给许可证时要逐个查</text>
+
+  <!-- Q2 enterprise -->
+  <path class="flowAmber" d="M390,262 L600,300" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M1020,262 L820,300" marker-end="url(#arr)"/>
+  <rect class="boxAmber" x="450" y="304" width="500" height="66" rx="10"/>
+  <circle class="badgeAmber" cx="478" cy="337" r="13"/><text class="bn" x="478" y="342">③</text>
+  <text class="hAmber" x="710" y="330" text-anchor="middle">企业 AI controls 里 Dreaming 选的是？</text>
+  <text class="t" x="710" y="354" text-anchor="middle">只读权限也能看到当前值；看不到就问企业管理员</text>
+
+  <!-- three branches -->
+  <path class="flowGray" d="M520,370 L240,418" marker-end="url(#arrGray)"/>
+  <path class="flowAmber" d="M700,370 L700,418" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M880,370 L1160,418" marker-end="url(#arr)"/>
+  <text class="tGray" x="250" y="380">Disabled everywhere</text>
+  <text class="labA" x="712" y="400">Let organizations decide</text>
+  <text class="lab" x="1030" y="378">Enabled everywhere</text>
+
+  <rect class="boxRed" x="40" y="422" width="390" height="78" rx="10"/>
+  <text class="hRed" x="235" y="450" text-anchor="middle">终点：只能找企业管理员</text>
+  <text class="t" x="235" y="474" text-anchor="middle">组织和个人都开不了，下面的步骤不用做</text>
+
+  <rect class="box" x="970" y="422" width="390" height="78" rx="10"/>
+  <text class="h" x="1165" y="450" text-anchor="middle">组织不能关，直接跳到第 ⑤ 步</text>
+  <text class="t" x="1165" y="474" text-anchor="middle">仍受 Memory 范围和前提条件约束</text>
+
+  <!-- Q3 org -->
+  <rect class="boxAmber" x="440" y="422" width="520" height="118" rx="10"/>
+  <circle class="badgeAmber" cx="468" cy="452" r="13"/><text class="bn" x="468" y="457">④</text>
+  <text class="hAmber" x="710" y="456" text-anchor="middle">逐个查给你许可证的组织</text>
+  <text class="t" x="710" y="480" text-anchor="middle">Settings → Copilot → Policies → Memory → Dreaming</text>
+  <text class="t" x="710" y="502" text-anchor="middle">多个组织取最严格；注意 Repository access 圈了哪些仓库</text>
+  <text class="labA" x="710" y="526" text-anchor="middle">我卡在这里：组织页侧栏没有 Copilot 入口</text>
+
+  <!-- Q3 outcomes -->
+  <path class="flowGray" d="M500,540 L240,598" marker-end="url(#arrGray)"/>
+  <path class="flowAmber" d="M700,540 L700,598" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M920,540 L1120,598" marker-end="url(#arr)"/>
+  <text class="tGray" x="250" y="566">有组织没开</text>
+  <text class="labA" x="712" y="574">看不到</text>
+  <text class="lab" x="1010" y="566">都开了</text>
+
+  <rect class="boxRed" x="40" y="602" width="390" height="96" rx="10"/>
+  <text class="hRed" x="235" y="630" text-anchor="middle">请该组织 owner 开启</text>
+  <text class="t" x="235" y="654" text-anchor="middle">开之前先核对 Repository access</text>
+  <text class="t" x="235" y="676" text-anchor="middle">和 AI credits 预算，开了就是整批仓库</text>
+
+  <rect class="boxGray" x="470" y="602" width="460" height="96" rx="10"/>
+  <text class="hGray" x="700" y="630" text-anchor="middle">没有组织策略的读权限</text>
+  <text class="tGray" x="700" y="654" text-anchor="middle">直接拼策略页网址也是 404，分不清是无权还是地址不对</text>
+  <text class="tGray" x="700" y="676" text-anchor="middle">只能请 owner 看一眼再告诉我，不靠猜</text>
+
+  <!-- Q4 personal -->
+  <rect class="box" x="970" y="602" width="390" height="96" rx="10"/>
+  <circle class="badge" cx="996" cy="632" r="13"/><text class="bn" x="996" y="637">⑤</text>
+  <text class="h" x="1175" y="636" text-anchor="middle">回个人 Features 页</text>
+  <text class="t" x="1175" y="660" text-anchor="middle">下拉框变成可选，自己选 Enabled</text>
+  <text class="t" x="1175" y="682" text-anchor="middle">上级放行不会替你打开</text>
+
+  <path class="flow" d="M1165,698 L1165,736" marker-end="url(#arr)"/>
+  <rect class="box" x="970" y="740" width="390" height="96" rx="10"/>
+  <circle class="badge" cx="996" cy="770" r="13"/><text class="bn" x="996" y="775">⑥</text>
+  <text class="h" x="1175" y="774" text-anchor="middle">核对前提条件</text>
+  <text class="t" x="1175" y="798" text-anchor="middle">GPT-6.1 Sol、会话上云、code review</text>
+  <text class="t" x="1175" y="820" text-anchor="middle">后补齐的，要把 Dreaming 关一次再开</text>
+
+  <path class="flow" d="M1165,836 L1165,874" marker-end="url(#arr)"/>
+  <rect class="box" x="970" y="878" width="390" height="96" rx="10"/>
+  <circle class="badge" cx="996" cy="908" r="13"/><text class="bn" x="996" y="913">⑦</text>
+  <text class="h" x="1175" y="912" text-anchor="middle">等第一次运行</text>
+  <text class="t" x="1175" y="936" text-anchor="middle">Copilot app → Automations → Dreaming</text>
+  <text class="t" x="1175" y="958" text-anchor="middle">由 GitHub 排期，不能手动触发</text>
+
+  <!-- legend -->
+  <text class="el" x="40" y="752">① 先确认看的是 Features 页，不是 Memory 列表页；列表为空和开关状态无关。</text>
+  <text class="el" x="40" y="778">② 两种提示文字都只说"上面有人没开"，不指明是哪一层、哪个组织。</text>
+  <text class="el" x="40" y="804">③ 企业这一项决定组织有没有选择权；"交给组织"不等于组织已开或已关。</text>
+  <text class="el" x="40" y="830">④ 组织是最常见的卡点：首次交给组织时默认关闭，多组织取最严格。</text>
+  <text class="el" x="40" y="856">⑤⑥ 上级全部放行后，还剩两件自己的事：打开个人开关，补齐前提。</text>
+  <text class="el" x="40" y="882">⑦ 开通后不会马上有结果，运行计划、提示词和模型都由 GitHub 决定。</text>
+  <text class="tGray" x="40" y="930">图例：琥珀实线 = 本次实际路径　青绿 = 其他可能路径　红框 = 需要上级管理员处理　灰虚线 = 卡住、信息不足</text>
+</svg>

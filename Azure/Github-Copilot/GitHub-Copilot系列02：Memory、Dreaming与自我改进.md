@@ -83,7 +83,7 @@ Memory 本身已经能在会话中学习，Dreaming 做的是另一件事：**�
 
 ### 前提与边界
 
-Dreaming 默认关闭，要主动开启：个人在 Copilot 设置里开个人整理、在仓库设置里开仓库 dream；组织和企业由管理员通过 Copilot 策略开启，企业可以把决定权下放给组织。
+Dreaming 默认关闭，要主动开启：个人在 Copilot 设置里开个人整理、在仓库设置里开仓库 dream；组织和企业由管理员通过 Copilot 策略开启，企业可以把决定权下放给组织。各层设置在哪、怎么叠加、显示 Disabled 时怎么排查，见 [系列 03](GitHub-Copilot系列03：Memory与Dreaming的分层配置.md)。
 
 它有一个容易被忽略的技术前提：**session syncing**。个人整理和仓库定制都要求本地会话被同步到 GitHub 账号——CLI 和 app 默认开启同步，但如果组织策略里"Store local sessions in the Cloud"没有至少设为 View from cloud，会话就只留在本地，Dreaming 也就没有素材。反过来说，打开 Dreaming 就意味着本地 CLI 和 app 的会话内容会上传到 GitHub，合规评审时要把这一点单独拎出来。初期预览还要求策略允许某个特定模型，不支持带数据驻留的 GHE Cloud，code review 定制暂不支持自托管 runner。
 
