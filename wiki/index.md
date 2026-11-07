@@ -32,6 +32,8 @@ tags:
 - [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，约 12~15 小时
 - [[voice-agent]] — 语音 Agent 与实时交互：技术栈 → 级联与端到端 → VAD / EOU → turn-taking → Speech Out → 传输 → ICE → 数字人工程 → 大脑接入 → 企业网络，10 站 + 前沿站，约 14~18 小时
 - [[harness-agent-architecture]] — Harness 工程与 Agent 架构：agent loop → context → harness → 控制论 → 扩展机制 → 协议 → 多 agent → 模型与 harness → 基础设施 → 外循环，10 站 + 前沿站（含 REA），约 16~20 小时
+- [[rl-post-training]] — 强化学习与后训练：Bitter Lesson → advantage 与四种形态 → 学习与 harness 分界 → reward → APO/SFT/RL 阶梯 → SFT → agent-lightning → VERL/Slime → 实跑，9 站 + 前沿站，约 16~20 小时
+- [[agent-self-improvement]] — Agent 自我改进：RSI 框架 → prompt 层 APO → skill 层 SkillOpt → harness 层 Meta-Harness → 产品记忆与 Dreaming → Dream-RSI → 凭什么说变好了，7 站 + 前沿站，约 12~15 小时
 
 ## 知识工作流
 
