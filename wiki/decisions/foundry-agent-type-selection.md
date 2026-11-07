@@ -151,7 +151,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **状态**：active
 - **复核**：2026-11-07 修订——依据：[Hosted agents in Foundry Agent Service](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)
 
-> 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
+> 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：闲置超时后回收算力（默认 15 分钟，现可配 2~60 分钟）、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温到闲置超时为止也计费（默认配置下单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴，调小超时可缩短尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
 
 > **2026-11-07 修订**：idle 超时现在可配 2~60 分钟、默认 15 分钟（不再是固定 15 分钟），计费尾巴随之可调；30 天不活跃永久删除、无 replica 数与 warm pool 可配仍然成立。每 session 磁盘上限约 20 GiB（1 vCPU 及以上，约 20% 留给系统）。
 
