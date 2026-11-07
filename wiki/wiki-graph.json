@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-05",
+  "generated_at": "2026-11-07",
   "stats": {
     "nodes": 154,
     "links": 540,
     "orphan_links_removed": 2,
-    "claims": 873,
+    "claims": 876,
     "categories": 13
   },
   "nodes": [
@@ -638,7 +638,7 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
+      "claims_count": 8,
       "avg_confidence": 0.72,
       "claims": [
         {
@@ -694,6 +694,24 @@
           "confidence": 0.65,
           "status": "active",
           "evidence": "Copilot Memory + Dreaming：存 GitHub 后端、仓库事实团队共享、citations + 投票校验、90 天未强化过期、Dreaming 开 PR 提权，但票数与内部字段不可见、无 diff。Claude Code auto memory：本机文件、按项目个人、无系统校验、无自动过期、可读可 diff。本库的记忆治理（memory-review + 提权）：本机文件 + 进 git 的规则文件，agent 写人审，定期人工审查时删除，全部可 diff。两边各有对方做不到的：Copilot 胜在共享与遗忘，文件方案胜在可见与可回滚。"
+        },
+        {
+          "statement": "离线整理的回滚是不对称的——记忆与 review 指引直接改、只有 instructions / skills 走 PR；关掉不撤销已做的改动",
+          "source": "GitHub-Copilot系列03：Memory与Dreaming的分层配置",
+          "first_seen": "2026-11-06",
+          "last_updated": "2026-11-07",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Copilot Dreaming 一个开关下有三类能力：个人记忆整理、仓库定制、code review 定制，每类前提不同（计划、策略允许的模型、会话上云、code review 预览功能），不能单独开关；先开 Dreaming、后补齐前提的，要把对应范围关一次再开才会激活新能力。生效方式分三路：记忆直接改不逐条审批，对 instructions / skills 的修改开 PR，code review 内部指引直接更新。关掉 Dreaming 不恢复被删记忆、不关闭已开 PR，进行中的运行可能跑完；关掉会话同步也不删除已同步的会话。能回滚的只有走 PR、合进 git 的那部分——与 [[recursive-self-improvement]] 中\"门控位置\"的判断一致：后台自我整理里只有落进版本控制的改动是可审计、可撤销的。"
+        },
+        {
+          "statement": "后台自我整理的范围和成本由上游的记忆范围决定——组织开 Dreaming 即覆盖 Repository access 圈定的全部仓库，按运行次数计费、空跑也算",
+          "source": "GitHub-Copilot系列03：Memory与Dreaming的分层配置",
+          "first_seen": "2026-11-06",
+          "last_updated": "2026-11-07",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "组织层没有\"给某个人开 Dreaming\"的选项，开启的范围就是 Memory 的 Repository access 里选中的全部仓库；每次运行扣 AI credits，包括没有产生改动、处理不活跃仓库的运行，用量提醒不拦截用量。运行由平台排期，不能手动触发，计划、提示词和模型都不可改，结果在 Copilot app 的 Automations → Dreaming 里看。实际做法是先收窄记忆范围再开整理：先在少量自有仓库开仓库级 Dreaming，把它开的 PR 当普通代码评审看，看过几轮结果再按仓库清单逐步放开组织级开关。"
         }
       ]
     },
@@ -1407,7 +1425,7 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
+      "claims_count": 12,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -1508,6 +1526,15 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "五个入口（Copilot app、CLI、IDE、github.com / Mobile、Slack / Teams）共享同一份 session 列表；VS Code、CLI、app 统一到同一个 Copilot harness；工具在本地沙箱、远程 Agent Host、GitHub 云沙箱（默认，托管隔离 micro-VM，关闭存快照）或 Actions 里执行；产出回到 PR，被 GHE 策略、模型策略 API、MDM 与 usage metrics 管住。二次开发三层：定制（skills / custom agents / MCP / plugin）→ 用 SDK 嵌进自己的程序（服务器到服务器认证让后台服务可用）→ 用托管 harness 做业务 agent（GitHub Copilot SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry）。竞争：Codex 与 Claude Code 是模型厂商自做 harness、共调出行业参照；Copilot 的 agent 本来就在 PR 里，身份、设备、审计不用另起；Cursor 强在编辑器体验。选型先问代码托管在哪、身份与设备管理用什么——是 GitHub + Entra / Intune 则 Copilot 基本是默认。短板：变化太快、执行位置多致排查多一层、预览功能多（产品 GA 不等于功能 GA）、GHES 不可用。"
+        },
+        {
+          "statement": "Copilot 功能开关是企业、组织、个人账号、个人仓库四层叠加的生效值——\"Let organizations decide\"只说明组织有选择权，排查要从个人页面的生效值往上反推",
+          "source": "GitHub-Copilot系列03：Memory与Dreaming的分层配置",
+          "first_seen": "2026-11-06",
+          "last_updated": "2026-11-07",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "以 Memory 与 Dreaming（公开预览）为例：企业在 AI controls 里定边界（Enabled everywhere 组织关不掉、Disabled everywhere 组织开不了、Let organizations decide 交给组织，首次选这项时组织默认关闭，但从全开改过来的保持开启）；组织在 Settings → Copilot → Policies 里选，并用 Memory 的 Repository access 圈定仓库；个人偏好永远越不过上级，上级放行也不替个人打开；个人拥有的仓库另有仓库级开关。同一用户从多个组织拿许可证时取最严格的设置。个人 Features 页上的盾牌 + Disabled 与提示文字只说明\"上面有人没开\"，不指明是哪一层、哪个组织；Memory 列表页的 No memories found 说明不了开关状态。实际排查中最常见的卡点在组织层——企业交给组织、个人又读不到组织策略页，只能请组织 owner 查看。"
         }
       ]
     },
