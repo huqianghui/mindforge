@@ -135,16 +135,16 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
   - 能说出沙箱的三件事：隔离原语、环境的分配与回收、出站与凭据，以及"凭据不进沙箱"的做法
   - 能说出 agent 本身和它执行的代码为什么要分开选隔离粒度
 
-## 第 10 站 · 外循环：Loop Engineering 与质量门禁
+## 第 10 站 · 外循环：Loop Engineering 与评测门禁
 
-- **读**：[[loop-engineering]]、[[harness-five-dimension-quality-gate]]
+- **读**：[[loop-engineering]]、[[harness-engineering]]（Claim「多模型 harness 必须自建三层评测体系」「Agent 行为回归是传统 CI 测不出的新回归类别」）
 - **前置**：第 3、4 站
 - **用时**：约 1.5 小时
 - **⚠️ stale**：[[loop-engineering]] 15/15
 - **算会**：
   - 能区分内循环与外循环，说出外循环的最小内核（自动发现 + workflow + 重复 + 跨轮记忆）
   - 能解释"循环的形状由验证信号来源决定"，以及验证为什么要左移
-  - 能用五个维度给一个 harness 做质量门禁检查
+  - 能说出多模型 harness 的三层评测：离线 benchmark → PR 门禁 → 生产 A/B，以及 agent 行为回归为什么是传统 CI 测不出的新回归类别
 
 ## 前沿站 · 正在发生的变化
 
@@ -163,5 +163,5 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 ## 这条路径暴露的缺口
 
 - **stale 是最大问题**：10 站里 8 站的底座页 stale 比例超过一半，优先 `/revalidate harness-engineering`、`model-harness-codesign`、`mcp-vs-cli`、`loop-engineering`
-- **缺评测类概念页**：agent-eval 连续多期在知识差距报告里出现，wiki 只有质量门禁方法页，没有"coding agent 评测"概念页
+- **缺评测类概念页**：agent-eval 连续多期在知识差距报告里出现，wiki 只有 [[harness-engineering]] 里的两条评测 Claim，没有"coding agent 评测"概念页（[[harness-five-dimension-quality-gate]] 讲的是 Harness CI 产品的代码质量门禁，不是 agent 评测）
 - **缺安全类页**：agent-safety、MCP 安全在报告里出现了 7 期，wiki 里没有对应页
