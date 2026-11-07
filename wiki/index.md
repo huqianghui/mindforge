@@ -34,6 +34,7 @@ tags:
 | `/extract-knowledge` | 从日记/文章中提取概念、方法和论断到 wiki   | 每日或按需 |
 | `/evolve-wiki`       | 更新置信度、生成摘要、刷新关联           | 每周    |
 | `/detect-conflict`   | 扫描 wiki 发现冲突论断            | 每周或按需 |
+| `/revalidate`        | 按证据复核 stale Claims：确认 / 修订 / 降级 / 退役 | 每周或按需 |
 | `/knowledge-gap`     | 分析知识库差距，生成学习建议报告          | 每周或按需 |
 | `/wiki-query`        | 跨切面查询：关系图谱、Claims 检索、决策查询 | 按需    |
 | `/weekly-review`     | 每周知识回顾与统计报告               | 每周    |
@@ -46,7 +47,9 @@ tags:
 active → conflicting（发现矛盾证据）
 active → outdated（被新证据取代）
 active → stale（60+ 天未更新）
-stale → active（重新验证后）
+stale → active（/revalidate 确认或修订）
+stale → outdated（/revalidate 退役，正文保留）
+stale → conflicting（/revalidate 发现部分被反驳）
 conflicting → active（人工裁决后）
 ```
 
