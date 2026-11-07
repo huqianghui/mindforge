@@ -1,7 +1,7 @@
 ---
 title: "Skill Runtime"
 created: "2026-04-13"
-updated: "2026-08-30"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,7 +31,9 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > query 触发 intent parse -> skill match -> context projection -> execution。
 
@@ -41,7 +43,9 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > YAML schema 定义输入/输出/依赖，而非全量拼接的文档——从 document-centric 到 capability-centric 的范式迁移。
 
@@ -51,7 +55,9 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 谁决定用哪个 skill、context 是否全量拼接、skill 有无明确 I/O、context 是否 externalizable、execution 是否 independent。
 
@@ -69,9 +75,11 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 - **来源**：[[2026-08-10-周一]]
 - **首次出现**：2026-08-10
-- **最近更新**：2026-08-10
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Agent Skills 官方规范 https://agentskills.io/specification ：仅定义 SKILL.md 包格式与 frontmatter；compatibility 字段仅为 ≤500 字符的环境需求说明，无执行机制
 
 > Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（GitHub Copilot harness）=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。
 
@@ -81,7 +89,9 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 面向跨 harness 可移植的 skill 脚本设计：① **最小公分母**——Python 标准库 only、不依赖 Node 专属脚本，重依赖以纯 Python 源码 vendor 进 skill 的 scripts/ 目录（无网也能用）；② **运行时探测 + 文字降级**——SKILL.md 写明"优先跑脚本，环境无 Python 则按以下手动步骤"，脚本失效时模型降级为纯推理执行，印证"离模型越近越可移植"；③ **重依赖改走 MCP**——需要 playwright/特定 SDK/Node 生态时不塞 skill scripts，做成 MCP server 跑在自控环境，把依赖问题从管不了的托管 sandbox 转移到管得了的自有服务器；④ **env-probe 探针 skill**——脚本打印 sys.version、pkgutil.iter_modules() 包清单、socket 出站测试、subprocess 试 node --version，上线前在目标 harness 跑一次拿真实能力清单，比等平台文档快且可重复验证。
 
@@ -91,7 +101,9 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Skill 化收敛的风险面：skill 是提示词说服（L2/L3），代码机制是强制执行（L1）。对确实需要硬门禁的场景（合规审计、不可逆操作），仍需宿主 hook 或外部流程兜底，不能全押说服。与记忆提权协议的三级约束强度（L1 Hook / L2 CLAUDE.md / L3 Memory）是同一个道理：**约束力要匹配需求强度，行为规则的载体决定它的强制力上限**。Superpowers 6.3.0 保留的唯一 SessionStart hook 承担全部"代码性"，正是最小可行 L1 注入点的实例。
 
@@ -100,6 +112,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - 2026-08-04：SEP-2640 提供协议层证据——skill=MCP Resource + progressive disclosure 三步，本页"按需投影"范式获得标准化路径，页面由 stale 注入新活跃证据。
 - 2026-08-30：注入系列14 约束力分级 Claim（skill=L2/L3 说服、hook=L1 强制，载体决定强制力上限）。
 - 2026-08-10：从 Copilot Studio 三 harness 讨论补充 scripts 层可移植性断层——规范只管包格式不管执行环境，与 SEP-2640 的约束同构（指令层依赖 harness 实现注入点，脚本层依赖 runtime 提供解释器）；沉淀托管 runtime 下的四条实操策略。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、长效 5
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "Grapheme-to-Phoneme（G2P）"
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -37,7 +37,9 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：G2P hybrid explicit implicit
 
 > 显式 G2P（独立模块输出 phoneme，可控性强但增加延迟）、隐式 G2P（End-to-End TTS 内部完成，如 VITS/Tacotron，简单但发音不可控）、Hybrid（规则+字典+fallback G2P，最常见的工程选择）。
 
@@ -47,7 +49,9 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：Lexicon override phoneme；Azure 文档 https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-pronunciation 与之相容，但未规定优先级
 
 > Custom Lexicon 在 G2P 之前介入，对命中词直接返回预定义 phoneme，跳过 G2P 推断。本质是"接管 G2P 对特定词汇的决策权"。SSML `<phoneme>` 标签是局部 override，Lexicon 是全局规则，G2P 是兜底推断——三者构成层级化发音控制体系。
 
@@ -57,7 +61,9 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：Pronunciation Control Layer SSML streaming
 
 > SSML + Streaming 天然冲突（XML 要完整结构，streaming 是 token 流）；LLM 不会稳定生成 SSML。正确方案：LLM 和 TTS 之间构建 Pronunciation Control Layer（Text Normalization → Lexicon Match → Phoneme Override → Fallback），80% 发音问题来自 20% 的词。
 
@@ -74,6 +80,7 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3
 
 ## 关联概念
 

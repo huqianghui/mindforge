@@ -1,7 +1,7 @@
 ---
 title: "Testcontainers"
 created: "2026-04-11"
-updated: "2026-04-23"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -30,7 +30,9 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-12
 - **置信度**：0.5
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 Testcontainers（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Testcontainers 按需启动 Docker 容器（数据库、消息队列、云服务模拟等），测试完自动销毁。常用模块：PostgreSQL、MySQL、Redis、Kafka、LocalStack（AWS 模拟）、MongoDB 等。相比传统 mock/嵌入式数据库方案，提供更接近生产环境的测试保真度。
 
@@ -38,9 +40,11 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 - **来源**：[[2026-04-11-周六]]
 - **首次出现**：2026-04-11
-- **最近更新**：2026-04-11
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：https://testcontainers.com/getting-started 语言列表 Java 居首；JVM Weekly 称其为 JVM 开发者的重要工具 https://www.jvm-weekly.com/p/docker-acquires-atomicjar-company（JUnit 4/5 原生集成细节未逐条核对，为弱证据）
 
 > 多语言支持中 Java 版（testcontainers-java）最成熟，提供 JUnit 4/5 原生集成。Python 版支持 pytest，JavaScript/TypeScript 版支持 Jest/Vitest。
 
@@ -60,7 +64,9 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 Testcontainers（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。
 
@@ -80,13 +86,16 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 Testcontainers（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Unit tests → mock（快速、无依赖）；Integration tests → Testcontainers（真实 DB/MQ/Cache）；E2E tests → Playwright + Testcontainers DB（全链路验证）。对于 Azure 云服务（AI Foundry、Speech），用 WireMock 录制/回放或 Azurite 模拟。
 
 ## 冲突与演进
 
 - 2026-04-23：从初始调研升级为深度实践认知。明确了 docker-compose vs Testcontainers 的本质差异（静态 vs 动态环境），以及 Testcontainers 在测试金字塔中的定位。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3、确认 1
 
 ## 关联概念
 

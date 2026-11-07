@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-10-16"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -32,7 +32,9 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：级联 端到端 两种架构；系列04 扩为四路线属细化
 
 > Cascaded Pipeline（STT + LLM + TTS）vs End-to-End Native（单一多模态模型 audio-in to audio-out）。
 
@@ -42,7 +44,9 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：组件重叠 streaming pipelining；755ms 为来源文章引用数字
 
 > 不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。Salesforce 级联管线实现 ~755ms first-audio latency。
 
@@ -52,7 +56,9 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：语音 流水线 <1 秒
 
 > 实现 < 1 秒端到端延迟需要 STT、LLM、TTS 的精密流水线协调。
 
@@ -72,7 +78,9 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：Voice Agent LLM Agent 难点
 
 > Voice Agent = LLM Agent + Voice I/O。推理、工具调用、状态管理才是核心难点，"能听会说"只是界面。
 
@@ -93,6 +101,8 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **最近更新**：2026-05-24
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 与 Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md：SDP 经 WS 交换属实；但 WebRTC 仅数字人下行，麦克风上行与 VAD 走 WS，数字人可降级为 WebSocket 下发
 
 > WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。
 
@@ -120,9 +130,11 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to ：Agent 模式用 agent_id + project_id 查询参数；自定义 agent 时 instructions 不支持；interim_response 的 latency/tool 触发器见 https://learn.microsoft.com/en-us/azure/ai-services/speech-service/…
 
 > 绑定通过 WebSocket 连接 URL 的 query 参数（`agent_id` + `project_id`）在会话建立时完成，而非运行时把 Agent 当工具调用。证据：挂 Agent 后 session 的 `instructions` 字段被禁用（推理归 Agent），且服务端会推送 `interim_response`（TOOL/LATENCY 类型）填补 Agent 推理延迟——这是服务端编排器行为，function call 模式不会有。
 
@@ -294,6 +306,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - 2026-10-04：注入 Voice Live 系列13（数字人配额与限流：两条独立限制 / 无可申请配额对象 / 按资源计）Claim；按系列12 2026-10-03 修订**更正 09-30 弱网 Claim 三处**——「约 20 秒速率限制」改为 60 秒窗口 3 次、「唯一杠杆 bitrate」改为另有 resolution / crop / scene.zoom、「静音期码率倒挂」作废。两个候选（`concurrency-vs-rate-limit` / `quota-object-vs-service-throttle`）单篇来源不建页，登记 HOLD。
 - 2026-10-08：注入 Voice Live 系列14（三条模型接入路径 / profile=集成模式定直通或级联 / 推理模型与语音会话模型拆分）两条 Claim，第二条并入系列15 第七节 realtime 文本面实测；系列15 的 EoU 两种实现归口 [[end-of-turn-detection]]、realtime 可达性与路线结论归口 [[cascaded-vs-e2e-voice]]（10-05 已先注入 §5.1 voice 会话级补充）。
 - 2026-10-16：注入 Voice Live 系列17 一条 Claim（降级与恢复都必须新建会话、`connected state` 提示的真实语义、降级到 `output_protocol: websocket`）。10-02 弱网 Claim 末尾的"UDP 封锁无画无声"仍成立（对 WebRTC 下发而言），但兜底不再只有"放弃 avatar"——数字人可改 WS 下发（[[realtime-protocol-selection]]）；端口钉死机制归口 [[ice-nat-traversal]]。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 4、待定 1、确认 1
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "RAG Architecture Comparison"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -28,9 +28,11 @@ related:
 
 - **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Foundry IQ 官方说明为知识库 + agentic retrieval https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq ；qmd 为库内工具无外部变化
 
 > qmd = "best search on your own files on your own device"（BM25 + vector + HyDE），Foundry IQ = enterprise agentic retrieval（LLM 驱动查询分解 + 多源并行检索）。
 
@@ -38,9 +40,11 @@ related:
 
 - **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Fabric IQ 为语义层（ontology/graph/data agent），Foundry IQ 做检索 https://learn.microsoft.com/en-us/fabric/iq/overview 与 https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq ；官方还给出把 ontology 暴露为 Foundry IQ knowledge source 的互补用法
 
 > Fabric IQ 定义数据含义（ontology + graph），Foundry IQ 检索与合成答案。
 
@@ -61,12 +65,15 @@ related:
 - **最近更新**：2026-04-12
 - **置信度**：0.5
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：Tavily 限流(429)，未能核到 AI Search Basic 与 Cosmos Gremlin 的当前价格和状态，~$80-115/月不能下结论
 
 > 基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 1
 
 ## 关联概念
 

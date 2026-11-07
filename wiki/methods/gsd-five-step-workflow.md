@@ -4,7 +4,7 @@ aliases:
   - "GSD 五步开发工作流"
   - "Get Shit Done Workflow"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -83,9 +83,11 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 
 - **来源**：[[Vibe-Coding系列08：三层插件架构|Vibe Coding系列08]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Medium 对 Superpowers、GSD、gstack 的对比（第三方线索）https://medium.com/@tentenco/superpowers-gsd-and-gstack-what-each-claude-code-framework-actually-constrains-12a1560960ad ；官方仓库 https://github.com/gsd-build/get-shit-done 仍活跃（64.4k stars），GSD 定位为解决 context rot，与原文一致
 
 > GSD 管"做对的事情"，Superpowers 管"做事情的方法对"，gstack 管"做完能交付"。
 
@@ -96,6 +98,8 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：属作者自己的融合实践，库内无更新实测，官方资料也未覆盖，无法独立验证
 
 > Claude Code 遇到泛指令时按路由表查表执行而非随机匹配。
 
@@ -104,6 +108,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 <!-- 在实际项目中应用此方法后，记录结果反馈 -->
 
 （暂无实践记录）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、待定 1
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "AutoResearch"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,7 +31,9 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 不是"AI 做研究"，而是自动化 hill-climbing，更接近 AutoML 和进化搜索。
 
@@ -41,7 +43,9 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > Ralph Loop 只有 done/not-done（fixed-point iteration），AutoResearch 有 score comparison + history of best + rollback（evolutionary search）。
 
@@ -51,7 +55,9 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > AutoML 搜索静态人定义参数空间，AutoResearch 允许 agent 通过修改训练代码创建全新搜索维度。
 
@@ -61,7 +67,9 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 单一可变面、固定评估、强制预算、diff 迭代、自动回滚——满足全部五条即可在任意领域进行安全的 autonomous agent 实验。
 
@@ -71,13 +79,16 @@ AutoResearch（Karpathy 提出）不是"AI 做研究"，而是在受控搜索空
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > program.md = Skill, train.py = Tool/MCP, prepare.py = Harness, metric = Eval/Feedback, git = Memory, loop = Agent Runtime Loop。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 5
 
 ## 关联概念
 

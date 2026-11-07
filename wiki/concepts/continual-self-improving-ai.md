@@ -1,7 +1,7 @@
 ---
 title: "Continually Self-Improving AI"
 created: "2026-04-13"
-updated: "2026-10-24"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -36,7 +36,9 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 静态权重（有限 context 记忆）、有限人类数据（power-law scaling 触顶）、人类设计的训练算法。
 
@@ -47,6 +49,8 @@ related:
 - **最近更新**：2026-07-06
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：arXiv 2409.07431 摘要可见 EntiGraph 与 RAG 结合，但『源语料小约 10,000 倍』与『接近 RAG』数字本轮页面未取到全文
 
 > 通过实体-关系合成语料 + 持续预训练，源语料可比传统 CPT 小约 10,000 倍。
 
@@ -54,9 +58,11 @@ related:
 
 - **来源**：[[2026-03-22-Continually-Self-Improving-AI]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-07-06
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：论文摘要：源文档在推理时可用时，EntiGraph 获得的知识与 RAG 叠加（compounds with RAG）：https://arxiv.org/abs/2409.07431 ；https://huggingface.co/papers/2409.07431
 
 > 知识内化与检索增强互补而非竞争。
 
@@ -74,9 +80,11 @@ related:
 
 - **来源**：[[2026-07-06-CL-RL全景与JitRL]]
 - **首次出现**：2026-07-07
-- **最近更新**：2026-07-07
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：arXiv 2601.18510 标题 'Continual Learning in LLM Agents Without Gradient Updates'（JitRL 不改参数）；arXiv 2606.04815 'Learning While Acting...' 存在：https://arxiv.org/abs/2601.18510 ；https://arxiv.org/abs/2606.04815 。XSkill/CURATOR 与 LifeSkill 改权重一点本轮未逐篇核
 
 > 「持续学习 × LLM Agent」的一批 arXiv 前沿论文共享一个动机：**离线训完的模型部署后不再进化，浪费了部署期海量真实交互的学习信号**。差别全在"怎么把信号用起来"，最锋利的一刀切在**改不改 base 模型参数**。四篇里只有 LifeSkill 真动权重：JitRL（2601.18510，外部 $(s,a,G)$ 经验库 → kNN advantage 重排 logits，不改参数）、XSkill（2603.12056，经验流+技能流双库，不改参数）、CURATOR（2606.25115，预算受限记忆治理+抗投毒，不改参数）都把学到的东西存外部持久记忆；LifeSkill（2606.04815，verifier 引导 + 在线内化，**refines the policy model's parameters**）内化回权重。摆到二维平面看：X 轴=改不改参数、Y 轴=何时适应，"部署后+改参数"这个历来空着的象限被 LifeSkill 独占，"部署后+不改参数"象限则由前三者证明远不止朴素 memory/RAG（还能做 RL-style 策略改进）。（详见 [[online-learning]] 的"存储位面"与"适应延迟"两条判据 Claim。）
 
@@ -87,6 +95,8 @@ related:
 - **最近更新**：2026-07-07
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：LifeSkill 的 OSI 机制细节本轮仅确认论文存在，未取到正文
 
 > LifeSkill 对 skill 生命周期的判断比它的算法更有启发：主流 skill-library/skill-injection 默认 skill 是持久外部资产（抽出→存库→检索注入 context，agent 一直依赖它）；LifeSkill 反过来主张 **skill 不该一直存在于 prompt 中，而应最终消失**。机制是 OSI（Online Skill Internalization）：用一条有效 skill 成功完成任务后，**把 skill 从输入里移除**，再用这条"已去掉提示"的成功轨迹训练 policy——skill 描述的本领被内化成模型自己的能力。类比人学开车：初学默念"离合、油门、看后视镜"（skill 在 prompt 里），熟练后消融进肌肉记忆（内化进权重）。这是它和整簇"不改参数"方法的分水岭：那三篇优化"如何更好地用外部拐杖"，LifeSkill 优化"如何把拐杖变成腿"。代价：不可移植、不可外科删除、有灾难性遗忘风险。
 
@@ -96,7 +106,9 @@ related:
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 非参数（JitRL：即时、低成本、不改参数、能力天花板锁在 base 候选覆盖）与参数化（LifeSkill：延迟、高成本、改参数、能内化全新能力）不是二选一，而可分工到不同时间尺度：**短期适应交给 JitRL**（前台、零延迟、改 logits，把交互结果先写进 memory），**长期沉淀交给 LifeSkill**（后台、异步、把反复复现的模式内化进权重、周期热更新）。JitRL 的 memory 恰好可当 LifeSkill 的训练数据源——两者在数据流上天然衔接。前台负责"现在就变聪明"，后台负责"慢慢真变强"，这是对"AI 应该真正变强（Learning）还是更聪明地用已有能力（Acting）"这个根问题的工程回答：两者兼得。
 
@@ -106,6 +118,7 @@ related:
 - 2026-09-06：镜像冗余边清理——删除本页指向 [[reinforcement-learning]] 的 `uses` 行（对方页已声明 `extends`，有向关系单侧保留）。
 - 2026-09-28：注入 FinOps 系列 02 Claim——RSI 术语澄清 + 与数据飞轮三维对照 + "进内圈判据=写得出验证器"；RSI 作本页别名收入（维持 09-23 不独立建页裁决），[[data-flywheel]] 建页后本页承接"内圈"一侧。
 - 2026-10-24：[[recursive-self-improvement]] 独立建页（解除 RSI 别名 HOLD）。RSI / Recursive Self-Improvement / 递归自我改进三个别名移出；两条 RSI Claim（Dream-RSI 三层正交坐标、FinOps 02 术语澄清与飞轮对照）原样迁到新页。本页回到持续学习主题（EntiGraph/SBP、CL-RL 四篇、skill 内化、hybrid 架构）。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2、待定 2、确认 2
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "Agent Loop Architecture"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -28,9 +28,11 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 - **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：shareAI-lab/learn-claude-code 与 mini-claude-code README 仍以 while 循环（stop_reason!=tool_use 返回，否则执行工具并回灌）为核心：https://github.com/shareAI-lab/learn-claude-code
 
 > while 循环 + model 调用 + 工具执行 + 结果回灌，"One loop & Bash is all you need"。
 
@@ -38,9 +40,11 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 - **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：mind1949 镜像 README 的 s02 motto 'Adding a tool means adding one handler'；官方仓库 s02_tool_use 仍是 stable tool dispatch layer：https://github.com/shareAI-lab/learn-claude-code
 
 > agent loop 本身一字不改，这是 Tool Dispatch 模式的核心优势。
 
@@ -68,9 +72,11 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 - **来源**：[[Computer-Use与Browser-Use系列三：自己实现]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Browserless 文档（https://docs.browserless.io/ai-integrations/computer-use/openai-computer-use）描述同一循环：发任务→执行 actions→回传截图→循环至无 computer_call；Playwright 作 handler 背后的执行环境。第三方文档，OpenAI 官方页本轮未提取
 
 > Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是"模型判断 + 执行 + 结果回灌"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。"One loop & Bash is all you need" 在 GUI 域的对应物是 "One loop & screenshot+click is all you need"——loop 骨架不变，工具面变了。
 
@@ -98,6 +104,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 ## 冲突与演进
 
 - 2026-08-30：注入 action loop 实例化 Claim（Computer Use 系列三），4 月 stale 页注入 active 新证据——agent loop 范式获得 GUI 操作域的跨域验证。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 3
 
 ## 关联概念
 

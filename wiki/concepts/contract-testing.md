@@ -1,7 +1,7 @@
 ---
 title: "Contract Testing"
 created: "2026-04-23"
-updated: "2026-04-23"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,7 +31,9 @@ Contract Testing（契约测试）是验证微服务间 API 接口是否一致�
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 契约测试/Pact（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 测试金字塔从下到上：Unit（pytest/JUnit）→ Contract（Pact）→ Integration（Testcontainers）→ E2E（Playwright）。契约测试在不启动真实依赖的情况下验证服务间 API 接口，速度快、隔离好。
 
@@ -48,6 +50,7 @@ Contract Testing（契约测试）是验证微服务间 API 接口是否一致�
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1
 
 ## 关联概念
 

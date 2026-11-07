@@ -1,7 +1,7 @@
 ---
 title: "VERL（Volcano Engine RL）"
 created: "2026-06-29"
-updated: "2026-07-14"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -47,9 +47,11 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 - **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：verl README 'verl/HybridFlow: A Flexible and Efficient RL Post-Training Framework' https://github.com/verl-project/verl；v0.8.0 引入统一 engine 抽象 https://github.com/verl-project/verl/releases/tag/v0.8.0 。Ray 调度未在本轮页面中逐字核到
 
 > ① HybridFlow 控制器模型：中央 Driver 全流程调度 + 多个 Worker（actor / critic / rollout）并行执行，本质是"小型调度系统 + 一堆分布式 worker"；② training 与 rollout 解耦（核心竞争力）——Engine mode（默认，rollout 与 training 共存同集群、权重共享）与 Server mode（rollout 独立成服务、经 RPC 调用、训练推理彻底分离便于横向扩展）双模式；③ 基于 Ray 的集群级调度（FSDP/Megatron 训练 + vLLM 推理）。此外算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，"让算法替换成为一个配置问题"，与 agent-lightning 上层的 method-agnostic 一脉相承。
 
@@ -57,9 +59,11 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 - **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Agent Lightning v1.0 README Trainer 'Runs verl and vLLM' https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
 > agent-lightning 不是"兼容 VERL"，而是"建立在 VERL 类架构的假设之上"，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套"rollout abstraction + reward pipeline + actor/critic/rollout/reward worker 模型 + Ray runtime"正是 agent-lightning 的 Triplet 轨迹、reward span、store 控制平面在 RL 这一级能落地的前提。本质升维：在 Agent 时代强化学习不再是算法问题而是分布式系统问题，VERL 被选中是因为它解决"系统级 RL"的瓶颈。
 
@@ -69,7 +73,9 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：verl rollout 瓶颈 overlap；verl v0.7/v0.8 路线（fully async、one-step-off）与之一致 https://verl.readthedocs.io/en/latest/blog/v0.7.html
 
 > 经验上 rollout 占 80~90% 时间，training 次要。优化重点是 rollout 是否异步、是否批处理、是否用 vLLM serving；理想状态是"生成第 n+1 批轨迹"与"训练第 n 批"并行（VERL 强项）。三个健康指标：GPU 利用率（rollout/training 是否互相空转）、rollout 吞吐（trajectory/sec）、reward 稳定性（variance 是否发散）。两个典型坑：工具延迟（需 caching/async/mock env）与 reward 设计（Agent 场景 reward 极难设计，重要性甚至高于算法本身）。
 
@@ -87,9 +93,11 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 
 - **来源**：[[Agent-Lightning系列08：RL实战]]
 - **首次出现**：2026-07-03
-- **最近更新**：2026-07-03
+- **最近更新**：2026-11-07
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：verl 官方文档 Engine Workers 'verl.workers.fsdp_workers ... have been removed' https://verl.readthedocs.io/en/latest/workers/engine_workers.html ；v0.8.0 release 弃用旧 worker https://github.com/verl-project/verl/releases/tag/v0.8.0 ；AL v1.0 已重构 https://github.com…
 
 > 实跑 calc_x 训练时 agentlightning 0.3.1 报 `ModuleNotFoundError: No module named 'verl.workers.fsdp_workers'`：verl 0.8.0 已把该文件删除/重构，而 agentlightning 0.3.1 仍按老路径 import。逐版核验——verl 0.5.0/0.6.0/0.7.0 都有此文件，0.8.0 起 404。修复是把 verl 钉到 0.7.0，同时保住稳定栈（torch 2.8.0 / vllm 0.11.0 / flash-attn 2.8.3.post1）。关键教训：`uv sync --frozen` 只保证"每个包按 lockfile 精确安装"，**不保证这套组合在运行时相互兼容**——CI 装得上（无 GPU、从不真正跑 VERL 训练循环）不等于训练能跑通，跨库 import 契约的破裂只有真实 GPU 跑一遍才暴露。这是"install 成功 ≠ runnable"在 RL infra 上的具体案例，也说明 agent-lightning 对 VERL 的架构锁定（见上文）是有版本窗口的紧耦合。
 
@@ -109,7 +117,9 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：ms-swift LLaMA-Factory verl GRPO
 
 > ms-swift（魔搭 ModelScope 官方）与 LLaMA-Factory 同属**轻量微调一站式框架**：命令式入口（`swift sft/rlhf/infer/deploy`）、内置 GRPO/DPO/PPO 等 RLHF 算法、LoRA/QLoRA 默认路径、单机可跑。verl 是**大规模 agentic RL 基础设施**：Ray 集群调度、training/rollout 解耦、多步轨迹。两边都叫 GRPO，但量级不同——ms-swift 的 GRPO 是"单机/小集群上对静态数据集做 RLHF 微调"，verl 的 GRPO 是"分布式 rollout worker 采多步 Agent 轨迹"。选型判据不是算法名而是**改权重的规模与交互形态**：静态数据集 + 单轮生成 + 资源有限 → ms-swift/LLaMA-Factory；多步工具调用轨迹 + rollout 吞吐是瓶颈 → verl。两者不是竞品而是阶梯——领域适配先用轻量框架 SFT/DPO，进入 Agent RL 才需要 verl 级 infra。
 
@@ -119,6 +129,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 - 2026-06-29：补充 SFT/RL 双入口与 RL 冷启动配置机制（`model.path` 指向 SFT checkpoint、actor/ref 共享、最佳实践），回应"VERL 是否自动 SFT 冷启动"的疑问。
 - 2026-07-03：从系列08 实战篇补两条 RL 落地 Claim——(a) verl 0.8.0 删 `fsdp_workers` 致 agentlightning 0.3.1 崩溃、须锁 0.7.0、frozen 保装不保跑；(b) 训练期两条 LLM 通路（外部 debug vs store 注入的内部 vLLM）解释"第3步通第4步连不上"。
 - 2026-07-14：从 ms-swift 全景文补赛道对照 Claim——ms-swift/LLaMA-Factory（轻量微调一站式）与 verl（大规模 agentic RL infra）是"改权重"的两个量级，同名 GRPO 不同赛道，按训练规模与交互形态选型。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 3、长效 2
 
 ## 关联概念
 

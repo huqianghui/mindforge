@@ -4,7 +4,7 @@ aliases:
   - "AI-Native 五层开发流水线"
   - "AI-Native Development Pipeline"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -86,7 +86,9 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 五层 Pipeline（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Figma 回答"长什么样"（视觉层），Brainstorm 回答"做什么为什么做"（需求层），Spec-Delta 回答"这次改什么"（变更层）。
 
@@ -96,7 +98,9 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 五层 Pipeline（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Design AI → Spec AI → Coding AI → Testing AI → Review AI，每个阶段产出的信息类型（视觉/需求/变更/测试/审查）各不相同。
 
@@ -105,6 +109,7 @@ AI-Native 五层开发 Pipeline 将软件开发拆解为 5 个 AI 驱动的阶�
 <!-- 在实际项目中应用此方法后，记录结果反馈 -->
 
 （暂无实践记录）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2
 
 ## 关联概念
 

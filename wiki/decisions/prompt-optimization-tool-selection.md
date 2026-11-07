@@ -1,7 +1,7 @@
 ---
 title: "Prompt 优化工具选型——DSPy vs agent-lightning"
 created: "2026-06-29"
-updated: "2026-08-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - decision
@@ -68,6 +68,8 @@ related_methods: []
 - **最近更新**：2026-06-24
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未对 DSPy 与 agent-lightning 最新版本能力做一手核查（只检索了 prompt-optimizer），无法下结论
 
 > 如果主要目标是 prompt 调优、寻找最优 prompt 且明确不碰权重微调，首选 DSPy。agent-lightning 的差异化价值是 method-agnostic（APO↔RL↔SFT 可换）+ RL 级 rollout 基础设施——只做 prompt 优化时这两个最大卖点完全用不上，等于付出"装一个偏 RL 训练框架"的复杂度却拿不到值钱的部分。agent-lightning 只在一种情况值得提前押注：客户预期会从 prompt 调优走向权重微调，需要"一套 reward / rollout 复用到多种优化方法"。一句话：只做 prompt → DSPy；既调 prompt 又要 RL 微调 → agent-lightning。
 
@@ -77,7 +79,9 @@ related_methods: []
 - **首次出现**：2026-06-24
 - **最近更新**：2026-06-24
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 APO/SkillOpt/成熟度（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 比"选哪个框架"更重要的事：真正的瓶颈是 reward 设计 + 评估噪声 + 数据量。小数据集标准误会盖过真实增益、reward 设错会让框架"忠实地优化噪声"、数据量不足无法可靠确认提升。落地顺序应是先把评测集和 reward 做扎实（降噪、对齐真实目标），再谈用哪个优化器——否则无论 DSPy 还是 agent-lightning 都只是在噪声里挑最大值。
 
@@ -87,7 +91,9 @@ related_methods: []
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 APO/SkillOpt/成熟度（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何"有效"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从"选哪个框架"到"选哪种优化器动力学、乃至要不要跑"。
 
@@ -97,9 +103,12 @@ related_methods: []
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 APO/SkillOpt/成熟度（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 本决策的所有选项（DSPy/TextGrad/AdalFlow/agent-lightning）都是 L2 数据闭环层工具，隐含前提是已具备可量化 reward + 足量评估数据。成熟度阶梯（见 [[prompt-optimization-maturity-ladder]]）指出更早的分叉：L1 的 prompt-optimizer 类工具（模板改写 + LLM-judge，人闭合回路）与 L2 工具不是竞品而是上下游——L1 阶段人工迭代攒下的 bad case 正是 L2 评估集的种子。数据 < 10 条或任务纯品味类 → 停在 L1，选型问题根本不成立；30~50 条可试 L2（必须降噪）。这给本决策补了一道前置门：先判层级，再谈框架。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、长效 3
 
 ## 关联概念
 

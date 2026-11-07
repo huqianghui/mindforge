@@ -1,7 +1,7 @@
 ---
 title: "Context Engineering"
 created: "2026-04-13"
-updated: "2026-04-15"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,7 +31,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > LLM performance limitations are rarely due to inherent model flaws -- they are a direct consequence of incomplete, inconsistent, or irrelevant context.
 
@@ -41,7 +43,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > Prompt engineering 关注"说什么"，CE 治理"模型知道什么"。企业采用驱动了这一转变。
 
@@ -51,7 +55,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 模型的整个推理工作记忆，用正确信息填充它是核心架构挑战。
 
@@ -61,7 +67,9 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > CE 整体管理 LLM 的 context window，MCP 提供标准化外部工具/数据接口。两者互补而非竞争。
 
@@ -81,13 +89,16 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 5
 
 ## 关联概念
 

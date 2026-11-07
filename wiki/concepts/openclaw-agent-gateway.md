@@ -1,7 +1,7 @@
 ---
 title: "OpenClaw Agent Gateway"
 created: "2026-04-13"
-updated: "2026-05-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 agent loop / stop_reason
 
 > 模型通过 stop_reason 决定何时停止，工具调用是简单 dispatch table（name-to-function mapping）。这种简洁性常被框架抽象掩盖。
 
@@ -44,7 +46,9 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；五阶段为作者归纳的架构模式，非产品事实
 
 > 基础循环 + 工具 → 网络层 → 智能层（8 层 prompt 组装 + 混合记忆）→ 自主层 → 生产硬化。
 
@@ -52,9 +56,11 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 - **来源**：[[OpenClaw架构解读]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：OpenClaw 官方文档 Nested sub-agents https://docs.openclaw.ai/tools/subagents/nesting ：Gateway 之外由 orchestrator agent 通过 sessions_spawn 编排
 
 > Channel = 平台（Telegram, Slack），Peer = 通信端点身份，Session = 会话状态容器。
 
@@ -62,9 +68,11 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：OpenClaw 官方文档 https://docs.openclaw.ai/tools/subagents/nesting ：orchestrator 通过 sessions_spawn 派生子 agent
 
 > Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket API），不做任务编排。多 Agent 编排由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现分层委托。来源：OpenClaw 官方 Sub-agents 文档。
 
@@ -82,15 +90,18 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：OpenClaw 官方文档 Sub-agents https://docs.openclaw.ai/tools/subagents ：sessions_spawn 支持 thread 绑定会话与按需 sub-agent
 
 > Persistent Agents：多个独立 Agent 绑定到不同 Channel，各自持久运行。Sub-Agents：从对话中按需 spawn 的后台 worker。两者可组合：Persistent Orchestrator + 按需 spawn Sub-Agents。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2、确认 3
 
 ## 关联概念
 

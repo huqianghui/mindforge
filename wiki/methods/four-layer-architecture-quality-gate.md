@@ -4,7 +4,7 @@ aliases:
   - "四层架构质量门禁"
   - "Lint → Constraint → Analysis → AI Review"
 created: "2026-04-23"
-updated: "2026-04-23"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -82,13 +82,16 @@ related_methods:
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit/四层（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Layer 4（AI 辅助 Review）和 Baseline MCP Server（让 Agent 在生成时就遵守规则）是 Vibe Coding 时代最有价值的新增层。
 
 ## 实践记录
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1
 
 ## 关联概念
 

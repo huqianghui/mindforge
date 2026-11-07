@@ -1,7 +1,7 @@
 ---
 title: "Hermes Agent"
 created: "2026-05-07"
-updated: "2026-05-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -43,9 +43,11 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Hermes 官方 Curator 文档 https://hermes-agent.nousresearch.com/docs/user-guide/features/curator：interval 168h(7天)、min_idle 2h、只管 agent-created skill、永不自动删除只归档
 
 > Curator 跟踪每个 Skill 的查看次数、使用次数、修补次数。触发条件：距上次运行 7+ 天 且 Agent 空闲 2+ 小时。会 fork 辅助 LLM 实例进行审查，提出合并建议或修补 drift。永不自动删除，最坏是归档（可恢复）。仅审查 Agent 自动创建的 Skill，不动 bundled 和 hub-installed 的。来源：Hermes 官方 Curator 文档。
 
@@ -53,9 +55,11 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Hermes skill_manage 含 create/patch/edit/delete/write_file/remove_file 六个动作，Curator 文档 https://hermes-agent.nousresearch.com/docs/user-guide/features/curator ；https://blog.dailydoseofds.com/p/hermes-agent-masterclass；hub skill 来自 agentskills.io
 
 > 除自动学习循环外，Skill 生成可通过多种方式手动触发：直接在 `~/.hermes/skills/` 下手写 SKILL.md、对话中告诉 Agent "save this as a skill"（调用 skill_manage 工具）、从 agentskills.io 安装（hermes skills install）、或在 config.yaml 中调整学习循环参数。来源：Hermes Creating Skills 官方文档。
 
@@ -66,6 +70,8 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **最近更新**：2026-05-07
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Issue #416 存在（https://github.com/NousResearch/hermes-agent/issues/416，标题 Skill Validation & Linting），但检索摘录未显示其当前开闭状态与是否已落地
 
 > 当前 skill_manage 创建 Skill 时缺少自动化质量检查（Python 语法验证、YAML 格式校验等）。社区正在通过 GitHub Issue #416 推进 Skill Linting 功能。当前最佳实践是 `hermes curator run --dry-run` 预览 + 手动 pin 验证过的 Skill。
 
@@ -76,12 +82,15 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 - **最近更新**：2026-05-07
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Hermes 单体架构/15+ 平台/SQLite FTS5 本轮未取到官方文档确认
 
 > Hermes 是单 AIAgent 对象包含所有模块（Prompt Builder + LLM Provider + Tool Scheduler + Memory + Skill System + Curator），通过 Gateway 对接 15+ 平台。内存存储使用 SQLite + FTS5 全文索引。OpenClaw 则解耦为 Gateway（控制面）+ Agent Node（执行面），支持多实例横向扩展。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 2
 
 ## 关联概念
 

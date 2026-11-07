@@ -1,7 +1,7 @@
 ---
 title: "Intelligent Dictation"
 created: "2026-05-24"
-updated: "2026-05-24"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -29,7 +29,9 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：语音输入 六层价值模型 Typeless
 
 > L1 语音识别（WER 优化）→ L2 文本清洗（去除 um/uh/重复）→ L3 语义重组（理解意图重组语序）→ L4 格式化（自动识别列表/步骤/要点）→ L5 场景适配（根据 App 切换语气）→ L6 个性化（学习用户表达风格）。传统 STT 只覆盖 L1，Typeless 等产品专攻 L2-L6。
 
@@ -39,7 +41,9 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 - **首次出现**：2026-05-20
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：三代范式 Intelligent Dictation
 
 > 第一代 Accurate Transcription（Azure Speech、Google STT）→ 第二代 Smart Transcription（Whisper、AssemblyAI）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow）。本质变化：从"忠实记录"到"写出想表达什么"，加入 LLM 后处理层理解语义意图后重新组织输出。
 
@@ -57,15 +61,18 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 
 - **来源**：[[Typeless深度解析]]
 - **首次出现**：2026-05-20
-- **最近更新**：2026-05-24
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Typeless 官方博客称按所用 App 调整语气 https://www.typeless.com/blog/typeless-vs-wispr-flow
 
 > 根据目标应用（Slack vs Gmail vs Notion）自动调整输出语气，本质是 context injection 策略。结合 Whisper Mode（低声输入）和 Edit via voice（语音修改已有文本），形成完整的语音交互闭环。
 
 ## 冲突与演进
 
 - **2026-08-16**：全部 4 条 Claims 证据停在 2026-05-24，距今 84 天超过 60 天线，维护标 stale，等新证据复核。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2、确认 1
 
 ## 关联概念
 

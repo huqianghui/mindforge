@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Memory System"
 created: "2026-04-13"
-updated: "2026-11-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -30,9 +30,11 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code Docs: Memory https://code.claude.com/docs/en/memory 说明 CLAUDE.md 与 Auto memory 分工；Settings 与 Skills/MCP 层未逐层核对，六层为作者自己的分类
 
 > 六层架构：Settings（强制配置，客户端执行）→ CLAUDE.md + Rules（行为指导，Claude 遵循）→ Auto Memory（Claude 自主笔记，跨 Session）→ Session Transcripts（对话历史，支持续接）→ Skills/Agents/MCP（扩展能力，按需加载）→ App State（全局配置）。关键区分：Settings 机械执行，CLAUDE.md 理解遵循，Memory 按需回忆。
 
@@ -40,9 +42,11 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code Docs: Memory https://code.claude.com/docs/en/memory ：MEMORY.md 启动加载前 200 行或 25KB，worktree 间共享，topic 文件按需读取；四类分法（user/feedback/project/reference）本轮未核对
 
 > Auto Memory 存储于 `~/.claude/projects/<project-path>/memory/`，MEMORY.md 索引文件启动时加载前 200 行/25KB，主题文件按需读取。记忆分 4 类：user（用户画像）、feedback（行为纠正/确认）、project（项目进展）、reference（外部指针）。同一 git repo 的所有 worktree 共享 memory 目录。
 
@@ -50,9 +54,11 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code Docs: Memory https://code.claude.com/docs/en/memory ：CLAUDE.md 超 200 行消耗更多上下文并可能降低遵循度，建议路径规则或精简
 
 > CLAUDE.md 每次对话完整加载占用上下文窗口。最佳实践：只保留行为规则摘要和 Agent 路由表，详细格式规范/工作流程通过 reference 指向 agent 文件和项目文档。本 vault 从 176 行精简到 98 行后效果更好。
 
@@ -60,9 +66,11 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code Docs: Create custom subagents https://code.claude.com/docs/en/sub-agents ：memory 字段取值 user/project/local，启动时注入 MEMORY.md 前 200 行或 25KB
 
 > Agent 定义文件中配置 `memory:` 字段可获得独立记忆：`project`（提交到 git）、`local`（gitignored）、`user`（跨项目）。每个 Subagent 启动时加载自己的 MEMORY.md 前 200 行。适用于需要跨 Session 追踪状态的 Agent（如知识提取器追踪已处理的日记）。
 
@@ -79,6 +87,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 4
 
 ## 关联概念
 

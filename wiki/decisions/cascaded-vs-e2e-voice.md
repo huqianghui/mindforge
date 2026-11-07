@@ -1,7 +1,7 @@
 ---
 title: "级联管线 vs 端到端：Voice Agent 架构选择"
 created: "2026-04-13"
-updated: "2026-10-08"
+updated: "2026-11-07"
 tags:
   - wiki
   - decision
@@ -75,9 +75,11 @@ related_methods:
 
 - **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Voice Live how-to https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to ——“The endpoint is the same for all models. The only difference is the required model query parameter”，与原文“统一在同一协议、切换只改 model 配置”一致；interim response 文档注明…
 
 > Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策"选定一条架构路线"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，"分层用模型"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。
 
@@ -122,6 +124,7 @@ related_methods:
 - **状态**：active
 
 > 数字人是平台级输出，四条路线都能挂，但口型由谁驱动取决于"说"落在哪——只有 Azure TTS 产 viseme 时间轴。题库文本经 `pre_generated_assistant_message` 走 Azure TTS，在级联与 realtime 宿主上都逐字一致（realtime 宿主耗时 1.4 s 对级联 1.8 s，指示性）。让模型自己念则取决于指令跟随：assistant item 方式两个受测模型都 0/3（把题目当对话输入去回答）；`response.instructions` 要求逐字念，`gpt-realtime-2.1` 1/3、`gpt-5-mini` 3/3——这是两个具体模型各 3 次的指令跟随样本，**不推广为"realtime 类比 chat 类更易念错"**，换模型或版本结论可能变。决策含义与模型无关：逐字念题是硬需求，不能寄托在任何模型的指令跟随上，所以留在 `pre_generated`（零推理、3/3）；只要走 Azure TTS 数字人就顺带成立，因此 realtime 配 Azure 音色的混合式可行、纯语音到语音（声音归模型）不合适。此前判断 realtime 不可用，是生产会话用了只在级联可用的文本型 EoU，换音频型后 realtime 整列可达（见 [[end-of-turn-detection]]）。组合原则：speech in 由模型定、speech out 由 `voice` 的家族定、建会话那一刻定死。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 1
 
 ## 关联概念
 

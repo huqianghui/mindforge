@@ -1,7 +1,7 @@
 ---
 title: "Voice Activity Detection"
 created: "2026-04-11"
-updated: "2026-09-25"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -30,9 +30,11 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 - **来源**：[[2026-04-11-周六]]、[[2026-04-12-周日]]
 - **首次出现**：2026-04-11
-- **最近更新**：2026-04-12
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：OpenAI VAD 文档 https://developers.openai.com/api/docs/guides/realtime-vad ：server_vad 与 semantic_vad 两种；eagerness 取 low/medium/high/auto；Azure 对应 azure_semantic_vad 见 https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to
 
 > OpenAI Realtime API 提供两种 VAD 模式：Server VAD 基于静音检测，可调参数包括 threshold、prefix_padding、silence_duration；Semantic VAD 使用语义分类器，通过 eagerness 参数控制打断灵敏度。参考：OpenAI Realtime VAD Guide。Azure 也有对应的 Semantic VAD vs Basic Server VAD。
 
@@ -42,7 +44,9 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：语义 VAD 解决思考停顿
 
 > 500ms 静音触发 false end-of-turn，但用户可能只是在思考。Semantic VAD 通过语义分类器解决此问题。
 
@@ -53,6 +57,8 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：同 29，Tavily 限流
 
 > 2MB 模型，< 1ms per 32ms audio chunk，实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机，支持 barge-in。
 
@@ -62,7 +68,9 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：Personal VAD NAS-VAD 论文；论文数字不随产品变化
 
 > Personal VAD（说话人条件化，约 13 万参数，三分类：非语音/目标/非目标）；CNN+Attention VAD（时频双重注意力，约 15 万参数即超越更大 CNN）；NAS-VAD（神经架构搜索，151K 参数，AUC 0.982，跨数据集泛化性强）。三者与云端 Semantic VAD 不是竞争关系而是互补的不同层次——声学 VAD 捕获语音帧，语义 VAD 调优切分时机。
 
@@ -84,7 +92,9 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：Interrupt Controller Backchannel；系列06/08 为后续篇无矛盾
 
 > 6 个组件：Interrupt Controller（判断是否应打断）、Streaming ASR（实时转写区分意图）、Backchannel Filter（过滤"嗯/ok"等非打断信号）、可中断 TTS 流（mid-stream 停止）、Turn State Machine（IDLE→LISTENING→THINKING→SPEAKING→INTERRUPTED）、Latency 控制（ASR+网络+TTS 缓冲综合管理）。仅靠 Realtime API + Semantic VAD 不足以实现自然对话打断。
 
@@ -94,7 +104,9 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 - **首次出现**：2026-04-27
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：VAD KWS 互补
 
 > VAD 检测"有无人声"（逐帧二值），KWS 检测"是否说了特定词"（事件触发）。VAD 无法替代 KWS——只用 VAD 会导致任何环境对话触发系统，功耗爆炸和隐私泄露。典型语音助手流水线：KWS（超低功耗 DSP 持续监听）→ VAD + ASR（主 CPU 激活后）→ Semantic VAD（云端判断说完没）。
 
@@ -111,6 +123,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 ## 冲突与演进
 
 - 2026-04-30：VAD 论文深入分析后，摘要扩展为涵盖深度学习三条路径和 Semantic VAD ≠ 打断能力的关键区分。原有 Claims 仍有效，新 Claims 补充了更细粒度的技术路径和系统级打断机制。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、长效 4、待定 1
 
 ## 关联概念
 

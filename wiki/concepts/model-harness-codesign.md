@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-09-12"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -33,9 +33,11 @@ related:
 
 - **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
-- **最近更新**：2026-07-14
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：VS Code 官方博客 2026-05-15 https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode ："The model is the engine. The harness is the car."
 
 > VS Code 官方博客（2026-05-15）："The model is the engine. The harness is the car."——语言模型只会产出文本，不会编辑文件、执行命令、跑测试。Harness 承担三大职责：① Context assembly（模型能看见什么完全由 harness 决定）；② Tool exposure（声明可调用的工具，工具集按请求动态变化）；③ Tool execution（校验参数、真正执行、格式化结果喂回下一轮）。内核是 turn / round / run 三层的 tool-calling 循环，与 Claude Code 的内循环结构几乎一一对应——行业在 harness 架构上已经收敛。
 
@@ -43,9 +45,11 @@ related:
 
 - **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-08
-- **最近更新**：2026-07-14
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：VS Code 官方博客 https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode：Claude 用 replace_string_in_file、GPT 用 apply_patch、Gemini 需提醒用 tool-calling、Sonnet 4/4.5/Opus 各有不同 system prompt
 
 > VS Code 第一手清单：Claude 系列用 `replace_string_in_file`、GPT 系列用 `apply_patch`；Gemini 需要专门提醒"用 tool-calling 而不是口头描述"；甚至同一家族内部（Claude Sonnet 4 / 4.5 / Opus）都拿到不同 system prompt。每接入一个新模型都要校验 tool schema、重调参数、完整重跑 agent session 评测。VS Code 团队自述 harness 才是他们花掉大部分工程时间的地方。GPT-5.5 发布后还要拉上 OpenAI 花两周、动用生产流量 A/B 才把这一个模型的 prompt 调到位——"A model release is not the end of the tuning loop"。
 
@@ -55,7 +59,9 @@ related:
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > per-model 差异分两层：**接口层**（tool 格式、prompt 偏好）harness 可以推理时适配；**能力层**（规划深度、工具选择直觉）由训练分布决定，prompt 工程只能缓解不能补齐。第一方组合的优势不在"适配做得快"而在"根本不需要适配"：① 训练分布对齐——拿自家 harness（真实工具集、system prompt、agent loop）作 RL 环境训模型；② 发布节奏同步——模型和 harness 在同一 release train 上联合调优（对照 VS Code 的乙方姿态：依赖 provider 提前给 checkpoint）；③ 零适配矩阵——省下的工程预算投入单一路径深度。"model 厂商向下做 harness，比 harness 厂商向上做 model 容易得多"。
 
@@ -66,6 +72,8 @@ related:
 - **最近更新**：2026-07-14
 - **置信度**：0.85
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：ChatGPT Work 发布细节本轮检索被 Tavily 限流(429)，未取得官方来源
 
 > OpenAI 于 2026-07-08/09 发布 ChatGPT Work：原 Codex 桌面 app 改名 "ChatGPT"，顶部切换器分成 **Work**（Codex 技术 + GPT-5.6 驱动，跨 Gmail/Slack/Drive 执行通用工作任务，对标 Claude Cowork）与 **Codex**（保留开发者 agent 体验）两个模式；ChatGPT classic 保持纯对话形态（GPT-5.5）。产品含义：agent 入口和 chat 入口被拆开，Codex harness 从"开发者工具"泛化为"通用工作 harness"，模型与 harness 深度绑定作为第一方产品推出——这是"每家 lab 都想通了同一件事"（OpenAI/Anthropic/Google 均推第一方 harness）的最新产品级证据。
 
@@ -75,7 +83,9 @@ related:
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > "MCP 降低适配税"的论点要打折扣：MCP 不是免费的，只是把成本换了形态。① Context 膨胀——每个 server 的 JSON schema + description 注入 prompt，工具异构税变成 context 税；② 描述冲突——协议只标准化了"怎么调用"，没有标准化"怎么描述"，多 server 命名撞车（`search`/`fetch`/`query`）使模型选择准确率下降；③ 治理负担转嫁用户（选装、排查、认证、控量）。第一方内置工具集可做训练时对齐 + 统一文案治理，MCP 工具在任何 harness 里都是"客座"待遇。
 
@@ -85,7 +95,9 @@ related:
 - **首次出现**：2026-07-08
 - **最近更新**：2026-07-14
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 反方论点至少五个：① 企业采购天然要求 BYOK 和多 provider（渠道属性决定的产品需求）；② 模型竞争红利只有多模型 harness 能兑现（按任务路由）；③ 评测税可转化为护城河（"每个模型在真实工作流里的确切表现"连 model 厂商自己都未必知道）；④ 头部渠道可用流量换 provider 深度合作（GPT-5.5 实验：OpenAI 出 expertise、VS Code 出 harness 数据与生产流量），信息不对称被部分对冲。类比框架：Apple vs Windows/Android 在 agent 层重演。开放问题：随着 agentic RL 把"模型在自家 harness 里训练"变成标配，水平生态能否维持"体验足够接近"——差距拉大则多模型框架被挤压到"企业合规渠道"单一生态位。
 
@@ -96,6 +108,8 @@ related:
 - **最近更新**：2026-08-16
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Claude Code dynamic workflows / Codex Multi-agent V2 细节本轮未查
 
 > 两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范："给 agent 目标而非严格转移"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与"图"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从"软件资产"变成"随用随弃的中间产物"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。
 
@@ -116,6 +130,8 @@ related:
 - **最近更新**：2026-09-04
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Copilot 搜索挂载点四种形态本轮未查
 
 > Copilot 同一产品内演示了四种搜索挂载点：`@github #web`（应用层，Bing 执行器钉死在 chat participant 服务端管道，agent 循环够不着）→ "Web Search for Copilot" 扩展（客户端工具层补裂缝，微软自家出品却由 Tavily 驱动、用户自带 key）→ model-native search（推理层，2026-02 起对 GPT-5.x 系启用，agent 循环天然继承）→ Azure Grounding with Bing（执行在服务端、账单在用户侧的第三计费形态）。规律：**挂载点越靠上层覆盖面越窄**，同一产品内部越容易出现"这里有、那里没有"的裂缝；`#web`→Tavily 扩展→model-native 的时间线就是挂载点一路下移、覆盖面扩大的过程。Microsoft Scout 提供第三形态镜像：本地 harness 整体挂靠 GitHub Copilot 闭环（烧 Copilot credits、继承模型目录），web research 开箱即用——与 Codex + Azure 把请求指出闭环、工具随之断供恰成镜像，**能力归属跟请求落点走、不跟产品形态走**在两个方向都成立。
 
@@ -126,6 +142,8 @@ related:
 - **最近更新**：2026-09-04
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：五平台产品细节本轮未查
 
 > 五平台横评给绑定光谱补了第二维：绑定 × 可分解的十字定位。Codex 绑定深 + 不可拆（体验最完整、控制权最少，loop 与 session 存储不可替换）；多模型阵营内部按可分解方式分四型——**dsh** 插件化（Cordis 内核 + capability seams，loop 也是插件，sub-agent seam 五 provider 含 Codex/Claude Code）；**pi** 极简内核可自改（primitives not features，空 system prompt + 四工具，self-modifying 一等公民）；**OpenHands** SDK 分层（agent 逻辑/远程沙箱/接口层解耦，拆的粒度是架构层而非能力件）；**Goose** 协议标准化（extension 即 MCP server，把拆解外包给 MCP/ACP 标准）。选型核心判据不是功能清单，而是"你要对 harness 拥有多大控制权、控制发生在哪一层"。
 
@@ -146,6 +164,8 @@ related:
 - **最近更新**：2026-09-06
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Codex tool_mode 三值与 gpt-6-astra 本轮检索被限流(429)，未取得来源
 
 > Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成"调 A→过滤→喂 B"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为"一段代码"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。
 
@@ -160,6 +180,7 @@ related:
 - 2026-09-04：注入两条新维度——搜索挂载点决定覆盖面（系列七 Copilot 四挂载点 + Scout 挂靠闭环镜像，"服务端工具全家桶"Claim 的机制细化）与绑定×可分解十字定位（五平台横评，多模型阵营内部的第二维分层）。
 - 2026-09-06：注入 Codex Desktop 系列05/06 的最强续证——per-model harness 实例化（九层解剖 + schema 校验语义 + Ultra 委派开关 + shell_type alias 化石修正）与 tool_mode 光谱（Direct↔CodeModeOnly、CodeAct 动机、单一治理入口）。co-design 证据首次达到源码字段级（rust-v0.153.1 逐字段核实），"每模型自带 harness 切片 vs 全局 harness 配多模型"成为本页第一方绑定路线在数据结构层的核心表述。
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正 per-model 实例化 Claim 两处——① Ultra 语义修正：委派能力的开关实为 `multi_agent_version`，Ultra 是 effort 回退（取 `multi_agent_reasoning_effort`）+ 仅 V2 下的委派策略切换器，此前"Ultra=多 agent 委派开关"表述不准确；② alias 化石归因降级：mini shell_type 例证出自本机快照且与官方 models.json 不一致，"代际化石"历史归因标注为推测，Claim 置信度 0.85→0.8。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 5、长效 3
 
 ## 关联概念
 

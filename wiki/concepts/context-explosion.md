@@ -1,7 +1,7 @@
 ---
 title: "Context Explosion"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,6 +34,8 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **最近更新**：2026-04-13
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据
 
 > document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。
 
@@ -44,6 +46,8 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **最近更新**：2026-04-15
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据
 
 > 优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的"甜蜜点"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。
 
@@ -54,6 +58,8 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据
 
 > subagent 的 context 在单个大功能时也会爆炸。
 
@@ -64,6 +70,8 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据
 
 > LLM 并不会真的"只看 delta"，delta 仍需还原语义上下文，从"一次性爆 context"变成"多次局部爆 context"。
 
@@ -73,7 +81,9 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 正确做法应是 state 外部存储 + context 按需投影（projection）。
 
@@ -90,6 +100,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 4、长效 1
 
 ## 关联概念
 

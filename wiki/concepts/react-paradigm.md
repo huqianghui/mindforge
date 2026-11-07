@@ -1,7 +1,7 @@
 ---
 title: "ReAct 范式（ReAct Paradigm）"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -37,7 +37,9 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 - **首次出现**：2026-03-25
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > ReAct 就是人类日常最常用的问题处理方式——"试试看"。如调试代码：想可能原因 → 改代码 → 看结果 → 再想下一步。不需要完整计划，靠每一步的反馈推进。
 
@@ -47,7 +49,9 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 - **首次出现**：2026-03-25
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Thought → Action → Observation 循环是 Agent 运行的最小完备单元。Plan-and-Solve 在前面加了 Planning 阶段，Reflection 在后面加了 Evaluation 阶段，但核心循环不变。
 
@@ -57,13 +61,16 @@ ReAct 与 Plan-and-Solve、Reflection 构成 Agent 三种经典范式，分别�
 - **首次出现**：2026-04-17
 - **最近更新**：2026-04-17
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > ReAct 的每一步 Action 可以看作一次 Skill 调用，Google 五种 Skill Pattern（Single-tool, Workflow, Router, Autonomous, Orchestrator）描述了 Action 内部的能力组合方式。
 
 ## 冲突与演进
 
 - 2026-03-25：首次系统对比三种范式与人类认知模式的映射。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3
 
 ## 关联概念
 

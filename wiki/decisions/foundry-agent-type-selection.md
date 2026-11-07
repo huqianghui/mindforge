@@ -80,7 +80,8 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **最近更新**：2026-07-21
 - **置信度**：0.8
 - **状态**：stale
-- **复核**：2026-11-07 待定——依据：身份层有新证据（[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)）；“内容过滤只有 Prompt Agent 内置”本轮未找到原文印证
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：沿用上一轮结论——身份层有新证据 https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity ，但“内容过滤只有 Prompt Agent 内置”未找到官方原文印证，无法下结论
 
 > 治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。"Hosted 治理弱"的笼统说法是错的，必须分层说。
 
@@ -185,6 +186,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - 2026-11-07：/revalidate 复核——确认 1（+0.1）、修订 4、待定 2
 
 - **2026-11-07**（/detect-conflict 裁决）：标题、背景、选择与前提假设同步到 /revalidate 修订后的三档框架；选项 B 改为 GA；选项 C 注释时态改为"定于"；硬约束中的 idle 断连与 session 回收超时区分开。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1
 
 ## 关联概念
 

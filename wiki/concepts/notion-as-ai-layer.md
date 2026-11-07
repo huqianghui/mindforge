@@ -1,7 +1,7 @@
 ---
 title: "Notion in AI Ecosystem"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -29,6 +29,8 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮检索到 Notion Custom Agents 已提供 MCP 连接（https://www.wiz.io/blog/wiz-notion-mcp-agents-integration），原判断可能过时，但未取到官方对 Custom Agents 自主程度的说明
 
 > LLM + Notion API + Trigger，更像"AI as operator"而非"AI as thinker"。
 
@@ -39,6 +41,8 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 - **最近更新**：2026-04-13
 - **置信度**：0.6
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：预测性判断，无法用文档裁决；仅知 Notion Custom Agents 已出现（https://www.wiz.io/blog/wiz-notion-mcp-agents-integration）
 
 > 真正的 Agent 系统在外部（Claude Code, Codex, LangGraph），Notion 只是数据/UI 层。
 
@@ -55,6 +59,7 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 2
 
 ## 关联概念
 

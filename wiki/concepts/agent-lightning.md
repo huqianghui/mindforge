@@ -1,7 +1,7 @@
 ---
 title: "Agent Lightning"
 created: "2026-06-29"
-updated: "2026-09-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -60,6 +60,8 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **最近更新**：2026-06-29
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：查到 v1.0 README 与 releases（https://github.com/microsoft/agent-lightning/releases）但未见 @rollout/prompt 资源注入的新版 API 说明，无法判断 0.3.1 写法是否仍适用
 
 > `@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓"零代码改动"实质是"包一层符合签名的函数"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。
 
@@ -79,7 +81,9 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **首次出现**：2026-06-25
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：APO SFT RL 阶梯 / 拒绝采样
 
 > 由轻到重：APO（只改 prompt，推理级，受限基座已有能力）→ SFT（拒绝采样只学正样本，16GB LoRA 可跑，把 pass@k 压成 pass@1）→ RL（正负样本+探索，40GB+，能探出新策略）。SFT 不是可有可无的过渡：① APO 改不动「能不能做对」只改「怎么说」，到顶后动权重最便宜入口是 SFT；② RL 几乎总要 SFT warmup，跳过直接 RL 冷启动易崩；③ reward 干净且 pass@k>0 时 SFT 性价比最优。其「只学正样本不探索」的限制恰是它便宜稳的来源——是 tradeoff 不是缺陷。
 
@@ -100,6 +104,8 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **最近更新**：2026-06-29
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：v1.0 README 不再描述 5 个 store 动作；未查到能确认或否定的官方文档
 
 > 自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。algorithm 进程（消费者）与 runner 进程（生产者）通过 store 解耦，可分进程跑也可用 Trainer 自带内存 store 一键运行。这印证了 §2.4「store 是控制平面」——它不是被动存储，而是 runner↔algorithm 之间的协调中枢，是 method-agnostic 能成立的物理基础。
 
@@ -110,6 +116,8 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **最近更新**：2026-06-29
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：未能在 v1.0 官方文档中核对 APO 源码实现（0.3.1 源码结论），无法下结论
 
 > 逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的"多 agent 协作"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。
 
@@ -117,9 +125,11 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 - **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]、[[Agent-Lightning系列08：RL实战]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-07-03
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Agent Lightning v1.0 README 'Trainer: Runs verl and vLLM' https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
 > agent-lightning 的 RL 这一级只有一条内置路径——`algorithm` 槽位里的 [[verl]]。它不是「兼容 VERL」而是「建立在 VERL 类架构假设之上」，隐式依赖四项能力：多步 Agent→trajectory RL、工具调用→async rollout、高吞吐→分布式 rollout worker、RLVR/自动奖励→自定义 reward pipeline。这套「rollout abstraction + reward pipeline + actor/critic/rollout/reward worker + Ray runtime」正是 Triplet 轨迹、reward span、store 控制平面在 RL 级能落地的前提。本质：Agent 时代 RL 是分布式系统问题而非算法问题，VERL 被选中是因它解决「系统级 RL」瓶颈（框架选型详见 [[rl-infra-framework-selection]]）。**补充（系列08 实战暴露）**：这层架构锁定不是抽象的、而是钉在具体版本上的紧耦合——agentlightning 0.3.1 按老路径 import `verl.workers.fsdp_workers`，verl 0.8.0 已删该模块，故 0.3.1 只能配 verl ≤0.7.0。跨库 import 契约会随 VERL 版本演进而破裂，"架构建立在假设之上"的代价是版本窗口很窄（详见 [[verl]] 版本锁定 Claim）。
 
@@ -129,7 +139,9 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：slime Data Buffer / agent-lightning 同构；另 THUDM/slime README 仍为 Training/Rollout/Data Buffer 数据流 https://github.com/THUDM/slime
 
 > agent-lightning 的 `runner→store→algorithm` 飞轮与 [[slime-rl-framework]] 的 `Rollout→Data Buffer→Training` 数据流逐项同构（store↔Data Buffer 居中中枢、runner↔Rollout 产数据、algorithm↔Training 吃数据改 prompt/权重），且 method-agnostic 正是 Slime「Agent workflow = data generation」的另一种表述；反而与 VERL 的 Controller+Workers（中央 Driver 逐步编排）范式相反。但关键修正：二者**不在同一层**——agent-lightning 在 RL infra 之上，VERL/Slime 是被填进其 `algorithm` 槽位的引擎。故「与 Slime 更吻合」指「换 Slime 会更统一（数据流包数据流）」，而非「现在选错了」；绑 VERL 是工程选型（生态/多 backend/Server mode）而非哲学错配。本质是 Agent RL「rollout 与优化解耦、用 buffer 连成数据流」这一形状在不同层的殊途同归。
 
@@ -140,6 +152,8 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **最近更新**：2026-09-04
 - **置信度**：0.5
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：DeepSeek Harness 为 preview 且未查到官方 changelog，Cordis 事件暴露情况无法核实
 
 > DeepSeek Harness 的 session log 是"模型可见事实的唯一来源"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将"轨迹采集/可审计执行（喂 RL、合规审计）"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh "loop 也是 plugin" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。
 
@@ -149,6 +163,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - 2026-06-29：从系列07 与 Slime vs VERL 对比补充——对 VERL 是架构锁定（Agent RL=系统问题）、数据流飞轮与 Slime 同构但不同层，接入 verl/slime-rl-framework 概念页。
 - 2026-07-03：从系列08 实战篇细化架构锁定 Claim——加入版本窗口证据（0.3.1↔verl≤0.7.0，verl 0.8.0 删 fsdp_workers），置信度 0.8→0.85。
 - 2026-09-04：注入 dsh session log 轨迹采集前端 Claim（五平台横评 + 日记 DSH 深挖场景 3）——框架首次获得"真实工作负载轨迹来源"的候选拼图，置信度 0.5 待 DSH 前置验证（headless/事件钩子）后调整。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 4、长效 2、确认 1
 
 ## 关联概念
 

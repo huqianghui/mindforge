@@ -1,7 +1,7 @@
 ---
 title: "Architecture Testing"
 created: "2026-04-23"
-updated: "2026-04-23"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > ArchUnit 读取编译后的 bytecode，构建依赖图，应用规则，返回违规结果。JUnit 只是它的"运行壳"——伪装成测试是为了零成本接入现有 CI 体系。其本质更接近 ESLint 之于 JavaScript。
 
@@ -44,7 +46,9 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 传统开发中架构腐蚀是缓慢过程，但 Coding Agent 每次生成几百行代码时，架构违规速度成倍增长。ArchUnit 类工具是 Harness Engineering 质量门禁中不可或缺的一环。
 
@@ -54,7 +58,9 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > ArchUnit 只覆盖 Layer 2（分层约束）。完整体系：Layer 1 代码格式与 Lint → Layer 2 架构约束执行 → Layer 3 模块化与复用分析 → Layer 4 AI 辅助 Review。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 正在成为最有价值的新增层。
 
@@ -62,15 +68,18 @@ Architecture Testing（架构测试）是通过可执行的规则引擎对代码
 
 - **来源**：[[Vibe-Coding系列11：架构测试全景]]
 - **首次出现**：2026-04-23
-- **最近更新**：2026-04-23
-- **置信度**：0.5
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：GitHub stewartjarod/baseline README——Rust 单二进制，baseline mcp 以 stdio 运行 MCP server 并暴露工具 https://github.com/stewartjarod/baseline
 
 > Baseline 能作为 MCP Server 运行，让 Coding Agent（Cursor、Claude Code 等）在生成代码时直接查询架构规则，实现"生成时即遵守"。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3、确认 1
 
 ## 关联概念
 

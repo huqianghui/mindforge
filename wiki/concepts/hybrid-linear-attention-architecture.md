@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 线性注意力架构（Hybrid Linear-Attention Architecture）"
 created: "2026-06-29"
-updated: "2026-09-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 - **首次出现**：2026-06-22
 - **最近更新**：2026-06-22
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Hybrid 线性注意力 记忆
 
 > Transformer（全注意力）= 随序列线性增长的 KV cache，每 token 留一对 (K,V)，prefill 后只读、可按 token 粒度共享；prefill O(n²)、decode 每步 O(n)。Mamba/SSM = 固定大小的循环状态矩阵 S（d_k×d_v），流式更新，prefill O(n)、decode O(1)/步，长上下文显存远低但精确召回（大海捞针）弱于全注意力。一句话：Transformer 用"无限增长的精确记忆"换算力，Mamba 用"固定大小的压缩记忆"换显存。
 
@@ -44,7 +46,9 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 - **首次出现**：2026-06-22
 - **最近更新**：2026-06-22
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Gated DeltaNet GDN
 
 > GDN = DeltaNet（用预测误差更新状态：`S_t = g_t·S_{t-1} + k_t⊗[β_t·(v_t − (g_t·S_{t-1})ᵀk_t)]`）+ 指数门控（gating/decay 控制旧状态保留多少）。delta rule 改善"写入什么"、gating 改善"遗忘多少"，提升记忆质量。但对推理框架而言，GDN 与 Mamba 共享同一关键属性：**循环状态、原地更新、无 token 级 KV**——这正是缓存难题的根源。
 
@@ -54,7 +58,9 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 - **首次出现**：2026-06-22
 - **最近更新**：2026-06-22
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Hybrid 交错堆叠
 
 > 纯线性注意力召回差、纯全注意力长上下文显存爆炸，主流解法是交错堆叠。Qwen3-Next（2025-09，首个旗舰级 Hybrid）与 Qwen3.5（2026）都用 GDN : Gated Attention = 3:1（75% 线性 + 25% 全注意力）；NVIDIA Nemotron-H（Mamba-2 + Self-Attention + MLP，推理快至 3×）、Jamba、Falcon-H1/Zamba/Bamba 同属此类。动机：线性层把 KV cache 显存压成常数，少数全注意力层把精确召回找回来——长上下文下逼近全注意力质量却只花零头显存。Qwen3.5 还叠加 MoE（稀疏激活），是另一条正交优化轴，进一步增加缓存/状态管理难度。
 
@@ -72,9 +78,11 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 
 - **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Qwen3.8 为 GDN+attention 混合（vLLM issue #55766 https://github.com/vllm-project/vllm/issues/55766）；Flash 三款对比与定价 https://local-ai-zone.github.io/blog/flash-tier-ai-models-comparative-analysis.html 与 https://regolo.ai/deepseek-v4-flash-vs-qwen3-8-flash-next-vs…
 
 > 2026-08-26 同日发布的两款 Flash 模型把 Hybrid 架构推进到"降价武器"阶段：**Qwen3.8-Flash-Next** 每四层一周期（三层 GDN + 一层 Qwen Sparse Attention——轻量索引器把历史序列压成 micro-block 四倍压缩、块级筛相关性、注意力 token 预算约 2048）；**GLM-5.3-Flash** 线性注意力管局部连续 + 稀疏注意力管全局检索 + IndexPool 加权池化压索引 key。两家独立收敛到"多数线性层 + 少数稀疏全局层"，续证交错堆叠主线。读数口径警示：Qwen 官方"1M 上下文 Prefill 快 7.6×/Decode 快 4.9×"是**注意力模块的内核级加速，不代表完整 API 请求同比例快**（还有 MoE、输出层、通信、调度）；GLM"注意力计算量 1/3.01、KV Cache 1/4.44"同为组件级读数，且官方承认 KV Cache 仍大于 Kimi-K3 / DeepSeek-V4-Flash。混合注意力最大的商业价值不是单次请求便宜几分钱，而是**让长时间运行的 Agent 不至于在后半程成本失控**。
 
@@ -82,6 +90,7 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 
 - 2026-09-04：注入六层降本文 Claim——Hybrid 从"架构方向"进入"商用兑现"（Qwen/GLM 双 Flash 同日发布），补内核级 vs 端到端读数口径警示。页面脱离 stale（08-21 曾跨线）。
 - 2026-06-22：从"Qwen3.5 升级后缓存命中率归零"的生产问题切入，理清 Transformer/Mamba/GDN/Hybrid 四类架构的"记忆怎么存"差异，定位缓存失效是架构迁移的必然代价。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3、确认 1
 
 ## 关联概念
 

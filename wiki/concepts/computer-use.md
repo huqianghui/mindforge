@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-10-14"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -65,9 +65,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列二：Codex浏览器运行时]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-29
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：wiki/concepts/computer-use.md 冲突与演进至 2026-10-14 无反向修订（09-12 事实性评审只软化分发链与治理层推断，不涉本条）
 
 > Codex 运行时三套操作 API 按精度降级：playwright 语义层（locator/getByRole，页面小改版不失效）→ dom_cua 节点层 → cua 纯视觉坐标兜底；Orca 独立实现同样收敛到"Accessibility Tree 语义元素优先、Screenshot 坐标兜底"。跨产品同构是设计规律的强信号：**坐标一次重排就失效，语义定位才可长期维护**。推荐降级链：语义操作 → 截图+坐标 → 交人接管。
 
@@ -75,9 +77,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列六：Codex-CLI与App的分界]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-29
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：wiki/concepts/computer-use.md 冲突与演进至 2026-10-14 无反向修订（09-12 事实性评审只软化分发链与治理层推断，不涉本条）
 
 > 实测：Codex CLI 能读到 App 的 bundled Computer Use Skill 文件（198 行完整 API 文档），但缺 `node_repl + @oai/sky` runtime，Skill 是一纸空文；本机 Orca 提供替代后端（75 行 discovery stub + 动态手册），同一任务（播放网易云音乐）经 `orca computer` 跑通。两个同名 `computer-use` Skill 并存时，路由的隐式裁决者是 **runtime 可用性排除法**而非智能路由。两条调用链在顶层 action loop 和底层 macOS Accessibility 一致，中间的执行引擎、协议、权限持有者（App 审批 UI vs Orca Helper）完全不同——信任边界随之不同。
 
@@ -85,9 +89,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-30
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：wiki/concepts/computer-use.md 冲突与演进至 2026-10-14 无反向修订（09-12 事实性评审只软化分发链与治理层推断，不涉本条）
 
 > 三个实例共享"声明处处可见、runtime 决定归属"结构：Computer Use（CLI 缺 `@oai/sky` → Orca 客户端补）、Browser Use（CLI 缺 Browser runtime → Orca 内嵌 Browser/Playwright 客户端补）、Web Search（换 Bedrock/Vertex/Databricks 代理后服务端执行器消失 → Tavily MCP 客户端补/LiteLLM 代理层拦截/browser use 开 Google 反向补）。规律：**web search 无本地状态，三层都能补；browser use 依赖登录态、computer use 依赖桌面与系统权限，只能客户端补**。"自带搜索"的产品全是第一方闭环（模型和搜索执行器同服务端）——服务端工具全家桶是第一方绑定的隐性福利。
 
@@ -98,6 +104,8 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - **最近更新**：2026-09-04
 - **置信度**：0.85
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：openai/codex#3851 本轮检索未能取到该 issue，无法核实『只在默认 OpenAI provider 才附加 web_search 声明』
 
 > Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是"端点无执行器、声明发了没人执行"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救"断在端点层"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述"当前会话没有向我暴露 web_search 工具"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。
 
@@ -105,9 +113,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：wiki/concepts/computer-use.md 冲突与演进至 2026-10-14 无反向修订（09-12 事实性评审只软化分发链与治理层推断，不涉本条）
 
 > VS Code 三模型对照实验（GPT-5.6 Sol / Gemini 3.7 Flash / Grok 4.6，同一问题只换模型）：三者搜索 Output schema 完全相同（`url_citation` 锚点 + `bing_searches`），证明走的是 Copilot 服务端统一管道而非某家模型厂商的 hosted search——Gemini 数据点起证伪作用（Google 自家 grounding 是另一套 `groundingMetadata` 格式）。五条判定指纹：① 工具名前缀（`mcp_` → MCP）；② Output schema（鉴别哪条管道格式化了结果，**不能**直接等同哪家执行）；③ 客户端有无对应物（没装扩展还能搜 → 服务端）；④ 换模型对照（schema 随模型变 → 挂模型；不变 → 挂管道层）；⑤ 权限弹窗位置——**弹本地权限恰恰证明执行器在本地**，这是执行位置最硬的指纹。元教训：单一指纹会误判（只看 schema 曾把统一管道误认成 OpenAI hosted），换模型对照这类控制变量实验一次就能分离管道层与模型层。真正的行为差异变量是模型性格：GPT/Gemini 信任搜索成品直接成文，Grok 自发沿三级梯下探（本地 fetch Yahoo 交叉验证触发权限弹窗）——管道决定能力下限，模型性格决定实际走几级梯。
 
@@ -115,9 +125,11 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列五：最佳实践]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：wiki/concepts/computer-use.md 冲突与演进至 2026-10-14 无反向修订（09-12 事实性评审只软化分发链与治理层推断，不涉本条）
 
 > browser use 解决登录态和 JS 渲染，**不解决 DOM 虚拟化**——虚拟化页面（如 ChatGPT share）的活 DOM 只含视口附近内容，`domSnapshot()` 读到的和手写 Playwright 一样残缺，且 agent 意识不到缺。真解在换数据层（如解析 turbo-stream 数据块）。信息获取三级梯（search 发现 → fetch 获取 → browser use 到场）中，上层工具可向下兼容下层只读场景（browser use 开 Google 省搜索 API 费），但代价是模型 token、延迟与风控风险——"能补"和"该用它补"之间隔着成本表。抓取后完整性核验（数量/关键词/悬置/边界四查）责任永远在人。
 
@@ -127,7 +139,9 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-29
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 企业场景的核心原则：模型不应直接持有浏览器控制权限——模型只提出动作，策略层决定是否放行（域名/动作白名单、高风险确认），执行器在客户浏览器本地落地。动作设计成高层业务语义（`click("新建订单")` 而非坐标），SaaS 适配从 SDK 变成流程配置。三条铁律：模型凭据不进扩展、客户 Cookie 不上后端、页面状态脱敏后才回传。安全确认按四级分类（Hand-off Required → No Confirmation），CAPTCHA/付费墙/改密码是产品硬编码的不可放行项。
 
@@ -219,6 +233,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正两处——分发链 Claim 的"签名/TCC/进程树不可拆整体"软化为"疑似紧耦合（推测，未直接验证）"并降置信度 0.8→0.75；治理层 Claim 补证据边界（修复为推断确认非抓包、404 归因为两证据推理）。同日注入 Blender DCC 域实证 Claim（三入口分工、Computer Use 三故障、"眼睛不做手"）。
 - 2026-09-28：注入系列八两条 Claim——首次把"下一步做什么"的判断从通用 LLM 换成 typed 决策模型做单变量受控对照，并给出 Jev skill 的条件默认路由规则；系列五场景路由表因此新增"判断模型"这一维。方法层归口 [[decision-policy-executor-split]]。
 - 2026-10-14：系列一 10-13 重写澄清包含关系的口径——首条 Claim 一度被误判为"撤回包含关系"而标 outdated，经用户纠正恢复 active（0.8）：重写否定的是"Chrome integration 作中间层"的三层树和"从产品设置推技术层级"，广义 Computer Use ⊃ Browser Use 仍成立；狭义原生桌面 Computer Use 与 Browser Use 并列。新增"正交维度"Claim 作补充；摘要同步改写。同日注入系列九两条 Claim：三条执行路径无固定性能/token 排名（测量纪律）与账号身份/model provider 分开（Browser Use 站点预检依赖 ChatGPT 身份，"认证三链路相互独立"修正为"用途不同、实现可能耦合"）。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 5、待定 1、长效 1
 
 ## 关联概念
 

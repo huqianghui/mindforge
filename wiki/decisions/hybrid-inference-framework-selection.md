@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang"
 created: "2026-06-29"
-updated: "2026-09-28"
+updated: "2026-11-07"
 tags:
   - wiki
   - decision
@@ -88,7 +88,9 @@ related_methods: []
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 工作点 / matched TBT / Jalapeño（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章；方法论不随产品版本变化
 
 > 推理性能选型读 benchmark 时的可复用方法论（Jalapeño vs GB300 实例）：同一对硬件/框架能同时给出 1.9× 和 104× 两套数字而不矛盾，因为它们是**吞吐—延迟曲线上不同工作点**的读数——峰值 mixed TPS/kW 描述极限产能、最低 TBT 描述单用户最快解码、matched TBT 下的吞吐描述"相同响应速度约束下的并发承载"（后者对交互式 serving 选型最相关，但绝不能读成整体性能倍数）。mixed TPS 口径含输入+输出 token 总量、除以标称功耗，非单用户输出速度。该方法同样适用于 vLLM/SGLang 等框架对比：先问测的是曲线上哪个点、功耗/并发口径是什么，再比数字。
 
@@ -96,9 +98,11 @@ related_methods: []
 
 - **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：GLM-5.3-Flash 官方文档确认“架构 + 推理系统”两层归因 https://docs.z.ai/guides/vlm/glm-5.3-flash ；DeepInfra 提醒厂商成本效率声称缺少独立审计 https://deepinfra.com/blog/glm-5-3-flash-documentation-integration-guide ，与“折扣与口径要还原”一致。价格与折扣具体数字本轮未复核。
 
 > 2026-08 价格战的正确归因拆分：**架构降本（稀疏激活/混合注意力/残差路由/N-gram/训练方法）决定长期价格下限；推理系统（量化/内核/EPD 集群）决定实际可售吞吐；限时折扣与免费额度负责短期获客；融资与份额策略决定厂商保留多少利润**——"免费承接 DeepSeek 涨价"的说法不准确（两家 API 都非永久免费，开源权重 ≠ 免费推理）。选型口径应从"每百万 token 单价"升级为**每成功任务成本**：任务成本 = 尝试次数 ×（新输入 + 缓存输入 + 输出 + 工具调用）+ 延迟成本 + 人工返工成本——便宜模型重试三次就比一次做对的贵模型更贵。监控指标：每成功任务成本、首次成功率、平均重试次数、缓存命中率、P50/P95 完成时间、工具调用成功率。降低 reasoning effort 单轮更快，但分析不足导致失败返工，总 token 反而可能增加（Qwen 官方自己提醒）。
 
@@ -106,9 +110,11 @@ related_methods: []
 
 - **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：Z.AI 官方文档 https://docs.z.ai/guides/vlm/glm-5.3-flash 原文：dedicated inference engine on top of SGLang、intra-node TP、ReplaySSM、W8A8、INT8/FP8/BF16 混合 cache 量化、Layer Split、EPD 分离；SGLang 官方文档也有 GLM-5.3-Flash 部署教程 https://lmsysorg.mintlify.app/docs/hardware-platf…
 
 > GLM-5.3-Flash（混合线性+稀疏注意力架构）的推理栈选择正是 SGLang：基于 SGLang 构建专用引擎，叠加线性注意力与 LM Head 的节点内张量并行、ReplaySSM、W8A8 量化、INT8/FP8/BF16 混合 Cache 量化、Layer Split，以及 **EPD 分离架构**（Encode/Prefill/Decode 拆成独立工作池分别扩缩容）。头部厂商为 Hybrid 模型的生产 serving 选 SGLang 做底座，是"Hybrid 这条线 SGLang 基因领先"判断的最强生产级续证。理论 FLOPs 降低 ≠ 账单降价——推理系统兑现层（内存带宽、通信、批处理效率、长短请求干扰、集群调度）才把架构优势变成毛利空间。
 
@@ -116,6 +122,7 @@ related_methods: []
 
 - 2026-09-04：注入六层降本文两条 Claim（归因拆分 + 每成功任务成本口径；SGLang 生产级续证）——本页脱离 A 类"隐藏过期"状态（08-29 hygiene 曾报证据停 06-22）。
 - 2026-09-28：本页 09-04 注入的"选型口径升级为每成功任务成本"已升格为独立概念页 [[cost-per-task]]（三项公式 + 两变量分桶 + 迁栏阈值），HOLD `cost-per-successful-task` 解除；本页 Claim 保留作推理侧价格归因的来源，任务级口径的展开归口该页。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1、确认 2
 
 ## 关联概念
 

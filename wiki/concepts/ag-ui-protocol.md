@@ -1,7 +1,7 @@
 ---
 title: "AG-UI 协议：Agent 三大协议的最后一环"
 created: "2026-08-04"
-updated: "2026-10-24"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,6 +34,8 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - **最近更新**：2026-08-04
 - **置信度**：0.75
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：查到的 AG-UI README 与 CopilotKit 文档未直接给出 MCP/A2A/AG-UI 三协议定位原文，不能下结论
 
 > 官方定位图：User —AG-UI— Agent Runtime —MCP— Tools/Data，—A2A— Other Agents。AG-UI 不是 Agent Framework 也不是 UI 框架，与 MCP、A2A 一样是协议规范（Specification）。与传统 REST 的本质区别：整个交互是双向事件流（RunStarted → MessageDelta → ToolCallStarted → RenderApprovalCard → UserAction(Confirm) → ContinueRun → FinalMessage），而非一次 HTTP Response。
 
@@ -41,9 +43,11 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 - **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：AG-UI README 的 Clients 表：CopilotKit、Terminal、Slack/Teams 渠道、React Native，与「Client 是能接收事件的系统，React 只是实现技术」一致 https://github.com/ag-ui-protocol/ag-ui
 
 > 类比 gRPC 的位置：HTTP/WebSocket/SSE 是传输层，AG-UI 是应用层协议，`@ag-ui/client` 是 SDK，React/Vue 是 UI 框架。官方集成列表没有 React/Vue 不是遗漏而是设计：AG-UI 标准化的链路是 Agent Runtime → Client → UI，真正的 Client 是 CopilotKit、VSCode 扩展、Slack App、CLI 这类"能接收展示并响应 AG-UI Event 的系统"，React 只是 Client 的实现技术。浏览器根本不知道 AG-UI 存在——就像它不知道 MCP 一样。
 
@@ -82,6 +86,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - 2026-08-04：建页。单来源专文但内容完整（定位/分层/生态），且用户明确"为后续 AG-UI 开发做准备"——工程准备型页面。置信度 0.7~0.75（基于官方文档 + ChatGPT 讨论整理，未经自建项目验证）。
 - 2026-09-12：evolve-wiki 例行复核——"Voice Agent 本质也是一种 UI"Claim 直接引用 Foundry 官方文档原话，按官方文档置信度下限规则 0.7→0.8。
 - 2026-10-24：A2A 与 A2UI 独立建页，补"第四块拼图"Claim 与两条 `contrasts` 关联（A2UI 承载关系、AG-UI ≠ MCP、应用状态 ≠ Data Model 两个边界）。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、确认 1
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "Spec-Driven Development（SDD）"
 created: "2026-07-21"
-updated: "2026-07-21"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -29,7 +29,9 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > 传统开发中规格是给代码打工的临时文档，写完即弃；SDD 反转权力关系：规格是持久的第一等公民，代码是从规格生成的产物，规格变更驱动代码再生成。这是 spec-driven.md 官方文档的核心论点。
 
@@ -39,7 +41,9 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > SDD 不靠说教靠模板结构约束 AI 行为：强制章节、`[NEEDS CLARIFICATION]` 标记（禁止 AI 猜测）、检查清单门禁、宪法条款引用、阶段门（phase gate）、反过度设计条款、可执行验收标准。方法论以模板为载体被"编译"进每次生成。
 
@@ -49,7 +53,9 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > Spec Kit 的 Constitution 九条中 Article III（Test-First）标注 NON-NEGOTIABLE：任何实现必须先有失败的测试。TDD 在 SDD 中不是消失而是换位——从开发者手动红绿重构，变成写进宪法由流程强制、由 AI 执行的结构性约束。
 
@@ -59,7 +65,9 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > spec-kit-v-model 扩展把 SDD 与 V-Model 融合：左轨规格分解（需求→架构→详设）每层配对右轨测试规格，Traceability Matrix 由确定性脚本（非 LLM）验证覆盖率。其 Compliant 模式含 8 阶段验证门，Hybrid 模式绕过验证门则不构成合规证据。金融行业（SR 11-7 / ECB TRIM / BCBS 239 / PCI DSS / SOX）的准 V-Model 要求是此扩展的现实需求来源。
 
@@ -69,7 +77,9 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > 四方分工：AI 负责起草规格与代码（生成），人类负责判断与批准（评估），确定性脚本负责验证追溯（凡可确定性计算的不交给 LLM），Git 负责审计追踪（每次拍板留痕）。这是 [[generation-evaluation-separation]] 在规格/合规域的实例，也符合 [[harness-engineering]] 的确定性外壳原则。
 
@@ -79,13 +89,16 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 Power Inversion、V-Model、Test-First
 
 > 第一层轻量 spec 提示（多数个人开发者）、第二层结构化 SDD 工作流（spec-kit 等工具用户）、第三层合规级双轨（受监管行业，V-Model 扩展）。采用深度由外部约束（监管/协作规模）而非个人偏好驱动。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 6
 
 ## 关联概念
 

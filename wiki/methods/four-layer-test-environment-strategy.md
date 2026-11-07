@@ -4,7 +4,7 @@ aliases:
   - "四层测试环境策略"
   - "Unit → Integration → E2E → Ephemeral"
 created: "2026-04-23"
-updated: "2026-04-23"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -83,13 +83,16 @@ related_methods:
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit/四层（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 三种混乱的测试环境模式（本地手工 / docker-compose 共享 / E2E 本地能跑 CI 不行）导致数据污染和 flaky test。Testcontainers 让每个测试拥有独立的 infrastructure，从根本上解决隔离问题。
 
 ## 实践记录
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1
 
 ## 关联概念
 

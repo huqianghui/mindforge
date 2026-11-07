@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Extension System"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -38,9 +38,11 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 - **来源**：[[Claude-Code系列06：Plugin生态与开发]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code 官方文档 Plugins https://code.claude.com/docs/en/plugins：plugin 把 skills、agents、hooks、MCP 打包成可安装可版本化的单元，经 marketplace 分发
 
 > 将 Skill/Command/Subagent/Hook/MCP 统一封装为可安装、可版本化的模块，类似 VS Code Extension 生态能力。
 
@@ -48,9 +50,11 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 
 - **来源**：[[Claude-Code系列06：Plugin生态与开发]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code 官方文档 Plugins https://code.claude.com/docs/en/plugins：运行时 skill/agent/command 以独立条目进入 context，MCP 随 plugin 启停
 
 > 安装后被"拆包"，运行时 model 看到的是独立的 tool/skill/command，完全不感知"Plugin"概念。
 
@@ -67,6 +71,7 @@ Claude Code 的扩展体系经历三次演进：Command（固定 prompt 模板�
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2
 
 ## 关联概念
 

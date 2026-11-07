@@ -94,7 +94,8 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 - **最近更新**：2026-08-04
 - **置信度**：0.7
 - **状态**：stale
-- **复核**：2026-11-07 待定——依据：本轮未找到能印证或否定这次实测的文档；发布模型迁移可能是原因，待在新 agent object model 下重测
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：依据：官方文档仍写“发布 agent 时才创建专属 blueprint”(https://learn.microsoft.com/en-us/entra/id-governance/agent-id-governance-overview)，与实测相左；无新实测或文档修订能判断是实现已变还是仅治理可见性，需用 token 的 sub 复验
 
 > 在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为"1 共享 + N 专属"，专属对在**创建时**即落，与文档"publish 才建"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。
 
@@ -126,6 +127,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 - 2026-08-04：Foundry 实测（Sweden Central 项目）发现 portal New agent 创建即建专属 blueprint 对，与官方文档"publish 才建"冲突——新增实测偏差 Claim；1:N 工厂模型 Claim 加限定（Foundry 实践 1:1 成对，N 兑现在共享复用/多租户分发）；新增创建时序 Claim；专文同步补第六节"Foundry 实操"。
 
 - 2026-11-07：/revalidate 复核——确认 5（其中 1 条 +0.1）、修订 1、待定 1
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1
 
 ## 关联概念
 

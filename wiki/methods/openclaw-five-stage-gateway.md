@@ -4,7 +4,7 @@ aliases:
   - "OpenClaw Agent 网关五阶段建设"
   - "OpenClaw Agent Gateway Build-out"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -83,7 +83,9 @@ related_methods: []
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 agent loop（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 模型通过 stop_reason 决定何时停止，工具调用是简单 dispatch table（name-to-function mapping）。
 
@@ -93,7 +95,9 @@ related_methods: []
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 agent loop（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 基础循环 + 工具 → 网络层 → 智能层（8 层 prompt 组装 + 混合记忆）→ 自主层 → 生产硬化。
 
@@ -102,6 +106,7 @@ related_methods: []
 <!-- 在实际项目中应用此方法后，记录结果反馈 -->
 
 （暂无实践记录）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2
 
 ## 关联概念
 

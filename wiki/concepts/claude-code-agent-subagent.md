@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Agent/Subagent/Teammate Architecture"
 created: "2026-04-13"
-updated: "2026-04-16"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -32,9 +32,11 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 - **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code 官方文档 Create custom subagents https://code.claude.com/docs/en/sub-agents：同一份 subagent 定义，委派时在独立 context 运行、只返回摘要
 
 > 在 .claude/agents/ 定义时叫 agent，被 Agent 工具调用运行时叫 subagent，没有两个独立概念。
 
@@ -52,9 +54,11 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 - **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Claude Code 官方文档 Create custom subagents https://code.claude.com/docs/en/sub-agents：每个 subagent 起始是全新隔离 context，不见父对话历史
 
 > Parent 维持持久 messages，Child 从空 messages 开始，交互极其克制。这是最关键的架构洞察。
 
@@ -81,6 +85,7 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2
 
 ## 关联概念
 

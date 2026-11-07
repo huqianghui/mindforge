@@ -1,7 +1,7 @@
 ---
 title: "Framework Selection"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -27,9 +27,11 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 - **来源**：[[Vibe-Coding系列04：流程框架选择指南|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者的框架实践结论，库内 wiki/methods/gsd-project-scale-selection.md 无矛盾；库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）
 
 > 规范驱动（GSD/SpecKit/OpenSpec）解决"做什么"，方法论（Superpowers）解决"怎么做"。
 
@@ -47,9 +49,11 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 - **来源**：[[Vibe-Coding系列06：GSD项目规模分级|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者的框架实践结论，库内 wiki/methods/gsd-project-scale-selection.md 无矛盾；库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）
 
 > 50 行 LangGraph 编排文件可能比 500 行 CRUD 更复杂。
 
@@ -57,9 +61,11 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 - **来源**：[[Vibe-Coding系列06：GSD项目规模分级|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者的框架实践结论，库内 wiki/methods/gsd-project-scale-selection.md 无矛盾；库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）
 
 > 单文件/脚本级项目应跳过 GSD 直接执行。
 
@@ -67,15 +73,18 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 - **来源**：[[Vibe-Coding系列06：GSD项目规模分级|Vibe Coding系列06]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者的框架实践结论，库内 wiki/methods/gsd-project-scale-selection.md 无矛盾；库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）
 
 > 项目足够复杂需要结构化，但又没复杂到触发 Context 上限。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 4
 
 ## 关联概念
 

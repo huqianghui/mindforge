@@ -1,7 +1,7 @@
 ---
 title: "OpenCLI"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,6 +31,8 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮 OpenCLI / Agent-Reach 检索被 Tavily 限流，未取得官方资料
 
 > 接口描述层，不是框架不是 agent，让机器通过结构化 JSON/YAML schema 理解如何调用任何 CLI 工具。
 
@@ -41,6 +43,8 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮 OpenCLI / Agent-Reach 检索被 Tavily 限流，未取得官方资料
 
 > LLM Agent 成为 CLI 调用者后，缺乏标准化参数 schema、能力发现和类型安全使稳定工具调用不可能。
 
@@ -51,6 +55,8 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 - **最近更新**：2026-04-13
 - **置信度**：0.6
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮 OpenCLI / Agent-Reach 检索被 Tavily 限流，未取得官方资料
 
 > spec 层描述 commands/arguments/types，不处理实际工具编排 pipeline。
 
@@ -61,12 +67,15 @@ OpenCLI 之于 CLI 就如 OpenAPI 之于 HTTP API——它是一个接口描述�
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮 OpenCLI / Agent-Reach 检索被 Tavily 限流，未取得官方资料
 
 > Agent-Reach 是工具编排 + scraping scaffold，OpenCLI 是标准化接口描述。Agent-Reach 的 SKILL.md 方式等价于 Google Skill Pattern 中的 Tool Wrapper。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 4
 
 ## 关联概念
 

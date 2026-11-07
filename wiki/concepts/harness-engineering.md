@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-11-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -36,7 +36,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 三者是同心圆包含关系：Prompt（单次措辞）< Context（上下文构建）< Harness（仓库级系统工程）。
 
@@ -46,7 +48,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套 Harness 设计范式，这不是巧合而是行业共识。
 
@@ -56,7 +60,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 上下文耗尽（Context Exhaustion）和提前收工（Premature Completion）不是"让模型更努力"能解决的，而是系统设计问题。
 
@@ -66,7 +72,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 单步 95% 成功率在 10 步串联后只剩 60%（0.95^10 ≈ 0.60），级联失败驱动了 Harness Engineering 的出现。
 
@@ -77,6 +85,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：OpenAI 五支柱为对某篇外部文章的转述，本轮未取到官方原文
 
 > 仓库即系统记录、分层领域架构、Agent 可读性、黄金准则、垃圾回收。
 
@@ -86,7 +96,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 30 行代码能跑 demo，但从 30 行到生产中间是 12 层 harness 的距离。Harness = Tools + Knowledge + Observation + Action Interfaces + Permissions。
 
@@ -96,7 +108,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > model 是做决策的主体，外部代码只是缰绳。
 
@@ -106,7 +120,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 业界主流（LangChain）定义 Harness 为"模型之外的一切"，Meta-Harness 论文精确聚焦为"the code that determines what to store, retrieve, and show to the model"——控制模型输入输出信息流的那层代码。同时揭示实际存在两层 Harness：Platform Harness（平台内置）和 User Harness（用户定制），同一模型换 Harness 可使性能排名跳跃 28 位。
 
@@ -116,7 +132,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Meta-Harness 将手工 Harness 迭代自动化为 Propose → Evaluate → Log → Repeat 搜索循环。消融实验证明完整执行 trace 访问（50.0%）远优于仅分数（34.6%），原始 trace 是不可替代的诊断信号。
 
@@ -126,7 +144,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-17
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，"怎么做出来"）、约束系统（L2 Planning + L1 Policy，"不能乱来"）、认知系统（L6 Eval，"从经验学到什么"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。
 
@@ -137,6 +157,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-07-06
 - **置信度**：0.9
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：98.7% / 6400 行为外部分析数字，本轮未取到可靠一手来源
 
 > Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
 
@@ -144,9 +166,11 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Agent=Model+Harness]]
 - **首次出现**：2026-07-14
-- **最近更新**：2026-07-14
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：VS Code 官方博客 https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode：VSC-Bench 为离线评测套件，度量 solution correctness / agent effort / token efficiency / latency；但"数据集私有""PR 门禁""生产 A/B"未在摘录中核到
 
 > VS Code 为支撑 per-model 适配矩阵被迫建成三层评测体系：① **VSC-Bench**（离线，选候选）——容器化可复现 workspace 里真正启动 VS Code 实例跑完整 agent session，度量 resolution rate + agent effort + token 效率 + latency 四件套；数据集刻意私有（公开就重蹈 SWE-bench 污染覆辙，私有性正是质量信号的前提）；② **PR 评测门禁**（merge 时，防回归）；③ **生产 A/B**（在线，定胜负）——GPT-5.5 prompt 实验用"10 分钟存活率 / commit 存活率"这类只有真实用户行为能提供的指标，`PRPT_LRG` 以 p95 首次编辑延迟 -9.30%、工具调用 -8.54% 换质量微降 0.44%（p=0.0493），显式量化 trade-off 后拍板。附带发现：xhigh reasoning effort 比 high 更费 token 但解题率反而略低——存在"有效努力甜点"。
 
@@ -157,6 +181,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-07-14
 - **置信度**：0.85
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：GitHub issue 状态需逐个核对，本轮未查
 
 > 模型没换、代码没 bug，但改一个工具 description、动一行 system prompt，agent 就可能整体变笨——单元测试全绿、产品体验回归。判断标准不是"改没改 prompt"而是"会不会改变 agent 感知到的世界"：microsoft/vscode#312854 只修终端 shell integration 挂起 bug（加 30 秒定时器）也要过评测门禁，因为终端是 `run_in_terminal` 的行为地基。实证（GitHub API 查证，截至 2026-07）：`~requires-eval-assessment` 标签的 9 个 PR 里 8 个由作者本人手打、仅 1 个由 bot 自动打——本质是**自我申报制**，依赖资深成员的直觉与团队文化。当改 harness 的主力变成 agent，约束需分层：L1 确定性路径规则（保召回）、L2 语义指令（AGENTS.md 自评）、L3 独立 reviewer agent（never self-approve）；成本不对称（漏报=回归上线，误报=多跑一轮评测）决定默认值应是"不确定时打标签"。
 
@@ -166,7 +192,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > InkOS 的 10 Agent 流水线 + 硬编码词表规则（L1 Hook）+ 7 真相文件（结构化状态持久化）+ 33 维审计检查清单（Evaluative Control）+ 审计-修订循环（反馈闭环）与 Harness Engineering 存在六个结构性同构映射。不同领域（小说 vs 编码），同一规律：AI 的可靠性不来自更强的模型，而来自更好的约束系统。
 
@@ -177,6 +205,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-04-23
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：第三方项目(Terminal Velocity/GOAT)本轮未查
 
 > 范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。
 
@@ -186,7 +216,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。
 
@@ -207,6 +239,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-08-04
 - **置信度**：0.75
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：同上 Microsoft Learn harnesses-overview：现为四种 harness（含 Customer Conversation harness）
 
 > Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
 
@@ -216,7 +250,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是"harness 提取物"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张"帮模型接触世界"），framework 流行于应用开发圈（价值主张"帮开发者抽象模型"）——方向相反，"Agent = Model, Not Framework" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。
 
@@ -236,7 +272,9 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Agentic harness 是包在模型外、决定 Agent"怎么思考和行动"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为"提前收工/上下文爆"焦虑的是 harness 工程师，为"生产安全/崩溃恢复/凭证下发"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。
 
@@ -247,6 +285,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-08-30
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Superpowers 5.0.2→6.3.0 目录对比本轮仅核到 release notes，未核各版本目录
 
 > Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**"变简单"是表象，实质是职责归位**——框架竞争维度从"机制精巧"变成"方法论文本质量"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。
 
@@ -257,6 +297,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **最近更新**：2026-09-04
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：dsh 与 OpenHands ACP 能力为产品细节，本轮未查
 
 > 把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像"编排层/胶水"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是"你要对 harness 拥有多大控制权、控制发生在哪一层"——loop 内（能力件级）还是 loop 外（架构层级）。
 
@@ -294,6 +336,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-08-30：注入系列14 Skill 化收敛 Claim（三层分工格局/四个收敛原因/竞争维度迁移）；"离模型越近越可移植"分层判据升格独立页 [[harness-portability-spectrum]]（原始 Claim 保留本页，判据归口新页）。
 - 2026-08-10：补充 framework/harness/runtime 三层链条辨析——framework 是 dev-time 的"造 harness 工具包"，运行期消融在 harness 里；"Agent = Model, Not Framework" Claim（2026-04-13）由此获得新解读：它是 harness 路线对重 framework 封装路线的立场表态。
 - 2026-09-04：注入五平台横评的编排接入镜像两式（dsh loop 内挂 / OpenHands loop 外包）与"控制权在哪一层"选型判据；绑定×可分解十字定位归口 [[model-harness-codesign]]，搬家工具市场实证归口 [[harness-portability-spectrum]]。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 7、确认 1、长效 13
 
 ## 关联概念
 

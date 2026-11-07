@@ -1,7 +1,7 @@
 ---
 title: "Spec Kit"
 created: "2026-07-21"
-updated: "2026-07-21"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -40,6 +40,8 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **最近更新**：2026-07-21
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：README 本轮抓取未含 checklist「Unit tests for English」措辞，需再查官方 spec-driven.md
 
 > checklist 命令为规格文本生成检查清单——官方定位是"给英文写单元测试"：规格是用自然语言写的程序，checklist 验证其完整性/一致性/无歧义。analyze 验证文档间一致性，converge 验证代码与文档收敛，三者构成文本层的测试金字塔。
 
@@ -47,9 +49,11 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 - **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
-- **最近更新**：2026-07-21
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者对 Spec Kit 与 PKC 层级模型的类比分析；README 仍以 constitution 命令为项目级原则 https://github.com/github/spec-kit，库内无矛盾
 
 > Constitution 存放在项目仓库、由命令流程在关键节点显式引用检查，属 Workflow 层约束；这与把原则塞进 System Prompt（每次加载但无强制检查点）形成对比——与 PKC memory-promotion 的层级模型同构：需要的约束力决定存放层级，行为规则放弱提示层是层级错配。
 
@@ -60,6 +64,8 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **最近更新**：2026-07-21
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未核实 .specify/feature.json 与 taskstoissues 的当前行为
 
 > spec-kit 用 `.specify/feature.json` 记录当前 active feature，所有命令隐式作用于它——单 Agent 单 Feature 假设。并行开发的官方姿势是一个 Feature 对应一个 Branch + Worktree + Agent Session，taskstoissues 把 tasks 转成 GitHub Issues 形成多 Agent Work Queue。
 
@@ -67,15 +73,18 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 - **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
-- **最近更新**：2026-07-21
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：作者给出的粒度经验值（20~80 tasks），库内无矛盾；非产品事实
 
 > Spec 的粒度锚点是"一个用户价值"（经验值 20~80 个 tasks）；太大则 clarify/analyze 阶段失控，太小则流程开销大于收益。Task 粒度锚点是"可独立提 PR 的单元"，这直接决定了 taskstoissues 多 Agent 分发的可行性。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 2、确认 2
 
 ## 关联概念
 

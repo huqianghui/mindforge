@@ -1,7 +1,7 @@
 ---
 title: "method-agnostic（方法无关设计）"
 created: "2026-07-02"
-updated: "2026-07-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -33,7 +33,9 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：method-agnostic
 
 > Agent Lightning 是一个 method-agnostic 的 agent 优化训练框架：换优化方法（APO↔SFT↔RL）只换 `algorithm` 槽位，agent 代码与 reward grader 一行不改。这把「升级优化能力」从"换框架/重写"降级为"换槽位"，是 method-agnostic 的核心承诺。
 
@@ -63,7 +65,9 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：APO SFT RL 共享 reward
 
 > method-agnostic 阶梯由轻到重：APO（不动权重，`sorted()[:beam_width]` 用 reward 排序选 prompt）→ SFT/RAFT（用 reward 筛轨迹做微调，改权重）→ RL（用 reward 当梯度信号）。三者共享同一份 grader/reward，差异只在"如何消费 reward"。这证明 method-agnostic 不是三个独立系统的拼接，而是一份 reward 的三种读法。
 
@@ -73,7 +77,9 @@ related:
 - **首次出现**：2026-06
 - **最近更新**：2026-07-02
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：算法替换 配置 verl 架构拆解
 
 > VERL 的算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，"让算法替换成为一个配置问题"，与 agent-lightning 上层的 method-agnostic 一脉相承。区别是层次：agent-lightning 在 RL infra 之上做"换优化方法"，VERL 在 RL 引擎内部做"换 RL 算法"。同一个"解耦+插槽"形状在不同抽象层各出现一次。
 
@@ -83,7 +89,9 @@ related:
 - **首次出现**：2026-07
 - **最近更新**：2026-07-02
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：environment-agnostic SkillOpt
 
 > SkillOpt 的 `ReflACTTrainer.train()` 编排六阶段流水线，但不认识任何 benchmark——所有 rollout/数据加载通过 `EnvAdapter` 接口回调。接新任务不改 trainer，只写一个 adapter。这与 agent-lightning "换算法只换槽位"同构，区别是这里换的是 **environment** 不是 algorithm。两者共同揭示：把"什么会变"隔离进一个契约层，是让框架长期可扩展的通用手法。
 
@@ -91,6 +99,7 @@ related:
 
 - **母概念归口（2026-07-02）**：method-agnostic 此前散落在 7 个 wiki 页（agent-lightning / verl / reinforcement-learning / rejection-sampling-finetuning / automatic-prompt-optimization / skillopt / prompt-optimization-tool-selection）作为论据，但无归口页。本次抽为独立概念页，上述页面通过 `part-of` / `grounds` 关联到此。
 - **层次澄清**：method-agnostic（换优化方法）、VERL 的算法可插拔（换 RL 算法）、environment-agnostic（换环境）三者是**同一原则在不同抽象层的实例**，不是同一层的竞争关系。本页作为"agnostic 设计脊柱"的母概念收束三者。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 4
 
 ## 关联概念
 

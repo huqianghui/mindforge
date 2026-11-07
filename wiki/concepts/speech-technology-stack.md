@@ -1,7 +1,7 @@
 ---
 title: "Speech Technology Stack"
 created: "2026-04-13"
-updated: "2026-10-11"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,7 +31,9 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：三层技术栈 Speech In Core Speech Out
 
 > Speech In（VAD、降噪、回声消除、AGC）→ Core Processing（ASR、LLM 推理、Turn-Taking）→ Speech Out（TTS、流式合成）。
 
@@ -41,7 +43,9 @@ related:
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：能量 VAD 思考停顿
 
 > 500ms 静音触发 false end-of-turn，但用户可能只是在思考。
 
@@ -52,6 +56,8 @@ related:
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：Tavily 限流(429)，Silero 2MB / <1ms 每 32ms 块未能查到官方 README 确认
 
 > 用户说话时打断 Agent 语音输出。Silero VAD（2MB 模型，< 1ms per 32ms audio chunk）实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机。
 
@@ -61,7 +67,9 @@ related:
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：TTS pipeline 六层 G2P；官方文档仅确认 SSML phoneme 与 lexicon 并存
 
 > TTS Pipeline 内部六层：Text Normalization → Lexicon Lookup → G2P → Prosody Prediction → Acoustic Model → Vocoder。发音控制三级优先级：SSML（局部 override）> Lexicon（全局规则）> G2P（兜底推断）。
 
@@ -71,7 +79,9 @@ related:
 - **首次出现**：2026-04-30
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：AEC ANS AGC VAD 顺序
 
 > AEC → ANS → AGC+Limiter → VAD → 干净语音帧。AEC 在最前面（自适应滤波器需原始信号幅度），AGC 在 ANS 之后（避免放大噪声）。
 
@@ -161,6 +171,7 @@ related:
 - 2026-09-12：注入音量包络口型同步 Claim（Blender 系列04 实测）——Speech Out 层新增"音频信号直接驱动动画"的实现档与简化/精细分界判据，页面 active 证据回填。
 - 2026-10-02：注入 Voice Live 系列01 4.5.1 + 系列12 §四（采样率与编解码按方向分：上行为机器、下行为人；24 kHz 协议继承、16 kHz 实测无损、WS 不收 Opus、Opus 48k 时钟标签）与系列09（`session.voice` 会话级参数 vs 逐句 SSML、旋钮不等于生效、`voice.type` 硬约束）两条 Claim——Speech In 的采样率层与 Speech Out 的发音控制体系（G2P / Lexicon）04 月 Claims 获生产级续证。
 - 2026-10-11：注入 Voice Live 系列16 §七 Opus Claim——澄清"Opus 只有 WebRTC 能用"是 Voice Live WS 接口限制而非编码与传输绑定，补"省带宽首段 Opus / 消卡顿必须 WebRTC"方向判据。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 4、待定 1
 
 ## 关联概念
 

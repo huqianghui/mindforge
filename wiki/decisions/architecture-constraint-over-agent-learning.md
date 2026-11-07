@@ -1,7 +1,7 @@
 ---
 title: "架构约束优于 Agent 自主学习：代码复用策略"
 created: "2026-04-13"
-updated: "2026-10-02"
+updated: "2026-11-07"
 tags:
   - wiki
   - decision
@@ -62,7 +62,9 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 代码复用（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 不让 agent 自己学会复用，而是用架构约束让它不得不复用。
 
@@ -85,6 +87,7 @@ Coding Agent 每次会话倾向从头实现功能而非复用已有代码，因�
 - **状态**：active
 
 > 本决策在 Realtime 协议层的第二个落地点（第一个是 09-25 的 judge / speaker 分离）：题库驱动场景里读题经模型复述后被改写、甚至被替换成模型自己编的一道题——根因是**读题仍是一次模型推理**（每个 `response.create` 都是一次"想"，模型看到的是整段对话历史，到中后段按惯性做了面试官该做的事），而 "verbatim" 是 prompt 约束，它在**求**模型照读，gpt-4o 听劝、gpt-5-mini 不一定。三代路径：第一代 `conversation.item.create(role=assistant)` + 裸 `response.create` 是隐式 prompt 约束；第二代 per-turn `instructions` "say ONLY this, verbatim" 是显式 prompt 约束，可以长期稳定、换模型就漂；第三代 `response.create` 带 `pre_generated_assistant_message` 是**机制约束**——服务端对给定文本直接 TTS、跳过模型推理，"不许改写"从对模型的要求变成协议上做不到的事（by construction）。因区域原生模型限制切换模型时读法若不重验，这个现象会直接出现在真实会话里——这是"by instruction 随模型而变"的直接证据。配套原则表（要保证的事 → 用什么保证 → 为什么不用 prompt）：题目原文一字不差→`pre_generated`（prompt verbatim 实测会漂）；不插话→`create_response=false`（单个布尔比"请勿打断"可靠）；不追问不纠偏→judge verdict 集合只有 `(wait, nudge)`，`follow_up` / `redirect` 直接不认（模型再想追问也发不出来）；nudge 不变相提问→服务端疑问句守卫（prompt 里"不要问问题"是软约束）；不泄露评分→judge prompt 不放 rubric 再加泄露守卫（模型看不见的东西无从泄露）；什么时候说→后端状态机 + 页面时序（时序不该交给模型判断）；**说什么字**（用词、耐心、是否致谢）→prompt，这才是它擅长的且只影响模型生成的文本；**怎么发声**→`session.voice` 会话参数，prompt 碰不到语音层。决策清单五问：内容谁定（后端定用 `pre_generated`，必须现场生成才让它"想"且优先在后端 LLM 生成成文本再 TTS）/ 时机谁定（页面或状态机用事件与计时器，不依赖 `create_response=true`）/ 有没有不该说的（写成代码守卫，prompt 只是第一道网）/ 怎么证明说对了（抓 WS 帧断言发出的文本与转写等于期望）/ 调的是字还是声。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1
 
 ## 关联概念
 

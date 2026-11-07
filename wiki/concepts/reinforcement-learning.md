@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-09-28"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -41,7 +41,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Sutton 刻意把 Search 和 Learning 并列为"两种利用算力的方法"。在 AlphaZero 中，Search（MCTS）和 Learning（self-play 训练神经网络）同时使用、相互增强——这种 search + learning 的结合是利用算力的最高形态。
 
@@ -51,7 +53,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 两者共享观察-决策-行动-反馈循环，但 RL Agent 通过梯度更新内化经验（权重变化），LLM Agent 依赖外部 Harness 提供知识和约束（无权重更新）。这解释了为什么 LLM Agent 需要如此庞大的 Harness——它是对缺失学习能力的工程补偿。**范围限定（2026-07-18 补）**：此区分特指经典/参数化 RL；梯度更新是 RL 式策略改进的**充分而非必要条件**——见本页 JitRL Claim（"经典 RL 把策略改进与参数更新焊死，JitRL 证明二者可拆开"）：JitRL 不改参数、只在外部 memory + advantage 上做非参数策略改进，仍是货真价实的 RL（广义策略迭代 GPI 的一个实例）。判据落在"学到的知识存哪"而非"改没改参数"，参见 [[online-learning]]。
 
@@ -61,7 +65,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-03-21
 - **最近更新**：2026-07-06
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Sutton 从 RL 研究出发，但发现"计算终将胜出"这个规律在所有 AI 子领域都成立。RL 只是他得出这个结论的起点——Bitter Lesson 的适用范围远超 RL。
 
@@ -71,7 +77,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 大模型语境下 RL 主要四种形态：PPO（actor+critic 两套网络，RLHF 标准内核）、GRPO（组内相对优势替代独立 critic、省显存，近年主流）、RLHF（奖励来自人类偏好训练的奖励模型）、RLVR（奖励来自可自动验证规则如数学答案/代码通过测试，无需奖励模型，Agent 场景最常用）。算法层差异最终都收敛到同一工程结构：生成数据（rollout）与更新模型（training）两阶段交替。与 SFT 的本质分野：SFT 模仿正样本、便宜稳定但受限于已有能力；RL 用试错探索换更高上界，代价是最贵、最不稳。
 
@@ -81,7 +89,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Rollout 属数据采集维度（Agent 实际执行了多少次任务，一条"提问→Search→Observation→Answer"即一条 rollout，`1000 rollouts` = 采集 1000 条轨迹）；Epoch 属优化维度（采集到的数据被反复学习几遍，`epoch 3` = 这批轨迹训练 3 次）。监督学习对应物：rollout ≈ sample/trajectory 而非 epoch。标准流程先后关系：收集 rollouts（policy_v1 产 1000 条轨迹）→ 计算 reward → 训练（这 1000 条跑 epoch1→2→3）。这也是 RL 日志刻意分 `Collect Rollouts` 与 `Optimize Epochs` 两段统计的原因，是读懂"rollout 与 training 解耦"的前提。
 
@@ -91,7 +101,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-06-29
 - **最近更新**：2026-06-29
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 传统 RLHF 假设单轮交互（`prompt→model→output→reward→update`，同步简单）；Agent 真实执行是多步轨迹（思考→调工具→观察→再决策→…→最终答案获 reward），具备四个传统 RL 不具备的特征：多轮、有状态、异步、依赖外部环境（API/DB/浏览器/代码执行器）。这四个特征使瓶颈从「算法」迁移到「基础设施」：rollout 占 80~90% 时间、需 training-rollout 解耦避免 GPU 互相空转。由此 Agent RL 的本质升维——不再是「怎么写 PPO loss」，而是「rollout 机制 + 训练推理解耦 + 分布式编排」的系统问题，框架选型（见 [[verl]]/[[slime-rl-framework]]）几乎必然建立在分布式基础设施架构之上。
 
@@ -101,7 +113,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 广义策略迭代（Generalized Policy Iteration, GPI）是 Sutton & Barto 那本书的中轴：任何 RL 方法都可拆成两步交替——**策略评估**（估计当前策略的 $V/Q$）+ **策略改进**（依 $Q$ 让策略更贪心），反复迭代直到收敛。绝大多数 RL 算法都是 GPI 的某种实例，差别只在"评估怎么做、改进怎么做、在哪个空间迭代"。JitRL 就是教科书级的 GPI，只是搬到推理期、且非参数：策略评估 = memory 上 kNN 的蒙特卡洛回报平均（非参数 MC policy evaluation），策略改进 = $z'=z+\beta\hat A$（KL 正则的改进步），迭代 = memory 越攒越准策略持续改进。所以它是"以 LLM logits 作为 base-policy 先验的、非参数（近乎 tabular）的强化学习"。
 
@@ -111,7 +125,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-07
 - **最近更新**：2026-07-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > "一个方法自称 learning 却不改参数"之所以绕，是两个不同问题被混成一个：**轴 A**（在不在做 RL 式的策略改进？）与**轴 B**（改进有没有写回参数？）。经典 RL 的信条是"通过改参数来改进策略"——两轴焊成一件事。JitRL 把它们撬开：保留 RL 的大脑（advantage-based 改进目标），扔掉 RL 惯用的身体（对权重求梯度），把学到的东西存进外部持久 memory、只在 logits 上瞬时生效。所以 [[online-learning]] 那条"改没改参数"的硬标准只在回答轴 B（结果存哪），从不是在说"这里没有 RL 计算"。这也接上一个更细的判据：判断学习的关键不只是"改没改参数"，而是"学到的知识存在哪"（见 [[online-learning]] 的存储位面 Claim）。
 
@@ -121,7 +137,9 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的"prompt+response 一起进 loss"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的"target 是评分键"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问"哪列进模型、哪列进 reward"即可快速定位。
 
@@ -164,6 +182,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - 2026-07-14：从 ms-swift 全景文补 GRPO/RLVR 数据流不变量 Claim——一条样本两个消费方（prompt→rollout、ground truth→reward 函数），行式对齐配对是静默错配的高危点。
 - 2026-09-06：镜像冗余边清理——删除本页指向 [[advantage-function]] 的 `uses` 行（对方页已声明 `part-of`，有向关系单侧保留）。
 - 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——RLHF/RLVR 从训练方法对照升到"决定 AI 在哪些任务上好用"的解释框架，并补 RLCD 为第三条训练目标；07-14 GRPO/RLVR 数据流 Claim 获应用侧续证。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 9
 
 ## 关联概念
 

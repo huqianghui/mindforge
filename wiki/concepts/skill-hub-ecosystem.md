@@ -1,7 +1,7 @@
 ---
 title: "Skill Hub Ecosystem"
 created: "2026-04-11"
-updated: "2026-04-15"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -43,12 +43,15 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 - **最近更新**：2026-04-11
 - **置信度**：0.3
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：来源本身写明「具体差异待深入调研」，本轮 gstack、Hermes 未查到官方资料；Superpowers 官方发布说明见 https://github.com/obra/superpowers/blob/main/RELEASE-NOTES.md
 
 > GStack vs Superpowers vs Hermes 对比：三大框架在 Claude Code 插件生态中各有定位。具体差异待深入调研。参考：Firecrawl 整理的 Skill 评测、Build to Launch 的 10 个 Plugin 实测（4 个值得保留）。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1
 
 ## 关联概念
 

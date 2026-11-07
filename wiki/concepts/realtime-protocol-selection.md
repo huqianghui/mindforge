@@ -1,7 +1,7 @@
 ---
 title: "Realtime Protocol Selection"
 created: "2026-05-24"
-updated: "2026-10-16"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -33,6 +33,8 @@ related:
 - **最近更新**：2026-05-24
 - **置信度**：0.9
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 表格：麦克风上行、转写、VAD、文字、信令走 WebSocket，WebRTC 只承载数字人下行；Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md 第 46 行SDP经同一条 WS
 
 > WebSocket：TCP 传输层、双向消息通道、可靠但可能 delay、载荷为 JSON 事件和控制指令。WebRTC：UDP（SRTP/SCTP）、超低延迟容忍丢包、载荷为音频帧/视频帧、原生集成浏览器音频处理链（AEC/AGC/NS）。在 Voice Live 中 WebSocket 负责信令 + 会话控制，WebRTC 负责音频/视频媒体流。
 
@@ -42,7 +44,9 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：SDP 信令 RFC；系列16 与之一致
 
 > SDP（Session Description Protocol）描述媒体类型、编解码器、网络地址和传输协议。WebRTC 标准本身不定义信令通道——SDP 是"合同内容"，WebSocket 是"传递合同的快递"，RTP 是"实际交付"。类比：SDP = 怎么合作，WebSocket = 把协议送达，RTP = 真正干活。
 
@@ -62,7 +66,9 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：WebSocket 音频 队头阻塞 AEC
 
 > ① TCP 队头阻塞导致延迟抖动；② 丢包重传带来延迟尖峰；③ 无法利用浏览器 AEC/NS 音频处理链；④ 无 RTP timestamp 同步机制（无法 AV sync）；⑤ TCP 带宽和延迟不适合视频（无法支持 Avatar）。这些缺陷在 prototype 阶段可接受，进入 production + avatar + low-latency 场景时成为瓶颈。
 
@@ -72,7 +78,9 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：协议选型 WebSocket WebRTC 阈值为经验值
 
 > 只用 WebSocket 的条件：prototype/内部 demo、延迟要求 > 500ms、不需浏览器音频处理、防火墙严格限 UDP、无视频。引入 WebRTC 的条件：端到端延迟 < 300ms、需浏览器 AEC/NS/AGC、需音视频同步（Avatar）、需 P2P/SFU 拓扑、生产环境高音质要求。
 
@@ -82,7 +90,9 @@ related:
 - **首次出现**：2026-05-22
 - **最近更新**：2026-05-24
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：渐进式架构 Control Plane Data Plane
 
 > Voice Live API 从 WebSocket-only → WebSocket + WebRTC 的演进路径是范例：先用简单方案验证产品（WebSocket 开发简单、防火墙友好、生态成熟），再根据生产需求引入更复杂但更高效的协议。核心原则：Control Plane ≠ Data Plane；信令通道与媒体通道解耦。
 
@@ -155,6 +165,7 @@ related:
 - **2026-10-02**：ICE 门控 Claim 的"relay-only"前提按系列12 探针实测加修正注（直连优先、relay 保底，成立理由改为"两类候选同源 + 收敛窗是规则一部分"）；注入系列10 / 11 / 12 三条 Claim（ICE / STUN / TURN 速览；对等 vs 客户端-服务器的建连成本本质 + Azure 只下发 UDP TURN 对"限 UDP → 只用 WS"选型条件的续证；RTP/RTCP 分工与弱网失效链对"WS 传音频五缺陷"的机制续证）。ICE / STUN / TURN 协议层压成一条速览 Claim 收入本页（extract 曾自主建 ice-nat-traversal 页，用户裁决暂不建、撤回），弱网降级实施归 [[weak-network-adaptive-degradation]]。
 - **2026-10-11**：用户读完 Voice Live 系列16 后解除 ice-nat-traversal HOLD——ICE / STUN / TURN 速览 Claim 迁出至 [[ice-nat-traversal]]（本页只留选型层）；注入系列16 一条 Claim（WebRTC 与 WS 的全维度差别、媒体直连后的后端职责重设计、可观测性不对称与 WS 分层工具）。
 - **2026-10-16**：注入系列17 一条 Claim（avatar `output_protocol: websocket` 实测可用），**更正** 10-02 Claim 里"UDP 封死唯一兜底是重建不带 avatar 的会话"——数字人可经 WS 以分片 MP4 下发保留，选型从"放弃数字人"变为"默认 WebRTC、建连失败降级 WS 下发"。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、长效 4
 
 ## 关联概念
 

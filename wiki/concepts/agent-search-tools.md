@@ -1,7 +1,7 @@
 ---
 title: "Agent Search Tools"
 created: "2026-04-13"
-updated: "2026-04-13"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -31,6 +31,8 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 - **最近更新**：2026-04-13
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未能核实 Exa/Tavily 当前定位（Tavily 限流）；仅确认 Context7 仍是文档检索 MCP https://github.com/upstash/context7
 
 > Exa 用于深度语义研究，Tavily 用于实时事实搜索，Context7 用于版本特定技术文档。
 
@@ -40,7 +42,9 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep wiki/Notes/paper 关键词，未见相反表述）；关键词 link lists
 
 > 传统搜索引擎返回的"link lists"不适合 Agent 消费。
 
@@ -51,12 +55,15 @@ Exa、Tavily 和 Context7 是 AI Agent 的三大搜索工具，覆盖不同搜�
 - **最近更新**：2026-04-13
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未查到 Exa 官方 MCP 实现说明（Tavily 限流）
 
 > 真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 2、长效 1
 
 ## 关联概念
 

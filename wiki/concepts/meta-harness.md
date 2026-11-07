@@ -1,7 +1,7 @@
 ---
 title: "Meta-Harness"
 created: "2026-04-16"
-updated: "2026-07-14"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -38,7 +38,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 业界主流（LangChain）定义 Harness 为"模型之外的一切"，边界过于宽泛。Meta-Harness 论文将其精确聚焦为"the code that determines what to store, retrieve, and show to the model"——即控制模型输入输出信息流的那层代码。这个区分在工程实践中至关重要，因为 Meta-Harness 优化的恰恰是这个信息管道。
 
@@ -48,7 +50,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 内置 Harness（Platform Harness）是 Agent 平台方提供的核心能力（如 Claude Code 的 compaction、Git 集成、子 Agent 生成）；外层 Harness（User Harness）是用户定制层（CLAUDE.md、Skills、GSD/Superpowers 等）。Terminal Bench 2.0 数据证实：同一模型换一层 Harness，性能排名可跳跃 28 位。
 
@@ -58,7 +62,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 消融实验：仅分数 34.6% → 分数 + LLM 摘要 34.9%（几乎无提升）→ 完整接口含原始 trace 50.0%（+15.4）。LLM 生成的摘要无法恢复丢失的因果信息。Proposer 每轮中位数读取 82 个文件、访问最高 1000 万 tokens 的诊断信息，是之前方法（OPRO/TextGrad/AlphaEvolve）的 400~5000 倍。
 
@@ -68,7 +74,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 手工设计 Harness 是当前 AI 系统的主要瓶颈。HumanLayer 博客结论："it's not a model problem. It's a configuration problem." Meta-Harness 将这个手工试错过程自动化为 Propose → Evaluate → Log → Repeat 的搜索循环，约 20 轮迭代、每轮约 3 个候选、总计约 60 个 Harness 变体。
 
@@ -78,7 +86,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-04-16
 - **最近更新**：2026-04-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 场景 A：从裸模型 API 出发构建完整 Agent（搜索空间无限）；场景 B：基于 Coding Agent 的外层 Harness 优化（CLAUDE.md/Hooks/Skills）；场景 C：Agent + 开源 Harness 框架（GSD/Superpowers）+ Meta-Harness 优化层。三种路径的 Harness 架构、优化空间和适用方式截然不同。
 
@@ -88,7 +98,9 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 两种评测体制的经济学对比：VS Code 门禁是**选择性评测**（只评打了 `~requires-eval-assessment` 标签的 PR，核心难题是"哪些改动敏感"的人肉判断，漏标=回归上线）；Meta-Harness 是**全量评测**（60 个候选变体每个都评，判断题不存在，代价是评测就是主循环本体）。SkillOpt 的 gate 同构——每次 skill 更新都在 validation split 上评、ties-rejected。**评测税没有消失，只是从"判断谁该交税"变成"人人都交但降低单价"**。推演：人肉标签是"评测昂贵"约束下的过渡产物，成本曲线下行后门禁自然从"标签触发"滑向"默认全评"，评测套件从 merge 关卡转身为 harness 演化的 fitness function。两个前提缺一翻车：① benchmark 保真度（Goodhart 风险——消融已证信号保真度决定优化质量，在线存活率指标是离线分数之外的保真度地锚）；② 爆炸半径控制（沙箱内放任搜索，出沙箱必须 staged rollout）。
 
@@ -96,6 +108,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 
 - 与 "Decoding the Configuration of AI Coding Agents"（arxiv 2511.09268v1）论文形成对比：后者仅做描述性统计（CLAUDE.md 配置分布），没有因果分析和效果验证；Meta-Harness 通过消融实验直接证明了 Harness 设计的因果效应。
 - 2026-07-14：VS Code 评测门禁的实证（自我申报制）为 Meta-Harness 的全量评测路线提供了现实对照面——选择性 vs 全量是同一评测税的两种缴法，补入"门禁守护→门禁驱动"演化推演 Claim。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 6
 
 ## 关联概念
 

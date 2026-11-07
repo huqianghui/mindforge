@@ -1,7 +1,7 @@
 ---
 title: "SkillOpt（文本空间 skill 优化器）"
 created: "2026-07-01"
-updated: "2026-09-28"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -39,7 +39,9 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：SkillOpt SGD 文本空间
 
 > 四大机件逐一对标深度学习优化器：① **textual learning rate `L_t`**＝每步最多几条编辑（离散代理步长，不是 token 数/edit distance/语义距离），默认 4、cosine 衰减到 2；消融显示"有界 vs 无界"才是分水岭（有界预算 85~87，无界改写掉到 84.6），"要有界且界得适中"而非"越紧越好"。② **rejected-edit buffer**＝负样本记忆/动量，候选没过门则把被拒编辑追加进 buffer 供同 epoch 后续反射避坑，**epoch 末清空**（短命）。③ **slow-update field**＝慢权重/双时间尺度，epoch 末做纵向 diff 写进 skill 文档里 markup 围栏的受保护区，step 级快编辑改不动它，随成品出厂。④ **meta skill `m_meta`**＝learning-to-optimize，summarize"编辑模式本身"（哪类改法有效），prepend 到未来 optimizer prompt，**不出厂**。`m_meta` 改的是 optimizer 的 context 不是权重——optimizer 本身也冻结。
 
@@ -49,7 +51,9 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：SkillOpt 快慢循环
 
 > SkillOpt 是一快一慢两层嵌套循环。**快层（step）**：每步 propose ≤`L_t` 条编辑 → 在 held-out `D_sel` 过接受门 → 收/退。**慢层（epoch 末）**：在 `D_tr` 重采样上对比"上一版 skill vs 当前版 skill"做四分类纵向诊断（improvements/regressions/persistent failures/stable successes）→ 写 slow-field / meta → **该候选仍要过 `D_sel` 接受门**才落地。两个关键澄清：① 慢层读的是"快层的净结果"（新旧 skill 行为差），不是"快层的编辑过程"；② gate 在两层都有，慢层不是"绕过验证的特权写入"，而是"换个信息源再 propose 一次，纪律照旧"。三个 split：`D_tr`（跑 rollout/反射提编辑）、`D_sel`（held-out 接受门）、`D_test`（最终评测不参与优化）。
 
@@ -59,7 +63,9 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **首次出现**：2026-07-01
 - **最近更新**：2026-07-01
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：SkillOpt 筛子 梯度
 
 > 常见误解是"SkillOpt 用 ground truth、RL 用 reward"——但 verifier↔judge 是评分手段的正交选择，不构成框架级分野（agent-lightning 的 calc_x 恰用 ground-truth 可验证 reward，SkillOpt 也把 reward-free/preference-driven gate 列为未来工作）。**真正的区别在"分数拿去干什么"**：SkillOpt 把分数当**选择/门控信号**（bundle 级比较是否严格超过当前，ties rejected，accept/reject 一份候选 skill），类比 model selection / early stopping；RL 把 reward 当**梯度信号**（算 advantage → PPO/GRPO 更新权重），类比反向传播。前者离散 accept/reject 改文本，后者连续参数更新——这才是两条路。这条也把 SkillOpt 归入**拒绝采样谱系**：与 [[rejection-sampling-finetuning]]（RAFT）同源"打分筛选、只留改进"，区别只是 RAFT 筛**样本**、SkillOpt 筛**编辑**；而"打分做梯度"的 RL 是另一族。
 
@@ -70,6 +76,8 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **最近更新**：2026-07-01
 - **置信度**：0.85
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：依据：SkillOpt 仓库官方文档检索被 Tavily 限流（429）未取到，无法核对六阶段循环与 EnvAdapter
 
 > `engine/trainer.py:ReflACTTrainer.train()` 是唯一"发动机"，编排六阶段流水线（ROLLOUT→REFLECT→AGGREGATE→SELECT→UPDATE→EVALUATE），但**不认识任何 benchmark**——所有 rollout/reflect/数据加载通过 `EnvAdapter` 接口回调。想接新任务不改 trainer，只写一个 adapter（`build_train_env`/`build_eval_env`/`rollout`/`get_task_types` 四个 abstract 方法）。这与 agent-lightning "method-agnostic + 换算法只换槽位"同构，区别是这里换的是 **environment** 不是 algorithm。两类模型两条独立后端通道：`chat_optimizer()`（REFLECT/AGGREGATE/SELECT/SLOW_UPDATE/META/REWRITE）走 optimizer_model；`chat_target()`（ROLLOUT/EVALUATE 的 sel-rollout）走 target_model。三大 memory 代码落点各异：rejected-buffer 活在内存变量、slow-update 嵌入 skill 文档围栏、meta_skill 存独立 JSON。⚠️ force-accept 模式下 slow_update 只改 `current_skill` 不改 `best_skill`，所以最终产物可能不含 slow_update 内容——除非经 gated 验证真涨了分。
 
@@ -77,9 +85,11 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 - **来源**：[[SkillOpt系列02：快速上手]]
 - **首次出现**：2026-07-01
-- **最近更新**：2026-07-01
+- **最近更新**：2026-11-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：依据：vault 来源 Notes/SkillOpt 系列02 git log --since=2026-07-01 仅有 07-08 命令参数订正与 10-03 去行号，冒烟结论无修订
 
 > SearchQA 单步干净冒烟跑（`--limit 8 --train_size 8 --num_epochs 1`，total_steps=1）：baseline `hard=0.5000`，STEP1 skill 从 104 字涨到 1891 字，却 EVALUATE **REJECT** `0.5000<=0.5000`（打平也拒），best 仍是初始 skill。逐条按 id 对齐 baseline 与 candidate 的 8 条 sel，发现 **8 条 hard 值全部一模一样**——1783 字新增对这批 sel 边际效果精确为零。三个叠加根因：① 编辑来自不相交的 train 8 条，泛化不到 sel 的错题；② 只跑 1 步（等于一次梯度更新）；③ sel=8 门太粗（分辨率 1/8=0.125 一档，微小改动跨不过 ties-rejected 门槛）。结论：`1 步 + 8 train + 8 sel` 三重太小，注定原地打平——它验证的是**管路通**（六段全跑/gate 严格/token 会花），不是**效果**。三味药缺一不可（更大 train + 更多 epoch/步 + 更大 sel），其中 **sel 太小最关键**——sel 不放大，就算真帮到了也照样显示打平被拒。此外印证：有界 LR（SELECT 恒 ≤budget）、接受门严格改进/ties-rejected、reflect 是耗时/token 主瓶颈（占 wall 的 60~73%）。
 
@@ -87,9 +97,11 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 - **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
-- **最近更新**：2026-07-15
+- **最近更新**：2026-11-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：依据：Notes/SkillOpt 系列03 git log --since=2026-07-15 无内容修订，无更新实测矛盾
 
 > 把两者的区别简化为"SkillOpt 多了门控"会低估它，准确拆法是三层机制叠加：① **搜索结构**——APO 是 beam search 并行候选整体重排，SkillOpt 是单谱系增量演进（永远只有一个 current skill）；② **编辑幅度**——APO 候选自由改写可整篇重写，SkillOpt 每步最多 `learning_rate` 条结构化 edit（cosine 衰减，信任域小步长）；③ **接受机制**——APO 轮内兄弟候选相对排序无在位者保护，SkillOpt 挑战者必须在 val 上不劣于 current（ties-rejected）否则回滚。因果链：APO 摆动的直接来源是"自由改写 + 相对重排"的组合（无继承性 + 每轮冠军重选，噪声一抖排名就翻）；SkillOpt 靠小步长保继承性、门控保单调性、step buffer 防重复踩坑三者**叠加**才压住摆动。两个 caveat：两者的"梯度"同源（LLM 读失败案例写 textual gradient），分岔在优化器动力学——APO 像并行随机搜索（探索强方差大），SkillOpt 像带信任域的 SGD（利用强方差小，需 slow update/meta 慢层补探索）；**门控不消灭噪声，只换其表现形式**——val 太小时 `2.8×σ/√n` 以内的比较照样是抛硬币，APO 的噪声表现为"prompt 摆动"，SkillOpt 的噪声表现为"错误的 accept/reject"。
 
@@ -97,9 +109,11 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 
 - **来源**：[[SkillOpt系列03：提示词调优实战]]
 - **首次出现**：2026-07-15
-- **最近更新**：2026-07-15
+- **最近更新**：2026-11-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：依据：Notes/SkillOpt 系列03 git log --since=2026-07-15 无内容修订；同期 07-15 联合展望文章与之一致
 
 > video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是"在 val 上不退步"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好"更稳"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则"移植成功"只是管道意义上的成功。**
 
@@ -128,6 +142,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - 2026-07-01：从 SkillOpt 论文精读 + 源码拆解 + AML 实战三条线首次建页。论文提供机制原理（四大机件/三 split/快慢循环），源码篇提供 environment-agnostic 骨架与 memory 代码落点，实战篇提供"冒烟只测管路不测效果"的关键经验教训。
 - 2026-07-16：从系列03 实战篇补充第一个真实客户任务（video2frames）的移植与实测证据——三层机制对比取代"门控唯一论"，100 任务无污染配对对决给出"机制稳 ≠ 效果赢"的一手辩证：SkillOpt 增益未泛化（gate 过拟合 val），保守机制在低天花板任务上探索不足。
 - 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——SkillOpt 资产在飞轮/RSI 坐标中的定位（能力资产、轻、可折旧）与 bad-case 循环的跨对象同构（skill 文本 ↔ 决策模型校准）。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3、待定 1、确认 3
 
 ## 关联概念
 

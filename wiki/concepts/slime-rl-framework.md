@@ -1,7 +1,7 @@
 ---
 title: "Slime（数据流式 RL 框架）"
 created: "2026-06-29"
-updated: "2026-06-29"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -36,9 +36,11 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 - **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：THUDM/slime README：Training(Megatron)/rollout(SGLang+router)/Data Buffer 数据流，自定义数据生成接口 https://github.com/THUDM/slime
 
 > 三大组件构成闭环：Training（Megatron）→ weight update → Data Buffer（连接训练与采样的数据流中枢）→ rollout data → Rollout（SGLang）→ 回到 Training。最关键的设计理念是 **"Agent workflow = data generation"**：把 Agent RL 直接当作"数据生成问题"处理，而非像 VERL 那样建模成一套 RL workflow 编排系统。这是它出现的动机——作者认为 VERL 过于系统化/抽象，Slime 的解法是统一成单一数据流 pipeline。
 
@@ -46,9 +48,11 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 - **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：THUDM/slime README：Megatron 参数直通、SGLang 参数加 --sglang- 前缀；Hermes 技能页列 ray 依赖 https://hermes-agent.nousresearch.com/docs/user-guide/skills/optional/mlops/mlops-slime ；https://github.com/THUDM/slime
 
 > Slime 的组件选型相当 opinionated（强约束）：训练后端只用 Megatron（支持 TP/PP/EP/MoE，超大模型能力强）；rollout 后端只选 SGLang 一个（看重高吞吐、continuous batching、prefix caching、routing）——这与 VERL 支持 vLLM/SGLang 多 backend 形成鲜明对比，是关键差异点；调度仅用 Ray 的 actor + placement group 做轻量粘合，而非重型中心调度系统。本质是**强制 server-based rollout 架构**——既是简洁来源，也是约束来源。
 
@@ -56,15 +60,18 @@ Slime 的核心哲学是一句话：**训练（training）与采样（rollout）
 
 - **来源**：[[Slime与VERL架构对比]]
 - **首次出现**：2026-06-29
-- **最近更新**：2026-06-29
-- **置信度**：0.75
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.85
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：THUDM/slime README：Megatron+SGLang 绑定，GLM-5.x 系列所用框架 https://github.com/THUDM/slime
 
 > 适合：Agent RL（多轮）、MoE 大模型训练、高吞吐 rollout、已有 Megatron 体系的团队。不适合：已在 HF/vLLM 体系、需要多 inference backend、想做通用 RL 平台。一句话画像——Slime 是"server-first + dataflow-first"框架，通过将训练/rollout/agent 交互统一到一个数据流水线实现高吞吐大模型 RL；相比 VERL 牺牲部分通用性，换取更简单的系统结构与更强性能。
 
 ## 冲突与演进
 
 - 2026-06-29：首次建页，从 Slime vs VERL 深度对比视角厘清其数据流哲学、Megatron+SGLang 强绑定与适用边界。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 3
 
 ## 关联概念
 

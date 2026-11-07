@@ -6,7 +6,7 @@ aliases:
   - "Multi-Agent Orchestration"
   - "sessions_spawn"
 created: "2026-05-07"
-updated: "2026-05-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -90,6 +90,8 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 - **最近更新**：2026-05-07
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：官方 sub-agent 与 nesting 文档只描述 agent 侧编排，没有直接论述 Gateway 是否参与编排，本轮查不到能下结论的原文
 
 > Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket），不做任何任务分解或调度决策。编排逻辑由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现。来源：OpenClaw 官方 Sub-agents 文档 + Meta Intelligence 技术分析。
 
@@ -107,15 +109,18 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：依据：OpenClaw 官方 Sub-agents 文档 https://docs.openclaw.ai/tools/subagents 说明 sub-agent 是后台运行并向请求方 announce 结果；参数教程 https://www.stanza.dev/courses/openclaw-automation/sub-agents/openclaw-automation-sessions-spawn 说明立即返回（第三方，仅作线索；accepted 字面值未核）
 
 > `sessions_spawn` 始终非阻塞，返回 `{ status: "accepted", runId, childSessionKey }`。Orchestrator 通过 sessions_list 监控和 sessions_result 收集结果。这种设计使编排者可以发出多个并行 spawn 而不必等待。
 
 ## 实践记录
 
 （暂无实践记录）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、确认 1
 
 ## 关联概念
 

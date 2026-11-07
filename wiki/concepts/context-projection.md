@@ -1,7 +1,7 @@
 ---
 title: "上下文投影（Context Projection）"
 created: "2026-04-17"
-updated: "2026-04-17"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 所有 GSD / Superpowers / OpenSpec 系统都有一个隐含错误假设：context = state。正确做法：state → 外部存储（结构化），context → 按需投影（projection）。
 
@@ -44,7 +46,9 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > State Layer 有成熟方案（数据库、文件系统），Execution Layer 有 LLM。但 Selection Layer（query → select → project → execute）目前没有通用工具——这是 Skill Runtime 需要解决的核心问题。
 
@@ -54,13 +58,16 @@ related:
 - **首次出现**：2026-03-22
 - **最近更新**：2026-04-17
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > GSD 是文档式加载（document-centric）：plan 越多 → prompt 越大。Skill Runtime 是能力式加载（capability-centric）：按任务需求投影必要上下文。后者是 context 管理的正确方向。
 
 ## 冲突与演进
 
 - 2026-03-22：首次提出 context ≠ state 的核心洞察，定义三层架构。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3
 
 ## 关联概念
 

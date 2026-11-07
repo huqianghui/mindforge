@@ -1,7 +1,7 @@
 ---
 title: "RTK Token Compression"
 created: "2026-04-15"
-updated: "2026-04-30"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -32,9 +32,11 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 
 - **来源**：[[2026-04-14-周二]]
 - **首次出现**：2026-04-14
-- **最近更新**：2026-04-15
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：RTK 官方仓库 https://github.com/rtk-ai/rtk ：CLI proxy，重写命令并过滤压缩输出，100+ 命令，<10ms 开销；注意其是改写命令（rtk git status）的钩子方式
 
 > RTK 在 Agent 和 OS 之间插入代理层，拦截 Bash/Read/Glob/Grep/Ls 等工具调用的输出，通过策略引擎裁剪、压缩、重组数据后返回给 Agent。Agent 无需任何修改即可获得压缩后的输出。
 
@@ -45,6 +47,8 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 - **最近更新**：2026-04-15
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：官方仓库 README 未取到 '59 个 TOML 配置文件' 的计数，数字易变
 
 > 59 个 TOML 配置文件定义了针对不同命令（git diff、cargo test、npm install 等）的压缩策略，包括行过滤、正则替换、重复折叠、截断等操作。用户可通过 Session 数据分析实际 token 消耗，定制个性化压缩规则。
 
@@ -54,7 +58,9 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 - **首次出现**：2026-04-15
 - **最近更新**：2026-04-15
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过 中间件范式：wiki/concepts/rtk-token-compression.md）
 
 > RTK 的架构启示：AI Agent 的工具调用链可以像 Web 中间件一样插入处理层。这种模式可以扩展到安全审计（拦截危险命令）、缓存（重复查询去重）、可观测性（记录所有工具调用）等场景。
 
@@ -62,9 +68,11 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 
 - **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：RTK 官方仓库 https://github.com/rtk-ai/rtk 称节省 60-90%（输入侧）；Caveman 官方仓库 https://github.com/juliusbrussee/caveman 压缩 output；作用于不同数据流。78% 为作者模拟值，未复核
 
 > Caveman 压缩 output tokens（LLM 回复，-65%），RTK 压缩 input tokens（工具输出，-80%），两者作用于完全不同的数据流互不干扰。联合使用 30 分钟会话总节省 ~78%（130,900→28,586 tokens）。RTK 绝对节省量更大（命令输出占总量 ~90%），但纯对话场景仅 Caveman 有效。
 
@@ -72,15 +80,18 @@ RTK（Rust Token Killer）是一个 Rust 编写的 CLI 代理工具，通过在 
 
 - **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：RTK 官方仓库 https://github.com/rtk-ai/rtk 列出 Smart Filtering / Grouping / Truncation / Deduplication 四策略，<10ms 开销
 
 > 智能过滤（去噪音/注释/空白）、分组（按目录/类型聚合）、截断（仅保留失败用例）、去重（合并重复日志行并计数）。与 Caveman 的概率性输出压缩不同，RTK 基于确定性算法，效果稳定可预测，每命令处理开销 <10ms。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 3、待定 1、长效 1
 
 ## 关联概念
 

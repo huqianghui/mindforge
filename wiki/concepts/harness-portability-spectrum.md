@@ -1,7 +1,7 @@
 ---
 title: "Harness 可移植性分层"
 created: "2026-08-30"
-updated: "2026-11-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -33,7 +33,9 @@ related:
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 离模型近的资产只依赖"模型能读文本"这一最普适能力；离模型远的资产依赖 harness 私有机制（hook 挂的是 harness 内部生命周期事件，事件模型本身就是实现细节，换 harness 事件就不存在——hook 可移植性几乎为零）。Copilot Studio 三 harness 并存提供产品级证据：同一 agent 配置换 harness 跑出不同行为，"选 harness 就是选行为语义"。
 
@@ -41,9 +43,11 @@ related:
 
 - **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
-- **最近更新**：2026-08-30
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.9
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Superpowers 官方 RELEASE-NOTES https://github.com/obra/superpowers/blob/main/RELEASE-NOTES.md 含 Harness Support 章节（Hermes Agent、Grok Build CLI、Devin CLI；另有 Pi、Antigravity、Kimi Code）；仓库含 .claude/.codex/.hermes 等多宿主插件目录 https://github.com/obra/superpowers
 
 > Superpowers 6.3.0 release notes 明确列出 Harness Support 章节（Hermes Agent、Grok Build CLI、Antigravity、Pi、Codex……），同一套 skills 通过不同 bootstrap 机制注入各家 harness；仓库同时存在 `CLAUDE.md`、`AGENTS.md`、`GEMINI.md` 三个入口文件——一份方法论、多个宿主。一旦资产押注在 skill 上，agent/command/hook 这些绑定单一宿主的机制就成了拖累跨平台发布的死重。这是 Harness 框架 Skill 化收敛的第三个（结构性）原因。Foundry 侧共振：Prompt/Hosted Agent 的 Skill support 双 Yes——skill 正在成为跨 harness 的行业通用格式。
 
@@ -54,6 +58,8 @@ related:
 - **最近更新**：2026-08-30
 - **置信度**：0.75
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：Codex CLI/App 的 node_repl 注入差异本轮未查（Tavily 限流 429）
 
 > Codex CLI 与 App 共享插件目录，Skill 文件跨宿主 100% 可发现；但 bundled Computer Use Skill 依赖的 `node_repl + @oai/sky` runtime 只在 App 注入——**同一份 Skill 在 App 是完整能力、在 CLI 是一纸空文**。这给"离模型越近越可移植"补了精确化限定：可移植的是 skill 的**指令层**（markdown 说明书）；skill 若依赖特定执行接口（runtime tool、脚本解释器），该依赖层的可移植性立即跌至 hook 级别。与 [[skill-runtime]] 的 scripts 断层同构：规范只管包格式，不管执行环境。
 
@@ -63,7 +69,9 @@ related:
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。
 
@@ -74,6 +82,8 @@ related:
 - **最近更新**：2026-09-04
 - **置信度**：0.75
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：dsh-movein/Codex 导入/Goose 的市场事实本轮未查
 
 > 2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——"搬家工具"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了"离模型越近越可移植"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。
 
@@ -91,6 +101,7 @@ related:
 
 - 2026-08-30：升格建页（用户裁决）。2026-08-04 HOLD 于 harness-engineering 页内 Claim；复核阈值"第 2 篇独立引用"被系列14（08-20）与 Computer Use 系列六（08-29）两次命中后解除。harness-engineering 页保留原始 Claim（Copilot Studio 证据），本页作分层判据的归口页并补 runtime 维度精确化。
 - 2026-09-04：注入首批续证——五平台横评的"搬家工具成产品类目"市场侧实证（建页后第 4 处独立来源）。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、待定 2、长效 2
 
 ## 关联概念
 

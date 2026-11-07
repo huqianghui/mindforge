@@ -1,7 +1,7 @@
 ---
 title: "AI 推理 ASIC"
 created: "2026-08-30"
-updated: "2026-09-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：推理芯片 训练芯片 Jalapeño 的 Notes/AI/hardware 文章
 
 > 硬件电路层：推理芯片把晶体管预算押注在低精度单元（MXFP4 等），训练需要高精度累加与梯度通路；算子层：反向传播不是一条指令而是一组系统要求（中间激活存储、梯度同步）；系统层与经济层：推理优化目标是单位功耗下的吞吐与延迟，训练是集群规模的扩展效率。"理论能训练、实际不经济"——Jalapeño 对标 GB300 比的是同一任务的推理性能，不意味着能替代其训练角色。
 
@@ -44,7 +46,9 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 - **首次出现**：2026-08-26
 - **最近更新**：2026-08-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾；查过 qmd/grep 关键词：benchmark 工作点 TBT 吞吐延迟；OpenAI 官方稿称详细技术报告数月后发布，数字待核
 
 > 三套指标各有语境：峰值 mixed TPS/kW（1.5~1.9×）=各自开到最大吞吐的极限产能；最低 TBT（2.7~4.1×）=单用户最快解码；**matched TBT 下的吞吐（53~104×）**=把对手的最快单用户速度设为共同约束、比较仍能承载的并发量——GB300 要达到自己的最低延迟必须把并发压到极低，Jalapeño 同约束下仍可满载。餐厅类比：不是"给单个顾客上菜快 104 倍"，而是"相同上菜速度约束下能服务的顾客数差 104 倍"。104× 是有价值但非常特定的服务能力指标，绝不能读成整体性能倍数。官方 Pareto frontier 主张：现有硬件在吞吐与延迟间二选一，Jalapeño 同一架构同时拿到两者。
 
@@ -93,6 +97,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 - 2026-09-04：注入六层降本文的国产芯片 co-design 实证与两组口径澄清——建页后首批续证（"co-design 下沉硅层"Claim 获国产侧对照样本）。
 - 2026-09-12：evolve-wiki 例行复核——"co-design 逻辑下沉到硬件层"Claim 含 OpenAI 官方原话（"design the full system together"），按官方文档置信度下限规则 0.7→0.8。
 - 2026-08-30：建页（用户裁决，vault 硬件方向首篇即建锚点页；harvest 原建议挂候选等第 2 篇）。throughput-latency 工作点读数法按 harvest 建议不独立建方法页，作页内 Claim 收入并同步注入 [[hybrid-inference-framework-selection]]。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "Caveman Token Compression"
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -35,9 +35,11 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 
 - **来源**：[[Caveman深度解析]]
 - **首次出现**：2026-04-28
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：官方仓库自述 cuts 65% of tokens；Output 压缩，另有 /caveman-compress 压缩 CLAUDE.md 等记忆文件：https://github.com/juliusbrussee/caveman ；第三方分析指出整体会话实际仅省约 4-15%（https://aifordevelopers.substack.com/p/the-complete-guide-to-caveman）与原文'独立测试仅 13-21%'同向
 
 > Caveman 通过 SessionStart Hook 将风格约束规则注入系统提示，LLM 在同一次推理中直接生成简洁回复。官方基准：Explain React re-render bug 1180→159 tokens（-87%），Fix auth middleware 704→121（-83%），平均 1214→294 tokens（-65%）。但独立测试（Kuba Guzik）在已有简洁指令的基线下，实际节省仅 13%--21%。
 
@@ -45,9 +47,11 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 
 - **来源**：[[Caveman深度解析]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：Caveman lite/full/ultra 加 wenyan 三档，用 /caveman lite|full|ultra 切换：https://app.thetestingacademy.com/masterclass/caveman 与官方仓库 https://github.com/juliusbrussee/caveman
 
 > Lite（删填充词保冠词）/ Full（删冠词、片段句、短同义词）/ Ultra（极致缩写、箭头因果）/ Wenyan-Lite / Wenyan-Full / Wenyan-Ultra。文言文模式利用古文高信息密度进一步压缩。
 
@@ -58,6 +62,8 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 - **最近更新**：2026-04-30
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未取到 Caveman Auto-Clarity 机制的官方说明
 
 > 安全警告、不可逆操作确认、多步骤序列、用户疑惑时自动退出简化模式。但退出判断仍依赖 LLM 自身，不存在确定性触发器。
 
@@ -68,12 +74,15 @@ Caveman 的创新在于三个层面：(1) "人设 + 结构化规则"比简单的
 - **最近更新**：2026-04-30
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：本轮未取到 Caveman hook/状态文件实现的官方源码说明（仅知有 SessionStart 插件自启）
 
 > 第一层：规则文本持续性声明（"ACTIVE EVERY RESPONSE"）；第二层：UserPrompt Hook 每轮输出 per-turn reinforcement；第三层：.caveman-active 状态文件跨轮次通信。
 
 ## 冲突与演进
 
 - 2026-04-30：首次系统研究。官方宣称 75% 节省与独立测试 13%--21% 存在差异——取决于基线是否已有简洁指令。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 2
 
 ## 关联概念
 

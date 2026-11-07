@@ -1,7 +1,7 @@
 ---
 title: "Harness Quality Gate"
 created: "2026-04-11"
-updated: "2026-09-28"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -30,7 +30,9 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-12
 - **置信度**：0.5
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit/质量门禁（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 核心思路：通过 pre-commit hook + Harness CI pipeline，从 5 个维度构建质量门禁：① 代码格式检查（pre-commit hook）② 架构测试验证（ArchUnit 及同类工具）③ 代码检查器（Lint / Static Analysis）④ CI 编译与集成测试（Testcontainers）⑤ 性能测试。每个维度对应一组多语言工具链。
 
@@ -40,7 +42,9 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - **首次出现**：2026-04-11
 - **最近更新**：2026-04-11
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit/质量门禁（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > Java 用 ArchUnit（包依赖规则、分层架构约束、命名规范、循环依赖检测），Python 用 import-linter / pytestarch，JavaScript/TypeScript 用 dependency-cruiser / eslint-plugin-boundaries。在 Harness CI 中作为测试 step 执行，失败即阻断 pipeline。
 
@@ -50,7 +54,9 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 - **首次出现**：2026-04-23
 - **最近更新**：2026-04-23
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 ArchUnit/质量门禁（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 四层门禁：Layer 1 代码格式与 Lint（Prettier/ESLint/Ruff）→ Layer 2 架构约束执行（ArchUnit/dependency-cruiser/Tach/Semgrep）→ Layer 3 模块化与复用分析（Code Maat/ArchUnitTS LCOM/jscpd）→ Layer 4 AI 辅助 Review（PR-Agent/oh-my-claudecode/Tanagram）。在 Vibe Coding 时代，Layer 4 和 Baseline MCP Server 是最有价值的新增层。
 
@@ -68,6 +74,7 @@ Harness 工程质量门禁体系是通过 pre-commit hook + Harness CI pipeline 
 
 - 2026-04-23：从初始 5 维度线性模型（代码格式→架构验证→代码检查→CI 编译→性能测试）演进为四层嵌套模型（Lint → 架构约束 → 模块化分析 → AI Review），新模型更强调层级递进关系和 AI 辅助层的价值。
 - 2026-09-28：从开发期静态门禁（04 月四层模型）延伸到运行时决策门控——注入 Jev 文 + Computer Use 系列八 Claim；页面自 04-23 起首次更新，三条 stale Claims 维持原状态（DevOps 维度无新证据），新增维度为 active。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3
 
 ## 关联概念
 

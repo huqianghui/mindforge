@@ -4,7 +4,7 @@ aliases:
   - "语音级联管线架构"
   - "STT → LLM → TTS Pipeline"
 created: "2026-04-13"
-updated: "2026-09-25"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -72,7 +72,9 @@ related_methods: []
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：grep 过 streaming（Notes/Azure/paper/wiki），最新命中仅为 wiki 索引与学习路径页，无与之冲突的更新文章
 
 > 不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。
 
@@ -101,6 +103,7 @@ related_methods: []
 <!-- 在实际项目中应用此方法后，记录结果反馈 -->
 
 （暂无实践记录）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 1
 
 ## 关联概念
 

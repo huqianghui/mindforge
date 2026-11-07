@@ -1,7 +1,7 @@
 ---
 title: "Agent Zero"
 created: "2026-05-07"
-updated: "2026-05-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,6 +34,8 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **最近更新**：2026-05-07
 - **置信度**：0.7
 - **状态**：stale
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 待定——依据：未检索 Agent Zero 官方仓库，无本轮实际证据
 
 > Agent Zero 本质是 prompt-defined autonomous computer operator，设计目标是最大化 agent 自由度。属于 "AI OS / autonomous runtime" 一派，与 Devin、Manus、Open Interpreter 同类。来源：与 ChatGPT 讨论后的归纳。
 
@@ -43,7 +45,9 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 三种 agent philosophy 对比：
 > - **Agent Zero** = agent 自由演化（autonomy 极端，determinism 差）
@@ -58,7 +62,9 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > Production agent 最怕四种失败模式：context drift（上下文漂移）、endless loops（死循环）、token explosion（token 爆炸）、memory corruption（记忆损坏）。Agent Zero 的自由度设计使其难以防范这些问题。从反面论证了：harness 必须存在、feedback 必须结构化、memory 必须被 regulation。
 
@@ -68,7 +74,9 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 - **首次出现**：2026-05-07
 - **最近更新**：2026-05-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 不是学它怎么做 agent，而是学它暴露了什么问题。结论：暂不深入，作为研究型参考样本。优先级归类为第二层（研究 agent autonomy），第一层必须深挖的是 Claude Code / OpenClaw / Hermes / MCP / A2A / LangGraph。
 
@@ -85,6 +93,7 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、长效 3
 
 ## 关联概念
 

@@ -1,7 +1,7 @@
 ---
 title: "Agent Paradigms"
 created: "2026-04-13"
-updated: "2026-04-15"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -32,7 +32,9 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > ReAct = 试错迭代（"try and see"），Plan-and-Solve = 系统规划（"think before act"），Reflection = 自我批评（"review and improve"）。
 
@@ -42,7 +44,9 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > Claude Code 示例：ReAct 用于简单任务，Plan Mode 用于复杂任务，Reflection loop 用于测试失败时。选择不是非此即彼而是自适应切换。
 
@@ -52,13 +56,16 @@ AI Agent 的三种经典范式——ReAct（试错迭代）、Plan-and-Solve（�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）
 
 > 定义循环结构（Thought-Action-Observation）、管理上下文（trajectory 累积）、处理异常（解析错误、重试、无限循环预防）。理解范式原理可以从框架"用户"进阶为 Agent"创造者"。
 
 ## 冲突与演进
 
 （暂无）
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 3
 
 ## 关联概念
 

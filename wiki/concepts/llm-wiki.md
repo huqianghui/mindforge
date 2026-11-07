@@ -1,7 +1,7 @@
 ---
 title: "LLM Wiki"
 created: "2026-04-12"
-updated: "2026-04-15"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -54,7 +54,9 @@ LLM Wiki 是 Karpathy 提出的知识管理范式：用 LLM 将原始资料"编�
 - **首次出现**：2026-04-12
 - **最近更新**：2026-04-15
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过 'wiki compounds'、知识复利：wiki/concepts/llm-wiki.md，Notes/AI/AI-coporation/与AI相处之道：从工具到认知伙伴.md 同向）；注：'优于'为定性判断，无对照实验
 
 > 传统 RAG 的 chunk 质量依赖分块策略，每次查询从原始文档重新检索碎片。LLM Wiki 的文章由 LLM 编译保证质量（已综合、交叉引用），好的回答可写回 wiki 形成自增长循环——Karpathy 所说的 "the wiki compounds over time"。
 
@@ -62,9 +64,11 @@ LLM Wiki 是 Karpathy 提出的知识管理范式：用 LLM 将原始资料"编�
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：库内无矛盾（wiki/concepts/personal-knowledge-compiler.md 与 PKC 系列同向）；流程描述为作者自身实践，仍与当前 inbox/loop 流程兼容
 
 > 已完成文章 → 从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践。核心理念：Vault 是 Source of Truth，OMC 是编排调度层（维护者），不是记忆本身。知识以 Concept + Claims 形式结构化。
 
@@ -74,13 +78,16 @@ LLM Wiki 是 Karpathy 提出的知识管理范式：用 LLM 将原始资料"编�
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过 'RAG = search'：wiki/concepts/llm-wiki.md、wiki/decisions/wiki-over-rag-for-personal-knowledge.md）
 
 > Karpathy 的 LLM Wiki 模型将 LLM 视为知识维护者（像 Wikipedia 编辑）而非问答者。
 
 ## 冲突与演进
 
 初始设计中 CosmosDB 被定位为 NoSQL 文档存储 + 向量索引，后经讨论修正为 Gremlin 图数据库角色，AI Search 承担搜索主体。这是一个架构认知的演进过程。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 2、确认 1
 
 ## 关联概念
 

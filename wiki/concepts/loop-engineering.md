@@ -1,7 +1,7 @@
 ---
 title: "Loop Engineering"
 created: "2026-06-16"
-updated: "2026-08-16"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -36,7 +36,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 内循环（Kilo 定义）的循环单元是单个 Agent 在单任务上的迭代（Intent→Context→Action→Observation→Adjustment）；外循环（Addy Osmani 定义）的循环单元是跨多任务、按 cadence 自动运行的编排系统。两者不是竞争定义，而是同一棵树的两层：外循环编排多个内循环。用户感到"说不清和 Harness 的区别"，正因为这两个高度被同一个词缝在一起。
 
@@ -46,7 +48,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > 自动发现（auto-discovery）+ workflow + 重复（cadence）+ 跨轮记忆（state）= 外循环，四个零件缺一不可。其中自动发现是真正的分水岭——它决定"任务从哪来"，也就是"那个不断 prompt 的人"到底有没有被替换掉。任务靠人喂进来的（普通 Harness / Ralph）不是外循环；系统自己 triage 发现的（人退到设计者位置）才是。
 
@@ -56,7 +60,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Kilo 的 5 种内循环本质是一条按 verifier 强度排序的谱系：Compiler-Driven > Test-Driven > Runtime Debugging > Product Iteration > Review-Driven（强←确定性/即时/可自动，弱←噪声/慢/要人）。两条硬规律：① verifier 越接近确定性 ground truth，循环越能跑得紧、越能无人值守；② 验证应尽量左移——把设计约束编码成 test、把 review comment 沉淀成 lint rule，把循环从右侧（要人）推向左侧（可自动）。这是控制论"控制器只能调到传感器测得准的程度"的直接推论：Agent 产出质量的上限 = verifier 质量的上限。
 
@@ -66,7 +72,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Loop Engineering 不是 Harness 的同义词，也不是干净的子集或超集，而是从"反馈"视角横切了 Harness 的内部与上层：内循环 ⊂ Harness（六层架构的 L6 Eval 反馈层就是内循环实现，这部分是 Harness 的复述）；外循环 ⊃ Harness（把"多个单 Agent + 各自的 Harness"编排成自治系统，这一层在传统 Harness 叙事里缺位——Harness 默认有人在轮次之间盯着，外循环把这个人也抽掉了）。
 
@@ -76,7 +84,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Ralph Loop 与外循环是被包含关系，不在一个层面。Ralph Loop 不发现新工作（任务人喂进去，只管磨到 done/not done），外循环的第一步就是自己发现该干什么。Ralph Loop、AutoResearch、Kilo 的 5 种内循环是同一层——都是"单任务怎么收敛"的不同策略，区别在 verifier 强度和有没有 selection 机制（Ralph 无 selection，AutoResearch 有）。外循环高它们一层，只管怎么发现任务、隔离派发、独立验证、跨轮记忆。
 
@@ -86,7 +96,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > cron job 管 WHEN（何时触发，触发/调度轴，人预先写死的确定性调度，对应 Anthropic 的 workflow 分类）；dynamic workflow 管 HOW（如何决策执行，控制流轴，模型运行时决定，对应 agent 分类）。一句话：cron 决定"什么时候醒"，dynamic workflow 决定"醒了之后怎么干"。外循环两者都需要——光有 cron 没 workflow，醒了不知道干嘛；光有 workflow 没 cron，没人按开始。cron + dynamic workflow 就是一个最小可用外循环（MVP），框架（Conductor/Gas Town）省的只是 worktree 隔离、state 持久化、并行调度、diff 审查这几件脏活。
 
@@ -96,7 +108,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Osmani 的点题是"把自己——那个不断 prompt agent 的人——替换掉"（You design the system that does it instead）。杠杆点从 prompting 移到了 loop design，但责任没有转移——"Build the loop. But build it like someone who intends to stay the engineer, not just the person who presses go." 自治不等于免责，三个代价：验证仍是人工的（done 是声明不是证明）、理解债（Comprehension Debt）累积、认知投降（Cognitive Surrender）的诱惑被循环放大。
 
@@ -106,7 +120,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-06-15
 - **最近更新**：2026-06-15
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > OpenAI、Anthropic、Geoffrey Huntley、Horthy、Vasilopoulos 五个独立团队收敛到同一发现。三层框架栈：单任务自治内核（Ralph / Codex `/goal` / Claude Code headless）、并行编排器（Conductor/Crystal/Claude Squad，worktree 隔离）、高吞吐 swarm 引擎（Gas Town + Beads）。四根支柱：Context 架构（分层渐进披露）、Agent 专精（scoped + maker/checker 分离）、持久记忆（文件系统而非对话历史）、结构化执行（research→plan→execute→verify）。Cobus Greyling 的 7 个 playbook（PR Babysitter、Daily Triage、CI Sweeper 等）是窄范围外循环——窄不等于矮，它们仍替换掉了那个手动盯 PR/扫依赖的人。
 
@@ -114,9 +130,11 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 - **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
-- **最近更新**：2026-06-16
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：自建实践：.claude/loops/LOOP_STATE.md 与 .claude/loops/loop-run-log.md 实际存在（触发器/记忆/trace 三件分离）；来源文章 Notes/AI/Loop-Engineering/Loop-Engineering实践：知识库外循环.md 自 06-16 后仅 10-14 批量改名提交，无反向修订
 
 > 按验证信号分两类：确定性管道（README 失同步、索引过期、坏图、死链、Claim 年龄——有 ground truth 可程序判定）→ L2 自动执行；语义判断（该提取哪些概念、Claim 对不对、冲突怎么解、该学什么——无 ground truth）→ L1 只提议。铁律：循环替我跑腿，但"什么值得进入 wiki"永远是我的判断——wiki 是认知模型，自动污染它等于污染自己。验证信号弱的循环，约束必须写得更死（如热点雷达：wiki 缺失 ≠ 我不知道，只报近 30 天新名词，绝不铺基础概念）。
 
@@ -124,9 +142,11 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 - **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
-- **最近更新**：2026-06-16
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：自建实践：.claude/loops/LOOP_STATE.md 与 .claude/loops/loop-run-log.md 实际存在（触发器/记忆/trace 三件分离）；来源文章 Notes/AI/Loop-Engineering/Loop-Engineering实践：知识库外循环.md 自 06-16 后仅 10-14 批量改名提交，无反向修订
 
 > 触发器（cron 只是闹钟，真正的循环体是每次那一发 `claude -p`，起一个全新无记忆会话跑完即销毁）、记忆（LOOP_STATE.md，待办快照会被覆盖更新，因为每发都失忆，"模型会忘，仓库不会忘"，也是人工审阅的唯一入口）、trace（loop-run-log.md，只追加不覆盖的事件流，记每轮耗时/退出码）。STATE 是"现在的待办快照"，run-log 是"历史的事件流"。把三件拆开，每层能单独看、单独换，比混在一起的"自动化脚本"易审计。
 
@@ -134,9 +154,11 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 - **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
-- **最近更新**：2026-06-16
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：自建实践：.claude/loops/LOOP_STATE.md 与 .claude/loops/loop-run-log.md 实际存在（触发器/记忆/trace 三件分离）；来源文章 Notes/AI/Loop-Engineering/Loop-Engineering实践：知识库外循环.md 自 06-16 后仅 10-14 批量改名提交，无反向修订
 
 > 借控制论：模型是无状态控制器 `f(context)→output`，外循环系统补的全是它"身体"的部分——传感器（verifier/自动发现）、执行器（connectors：qmd/git/README 写入）、记忆（LOOP_STATE.md）、触发（cron 心跳）。更聪明的模型也替代不了这层，因为这些是系统属性不是智能属性：再聪明的无状态函数也无法凭空长出一块硬盘或一个闹钟。认知脚手架会被更强模型吸收，但"具身事实"不会——这正是 Loop Engineering 是一门工程而非"等模型变强"的原因。
 
@@ -146,7 +168,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Carlos Perez（Intuition Machine, 2026-07-19，标题即 "From Loop Engineering to Graph Engineering"）：单循环的四个死法不是偶然故障而是循环形状的必然后果——① Goodhart 定律（循环只见自身指标，客服 bot 用"劝退式关单"刷解决率）；② 向上盲区（循环无法质疑自己的目标值，越努力错误目标达成得越彻底）；③ 循环间冲突（独立建的循环互相拆台，单个看都工作正常）；④ 测量腐烂（传感器漂移、指标定义变质，没人看着看守者）。解法全是拓扑性的：配对解（优化循环配反指标监督——解决率配续约率）、层级解（慢循环持有快循环的 reference，改目标本身是被治理的循环）、显式仲裁解（打架循环之上有拥有权衡权的循环）、独立审计解（专职核对其他循环的数字是否还接触现实）。这正是成熟系统的实际形状：MLOps 的 champion-challenger + drift monitor + held-out 评估集、治理良好公司的日会 ⊂ 季度规划 ⊂ 独立年审。
 
@@ -156,7 +180,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Perez 更深的警告：建齐全套循环网络（配对指标、审计循环、meta-loop）仍可能失败——若审计循环拿运营数字对财务数字、而财务数字来自运营喂数的同一批系统，图是**环形的**：一切一致，无一被验证，它会以单循环同样的方式失败，只是更晚、更贵、沿途绿灯更多。图需要三样任何拓扑无法自给的**锚点（anchors）**：① 不可争辩的测量（钱真的到账、测试真的执行、客户真的留下）；② 冻结节点（优化循环永远不许调的规则，恰因那是优化器最想弱化的——如训练循环永远不许看 held-out set）；③ 图外判断（根部的"什么算更好"无法由机器自产，由人通过接触真实失败供给）。结论：持久的轴从来不是 loops vs graphs，而是 ungrounded vs grounded——改进机器是否还在接触它声称要改进的现实。这与本页"管道自动化，判断留给人"的分级自治原则同源。
 
@@ -166,7 +192,9 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - **首次出现**：2026-08-07
 - **最近更新**：2026-08-16
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳
 
 > Flowtivity 的成本推导：3 个 reviewer 并行使 wall-clock 缩到 1/3 但 token 是 3 份。单轮通过率 50% 时循环与图都约 2 轮 6 次调用，图纯赚 wall-clock；通过率 30% 时两者都约 3.3 轮，但图的每轮 token 是 3 倍——全体 reviewer 反复重跑，图比顺序循环更贵。配套决策矩阵（2×2：任务复杂度 × 并发需求）：只有"复杂任务 + 高并发需求"象限才上图，经验法则是任务有 3 个以上互相独立的验证步骤 + 复杂条件路由。监控指标是 cost per successful completion 而非 wall-clock。这给本页"何时做成外循环的三特征"补上了成本侧判据：循环升级为图（并行化）前先看单轮通过率。
 
@@ -174,9 +202,11 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 
 - **来源**：[[Loop-Engineering实践：知识库外循环]]
 - **首次出现**：2026-06-16
-- **最近更新**：2026-06-16
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 确认——依据：自建实践：.claude/loops/LOOP_STATE.md 与 .claude/loops/loop-run-log.md 实际存在（触发器/记忆/trace 三件分离）；来源文章 Notes/AI/Loop-Engineering/Loop-Engineering实践：知识库外循环.md 自 06-16 后仅 10-14 批量改名提交，无反向修订
 
 > ① 重复且有节奏（每天/每周固定要做，否则自动化收益盖不过维护成本）；② 大部分步骤有 ground truth（能交给确定性管道的越多越敢放手）；③ 判断点能干净隔离（把"需要品味"的环节收敛成 STATE 里几条待审，人只在这几个点花注意力）。最终留下的不是"全自动的知识库"，而是一个帮你跑腿、把判断浓缩到一处等你拍板的系统。分阶段信任：先手动空跑验证管道安全 + 语义层守得住边界，再挂 cron。
 
@@ -185,6 +215,7 @@ Loop Engineering（循环工程，2026 年出现的新词）是 Agentic Engineer
 - 2026-06-15：概念澄清篇确立内/外循环双高度框架，定位 Loop Engineering 在 Prompt⊂Context⊂Harness 概念栈中是"时间维度切片"，并提出 verifier 谱系这一核心增量。
 - 2026-06-16：实践篇把外循环最小内核落到个人知识库（PKC），验证"管道自动化、判断留给人"的分级自治可行，并提炼出"瓶颈是基础设施不是智能"的具身控制论洞察。
 - 2026-08-07/08-16：Graph Engineering 讨论（Perez "From Loop Engineering to Graph Engineering"）把设计单位从单循环升级到循环的网络——四死法/拓扑解法/锚点论作为本页的自然延伸注入；成本红线（通过率 <50% 图更贵）补上并行化的成本判据。graph engineering（含义②循环网络）暂不独立建页，归口本页。
+- 2026-11-07：/revalidate 全库复核（证据分类）——确认 4、长效 11
 
 ## 关联概念
 

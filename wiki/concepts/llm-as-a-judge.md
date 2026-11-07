@@ -1,7 +1,7 @@
 ---
 title: "LLM-as-a-Judge（三层正交评估模型）"
 created: "2026-08-03"
-updated: "2026-09-28"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -34,7 +34,9 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Evaluator Judge Strategy Criteria
 
 > 换 Judge 不换标准（GPT judge 换人工，rubric 可不变）；同一 judge 既能 pointwise 也能 pairwise；换一套 rubric，同一 judge 就从客服评估器变成医疗评估器。很多 Survey 和产品文档把三层画成同一棵分类树，是概念混乱的根源。
 
@@ -44,7 +46,9 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Judge 实现 Reward Model
 
 > Human 是黄金标准但贵且慢，定位是校准锚点而非日常工具（所有自动 judge 的终极指标是 Agreement with Humans）；能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用 Rule/Metric（零噪声，与 [[reward-design-three-inputs]] "确定性规则分白送零噪声信号"一致）；专训 reward model（PairRM/Prometheus）走向 rubric 化可解释化、通用 LLM judge 走向 RL 训练强化（J1），两条线在收敛。
 
@@ -54,7 +58,9 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Rubric Evaluator LLM Judge
 
 > 研究层（Survey 分类）把 Rubric-based 放在 LLM-as-a-Judge 之下（judge 的一种策略配置）；产品层（Azure AI Foundry）把 Rubric Evaluator 作为打包组件直接调用——内部就是 LLM judge 对加权维度逐维打 1~5 分并给理由，加权平均后归一化到 0~1，Foundry 把它作为 Agent 评估推荐主指标。两种画法都对，只是抽象层次不同。基于 Foundry 官方文档核对。
 
@@ -64,7 +70,9 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：Judge reliability 偏差
 
 > Consistency（同答案打十次漂移）、Position Bias、Verbosity Bias、Self-Preference（GPT 偏爱 GPT）、Style Bias、Prompt Sensitivity、Calibration 错位、Agreement with Humans——这张清单把 [[reward-design-three-inputs]] 里抽象的"judge 噪声 σ_noise"拆成可对症的病灶。评估噪声顺训练管道放大：APO 摆动第一大原因是评估噪声而非算法（见 [[automatic-prompt-optimization]]），"把 judge 做稳"（多次采样取均值、拆分维度、rubric 锚点）是评估和优化共同的地基。
 
@@ -74,7 +82,9 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：评估策略 Optimizer
 
 > Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。
 
@@ -102,6 +112,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 
 - 2026-08-03：概念篇 + 链路篇两篇成文，三层正交模型与 Judge Reliability 议题入库。ChatGPT 讨论中引用的 "RUBRIC-ARROW"、"C2" 两篇论文经核实不存在（幻觉引用），已替换为已核实论文（Survey 2411.15594 / 2411.16594 / 2412.05579 / 2507.21504 / MRRG 2607.01830）。
 - 2026-09-28：注入 FinOps 系列 02 + Jev 文 Claim——judge 在两变量坐标里的定位（左栏唯一评估手段、右栏兜底）与 typed 决策模型的对照；Reliability 议题新增"自报置信度无训练目标约束"一条具体来源。
+- 2026-11-07：/revalidate 全库复核（证据分类）——长效 5
 
 ## 关联概念
 

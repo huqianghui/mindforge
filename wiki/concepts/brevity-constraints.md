@@ -1,7 +1,7 @@
 ---
 title: "Brevity Constraints（简洁约束）"
 created: "2026-04-30"
-updated: "2026-07-07"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -37,6 +37,8 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 - **最近更新**：2026-04-30
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：论文数字（40.2%/84.4%、t=7.80）本轮未在论文原文核对，仅 vault 内部来源
 
 > Control 条件下大模型准确率 40.2% vs 小模型 84.4%（落后 44.2pp）；Brief 条件下大模型 66.5% vs 小模型 81.3%（差距缩小至 14.8pp）；Direct 条件下大模型 74.5% vs 小模型 82.3%。统计显著性：paired t-test, t=7.80, p<0.0001（96 个问题）。
 
@@ -47,6 +49,8 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 - **最近更新**：2026-04-30
 - **置信度**：0.8
 - **状态**：stale
+- **证据类型**：实测经验
+- **复核**：2026-11-07 待定——依据：论文分类占比（27.1%/48.1%/7.7%）本轮未在论文原文核对
 
 > 论文将问题分为 non-discriminative（27.1%）、normal scaling（48.1%）、inverse scaling（7.7%），准确率提升仅在 inverse scaling 问题上显著。对需要深度推理的任务，简洁约束可能严重损害性能。
 
@@ -56,7 +60,9 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 - **首次出现**：2026-04-29
 - **最近更新**：2026-04-30
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-07 长效——依据：库内无矛盾（查过 brevity、Caveman、reasoning 相关页：wiki/concepts/brevity-constraints.md）；属范式层面判断
 
 > 简洁约束有效场景：解空间小、答案直接可达，失败模式是"想太多"（overthinking）。长推理有效场景：解空间大、需多步搜索，失败模式是"想太少"。两种范式互斥——Caveman vs CoT/DeepSeek-R1/o1。
 
@@ -64,9 +70,11 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 - **来源**：[[2026-04-29-简洁约束逆转模型性能层级]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 确认——依据：RADAR: Reasoning-Ability and Difficulty-Aware Routing 论文 Published as a conference paper at ICLR 2026，使用 IRT 估计查询难度与模型配置能力；路由延迟约 6.89ms：https://people.umass.edu/~andrewlan/papers/26iclr-radar.pdf 与 https://arxiv.org/html/2509.25426v1（Poster 形式未核对）
 
 > ICLR 2026 Poster。借鉴心理测量学 Item Response Theory（IRT），给查询打"难度分"、给模型打"能力分"，实现查询级路由。难度高→大模型+深度推理，难度低→小模型+简洁快速。但距离工程落地仍有距离。
 
@@ -74,6 +82,7 @@ Brevity Constraints 指对 LLM 施加的输出长度约束（如"回答不超过
 
 - 2026-04-29：从论文中提取核心发现。与当前 Reasoning Model 主流趋势（CoT、extended thinking）存在范式矛盾——两者适用于不同问题类型。
 - **2026-08-16**：全部 4 条 Claims 证据停在 2026-04-30（frontmatter `updated` 07-07 但未更新证据），维护标 stale，等新证据复核。
+- 2026-11-07：/revalidate 全库复核（证据分类）——待定 2、长效 1、确认 1
 
 ## 关联概念
 
