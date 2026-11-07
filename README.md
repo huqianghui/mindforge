@@ -119,12 +119,14 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - `/wiki-query`：跨页查询
 - `/weekly-review`：每周回顾
 
-后台循环（cron）：
+后台循环（cron 定时无人值守运行；每个循环本身就是一个命令，也可以随时手动触发）：
 
-- 每天：收割新文章
-- 周六：图谱保鲜
-- 周日：复核一批 stale（`/loop-revalidate`，优先产品与服务类；确认类自动写回，修订 / 降级 / 退役留待人工裁决）
-- 周日：周度复盘与热点雷达
+- 每天：收割新文章——`/loop-harvest`
+- 周六：图谱保鲜——`/loop-hygiene`
+- 周日：复核一批 stale——`/loop-revalidate`（优先产品与服务类；确认类自动写回，修订 / 降级 / 退役留待人工裁决）
+- 周日：周度复盘与热点雷达——`/loop-weekly`
+
+想按 cron 的方式跑（带运行日志和失败自检），用 `.claude/loops/run-loop.sh <命令名>`，例如 `.claude/loops/run-loop.sh loop-weekly`；`touch .claude/loops/.loop-disabled` 可暂停全部循环。
 
 完整工作流见 `wiki/index.md`。
 
