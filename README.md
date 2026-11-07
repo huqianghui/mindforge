@@ -98,9 +98,22 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### 4. 维护命令（Claude Code skills）
 
-`/extract-knowledge` 提取知识 · `/evolve-wiki` 演进维护（按日期标记 stale）· `/revalidate` 按证据复核 stale（确认 / 修订 / 降级 / 退役）· `/detect-conflict` 查冲突 · `/knowledge-gap` 找差距 · `/wiki-query` 跨页查询 · `/weekly-review` 周报。完整工作流见 `wiki/index.md`。
+- `/extract-knowledge`：从日记和文章中提取知识
+- `/evolve-wiki`：演进维护，按日期标记 stale
+- `/revalidate`：按证据复核 stale（确认 / 修订 / 降级 / 退役）
+- `/detect-conflict`：查冲突论断
+- `/knowledge-gap`：找知识差距
+- `/wiki-query`：跨页查询
+- `/weekly-review`：每周回顾
 
-后台循环（cron）：每天收割新文章 · 周六图谱保鲜 · 周日复核一批 stale（确认类自动写回，改动知识本身的结论留待人工裁决）· 周日周度复盘与热点雷达。
+后台循环（cron）：
+
+- 每天：收割新文章
+- 周六：图谱保鲜
+- 周日：复核一批 stale（确认类自动写回，改动知识本身的结论留待人工裁决）
+- 周日：周度复盘与热点雷达
+
+完整工作流见 `wiki/index.md`。
 
 ---
 
