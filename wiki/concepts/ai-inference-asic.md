@@ -62,7 +62,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 - **证据类型**：产品与服务
 - **复核**：2026-11-07 修订——依据：依据：OpenAI 官方稿称 performance per watt 更优 https://openai.com/index/openai-broadcom-jalapeno-inference-chip；Yahoo Finance 报道额定 700W、实测持续功耗不高于 550W https://finance.yahoo.com/technology/ai/articles/openai-built-nvidia-beating-inference-175825708.html
 
-> **现行结论（2026-11-07 修订）**：补一句：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立
+> **现行结论（2026-11-07 修订）**：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立
 >
 > 以下为原记录：
 > OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从"买多少卡"变成"有多少电"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。

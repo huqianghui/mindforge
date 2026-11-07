@@ -43,7 +43,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 - **证据类型**：产品与服务
 - **复核**：2026-11-07 修订——依据：依据：verl README 标题 'verl/HybridFlow'，'2026/01 verl has been migrated to the verl-project' https://github.com/verl-project/verl
 
-> **现行结论（2026-11-07 修订）**：补充：仓库已从 volcengine/verl 迁至 verl-project/verl（2026-01）；最新已到 v0.9.x；HybridFlow 血缘与命名不变
+> **现行结论（2026-11-07 修订）**：仓库已从 volcengine/verl 迁至 verl-project/verl（2026-01）；最新已到 v0.9.x；HybridFlow 血缘与命名不变
 >
 > 以下为原记录：
 > 命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README："verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其"单控制器 + 多控制器"混合编排正是该论文核心设计的落地。

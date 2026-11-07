@@ -58,7 +58,7 @@ related:
 - **证据类型**：实测经验
 - **复核**：2026-11-07 修订——依据：OMC wiki 与 vault 并存问题已由 vault 的 wiki/ 目录取代（CLAUDE.md 当前以 wiki/ 为唯一存储）；wiki/decisions/wiki-over-rag-for-personal-knowledge.md
 
-> **现行结论（2026-11-07 修订）**：一句：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki
+> **现行结论（2026-11-07 修订）**：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki
 >
 > 以下为原记录：
 > OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。
