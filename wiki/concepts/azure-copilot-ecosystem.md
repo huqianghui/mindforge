@@ -125,12 +125,23 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 
 > 两层的细节分别归口 [[copilot-studio]] 与 [[copilot-managed-runtime]]，harness 选型归口 [[copilot-studio-harness-selection]]。与本页既有的 Azure Copilot Agents / Skills / MCP 不同，这两层的地基是 Power Platform（环境、Dataverse、Connector、DLP），治理横跨 M365 与 Power Platform 两个 admin center；与 Foundry Agent Service 不在同一层（SaaS 构建产品 vs Azure agent 运行时）。
 
+### Claim: 微软 AI 技术栈有三个支柱——GitHub Copilot（开发者与代码平台）、Copilot Studio（Power Platform 上的 SaaS 构建）、Foundry Agent Service（Azure 上的 PaaS 运行时）；三者共享 Copilot harness 与 Entra Agent ID，选型是分层组合而不是站队
+
+- **来源**：[[Foundry-Agent与Copilot-Studio的选型]]、[[GitHub-Copilot系列01：产品全景与竞争格局]]、[[Copilot-Studio系列03：四种Harness对比与选型]]
+- **首次出现**：2026-11-07
+- **最近更新**：2026-11-07
+- **置信度**：0.7
+- **状态**：active
+
+> 三者的构建者、计费和治理各不相同：[[github-copilot]] 面向开发者，入口是 IDE / CLI / app / github.com，底座是 GitHub Enterprise 的策略与度量，按席位加 AI credits；[[copilot-studio]] 面向业务制作者与 fusion team，地基是 Power Platform 环境、Dataverse、Connector、DLP，按 Copilot Credits；[[foundry-agent-service]] 面向专业开发者，地基是 Azure 订阅、RBAC、私网，按量计费。把它们连起来的有两样：同一套 Copilot harness（GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness），以及治理面的 Entra Agent ID 与 Agent 365。大企业里三者常同时存在、分属不同团队，选型的重点是接缝处走哪条官方支持的路。
+
 ## 冲突与演进
 
 - 2026-08-04：从 AG-UI 篇与 Foundry Toolbox/Skills 篇补充协议面（AG-UI 向上补齐）与 skill 治理面（toolbox 版本化、三路径不通、harness 实现权）两条新证据。
 - 2026-09-28：注入 FinOps 系列 01 Claim——从 Skills/协议/治理面扩展到产品阶段与定价面（Copilot/Cowork/Super App 三档、Copilot Credits 计价、C 端引 B 端分发策略）；页面自 08-04 起首次更新。
 - 2026-11-07：注入 GitHub Copilot 系列 03 Claim——从产品形态扩展到治理面的策略叠加规则（四层设置、最严格取值、生效值反推排查）。
 - 2026-11-07：GitHub Copilot 两条 Claim（四层系统与竞争格局、四层策略叠加）迁至新建的 [[github-copilot]]，本页保留微软 Azure / M365 一侧的生态与定价论断。
+- 2026-11-07：用户裁决三个支柱各自建页（[[github-copilot]]、[[copilot-studio]]、[[foundry-agent-service]]），本页作为总页补"三支柱"Claim，三页各以 part-of 挂回本页。
 
 ## 关联概念
 
