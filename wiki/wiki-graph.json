@@ -309,10 +309,10 @@
           "statement": "生态缺口在 Frontend SDK 层——Backend 可互换已基本做到，`@ag-ui/react` 类框架适配层缺失",
           "source": "AG-UI协议解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：缺口已部分补上：CopilotKit v2 提供 `useAgent`（@copilotkit/react-core/v2）直接返回 AG-UI AbstractAgent 并订阅状态；Client 也扩到 React Native、Angular、Slack/Teams。但仍是 CopilotKit 一家，没有中立的 `@ag-ui/react`。正文改为「useAgent 类 hook 已有，但仅 CopilotKit 提供」  以下为原记录： 第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。"
         },
         {
           "statement": "Voice Agent 本质也是一种 UI——interrupt/partial transcript/barge-in 可放进 AG-UI Event Flow",
@@ -436,25 +436,25 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 11,
-      "avg_confidence": 0.79,
+      "avg_confidence": 0.74,
       "claims": [
         {
-          "statement": "框架是一条 9 模块数据流脊柱 + 控制反转",
+          "statement": "框架是一条 9 模块数据流脊柱 + 控制反转（0.3.1 源码；v1.0 简化为 Trainer / API Gateway / Rollout Controller）",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "2026-06-25",
-          "last_updated": "2026-06-29",
+          "last_updated": "2026-11-07",
           "confidence": 0.85,
-          "status": "stale",
-          "evidence": "litagent → runner → tracer → store → adapter → reward → algorithm 是一条单向数据流，trainer 编排、types 做契约（基于 0.3.1 源码逐模块带 `file:line` 拆解）。控制反转：你定义「什么算好」的静态零件（agent 逻辑 + reward grader + 数据集），框架拥有「把好坏变成可迭代优化循环」的动态机制。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：'9 模块脊柱基于 0.3.1 源码'；v1.0 起架构简化为 Trainer（verl+vLLM）/ API Gateway / Rollout Controller 三件，需补一句版本对照，控制反转思想不变  以下为原记录： litagent → runner → tracer → store → adapter → reward → algorithm 是一条单向数据流，trainer 编排、types 做契约（基于 0.3.1 源码逐模块带 `file:line` 拆解）。控制反转：你定义「什么算好」的静态零件（agent 逻辑 + reward grader + 数据集），框架拥有「把好坏变成可迭代优化循环」的动态机制。"
         },
         {
-          "statement": "method-agnostic 的接缝是 adapter——换算法不动 agent",
+          "statement": "method-agnostic 的接缝是 adapter——换算法不动 agent（0.x 架构）",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "2026-06-25",
-          "last_updated": "2026-06-29",
-          "confidence": 0.85,
-          "status": "stale",
-          "evidence": "同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 的兑现处，也是它区别于纯 prompt 工具（DSPy）的差异化价值。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为 0.x 架构的描述并注明 v1.0 由 Gateway 承担  以下为原记录： 同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 的兑现处，也是它区别于纯 prompt 工具（DSPy）的差异化价值。"
         },
         {
           "statement": "@rollout 包函数不包实例；prompt 必须抽成注入资源",
@@ -466,13 +466,13 @@
           "evidence": "`@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓\"零代码改动\"实质是\"包一层符合签名的函数\"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。"
         },
         {
-          "statement": "store 是训练的控制平面，不只是 trace 存储",
+          "statement": "store 是训练的控制平面，不只是 trace 存储（0.2~0.3 的 LightningStore 设计）",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "2026-06-25",
-          "last_updated": "2026-06-29",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "store 自称 \"persistent control-plane that coordinates training rollouts\"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）的中枢。生产选型：负载是「高频小记录读写 + 队列状态机 + 嵌套 JSON spans」，Azure 上用 Cosmos DB for MongoDB API 最省事（协议兼容、0 代码复用现成 mongo 实现）；已有 PostgreSQL 则 pg+JSONB 自己实现接口；MySQL 不推荐（JSON 支持弱）。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为 0.2~0.3 的 LightningStore 设计；v1.0 以 Trainer/Gateway/Controller 重构  以下为原记录： store 自称 \"persistent control-plane that coordinates training rollouts\"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）的中枢。生产选型：负载是「高频小记录读写 + 队列状态机 + 嵌套 JSON spans」，Azure 上用 Cosmos DB for MongoDB API 最省事（协议兼容、0 代码复用现成 mongo 实现）；已有 PostgreSQL 则 pg+JSONB 自己实现接口；MySQL 不推荐（JSON 支持弱）。"
         },
         {
           "statement": "三级优化阶梯 APO → SFT → RL，SFT 是微调权重最便宜稳的入口",
@@ -484,13 +484,13 @@
           "evidence": "由轻到重：APO（只改 prompt，推理级，受限基座已有能力）→ SFT（拒绝采样只学正样本，16GB LoRA 可跑，把 pass@k 压成 pass@1）→ RL（正负样本+探索，40GB+，能探出新策略）。SFT 不是可有可无的过渡：① APO 改不动「能不能做对」只改「怎么说」，到顶后动权重最便宜入口是 SFT；② RL 几乎总要 SFT warmup，跳过直接 RL 冷启动易崩；③ reward 干净且 pass@k>0 时 SFT 性价比最优。其「只学正样本不探索」的限制恰是它便宜稳的来源——是 tradeoff 不是缺陷。"
         },
         {
-          "statement": "内置算法只有 APO + VERL，SFT 走自定义算法扩展点",
+          "statement": "0.3.1 内置算法只有 APO + VERL，SFT 走自定义算法扩展点",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "2026-06-25",
-          "last_updated": "2026-06-29",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "`algorithm/__init__.py` 仅 export 两个一等公民：APO（prompt）、VERL（RL 权重）。SFT **不是**内置算法类——它继承 `Algorithm` + 实现 `run()`，在 run 里用 `store.enqueue_rollout` 收集带 reward 轨迹、adapter 转 triplet、喂 Unsloth/Azure 微调（`examples/unsloth/sft_allinone.py`、`examples/azure/`）。这纠正了系列01 初版把 SFT 列为内置算法的说法。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为 0.3.1 源码结论；v1.0 内置算法集合需重新核对（README 仅体现 verl）  以下为原记录： `algorithm/__init__.py` 仅 export 两个一等公民：APO（prompt）、VERL（RL 权重）。SFT **不是**内置算法类——它继承 `Algorithm` + 实现 `run()`，在 run 里用 `store.enqueue_rollout` 收集带 reward 轨迹、adapter 转 triplet、喂 Unsloth/Azure 微调（`examples/unsloth/sft_allinone.py`、`examples/azure/`）。这纠正了系列01 初版把 SFT 列为内置算法的说法。"
         },
         {
           "statement": "store 居中解耦——算法与执行靠 5 个 store 动作做生产者消费者",
@@ -579,19 +579,19 @@
           "statement": "TodoWrite 是 harness \"行为纠偏\"能力的首次展现",
           "source": "Claude-Code系列02：learn-claude-code|learn-claude-code",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "引入任务追踪后，model 被强制同一时间只有一个 in_progress 任务；连续 3 轮不调用 todo 工具时系统自动注入提醒。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：TodoWrite 仍是 planning 机制（现仓库章节为 s05_todo_write，旧 12-session 版为 s03），提醒阈值细节标注未复核  以下为原记录： 引入任务追踪后，model 被强制同一时间只有一个 in_progress 任务；连续 3 轮不调用 todo 工具时系统自动注入提醒。"
         },
         {
           "statement": "learn-claude-code 的 12 session 分三梯队",
           "source": "Claude-Code系列02：learn-claude-code|learn-claude-code",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：旧 12 session 三梯队分法仍可作历史描述，但上游已重构为 s01–s17（含权限、hooks、MCP/plugin、workflow runtime、goal loop），需注明版本差异并重写梯队划分  以下为原记录： 基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。"
         },
         {
           "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——观察对象换成屏幕状态、动作换成 UI 事件",
@@ -968,13 +968,13 @@
           "evidence": "不是学它怎么做 agent，而是学它暴露了什么问题。结论：暂不深入，作为研究型参考样本。优先级归类为第二层（研究 agent autonomy），第一层必须深挖的是 Claude Code / OpenClaw / Hermes / MCP / A2A / LangGraph。"
         },
         {
-          "statement": "SKILL.md standard 可能催生 agent-native package ecosystem",
+          "statement": "SKILL.md 已成跨平台开放标准，正在催生 agent-native package ecosystem",
           "source": "2026-05-07-周四",
           "first_seen": "2026-05-07",
-          "last_updated": "2026-05-07",
+          "last_updated": "2026-11-07",
           "confidence": 0.5,
-          "status": "stale",
-          "evidence": "Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：SKILL.md 已是跨平台开放标准（agentskills.io，2025-12 发布，多家主流 agent/IDE 采纳），『尚无广泛采纳证据』已过时  以下为原记录： Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。"
         }
       ]
     },
@@ -1018,19 +1018,19 @@
           "statement": "per-kW vs per-chip 度量口径即立场——电力成为数据中心第一约束时能效是新竞争维度",
           "source": "OpenAI-Jalapeño推理芯片解读",
           "first_seen": "2026-08-26",
-          "last_updated": "2026-08-30",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：补一句：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立  以下为原记录： OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
         },
         {
           "statement": "\"begin deploying\" ≠ 大规模量产——芯片交付十阶段的位置判断",
           "source": "OpenAI-Jalapeño推理芯片解读",
           "first_seen": "2026-08-26",
-          "last_updated": "2026-08-30",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "已公布实机功耗与多模型 benchmark，说明至少完成 Tape-out → 样片点亮 → 初步软件适配，当前处于\"生产认证 + 小批试部署\"。分层判断：年底小批量内部部署可信（Broadcom 有为 TPU 预订台积电产能的先例）；立即替代大量 NVIDIA GPU 无证据（制程/良率/首批数量未披露）；数 GW 规模取决于多年爬坡（Hock Tan 口径：2026 底原型、2027 ramp、2028 上半年 full tilt）。同理勘误：\"九个月设计周期\"指架构设计环节而非立项到样片全程；与 Sol API 降价是战略相关而非直接因果（首测公布时芯片不可能已承担 Sol 流量）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：勘误处需改：多个来源把“九个月”描述为初始设计到流片（tape-out），不止架构设计环节；“年底小批量初始部署”与官方一致，数 GW 爬坡口径仍无官方时间表，保留分层判断  以下为原记录： 已公布实机功耗与多模型 benchmark，说明至少完成 Tape-out → 样片点亮 → 初步软件适配，当前处于\"生产认证 + 小批试部署\"。分层判断：年底小批量内部部署可信（Broadcom 有为 TPU 预订台积电产能的先例）；立即替代大量 NVIDIA GPU 无证据（制程/良率/首批数量未披露）；数 GW 规模取决于多年爬坡（Hock Tan 口径：2026 底原型、2027 ramp、2028 上半年 full tilt）。同理勘误：\"九个月设计周期\"指架构设计环节而非立项到样片全程；与 Sol API 降价是战略相关而非直接因果（首测公布时芯片不可能已承担 Sol 流量）。"
         },
         {
           "statement": "co-design 逻辑下沉到硬件层——模型+推理软件栈+芯片同司联合优化，且 AI 开始加速芯片设计本身",
@@ -1045,10 +1045,10 @@
           "statement": "国产芯片侧的 co-design 实证——架构×硬件联合设计把国产加速器拉近 NVIDIA 水平；\"3 倍端到端\"与\"训练 1/9\"都要先还原口径",
           "source": "Qwen3.8-Flash与GLM-5.3-Flash的降本解剖",
           "first_seen": "2026-08-31",
-          "last_updated": "2026-09-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①\"端到端性能提升 3 倍\"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②\"训练开销只有前代 1/9\"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：“数万张”改为“数万到约 10 万张（第三方口径，官方未给精确数）”；3 倍口径的读法确认；1/9 训练开销未查到官方来源，保持原文但标注待核  以下为原记录： GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①\"端到端性能提升 3 倍\"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②\"训练开销只有前代 1/9\"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。"
         }
       ]
     },
@@ -1846,10 +1846,10 @@
           "statement": "Subagent Context 与主 session 完全隔离",
           "source": "Claude-Code系列03：Agent、Subagent与Teammate",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "仅传递 prompt 参数，无对话历史、无主 session 上下文，返回时中间过程全部丢弃仅返回摘要。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：核心成立（独立 context、只返回摘要）。补充：官方现在区分 fork，fork 继承父对话而非空白启动；另外被命名的 subagent 之间可互发消息。正文加「fork 例外」  以下为原记录： 仅传递 prompt 参数，无对话历史、无主 session 上下文，返回时中间过程全部丢弃仅返回摘要。"
         },
         {
           "statement": "\"Process isolation gives context isolation for free\"",
@@ -1864,19 +1864,19 @@
           "statement": "Teammate 是具有名字、收件箱和独立 Agent Loop 的长期协作者",
           "source": "Claude-Code系列03：Agent、Subagent与Teammate",
           "first_seen": "2026-04-16",
-          "last_updated": "2026-04-16",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Teammate 与 Subagent 的本质区别：Subagent 是一次性委派（fire-and-forget），执行完即销毁；Teammate 有持久身份（name）、独立收件箱（JSONL inbox）和长期运行的 Agent Loop，通过 TeamConfig（`.team/config.json`）注册，通过 MessageEnvelope（type/from/content/timestamp）通信。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：Claude Code 官方已有 Agent teams：队友有独立 context、可直接互发消息、共享任务列表，由 lead 协调；官方机制并非原文的 JSONL inbox / .team/config.json（那是 learn-claude-code 教学实现）。正文标明「教学实现」与「官方 Agent teams」两个层次  以下为原记录： Teammate 与 Subagent 的本质区别：Subagent 是一次性委派（fire-and-forget），执行完即销毁；Teammate 有持久身份（name）、独立收件箱（JSONL inbox）和长期运行的 Agent Loop，通过 TeamConfig（`.team/config.json`）注册，通过 MessageEnvelope（type/from/content/timestamp）通信。"
         },
         {
           "statement": "Claude Code 形成三层 Agent 架构——Subagent / Runtime Task / Teammate",
           "source": "Claude-Code系列03：Agent、Subagent与Teammate",
           "first_seen": "2026-04-16",
-          "last_updated": "2026-04-16",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：三层仍可用作分析框架，但官方现在是 subagent（含 fork）/ Agent teams 两档，后台任务属 subagent 的运行方式。正文注明 Teammate 对应官方 Agent teams，Runtime Task 不是官方独立层  以下为原记录： 三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。"
         }
       ]
     },
@@ -1900,13 +1900,13 @@
       "avg_confidence": 0.75,
       "claims": [
         {
-          "statement": "Command / Skill / Agent 三层扩展各有定位",
+          "statement": "自定义 Command 已并入 Skill——扩展体系是 Skill 加 Agent，Plugin 负责打包分发",
           "source": "Claude-Code系列04：Command、Skill与Agent",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Command 是 prompt 模板（快捷入口，共享主 session context），Skill 是知识注入（被动触发，AI 自动判断加载），Agent 是独立角色（独立 context window，可限制工具和模型）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：官方文档：自定义 commands 已合并进 skills，`.claude/commands/x.md` 与 `skills/x/SKILL.md` 都创建 /x。正文改为「Command 并入 Skill，两层加 Agent」，三层说法降为两层加独立角色  以下为原记录： Command 是 prompt 模板（快捷入口，共享主 session context），Skill 是知识注入（被动触发，AI 自动判断加载），Agent 是独立角色（独立 context window，可限制工具和模型）。"
         },
         {
           "statement": "Plugin 是 Coding Agent 从\"工具\"走向\"平台\"的关键拐点",
@@ -1930,10 +1930,10 @@
           "statement": "扩展机制经历三次演进",
           "source": "Claude-Code系列06：Plugin生态与开发",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Command → Skill → Plugin。Anthropic 明确表示未来 Plugin 将成为标准扩展方式。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：演进链改为：Command 合并进 Skill，再由 Plugin 打包分发；Plugin 现在额外可含 hooks module（mod）。「Anthropic 明确表示」一句无本轮来源，删去或标出处  以下为原记录： Command → Skill → Plugin。Anthropic 明确表示未来 Plugin 将成为标准扩展方式。"
         }
       ]
     },
@@ -2305,10 +2305,10 @@
           "statement": "action loop 是 agent loop 在 GUI 操作域的实例化——协议层/翻译层/执行层分离，官方只给协议不给执行器",
           "source": "Computer-Use与Browser-Use系列三：自己实现",
           "first_seen": "2026-08-29",
-          "last_updated": "2026-08-30",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "循环骨架与 agent loop 同构（观察 → 模型判断 → 执行 → 回灌新状态），区别仅在实例化域：观察对象从工具返回值变成屏幕/页面状态（截图、DOM、AX 树），动作从 API 调用变成 UI 事件（click/type/scroll 坐标或元素引用）。分层上，模型返回的 action JSON 只是协议（`{type:\"click\",x,y}` 不会自己执行）；**action handler 是自己要写的翻译层**（官方仅给示例）；执行层可选 Playwright（浏览器页面）或 xdotool/系统事件（整个桌面）。\"Docker 支持这些 action\"是误读——支持 action 的是 handler，Docker/Playwright 只是执行环境。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：正文中『action JSON {type:click,x,y}』改为『computer_call 内的有序 actions 数组』；handler 为翻译层、Playwright/xdotool 为执行环境的分层结论不变  以下为原记录： 循环骨架与 agent loop 同构（观察 → 模型判断 → 执行 → 回灌新状态），区别仅在实例化域：观察对象从工具返回值变成屏幕/页面状态（截图、DOM、AX 树），动作从 API 调用变成 UI 事件（click/type/scroll 坐标或元素引用）。分层上，模型返回的 action JSON 只是协议（`{type:\"click\",x,y}` 不会自己执行）；**action handler 是自己要写的翻译层**（官方仅给示例）；执行层可选 Playwright（浏览器页面）或 xdotool/系统事件（整个桌面）。\"Docker 支持这些 action\"是误读——支持 action 的是 handler，Docker/Playwright 只是执行环境。"
         },
         {
           "statement": "语义操作优先、坐标操作兜底——Codex 与 Orca 两个独立实现同构收敛",
@@ -2627,10 +2627,10 @@
           "statement": "MCP 标准化为未来 AI \"App Store\" 生态奠基",
           "source": "05-Strategic-Implications-and-Future-Outlook",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-15",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：官方 MCP Registry 已存在但仍为 preview，且为公开服务器元数据目录；『Agent 无需人类预先配置地动态发现』仍属愿景，不是现状  以下为原记录： Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。"
         },
         {
           "statement": "AI 的可持续竞争优势来自上下文环境而非模型本身",
@@ -2795,10 +2795,10 @@
           "statement": "架构极简——仅 2 个工具",
           "source": "Context7：实时获取最新文档的MCP-Server",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "resolve-library-id 和 query-docs，检索排序在服务端完成，不消耗 LLM 推理 tokens。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：MCP 工具仍是 resolve-library-id 与 query-docs（两参数现均要求 query）；但现在另有 CLI+Skills 模式（ctx7 library / ctx7 docs），无需 MCP。正文补「也可走 CLI」  以下为原记录： resolve-library-id 和 query-docs，检索排序在服务端完成，不消耗 LLM 推理 tokens。"
         },
         {
           "statement": "支持版本特定查询和数千库文档",
@@ -2863,10 +2863,10 @@
           "statement": "SBP 用高熵训练目标提升跨文档关系建模",
           "source": "2026-03-22-Continually-Self-Improving-AI",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-07-06",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：全名称与机制『学习文档间关系并合成新语料』；『高熵目标/一对多』的措辞本轮摘要未见，需对照全文再保留  以下为原记录： 一个文档映射到多个相关文档，强制模型提炼共享抽象概念。"
         },
         {
           "statement": "CL-RL 四篇全景——一刀切在「改不改 base 参数」",
@@ -2927,10 +2927,10 @@
           "statement": "PactFlow AI 能从 OpenAPI spec 自动生成契约测试",
           "source": "Vibe-Coding系列12：测试环境即代码",
           "first_seen": "2026-04-23",
-          "last_updated": "2026-04-23",
+          "last_updated": "2026-11-07",
           "confidence": 0.5,
-          "status": "stale",
-          "evidence": "PactFlow AI（2025）支持 MCP Server 集成 VS Code/Cursor/Claude Code，从 OpenAPI spec 自动生成契约测试。这是 AI 辅助测试生成的前沿方向。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：核心成立（可从 OpenAPI、HTTP 流量或源码生成 Pact 测试）。补充三点：产品已更名为 PactFlow AI（原 HaloAI），命令为 pactflow-ai generate，并提供 PactFlow MCP Server；当前仅支持消费者侧 HTTP 交互的契约测试，provider 验证和事件架构仍在规划中；生成结果仍需人工评审。  以下为原记录： PactFlow AI（2025）支持 MCP Server 集成 VS Code/Cursor/Claude Code，从 OpenAPI spec 自动生成契约测试。这是 AI 辅助测试生成的前沿方向。"
         }
       ]
     },
@@ -3672,10 +3672,10 @@
           "statement": "Fabric IQ 是微软首次正式采用\"Ontology\"",
           "source": "Microsoft-Fabric-IQ与本体论",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "首次在数据平台产品中正式使用该术语。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：Fabric IQ 及 Ontology 目前仍为 preview（预览），并去掉或弱化'首次'的断言  以下为原记录： 首次在数据平台产品中正式使用该术语。"
         },
         {
           "statement": "Ontology 将数据从\"可查询\"升级为\"可理解、可推理、可行动\"",
@@ -3690,10 +3690,10 @@
           "statement": "Palantir Ontology 是操作语义层而非数据库",
           "source": "Palantir-Ontology的工程实践",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "不复制数据，而是编码业务逻辑。将企业数据景观从\"静态地图\"升级为\"实时导航系统\"。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：'不复制数据'过于绝对：Ontology 通过 backing datasource 映射，运行时由 object databases 索引对象数据；应改为'语义+动作的操作层，而非单纯数据库'  以下为原记录： 不复制数据，而是编码业务逻辑。将企业数据景观从\"静态地图\"升级为\"实时导航系统\"。"
         },
         {
           "statement": "DDD 是\"蓝图思维\"，Palantir Ontology 超越纯数据建模",
@@ -4105,7 +4105,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），闲置超时后回收算力（默认 15 分钟、可配 2~60 分钟；30 天不活跃永久删除）、恢复时状态自动还原（scale-to-zero + 有状态恢复），没有 replica 数和 warm pool 可配。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。"
+          "evidence": "每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），闲置超时后回收算力（默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）；30 天不活跃永久删除）、恢复时状态自动还原（scale-to-zero + 有状态恢复），没有 replica 数和 warm pool 可配。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。"
         },
         {
           "statement": "2026 年 Foundry 的路线是\"先把运行时做完、编排下沉到代码、再开放托管 harness\"——Copilot harness 进入 Foundry 后多了\"Microsoft 跑 loop、你只声明\"的第三种做法",
@@ -4209,7 +4209,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "规范驱动与方法论框架互补不可互替",
@@ -4221,13 +4221,13 @@
           "evidence": "规范驱动（GSD/SpecKit/OpenSpec）解决\"做什么\"，方法论（Superpowers）解决\"怎么做\"。"
         },
         {
-          "statement": "GSD/SpecKit/OpenSpec 只能三选一",
+          "statement": "GSD/SpecKit/OpenSpec 建议三选一——经验建议而非产品限制",
           "source": "Vibe-Coding系列04：流程框架选择指南|Vibe Coding系列04",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
-          "status": "stale",
-          "evidence": "三者功能高度重叠（都管\"做什么\"），Superpowers 管\"怎么做\"几乎必选搭配。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：「只能三选一」是作者建议而非产品限制，且 Spec Kit 现在是可组合 primitives；降为经验建议  以下为原记录： 三者功能高度重叠（都管\"做什么\"），Superpowers 管\"怎么做\"几乎必选搭配。"
         },
         {
           "statement": "项目复杂度应按 Context 信息量而非代码行数定级",
@@ -4746,10 +4746,10 @@
           "statement": "G2P 控制能力决定 Voice Agent \"做大之后会不会崩\"",
           "source": "Speech-Out深入：从G2P到SSML",
           "first_seen": "2026-04-30",
-          "last_updated": "2026-04-30",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：“GPT-Realtime 发音不可控”只对纯 S2S 路线成立；Voice Live 混合式（Realtime 出文本 + Azure TTS）可同时用 Lexicon，应改为“选对路线即可拿回发音控制”  以下为原记录： Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。"
         }
       ]
     },
@@ -4946,10 +4946,10 @@
           "statement": "Copilot Studio 把 harness 与 runtime 打包出售——选 harness 即选 runtime，依赖管理被扩展点取代",
           "source": "2026-08-10-周一",
           "first_seen": "2026-08-10",
-          "last_updated": "2026-08-10",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称\"四种 harness\"（另有 Customer Conversation harness）；\"Copilot Chat harness 对应无代码执行\"等细节应对照最新文档；正文应补第四种  以下为原记录： 微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。"
         },
         {
           "statement": "Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层",
@@ -5148,13 +5148,13 @@
       "avg_confidence": 0.82,
       "claims": [
         {
-          "statement": "Hermes Skill 自动生成基于工具调用计数器（每 15 次），非 cron 定时",
+          "statement": "Hermes Skill 自动生成由复杂任务、错误恢复、用户纠正等事件触发，非 cron 定时",
           "source": "Hermes-Agent与OpenClaw对比",
           "first_seen": "2026-05-07",
-          "last_updated": "2026-05-07",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：skill 由 skill_manage 在完成 5+ 工具调用的复杂任务、错误恢复、用户纠正后触发创建，属事件/启发式驱动而非 cron；\"每 15 次\"降为第三方说法  以下为原记录： 每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。"
         },
         {
           "statement": "Curator 系统管理 Agent 自动创建的 Skill 生命周期（active → stale → archived）",
@@ -5242,13 +5242,13 @@
           "evidence": "纯线性注意力召回差、纯全注意力长上下文显存爆炸，主流解法是交错堆叠。Qwen3-Next（2025-09，首个旗舰级 Hybrid）与 Qwen3.5（2026）都用 GDN : Gated Attention = 3:1（75% 线性 + 25% 全注意力）；NVIDIA Nemotron-H（Mamba-2 + Self-Attention + MLP，推理快至 3×）、Jamba、Falcon-H1/Zamba/Bamba 同属此类。动机：线性层把 KV cache 显存压成常数，少数全注意力层把精确召回找回来——长上下文下逼近全注意力质量却只花零头显存。Qwen3.5 还叠加 MoE（稀疏激活），是另一条正交优化轴，进一步增加缓存/状态管理难度。"
         },
         {
-          "statement": "Qwen3.5 缓存命中率归零是架构迁移的必然副作用，不是 bug",
+          "statement": "Qwen3.5 短前缀缓存命中近零是架构迁移的副作用，不是 bug",
           "source": "线性注意力时代的推理架构之一：Hybrid架构",
           "first_seen": "2026-06-22",
-          "last_updated": "2026-06-22",
+          "last_updated": "2026-11-07",
           "confidence": 0.85,
-          "status": "stale",
-          "evidence": "真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到\"多模态图像在前导致无公共前缀\"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：'命中率归零'改为：align 模式下短前缀命中近 0、长前缀可高命中，取决于块边界；'架构限制而非 bug'的结论保留  以下为原记录： 真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到\"多模态图像在前导致无公共前缀\"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。"
         },
         {
           "statement": "Hybrid 路线进入商用兑现期——Qwen GDN+QSA 3:1 与 GLM 线性+稀疏+IndexPool 双实现同构；内核级读数 ≠ 端到端读数",
@@ -5395,10 +5395,10 @@
           "statement": "底层 ASR 已\"够用\"，差异化在 L2-L6 上层",
           "source": "Typeless深度解析",
           "first_seen": "2026-05-20",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻\"最后一公里\"。产品洞察：用户要的不是\"准确的转录\"，而是\"不用打字就能产出好文本\"。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：去掉“Whisper WER 7.6%”这种单一数字，改为 WER 随数据集在约 2%~9% 浮动，“底层够用”的判断保留  以下为原记录： Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻\"最后一公里\"。产品洞察：用户要的不是\"准确的转录\"，而是\"不用打字就能产出好文本\"。"
         },
         {
           "statement": "App-aware tone switching 是智能听写的关键创新",
@@ -5510,25 +5510,25 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.64,
+      "avg_confidence": 0.57,
       "claims": [
         {
-          "statement": "Azure 企业级 LLM Wiki 应采用 AI Search（主体）+ CosmosDB Gremlin（图数据库补充）的双层架构",
+          "statement": "Azure 企业级 LLM Wiki 的一种候选架构：AI Search 为主 + CosmosDB Gremlin 补图",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-15",
-          "confidence": 0.6,
-          "status": "stale",
-          "evidence": "AI Search 承担文档/向量存储 + 混合检索（BM25 + Vector）+ 语义重排的搜索主体角色；CosmosDB Gremlin API 专注于 Entity + Relationship 的存储与多跳遍历——对应 Obsidian 的 Graph View / Backlinks / `[[wikilinks]]`。CosmosDB 不做文档/向量主存储。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：改为'仅作为企业级的一种候选架构，个人场景已被决策页否定'  以下为原记录： AI Search 承担文档/向量存储 + 混合检索（BM25 + Vector）+ 语义重排的搜索主体角色；CosmosDB Gremlin API 专注于 Entity + Relationship 的存储与多跳遍历——对应 Obsidian 的 Graph View / Backlinks / `[[wikilinks]]`。CosmosDB 不做文档/向量主存储。"
         },
         {
           "statement": "OmniRAG 路由根据查询类型自动选择最优检索路径",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-15",
-          "confidence": 0.6,
-          "status": "stale",
-          "evidence": "语义/关键词查询走 AI Search（主路径），关系/遍历查询走 CosmosDB Gremlin（补充路径），复合查询先 Gremlin 图遍历缩小范围再 AI Search 精排。比单一 Vector RAG 能回答更广泛的问题。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.45,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为'RAG 侧的混合检索路由思路'，不再与 LLM Wiki 绑定  以下为原记录： 语义/关键词查询走 AI Search（主路径），关系/遍历查询走 CosmosDB Gremlin（补充路径），复合查询先 Gremlin 图遍历缩小范围再 AI Search 精排。比单一 Vector RAG 能回答更广泛的问题。"
         },
         {
           "statement": "LLM Wiki 的知识复利效应优于传统 RAG",
@@ -5734,13 +5734,13 @@
       "avg_confidence": 0.74,
       "claims": [
         {
-          "statement": "MCP 存在严重 context 膨胀问题",
+          "statement": "MCP 曾有严重的 context 膨胀问题，tool search 延迟加载已大幅缓解",
           "source": "MCP-vs-CLI：重新审视MCP",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "每个 MCP Server 在每次推理调用时通过 tools/list 注入所有工具定义。70+ 工具消耗 15,000-25,000 tokens，占 context window 10%+。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：Claude Code 现默认延迟加载 MCP 工具定义（工具总量达上下文 10% 触发，可用 ENABLE_TOOL_SEARCH 调节），膨胀问题已大幅缓解。正文改为「早期（2026 年 1 月前）严重，现已有 tool search 缓解」，15-25k token 数字标注为旧数据  以下为原记录： 每个 MCP Server 在每次推理调用时通过 tools/list 注入所有工具定义。70+ 工具消耗 15,000-25,000 tokens，占 context window 10%+。"
         },
         {
           "statement": "CLI 方式 token 效率极高",
@@ -5897,7 +5897,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.85,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "method-agnostic 的定义是「换方法只换槽位，agent 与 reward 不改」",
@@ -5909,22 +5909,22 @@
           "evidence": "Agent Lightning 是一个 method-agnostic 的 agent 优化训练框架：换优化方法（APO↔SFT↔RL）只换 `algorithm` 槽位，agent 代码与 reward grader 一行不改。这把「升级优化能力」从\"换框架/重写\"降级为\"换槽位\"，是 method-agnostic 的核心承诺。"
         },
         {
-          "statement": "接缝是 adapter——同一份 trace，不同算法用不同消费方式",
+          "statement": "接缝是 adapter——同一份 trace，不同算法用不同消费方式（0.x 版本）",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "",
-          "last_updated": "2026-07-02",
-          "confidence": 0.9,
-          "status": "stale",
-          "evidence": "同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 从\"口号\"变成\"接缝\"的具体位置。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为 0.x 版本的 adapter 接缝  以下为原记录： 同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 从\"口号\"变成\"接缝\"的具体位置。"
         },
         {
-          "statement": "store（控制平面）是 method-agnostic 能成立的物理基础",
+          "statement": "store（控制平面）是 method-agnostic 能成立的物理基础（0.x 设计）",
           "source": "Agent-Lightning系列02：框架全景",
           "first_seen": "",
-          "last_updated": "2026-07-02",
-          "confidence": 0.85,
-          "status": "stale",
-          "evidence": "自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。store 不是被动存储，而是 runner↔algorithm 之间的协调中枢——正因为有这个居中的控制平面，生产者与消费者才能各自替换而互不影响。没有 store，method-agnostic 只是愿望；有了 store，它才有物理支点。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：限定为 0.x 的 store 设计；method-agnostic 原则本身不变  以下为原记录： 自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。store 不是被动存储，而是 runner↔algorithm 之间的协调中枢——正因为有这个居中的控制平面，生产者与消费者才能各自替换而互不影响。没有 store，method-agnostic 只是愿望；有了 store，它才有物理支点。"
         },
         {
           "statement": "三级阶梯（APO→SFT→RL）共享同一份 reward，只是消费方式不同",
@@ -6263,13 +6263,13 @@
           "evidence": "真正的 Agent 系统在外部（Claude Code, Codex, LangGraph），Notion 只是数据/UI 层。"
         },
         {
-          "statement": "MCP 是 Notion 的关键变量",
+          "statement": "Notion 已提供官方托管 MCP——MCP 从关键变量变成现实接口",
           "source": "Notion学习笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.5,
-          "status": "stale",
-          "evidence": "如果 MCP 成功，Notion 可成为外部 AI agent 的记忆层。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：'如果 MCP 成功'已成为现实：Notion 已提供官方托管 MCP（OAuth 认证，面向交互式客户端），且 Custom Agents 可连接外部 MCP；建议改写为陈述句并上调置信度  以下为原记录： 如果 MCP 成功，Notion 可成为外部 AI agent 的记忆层。"
         }
       ]
     },
@@ -6313,19 +6313,19 @@
           "statement": "OMC Autopilot 与 Superpowers 的核心体验差异",
           "source": "Vibe-Coding系列10：oh-my-claude-code|Vibe Coding系列10",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Superpowers 要求人类在每个阶段参与，OMC 的 autopilot 可以一句话跑完全程（全自动连续执行）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：autopilot 仍是一句话跑全程，但现在可配置阶段（autopilot.workflows）并可由 lead 保留最终审批；Superpowers 也已有 subagent-driven-development。差异从「人参与 vs 全自动」改为「默认参与度不同，两者均可调」  以下为原记录： Superpowers 要求人类在每个阶段参与，OMC 的 autopilot 可以一句话跑完全程（全自动连续执行）。"
         },
         {
           "statement": "Autopilot 运行时动态决策四大能力",
           "source": "Vibe-Coding系列10：oh-my-claude-code|Vibe Coding系列10",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.6,
-          "status": "stale",
-          "evidence": "Shared State 追踪、Role Routing 自动选模型、Persistent Execution Loop 反复验证、Parallel Task Distribution 多 worker 并行。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：autopilot 现为 stages 可配置工作流，能指定各阶段 executor；「四大能力」逐条名称未在官方 README 核到，正文改写为官方描述（可配置阶段、team 并行、reviewer 判定文件驱动状态转换）  以下为原记录： Shared State 追踪、Role Routing 自动选模型、Persistent Execution Loop 反复验证、Parallel Task Distribution 多 worker 并行。"
         }
       ]
     },
@@ -6593,10 +6593,10 @@
           "statement": "单个 Agent Node 内可通过 sessions_spawn 包含多个 Sub-Agent（嵌套最深 5 层）",
           "source": "Hermes-Agent与OpenClaw对比",
           "first_seen": "2026-05-07",
-          "last_updated": "2026-05-07",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Sub-Agent 是从 parent session 衍生的后台 worker，独立上下文和工具权限。maxSpawnDepth 默认 1（无嵌套），设为 2 即启用 Orchestrator Pattern。每 session 最多 5 个活跃子 Agent，全局并发上限 8。Sub-Agent 间逻辑隔离（独立 workspace、memory、skills、auth）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：maxSpawnDepth 默认已是 5（范围 1-5），非原文的 1；maxChildrenPerAgent 默认 5（范围 1-20），maxConcurrent 默认 8 且是每个派生会话的并发。正文把「默认 1 / 设 2 启用」改为「默认 5，可调 1-5」；「全局并发上限 8」改为「每个派生会话 8」  以下为原记录： Sub-Agent 是从 parent session 衍生的后台 worker，独立上下文和工具权限。maxSpawnDepth 默认 1（无嵌套），设为 2 即启用 Orchestrator Pattern。每 session 最多 5 个活跃子 Agent，全局并发上限 8。Sub-Agent 间逻辑隔离（独立 workspace、memory、skills、auth）。"
         },
         {
           "statement": "OpenClaw 支持 Persistent Agents 和 Sub-Agents 两种多 Agent 模式",
@@ -6705,19 +6705,19 @@
           "statement": "知识碎片化问题及解法",
           "source": "PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-15",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：一句：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki  以下为原记录： OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
         },
         {
           "statement": "PKC 四层知识模型——Concept/Method/Decision/Typed Relations",
           "source": "2026-04-13-周一",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "PKC 从单一概念层演进为四层模型：Concept（What）→ Method（How）→ Decision（Why）→ Typed Relations（How connected）。每层解决不同类型的知识问题：概念页记录声明式知识，方法页记录步骤化过程知识，决策页记录选型论证，8 种类型化关联记录知识间的语义关系。当前规模：40 concepts + 8 methods + 4 decisions + ~160 claims。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：规模数字改为引用当前 wiki/index.md 的统计，或标注'2026-04-13 时点'  以下为原记录： PKC 从单一概念层演进为四层模型：Concept（What）→ Method（How）→ Decision（Why）→ Typed Relations（How connected）。每层解决不同类型的知识问题：概念页记录声明式知识，方法页记录步骤化过程知识，决策页记录选型论证，8 种类型化关联记录知识间的语义关系。当前规模：40 concepts + 8 methods + 4 decisions + ~160 claims。"
         },
         {
           "statement": "五项高维度改进构成 PKC 持续演进机制",
@@ -6732,10 +6732,10 @@
           "statement": "知识图谱可视化让 PKC 从文本走向交互式图谱",
           "source": "2026-04-15-周三",
           "first_seen": "2026-04-15",
-          "last_updated": "2026-04-15",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从\"编译知识\"到\"可视化知识生态\"的关键一步。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：规模数字标注为 2026-04-15 时点，或更新为当前 export-graph 统计  以下为原记录： 通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从\"编译知识\"到\"可视化知识生态\"的关键一步。"
         },
         {
           "statement": "一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引——实体消解从构造上解决、索引成本为零",
@@ -6844,10 +6844,10 @@
           "statement": "缓存经济学首次有跨厂商价格实证——缓存命中价是独立竞争维度，prompt 结构越稳定越占优",
           "source": "Qwen3.8-Flash与GLM-5.3-Flash的降本解剖",
           "first_seen": "2026-08-31",
-          "last_updated": "2026-09-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于\"token 单价\"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从\"开不开\"变成\"何时命中、命中多少、什么时段\"三维账。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：DeepSeek V4 Flash 缓存命中价各源为 $0.0028~$0.007；GLM-5.3-Flash 限时 $0.015 的促销已于 9 月 9 日结束，现 $0.03；Qwen3.8-Flash 缓存价随服务商而异（DashScope 约输入价 10%）；结论'缓存命中价是独立竞争维度'保留  以下为原记录： 截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于\"token 单价\"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从\"开不开\"变成\"何时命中、命中多少、什么时段\"三维账。"
         },
         {
           "statement": "GPT-5.6 把 prompt caching 变为一等机制——控制权/计费/报告三换轨，128N 是报告取整口径而非放置规则",
@@ -6993,10 +6993,10 @@
           "statement": "知识图谱是个人与企业 RAG 的关键差距",
           "source": "qmd与Foundry-IQ的RAG能力对比",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.6,
-          "status": "stale",
-          "evidence": "qmd 缺乏知识图谱能力，Fabric IQ 提供原生 Labeled Property Graph + ISO GQL 支持。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：补“Fabric IQ ontology/graph 为 preview，图模型由 ontology 可选生成”；LPG + GQL 表述待官方页核对  以下为原记录： qmd 缺乏知识图谱能力，Fabric IQ 提供原生 Labeled Property Graph + ISO GQL 支持。"
         },
         {
           "statement": "Azure 企业级 LLM Wiki 架构——AI Search + CosmosDB Gremlin + OmniRAG 路由",
@@ -7099,10 +7099,10 @@
           "statement": "双通道架构中两条路径职责严格解耦",
           "source": "WebSocket与WebRTC深度对比",
           "first_seen": "2026-05-22",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "WebSocket（主控制面）：session control、tool calling、config 修改、错误通知、AI response lifecycle——可靠（TCP）语义控制。WebRTC DataChannel（就地控制）：VAD 事件、streaming token、fine-grained sync——低延迟与音频同链路。即使 PeerConnection 已建立，WebSocket 仍负责系统级控制。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：去掉“VAD 事件走 DataChannel”，改为 Voice Live 里事件主要走 WebSocket，DataChannel 非必需  以下为原记录： WebSocket（主控制面）：session control、tool calling、config 修改、错误通知、AI response lifecycle——可靠（TCP）语义控制。WebRTC DataChannel（就地控制）：VAD 事件、streaming token、fine-grained sync——低延迟与音频同链路。即使 PeerConnection 已建立，WebSocket 仍负责系统级控制。"
         },
         {
           "statement": "WebSocket 传音频有五个结构性缺陷",
@@ -7896,16 +7896,16 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 2,
-      "avg_confidence": 0.4,
+      "avg_confidence": 0.25,
       "claims": [
         {
-          "statement": "OpenClaw 是 Claude Code 主流 Skill 注册中心，拥有 2800+ 社区 Skill",
+          "statement": "ClawHub 是 OpenClaw 的 Skill 注册中心——规模数千至上万，且有恶意 skill 风险",
           "source": "2026-04-11-周六",
           "first_seen": "2026-04-11",
-          "last_updated": "2026-04-11",
-          "confidence": 0.5,
-          "status": "stale",
-          "evidence": "OpenClaw / ClawHub 提供 2800+ 社区 Skill，是目前 Claude Code 生态中规模最大的 Skill 注册中心。George 提到可将 OpenClaw 的 Skill Hub 模式用于功能复用——将培训材料、培训流程、培训打分作为独立 Skill 模块化管理。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.2,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：「2800+」已过时，改为「数千至上万，且有安全审计发现大量恶意 skill」；「Claude Code 主流 Skill 注册中心」说法不准，ClawHub 是 OpenClaw 的注册中心。  以下为原记录： OpenClaw / ClawHub 提供 2800+ 社区 Skill，是目前 Claude Code 生态中规模最大的 Skill 注册中心。George 提到可将 OpenClaw 的 Skill Hub 模式用于功能复用——将培训材料、培训流程、培训打分作为独立 Skill 模块化管理。"
         },
         {
           "statement": "GStack、Superpowers、Hermes 三大框架定位不同，适合不同场景",
@@ -8032,10 +8032,10 @@
           "statement": "SEP-2640 把 skill 标准化为 MCP Resource——progressive disclosure 三步正是 context projection 的协议化",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是\"读进上下文的文本\"，不是\"被调用的函数\"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的\"query → skill match → context projection\"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：SEP-2640 已于 2026-09 定稿(Final)成为官方扩展 io.modelcontextprotocol/skills；以 skill:// URI 的 Resource 暴露，新增 skills/list、skills/get 方法（可选 resources/directory/read）；\"Resource 而非 tool\"的核心成立，把\"提案\"改为\"已定稿扩展\"  以下为原记录： MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是\"读进上下文的文本\"，不是\"被调用的函数\"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的\"query → skill match → context projection\"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。"
         },
         {
           "statement": "Agent Skills 规范只定义包格式不定义执行环境——scripts 层是 skill 可移植性的隐藏断层",
@@ -8367,10 +8367,10 @@
           "statement": "十命令四阶段——SDD 方法论被编译成命令序列",
           "source": "Spec-Kit系列01：整体认识",
           "first_seen": "2026-07-20",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：命令已改为 /speckit-* 形式的 agent skills（constitution、specify、plan、tasks、implement、converge，clarify/checklist/analyze 为附加质量门）。「十命令四阶段」核心成立，正文加「现以 skills 形式提供」，并确认 converge 在列  以下为原记录： 十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。"
         },
         {
           "statement": "checklist 是\"Unit tests for English\"",
@@ -8427,7 +8427,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 13,
-      "avg_confidence": 0.77,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "实时语音 Agent 涉及三层技术栈",
@@ -8478,19 +8478,19 @@
           "statement": "Semantic VAD 本质是 Turn-Taking Policy 的接口壳而非独立 VAD 模块",
           "source": "Speech技术全景",
           "first_seen": "2026-04-30",
-          "last_updated": "2026-04-30",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“policy threshold / reward tradeoff”无官方依据，且 Azure semantic VAD 不是 GPT-4o 内部能力  以下为原记录： eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。"
         },
         {
           "statement": "语音输入产品经历三代范式演进——从准确转录到智能听写",
           "source": "Typeless深度解析",
           "first_seen": "2026-05-20",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已\"够用\"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：同 15，去掉 WER 7.6% 单一数字，三代范式保留  以下为原记录： 第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已\"够用\"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。"
         },
         {
           "statement": "音量包络驱动是\"简化口型同步\"与\"精细口型同步\"的分界——只认音量不认发音",
@@ -8630,7 +8630,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.62,
+      "avg_confidence": 0.57,
       "claims": [
         {
           "statement": "tmux 解耦终端会话与窗口",
@@ -8660,13 +8660,13 @@
           "evidence": "Ghostty（终端渲染）+ tmux 式会话管理 + AI Agent 集成层。"
         },
         {
-          "statement": "cmux 架构是 GUI App > Socket API > CLI",
+          "statement": "cmux 的 CLI 与 Unix socket 同为可编程接口",
           "source": "cmux使用笔记",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.5,
-          "status": "stale",
-          "evidence": "CLI 只是 wrapper，Socket API 才是唯一稳定接口，外部调用时 CLI 能力降级。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.3,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：改为'CLI 与 Unix socket 同为可编程接口'；'外部调用时 CLI 能力降级'本轮无官方佐证  以下为原记录： CLI 只是 wrapper，Socket API 才是唯一稳定接口，外部调用时 CLI 能力降级。"
         }
       ]
     },
@@ -8686,7 +8686,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.7,
+      "avg_confidence": 0.68,
       "claims": [
         {
           "statement": "Testcontainers 用真实容器替代 mock 是集成测试的更好方案",
@@ -8710,10 +8710,10 @@
           "statement": "在 Harness CI 中可通过 Docker-in-Docker 或 Testcontainers Cloud 运行",
           "source": "2026-04-11-周六",
           "first_seen": "2026-04-11",
-          "last_updated": "2026-04-11",
-          "confidence": 0.5,
-          "status": "stale",
-          "evidence": "Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：Testcontainers Cloud 作为替代运行时成立；Harness 特定的 DinD 配置没有取到一手证据。  以下为原记录： Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。"
         },
         {
           "statement": "docker-compose 是静态环境，Testcontainers 是动态环境——设计目标不同",
@@ -8725,13 +8725,13 @@
           "evidence": "docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。"
         },
         {
-          "statement": "Testcontainers 已被 Docker 收购（AtomicJar），支持 12 种语言，成为容器化集成测试事实标准",
+          "statement": "Testcontainers 已被 Docker 收购（AtomicJar），支持约 10 种语言，成为容器化集成测试事实标准",
           "source": "Vibe-Coding系列12：测试环境即代码",
           "first_seen": "2026-04-23",
-          "last_updated": "2026-04-23",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：收购事实成立（Docker 于 2023-12-11 宣布收购 AtomicJar），“事实标准”也有 Docker 官方措辞支持。但“12 种语言”不准：Docker 博客写的是 Java、.NET、Go、Node.js 加另外 6 种（共约 10 种），testcontainers.com 现列出 13 项（含 Native）。  以下为原记录： 2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。"
         },
         {
           "statement": "推荐测试分层：Unit(mock) → Integration(Testcontainers) → E2E(Playwright+TC)",
@@ -8830,13 +8830,13 @@
           "evidence": "常见误解：\"用户停了 → 我说话\"。正确理解：Turn-Taking 包含预测性机制（预判用户是否说完）和反应性机制（检测到停顿后决策），二者协同工作。"
         },
         {
-          "statement": "Turn-Taking 是语音 Agent 的核心难题",
+          "statement": "半双工范式下 Turn-Taking 是语音 Agent 的核心难题",
           "source": "Speech技术全景",
           "first_seen": "2026-04-11",
-          "last_updated": "2026-04-17",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：加范围：半双工（VAD 判停）范式下是核心难题；全双工模型下该难题被模型吸收  以下为原记录： Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
         },
         {
           "statement": "端到端架构将 Turn-Taking 内化为模型能力",
@@ -8918,10 +8918,10 @@
           "statement": "VERL = Volcano Engine RL，ByteDance Seed Team 发起、HybridFlow 的开源实现",
           "source": "Agent-Lightning系列07：强化学习与VERL入门",
           "first_seen": "2026-06-29",
-          "last_updated": "2026-06-29",
+          "last_updated": "2026-11-07",
           "confidence": 0.9,
-          "status": "stale",
-          "evidence": "命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：补充：仓库已从 volcengine/verl 迁至 verl-project/verl（2026-01）；最新已到 v0.9.x；HybridFlow 血缘与命名不变  以下为原记录： 命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
         },
         {
           "statement": "三大核心特征——HybridFlow 控制器、training/rollout 解耦、Ray 集群调度",
@@ -8954,10 +8954,10 @@
           "statement": "SFT 与 RL 是两个独立入口，RL 冷启动靠配置 `model.path` 而非自动 SFT",
           "source": "Agent-Lightning系列07：强化学习与VERL入门",
           "first_seen": "2026-06-29",
-          "last_updated": "2026-06-29",
+          "last_updated": "2026-11-07",
           "confidence": 0.85,
-          "status": "stale",
-          "evidence": "VERL 的 SFT Trainer 与 RL Trainer 是平级、独立的入口（`verl.trainer.fsdp_sft_trainer` vs `verl.trainer.main_ppo`），共享下层 Model Engine（FSDP/Megatron/VeOmni）与 CheckpointEngine，但 RL 启动时**不会自动先做 SFT**。所谓\"SFT 冷启动\"不是开关而是配置：把 `actor_rollout_ref.model.path` 指向一个已 SFT/Instruct 的 checkpoint。该配置组把 actor/rollout/reference 打包共享同一 `model.path`，故 SFT 模型同时充当 actor 初始权重与 reference policy（KL 锚点）。两种来路：① 直接用现成 Instruct 模型（多数实践，如 Qwen2.5-Instruct）；② 先用 fsdp_sft_trainer 产出 checkpoint 再喂给 main_ppo（SFT→RL 两段式，checkpoint 格式天然衔接）。最佳实践：通用任务直接用 Instruct 模型冷启动；domain gap 大或复刻 R1 式推理才自做 SFT，甚至 SFT→RL→SFT→RL 多轮交替。这与 agent-lightning 跨框架解耦 SFT(unsloth)/RL(verl) 同构——VERL 内部本就把两步解耦。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：入口名更新：main_ppo 已弃用为 main_ppo_sync；'SFT 与 RL 独立入口、冷启动靠 model.path'的结论保留，fsdp_sft_trainer 路径需按 0.8+ 重新核对  以下为原记录： VERL 的 SFT Trainer 与 RL Trainer 是平级、独立的入口（`verl.trainer.fsdp_sft_trainer` vs `verl.trainer.main_ppo`），共享下层 Model Engine（FSDP/Megatron/VeOmni）与 CheckpointEngine，但 RL 启动时**不会自动先做 SFT**。所谓\"SFT 冷启动\"不是开关而是配置：把 `actor_rollout_ref.model.path` 指向一个已 SFT/Instruct 的 checkpoint。该配置组把 actor/rollout/reference 打包共享同一 `model.path`，故 SFT 模型同时充当 actor 初始权重与 reference policy（KL 锚点）。两种来路：① 直接用现成 Instruct 模型（多数实践，如 Qwen2.5-Instruct）；② 先用 fsdp_sft_trainer 产出 checkpoint 再喂给 main_ppo（SFT→RL 两段式，checkpoint 格式天然衔接）。最佳实践：通用任务直接用 Instruct 模型冷启动；domain gap 大或复刻 R1 式推理才自做 SFT，甚至 SFT→RL→SFT→RL 多轮交替。这与 agent-lightning 跨框架解耦 SFT(unsloth)/RL(verl) 同构——VERL 内部本就把两步解耦。"
         },
         {
           "statement": "verl 0.8.0 删除 `verl.workers.fsdp_workers`，agentlightning 0.3.1 须锁 verl ≤0.7.0——`uv sync --frozen` 保证\"按锁装\"不保证\"能跑通\"",
@@ -8972,10 +8972,10 @@
           "statement": "训练期有两条独立 LLM 通路——debug 走外部 `OPENAI_BASE_URL`、训练走 store 注入的内部 vLLM",
           "source": "Agent-Lightning系列08：RL实战",
           "first_seen": "2026-07-03",
-          "last_updated": "2026-07-03",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "calc_x 跑通过程中\"第 3 步（调外部 API）通、第 4 步（进训练）报 Cannot connect\"的现象，根因是 agent-lightning + VERL 运行时存在两条物理隔离的 LLM 通路：① debug/开发态——Agent 直连外部 `OPENAI_BASE_URL`（如真实 OpenAI 或本地代理），验证 Agent 逻辑本身；② 训练态——rollout 用的是 VERL 内部拉起的 vLLM 实例，通过 store 的 `main_llm` resource 注入 Agent，Agent 此时应当读 store 提供的 endpoint 而非外部 API。两条通路的 base_url 来源不同，配置串了就表现为\"逻辑跑得通但一进训练就连不上\"。这印证了 [[method-agnostic]] 里 store 作为控制平面注入资源的物理基础——训练期的 LLM endpoint 不是 Agent 自己配的，是 store 下发的。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：注明为 0.3.1 观察；v1.0 改由 API Gateway 统一代理模型请求，两通路的区分需按新架构重述  以下为原记录： calc_x 跑通过程中\"第 3 步（调外部 API）通、第 4 步（进训练）报 Cannot connect\"的现象，根因是 agent-lightning + VERL 运行时存在两条物理隔离的 LLM 通路：① debug/开发态——Agent 直连外部 `OPENAI_BASE_URL`（如真实 OpenAI 或本地代理），验证 Agent 逻辑本身；② 训练态——rollout 用的是 VERL 内部拉起的 vLLM 实例，通过 store 的 `main_llm` resource 注入 Agent，Agent 此时应当读 store 提供的 endpoint 而非外部 API。两条通路的 base_url 来源不同，配置串了就表现为\"逻辑跑得通但一进训练就连不上\"。这印证了 [[method-agnostic]] 里 store 作为控制平面注入资源的物理基础——训练期的 LLM endpoint 不是 Agent 自己配的，是 store 下发的。"
         },
         {
           "statement": "verl 与 ms-swift/LLaMA-Factory 是\"改权重\"的两个量级——同名 GRPO 不同赛道，按训练规模选型",
@@ -9222,7 +9222,7 @@
       "id": "voice-live-agent",
       "type": "concept",
       "title": "Voice Live Agent",
-      "summary": "Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统。当前存在两种主流架构：Cascaded Pipeline（STT + LLM + TTS 独立流式组件）和 End-to-End Native（单一多模态模型）。2026 年企业级唯一生产可行架构仍是级联管线。低延迟的关键不是让单个组件更快，而是让它们重叠执行（streaming + pipelining）。",
+      "summary": "Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统。当前存在两种主流架构：Cascaded Pipeline（STT + LLM + TTS 独立流式组件）和 End-to-End Native（单一多模态模型）。企业场景仍常用级联或混合式；端到端（Realtime S2S）已可用于生产但控制力较弱（2026-11-07 复核修订，原写\"唯一生产可行架构仍是级联\"）。低延迟的关键不是让单个组件更快，而是让它们重叠执行（streaming + pipelining）。",
       "tags": [
         "wiki",
         "concept",
@@ -9235,7 +9235,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 25,
-      "avg_confidence": 0.79,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
@@ -9265,13 +9265,13 @@
           "evidence": "实现 < 1 秒端到端延迟需要 STT、LLM、TTS 的精密流水线协调。"
         },
         {
-          "statement": "端到端模型尚未达到企业生产可用",
+          "statement": "端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优",
           "source": "2026-04-06-企业级实时语音Agent",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值，Level 2 Hybrid Omni 本质仍是管线。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“唯一生产可行是级联”已过时，应改为“企业场景仍常用级联或混合式，Realtime S2S 已可用于生产但控制力较弱”  以下为原记录： 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值，Level 2 Hybrid Omni 本质仍是管线。"
         },
         {
           "statement": "Voice Agent 的真正难点在 Agent 而非语音",
@@ -9283,13 +9283,13 @@
           "evidence": "Voice Agent = LLM Agent + Voice I/O。推理、工具调用、状态管理才是核心难点，\"能听会说\"只是界面。"
         },
         {
-          "statement": "Azure Voice Live API 走全托管端到端路线",
+          "statement": "Azure Voice Live 是托管语音层——可挂 Realtime S2S、级联、混合式、BYOM 或 Agent",
           "source": "Voice-Live系列01：Agent实现架构",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.6,
-          "status": "stale",
-          "evidence": "STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：“走全托管端到端路线”过窄，改为“托管语音层，可挂 Realtime（S2S）、级联、混合式、BYOM 或 Agent”  以下为原记录： STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。"
         },
         {
           "statement": "Voice Live API 采用 WebSocket + WebRTC 双通道架构",
@@ -9301,22 +9301,22 @@
           "evidence": "WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。"
         },
         {
-          "statement": "从 WebSocket-only 到双通道是产品成熟度驱动的必然升级",
+          "statement": "要获得数字人最佳体验才需要 WebRTC——WebSocket-only 并非必然被淘汰",
           "source": "WebSocket与WebRTC深度对比",
           "first_seen": "2026-05-22",
-          "last_updated": "2026-05-24",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“WS 触顶必然升级”收窄为“要获得 avatar 的最佳体验才需要 WebRTC”  以下为原记录： WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。"
         },
         {
-          "statement": "Voice Live 与 Agent Service 解耦后发生模型归属反转",
+          "statement": "Voice Live 独立成服务，Agent 是可选挂载的大脑之一",
           "source": "Voice-Live系列02：解耦Agent-Service后的架构演进",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：“模型归属反转”的因果删掉；保留“Voice Live 独立成服务、Agent 为可选挂载、三种合作模式”，并注明 Agent 可搭 gpt-realtime  以下为原记录： Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。"
         },
         {
           "statement": "Voice Live 挂 Agent 是会话级绑定 + 服务端编排，不是 function call",
@@ -9331,10 +9331,10 @@
           "statement": "选型是一条光谱，延迟瓶颈在模型和工具而非 Voice Live 这层壳",
           "source": "Voice-Live系列02：解耦Agent-Service后的架构演进",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：在光谱上补 BYOM 与混合式两个位置；三笔账结论保留  以下为原记录： 直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。"
         },
         {
           "statement": "数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器",
@@ -10050,13 +10050,13 @@
           "evidence": "Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket），不做任何任务分解或调度决策。编排逻辑由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现。来源：OpenClaw 官方 Sub-agents 文档 + Meta Intelligence 技术分析。"
         },
         {
-          "statement": "OpenClaw 支持嵌套 Sub-Agent（最深 5 层，推荐 2 层）",
+          "statement": "OpenClaw 支持嵌套 Sub-Agent（默认最深 5 层，可用 maxSpawnDepth 收紧）",
           "source": "Hermes-Agent与OpenClaw对比",
           "first_seen": "2026-05-07",
-          "last_updated": "2026-05-07",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "maxSpawnDepth 范围 1-5，默认 1（不允许嵌套）。设为 2 时 Orchestrator 获得 sessions_spawn 权限可 spawn worker。Depth 2 的 leaf worker 无 session 工具，不能再 spawn。每 session 最多 5 个活跃子 Agent（maxChildrenPerAgent），全局并发上限默认 8。来源：OpenClaw 官方文档 docs.openclaw.ai/tools/subagents。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：“最深 5 层”与当前默认边界一致；但“推荐 2 层”只对应最初 changelog 里的 maxSpawnDepth: 2 示例，现行文档没有这条推荐。  以下为原记录： maxSpawnDepth 范围 1-5，默认 1（不允许嵌套）。设为 2 时 Orchestrator 获得 sessions_spawn 权限可 spawn worker。Depth 2 的 leaf worker 无 session 工具，不能再 spawn。每 session 最多 5 个活跃子 Agent（maxChildrenPerAgent），全局并发上限默认 8。来源：OpenClaw 官方文档 docs.openclaw.ai/tools/subagents。"
         },
         {
           "statement": "sessions_spawn 是非阻塞调用，立即返回 accepted 状态",
@@ -10278,10 +10278,10 @@
           "statement": "prompt-optimizer 是 L1 典型实现——meta-prompt 模板驱动单次改写，模板分语言不分模型",
           "source": "Prompt优化成熟度阶梯",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "工作流是\"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt\"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：L1 定位成立。但它已不止“单次改写”：现在支持测试、评估、收藏版本历史、图像模板、高级模板（消息数组）和 Prompt Garden 来源；“内置模板只分语言不分模型”本轮未能从 README 核实。  以下为原记录： 工作流是\"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt\"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。"
         },
         {
           "statement": "阶梯是数据飞轮中圈的优化环节：L0→L2 每上一级人的参与从\"人改人看\"退到\"人定评估集、算法闭合回路\"；L1 用 RLHF 式主观分、L2 才可能接 RLVR 式客观分；L2→RSI 的迁移阈值尚未知",
@@ -10443,25 +10443,25 @@
       "method_type": "layered-strategy",
       "decision_status": null,
       "claims_count": 2,
-      "avg_confidence": 0.7,
+      "avg_confidence": 0.4,
       "claims": [
         {
-          "statement": "三层优化覆盖 token 消耗全链路，联合节省 ~78%",
+          "statement": "三层优化覆盖 token 消耗全链路——官方宣称联合节省约 78%，独立实测显著更低",
           "source": "Caveman与RTK对比",
           "first_seen": "2026-04-30",
-          "last_updated": "2026-04-30",
-          "confidence": 0.7,
-          "status": "stale",
-          "evidence": "30 分钟会话估算：LLM 输出 12,000→4,200（Caveman -65%）、命令输出 118,000→23,900（RTK -80%）、记忆文件 900→486（compress -46%），总计 130,900→28,586（-78%）。RTK 绝对节省量最大（命令输出占总量 ~90%），Caveman 在纯对话场景不可替代。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“联合节省 ~78%”是单个 30 分钟会话的估算，缺少 A/B 实测，且被独立基准明显反驳。  以下为原记录： 30 分钟会话估算：LLM 输出 12,000→4,200（Caveman -65%）、命令输出 118,000→23,900（RTK -80%）、记忆文件 900→486（compress -46%），总计 130,900→28,586（-78%）。RTK 绝对节省量最大（命令输出占总量 ~90%），Caveman 在纯对话场景不可替代。"
         },
         {
-          "statement": "RTK 的绝对节省量远大于 Caveman",
+          "statement": "Bash 命令密集的会话里 RTK 的绝对节省量大于 Caveman",
           "source": "Caveman与RTK对比",
           "first_seen": "2026-04-30",
-          "last_updated": "2026-04-30",
-          "confidence": 0.7,
-          "status": "stale",
-          "evidence": "命令输出在总 token 中占比最大（~90%），RTK 对此压缩 ~80%。Caveman 仅压缩 LLM 回复和记忆文件，绝对量较小。但在不涉及命令执行的纯对话场景中，RTK 无效而 Caveman 是唯一手段。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“命令输出占 ~90%、RTK 压缩 80%”只在 Bash 命令密集的会话成立，内置读取工具不经过它。  以下为原记录： 命令输出在总 token 中占比最大（~90%），RTK 对此压缩 ~80%。Caveman 仅压缩 LLM 回复和记忆文件，绝对量较小。但在不涉及命令执行的纯对话场景中，RTK 无效而 Caveman 是唯一手段。"
         }
       ]
     },
@@ -10516,7 +10516,7 @@
       "id": "voice-cascaded-pipeline",
       "type": "method",
       "title": "Voice Cascaded Pipeline",
-      "summary": "语音级联管线（Cascaded Pipeline）是当前企业级 Voice Agent 的唯一生产可行架构。核心是将语音交互拆解为 STT → LLM → TTS 三个独立流式组件，通过 streaming + pipelining 重叠执行实现低延迟。**低延迟的关键不是让单个组件更快，而是让它们重叠执行**——Salesforce 级联管线实现 ~755ms first-audio latency。",
+      "summary": "语音级联管线（Cascaded Pipeline）是企业级 Voice Agent 最常用的架构，在多语言、自定义声音、interim response 上仍占优（端到端已可用于生产但控制力较弱，2026-11-07 复核修订）。核心是将语音交互拆解为 STT → LLM → TTS 三个独立流式组件，通过 streaming + pipelining 重叠执行实现低延迟。**低延迟的关键不是让单个组件更快，而是让它们重叠执行**——Salesforce 级联管线实现 ~755ms first-audio latency。",
       "tags": [
         "wiki",
         "method",
@@ -10529,7 +10529,7 @@
       "method_type": "architecture-pattern",
       "decision_status": null,
       "claims_count": 3,
-      "avg_confidence": 0.78,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "低延迟关键在于组件重叠执行",
@@ -10541,13 +10541,13 @@
           "evidence": "不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。"
         },
         {
-          "statement": "端到端模型尚未达到企业生产可用",
+          "statement": "端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优",
           "source": "2026-04-06-企业级实时语音Agent",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“唯一生产可行架构仍是级联”过强：Foundry voice agent 已把 gpt-realtime 类 speech-to-speech 作为一等选项，只是 interim response 等能力仅级联支持。  以下为原记录： 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。"
         },
         {
           "statement": "Dialog Manager 是被 Voice Live 默认配置折叠掉的一层——应答门控把它重新展开为显式状态机",
@@ -10697,16 +10697,16 @@
       "method_type": null,
       "decision_status": "active",
       "claims_count": 6,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.77,
       "claims": [
         {
-          "statement": "端到端模型尚未达到企业生产可用",
+          "statement": "端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优",
           "source": "2026-04-06-企业级实时语音Agent",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：“唯一生产可行架构仍是级联”过强：Foundry voice agent 已把 gpt-realtime 类 speech-to-speech 作为一等选项，只是 interim response 等能力仅级联支持。  以下为原记录： 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。"
         },
         {
           "statement": "Voice Live 把级联与端到端统一在同一 API 后面，切换成本降到配置级",
@@ -10859,10 +10859,10 @@
           "statement": "Hosted Agent 有一组不可忽视的硬约束",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：WebSocket 帧上限 1 MB（超限关闭码 1009）、单连接约 30 分钟（平台滚动回收时发关闭码 1001，用同一 agent_session_id 重连，平台不重放丢失的帧）、沙箱最高 2 vCPU / 4 GiB（语音建议至少 1 vCPU / 2 GiB）。session 闲置超时默认 15 分钟、可配置，但两篇官方文档口径不一致：Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟（最长 4 小时），以实测为准。Hosted 现在有官方的语音 agent 与 Telephony integration 章节，原来的“无 PSTN、电话场景直接撞墙”已过时，改为“有明确上限，按重连协议设计”；“无 WebRTC”本轮未找到原文，待核  以下为原记录： WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。"
         },
         {
           "statement": "Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权",
@@ -10898,7 +10898,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：闲置超时后回收算力（默认 15 分钟，现可配 2~60 分钟）、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温到闲置超时为止也计费（默认配置下单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴，调小超时可缩短尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
+          "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：闲置超时后回收算力（默认 15 分钟，可配置；两篇官方文档的上限不一致）、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温到闲置超时为止也计费（默认配置下单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴，调小超时可缩短尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
         },
         {
           "statement": "反向判据：何时不该挂 Agent——\"应用开轮 + 现成文本逐字读\"下 Agent 价值为零且 Agent 模式是负资产",
@@ -10937,25 +10937,25 @@
       "method_type": null,
       "decision_status": "active",
       "claims_count": 5,
-      "avg_confidence": 0.84,
+      "avg_confidence": 0.82,
       "claims": [
         {
           "statement": "框架按部署规模选型——llama.cpp/SGLang/vLLM 三档",
           "source": "2026-06-22-周一",
           "first_seen": "2026-06-22",
-          "last_updated": "2026-06-22",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "单机/个人/低并发 → llama.cpp（slot 续接够用，部署省心，但无法跨并发共享）；生产/高并发/多模态 → SGLang（MambaRadixCache 是当前唯一为 Hybrid 跨请求复用专门设计的方案）；vLLM 居中——命中率 0 时\"关掉推测解码\"救场。落地顺序：查日志 `Prefix cache hit rate:` 定基线 → vLLM 显式 `--enable-prefix-caching` + 关 MTP 推测解码再测 → 仍为 0 上 SGLang 按 cookbook 部署 → 压测并发 × 命中率/TTFT/吞吐。收益预期：只省 system prompt 的 prefill，占比 ≈ `prompt token /(prompt + 图片 token)`，prompt 越长收益越大。"
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：方向仍成立，但“命中率 0 时关掉推测解码救场”已过时：vLLM 已有 align 模式混合模型前缀缓存，并新增 --enable-mamba-shared-prefix-checkpoint 与 Marconi 式准入策略，MTP 与 align 模式兼容也在合入。vLLM 在 hybrid 上仍有命中率缺陷（issue 45238），“生产高并发首选 SGLang”暂时保留，但“MambaRadixCache 是唯一专门设计”要改成“当前最成熟”。  以下为原记录： 单机/个人/低并发 → llama.cpp（slot 续接够用，部署省心，但无法跨并发共享）；生产/高并发/多模态 → SGLang（MambaRadixCache 是当前唯一为 Hybrid 跨请求复用专门设计的方案）；vLLM 居中——命中率 0 时\"关掉推测解码\"救场。落地顺序：查日志 `Prefix cache hit rate:` 定基线 → vLLM 显式 `--enable-prefix-caching` + 关 MTP 推测解码再测 → 仍为 0 上 SGLang 按 cookbook 部署 → 压测并发 × 命中率/TTFT/吞吐。收益预期：只省 system prompt 的 prefill，占比 ≈ `prompt token /(prompt + 图片 token)`，prompt 越长收益越大。"
         },
         {
           "statement": "SGLang 领先是设计基因（prefix-centric）而非团队速度",
           "source": "SGLang与vLLM的基因之争",
           "first_seen": "2026-06-22",
-          "last_updated": "2026-06-22",
-          "confidence": 0.85,
-          "status": "stale",
-          "evidence": "vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。"
+          "last_updated": "2026-11-07",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 降级）**：原文自己已说明“不是永久护城河、选型要带日期”，这一点正确；但“vLLM 要补课”已部分兑现，建议把结论改成“2026 年中 SGLang 在 hybrid 上更稳，vLLM 已追上基础能力”。  以下为原记录： vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。"
         },
         {
           "statement": "benchmark 解读先辨工作点——峰值吞吐、最低 TBT、matched TBT 三读数各有语境",
