@@ -94,13 +94,26 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 ### 3. 阅读 Wiki
 
-入口 `wiki/index.md`——含完整的概念 / 方法 / 决策索引。知识以 **Claim** 为单元：每条论断带证据来源、置信度（0.0~1.0）、生命周期状态（active / conflicting / outdated / stale）。9 种类型化关系（implements / grounds / extends / …）定义见 `wiki/_relations.md`。不想在本地跑的话，可以直接用 [在线浏览](#在线浏览--browse-online) 里的知识图谱和洞察页查看同样的内容。
+入口 `wiki/index.md`——含完整的概念 / 方法 / 决策索引。知识以 **Claim** 为单元：每条论断带证据来源、置信度（0.0~1.0）、生命周期状态（active / conflicting / outdated / stale）。9 种类型化关系（implements / grounds / extends / …）定义见 `wiki/_relations.md`。
 
-### 4. 维护命令（Claude Code skills）
+每条 Claim 还标有**证据类型**（产品与服务 / 实测经验 / 理论（长效））和最近一次**复核**记录（结论 + 依据链接）：产品与实测类超过 60 天未更新会标 stale、由 `/revalidate` 拿证据复核；理论类标为长效，不按日期过期，只在出现反面证据时重审。不想在本地跑的话，可以直接用 [在线浏览](#在线浏览--browse-online) 里的知识图谱和洞察页查看同样的内容。
+
+### 4. 学习路径
+
+`wiki/paths/` 把网状的图谱排成有先后顺序的学习路径，目前 6 条：微软 AI 三支柱、语音 Agent 与实时交互、Harness 工程与 Agent 架构、强化学习与后训练、Agent 自我改进、个人知识编译（PKC）。每条路径：
+
+- **站点**：每站列出要读的 wiki 页与原文、前置站点、预计用时，以及 3~4 条「学到什么程度算会」
+- **前沿站**：知识差距报告里与本领域相关、还没进 wiki 的新变化，「算会」统一是"能说出它改变了哪一站的哪条结论"
+- **题库**：`<路径>.quiz.md`，按站点分组的场景 / 辨析 / 解释题，每题带参考要点与出处（目前三支柱已有 55 题，其余路径陆续补）
+- **信号源**：frontmatter 的 `gap_topics` 与 `signals` 声明这个领域关联哪些知识差距主题、该盯哪些外部信源
+
+企业内部的 Managed Runtime 版本（[mindforge-managed-app](https://github.com/huqianghui/mindforge-managed-app)，需 Entra 登录）有「学习」页签：按站点阅读、勾选「算会」、间隔复习自测（可选 AI 点评），进度按登录用户保存，可导出学习记录流回知识差距分析。
+
+### 5. 维护命令（Claude Code skills）
 
 - `/extract-knowledge`：从日记和文章中提取知识
-- `/evolve-wiki`：演进维护，按日期标记 stale
-- `/revalidate`：按证据复核 stale（确认 / 修订 / 降级 / 退役）
+- `/evolve-wiki`：演进维护，按日期标记 stale（理论（长效）类除外）
+- `/revalidate`：按证据复核 stale——先分证据类型（产品 / 实测 / 理论），再给出确认 / 修订 / 降级 / 退役 / 待定，改知识本身的结论先经人工裁决
 - `/detect-conflict`：查冲突论断
 - `/knowledge-gap`：找知识差距
 - `/wiki-query`：跨页查询
@@ -110,7 +123,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 
 - 每天：收割新文章
 - 周六：图谱保鲜
-- 周日：复核一批 stale（确认类自动写回，改动知识本身的结论留待人工裁决）
+- 周日：复核一批 stale（`/loop-revalidate`，优先产品与服务类；确认类自动写回，修订 / 降级 / 退役留待人工裁决）
 - 周日：周度复盘与热点雷达
 
 完整工作流见 `wiki/index.md`。
