@@ -119,6 +119,7 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - `/extract-knowledge`：从日记和文章中提取知识
 - `/evolve-wiki`：演进维护，按日期标记 stale（理论（长效）类除外）
 - `/revalidate`：按证据复核 stale——先分证据类型（产品 / 实测 / 理论），再给出确认 / 修订 / 降级 / 退役 / 待定，改知识本身的结论先经人工裁决
+- `/learning-path`：生成或刷新一条学习路径与题库；不带参数时按库内厚度、知识差距热度和工作主线推荐候选领域
 - `/detect-conflict`：查冲突论断
 - `/knowledge-gap`：找知识差距
 - `/wiki-query`：跨页查询

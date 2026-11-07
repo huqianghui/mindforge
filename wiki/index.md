@@ -45,6 +45,7 @@ tags:
 | `/extract-knowledge` | 从日记/文章中提取概念、方法和论断到 wiki   | 每日或按需 |
 | `/evolve-wiki`       | 更新置信度、生成摘要、刷新关联           | 每周    |
 | `/detect-conflict`   | 扫描 wiki 发现冲突论断            | 每周或按需 |
+| `/learning-path`     | 生成 / 刷新学习路径与题库，无参数时推荐候选领域 | 按需 |
 | `/revalidate`        | 按证据复核 stale Claims：确认 / 修订 / 降级 / 退役 | 每周或按需 |
 | `/knowledge-gap`     | 分析知识库差距，生成学习建议报告          | 每周或按需 |
 | `/wiki-query`        | 跨切面查询：关系图谱、Claims 检索、决策查询 | 按需    |
