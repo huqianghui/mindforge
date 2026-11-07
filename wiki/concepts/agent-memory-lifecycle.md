@@ -15,6 +15,7 @@ aliases:
   - "Copilot Memory 生命周期"
 related:
   - "[[claude-code-memory-system]]"
+  - "[[github-copilot]]"
   - "[[recursive-self-improvement]]"
 ---
 
@@ -117,6 +118,7 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 ## 关联概念
 
 - [[claude-code-memory-system]] — `contrasts` 前者靠分层与人工提权管理记忆，本页靠核对、投票、过期自动管理
+- [[github-copilot]] — `part-of` 本页机制目前唯一的产品实现样本是 GitHub Copilot 的 Memory 与 Dreaming
 - [[recursive-self-improvement]] — `part-of` 记忆生命周期是 RSI 中"持久状态改进"在上下文层的一种实现
 
 ## 来源日记
