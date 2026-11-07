@@ -4,7 +4,7 @@ aliases:
   - "三层 Token 优化策略"
   - "compact / RTK / Caveman"
 created: "2026-04-30"
-updated: "2026-04-30"
+updated: "2026-11-07"
 tags:
   - wiki
   - method
@@ -76,24 +76,34 @@ AI Coding Agent 的 token 消耗来自三个方向：LLM 回复（output）、�
 
 ## Claims
 
-### Claim: 三层优化覆盖 token 消耗全链路，联合节省 ~78%
+### Claim: 三层优化覆盖 token 消耗全链路——官方宣称联合节省约 78%，独立实测显著更低
 
 - **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.4
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 降级——依据：依据：JetBrains 对 token 节省工具的配对基准 https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings ——caveman 宣称 -65%，实测 -8.5%；rtk 宣称 -60 到 -90%，实测 +7.6%（80 个配对任务）
 
+> **现行结论（2026-11-07 降级）**：“联合节省 ~78%”是单个 30 分钟会话的估算，缺少 A/B 实测，且被独立基准明显反驳。
+>
+> 以下为原记录：
 > 30 分钟会话估算：LLM 输出 12,000→4,200（Caveman -65%）、命令输出 118,000→23,900（RTK -80%）、记忆文件 900→486（compress -46%），总计 130,900→28,586（-78%）。RTK 绝对节省量最大（命令输出占总量 ~90%），Caveman 在纯对话场景不可替代。
 
-### Claim: RTK 的绝对节省量远大于 Caveman
+### Claim: Bash 命令密集的会话里 RTK 的绝对节省量大于 Caveman
 
 - **来源**：[[Caveman与RTK对比]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.4
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 降级——依据：依据：JetBrains 配对基准 rtk 实测 +7.6%（https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings ）；caveman.so 对比页引用 RTK README：Claude Code 内置 Read、Grep、Glob 绕过 Bash hook https://caveman.so/compare/rtk
 
+> **现行结论（2026-11-07 降级）**：“命令输出占 ~90%、RTK 压缩 80%”只在 Bash 命令密集的会话成立，内置读取工具不经过它。
+>
+> 以下为原记录：
 > 命令输出在总 token 中占比最大（~90%），RTK 对此压缩 ~80%。Caveman 仅压缩 LLM 回复和记忆文件，绝对量较小。但在不涉及命令执行的纯对话场景中，RTK 无效而 Caveman 是唯一手段。
 
 ## 实践记录

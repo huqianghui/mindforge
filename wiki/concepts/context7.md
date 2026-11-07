@@ -38,10 +38,15 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 - **来源**：[[Context7：实时获取最新文档的MCP-Server]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Context7 官方仓库 https://github.com/upstash/context7
 
+> **现行结论（2026-11-07 修订）**：MCP 工具仍是 resolve-library-id 与 query-docs（两参数现均要求 query）；但现在另有 CLI+Skills 模式（ctx7 library / ctx7 docs），无需 MCP。正文补「也可走 CLI」
+>
+> 以下为原记录：
 > resolve-library-id 和 query-docs，检索排序在服务端完成，不消耗 LLM 推理 tokens。
 
 ### Claim: 支持版本特定查询和数千库文档

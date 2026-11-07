@@ -35,14 +35,19 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 
 > 规范驱动（GSD/SpecKit/OpenSpec）解决"做什么"，方法论（Superpowers）解决"怎么做"。
 
-### Claim: GSD/SpecKit/OpenSpec 只能三选一
+### Claim: GSD/SpecKit/OpenSpec 建议三选一——经验建议而非产品限制
 
 - **来源**：[[Vibe-Coding系列04：流程框架选择指南|Vibe Coding系列04]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.55
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 降级——依据：Spec Kit 官方 README 已把 SDD 作为可选流程之一，另有 bug fixing 等独立入口 https://github.com/github/spec-kit
 
+> **现行结论（2026-11-07 降级）**：「只能三选一」是作者建议而非产品限制，且 Spec Kit 现在是可组合 primitives；降为经验建议
+>
+> 以下为原记录：
 > 三者功能高度重叠（都管"做什么"），Superpowers 管"怎么做"几乎必选搭配。
 
 ### Claim: 项目复杂度应按 Context 信息量而非代码行数定级

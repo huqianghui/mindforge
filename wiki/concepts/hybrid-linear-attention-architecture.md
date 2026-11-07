@@ -64,14 +64,19 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 
 > 纯线性注意力召回差、纯全注意力长上下文显存爆炸，主流解法是交错堆叠。Qwen3-Next（2025-09，首个旗舰级 Hybrid）与 Qwen3.5（2026）都用 GDN : Gated Attention = 3:1（75% 线性 + 25% 全注意力）；NVIDIA Nemotron-H（Mamba-2 + Self-Attention + MLP，推理快至 3×）、Jamba、Falcon-H1/Zamba/Bamba 同属此类。动机：线性层把 KV cache 显存压成常数，少数全注意力层把精确召回找回来——长上下文下逼近全注意力质量却只花零头显存。Qwen3.5 还叠加 MoE（稀疏激活），是另一条正交优化轴，进一步增加缓存/状态管理难度。
 
-### Claim: Qwen3.5 缓存命中率归零是架构迁移的必然副作用，不是 bug
+### Claim: Qwen3.5 短前缀缓存命中近零是架构迁移的副作用，不是 bug
 
 - **来源**：[[线性注意力时代的推理架构之一：Hybrid架构]]
 - **首次出现**：2026-06-22
-- **最近更新**：2026-06-22
+- **最近更新**：2026-11-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：vLLM issue #51250 https://github.com/vllm-project/vllm/issues/51250（Qwen3.5 不支持 mamba prefix caching，回退 align 模式，短/共享前缀命中近 0，长前缀跨块边界可高命中）
 
+> **现行结论（2026-11-07 修订）**：'命中率归零'改为：align 模式下短前缀命中近 0、长前缀可高命中，取决于块边界；'架构限制而非 bug'的结论保留
+>
+> 以下为原记录：
 > 真实客户问题：多模态场景 Qwen3 prefix cache 命中正常，升级 Qwen3.5 后命中率长期为 0（vLLM issue #43587、#36493）。容易误归因到"多模态图像在前导致无公共前缀"——这对但不完整：Qwen3.5 即使纯文本命中率也极低。真正分水岭是架构从纯 Transformer 变成 GDN + Gated Attention 的 Hybrid——prefix caching 这套为 token 级 KV 设计的机制遇到循环状态就失效。详见 [[prefix-caching]]。
 
 ### Claim: Hybrid 路线进入商用兑现期——Qwen GDN+QSA 3:1 与 GLM 线性+稀疏+IndexPool 双实现同构；内核级读数 ≠ 端到端读数

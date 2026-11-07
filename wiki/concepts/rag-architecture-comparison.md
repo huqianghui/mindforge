@@ -52,10 +52,15 @@ related:
 
 - **来源**：[[qmd与Foundry-IQ的RAG能力对比]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：https://learn.microsoft.com/en-us/fabric/iq/overview 称 ontology 为 preview，可选生成内置 graph model；LPG 与 ISO GQL 细节本轮未在官方页核到
 
+> **现行结论（2026-11-07 修订）**：补“Fabric IQ ontology/graph 为 preview，图模型由 ontology 可选生成”；LPG + GQL 表述待官方页核对
+>
+> 以下为原记录：
 > qmd 缺乏知识图谱能力，Fabric IQ 提供原生 Labeled Property Graph + ISO GQL 支持。
 
 ### Claim: Azure 企业级 LLM Wiki 架构——AI Search + CosmosDB Gremlin + OmniRAG 路由

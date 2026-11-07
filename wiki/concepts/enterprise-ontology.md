@@ -42,10 +42,15 @@ related:
 
 - **来源**：[[Microsoft-Fabric-IQ与本体论]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Fabric IQ 文档 https://learn.microsoft.com/en-us/fabric/iq/overview 显示 Ontology 为 Fabric IQ 的核心 item，但仍标注 (preview)；'首次'一词本轮无官方佐证
 
+> **现行结论（2026-11-07 修订）**：Fabric IQ 及 Ontology 目前仍为 preview（预览），并去掉或弱化'首次'的断言
+>
+> 以下为原记录：
 > 首次在数据平台产品中正式使用该术语。
 
 ### Claim: Ontology 将数据从"可查询"升级为"可理解、可推理、可行动"
@@ -64,10 +69,15 @@ related:
 
 - **来源**：[[Palantir-Ontology的工程实践]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Palantir 文档 https://palantir.com/docs/foundry/ontology/overview 称 Ontology 是 operational layer 并含 semantic 与 kinetic 两类要素；https://palantir.com/docs/foundry/object-backend/overview 另有 Object databases 为对象建索引
 
+> **现行结论（2026-11-07 修订）**：'不复制数据'过于绝对：Ontology 通过 backing datasource 映射，运行时由 object databases 索引对象数据；应改为'语义+动作的操作层，而非单纯数据库'
+>
+> 以下为原记录：
 > 不复制数据，而是编码业务逻辑。将企业数据景观从"静态地图"升级为"实时导航系统"。
 
 ### Claim: DDD 是"蓝图思维"，Palantir Ontology 超越纯数据建模

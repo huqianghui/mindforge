@@ -66,20 +66,30 @@ related_methods: []
 
 - **来源**：[[2026-06-22-周一]]
 - **首次出现**：2026-06-22
-- **最近更新**：2026-06-22
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：vLLM 文档 automatic_prefix_caching 的 Hybrid Mamba 章节 https://github.com/vllm-project/vllm/blob/main/docs/features/automatic_prefix_caching.md ；vLLM issue 45238 https://github.com/vllm-project/vllm/issues/45238 ；跟踪 issue 26201 https://github.com/vllm-project/vllm/issues/26201
 
+> **现行结论（2026-11-07 修订）**：方向仍成立，但“命中率 0 时关掉推测解码救场”已过时：vLLM 已有 align 模式混合模型前缀缓存，并新增 --enable-mamba-shared-prefix-checkpoint 与 Marconi 式准入策略，MTP 与 align 模式兼容也在合入。vLLM 在 hybrid 上仍有命中率缺陷（issue 45238），“生产高并发首选 SGLang”暂时保留，但“MambaRadixCache 是唯一专门设计”要改成“当前最成熟”。
+>
+> 以下为原记录：
 > 单机/个人/低并发 → llama.cpp（slot 续接够用，部署省心，但无法跨并发共享）；生产/高并发/多模态 → SGLang（MambaRadixCache 是当前唯一为 Hybrid 跨请求复用专门设计的方案）；vLLM 居中——命中率 0 时"关掉推测解码"救场。落地顺序：查日志 `Prefix cache hit rate:` 定基线 → vLLM 显式 `--enable-prefix-caching` + 关 MTP 推测解码再测 → 仍为 0 上 SGLang 按 cookbook 部署 → 压测并发 × 命中率/TTFT/吞吐。收益预期：只省 system prompt 的 prefill，占比 ≈ `prompt token /(prompt + 图片 token)`，prompt 越长收益越大。
 
 ### Claim: SGLang 领先是设计基因（prefix-centric）而非团队速度
 
 - **来源**：[[SGLang与vLLM的基因之争]]
 - **首次出现**：2026-06-22
-- **最近更新**：2026-06-22
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：vLLM 近期持续补齐 hybrid 前缀缓存（issue 26201 跟踪项、文档 Hybrid Mamba 章节、PR 42554），先发优势窗口在收窄 https://github.com/vllm-project/vllm/issues/26201
 
+> **现行结论（2026-11-07 降级）**：原文自己已说明“不是永久护城河、选型要带日期”，这一点正确；但“vLLM 要补课”已部分兑现，建议把结论改成“2026 年中 SGLang 在 hybrid 上更稳，vLLM 已追上基础能力”。
+>
+> 以下为原记录：
 > vLLM = token-centric（PagedAttention，为 attention-only 吞吐而生，隐含 state = KV cache）；SGLang = prefix-centric（RadixAttention，把 KV cache 组织成基数树，从 2024 年初核心命题就是跨请求共享前缀）。纯 Transformer 时代两者还能正面竞争吞吐；Hybrid 把 `state` 从 `KV` 扩成 `KV + 循环状态`，恰好踩在两套基因的分野上。MambaRadixCache 的本质 = 把前缀树从 KV 维度延伸到 request-state 维度（KV → tree node，SSM state → 绑定 request lifecycle），SGLang 顺手扩展、vLLM 要补课。这是先发优势 + 时间窗口，不是永久护城河——选型要带日期（2026 上半年 SGLang 更稳）。
 
 ### Claim: benchmark 解读先辨工作点——峰值吞吐、最低 TBT、matched TBT 三读数各有语境

@@ -52,20 +52,30 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 - **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：官方仓库 s05_todo_write / 旧版 s03 TodoWrite 仍在（https://github.com/shareAI-lab/learn-claude-code）；但『连续 3 轮提醒』等细节本轮未在 README 层面核实
 
+> **现行结论（2026-11-07 修订）**：TodoWrite 仍是 planning 机制（现仓库章节为 s05_todo_write，旧 12-session 版为 s03），提醒阈值细节标注未复核
+>
+> 以下为原记录：
 > 引入任务追踪后，model 被强制同一时间只有一个 in_progress 任务；连续 3 轮不调用 todo 工具时系统自动注入提醒。
 
 ### Claim: learn-claude-code 的 12 session 分三梯队
 
 - **来源**：[[Claude-Code系列02：learn-claude-code|learn-claude-code]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：官方仓库现为 s01–s17（含 s15 integrated harness、s16 workflow runtime、s17 goal loop），旧 12 课保留在 agents/ 与 docs/ 过渡目录：https://github.com/shareAI-lab/learn-claude-code；另见 wytheglobal 备份 README（2026.04.14 版 s00–s19 分章）
 
+> **现行结论（2026-11-07 修订）**：旧 12 session 三梯队分法仍可作历史描述，但上游已重构为 s01–s17（含权限、hooks、MCP/plugin、workflow runtime、goal loop），需注明版本差异并重写梯队划分
+>
+> 以下为原记录：
 > 基础层（Agent 能做什么）、隔离层（怎么管理注意力）、协作层（多 Agent 怎么协同），对应 Claude Code 从 Agent Loop 到 Teams/Worktree 的完整机制。
 
 ### Claim: action loop 是 agent loop 在 GUI 操作域的实例化——观察对象换成屏幕状态、动作换成 UI 事件

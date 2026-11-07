@@ -95,14 +95,19 @@ Orchestrator Pattern 是 OpenClaw 多 Agent 协作的核心架构模式：通过
 
 > Gateway 是纯通讯层（消息路由 + 心跳 + WebSocket），不做任何任务分解或调度决策。编排逻辑由用户指定的 Orchestrator Agent（一个普通 Node）通过 sessions_spawn 工具实现。来源：OpenClaw 官方 Sub-agents 文档 + Meta Intelligence 技术分析。
 
-### Claim: OpenClaw 支持嵌套 Sub-Agent（最深 5 层，推荐 2 层）
+### Claim: OpenClaw 支持嵌套 Sub-Agent（默认最深 5 层，可用 maxSpawnDepth 收紧）
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：OpenClaw 官方文档 Nested sub-agents https://docs.openclaw.ai/tools/subagents/nesting （extract 原文）：默认深度边界为 5，depth 1 起默认即 orchestrator，maxSpawnDepth 可配置，每个会话 maxChildrenPerAgent 默认 5
 
+> **现行结论（2026-11-07 修订）**：“最深 5 层”与当前默认边界一致；但“推荐 2 层”只对应最初 changelog 里的 maxSpawnDepth: 2 示例，现行文档没有这条推荐。
+>
+> 以下为原记录：
 > maxSpawnDepth 范围 1-5，默认 1（不允许嵌套）。设为 2 时 Orchestrator 获得 sessions_spawn 权限可 spawn worker。Depth 2 的 leaf worker 无 session 工具，不能再 spawn。每 session 最多 5 个活跃子 Agent（maxChildrenPerAgent），全局并发上限默认 8。来源：OpenClaw 官方文档 docs.openclaw.ai/tools/subagents。
 
 ### Claim: sessions_spawn 是非阻塞调用，立即返回 accepted 状态

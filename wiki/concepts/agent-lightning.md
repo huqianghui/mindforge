@@ -33,24 +33,34 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 ## Claims
 
-### Claim: 框架是一条 9 模块数据流脊柱 + 控制反转
+### Claim: 框架是一条 9 模块数据流脊柱 + 控制反转（0.3.1 源码；v1.0 简化为 Trainer / API Gateway / Rollout Controller）
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
-- **最近更新**：2026-06-29
+- **最近更新**：2026-11-07
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：Agent Lightning README（v1.0）架构 https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
+> **现行结论（2026-11-07 修订）**：'9 模块脊柱基于 0.3.1 源码'；v1.0 起架构简化为 Trainer（verl+vLLM）/ API Gateway / Rollout Controller 三件，需补一句版本对照，控制反转思想不变
+>
+> 以下为原记录：
 > litagent → runner → tracer → store → adapter → reward → algorithm 是一条单向数据流，trainer 编排、types 做契约（基于 0.3.1 源码逐模块带 `file:line` 拆解）。控制反转：你定义「什么算好」的静态零件（agent 逻辑 + reward grader + 数据集），框架拥有「把好坏变成可迭代优化循环」的动态机制。
 
-### Claim: method-agnostic 的接缝是 adapter——换算法不动 agent
+### Claim: method-agnostic 的接缝是 adapter——换算法不动 agent（0.x 架构）
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
-- **最近更新**：2026-06-29
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：Agent Lightning v1.0 README 以 API Gateway 把交互转成训练数据，未再强调 adapter 接缝：https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
+> **现行结论（2026-11-07 降级）**：限定为 0.x 架构的描述并注明 v1.0 由 Gateway 承担
+>
+> 以下为原记录：
 > 同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 的兑现处，也是它区别于纯 prompt 工具（DSPy）的差异化价值。
 
 ### Claim: @rollout 包函数不包实例；prompt 必须抽成注入资源
@@ -65,14 +75,19 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 > `@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓"零代码改动"实质是"包一层符合签名的函数"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。
 
-### Claim: store 是训练的控制平面，不只是 trace 存储
+### Claim: store 是训练的控制平面，不只是 trace 存储（0.2~0.3 的 LightningStore 设计）
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
-- **最近更新**：2026-06-29
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：v1.0 README 架构三件中不再列 Store：https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
+> **现行结论（2026-11-07 降级）**：限定为 0.2~0.3 的 LightningStore 设计；v1.0 以 Trainer/Gateway/Controller 重构
+>
+> 以下为原记录：
 > store 自称 "persistent control-plane that coordinates training rollouts"——存队列、attempt、状态机、spans、resources，是 runner（生产者）↔ algorithm（消费者）的中枢。生产选型：负载是「高频小记录读写 + 队列状态机 + 嵌套 JSON spans」，Azure 上用 Cosmos DB for MongoDB API 最省事（协议兼容、0 代码复用现成 mongo 实现）；已有 PostgreSQL 则 pg+JSONB 自己实现接口；MySQL 不推荐（JSON 支持弱）。
 
 ### Claim: 三级优化阶梯 APO → SFT → RL，SFT 是微调权重最便宜稳的入口
@@ -87,14 +102,19 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 > 由轻到重：APO（只改 prompt，推理级，受限基座已有能力）→ SFT（拒绝采样只学正样本，16GB LoRA 可跑，把 pass@k 压成 pass@1）→ RL（正负样本+探索，40GB+，能探出新策略）。SFT 不是可有可无的过渡：① APO 改不动「能不能做对」只改「怎么说」，到顶后动权重最便宜入口是 SFT；② RL 几乎总要 SFT warmup，跳过直接 RL 冷启动易崩；③ reward 干净且 pass@k>0 时 SFT 性价比最优。其「只学正样本不探索」的限制恰是它便宜稳的来源——是 tradeoff 不是缺陷。
 
-### Claim: 内置算法只有 APO + VERL，SFT 走自定义算法扩展点
+### Claim: 0.3.1 内置算法只有 APO + VERL，SFT 走自定义算法扩展点
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
-- **最近更新**：2026-06-29
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：Agent Lightning releases 与 README：https://github.com/microsoft/agent-lightning/releases；v1.0 README 仅提 Trainer 跑 verl，未列 APO；SFT 另有 Unsloth/Azure 示例
 
+> **现行结论（2026-11-07 降级）**：限定为 0.3.1 源码结论；v1.0 内置算法集合需重新核对（README 仅体现 verl）
+>
+> 以下为原记录：
 > `algorithm/__init__.py` 仅 export 两个一等公民：APO（prompt）、VERL（RL 权重）。SFT **不是**内置算法类——它继承 `Algorithm` + 实现 `run()`，在 run 里用 `store.enqueue_rollout` 收集带 reward 轨迹、adapter 转 triplet、喂 Unsloth/Azure 微调（`examples/unsloth/sft_allinone.py`、`examples/azure/`）。这纠正了系列01 初版把 SFT 列为内置算法的说法。
 
 ### Claim: store 居中解耦——算法与执行靠 5 个 store 动作做生产者消费者

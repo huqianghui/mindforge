@@ -51,10 +51,15 @@ Intelligent Dictation（智能听写）是语音输入领域的第三代范式�
 
 - **来源**：[[Typeless深度解析]]
 - **首次出现**：2026-05-20
-- **最近更新**：2026-05-24
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：第三方基准 https://superwhisper.com/benchmarks/wispr-flow-raw 显示不同数据集 WER 3.5%~8.7%；https://voicedash.ai/wispr-flow-vs-typeless 显示 Wispr 3.9% 而 Typeless 因重写约 20%；MLCommons 引述 Whisper 干净语音词准确率 97.93%（线索级）
 
+> **现行结论（2026-11-07 修订）**：去掉“Whisper WER 7.6%”这种单一数字，改为 WER 随数据集在约 2%~9% 浮动，“底层够用”的判断保留
+>
+> 以下为原记录：
 > Whisper 的 WER 已达 7.6%，差异化不在底层引擎而在上层产品能力。Typeless 不跟 Azure/Google 竞争 L1，而是站在 L1 之上专攻"最后一公里"。产品洞察：用户要的不是"准确的转录"，而是"不用打字就能产出好文本"。
 
 ### Claim: App-aware tone switching 是智能听写的关键创新

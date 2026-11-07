@@ -260,10 +260,15 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[2026-08-10-周一]]
 - **首次出现**：2026-08-10
-- **最近更新**：2026-08-10
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Microsoft Learn Harnesses in Copilot Studio https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview ；GA 公告 https://www.microsoft.com/en-us/copilot/blog/copilot-studio/new-and-improved-github-copilot-harness-agent-skills-and-richer-context
 
+> **现行结论（2026-11-07 修订）**：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称"四种 harness"（另有 Customer Conversation harness）；"Copilot Chat harness 对应无代码执行"等细节应对照最新文档；正文应补第四种
+>
+> 以下为原记录：
 > 微软官方文档（Choose a harness）直接定义 "The harness **is a runtime**"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。
 
 ### Claim: Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层

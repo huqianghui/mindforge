@@ -46,14 +46,19 @@ Notion Agent 不是自主 agent 系统或多 agent 协作系统——它是"AI �
 
 > 真正的 Agent 系统在外部（Claude Code, Codex, LangGraph），Notion 只是数据/UI 层。
 
-### Claim: MCP 是 Notion 的关键变量
+### Claim: Notion 已提供官方托管 MCP——MCP 从关键变量变成现实接口
 
 - **来源**：[[Notion学习笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.5
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Notion 官方仓库 https://github.com/makenotion/notion-mcp-server 说明已提供 Remote Notion MCP 托管服务，本地版不再维护；https://www.scalekit.com/blog/notion-mcp-vs-api 称所有计划均可用
 
+> **现行结论（2026-11-07 修订）**：'如果 MCP 成功'已成为现实：Notion 已提供官方托管 MCP（OAuth 认证，面向交互式客户端），且 Custom Agents 可连接外部 MCP；建议改写为陈述句并上调置信度
+>
+> 以下为原记录：
 > 如果 MCP 成功，Notion 可成为外部 AI agent 的记忆层。
 
 ## 冲突与演进

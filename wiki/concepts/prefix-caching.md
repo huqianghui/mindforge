@@ -92,10 +92,15 @@ related:
 
 - **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：定价对比 https://regolo.ai/deepseek-v4-flash-vs-qwen3-8-flash-next-vs-glm-5-3-flash-the-real-leader-in-quality-to-price-in-2026 与 https://therouter.ai/blog/flash-tier-model-shootout-deepseek-v41-vs-qwen38-vs-glm53-flash-comparison
 
+> **现行结论（2026-11-07 修订）**：DeepSeek V4 Flash 缓存命中价各源为 $0.0028~$0.007；GLM-5.3-Flash 限时 $0.015 的促销已于 9 月 9 日结束，现 $0.03；Qwen3.8-Flash 缓存价随服务商而异（DashScope 约输入价 10%）；结论'缓存命中价是独立竞争维度'保留
+>
+> 以下为原记录：
 > 截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于"token 单价"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从"开不开"变成"何时命中、命中多少、什么时段"三维账。
 
 ### Claim: GPT-5.6 把 prompt caching 变为一等机制——控制权/计费/报告三换轨，128N 是报告取整口径而非放置规则

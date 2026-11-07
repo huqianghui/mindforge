@@ -50,7 +50,7 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 - **置信度**：0.75
 - **状态**：active
 
-> 每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），闲置超时后回收算力（默认 15 分钟、可配 2~60 分钟；30 天不活跃永久删除）、恢复时状态自动还原（scale-to-zero + 有状态恢复），没有 replica 数和 warm pool 可配。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。
+> 每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），闲置超时后回收算力（默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）；30 天不活跃永久删除）、恢复时状态自动还原（scale-to-zero + 有状态恢复），没有 replica 数和 warm pool 可配。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。
 
 ### Claim: 2026 年 Foundry 的路线是"先把运行时做完、编排下沉到代码、再开放托管 harness"——Copilot harness 进入 Foundry 后多了"Microsoft 跑 loop、你只声明"的第三种做法
 

@@ -29,7 +29,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 ### 选项 B: Hosted Agent（GA）
 
 - **优势**：完全控制 Agent Runtime（自带框架如 LangGraph/AutoGen，容器内任意代码）；支持三种协议入口（`/responses`、`/invocations`、`/invocations_ws`）
-- **劣势**：内容层治理自理（Prompt Shield 等不内置）；硬约束多——1MB 帧上限、30min 连接上限、idle 断连、2vCPU、无 WebRTC、无 PSTN（这组数字 2026-11-07 复核未找到原文，待核实；session 闲置回收算力的超时已可配 2~60 分钟、默认 15 分钟，与 WebSocket 闲置断连是否同一机制未确认）
+- **劣势**：内容层治理自理（Prompt Shield 等不内置）；有明确上限——WebSocket 帧 1 MB、单连接约 30 分钟（发 1001 后用同一 agent_session_id 重连）、沙箱最高 2 vCPU / 4 GiB；session 闲置超时默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）；已有官方语音 agent 与 Telephony integration（2026-11-07 复核，见语音 agent 文档）；"无 WebRTC"待核
 - **适用条件**：需要自定义推理循环 / 已有框架代码要迁移 / 多模型编排等 7 条 Hosted 信号
 
 ### 选项 C: Workflow Agent（public preview）
@@ -102,11 +102,15 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
-- **复核**：2026-11-07 待定——依据：本轮在 Hosted agents 文档中未找到 1MB / 30min / 2vCPU 这几个数字，只查到每 session 磁盘上限 20 GiB（1 vCPU 及以上）与 CPU 分档
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：Microsoft Learn Build a voice agent with hosted agents，Limits 表 https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/build-voice-agent （extract 原文）
 
+> **现行结论（2026-11-07 修订）**：WebSocket 帧上限 1 MB（超限关闭码 1009）、单连接约 30 分钟（平台滚动回收时发关闭码 1001，用同一 agent_session_id 重连，平台不重放丢失的帧）、沙箱最高 2 vCPU / 4 GiB（语音建议至少 1 vCPU / 2 GiB）。session 闲置超时默认 15 分钟、可配置，但两篇官方文档口径不一致：Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟（最长 4 小时），以实测为准。Hosted 现在有官方的语音 agent 与 Telephony integration 章节，原来的“无 PSTN、电话场景直接撞墙”已过时，改为“有明确上限，按重连协议设计”；“无 WebRTC”本轮未找到原文，待核
+>
+> 以下为原记录：
 > WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。
 
 ### Claim: Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权
@@ -152,9 +156,9 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **状态**：active
 - **复核**：2026-11-07 修订——依据：[Hosted agents in Foundry Agent Service](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)
 
-> 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：闲置超时后回收算力（默认 15 分钟，现可配 2~60 分钟）、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温到闲置超时为止也计费（默认配置下单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴，调小超时可缩短尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
+> 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：闲置超时后回收算力（默认 15 分钟，可配置；两篇官方文档的上限不一致）、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温到闲置超时为止也计费（默认配置下单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴，调小超时可缩短尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
 
-> **2026-11-07 修订**：idle 超时现在可配 2~60 分钟、默认 15 分钟（不再是固定 15 分钟），计费尾巴随之可调；30 天不活跃永久删除、无 replica 数与 warm pool 可配仍然成立。每 session 磁盘上限约 20 GiB（1 vCPU 及以上，约 20% 留给系统）。
+> **2026-11-07 修订**：idle 超时默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）（不再是固定 15 分钟），计费尾巴随之可调；30 天不活跃永久删除、无 replica 数与 warm pool 可配仍然成立。每 session 磁盘上限约 20 GiB（1 vCPU 及以上，约 20% 留给系统）。
 
 ### Claim: 反向判据：何时不该挂 Agent——"应用开轮 + 现成文本逐字读"下 Agent 价值为零且 Agent 模式是负资产
 

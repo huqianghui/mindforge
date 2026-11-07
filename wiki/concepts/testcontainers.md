@@ -52,10 +52,15 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 - **来源**：[[2026-04-11-周六]]
 - **首次出现**：2026-04-11
-- **最近更新**：2026-04-11
-- **置信度**：0.5
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.4
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：https://testcontainers.com/getting-started 确认 Testcontainers Cloud 是官方支持的运行时；但 Harness CI 里 Docker-in-Docker 的具体做法本轮未找到 Harness 官方文档
 
+> **现行结论（2026-11-07 降级）**：Testcontainers Cloud 作为替代运行时成立；Harness 特定的 DinD 配置没有取到一手证据。
+>
+> 以下为原记录：
 > Testcontainers Cloud 提供云端运行容器的能力，无需本地 Docker Desktop。在 Harness CI 中通过 Docker-in-Docker 或 Service Dependency 模式运行 Testcontainers。
 
 ### Claim: docker-compose 是静态环境，Testcontainers 是动态环境——设计目标不同
@@ -70,14 +75,19 @@ Testcontainers 是一个用真实 Docker 容器替代 mock 进行集成测试的
 
 > docker-compose = 静态环境（你维护一个环境），Testcontainers = 动态环境（测试自己创建环境）。关键差异：并发测试（TC 天然支持随机端口隔离）、数据污染（TC 每个 test 全新数据库）、CI 隔离（TC 自动创建/销毁）。docker-compose 适合小项目单 DB，Testcontainers 适合 CI 并发、微服务、flaky test 场景。
 
-### Claim: Testcontainers 已被 Docker 收购（AtomicJar），支持 12 种语言，成为容器化集成测试事实标准
+### Claim: Testcontainers 已被 Docker 收购（AtomicJar），支持约 10 种语言，成为容器化集成测试事实标准
 
 - **来源**：[[Vibe-Coding系列12：测试环境即代码]]
 - **首次出现**：2026-04-23
-- **最近更新**：2026-04-23
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：Docker 官方博客 https://www.docker.com/blog/docker-whale-comes-atomicjar-maker-of-testcontainers ；新闻稿 https://www.docker.com/press-release/testing-shifts-left-with-docker-acquisition-of-atomicjar ；https://testcontainers.com/getting-started
 
+> **现行结论（2026-11-07 修订）**：收购事实成立（Docker 于 2023-12-11 宣布收购 AtomicJar），“事实标准”也有 Docker 官方措辞支持。但“12 种语言”不准：Docker 博客写的是 Java、.NET、Go、Node.js 加另外 6 种（共约 10 种），testcontainers.com 现列出 13 项（含 Native）。
+>
+> 以下为原记录：
 > 2023 年被 Docker 公司收购（AtomicJar）。Tier 1 语言支持：Java、Go、.NET、Node.js、Python。预置模块覆盖数据库（PostgreSQL/MySQL/MongoDB）、消息队列（Kafka/RabbitMQ）、缓存（Redis）、搜索/向量（Elasticsearch/Qdrant/Weaviate/Chroma）、云模拟（LocalStack/Azurite）。
 
 ### Claim: 推荐测试分层：Unit(mock) → Integration(Testcontainers) → E2E(Playwright+TC)

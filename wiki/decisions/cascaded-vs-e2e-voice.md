@@ -32,8 +32,8 @@ related_methods:
 ### 选项 B: 端到端原生（End-to-End Native）
 
 - **优势**：架构简洁；理论上延迟更低；无需组件间协调
-- **劣势**：2026 年尚未达到企业生产可用（Moshi 等仅有研究价值）；不可替换单一组件；可控性差
-- **适用条件**：研究/实验场景；未来模型成熟后可重新评估
+- **劣势**：可控性差、不可替换单一组件；interim response 等能力只在级联下支持（2026-11-07 复核：Foundry voice agent 已把 gpt-realtime 类 speech-to-speech 作为一等选项，已可用于生产，原写"尚未达到企业生产可用"）
+- **适用条件**：对控制力要求不高、追求自然度与低延迟的场景；Moshi 等完全端到端模型仍以研究为主
 
 ### 选项 C: Azure Voice Live API（全托管）
 
@@ -44,9 +44,9 @@ related_methods:
 ## 决策结论
 
 - **选择**：级联管线（Cascaded Pipeline）
-- **理由**：2026 年企业级唯一生产可行架构。通过 streaming + pipelining 重叠执行已能实现可接受延迟
+- **理由**：在多语言、自定义声音、interim response、逐字念题等企业需求上仍占优；streaming + pipelining 重叠执行已能实现可接受延迟（2026-11-07 修订：不再是"唯一生产可行"，端到端已可用于生产但控制力较弱）
 - **放弃理由**：E2E 模型未达生产可用（Level 1 Fully E2E 无工程价值，Level 2 Hybrid Omni 本质仍是管线）；Azure 全托管牺牲控制力
-- **前提假设**：E2E 模型在未来 1-2 年内仍无法达到企业级质量——如果出现突破性进展需重新评估
+- **前提假设**：企业场景对控制力的要求高于对自然度的要求；全双工模型若补齐控制面（工具调用、逐字朗读、发音控制），需重新评估
 
 ## 影响范围
 
@@ -61,14 +61,19 @@ related_methods:
 
 ## Claims
 
-### Claim: 端到端模型尚未达到企业生产可用
+### Claim: 端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优
 
 - **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：Microsoft Learn Build a voice agent with hosted agents 把 speech-to-speech（GPT-4o Realtime、gpt-realtime）与级联并列为官方支持的路径 https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/build-voice-agent ；Migrate from Voice Live 文档 https://learn.microsoft.com/en-us/azure/foundry/agen
 
+> **现行结论（2026-11-07 降级）**：“唯一生产可行架构仍是级联”过强：Foundry voice agent 已把 gpt-realtime 类 speech-to-speech 作为一等选项，只是 interim response 等能力仅级联支持。
+>
+> 以下为原记录：
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值。
 
 ### Claim: Voice Live 把级联与端到端统一在同一 API 后面，切换成本降到配置级

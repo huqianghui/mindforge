@@ -58,14 +58,19 @@ related: []
 
 > Ghostty（终端渲染）+ tmux 式会话管理 + AI Agent 集成层。
 
-### Claim: cmux 架构是 GUI App > Socket API > CLI
+### Claim: cmux 的 CLI 与 Unix socket 同为可编程接口
 
 - **来源**：[[cmux使用笔记]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.5
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.3
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：cmux 官方仓库 https://github.com/manaflow-ai/cmux 称 CLI 与 socket API 均可完成每个动作，并未表明 CLI 是降级 wrapper
 
+> **现行结论（2026-11-07 降级）**：改为'CLI 与 Unix socket 同为可编程接口'；'外部调用时 CLI 能力降级'本轮无官方佐证
+>
+> 以下为原记录：
 > CLI 只是 wrapper，Socket API 才是唯一稳定接口，外部调用时 CLI 能力降级。
 
 ## 冲突与演进

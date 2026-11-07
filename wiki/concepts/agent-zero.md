@@ -80,14 +80,19 @@ Agent Zero 是 agent0ai 开源的自主 AI Agent 框架，核心理念为 **prom
 
 > 不是学它怎么做 agent，而是学它暴露了什么问题。结论：暂不深入，作为研究型参考样本。优先级归类为第二层（研究 agent autonomy），第一层必须深挖的是 Claude Code / OpenClaw / Hermes / MCP / A2A / LangGraph。
 
-### Claim: SKILL.md standard 可能催生 agent-native package ecosystem
+### Claim: SKILL.md 已成跨平台开放标准，正在催生 agent-native package ecosystem
 
 - **来源**：[[2026-05-07-周四]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.5
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：SKILL.md 已成为 Anthropic 于 2025-12-18 发布的 Agent Skills 开放标准（agentskills.io），Microsoft/OpenAI/GitHub/Cursor 等已采纳：https://www.unite.ai/anthropic-opens-agent-skills-standard-continuing-its-pattern-of-building-industry-infrastructure ；https://strapi.io/blog/what-are-agent-skills-and-ho
 
+> **现行结论（2026-11-07 修订）**：SKILL.md 已是跨平台开放标准（agentskills.io，2025-12 发布，多家主流 agent/IDE 采纳），『尚无广泛采纳证据』已过时
+>
+> 以下为原记录：
 > Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。
 
 ## 冲突与演进

@@ -29,14 +29,19 @@ Hermes Agent 是 Nous Research 于 2026 年 2 月开源的自主 AI Agent 框架
 
 ## Claims
 
-### Claim: Hermes Skill 自动生成基于工具调用计数器（每 15 次），非 cron 定时
+### Claim: Hermes Skill 自动生成由复杂任务、错误恢复、用户纠正等事件触发，非 cron 定时
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Hermes 官方 skills 文档（经 https://ssojet.com/blog/hermes-agent-self-evolving-skills 转述）：创建触发为完成 5+ 次工具调用的复杂任务、错误恢复后或用户纠正后；"每 15 次"仅见于第三方 https://www.news.aakashg.com/p/hermes-agent-guide
 
+> **现行结论（2026-11-07 修订）**：skill 由 skill_manage 在完成 5+ 工具调用的复杂任务、错误恢复、用户纠正后触发创建，属事件/启发式驱动而非 cron；"每 15 次"降为第三方说法
+>
+> 以下为原记录：
 > 每 15 次工具调用（tool calls），Agent 暂停执行流回顾本次会话中成功的工具链模式，异步 fork 辅助 AIAgent 实例生成 Skill 文件到 `~/.hermes/skills/`。这是启发式机制而非固定定时任务。来源：Hermes Agent Guide for PMs + 官方文档。
 
 ### Claim: Curator 系统管理 Agent 自动创建的 Skill 生命周期（active → stale → archived）

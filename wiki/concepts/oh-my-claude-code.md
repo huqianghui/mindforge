@@ -53,20 +53,30 @@ oh-my-claude-code（OMC）是一个多 Agent 编排框架，核心命题是"不�
 
 - **来源**：[[Vibe-Coding系列10：oh-my-claude-code|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：OMC 官方仓库 https://github.com/yeachan-heo/oh-my-claudecode ；Superpowers 发布说明 https://github.com/obra/superpowers/blob/main/RELEASE-NOTES.md
 
+> **现行结论（2026-11-07 修订）**：autopilot 仍是一句话跑全程，但现在可配置阶段（autopilot.workflows）并可由 lead 保留最终审批；Superpowers 也已有 subagent-driven-development。差异从「人参与 vs 全自动」改为「默认参与度不同，两者均可调」
+>
+> 以下为原记录：
 > Superpowers 要求人类在每个阶段参与，OMC 的 autopilot 可以一句话跑完全程（全自动连续执行）。
 
 ### Claim: Autopilot 运行时动态决策四大能力
 
 - **来源**：[[Vibe-Coding系列10：oh-my-claude-code|Vibe Coding系列10]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：OMC 官方仓库 https://github.com/yeachan-heo/oh-my-claudecode
 
+> **现行结论（2026-11-07 修订）**：autopilot 现为 stages 可配置工作流，能指定各阶段 executor；「四大能力」逐条名称未在官方 README 核到，正文改写为官方描述（可配置阶段、team 并行、reviewer 判定文件驱动状态转换）
+>
+> 以下为原记录：
 > Shared State 追踪、Role Routing 自动选模型、Persistent Execution Loop 反复验证、Parallel Task Distribution 多 worker 并行。
 
 ## 冲突与演进

@@ -24,7 +24,7 @@ related_methods: []
 
 ## 摘要
 
-语音级联管线（Cascaded Pipeline）是当前企业级 Voice Agent 的唯一生产可行架构。核心是将语音交互拆解为 STT → LLM → TTS 三个独立流式组件，通过 streaming + pipelining 重叠执行实现低延迟。**低延迟的关键不是让单个组件更快，而是让它们重叠执行**——Salesforce 级联管线实现 ~755ms first-audio latency。
+语音级联管线（Cascaded Pipeline）是企业级 Voice Agent 最常用的架构，在多语言、自定义声音、interim response 上仍占优（端到端已可用于生产但控制力较弱，2026-11-07 复核修订）。核心是将语音交互拆解为 STT → LLM → TTS 三个独立流式组件，通过 streaming + pipelining 重叠执行实现低延迟。**低延迟的关键不是让单个组件更快，而是让它们重叠执行**——Salesforce 级联管线实现 ~755ms first-audio latency。
 
 ## 适用条件
 
@@ -78,14 +78,19 @@ related_methods: []
 
 > 不是让单个组件更快，而是 streaming + pipelining。sentence buffer 是 LLM token 输出到 TTS 句子输入的关键管线节点。
 
-### Claim: 端到端模型尚未达到企业生产可用
+### Claim: 端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优
 
 - **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：（同名 Claim，处理一致）依据：Microsoft Learn Build a voice agent with hosted agents 把 speech-to-speech（GPT-4o Realtime、gpt-realtime）与级联并列为官方支持的路径 https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/build-voice-agent ；Migrate from Voice Live 文档 https://learn.microsoft.com/en-us/azu
 
+> **现行结论（2026-11-07 降级）**：“唯一生产可行架构仍是级联”过强：Foundry voice agent 已把 gpt-realtime 类 speech-to-speech 作为一等选项，只是 interim response 等能力仅级联支持。
+>
+> 以下为原记录：
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。
 
 ### Claim: Dialog Manager 是被 Voice Live 默认配置折叠掉的一层——应答门控把它重新展开为显式状态机

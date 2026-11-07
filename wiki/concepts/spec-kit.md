@@ -27,10 +27,15 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 
 - **来源**：[[Spec-Kit系列01：整体认识]]
 - **首次出现**：2026-07-20
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Spec Kit 官方 README https://github.com/github/spec-kit
 
+> **现行结论（2026-11-07 修订）**：命令已改为 /speckit-* 形式的 agent skills（constitution、specify、plan、tasks、implement、converge，clarify/checklist/analyze 为附加质量门）。「十命令四阶段」核心成立，正文加「现以 skills 形式提供」，并确认 converge 在列
+>
+> 以下为原记录：
 > 十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。
 
 ### Claim: checklist 是"Unit tests for English"

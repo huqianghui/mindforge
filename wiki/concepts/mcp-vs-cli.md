@@ -24,14 +24,19 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ## Claims
 
-### Claim: MCP 存在严重 context 膨胀问题
+### Claim: MCP 曾有严重的 context 膨胀问题，tool search 延迟加载已大幅缓解
 
 - **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Claude Code MCP tool search 文档 https://code.claude.com/docs/en/agent-sdk/tool-search ；Claude Platform manage tool context https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context
 
+> **现行结论（2026-11-07 修订）**：Claude Code 现默认延迟加载 MCP 工具定义（工具总量达上下文 10% 触发，可用 ENABLE_TOOL_SEARCH 调节），膨胀问题已大幅缓解。正文改为「早期（2026 年 1 月前）严重，现已有 tool search 缓解」，15-25k token 数字标注为旧数据
+>
+> 以下为原记录：
 > 每个 MCP Server 在每次推理调用时通过 tools/list 注入所有工具定义。70+ 工具消耗 15,000-25,000 tokens，占 context window 10%+。
 
 ### Claim: CLI 方式 token 效率极高

@@ -98,7 +98,7 @@ signals:
 - **前置**：第 5 站
 - **用时**：约 2 小时
 - **算会**：
-  - 能画出 agent-lightning 的数据流脊柱，说出 store 为什么是训练的控制平面
+  - 能说出 agent-lightning 从 0.3.1（9 模块脊柱、store 控制平面、adapter 接缝）到 v1.0（Trainer / API Gateway / Rollout Controller）的架构变化，以及哪些设计思想没变（控制反转、method-agnostic）
   - 能说出 method-agnostic（换算法只换槽位）和 environment-agnostic（接新任务只写 EnvAdapter）各在哪一侧
   - 能说出显式环境契约的暗面：接口实现完不等于数据流追通过
 

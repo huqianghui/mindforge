@@ -80,10 +80,15 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 
 - **来源**：[[Hermes-Agent与OpenClaw对比]]
 - **首次出现**：2026-05-07
-- **最近更新**：2026-05-07
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：OpenClaw 官方文档 https://docs.openclaw.ai/tools/subagents/nesting
 
+> **现行结论（2026-11-07 修订）**：maxSpawnDepth 默认已是 5（范围 1-5），非原文的 1；maxChildrenPerAgent 默认 5（范围 1-20），maxConcurrent 默认 8 且是每个派生会话的并发。正文把「默认 1 / 设 2 启用」改为「默认 5，可调 1-5」；「全局并发上限 8」改为「每个派生会话 8」
+>
+> 以下为原记录：
 > Sub-Agent 是从 parent session 衍生的后台 worker，独立上下文和工具权限。maxSpawnDepth 默认 1（无嵌套），设为 2 即启用 Orchestrator Pattern。每 session 最多 5 个活跃子 Agent，全局并发上限 8。Sub-Agent 间逻辑隔离（独立 workspace、memory、skills、auth）。
 
 ### Claim: OpenClaw 支持 Persistent Agents 和 Sub-Agents 两种多 Agent 模式

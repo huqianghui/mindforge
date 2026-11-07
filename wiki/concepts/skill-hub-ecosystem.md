@@ -26,14 +26,19 @@ Coding Agent（如 Claude Code）的 Skill/Plugin 生态正在快速发展，多
 
 ## Claims
 
-### Claim: OpenClaw 是 Claude Code 主流 Skill 注册中心，拥有 2800+ 社区 Skill
+### Claim: ClawHub 是 OpenClaw 的 Skill 注册中心——规模数千至上万，且有恶意 skill 风险
 
 - **来源**：[[2026-04-11-周六]]
 - **首次出现**：2026-04-11
-- **最近更新**：2026-04-11
-- **置信度**：0.5
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.2
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：OpenClaw 技能数 ClawHub 2026-02 已超 13000，VoltAgent 精选清单称 5400+（https://github.com/VoltAgent/awesome-openclaw-skills ；https://felo.ai/blog/best-openclaw-skills-2026 仅作线索）；2857 是 2026-02 审计样本数
 
+> **现行结论（2026-11-07 降级）**：「2800+」已过时，改为「数千至上万，且有安全审计发现大量恶意 skill」；「Claude Code 主流 Skill 注册中心」说法不准，ClawHub 是 OpenClaw 的注册中心。
+>
+> 以下为原记录：
 > OpenClaw / ClawHub 提供 2800+ 社区 Skill，是目前 Claude Code 生态中规模最大的 Skill 注册中心。George 提到可将 OpenClaw 的 Skill Hub 模式用于功能复用——将培训材料、培训流程、培训打分作为独立 Skill 模块化管理。
 
 ### Claim: GStack、Superpowers、Hermes 三大框架定位不同，适合不同场景

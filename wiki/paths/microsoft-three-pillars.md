@@ -120,7 +120,7 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 - **用时**：约 2 小时
 - **算会**：
   - 能说出 Prompt Agent 与 Hosted Agent 的"运行时归谁"差异，以及 Workflow Agent 去了哪里
-  - 能说出 Hosted Agent 的运行模型：每 session 一个 VM 级沙箱、闲置超时（默认 15、可配 2~60 分钟）、三种调用协议各自适合什么
+  - 能说出 Hosted Agent 的运行模型：每 session 一个 VM 级沙箱、闲置超时（默认 15 分钟、可配置，两篇官方文档给的上限不一致）、三种调用协议各自适合什么
   - 能解释 skill 在 Foundry 里怎么交付（toolbox + MCP Resources），以及为什么只有用 Copilot harness 的 Prompt Agent 能直接挂 skill
 
 ## 第 10 站 · Foundry 的选型

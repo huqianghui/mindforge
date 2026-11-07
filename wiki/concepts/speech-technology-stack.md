@@ -89,20 +89,30 @@ related:
 
 - **来源**：[[Speech技术全景]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：OpenAI 文档 https://developers.openai.com/api/reference/resources/realtime/client-events 称 eagerness 对应最长超时 8s/4s/2s；https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to 显示 Azure 另有 azure_semantic_vad 与多语种版本，独立于 GPT-4o
 
+> **现行结论（2026-11-07 降级）**：“policy threshold / reward tradeoff”无官方依据，且 Azure semantic VAD 不是 GPT-4o 内部能力
+>
+> 以下为原记录：
 > eagerness 参数实际调整的是模型内部 policy threshold / reward tradeoff，而非传统 VAD 参数。Semantic VAD 不可用第三方 VAD 替换，它是 GPT-4o 内部 turn-taking 能力的对外暴露接口。
 
 ### Claim: 语音输入产品经历三代范式演进——从准确转录到智能听写
 
 - **来源**：[[Typeless深度解析]]
 - **首次出现**：2026-05-20
-- **最近更新**：2026-05-24
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：同 15，第三方基准 https://superwhisper.com/benchmarks/wispr-flow-raw ；三代范式为框架判断
 
+> **现行结论（2026-11-07 修订）**：同 15，去掉 WER 7.6% 单一数字，三代范式保留
+>
+> 以下为原记录：
 > 第一代 Accurate Transcription（Azure Speech、Google STT——WER 优化）→ 第二代 Smart Transcription（Whisper、AssemblyAI——更好的标点/段落/多语言）→ 第三代 Intelligent Dictation（Typeless、Wispr Flow——LLM 后处理、语义重组、场景适配）。底层 ASR 已"够用"（Whisper WER 7.6%），产品差异化在 L2-L6 上层。
 
 ### Claim: 音量包络驱动是"简化口型同步"与"精细口型同步"的分界——只认音量不认发音

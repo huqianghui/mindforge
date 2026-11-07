@@ -28,24 +28,34 @@ LLM Wiki 是 Karpathy 提出的知识管理范式：用 LLM 将原始资料"编�
 
 ## Claims
 
-### Claim: Azure 企业级 LLM Wiki 应采用 AI Search（主体）+ CosmosDB Gremlin（图数据库补充）的双层架构
+### Claim: Azure 企业级 LLM Wiki 的一种候选架构：AI Search 为主 + CosmosDB Gremlin 补图
 
 - **来源**：[[2026-04-12-周日]]
 - **首次出现**：2026-04-12
-- **最近更新**：2026-04-15
-- **置信度**：0.6
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.4
+- **状态**：active
+- **证据类型**：理论
+- **复核**：2026-11-07 降级——依据：vault 内更新的决策页 wiki/decisions/wiki-over-rag-for-personal-knowledge.md（2026-04-23）写明：原计划合并为 AI Search + CosmosDB Gremlin 方案，实际使用后发现两者是不同范式；wiki/concepts/rag-architecture-comparison.md 仍保留该方案作企业级参考
 
+> **现行结论（2026-11-07 降级）**：改为'仅作为企业级的一种候选架构，个人场景已被决策页否定'
+>
+> 以下为原记录：
 > AI Search 承担文档/向量存储 + 混合检索（BM25 + Vector）+ 语义重排的搜索主体角色；CosmosDB Gremlin API 专注于 Entity + Relationship 的存储与多跳遍历——对应 Obsidian 的 Graph View / Backlinks / `[[wikilinks]]`。CosmosDB 不做文档/向量主存储。
 
 ### Claim: OmniRAG 路由根据查询类型自动选择最优检索路径
 
 - **来源**：[[2026-04-12-周日]]
 - **首次出现**：2026-04-12
-- **最近更新**：2026-04-15
-- **置信度**：0.6
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.45
+- **状态**：active
+- **证据类型**：理论
+- **复核**：2026-11-07 降级——依据：同上：wiki/decisions/wiki-over-rag-for-personal-knowledge.md 第 93 行说明合并方案已不采用；OmniRAG 路由仅是 RAG 内部概念
 
+> **现行结论（2026-11-07 降级）**：限定为'RAG 侧的混合检索路由思路'，不再与 LLM Wiki 绑定
+>
+> 以下为原记录：
 > 语义/关键词查询走 AI Search（主路径），关系/遍历查询走 CosmosDB Gremlin（补充路径），复合查询先 Gremlin 图遍历缩小范围再 AI Search 精排。比单一 Vector RAG 能回答更广泛的问题。
 
 ### Claim: LLM Wiki 的知识复利效应优于传统 RAG

@@ -77,10 +77,15 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 - **来源**：[[05-Strategic-Implications-and-Future-Outlook]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：官方 MCP Registry 已于 2025-09-08 以 preview 上线（open catalog + API，DNS 命名空间校验），迄今文档仍标 preview：https://blog.modelcontextprotocol.io/posts/2025-09-08-mcp-registry-preview ；https://modelcontextprotocol.io/registry/about
 
+> **现行结论（2026-11-07 修订）**：官方 MCP Registry 已存在但仍为 preview，且为公开服务器元数据目录；『Agent 无需人类预先配置地动态发现』仍属愿景，不是现状
+>
+> 以下为原记录：
 > Agent 将动态发现、配置和使用全球 MCP 注册表中的能力，无需人类预先配置。
 
 ### Claim: AI 的可持续竞争优势来自上下文环境而非模型本身

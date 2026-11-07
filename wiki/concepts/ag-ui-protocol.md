@@ -55,10 +55,15 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 - **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：CopilotKit 文档 useAgent https://docs.copilotkit.ai/reference/v2/hooks/useAgent ；CopilotKit README https://github.com/copilotkit/copilotkit
 
+> **现行结论（2026-11-07 修订）**：缺口已部分补上：CopilotKit v2 提供 `useAgent`（@copilotkit/react-core/v2）直接返回 AG-UI AbstractAgent 并订阅状态；Client 也扩到 React Native、Angular、Slack/Teams。但仍是 CopilotKit 一家，没有中立的 `@ag-ui/react`。正文改为「useAgent 类 hook 已有，但仅 CopilotKit 提供」
+>
+> 以下为原记录：
 > 第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。
 
 ### Claim: Voice Agent 本质也是一种 UI——interrupt/partial transcript/barge-in 可放进 AG-UI Event Flow

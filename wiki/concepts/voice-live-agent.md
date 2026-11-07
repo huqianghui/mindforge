@@ -22,7 +22,7 @@ related:
 
 ## 摘要
 
-Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统。当前存在两种主流架构：Cascaded Pipeline（STT + LLM + TTS 独立流式组件）和 End-to-End Native（单一多模态模型）。2026 年企业级唯一生产可行架构仍是级联管线。低延迟的关键不是让单个组件更快，而是让它们重叠执行（streaming + pipelining）。
+Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统。当前存在两种主流架构：Cascaded Pipeline（STT + LLM + TTS 独立流式组件）和 End-to-End Native（单一多模态模型）。企业场景仍常用级联或混合式；端到端（Realtime S2S）已可用于生产但控制力较弱（2026-11-07 复核修订，原写"唯一生产可行架构仍是级联"）。低延迟的关键不是让单个组件更快，而是让它们重叠执行（streaming + pipelining）。
 
 ## Claims
 
@@ -62,14 +62,19 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > 实现 < 1 秒端到端延迟需要 STT、LLM、TTS 的精密流水线协调。
 
-### Claim: 端到端模型尚未达到企业生产可用
+### Claim: 端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优
 
 - **来源**：[[2026-04-06-企业级实时语音Agent]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.55
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to 与数据隐私页 https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/speech-service/voice-live/data-privacy-security 把 GPT-Realtime 列为 Voice Live 受支持生产模型；Azure/VoiceLive/Voice-Live系列04：GPT
 
+> **现行结论（2026-11-07 降级）**：“唯一生产可行是级联”已过时，应改为“企业场景仍常用级联或混合式，Realtime S2S 已可用于生产但控制力较弱”
+>
+> 以下为原记录：
 > 2026 年企业级唯一生产可行架构仍是 STT → LLM → TTS 级联管线。Level 1 Fully E2E（如 Moshi）有研究价值无工程价值，Level 2 Hybrid Omni 本质仍是管线。
 
 ### Claim: Voice Agent 的真正难点在 Agent 而非语音
@@ -84,14 +89,19 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > Voice Agent = LLM Agent + Voice I/O。推理、工具调用、状态管理才是核心难点，"能听会说"只是界面。
 
-### Claim: Azure Voice Live API 走全托管端到端路线
+### Claim: Azure Voice Live 是托管语音层——可挂 Realtime S2S、级联、混合式、BYOM 或 Agent
 
 - **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.6
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-how-to 与 data-privacy 页：Voice Live 同时支持原生模型、BYOM、Foundry Agent；Azure/VoiceLive/Voice-Live系列14：模型接入的三条路径.md三条接入路径；Azure/VoiceLive/Voice-Live系列04：GPT-Live-1对数字人方案的影响.md 混合式
 
+> **现行结论（2026-11-07 修订）**：“走全托管端到端路线”过窄，改为“托管语音层，可挂 Realtime（S2S）、级联、混合式、BYOM 或 Agent”
+>
+> 以下为原记录：
 > STT、GPT Realtime、TTS、VAD、降噪、回声消除全部云端处理，原生 Avatar 集成。牺牲自托管控制换取更低集成复杂度。
 
 ### Claim: Voice Live API 采用 WebSocket + WebRTC 双通道架构
@@ -106,24 +116,34 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 > WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。
 
-### Claim: 从 WebSocket-only 到双通道是产品成熟度驱动的必然升级
+### Claim: 要获得数字人最佳体验才需要 WebRTC——WebSocket-only 并非必然被淘汰
 
 - **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
-- **最近更新**：2026-05-24
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 降级——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 第 276 行起：数字人可改走 WebSocket 下发作为企业安全客户端下的降级；说明 WS 并非不可用，只是体验较差
 
+> **现行结论（2026-11-07 降级）**：“WS 触顶必然升级”收窄为“要获得 avatar 的最佳体验才需要 WebRTC”
+>
+> 以下为原记录：
 > WebSocket 传音频的缺陷：TCP 队头阻塞导致延迟抖动、丢包重传带来延迟尖峰、无法利用浏览器 AEC/NS、无 AV sync、无法支持 Avatar 视频。当场景从 demo 进入 production + avatar + low-latency 时，WebSocket 作为音频传输通道的技术天花板被触碰。
 
-### Claim: Voice Live 与 Agent Service 解耦后发生模型归属反转
+### Claim: Voice Live 独立成服务，Agent 是可选挂载的大脑之一
 
 - **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：依据：Azure/VoiceLive/Voice-Live系列02：解耦Agent-Service后的架构演进.md 第 28 行更新（2026-09-19）：Agent 选不到 gpt-realtime 是 bug 且已修复，非解耦设计
 
+> **现行结论（2026-11-07 修订）**：“模型归属反转”的因果删掉；保留“Voice Live 独立成服务、Agent 为可选挂载、三种合作模式”，并注明 Agent 可搭 gpt-realtime
+>
+> 以下为原记录：
 > Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。
 
 ### Claim: Voice Live 挂 Agent 是会话级绑定 + 服务端编排，不是 function call
@@ -142,10 +162,15 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[Voice-Live系列02：解耦Agent-Service后的架构演进]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：依据：Azure/VoiceLive/Voice-Live系列14：模型接入的三条路径.md 已把光谱扩为原生/BYOM/Agent 三条路径；Azure/VoiceLive/Voice-Live系列02：解耦Agent-Service后的架构演进.md 第 28 行称选型光谱仍成立
 
+> **现行结论（2026-11-07 修订）**：在光谱上补 BYOM 与混合式两个位置；三笔账结论保留
+>
+> 以下为原记录：
 > 直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。
 
 ### Claim: 数字人 avatar=云端神经视频合成 + viseme 时间轴 + WebRTC 推流——浏览器退化为显示器

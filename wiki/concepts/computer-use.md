@@ -55,10 +55,15 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列三：自己实现]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：OpenAI computer use 现返回 computer_call，其 actions 为有序数组（一次可含多个动作），需逐个交 Playwright 执行后回传一张截图：https://docs.browserless.io/ai-integrations/computer-use/openai-computer-use （第三方文档；官方页未提取）
 
+> **现行结论（2026-11-07 修订）**：正文中『action JSON {type:click,x,y}』改为『computer_call 内的有序 actions 数组』；handler 为翻译层、Playwright/xdotool 为执行环境的分层结论不变
+>
+> 以下为原记录：
 > 循环骨架与 agent loop 同构（观察 → 模型判断 → 执行 → 回灌新状态），区别仅在实例化域：观察对象从工具返回值变成屏幕/页面状态（截图、DOM、AX 树），动作从 API 调用变成 UI 事件（click/type/scroll 坐标或元素引用）。分层上，模型返回的 action JSON 只是协议（`{type:"click",x,y}` 不会自己执行）；**action handler 是自己要写的翻译层**（官方仅给示例）；执行层可选 Playwright（浏览器页面）或 xdotool/系统事件（整个桌面）。"Docker 支持这些 action"是误读——支持 action 的是 handler，Docker/Playwright 只是执行环境。
 
 ### Claim: 语义操作优先、坐标操作兜底——Codex 与 Orca 两个独立实现同构收敛

@@ -54,10 +54,15 @@ related:
 
 - **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
-- **最近更新**：2026-05-24
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 明确 VAD 事件走 WebSocket；Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md 第 193 行事件通道可为同 WS 或另开 DataChannel
 
+> **现行结论（2026-11-07 修订）**：去掉“VAD 事件走 DataChannel”，改为 Voice Live 里事件主要走 WebSocket，DataChannel 非必需
+>
+> 以下为原记录：
 > WebSocket（主控制面）：session control、tool calling、config 修改、错误通知、AI response lifecycle——可靠（TCP）语义控制。WebRTC DataChannel（就地控制）：VAD 事件、streaming token、fine-grained sync——低延迟与音频同链路。即使 PeerConnection 已建立，WebSocket 仍负责系统级控制。
 
 ### Claim: WebSocket 传音频有五个结构性缺陷

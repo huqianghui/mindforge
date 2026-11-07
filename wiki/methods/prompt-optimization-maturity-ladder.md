@@ -124,10 +124,15 @@ related_methods:
 
 - **来源**：[[Prompt优化成熟度阶梯]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：GitHub linshenkx/prompt-optimizer README 与 Releases https://github.com/linshenkx/prompt-optimizer https://github.com/linshenkx/prompt-optimizer/releases
 
+> **现行结论（2026-11-07 修订）**：L1 定位成立。但它已不止“单次改写”：现在支持测试、评估、收藏版本历史、图像模板、高级模板（消息数组）和 Prompt Garden 来源；“内置模板只分语言不分模型”本轮未能从 README 核实。
+>
+> 以下为原记录：
 > 工作流是"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。
 
 ### Claim: 阶梯是数据飞轮中圈的优化环节：L0→L2 每上一级人的参与从"人改人看"退到"人定评估集、算法闭合回路"；L1 用 RLHF 式主观分、L2 才可能接 RLVR 式客观分；L2→RSI 的迁移阈值尚未知

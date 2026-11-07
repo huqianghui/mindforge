@@ -65,10 +65,15 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 
 - **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：MCP 官方 SEP-2640 https://modelcontextprotocol.io/seps/2640-skills-extension ；https://rohitghumare.com/blog/mcp-skills-extension（2026-09-13 合入 Final）；Bloomberg 称已成官方 MCP extension
 
+> **现行结论（2026-11-07 修订）**：SEP-2640 已于 2026-09 定稿(Final)成为官方扩展 io.modelcontextprotocol/skills；以 skill:// URI 的 Resource 暴露，新增 skills/list、skills/get 方法（可选 resources/directory/read）；"Resource 而非 tool"的核心成立，把"提案"改为"已定稿扩展"
+>
+> 以下为原记录：
 > MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是"读进上下文的文本"，不是"被调用的函数"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的"query → skill match → context projection"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。
 
 ### Claim: Agent Skills 规范只定义包格式不定义执行环境——scripts 层是 skill 可移植性的隐藏断层

@@ -71,10 +71,15 @@ G2P 在 TTS Pipeline 中位于 Text Normalization 之后、Acoustic Model 之前
 
 - **来源**：[[Speech-Out深入：从G2P到SSML]]
 - **首次出现**：2026-04-30
-- **最近更新**：2026-04-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：Azure 文档 https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-pronunciation 确认 SSML phoneme + Custom Lexicon；Azure/VoiceLive/Voice-Live系列04：GPT-Live-1对数字人方案的影响.md 第二节“混合式”可用 Realtime 当 Speech-LLM、再交给 Azure TTS
 
+> **现行结论（2026-11-07 修订）**：“GPT-Realtime 发音不可控”只对纯 S2S 路线成立；Voice Live 混合式（Realtime 出文本 + Azure TTS）可同时用 Lexicon，应改为“选对路线即可拿回发音控制”
+>
+> 以下为原记录：
 > Azure Speech 提供 Hybrid G2P + SSML + Custom Lexicon（高可控性）；GPT-Realtime 内嵌 G2P 不可控（只能文本层面 hack）。涉及人名/品牌名/多语言混合/专业领域时，必须选择有发音控制权的技术栈。
 
 ## 冲突与演进

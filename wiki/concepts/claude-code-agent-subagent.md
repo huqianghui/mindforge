@@ -44,10 +44,15 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 - **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Claude Code 官方文档 Create custom subagents https://code.claude.com/docs/en/sub-agents；Claude Code 官方文档 Agent teams https://code.claude.com/docs/en/agent-teams
 
+> **现行结论（2026-11-07 修订）**：核心成立（独立 context、只返回摘要）。补充：官方现在区分 fork，fork 继承父对话而非空白启动；另外被命名的 subagent 之间可互发消息。正文加「fork 例外」
+>
+> 以下为原记录：
 > 仅传递 prompt 参数，无对话历史、无主 session 上下文，返回时中间过程全部丢弃仅返回摘要。
 
 ### Claim: "Process isolation gives context isolation for free"
@@ -66,20 +71,30 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 
 - **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-16
-- **最近更新**：2026-04-16
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Claude Code 官方文档 Agent teams https://code.claude.com/docs/en/agent-teams
 
+> **现行结论（2026-11-07 修订）**：Claude Code 官方已有 Agent teams：队友有独立 context、可直接互发消息、共享任务列表，由 lead 协调；官方机制并非原文的 JSONL inbox / .team/config.json（那是 learn-claude-code 教学实现）。正文标明「教学实现」与「官方 Agent teams」两个层次
+>
+> 以下为原记录：
 > Teammate 与 Subagent 的本质区别：Subagent 是一次性委派（fire-and-forget），执行完即销毁；Teammate 有持久身份（name）、独立收件箱（JSONL inbox）和长期运行的 Agent Loop，通过 TeamConfig（`.team/config.json`）注册，通过 MessageEnvelope（type/from/content/timestamp）通信。
 
 ### Claim: Claude Code 形成三层 Agent 架构——Subagent / Runtime Task / Teammate
 
 - **来源**：[[Claude-Code系列03：Agent、Subagent与Teammate]]
 - **首次出现**：2026-04-16
-- **最近更新**：2026-04-16
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：Claude Code 官方文档 Create custom subagents https://code.claude.com/docs/en/sub-agents；Claude Code 官方文档 Agent teams https://code.claude.com/docs/en/agent-teams
 
+> **现行结论（2026-11-07 修订）**：三层仍可用作分析框架，但官方现在是 subagent（含 fork）/ Agent teams 两档，后台任务属 subagent 的运行方式。正文注明 Teammate 对应官方 Agent teams，Runtime Task 不是官方独立层
+>
+> 以下为原记录：
 > 三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。
 
 ## 冲突与演进

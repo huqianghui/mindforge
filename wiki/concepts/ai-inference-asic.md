@@ -56,20 +56,30 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 - **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：OpenAI 官方稿称 performance per watt 更优 https://openai.com/index/openai-broadcom-jalapeno-inference-chip；Yahoo Finance 报道额定 700W、实测持续功耗不高于 550W https://finance.yahoo.com/technology/ai/articles/openai-built-nvidia-beating-inference-175825708.html
 
+> **现行结论（2026-11-07 修订）**：补一句：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立
+>
+> 以下为原记录：
 > OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从"买多少卡"变成"有多少电"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。
 
 ### Claim: "begin deploying" ≠ 大规模量产——芯片交付十阶段的位置判断
 
 - **来源**：[[OpenAI-Jalapeño推理芯片解读]]
 - **首次出现**：2026-08-26
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：OpenAI 官方稿 https://openai.com/index/openai-broadcom-jalapeno-inference-chip 与 NYU 摘要 https://rits.shanghai.nyu.edu/ai/openai-and-broadcom-unveil-jalapeno-a-custom-llm-inference-chip：2026-06-24 发布，初始部署目标为 2026 年底，OpenAI 称从初始设计到流片约九个月；Tom's Hardware 引 Hock Tan 称 2026 年起与 Microso
 
+> **现行结论（2026-11-07 修订）**：勘误处需改：多个来源把“九个月”描述为初始设计到流片（tape-out），不止架构设计环节；“年底小批量初始部署”与官方一致，数 GW 爬坡口径仍无官方时间表，保留分层判断
+>
+> 以下为原记录：
 > 已公布实机功耗与多模型 benchmark，说明至少完成 Tape-out → 样片点亮 → 初步软件适配，当前处于"生产认证 + 小批试部署"。分层判断：年底小批量内部部署可信（Broadcom 有为 TPU 预订台积电产能的先例）；立即替代大量 NVIDIA GPU 无证据（制程/良率/首批数量未披露）；数 GW 规模取决于多年爬坡（Hock Tan 口径：2026 底原型、2027 ramp、2028 上半年 full tilt）。同理勘误："九个月设计周期"指架构设计环节而非立项到样片全程；与 Sol API 降价是战略相关而非直接因果（首测公布时芯片不可能已承担 Sol 流量）。
 
 ### Claim: co-design 逻辑下沉到硬件层——模型+推理软件栈+芯片同司联合优化，且 AI 开始加速芯片设计本身
@@ -86,10 +96,15 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 - **来源**：[[Qwen3.8-Flash与GLM-5.3-Flash的降本解剖]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 修订——依据：依据：NYU 摘要称 Z.ai 报告同硬件相对初始基线端到端 3 倍，每 token 成本接近主流 NVIDIA https://rits.shanghai.nyu.edu/ai/glm-5-3-flash-320b-multimodal-moe ；第三方 https://www.orcarouter.ai/blog/ox-alpha-stealth-model-what-we-know 称 Ox Alpha 约跑在 10 万张国产芯片上
 
+> **现行结论（2026-11-07 修订）**：“数万张”改为“数万到约 10 万张（第三方口径，官方未给精确数）”；3 倍口径的读法确认；1/9 训练开销未查到官方来源，保持原文但标注待核
+>
+> 以下为原记录：
 > GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①"端到端性能提升 3 倍"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②"训练开销只有前代 1/9"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。
 
 ## 冲突与演进

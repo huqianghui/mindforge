@@ -39,24 +39,34 @@ related:
 
 > Agent Lightning 是一个 method-agnostic 的 agent 优化训练框架：换优化方法（APO↔SFT↔RL）只换 `algorithm` 槽位，agent 代码与 reward grader 一行不改。这把「升级优化能力」从"换框架/重写"降级为"换槽位"，是 method-agnostic 的核心承诺。
 
-### Claim: 接缝是 adapter——同一份 trace，不同算法用不同消费方式
+### Claim: 接缝是 adapter——同一份 trace，不同算法用不同消费方式（0.x 版本）
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06
-- **最近更新**：2026-07-02
-- **置信度**：0.9
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：Agent Lightning v1.0 README 以 API Gateway 取代 adapter 叙述：https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
+> **现行结论（2026-11-07 降级）**：限定为 0.x 版本的 adapter 接缝
+>
+> 以下为原记录：
 > 同一份 trace，APO 走 `TraceToMessages`（看对话），RL/SFT 走 `TraceToTriplet`（取训练样本）。algorithm 是「消费者」，只通过 store 与 runner（生产者）解耦通信——换优化方法 = 换 algorithm 出口槽位，rollout / reward / store 一行不改。这是 method-agnostic 从"口号"变成"接缝"的具体位置。
 
-### Claim: store（控制平面）是 method-agnostic 能成立的物理基础
+### Claim: store（控制平面）是 method-agnostic 能成立的物理基础（0.x 设计）
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06
-- **最近更新**：2026-07-02
-- **置信度**：0.85
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-07 降级——依据：依据：v1.0 README 架构不再列 Store：https://github.com/microsoft/agent-lightning（v1.0 README 架构：Trainer 跑 verl+vLLM / API Gateway / Rollout Controller）
 
+> **现行结论（2026-11-07 降级）**：限定为 0.x 的 store 设计；method-agnostic 原则本身不变
+>
+> 以下为原记录：
 > 自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。store 不是被动存储，而是 runner↔algorithm 之间的协调中枢——正因为有这个居中的控制平面，生产者与消费者才能各自替换而互不影响。没有 store，method-agnostic 只是愿望；有了 store，它才有物理支点。
 
 ### Claim: 三级阶梯（APO→SFT→RL）共享同一份 reward，只是消费方式不同

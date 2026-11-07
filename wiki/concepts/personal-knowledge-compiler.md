@@ -52,20 +52,30 @@ related:
 
 - **来源**：[[PKC系列01：从日记到知识库|从日记到知识库：Obsidian × oh-my-claudecode × LLM Wiki 的个人知识编译实践]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：OMC wiki 与 vault 并存问题已由 vault 的 wiki/ 目录取代（CLAUDE.md 当前以 wiki/ 为唯一存储）；wiki/decisions/wiki-over-rag-for-personal-knowledge.md
 
+> **现行结论（2026-11-07 修订）**：一句：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki
+>
+> 以下为原记录：
 > OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。
 
 ### Claim: PKC 四层知识模型——Concept/Method/Decision/Typed Relations
 
 - **来源**：[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：wiki/index.md 当前规模已远超 40 concepts + 8 methods + 4 decisions；CLAUDE.md 与近期 commit 显示已有学习路径等新层级
 
+> **现行结论（2026-11-07 修订）**：规模数字改为引用当前 wiki/index.md 的统计，或标注'2026-04-13 时点'
+>
+> 以下为原记录：
 > PKC 从单一概念层演进为四层模型：Concept（What）→ Method（How）→ Decision（Why）→ Typed Relations（How connected）。每层解决不同类型的知识问题：概念页记录声明式知识，方法页记录步骤化过程知识，决策页记录选型论证，8 种类型化关联记录知识间的语义关系。当前规模：40 concepts + 8 methods + 4 decisions + ~160 claims。
 
 ### Claim: 五项高维度改进构成 PKC 持续演进机制
@@ -84,10 +94,15 @@ related:
 
 - **来源**：[[2026-04-15-周三]]
 - **首次出现**：2026-04-15
-- **最近更新**：2026-04-15
+- **最近更新**：2026-11-07
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-07 修订——依据：wiki/wiki-graph.json 与 wiki/visualizer 目录存在，可视化持续使用；53 节点/141 关联/180 Claims 为 4 月时点
 
+> **现行结论（2026-11-07 修订）**：规模数字标注为 2026-04-15 时点，或更新为当前 export-graph 统计
+>
+> 以下为原记录：
 > 通过 Python 导出脚本（wiki → JSON）+ React 力导向图（react-force-graph-2d），PKC 的 53 个节点、141 条关联、180 条 Claims 可在浏览器中交互式浏览。部署到 GitHub Pages 后可随时访问，不依赖本地环境。这是 PKC 从"编译知识"到"可视化知识生态"的关键一步。
 
 ### Claim: 一个维护良好的 wikilink vault 已经是 80% 的 GraphRAG 索引——实体消解从构造上解决、索引成本为零
