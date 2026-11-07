@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
 created: "2026-07-21"
-updated: "2026-11-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - decision
@@ -16,7 +16,7 @@ related_methods: []
 
 ## 背景
 
-Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（preview，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。**2026-08-16 更新**：Workflow Agent 已于 2026-12-01 退役（官方类型收窄为 Prompt / Hosted 二元），选型框架主线相应改为二元；详见下方选项 C 标注与新增 Claim。构建企业 Agent 时需要在（现二元的）Prompt 与 Hosted 之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
+Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（preview，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。**2026-08-16 更新**：Workflow Agent 已移出官方 agent 类型、定于 2026-12-01 退役（官方类型收窄为 Prompt / Hosted 二元），选型框架主线相应改为二元；详见下方选项 C 标注与新增 Claim。构建企业 Agent 时需要在（现二元的）Prompt 与 Hosted 之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
 
 ## 选项分析
 
@@ -120,11 +120,11 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 > 两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是"是否需要 harness 控制权"，而不只是"要不要多付钱"——scale-to-zero 让低流量场景该成本接近零。
 
-### Claim: Workflow Agent 已于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills
+### Claim: Workflow Agent 定于 2026-12-01 退役、已移出官方类型，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-31
-- **最近更新**：2026-08-16
+- **最近更新**：2026-11-07
 - **置信度**：0.85
 - **状态**：active
 
@@ -164,6 +164,8 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **2026-08-30**：注入 08-20 文档修订的三组 Hosted 运行时经济学硬约束（双 ID 生命周期/per-session 计费/冷启动无 benchmark），"Hosted 硬约束表"证据面扩充。
 - **2026-08-16**：源文章《Foundry Agent 全面对比》2026-07-31 修订确认 Workflow Agent 于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元（姊妹篇《Foundry Toolbox与Skills深度解析》同日确认）。本决策页据此修订：① 选项 C 标注 `superseded`；② 选型框架主线由三选一改为二元；③ 新增 Claim 记录退役事件与编排责任下沉路径（Hosted 内 harness/Agent Framework + A2A + Skills）；④ `decision_status` 保持 `active`（决策主线本身未被推翻，仅选项集收窄）。
+
+- **2026-11-07**：更正时态——Workflow Agent 是"定于 2026-12-01 退役"，不是"已于"（写作时尚未到期）；官方类型收窄为 Prompt / Hosted 的结论不变。
 
 ## 关联概念
 
