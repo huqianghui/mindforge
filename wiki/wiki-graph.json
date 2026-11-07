@@ -1414,7 +1414,7 @@
       "id": "azure-copilot-ecosystem",
       "type": "concept",
       "title": "Azure Copilot Ecosystem",
-      "summary": "Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置 Agent）、Azure Skills（22 个专家级工作流剧本）、Azure MCP Server（200+ Azure 服务工具的 MCP 协议实现）。当前 Copilot Agents 仅限 Portal 交互，无 API/SDK 暴露，因此编程化的 Agentic Infrastructure 路径需要组合使用 Skills + MCP Server + CLI。",
+      "summary": "Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal 内的 agent，Troubleshooting、Observability 已 GA，其余仍在 preview）、Azure Skills（Azure Skills Plugin 打包的 26+ 个工作流 skill）、Azure MCP Server（40+ 个 Azure 服务、按命名空间合并后的 59 个工具）。Copilot Agents 的对话交互只在 Portal，通用调用 API / SDK 未见文档（只有 Observability Agent 能以 ARM / Bicep 资源方式部署），因此编程化的 Agentic Infrastructure 路径仍是组合使用 Skills + MCP Server + CLI。（2026-11-07 /revalidate 后同步更新）",
       "tags": [
         "wiki",
         "concept",
@@ -1429,13 +1429,13 @@
       "avg_confidence": 0.75,
       "claims": [
         {
-          "statement": "Azure Copilot Agents 仅限 Portal UI，无 API/SDK",
+          "statement": "Azure Copilot Agents 的对话交互只在 Portal，通用调用 API/SDK 未见文档——Observability Agent 可经 ARM / Bicep 部署是例外",
           "source": "2026-04-11-周六",
           "first_seen": "2026-04-11",
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。Azure Copilot Agents 目前处于 preview 阶段，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口。"
+          "evidence": "详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。写作时（2026-04）Azure Copilot Agents 处于 preview，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口；当前状态见下方修订。"
         },
         {
           "statement": "Azure 编程化 Agentic 路径 = Azure Skills + Azure MCP Server + CLI",
@@ -1444,10 +1444,10 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（200+ Azure 服务工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 提供 22 个专家级 Azure 工作流剧本（含 AKS 故障排查、GPU 选型）。"
+          "evidence": "agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（40+ 服务、59 个工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 现有 26+ 个可复用 skill（写作时为 22 个，含 AKS 故障排查、GPU 选型）。"
         },
         {
-          "statement": "Azure MCP Server 覆盖 35+ 服务 200+ 工具",
+          "statement": "Azure MCP Server 覆盖 40+ 服务、59 个工具（按服务命名空间合并）",
           "source": "Azure-Copilot生态：Skills、MCP与Agents的协作",
           "first_seen": "2026-04-13",
           "last_updated": "2026-11-07",
@@ -4105,7 +4105,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），idle 15 分钟回收算力、恢复时状态自动还原（scale-to-zero + 有状态恢复）。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。"
+          "evidence": "每个 session 一个 VM 级隔离沙箱，带持久文件系统（`$HOME` 与 `/files`），闲置超时后回收算力（默认 15 分钟、可配 2~60 分钟；30 天不活跃永久删除）、恢复时状态自动还原（scale-to-zero + 有状态恢复），没有 replica 数和 warm pool 可配。三种协议可同时暴露：`/responses`（OpenAI Responses 兼容，对话首选）、`/invocations`（任意 JSON 进出，适合 webhook、批处理、AG-UI 这类协议桥接）、`/invocations_ws`（全双工 WebSocket，实时语音等双向流）。协议库内置 OpenTelemetry，trace 进关联的 App Insights。Hosted 还可经 Toolbox MCP endpoint 使用 Foundry 托管工具（Web Search、File Search、Code Interpreter、AI Search、custom MCP、A2A）。"
         },
         {
           "statement": "2026 年 Foundry 的路线是\"先把运行时做完、编排下沉到代码、再开放托管 harness\"——Copilot harness 进入 Foundry 后多了\"Microsoft 跑 loop、你只声明\"的第三种做法",
@@ -4994,7 +4994,7 @@
           "last_updated": "2026-11-04",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要\"自己想办法干完\"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是\"harness 产品化\"的实例。"
+          "evidence": "三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness；Foundry Prompt Agent 现可在默认 harness 与 Microsoft Copilot harness 之间选，但两者都由平台托管）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要\"自己想办法干完\"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是\"harness 产品化\"的实例。"
         }
       ]
     },
@@ -10814,7 +10814,7 @@
     {
       "id": "foundry-agent-type-selection",
       "type": "decision",
-      "title": "Foundry Agent 三类型选型：Prompt / Hosted / Workflow",
+      "title": "Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted",
       "summary": "",
       "tags": [
         "wiki",
