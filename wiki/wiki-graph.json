@@ -10883,10 +10883,10 @@
           "evidence": "两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是\"是否需要 harness 控制权\"，而不只是\"要不要多付钱\"——scale-to-zero 让低流量场景该成本接近零。"
         },
         {
-          "statement": "Workflow Agent 已于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills",
+          "statement": "Workflow Agent 定于 2026-12-01 退役、已移出官方类型，官方类型收窄为 Prompt/Hosted 二元，编排责任下沉到 Hosted 内 harness + A2A + Skills",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-07-31",
-          "last_updated": "2026-08-16",
+          "last_updated": "2026-11-07",
           "confidence": 0.85,
           "status": "active",
           "evidence": "官方明确 \"Microsoft Foundry is retiring workflows on **December 1, 2026**\"，禁止新的生产依赖，存量 workflow 有官方迁移指南。Workflow Agent 不再是官方 agent 类型，Foundry Agent 类型收窄为 Prompt / Hosted 二元；姊妹篇《Foundry Toolbox与Skills深度解析》同日（2026-07-31）确认这一变化。\"编排层\"这个维度本身没有消失，只是载体从托管产品换成了代码级机制：确定性多 Agent 协作收敛为三层组合——Microsoft Agent Framework 的 workflow orchestrations（代码级编排，可打包为 Hosted Agent 部署）+ A2A 协议（preview，agent 间委派的平台级标准通道）+ Skills（能力承接）。对本决策选项 C 的影响：其\"多 Agent 固定流程编排\"适用条件与\"流程即 YAML 天然可审计\"优势均失效，标 `superseded`；选型框架主线从三选一收窄为二元（Prompt vs Hosted），原 Workflow 场景并入 Hosted 判断。"
