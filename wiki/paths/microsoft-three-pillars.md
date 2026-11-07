@@ -10,6 +10,15 @@ tags:
   - foundry
 path_id: "microsoft-three-pillars"
 audience: "自己 + CSA 团队"
+gap_topics:
+  - agent-memory
+  - model-harness-decoupling
+  - agent-tooling
+signals:
+  - "GitHub Changelog（github.blog/changelog）"
+  - "Microsoft Foundry Blog 与 Foundry What's new"
+  - "Copilot Studio What's new"
+  - "Microsoft Entra Agent ID 与 Agent 365 文档更新"
 ---
 
 # 学习路径：微软 AI 三支柱
@@ -134,6 +143,15 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
   - 给一个客户场景（如"员工在 Teams 里用、要接内部系统、要语音"），能按"入口 → 大脑要不要自己控制 → 语音 → 治理"给出组合方案
   - 能说出三处接缝上的硬约束，以及哪些是可以任选、只有 trade-off 的地带
   - 能说出 2026 年三条产品线的汇合方向
+
+## 前沿站 · 正在发生的变化
+
+三支柱变化很快，这一站放还没完全进 wiki、或刚被复核改过的变化。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
+
+- **Microsoft Copilot harness 进入 Foundry（公开预览）**→ 影响第 9、10 站：Foundry 选型从两档变三档，Prompt Agent 有了 skill
+- **Agent memory 第一次有了能直接用的评测结论**（知识差距 2026-10-25，高优先级，建议深挖）→ 影响第 5 站：Copilot Memory 的"使用中投票"能不能被这类评测检验
+- **Harness 与 model 解耦变成日常产品**（知识差距 2026-10-19）→ 影响第 2、4 站：同一个 Copilot harness 跨三个产品复用，是这个趋势在微软的落点
+- **Foundry 发布模型迁移**（Agent Application → 新 agent endpoint）→ 影响第 3 站：发布前后身份怎么变要按新模型重查
 
 ## 毕业标准
 

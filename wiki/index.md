@@ -30,6 +30,7 @@ tags:
 **学习路径**（`wiki/paths/`）：把网状的图谱排成有先后顺序的路径，每站标出要读的页、前置站点和「算会」标准，也是自测题库的出题来源。
 
 - [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，约 12~15 小时
+- [[voice-agent]] — 语音 Agent 与实时交互：技术栈 → 级联与端到端 → VAD / EOU → turn-taking → Speech Out → 传输 → ICE → 数字人工程 → 大脑接入 → 企业网络，10 站 + 前沿站，约 14~18 小时
 
 ## 知识工作流
 
