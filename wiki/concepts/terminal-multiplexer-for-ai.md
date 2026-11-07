@@ -40,7 +40,7 @@ related: []
 - **首次出现**：2026-07-25
 - **最近更新**：2026-08-04
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Orca Mobile 是 read-mostly 遥控器：浏览会话、下指令、审阅 diff、批准提交，但 Agent 执行永远发生在 desktop/server 上——这是 tmux"会话与窗口解耦"范式的产品化延伸。跨网络不走云中继，靠 Tailscale 组一张私有网；Remote Orca Server 模式把运行时归属从"我的 Mac"翻转到"远端常驻服务器"，四种连接模式覆盖本机/局域网/Tailscale/远端服务器。每个任务独立 git worktree 隔离，支持 fan-out 并行跑多个 Agent 再 pick the winner——终端复用从"人访问会话"进化为"人调度 Agent 编队"。
 

@@ -33,7 +33,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > 官方定位图：User —AG-UI— Agent Runtime —MCP— Tools/Data，—A2A— Other Agents。AG-UI 不是 Agent Framework 也不是 UI 框架，与 MCP、A2A 一样是协议规范（Specification）。与传统 REST 的本质区别：整个交互是双向事件流（RunStarted → MessageDelta → ToolCallStarted → RenderApprovalCard → UserAction(Confirm) → ContinueRun → FinalMessage），而非一次 HTTP Response。
 
@@ -43,7 +43,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > 类比 gRPC 的位置：HTTP/WebSocket/SSE 是传输层，AG-UI 是应用层协议，`@ag-ui/client` 是 SDK，React/Vue 是 UI 框架。官方集成列表没有 React/Vue 不是遗漏而是设计：AG-UI 标准化的链路是 Agent Runtime → Client → UI，真正的 Client 是 CopilotKit、VSCode 扩展、Slack App、CLI 这类"能接收展示并响应 AG-UI Event 的系统"，React 只是 Client 的实现技术。浏览器根本不知道 AG-UI 存在——就像它不知道 MCP 一样。
 
@@ -53,7 +53,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。
 

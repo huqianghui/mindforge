@@ -61,7 +61,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是"读进上下文的文本"，不是"被调用的函数"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的"query → skill match → context projection"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。
 
@@ -71,7 +71,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（GitHub Copilot harness）=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。
 
@@ -81,7 +81,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > 面向跨 harness 可移植的 skill 脚本设计：① **最小公分母**——Python 标准库 only、不依赖 Node 专属脚本，重依赖以纯 Python 源码 vendor 进 skill 的 scripts/ 目录（无网也能用）；② **运行时探测 + 文字降级**——SKILL.md 写明"优先跑脚本，环境无 Python 则按以下手动步骤"，脚本失效时模型降级为纯推理执行，印证"离模型越近越可移植"；③ **重依赖改走 MCP**——需要 playwright/特定 SDK/Node 生态时不塞 skill scripts，做成 MCP server 跑在自控环境，把依赖问题从管不了的托管 sandbox 转移到管得了的自有服务器；④ **env-probe 探针 skill**——脚本打印 sys.version、pkgutil.iter_modules() 包清单、socket 出站测试、subprocess 试 node --version，上线前在目标 harness 跑一次拿真实能力清单，比等平台文档快且可重复验证。
 
@@ -91,7 +91,7 @@ Skill Runtime 是解决 Context 爆炸问题的范式方案：从 document-centr
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Skill 化收敛的风险面：skill 是提示词说服（L2/L3），代码机制是强制执行（L1）。对确实需要硬门禁的场景（合规审计、不可逆操作），仍需宿主 hook 或外部流程兜底，不能全押说服。与记忆提权协议的三级约束强度（L1 Hook / L2 CLAUDE.md / L3 Memory）是同一个道理：**约束力要匹配需求强度，行为规则的载体决定它的强制力上限**。Superpowers 6.3.0 保留的唯一 SessionStart hook 承担全部"代码性"，正是最小可行 L1 注入点的实例。
 

@@ -33,7 +33,7 @@ related:
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-30
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 离模型近的资产只依赖"模型能读文本"这一最普适能力；离模型远的资产依赖 harness 私有机制（hook 挂的是 harness 内部生命周期事件，事件模型本身就是实现细节，换 harness 事件就不存在——hook 可移植性几乎为零）。Copilot Studio 三 harness 并存提供产品级证据：同一 agent 配置换 harness 跑出不同行为，"选 harness 就是选行为语义"。
 
@@ -43,7 +43,7 @@ related:
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Superpowers 6.3.0 release notes 明确列出 Harness Support 章节（Hermes Agent、Grok Build CLI、Antigravity、Pi、Codex……），同一套 skills 通过不同 bootstrap 机制注入各家 harness；仓库同时存在 `CLAUDE.md`、`AGENTS.md`、`GEMINI.md` 三个入口文件——一份方法论、多个宿主。一旦资产押注在 skill 上，agent/command/hook 这些绑定单一宿主的机制就成了拖累跨平台发布的死重。这是 Harness 框架 Skill 化收敛的第三个（结构性）原因。Foundry 侧共振：Prompt/Hosted Agent 的 Skill support 双 Yes——skill 正在成为跨 harness 的行业通用格式。
 
@@ -53,7 +53,7 @@ related:
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Codex CLI 与 App 共享插件目录，Skill 文件跨宿主 100% 可发现；但 bundled Computer Use Skill 依赖的 `node_repl + @oai/sky` runtime 只在 App 注入——**同一份 Skill 在 App 是完整能力、在 CLI 是一纸空文**。这给"离模型越近越可移植"补了精确化限定：可移植的是 skill 的**指令层**（markdown 说明书）；skill 若依赖特定执行接口（runtime tool、脚本解释器），该依赖层的可移植性立即跌至 hook 级别。与 [[skill-runtime]] 的 scripts 断层同构：规范只管包格式，不管执行环境。
 
@@ -63,7 +63,7 @@ related:
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。
 
@@ -73,7 +73,7 @@ related:
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > 2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——"搬家工具"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了"离模型越近越可移植"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。
 

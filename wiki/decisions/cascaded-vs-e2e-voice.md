@@ -77,7 +77,7 @@ related_methods:
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策"选定一条架构路线"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，"分层用模型"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。
 

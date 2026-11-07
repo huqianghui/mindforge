@@ -121,7 +121,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的"prompt+response 一起进 loss"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的"target 是评分键"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问"哪列进模型、哪列进 reward"即可快速定位。
 

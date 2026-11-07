@@ -112,7 +112,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。
 
@@ -122,7 +122,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 绑定通过 WebSocket 连接 URL 的 query 参数（`agent_id` + `project_id`）在会话建立时完成，而非运行时把 Agent 当工具调用。证据：挂 Agent 后 session 的 `instructions` 字段被禁用（推理归 Agent），且服务端会推送 `interim_response`（TOOL/LATENCY 类型）填补 Agent 推理延迟——这是服务端编排器行为，function call 模式不会有。
 
@@ -132,7 +132,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 - **首次出现**：2026-07-19
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。
 

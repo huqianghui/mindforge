@@ -40,7 +40,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.85（本机实测 + codesign 验证 + 官方 issue 佐证）
-- **状态**：active
+- **状态**：stale
 
 > `Codex Desktop = ChatGPT 壳 + bundled CLI + bundled plugins`。三个部分版本互相独立：App version（26.901.x）、bundled CLI（`/Applications/ChatGPT.app/Contents/Resources/codex --version`，如 0.153.1）、terminal CLI（Homebrew/npm 另装，如 0.153.4）——**排查任何 Desktop 行为一律以包内二进制版本为准**，App 自身版本号对定位 schema/行为无用。bundled CLI 与 standalone CLI 是**同源不同发行版**：同一个 openai/codex 开源项目、两条发行通道、与 App 配套测试的不同 build；能力差异出在 build 之外的 App 环境层（签名/Apple Events/进程树）。血缘证据：`codesign -dv` 显示 ChatGPT.app 的 bundle identifier 仍是 **`com.openai.codex`**——新 ChatGPT.app 是 Codex Desktop 演化出的统一壳（Chat + Work + Codex），不是 Classic 加了个 Codex。三元中**只有 CLI 一元开源**（且只是一个特定 build），壳与能力 payload 均为 proprietary。
 
@@ -50,7 +50,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.85（Azure GPT-6/mini 全链路实测验收）
-- **状态**：active
+- **状态**：stale
 
 > Codex harness 对第三方 provider 的态度是**分层的"默认绑定 + 可撬"**，每层答案不同：① **模型目录层可替换**——`model_catalog_json` 整体替换（非 merge），schema 跟 bundled CLI 版本走（`rust-vX.Y.Z` tag 是唯一可靠坐标，手写和 main 分支都走不通），且官方 catalog 里第三方场景要的模型定义往往齐全、只是 `visibility: "hide"`（翻 visibility 即可，不必造轮子）；② **服务端工具层不可补**——harness 检测到自定义 provider 后拒发 web_search 声明；③ **治理层必须显式覆盖**——审批等隐藏模型调用跟 provider 走，需 `auto_review_model_override` 指向真实 deployment。配套操作纪律：模型菜单读全局配置（`cwd: null`），项目级 catalog 控制不了它；退休元数据（`upgrade`/`retirement_at`）是 OpenAI 第一方生命周期信息、与自己 Azure deployment 无关，清 `null`；分层排错顺序 schema 层 → provider 层 → API 兼容层，一次只动一层。结论：评估"某 harness 能不能接自家模型端点"应该**按层给出答案**，而不是一个总体是否。（断供侧的三层框架——工具层/目录层/治理层——归口 [[computer-use]]，本条是同一链路的接入操作面。）
 
@@ -60,7 +60,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 - **首次出现**：2026-09-06
 - **最近更新**：2026-09-06
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > 从最强模型条目的字段配置能读出能力投资方向：gpt-6-astra 的 ModelInfo 自带 computer/browser use 的**全套治理内容**——`confirmation_policies` 四级确认政策全文、guardian 的 `node_repl_policy.md` 专管 "computer and browser use via node_repl or cua_repl"；运行时侧，`cua_repl`（cua = Computer Use Agent）是与 node_repl 同一 bundled Node.js 24 运行时的 Computer Use 变体（App bundle 内 `cua_node/` 目录），`tool_mode: code_mode_only` 下桌面/浏览器操作与其他工具一样走 JS 编排、收进单一治理入口。结合分发链事实（payload 只随 Apple Silicon 的第一方 App 分发、standalone CLI 与 Intel 构建都不带），可见 **Computer Use 能力栈是围绕"最新模型档 × 第一方 App 形态"优先配齐的**：老模型（mini，`direct`）与 CLI 发行版都不在第一梯队。这与 ChatGPT Work 把 Codex harness 泛化为"通用工作 harness"的产品方向互为表里——通用工作任务需要操作 GUI，Computer Use 就是最新模型档的发力点。
 

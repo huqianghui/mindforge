@@ -34,7 +34,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 换 Judge 不换标准（GPT judge 换人工，rubric 可不变）；同一 judge 既能 pointwise 也能 pairwise；换一套 rubric，同一 judge 就从客服评估器变成医疗评估器。很多 Survey 和产品文档把三层画成同一棵分类树，是概念混乱的根源。
 
@@ -44,7 +44,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Human 是黄金标准但贵且慢，定位是校准锚点而非日常工具（所有自动 judge 的终极指标是 Agreement with Humans）；能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用 Rule/Metric（零噪声，与 [[reward-design-three-inputs]] "确定性规则分白送零噪声信号"一致）；专训 reward model（PairRM/Prometheus）走向 rubric 化可解释化、通用 LLM judge 走向 RL 训练强化（J1），两条线在收敛。
 
@@ -54,7 +54,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 研究层（Survey 分类）把 Rubric-based 放在 LLM-as-a-Judge 之下（judge 的一种策略配置）；产品层（Azure AI Foundry）把 Rubric Evaluator 作为打包组件直接调用——内部就是 LLM judge 对加权维度逐维打 1~5 分并给理由，加权平均后归一化到 0~1，Foundry 把它作为 Agent 评估推荐主指标。两种画法都对，只是抽象层次不同。基于 Foundry 官方文档核对。
 
@@ -64,7 +64,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Consistency（同答案打十次漂移）、Position Bias、Verbosity Bias、Self-Preference（GPT 偏爱 GPT）、Style Bias、Prompt Sensitivity、Calibration 错位、Agreement with Humans——这张清单把 [[reward-design-three-inputs]] 里抽象的"judge 噪声 σ_noise"拆成可对症的病灶。评估噪声顺训练管道放大：APO 摆动第一大原因是评估噪声而非算法（见 [[automatic-prompt-optimization]]），"把 judge 做稳"（多次采样取均值、拆分维度、rubric 锚点）是评估和优化共同的地基。
 
@@ -74,7 +74,7 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - **首次出现**：2026-08-03
 - **最近更新**：2026-08-03
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。
 

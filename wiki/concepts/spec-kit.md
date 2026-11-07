@@ -29,7 +29,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。
 
@@ -39,7 +39,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > checklist 命令为规格文本生成检查清单——官方定位是"给英文写单元测试"：规格是用自然语言写的程序，checklist 验证其完整性/一致性/无歧义。analyze 验证文档间一致性，converge 验证代码与文档收敛，三者构成文本层的测试金字塔。
 
@@ -49,7 +49,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Constitution 存放在项目仓库、由命令流程在关键节点显式引用检查，属 Workflow 层约束；这与把原则塞进 System Prompt（每次加载但无强制检查点）形成对比——与 PKC memory-promotion 的层级模型同构：需要的约束力决定存放层级，行为规则放弱提示层是层级错配。
 
@@ -59,7 +59,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > spec-kit 用 `.specify/feature.json` 记录当前 active feature，所有命令隐式作用于它——单 Agent 单 Feature 假设。并行开发的官方姿势是一个 Feature 对应一个 Branch + Worktree + Agent Session，taskstoissues 把 tasks 转成 GitHub Issues 形成多 Agent Work Queue。
 
@@ -69,7 +69,7 @@ Spec Kit 是 GitHub 开源的 SDD（Spec-Driven Development）工具链：十个
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Spec 的粒度锚点是"一个用户价值"（经验值 20~80 个 tasks）；太大则 clarify/analyze 阶段失控，太小则流程开销大于收益。Task 粒度锚点是"可独立提 PR 的单元"，这直接决定了 taskstoissues 多 Agent 分发的可行性。
 

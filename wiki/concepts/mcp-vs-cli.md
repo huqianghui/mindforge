@@ -80,7 +80,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 浏览器操作产品化引入第三层：**WebMCP site tools**——页面顶层 JS 里 `document.modelContext.registerTool()` 把页面能力直接声明为 agent 工具（带 readOnlyHint/untrustedContentHint 注解），agent 不再猜 DOM、不点坐标，直接调业务语义工具。三层分工：Extension 解决"进入用户正在看的页面"（登录态）、Plugin+MCP 解决"安全稳定做业务"（页面没开也能跑）、WebMCP 解决"当前页面告诉 agent 自己能做什么"（工具随页面关闭失效）。选型判据从"MCP 上下文换精度 vs CLI 内置知识换节省"扩展为按运行位置分层：操作自家页面 → WebMCP 优先；后台任务 → MCP+API；第三方站点 → Extension/浏览器控制兜底。OpenAI 开发者文档站已实测暴露 search/lookup/navigate site tools——生产级 WebMCP 已存在。
 
@@ -90,7 +90,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-06
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是"跨应用接第三方工具"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。
 

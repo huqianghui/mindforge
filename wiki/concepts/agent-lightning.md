@@ -139,7 +139,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.5
-- **状态**：active
+- **状态**：stale
 
 > DeepSeek Harness 的 session log 是"模型可见事实的唯一来源"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将"轨迹采集/可审计执行（喂 RL、合规审计）"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh "loop 也是 plugin" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。
 

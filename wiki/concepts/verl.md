@@ -109,7 +109,7 @@ VERL 的设计目标可一句话概括：**让 GPU 利用率最大化，哪怕�
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > ms-swift（魔搭 ModelScope 官方）与 LLaMA-Factory 同属**轻量微调一站式框架**：命令式入口（`swift sft/rlhf/infer/deploy`）、内置 GRPO/DPO/PPO 等 RLHF 算法、LoRA/QLoRA 默认路径、单机可跑。verl 是**大规模 agentic RL 基础设施**：Ray 集群调度、training/rollout 解耦、多步轨迹。两边都叫 GRPO，但量级不同——ms-swift 的 GRPO 是"单机/小集群上对静态数据集做 RLHF 微调"，verl 的 GRPO 是"分布式 rollout worker 采多步 Agent 轨迹"。选型判据不是算法名而是**改权重的规模与交互形态**：静态数据集 + 单轮生成 + 资源有限 → ms-swift/LLaMA-Factory；多步工具调用轨迹 + rollout 吞吐是瓶颈 → verl。两者不是竞品而是阶梯——领域适配先用轻量框架 SFT/DPO，进入 Agent RL 才需要 verl 级 infra。
 

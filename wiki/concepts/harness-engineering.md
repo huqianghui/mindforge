@@ -146,7 +146,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > VS Code 为支撑 per-model 适配矩阵被迫建成三层评测体系：① **VSC-Bench**（离线，选候选）——容器化可复现 workspace 里真正启动 VS Code 实例跑完整 agent session，度量 resolution rate + agent effort + token 效率 + latency 四件套；数据集刻意私有（公开就重蹈 SWE-bench 污染覆辙，私有性正是质量信号的前提）；② **PR 评测门禁**（merge 时，防回归）；③ **生产 A/B**（在线，定胜负）——GPT-5.5 prompt 实验用"10 分钟存活率 / commit 存活率"这类只有真实用户行为能提供的指标，`PRPT_LRG` 以 p95 首次编辑延迟 -9.30%、工具调用 -8.54% 换质量微降 0.44%（p=0.0493），显式量化 trade-off 后拍板。附带发现：xhigh reasoning effort 比 high 更费 token 但解题率反而略低——存在"有效努力甜点"。
 
@@ -156,7 +156,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 模型没换、代码没 bug，但改一个工具 description、动一行 system prompt，agent 就可能整体变笨——单元测试全绿、产品体验回归。判断标准不是"改没改 prompt"而是"会不会改变 agent 感知到的世界"：microsoft/vscode#312854 只修终端 shell integration 挂起 bug（加 30 秒定时器）也要过评测门禁，因为终端是 `run_in_terminal` 的行为地基。实证（GitHub API 查证，截至 2026-07）：`~requires-eval-assessment` 标签的 9 个 PR 里 8 个由作者本人手打、仅 1 个由 bot 自动打——本质是**自我申报制**，依赖资深成员的直觉与团队文化。当改 harness 的主力变成 agent，约束需分层：L1 确定性路径规则（保召回）、L2 语义指令（AGENTS.md 自评）、L3 独立 reviewer agent（never self-approve）；成本不对称（漏报=回归上线，误报=多跑一轮评测）决定默认值应是"不确定时打标签"。
 
@@ -186,7 +186,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-07-20
 - **最近更新**：2026-07-21
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。
 
@@ -206,7 +206,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-07-30
 - **最近更新**：2026-08-04
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
 
@@ -216,7 +216,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是"harness 提取物"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张"帮模型接触世界"），framework 流行于应用开发圈（价值主张"帮开发者抽象模型"）——方向相反，"Agent = Model, Not Framework" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。
 
@@ -226,7 +226,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 微软官方文档（Choose a harness）直接定义 "The harness **is a runtime**"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。
 
@@ -236,7 +236,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-10
 - **最近更新**：2026-08-10
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Agentic harness 是包在模型外、决定 Agent"怎么思考和行动"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为"提前收工/上下文爆"焦虑的是 harness 工程师，为"生产安全/崩溃恢复/凭证下发"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。
 
@@ -246,7 +246,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-20
 - **最近更新**：2026-08-30
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**"变简单"是表象，实质是职责归位**——框架竞争维度从"机制精巧"变成"方法论文本质量"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。
 
@@ -256,7 +256,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - **首次出现**：2026-08-31
 - **最近更新**：2026-09-04
 - **置信度**：0.7
-- **状态**：active
+- **状态**：stale
 
 > 把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像"编排层/胶水"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是"你要对 harness 拥有多大控制权、控制发生在哪一层"——loop 内（能力件级）还是 loop 外（架构层级）。
 

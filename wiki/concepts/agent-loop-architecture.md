@@ -70,7 +70,7 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 - **首次出现**：2026-08-29
 - **最近更新**：2026-08-30
 - **置信度**：0.75
-- **状态**：active
+- **状态**：stale
 
 > Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是"模型判断 + 执行 + 结果回灌"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。"One loop & Bash is all you need" 在 GUI 域的对应物是 "One loop & screenshot+click is all you need"——loop 骨架不变，工具面变了。
 

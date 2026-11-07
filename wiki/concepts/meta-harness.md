@@ -88,7 +88,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - **首次出现**：2026-07-14
 - **最近更新**：2026-07-14
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 两种评测体制的经济学对比：VS Code 门禁是**选择性评测**（只评打了 `~requires-eval-assessment` 标签的 PR，核心难题是"哪些改动敏感"的人肉判断，漏标=回归上线）；Meta-Harness 是**全量评测**（60 个候选变体每个都评，判断题不存在，代价是评测就是主循环本体）。SkillOpt 的 gate 同构——每次 skill 更新都在 validation split 上评、ties-rejected。**评测税没有消失，只是从"判断谁该交税"变成"人人都交但降低单价"**。推演：人肉标签是"评测昂贵"约束下的过渡产物，成本曲线下行后门禁自然从"标签触发"滑向"默认全评"，评测套件从 merge 关卡转身为 harness 演化的 fitness function。两个前提缺一翻车：① benchmark 保真度（Goodhart 风险——消融已证信号保真度决定优化质量，在线存活率指标是离线分数之外的保真度地锚）；② 爆炸半径控制（沙箱内放任搜索，出沙箱必须 staged rollout）。
 

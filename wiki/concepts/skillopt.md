@@ -89,7 +89,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > 把两者的区别简化为"SkillOpt 多了门控"会低估它，准确拆法是三层机制叠加：① **搜索结构**——APO 是 beam search 并行候选整体重排，SkillOpt 是单谱系增量演进（永远只有一个 current skill）；② **编辑幅度**——APO 候选自由改写可整篇重写，SkillOpt 每步最多 `learning_rate` 条结构化 edit（cosine 衰减，信任域小步长）；③ **接受机制**——APO 轮内兄弟候选相对排序无在位者保护，SkillOpt 挑战者必须在 val 上不劣于 current（ties-rejected）否则回滚。因果链：APO 摆动的直接来源是"自由改写 + 相对重排"的组合（无继承性 + 每轮冠军重选，噪声一抖排名就翻）；SkillOpt 靠小步长保继承性、门控保单调性、step buffer 防重复踩坑三者**叠加**才压住摆动。两个 caveat：两者的"梯度"同源（LLM 读失败案例写 textual gradient），分岔在优化器动力学——APO 像并行随机搜索（探索强方差大），SkillOpt 像带信任域的 SGD（利用强方差小，需 slow update/meta 慢层补探索）；**门控不消灭噪声，只换其表现形式**——val 太小时 `2.8×σ/√n` 以内的比较照样是抛硬币，APO 的噪声表现为"prompt 摆动"，SkillOpt 的噪声表现为"错误的 accept/reject"。
 
@@ -99,7 +99,7 @@ SkillOpt 把 **agent skill 当作 frozen agent 的可训练外部状态 `s`**（
 - **首次出现**：2026-07-15
 - **最近更新**：2026-07-15
 - **置信度**：0.85
-- **状态**：active
+- **状态**：stale
 
 > video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是"在 val 上不退步"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好"更稳"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则"移植成功"只是管道意义上的成功。**
 
