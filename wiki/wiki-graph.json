@@ -1432,72 +1432,72 @@
           "statement": "Azure Copilot Agents 仅限 Portal UI，无 API/SDK",
           "source": "2026-04-11-周六",
           "first_seen": "2026-04-11",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。Azure Copilot Agents 目前处于 preview 阶段，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口。"
         },
         {
           "statement": "Azure 编程化 Agentic 路径 = Azure Skills + Azure MCP Server + CLI",
           "source": "2026-04-11-周六",
           "first_seen": "2026-04-11",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（200+ Azure 服务工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 提供 22 个专家级 Azure 工作流剧本（含 AKS 故障排查、GPU 选型）。"
         },
         {
           "statement": "Azure MCP Server 覆盖 35+ 服务 200+ 工具",
           "source": "Azure-Copilot生态：Skills、MCP与Agents的协作",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "开源（MIT），兼容所有 MCP 客户端（Claude Code、GitHub Copilot、Cursor、Windsurf 等）——这是 AI agent 访问 Azure 的通用编程接口。"
         },
         {
           "statement": "AI Shell (aish) 已归档，az copilot 命令不存在",
           "source": "Azure-Copilot生态：Skills、MCP与Agents的协作",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "AI Shell 于 2026 年 1 月归档，不再维护。目前没有基于 CLI 的 Azure Copilot 扩展。"
         },
         {
           "statement": "Azure Skills 三层架构——\"脑\"（Skills）+\"眼\"（MCP）+\"手\"（CLI）",
           "source": "Azure-Copilot生态：Skills、MCP与Agents的协作",
           "first_seen": "2026-05-14",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "Azure Skills = 经验丰富的架构师（知道做什么、什么顺序、遇到问题怎么处理）。Azure MCP Server = 监控仪表盘（看到实时状态）。CLI = 操作台按钮（执行变更）。Skills 通过 plugin.json 将三层能力打包：注入 SKILL.md 剧本 + 启动 Azure MCP Server + 启动 Context7 MCP。"
         },
         {
           "statement": "Azure Skills 预编排工具路由而非让 Agent 自行选择",
           "source": "Azure-Copilot生态：Skills、MCP与Agents的协作",
           "first_seen": "2026-05-14",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "SKILL.md 本质是预编排的决策树——每一步该用哪个工具已在剧本中明确规定。AKS 故障排查有显式优先级链（MCP → CLI 回退），azure-kusto 定义了四个精确回退触发条件（超时/不可用/认证失败/空结果），azure-quotas 明确声明 CLI 是唯一可靠方法。选择标准不是\"读用 MCP、写用 CLI\"，而是\"关键专有 API 走 MCP，常见成熟命令走 CLI\"。"
         },
         {
           "statement": "AG-UI 是 Foundry \"custom protocols\" 之一——Microsoft Agent Framework 已宣布支持",
           "source": "AG-UI协议解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
-          "confidence": 0.7,
-          "status": "stale",
+          "last_updated": "2026-11-07",
+          "confidence": 0.8,
+          "status": "active",
           "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"——它们都是 Agent 对外交互方式而非内部推理机制。Microsoft Agent Framework 已宣布支持 AG-UI：Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流。这把微软 Agent 生态的协议面从\"向下\"（MCP 连工具）补齐到\"向上\"（AG-UI 连 UI），见 [[ag-ui-protocol]]。"
         },
         {
           "statement": "Foundry Agents 侧 Skill 加载三路径均未文档化打通——toolbox 不可变版本 + 显式 publish 是治理特征",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "outdated",
           "evidence": "Foundry 的 skill 分发走 toolbox（不可变版本 + 显式 publish，治理优先），但 Prompt Agent 消费 skill 的三条候选路径——toolbox 挂 skill 的 MCP Resources 消费、直接注入、Responses API shell tool——截至 2026-07-31 复核没有一条文档化可走通；Responses API 的 shell tool（`container_auto`：Debian 12 容器、默认断网）是真执行环境但属 API 侧非 Agents 侧。根因是 harness 实现权：托管 harness 是平台封闭代码（详见 [[foundry-agent-type-selection]]）。对照 Copilot Studio 一个产品里就有三种 harness 可选——选 harness 就是选行为语义。"
         },
         {
@@ -3741,51 +3741,51 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 8,
-      "avg_confidence": 0.74,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "Agent Blueprint 承担四职责——模板、凭据持有者、容器、创建入口",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-08-03",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "官方定义 Blueprint 是创建 agent identity 的模板对象：① 模板（共享属性：description、app roles、认证协议设置）；② 凭据持有者（FIC 推荐 / Certificate / Client Secret 三种，Agent Identity 自身零凭据）；③ 容器（1:N 父子关系）；④ 创建入口（服务用 Blueprint 的 client ID + 凭据经 Microsoft Graph API 创建 agent identity）。基于 Microsoft Learn 官方文档核对。"
         },
         {
           "statement": "Agent Identity 是无自有凭据的特殊 service principal——FIC-only 认证、始终单租户",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-08-03",
-          "confidence": 0.8,
-          "status": "stale",
+          "last_updated": "2026-11-07",
+          "confidence": 0.9,
+          "status": "active",
           "evidence": "官方明确 \"Credentials do not reside on the agent identity\"——Agent Identity 只能通过 Blueprint 签发的 FIC 认证；独立拥有 Object ID、Permissions、Sign-in/Audit Log、Owner/Sponsor 与生命周期。Agent Identity 始终单租户，而 Blueprint 可配置 multitenant（发布到其他租户后创建租户本地的 Agent Identity）。自治型 Agent 以 agent identity 获取 app token，交互型携带用户 token 走 on-behalf。"
         },
         {
           "statement": "完整 Token 流程三阶段——认证走 Blueprint，中间有代表资格检查，资源授权基于 Agent Identity",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-08-03",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "① Blueprint Authentication：Blueprint 用自己的凭据向 Entra 认证（协议层就是 OAuth Client Credential Flow，Foundry 文档 \"Agent Service presents the blueprint's OAuth credentials\" 即指此）；② Entra 内部检查该 Blueprint 是否有资格代表目标 Agent Identity，通过才签发 Token（sub = Agent Identity）；③ 资源服务器按 Agent Identity 持有的 Permissions/Roles/Scopes 做访问授权。容易漏掉的是阶段②——\"授权\"实际有两种，通常说的\"真正授权\"指阶段③。"
         },
         {
           "statement": "1:N 工厂模型的六层设计动机——本质是大规模 Agent 的 Workload Identity 治理，不是新 App",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "\"每个 Agent 一个 App Registration\"技术可行但管理模式错配，六层动机：① 规模（17,000 Agent → 3 个 Blueprint）；② 凭据爆炸（Managed Identity→Blueprint FIC→N Agent，Agent 侧 secretless）；③ 策略继承（Conditional Access 等配在 Blueprint，继承非复制）；④ 一键熔断（禁用 Blueprint 全体失效）；⑤ Agent 生命周期以分钟/小时计，Blueprint 长存 = Factory Pattern（同构于 K8s Deployment/Pod）；⑥ 一级审计身份（每个 Agent 独立 Object ID + 日志 + Owner/Sponsor）。App Registration 假设\"一个应用=一个身份\"，Agent 世界是\"一个 Runtime 动态创建上万实例各需独立身份\"——Blueprint 解决的不是认证问题，是身份治理问题。  **限定（2026-08-04 实测）**：1:N 是模型上限（Graph API 单 Blueprint ≤250 identity），Foundry 实践为 1:1 成对；\"N\"实际兑现在三处——共享 blueprint 的 1 个 identity 被 N 个未发布 agent 复用（方向相反的 N:1）、多租户分发时 1 blueprint 投影 N 个租户本地 identity（blueprint principal 机制）、fleet 场景预留。六层动机中①⑤按字面（一类 Agent 万级实例共享 Blueprint）在 Foundry 单租户实践中未兑现；②③④⑥不依赖 N，1:1 下依然成立。Blueprint 之间无继承关系（共享与专属 blueprint 是平级独立对象）。"
         },
         {
           "statement": "Foundry 身份创建时序——项目不建、首 agent 建共享对、publish 建专属对且 RBAC 不继承",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-04",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "官方时序：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。"
         },
         {
@@ -3801,9 +3801,9 @@
           "statement": "Blueprint Authentication 属 Entra OAuth 层，与 Azure RBAC 是两套授权体系",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-08-03",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "Azure 存在两套授权体系：Entra Authorization（OAuth Scope / Application Permission，管 Graph 与 Entra 对象 API）和 Azure RBAC（Role Assignment，管 ARM 资源）。Blueprint Authentication 完全属于认证层（Entra + OAuth），不是 RBAC；Agent Identity 拿 Token 访问 Storage/Key Vault/AKS 时才进入 RBAC 管辖，检查对象同样是 Agent Identity 而非 Blueprint。"
         },
         {
@@ -4087,7 +4087,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 5,
-      "avg_confidence": 0.72,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "Foundry 的产品差异在\"运行时归谁\"——Prompt Agent 是 Foundry 帮你运行，Hosted Agent 是你运行、Foundry 托管；Workflow Agent 已移出官方类型（定于 2026-12-01 退役）",
@@ -4126,13 +4126,13 @@
           "evidence": "Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，GitHub Copilot harness 可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像\"每一层用谁\"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。"
         },
         {
-          "statement": "Foundry 的 skill 是文本而不是可执行代码，能不能用 skill、怎么装进上下文取决于 harness 归谁",
+          "statement": "Foundry 的 skill 是文本而不是可执行代码，能不能用 skill、怎么装进上下文取决于 harness 归谁——换上 Copilot harness 的 Prompt Agent 才能直接挂 skill",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
           "last_updated": "2026-11-07",
-          "confidence": 0.65,
+          "confidence": 0.7,
           "status": "active",
-          "evidence": "Agents 侧的 skill 存在 Skills API 里、有版本，交付分两种模式（谁负责把 skill 装进上下文）；Toolbox 发布是不可变版本 + 显式 publish，\"添加 skill 后无法发布\"源于这一机制。Prompt Agent 侧 skill 支持在文档层面有矛盾，根因是 harness 不在你手里；Hosted Agent 自带 harness，skill 的加载方式自己决定。成本上两类调用侧计费相同，Hosted 的 container compute 买的是\"改 harness 的权力\"。（细节与三路径未打通的判断见 [[azure-copilot-ecosystem]] 与 [[foundry-agent-type-selection]] 的相关 Claim。）"
+          "evidence": "skill 存在项目级目录里、有不可变版本，挂到 toolbox 后以 MCP Resources 暴露，agent 按 advertise（名称与描述进 system prompt）→ load（需要时取全文）→ read resources 三步按需加载，任何支持 MCP Resources 的客户端都能用。直接集成只支持用 Microsoft Copilot harness 的 Prompt Agent；Hosted Agent 自带 harness，经 Toolbox MCP endpoint 取用，加载方式自己决定。Toolbox 发布是不可变版本 + 显式 publish。成本上两类调用侧计费相同，Hosted 的 container compute 买的是\"改 harness 的权力\"。（2026-11-07 复核：原写\"Prompt Agent 侧 skill 支持在文档层面有矛盾\"已过时，见 [[foundry-agent-type-selection]] 对应 Claim 的修订。）"
         }
       ]
     },
@@ -10826,15 +10826,15 @@
       "method_type": null,
       "decision_status": "active",
       "claims_count": 10,
-      "avg_confidence": 0.78,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "Prompt Agent 由 Foundry 跑，Hosted Agent 由你在容器里跑，Workflow Agent 是 YAML 编排壳。所有选型问题都可归结为 Runtime 归属：不需要控制 Runtime → Prompt（80% 场景）；命中 7 条 Hosted 信号（自定义推理循环、已有框架代码、多模型编排等）→ Hosted；多 Agent 固定流程 → Workflow。"
         },
         {
@@ -10850,9 +10850,9 @@
           "statement": "Voice Live 与两类 Agent 的组合方向相反",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "Prompt Agent 组合语音：Voice Live 在外持有语音层，通过 `agent_id` 把 Agent 挂进来（语音在外，Agent 在内）。Hosted Agent 组合语音：走 `/invocations_ws` 协议，语音处理进容器（语音在内）。用 Voice Live `agent_id` 直连 Hosted Agent 属未定义行为，官方未支持。"
         },
         {
@@ -10868,18 +10868,18 @@
           "statement": "Skill 支持是 Runtime 归属主线的新证据——Prompt Agent 文档级矛盾，根因是 harness 控制权",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-07",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "active",
           "evidence": "agents overview 给 Prompt Agent 标 \"Skill support: Yes\"，但三条绑定路径（toolbox 挂 skill 的 MCP Resources 消费 / 直接注入 / Responses API shell tool）截至 2026-07-31 复核没有一条文档化可走通——skills 功能矩阵压根没有 prompt agent 列。根因不是执行环境（Agents 侧 skill 是纯文本，加载只需\"读文本拼进 system prompt\"），而是 **harness 实现权**：skill 加载（SEP-2640 + progressive disclosure）需要 harness 实现 client 逻辑，Prompt Agent 的托管 harness 是平台封闭代码，它没实现你就没有注入点；Hosted Agent 自己写或用 Agent Framework `AgentSkillsProvider`。这把本决策\"Runtime 归属唯一主线\"延伸到了 skill 能力域。"
         },
         {
           "statement": "成本模型——调用侧计费两类相同，container compute 买的是\"改 harness 的权力\"",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
-          "confidence": 0.75,
-          "status": "stale",
+          "last_updated": "2026-11-07",
+          "confidence": 0.85,
+          "status": "active",
           "evidence": "两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是\"是否需要 harness 控制权\"，而不只是\"要不要多付钱\"——scale-to-zero 让低流量场景该成本接近零。"
         },
         {
@@ -10895,9 +10895,9 @@
           "statement": "Hosted Agent 运行时经济学——Session/Conversation 双 ID 生命周期脱节、per-session 计费无摊薄、冷启动无 benchmark",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-08-20",
-          "last_updated": "2026-08-30",
+          "last_updated": "2026-11-07",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
         },
         {
