@@ -27,6 +27,10 @@ tags:
 
 浏览所有概念：`wiki/concepts/`
 
+**学习路径**（`wiki/paths/`）：把网状的图谱排成有先后顺序的路径，每站标出要读的页、前置站点和「算会」标准，也是自测题库的出题来源。
+
+- [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，约 12~15 小时
+
 ## 知识工作流
 
 | 命令                   | 用途                        | 触发频率  |
@@ -198,7 +202,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[rag-architecture-comparison]] — RAG 架构对比：个人级 qmd vs 企业级 Foundry IQ
 - [[entra-agent-id]] — Entra Agent ID：Blueprint 管认证、Agent Identity 管授权与审计的 1:N 双层身份模型
 - [[global-secure-access]] — Global Secure Access（微软 SSE）：TCP 中心的 Web 网关、UDP 端口钉死、Private Access 的 /etc/resolver 规则残留与父域名截获、经通道每个新连接多约 1 秒
-- [[foundry-agent-service]] — Foundry Agent Service（Azure AI Agent）：Azure 上的 PaaS agent 运行时；Prompt（Foundry 帮你运行）/ Hosted（你运行、Foundry 托管）两类，Workflow 已退役；每 session VM 级沙箱 + 三种调用协议；Copilot harness 托管进 Foundry；与另两个支柱的接缝
+- [[foundry-agent-service]] — Foundry Agent Service（Azure AI Agent）：Azure 上的 PaaS agent 运行时；Prompt（Foundry 帮你运行）/ Hosted（你运行、Foundry 托管）两类，Workflow 已移出官方类型（定于 2026-12-01 退役）；每 session VM 级沙箱 + 三种调用协议；Copilot harness 托管进 Foundry；与另两个支柱的接缝
 - [[github-copilot]] — GitHub Copilot：五个入口共享 session、统一 harness 与 Fusion 多模型路由、二次开发三层（定制 / SDK 嵌入 / Foundry 托管 harness）、治理默认值与度量盲区、Memory 与 Dreaming 的四层策略叠加
 - [[copilot-studio]] — Copilot Studio：Power Platform 上的 agent / workflow / app 构建产品；agent 是 Dataverse 行、配置在 YAML、浏览器 app 调不到 agent、指纹 + 对照验证、知识库 agent 的 Fallback 拒答与分批上传
 - [[copilot-managed-runtime]] — Copilot Managed Runtime：M365 企业内 SPA 托管；宿主中介沙箱、调 AI 只能经 Connector、App state perUser、Connector 七关、按路径缓存与深链不传入
