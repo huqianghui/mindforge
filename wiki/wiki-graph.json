@@ -1021,7 +1021,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：补一句：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立  以下为原记录： OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
+          "evidence": "**现行结论（2026-11-07 修订）**：额定 700W，OpenAI 称实测持续功耗不超过 550W，因此 700W 对 1,400W 的功耗口径还略保守；per-kW 立场本身成立  以下为原记录： OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
         },
         {
           "statement": "\"begin deploying\" ≠ 大规模量产——芯片交付十阶段的位置判断",
@@ -6708,7 +6708,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：一句：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki  以下为原记录： OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
+          "evidence": "**现行结论（2026-11-07 修订）**：该解法已落地，当前 wiki/ 为唯一知识存储，不再使用 .omc/wiki  以下为原记录： OMC Wiki（.omc/wiki/）与 Obsidian vault（Notes/）并存导致同一概念可能存在两处。解法：将 LLM Wiki 概念直接整合到 Obsidian vault 的 wiki/ 目录。"
         },
         {
           "statement": "PKC 四层知识模型——Concept/Method/Decision/Typed Relations",
@@ -8836,7 +8836,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：加范围：半双工（VAD 判停）范式下是核心难题；全双工模型下该难题被模型吸收  以下为原记录： Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
+          "evidence": "**现行结论（2026-11-07 修订）**：半双工（VAD 判停）范式下是核心难题；全双工模型下该难题被模型吸收  以下为原记录： Turn-Taking 是语音 Agent 中\"最被低估也最关键\"的技术。它决定了对话是否自然——错误的话轮切换会导致打断用户或无法及时回应。"
         },
         {
           "statement": "端到端架构将 Turn-Taking 内化为模型能力",
@@ -8921,7 +8921,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.9,
           "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：补充：仓库已从 volcengine/verl 迁至 verl-project/verl（2026-01）；最新已到 v0.9.x；HybridFlow 血缘与命名不变  以下为原记录： 命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
+          "evidence": "**现行结论（2026-11-07 修订）**：仓库已从 volcengine/verl 迁至 verl-project/verl（2026-01）；最新已到 v0.9.x；HybridFlow 血缘与命名不变  以下为原记录： 命名拆解为 VE + RL：VE = Volcano Engine（字节跳动对外云服务品牌火山引擎），RL = Reinforcement Learning，把品牌名整体前置（同 AWS SageMaker / Azure ML 命名逻辑）故缩写为 VERL 而非 VRL。出身需区分研发团队与项目归属：最初由 ByteDance Seed Team 发起，后以 Volcano Engine 品牌开源、社区维护（官方 README：\"verl is a RL training library initiated by ByteDance Seed team and maintained by the verl community\"）。技术血缘上 VERL 是论文 HybridFlow 的开源实现，其\"单控制器 + 多控制器\"混合编排正是该论文核心设计的落地。"
         },
         {
           "statement": "三大核心特征——HybridFlow 控制器、training/rollout 解耦、Ray 集群调度",
