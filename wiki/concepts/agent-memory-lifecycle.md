@@ -1,7 +1,7 @@
 ---
 title: "Agent Memory Lifecycle"
 created: "2026-11-04"
-updated: "2026-11-04"
+updated: "2026-11-07"
 tags:
   - wiki
   - concept
@@ -88,10 +88,31 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 
 > Copilot Memory + Dreaming：存 GitHub 后端、仓库事实团队共享、citations + 投票校验、90 天未强化过期、Dreaming 开 PR 提权，但票数与内部字段不可见、无 diff。Claude Code auto memory：本机文件、按项目个人、无系统校验、无自动过期、可读可 diff。本库的记忆治理（memory-review + 提权）：本机文件 + 进 git 的规则文件，agent 写人审，定期人工审查时删除，全部可 diff。两边各有对方做不到的：Copilot 胜在共享与遗忘，文件方案胜在可见与可回滚。
 
+### Claim: 离线整理的回滚是不对称的——记忆与 review 指引直接改、只有 instructions / skills 走 PR；关掉不撤销已做的改动
+
+- **来源**：[[GitHub-Copilot系列03：Memory与Dreaming的分层配置]]、[[GitHub-Copilot系列02：Memory、Dreaming与自我改进]]
+- **首次出现**：2026-11-06
+- **最近更新**：2026-11-07
+- **置信度**：0.75
+- **状态**：active
+
+> Copilot Dreaming 一个开关下有三类能力：个人记忆整理、仓库定制、code review 定制，每类前提不同（计划、策略允许的模型、会话上云、code review 预览功能），不能单独开关；先开 Dreaming、后补齐前提的，要把对应范围关一次再开才会激活新能力。生效方式分三路：记忆直接改不逐条审批，对 instructions / skills 的修改开 PR，code review 内部指引直接更新。关掉 Dreaming 不恢复被删记忆、不关闭已开 PR，进行中的运行可能跑完；关掉会话同步也不删除已同步的会话。能回滚的只有走 PR、合进 git 的那部分——与 [[recursive-self-improvement]] 中"门控位置"的判断一致：后台自我整理里只有落进版本控制的改动是可审计、可撤销的。
+
+### Claim: 后台自我整理的范围和成本由上游的记忆范围决定——组织开 Dreaming 即覆盖 Repository access 圈定的全部仓库，按运行次数计费、空跑也算
+
+- **来源**：[[GitHub-Copilot系列03：Memory与Dreaming的分层配置]]
+- **首次出现**：2026-11-06
+- **最近更新**：2026-11-07
+- **置信度**：0.7
+- **状态**：active
+
+> 组织层没有"给某个人开 Dreaming"的选项，开启的范围就是 Memory 的 Repository access 里选中的全部仓库；每次运行扣 AI credits，包括没有产生改动、处理不活跃仓库的运行，用量提醒不拦截用量。运行由平台排期，不能手动触发，计划、提示词和模型都不可改，结果在 Copilot app 的 Automations → Dreaming 里看。实际做法是先收窄记忆范围再开整理：先在少量自有仓库开仓库级 Dreaming，把它开的 PR 当普通代码评审看，看过几轮结果再按仓库清单逐步放开组织级开关。
+
 ## 冲突与演进
 
 - 2026-11-03 harvest 倾向先作 Claim 注入 [[claude-code-memory-system]]（仅一篇来源），2026-11-04 用户裁决单独建页——它是 agent 记忆的通用机制（核对、投票、过期、写权限），而 claude-code-memory-system 讲的是 Claude Code 的分层与提权，二者维度不同。目前只有 GitHub Copilot 一个实现样本，出现第二个产品或论文的同类机制后复核置信度。
 - "自我改进的门控位置"（`online-vs-offline-self-improvement-gate`）未单独建页，作为 Claim 注入 [[recursive-self-improvement]]。
+- 2026-11-07：注入 GitHub Copilot 系列 03 两条 Claim（回滚不对称、整理范围与成本由记忆范围决定）；实现样本仍只有 GitHub Copilot 一家，置信度暂不上调。
 
 ## 关联概念
 
@@ -102,3 +123,5 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 
 - [[2026-11-03-周二]] — GitHub Copilot 系列 02 成文
 - [[GitHub-Copilot系列02：Memory、Dreaming与自我改进]] — 两类记忆、生命周期、写入过滤、各入口读写差异、Dreaming 三类 dream、三方记忆方案对照
+- [[2026-11-06-周五]] — GitHub Copilot 系列 03 成文
+- [[GitHub-Copilot系列03：Memory与Dreaming的分层配置]] — Dreaming 三类能力的前提与生效方式、开启范围与计费、关掉不回滚
