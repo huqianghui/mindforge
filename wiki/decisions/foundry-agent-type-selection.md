@@ -1,5 +1,5 @@
 ---
-title: "Foundry Agent 三类型选型：Prompt / Hosted / Workflow"
+title: "Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted"
 created: "2026-07-21"
 updated: "2026-11-07"
 tags:
@@ -12,11 +12,11 @@ related_concepts: []
 related_methods: []
 ---
 
-# Foundry Agent 三类型选型：Prompt / Hosted / Workflow
+# Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted
 
 ## 背景
 
-Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（preview，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。**2026-08-16 更新**：Workflow Agent 已移出官方 agent 类型、定于 2026-12-01 退役（官方类型收窄为 Prompt / Hosted 二元），选型框架主线相应改为二元；详见下方选项 C 标注与新增 Claim。构建企业 Agent 时需要在（现二元的）Prompt 与 Hosted 之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
+Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托管运行）、Hosted Agent（写作时 preview，2026-07/08 已 GA，自带代码跑在托管容器）、Workflow Agent（public preview，YAML 声明式编排）。**2026-08-16 更新**：Workflow Agent 已移出官方 agent 类型、定于 2026-12-01 退役（官方类型收窄为 Prompt / Hosted 二元），选型框架主线相应改为二元；详见下方选项 C 标注与新增 Claim。**2026-11-07 更新**：Microsoft Copilot harness 进入 Foundry（公开预览）后，Prompt Agent 可选用 Copilot harness，选型从二元变为三档——Prompt Agent、Prompt Agent + Copilot harness、Hosted Agent。构建企业 Agent 时需要在这三档之间选型，决策影响运行时控制力、治理能力（内容安全）、运维成本与语音等周边能力的组合方式。
 
 ## 选项分析
 
@@ -26,15 +26,15 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **劣势**：逻辑受限于 instructions + tools 声明式表达，无法运行自定义代码循环
 - **适用条件**：约 80% 的常规场景（知识问答、工具调用、RAG 类）
 
-### 选项 B: Hosted Agent（preview）
+### 选项 B: Hosted Agent（GA）
 
 - **优势**：完全控制 Agent Runtime（自带框架如 LangGraph/AutoGen，容器内任意代码）；支持三种协议入口（`/responses`、`/invocations`、`/invocations_ws`）
-- **劣势**：内容层治理自理（Prompt Shield 等不内置）；硬约束多——1MB 帧上限、30min 连接上限、15min idle 断连、2vCPU、无 WebRTC、无 PSTN；preview 阶段
+- **劣势**：内容层治理自理（Prompt Shield 等不内置）；硬约束多——1MB 帧上限、30min 连接上限、idle 断连、2vCPU、无 WebRTC、无 PSTN（这组数字 2026-11-07 复核未找到原文，待核实；session 闲置回收算力的超时已可配 2~60 分钟、默认 15 分钟，与 WebSocket 闲置断连是否同一机制未确认）
 - **适用条件**：需要自定义推理循环 / 已有框架代码要迁移 / 多模型编排等 7 条 Hosted 信号
 
 ### 选项 C: Workflow Agent（public preview）
 
-> ⚠️ **superseded（2026-08-16）**：Workflow Agent 已于 **2026-12-01 退役**，官方 Agent 类型收窄为 Prompt / Hosted 二类；本选项及其"多 Agent 固定流程"适用条件不再成立，仅保留为历史记录。编排责任下沉到 Hosted Agent 内的 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills（见下方新增 Claim 与来源）。
+> ⚠️ **superseded（2026-08-16）**：Workflow Agent 已移出官方类型、**定于 2026-12-01 退役**，官方 Agent 类型收窄为 Prompt / Hosted 二类（2026-11-07 起 Prompt 另有 Copilot harness 一档）；本选项及其"多 Agent 固定流程"适用条件不再成立，仅保留为历史记录。编排责任下沉到 Hosted Agent 内的 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills（见下方新增 Claim 与来源）。
 
 - **优势**：YAML 声明式多 Agent 编排，流程可审计
 - **劣势**：表达力受编排 DSL 限制，复杂逻辑仍需下沉到子 Agent
@@ -42,10 +42,10 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ## 决策结论
 
-- **选择**（2026-08-16 修订为二元）：以"是否需要自己控制 Agent Runtime"为唯一主线做选型——不需要则默认 Prompt Agent，需要（含原 Workflow Agent 承接的多 Agent 固定流程场景）则上 Hosted Agent，多 Agent 编排靠 Hosted 内 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills 承接
+- **选择**（2026-08-16 修订为二元，2026-11-07 修订为三档）：以"是否需要自己控制 Agent Runtime / harness"为唯一主线做选型——instructions 与支持的工具就够 → Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness；要改框架、agent loop、中间件或运行时行为（含原 Workflow Agent 承接的多 Agent 固定流程场景）→ Hosted Agent，多 Agent 编排靠 Hosted 内 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills 承接
 - **理由**：两者差异的本质不是能力多少，而是 Runtime 归属；80/20 规则下大多数场景 Prompt Agent 足够且治理最全
 - **放弃理由**：不以"功能清单对比"选型——身份层两者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Shield/Content Filter 仅 Prompt Agent 内置），逐功能对比会掩盖这条主线
-- **前提假设**：Hosted 仍在 preview，GA 后硬约束（帧上限、连接时长、vCPU）可能放宽，届时需复核。~~Workflow 相关前提~~已随退役失效，不再需要复核
+- **前提假设**：Hosted 已于 2026-07/08 GA（[Hosting Agent Framework applications](https://learn.microsoft.com/en-us/agent-framework/hosting)），GA 前记录的硬约束（帧上限、连接时长、vCPU）需按 GA 文档复核；Copilot harness in Foundry 仍是公开预览。~~Workflow 相关前提~~已随退役失效，不再需要复核
 
 ## 影响范围
 
@@ -183,6 +183,8 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **2026-11-07**：更正时态——Workflow Agent 是"定于 2026-12-01 退役"，不是"已于"（写作时尚未到期）；官方类型收窄为 Prompt / Hosted 的结论不变。
 
 - 2026-11-07：/revalidate 复核——确认 1（+0.1）、修订 4、待定 2
+
+- **2026-11-07**（/detect-conflict 裁决）：标题、背景、选择与前提假设同步到 /revalidate 修订后的三档框架；选项 B 改为 GA；选项 C 注释时态改为"定于"；硬约束中的 idle 断连与 session 回收超时区分开。
 
 ## 关联概念
 

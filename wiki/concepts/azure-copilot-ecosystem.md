@@ -21,11 +21,11 @@ related:
 
 ## 摘要
 
-Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置 Agent）、Azure Skills（22 个专家级工作流剧本）、Azure MCP Server（200+ Azure 服务工具的 MCP 协议实现）。当前 Copilot Agents 仅限 Portal 交互，无 API/SDK 暴露，因此编程化的 Agentic Infrastructure 路径需要组合使用 Skills + MCP Server + CLI。
+Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal 内的 agent，Troubleshooting、Observability 已 GA，其余仍在 preview）、Azure Skills（Azure Skills Plugin 打包的 26+ 个工作流 skill）、Azure MCP Server（40+ 个 Azure 服务、按命名空间合并后的 59 个工具）。Copilot Agents 的对话交互只在 Portal，通用调用 API / SDK 未见文档（只有 Observability Agent 能以 ARM / Bicep 资源方式部署），因此编程化的 Agentic Infrastructure 路径仍是组合使用 Skills + MCP Server + CLI。（2026-11-07 /revalidate 后同步更新）
 
 ## Claims
 
-### Claim: Azure Copilot Agents 仅限 Portal UI，无 API/SDK
+### Claim: Azure Copilot Agents 的对话交互只在 Portal，通用调用 API/SDK 未见文档——Observability Agent 可经 ARM / Bicep 部署是例外
 
 - **来源**：[[2026-04-11-周六]]
 - **首次出现**：2026-04-11
@@ -34,7 +34,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **状态**：active
 - **复核**：2026-11-07 修订——依据：[Agents in Azure Copilot](https://learn.microsoft.com/en-us/azure/copilot/agents)
 
-> 详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。Azure Copilot Agents 目前处于 preview 阶段，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口。
+> 详细分析已整理为文章 → Azure Copilot 生态全景：Skills、MCP Server 与 Copilot Agents 的协作实践。写作时（2026-04）Azure Copilot Agents 处于 preview，仅支持 Portal UI 交互，不提供编程化 API 或 SDK 接口；当前状态见下方修订。
 
 > **2026-11-07 修订**：Azure Copilot 的 agent 已不全是 preview——Troubleshooting、Observability 已 GA，Deployment、Optimization、Resiliency、Migration 仍在推进；对话交互仍在 Portal 的 Azure Copilot 里。Observability Agent 的后台自主运维可经 Azure Portal 或 ARM / Bicep 创建 `Microsoft.Monitor/observabilityAgents` 资源（Azure CLI 与 Terraform 暂不支持），这是第一个有资源化 / API 入口的 Azure Copilot agent；通用的 agent 调用 API / SDK 仍未见文档。
 
@@ -47,11 +47,11 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal UI 内置
 - **状态**：active
 - **复核**：2026-11-07 修订——依据：[What is the Azure MCP Server?](https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/overview)
 
-> agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（200+ Azure 服务工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 提供 22 个专家级 Azure 工作流剧本（含 AKS 故障排查、GPU 选型）。
+> agenticInfraOps 推荐集成方案：Azure MCP Server 做查询（40+ 服务、59 个工具）+ az/azd/terraform CLI 做部署执行 + Azure Skills 的 AKS 诊断剧本做故障排查。Azure Skills 现有 26+ 个可复用 skill（写作时为 22 个，含 AKS 故障排查、GPU 选型）。
 
 > **2026-11-07 修订**：Azure Skills Plugin 现在打包 26+ 个可复用 skill（azure-prepare、azure-validate、azure-deploy、azure-diagnostics、azure-cost 等），配合 Azure MCP Server 与 Foundry MCP Server 使用；路径本身不变。
 
-### Claim: Azure MCP Server 覆盖 35+ 服务 200+ 工具
+### Claim: Azure MCP Server 覆盖 40+ 服务、59 个工具（按服务命名空间合并）
 
 - **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-04-13

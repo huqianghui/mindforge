@@ -307,5 +307,5 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[prompt-optimization-tool-selection]] — Prompt 优化工具选型：DSPy vs agent-lightning
 - [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang
 - [[rl-infra-framework-selection]] — Agent RL 基础设施框架选型：VERL vs Slime vs OpenRLHF vs TRL
-- [[foundry-agent-type-selection]] — Foundry Agent 三类型选型：Runtime 归属主线 + 治理分层
+- [[foundry-agent-type-selection]] — Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted 三档，Runtime 与 harness 归属主线 + 治理分层
 - [[copilot-studio-harness-selection]] — Copilot Studio harness 选型：按任务重量选，建后不能互转，四种都不能被浏览器 app 同步调用
