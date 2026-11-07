@@ -107,7 +107,12 @@ qmd get qmd://mindforge/wiki/index.md  # 直接取文档
 - **题库**：`<路径>.quiz.md`，按站点分组的场景 / 辨析 / 解释题，每题带参考要点与出处（目前三支柱已有 55 题，其余路径陆续补）
 - **信号源**：frontmatter 的 `gap_topics` 与 `signals` 声明这个领域关联哪些知识差距主题、该盯哪些外部信源
 
-企业内部的 Managed Runtime 版本（[mindforge-managed-app](https://github.com/huqianghui/mindforge-managed-app)，需 Entra 登录）有「学习」页签：按站点阅读、勾选「算会」、间隔复习自测（可选 AI 点评），进度按登录用户保存，可导出学习记录流回知识差距分析。
+企业内部的 Managed Runtime 版本（[mindforge-managed-app](https://github.com/huqianghui/mindforge-managed-app)，需 Entra 登录）有两个对应页签：
+
+- **学习**：首页是本周推荐（必须掌握 / 重磅热点 / 适合延伸三栏），下面是各条路径；按站点阅读、勾选「算会」、间隔复习自测（可选 AI 点评），进度按登录用户保存，可导出学习记录流回知识差距分析
+- **周报**：每周的公开周报（`wiki/weekly/<ISO 周>.md`，每周日由 `/loop-weekly` 生成）——新文章、wiki 变化、知识复核结果、重磅热点、下周推荐；往期周报与差距追踪也在这里
+
+周报只含公开信息，日记、任务完成率等私人内容不进周报。
 
 ### 5. 维护命令（Claude Code skills）
 

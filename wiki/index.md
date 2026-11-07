@@ -27,6 +27,8 @@ tags:
 
 浏览所有概念：`wiki/concepts/`
 
+**周报**（`wiki/weekly/`）：每周日 `/loop-weekly` 生成的公开周报，含新文章、wiki 变化、知识复核、重磅热点与下周推荐。最新一期：[[2026-W45]]。
+
 **学习路径**（`wiki/paths/`）：把网状的图谱排成有先后顺序的路径，每站标出要读的页、前置站点和「算会」标准，也是自测题库的出题来源。
 
 - [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，约 12~15 小时
