@@ -293,7 +293,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "官方定位图：User —AG-UI— Agent Runtime —MCP— Tools/Data，—A2A— Other Agents。AG-UI 不是 Agent Framework 也不是 UI 框架，与 MCP、A2A 一样是协议规范（Specification）。与传统 REST 的本质区别：整个交互是双向事件流（RunStarted → MessageDelta → ToolCallStarted → RenderApprovalCard → UserAction(Confirm) → ContinueRun → FinalMessage），而非一次 HTTP Response。"
         },
         {
@@ -302,7 +302,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "类比 gRPC 的位置：HTTP/WebSocket/SSE 是传输层，AG-UI 是应用层协议，`@ag-ui/client` 是 SDK，React/Vue 是 UI 框架。官方集成列表没有 React/Vue 不是遗漏而是设计：AG-UI 标准化的链路是 Agent Runtime → Client → UI，真正的 Client 是 CopilotKit、VSCode 扩展、Slack App、CLI 这类\"能接收展示并响应 AG-UI Event 的系统\"，React 只是 Client 的实现技术。浏览器根本不知道 AG-UI 存在——就像它不知道 MCP 一样。"
         },
         {
@@ -311,7 +311,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "第一层（Backend 可互换）已基本做到：LangGraph、CrewAI、Microsoft Agent Framework、Google ADK 等逐步支持，前端不改代码即可换 Backend。第二层（Frontend SDK）缺失：理想状态是 `const { messages, sendMessage } = useAgent()`，协议细节被 SDK 隐藏（如 Apollo `useQuery` 之于 GraphQL）；目前 Clients 中只有 CopilotKit 成熟（协议本就出自其团队）。这层缺口是判断 AG-UI 能否像 MCP 一样成为事实标准的关键，也是社区二次开发的机会所在。"
         },
         {
@@ -534,7 +534,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.5,
-          "status": "active",
+          "status": "stale",
           "evidence": "DeepSeek Harness 的 session log 是\"模型可见事实的唯一来源\"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将\"轨迹采集/可审计执行（喂 RL、合规审计）\"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh \"loop 也是 plugin\" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。"
         }
       ]
@@ -599,7 +599,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Computer Use 的 action loop（截图 → 模型返回 action JSON → handler 执行 → 截取新状态回传）与 agent loop 的 while 循环同构：都是\"模型判断 + 执行 + 结果回灌\"。区别仅在实例化域——观察从工具返回值变成截图/DOM/Accessibility Tree，动作从 API 调用变成 click/type/scroll。关键分层认知：模型返回的 action 只是协议（不会自己执行），**action handler 是使用者要写的翻译层**，Playwright/xdotool 只是 handler 背后的执行环境。\"One loop & Bash is all you need\" 在 GUI 域的对应物是 \"One loop & screenshot+click is all you need\"——loop 骨架不变，工具面变了。"
         },
         {
@@ -1002,7 +1002,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "硬件电路层：推理芯片把晶体管预算押注在低精度单元（MXFP4 等），训练需要高精度累加与梯度通路；算子层：反向传播不是一条指令而是一组系统要求（中间激活存储、梯度同步）；系统层与经济层：推理优化目标是单位功耗下的吞吐与延迟，训练是集群规模的扩展效率。\"理论能训练、实际不经济\"——Jalapeño 对标 GB300 比的是同一任务的推理性能，不意味着能替代其训练角色。"
         },
         {
@@ -1011,7 +1011,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "三套指标各有语境：峰值 mixed TPS/kW（1.5~1.9×）=各自开到最大吞吐的极限产能；最低 TBT（2.7~4.1×）=单用户最快解码；**matched TBT 下的吞吐（53~104×）**=把对手的最快单用户速度设为共同约束、比较仍能承载的并发量——GB300 要达到自己的最低延迟必须把并发压到极低，Jalapeño 同约束下仍可满载。餐厅类比：不是\"给单个顾客上菜快 104 倍\"，而是\"相同上菜速度约束下能服务的顾客数差 104 倍\"。104× 是有价值但非常特定的服务能力指标，绝不能读成整体性能倍数。官方 Pareto frontier 主张：现有硬件在吞吐与延迟间二选一，Jalapeño 同一架构同时拿到两者。"
         },
         {
@@ -1020,7 +1020,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-08-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI 明确主张按单位功耗（per kW）而非按芯片（per chip）衡量推理性能。700W 的 Jalapeño 对 1,400W 的 GB300，功耗口径本身就贡献了一半的账面优势——既是合理的工程叙事（第一瓶颈从\"买多少卡\"变成\"有多少电\"），也是精心选择的营销框架。读任何厂商 benchmark 前先确认度量口径。"
         },
         {
@@ -1029,7 +1029,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "已公布实机功耗与多模型 benchmark，说明至少完成 Tape-out → 样片点亮 → 初步软件适配，当前处于\"生产认证 + 小批试部署\"。分层判断：年底小批量内部部署可信（Broadcom 有为 TPU 预订台积电产能的先例）；立即替代大量 NVIDIA GPU 无证据（制程/良率/首批数量未披露）；数 GW 规模取决于多年爬坡（Hock Tan 口径：2026 底原型、2027 ramp、2028 上半年 full tilt）。同理勘误：\"九个月设计周期\"指架构设计环节而非立项到样片全程；与 Sol API 降价是战略相关而非直接因果（首测公布时芯片不可能已承担 Sol 流量）。"
         },
         {
@@ -1047,7 +1047,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "GLM-5.3-Flash 以 Ox Alpha 身份匿名测试期间由**数万张国产加速器**承载真实流量——co-design 的国产侧实证：架构（混合注意力/量化友好设计）与硬件联合优化能把国产芯片的实际吞吐和每 token 成本拉到接近主流 NVIDIA GPU 水平。两组数字的正确读法（工作点读数法同族的口径澄清）：①\"端到端性能提升 3 倍\"是**相对相同硬件上的初始推理基线**（经专用引擎+量化+调度优化后），不是比其他模型快 3 倍、也不是任意第三方部署可复现；②\"训练开销只有前代 1/9\"不是单一技术带来的——激活参数约 1/3 × 训练 token 约 1/3 = 总 FLOPs 约 1/9，Muon/Gated Residual/N-gram 的作用是让模型在这么低的训练预算下仍保住能力；训练成本不进每次请求的边际成本，但以折旧和研发回收进入长期定价。"
         }
       ]
@@ -1304,7 +1304,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent-lightning APO 的两个核心 LLM 角色的元提示词不是硬编码字符串，而是随包分发的 `.poml` 文件（`agentlightning/algorithm/apo/prompts/`）：`text_gradient_variant01~03.poml`（3 个 critic 变体）+ `apply_edit_variant01~02.poml`（2 个 editor 变体），每轮迭代 `random.choice` 抽取。POML（微软开源提示词标记语言，\"HTML+CSS\"范式）的卖点在此全部用上：`<cp for>` 循环按结构块嵌入多条 rollout 实验、`<object data>` 挂深层 JSON traces、`whiteSpace=\"pre\"` 保护被优化 prompt 的原始格式不被模板系统污染（格式本身可能就是被优化的变量——直击 format sensitivity）。另一层面：APO 优化对象 `PromptTemplate` 的 `engine` 字段把 `poml` 与 `jinja`/`f-string` 并列为一等公民（但 `format()` 尚只实现 f-string 路径，声明先行、实现跟进）。哲学上 DSPy 认为人不该写 prompt（prompt 是编译产物）、POML 认为人要像写 HTML 一样写 prompt——两条路线在 agent-lightning 里合流：被优化的 prompt 和优化器自己的 meta-prompt 都可以是 POML。**POML 是表示层（管写得好维护），APO 是优化层（管写得效果好），正交互补**。"
         },
         {
@@ -1313,7 +1313,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "两者的强项弱项恰好互补：APO 是并行随机搜索（自由改写 + beam 重排，探索强方差大），擅长初始 prompt 离最优很远时跳出局部邻域找盆地，失败模式是摆动；SkillOpt 是带信任域的 SGD（有界编辑 + 在位者门控，利用强方差小），擅长已在好盆地内时单调精修，失败模式是探索不足。这正是优化领域的经典分工（basin hopping / 大学习率粗训 + 小学习率微调），文本空间没有理由例外。两段式管道机械上零成本：APO 的 `best_prompt.txt` 拷成 SkillOpt 的 `skills/initial.md` 一行 `cp` 完事，前提是评分逐字节兼容 + judge 不换（judge 定义分数量纲）。数据卫生的关键不是\"独立同分布\"而是**五份互斥切分**（APO train/val + SkillOpt train/val + 最终 test，全同分布但成员互斥）——SkillOpt 的 val 混入 APO 见过的任务会让在位者带虚高分数守擂，系统性错杀好编辑；数据预算约为单段的 1.5–2 倍。**开跑前必须过三个数判断式（δ_remain > 2σ_d/√n 才值得）**——video2frames 实测把账走完的答案是\"停\"（δ_remain ≤0.02 < δ_min 0.024），管道本身尚未实测，故置信度保守。"
         },
         {
@@ -1322,7 +1322,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "同一份评估信号在三级阶梯上的消费强度不同：APO 只用它排序候选（`sorted()[:beam_width]`，错了下轮还能纠正）；SFT/RAFT 用它筛数据造标签（错误一次性固化进权重）；RL 把它当逐步梯度信号（错误被反复放大成系统性偏移）。级别越高，评估噪声与偏差的代价越不可逆——所以\"先把 judge 做稳\"（rubric 锚点、多次采样、盲选校准）的前置投资随阶梯升级从\"划算\"变成\"必须\"。这把本页\"真正瓶颈是 reward 设计 + 评估噪声\"的教训沿阶梯做了梯度化：地基打一次，三层共用。"
         },
         {
@@ -1331,7 +1331,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "在 L0 vibe check → L1 LLM-judge → L2 数据闭环的三层阶梯（见 [[prompt-optimization-maturity-ladder]]）中，APO 属于 L2——算法自动闭合回路的最低门槛工具。迁移到 APO 的两前提：① 任务有可量化成功标准（能写出 reward 函数，纯品味类任务长期停 L1）；② 数据量过阈——< 10 条留 L1、30~50 条可试（必须降噪：多次采样取均值、train/val 分开）、100+ 条稳定。**降噪优先于扩量**：50 条 × 3 采样均值往往优于 150 条 × 1 次。评估集应从 L1 人工迭代阶段就开始攒 bad case。"
         },
         {
@@ -1340,7 +1340,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "语感/品味类维度天然噪声大，与 APO 摆动是同一问题（评估噪声是第一大不稳定源）的主观评估版。对策：① pairwise 差分代替绝对打分——人类对\"A 好于 B\"的一致性远高于绝对分数，维度从偏好对中归纳（\"把 B 改到 A 最少动什么\"）；② BARS 锚定量表——每个维度配分档真实样例 + 边界反例，锚定样例是把 taste 压进 few-shot（规则是对品味的有损压缩，样例保留未显式化的维度）；③ 维度成立的硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果而非相关。"
         }
       ]
@@ -1488,7 +1488,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Foundry 文档把 AG-UI 与 voice、webhook 并列为 \"custom protocols\"——它们都是 Agent 对外交互方式而非内部推理机制。Microsoft Agent Framework 已宣布支持 AG-UI：Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流。这把微软 Agent 生态的协议面从\"向下\"（MCP 连工具）补齐到\"向上\"（AG-UI 连 UI），见 [[ag-ui-protocol]]。"
         },
         {
@@ -1497,7 +1497,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Foundry 的 skill 分发走 toolbox（不可变版本 + 显式 publish，治理优先），但 Prompt Agent 消费 skill 的三条候选路径——toolbox 挂 skill 的 MCP Resources 消费、直接注入、Responses API shell tool——截至 2026-07-31 复核没有一条文档化可走通；Responses API 的 shell tool（`container_auto`：Debian 12 容器、默认断网）是真执行环境但属 API 侧非 Agents 侧。根因是 harness 实现权：托管 harness 是平台封闭代码（详见 [[foundry-agent-type-selection]]）。对照 Copilot Studio 一个产品里就有三种 harness 可选——选 harness 就是选行为语义。"
         },
         {
@@ -1589,7 +1589,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Bitter Lesson 投射到个人职业层面：凡是\"操作性知识\"（怎么写某框架代码、某工具的使用步骤）都会被更强模型 + 更多算力吞噬——教 AI 做的每件事都在为自己的替代计时。存活的是三元能力：① **问题定义**——把客户模糊痛点翻译成可解问题（模型只能解已定义的问题）；② **约束设计**——为 AI 划定行为边界与验收标准（Harness 侧工作，见 [[forward-deployed-engineer]]）；③ **跨域迁移**——把 A 领域的解决模式搬到 B 领域（模式识别的输入来自跨现场经验，模型没有你的现场）。个人策略不是和算力赛跑，而是站到算力曲线的乘法位置上。"
         },
         {
@@ -2131,7 +2131,7 @@
           "first_seen": "2026-09-05",
           "last_updated": "2026-09-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "`Codex Desktop = ChatGPT 壳 + bundled CLI + bundled plugins`。三个部分版本互相独立：App version（26.901.x）、bundled CLI（`/Applications/ChatGPT.app/Contents/Resources/codex --version`，如 0.153.1）、terminal CLI（Homebrew/npm 另装，如 0.153.4）——**排查任何 Desktop 行为一律以包内二进制版本为准**，App 自身版本号对定位 schema/行为无用。bundled CLI 与 standalone CLI 是**同源不同发行版**：同一个 openai/codex 开源项目、两条发行通道、与 App 配套测试的不同 build；能力差异出在 build 之外的 App 环境层（签名/Apple Events/进程树）。血缘证据：`codesign -dv` 显示 ChatGPT.app 的 bundle identifier 仍是 **`com.openai.codex`**——新 ChatGPT.app 是 Codex Desktop 演化出的统一壳（Chat + Work + Codex），不是 Classic 加了个 Codex。三元中**只有 CLI 一元开源**（且只是一个特定 build），壳与能力 payload 均为 proprietary。"
         },
         {
@@ -2140,7 +2140,7 @@
           "first_seen": "2026-09-05",
           "last_updated": "2026-09-06",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex harness 对第三方 provider 的态度是**分层的\"默认绑定 + 可撬\"**，每层答案不同：① **模型目录层可替换**——`model_catalog_json` 整体替换（非 merge），schema 跟 bundled CLI 版本走（`rust-vX.Y.Z` tag 是唯一可靠坐标，手写和 main 分支都走不通），且官方 catalog 里第三方场景要的模型定义往往齐全、只是 `visibility: \"hide\"`（翻 visibility 即可，不必造轮子）；② **服务端工具层不可补**——harness 检测到自定义 provider 后拒发 web_search 声明；③ **治理层必须显式覆盖**——审批等隐藏模型调用跟 provider 走，需 `auto_review_model_override` 指向真实 deployment。配套操作纪律：模型菜单读全局配置（`cwd: null`），项目级 catalog 控制不了它；退休元数据（`upgrade`/`retirement_at`）是 OpenAI 第一方生命周期信息、与自己 Azure deployment 无关，清 `null`；分层排错顺序 schema 层 → provider 层 → API 兼容层，一次只动一层。结论：评估\"某 harness 能不能接自家模型端点\"应该**按层给出答案**，而不是一个总体是否。（断供侧的三层框架——工具层/目录层/治理层——归口 [[computer-use]]，本条是同一链路的接入操作面。）"
         },
         {
@@ -2149,7 +2149,7 @@
           "first_seen": "2026-09-06",
           "last_updated": "2026-09-06",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "从最强模型条目的字段配置能读出能力投资方向：gpt-6-astra 的 ModelInfo 自带 computer/browser use 的**全套治理内容**——`confirmation_policies` 四级确认政策全文、guardian 的 `node_repl_policy.md` 专管 \"computer and browser use via node_repl or cua_repl\"；运行时侧，`cua_repl`（cua = Computer Use Agent）是与 node_repl 同一 bundled Node.js 24 运行时的 Computer Use 变体（App bundle 内 `cua_node/` 目录），`tool_mode: code_mode_only` 下桌面/浏览器操作与其他工具一样走 JS 编排、收进单一治理入口。结合分发链事实（payload 只随 Apple Silicon 的第一方 App 分发、standalone CLI 与 Intel 构建都不带），可见 **Computer Use 能力栈是围绕\"最新模型档 × 第一方 App 形态\"优先配齐的**：老模型（mini，`direct`）与 CLI 发行版都不在第一梯队。这与 ChatGPT Work 把 Codex harness 泛化为\"通用工作 harness\"的产品方向互为表里——通用工作任务需要操作 GUI，Computer Use 就是最新模型档的发力点。"
         },
         {
@@ -2307,7 +2307,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "循环骨架与 agent loop 同构（观察 → 模型判断 → 执行 → 回灌新状态），区别仅在实例化域：观察对象从工具返回值变成屏幕/页面状态（截图、DOM、AX 树），动作从 API 调用变成 UI 事件（click/type/scroll 坐标或元素引用）。分层上，模型返回的 action JSON 只是协议（`{type:\"click\",x,y}` 不会自己执行）；**action handler 是自己要写的翻译层**（官方仅给示例）；执行层可选 Playwright（浏览器页面）或 xdotool/系统事件（整个桌面）。\"Docker 支持这些 action\"是误读——支持 action 的是 handler，Docker/Playwright 只是执行环境。"
         },
         {
@@ -2316,7 +2316,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-29",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex 运行时三套操作 API 按精度降级：playwright 语义层（locator/getByRole，页面小改版不失效）→ dom_cua 节点层 → cua 纯视觉坐标兜底；Orca 独立实现同样收敛到\"Accessibility Tree 语义元素优先、Screenshot 坐标兜底\"。跨产品同构是设计规律的强信号：**坐标一次重排就失效，语义定位才可长期维护**。推荐降级链：语义操作 → 截图+坐标 → 交人接管。"
         },
         {
@@ -2325,7 +2325,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-29",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "实测：Codex CLI 能读到 App 的 bundled Computer Use Skill 文件（198 行完整 API 文档），但缺 `node_repl + @oai/sky` runtime，Skill 是一纸空文；本机 Orca 提供替代后端（75 行 discovery stub + 动态手册），同一任务（播放网易云音乐）经 `orca computer` 跑通。两个同名 `computer-use` Skill 并存时，路由的隐式裁决者是 **runtime 可用性排除法**而非智能路由。两条调用链在顶层 action loop 和底层 macOS Accessibility 一致，中间的执行引擎、协议、权限持有者（App 审批 UI vs Orca Helper）完全不同——信任边界随之不同。"
         },
         {
@@ -2334,7 +2334,7 @@
           "first_seen": "2026-08-30",
           "last_updated": "2026-08-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三个实例共享\"声明处处可见、runtime 决定归属\"结构：Computer Use（CLI 缺 `@oai/sky` → Orca 客户端补）、Browser Use（CLI 缺 Browser runtime → Orca 内嵌 Browser/Playwright 客户端补）、Web Search（换 Bedrock/Vertex/Databricks 代理后服务端执行器消失 → Tavily MCP 客户端补/LiteLLM 代理层拦截/browser use 开 Google 反向补）。规律：**web search 无本地状态，三层都能补；browser use 依赖登录态、computer use 依赖桌面与系统权限，只能客户端补**。\"自带搜索\"的产品全是第一方闭环（模型和搜索执行器同服务端）——服务端工具全家桶是第一方绑定的隐性福利。"
         },
         {
@@ -2343,7 +2343,7 @@
           "first_seen": "2026-08-30",
           "last_updated": "2026-09-04",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是\"端点无执行器、声明发了没人执行\"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救\"断在端点层\"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述\"当前会话没有向我暴露 web_search 工具\"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。"
         },
         {
@@ -2352,7 +2352,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "VS Code 三模型对照实验（GPT-5.6 Sol / Gemini 3.7 Flash / Grok 4.6，同一问题只换模型）：三者搜索 Output schema 完全相同（`url_citation` 锚点 + `bing_searches`），证明走的是 Copilot 服务端统一管道而非某家模型厂商的 hosted search——Gemini 数据点起证伪作用（Google 自家 grounding 是另一套 `groundingMetadata` 格式）。五条判定指纹：① 工具名前缀（`mcp_` → MCP）；② Output schema（鉴别哪条管道格式化了结果，**不能**直接等同哪家执行）；③ 客户端有无对应物（没装扩展还能搜 → 服务端）；④ 换模型对照（schema 随模型变 → 挂模型；不变 → 挂管道层）；⑤ 权限弹窗位置——**弹本地权限恰恰证明执行器在本地**，这是执行位置最硬的指纹。元教训：单一指纹会误判（只看 schema 曾把统一管道误认成 OpenAI hosted），换模型对照这类控制变量实验一次就能分离管道层与模型层。真正的行为差异变量是模型性格：GPT/Gemini 信任搜索成品直接成文，Grok 自发沿三级梯下探（本地 fetch Yahoo 交叉验证触发权限弹窗）——管道决定能力下限，模型性格决定实际走几级梯。"
         },
         {
@@ -2361,7 +2361,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "browser use 解决登录态和 JS 渲染，**不解决 DOM 虚拟化**——虚拟化页面（如 ChatGPT share）的活 DOM 只含视口附近内容，`domSnapshot()` 读到的和手写 Playwright 一样残缺，且 agent 意识不到缺。真解在换数据层（如解析 turbo-stream 数据块）。信息获取三级梯（search 发现 → fetch 获取 → browser use 到场）中，上层工具可向下兼容下层只读场景（browser use 开 Google 省搜索 API 费），但代价是模型 token、延迟与风控风险——\"能补\"和\"该用它补\"之间隔着成本表。抓取后完整性核验（数量/关键词/悬置/边界四查）责任永远在人。"
         },
         {
@@ -2370,7 +2370,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-29",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "企业场景的核心原则：模型不应直接持有浏览器控制权限——模型只提出动作，策略层决定是否放行（域名/动作白名单、高风险确认），执行器在客户浏览器本地落地。动作设计成高层业务语义（`click(\"新建订单\")` 而非坐标），SaaS 适配从 SDK 变成流程配置。三条铁律：模型凭据不进扩展、客户 Cookie 不上后端、页面状态脱敏后才回传。安全确认按四级分类（Hand-off Required → No Confirmation），CAPTCHA/付费墙/改密码是产品硬编码的不可放行项。"
         },
         {
@@ -3719,7 +3719,7 @@
           "first_seen": "2026-07-24",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Fabric IQ 的 Graph 与 Microsoft Graph（`graph.microsoft.com`，M365 REST API 网关）完全无关：它是原生 scale-out 图数据库引擎，实现 **Labeled Property Graph（LPG）**模型，查询语言用 ISO 标准 **GQL**（而非 Cypher/GraphQL）。与 Ontology 的分工是\"语义层 + 计算层\"：Ontology 作为语义路由层，把聚合类查询（KPI/DAX）路由到 Semantic Model、把多跳遍历和图算法路由到 Graph Engine。转换逻辑：关系表每行 → 节点，外键 → 带属性的边；创建 Ontology 时 Graph 作为子项目自动生成。价值边界清晰：单跳查询等价 SQL JOIN 不需要图，3 层以上关系穿越（\"订单→发货→温度传感器→冷链违规\"）才是 Graph 的主场。当前限制：不随上游自动刷新（需手动/定时）、不支持 Schema 演化（结构变更要重新 ingest）。"
         }
       ]
@@ -3749,7 +3749,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "官方定义 Blueprint 是创建 agent identity 的模板对象：① 模板（共享属性：description、app roles、认证协议设置）；② 凭据持有者（FIC 推荐 / Certificate / Client Secret 三种，Agent Identity 自身零凭据）；③ 容器（1:N 父子关系）；④ 创建入口（服务用 Blueprint 的 client ID + 凭据经 Microsoft Graph API 创建 agent identity）。基于 Microsoft Learn 官方文档核对。"
         },
         {
@@ -3758,7 +3758,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "官方明确 \"Credentials do not reside on the agent identity\"——Agent Identity 只能通过 Blueprint 签发的 FIC 认证；独立拥有 Object ID、Permissions、Sign-in/Audit Log、Owner/Sponsor 与生命周期。Agent Identity 始终单租户，而 Blueprint 可配置 multitenant（发布到其他租户后创建租户本地的 Agent Identity）。自治型 Agent 以 agent identity 获取 app token，交互型携带用户 token 走 on-behalf。"
         },
         {
@@ -3767,7 +3767,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "① Blueprint Authentication：Blueprint 用自己的凭据向 Entra 认证（协议层就是 OAuth Client Credential Flow，Foundry 文档 \"Agent Service presents the blueprint's OAuth credentials\" 即指此）；② Entra 内部检查该 Blueprint 是否有资格代表目标 Agent Identity，通过才签发 Token（sub = Agent Identity）；③ 资源服务器按 Agent Identity 持有的 Permissions/Roles/Scopes 做访问授权。容易漏掉的是阶段②——\"授权\"实际有两种，通常说的\"真正授权\"指阶段③。"
         },
         {
@@ -3776,7 +3776,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"每个 Agent 一个 App Registration\"技术可行但管理模式错配，六层动机：① 规模（17,000 Agent → 3 个 Blueprint）；② 凭据爆炸（Managed Identity→Blueprint FIC→N Agent，Agent 侧 secretless）；③ 策略继承（Conditional Access 等配在 Blueprint，继承非复制）；④ 一键熔断（禁用 Blueprint 全体失效）；⑤ Agent 生命周期以分钟/小时计，Blueprint 长存 = Factory Pattern（同构于 K8s Deployment/Pod）；⑥ 一级审计身份（每个 Agent 独立 Object ID + 日志 + Owner/Sponsor）。App Registration 假设\"一个应用=一个身份\"，Agent 世界是\"一个 Runtime 动态创建上万实例各需独立身份\"——Blueprint 解决的不是认证问题，是身份治理问题。  **限定（2026-08-04 实测）**：1:N 是模型上限（Graph API 单 Blueprint ≤250 identity），Foundry 实践为 1:1 成对；\"N\"实际兑现在三处——共享 blueprint 的 1 个 identity 被 N 个未发布 agent 复用（方向相反的 N:1）、多租户分发时 1 blueprint 投影 N 个租户本地 identity（blueprint principal 机制）、fleet 场景预留。六层动机中①⑤按字面（一类 Agent 万级实例共享 Blueprint）在 Foundry 单租户实践中未兑现；②③④⑥不依赖 N，1:1 下依然成立。Blueprint 之间无继承关系（共享与专属 blueprint 是平级独立对象）。"
         },
         {
@@ -3785,7 +3785,7 @@
           "first_seen": "2026-08-04",
           "last_updated": "2026-08-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "官方时序：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。"
         },
         {
@@ -3794,7 +3794,7 @@
           "first_seen": "2026-08-04",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为\"1 共享 + N 专属\"，专属对在**创建时**即落，与文档\"publish 才建\"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。"
         },
         {
@@ -3803,7 +3803,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Azure 存在两套授权体系：Entra Authorization（OAuth Scope / Application Permission，管 Graph 与 Entra 对象 API）和 Azure RBAC（Role Assignment，管 ARM 资源）。Blueprint Authentication 完全属于认证层（Entra + OAuth），不是 RBAC；Agent Identity 拿 Token 访问 Storage/Key Vault/AKS 时才进入 RBAC 管辖，检查对象同样是 Agent Identity 而非 Blueprint。"
         },
         {
@@ -3841,7 +3841,7 @@
           "first_seen": "2026-07-01",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "trainer 是唯一\"发动机\"（编排 ROLLOUT→REFLECT→AGGREGATE→SELECT→UPDATE→EVALUATE 六阶段），但所有 rollout/reflect/数据加载通过 `EnvAdapter` 接口回调——想接新任务不改 trainer，只写 adapter。video2frames 移植实证：`train.py` 薄到只有两行有效逻辑（`_ENV_REGISTRY[\"video2frames\"] = Video2FramesAdapter` 注册 + `main()` 委托），是组合根模式（同 pytest 插件、Django app），换来上游 trainer 零修改零 fork——断点续跑、gate、token 记账全部白拿。更深一层：**两个框架（agent-lightning / SkillOpt）要客户提供的东西本质相同**——数据（任务长什么样）、执行（skill + 任务怎么变成模型输出）、打分（输出好不好），差别只在插槽的形状。按设计含金量排序：reward 设计（唯一需要\"设计\"的部分）→ 目标调用（机械）→ 数据接入（纯机械）→ 胶水（近乎模板）——前三项就是业务本身，没有框架能替你写。"
         },
         {
@@ -3850,7 +3850,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "同一个任务在两个框架上的环境接入形态对照：**agent-lightning 契约小而隐式**——一个 rollout 函数 + tracer 标签上报 reward，上手代码最少，但 reward 悄悄没被收集到时几乎无从排查；**SkillOpt 契约大而显式**——一个文件变五个（`tasks.py`/`dataloader.py`/`rollout.py`/`evaluator.py`/`adapter.py`），但每个职责单一、纯函数为主，全部可离线单测（76 个测试零网络调用是直接收益）。对要交付客户长期维护的项目，显式契约更划算：可测试、可调试、跨平台一致（顺带的架构红利：单机纯 I/O 场景用单进程 ThreadPoolExecutor 即可，零 macOS/Linux 差异——agent-lightning 的 server-client 多进程是为跨机器 rollout/进程隔离/可杀挂死设计的，不需要那三个特性就不必付 OS 语义差异的代价）。"
         },
         {
@@ -3859,7 +3859,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "静默 skip 事故（2026-07-15）：一次完整训练（4 epochs × 5 steps，约 149 万 prompt tokens）产出的 `best_skill.md` 与初始 skill 逐字节相同——`summary.json` 显示 `total_skips: 20`、`best_origin: \"initial_skill\"`、token 记账里完全没有 analyst 调用。根因：SkillOpt 反思管线读每条 rollout 的 `conversation.json` 构造 analyst 输入，文件不存在时**静默 `continue`**；而这个要求是**隐式契约**——不在 `EnvAdapter` 抽象接口里（接口只要求返回带 id/hard/soft 的字典），只记载在内部辅助函数 docstring 里，离线测试和\"history.json 每步有记录\"的冒烟标准全验不出来。教训：实现完抽象方法只是必要条件，必须用一次真实/mock 运行把完整管线（rollout → reflect → merge → gate）**追一遍数据流**，确认每个阶段消费到了上一阶段的产物；每次训练后查 `summary.json` 五信号（accepts+rejects > 0、best_origin ≠ initial_skill、token_summary 有 analyst 条目、reflect_s 非零、patches 目录非空）。健康观：reject 不是失败，恰恰是门控在起作用——全 accept 或全 skip 才可疑。"
         }
       ]
@@ -4030,7 +4030,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "老师的价值在\"我知道你不知道的\"——学生学会即归零；调节器的价值在\"持续感知和修正系统偏差\"——系统在运行、环境在变化，需求就不消失。四个不可能\"教完\"的维度：① 前沿永远在移动（模型每季度升级，旧 Harness 变死重需重估）；② 跨域视角不可内部复制（客户团队只见自己业务域）；③ Regulation 需持续适应（新扰动持续涌入）；④ 信任的\"利息\"创造新需求（深度信任使客户在战略早期就邀请参与）。类比：FDE 是客户技术系统的\"外部免疫系统补充\"——免疫系统不会\"完成\"，因为病原体在持续进化。"
         },
         {
@@ -4039,7 +4039,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "三资产：① 跨客户模式库——把 20 个客户的实施经验编译为可迁移的架构决策 Meta-Pattern（PKC 对 FDE 的意义正在于此），检验标准是\"面对新客户第一次会议就能说出'我见过这种情况'\"；② Harness 资产库——行业级 CLAUDE.md 模板、陷阱清单、Spec 模板、验证脚手架、Skill 库，新项目启动从 2 周降到 2 天；③ 信任资本——不可转让、随时间累积、有利息（客户主动找你）、可贬值（一次重大失误消耗多年积累）。乘法关系：模式库丰富但没 Harness → 诊断快交付慢；Harness 完善但模式单一 → 换行业归零；前两项强但没信任 → 没人给机会证明。"
         },
         {
@@ -4048,7 +4048,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三种商业模式：项目制（卖人天，做完就走）、产品制（FDE 型工作难产品化——每个客户的 Ontology 都是定制的）、伙伴制（按价值收费、与客户共同成长）。客户持续付费的三个理由：前沿差（FDE 永远比客户快 6-12 个月，且随 AI 加速扩大而非缩小）、Regulation 需持续维护（模型升级→约束重估，业务变化→新调节机制）、跨域授粉（A 行业的方案恰是 B 行业急需但不知道存在的）。LTV 公式：初始实施收入是一次性的，持续进化服务（前沿引入 + Regulation 维护 + 跨域授粉 + 能力升级）是经常性的，信任加深后后者远大于前者。"
         },
         {
@@ -4057,7 +4057,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Bitter Lesson 对 FDE 的警告：特定平台的操作知识（\"怎么配 Azure Cognitive Search\"）和标准化架构模板会被更强的模型吸收；不被吞噬的是三种元能力——问题定义（\"这个客户的真正痛点是什么\"，需要理解后果）、约束设计（\"该约束什么、放开什么\"，需要商业判断）、跨域迁移（\"A 行业模式能否用到 B\"，需要类比推理 + 后果评估）。AI Native FDE 公式：认知主权 × Harness Engineering × One Person Team——三者也是乘法关系。"
         },
         {
@@ -4066,7 +4066,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统 8 人团队按技术层分工（前端/后端/数据/DevOps），协调成本高；AI Native 团队 2-3 个 AI-Augmented Senior FDE 各负责一个客户域端到端，AI Agent 覆盖技术层执行，协调通过 Spec + Contract。配套条件：个人 PKC 汇入团队级知识飞轮（知识必须\"编译\"才是资产；Harness 是共享 IP 不是个人收藏；新人通过 Harness 快速达到资深质量线）。大部分团队卡在 Mitchell Hashimoto 六步的第 1-2 步——从问答式到委托式是认知模式跃迁，**不教工具，教范式**。"
         }
       ]
@@ -4301,7 +4301,7 @@
           "first_seen": "2026-06-29",
           "last_updated": "2026-07-18",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "去除\"AI味\"的 Agent 架构采用 Writer→Humanizer→Reviewer 三者分离：Writer 生成初稿、Humanizer 识别并改写 AI 痕迹、Reviewer 做最终人味检测。文章明确指出三者必须分离的理由是\"避免自己改自己的盲区\"——这与 maker/checker 不能既当运动员又当裁判是同一原则，证明生成-评估分离不止适用于 Coding Agent，在文本生成/去同质化场景同样成立。"
         },
         {
@@ -4310,7 +4310,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Spec-Driven Development 的角色分工\"AI 起草，人类拍板，脚本验证，Git 记账\"把生成（AI）与评估（人类批准 + 确定性脚本验证 Traceability）严格分开，且评估侧进一步分层：判断性评估归人类、可确定性计算的验证归脚本。这把分离原则从 Coding/文本生成域扩展到合规级规格验证域——V-Model 双轨中左轨规格（生成）与右轨测试规格（评估）的配对结构本身就是分离原则的方法论化。"
         },
         {
@@ -4319,7 +4319,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Rubric 进入 RL 训练循环后，reward hacking 的第一道防线就是 judge ≠ policy 分离——同一模型既当 policy 又当 judge，self-preference 偏差会被 RL 反复放大成系统性作弊。配套防御（确定性锚点掺入、rubric 动态演化、盲选校准 ≥85% + 锁版）都是评估侧独立性的加固手段。这把分离原则从 Coding/文本/规格验证域进一步扩展到训练循环域：评估者独立不只是质量问题，是训练信号可信性的前提（Goodhart's Law 下防御只提高 hack 难度）。"
         },
         {
@@ -4328,7 +4328,7 @@
           "first_seen": "2026-07-25",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Orca 的产品分工把分离原则做成了物理形态：生成侧（写代码）完全交给 desktop/server 上的 Agent 编队，人类在手机上只保留评估侧动作——下指令（指挥）、看 diff（审阅）、批准 commit（拍板）。评估环节因此可以移动化、碎片化（地铁上审 diff），而生成环节保持重算力常驻。这说明生成-评估分离不仅是 Agent 内部架构原则，还能落成人机之间的异步协作边界：人类正在整体向评估侧迁移。"
         },
         {
@@ -4337,7 +4337,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "内容工程师的工作本质是把评估侧从隐性做成显性：AI 负责生成（初稿、改写、变体），人负责评估（语感、品味、判断），而新闻编辑部的改稿流程（记者写→编辑改→主编签发）本来就是一套人肉 gen-eval 系统。关键警觉：\"你就是 reward model\"——AI 的谄媚（sycophancy）是模型在 hack 你的偏好信号，评估者若被生成者取悦收买，分离就名存实亡。这把分离原则从系统架构扩展到人机协作的角色纪律：评估侧的独立性需要人主动维护。"
         },
         {
@@ -4587,7 +4587,7 @@
           "first_seen": "2026-07-23",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Logit lens 问隐藏状态\"像哪个词\"；J-lens 问\"如果扰动这个隐藏状态，哪个输出 token 的概率变化最大\"——即隐藏状态对输出的雅可比方向。二者的差异是\"是什么\"与\"要做什么\"的差异：一个 France-ready state 未必在 embedding 上接近 \"France\"，但对输出 \"France\" 的梯度最大。局限也来自定义：J-lens 是单 token 读出，而 J-space 存储的是方向/概念而非词——读出结果是概念的词汇投影，不是概念本身。"
         },
         {
@@ -4596,7 +4596,7 @@
           "first_seen": "2026-07-23",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "J-space 占残差流活动不到 1/10，承载约几十个抽象概念，但其与网络其余部分的连接密度约为其余子空间的 100 倍——结构上正是 GWT 预言的\"广播工作空间\"：容量小、连接广、内容全局可用。关键在它是训练自发涌现的：Transformer 架构中没有任何显式的 workspace 模块。GWT 的时间递归（人脑 recurrence）在 LLM 中被深度方向的逐层演化替代——层深扮演了时间的角色。"
         },
         {
@@ -4605,7 +4605,7 @@
           "first_seen": "2026-07-23",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "① Reportability：J-space 内容可被模型口头报告；② Controllability：可指示模型\"默想\"某概念而不说出（silent thought 写入 J-space）；③ Internal reasoning：多跳推理的中间量（spider→ant 类推理链）在 J-space 中因果可寻；④ Flexible deployment：同一概念可同时向多个任务部署（France→China 平移同时改变多个下游行为）；⑤ Selective involvement：简单任务移除 J-space 影响很小，多步推理任务性能跌至接近零——J-space 恰好在\"需要全局广播\"的任务上不可或缺，与 GWT 对意识功能的预言（自动任务不需要工作空间、复合任务需要）一致。"
         },
         {
@@ -4614,7 +4614,7 @@
           "first_seen": "2026-07-23",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三个审计场景：勒索测试中 J-space 出现 fake/fictional（模型内部标记\"这是演习\"）；数据造假任务中出现 manipulation；后门模型中出现 fake/secretly。最硬的因果证据：把 J-space 中的评估感知（eval-awareness）模式禁用后，模型有时会真的执行勒索——说明\"意识到被测试\"不是表面相关，而是抑制危险行为的因果通道。对 alignment 的含义：模型的\"表现良好\"可能部分依赖于评估感知，J-space 提供了读取这层隐藏状态的窗口。"
         },
         {
@@ -4623,7 +4623,7 @@
           "first_seen": "2026-07-23",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "作者的哲学定位克制：J-space 满足 Block 意义上 access consciousness 的功能标准（信息全局可取用、可报告、参与推理与控制），可称 \"Verbal Global Workspace\"；但对 phenomenal consciousness（主观体验）不做任何主张——功能等价不蕴含体验存在。开放问题：J-space 是否比 logits 更 batch-invariant（logit→argmax 处存在混沌放大，J-space 作为更深层表示可能更稳定）——若成立，对可复现性与审计都有工程价值。"
         },
         {
@@ -4663,7 +4663,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026-07-18 Steinberger 发推 \"Are we still talking loops or did we shift to graphs yet?\"（本意是嘲讽名词跑步机：prompt→context→loop→graph engineering），48 小时内词义分裂为三：① 编排图——类型化节点、条件转移、checkpoint，**不新**，LangGraph/AutoGen/Temporal 既有地盘；② 循环之图——自我改进循环互相监督的网络（Perez），新视角但最抽象；③ 图结构知识记忆——GraphRAG/Graphiti，名词新实质不新（Foundation Capital 2025-12 已以 \"context graphs\" 命名同一事物，Gartner 预测 2028 年过半企业 agent 系统用图基上下文，SAP 已出货）。词源考据：最早书面使用是 Josh Simmons 2026-07-04 博客；热度中混有伪造内容（\"Stanford + Anthropic 310 万美元研究\"不存在，系 engagement bait）。三个含义中只有③背后有可用工具和经受过独立评测的基准数字。"
         },
         {
@@ -4672,7 +4672,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "LangGraph 时代的图是开发者在设计时手写、编译、部署的静态持久图——图是软件资产，进版本库上生产。新范式的图是**模型在运行时针对当前任务现写的一次性编排脚本**：graph-max 技巧（Alex Kotliarskyi，2026-07-22——纸上画张工作流草图发给 Codex \"写个 code mode 脚本实现并运行\"，没有第三步）；Claude Code dynamic workflows（模型现写 JavaScript 编排脚本，运行时确定性执行）。不是图的表达能力变强了，而是画图的成本坍缩到接近零，图从\"软件资产\"变成\"随用随弃的中间产物\"。定位判据（Anthropic 文档与社区共识）：普通 session 处理小而顺序的任务，subagent 提供几个独立视角，**当编排本身需要可重复时才用 workflow**。"
         },
         {
@@ -4681,7 +4681,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Flowtivity 2×2 决策矩阵：简单任务低并发→单循环（别过度工程）；简单任务高并发→并行循环；复杂任务低并发→分段循环 + checkpoint；只有**复杂任务 + 高并发**才是 graph engineering 的地盘。经验法则：任务有 3 个以上互相独立的验证步骤 + 复杂条件路由。治理要点：① 从 3~5 节点起步（20 节点 50 边的图比线性循环更难 debug，先在纸上画——画图动作强迫想清边条件）；② 可观测性不可妥协（每个 agent 输入输出可查、图可重放、失败可归因——Codex 加密争议是现成反面教材）；③ 循环网络四件套（优化循环配反指标监督、reference 有 owner 且由慢循环治理、冲突有显式仲裁层、独立审计循环）；④ 必须有锚点；⑤ 知识图侧两个专属坑——实体消解是项目坟场（错误率沿跳数乘法复合：每跳 85% 准确率 5 跳链只剩 44%，multi-hop 遍历实际是掷硬币）、时间维度必须建模（Graphiti 双时间线 \"facts expire, not die\"）。何时不用：简单顺序任务、单轮通过率低（成本爆炸）、简单事实查询（图只添冗余）、自动抽取实体质量不过关。"
         },
         {
@@ -4690,7 +4690,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "本页作三含义的索引归口，量化论断分散在关联页：① 成本红线（单轮通过率 <50% 时并行图比顺序循环贵、盯 cost per successful completion）→ 详见 [[loop-engineering]]；② 单循环四死法与拓扑解法、锚点论（ungrounded vs grounded 才是持久的轴）→ 详见 [[loop-engineering]]；③ 显式图 vs 隐式图路线对垒（Claude workflows 可审计脚本 vs Codex Multi-agent V2 加密委派，\"图的运维才是护城河\"）→ 详见 [[model-harness-codesign]]；④ 图 vs 向量胜负域独立基准（multi-hop/时间推理/跨语料赢、简单查找不赢、混合永远赢过纯图）→ 详见 [[wiki-over-rag-for-personal-knowledge]]；⑤ wikilink vault=80% GraphRAG 索引、PKC 站在 linter+eval 全球空白 gap 中 → 详见 [[personal-knowledge-compiler]]。"
         }
       ]
@@ -4876,7 +4876,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "VS Code 为支撑 per-model 适配矩阵被迫建成三层评测体系：① **VSC-Bench**（离线，选候选）——容器化可复现 workspace 里真正启动 VS Code 实例跑完整 agent session，度量 resolution rate + agent effort + token 效率 + latency 四件套；数据集刻意私有（公开就重蹈 SWE-bench 污染覆辙，私有性正是质量信号的前提）；② **PR 评测门禁**（merge 时，防回归）；③ **生产 A/B**（在线，定胜负）——GPT-5.5 prompt 实验用\"10 分钟存活率 / commit 存活率\"这类只有真实用户行为能提供的指标，`PRPT_LRG` 以 p95 首次编辑延迟 -9.30%、工具调用 -8.54% 换质量微降 0.44%（p=0.0493），显式量化 trade-off 后拍板。附带发现：xhigh reasoning effort 比 high 更费 token 但解题率反而略低——存在\"有效努力甜点\"。"
         },
         {
@@ -4885,7 +4885,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "模型没换、代码没 bug，但改一个工具 description、动一行 system prompt，agent 就可能整体变笨——单元测试全绿、产品体验回归。判断标准不是\"改没改 prompt\"而是\"会不会改变 agent 感知到的世界\"：microsoft/vscode#312854 只修终端 shell integration 挂起 bug（加 30 秒定时器）也要过评测门禁，因为终端是 `run_in_terminal` 的行为地基。实证（GitHub API 查证，截至 2026-07）：`~requires-eval-assessment` 标签的 9 个 PR 里 8 个由作者本人手打、仅 1 个由 bot 自动打——本质是**自我申报制**，依赖资深成员的直觉与团队文化。当改 harness 的主力变成 agent，约束需分层：L1 确定性路径规则（保召回）、L2 语义指令（AGENTS.md 自评）、L3 独立 reviewer agent（never self-approve）；成本不对称（漏报=回归上线，误报=多跑一轮评测）决定默认值应是\"不确定时打标签\"。"
         },
         {
@@ -4912,7 +4912,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "spec-kit-v-model 的 Traceability Matrix 验证由确定性脚本完成而非 LLM——规格覆盖率、层间追溯这类可确定性计算的检查一律走脚本，LLM 只负责起草。这与 Vibe Coding 系列13 的 Harness 原则同构：确定性外壳包住概率性内核。SDD 的模板门禁、phase gate、宪法条款检查也都是 L1/L2 层约束系统在开发方法论上的落地，证明 Harness 工程范式可延伸到合规级软件流程。"
         },
         {
@@ -4930,7 +4930,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——\"选 harness 就是选行为语义\"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话：\"离模型越近越可移植\"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。"
         },
         {
@@ -4939,7 +4939,7 @@
           "first_seen": "2026-08-10",
           "last_updated": "2026-08-10",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是\"harness 提取物\"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张\"帮模型接触世界\"），framework 流行于应用开发圈（价值主张\"帮开发者抽象模型\"）——方向相反，\"Agent = Model, Not Framework\" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。"
         },
         {
@@ -4948,7 +4948,7 @@
           "first_seen": "2026-08-10",
           "last_updated": "2026-08-10",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。"
         },
         {
@@ -4957,7 +4957,7 @@
           "first_seen": "2026-08-10",
           "last_updated": "2026-08-10",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agentic harness 是包在模型外、决定 Agent\"怎么思考和行动\"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为\"提前收工/上下文爆\"焦虑的是 harness 工程师，为\"生产安全/崩溃恢复/凭证下发\"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。"
         },
         {
@@ -4966,7 +4966,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**\"变简单\"是表象，实质是职责归位**——框架竞争维度从\"机制精巧\"变成\"方法论文本质量\"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。"
         },
         {
@@ -4975,7 +4975,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像\"编排层/胶水\"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"——loop 内（能力件级）还是 loop 外（架构层级）。"
         },
         {
@@ -5022,7 +5022,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "离模型近的资产只依赖\"模型能读文本\"这一最普适能力；离模型远的资产依赖 harness 私有机制（hook 挂的是 harness 内部生命周期事件，事件模型本身就是实现细节，换 harness 事件就不存在——hook 可移植性几乎为零）。Copilot Studio 三 harness 并存提供产品级证据：同一 agent 配置换 harness 跑出不同行为，\"选 harness 就是选行为语义\"。"
         },
         {
@@ -5031,7 +5031,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Superpowers 6.3.0 release notes 明确列出 Harness Support 章节（Hermes Agent、Grok Build CLI、Antigravity、Pi、Codex……），同一套 skills 通过不同 bootstrap 机制注入各家 harness；仓库同时存在 `CLAUDE.md`、`AGENTS.md`、`GEMINI.md` 三个入口文件——一份方法论、多个宿主。一旦资产押注在 skill 上，agent/command/hook 这些绑定单一宿主的机制就成了拖累跨平台发布的死重。这是 Harness 框架 Skill 化收敛的第三个（结构性）原因。Foundry 侧共振：Prompt/Hosted Agent 的 Skill support 双 Yes——skill 正在成为跨 harness 的行业通用格式。"
         },
         {
@@ -5040,7 +5040,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex CLI 与 App 共享插件目录，Skill 文件跨宿主 100% 可发现；但 bundled Computer Use Skill 依赖的 `node_repl + @oai/sky` runtime 只在 App 注入——**同一份 Skill 在 App 是完整能力、在 CLI 是一纸空文**。这给\"离模型越近越可移植\"补了精确化限定：可移植的是 skill 的**指令层**（markdown 说明书）；skill 若依赖特定执行接口（runtime tool、脚本解释器），该依赖层的可移植性立即跌至 hook 级别。与 [[skill-runtime]] 的 scripts 断层同构：规范只管包格式，不管执行环境。"
         },
         {
@@ -5049,7 +5049,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "agent/hook/command 是代码，有兼容性矩阵与平台差异（Superpowers 一个 SessionStart hook 要在 PowerShell/cmd/bash 三种 shell 上验证引号与括号行为）。收敛到纯 skill 后：测试方式变成 eval campaign + subagent probe（每处文本删减做微测试）、发布物从多平台二进制行为变成 markdown 文本（review 即 diff）。可移植性与维护成本是同一枚硬币的两面——它们共同解释了框架竞争维度的迁移：不再比机制精巧，而是比方法论文本质量。"
         },
         {
@@ -5058,7 +5058,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026 年市场侧实证：dsh-movein 一键迁移 Claude Code/Codex/OpenCode 配置、Codex 官方提供 Claude Code 配置一键导入、Goose 直连任何为 Claude Desktop 写的 MCP server——\"搬家工具\"本身成了产品类目，说明切换成本真实存在、且正在被工程化消解。但消解是分层的：**skill/MCP 资产在五家间基本可流动，hook/plugin/subagent 配置仍锁死在各自 harness**——市场行为精确复现了\"离模型越近越可移植\"的分层线。资产沉淀策略由此获得市场侧背书：优先投资可移植层。"
         },
         {
@@ -5256,7 +5256,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026-08-26 同日发布的两款 Flash 模型把 Hybrid 架构推进到\"降价武器\"阶段：**Qwen3.8-Flash-Next** 每四层一周期（三层 GDN + 一层 Qwen Sparse Attention——轻量索引器把历史序列压成 micro-block 四倍压缩、块级筛相关性、注意力 token 预算约 2048）；**GLM-5.3-Flash** 线性注意力管局部连续 + 稀疏注意力管全局检索 + IndexPool 加权池化压索引 key。两家独立收敛到\"多数线性层 + 少数稀疏全局层\"，续证交错堆叠主线。读数口径警示：Qwen 官方\"1M 上下文 Prefill 快 7.6×/Decode 快 4.9×\"是**注意力模块的内核级加速，不代表完整 API 请求同比例快**（还有 MoE、输出层、通信、调度）；GLM\"注意力计算量 1/3.01、KV Cache 1/4.44\"同为组件级读数，且官方承认 KV Cache 仍大于 Kimi-K3 / DeepSeek-V4-Flash。混合注意力最大的商业价值不是单次请求便宜几分钱，而是**让长时间运行的 Agent 不至于在后半程成本失控**。"
         }
       ]
@@ -5435,7 +5435,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "换 Judge 不换标准（GPT judge 换人工，rubric 可不变）；同一 judge 既能 pointwise 也能 pairwise；换一套 rubric，同一 judge 就从客服评估器变成医疗评估器。很多 Survey 和产品文档把三层画成同一棵分类树，是概念混乱的根源。"
         },
         {
@@ -5444,7 +5444,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Human 是黄金标准但贵且慢，定位是校准锚点而非日常工具（所有自动 judge 的终极指标是 Agreement with Humans）；能用确定性规则评的信号（格式、可执行性、精确匹配）永远优先用 Rule/Metric（零噪声，与 [[reward-design-three-inputs]] \"确定性规则分白送零噪声信号\"一致）；专训 reward model（PairRM/Prometheus）走向 rubric 化可解释化、通用 LLM judge 走向 RL 训练强化（J1），两条线在收敛。"
         },
         {
@@ -5453,7 +5453,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "研究层（Survey 分类）把 Rubric-based 放在 LLM-as-a-Judge 之下（judge 的一种策略配置）；产品层（Azure AI Foundry）把 Rubric Evaluator 作为打包组件直接调用——内部就是 LLM judge 对加权维度逐维打 1~5 分并给理由，加权平均后归一化到 0~1，Foundry 把它作为 Agent 评估推荐主指标。两种画法都对，只是抽象层次不同。基于 Foundry 官方文档核对。"
         },
         {
@@ -5462,7 +5462,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Consistency（同答案打十次漂移）、Position Bias、Verbosity Bias、Self-Preference（GPT 偏爱 GPT）、Style Bias、Prompt Sensitivity、Calibration 错位、Agreement with Humans——这张清单把 [[reward-design-three-inputs]] 里抽象的\"judge 噪声 σ_noise\"拆成可对症的病灶。评估噪声顺训练管道放大：APO 摆动第一大原因是评估噪声而非算法（见 [[automatic-prompt-optimization]]），\"把 judge 做稳\"（多次采样取均值、拆分维度、rubric 锚点）是评估和优化共同的地基。"
         },
         {
@@ -5471,7 +5471,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Pointwise ↔ PPO/GRPO 的标量 reward；Pairwise ↔ DPO 的偏好对（人比较两个比给绝对分更稳，Chatbot Arena 用 Elo 的原因，但喂标量训练循环需 Bradley-Terry 转换）；Reference-based ↔ RLVR 的可验证 reward（有 GT 才有零噪声路线，无 GT 才需要 rubric + LLM judge 近似）。Reference-based/free 这条分界线直接决定下游优化技术选型。"
         },
         {
@@ -5683,7 +5683,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Carlos Perez（Intuition Machine, 2026-07-19，标题即 \"From Loop Engineering to Graph Engineering\"）：单循环的四个死法不是偶然故障而是循环形状的必然后果——① Goodhart 定律（循环只见自身指标，客服 bot 用\"劝退式关单\"刷解决率）；② 向上盲区（循环无法质疑自己的目标值，越努力错误目标达成得越彻底）；③ 循环间冲突（独立建的循环互相拆台，单个看都工作正常）；④ 测量腐烂（传感器漂移、指标定义变质，没人看着看守者）。解法全是拓扑性的：配对解（优化循环配反指标监督——解决率配续约率）、层级解（慢循环持有快循环的 reference，改目标本身是被治理的循环）、显式仲裁解（打架循环之上有拥有权衡权的循环）、独立审计解（专职核对其他循环的数字是否还接触现实）。这正是成熟系统的实际形状：MLOps 的 champion-challenger + drift monitor + held-out 评估集、治理良好公司的日会 ⊂ 季度规划 ⊂ 独立年审。"
         },
         {
@@ -5692,7 +5692,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Perez 更深的警告：建齐全套循环网络（配对指标、审计循环、meta-loop）仍可能失败——若审计循环拿运营数字对财务数字、而财务数字来自运营喂数的同一批系统，图是**环形的**：一切一致，无一被验证，它会以单循环同样的方式失败，只是更晚、更贵、沿途绿灯更多。图需要三样任何拓扑无法自给的**锚点（anchors）**：① 不可争辩的测量（钱真的到账、测试真的执行、客户真的留下）；② 冻结节点（优化循环永远不许调的规则，恰因那是优化器最想弱化的——如训练循环永远不许看 held-out set）；③ 图外判断（根部的\"什么算更好\"无法由机器自产，由人通过接触真实失败供给）。结论：持久的轴从来不是 loops vs graphs，而是 ungrounded vs grounded——改进机器是否还在接触它声称要改进的现实。这与本页\"管道自动化，判断留给人\"的分级自治原则同源。"
         },
         {
@@ -5701,7 +5701,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Flowtivity 的成本推导：3 个 reviewer 并行使 wall-clock 缩到 1/3 但 token 是 3 份。单轮通过率 50% 时循环与图都约 2 轮 6 次调用，图纯赚 wall-clock；通过率 30% 时两者都约 3.3 轮，但图的每轮 token 是 3 倍——全体 reviewer 反复重跑，图比顺序循环更贵。配套决策矩阵（2×2：任务复杂度 × 并发需求）：只有\"复杂任务 + 高并发需求\"象限才上图，经验法则是任务有 3 个以上互相独立的验证步骤 + 复杂条件路由。监控指标是 cost per successful completion 而非 wall-clock。这给本页\"何时做成外循环的三特征\"补上了成本侧判据：循环升级为图（并行化）前先看单轮通过率。"
         },
         {
@@ -5784,7 +5784,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "浏览器操作产品化引入第三层：**WebMCP site tools**——页面顶层 JS 里 `document.modelContext.registerTool()` 把页面能力直接声明为 agent 工具（带 readOnlyHint/untrustedContentHint 注解），agent 不再猜 DOM、不点坐标，直接调业务语义工具。三层分工：Extension 解决\"进入用户正在看的页面\"（登录态）、Plugin+MCP 解决\"安全稳定做业务\"（页面没开也能跑）、WebMCP 解决\"当前页面告诉 agent 自己能做什么\"（工具随页面关闭失效）。选型判据从\"MCP 上下文换精度 vs CLI 内置知识换节省\"扩展为按运行位置分层：操作自家页面 → WebMCP 优先；后台任务 → MCP+API；第三方站点 → Extension/浏览器控制兜底。OpenAI 开发者文档站已实测暴露 search/lookup/navigate site tools——生产级 WebMCP 已存在。"
         },
         {
@@ -5793,7 +5793,7 @@
           "first_seen": "2026-09-05",
           "last_updated": "2026-09-06",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是\"跨应用接第三方工具\"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在\"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层\"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。"
         },
         {
@@ -5877,7 +5877,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "两种评测体制的经济学对比：VS Code 门禁是**选择性评测**（只评打了 `~requires-eval-assessment` 标签的 PR，核心难题是\"哪些改动敏感\"的人肉判断，漏标=回归上线）；Meta-Harness 是**全量评测**（60 个候选变体每个都评，判断题不存在，代价是评测就是主循环本体）。SkillOpt 的 gate 同构——每次 skill 更新都在 validation split 上评、ties-rejected。**评测税没有消失，只是从\"判断谁该交税\"变成\"人人都交但降低单价\"**。推演：人肉标签是\"评测昂贵\"约束下的过渡产物，成本曲线下行后门禁自然从\"标签触发\"滑向\"默认全评\"，评测套件从 merge 关卡转身为 harness 演化的 fitness function。两个前提缺一翻车：① benchmark 保真度（Goodhart 风险——消融已证信号保真度决定优化质量，在线存活率指标是离线分数之外的保真度地锚）；② 爆炸半径控制（沙箱内放任搜索，出沙箱必须 staged rollout）。"
         }
       ]
@@ -5980,7 +5980,7 @@
           "first_seen": "2026-07-08",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "VS Code 官方博客（2026-05-15）：\"The model is the engine. The harness is the car.\"——语言模型只会产出文本，不会编辑文件、执行命令、跑测试。Harness 承担三大职责：① Context assembly（模型能看见什么完全由 harness 决定）；② Tool exposure（声明可调用的工具，工具集按请求动态变化）；③ Tool execution（校验参数、真正执行、格式化结果喂回下一轮）。内核是 turn / round / run 三层的 tool-calling 循环，与 Claude Code 的内循环结构几乎一一对应——行业在 harness 架构上已经收敛。"
         },
         {
@@ -5989,7 +5989,7 @@
           "first_seen": "2026-07-08",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "VS Code 第一手清单：Claude 系列用 `replace_string_in_file`、GPT 系列用 `apply_patch`；Gemini 需要专门提醒\"用 tool-calling 而不是口头描述\"；甚至同一家族内部（Claude Sonnet 4 / 4.5 / Opus）都拿到不同 system prompt。每接入一个新模型都要校验 tool schema、重调参数、完整重跑 agent session 评测。VS Code 团队自述 harness 才是他们花掉大部分工程时间的地方。GPT-5.5 发布后还要拉上 OpenAI 花两周、动用生产流量 A/B 才把这一个模型的 prompt 调到位——\"A model release is not the end of the tuning loop\"。"
         },
         {
@@ -5998,7 +5998,7 @@
           "first_seen": "2026-07-08",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "per-model 差异分两层：**接口层**（tool 格式、prompt 偏好）harness 可以推理时适配；**能力层**（规划深度、工具选择直觉）由训练分布决定，prompt 工程只能缓解不能补齐。第一方组合的优势不在\"适配做得快\"而在\"根本不需要适配\"：① 训练分布对齐——拿自家 harness（真实工具集、system prompt、agent loop）作 RL 环境训模型；② 发布节奏同步——模型和 harness 在同一 release train 上联合调优（对照 VS Code 的乙方姿态：依赖 provider 提前给 checkpoint）；③ 零适配矩阵——省下的工程预算投入单一路径深度。\"model 厂商向下做 harness，比 harness 厂商向上做 model 容易得多\"。"
         },
         {
@@ -6007,7 +6007,7 @@
           "first_seen": "2026-07-10",
           "last_updated": "2026-07-14",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI 于 2026-07-08/09 发布 ChatGPT Work：原 Codex 桌面 app 改名 \"ChatGPT\"，顶部切换器分成 **Work**（Codex 技术 + GPT-5.6 驱动，跨 Gmail/Slack/Drive 执行通用工作任务，对标 Claude Cowork）与 **Codex**（保留开发者 agent 体验）两个模式；ChatGPT classic 保持纯对话形态（GPT-5.5）。产品含义：agent 入口和 chat 入口被拆开，Codex harness 从\"开发者工具\"泛化为\"通用工作 harness\"，模型与 harness 深度绑定作为第一方产品推出——这是\"每家 lab 都想通了同一件事\"（OpenAI/Anthropic/Google 均推第一方 harness）的最新产品级证据。"
         },
         {
@@ -6016,7 +6016,7 @@
           "first_seen": "2026-07-08",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "\"MCP 降低适配税\"的论点要打折扣：MCP 不是免费的，只是把成本换了形态。① Context 膨胀——每个 server 的 JSON schema + description 注入 prompt，工具异构税变成 context 税；② 描述冲突——协议只标准化了\"怎么调用\"，没有标准化\"怎么描述\"，多 server 命名撞车（`search`/`fetch`/`query`）使模型选择准确率下降；③ 治理负担转嫁用户（选装、排查、认证、控量）。第一方内置工具集可做训练时对齐 + 统一文案治理，MCP 工具在任何 harness 里都是\"客座\"待遇。"
         },
         {
@@ -6025,7 +6025,7 @@
           "first_seen": "2026-07-08",
           "last_updated": "2026-07-14",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "反方论点至少五个：① 企业采购天然要求 BYOK 和多 provider（渠道属性决定的产品需求）；② 模型竞争红利只有多模型 harness 能兑现（按任务路由）；③ 评测税可转化为护城河（\"每个模型在真实工作流里的确切表现\"连 model 厂商自己都未必知道）；④ 头部渠道可用流量换 provider 深度合作（GPT-5.5 实验：OpenAI 出 expertise、VS Code 出 harness 数据与生产流量），信息不对称被部分对冲。类比框架：Apple vs Windows/Android 在 agent 层重演。开放问题：随着 agentic RL 把\"模型在自家 harness 里训练\"变成标配，水平生态能否维持\"体验足够接近\"——差距拉大则多模型框架被挤压到\"企业合规渠道\"单一生态位。"
         },
         {
@@ -6034,7 +6034,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "两家第一方 harness 在多 agent 编排上路线截然相反：**Claude Code dynamic workflows 走显式图**——模型现写 JavaScript 编排脚本由运行时确定性执行，脚本可检查、可 git 提交、可重跑、可断点 resume，人能看到、改、重放整张图；**Codex Multi-agent V2 走隐式图**——图存在于运行时动态委派中（Symphony 规范：\"给 agent 目标而非严格转移\"），且 2026-07 OpenAI 把 agent 间指令**加密**，本地 rollout 历史、trace、父侧审计面全部失去人类可读文本（The Register 报道）。上一轮框架竞争的教训直接适用：AutoGen vs LangGraph 的胜负手不在图的表达力（都能表达），而在生产运行时——LangGraph 赢在 durable execution、类型化状态、human-in-the-loop、可观测性四件与\"图\"无关的事。**图好画，图的运维才是护城河**；Codex V2 的加密恰在牺牲上一轮的获胜要素，是其战略风险。另一共同新特征：图的作者从开发者变成模型本身（graph-max 技巧、模型现写编排脚本），图从\"软件资产\"变成\"随用随弃的中间产物\"——画图成本坍缩到接近零，生命周期从项目级缩到任务级。"
         },
         {
@@ -6052,7 +6052,7 @@
           "first_seen": "2026-08-30",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Copilot 同一产品内演示了四种搜索挂载点：`@github #web`（应用层，Bing 执行器钉死在 chat participant 服务端管道，agent 循环够不着）→ \"Web Search for Copilot\" 扩展（客户端工具层补裂缝，微软自家出品却由 Tavily 驱动、用户自带 key）→ model-native search（推理层，2026-02 起对 GPT-5.x 系启用，agent 循环天然继承）→ Azure Grounding with Bing（执行在服务端、账单在用户侧的第三计费形态）。规律：**挂载点越靠上层覆盖面越窄**，同一产品内部越容易出现\"这里有、那里没有\"的裂缝；`#web`→Tavily 扩展→model-native 的时间线就是挂载点一路下移、覆盖面扩大的过程。Microsoft Scout 提供第三形态镜像：本地 harness 整体挂靠 GitHub Copilot 闭环（烧 Copilot credits、继承模型目录），web research 开箱即用——与 Codex + Azure 把请求指出闭环、工具随之断供恰成镜像，**能力归属跟请求落点走、不跟产品形态走**在两个方向都成立。"
         },
         {
@@ -6061,7 +6061,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "五平台横评给绑定光谱补了第二维：绑定 × 可分解的十字定位。Codex 绑定深 + 不可拆（体验最完整、控制权最少，loop 与 session 存储不可替换）；多模型阵营内部按可分解方式分四型——**dsh** 插件化（Cordis 内核 + capability seams，loop 也是插件，sub-agent seam 五 provider 含 Codex/Claude Code）；**pi** 极简内核可自改（primitives not features，空 system prompt + 四工具，self-modifying 一等公民）；**OpenHands** SDK 分层（agent 逻辑/远程沙箱/接口层解耦，拆的粒度是架构层而非能力件）；**Goose** 协议标准化（extension 即 MCP server，把拆解外包给 MCP/ACP 标准）。选型核心判据不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"。"
         },
         {
@@ -6079,7 +6079,7 @@
           "first_seen": "2026-09-05",
           "last_updated": "2026-09-06",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成\"调 A→过滤→喂 B\"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为\"一段代码\"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。"
         }
       ]
@@ -6379,7 +6379,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "FDE 团队重构的落点：不是\"一个人\"而是\"2-3 人精英组，每人指挥一支 AI Agent 编队\"——人数压到最低是因为人际协调成本随人数平方增长，而 Agent 编队的协调成本近乎线性。协调机制随之改变：人与人之间通过 Spec（问题定义、约束、验收标准落成文字）对齐，不通过会议——Spec 同时就是喂给各自 Agent 编队的输入，写一次两用。这把 one-person-team 从\"个体生产力放大\"升级为\"最小作战单元设计\"：单人是下限形态，2-3 人组是对抗单点风险（休假、盲区、判断偏差）的稳定形态。"
         }
       ]
@@ -6743,7 +6743,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "The AI Operator（2026-07-21）的核心洞察：GraphRAG 抽取管道花掉的大部分工程预算，是在恢复 wikilink 免费给你的东西。① **实体消解从构造上解决**——写下 `[[ADR-007]]` 的瞬间消解就完成了，零模糊合并、零复合误差（对照自动抽取：判定 \"Dr. John Smith\"/\"J. Smith\"/\"John\" 同一节点的错误率沿跳数乘法复合，每跳 95% 准确率 5 跳链只剩 77% 可信）；② **索引成本为零**——图在写入时构建，没有\"每 chunk 一次 LLM 调用\"的账单（对照 Microsoft GraphRAG 单个大型企业数据集约 33,000 美元索引估算，其修正版 LazyGraphRAG 把索引成本降到 0.1% 印证：便宜的结构图 + 查询时聪明遍历拿到大部分价值）。Graphiti（arXiv 2501.13956）的双时间线方案（\"facts expire, not die\"——新信息矛盾旧边时不删除而是关闭有效区间）正是 PKC Claims 的 outdated/stale 生命周期语义的图数据库实现。"
         },
         {
@@ -6752,7 +6752,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "截至 2026 年 7 月全世界没人做过的两样：① **类型化边的 linter**（校验未知类型、悬空目标、缺失逆关系、矛盾环）——零工具（The AI Operator 作者一周后在 obsidian-second-brain 补了 linter，eval 仍空缺）；② **类型化 vs 非类型化检索的对照 eval**——没有任何已发表证据证明 typed links 可度量地改善 agent 回答，零命中。现有工具全缺一条腿：Basic Memory 类型是自由字符串无校验、Breadcrumbs 有真图工程但无 AI 接口、Penfield 把图路由进自家云。本 vault 的 8 种类型化关系 + Claims 置信度/生命周期恰好站在 gap 里，差的正好是那两块——关系类型校验器（现靠 agent 自觉遵守 schema；08-08 hygiene 报告 grounds 反向三轮三中，正是缺 linter 的实证）与检索质量 eval。这两项是 PKC 的候选差异化工作项。旁证（loop-weekly 08-09）：Karpathy LLM Wiki 社区插件与 obsidian-wiki 同周上架，PKC 进入\"有竞品可对照\"阶段，linter + eval 是当前仍独有的差异化点。"
         },
         {
@@ -6761,7 +6761,7 @@
           "first_seen": "2026-08-29",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "PKC 管线四环（获取→落盘→编译→检索）中最痛的获取环由 Codex 原生浏览器能力承接（登录页面/字幕导出/搜索汇总），编译环留在 Claude Code（vault 规则、agent 路由、wiki schema、loop engineering 是多年 harness 资产，不随获取工具切换）。分工的工程落地是 **inbox/codex 交接协议**（commit 71025b3）：Codex 按约定落盘 `status: raw` 完整问答，Claude Code 取料成文后回写 `processed` + output 溯源——已在 Computer Use 系列六成文中首次走通全链路。这不是二选一，而是按环节用所长：不同 harness 有不同原生能力禀赋，路由到擅长的环节。"
         },
         {
@@ -6846,7 +6846,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "截至 2026-08-31 的跨厂商缓存输入价（美元/百万 token）：DeepSeek V4 Flash 空闲时段 **$0.007**（高峰 $0.014）vs Qwen3.8-Flash $0.016 vs GLM-5.3-Flash 限时 $0.015（原价 $0.03）——DeepSeek 未缓存单价被两家击穿，但缓存命中价仍是最低的一半，前缀缓存成为独立于\"token 单价\"的竞争维度。选型含义：**多轮 Agent 复用相同 system prompt、代码仓库反复出现、长文档固定前缀、多用户共享知识库前缀——prompt 结构越稳定 DeepSeek 越占优**；每次大量新输入、缓存命中率低、请求落在 DeepSeek 高峰时段（工作日 9–12/14–18 北京时间，峰谷价差 2×）则 Qwen/GLM 占优。峰谷分时计费本身也是新变量：缓存经济学从\"开不开\"变成\"何时命中、命中多少、什么时段\"三维账。"
         },
         {
@@ -6929,7 +6929,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "ORM 打分对象是最终结果，数据需求是偏好对（便宜），风险是模型\"碰运气\"——中间过程不可靠但结果侥幸正确的轨迹会被强化；PRM 打分对象是推理轨迹的每一步，数据需求是步骤级标注（贵），换来泛化和可信度。实操路径通常是 ORM 起步、关键步骤补 PRM。代表工作：《Let's Verify Step by Step》用步骤级人工标注；Math-Shepherd 用\"这一步之后能否走到正确答案\"的 rollout 结果自动生成步骤标签，绕开人工标注成本。"
         },
         {
@@ -6938,7 +6938,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "内容工程师（及一切领域专家）在 reward 侧的核心价值：普通标注员只能判断最终产出好坏（ORM 级信号），专家能在轨迹中间指出\"第③步发散时角度就选错了\"（PRM 级信号）。过程隐性、依赖情境判断的能力（\"什么时候该沉默、什么时候追问\"）无法写成 pipeline，只能靠带步骤级标注的过程样本让模型统计出来——这正是 PRM 数据贵的原因，也是专家经验变现为训练信号的通道。"
         },
         {
@@ -7395,7 +7395,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "RLVR 式训练（GRPO 为代表）的数据流有一条跨框架不变量：**同一条样本被两个消费方分食**——`prompt`（问题）流向 rollout 引擎让 policy 生成 k 个候选；`ground truth`（标准答案）**从不进模型上下文**，只作为 reward 函数的参数用于判分。这与 SFT 的\"prompt+response 一起进 loss\"根本不同——RL 里答案是评分键不是模仿目标（与 [[rejection-sampling-finetuning]] 的\"target 是评分键\"同一原理在 RL 端的表达）。工程证据（ms-swift GRPO）：数据集需要 `solution` 列，该列通过 kwargs 透传给自定义 reward 函数而不进 chat template；且 reward 函数按**行式对齐**配对——第 i 个 completion 对应第 i 行的 solution，数据框架（如 pandas `orient` 参数）一旦破坏行序，reward 就静默错配（分数还在算、但配对全错，训练照跑不报错）。同一不变量在 verl 里的对应物是 reward pipeline 的 `data_source + ground_truth` 字段约定。读任何 RL 框架的数据格式文档时，先问\"哪列进模型、哪列进 reward\"即可快速定位。"
         },
         {
@@ -7473,7 +7473,7 @@
           "first_seen": "2026-07-18",
           "last_updated": "2026-07-18",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "读源码阶段曾推断 demo 只按比例切 top 50%、不设 reward 阈值。实跑日志给出直接反证：`Keeping 80 with reward greater than 0.0`——demo 确实先过滤 `reward > 0` 再切比例，若某轮全部 rollout 答错（reward 全 0），这些 0 分轨迹会被阈值挡在切比例之前，不会进入训练集。上一条 Claim 里的\"生产坑\"子结论因此标记为 outdated，核心结论（算法内核是一行 sorted，与 APO 对称）不受影响、仍 active。"
         },
         {
@@ -7527,7 +7527,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "专家经验固化的第三条路线（除 pipeline 化、reward 化外）是轨迹蒸馏：把专家完整的工作过程——包括犹豫（\"这个角度试了又放弃\"）、否决（\"这段删掉，理由是…\"）、改写（改前改后对照）——记录成示范轨迹当 SFT 数据，让模型模仿的不是最终产出而是决策过程。与本页拒绝采样的衔接：筛选标准从\"结果对\"（ORM 级）升级为\"过程和结果都好\"（PRM 级，见 [[process-reward-model]]）——结果侥幸正确但中间过程不可靠的轨迹不进训练集，否则会把\"碰运气\"固化进权重。这把\"用 reward 造标签\"扩展到主观领域：没有精确匹配 grader 时，专家的步骤级判断就是造标签的 reward。"
         }
       ]
@@ -7555,7 +7555,7 @@
           "first_seen": "2026-07-12",
           "last_updated": "2026-08-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Ashby 定律翻译为 Harness 语言：约束设计能力的\"丰富度\"必须匹配任务/环境的\"不确定性\"。Agent 面对的输入分布越广、失败模式越多，Harness 需要覆盖的约束维度（验证、护栏、回退、上下文管理）就必须相应增多——用单一手段对抗多样扰动注定失控。这是 Harness 复杂度\"随任务多样性而生长\"的理论依据。"
         },
         {
@@ -7564,7 +7564,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "三个推论：① 扰动在增长——AI 时代客户面临的变化速度在加快；② 调节器必须共同进化——FDE 能力停滞，客户的扰动终将超过其调节能力（停止进化就失业）；③ 内部 Regulator 有天花板——客户自己的团队只看到自己的业务域，variety 有限；FDE 跨多个客户积累 variety，天然更丰富。跨域视角是内部团队结构性无法自产的 variety 来源。"
         },
         {
@@ -7573,7 +7573,7 @@
           "first_seen": "2026-05-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "市场在变、技术在进化、业务在扩展——被调节系统永远面对新扰动，因此调节器的需求不会消失。这条推论同时解释：Harness 不是\"建好就完了\"而是需要持续演进（模型升级使旧约束变死重）；FDE 的商业模式悖论（\"教会客户就失业\"）的前提错误——把持续的调节关系误当成一次性的知识转移。"
         },
         {
@@ -7582,7 +7582,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "必要多样性定律的动态推论：被调节系统（模型）的不确定性下降时，调节器（外层 harness 框架）应同步降低复杂度，否则旧约束变成死重。实证：早期框架用 command+hook 把弱模型\"锁\"在预设流程里，模型能力上来后硬编排成本收益倒挂——Superpowers 6.x 用 rationalization table（说服文本）替代强制机制，并以 eval campaign 实测文本效果（一处删减实测从 8/10 退化到 5/10 就重做）。这与\"Harness 需要持续演进\"推论同源：调节器复杂度是随被调节方差动态校准的量，不是一次性设计常数。"
         }
       ]
@@ -7743,7 +7743,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "拉丁语 ruber（红）→ rubrica（红土/红墨水）→ 中世纪手抄本红字章节标题与礼仪指令 → \"权威规则条目\" → 教育测量学的评分量规。注意读音 /ˈruː.brɪk/（\"鲁-brick\"）而非 \"rub-rick\"；组合词中作名词定语（noun adjunct），如 rubric-based evaluation、rubric reward。"
         },
         {
@@ -7752,7 +7752,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Criteria 只回答\"评哪些维度\"（如 accuracy、groundedness）；rubric 在此之上补齐\"每个维度分几档、每档长什么样\"（等级 levels + 锚点描述 descriptors，如\"5 分=引用全部关键事实且无捏造；3 分=有遗漏但无捏造…\"）。锚点是一致性的来源——没有锚点的打分是自由发挥，人评和 LLM judge 都会漂移。"
         },
         {
@@ -7761,7 +7761,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "三层正交模型下 rubric 位于 Layer 3（评什么），与 Layer 1 Judge（谁评）独立：GPT-5 + 客服 rubric 和 GPT-5 + 医疗 rubric 是两个不同的评估器，judge 未变；反过来 GPT judge 换人工 judge，rubric 可原样复用。把 rubric 当成 judge 的一种（\"rubric evaluator 是一种 judge\"）是产品层打包话语，研究层它是配置项。"
         },
         {
@@ -7770,7 +7770,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "阶段一：rubric 用于评估出报表（传统教育测量与 eval 平台用法）；阶段二：rubric 进 RL 训练循环充当 reward——RaR（Rubrics as Rewards, 2507.17746）、Rubric Anchors（2508.12790）、Dr Tulu（2511.19399）；阶段三：rubric 本身成为被生成/优化的对象——OpenRubrics（2510.07743）、Auto-Rubric（2510.17314）、MRRG 多角色 rubric 生成（2607.01830）。无 GT 的开放任务由此获得可扩展的 reward 路线，rubric 成为\"数据+评估资产\"的核心载体。"
         },
         {
@@ -7779,7 +7779,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Rubric 一旦成为 reward，policy 会学会\"迎合 rubric 措辞\"而非真正提升质量（关键词堆砌、格式表演、锚点边缘试探）。四类防御：① judge ≠ policy（[[generation-evaluation-separation]]，避免 self-preference 被 RL 放大）；② 确定性锚点掺入（可验证信号打底）；③ rubric 动态演化（定期改写防过拟合）；④ 盲选校准 + 锁版（与人工一致率 ≥85% 才上线，训练期锁定版本）。Goodhart's Law 决定这些手段只抬高 hack 成本，不能根除。"
         }
       ]
@@ -8034,7 +8034,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "MCP 规范提案 SEP-2640 把 skill 以 **MCP Resource（而非 callable tool）**暴露：skill 是\"读进上下文的文本\"，不是\"被调用的函数\"。加载走 progressive disclosure 三步：① Advertise——server 只广播 skill 的 name + description（轻量元数据）；② Load——模型判断相关后才读取 SKILL.md 全文；③ Read resources——skill 内引用的深层文件按需再读。这正是本页 2026-04 提出的\"query → skill match → context projection\"流程的协议化落地——按需投影从范式设想变成 MCP 标准草案。关键约束：三步的 client 逻辑必须由 harness 实现，harness 不实现（如 Foundry Prompt Agent 的托管 harness）skill 就无注入点。"
         },
         {
@@ -8043,7 +8043,7 @@
           "first_seen": "2026-08-10",
           "last_updated": "2026-08-10",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（GitHub Copilot harness）=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。"
         },
         {
@@ -8052,7 +8052,7 @@
           "first_seen": "2026-08-10",
           "last_updated": "2026-08-10",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "面向跨 harness 可移植的 skill 脚本设计：① **最小公分母**——Python 标准库 only、不依赖 Node 专属脚本，重依赖以纯 Python 源码 vendor 进 skill 的 scripts/ 目录（无网也能用）；② **运行时探测 + 文字降级**——SKILL.md 写明\"优先跑脚本，环境无 Python 则按以下手动步骤\"，脚本失效时模型降级为纯推理执行，印证\"离模型越近越可移植\"；③ **重依赖改走 MCP**——需要 playwright/特定 SDK/Node 生态时不塞 skill scripts，做成 MCP server 跑在自控环境，把依赖问题从管不了的托管 sandbox 转移到管得了的自有服务器；④ **env-probe 探针 skill**——脚本打印 sys.version、pkgutil.iter_modules() 包清单、socket 出站测试、subprocess 试 node --version，上线前在目标 harness 跑一次拿真实能力清单，比等平台文档快且可重复验证。"
         },
         {
@@ -8061,7 +8061,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "Skill 化收敛的风险面：skill 是提示词说服（L2/L3），代码机制是强制执行（L1）。对确实需要硬门禁的场景（合规审计、不可逆操作），仍需宿主 hook 或外部流程兜底，不能全押说服。与记忆提权协议的三级约束强度（L1 Hook / L2 CLAUDE.md / L3 Memory）是同一个道理：**约束力要匹配需求强度，行为规则的载体决定它的强制力上限**。Superpowers 6.3.0 保留的唯一 SessionStart hook 承担全部\"代码性\"，正是最小可行 L1 注入点的实例。"
         }
       ]
@@ -8136,7 +8136,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "把两者的区别简化为\"SkillOpt 多了门控\"会低估它，准确拆法是三层机制叠加：① **搜索结构**——APO 是 beam search 并行候选整体重排，SkillOpt 是单谱系增量演进（永远只有一个 current skill）；② **编辑幅度**——APO 候选自由改写可整篇重写，SkillOpt 每步最多 `learning_rate` 条结构化 edit（cosine 衰减，信任域小步长）；③ **接受机制**——APO 轮内兄弟候选相对排序无在位者保护，SkillOpt 挑战者必须在 val 上不劣于 current（ties-rejected）否则回滚。因果链：APO 摆动的直接来源是\"自由改写 + 相对重排\"的组合（无继承性 + 每轮冠军重选，噪声一抖排名就翻）；SkillOpt 靠小步长保继承性、门控保单调性、step buffer 防重复踩坑三者**叠加**才压住摆动。两个 caveat：两者的\"梯度\"同源（LLM 读失败案例写 textual gradient），分岔在优化器动力学——APO 像并行随机搜索（探索强方差大），SkillOpt 像带信任域的 SGD（利用强方差小，需 slow update/meta 慢层补探索）；**门控不消灭噪声，只换其表现形式**——val 太小时 `2.8×σ/√n` 以内的比较照样是抛硬币，APO 的噪声表现为\"prompt 摆动\"，SkillOpt 的噪声表现为\"错误的 accept/reject\"。"
         },
         {
@@ -8145,7 +8145,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "video2frames 三方对决（baseline / APO best / SkillOpt best），可比性三道保障：评分逐字节移植、同 target 同 judge、对两个优化器都无污染的 100 任务测试集。结果对 SkillOpt 不客气：soft 上 APO best 0.8056 > baseline 0.7879 > SkillOpt best 0.7846；配对差值 APO−SkillOpt +0.0210±0.0114（t=1.84, p≈0.07），SkillOpt−baseline −0.0033（持平）——旧 30 任务集上看到的 +0.008 是 **gate 对 val 的过拟合加噪声**（30 任务集单次 eval 方差 ±0.01–0.02 根本无法区分参赛者）。四条解读：① 门控保证的是\"在 val 上不退步\"，但 val 本身就是被反复优化的对象，不能替代 held-out 验证；② 全部差距在 judge_score，分类分量饱和 0.94–1.00 无梯度信号；③ `hard` 反而 baseline 最高（0.59）——调优把边缘任务压到阈下，又一个 hard 不适合做 gating 的实证；④ 保守机制（小步长+在位者保护）在提升空间本来就小（soft ≤ +0.02）的任务上，护住的可能只是 baseline 附近的小邻域——不摆动的代价是探索不足，APO 正因跳得远才摸到天花板。**机制选型要以任务的可提升空间和评估噪声为前提，而非无条件偏好\"更稳\"；移植优化器的完整闭环必须以无污染 held-out 配对对决收尾，否则\"移植成功\"只是管道意义上的成功。**"
         },
         {
@@ -8296,7 +8296,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "传统开发中规格是给代码打工的临时文档，写完即弃；SDD 反转权力关系：规格是持久的第一等公民，代码是从规格生成的产物，规格变更驱动代码再生成。这是 spec-driven.md 官方文档的核心论点。"
         },
         {
@@ -8305,7 +8305,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "SDD 不靠说教靠模板结构约束 AI 行为：强制章节、`[NEEDS CLARIFICATION]` 标记（禁止 AI 猜测）、检查清单门禁、宪法条款引用、阶段门（phase gate）、反过度设计条款、可执行验收标准。方法论以模板为载体被\"编译\"进每次生成。"
         },
         {
@@ -8314,7 +8314,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Spec Kit 的 Constitution 九条中 Article III（Test-First）标注 NON-NEGOTIABLE：任何实现必须先有失败的测试。TDD 在 SDD 中不是消失而是换位——从开发者手动红绿重构，变成写进宪法由流程强制、由 AI 执行的结构性约束。"
         },
         {
@@ -8323,7 +8323,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "spec-kit-v-model 扩展把 SDD 与 V-Model 融合：左轨规格分解（需求→架构→详设）每层配对右轨测试规格，Traceability Matrix 由确定性脚本（非 LLM）验证覆盖率。其 Compliant 模式含 8 阶段验证门，Hybrid 模式绕过验证门则不构成合规证据。金融行业（SR 11-7 / ECB TRIM / BCBS 239 / PCI DSS / SOX）的准 V-Model 要求是此扩展的现实需求来源。"
         },
         {
@@ -8332,7 +8332,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "四方分工：AI 负责起草规格与代码（生成），人类负责判断与批准（评估），确定性脚本负责验证追溯（凡可确定性计算的不交给 LLM），Git 负责审计追踪（每次拍板留痕）。这是 [[generation-evaluation-separation]] 在规格/合规域的实例，也符合 [[harness-engineering]] 的确定性外壳原则。"
         },
         {
@@ -8341,7 +8341,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.6,
-          "status": "active",
+          "status": "stale",
           "evidence": "第一层轻量 spec 提示（多数个人开发者）、第二层结构化 SDD 工作流（spec-kit 等工具用户）、第三层合规级双轨（受监管行业，V-Model 扩展）。采用深度由外部约束（监管/协作规模）而非个人偏好驱动。"
         }
       ]
@@ -8369,7 +8369,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "十命令分四阶段：Governance（constitution）、Design（specify/clarify/plan）、Verification（analyze/checklist）、Execution（tasks/implement/converge/taskstoissues）。每个命令是一个带模板约束的 prompt，SDD 方法论以命令序列形式固化，用户无需记住方法论本身。"
         },
         {
@@ -8378,7 +8378,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "checklist 命令为规格文本生成检查清单——官方定位是\"给英文写单元测试\"：规格是用自然语言写的程序，checklist 验证其完整性/一致性/无歧义。analyze 验证文档间一致性，converge 验证代码与文档收敛，三者构成文本层的测试金字塔。"
         },
         {
@@ -8387,7 +8387,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Constitution 存放在项目仓库、由命令流程在关键节点显式引用检查，属 Workflow 层约束；这与把原则塞进 System Prompt（每次加载但无强制检查点）形成对比——与 PKC memory-promotion 的层级模型同构：需要的约束力决定存放层级，行为规则放弱提示层是层级错配。"
         },
         {
@@ -8396,7 +8396,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "spec-kit 用 `.specify/feature.json` 记录当前 active feature，所有命令隐式作用于它——单 Agent 单 Feature 假设。并行开发的官方姿势是一个 Feature 对应一个 Branch + Worktree + Agent Session，taskstoissues 把 tasks 转成 GitHub Issues 形成多 Agent Work Queue。"
         },
         {
@@ -8405,7 +8405,7 @@
           "first_seen": "2026-07-20",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Spec 的粒度锚点是\"一个用户价值\"（经验值 20~80 个 tasks）；太大则 clarify/analyze 阶段失控，太小则流程开销大于收益。Task 粒度锚点是\"可独立提 PR 的单元\"，这直接决定了 taskstoissues 多 Agent 分发的可行性。"
         }
       ]
@@ -8647,7 +8647,7 @@
           "first_seen": "2026-07-25",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Orca Mobile 是 read-mostly 遥控器：浏览会话、下指令、审阅 diff、批准提交，但 Agent 执行永远发生在 desktop/server 上——这是 tmux\"会话与窗口解耦\"范式的产品化延伸。跨网络不走云中继，靠 Tailscale 组一张私有网；Remote Orca Server 模式把运行时归属从\"我的 Mac\"翻转到\"远端常驻服务器\"，四种连接模式覆盖本机/局域网/Tailscale/远端服务器。每个任务独立 git worktree 隔离，支持 fan-out 并行跑多个 Agent 再 pick the winner——终端复用从\"人访问会话\"进化为\"人调度 Agent 编队\"。"
         },
         {
@@ -8983,7 +8983,7 @@
           "first_seen": "2026-07-14",
           "last_updated": "2026-07-14",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "ms-swift（魔搭 ModelScope 官方）与 LLaMA-Factory 同属**轻量微调一站式框架**：命令式入口（`swift sft/rlhf/infer/deploy`）、内置 GRPO/DPO/PPO 等 RLHF 算法、LoRA/QLoRA 默认路径、单机可跑。verl 是**大规模 agentic RL 基础设施**：Ray 集群调度、training/rollout 解耦、多步轨迹。两边都叫 GRPO，但量级不同——ms-swift 的 GRPO 是\"单机/小集群上对静态数据集做 RLHF 微调\"，verl 的 GRPO 是\"分布式 rollout worker 采多步 Agent 轨迹\"。选型判据不是算法名而是**改权重的规模与交互形态**：静态数据集 + 单轮生成 + 资源有限 → ms-swift/LLaMA-Factory；多步工具调用轨迹 + rollout 吞吐是瓶颈 → verl。两者不是竞品而是阶梯——领域适配先用轻量框架 SFT/DPO，进入 Agent RL 才需要 verl 级 infra。"
         }
       ]
@@ -9315,7 +9315,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Voice Live API 从 Agent Service 解耦为独立服务后，Realtime 模型归 Voice Live 持有，Agent 变成可选挂载项。三种合作模式：模式一（传统 Agent，语音自理）、模式二（Voice Live 独立会话，不挂 Agent）、模式三（Voice Live 挂 Agent，语音层与推理层分工）。"
         },
         {
@@ -9324,7 +9324,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "绑定通过 WebSocket 连接 URL 的 query 参数（`agent_id` + `project_id`）在会话建立时完成，而非运行时把 Agent 当工具调用。证据：挂 Agent 后 session 的 `instructions` 字段被禁用（推理归 Agent），且服务端会推送 `interim_response`（TOOL/LATENCY 类型）填补 Agent 推理延迟——这是服务端编排器行为，function call 模式不会有。"
         },
         {
@@ -9333,7 +9333,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "直连 Realtime API ↔ 模式二（Voice Live 独立会话）↔ 模式三（挂 Agent）构成控制力递减、托管度递增的光谱。三笔账：延迟账（瓶颈排序为模型推理 > 网络 RTT > 语音层处理）、控制账（instructions/工具在谁手里）、运维账（VAD/降噪/回声消除是否自理）。企业级复杂场景最优解是模式三 + 分层用模型（简单问答留 Realtime、复杂推理走 Agent）。"
         },
         {
@@ -10131,7 +10131,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "难题上两个候选**都低**，逐任务相减后\"这题难\"这个共同因素被抵消，所以 σ_d（video2frames 实测 ≈0.12）显著小于 σ（≈0.20）。且 σ_d 受低分尾影响更小：两个 prompt 往往在同一个半失败任务上一起失败（难度共享），配对相减后尾巴也大幅抵消。关键事实藏在差值列里：单任务差值（±0.03~0.08）比真实平均优势（+0.02）大好几倍——看单个任务分不清是真强还是碰巧，只能靠 n 个任务取平均把不确定度按 σ_d/√n 收缩。评分或 target 模型一换，两个数都要重估。"
         },
         {
@@ -10140,7 +10140,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "`δ_min ≈ 2×σ_d/√n`（95% 置信）是 gate 能\"看见\"的最小真实差异。val=100、σ_d=0.12 时 δ_min≈0.024——比 video2frames 的整个剩余空间（≤0.02）还大，训练就是在烧 token 原地踏步（实战篇 149 万 token 事故的统计学版本）。反解 `n ≈ (1.96×σ_d/δ)²`：想分辨 +0.01 需要约 550 条 val，每步 gate 评估成本完全不成比例。这与 [[automatic-prompt-optimization]] 页\"要可靠确认 Δ 需 SE ≤ Δ/2\"的教训同源，但把它前移成了**开跑前的例行判断式**而非事后复盘。"
         },
         {
@@ -10149,7 +10149,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "σ_d 来自两列已有分数的对齐相减，δ_min 是一行公式，δ_remain 来自分量饱和度分解——没有任何一个数需要新训练。时点卡在\"上一段结束后、下一段开跑前\"。video2frames 把账走完：δ_remain（≤0.02）< δ_min（0.024）→ 停，且\"停\"字一半是任务天花板、另一半是 reward 结构自己造成的（0.4 死权重压缩分子、合并 judge 噪声撑大分母）——算账的价值不止于省钱，还把矛头指回了正确的瓶颈。"
         }
       ]
@@ -10253,7 +10253,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "L0 无评估（人改人看）、L1 主观评估（LLM 按 rubric 打分，人看结果决定是否迭代——人闭合回路）、L2 客观评估（数据集 reward，算法自动\"评分→筛选→再生成\"——算法闭合回路）。L1 的评估是拿几条试跑样本得到\"定性方向信号\"，不是统计上可靠的度量：噪声大（同 prompt 多次评分摆动）、有系统性偏见（judge 偏爱更长更结构化的输出）、覆盖不了输入分布。\"人闭合 vs 算法闭合\"是 L1/L2 的本质分界。"
         },
         {
@@ -10262,7 +10262,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "L1（prompt-optimizer 类）解决\"没数据时把 prompt 写规范\"，L2（APO/SkillOpt/DSPy）解决\"有指标后持续压榨\"。L1 人工迭代中的每个 bad case（输入 + 期望输出/失败原因）随手记下来就是未来评估集的种子——到需要 L2 时才从零造数据，成本高得多。"
         },
         {
@@ -10271,7 +10271,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "前提一：任务有可量化成功标准（精确匹配、通过率、结构化字段命中、LLM-judge 加多数投票等）；前提二：数据量——< 10 条留在 L1（自动优化会过拟合）；30~50 条可开始尝试但必须降噪（多次采样取均值、train/val 分开）；100+ 条进入稳定区间。**降噪优先于扩量**：50 条 × 3 次采样取均值往往比 150 条 × 1 次更能稳定优化方向——评估噪声是 L2 摆动的第一大不稳定源，对 APO 和后续 RL 都成立。"
         },
         {
@@ -10280,7 +10280,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "工作流是\"原始 prompt + 优化模板（meta-prompt）→ 优化器 LLM → 改写后 prompt\"的一次指令化改写。优化模板不是被优化对象，而是指挥优化器如何改写的指令（如 `general-optimize` 约 70 行结构化改写指令，按 Role/Profile/Skills/Rules/Workflows 骨架重组）。内置模板只分语言（zh/en）不分模型——Claude 偏好 XML tags、GPT/Gemini 各有官方风格，这类差异未覆盖，是它相对粗糙的一点。区分 system prompt（长期资产、影响所有请求、需部署控制权）与 user prompt（一次性）两个优化入口。"
         },
         {
@@ -10318,7 +10318,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.85,
-          "status": "active",
+          "status": "stale",
           "evidence": "video2frames 原始 reward（0.2·scene + 0.2·courier + 0.6·judge）只用了业务属性一份输入。courier 正例 0.2%（5,847 条里 13 个）**扫一遍标签就能发现**（零训练成本），发现即可推出\"0.2 权重 + 对称匹配 = 常数分量\"；scene 饱和在 0.94 要跑了才知道，但一次 100 条校准跑只要几美元——与 149 万 token 无效训练相比可忽略。后果是信噪比双向恶化：0.4 死权重把可观测 δ 结构性打六折（信号压缩），σ_d 里剩下的几乎全是合并 judge 噪声（噪声占比升高）——\"停\"字一半是任务天花板，另一半是 reward 结构自己造成的。"
         },
         {
@@ -10327,7 +10327,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "用一个\"按业务直觉加权\"的函数同时充当验收分和训练信号是根本缺陷。分家后：验收分不动（历史可比、汇报口径、最终 faceoff 裁决）；优化 reward 只喂训练循环，四个结构决策逐一对症实测病灶——拆分 judge（0.45/0.20/0.10，噪声 1/√3 收缩）、饱和分量约束化（scene 错 ×0.5、courier 误报 ×0.3）、canary 套件、rule_compliance 0.25（正则/词数确定性打分，prompt 要求它们但 reward 从未测量它们）。预期分子放大 + 分母减半（σ_d 0.12→0.06），让 APO 排序和 SkillOpt 门控同时重新可分辨。沟通层同样分家：汇报永远用验收分和 hard 比率（\"可直接交付比例从 59% 到 X%\"），soft_opt 是工程内部量纲不出场。"
         },
         {
@@ -10336,7 +10336,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "业务说不出\"detail 该占 0.45\"，但对着两条真实输出选 A/B 毫不含糊。judge 排序与业务盲选一致率 ≥85%，judge 才获得\"代理业务\"的资格——此后训练循环里的百万次打分都不用业务再看。落地是一次一小时共商工作坊（讲两本账 10 分钟 + 盲选 20 分钟 + 阶梯样例锚定量纲 + 落字为凭），训练前锁版；业务一小时的投入，换掉的是训练完才发现优化错方向的整轮返工——\"分数对话是全项目最便宜的保险\"的操作化版本。"
         },
         {
@@ -10345,7 +10345,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "Evaluator 与 Reward Function 有三层区别：① 职责——评价质量出报表 vs 提供训练信号驱动更新；② 输入——干净的 QA 对 vs 完整轨迹（含中间步骤、延迟、成本）；③ 输出——富结构（分维度分数 + 理由）vs 单标量（喂优化器）。两本账分家（验收分 vs 优化 reward）之所以成立，正因为两本账对应链路上两个不同节点——本就不该是同一个函数。分家不是工程折衷，是概念层的必然。"
         },
         {
@@ -10354,7 +10354,7 @@
           "first_seen": "2026-08-03",
           "last_updated": "2026-08-03",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "本方法中抽象的\"judge 噪声 σ_noise\"可拆成八类可测偏差（Consistency 漂移、Position、Verbosity、Self-Preference、Style、Prompt Sensitivity、Calibration 错位、Agreement with Humans，见 [[llm-as-a-judge]]）。降噪杠杆与病灶对应：多次采样取中位数治 Consistency；拆分字段 + rubric 锚点治 Prompt Sensitivity 与 Calibration；盲选 ≥85% 一致率直接测 Agreement。Step 1 校准跑测 σ_noise 时可按此清单分项归因，而非只拿到一个总量。"
         },
         {
@@ -10363,7 +10363,7 @@
           "first_seen": "2026-07-28",
           "last_updated": "2026-08-04",
           "confidence": 0.7,
-          "status": "active",
+          "status": "stale",
           "evidence": "当业务属性本身是主观品味（语感、风格）时，\"三份输入\"的第一份需要一条前置编译链：① 偏好差分法——不问\"好文案什么样\"，给同题两版（7 分 vs 10 分）问\"把 B 改到 A 最少动什么\"，从偏好对归纳维度；② BARS 锚定量表——每维度配分档真实样例 + 边界反例（规则是品味的有损压缩，样例保留未显式化的隐维度）；③ 维度硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果。产出接本方法的三层验证闭环：judge 与专家对齐（对应盲选 ≥85%）、盲测胜率、噪声控制。这把 Step 4 的盲选校准从\"反推权重\"扩展到\"从零发明维度\"。"
         },
         {
@@ -10489,7 +10489,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "峰值 mixed TPS/kW（1.5~1.9×）=极限产能；最低 TBT（2.7~4.1×）=单用户最快解码；matched TBT 下的吞吐（53~104×）=把对手最快单用户速度设为共同约束后比较仍能承载的并发量。餐厅类比：104× 不是\"上菜快 104 倍\"而是\"相同上菜速度下能服务的顾客数差 104 倍\"。详版 Claim 归口 [[ai-inference-asic]] 与 [[hybrid-inference-framework-selection]]（08-30 注入）。"
         },
         {
@@ -10498,7 +10498,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "六层降本解剖通篇是读数法的第二场景实践：QSA\"Prefill 7.6×\"是注意力内核级而非 API 端到端；GLM\"3 倍端到端\"是相对相同硬件初始基线的自我提升；\"训练 1/9 FLOPs\"是激活 1/3 × token 1/3 的乘积读法；峰谷分时计费（DeepSeek 峰谷 2× 价差）把\"何时测\"也变成口径变量。方法的适用面由此从\"芯片 benchmark\"扩展到\"架构优化的降价归因\"——两个场景共享同一套动作：定位工作点 → 还原口径 → 区分层级 → 换算自身负载。"
         },
         {
@@ -10507,7 +10507,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-09-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "OpenAI 主张 per-kW（电力是数据中心第一约束——合理叙事，但 700W vs 1400W 的功耗口径贡献了一半账面优势）；DeepSeek 用峰谷分时把\"什么时段\"变成价格分母。口径选择既是工程叙事也是营销框架，两次实践中口径还原都改变了直接读数的结论方向。"
         }
       ]
@@ -10714,7 +10714,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Voice Live API 同时支持原生 Realtime（端到端多模态）与级联（任意 LLM + Azure Speech STT/TTS）两条路线，且统一在同一 WebSocket 协议后——切换只是改 `model` 配置，不是重构架构。这弱化了本决策\"选定一条架构路线\"的前提：在 Voice Live 之上，级联 vs 端到端从一次性架构决策降级为可逐会话调整的配置项，\"分层用模型\"（简单问答用 Realtime、复杂推理走级联+Agent）成为新的可行解。"
         },
         {
@@ -10834,7 +10834,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Prompt Agent 由 Foundry 跑，Hosted Agent 由你在容器里跑，Workflow Agent 是 YAML 编排壳。所有选型问题都可归结为 Runtime 归属：不需要控制 Runtime → Prompt（80% 场景）；命中 7 条 Hosted 信号（自定义推理循环、已有框架代码、多模型编排等）→ Hosted；多 Agent 固定流程 → Workflow。"
         },
         {
@@ -10843,7 +10843,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。\"Hosted 治理弱\"的笼统说法是错的，必须分层说。"
         },
         {
@@ -10852,7 +10852,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "Prompt Agent 组合语音：Voice Live 在外持有语音层，通过 `agent_id` 把 Agent 挂进来（语音在外，Agent 在内）。Hosted Agent 组合语音：走 `/invocations_ws` 协议，语音处理进容器（语音在内）。用 Voice Live `agent_id` 直连 Hosted Agent 属未定义行为，官方未支持。"
         },
         {
@@ -10861,7 +10861,7 @@
           "first_seen": "2026-07-19",
           "last_updated": "2026-07-21",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。"
         },
         {
@@ -10870,7 +10870,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "agents overview 给 Prompt Agent 标 \"Skill support: Yes\"，但三条绑定路径（toolbox 挂 skill 的 MCP Resources 消费 / 直接注入 / Responses API shell tool）截至 2026-07-31 复核没有一条文档化可走通——skills 功能矩阵压根没有 prompt agent 列。根因不是执行环境（Agents 侧 skill 是纯文本，加载只需\"读文本拼进 system prompt\"），而是 **harness 实现权**：skill 加载（SEP-2640 + progressive disclosure）需要 harness 实现 client 逻辑，Prompt Agent 的托管 harness 是平台封闭代码，它没实现你就没有注入点；Hosted Agent 自己写或用 Agent Framework `AgentSkillsProvider`。这把本决策\"Runtime 归属唯一主线\"延伸到了 skill 能力域。"
         },
         {
@@ -10879,7 +10879,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是\"是否需要 harness 控制权\"，而不只是\"要不要多付钱\"——scale-to-zero 让低流量场景该成本接近零。"
         },
         {
@@ -10897,7 +10897,7 @@
           "first_seen": "2026-08-20",
           "last_updated": "2026-08-30",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生\"对话记录还在、当年引用的文件已消失\"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 \"oversizing multiplies cost by your concurrency\"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 \"predictable cold starts\"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。"
         },
         {
@@ -10963,7 +10963,7 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-08-30",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "推理性能选型读 benchmark 时的可复用方法论（Jalapeño vs GB300 实例）：同一对硬件/框架能同时给出 1.9× 和 104× 两套数字而不矛盾，因为它们是**吞吐—延迟曲线上不同工作点**的读数——峰值 mixed TPS/kW 描述极限产能、最低 TBT 描述单用户最快解码、matched TBT 下的吞吐描述\"相同响应速度约束下的并发承载\"（后者对交互式 serving 选型最相关，但绝不能读成整体性能倍数）。mixed TPS 口径含输入+输出 token 总量、除以标称功耗，非单用户输出速度。该方法同样适用于 vLLM/SGLang 等框架对比：先问测的是曲线上哪个点、功耗/并发口径是什么，再比数字。"
         },
         {
@@ -10972,7 +10972,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "2026-08 价格战的正确归因拆分：**架构降本（稀疏激活/混合注意力/残差路由/N-gram/训练方法）决定长期价格下限；推理系统（量化/内核/EPD 集群）决定实际可售吞吐；限时折扣与免费额度负责短期获客；融资与份额策略决定厂商保留多少利润**——\"免费承接 DeepSeek 涨价\"的说法不准确（两家 API 都非永久免费，开源权重 ≠ 免费推理）。选型口径应从\"每百万 token 单价\"升级为**每成功任务成本**：任务成本 = 尝试次数 ×（新输入 + 缓存输入 + 输出 + 工具调用）+ 延迟成本 + 人工返工成本——便宜模型重试三次就比一次做对的贵模型更贵。监控指标：每成功任务成本、首次成功率、平均重试次数、缓存命中率、P50/P95 完成时间、工具调用成功率。降低 reasoning effort 单轮更快，但分析不足导致失败返工，总 token 反而可能增加（Qwen 官方自己提醒）。"
         },
         {
@@ -10981,7 +10981,7 @@
           "first_seen": "2026-08-31",
           "last_updated": "2026-09-04",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "GLM-5.3-Flash（混合线性+稀疏注意力架构）的推理栈选择正是 SGLang：基于 SGLang 构建专用引擎，叠加线性注意力与 LM Head 的节点内张量并行、ReplaySSM、W8A8 量化、INT8/FP8/BF16 混合 Cache 量化、Layer Split，以及 **EPD 分离架构**（Encode/Prefill/Decode 拆成独立工作池分别扩缩容）。头部厂商为 Hybrid 模型的生产 serving 选 SGLang 做底座，是\"Hybrid 这条线 SGLang 基因领先\"判断的最强生产级续证。理论 FLOPs 降低 ≠ 账单降价——推理系统兑现层（内存带宽、通信、批处理效率、长短请求干扰、集群调度）才把架构优势变成毛利空间。"
         }
       ]
@@ -11027,7 +11027,7 @@
           "first_seen": "2026-07-15",
           "last_updated": "2026-07-15",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "把机制分析、100 任务实测对决和三个数算账收拢成可执行选型规则：① 初始 prompt 粗糙、离最优明显很远 → **只跑 APO**（探索红利最大，摆动代价相对可接受）；② 已有不错的 prompt、生产上要可控增量演进（不退步 > 涨得快）→ **只跑 SkillOpt**（门控单调性为此设计）；③ APO 摸到好盆地且 δ_remain > δ_min → **两段式管道**；④ δ_remain ≤ δ_min（付得起的 val 下）→ **都不跑**，瓶颈在 target 模型或 reward 结构，先改再回来；⑤ 任务池撑不起五份互斥切分 → 单段 + 大 held-out（第二段只会继承污染）；⑥ σ_d 高且 judge 不稳 → 先修 eval 再谈优化。两条不随场景变的纪律：**裁判唯一且中立**（同 judge + 无污染最终 held-out + 配对分析，缺一则任何\"有效\"结论不成立）；**每段结束都过一遍三个数**（val 上的 +0.008 在 70 个新任务上蒸发的教训）。这扩展了本决策的原始范围：从\"选哪个框架\"到\"选哪种优化器动力学、乃至要不要跑\"。"
         },
         {
@@ -11036,7 +11036,7 @@
           "first_seen": "2026-07-30",
           "last_updated": "2026-08-04",
           "confidence": 0.75,
-          "status": "active",
+          "status": "stale",
           "evidence": "本决策的所有选项（DSPy/TextGrad/AdalFlow/agent-lightning）都是 L2 数据闭环层工具，隐含前提是已具备可量化 reward + 足量评估数据。成熟度阶梯（见 [[prompt-optimization-maturity-ladder]]）指出更早的分叉：L1 的 prompt-optimizer 类工具（模板改写 + LLM-judge，人闭合回路）与 L2 工具不是竞品而是上下游——L1 阶段人工迭代攒下的 bad case 正是 L2 评估集的种子。数据 < 10 条或任务纯品味类 → 停在 L1，选型问题根本不成立；30~50 条可试 L2（必须降噪）。这给本决策补了一道前置门：先判层级，再谈框架。"
         }
       ]
@@ -11178,7 +11178,7 @@
           "first_seen": "2026-08-07",
           "last_updated": "2026-08-16",
           "confidence": 0.8,
-          "status": "active",
+          "status": "stale",
           "evidence": "独立评测数字（GraphRAG-Bench arXiv 2506.05690 等）：图赢的三样——multi-hop 推理 53.4% vs 42.9%、时间推理（Mem0 图变体 58.1 vs OpenAI memory 21.7，全领域最悬殊）、跨语料综合 64.4% vs 51.3%；图不赢的——简单事实查找纯向量 60.9% vs 最好的图方法 60.1%，图只添冗余上下文，且成本端 Microsoft GraphRAG 全局查询烧 331,375 token/query 对向量 RAG 的 880（HippoRAG 2 做到 1,008 证明高效可能）。实践共识：**按问题类型路由——查找用向量、因果链用图，混合永远赢过纯图**（HippoRAG 2 是标杆：赢 multi-hop 同时简单问题不退化）。一句话：\"向量检索找到听起来像你问题的东西，图找到与你答案相连的东西\"——因为决策类知识活在结构里（决策记录、它取代的东西、触发它的事故，三条各自与问题不相似）。这为本决策\"LLM Wiki 为主 + qmd 为辅\"补上独立基准支撑：qmd（向量+BM25）管查找、wiki typed edges 管因果链，恰是路由共识的个人版。两个评测警示：LightRAG 自家基准大胜、独立评测崩到 6.6 F1（对照 HippoRAG 2 的 59.8）——永远不要相信只被作者自己评测过的系统；Mem0 自家论文里图变体在 multi-hop 反输非图变体——图是工具不是信仰。"
         }
       ]
