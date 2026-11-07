@@ -72,15 +72,16 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 
 > Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，GitHub Copilot harness 可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像"每一层用谁"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。
 
-### Claim: Foundry 的 skill 是文本而不是可执行代码，能不能用 skill、怎么装进上下文取决于 harness 归谁
+### Claim: Foundry 的 skill 是文本而不是可执行代码，能不能用 skill、怎么装进上下文取决于 harness 归谁——换上 Copilot harness 的 Prompt Agent 才能直接挂 skill
 
 - **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
 - **最近更新**：2026-11-07
-- **置信度**：0.65
+- **置信度**：0.7
 - **状态**：active
+- **复核**：2026-11-07 修订——依据：[Use skills with Microsoft Foundry agents (preview)](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)、[What is Toolbox in Microsoft Foundry?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview)
 
-> Agents 侧的 skill 存在 Skills API 里、有版本，交付分两种模式（谁负责把 skill 装进上下文）；Toolbox 发布是不可变版本 + 显式 publish，"添加 skill 后无法发布"源于这一机制。Prompt Agent 侧 skill 支持在文档层面有矛盾，根因是 harness 不在你手里；Hosted Agent 自带 harness，skill 的加载方式自己决定。成本上两类调用侧计费相同，Hosted 的 container compute 买的是"改 harness 的权力"。（细节与三路径未打通的判断见 [[azure-copilot-ecosystem]] 与 [[foundry-agent-type-selection]] 的相关 Claim。）
+> skill 存在项目级目录里、有不可变版本，挂到 toolbox 后以 MCP Resources 暴露，agent 按 advertise（名称与描述进 system prompt）→ load（需要时取全文）→ read resources 三步按需加载，任何支持 MCP Resources 的客户端都能用。直接集成只支持用 Microsoft Copilot harness 的 Prompt Agent；Hosted Agent 自带 harness，经 Toolbox MCP endpoint 取用，加载方式自己决定。Toolbox 发布是不可变版本 + 显式 publish。成本上两类调用侧计费相同，Hosted 的 container compute 买的是"改 harness 的权力"。（2026-11-07 复核：原写"Prompt Agent 侧 skill 支持在文档层面有矛盾"已过时，见 [[foundry-agent-type-selection]] 对应 Claim 的修订。）
 
 ## 冲突与演进
 

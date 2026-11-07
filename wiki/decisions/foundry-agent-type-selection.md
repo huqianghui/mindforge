@@ -64,11 +64,14 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **复核**：2026-11-07 修订——依据：[Introducing the Microsoft Copilot harness in Foundry Agent Service](https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry)
 
 > Prompt Agent 由 Foundry 跑，Hosted Agent 由你在容器里跑，Workflow Agent 是 YAML 编排壳。所有选型问题都可归结为 Runtime 归属：不需要控制 Runtime → Prompt（80% 场景）；命中 7 条 Hosted 信号（自定义推理循环、已有框架代码、多模型编排等）→ Hosted；多 Agent 固定流程 → Workflow。
+
+> **2026-11-07 修订**：Workflow 一档已移出官方类型；Copilot harness 进入 Foundry 后，主线“要不要自己控制 runtime / harness”不变，但分成三档——Prompt Agent（instructions 与支持的工具就够）、Prompt Agent + Microsoft Copilot harness（要 skills、托管执行、文件、子 agent，但不想自己持有 harness）、Hosted Agent（要改框架、agent loop、中间件或运行时行为）。
 
 ### Claim: 治理分层——身份层三者同源，分水岭在内容层
 
@@ -77,6 +80,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **最近更新**：2026-07-21
 - **置信度**：0.8
 - **状态**：stale
+- **复核**：2026-11-07 待定——依据：身份层有新证据（[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)）；“内容过滤只有 Prompt Agent 内置”本轮未找到原文印证
 
 > 治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。"Hosted 治理弱"的笼统说法是错的，必须分层说。
 
@@ -84,11 +88,14 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **复核**：2026-11-07 修订——依据：[Quickstart: Voice Live with Foundry Agent Service](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-agents-quickstart)
 
 > Prompt Agent 组合语音：Voice Live 在外持有语音层，通过 `agent_id` 把 Agent 挂进来（语音在外，Agent 在内）。Hosted Agent 组合语音：走 `/invocations_ws` 协议，语音处理进容器（语音在内）。用 Voice Live `agent_id` 直连 Hosted Agent 属未定义行为，官方未支持。
+
+> **2026-11-07 修订**：Prompt Agent 经 `agent_id` + 项目参数接 Voice Live 的路径仍在，可指定 agent 版本、可跨 Foundry 资源连接；官方现在建议新语音场景优先用 Foundry voice agents（preview，Prompt Agent 打开语音模式，自带电话与语音链路 tracing）。Hosted 一侧仍走 `invocations_ws`，`agent_id` 直连 Hosted 仍无文档。
 
 ### Claim: Hosted Agent 有一组不可忽视的硬约束
 
@@ -97,6 +104,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **最近更新**：2026-07-21
 - **置信度**：0.8
 - **状态**：stale
+- **复核**：2026-11-07 待定——依据：本轮在 Hosted agents 文档中未找到 1MB / 30min / 2vCPU 这几个数字，只查到每 session 磁盘上限 20 GiB（1 vCPU 及以上）与 CPU 分档
 
 > WebSocket 帧上限 1MB、单连接上限 30min、idle 15min 断连、容器 2vCPU、无 WebRTC、无 PSTN。语音重、长会话、电话场景在 Hosted 上会直接撞墙，选型时必须先过这张硬约束表。
 
@@ -104,19 +112,23 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-07
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
+- **复核**：2026-11-07 修订——依据：[What is Toolbox in Microsoft Foundry?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview)、[Use skills with Microsoft Foundry agents (preview)](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)
 
 > agents overview 给 Prompt Agent 标 "Skill support: Yes"，但三条绑定路径（toolbox 挂 skill 的 MCP Resources 消费 / 直接注入 / Responses API shell tool）截至 2026-07-31 复核没有一条文档化可走通——skills 功能矩阵压根没有 prompt agent 列。根因不是执行环境（Agents 侧 skill 是纯文本，加载只需"读文本拼进 system prompt"），而是 **harness 实现权**：skill 加载（SEP-2640 + progressive disclosure）需要 harness 实现 client 逻辑，Prompt Agent 的托管 harness 是平台封闭代码，它没实现你就没有注入点；Hosted Agent 自己写或用 Agent Framework `AgentSkillsProvider`。这把本决策"Runtime 归属唯一主线"延伸到了 skill 能力域。
+
+> **2026-11-07 修订**：文档级矛盾已消除——skill 经 toolbox 以 MCP Resources 加载已有文档，直接集成标注为“用 Microsoft Copilot harness 的 Prompt Agent 支持”。这反而把“harness 实现权决定 skill 能力”坐实了：同为 Prompt Agent，换上 Copilot harness 才有 skill。
 
 ### Claim: 成本模型——调用侧计费两类相同，container compute 买的是"改 harness 的权力"
 
 - **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
-- **置信度**：0.75
-- **状态**：stale
+- **最近更新**：2026-11-07
+- **置信度**：0.85
+- **状态**：active
+- **复核**：2026-11-07 确认——依据：[What is Microsoft Foundry Agent Service?](https://learn.microsoft.com/en-us/azure/foundry/agents/overview)（成本模型：Prompt 为按调用推理 + 工具，Hosted 另加 container compute）
 
 > 两类 agent 最终都打到同一个 Responses API：inference + tool usage 单价完全相同。差异在消耗量的控制权——Prompt Agent 每次注入什么由平台 harness 决定，无法优化 token 消耗；Hosted Agent 可做上下文裁剪、prompt 缓存、模型路由、按需加载 skill。Hosted 多付的 container compute 买的是 harness 控制权：skill 加载、token 优化、新协议即时跟进。选型判断标准应是"是否需要 harness 控制权"，而不只是"要不要多付钱"——scale-to-zero 让低流量场景该成本接近零。
 
@@ -134,11 +146,14 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-08-20
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-07
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
+- **复核**：2026-11-07 修订——依据：[Hosted agents in Foundry Agent Service](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agents)
 
 > 2026-08-20 文档修订补充的三组硬约束：① **双 ID 状态模型**——session（随计算走：idle 15 分钟回收算力、30 天不活跃连同 $HOME//files 永久删除）与 conversation（Foundry 存储长期保留）生命周期脱节，产生"对话记录还在、当年引用的文件已消失"状态：conversation 作为记录完备（agent 产出的摘要已文本固化），作为可复现工作环境不完备（无法让 agent 重开旧文件）——原始文件的源头责任在客户端；② **per-session serverless 计费**——计费时钟跟 session 走而非请求走，每轮对话后沙箱保温最多 15 分钟也计费（单条消息实际计费 ≈ 处理时间 + 15 分钟尾巴），且成本随并发 session 线性放大（官方原话 "oversizing multiplies cost by your concurrency"）、无摊薄空间——全天高频稳定流量下未必比 ACA 常驻便宜；③ **冷启动无官方 benchmark**——仅定性承诺 "predictable cold starts"，无 warm pool、无 replica 数可配，无法用常驻换冷启动，延迟敏感场景是选型硬信号（唯一硬数字是 agent 版本创建时 provisioning 2–5 分钟，属部署时一次性开销）。
+
+> **2026-11-07 修订**：idle 超时现在可配 2~60 分钟、默认 15 分钟（不再是固定 15 分钟），计费尾巴随之可调；30 天不活跃永久删除、无 replica 数与 warm pool 可配仍然成立。每 session 磁盘上限约 20 GiB（1 vCPU 及以上，约 20% 留给系统）。
 
 ### Claim: 反向判据：何时不该挂 Agent——"应用开轮 + 现成文本逐字读"下 Agent 价值为零且 Agent 模式是负资产
 
@@ -166,6 +181,8 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **2026-08-16**：源文章《Foundry Agent 全面对比》2026-07-31 修订确认 Workflow Agent 于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元（姊妹篇《Foundry Toolbox与Skills深度解析》同日确认）。本决策页据此修订：① 选项 C 标注 `superseded`；② 选型框架主线由三选一改为二元；③ 新增 Claim 记录退役事件与编排责任下沉路径（Hosted 内 harness/Agent Framework + A2A + Skills）；④ `decision_status` 保持 `active`（决策主线本身未被推翻，仅选项集收窄）。
 
 - **2026-11-07**：更正时态——Workflow Agent 是"定于 2026-12-01 退役"，不是"已于"（写作时尚未到期）；官方类型收窄为 Prompt / Hosted 的结论不变。
+
+- 2026-11-07：/revalidate 复核——确认 1（+0.1）、修订 4、待定 2
 
 ## 关联概念
 
