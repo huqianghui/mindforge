@@ -136,7 +136,7 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 
 ## 第 11 站 · 汇合：分层组合与接缝
 
-- **读**：[[Foundry-Agent与Copilot-Studio的选型]]（「必须遵循的硬约束」「决策树」两节）、[[foundry-agent-service]]（Claim「硬约束集中在接缝上」）
+- **读**：[[microsoft-ai-pillars-selection]]、[[Foundry-Agent与Copilot-Studio的选型]]（「必须遵循的硬约束」「决策树」两节）、[[foundry-agent-service]]（Claim「硬约束集中在接缝上」）
 - **前置**：第 5、7、8、10 站
 - **用时**：约 1 小时
 - **算会**：
@@ -162,5 +162,5 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 排路径时发现缺这些页，补上后路径会更完整：
 
 - **概念页缺失**：Power Platform 地基（环境、Dataverse、DLP 目前散在 [[copilot-studio]] 里）、M365 Copilot 本体与声明式 agent、Agent 365、Microsoft Agent Framework、Work IQ
-- **决策页缺失**：三支柱怎么选与组合（现在只有文章，没有决策页）、语音 agent 的三种构建方式、员工侧与客户侧入口的选择
+- **决策页缺失**：员工侧与客户侧入口的选择（"三支柱怎么选与组合"已补为 [[microsoft-ai-pillars-selection]]，"语音 agent 的构建方式"已补为 [[voice-agent-build-approach]]）
 - **stale 集中**：[[harness-engineering]] 22/25 条 stale，是第 2 站的底座页，值得优先跑一轮 `/revalidate harness-engineering`

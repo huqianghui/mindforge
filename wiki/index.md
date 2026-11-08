@@ -313,6 +313,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 浏览所有决策：`wiki/decisions/`
 
 - [[cascaded-vs-e2e-voice]] — 级联管线 vs 端到端：Voice Agent 架构选择
+- [[microsoft-ai-pillars-selection]] — 微软 AI 三支柱怎么选与组合：按入口、维护者、大脑控制权三刀切，接缝硬约束与三种常见组合
+- [[voice-agent-build-approach]] — 语音 Agent 的构建方式：按"每一轮由谁控制"选 Foundry 语音 agent / Hosted + Voice Live / 直接调 API，电话与数字人入口单独判断
 - [[architecture-constraint-over-agent-learning]] — 架构约束优于 Agent 自主学习：代码复用策略
 - [[spec-driven-vs-methodology-framework]] — 规范驱动 vs 方法论框架：Vibe Coding 工具选型
 - [[wiki-over-rag-for-personal-knowledge]] — LLM Wiki 优于 RAG：个人知识管理架构

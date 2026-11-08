@@ -112,7 +112,7 @@ signals:
 
 ## 第 9 站 · 大脑怎么挂：模型接入三条路径
 
-- **读**：[[Voice-Live系列14：模型接入的三条路径]]、[[Voice-Live系列15：realtime模型与数字人]]、[[voice-live-agent]]（Claim「给会话挂大脑有且只有三条路径」）
+- **读**：[[voice-agent-build-approach]]、[[Voice-Live系列14：模型接入的三条路径]]、[[Voice-Live系列15：realtime模型与数字人]]、[[voice-live-agent]]（Claim「给会话挂大脑有且只有三条路径」）
 - **前置**：第 2、4 站
 - **用时**：约 1.5 小时
 - **算会**：
