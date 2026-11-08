@@ -92,6 +92,8 @@ def extract_claims(content: str) -> list[dict]:
                 "confidence": 0.0,
                 "status": "active",
                 "evidence": "",
+                "evidence_type": "",
+                "review": "",
             }
             i += 1
             # Parse metadata lines
@@ -107,6 +109,10 @@ def extract_claims(content: str) -> list[dict]:
                     claim["confidence"] = float(sm.group(1))
                 elif (sm := RE_CLAIM_STATUS.match(line)):
                     claim["status"] = sm.group(1)
+                elif line.startswith("- **证据类型**："):
+                    claim["evidence_type"] = line.split("：", 1)[1].strip()
+                elif line.startswith("- **复核**："):
+                    claim["review"] = line.split("：", 1)[1].strip()
                 elif line.startswith(">"):
                     # Collect evidence blockquote
                     ev_lines = []
