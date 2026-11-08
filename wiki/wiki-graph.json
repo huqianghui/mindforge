@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-07",
+  "generated_at": "2026-11-08",
   "stats": {
-    "nodes": 156,
-    "links": 553,
+    "nodes": 158,
+    "links": 564,
     "orphan_links_removed": 2,
-    "claims": 886,
+    "claims": 899,
     "categories": 13
   },
   "nodes": [
@@ -10987,6 +10987,90 @@
       ]
     },
     {
+      "id": "microsoft-ai-pillars-selection",
+      "type": "decision",
+      "title": "微软 AI 三支柱怎么选与组合",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "azure",
+        "copilot-studio",
+        "foundry",
+        "github-copilot"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 7,
+      "avg_confidence": 0.71,
+      "claims": [
+        {
+          "statement": "三支柱不在同一层，选型第一刀按用户入口切——入口决定哪些产品根本不在候选里",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Copilot Studio 是 SaaS 构建产品，Foundry 是 PaaS 运行时，Voice Live 是能接在两者前面的语音层，GitHub Copilot 在开发者与代码平台一侧。员工在 M365 / Teams 用 → Copilot Studio 优先；打电话 → 看有没有 D365 Contact Center；网页、App、数字人 → 语音与形象只能来自 Azure Speech，大脑可以是任一边；自有产品后端、外部客户 → Foundry。网页 / 数字人入口下 Copilot Studio 只能当大脑、不能当语音前端；自有产品后端基本排除 Copilot Studio 的语音和 app。"
+        },
+        {
+          "statement": "谁来长期维护就选谁的平台——业务团队维护选 Copilot Studio，平台团队维护选 Foundry",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "以员工知识问答助手为例，两边都走得通：选 Copilot Studio 得到业务团队自己能改、Connector 与 DLP 现成、内部用户可能豁免 Credits，付出黑盒运行时和与 Git 流程分离的 ALM；选 Foundry 得到按 token 计费、Git / IaC / 评测 / tracing、私网，付出需要开发者、发布要管理员审批、企业连接要自己接。维护者决定了哪套 ALM 和技能栈能长期跑下去。"
+        },
+        {
+          "statement": "接缝处的硬约束比功能差异更决定成败——managed app 调 agent、Voice Live 绑定、数字人渲染、私网发布都只有一条官方路",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "浏览器里的 managed app 同步调不到任何 harness 的 agent；Copilot Studio 的语音只在 Standard harness 上，harness 建后不能互转；Copilot Studio 挂 Foundry agent 要求主 agent 是 GitHub Copilot harness、Foundry agent 开启 Activity 协议；Voice Live 的 agent 绑定只认 Prompt Agent 且必须 Entra 认证；数字人渲染只能来自 Azure Speech avatar；关闭公网的 Foundry project 不能从 portal 发布到 M365；managed app 只服务内部 Entra 用户。另有一票否决项：gpt-realtime 在 Global Standard 下可能在资源地域之外处理数据，严格驻留的客户要先过合规。"
+        },
+        {
+          "statement": "大脑控制权分三档——不自控走 Copilot Studio 或 Prompt Agent，要 skill 不想持有 harness 加 Copilot harness，要改 loop 才上 Hosted",
+          "source": "foundry-agent-type-selection",
+          "first_seen": "2026-11-08",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "不需要自定义 planner、官方工具够用、治理是刚需 → Copilot Studio 的 harness 或 Foundry Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness（公开预览）；出现长期记忆、显式状态机、复杂多 agent、审批节点、跨模型路由、自定义 planner 任一信号 → Hosted Agent。Copilot Studio 内部的重活（自主拆解、Bash 容器、读写 Office 文件）放 GitHub Copilot harness。"
+        },
+        {
+          "statement": "最常见的是三种组合——员工 + 客户双侧、重活下沉到 Foundry、同一个 agent 两个入口",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "员工 + 客户双侧：员工助手用 Copilot Studio，客户侧语音用 Voice Live + Foundry Prompt Agent，两边的 agent 都在 Agent 365 里登记。重活下沉：Copilot Studio 的 GitHub Copilot harness 做编排，把需要自定义运行时的那一步交给 Foundry agent（connected agent），结果写回 Dataverse。同一个 agent 两个入口：一个 Foundry Prompt Agent 既发布到 Teams 给员工打字用，又被 Voice Live 绑定给网页语音用，prompt 和工具只维护一份。"
+        },
+        {
+          "statement": "GitHub Copilot 在客户方案里的位置是开发者侧与代码平台——选型先问代码托管在哪、身份与设备用什么",
+          "source": "github-copilot",
+          "first_seen": "2026-11-03",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "代码在 GitHub、身份与设备用 Entra / Intune 时，Copilot 基本是开发者侧的默认选项：agent 本来就在 PR 里，身份、设备、审计不用另起。它和另外两个支柱通过同一套 Copilot harness 相连——Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness 都是同一套，所以\"用 GitHub Copilot 的 harness 做业务 agent\"的现实路径是 Foundry 托管 harness，而不是让业务用户用 GitHub Copilot。"
+        },
+        {
+          "statement": "和客户第一次沟通先问三个问题——用户从哪里进来、谁来建和维护、已经有哪些许可和底座",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "前三问决定走哪个平台：入口（员工 / 来电 / 网页数字人 / 自有产品）、维护者（业务团队 / 平台团队）、已有许可（M365 Copilot、D365 Contact Center 让 Copilot Studio 的成本与集成更顺；只有 Azure 订阅则 Foundry）。之后再问平台内的路：要不要逐轮控制对话、大脑要不要自定义、要不要数字人、有无数据驻留与私网、用户内外部与是否匿名、是否被其他应用程序化调用、计费偏好。\"要不要逐轮控制\"最容易被低估，答案是\"可能需要\"时前期就按直接调 Voice Live API 设计（见 [[voice-agent-build-approach]]）。"
+        }
+      ]
+    },
+    {
       "id": "prompt-optimization-tool-selection",
       "type": "decision",
       "title": "Prompt 优化工具选型——DSPy vs agent-lightning",
@@ -11125,6 +11209,80 @@
           "confidence": 0.7,
           "status": "stale",
           "evidence": "三者功能高度重叠（都管\"做什么\"），Superpowers 管\"怎么做\"几乎必选搭配。"
+        }
+      ]
+    },
+    {
+      "id": "voice-agent-build-approach",
+      "type": "decision",
+      "title": "语音 Agent 的构建方式",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "voice",
+        "voice-live",
+        "foundry"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 6,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "语音 agent 的构建方式按\"每一轮由谁控制\"排成梯度——Foundry 语音 agent、Hosted + Voice Live、直接调 Voice Live API，控制力递增、托管程度递减",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Foundry 语音 agent：Prompt Agent 打开 Voice mode，配置存在 agent metadata 里，几乎零代码，但大脑在 agent 侧、会话 `instructions` 不可用、架构是级联。Hosted + Voice Live：自己的代码在容器里调 Voice Live、暴露 `invocations_ws`，planner 与模型自控，但重连与续传要自己做。直接调 Voice Live API：自己的后端建会话，每一轮都能介入，代价是轮次控制成了一门工程。Voice Live 本身被官方画成 \"Voice Live API / Agent Platform\"，所有路线都能把推理和工具委派给 Foundry agent 或自带后端。"
+        },
+        {
+          "statement": "真实客户项目大多落在直接调 Voice Live API——\"要不要逐轮控制\"是最容易被低估的选型问题",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "托管的语音 agent 适合\"一个能对话的 agent 加上声音\"；一旦业务要求控制每一轮——什么时候开口、说哪句原文、何时打断、网络差时怎么降级——就需要会话在自己手里。客户在 POC 阶段通常觉得托管够用，进入真实业务才发现要控制每一轮；答案是\"可能需要\"时，前期就按直接调 API 设计会话层，比后期迁出便宜得多。一个数字人面试案例：会话全部走 model 模式，Voice Live 只当\"一张嘴\"，追问由会话外的 judge 决定。"
+        },
+        {
+          "statement": "一个产品里多种构建方式并存是常态——自由对话的会话挂 agent，脚本化、强控制的会话只挂模型",
+          "source": "Voice-Live系列14：模型接入的三条路径",
+          "first_seen": "2026-10-05",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "直接调 Voice Live API 时，原生 `model=`、BYOM、agent 绑定按会话选，不是全产品统一一种。agent 的价值等于交给它的内容决定权：应用开轮 + 现成文本逐字读的会话里，挂 agent 反而丢 per-turn instructions、多一圈 runtime，应走 model 模式；需要追问、内容无法预写、多 persona 共享同一大脑的会话，才挂 agent。"
+        },
+        {
+          "statement": "电话入口单独看底座——有 D365 Contact Center、要标准 IVR 走 Copilot Studio 语音 agent，要自定义体验、模型或数据驻留走 Voice Live + ACS",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Copilot Studio 一侧：DTMF、转人工、答录机检测、上下文交给坐席现成，但只在 Standard harness 上、与 D365 绑得紧、可调的轮次参数少，gpt-realtime 在 Global Standard 下的处理地域要先过合规。Voice Live 一侧：semantic VAD、降噪与回声消除、自定义音色、模型三档或 BYOM，有 Call Center Voice Agent Accelerator 模板起步，但 IVR 菜单、转人工、录音要基于 ACS Call Automation 自己写。Hosted Agent 现在也有官方的 Telephony integration 文档，可作为第三条路评估。"
+        },
+        {
+          "statement": "Copilot Studio 没有内置数字人——只能自建前端拼\"转写 → agent → avatar\"三段，适合展示、不适合产品级体验",
+          "source": "Foundry-Agent与Copilot-Studio的选型",
+          "first_seen": "2026-10-27",
+          "last_updated": "2026-11-08",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "数字人（照片级 avatar 的实时视频加口型）是 Azure Speech 的能力，入口是 Voice Live 会话里的 avatar 或 Speech SDK 的实时 avatar API。给 Copilot Studio agent 做数字人：前端用 Speech SDK 转写，文本经 Direct Line（Standard）或 M365 Agents SDK 发给 agent，回复交给实时 avatar 合成。代价：三段各一跳、延迟最高；没有 Voice Live 内置的轮次能力；回复整段返回；接不进 Voice Live 的 agent 绑定；匿名访客只能走 Direct Line 且只适用 Standard。数字人本身就是产品时，走 Voice Live + Foundry Prompt Agent。"
+        },
+        {
+          "statement": "Hosted Agent 做语音有明确上限——帧 1 MB、单连接约 30 分钟、沙箱 2 vCPU / 4 GiB，要按重连协议设计",
+          "source": "foundry-agent-type-selection",
+          "first_seen": "2026-11-07",
+          "last_updated": "2026-11-08",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "WebSocket 帧上限 1 MB（超限关闭码 1009）；平台滚动回收基础设施，单连接约 30 分钟发关闭码 1001，客户端用同一 `agent_session_id` 重连，平台不重放丢失的帧，应用层续传要容器自己做；沙箱最高 2 vCPU / 4 GiB，语音建议至少 1 vCPU / 2 GiB。session 闲置超时默认 15 分钟、可配置（两篇官方文档给的上限不一致：2~60 分钟与 2~240 分钟）。"
         }
       ]
     },
@@ -14408,6 +14566,36 @@
       "description": "Hybrid 架构的循环状态是触发本选型的根因，约束了哪些框架能用"
     },
     {
+      "source": "microsoft-ai-pillars-selection",
+      "target": "azure-copilot-ecosystem",
+      "relation_type": "part-of",
+      "description": "三支柱分工的选型落地"
+    },
+    {
+      "source": "microsoft-ai-pillars-selection",
+      "target": "copilot-studio",
+      "relation_type": "uses",
+      "description": "选项 A 的产品"
+    },
+    {
+      "source": "microsoft-ai-pillars-selection",
+      "target": "foundry-agent-service",
+      "relation_type": "uses",
+      "description": "选项 B、C 的产品"
+    },
+    {
+      "source": "microsoft-ai-pillars-selection",
+      "target": "github-copilot",
+      "relation_type": "uses",
+      "description": "选项 D 的产品"
+    },
+    {
+      "source": "microsoft-ai-pillars-selection",
+      "target": "entra-agent-id",
+      "relation_type": "constrains",
+      "description": "治理面在 Entra Agent ID 与 Agent 365 汇合，组合方案的身份要按它设计"
+    },
+    {
       "source": "prompt-optimization-tool-selection",
       "target": "agent-lightning",
       "relation_type": "constrains",
@@ -14478,6 +14666,42 @@
       "target": "gsd-five-step-workflow",
       "relation_type": "produces",
       "description": "基于此决策的 GSD 执行流程"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "voice-live-agent",
+      "relation_type": "uses",
+      "description": "三种构建方式都建在 Voice Live 之上"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "foundry-agent-service",
+      "relation_type": "uses",
+      "description": "选项 A、B 是 Foundry 的两类 agent"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "copilot-studio",
+      "relation_type": "contrasts",
+      "description": "电话与数字人入口下 Copilot Studio 的能力边界"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "turn-taking",
+      "relation_type": "constrains",
+      "description": "选项 C 的工程量主要来自轮次控制"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "voice-cascaded-pipeline",
+      "relation_type": "uses",
+      "description": "选项 A、B 在架构上都是级联"
+    },
+    {
+      "source": "voice-agent-build-approach",
+      "target": "weak-network-adaptive-degradation",
+      "relation_type": "uses",
+      "description": "选项 C 才能做弱网时关画面保声音的不对称降级"
     },
     {
       "source": "wiki-over-rag-for-personal-knowledge",
