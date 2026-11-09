@@ -153,7 +153,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 
 几个设计上的要点：
 
-1. **按信任程度分节点池。** 受信的 harness 进程（自己写的 ADK / MAF / LangGraph agent）放普通 agent 池；模型生成的代码只在 Kata 池里跑。Kata 池默认带 `kata=enabled:NoSchedule` 污点，普通工作负载不会误落进去。
+1. **按信任程度分节点池。** 受信的 harness 进程（自己写的 ADK / MAF / LangGraph agent）放普通 agent 池；模型生成的代码只在 Kata 池里跑。Kata 池要在建池时显式加污点（如 `--node-taints sandbox=true:NoSchedule`），否则普通工作负载也会被调度进去——实测 AKS 不会自动给 Kata 池打污点，见 [AKS Agent Runtime 系列 01](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md) 的实践部分。
 2. **沙箱的出站只走代理。** 不在白名单的域名直接拒绝；需要调外部服务时，由 egress 代理从 Key Vault 取凭据注入，沙箱里只有占位符。这里要说准确：凭据并没有从系统里消失，代理和后端仍在可信边界内，而且"拿不到 token"不等于"不能滥用 token 授权的操作"，工具权限仍要收窄。
 3. **模型流量和工具流量都经过网关。** agentgateway 同时代理 LLM、MCP 和 A2A，配额、token 计量、内容过滤和审计集中在一处；自托管模型时还能接 Gateway API Inference Extension 按 KV cache 占用选副本。
 4. **持久执行按需上。** 只有长任务、跨审批的流程才需要 Dapr Workflow；几秒钟就结束的问答型 agent，framework 自带的 checkpoint 足够。

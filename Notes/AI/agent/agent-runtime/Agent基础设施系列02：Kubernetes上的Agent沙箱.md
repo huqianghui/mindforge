@@ -79,13 +79,14 @@ az aks nodepool add \
   --os-sku AzureLinux \
   --workload-runtime KataVmIsolation \
   --node-vm-size Standard_D4s_v5 \
-  --node-count 2
+  --node-count 2 \
+  --node-taints sandbox=true:NoSchedule
 
 kubectl get runtimeclass kata-vm-isolation
 kubectl get nodes -L kubernetes.azure.com/kata-vm-isolation
 ```
 
-前提是 Azure Linux 节点、支持嵌套虚拟化的 Gen2 规格（Dsv3 / Dsv5 一类），集群 1.27 以上。较早的集群和一些社区示例里用的是 `KataMshvVmIsolation`，是同一个功能的旧名字，以集群里实际存在的 RuntimeClass 为准。和自己装 Kata 不同，AKS 会自动注册 `kata-vm-isolation` 这个 RuntimeClass，并给节点打上 `kubernetes.azure.com/kata-vm-isolation=true` 标签和 `kata=enabled:NoSchedule` 污点——普通工作负载不会误落到这个池子上，沙箱的 pod 则要显式加上对应的 toleration。
+前提是 Azure Linux 节点、支持嵌套虚拟化的 Gen2 规格（Dsv3 / Dsv5 一类），集群 1.27 以上。较早的集群和一些社区示例里用的是 `KataMshvVmIsolation`，是同一个功能的旧名字，以集群里实际存在的 RuntimeClass 为准。和自己装 Kata 不同，AKS 会自动注册 `kata-vm-isolation` 这个 RuntimeClass，并给节点打上 `kubernetes.azure.com/kata-vm-isolation=true` 标签，RuntimeClass 自带这个 nodeSelector，所以沙箱 pod 一定落在 Kata 池。但 AKS **不会**自动打污点：我在 2026-11 新建的集群上实测，Kata 节点 taints 为空，普通 runc pod 也被调度了上去。要隔离开，建池时显式加 `--node-taints`，沙箱 pod 加对应的 toleration（实测过程见 [AKS Agent Runtime 系列 01](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)）。
 
 验证隔离有没有生效很简单：沙箱里 `uname -r` 和节点上的 kernelVersion 不一样，就说明跑在独立的 guest kernel 里。
 
