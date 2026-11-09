@@ -194,6 +194,8 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 - Runtime：Dapr Agents——把持久执行做进运行时（随 PoC 4 成文）
 - [Agent 基础设施系列 04：Framework 层与三层串联](../agent-framework/Agent基础设施系列04：Framework层与三层串联.md)——框架对比、三层接口与 PoC 路线
 
+沙箱之外的会话平面、治理平面与 harness 编排，在 AKS 上按平面逐篇实践的部分另起了 [AKS Agent Runtime 系列](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)。
+
 相关阅读：[Agent Harness 五平台对比](../Agent-Harness五平台对比.md)、[Copilot Managed Runtime 系列 03：宿主沙箱与安全边界](../../../../Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)。
 
 ## 参考资料

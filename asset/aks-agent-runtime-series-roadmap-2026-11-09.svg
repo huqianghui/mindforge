@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 600" width="1400" height="600" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .band { stroke-width: 1.4; }
+      .bt { fill: #f1f5f9; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .axis { stroke: #334155; stroke-width: 3; stroke-dasharray: 8 7; fill: none; }
+      .plan { fill: #111827; stroke: #475569; stroke-width: 2; stroke-dasharray: 5 4; }
+      .cur { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 3; animation: pulse 2s ease-in-out infinite; }
+      .nn { fill: #cbd5e1; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .nnc { fill: #fde68a; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .lead { stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 4; }
+      .leadc { stroke: #fbbf24; stroke-width: 1.4; }
+      .th { fill: #e2e8f0; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .thc { fill: #fde68a; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .tp { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+      @keyframes glow { 0%,100% { opacity: 0.15; } 50% { opacity: 0.5; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="600" rx="16"/>
+  <text class="title" x="30" y="44">AKS Agent Runtime 系列路线</text>
+  <text class="sub" x="30" y="72">按平面推进，每篇一次实践；琥珀 = 当前这篇，灰色虚线 = 规划中</text>
+
+  <!-- 平面色带 -->
+  <rect class="band" x="70" y="104" width="120" height="36" rx="8" fill="#1e293b" stroke="#94a3b8"/>
+  <text class="bt" x="130" y="127">总览</text>
+  <rect class="band" x="203" y="104" width="253" height="36" rx="8" fill="#0c2440" stroke="#38bdf8"/>
+  <text class="bt" x="329" y="127">执行平面与 harness</text>
+  <rect class="band" x="469" y="104" width="120" height="36" rx="8" fill="#1f1838" stroke="#a78bfa"/>
+  <text class="bt" x="529" y="127">治理平面</text>
+  <rect class="band" x="602" y="104" width="253" height="36" rx="8" fill="#0f2a2a" stroke="#2dd4bf"/>
+  <text class="bt" x="728" y="127">会话平面</text>
+  <rect class="band" x="868" y="104" width="120" height="36" rx="8" fill="#2a1f0b" stroke="#f59e0b"/>
+  <text class="bt" x="928" y="127">定义与发现</text>
+  <rect class="band" x="1001" y="104" width="253" height="36" rx="8" fill="#1f1838" stroke="#a78bfa"/>
+  <text class="bt" x="1127" y="127">治理平面（续）</text>
+  <rect class="band" x="1267" y="104" width="120" height="36" rx="8" fill="#1e293b" stroke="#94a3b8"/>
+  <text class="bt" x="1327" y="127">产品定位</text>
+
+  <!-- 时间轴 -->
+  <line class="axis" x1="130" y1="210" x2="1327" y2="210"/>
+  <rect x="112" y="192" width="36" height="36" rx="18" fill="#fbbf24" style="animation: glow 2s ease-in-out infinite"/>
+
+  <!-- 节点：x = 130 + 133*i -->
+  <circle class="cur"  cx="130"  cy="210" r="20"/><text class="nnc" x="130"  y="215">01</text>
+  <circle class="plan" cx="263"  cy="210" r="20"/><text class="nn" x="263"  y="215">02</text>
+  <circle class="plan" cx="396"  cy="210" r="20"/><text class="nn" x="396"  y="215">03</text>
+  <circle class="plan" cx="529"  cy="210" r="20"/><text class="nn" x="529"  y="215">04</text>
+  <circle class="plan" cx="662"  cy="210" r="20"/><text class="nn" x="662"  y="215">05</text>
+  <circle class="plan" cx="795"  cy="210" r="20"/><text class="nn" x="795"  y="215">06</text>
+  <circle class="plan" cx="928"  cy="210" r="20"/><text class="nn" x="928"  y="215">07</text>
+  <circle class="plan" cx="1061" cy="210" r="20"/><text class="nn" x="1061" y="215">08</text>
+  <circle class="plan" cx="1194" cy="210" r="20"/><text class="nn" x="1194" y="215">09</text>
+  <circle class="plan" cx="1327" cy="210" r="20"/><text class="nn" x="1327" y="215">10</text>
+
+  <!-- 引线：奇数篇到 A 行，偶数篇到 B 行 -->
+  <line class="leadc" x1="130"  y1="230" x2="130"  y2="270"/>
+  <line class="lead" x1="263"  y1="230" x2="263"  y2="370"/>
+  <line class="lead" x1="396"  y1="230" x2="396"  y2="270"/>
+  <line class="lead" x1="529"  y1="230" x2="529"  y2="370"/>
+  <line class="lead" x1="662"  y1="230" x2="662"  y2="270"/>
+  <line class="lead" x1="795"  y1="230" x2="795"  y2="370"/>
+  <line class="lead" x1="928"  y1="230" x2="928"  y2="270"/>
+  <line class="lead" x1="1061" y1="230" x2="1061" y2="370"/>
+  <line class="lead" x1="1194" y1="230" x2="1194" y2="270"/>
+  <line class="lead" x1="1327" y1="230" x2="1327" y2="370"/>
+
+  <!-- A 行 -->
+  <text class="thc" x="150" y="292">三个平面</text>
+  <text class="tp" x="150" y="314">实践：AKS 基线集群</text>
+  <text class="th" x="396" y="292">harness 的 harness</text>
+  <text class="tp" x="396" y="314">实践：最小会话控制器</text>
+  <text class="th" x="662" y="292">会话生命周期</text>
+  <text class="tp" x="662" y="314">实践：checkpoint 与孤儿对账</text>
+  <text class="th" x="928" y="292">类型、注册与发现</text>
+  <text class="tp" x="928" y="314">实践：Agent CRD + Agent Card</text>
+  <text class="th" x="1194" y="292">身份传递</text>
+  <text class="tp" x="1194" y="314">实践：OBO 与 Token Exchange</text>
+
+  <!-- B 行 -->
+  <text class="th" x="263" y="392">harness 放在哪</text>
+  <text class="tp" x="263" y="414">实践：Kata 里跑 harness</text>
+  <text class="th" x="529" y="392">出站治理</text>
+  <text class="tp" x="529" y="414">实践：网关 + ReBAC + 凭据</text>
+  <text class="th" x="795" y="392">会话高可用</text>
+  <text class="tp" x="795" y="414">实践：lease + fencing</text>
+  <text class="th" x="1061" y="392">模型接入层</text>
+  <text class="tp" x="1061" y="414">实践：harness 经网关接模型</text>
+  <text class="th" x="1300" y="392">AKS 还是 Foundry</text>
+  <text class="tp" x="1300" y="414">选型与定位</text>
+
+  <!-- 底部说明 -->
+  <line x1="30" y1="460" x2="1370" y2="460" stroke="#1e293b" stroke-width="1.4"/>
+  <circle class="cur" cx="48" cy="494" r="11"/><text class="lg" x="70" y="499">当前篇</text>
+  <circle class="plan" cx="170" cy="494" r="11"/><text class="lg" x="192" y="499">规划中，顺序可能随实践结果调整</text>
+  <text class="lg" x="30" y="536">沙箱本身（Kata 规格、agent-sandbox、OpenSandbox、kagent 与 Agent Substrate）已在「Agent 基础设施系列」02、03 讲过，这里不再展开。</text>
+  <text class="lg" x="30" y="564">威胁模型与供应链、冷启动、成本、多租户、可观测性、人工审批，等前几篇实践有数据后再决定是否单独成篇。</text>
+</svg>

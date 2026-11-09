@@ -303,6 +303,10 @@
 - [Azure 资源标签守护：事件订阅与定时扫描的自动修复](Azure/Azure资源标签守护：事件订阅与定时扫描的自动修复.md)
 - [Foundry Agent 与 Copilot Studio 的选型](Azure/Foundry-Agent与Copilot-Studio的选型.md)
 
+#### Azure/Azure-Kubernetes-Service
+
+- [AKS Agent Runtime 系列 01：Sandbox 之外的三个平面](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)
+
 #### Azure/Copilot-Managed-Runtime
 
 - [Copilot Managed Runtime 系列 01：托管环境对比与选型](Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列01：托管环境对比与选型.md)

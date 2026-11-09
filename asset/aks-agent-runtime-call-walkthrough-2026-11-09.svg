@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" width="1400" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .lane { fill: #0f1a2e; stroke: #1e293b; stroke-width: 1; }
+      .laneExec { fill: #0e2036; stroke: #38bdf8; stroke-width: 1.6; stroke-dasharray: 10 6; }
+      .ln { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lns { fill: #94a3b8; font-size: 13px; }
+      .bCh { fill: #1e293b; stroke: #94a3b8; stroke-width: 1.4; }
+      .bSe { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .bEx { fill: #0c2440; stroke: #38bdf8; stroke-width: 1.6; }
+      .bGo { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.6; }
+      .bEt { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .s { fill: #cbd5e1; font-size: 13px; text-anchor: middle; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowBack { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 4 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .tag { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; animation: pulse 2.4s ease-in-out infinite; }
+      .tagt { fill: #fde68a; font-size: 13px; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="960" rx="16"/>
+  <text class="title" x="30" y="44">一次调用从触发到回收：sandbox 只占中间一段</text>
+  <text class="sub" x="30" y="72">以"在 Teams 线程里让编码 agent 改一个仓库"为例，按平面分泳道；编号对应下方逐条说明</text>
+
+  <!-- 泳道 -->
+  <rect class="lane" x="30" y="96" width="1340" height="90" rx="8"/>
+  <rect class="lane" x="30" y="194" width="1340" height="110" rx="8"/>
+  <rect class="laneExec" x="30" y="312" width="1340" height="110" rx="8"/>
+  <rect class="lane" x="30" y="430" width="1340" height="100" rx="8"/>
+  <rect class="lane" x="30" y="538" width="1340" height="90" rx="8"/>
+
+  <text class="ln" x="44" y="136">触发渠道</text>
+  <text class="lns" x="44" y="157">Teams 等</text>
+  <text class="ln" x="44" y="244">会话平面</text>
+  <text class="lns" x="44" y="265">可信</text>
+  <text class="ln" x="44" y="362">执行平面</text>
+  <text class="lns" x="44" y="383">Kata 沙箱</text>
+  <text class="ln" x="44" y="475">治理平面</text>
+  <text class="lns" x="44" y="496">可信</text>
+  <text class="ln" x="44" y="578">外部资源</text>
+  <text class="lns" x="44" y="599">模型 / Git</text>
+
+  <!-- 讨论焦点标记 -->
+  <rect class="tag" x="752" y="352" width="178" height="28" rx="6"/>
+  <text class="tagt" x="762" y="371">讨论常只看这条泳道</text>
+
+  <!-- 流程连线（先画，压在方框下面） -->
+  <path class="flow" d="M227,141 H234 V249 H244" marker-end="url(#arr)"/>
+  <path class="flow" d="M349,249 H356 V367 H366" marker-end="url(#arr)"/>
+  <path class="flow" d="M471,367 H488" marker-end="url(#arr)"/>
+  <path class="flow" d="M593,367 H610" marker-end="url(#arr)"/>
+  <path class="flow" d="M715,367 H722 V480 H732" marker-end="url(#arr)"/>
+  <path class="flow" d="M837,480 H844 V583 H854" marker-end="url(#arr)"/>
+  <path class="flow" d="M959,583 H966 V249 H976" marker-end="url(#arr)"/>
+  <path class="flow" d="M1081,249 H1098" marker-end="url(#arr)"/>
+  <path class="flow" d="M1203,249 H1220" marker-end="url(#arr)"/>
+  <!-- 输出回到渠道 -->
+  <path class="flowBack" d="M1028,221 V170" marker-end="url(#arrGray)"/>
+  <!-- 暂停时作用到沙箱 -->
+  <path class="flowBack" d="M1150,277 V340" marker-end="url(#arrGray)"/>
+  <path class="flowBack" d="M1272,277 V362" marker-end="url(#arrGray)"/>
+
+  <!-- 粒子沿主链路运动 -->
+  <circle r="5" fill="#5eead4">
+    <animateMotion dur="9s" repeatCount="indefinite" path="M170,141 H234 V249 H356 V367 H722 V480 H844 V583 H966 V249 H1272"/>
+  </circle>
+
+  <!-- ① 渠道 -->
+  <rect class="bCh" x="113" y="113" width="114" height="56" rx="8"/>
+  <text class="h" x="170" y="137">Teams 线程</text>
+  <text class="s" x="170" y="157">一句话触发</text>
+  <!-- 回帖 -->
+  <rect class="bEt" x="971" y="113" width="114" height="56" rx="8"/>
+  <text class="h" x="1028" y="137">回到线程</text>
+  <text class="s" x="1028" y="157">结果流式回写</text>
+
+  <!-- ② 会话键 -->
+  <rect class="bSe" x="235" y="221" width="114" height="56" rx="8"/>
+  <text class="h" x="292" y="245">会话键</text>
+  <text class="s" x="292" y="265">写收件箱后 ACK</text>
+
+  <!-- ③ 分配沙箱 -->
+  <rect class="bEx" x="357" y="339" width="114" height="56" rx="8"/>
+  <text class="h" x="414" y="363">分配沙箱</text>
+  <text class="s" x="414" y="383">预热池或新建</text>
+  <!-- ④ 放入配置 -->
+  <rect class="bEx" x="479" y="339" width="114" height="56" rx="8"/>
+  <text class="h" x="536" y="363">放入配置</text>
+  <text class="s" x="536" y="383">AGENTS.md 等</text>
+  <!-- ⑤ 启动 harness -->
+  <rect class="bEx" x="601" y="339" width="114" height="56" rx="8"/>
+  <text class="h" x="658" y="363">启动 harness</text>
+  <text class="s" x="658" y="383">一轮一次</text>
+
+  <!-- ⑥ 网关 -->
+  <rect class="bGo" x="723" y="452" width="114" height="56" rx="8"/>
+  <text class="h" x="780" y="476">网关校验</text>
+  <text class="s" x="780" y="496">身份·授权·凭据</text>
+
+  <!-- ⑦ 外部 -->
+  <rect class="bEt" x="845" y="555" width="114" height="56" rx="8"/>
+  <text class="h" x="902" y="579">模型 / Git</text>
+  <text class="s" x="902" y="599">只看到网关</text>
+
+  <!-- ⑧ 输出流 -->
+  <rect class="bSe" x="967" y="221" width="114" height="56" rx="8"/>
+  <text class="h" x="1024" y="245">输出流</text>
+  <text class="s" x="1024" y="265">持久化 + SSE</text>
+  <!-- ⑨ 空闲暂停 -->
+  <rect class="bSe" x="1089" y="221" width="114" height="56" rx="8"/>
+  <text class="h" x="1146" y="245">空闲暂停</text>
+  <text class="s" x="1146" y="265">先 checkpoint</text>
+  <!-- ⑩ 到期回收 -->
+  <rect class="bSe" x="1211" y="221" width="114" height="56" rx="8"/>
+  <text class="h" x="1268" y="245">到期回收</text>
+  <text class="s" x="1268" y="265">删沙箱与快照</text>
+
+  <!-- 暂停/回收作用在沙箱上的落点 -->
+  <rect class="bEt" x="1093" y="361" width="106" height="44" rx="8"/>
+  <text class="s" x="1146" y="388">沙箱暂停</text>
+  <rect class="bEt" x="1219" y="372" width="106" height="44" rx="8"/><text class="s" x="1272" y="399">沙箱删除</text>
+
+  <!-- 编号徽章 -->
+  <circle class="badge" cx="116" cy="113" r="12"/><text class="bn" x="116" y="118">①</text>
+  <circle class="badge" cx="238" cy="221" r="12"/><text class="bn" x="238" y="226">②</text>
+  <circle class="badge" cx="360" cy="339" r="12"/><text class="bn" x="360" y="344">③</text>
+  <circle class="badge" cx="482" cy="339" r="12"/><text class="bn" x="482" y="344">④</text>
+  <circle class="badge" cx="604" cy="339" r="12"/><text class="bn" x="604" y="344">⑤</text>
+  <circle class="badge" cx="726" cy="452" r="12"/><text class="bn" x="726" y="457">⑥</text>
+  <circle class="badge" cx="848" cy="555" r="12"/><text class="bn" x="848" y="560">⑦</text>
+  <circle class="badge" cx="970" cy="221" r="12"/><text class="bn" x="970" y="226">⑧</text>
+  <circle class="badge" cx="1092" cy="221" r="12"/><text class="bn" x="1092" y="226">⑨</text>
+  <circle class="badge" cx="1214" cy="221" r="12"/><text class="bn" x="1214" y="226">⑩</text>
+
+  <!-- 图例 -->
+  <line x1="30" y1="652" x2="1370" y2="652" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="682">逐条说明</text>
+
+  <text class="lg" x="30" y="714">① 用户在 Teams 线程里 @agent；渠道适配器认证入站请求，记下是谁说的</text>
+  <text class="lg" x="30" y="744">② 按"线程 + agent"算出会话键，消息写进收件箱、落盘后才确认收到</text>
+  <text class="lg" x="30" y="774">③ 会话第一次进来才分配沙箱：从 Kata 预热池领取一个，或现场创建</text>
+  <text class="lg" x="30" y="804">④ 控制面经沙箱里的执行守护进程，把 AGENTS.md、skills、初始文件写进去</text>
+  <text class="lg" x="30" y="834">⑤ 每条消息启动一次 harness（Claude Code / Codex 等），在沙箱里免确认运行</text>
+
+  <text class="lg" x="710" y="714">⑥ harness 的所有出站都过网关：核对 Pod 身份与会话绑定，授权后注入凭据</text>
+  <text class="lg" x="710" y="744">⑦ 沙箱里始终没有密钥，模型、Git 这些真实资源只和网关打交道</text>
+  <text class="lg" x="710" y="774">⑧ harness 输出解析成统一事件，先持久化再推回渠道，线程里逐步出现回复</text>
+  <text class="lg" x="710" y="804">⑨ 空闲超过阈值：先做 checkpoint，确认后暂停沙箱，不再占计算资源</text>
+  <text class="lg" x="710" y="834">⑩ 最后一次活动超过保留期：删除沙箱和全部 checkpoint，会话历史另行保留</text>
+
+  <rect class="bSe" x="30" y="868" width="22" height="16" rx="3"/><text class="lg" x="62" y="881">会话平面</text>
+  <rect class="bEx" x="170" y="868" width="22" height="16" rx="3"/><text class="lg" x="202" y="881">执行平面</text>
+  <rect class="bGo" x="310" y="868" width="22" height="16" rx="3"/><text class="lg" x="342" y="881">治理平面</text>
+  <rect class="bEt" x="450" y="868" width="22" height="16" rx="3"/><text class="lg" x="482" y="881">平台之外 / 被作用的对象</text>
+  <line class="flowBack" x1="700" y1="876" x2="740" y2="876"/><text class="lg" x="750" y="881">控制面对沙箱的动作、结果回写</text>
+  <text class="lg" x="30" y="926">十步里只有 ③④⑤ 发生在沙箱内；会话键、收件箱、暂停恢复、回收、出站授权都在沙箱外，由可信组件完成。</text>
+</svg>
