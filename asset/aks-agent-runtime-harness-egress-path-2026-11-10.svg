@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 9 5; }
+      .zone { fill: #0d1729; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .card { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .cardT { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
+      .cardW { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; }
+      .cardV { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.4; }
+      .ext { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; }
+      .wall { fill: #3b1219; stroke: #f87171; stroke-width: 1.4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tr { fill: #fecaca; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 4 5; }
+      .flowG { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">实测：沙箱里的 harness 调一次模型，经过哪几跳</text>
+  <text class="sub" x="30" y="72">AKS 自托管 Kata + 编码 harness + 模型网关；harness 自己只知道一个集群内地址和一个会话头</text>
+
+  <!-- 控制面（上方） -->
+  <rect class="cardT" x="560" y="96" width="360" height="74" rx="10"/>
+  <text class="h" x="580" y="124">会话控制面</text>
+  <text class="t" x="580" y="148">这个会话能否调这个模型？（申请 ∩ 批准 ∩ 实时）</text>
+
+  <!-- Kata VM -->
+  <rect class="vm" x="30" y="196" width="440" height="430" rx="14"/>
+  <text class="zl" x="48" y="222" fill="#fca5a5">一个沙箱 Pod = 一个 Kata VM（不可信）</text>
+
+  <rect class="cardW" x="50" y="240" width="400" height="118" rx="10"/>
+  <text class="h" x="70" y="266">harness 进程（编码 CLI，免确认）</text>
+  <text class="t" x="70" y="290">自定义 provider → 集群内模型网关地址</text>
+  <text class="t" x="70" y="312">请求头带会话 ID；API key 只是占位符</text>
+  <text class="t" x="70" y="334">离线模式：不连 harness 厂商自己的服务</text>
+
+  <rect class="card" x="50" y="380" width="400" height="128" rx="10"/>
+  <text class="h" x="70" y="406">egress sidecar（同一个 VM 里）</text>
+  <text class="t" x="70" y="430">iptables 把出站 80/443 透明导到本地代理</text>
+  <text class="t" x="70" y="452">代理不直连目标，而是向上游发 CONNECT</text>
+  <text class="t" x="70" y="474">mTLS 客户端证书由 CSI 投递，进程读不到私钥</text>
+  <text class="t" x="70" y="496">DNS 只放行允许的域名</text>
+
+  <rect class="cardV" x="50" y="528" width="400" height="80" rx="10"/>
+  <text class="h" x="70" y="554">执行守护进程</text>
+  <text class="t" x="70" y="578">控制面下发命令、读写文件的唯一入口</text>
+
+  <!-- NetworkPolicy 墙 -->
+  <rect class="wall" x="500" y="196" width="34" height="430" rx="6"/>
+  <text x="517" y="420" fill="#fecaca" font-size="13.5" font-weight="600" text-anchor="middle" transform="rotate(-90 517 420)">NetworkPolicy：只放行 CONNECT 网关 :8443 与 DNS</text>
+
+  <!-- CONNECT 网关 -->
+  <rect class="zone" x="560" y="196" width="360" height="430" rx="12"/>
+  <text class="zl" x="578" y="222" fill="#94a3b8">治理平面（可信）</text>
+  <rect class="cardT" x="580" y="240" width="320" height="140" rx="10"/>
+  <text class="h" x="600" y="266">CONNECT 网关（agentgateway）</text>
+  <text class="t" x="600" y="290">mTLS 证书 → 存活 Pod → 唯一会话</text>
+  <text class="t" x="600" y="312">extAuth 询问控制面：放不放行</text>
+  <text class="t" x="600" y="334">按会话装入允许的目标（provider 服务）</text>
+  <text class="t" x="600" y="356">拒绝即断开，不回落直连</text>
+
+  <rect class="cardT" x="580" y="410" width="320" height="140" rx="10"/>
+  <text class="h" x="600" y="436">模型网关（agentgateway）</text>
+  <text class="t" x="600" y="460">Responses 与 Messages 两种协议路由</text>
+  <text class="t" x="600" y="482">Workload Identity 取 Entra token</text>
+  <text class="t" x="600" y="504">护栏、限流、按会话计量</text>
+  <text class="t" x="600" y="526">模型别名 → 真实部署名</text>
+
+  <!-- Azure -->
+  <rect class="ext" x="980" y="410" width="380" height="140" rx="10"/>
+  <text class="h" x="1000" y="436">Azure OpenAI / Foundry 账号</text>
+  <text class="t" x="1000" y="460">只认网关的托管身份</text>
+  <text class="t" x="1000" y="482">角色：Cognitive Services OpenAI User</text>
+  <text class="t" x="1000" y="504">沙箱和 harness 都不在调用方里</text>
+  <rect class="ext" x="980" y="240" width="380" height="140" rx="10"/>
+  <text class="h" x="1000" y="266">其他 provider 服务</text>
+  <text class="t" x="1000" y="290">Git、ADO、Kusto……同一条 CONNECT 路径</text>
+  <text class="t" x="1000" y="312">每个 provider 自己是策略执行点</text>
+  <text class="t" x="1000" y="334">凭据只在 provider 侧注入</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M250,358 V378" marker-end="url(#arr)"/>
+  <path class="flow" d="M450,424 H480 V310 H578" marker-end="url(#arr)"/>
+  <path class="flow" d="M740,240 V172" marker-end="url(#arr)"/>
+  <path class="flow" d="M740,380 V408" marker-end="url(#arr)"/>
+  <path class="flow" d="M900,480 H978" marker-end="url(#arr)"/>
+  <path class="flowG" d="M900,310 H978" marker-end="url(#arrG)"/>
+  <!-- 直连被拦 -->
+  <path class="flowR" d="M450,478 H496" marker-end="url(#arrR)"/>
+  <text x="474" y="470" fill="#f87171" font-size="20" font-weight="700" text-anchor="middle">✗</text>
+
+  <circle cx="0" cy="0" r="5" fill="#5eead4">
+    <animateMotion dur="5s" repeatCount="indefinite" path="M250,358 V378 M450,424 H480 V310 H740 V480 H978"/>
+  </circle>
+
+  <circle class="badge" cx="272" cy="368" r="12"/><text class="bn" x="272" y="373">①</text>
+  <circle class="badge" cx="480" cy="372" r="12"/><text class="bn" x="480" y="377">②</text>
+  <circle class="badge" cx="762" cy="206" r="12"/><text class="bn" x="762" y="211">③</text>
+  <circle class="badge" cx="762" cy="394" r="12"/><text class="bn" x="762" y="399">④</text>
+  <circle class="badge" cx="940" cy="466" r="12"/><text class="bn" x="940" y="471">⑤</text>
+  <circle class="badge" cx="474" cy="500" r="12" style="fill:#7f1d1d;stroke:#fca5a5"/><text class="bn" x="474" y="505">⑥</text>
+
+  <!-- 说明 -->
+  <line x1="30" y1="650" x2="1370" y2="650" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="680">逐跳说明</text>
+  <text class="lg" x="30" y="712">① harness 向配置里的集群内网关地址发模型请求，iptables 把这条连接透明地交给同一 VM 里的 egress sidecar</text>
+  <text class="lg" x="30" y="740">② sidecar 带着 Pod 绑定的 mTLS 证书向 CONNECT 网关发起隧道——这是 NetworkPolicy 唯一放行的出口</text>
+  <text class="lg" x="30" y="768">③ CONNECT 网关把证书解析成会话，再向控制面做 extAuth：这个会话对这个资源有没有 model.invoke</text>
+  <text class="lg" x="30" y="796">④ 放行后转到模型网关；⑤ 模型网关用自己的 Workload Identity 换 Entra token，请求才第一次带上真凭据</text>
+  <text class="lg" x="30" y="824" fill="#fecaca">⑥ 如果 sidecar 不支持上游 CONNECT，它会直连目标，被 NetworkPolicy 丢弃——harness 不报错，只是一直等，会话卡在 running</text>
+  <text class="lg" x="30" y="860">实测一轮：领沙箱约 1 秒，harness 启动到开始调用约 7 秒，一次 bash 工具 7 毫秒，整轮 16 秒。</text>
+</svg>

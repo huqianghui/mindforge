@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .panel { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .ph { fill: #f1f5f9; font-size: 18px; font-weight: 700; }
+      .phs { fill: #94a3b8; font-size: 13.5px; }
+      .trust { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .untrust { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 8 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .card { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .cardT { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
+      .cardW { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; animation: pulse 2.6s ease-in-out infinite; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tr { fill: #fecaca; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 4 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">harness 放在哪：两种拓扑的信任边界</text>
+  <text class="sub" x="30" y="72">红色虚线框 = 不可信区（假设已被 prompt injection 劫持）；青绿虚线框 = 可信区。编号见下方说明</text>
+
+  <!-- ===== 拓扑 A ===== -->
+  <rect class="panel" x="30" y="92" width="660" height="560" rx="14"/>
+  <text class="ph" x="52" y="126">拓扑 A：harness 在沙箱内</text>
+  <text class="phs" x="52" y="148">编码类 harness（Claude Code / Codex / Copilot CLI）</text>
+
+  <rect class="untrust" x="52" y="166" width="300" height="300" rx="10"/>
+  <text class="zl" x="68" y="190" fill="#fca5a5">Kata 沙箱（每会话一个 VM）</text>
+  <rect class="cardW" x="70" y="206" width="264" height="74" rx="8"/>
+  <text class="h" x="86" y="232">harness loop（免确认运行）</text>
+  <text class="t" x="86" y="254">调模型、决定下一步调什么工具</text>
+  <rect class="card" x="70" y="292" width="264" height="74" rx="8"/>
+  <text class="h" x="86" y="318">本地工具</text>
+  <text class="t" x="86" y="340">shell、Read/Edit/Grep、构建测试</text>
+  <rect class="card" x="70" y="378" width="264" height="70" rx="8"/>
+  <text class="h" x="86" y="404">工作区 + harness 会话文件</text>
+  <text class="t" x="86" y="426">随 checkpoint 跨沙箱保留</text>
+
+  <rect class="trust" x="392" y="166" width="276" height="300" rx="10"/>
+  <text class="zl" x="408" y="190" fill="#5eead4">沙箱外（可信）</text>
+  <rect class="cardT" x="408" y="206" width="244" height="64" rx="8"/>
+  <text class="h" x="424" y="232">会话控制面</text>
+  <text class="t" x="424" y="254">分配、启动、暂停、回收</text>
+  <rect class="cardT" x="408" y="282" width="244" height="64" rx="8"/>
+  <text class="h" x="424" y="308">出站网关</text>
+  <text class="t" x="424" y="330">识别会话 · 授权 · 注入凭据</text>
+  <rect class="cardT" x="408" y="358" width="244" height="90" rx="8"/>
+  <text class="h" x="424" y="384">只在这里出现</text>
+  <text class="t" x="424" y="406">模型 key、Git token、云凭据</text>
+  <text class="t" x="424" y="428">授权决策、配额、审计</text>
+
+  <path class="flowA" d="M408,238 H350" marker-end="url(#arrA)"/>
+  <path class="flow" d="M334,243 H360 V314 H406" marker-end="url(#arr)"/>
+  <circle class="badgeA" cx="378" cy="225" r="12"/><text class="bn" x="378" y="230">①</text>
+  <circle class="badge" cx="380" cy="296" r="12"/><text class="bn" x="380" y="301">②</text>
+
+  <rect class="untrust" x="52" y="486" width="616" height="146" rx="10" style="fill:#1a1416"/>
+  <text class="zl" x="68" y="512" fill="#fca5a5">被劫持时最坏能做什么</text>
+  <text class="tr" x="68" y="538">• 在自己的 VM 里删改工作区、跑任意命令——可以接受，下次从 checkpoint 恢复</text>
+  <text class="tr" x="68" y="562">• 经网关访问本会话被授权的资源——权限已按会话收窄</text>
+  <text class="tr" x="68" y="586">• 拿不到密钥，碰不到 Kubernetes API、IMDS、其他沙箱</text>
+  <text class="t" x="68" y="614">代价：工具、文件、harness 都在沙箱里，每个会话独占一个 VM</text>
+
+  <!-- ===== 拓扑 B ===== -->
+  <rect class="panel" x="710" y="92" width="660" height="560" rx="14"/>
+  <text class="ph" x="732" y="126">拓扑 B：harness 在外，沙箱当工具</text>
+  <text class="phs" x="732" y="148">自写 loop（LangGraph / ADK / Agent Framework）</text>
+
+  <rect class="trust" x="732" y="166" width="300" height="300" rx="10"/>
+  <text class="zl" x="748" y="190" fill="#5eead4">loop 服务（可信代码）</text>
+  <rect class="cardT" x="750" y="206" width="264" height="74" rx="8"/>
+  <text class="h" x="766" y="232">loop + 记忆 + 编排</text>
+  <text class="t" x="766" y="254">比沙箱活得久，可驱动多个沙箱</text>
+  <rect class="cardW" x="750" y="292" width="264" height="74" rx="8"/>
+  <text class="h" x="766" y="318">读沙箱输出</text>
+  <text class="t" x="766" y="340">输出是不可信数据，也是注入载体</text>
+  <rect class="cardT" x="750" y="378" width="264" height="70" rx="8"/>
+  <text class="h" x="766" y="404">远程工具：MCP / API</text>
+  <text class="t" x="766" y="426">也应走同一个网关</text>
+
+  <rect class="untrust" x="1072" y="166" width="276" height="300" rx="10"/>
+  <text class="zl" x="1088" y="190" fill="#fca5a5">沙箱（执行 API）</text>
+  <rect class="card" x="1088" y="206" width="244" height="64" rx="8"/>
+  <text class="h" x="1104" y="232">code interpreter</text>
+  <text class="t" x="1104" y="254">执行 loop 传来的代码</text>
+  <rect class="card" x="1088" y="282" width="244" height="64" rx="8"/>
+  <text class="h" x="1104" y="308">文件读写 API</text>
+  <text class="t" x="1104" y="330">按会话隔离</text>
+  <rect class="card" x="1088" y="358" width="244" height="90" rx="8"/>
+  <text class="h" x="1104" y="384">同样没有密钥</text>
+  <text class="t" x="1104" y="406">出站默认拒绝</text>
+  <text class="t" x="1104" y="428">只能产出数据</text>
+
+  <path class="flow" d="M1014,243 H1086" marker-end="url(#arr)"/>
+  <path class="flowA" d="M1088,314 H1016" marker-end="url(#arrA)"/>
+  <circle class="badge" cx="1050" cy="226" r="12"/><text class="bn" x="1050" y="231">③</text>
+  <circle class="badgeA" cx="1052" cy="296" r="12"/><text class="bn" x="1052" y="301">④</text>
+
+  <rect class="untrust" x="732" y="486" width="616" height="146" rx="10" style="fill:#1a1416"/>
+  <text class="zl" x="748" y="512" fill="#fca5a5">易被忽视的坑：confused deputy</text>
+  <text class="tr" x="748" y="538">• loop 若直接持有凭据，读到被注入的沙箱输出后，会用自己的高权限执行</text>
+  <text class="tr" x="748" y="562">• "拆到沙箱外"不自动更安全，只是把不可信输入换了一个入口</text>
+  <text class="tr" x="748" y="586">• 对策：loop 调外部资源也走网关、按会话授权，loop 本身不存长期凭据</text>
+  <text class="t" x="748" y="614">好处：一个 loop 驱动多个沙箱；沙箱销毁后 loop 还能继续</text>
+
+  <!-- 图例 -->
+  <line x1="30" y1="676" x2="1370" y2="676" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="706">编号说明</text>
+  <text class="lg" x="30" y="738">① 控制面经沙箱里的执行守护进程下发命令：放入配置文件、按轮启动 harness；这是控制面进沙箱的唯一入口</text>
+  <text class="lg" x="30" y="768">② harness 的所有出站（模型、Git、MCP）都只能到网关；网关按 Pod 身份认出会话，授权后注入凭据再转发</text>
+  <text class="lg" x="30" y="798">③ loop 通过执行 API 把代码交给沙箱运行，需要文件时走文件 API，不共享文件系统</text>
+  <text class="lg" x="30" y="828">④ 沙箱的执行结果回到 loop——这是拓扑 B 里不可信数据进入可信区的地方，要当成用户输入来对待</text>
+  <rect class="cardW" x="30" y="854" width="22" height="16" rx="3"/><text class="lg" x="62" y="867">不可信输入进入决策的位置</text>
+  <rect class="trust" x="290" y="854" width="22" height="16" rx="3"/><text class="lg" x="322" y="867">可信区</text>
+  <rect class="untrust" x="420" y="854" width="22" height="16" rx="3"/><text class="lg" x="452" y="867">不可信区</text>
+  <text class="lg" x="30" y="904">两种拓扑里沙箱都没有密钥；区别在于 harness 这个"会被注入的 loop"放在哪一侧，以及它手里有没有权限。</text>
+</svg>

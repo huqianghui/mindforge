@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .q { fill: #13213a; stroke: #38bdf8; stroke-width: 1.6; }
+      .a { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; animation: pulse 2.6s ease-in-out infinite; }
+      .b { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.8; }
+      .mix { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.6; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .hc { fill: #f1f5f9; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tc { fill: #cbd5e1; font-size: 13px; text-anchor: middle; }
+      .yes { fill: #5eead4; font-size: 13px; font-weight: 600; }
+      .no { fill: #fca5a5; font-size: 13px; font-weight: 600; }
+      .edge { fill: none; stroke: #94a3b8; stroke-width: 1.6; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">该把 harness 放进沙箱，还是放在外面</text>
+  <text class="sub" x="30" y="72">从上往下回答三个问题；落到琥珀色是拓扑 A，青绿色是拓扑 B，紫色是两者组合</text>
+
+  <!-- Q1 -->
+  <rect class="q" x="450" y="96" width="500" height="76" rx="12"/>
+  <text class="hc" x="700" y="126">Q1 用的是现成的编码 harness 吗？</text>
+  <text class="tc" x="700" y="150">Read / Edit / Bash 默认直接操作本地文件系统</text>
+  <!-- A1 -->
+  <rect class="a" x="60" y="220" width="400" height="150" rx="12"/>
+  <text class="h" x="80" y="248">拓扑 A：整个 harness 进沙箱</text>
+  <text class="t" x="80" y="274">拆开要把每个文件工具改成远程调用，</text>
+  <text class="t" x="80" y="296">那是在改造 harness，不是部署 harness</text>
+  <text class="t" x="80" y="322">AKS 落点：Kata 池 + 每会话一个沙箱</text>
+  <text class="t" x="80" y="344">harness 版本由平台固定，模型走网关</text>
+  <path class="edge" d="M450,134 H260 V218" marker-end="url(#arr)"/>
+  <text class="yes" x="300" y="126">是</text>
+
+  <!-- Q2 -->
+  <rect class="q" x="700" y="220" width="560" height="76" rx="12"/>
+  <text class="hc" x="980" y="250">Q2 loop 要比沙箱活得久，或者同时驱动多个沙箱？</text>
+  <text class="tc" x="980" y="274">长流程、多步编排、执行代码只是偶尔的一步</text>
+  <path class="edge" d="M950,134 H980 V218" marker-end="url(#arr)"/>
+  <text class="no" x="992" y="190">否：自写 loop</text>
+
+  <!-- B1 -->
+  <rect class="b" x="900" y="350" width="440" height="150" rx="12"/>
+  <text class="h" x="920" y="378">拓扑 B：loop 在外，沙箱当执行 API</text>
+  <text class="t" x="920" y="404">loop 是可信代码，但读到的沙箱输出不可信</text>
+  <text class="t" x="920" y="426">loop 不持长期凭据，调资源也走网关授权</text>
+  <text class="t" x="920" y="452">AKS 落点：loop 在普通节点池 Deployment，</text>
+  <text class="t" x="920" y="474">代码执行用 SandboxClaim / 执行 API 按需申请</text>
+  <path class="edge" d="M1120,296 V348" marker-end="url(#arr)"/>
+  <text class="yes" x="1132" y="328">是</text>
+
+  <!-- Q3 -->
+  <rect class="q" x="480" y="390" width="400" height="96" rx="12"/>
+  <text class="hc" x="680" y="420">Q3 loop 要处理大量不可信内容，</text>
+  <text class="hc" x="680" y="442">同时手握高权限工具吗？</text>
+  <text class="tc" x="680" y="466">网页、仓库 README、用户上传、邮件……</text>
+  <path class="edge" d="M840,296 V330 H680 V388" marker-end="url(#arr)"/>
+  <text class="no" x="770" y="322">否</text>
+
+  <!-- A2 / B2 -->
+  <rect class="a" x="60" y="530" width="400" height="120" rx="12"/>
+  <text class="h" x="80" y="558">把自写 loop 也关进沙箱</text>
+  <text class="t" x="80" y="584">按拓扑 A 处理：它会被注入，就别让它在外面</text>
+  <text class="t" x="80" y="606">接入方式和第三方 harness 一样，镜像换成自己的</text>
+  <text class="t" x="80" y="628">代价是每会话一个 VM</text>
+  <path class="edge" d="M480,438 H260 V528" marker-end="url(#arr)"/>
+  <text class="yes" x="300" y="430">是</text>
+
+  <rect class="b" x="520" y="530" width="320" height="120" rx="12"/>
+  <text class="h" x="540" y="558">留在外面即可</text>
+  <text class="t" x="540" y="584">权限窄、输入可控的业务 loop</text>
+  <text class="t" x="540" y="606">按拓扑 B，代码执行仍进沙箱</text>
+  <path class="edge" d="M680,486 V528" marker-end="url(#arr)"/>
+  <text class="no" x="692" y="512">否</text>
+
+  <!-- MIX -->
+  <rect class="mix" x="900" y="540" width="440" height="110" rx="12"/>
+  <text class="h" x="920" y="568">组合：B 的 loop 调 A 型 agent</text>
+  <text class="t" x="920" y="594">外层编排 loop 把"改代码"这类子任务交给</text>
+  <text class="t" x="920" y="616">沙箱里的编码 agent，作为一次受控的子会话</text>
+  <text class="t" x="920" y="638">被调方审批、只一跳、不继承调用方权限</text>
+  <path class="edge" d="M1120,500 V538" marker-end="url(#arr)"/>
+
+  <line x1="30" y1="680" x2="1370" y2="680" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lg" x="30" y="712">两种拓扑共用一条底线：沙箱里没有密钥，出站只走网关，授权按会话逐请求生效；harness 自带的"调用前确认"只当第二层防护。</text>
+  <text class="lg" x="30" y="742">真正要权衡的是成本：A 每会话独占一个 VM，B 的 loop 可以多租户共享，只在执行代码时才申请沙箱。</text>
+  <text class="lg" x="30" y="772">我的默认：第三方编码 harness 一律 A；自写 loop 先问 Q3，答不上来就按 A 处理。</text>
+</svg>
