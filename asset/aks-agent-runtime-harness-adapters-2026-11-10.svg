@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .hcard { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
+      .acard { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .ecard { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .ch { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="860" rx="16"/>
+  <text class="title" x="30" y="44">harness 适配器：五种 CLI，一种事件流</text>
+  <text class="sub" x="30" y="72">每个 harness 都以"非交互 + 免确认 + JSON 流"的方式启动；适配器负责拼命令、解析输出、记住它自己的会话 ID</text>
+
+  <!-- 左：沙箱里的 harness -->
+  <rect class="vm" x="30" y="96" width="400" height="560" rx="12"/>
+  <text class="zl" x="48" y="122" fill="#fca5a5">沙箱里（每轮启动一次的进程）</text>
+  <rect class="hcard" x="48" y="138" width="364" height="92" rx="8"/>
+  <text class="h" x="64" y="162">Claude Code</text>
+  <text class="m" x="64" y="186">--print --output-format stream-json</text>
+  <text class="t" x="64" y="210">首轮 --session-id，之后 --resume</text>
+  <rect class="hcard" x="48" y="240" width="364" height="92" rx="8"/>
+  <text class="h" x="64" y="264">Codex</text>
+  <text class="m" x="64" y="288">exec --json</text>
+  <text class="t" x="64" y="312">首轮输出里拿 thread ID，之后 exec resume</text>
+  <rect class="hcard" x="48" y="342" width="364" height="92" rx="8"/>
+  <text class="h" x="64" y="366">Copilot CLI</text>
+  <text class="m" x="64" y="390">-p … --output-format json --stream on</text>
+  <text class="t" x="64" y="414">每轮都带同一个 --session-id</text>
+  <rect class="hcard" x="48" y="444" width="364" height="92" rx="8"/>
+  <text class="h" x="64" y="468">OpenCode</text>
+  <text class="m" x="64" y="492">run --format json</text>
+  <text class="t" x="64" y="516">首轮拿到会话 ID，之后 --session</text>
+  <rect class="hcard" x="48" y="546" width="364" height="92" rx="8"/>
+  <text class="h" x="64" y="570">Pi</text>
+  <text class="m" x="64" y="594">--mode json --print --approve</text>
+  <text class="t" x="64" y="618">每轮都带同一个 --session-id</text>
+
+  <!-- 中：适配器 -->
+  <rect class="zone" x="480" y="96" width="420" height="560" rx="12"/>
+  <text class="zl" x="498" y="122" fill="#94a3b8">控制面里（每个 harness 一个适配器）</text>
+  <rect class="acard" x="500" y="140" width="380" height="140" rx="10"/>
+  <text class="h" x="520" y="168">① 拼命令行</text>
+  <text class="t" x="520" y="194">固定参数：非交互、免确认、JSON 输出</text>
+  <text class="t" x="520" y="218">按轮变化：这轮的消息、选中的模型、</text>
+  <text class="t" x="520" y="240">新建还是续接（带哪个原生会话 ID）</text>
+  <text class="t" x="520" y="262">注入模型网关地址与会话头</text>
+  <rect class="acard" x="500" y="300" width="380" height="160" rx="10"/>
+  <text class="h" x="520" y="328">② 解析输出</text>
+  <text class="t" x="520" y="354">逐行读 harness 的 JSON 事件，映射成</text>
+  <text class="t" x="520" y="378">平台自己的少数几种事件</text>
+  <text class="t" x="520" y="402">harness 弹出"要不要允许"→ 直接判失败，</text>
+  <text class="t" x="520" y="426">不会卡在那里等人点</text>
+  <text class="t" x="520" y="450">进程异常退出 → 这一轮标为失败</text>
+  <rect class="acard" x="500" y="480" width="380" height="156" rx="10"/>
+  <text class="h" x="520" y="508">③ 记住原生会话 ID</text>
+  <text class="t" x="520" y="534">写进工作区里的一个小文件，</text>
+  <text class="t" x="520" y="558">跟着 checkpoint 一起跨沙箱保留</text>
+  <text class="t" x="520" y="582">下一轮先读出来，再决定新建还是续接</text>
+  <text class="t" x="520" y="606">平台会话 ID 与原生 ID 各管各的</text>
+
+  <!-- 右：统一事件 -->
+  <rect class="ecard" x="950" y="96" width="420" height="300" rx="12"/>
+  <text class="h" x="970" y="126">统一后的事件（示意命名）</text>
+  <text class="m" x="970" y="158">assistant.started / delta / completed</text>
+  <text class="m" x="970" y="184">tool.started / tool.completed</text>
+  <text class="m" x="970" y="210">usage.updated（输入 / 输出 / 缓存 token）</text>
+  <text class="m" x="970" y="236">state: queued → running → completed</text>
+  <text class="t" x="970" y="270">每条事件带稳定的事件 ID 与条目 ID，</text>
+  <text class="t" x="970" y="294">重放时可去重</text>
+  <text class="t" x="970" y="330">只记元数据的性能时间线单独存，</text>
+  <text class="t" x="970" y="354">不含 prompt、模型输出与工具参数</text>
+  <rect class="ecard" x="950" y="416" width="420" height="100" rx="12"/>
+  <text class="h" x="970" y="446">④ 先持久化，再推送</text>
+  <text class="t" x="970" y="472">逐条入库 → 带游标的更新流 → SSE</text>
+  <text class="t" x="970" y="496">断线重连从游标接着读，不丢不重</text>
+  <rect class="ch" x="950" y="536" width="130" height="50" rx="8"/><text class="h" x="985" y="567">CLI</text>
+  <rect class="ch" x="1095" y="536" width="130" height="50" rx="8"/><text class="h" x="1124" y="567">Teams</text>
+  <rect class="ch" x="1240" y="536" width="130" height="50" rx="8"/><text class="h" x="1262" y="567">其他 API</text>
+  <text class="t" x="950" y="616">渠道只订阅事件流，不关心背后是哪个 harness</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M500,210 H440 V184 H414" marker-end="url(#arr)"/>
+  <path class="flow" d="M414,388 H460 V380 H498" marker-end="url(#arr)"/>
+  <path class="flow" d="M880,380 H915 V246 H948" marker-end="url(#arr)"/>
+  <path class="flow" d="M1160,396 V414" marker-end="url(#arr)"/>
+  <path class="flow" d="M1160,516 V534" marker-end="url(#arr)"/>
+  <circle class="badge" cx="456" cy="196" r="12"/><text class="bn" x="456" y="201">①</text>
+  <circle class="badge" cx="456" cy="408" r="12"/><text class="bn" x="456" y="413">②</text>
+  <circle class="badge" cx="930" cy="314" r="12"/><text class="bn" x="930" y="319">④</text>
+
+  <line x1="30" y1="680" x2="1370" y2="680" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="710">要点</text>
+  <text class="lg" x="30" y="742">① 控制面把命令交给沙箱里的执行守护进程启动；harness 只看到这一轮的消息、模型网关地址和一个会话头。</text>
+  <text class="lg" x="30" y="770">② harness 的输出是这几家各自定义的 JSON，字段和粒度都不一样；适配器把它们收敛成右边那几种事件。</text>
+  <text class="lg" x="30" y="798">③ 原生会话 ID 放在工作区里而不是控制面数据库里，是为了让它和 harness 的本地会话文件一起进 checkpoint。</text>
+  <text class="lg" x="30" y="826">④ 事件先入库再推送，所以沙箱中途挂了，已经产出的内容不会丢；渠道换了、断线了，也能从游标续上。</text>
+</svg>

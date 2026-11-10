@@ -122,5 +122,5 @@
   <text class="lg" x="30" y="768">③ CONNECT 网关把证书解析成会话，再向控制面做 extAuth：这个会话对这个资源有没有 model.invoke</text>
   <text class="lg" x="30" y="796">④ 放行后转到模型网关；⑤ 模型网关用自己的 Workload Identity 换 Entra token，请求才第一次带上真凭据</text>
   <text class="lg" x="30" y="824" fill="#fecaca">⑥ 如果 sidecar 不支持上游 CONNECT，它会直连目标，被 NetworkPolicy 丢弃——harness 不报错，只是一直等，会话卡在 running</text>
-  <text class="lg" x="30" y="860">实测一轮：领沙箱约 1 秒，harness 启动到开始调用约 7 秒，一次 bash 工具 7 毫秒，整轮 16 秒。</text>
+  <text class="lg" x="30" y="860">实测一轮：领沙箱约 1 秒，提交消息到第一次调用工具约 7 秒（含 harness 启动与首次模型调用），bash 7 毫秒，整轮 16 秒。</text>
 </svg>

@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .must { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .later { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 4; }
+      .ext { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .hg { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tg { fill: #94a3b8; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">自己写一个最小控制面，要哪几块</text>
+  <text class="sub" x="30" y="72">青绿实线 = 第一版就必须有；灰色虚线 = 可以后补。编号是一条消息从进来到推出去的顺序</text>
+
+  <rect class="ext" x="30" y="100" width="190" height="90" rx="10"/>
+  <text class="h" x="48" y="128">渠道</text>
+  <text class="t" x="48" y="152">CLI、Teams、Cron、</text>
+  <text class="t" x="48" y="174">其他 agent</text>
+
+  <rect class="zone" x="250" y="96" width="860" height="560" rx="14"/>
+  <text class="zl" x="268" y="122" fill="#5eead4">控制面（普通节点池上的 Deployment，可信）</text>
+
+  <rect class="must" x="270" y="140" width="250" height="150" rx="10"/>
+  <text class="h" x="288" y="166">会话 API</text>
+  <text class="t" x="288" y="192">创建会话（必须带幂等键）</text>
+  <text class="t" x="288" y="214">投递消息、读历史</text>
+  <text class="t" x="288" y="236">事件流（SSE，带游标）</text>
+  <text class="t" x="288" y="258">调用方身份 → 归属</text>
+
+  <rect class="must" x="550" y="140" width="270" height="250" rx="10"/>
+  <text class="h" x="568" y="166">状态库</text>
+  <text class="t" x="568" y="192">会话：状态、归属、固定的配置版本</text>
+  <text class="t" x="568" y="214">收件箱：落盘后才 ACK</text>
+  <text class="t" x="568" y="236">事件：逐条 + 更新流游标</text>
+  <text class="t" x="568" y="258">副作用意图：和状态同一事务写入</text>
+  <text class="t" x="568" y="280">绑定：会话 ↔ 沙箱 ↔ Pod UID</text>
+  <text class="t" x="568" y="302">checkpoint 编号、最后活动时间</text>
+  <text class="t" x="568" y="332">第一版 SQLite / PostgreSQL 都行，</text>
+  <text class="t" x="568" y="354">多副本时必须 PostgreSQL + lease</text>
+
+  <rect class="must" x="850" y="140" width="240" height="250" rx="10"/>
+  <text class="h" x="868" y="166">runner</text>
+  <text class="t" x="868" y="192">取副作用意图逐个执行：</text>
+  <text class="t" x="868" y="214">领沙箱、放文件、跑一轮、</text>
+  <text class="t" x="868" y="236">checkpoint、暂停、恢复、删除</text>
+  <text class="t" x="868" y="262">结果写回状态库</text>
+  <text class="t" x="868" y="288">重启后先接管未完成的意图</text>
+  <text class="t" x="868" y="314">结果不确定的一轮不重放</text>
+  <text class="t" x="868" y="340">定时器：空闲暂停、到期回收</text>
+
+  <rect class="must" x="270" y="310" width="250" height="140" rx="10"/>
+  <text class="h" x="288" y="336">harness 适配器</text>
+  <text class="t" x="288" y="362">每个 harness 一个：</text>
+  <text class="t" x="288" y="384">拼命令、解析输出、</text>
+  <text class="t" x="288" y="406">存取原生会话 ID</text>
+  <text class="t" x="288" y="428">先做一个，接口留好</text>
+
+  <rect class="later" x="550" y="410" width="270" height="110" rx="10"/>
+  <text class="hg" x="568" y="436">对账器（后补，但别太晚）</text>
+  <text class="tg" x="568" y="462">按标签列出所有沙箱和快照，</text>
+  <text class="tg" x="568" y="484">数据库里认不出的才删</text>
+  <text class="tg" x="568" y="506">控制面宕机期间的泄漏靠它兜底</text>
+
+  <rect class="later" x="850" y="410" width="240" height="110" rx="10"/>
+  <text class="hg" x="868" y="436">授权回调（后补）</text>
+  <text class="tg" x="868" y="462">网关 extAuth 来问：</text>
+  <text class="tg" x="868" y="484">这个会话能否做这个动作</text>
+  <text class="tg" x="868" y="506">第一版可先只放行模型调用</text>
+
+  <rect class="later" x="270" y="470" width="250" height="160" rx="10"/>
+  <text class="hg" x="288" y="496">应用定义（后补）</text>
+  <text class="tg" x="288" y="522">CRD + controller：解析引用，</text>
+  <text class="tg" x="288" y="544">生成不可变版本；</text>
+  <text class="tg" x="288" y="566">第一版用一个 YAML 文件</text>
+  <text class="tg" x="288" y="588">写死 harness、镜像、</text>
+  <text class="tg" x="288" y="610">AGENTS.md 就够了</text>
+
+  <rect class="later" x="550" y="540" width="540" height="90" rx="10"/>
+  <text class="hg" x="568" y="566">渠道适配器、子会话、配额（后补）</text>
+  <text class="tg" x="568" y="592">Teams 线程 → 会话键、agent 调 agent、每个应用和租户的并发上限</text>
+  <text class="tg" x="568" y="614">这些都建立在上面几块稳定之后</text>
+
+  <!-- 沙箱后端与沙箱 -->
+  <rect class="ext" x="1140" y="140" width="230" height="250" rx="10"/>
+  <text class="h" x="1158" y="166">沙箱后端（用现成的）</text>
+  <text class="t" x="1158" y="192">agent-sandbox 或</text>
+  <text class="t" x="1158" y="214">OpenSandbox 的 API：</text>
+  <text class="t" x="1158" y="240">领取 / 释放</text>
+  <text class="t" x="1158" y="262">执行命令、读写文件</text>
+  <text class="t" x="1158" y="284">快照 / 从快照恢复</text>
+  <text class="t" x="1158" y="306">暂停 / 删除</text>
+  <text class="t" x="1158" y="340">控制面是唯一持有</text>
+  <text class="t" x="1158" y="362">这套 API 身份的组件</text>
+
+  <rect class="vm" x="1140" y="410" width="230" height="220" rx="10"/>
+  <text class="zl" x="1158" y="436" fill="#fca5a5">Kata 沙箱</text>
+  <text class="t" x="1158" y="462">执行守护进程</text>
+  <text class="t" x="1158" y="486">harness（每轮一个进程）</text>
+  <text class="t" x="1158" y="510">工作区 + 原生会话文件</text>
+  <text class="t" x="1158" y="534">egress sidecar</text>
+  <text class="t" x="1158" y="566">不能调回控制面，</text>
+  <text class="t" x="1158" y="588">只能产出数据</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M220,145 H268" marker-end="url(#arr)"/>
+  <path class="flow" d="M520,200 H548" marker-end="url(#arr)"/>
+  <path class="flow" d="M820,200 H848" marker-end="url(#arr)"/>
+  <path class="flow" d="M1090,200 H1138" marker-end="url(#arr)"/>
+  <path class="flow" d="M1255,390 V408" marker-end="url(#arr)"/>
+  <path class="flow" d="M850,300 H836 V400 H522" marker-end="url(#arr)"/>
+  <path class="flow" d="M520,240 H535 V250 H548" marker-end="url(#arr)"/>
+  <path class="flowG" d="M270,260 H240 V175 H222" marker-end="url(#arrG)"/>
+  <circle class="badge" cx="244" cy="128" r="12"/><text class="bn" x="244" y="133">①</text>
+  <circle class="badge" cx="534" cy="182" r="12"/><text class="bn" x="534" y="187">②</text>
+  <circle class="badge" cx="834" cy="182" r="12"/><text class="bn" x="834" y="187">③</text>
+  <circle class="badge" cx="1114" cy="182" r="12"/><text class="bn" x="1114" y="187">④</text>
+  <circle class="badge" cx="684" cy="400" r="11"/><text class="bn" x="684" y="405">⑤</text>
+  <circle class="badge" cx="240" cy="210" r="12"/><text class="bn" x="240" y="215">⑥</text>
+
+  <line x1="30" y1="680" x2="1370" y2="680" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="710">一条消息的路径</text>
+  <text class="lg" x="30" y="742">① 渠道调会话 API；② 消息和"跑一轮"的副作用意图在同一个事务里写进状态库，写成功才回 ACK</text>
+  <text class="lg" x="30" y="770">③ runner 取到意图；④ 调沙箱后端：没有沙箱就领一个、放文件，有就（必要时恢复后）通过执行守护进程启动 harness</text>
+  <text class="lg" x="30" y="798">⑤ 适配器把 harness 的输出转成统一事件写回状态库；⑥ 会话 API 从更新流按游标推给渠道</text>
+  <text class="lg" x="30" y="836">最难的不是哪一块的代码，而是"每一步先落盘再执行、重启后能接着做、不确定就不重放"这条规矩要贯穿所有组件。</text>
+  <text class="lg" x="30" y="866">AKS 没有提供其中任何一块；沙箱后端可以直接用社区项目，其余都要自己写或选型。</text>
+</svg>

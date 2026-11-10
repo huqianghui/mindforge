@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .band { stroke-width: 1.4; }
+      .bt { fill: #f1f5f9; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .chip { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .ct { fill: #a5f3fc; font-size: 13px; text-anchor: middle; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .axis { stroke: #2dd4bf; stroke-width: 3; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .node { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 2.4; }
+      .nodeH { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2.6; animation: pulse 2s ease-in-out infinite; }
+      .nn { fill: #f0fdfa; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .lead { stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 4; }
+      .th { fill: #e2e8f0; font-size: 15px; font-weight: 600; text-anchor: middle; }
+      .tp { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -34; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="760" rx="16"/>
+  <text class="title" x="30" y="44">一轮对话在控制面上走过的八步</text>
+  <text class="sub" x="30" y="72">上方是负责这一步的组件，芯片里是参考实现日志中的状态事件名；琥珀色两步发生在沙箱里，其余都在沙箱外</text>
+
+  <!-- 组件色带 x = 110 + 170*i -->
+  <rect class="band" x="40" y="104" width="140" height="38" rx="8" fill="#10302d" stroke="#2dd4bf"/><text class="bt" x="110" y="128">会话 API</text>
+  <rect class="band" x="210" y="104" width="310" height="38" rx="8" fill="#0c2440" stroke="#38bdf8"/><text class="bt" x="365" y="128">runner + 沙箱编排</text>
+  <rect class="band" x="550" y="104" width="140" height="38" rx="8" fill="#10302d" stroke="#2dd4bf"/><text class="bt" x="620" y="128">收件箱</text>
+  <rect class="band" x="720" y="104" width="140" height="38" rx="8" fill="#1f1838" stroke="#a78bfa"/><text class="bt" x="790" y="128">授权</text>
+  <rect class="band" x="890" y="104" width="310" height="38" rx="8" fill="#2a1f0b" stroke="#fbbf24"/><text class="bt" x="1045" y="128">harness 适配器（经执行守护进程）</text>
+  <rect class="band" x="1230" y="104" width="140" height="38" rx="8" fill="#0c2440" stroke="#38bdf8"/><text class="bt" x="1300" y="128">快照</text>
+
+  <!-- 状态芯片 -->
+  <rect class="chip" x="32" y="170" width="156" height="30" rx="6"/><text class="ct" x="110" y="190">CreateSession</text>
+  <rect class="chip" x="202" y="170" width="156" height="30" rx="6"/><text class="ct" x="280" y="190">SandboxAllocated</text>
+  <rect class="chip" x="372" y="170" width="156" height="30" rx="6"/><text class="ct" x="450" y="190">EnvPrepared</text>
+  <rect class="chip" x="542" y="170" width="156" height="30" rx="6"/><text class="ct" x="620" y="190">AdmitPrompt</text>
+  <rect class="chip" x="712" y="170" width="156" height="30" rx="6"/><text class="ct" x="790" y="190">AuthorityChecked</text>
+  <rect class="chip" x="882" y="170" width="156" height="30" rx="6"/><text class="ct" x="960" y="190">DispatchStarted</text>
+  <rect class="chip" x="1052" y="170" width="156" height="30" rx="6"/><text class="ct" x="1130" y="190">RuntimeOutput</text>
+  <rect class="chip" x="1222" y="170" width="156" height="30" rx="6"/><text class="ct" x="1300" y="190">Checkpointing</text>
+  <line class="lead" x1="110" y1="200" x2="110" y2="250"/><line class="lead" x1="280" y1="200" x2="280" y2="250"/>
+  <line class="lead" x1="450" y1="200" x2="450" y2="250"/><line class="lead" x1="620" y1="200" x2="620" y2="250"/>
+  <line class="lead" x1="790" y1="200" x2="790" y2="250"/><line class="lead" x1="960" y1="200" x2="960" y2="250"/>
+  <line class="lead" x1="1130" y1="200" x2="1130" y2="250"/><line class="lead" x1="1300" y1="200" x2="1300" y2="250"/>
+
+  <!-- 轴 -->
+  <line class="axis" x1="110" y1="272" x2="1300" y2="272"/>
+  <circle r="6" fill="#5eead4"><animateMotion dur="7s" repeatCount="indefinite" path="M110,272 H1300"/></circle>
+  <circle class="node" cx="110" cy="272" r="22"/><text class="nn" x="110" y="277">1</text>
+  <circle class="node" cx="280" cy="272" r="22"/><text class="nn" x="280" y="277">2</text>
+  <circle class="node" cx="450" cy="272" r="22"/><text class="nn" x="450" y="277">3</text>
+  <circle class="node" cx="620" cy="272" r="22"/><text class="nn" x="620" y="277">4</text>
+  <circle class="node" cx="790" cy="272" r="22"/><text class="nn" x="790" y="277">5</text>
+  <circle class="nodeH" cx="960" cy="272" r="22"/><text class="nn" x="960" y="277">6</text>
+  <circle class="nodeH" cx="1130" cy="272" r="22"/><text class="nn" x="1130" y="277">7</text>
+  <circle class="node" cx="1300" cy="272" r="22"/><text class="nn" x="1300" y="277">8</text>
+
+  <!-- 引线：奇数到 A 行，偶数到 B 行 -->
+  <line class="lead" x1="110" y1="294" x2="110" y2="324"/><line class="lead" x1="450" y1="294" x2="450" y2="324"/>
+  <line class="lead" x1="790" y1="294" x2="790" y2="324"/><line class="lead" x1="1130" y1="294" x2="1130" y2="324"/>
+  <line class="lead" x1="280" y1="294" x2="280" y2="414"/><line class="lead" x1="620" y1="294" x2="620" y2="414"/>
+  <line class="lead" x1="960" y1="294" x2="960" y2="414"/><line class="lead" x1="1300" y1="294" x2="1300" y2="414"/>
+
+  <!-- A 行 -->
+  <text class="th" x="130" y="346">创建会话</text><text class="tp" x="130" y="368">幂等键防重复分配</text>
+  <text class="th" x="450" y="346">放入配置</text><text class="tp" x="450" y="368">AGENTS.md、初始文件</text>
+  <text class="th" x="790" y="346">这一轮重新授权</text><text class="tp" x="790" y="368">按应用当前的权限计算</text>
+  <text class="th" x="1130" y="346">输出 → 统一事件</text><text class="tp" x="1130" y="368">先持久化，再经 SSE 推出</text>
+  <!-- B 行 -->
+  <text class="th" x="280" y="436">领沙箱 ≈ 1 秒</text><text class="tp" x="280" y="458">从预热池里拿一个</text>
+  <text class="th" x="620" y="436">消息落盘才确认</text><text class="tp" x="620" y="458">同一会话一次只跑一轮</text>
+  <text class="th" x="960" y="436">到首次调工具 ≈ 7 秒</text><text class="tp" x="960" y="458">含 harness 启动与首次模型调用</text>
+  <text class="th" x="1290" y="436">改了工作区就快照</text><text class="tp" x="1290" y="458">之后空闲就暂停</text>
+
+  <line x1="30" y1="500" x2="1370" y2="500" stroke="#1e293b" stroke-width="1.4"/>
+  <text class="lgh" x="30" y="530">读这张图</text>
+  <text class="lg" x="30" y="562">• 每一步都先把"新状态 + 要执行的副作用"写进数据库，再由 runner 去执行；控制面重启后，从数据库接着做没做完的副作用。</text>
+  <text class="lg" x="30" y="592">• 第 2、3 步只在会话第一次进来时发生；同一会话的后续消息从第 4 步开始，沙箱被暂停过就先恢复。</text>
+  <text class="lg" x="30" y="622">• 第 5 步每一轮都做：权限是按应用当前声明和批准算的，中途撤销了，下一轮就会被拒。</text>
+  <text class="lg" x="30" y="652">• 第 6、7 步是 harness 唯一在跑的时间。控制面通过执行守护进程启动它，一轮结束进程就退出，下一轮带着同一个会话 ID 重新启动。</text>
+  <text class="lg" x="30" y="682">• 实测一轮"跑一条 bash 再回答"：提交消息到第一次调用工具约 7 秒（含 harness 启动和第一次模型调用），工具 7 毫秒，整轮 16 秒。</text>
+  <text class="lg" x="30" y="722" fill="#94a3b8">状态事件名取自参考实现的日志，为了放进芯片略有缩写（EnvPrepared = EnvironmentPrepared，DispatchStarted = TurnDispatchStarted）。</text>
+</svg>
