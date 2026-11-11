@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .cp { fill: #15122a; stroke: #a78bfa; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .ex { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .card { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cardR { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; }
+      .cardP { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .cardB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; animation: pulse 2.2s ease-in-out infinite; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .m { fill: #a5f3fc; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .deny { fill: #fca5a5; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1010" rx="16"/>
+  <text class="title" x="30" y="44">一次出站请求经过的路：沙箱里没有凭据，网关认证书，授权在沙箱外做</text>
+  <text class="sub" x="30" y="72">实测场景：沙箱内 harness 读一个 GitHub 私有仓库。编号是请求经过的顺序，琥珀色是凭据第一次出现的地方</text>
+
+  <!-- 沙箱 -->
+  <rect class="vm" x="30" y="100" width="300" height="530" rx="14"/>
+  <text class="zl" x="48" y="126" fill="#fca5a5">Kata 沙箱 Pod（不可信）</text>
+  <rect class="cardR" x="50" y="146" width="260" height="128" rx="10"/>
+  <text class="h" x="68" y="172">harness / agent 生成的代码</text>
+  <text class="m" x="68" y="198">curl http://github-api.</text>
+  <text class="m" x="68" y="218">  …svc.cluster.local/repos/…</text>
+  <text class="t" x="68" y="244">环境变量、git config 里没有 token</text>
+  <text class="t" x="68" y="264">不挂 ServiceAccount token</text>
+  <rect class="cardR" x="50" y="304" width="260" height="210" rx="10"/>
+  <text class="h" x="68" y="330">出站边车（透明代理）</text>
+  <text class="t" x="68" y="356">只解析白名单里的域名</text>
+  <text class="t" x="68" y="378">白名单 = 已批准动作对应的</text>
+  <text class="t" x="68" y="398">provider Service，按会话下发</text>
+  <text class="t" x="68" y="424">持有和 Pod 绑定的客户端证书</text>
+  <text class="m" x="68" y="446">spiffe://…/ns/&lt;ns&gt;/sa/&lt;sa&gt;</text>
+  <text class="t" x="68" y="472">直连 api.github.com：连接失败</text>
+  <text class="t" x="68" y="494">撤销后约 3 秒移除目的地</text>
+  <text class="t" x="50" y="560">沙箱 Pod 的网络策略只允许两样：</text>
+  <text class="t" x="50" y="582">DNS，以及到出站网关的 8443</text>
+  <text class="t" x="50" y="608">其余出站一律拒绝</text>
+
+  <!-- 出站网关 -->
+  <rect class="zone" x="370" y="100" width="540" height="530" rx="14"/>
+  <text class="zl" x="388" y="126" fill="#5eead4">出站网关（agentgateway，CONNECT 模式，沙箱外）</text>
+  <rect class="card" x="390" y="146" width="500" height="92" rx="10"/>
+  <text class="h" x="408" y="172">mTLS 终止 + 按 Host 选路由</text>
+  <text class="t" x="408" y="196">只认出站边车签发链上的客户端证书</text>
+  <text class="t" x="408" y="218">Host 是 provider 的 Service 名，跟后端真实域名无关</text>
+  <rect class="card" x="390" y="256" width="500" height="118" rx="10"/>
+  <text class="h" x="408" y="282">上下文策略</text>
+  <text class="t" x="408" y="306">证书 SAN 必须恰好一个，且是沙箱 SPIFFE 前缀</text>
+  <text class="t" x="408" y="328">删除 authorization、cookie、api-key</text>
+  <text class="t" x="408" y="350">删除沙箱自己带来的身份头，身份只从证书取</text>
+  <rect class="card" x="390" y="392" width="500" height="96" rx="10"/>
+  <text class="h" x="408" y="418">路由规则（每个动作一条）</text>
+  <text class="t" x="408" y="442">只匹配 GET / HEAD + 仓库路径前缀</text>
+  <text class="t" x="408" y="464">POST、/user 这类没有路由的请求：404</text>
+  <rect class="cardA" x="390" y="506" width="500" height="106" rx="10"/>
+  <text class="h" x="408" y="532">后端策略</text>
+  <text class="t" x="408" y="556">授权通过后，先调凭据代理拿 Authorization 头</text>
+  <text class="t" x="408" y="578">改写 Host 为 api.github.com，TLS 转发</text>
+  <text class="t" x="408" y="600">授权失败的请求走不到这一步</text>
+
+  <!-- 控制面 -->
+  <rect class="cp" x="950" y="100" width="420" height="330" rx="14"/>
+  <text class="zl" x="968" y="126" fill="#c4b5fd">控制面：授权决策点（沙箱外）</text>
+  <rect class="cardP" x="970" y="146" width="380" height="148" rx="10"/>
+  <text class="h" x="988" y="172">逐请求核对</text>
+  <text class="t" x="988" y="196">证书 → 活着的 Pod → 会话绑定 → 应用</text>
+  <text class="t" x="988" y="218">应用当前的申请，资源当前的目标</text>
+  <text class="t" x="988" y="240">来源地址与运行时身份必须吻合</text>
+  <text class="num" x="988" y="270">p50 105 ms，其中身份解析约 62 ms</text>
+  <rect class="cardP" x="970" y="312" width="380" height="100" rx="10"/>
+  <text class="h" x="988" y="338">OpenFGA</text>
+  <text class="m" x="988" y="364">perform = 申请 ∧ 批准 ∧ 发布</text>
+  <text class="num" x="988" y="392">p50 2.5 ms</text>
+
+  <!-- 外部 -->
+  <rect class="ex" x="950" y="460" width="420" height="170" rx="14"/>
+  <text class="zl" x="968" y="486" fill="#7dd3fc">凭据与上游</text>
+  <rect class="cardA" x="970" y="502" width="185" height="112" rx="10"/>
+  <text class="h" x="986" y="528">凭据代理</text>
+  <text class="t" x="986" y="552">token 只在这里</text>
+  <text class="t" x="986" y="574">只接受网关来源</text>
+  <text class="t" x="986" y="596">只回 authorization</text>
+  <rect class="cardB" x="1170" y="502" width="180" height="112" rx="10"/>
+  <text class="h" x="1186" y="528">api.github.com</text>
+  <text class="t" x="1186" y="552">私有仓库</text>
+  <text class="t" x="1186" y="574">看到的是平台</text>
+  <text class="t" x="1186" y="596">的 token</text>
+
+  <!-- 数据流 -->
+  <path class="flow" d="M180,274 L180,302" marker-end="url(#arr)"/>
+  <circle class="badge" cx="204" cy="288" r="12"/><text class="bn" x="204" y="293">1</text>
+  <path class="flow" d="M310,350 C345,350 350,192 388,192" marker-end="url(#arr)"/>
+  <circle class="badge" cx="345" cy="270" r="12"/><text class="bn" x="345" y="275">2</text>
+  <path class="flow" d="M640,238 L640,254" marker-end="url(#arr)"/>
+  <path class="flow" d="M640,374 L640,390" marker-end="url(#arr)"/>
+  <circle class="badge" cx="666" cy="383" r="12"/><text class="bn" x="666" y="388">3</text>
+  <path class="flow" d="M890,440 C925,440 930,220 968,220" marker-end="url(#arr)"/>
+  <circle class="badge" cx="928" cy="330" r="12"/><text class="bn" x="928" y="335">4</text>
+  <path class="flow" d="M1160,294 L1160,310" marker-end="url(#arr)"/>
+  <circle class="badge" cx="1186" cy="302" r="12"/><text class="bn" x="1186" y="307">5</text>
+  <path class="flowA" d="M890,540 L968,540" marker-end="url(#arrA)"/>
+  <circle class="badge" cx="929" cy="522" r="12"/><text class="bn" x="929" y="527">6</text>
+  <path class="flowA" d="M640,612 L640,652 L1260,652 L1260,616" marker-end="url(#arrA)"/>
+  <circle class="badge" cx="1100" cy="652" r="12"/><text class="bn" x="1100" y="657">7</text>
+
+  <!-- 图例 -->
+  <text class="lgh" x="40" y="712">编号说明</text>
+  <text class="lg" x="40" y="742">① harness 用普通 HTTP 访问 provider 的 Service 名，沙箱里不需要任何凭据</text>
+  <text class="lg" x="40" y="770">② 边车先查域名和目的地白名单，再用 Pod 证书和出站网关建 mTLS CONNECT</text>
+  <text class="lg" x="40" y="798">③ 网关按 Host 选路由，校验 SPIFFE 身份，剥掉沙箱带来的认证头和身份头</text>
+  <text class="lg" x="40" y="826">④ 授权请求只写网关自己知道的事实：资源、动作、目标、来源地址、证书 SAN</text>
+  <text class="lg" x="720" y="742">⑤ 决策点回查活着的 Pod、会话绑定和应用当前声明，最后问 OpenFGA</text>
+  <text class="lg" x="720" y="770">⑥ 允许之后才去凭据代理取 Authorization 头，被拒的请求碰不到凭据</text>
+  <text class="lg" x="720" y="798">⑦ 改写 Host，TLS 连 api.github.com，带的是平台持有的 token</text>
+  <text class="lg" x="720" y="826">整条链路读私有仓库实测 0.27 ~ 0.43 秒</text>
+  <text class="lgh" x="40" y="880">被拒时各是什么样（实测）</text>
+  <text class="deny" x="40" y="910">· 白名单之外的域名：DNS 都解析不了，curl 直接失败（000）</text>
+  <text class="deny" x="40" y="938">· 没有对应路由的请求（写操作、其他路径）：网关返回 404，根本不会去问授权</text>
+  <text class="deny" x="40" y="966">· 有路由但授权不过（没申请、没批准或没发布）：403，凭据代理不会被调用</text>
+  <text class="deny" x="720" y="910">· 伪造 Authorization 或身份头：被网关删掉，结果和不带一样</text>
+</svg>

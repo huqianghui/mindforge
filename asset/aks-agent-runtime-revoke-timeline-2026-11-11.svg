@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .laneS { fill: #94a3b8; font-size: 13px; }
+      .s200 { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
+      .s403 { fill: #3b1518; stroke: #f87171; stroke-width: 1.4; }
+      .s000 { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .bl { fill: #f1f5f9; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .ev { stroke: #fbbf24; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
+      .evR { stroke: #2dd4bf; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
+      .evT { fill: #fde68a; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .evTR { fill: #5eead4; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .lead { stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 3 4; fill: none; }
+      .an { fill: #cbd5e1; font-size: 13.5px; }
+      .anE { fill: #cbd5e1; font-size: 13.5px; text-anchor: end; }
+      .axis { stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .tick { stroke: #475569; stroke-width: 1.2; }
+      .tl { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .chip200 { fill: #0f3d38; stroke: #2dd4bf; }
+      .chip403 { fill: #3b1518; stroke: #f87171; }
+      .chip000 { fill: #1e293b; stroke: #64748b; stroke-dasharray: 4 3; }
+      @keyframes dash { to { stroke-dashoffset: -34; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">运行中的会话里撤销批准：授权层约 1 秒生效，网络层约 3 秒跟上</text>
+  <text class="sub" x="30" y="72">沙箱内每 0.5 秒请求一次 target 仓库；横轴是相对撤销时刻的秒数。两次实验用的是同一个会话、同一个沙箱</text>
+
+  <!-- 图例芯片 -->
+  <rect class="chip200" x="980" y="90" width="22" height="16" rx="3"/><text class="laneS" x="1008" y="103">200</text>
+  <rect class="chip403" x="1050" y="90" width="22" height="16" rx="3"/><text class="laneS" x="1078" y="103">403 授权拒绝</text>
+  <rect class="chip000" x="1180" y="90" width="22" height="16" rx="3"/><text class="laneS" x="1208" y="103">000 连不上</text>
+
+  <!-- 第二次 -->
+  <text class="lane" x="40" y="150">第二次：只撤 target 的批准</text>
+  <text class="laneS" x="250" y="150">other 的批准还在，provider Service 留在白名单里</text>
+  <rect class="s200" x="88.0" y="170" width="145.6" height="34" rx="4"/>
+  <rect class="s403" x="233.6" y="170" width="940.8" height="34" rx="4"/><text class="bl" x="704.0" y="192">403</text>
+  <rect class="s200" x="1174.4" y="170" width="145.6" height="34" rx="4"/><text class="bl" x="1247.2" y="192">200</text>
+  <path class="lead" d="M233.6,204 L233.6,232 L420,232"/>
+  <text class="an" x="428" y="237">① 撤销后 1.2 秒：授权层返回 403，之后一直是 403，网络层没有变化</text>
+  <path class="lead" d="M1174.4,204 L1174.4,262"/>
+  <text class="anE" x="1166" y="267">② 恢复批准后 3.3 秒回到 200</text>
+
+  <!-- 第三次 -->
+  <text class="lane" x="40" y="320">第三次：两项都撤</text>
+  <text class="laneS" x="230" y="320">应用对这个 provider 已经没有任何已批动作</text>
+  <rect class="s200" x="88.0" y="340" width="144.5" height="34" rx="4"/>
+  <rect class="s403" x="232.5" y="340" width="55.4" height="34" rx="4"/>
+  <rect class="s000" x="287.9" y="340" width="14.3" height="34" rx="4"/>
+  <rect class="s403" x="302.2" y="340" width="17.9" height="34" rx="4"/>
+  <rect class="s000" x="320.1" y="340" width="884.0" height="34" rx="4"/><text class="bl" x="762.1" y="362">000 · DNS 解析失败</text>
+  <rect class="s200" x="1204.1" y="340" width="115.9" height="34" rx="4"/><text class="bl" x="1262.0" y="362">200</text>
+  <path class="lead" d="M232.5,374 L232.5,402 L420,402"/>
+  <text class="an" x="428" y="407">① 1.2 秒：先是授权层 403</text>
+  <path class="lead" d="M287.9,374 L287.9,430 L420,430"/>
+  <text class="an" x="428" y="435">② 3.1 秒：出站边车删掉这个目的地，连域名都解析不出来</text>
+  <path class="lead" d="M311,374 L311,458 L420,458"/>
+  <text class="an" x="428" y="463">③ 3.7 ~ 4.3 秒：两层结果交替各出现一次，之后稳定在 000</text>
+  <path class="lead" d="M1204.1,374 L1204.1,490"/>
+  <text class="anE" x="1196" y="495">④ 恢复两项批准后 3.5 秒回到 200</text>
+
+  <!-- 事件竖线 -->
+  <line class="ev" x1="200" y1="160" x2="200" y2="300"/>
+  <line class="ev" x1="200" y1="330" x2="200" y2="520"/>
+  <text class="evT" x="200" y="540">撤销</text>
+  <line class="evR" x1="1082" y1="160" x2="1082" y2="214"/>
+  <line class="evR" x1="1105.8" y1="330" x2="1105.8" y2="384"/>
+  <text class="evTR" x="1082" y="154">恢复</text>
+  <text class="evTR" x="1105.8" y="326">恢复</text>
+
+  <!-- 时间轴 -->
+  <line class="axis" x1="88" y1="560" x2="1320" y2="560"/>
+  <line class="tick" x1="200" y1="554" x2="200" y2="566"/><text class="tl" x="200" y="584">0 s</text>
+  <line class="tick" x1="340" y1="554" x2="340" y2="566"/><text class="tl" x="340" y="584">5</text>
+  <line class="tick" x1="480" y1="554" x2="480" y2="566"/><text class="tl" x="480" y="584">10</text>
+  <line class="tick" x1="620" y1="554" x2="620" y2="566"/><text class="tl" x="620" y="584">15</text>
+  <line class="tick" x1="760" y1="554" x2="760" y2="566"/><text class="tl" x="760" y="584">20</text>
+  <line class="tick" x1="900" y1="554" x2="900" y2="566"/><text class="tl" x="900" y="584">25</text>
+  <line class="tick" x1="1040" y1="554" x2="1040" y2="566"/><text class="tl" x="1040" y="584">30</text>
+  <line class="tick" x1="1180" y1="554" x2="1180" y2="566"/><text class="tl" x="1180" y="584">35</text>
+  <line class="tick" x1="1320" y1="554" x2="1320" y2="566"/><text class="tl" x="1320" y="584">40 s</text>
+
+  <!-- 说明 -->
+  <text class="lgh" x="40" y="630">两层各管什么</text>
+  <text class="lg" x="40" y="660">· 授权层逐请求判定，读的是控制器投影进 OpenFGA 的关系，撤销后 1 秒多就拒；被拒的请求碰不到凭据</text>
+  <text class="lg" x="40" y="688">· 网络层按会话下发白名单，粒度是 provider Service 而不是动作：同一个 Service 下还有别的已批动作时，目的地不会被移除</text>
+  <text class="lg" x="40" y="716">· 恢复都在同一个会话里完成，不用新开会话；第一次跑同样的实验，恢复花了 8.2 秒，几秒的波动我没有再细查</text>
+  <text class="lg" x="40" y="744">· 撤销只挡之后的请求：已经通过授权、正在传输的请求不会被打断，已经做完的事也撤不回</text>
+</svg>
