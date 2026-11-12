@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .laneS { fill: #94a3b8; font-size: 13px; }
+      .track { fill: #0f172a; stroke: #1e293b; stroke-width: 1; }
+      .turn { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
+      .ckpt { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.4; }
+      .pause { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
+      .resume { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .pod { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.2; }
+      .gone { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .bl { fill: #f1f5f9; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .blS { fill: #cbd5e1; font-size: 13px; text-anchor: middle; }
+      .brk { fill: #0b1220; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 4; }
+      .brkT { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .axis { stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .ev { stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 4 3; animation: pulse 1.8s ease-in-out infinite; }
+      .evT { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .lead { stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 3 4; fill: none; }
+      .an { fill: #cbd5e1; font-size: 13.5px; }
+      .tl { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .chip { stroke-width: 1.2; }
+      @keyframes dash { to { stroke-dashoffset: -34; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">一个 Durable 会话的两轮对话：每轮之后 checkpoint，空闲就暂停，来消息再恢复</text>
+  <text class="sub" x="30" y="72">实测，pauseAfterIdle 设为 30 秒；时间按 1 秒 = 6 像素画，中间 5 分多钟的空闲段压缩掉了。数据来自控制面的阶段记录和集群事件</text>
+
+  <!-- 图例 -->
+  <rect class="turn chip" x="760" y="88" width="20" height="14" rx="3"/><text class="laneS" x="786" y="100">执行一轮</text>
+  <rect class="ckpt chip" x="860" y="88" width="20" height="14" rx="3"/><text class="laneS" x="886" y="100">checkpoint</text>
+  <rect class="pause chip" x="980" y="88" width="20" height="14" rx="3"/><text class="laneS" x="1006" y="100">暂停（再 commit 一次）</text>
+  <rect class="resume chip" x="1180" y="88" width="20" height="14" rx="3"/><text class="laneS" x="1206" y="100">恢复</text>
+
+  <!-- 控制面阶段 -->
+  <text class="lane" x="30" y="150">控制面</text>
+  <text class="laneS" x="30" y="170">会话状态机</text>
+  <rect class="track" x="140" y="132" width="1180" height="44" rx="6"/>
+  <rect class="turn" x="140" y="136" width="101" height="36" rx="4"/><text class="bl" x="190" y="159">第一轮 16s</text>
+  <rect class="ckpt" x="241" y="136" width="246" height="36" rx="4"/><text class="bl" x="364" y="159">checkpoint 41s</text>
+  <rect class="pause" x="488" y="136" width="210" height="36" rx="4"/><text class="bl" x="593" y="159">暂停 35s</text>
+  <rect class="brk" x="712" y="132" width="40" height="44" rx="4"/>
+  <rect class="resume" x="783" y="136" width="68" height="36" rx="4"/><text class="bl" x="817" y="159">恢复</text>
+  <rect class="turn" x="851" y="136" width="45" height="36" rx="4"/>
+  <rect class="ckpt" x="897" y="136" width="186" height="36" rx="4"/><text class="bl" x="990" y="159">checkpoint 31s</text>
+  <rect class="pause" x="1084" y="136" width="210" height="36" rx="4"/><text class="bl" x="1189" y="159">暂停 35s</text>
+
+  <!-- 沙箱 Pod -->
+  <text class="lane" x="30" y="230">沙箱 Pod</text>
+  <text class="laneS" x="30" y="250">Kata VM</text>
+  <rect class="track" x="140" y="212" width="1180" height="44" rx="6"/>
+  <rect class="pod" x="152" y="216" width="558" height="36" rx="4"/><text class="bl" x="566" y="239">预热池里的 Pod，1.1 秒领到</text>
+  <rect class="gone" x="712" y="216" width="94" height="36" rx="4"/>
+  <rect class="brk" x="712" y="212" width="40" height="44" rx="4"/>
+  <rect class="pod" x="784" y="216" width="510" height="36" rx="4"/><text class="bl" x="1039" y="239">用快照镜像新建的 Pod（新 VM、新主机名）</text>
+  <rect class="gone" x="1294" y="216" width="26" height="36" rx="4"/>
+
+  <!-- 快照 commit -->
+  <text class="lane" x="30" y="310">commit Job</text>
+  <text class="laneS" x="30" y="330">同节点，推 ACR</text>
+  <rect class="track" x="140" y="292" width="1180" height="44" rx="6"/>
+  <rect class="ckpt" x="224" y="296" width="222" height="36" rx="4"/><text class="blS" x="335" y="319">checkpoint 镜像</text>
+  <rect class="pause" x="488" y="296" width="186" height="36" rx="4"/><text class="blS" x="581" y="319">暂停镜像</text>
+  <rect class="brk" x="712" y="292" width="40" height="44" rx="4"/>
+  <rect class="ckpt" x="904" y="296" width="168" height="36" rx="4"/><text class="blS" x="988" y="319">checkpoint 镜像</text>
+  <rect class="pause" x="1094" y="296" width="150" height="36" rx="4"/><text class="blS" x="1169" y="319">暂停镜像</text>
+
+  <!-- 断轴文字 -->
+  <text class="brkT" x="732" y="368">空闲</text>
+  <text class="brkT" x="732" y="386">5 分 26 秒</text>
+
+  <!-- 事件 -->
+  <line class="ev" x1="421" y1="124" x2="421" y2="408"/>
+
+  <!-- 时间轴 -->
+  <line class="axis" x1="140" y1="420" x2="1320" y2="420"/>
+  <text class="tl" x="140" y="442">0 s</text>
+  <text class="tl" x="320" y="442">30</text>
+  <text class="tl" x="500" y="442">60</text>
+  <text class="tl" x="680" y="442">90</text>
+  <text class="tl" x="760" y="442">0 s</text>
+  <text class="tl" x="940" y="442">30</text>
+  <text class="tl" x="1120" y="442">60</text>
+  <text class="tl" x="1300" y="442">90</text>
+
+  <!-- 阶梯注释：右侧事件放高行，左侧事件放低行，引线不穿文字 -->
+  <path class="lead" d="M1083,456 L1083,473 L1103,473"/>
+  <text class="an" x="1109" y="478">⑥ 新 checkpoint 写好后删旧的</text>
+  <path class="lead" d="M817,456 L817,503 L837,503"/>
+  <text class="an" x="843" y="508">⑤ 来消息：排队 11.3 秒，其中恢复 11.2 秒</text>
+  <path class="lead" d="M698,456 L698,533 L718,533"/>
+  <text class="an" x="724" y="538">④ 暂停又 commit 一次，然后删 Pod：从这一轮结束到 Pod 消失共 79 秒</text>
+  <path class="lead" d="M421,456 L421,563 L441,563"/>
+  <text class="an" x="447" y="568">③ 空闲满 30 秒时 checkpoint 还没做完，暂停排在它后面</text>
+  <path class="lead" d="M241,456 L241,593 L261,593"/>
+  <text class="an" x="267" y="598">② 一轮结束立刻 checkpoint：把沙箱和出站边车两个容器的 rootfs 打成镜像推到 ACR</text>
+  <path class="lead" d="M190,456 L190,623 L210,623"/>
+  <text class="an" x="216" y="628">① 第一轮：写两个文件、起一个后台进程、记住暗号，整轮 16 秒</text>
+  <!-- 说明 -->
+  <text class="lgh" x="40" y="690">恢复以后，第二轮在沙箱里看到的</text>
+  <text class="lg" x="40" y="720">· 留下来了：/root/work 和 /tmp 下的文件都在；harness 答出了上一轮的暗号，因为它自己的会话文件就在 rootfs 里</text>
+  <text class="lg" x="40" y="748">· 没留下：上一轮起的后台进程不在了（pid 文件还在）；uptime 显示是刚启动的 VM；主机名从预热池的 Pod 名换成了会话自己的名字</text>
+  <text class="lg" x="40" y="776">· 恢复时出站白名单按应用"当前"的权限重新下发，不是暂停时的那一份</text>
+  <text class="lgh" x="40" y="822">代价</text>
+  <text class="lg" x="40" y="852">· 每轮至少两次 commit（checkpoint + 暂停），各 30 ~ 40 秒；每份镜像新增一层约 67 MB，34 层基础镜像共 1.4 GB 在 registry 里共用</text>
+  <text class="lg" x="40" y="880">· 空闲阈值设得越短，暂停 / 恢复越频繁；我这里每次恢复都要 10 秒左右，交互式场景要按这个数来定阈值</text>
+</svg>

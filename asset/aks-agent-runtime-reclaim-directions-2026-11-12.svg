@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneA { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneB { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zl { font-size: 15px; font-weight: 600; }
+      .card { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.5; }
+      .cardB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .cardX { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; animation: pulse 2s ease-in-out infinite; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .bad { fill: #fca5a5; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeA { fill: #92400e; stroke: #fde68a; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="980" rx="16"/>
+  <text class="title" x="30" y="44">谁来回收：会话层从状态库往外清，对账器从外往里按标签清</text>
+  <text class="sub" x="30" y="72">青绿是参考实现已有的路径，琥珀是我补的一层；红框是实测中两边都没覆盖、或者只有对账器能发现的东西</text>
+
+  <!-- 左：会话层 -->
+  <rect class="zone" x="30" y="96" width="640" height="460" rx="14"/>
+  <text class="zl" x="48" y="122" fill="#5eead4">会话层（控制面）：从状态库往外</text>
+  <rect class="card" x="50" y="140" width="290" height="180" rx="10"/>
+  <text class="h" x="68" y="166">状态库</text>
+  <text class="t" x="68" y="192">每个会话：状态、绑定的沙箱 ID</text>
+  <text class="t" x="68" y="214">当前 checkpoint、待执行的副作用</text>
+  <text class="t" x="68" y="236">Durable 的保留期限（滑动）</text>
+  <text class="t" x="68" y="262">控制面重启后先把未确认的</text>
+  <text class="t" x="68" y="284">副作用逐个核对一遍</text>
+  <text class="num" x="68" y="308">删控制面 Pod，5 秒后恢复服务</text>
+  <rect class="card" x="360" y="140" width="290" height="180" rx="10"/>
+  <text class="h" x="378" y="166">维护循环（每 15 秒）</text>
+  <text class="t" x="378" y="192">三种过期理由：</text>
+  <text class="t" x="378" y="214">· 保留期到了</text>
+  <text class="t" x="378" y="236">· 应用被删了</text>
+  <text class="t" x="378" y="258">· 准备阶段卡住超过</text>
+  <text class="t" x="378" y="280">  操作超时 + 10 分钟安全期</text>
+  <text class="num" x="378" y="308">删应用后 14 秒两个会话清完</text>
+  <rect class="card" x="50" y="340" width="600" height="200" rx="10"/>
+  <text class="h" x="68" y="366">重启时怎么处理做到一半的事（实测）</text>
+  <text class="t" x="68" y="394">一轮执行到一半：记为"未确认"；重启后先确认沙箱还是原来那个 Pod，再整轮重发给 harness。</text>
+  <text class="t" x="68" y="416">第一次执行的进程随连接断开被杀掉了，没有和第二次重叠写文件</text>
+  <text class="t" x="68" y="446">checkpoint 做到一半：同样记为"未确认"，但不重发；每隔约 11 秒去核对那一份快照，等它完成后</text>
+  <text class="t" x="68" y="468">再删旧 checkpoint、照常暂停。commit 本来就由 OpenSandbox 在集群里跑，跟控制面死活无关</text>
+  <text class="t" x="68" y="498">两者区别在于：重发一轮有副作用风险（编码 harness 自己承担重复执行），重发快照只是浪费时间</text>
+  <text class="num" x="68" y="524">集群夜间整体停机再启动，已有的暂停会话也都能接着用</text>
+
+  <!-- 右：对账器 -->
+  <rect class="zoneA" x="710" y="96" width="660" height="460" rx="14"/>
+  <text class="zl" x="728" y="122" fill="#fde68a">对账器（我补的）：从外往里，按标签</text>
+  <rect class="cardA" x="730" y="140" width="300" height="180" rx="10"/>
+  <text class="h" x="748" y="166">盘点</text>
+  <text class="t" x="748" y="192">所有带"会话 ID + 应用 UID"</text>
+  <text class="t" x="748" y="214">两个标签的沙箱</text>
+  <text class="t" x="748" y="236">所有快照仓库和 tag</text>
+  <text class="t" x="748" y="262">再用管理员接口拉一遍</text>
+  <text class="t" x="748" y="284">会话层认识的全部会话</text>
+  <rect class="cardA" x="1050" y="140" width="300" height="180" rx="10"/>
+  <text class="h" x="1068" y="166">判定</text>
+  <text class="t" x="1068" y="192">应用已经不存在 → 孤儿</text>
+  <text class="t" x="1068" y="214">会话层不认识 → 孤儿</text>
+  <text class="t" x="1068" y="236">比安全期年轻 → 跳过</text>
+  <text class="t" x="1068" y="258">（可能还在分配中）</text>
+  <text class="t" x="1068" y="284">没有沙箱的快照仓库 → 无主</text>
+  <rect class="cardA" x="730" y="340" width="620" height="200" rx="10"/>
+  <text class="h" x="748" y="366">动作（默认只出报告，--apply 才删）</text>
+  <text class="t" x="748" y="394">删沙箱前按 ID 再读一次，标签和盘点时一致才删；删不掉就留给下一轮</text>
+  <text class="t" x="748" y="418">无主的快照仓库整个删；活着的沙箱只摘掉没有记录引用的旧 tag</text>
+  <text class="t" x="748" y="442">不碰没有会话标签的沙箱（预热池里的、别的系统建的）</text>
+  <text class="num" x="748" y="474">孤儿沙箱：存在 6 分钟、约 24 个维护周期没人管 → 对账器删除，返回 204</text>
+  <text class="num" x="748" y="498">无主快照仓库：5 个会话共 10 个仓库，其中 2 个会话是刚删掉的应用留下的</text>
+  <text class="num" x="748" y="522">第二遍复查：剩下 5 个沙箱全部有主</text>
+
+  <!-- 下：OpenSandbox / ACR -->
+  <rect class="zoneB" x="30" y="600" width="1340" height="200" rx="14"/>
+  <text class="zl" x="48" y="626" fill="#7dd3fc">OpenSandbox 与 ACR（真正占资源的地方）</text>
+  <rect class="cardB" x="50" y="644" width="300" height="140" rx="10"/>
+  <text class="h" x="68" y="670">Ephemeral 沙箱</text>
+  <text class="t" x="68" y="696">OpenSandbox 侧有 30 分钟 TTL</text>
+  <text class="t" x="68" y="718">只在一轮执行时续期</text>
+  <text class="t" x="68" y="740">控制面死了也会自己到期</text>
+  <text class="t" x="68" y="762">不做任何快照</text>
+  <rect class="cardX" x="370" y="644" width="300" height="140" rx="10"/>
+  <text class="h" x="388" y="670">Durable 沙箱</text>
+  <text class="t" x="388" y="696">不设 TTL，生死全靠会话层</text>
+  <text class="t" x="388" y="718">会话层不认识它，它就一直在</text>
+  <text class="bad" x="388" y="744">实测：带同样标签、会话库里</text>
+  <text class="bad" x="388" y="766">没记录的沙箱，没人回收</text>
+  <rect class="cardB" x="690" y="644" width="300" height="140" rx="10"/>
+  <text class="h" x="708" y="670">快照记录</text>
+  <text class="t" x="708" y="696">每份 checkpoint / 暂停一条</text>
+  <text class="t" x="708" y="718">会话层只留最新的 checkpoint</text>
+  <text class="t" x="708" y="740">新的确认后 74 ms 删掉旧记录</text>
+  <text class="t" x="708" y="762">会话删除时一起删</text>
+  <rect class="cardX" x="1010" y="644" width="340" height="140" rx="10"/>
+  <text class="h" x="1028" y="670">ACR 里的快照镜像</text>
+  <text class="t" x="1028" y="696">每份约 1.46 GB（共用基础层，</text>
+  <text class="t" x="1028" y="718">每份新增约 67 MB）</text>
+  <text class="bad" x="1028" y="744">删记录不删镜像：一个会话两轮</text>
+  <text class="bad" x="1028" y="766">对话就留下 5 ~ 6 个 tag</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M340,230 L358,230" marker-end="url(#arr)"/>
+  <circle class="badge" cx="349" cy="210" r="11"/><text class="bn" x="349" y="215">1</text>
+  <path class="flow" d="M505,320 C505,330 520,330 520,338" marker-end="url(#arr)"/>
+  <path class="flow" d="M200,540 L200,642" marker-end="url(#arr)"/>
+  <path class="flow" d="M560,540 L560,642" marker-end="url(#arr)"/>
+  <path class="flow" d="M640,540 C680,580 760,600 800,642" marker-end="url(#arr)"/>
+  <circle class="badge" cx="560" cy="590" r="11"/><text class="bn" x="560" y="595">2</text>
+  <path class="flowG" d="M650,548 L650,572 L1140,572 L1140,642" marker-end="url(#arrG)"/>
+  <circle class="badge" cx="1000" cy="572" r="11" style="fill:#334155;stroke:#64748b"/><text class="bn" x="1000" y="577">3</text>
+  <path class="flowA" d="M1030,230 L1048,230" marker-end="url(#arrA)"/>
+  <circle class="badgeA" cx="1039" cy="210" r="11"/><text class="bn" x="1039" y="215">4</text>
+  <path class="flowA" d="M1200,540 C1200,580 1180,600 1180,642" marker-end="url(#arrA)"/>
+  <path class="flowA" d="M900,540 C860,590 600,600 520,642" marker-end="url(#arrA)"/>
+  <circle class="badgeA" cx="1192" cy="590" r="11"/><text class="bn" x="1192" y="595">5</text>
+
+  <!-- 说明 -->
+  <text class="lgh" x="40" y="846">编号说明</text>
+  <text class="lg" x="40" y="874">① 维护循环只看状态库里登记过的会话，到期或应用已删的会话会被标成"待过期"</text>
+  <text class="lg" x="40" y="900">② 按会话里记下的沙箱 ID 去删沙箱和快照记录，删之前核对一遍标签，保证不会删到别人的</text>
+  <text class="lg" x="40" y="926">③ 灰线：ACR 里的镜像没有人删，参考实现的文档也写明 registry 的保留和清理要运维自己配</text>
+  <text class="lg" x="720" y="874">④ 对账器先盘点、再比对，两份清单的差集才是孤儿</text>
+  <text class="lg" x="720" y="900">⑤ 删除走 OpenSandbox API 和 ACR，补上的正是会话层看不到的两类：</text>
+  <text class="lg" x="720" y="926">    会话库里没有记录的 Durable 沙箱，和已经没人引用的快照镜像</text>
+</svg>

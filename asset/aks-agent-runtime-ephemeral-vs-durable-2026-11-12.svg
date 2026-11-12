@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 780" width="1400" height="780" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .colE { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.6; }
+      .colD { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.6; }
+      .hdE { fill: #7dd3fc; font-size: 19px; font-weight: 700; text-anchor: middle; }
+      .hdD { fill: #c4b5fd; font-size: 19px; font-weight: 700; text-anchor: middle; }
+      .hs { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .rowL { fill: #e2e8f0; font-size: 14.5px; font-weight: 600; }
+      .cell { fill: #111827; stroke: #1f2937; stroke-width: 1; }
+      .cellW { fill: #2a1416; stroke: #f87171; stroke-width: 1.4; }
+      .cellG { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tg { fill: #5eead4; font-size: 13.5px; font-weight: 600; }
+      .tr { fill: #fca5a5; font-size: 13.5px; font-weight: 600; }
+      .pulse { animation: pulse 2s ease-in-out infinite; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="780" rx="16"/>
+  <text class="title" x="30" y="44">Ephemeral 与 Durable：同一个运行时，生死由谁说了算完全不同</text>
+  <text class="sub" x="30" y="72">每格都是这次实测看到的结果；绿色是这种模式的长处，红色是要自己补的地方</text>
+
+  <rect class="colE" x="300" y="96" width="520" height="70" rx="12"/>
+  <text class="hdE" x="560" y="128">Ephemeral</text>
+  <text class="hs" x="560" y="152">一个沙箱用到底，不做快照</text>
+  <rect class="colD" x="850" y="96" width="520" height="70" rx="12"/>
+  <text class="hdD" x="1110" y="128">Durable</text>
+  <text class="hs" x="1110" y="152">每轮 checkpoint，空闲暂停，按需恢复</text>
+
+  <!-- 行 1 -->
+  <text class="rowL" x="40" y="212">沙箱活多久</text>
+  <rect class="cellG" x="300" y="184" width="520" height="56" rx="8"/>
+  <text class="t" x="318" y="208">OpenSandbox 侧 TTL 30 分钟，只在执行一轮时续期</text>
+  <text class="tg" x="318" y="230">到点即删（实测误差 2 秒内）</text>
+  <rect class="cell" x="850" y="184" width="520" height="56" rx="8"/>
+  <text class="t" x="868" y="208">不设 TTL；空闲 30 秒起暂停，保留期 1 小时起，</text>
+  <text class="t" x="868" y="230">最后一次活动后按保留期清理</text>
+
+  <!-- 行 2 -->
+  <text class="rowL" x="40" y="280">一轮之后的开销</text>
+  <rect class="cellG" x="300" y="252" width="520" height="56" rx="8"/>
+  <text class="tg" x="318" y="276">没有额外开销</text>
+  <text class="t" x="318" y="298">空闲时 VM 一直占着，直到 TTL 到期</text>
+  <rect class="cell" x="850" y="252" width="520" height="56" rx="8"/>
+  <text class="t" x="868" y="276">checkpoint 31 ~ 41 秒 + 暂停 29 ~ 35 秒，各 commit 一次</text>
+  <text class="t" x="868" y="298">每次约 67 MB 新增层，推到 ACR</text>
+
+  <!-- 行 3 -->
+  <text class="rowL" x="40" y="348">隔一段时间再来</text>
+  <rect class="cellW pulse" x="300" y="320" width="520" height="56" rx="8"/>
+  <text class="tr" x="318" y="344">TTL 过了：换一个空白沙箱接着跑，文件和上下文都没了</text>
+  <text class="t" x="318" y="366">用户这一侧没有任何提示</text>
+  <rect class="cellG" x="850" y="320" width="520" height="56" rx="8"/>
+  <text class="tg" x="868" y="344">恢复约 10 秒；文件、/tmp、harness 上下文都在</text>
+  <text class="t" x="868" y="366">进程、内存、VM、主机名是新的</text>
+
+  <!-- 行 4 -->
+  <text class="rowL" x="40" y="416">控制面挂了</text>
+  <rect class="cellG" x="300" y="388" width="520" height="56" rx="8"/>
+  <text class="tg" x="318" y="412">沙箱照样按 TTL 到期，不会泄漏</text>
+  <text class="t" x="318" y="434">执行中那一轮怎么处理，这次没有单独测</text>
+  <rect class="cell" x="850" y="388" width="520" height="56" rx="8"/>
+  <text class="t" x="868" y="412">重启后核对未确认的副作用：一轮整轮重发，</text>
+  <text class="t" x="868" y="434">checkpoint 等原来那份完成、不重发</text>
+
+  <!-- 行 5 -->
+  <text class="rowL" x="40" y="484">状态库丢了记录</text>
+  <rect class="cellG" x="300" y="456" width="520" height="56" rx="8"/>
+  <text class="tg" x="318" y="480">TTL 兜底，最多多占 30 分钟</text>
+  <text class="t" x="318" y="502">（推算：TTL 由 OpenSandbox 执行，与状态库无关）</text>
+  <rect class="cellW pulse" x="850" y="456" width="520" height="56" rx="8"/>
+  <text class="tr" x="868" y="480">没人回收：实测 6 分钟、约 24 个维护周期无人处理</text>
+  <text class="t" x="868" y="502">需要按标签从外往里对账</text>
+
+  <!-- 行 6 -->
+  <text class="rowL" x="40" y="552">存储</text>
+  <rect class="cellG" x="300" y="524" width="520" height="56" rx="8"/>
+  <text class="tg" x="318" y="548">不产生快照镜像</text>
+  <text class="t" x="318" y="570">只有沙箱本身的磁盘</text>
+  <rect class="cellW pulse" x="850" y="524" width="520" height="56" rx="8"/>
+  <text class="tr" x="868" y="548">删记录不删镜像：两三轮对话就留下 5 ~ 6 个 tag</text>
+  <text class="t" x="868" y="570">registry 的保留和清理要自己配</text>
+
+  <!-- 行 7 -->
+  <text class="rowL" x="40" y="620">适合</text>
+  <rect class="cell" x="300" y="592" width="520" height="56" rx="8"/>
+  <text class="t" x="318" y="616">一次性任务：一次代码审查、一次批处理、</text>
+  <text class="t" x="318" y="638">半小时内做完的修复</text>
+  <rect class="cell" x="850" y="592" width="520" height="56" rx="8"/>
+  <text class="t" x="868" y="616">要隔天接着聊的编码助手、长周期任务、</text>
+  <text class="t" x="868" y="638">需要保留工作区的定时任务</text>
+
+  <text class="lgh" x="40" y="700">两种模式选完之后各自要补的东西</text>
+  <text class="lg" x="40" y="728">· Ephemeral：渠道层要在沙箱到期后告诉用户"这是一个新环境"，否则用户只会觉得 agent 失忆了</text>
+  <text class="lg" x="40" y="754">· Durable：一个从外往里的对账器，加上 snapshot registry 的保留策略；空闲阈值按"恢复约 10 秒"来权衡</text>
+</svg>
