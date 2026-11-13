@@ -116,7 +116,7 @@ A2A 1.x 的卡片结构和早期版本不一样，入口从单个 `url` 改成�
 - **revision 名取内容哈希**。内容不变就永远是同一个 revision，controller 重启、换副本都不会多出一个。
 - **卡片只放对外的信息**，并且只发布 Ready 的 agent。卡片的认证声明和调用授权分开设计，不要因为"能看到"就默认"能调"。
 
-下一篇讲模型接入层：Claude Code、Codex 这些 harness 怎么经过网关接到 Foundry 的模型上，以及参考实现里一直没打通的 Claude Code 接 Azure OpenAI 这条路，到底能不能走通。
+[下一篇](AKS-Agent-Runtime系列08：模型接入层.md)讲模型接入层：Claude Code、Codex 这些 harness 怎么经过网关接到 Foundry 的模型上，以及参考实现里一直没打通的 Claude Code 接 Azure OpenAI 这条路，到底能不能走通。
 
 ## 相关阅读
 

@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .panel { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
+      .ph { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .rowT { fill: #e2e8f0; font-size: 13.5px; }
+      .m { fill: #a5f3fc; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .ok { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.2; }
+      .no { fill: #3b1518; stroke: #f87171; stroke-width: 1.2; }
+      .badT { fill: #5eead4; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .badR { fill: #fca5a5; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .g200 { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
+      .g503 { fill: #3b1518; stroke: #f87171; stroke-width: 1.4; animation: pulse 1.8s ease-in-out infinite; }
+      .g403 { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
+      .bl { fill: #f1f5f9; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .lat { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.4; }
+      .latT { fill: #e9d5ff; font-size: 13px; font-weight: 600; }
+      .ax { stroke: #334155; stroke-width: 1; }
+      .axl { fill: #64748b; font-size: 12.5px; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -24; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="800" rx="16"/>
+  <text class="title" x="30" y="44">网关挡住了什么，又是哪里先扛不住</text>
+  <text class="sub" x="30" y="72">左：同一个沙箱里换不同的 model 名发请求；右：同时发 40 个和 100 个小请求。全部实测，模型都是 gpt-5.6-luna</text>
+
+  <!-- 左：模型名 -->
+  <rect class="panel" x="30" y="96" width="600" height="440" rx="14"/>
+  <text class="ph" x="50" y="126">请求体里写的 model</text>
+  <text class="rowT" x="440" y="126">Responses</text>
+  <text class="rowT" x="540" y="126">Messages</text>
+  <text class="m" x="50" y="170">gpt-5.6-luna</text><text class="rowT" x="50" y="190" style="fill:#94a3b8;font-size:12.5px">资源上批准的部署名</text>
+  <rect class="ok" x="440" y="152" width="70" height="30" rx="6"/><text class="badT" x="475" y="172">200</text>
+  <rect class="ok" x="540" y="152" width="70" height="30" rx="6"/><text class="badT" x="575" y="172">200</text>
+  <text class="m" x="50" y="240">fast / smart</text><text class="rowT" x="50" y="260" style="fill:#94a3b8;font-size:12.5px">资源配置里定义的别名</text>
+  <rect class="no" x="440" y="222" width="70" height="30" rx="6"/><text class="badR" x="475" y="242">403</text>
+  <rect class="no" x="540" y="222" width="70" height="30" rx="6"/><text class="badR" x="575" y="242">403</text>
+  <text class="m" x="50" y="310">gpt-4.1-mini</text><text class="rowT" x="50" y="330" style="fill:#94a3b8;font-size:12.5px">账号上部署了，但没批准给这个资源</text>
+  <rect class="no" x="440" y="292" width="70" height="30" rx="6"/><text class="badR" x="475" y="312">403</text>
+  <rect class="no" x="540" y="292" width="70" height="30" rx="6"/><text class="badR" x="575" y="312">403</text>
+  <text class="m" x="50" y="380">claude-haiku-4-5</text><text class="rowT" x="50" y="400" style="fill:#94a3b8;font-size:12.5px">Claude 系列的模型名</text>
+  <rect class="no" x="540" y="362" width="70" height="30" rx="6"/><text class="badR" x="575" y="382">403</text>
+  <text class="lg" x="50" y="446">授权从请求体取 model 当作资源目标，两种协议共用一份清单</text>
+  <text class="lg" x="50" y="472">别名只在会话层选模型时生效，到网关就得是部署名</text>
+  <text class="lg" x="50" y="498">Claude Code 在 --print --bare 下没有发出 haiku 请求，</text>
+  <text class="lg" x="50" y="520">一次 5 轮的任务，授权记录正好 5 条，全是 200</text>
+
+  <!-- 右：突发 -->
+  <rect class="panel" x="660" y="96" width="710" height="440" rx="14"/>
+  <text class="ph" x="680" y="126">同时发出的请求，最后的状态码</text>
+  <!-- 100 个 = 600px, x0=740 -->
+  <line class="ax" x1="740" y1="146" x2="740" y2="260"/>
+  <text class="rowT" x="680" y="182">40 个</text>
+  <rect class="g200" x="740" y="164" width="240" height="30" rx="4"/><text class="bl" x="860" y="184">200 × 40</text>
+  <text class="rowT" x="680" y="236">100 个</text>
+  <rect class="g200" x="740" y="218" width="288" height="30" rx="4"/><text class="bl" x="884" y="238">200 × 48</text>
+  <rect class="g403" x="1028" y="218" width="6" height="30" rx="2"/>
+  <rect class="g503" x="1034" y="218" width="306" height="30" rx="4"/><text class="bl" x="1187" y="238">503 × 51</text>
+  <text class="axl" x="1031" y="270">403 × 1</text>
+  <text class="lg" x="680" y="300">100 个全部完成用了 10.6 秒；本地限流（每秒 20 个）一次 429 都没有返回</text>
+
+  <text class="ph" x="680" y="346">授权决策点同一时段的耗时</text>
+  <line class="ax" x1="740" y1="362" x2="740" y2="470"/>
+  <text class="rowT" x="680" y="392">平时</text>
+  <rect class="lat" x="740" y="374" width="12" height="28" rx="3"/><text class="latT" x="762" y="394">p50 105 ms（第 04 篇）</text>
+  <text class="rowT" x="680" y="438">100 并发</text>
+  <rect class="lat" x="740" y="420" width="222" height="28" rx="3"/><text class="latT" x="972" y="440">p50 1850 ms</text>
+  <rect class="lat" x="740" y="456" width="600" height="20" rx="3" style="fill-opacity:0.4"/><text class="latT" x="1080" y="471" text-anchor="middle">最长 5001 ms：撞上超时上限</text>
+  <text class="lg" x="680" y="512">51 个 503 是授权决策点自己返回的（单次检查 5 秒超时），网关照此拒绝</text>
+
+  <text class="lgh" x="40" y="590">这意味着什么</text>
+  <text class="lg" x="40" y="620">· 突发流量下先撑不住的是逐请求授权，不是模型配额，也不是网关限流。授权的大头是回查 Pod、会话、ServiceAccount，而控制面现在是单副本</text>
+  <text class="lg" x="40" y="648">· 一个编码 harness 每轮只发一个模型请求，几十个会话同时跑不会到这个量；但几十个会话加上 subagent、批量任务一起到，就可能碰到</text>
+  <text class="lg" x="40" y="676">· 要扩的是授权决策点：多副本（第 06 篇）、对"证书 → Pod → 会话"这段解析做短时缓存；OpenFGA 本身只占几毫秒，不是瓶颈</text>
+  <text class="lg" x="40" y="704">· 失败方式是 503 而不是 429：调用方拿不到"该退避"的信号。网关应该在授权之前先限流，超出时明确返回 429</text>
+  <text class="lg" x="40" y="732">· 按 token 的配额（每个应用每分钟多少 token）这次没有配置也没有测；路由层的这些控制，后面接入更多模型时再补</text>
+</svg>

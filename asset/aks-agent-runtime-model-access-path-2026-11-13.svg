@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" width="1400" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .cp { fill: #15122a; stroke: #a78bfa; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .ex { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .cR { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; }
+      .cT { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; animation: pulse 2.2s ease-in-out infinite; }
+      .cP { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .cB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .cG { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .hg { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tg { fill: #94a3b8; font-size: 13px; }
+      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeA { fill: #92400e; stroke: #fde68a; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="960" rx="16"/>
+  <text class="title" x="30" y="44">两种协议，一个网关：Claude Code 说 Messages，其余 harness 说 Responses</text>
+  <text class="sub" x="30" y="72">实测路径是青绿（Responses）和琥珀（Messages 转换）；灰色是 Foundry 上的 Claude 原生路径，这次没有部署，未实测</text>
+
+  <!-- 沙箱 -->
+  <rect class="vm" x="30" y="100" width="300" height="520" rx="14"/>
+  <text class="zl" x="48" y="126" fill="#fca5a5">Kata 沙箱（harness 免确认运行）</text>
+  <rect class="cT" x="50" y="144" width="260" height="170" rx="10"/>
+  <text class="h" x="68" y="170">Codex 等四种 harness</text>
+  <text class="t" x="68" y="196">四种都原生说 OpenAI Responses</text>
+  <text class="m" x="68" y="222">POST /openai/v1/responses</text>
+  <text class="t" x="68" y="250">模型提供方指向网关地址，</text>
+  <text class="t" x="68" y="272">key 填占位值，网关会换掉</text>
+  <text class="num" x="68" y="298">Codex 修 bug 任务 2/2，10 ~ 14 秒</text>
+  <rect class="cA" x="50" y="334" width="260" height="270" rx="10"/>
+  <text class="h" x="68" y="360">Claude Code</text>
+  <text class="t" x="68" y="386">只说 Anthropic Messages</text>
+  <text class="m" x="68" y="412">POST /v1/messages</text>
+  <text class="m" x="68" y="436">ANTHROPIC_BASE_URL=网关</text>
+  <text class="m" x="68" y="458">--model gpt-5.6-luna</text>
+  <text class="t" x="68" y="486">root 下免确认运行要加</text>
+  <text class="m" x="68" y="508">IS_SANDBOX=1</text>
+  <text class="t" x="68" y="534">否则直接退出（参考实现的</text>
+  <text class="t" x="68" y="556">适配器就卡在这里）</text>
+  <text class="num" x="68" y="586">修 bug 任务 2/2，11 ~ 13 秒</text>
+
+  <!-- 网关 -->
+  <rect class="zone" x="370" y="100" width="560" height="520" rx="14"/>
+  <text class="zl" x="388" y="126" fill="#5eead4">模型网关（agentgateway，沙箱外）</text>
+  <rect class="cT" x="390" y="144" width="520" height="130" rx="10"/>
+  <text class="h" x="408" y="170">一条路由，两个入口路径</text>
+  <text class="t" x="408" y="196">只放行 POST /openai/v1/responses 和 POST /v1/messages</text>
+  <text class="t" x="408" y="220">删掉 api-key、x-api-key 等沙箱带来的认证头</text>
+  <text class="t" x="408" y="244">配了本地限流（每秒 20 个），实测 100 并发也没有出现 429</text>
+  <rect class="cP" x="390" y="294" width="520" height="130" rx="10"/>
+  <text class="h" x="408" y="320">逐请求授权（第 04 篇那一套）</text>
+  <text class="t" x="408" y="346">从请求体取 model，拼成 aoai://账号/模型 作为资源目标</text>
+  <text class="t" x="408" y="370">模型必须是资源上批准的部署名：别名、未批准的部署、</text>
+  <text class="t" x="408" y="394">claude-* 这些名字一律 403</text>
+  <rect class="cA" x="390" y="444" width="520" height="160" rx="10"/>
+  <text class="h" x="408" y="470">AI 后端：按路由类型处理协议</text>
+  <text class="m" x="408" y="496">routes: /openai/v1/responses → Responses</text>
+  <text class="m" x="408" y="518">        /v1/messages         → Messages</text>
+  <text class="t" x="408" y="546">Messages 请求被转成 Azure OpenAI 的 Responses 调用，</text>
+  <text class="t" x="408" y="568">回包再转回 Anthropic 格式：tool_use 块、SSE 事件都正确</text>
+  <text class="num" x="408" y="592">返回的 id 是 resp_…，能看出背后是 Responses</text>
+
+  <!-- 后端 -->
+  <rect class="ex" x="970" y="100" width="400" height="300" rx="14"/>
+  <text class="zl" x="988" y="126" fill="#7dd3fc">Azure OpenAI（同一个 Foundry 账号）</text>
+  <rect class="cB" x="990" y="144" width="360" height="236" rx="10"/>
+  <text class="h" x="1008" y="170">GPT 部署</text>
+  <text class="t" x="1008" y="196">gpt-5.6-luna / terra / gpt-6-astra</text>
+  <text class="t" x="1008" y="222">网关用 Workload Identity 认证，</text>
+  <text class="t" x="1008" y="244">沙箱里没有任何模型凭据</text>
+  <text class="t" x="1008" y="274">Claude Code 看到的是一个它不认识</text>
+  <text class="t" x="1008" y="296">的模型名：会打 unrecognized_model</text>
+  <text class="t" x="1008" y="318">警告，上下文窗口、计价都用默认值</text>
+  <text class="num" x="1008" y="350">输出里的 cost 没有参考意义</text>
+
+  <rect class="cG" x="970" y="420" width="400" height="200" rx="14"/>
+  <text class="hg" x="990" y="448">Foundry 上的 Claude（未实测）</text>
+  <text class="tg" x="990" y="474">账号的可部署列表里有 claude-sonnet-5-5、</text>
+  <text class="tg" x="990" y="496">claude-opus-5-5 等</text>
+  <text class="tg" x="990" y="522">部署时要求填 ModelProviderData：</text>
+  <text class="tg" x="990" y="544">行业、组织名、国家代码</text>
+  <text class="tg" x="990" y="570">这是代表组织做的声明，这次没有部署</text>
+  <text class="tg" x="990" y="596">原生 Messages 路径留待以后验证</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M310,220 L388,210" marker-end="url(#arr)"/>
+  <circle class="badge" cx="349" cy="198" r="11"/><text class="bn" x="349" y="203">1</text>
+  <path class="flowA" d="M310,420 C345,420 350,240 388,240" marker-end="url(#arrA)"/>
+  <circle class="badgeA" cx="349" cy="330" r="11"/><text class="bn" x="349" y="335">2</text>
+  <path class="flow" d="M650,274 L650,292" marker-end="url(#arr)"/>
+  <path class="flow" d="M650,424 L650,442" marker-end="url(#arr)"/>
+  <circle class="badge" cx="676" cy="433" r="11"/><text class="bn" x="676" y="438">3</text>
+  <path class="flow" d="M910,520 C940,520 950,260 988,260" marker-end="url(#arr)"/>
+  <circle class="badge" cx="950" cy="390" r="11"/><text class="bn" x="950" y="395">4</text>
+  <path class="flowG" d="M910,580 L968,560" marker-end="url(#arrG)"/>
+
+  <text class="lgh" x="40" y="672">编号说明</text>
+  <text class="lg" x="40" y="700">① Responses 原生的 harness 直接把网关当成 OpenAI 兼容端点，网关只做授权和认证替换</text>
+  <text class="lg" x="40" y="726">② Claude Code 把网关当成 Anthropic 端点；它的请求和返回都要在网关里转换</text>
+  <text class="lg" x="40" y="752">③ 授权看的是请求体里的 model：这一步不区分协议，两条路用同一份批准清单</text>
+  <text class="lg" x="40" y="778">④ 后端只有一种：Azure OpenAI 的 Responses。协议差异全部在网关里吸收掉，沙箱和后端都不用改</text>
+
+  <text class="lgh" x="40" y="830">实测小结</text>
+  <text class="lg" x="40" y="858">· 单步任务（写文件并执行）：Claude Code 2 轮、5.9 秒；修两个 bug 的多步任务：Claude Code 5 ~ 6 轮、Codex 3 次命令，四次全部通过测试</text>
+  <text class="lg" x="40" y="884">· 在 --print --bare 模式下，Claude Code 每轮只调一次主模型，没有用 haiku 发后台请求，所以不覆盖"小模型"也没问题</text>
+  <text class="lg" x="40" y="910">· 别名（fast / smart）在网关返回 403：别名是会话层选模型时用的，请求到网关时 model 必须是部署名</text>
+  <text class="lg" x="40" y="936">· 参考实现没有给 Claude Code 配模型；实测网关的转换是通的，在这个镜像里先挡住 Claude Code 的是 root 下免确认运行的检查</text>
+</svg>
