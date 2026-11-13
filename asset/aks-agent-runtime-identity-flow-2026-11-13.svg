@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .ext { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .entra { fill: #15122a; stroke: #a78bfa; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .c { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; animation: pulse 2.2s ease-in-out infinite; }
+      .cB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .cP { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .cR { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; }
+      .cD { fill: #111827; stroke: #475569; stroke-width: 1.3; stroke-dasharray: 6 4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .hg { fill: #94a3b8; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tg { fill: #94a3b8; font-size: 13px; }
+      .ok { fill: #5eead4; font-size: 12.5px; font-weight: 600; }
+      .dz { fill: #94a3b8; font-size: 12.5px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowP { fill: none; stroke: #a78bfa; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeP { fill: #5b21b6; stroke: #c4b5fd; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">用户身份怎么走到下游：令牌只在沙箱外流转</text>
+  <text class="sub" x="30" y="72">标"实测"的步骤这次在 AKS 上跑过；标"设计"的是把它放进 runtime 时我会怎么接，没有实现</text>
+
+  <!-- 用户 -->
+  <rect class="cB" x="30" y="110" width="200" height="150" rx="10"/>
+  <text class="h" x="46" y="136">用户 + 渠道</text>
+  <text class="t" x="46" y="162">CLI、Teams、门户</text>
+  <text class="t" x="46" y="186">登录后拿 aud 为控制面</text>
+  <text class="t" x="46" y="208">的令牌（68 分钟）</text>
+  <text class="ok" x="46" y="240">实测：CLI 预授权，无弹窗</text>
+
+  <!-- 控制面 -->
+  <rect class="zone" x="270" y="96" width="540" height="420" rx="14"/>
+  <text class="zl" x="288" y="122" fill="#5eead4">控制面（沙箱外）</text>
+  <rect class="c" x="290" y="140" width="240" height="160" rx="10"/>
+  <text class="h" x="306" y="166">会话 API</text>
+  <text class="t" x="306" y="190">校验 aud = 控制面、scp</text>
+  <text class="t" x="306" y="212">把 oid 记为会话的 owner</text>
+  <text class="t" x="306" y="236">（参考实现已经这样做，</text>
+  <text class="t" x="306" y="258">只是不往下游传）</text>
+  <text class="dz" x="306" y="286">设计：用户令牌不落库</text>
+  <rect class="cA" x="550" y="140" width="240" height="190" rx="10"/>
+  <text class="h" x="566" y="166">令牌服务</text>
+  <text class="t" x="566" y="190">OBO：用户令牌 → 下游令牌</text>
+  <text class="t" x="566" y="212">客户端断言是控制面 Pod 的</text>
+  <text class="t" x="566" y="234">联合令牌，没有 secret</text>
+  <text class="t" x="566" y="260">refresh token 加密后按会话</text>
+  <text class="t" x="566" y="282">存进状态库（第 06 篇）</text>
+  <text class="ok" x="566" y="314">实测：OBO、拿到 refresh token</text>
+  <rect class="cP" x="290" y="320" width="240" height="176" rx="10"/>
+  <text class="h" x="306" y="346">agent 自己的身份</text>
+  <text class="t" x="306" y="372">blueprint 的联合凭据指向</text>
+  <text class="t" x="306" y="394">控制面的 ServiceAccount</text>
+  <text class="t" x="306" y="420">按 agent 定义（第 07 篇）</text>
+  <text class="t" x="306" y="442">选 fmi_path，一个 agent 一个</text>
+  <text class="ok" x="306" y="476">实测：app-only 两步换令牌</text>
+  <rect class="cD" x="550" y="350" width="240" height="146" rx="10"/>
+  <text class="hg" x="566" y="376">agent 代表用户</text>
+  <text class="tg" x="566" y="402">agent identity 做 OBO</text>
+  <text class="tg" x="566" y="426">需要管理员在 blueprint 上</text>
+  <text class="tg" x="566" y="448">配可继承权限或做同意</text>
+  <text class="dz" x="566" y="478">这次卡在 AADSTS65001</text>
+
+  <!-- 沙箱 -->
+  <rect class="vm" x="30" y="560" width="380" height="200" rx="14"/>
+  <text class="zl" x="48" y="586" fill="#fca5a5">沙箱（harness）</text>
+  <rect class="cR" x="50" y="604" width="340" height="136" rx="10"/>
+  <text class="h" x="66" y="630">没有任何令牌</text>
+  <text class="t" x="66" y="656">不挂 ServiceAccount token、没有用户令牌、</text>
+  <text class="t" x="66" y="678">没有 refresh token</text>
+  <text class="t" x="66" y="704">请求照常发给 provider 的 Service 名，</text>
+  <text class="t" x="66" y="726">认证由网关替它完成（第 04 篇）</text>
+
+  <!-- 网关 -->
+  <rect class="zone" x="450" y="560" width="440" height="200" rx="14"/>
+  <text class="zl" x="468" y="586" fill="#5eead4">出站网关（沙箱外）</text>
+  <rect class="cA" x="470" y="604" width="400" height="136" rx="10"/>
+  <text class="h" x="486" y="630">凭据代理，按会话取令牌</text>
+  <text class="t" x="486" y="656">授权通过后，按"证书 → Pod → 会话 → owner"</text>
+  <text class="t" x="486" y="678">向令牌服务要这个会话的下游令牌</text>
+  <text class="t" x="486" y="702">第 04 篇里凭据代理返回的是一个固定 token，</text>
+  <text class="dz" x="486" y="726">设计：换成按会话的 OBO 令牌</text>
+
+  <!-- Entra -->
+  <rect class="entra" x="850" y="96" width="520" height="200" rx="14"/>
+  <text class="zl" x="868" y="122" fill="#c4b5fd">Entra ID</text>
+  <rect class="cP" x="870" y="140" width="480" height="136" rx="10"/>
+  <text class="h" x="886" y="166">令牌端点</text>
+  <text class="t" x="886" y="192">OBO 换出来的令牌和用户令牌同时过期</text>
+  <text class="t" x="886" y="216">app-only 令牌约 24 小时</text>
+  <text class="t" x="886" y="240">agent identity：blueprint 先换 T1（sub 是 FMI 路径），</text>
+  <text class="t" x="886" y="262">agent identity 再用 T1 换资源令牌</text>
+
+  <!-- 下游 -->
+  <rect class="ext" x="930" y="560" width="440" height="200" rx="14"/>
+  <text class="zl" x="948" y="586" fill="#7dd3fc">下游工具 API</text>
+  <rect class="cB" x="950" y="604" width="400" height="136" rx="10"/>
+  <text class="h" x="966" y="630">按令牌里的人和动作判断</text>
+  <text class="t" x="966" y="656">aud 是自己 + scp（委托）或 roles（应用）</text>
+  <text class="t" x="966" y="678">只看 aud 会放过租户里任何应用</text>
+  <text class="t" x="966" y="704">审计里写 oid（用户）+ azp（哪个 agent）</text>
+  <text class="ok" x="966" y="728">实测：令牌声明如上一张图</text>
+
+  <!-- 流 -->
+  <path class="flow" d="M230,185 L288,200" marker-end="url(#arr)"/>
+  <circle class="badge" cx="259" cy="176" r="11"/><text class="bn" x="259" y="181">1</text>
+  <path class="flow" d="M530,220 L548,220" marker-end="url(#arr)"/>
+  <circle class="badge" cx="539" cy="204" r="11"/><text class="bn" x="539" y="209">2</text>
+  <path class="flowP" d="M790,200 C820,200 830,210 868,210" marker-end="url(#arrP)"/>
+  <circle class="badgeP" cx="829" cy="190" r="11"/><text class="bn" x="829" y="195">3</text>
+  <path class="flow" d="M390,672 L468,672" marker-end="url(#arr)"/>
+  <circle class="badge" cx="429" cy="654" r="11"/><text class="bn" x="429" y="659">4</text>
+  <path class="flowG" d="M860,604 L860,540 L830,540 L830,300 L793,300" marker-end="url(#arrG)"/>
+  <circle class="badge" cx="830" cy="430" r="11" style="fill:#334155;stroke:#64748b"/><text class="bn" x="830" y="435">5</text>
+  <path class="flow" d="M870,672 L948,672" marker-end="url(#arr)"/>
+  <circle class="badge" cx="909" cy="654" r="11"/><text class="bn" x="909" y="659">6</text>
+
+  <text class="lgh" x="40" y="812">编号说明</text>
+  <text class="lg" x="40" y="840">① 用户经渠道调用会话 API，令牌的 aud 是控制面　② 控制面在需要时做 OBO，refresh token 按会话存</text>
+  <text class="lg" x="40" y="866">③ OBO 和 agent identity 的令牌都在 Entra 换，客户端断言都是 AKS 的联合令牌</text>
+  <text class="lg" x="40" y="892">④ 沙箱照常发请求，不带凭据　⑤ 网关在授权通过后向令牌服务要这个会话的下游令牌（灰线：设计）　⑥ 带着用户 + agent 的令牌调下游</text>
+</svg>

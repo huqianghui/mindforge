@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 850" width="1400" height="850" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .colP { fill: #111827; stroke: #475569; stroke-width: 1.5; }
+      .colA { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .colO { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.8; }
+      .colI { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .colX { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; stroke-dasharray: 7 5; }
+      .hd { fill: #f8fafc; font-size: 16px; font-weight: 700; }
+      .hs { fill: #94a3b8; font-size: 12.5px; }
+      .k { fill: #94a3b8; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .v { fill: #e2e8f0; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .vg { fill: #5eead4; font-size: 12.5px; font-weight: 600; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .vr { fill: #fca5a5; font-size: 12.5px; font-weight: 600; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .vp { fill: #c4b5fd; font-size: 12.5px; font-weight: 600; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .sep { stroke: #334155; stroke-width: 1; }
+      .q { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .glow { animation: pulse 2.2s ease-in-out infinite; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="850" rx="16"/>
+  <text class="title" x="30" y="44">agent 去调下游工具 API 时，下游看到的是谁</text>
+  <text class="sub" x="30" y="72">同一个下游 API（工单系统），换不同的身份去拿令牌；下面是令牌里的关键声明，全部来自这次实测解码出来的值</text>
+
+  <!-- 列 x: 30, 300, 570, 840, 1110 宽 255 -->
+  <rect class="colP" x="30" y="96" width="255" height="520" rx="12"/>
+  <text class="hd" x="46" y="124">① 平台的身份</text>
+  <text class="hs" x="46" y="144">网关用 Workload Identity</text>
+  <text class="hs" x="46" y="162">（按配置推断，未解码）</text>
+  <line class="sep" x1="46" y1="176" x2="270" y2="176"/>
+  <text class="k" x="46" y="200">idtyp</text><text class="v" x="130" y="200">app</text>
+  <text class="k" x="46" y="224">oid</text><text class="v" x="130" y="224">网关的身份</text>
+  <text class="k" x="46" y="248">scp</text><text class="v" x="130" y="248">—</text>
+  <text class="k" x="46" y="272">谁的事</text><text class="vr" x="130" y="272">看不出</text>
+  <line class="sep" x1="46" y1="290" x2="270" y2="290"/>
+  <text class="t" x="46" y="316">所有会话、所有 agent、</text>
+  <text class="t" x="46" y="338">所有用户共用一个身份</text>
+  <text class="t" x="46" y="364">"这个会话能不能做"由网关</text>
+  <text class="t" x="46" y="386">的逐请求授权决定；下游</text>
+  <text class="t" x="46" y="408">只知道"平台来调了"</text>
+  <text class="q" x="46" y="444">下游的审计日志里只有一个名字</text>
+  <text class="t" x="46" y="474">第 04、08 篇的现状就是这样</text>
+
+  <rect class="colA" x="300" y="96" width="255" height="520" rx="12"/>
+  <text class="hd" x="316" y="124">② 控制面应用 app-only</text>
+  <text class="hs" x="316" y="144">client credentials，</text>
+  <text class="hs" x="316" y="162">Workload Identity 作断言</text>
+  <line class="sep" x1="316" y1="176" x2="540" y2="176"/>
+  <text class="k" x="316" y="200">idtyp</text><text class="v" x="400" y="200">app</text>
+  <text class="k" x="316" y="224">oid</text><text class="v" x="400" y="224">控制面 A</text>
+  <text class="k" x="316" y="248">scp</text><text class="vr" x="400" y="248">无</text>
+  <text class="k" x="316" y="272">roles</text><text class="vr" x="400" y="272">无</text>
+  <text class="k" x="316" y="296">寿命</text><text class="v" x="400" y="296">1445 分钟</text>
+  <line class="sep" x1="316" y1="314" x2="540" y2="314"/>
+  <text class="t" x="316" y="340">下游没给 A 分配任何应用</text>
+  <text class="t" x="316" y="362">角色，令牌照样发了</text>
+  <text class="vr" x="316" y="392">只校验 aud 的 API，</text>
+  <text class="vr" x="316" y="414">租户里任何应用都能调</text>
+  <text class="q" x="316" y="444">必须同时检查 scp 或 roles</text>
+
+  <rect class="colO glow" x="570" y="96" width="255" height="520" rx="12"/>
+  <text class="hd" x="586" y="124">③ OBO：代表用户</text>
+  <text class="hs" x="586" y="144">用户令牌 → 控制面 A 换</text>
+  <text class="hs" x="586" y="162">下游令牌（无 secret）</text>
+  <line class="sep" x1="586" y1="176" x2="810" y2="176"/>
+  <text class="k" x="586" y="200">idtyp</text><text class="vg" x="670" y="200">user</text>
+  <text class="k" x="586" y="224">oid</text><text class="vg" x="670" y="224">用户本人</text>
+  <text class="k" x="586" y="248">azp</text><text class="vg" x="670" y="248">控制面 A</text>
+  <text class="k" x="586" y="272">scp</text><text class="vg" x="670" y="272">tickets.write</text>
+  <text class="k" x="586" y="296">寿命</text><text class="v" x="670" y="296">跟用户令牌同时过期</text>
+  <line class="sep" x1="586" y1="314" x2="810" y2="314"/>
+  <text class="t" x="586" y="340">一张令牌里写明"代表谁"</text>
+  <text class="t" x="586" y="362">和"谁在代办"</text>
+  <text class="t" x="586" y="388">下游按用户本人的权限判断，</text>
+  <text class="t" x="586" y="410">用户没有的权限 agent 也没有</text>
+  <text class="q" x="586" y="444">还拿到了 refresh token</text>
+
+  <rect class="colI" x="840" y="96" width="255" height="520" rx="12"/>
+  <text class="hd" x="856" y="124">④ Entra Agent ID</text>
+  <text class="hs" x="856" y="144">blueprint 换 T1，agent</text>
+  <text class="hs" x="856" y="162">identity 再换资源令牌</text>
+  <line class="sep" x1="856" y1="176" x2="1080" y2="176"/>
+  <text class="k" x="856" y="200">idtyp</text><text class="v" x="940" y="200">app</text>
+  <text class="k" x="856" y="224">oid</text><text class="vp" x="940" y="224">这个 agent 自己</text>
+  <text class="k" x="856" y="248">azp</text><text class="vp" x="940" y="248">这个 agent 自己</text>
+  <text class="k" x="856" y="272">T1.sub</text><text class="v" x="940" y="272">/eid1/…/&lt;agent&gt;</text>
+  <text class="k" x="856" y="296">寿命</text><text class="v" x="940" y="296">1445 分钟</text>
+  <line class="sep" x1="856" y1="314" x2="1080" y2="314"/>
+  <text class="t" x="856" y="340">每个 agent 一个独立的</text>
+  <text class="t" x="856" y="362">主体：能单独授权、单独</text>
+  <text class="t" x="856" y="384">审计、单独停用</text>
+  <text class="t" x="856" y="410">blueprint 的凭据是 AKS</text>
+  <text class="t" x="856" y="432">ServiceAccount 的联合令牌</text>
+  <text class="q" x="856" y="462">全程没有 secret</text>
+
+  <rect class="colX" x="1110" y="96" width="260" height="520" rx="12"/>
+  <text class="hd" x="1126" y="124">⑤ Agent ID + OBO</text>
+  <text class="hs" x="1126" y="144">agent identity 代表用户</text>
+  <text class="hs" x="1126" y="162">（这次没能跑通）</text>
+  <line class="sep" x1="1126" y1="176" x2="1355" y2="176"/>
+  <text class="t" x="1126" y="202">用户令牌的 aud 必须是</text>
+  <text class="t" x="1126" y="224">blueprint：拿到了（80 分钟）</text>
+  <text class="vr" x="1126" y="254">OBO → AADSTS65001</text>
+  <text class="t" x="1126" y="278">没有同意记录</text>
+  <line class="sep" x1="1126" y1="296" x2="1355" y2="296"/>
+  <text class="t" x="1126" y="322">agent identity 没有应用对象，</text>
+  <text class="t" x="1126" y="344">不能写进下游的预授权列表</text>
+  <text class="t" x="1126" y="370">自己建委托授权：</text>
+  <text class="vr" x="1126" y="392">Insufficient privileges</text>
+  <text class="t" x="1126" y="418">（我是租户的 guest）</text>
+  <text class="q" x="1126" y="452">要管理员在 blueprint 上</text>
+  <text class="q" x="1126" y="474">配可继承权限或做同意</text>
+
+  <text class="lgh" x="40" y="664">怎么读这张图</text>
+  <text class="lg" x="40" y="692">· 从左到右，下游能看清的东西越来越多：① 只知道平台；② 知道哪个应用；③ 知道哪个用户、经哪个应用；④ 知道是哪个 agent</text>
+  <text class="lg" x="40" y="720">· ③ 和 ④ 解决的是两个不同的问题：③ 让 agent 的权限不超过用户本人；④ 让每个 agent 能被单独授权和追责。两者组合起来就是 ⑤</text>
+  <text class="lg" x="40" y="748">· ② 那一列的坑在任何方案里都存在：Entra 会给租户里的应用签发以你的 API 为 aud 的令牌，授权要看 scp 和 roles，不能只看 aud</text>
+  <text class="lg" x="40" y="776">· 五种令牌都不会进沙箱。它们的使用者是控制面或出站网关，沙箱里的 harness 只能通过网关间接用到它们</text>
+  <text class="lg" x="40" y="804">· 1445 分钟（约 24 小时）是这个租户里 Workload Identity 换出来的 app-only 令牌的实际寿命；用户相关的令牌都在 1 小时上下</text>
+</svg>
