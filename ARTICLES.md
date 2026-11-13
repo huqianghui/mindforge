@@ -311,6 +311,7 @@
 - [AKS Agent Runtime 系列 04：出站治理与逐请求授权](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列04：出站治理与逐请求授权.md)
 - [AKS Agent Runtime 系列 05：会话生命周期与回收](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列05：会话生命周期与回收.md)
 - [AKS Agent Runtime 系列 06：会话管理与高可用](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列06：会话管理与高可用.md)
+- [AKS Agent Runtime 系列 07：Agent 的类型、注册与发现](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列07：Agent的类型、注册与发现.md)
 
 #### Azure/Copilot-Managed-Runtime
 

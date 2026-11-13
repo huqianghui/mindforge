@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .stage { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .stageB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .stageP { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .fail { fill: #2a1416; stroke: #f87171; stroke-width: 1.4; }
+      .zone { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.5; }
+      .cardG { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; animation: pulse 2.2s ease-in-out infinite; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .r { fill: #fca5a5; font-size: 13px; }
+      .rh { fill: #fecaca; font-size: 13px; font-weight: 600; }
+      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 3 4; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="980" rx="16"/>
+  <text class="title" x="30" y="44">注册：从一份 YAML 到一个能被发现的 agent，每一步都可能把它拦下</text>
+  <text class="sub" x="30" y="72">实测：三类各一个正常的，加五个故意写错的（红色），以及一次 skills 包 tag 被挪动（下半部分）</text>
+
+  <!-- 六个阶段 x: 30,255,480,705,930,1155 宽 205 -->
+  <rect class="stageB" x="30" y="100" width="205" height="150" rx="10"/>
+  <text class="h" x="46" y="126">① 提交</text>
+  <text class="t" x="46" y="152">GitOps 或 kubectl</text>
+  <text class="t" x="46" y="174">提交 Agent 对象</text>
+  <text class="t" x="46" y="200">谁能提交、提交到哪个</text>
+  <text class="t" x="46" y="222">命名空间，由 RBAC 管</text>
+
+  <rect class="stageB" x="255" y="100" width="205" height="150" rx="10"/>
+  <text class="h" x="271" y="126">② 结构校验</text>
+  <text class="t" x="271" y="152">API Server 执行 CRD 的</text>
+  <text class="t" x="271" y="174">schema 和 CEL 规则</text>
+  <text class="t" x="271" y="200">type 与配置块必须对应</text>
+  <text class="t" x="271" y="222">不过就不会被存下来</text>
+
+  <rect class="stage" x="480" y="100" width="205" height="150" rx="10"/>
+  <text class="h" x="496" y="126">③ 语义校验</text>
+  <text class="t" x="496" y="152">controller 读运维的</text>
+  <text class="t" x="496" y="174">批准清单：运行时类、</text>
+  <text class="t" x="496" y="196">模型、镜像仓库前缀</text>
+  <text class="t" x="496" y="222">代码镜像必须写 digest</text>
+
+  <rect class="stage" x="705" y="100" width="205" height="150" rx="10"/>
+  <text class="h" x="721" y="126">④ 解析引用</text>
+  <text class="t" x="721" y="152">skills 包 tag → digest</text>
+  <text class="t" x="721" y="174">Workload Identity 换</text>
+  <text class="t" x="721" y="196">ACR 令牌，HEAD manifest</text>
+  <text class="num" x="721" y="222">reviewer:v1 → a8c0188b…</text>
+
+  <rect class="stageP" x="930" y="100" width="205" height="150" rx="10"/>
+  <text class="h" x="946" y="126">⑤ 生成 revision</text>
+  <text class="t" x="946" y="152">规范化：tag 换成 digest</text>
+  <text class="t" x="946" y="174">取哈希作为 revision 名</text>
+  <text class="t" x="946" y="196">AgentRevision 只能新建，</text>
+  <text class="t" x="946" y="218">CEL 规则禁止修改</text>
+
+  <rect class="stageP" x="1155" y="100" width="215" height="150" rx="10"/>
+  <text class="h" x="1171" y="126">⑥ 发布卡片</text>
+  <text class="t" x="1171" y="152">按 A2A 1.x 生成 Agent Card</text>
+  <text class="t" x="1171" y="174">注册端点按 well-known</text>
+  <text class="t" x="1171" y="196">路径发布，只发 Ready 的</text>
+  <text class="num" x="1171" y="222">SDK 解析 + 严格解析通过</text>
+
+  <path class="flow" d="M235,175 L253,175" marker-end="url(#arr)"/>
+  <path class="flow" d="M460,175 L478,175" marker-end="url(#arr)"/>
+  <path class="flow" d="M685,175 L703,175" marker-end="url(#arr)"/>
+  <path class="flow" d="M910,175 L928,175" marker-end="url(#arr)"/>
+  <path class="flow" d="M1135,175 L1153,175" marker-end="url(#arr)"/>
+
+  <!-- 失败 -->
+  <path class="flowR" d="M357,250 L357,290" marker-end="url(#arrR)"/>
+  <rect class="fail" x="255" y="292" width="205" height="96" rx="8"/>
+  <text class="rh" x="271" y="316">bad-shape</text>
+  <text class="r" x="271" y="338">Declarative 却填了 harness</text>
+  <text class="r" x="271" y="360">提交即被拒，集群里</text>
+  <text class="r" x="271" y="380">根本没有这个对象</text>
+
+  <path class="flowR" d="M582,250 L582,290" marker-end="url(#arrR)"/>
+  <rect class="fail" x="480" y="292" width="205" height="150" rx="8"/>
+  <text class="rh" x="496" y="316">bad-runtime</text>
+  <text class="r" x="496" y="336">RuntimeNotApproved</text>
+  <text class="rh" x="496" y="362">bad-tag</text>
+  <text class="r" x="496" y="382">ImageNotPinned</text>
+  <text class="rh" x="496" y="408">bad-registry</text>
+  <text class="r" x="496" y="428">ImageNotApproved</text>
+
+  <path class="flowR" d="M807,250 L807,290" marker-end="url(#arrR)"/>
+  <rect class="fail" x="705" y="292" width="205" height="96" rx="8"/>
+  <text class="rh" x="721" y="316">bad-bundle</text>
+  <text class="r" x="721" y="338">BundleUnresolved</text>
+  <text class="r" x="721" y="360">reviewer:v9 不存在</text>
+
+  <rect class="fail" x="930" y="292" width="440" height="150" rx="8"/>
+  <text class="rh" x="946" y="316">被拦下的后果（四个都一样）</text>
+  <text class="r" x="946" y="340">Ready=False，原因写在 status 里</text>
+  <text class="r" x="946" y="362">不生成 revision</text>
+  <text class="r" x="946" y="384">注册端点对它返回 404：不合格的 agent 不会被发现</text>
+  <text class="r" x="946" y="410">改 AgentRevision 的 spec：</text>
+  <text class="r" x="946" y="430">"AgentRevision 不可修改"，被 API Server 拒绝</text>
+
+  <!-- tag 挪动 -->
+  <rect class="zone" x="30" y="476" width="1340" height="290" rx="14"/>
+  <text class="h" x="48" y="504" style="fill:#fde68a">skills 包的 tag 被挪动：同一个 reviewer:v1 推了新内容（a8c0188b… → 46ee1fb2…）</text>
+  <rect class="cardA" x="50" y="524" width="300" height="220" rx="10"/>
+  <text class="h" x="68" y="550">controller 每 20 秒复查</text>
+  <text class="t" x="68" y="576">只对 Harness 类型做</text>
+  <text class="t" x="68" y="598">重新把 tag 解析成 digest</text>
+  <text class="t" x="68" y="620">和当前 revision 里记的比</text>
+  <text class="num" x="68" y="652">04:40:04 推送新内容</text>
+  <text class="num" x="68" y="674">04:40:32 两个 agent 都已反应</text>
+  <text class="t" x="68" y="704">复查失败（网络、权限）</text>
+  <text class="t" x="68" y="726">不影响当前 revision</text>
+
+  <rect class="cardA" x="390" y="524" width="440" height="100" rx="10"/>
+  <text class="h" x="408" y="550">updatePolicy: Pinned（默认）</text>
+  <text class="t" x="408" y="576">revision 不变，仍指向 a8c0188b…</text>
+  <text class="t" x="408" y="600">status 里多一条 bundleTagMoved：钉住的、tag 现在指向的</text>
+
+  <rect class="cardG" x="390" y="644" width="440" height="100" rx="10"/>
+  <text class="h" x="408" y="670">updatePolicy: Track</text>
+  <text class="t" x="408" y="696">自动生成新 revision 69d3284541，指向 46ee1fb2…</text>
+  <text class="t" x="408" y="720">旧 revision 保留：已在用它的会话不受影响</text>
+
+  <rect class="cardA" x="870" y="524" width="480" height="220" rx="10"/>
+  <text class="h" x="888" y="550">按 tag 拉 vs 按 digest 拉（实测）</text>
+  <text class="m" x="888" y="578">oras pull …/reviewer:v1</text>
+  <text class="t" x="888" y="600">→ 新内容（多了最后一行）</text>
+  <text class="m" x="888" y="630">oras pull …/reviewer@sha256:a8c0188b…</text>
+  <text class="t" x="888" y="652">→ 原来那一版</text>
+  <text class="t" x="888" y="684">沙箱放文件那一步必须按 revision 里的</text>
+  <text class="t" x="888" y="706">digest 拉，否则"同一个 revision"的两个</text>
+  <text class="t" x="888" y="728">会话可能拿到不同的 skills</text>
+
+  <path class="flowA" d="M350,580 L388,575" marker-end="url(#arrA)"/>
+  <path class="flowA" d="M350,680 L388,690" marker-end="url(#arrA)"/>
+
+  <text class="lgh" x="40" y="812">几个数和结论</text>
+  <text class="lg" x="40" y="840">· 1.6 MB 的 skills 包做成 ConfigMap：API Server 直接拒绝（上限 1048576 字节）；做成 OCI artifact 推 ACR 没有问题</text>
+  <text class="lg" x="40" y="866">· kagent 1.x 每个 revision 的配置和 Agent Card 合计限 256 KiB，大的 skills 同样得放到外面，再按 digest 引用</text>
+  <text class="lg" x="40" y="892">· revision 名是规范化内容的哈希：spec 不变、digest 不变就永远是同一个 revision，换 controller 副本、重启都不会多出一个</text>
+  <text class="lg" x="40" y="918">· 结构问题交给 CEL，在提交时拒绝；要查外部系统的（批准清单、registry）交给 controller，结果写进 status</text>
+</svg>

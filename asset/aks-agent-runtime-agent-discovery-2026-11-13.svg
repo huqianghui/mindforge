@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" width="1400" height="820" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .l1 { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .l2 { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .l3 { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .auth { fill: #2a1416; stroke: #f87171; stroke-width: 1.6; animation: pulse 2s ease-in-out infinite; }
+      .h { fill: #f1f5f9; font-size: 16px; font-weight: 700; }
+      .hg { fill: #94a3b8; font-size: 16px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .tg { fill: #94a3b8; font-size: 13px; }
+      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .rh { fill: #fecaca; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #f87171; stroke-width: 2.2; stroke-dasharray: 4 5; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="820" rx="16"/>
+  <text class="title" x="30" y="44">发现分三层，授权另走一条路</text>
+  <text class="sub" x="30" y="72">前两层是这次实测的；第三层（同步到企业级目录）没有做，只按文档画出位置</text>
+
+  <rect class="l1" x="30" y="100" width="420" height="300" rx="12"/>
+  <text class="h" x="50" y="130">第一层：集群内</text>
+  <text class="t" x="50" y="158">直接查 Kubernetes API</text>
+  <text class="m" x="50" y="186">kubectl get agents -A -l team=a</text>
+  <text class="m" x="50" y="208">kubectl get agentrevisions</text>
+  <text class="t" x="50" y="238">谁能看到哪些 agent，由 RBAC 决定</text>
+  <text class="t" x="50" y="260">看到的是完整定义：权限申请、会话策略、</text>
+  <text class="t" x="50" y="282">解析后的 digest、revision 历史</text>
+  <text class="num" x="50" y="314">适合平台运维和同一个团队的人</text>
+  <text class="tg" x="50" y="346">不适合给别的框架、别的集群用：</text>
+  <text class="tg" x="50" y="368">它们不认识这个 CRD</text>
+
+  <rect class="l2" x="490" y="100" width="420" height="300" rx="12"/>
+  <text class="h" x="510" y="130">第二层：跨框架（A2A Agent Card）</text>
+  <text class="t" x="510" y="158">controller 从 CRD 生成卡片，注册端点发布</text>
+  <text class="m" x="510" y="186">GET /agents</text>
+  <text class="m" x="510" y="208">GET /agents/{ns}/{name}/.well-known/</text>
+  <text class="m" x="510" y="228">    agent-card.json</text>
+  <text class="t" x="510" y="258">卡片里只有对外需要的：名字、描述、</text>
+  <text class="t" x="510" y="280">skills、入口地址、认证方式、版本</text>
+  <text class="t" x="510" y="302">版本带 revision 哈希，调用方能看出变没变</text>
+  <text class="num" x="510" y="334">3 张卡片：官方 SDK 解析 + 严格解析通过</text>
+  <text class="tg" x="510" y="364">工具类能力（MCP server）另有自己的</text>
+  <text class="tg" x="510" y="386">registry，不混进 Agent Card</text>
+
+  <rect class="l3" x="950" y="100" width="420" height="300" rx="12"/>
+  <text class="hg" x="970" y="130">第三层：企业级目录（未实测）</text>
+  <text class="tg" x="970" y="158">把卡片同步到企业级的 agent 目录</text>
+  <text class="tg" x="970" y="180">（如 Entra 里的 Agent Registry），</text>
+  <text class="tg" x="970" y="202">让 Teams、Copilot 和其他平台</text>
+  <text class="tg" x="970" y="224">找得到跑在 AKS 上的 agent</text>
+  <text class="tg" x="970" y="256">这一层通常和 agent 自己的身份</text>
+  <text class="tg" x="970" y="278">一起出现：目录里的条目对应</text>
+  <text class="tg" x="970" y="300">一个可以被授权、被审计的主体</text>
+  <text class="tg" x="970" y="334">放到第 09 篇讲身份时再看</text>
+
+  <path class="flow" d="M450,250 L488,250" marker-end="url(#arr)"/>
+  <circle class="badge" cx="469" cy="232" r="11"/><text class="bn" x="469" y="237">1</text>
+  <path class="flow" d="M910,250 L948,250" marker-end="url(#arr)"/>
+  <circle class="badge" cx="929" cy="232" r="11"/><text class="bn" x="929" y="237">2</text>
+
+  <rect class="auth" x="30" y="440" width="1340" height="200" rx="12"/>
+  <text class="h" x="50" y="470" style="fill:#fecaca">调用授权：和发现完全分开</text>
+  <text class="t" x="50" y="500">卡片里声明的是"怎么认证"：securitySchemes 写的是 Entra 签发的 Bearer JWT，description 里明说"发现不等于授权"</text>
+  <text class="t" x="50" y="526">真正的调用要过被调用方的审批：像第 03 篇的 agent 调 agent，由目标 agent 的 owner 批准哪些源 agent 能调、能做哪些动作，</text>
+  <text class="t" x="50" y="552">每次请求核对源会话的身份，只允许一跳；批准撤销后，卡片照样能看到，调用会被拒</text>
+  <text class="rh" x="50" y="586">反过来也一样：不合格（Ready=False）的 agent 不发卡片，注册端点返回 404</text>
+  <text class="rh" x="50" y="612">这次的 PoC 只做到"发现"，卡片里的入口地址（agent 网关）没有实现，调用链路留到后面几篇</text>
+
+  <path class="flowR" d="M700,400 L700,438" marker-end="url(#arrR)"/>
+  <circle class="badge" cx="722" cy="419" r="11" style="fill:#7f1d1d;stroke:#fca5a5"/><text class="bn" x="722" y="424">3</text>
+
+  <text class="lgh" x="40" y="684">编号说明</text>
+  <text class="lg" x="40" y="712">① 集群内的完整定义，经 controller 裁剪成卡片：权限申请、会话策略这些内部信息不出现在卡片里</text>
+  <text class="lg" x="40" y="738">② 同一张卡片再往外同步，到企业级目录（这次没做）</text>
+  <text class="lg" x="40" y="764">③ 不管从哪一层发现的，调用时都要单独授权；能看到不等于能调</text>
+  <text class="lg" x="40" y="790">· kagent 也会为 agent 发布卡片，但它的 BYO 类型卡片里不带 skills：自己写 loop 的 agent，能力描述要作者自己补</text>
+</svg>

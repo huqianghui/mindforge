@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .colA { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .colB { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; }
+      .colC { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.6; }
+      .shell { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.6; stroke-dasharray: 9 5; }
+      .hd { fill: #f8fafc; font-size: 18px; font-weight: 700; }
+      .tag { font-size: 13px; font-weight: 600; }
+      .rowL { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .t { fill: #e2e8f0; font-size: 13.5px; }
+      .tg { fill: #cbd5e1; font-size: 13px; }
+      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .sep { stroke: #334155; stroke-width: 1; }
+      .spec { fill: none; stroke: #38bdf8; stroke-width: 3; stroke-dasharray: 10 8; animation: dash 1.6s linear infinite; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -36; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">三类 agent：按"loop 归谁"来分，对外却是同一个外壳</text>
+  <text class="sub" x="30" y="72">从左到右，作者写的东西越来越像代码，平台能替它做的越来越少；运行时的分界线在 A 和 B 之间，不在 B 和 C 之间</text>
+
+  <!-- 光谱 -->
+  <path class="spec" d="M190,108 L1310,108"/>
+  <text class="tag" x="190" y="100" fill="#5eead4">纯配置</text>
+  <text class="tag" x="1310" y="100" fill="#c4b5fd" text-anchor="end">纯代码</text>
+
+  <!-- 行标签 -->
+  <text class="rowL" x="30" y="176">loop 归谁</text>
+  <text class="rowL" x="30" y="236">作者写什么</text>
+  <text class="rowL" x="30" y="310">怎么跑</text>
+  <text class="rowL" x="30" y="384">打包与固定</text>
+  <text class="rowL" x="30" y="452">参照</text>
+
+  <!-- A -->
+  <rect class="colA" x="150" y="124" width="380" height="360" rx="12"/>
+  <text class="hd" x="170" y="154">A · 声明式</text>
+  <text class="t" x="170" y="180">平台自带的通用 loop</text>
+  <line class="sep" x1="170" y1="198" x2="510" y2="198"/>
+  <text class="t" x="170" y="226">指令、模型、MCP 工具、知识源</text>
+  <text class="tg" x="170" y="248">全是配置</text>
+  <line class="sep" x1="170" y1="266" x2="510" y2="266"/>
+  <text class="t" x="170" y="294">loop 可以跑在共享的多租户服务里</text>
+  <text class="tg" x="170" y="316">要执行代码时再按需申请沙箱，成本最低</text>
+  <line class="sep" x1="170" y1="338" x2="510" y2="338"/>
+  <text class="t" x="170" y="366">配置本身就是全部内容</text>
+  <text class="tg" x="170" y="388">模型名要在批准清单里</text>
+  <line class="sep" x1="170" y1="408" x2="510" y2="408"/>
+  <text class="tg" x="170" y="436">Foundry：Prompt agent</text>
+  <text class="tg" x="170" y="458">kagent：declarative（harness kagent）</text>
+
+  <!-- B -->
+  <rect class="colB" x="550" y="124" width="380" height="360" rx="12"/>
+  <text class="hd" x="570" y="154">B · 基于现成 harness</text>
+  <text class="t" x="570" y="180">第三方的 Claude Code、Codex、Copilot…</text>
+  <line class="sep" x1="570" y1="198" x2="910" y2="198"/>
+  <text class="t" x="570" y="226">AGENTS.md、skills、MCP 配置</text>
+  <text class="tg" x="570" y="248">在作者看来仍然是配置，不写 loop</text>
+  <line class="sep" x1="570" y1="266" x2="910" y2="266"/>
+  <text class="t" x="570" y="294">每个会话独占一个沙箱</text>
+  <text class="tg" x="570" y="316">harness 要文件系统和 shell，第 02 篇</text>
+  <line class="sep" x1="570" y1="338" x2="910" y2="338"/>
+  <text class="t" x="570" y="366">AGENTS.md + skills 打成 OCI artifact</text>
+  <text class="tg" x="570" y="388">harness 版本由运行时类固定</text>
+  <line class="sep" x1="570" y1="408" x2="910" y2="408"/>
+  <text class="tg" x="570" y="436">Foundry：没有直接对应</text>
+  <text class="tg" x="570" y="458">kagent：harness codex / claude</text>
+
+  <!-- C -->
+  <rect class="colC" x="950" y="124" width="380" height="360" rx="12"/>
+  <text class="hd" x="970" y="154">C · 自写 loop 的代码</text>
+  <text class="t" x="970" y="180">作者自己（Agent Framework、LangGraph…）</text>
+  <line class="sep" x1="970" y1="198" x2="1310" y2="198"/>
+  <text class="t" x="970" y="226">代码，打成容器镜像</text>
+  <text class="tg" x="970" y="248">实现约定的协议（A2A / Responses）</text>
+  <line class="sep" x1="970" y1="266" x2="1310" y2="266"/>
+  <text class="t" x="970" y="294">每个会话独占一个沙箱</text>
+  <text class="tg" x="970" y="316">和 B 一样，只是 loop 换成自己的</text>
+  <line class="sep" x1="970" y1="338" x2="1310" y2="338"/>
+  <text class="t" x="970" y="366">镜像按 digest 固定</text>
+  <text class="tg" x="970" y="388">仓库前缀要在批准清单里</text>
+  <line class="sep" x1="970" y1="408" x2="1310" y2="408"/>
+  <text class="tg" x="970" y="436">Foundry：Hosted agent</text>
+  <text class="tg" x="970" y="458">kagent：harness byo</text>
+
+  <!-- 外壳 -->
+  <rect class="shell" x="150" y="512" width="1180" height="230" rx="14"/>
+  <text class="hd" x="170" y="544" style="fill:#7dd3fc">统一外壳：一个 Agent CRD，三类共用的字段</text>
+  <text class="m" x="170" y="576">spec.type: Declarative | Harness | Code</text>
+  <text class="m" x="170" y="600">description · version · skills[]        ← 发现时展示，进 Agent Card</text>
+  <text class="m" x="170" y="624">entrypoints: [A2A, Responses, Teams, Cron]</text>
+  <text class="m" x="170" y="648">permissions: [{action, resourceRef}]     ← 只是申请，第 04 篇</text>
+  <text class="m" x="170" y="672">session: {persistence, pauseAfterIdle, retention}   ← 第 05 篇</text>
+  <text class="m" x="170" y="696">declarative{…} | harness{…} | code{…}    ← 只能填与 type 对应的那一块</text>
+  <text class="t" x="840" y="576">为什么值得统一：</text>
+  <text class="tg" x="840" y="602">调用方、授权、发现只面对一种对象</text>
+  <text class="tg" x="840" y="626">渠道适配器不用知道背后是哪一类</text>
+  <text class="tg" x="840" y="650">审批流程（权限申请与批准）只写一遍</text>
+  <text class="num" x="840" y="682">"type 和配置块对不上"在提交时</text>
+  <text class="num" x="840" y="704">就被 CRD 里的 CEL 规则拒绝</text>
+
+  <text class="lgh" x="40" y="790">怎么读这张图</text>
+  <text class="lg" x="40" y="818">· B 在作者眼里像 A：都是写描述、选工具，没有一行 loop 代码；在运行时眼里像 C：要独占沙箱、要 shell、loop 不是平台写的</text>
+  <text class="lg" x="40" y="846">· 所以真正的分界在 A 和 B 之间。A 可以几百个共用一个服务；B 和 C 每个会话一个 Kata VM，成本和冷启动是另一个量级</text>
+  <text class="lg" x="40" y="874">· kagent 0.x 也是一个 Agent CRD 加 spec.type；1.x 拆成了 AgentTemplate 加 Harness 两层，harness 的选项正好落在这三类上</text>
+  <text class="lg" x="40" y="902">· 三类内部差别再大，对外都应该是同一套会话 API 和同一种 Agent Card，这是第 03 篇"统一事件流"往外再推一层</text>
+</svg>
