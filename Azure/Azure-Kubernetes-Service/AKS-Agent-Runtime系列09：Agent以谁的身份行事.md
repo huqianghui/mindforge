@@ -102,7 +102,7 @@ Entra Agent ID 就是为这个设计的。它有两层：**agent identity bluepr
 - **Durable 会话要处理令牌过期**：用户令牌一小时左右就过期，过期后只能靠 refresh token 续。要么加密保存 refresh token 并随会话删除，要么在令牌过期后暂停需要用户身份的操作、等用户回来重新授权
 - **agent 多起来之后上 Agent ID**，每个 agent 一个身份，blueprint 的凭据用 AKS 的联合凭据，不放 secret。代表用户的那一步需要管理员配好可继承权限，这个审批要算进上线流程里。
 
-最后一篇做个收尾：既然 Foundry 已经有 Hosted Agents，为什么还要在 AKS 上自己搭这一套？
+[最后一篇](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)做个收尾：既然 Foundry 已经有 Hosted Agents，为什么还要在 AKS 上自己搭这一套？
 
 ## 相关阅读
 

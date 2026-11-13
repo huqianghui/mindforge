@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1060" width="1400" height="1060" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .hA { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .hF { fill: #13213a; stroke: #38bdf8; stroke-width: 1.6; }
+      .hdA { fill: #5eead4; font-size: 17px; font-weight: 700; }
+      .hdF { fill: #7dd3fc; font-size: 17px; font-weight: 700; }
+      .row { fill: #0f172a; stroke: #1e293b; stroke-width: 1; }
+      .lab { fill: #e2e8f0; font-size: 14px; font-weight: 600; }
+      .ep { fill: #94a3b8; font-size: 12px; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .warn { fill: #fca5a5; font-size: 13px; }
+      .good { fill: #5eead4; font-size: 13px; }
+      .gap { fill: #fde68a; font-size: 13px; }
+      .dot { stroke-width: 0; }
+      .flow { fill: none; stroke: #334155; stroke-width: 1.5; stroke-dasharray: 4 6; animation: dash 1.6s linear infinite; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -20; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1060" rx="16"/>
+  <text class="title" x="30" y="44">九篇里自己搭的每一块，在 Foundry Hosted Agents 里是什么</text>
+  <text class="sub" x="30" y="72">左边是这个系列在 AKS 上实测到的（含踩到的坑，红色）；右边是 Hosted Agents 文档写明的能力；黄色是右边没有直接对应的地方</text>
+
+  <rect class="hA" x="260" y="92" width="550" height="44" rx="8"/><text class="hdA" x="280" y="120">AKS 自建（这个系列）</text>
+  <rect class="hF" x="830" y="92" width="540" height="44" rx="8"/><text class="hdF" x="850" y="120">Foundry Hosted Agents（文档）</text>
+
+  <!-- 行：y0 = 150 + 92*i，高 84 -->
+  <rect class="row" x="30" y="150" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="182">执行隔离</text><text class="ep" x="46" y="202">01 · 02</text>
+  <text class="t" x="260" y="180">Kata 节点池，每会话一个 VM；规格按节点池随意选</text>
+  <text class="t" x="260" y="202">默认拒绝出站、不挂 SA token、IMDS 不可达都要自己配</text>
+  <text class="good" x="850" y="180">每会话一个 VM 隔离沙箱，平台负责</text>
+  <text class="gap" x="850" y="202">规格最大 2 vCPU / 4 GiB；协议库支持 Python、C#</text>
+
+  <rect class="row" x="30" y="242" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="274">harness</text><text class="ep" x="46" y="294">02 · 03 · 08</text>
+  <text class="t" x="260" y="272">Claude Code、Codex、Copilot CLI 直接关进沙箱免确认跑</text>
+  <text class="warn" x="260" y="294">Claude Code 要 IS_SANDBOX=1 才能在 root 下免确认</text>
+  <text class="t" x="850" y="272">容器里跑任意框架，对外实现 Responses / Invocations</text>
+  <text class="gap" x="850" y="294">没有"托管现成编码 CLI"这一类，要自己包一层协议</text>
+
+  <rect class="row" x="30" y="334" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="366">控制面 / 会话</text><text class="ep" x="46" y="386">03 · 06</text>
+  <text class="t" x="260" y="364">自己写：八步状态机、适配器、事件流</text>
+  <text class="warn" x="260" y="386">参考实现单副本 + SQLite；多副本要 lease + fencing 自己做</text>
+  <text class="good" x="850" y="364">会话 API、对话历史（Responses）由平台管</text>
+  <text class="t" x="850" y="386">会话与对话分开：会话是沙箱和文件，对话是消息历史</text>
+
+  <rect class="row" x="30" y="426" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="458">出站治理</text><text class="ep" x="46" y="478">04</text>
+  <text class="t" x="260" y="456">网关认 Pod 证书，按"申请 ∧ 批准 ∧ 发布"逐请求授权</text>
+  <text class="warn" x="260" y="478">缺一项批准新会话就整体 503；授权在突发下最先撑不住</text>
+  <text class="t" x="850" y="456">出站可以走客户自己的 VNet；工具统一经 Toolbox MCP</text>
+  <text class="gap" x="850" y="478">"某个 agent 对某个资源的某个动作"这一级的批准要另想办法</text>
+
+  <rect class="row" x="30" y="518" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="550">生命周期</text><text class="ep" x="46" y="570">05</text>
+  <text class="t" x="260" y="548">rootfs 打成镜像推 ACR，每轮两次 commit，恢复约 10 秒</text>
+  <text class="warn" x="260" y="570">会话库没记录的 Durable 沙箱、删记录后的快照镜像没人回收</text>
+  <text class="good" x="850" y="548">空闲 2~60 分钟释放，恢复时还原 $HOME 和 /files</text>
+  <text class="good" x="850" y="570">30 天不活动删除；没有预热池要配</text>
+
+  <rect class="row" x="30" y="610" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="642">注册与发现</text><text class="ep" x="46" y="662">07</text>
+  <text class="t" x="260" y="640">Agent CRD + controller，skills 打 OCI 包按 digest 固定</text>
+  <text class="t" x="260" y="662">自己生成 A2A Agent Card，发现与授权分开</text>
+  <text class="good" x="850" y="640">平台保存镜像、agent 版本和 agent identity</text>
+  <text class="t" x="850" y="662">对外发现（卡片、目录）这次没有核实</text>
+
+  <rect class="row" x="30" y="702" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="734">模型接入</text><text class="ep" x="46" y="754">08</text>
+  <text class="t" x="260" y="732">一个网关同时接 Responses 和 Messages，协议在网关里转换</text>
+  <text class="warn" x="260" y="754">别名在网关不认；Foundry 上的 Claude 部署需组织声明（未测）</text>
+  <text class="t" x="850" y="732">容器内用 agent identity 调 Foundry 模型</text>
+  <text class="t" x="850" y="754">换哪家模型、走什么协议，由容器里的代码决定</text>
+
+  <rect class="row" x="30" y="794" width="1340" height="84" rx="8"/>
+  <text class="lab" x="46" y="826">身份</text><text class="ep" x="46" y="846">09</text>
+  <text class="t" x="260" y="824">OBO、Agent ID 都能用 AKS 联合凭据跑，无 secret</text>
+  <text class="warn" x="260" y="846">Agent ID 的 OBO 需要管理员同意；令牌服务要自己写</text>
+  <text class="good" x="850" y="824">部署时自动给每个 agent 建 Entra agent identity</text>
+  <text class="good" x="850" y="846">按用户隔离会话；Toolbox 统一处理身份透传</text>
+
+  <line class="flow" x1="815" y1="150" x2="815" y2="878"/>
+
+  <text class="lgh" x="40" y="930">怎么读这张图</text>
+  <text class="lg" x="40" y="958">· 右边绿色的部分，正是这个系列花篇幅最多、坑也最多的那几块：会话生命周期、按会话的沙箱、每个 agent 的身份</text>
+  <text class="lg" x="40" y="986">· 黄色是选 AKS 的真正理由：要直接跑现成的编码 CLI、沙箱要比 2 vCPU / 4 GiB 大、出站要按"资源 + 动作"逐请求批准</text>
+  <text class="lg" x="40" y="1014">· 红色是选 AKS 的代价：这些问题都是在几天的 PoC 里撞上的，生产环境只会更多</text>
+</svg>

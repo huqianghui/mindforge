@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .q { fill: #13213a; stroke: #38bdf8; stroke-width: 1.6; }
+      .qT { fill: #f1f5f9; font-size: 14.5px; font-weight: 600; }
+      .qS { fill: #94a3b8; font-size: 12.5px; }
+      .resF { fill: #0f2a3a; stroke: #7dd3fc; stroke-width: 1.8; }
+      .resA { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.8; animation: pulse 2.4s ease-in-out infinite; }
+      .resM { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
+      .rT { fill: #f8fafc; font-size: 15px; font-weight: 700; }
+      .rS { fill: #cbd5e1; font-size: 13px; }
+      .edge { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .el { fill: #fde68a; font-size: 13px; font-weight: 600; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="900" rx="16"/>
+  <text class="title" x="30" y="44">放在哪：先问 agent 是哪一类，再问三件 Hosted Agents 不管的事</text>
+  <text class="sub" x="30" y="72">三类划分见第 07 篇；判断条件来自这个系列的实测和 Hosted Agents 文档写明的能力边界</text>
+
+  <!-- 根 -->
+  <rect class="q" x="530" y="96" width="340" height="70" rx="10"/>
+  <text class="qT" x="550" y="124">这个 agent 的 loop 归谁？</text>
+  <text class="qS" x="550" y="148">第 07 篇：声明式 / 现成 harness / 自写代码</text>
+
+  <!-- 三个分支 -->
+  <path class="edge" d="M600,166 C560,200 250,200 230,226" marker-end="url(#arr)"/><text class="el" x="330" y="200">A 平台的 loop</text>
+  <path class="edge" d="M700,166 L700,226" marker-end="url(#arr)"/><text class="el" x="712" y="204">C 自己写</text>
+  <path class="edge" d="M800,166 C840,200 1150,200 1170,226" marker-end="url(#arr)"/><text class="el" x="1000" y="200">B 现成编码 CLI</text>
+
+  <rect class="resF" x="40" y="228" width="380" height="150" rx="12"/>
+  <text class="rT" x="60" y="258">Foundry Prompt agent</text>
+  <text class="rS" x="60" y="284">loop 在共享服务里，不需要每会话一个 VM</text>
+  <text class="rS" x="60" y="306">在 AKS 上自建这一类，等于重写一个平台</text>
+  <text class="rS" x="60" y="328">只有它要和 B、C 共用同一套治理时，</text>
+  <text class="rS" x="60" y="350">才值得放进自建的统一外壳</text>
+
+  <rect class="q" x="510" y="228" width="380" height="96" rx="10"/>
+  <text class="qT" x="530" y="256">沙箱 2 vCPU / 4 GiB 够不够？</text>
+  <text class="qS" x="530" y="280">编码工具链镜像动辄上 GB；大仓库构建、</text>
+  <text class="qS" x="530" y="300">跑测试、需要 GPU 的，通常不够</text>
+
+  <rect class="q" x="980" y="228" width="380" height="96" rx="10"/>
+  <text class="qT" x="1000" y="256">能接受自己包一层协议吗？</text>
+  <text class="qS" x="1000" y="280">Hosted Agents 要求容器实现 Responses /</text>
+  <text class="qS" x="1000" y="300">Invocations；CLI 本身不说这些协议</text>
+
+  <path class="edge" d="M600,324 C600,360 600,370 600,400" marker-end="url(#arr)"/><text class="el" x="612" y="368">够</text>
+  <path class="edge" d="M890,290 C935,290 935,560 1000,600" marker-end="url(#arr)"/><text class="el" x="944" y="540">不够</text>
+  <path class="edge" d="M1010,324 C1000,410 900,440 842,452" marker-end="url(#arr)"/><text class="el" x="1012" y="392">能，且规格够</text>
+  <path class="edge" d="M1250,324 L1250,600" marker-end="url(#arr)"/><text class="el" x="1262" y="470">不能</text>
+
+  <rect class="q" x="420" y="402" width="420" height="120" rx="10"/>
+  <text class="qT" x="440" y="430">另外三件事里，有没有必须的？</text>
+  <text class="qS" x="440" y="454">① 出站要按"某个 agent 对某个资源的某个动作"批准（04）</text>
+  <text class="qS" x="440" y="476">② 一个网关统一接多家模型和协议（08）</text>
+  <text class="qS" x="440" y="498">③ 控制面要按自己的规则改（会话、回收、HA）</text>
+
+  <path class="edge" d="M520,522 C520,560 300,580 280,600" marker-end="url(#arr)"/><text class="el" x="330" y="574">都不是必须</text>
+  <path class="edge" d="M760,522 C780,560 1000,580 1060,600" marker-end="url(#arr)"/><text class="el" x="840" y="574">有</text>
+
+  <rect class="resF" x="40" y="602" width="520" height="160" rx="12"/>
+  <text class="rT" x="60" y="632">Foundry Hosted Agents</text>
+  <text class="rS" x="60" y="658">会话沙箱、空闲释放与恢复、每个 agent 的身份、按用户</text>
+  <text class="rS" x="60" y="680">隔离会话，这些平台都替你做了：正是这个系列里最费劲、</text>
+  <text class="rS" x="60" y="702">坑最多的几块</text>
+  <text class="rS" x="60" y="730">出站走 VNet，工具走 Toolbox；粒度更细的批准在工具</text>
+  <text class="rS" x="60" y="752">一侧补</text>
+
+  <rect class="resA" x="600" y="602" width="760" height="160" rx="12"/>
+  <text class="rT" x="620" y="632">AKS 自建（前提：团队能扛下控制面的运维）</text>
+  <text class="rS" x="620" y="658">直接跑现成编码 CLI；沙箱规格不受限；出站逐请求按"资源 + 动作"授权；一个网关统一模型协议</text>
+  <text class="rS" x="620" y="684">代价是这个系列撞上的每一个坑都要自己填：单副本控制面、孤儿沙箱和快照镜像的回收、</text>
+  <text class="rS" x="620" y="706">授权在突发下的瓶颈、Claude Code 的 root 检查、令牌服务、管理员同意的审批流程</text>
+  <text class="rS" x="620" y="738">AKS 本身给的是原语：Kata、Workload Identity、节点池、网络策略。会话层和 harness 编排层都要自己写</text>
+
+  <text class="lgh" x="40" y="812">读这张图</text>
+  <text class="lg" x="40" y="840">· 判断的顺序是先看 agent 类型，再看规格和协议，最后才是"要不要自己掌控"。最后一问答"有"，前提也是团队愿意长期维护一个控制面</text>
+  <text class="lg" x="40" y="868">· 两边不互斥：同一个组织完全可以 A、C 类放 Foundry，只把 B 类（编码 CLI）放在 AKS，用同一个 Entra 租户和同一套 agent 身份</text>
+</svg>

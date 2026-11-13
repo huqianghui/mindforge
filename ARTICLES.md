@@ -314,6 +314,7 @@
 - [AKS Agent Runtime 系列 07：Agent 的类型、注册与发现](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列07：Agent的类型、注册与发现.md)
 - [AKS Agent Runtime 系列 08：模型接入层](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列08：模型接入层.md)
 - [AKS Agent Runtime 系列 09：Agent 以谁的身份行事](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)
+- [AKS Agent Runtime 系列 10：为什么在 AKS 上自建](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列10：为什么在AKS上自建.md)
 
 #### Azure/Copilot-Managed-Runtime
 
