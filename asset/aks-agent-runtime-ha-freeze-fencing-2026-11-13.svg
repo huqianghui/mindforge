@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 770" width="1400" height="770" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #e2e8f0; font-size: 16px; font-weight: 700; }
+      .laneS { fill: #94a3b8; font-size: 13px; }
+      .rl { fill: #cbd5e1; font-size: 14px; font-weight: 600; }
+      .run { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
+      .frozen { fill: #111827; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .zombie { fill: #3b1518; stroke: #f87171; stroke-width: 1.6; animation: pulse 1.8s ease-in-out infinite; }
+      .bl { fill: #f1f5f9; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .track { stroke: #334155; stroke-width: 2; stroke-dasharray: 8 6; animation: dash 1.4s linear infinite; }
+      .lease { stroke: #a78bfa; stroke-width: 1.8; stroke-dasharray: 4 4; }
+      .relock { stroke: #38bdf8; stroke-width: 1.8; stroke-dasharray: 4 4; }
+      .vt { fill: #c4b5fd; font-size: 13px; }
+      .vt2 { fill: #7dd3fc; font-size: 13px; }
+      .good { fill: #2dd4bf; stroke: #99f6e4; stroke-width: 1.5; }
+      .bad { fill: #f87171; stroke: #fecaca; stroke-width: 1.5; animation: pulse 1.4s ease-in-out infinite; }
+      .mk { fill: #e2e8f0; font-size: 13.5px; font-weight: 600; }
+      .tl { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .axis { stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -34; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="770" rx="16"/>
+  <text class="title" x="30" y="44">旧主没死只是卡住了：有没有 fencing，结果完全不同</text>
+  <text class="sub" x="30" y="72">实测：持有会话的副本在执行第 1 轮时停顿 45 秒，超过 lease（10 秒）和会话锁（30 秒）；横轴是从第 1 轮开始算的秒数，1 秒 = 9 像素</text>
+  <text class="lane" x="30" y="120">fencing 开</text>
+  <text class="laneS" x="30" y="140">写入检查 token 和序号</text>
+  <text class="rl" x="30" y="180">旧主 A</text>
+  <text class="rl" x="30" y="230">新主 B</text>
+  <text class="rl" x="30" y="275">B 的写入</text>
+  <line class="track" x1="160" y1="270" x2="1200" y2="270"/>
+  <rect class="run" x="160" y="160" width="86" height="30" rx="4"/>
+  <text class="bl" x="203" y="180">执行 seq1</text>
+  <rect class="frozen" x="246" y="160" width="405" height="30" rx="4"/>
+  <text class="bl" x="449" y="180">冻结 45 秒：续租全停</text>
+  <rect class="zombie" x="651" y="160" width="103" height="30" rx="4"/>
+  <text class="bl" x="703" y="180">解冻继续</text>
+  <rect class="run" x="567" y="210" width="188" height="30" rx="4"/>
+  <text class="bl" x="661" y="230">seq1 重做</text>
+  <rect class="run" x="765" y="210" width="188" height="30" rx="4"/>
+  <text class="bl" x="859" y="230">seq2</text>
+  <rect class="run" x="963" y="210" width="188" height="30" rx="4"/>
+  <text class="bl" x="1057" y="230">seq3</text>
+  <line class="lease" x1="336" y1="152" x2="336" y2="248"/>
+  <text class="vt" x="341" y="148">lease 过期</text>
+  <line class="relock" x1="565" y1="152" x2="565" y2="248"/>
+  <text class="vt2" x="560" y="148" text-anchor="end">会话锁转给 B</text>
+  <circle class="bad" cx="754" cy="175" r="7"/>
+  <text class="mk" x="764" y="180" text-anchor="start">写入 seq1 被拒（带的是 token=1，库里已是 2）</text>
+  <circle class="good" cx="755" cy="270" r="7"/>
+  <text class="mk" x="745" y="275" text-anchor="end">seq1</text>
+  <circle class="good" cx="953" cy="270" r="7"/>
+  <text class="mk" x="943" y="275" text-anchor="end">seq2</text>
+  <circle class="good" cx="1151" cy="270" r="7"/>
+  <text class="mk" x="1141" y="275" text-anchor="end">seq3</text>
+  <text class="lane" x="30" y="340">fencing 关（对照）</text>
+  <text class="laneS" x="30" y="360">写入不检查 token 和序号</text>
+  <text class="rl" x="30" y="400">旧主 A</text>
+  <text class="rl" x="30" y="450">新主 B</text>
+  <text class="rl" x="30" y="495">B 的写入</text>
+  <line class="track" x1="160" y1="490" x2="1200" y2="490"/>
+  <rect class="run" x="160" y="380" width="84" height="30" rx="4"/>
+  <text class="bl" x="202" y="400">执行 seq1</text>
+  <rect class="frozen" x="244" y="380" width="405" height="30" rx="4"/>
+  <text class="bl" x="446" y="400">冻结 45 秒：续租全停</text>
+  <rect class="zombie" x="649" y="380" width="102" height="30" rx="4"/>
+  <text class="bl" x="700" y="400">解冻继续</text>
+  <rect class="run" x="535" y="430" width="187" height="30" rx="4"/>
+  <text class="bl" x="629" y="450">seq1 重做</text>
+  <rect class="run" x="730" y="430" width="190" height="30" rx="4"/>
+  <text class="bl" x="825" y="450">seq2</text>
+  <rect class="run" x="925" y="430" width="187" height="30" rx="4"/>
+  <text class="bl" x="1019" y="450">seq3</text>
+  <line class="lease" x1="334" y1="372" x2="334" y2="468"/>
+  <text class="vt" x="339" y="368">lease 过期</text>
+  <line class="relock" x1="534" y1="372" x2="534" y2="468"/>
+  <text class="vt2" x="528" y="368" text-anchor="end">会话锁转给 B</text>
+  <circle class="bad" cx="750" cy="395" r="7"/>
+  <text class="mk" x="760" y="400" text-anchor="start">又写了一次 seq1：B 已经在做 seq2，重复且乱序</text>
+  <circle class="good" cx="722" cy="490" r="7"/>
+  <text class="mk" x="712" y="495" text-anchor="end">seq1</text>
+  <circle class="good" cx="920" cy="490" r="7"/>
+  <text class="mk" x="910" y="495" text-anchor="end">seq2</text>
+  <circle class="good" cx="1112" cy="490" r="7"/>
+  <text class="mk" x="1102" y="495" text-anchor="end">seq3</text>
+  <line class="axis" x1="160" y1="560" x2="1200" y2="560"/>
+  <text class="tl" x="160" y="582">0 s</text><text class="tl" x="340" y="582">20</text><text class="tl" x="520" y="582">40</text><text class="tl" x="700" y="582">60</text><text class="tl" x="880" y="582">80</text><text class="tl" x="1060" y="582">100</text>
+
+  <text class="lgh" x="40" y="630">读这张图</text>
+  <text class="lg" x="40" y="658">· lease 10 秒就过期了，但会话锁要等 30 秒超时，B 在冻结后 32 ~ 35 秒才拿到会话：卡住的旧主，接管时间由会话锁决定，不由 lease 决定</text>
+  <text class="lg" x="40" y="684">· 两种情况下，旧主解冻后都不知道自己已经被替换，和新主同时执行了 11 秒多；fencing 挡住的是写入，不是执行</text>
+  <text class="lg" x="40" y="710">· 关掉 fencing 时，旧主在新主已经开始第 2 轮之后又写了一次第 1 轮。它随后确认消息时收到 SessionLockLostError——队列知道它丢了锁，</text>
+  <text class="lg" x="40" y="736">  但副作用已经发生了。真实场景里这一步可能是又推了一次代码、又发了一条消息</text>
+</svg>

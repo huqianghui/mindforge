@@ -310,6 +310,7 @@
 - [AKS Agent Runtime 系列 03：控制面怎么驱动编码 Harness](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md)
 - [AKS Agent Runtime 系列 04：出站治理与逐请求授权](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列04：出站治理与逐请求授权.md)
 - [AKS Agent Runtime 系列 05：会话生命周期与回收](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列05：会话生命周期与回收.md)
+- [AKS Agent Runtime 系列 06：会话管理与高可用](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列06：会话管理与高可用.md)
 
 #### Azure/Copilot-Managed-Runtime
 

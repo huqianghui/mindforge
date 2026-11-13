@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .rh { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .rs { fill: #94a3b8; font-size: 13px; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+      .gl { fill: #64748b; font-size: 13px; text-anchor: middle; }
+      .bG { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.5; }
+      .bA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.5; }
+      .bB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .bR { fill: #3b1518; stroke: #f87171; stroke-width: 1.6; animation: pulse 1.8s ease-in-out infinite; }
+      .bS { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
+      .v { fill: #f1f5f9; font-size: 14px; font-weight: 700; }
+      .why { fill: #cbd5e1; font-size: 13px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .flowbar { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -24; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="760" rx="16"/>
+  <text class="title" x="30" y="44">会话被接管要多久：取决于旧主是怎么"没"的</text>
+  <text class="sub" x="30" y="72">从故障发生到另一个副本开始处理同一个会话的秒数，全部实测；横轴 1 秒 = 16 像素。右侧写的是决定这个数的那个超时</text>
+
+  <!-- 网格 0..40s, x = 330 + 16*t -->
+  <line class="grid" x1="330" y1="100" x2="330" y2="530"/><text class="gl" x="330" y="552">0</text>
+  <line class="grid" x1="490" y1="100" x2="490" y2="530"/><text class="gl" x="490" y="552">10 s</text>
+  <line class="grid" x1="650" y1="100" x2="650" y2="530"/><text class="gl" x="650" y="552">20 s</text>
+  <line class="grid" x1="810" y1="100" x2="810" y2="530"/><text class="gl" x="810" y="552">30 s</text>
+  <line class="grid" x1="970" y1="100" x2="970" y2="530"/><text class="gl" x="970" y="552">40 s</text>
+
+  <text class="rh" x="30" y="128">优雅退出（SIGTERM）</text>
+  <text class="rs" x="30" y="148">做完当前这一轮再交出</text>
+  <rect class="bG" x="330" y="112" width="6" height="40" rx="3"/>
+  <text class="v" x="346" y="138">0.1 s</text>
+  <text class="why" x="1000" y="128">主动释放 lease 和会话锁</text>
+  <text class="why" x="1000" y="148">前提：grace 期长于剩余执行时间</text>
+
+  <text class="rh" x="30" y="208">单副本重启（参考实现）</text>
+  <text class="rs" x="30" y="228">Recreate + SQLite</text>
+  <rect class="bS" x="330" y="192" width="80" height="40" rx="4"/>
+  <text class="v" x="420" y="218">5 s</text>
+  <text class="why" x="1000" y="208">Pod 重建 + 启动时围栏核对</text>
+  <text class="why" x="1000" y="228">期间所有会话都停，第 05 篇实测</text>
+
+  <text class="rh" x="30" y="288">进程被杀（连接断开）</text>
+  <text class="rs" x="30" y="308">两次实测：执行到一半</text>
+  <rect class="bA" x="330" y="272" width="238" height="40" rx="4"/>
+  <rect class="bA" x="330" y="272" width="256" height="40" rx="4" style="fill-opacity:0.45"/>
+  <text class="v" x="598" y="298">14.9 ~ 16 s</text>
+  <text class="why" x="1000" y="288">会话锁 4 ~ 16 秒就放了，</text>
+  <text class="why" x="1000" y="308">剩下的是等 10 秒 lease 过期</text>
+
+  <text class="rh" x="30" y="368">进程卡住（连接还在）</text>
+  <text class="rs" x="30" y="388">冻结 45 秒，两次实测</text>
+  <rect class="bB" x="330" y="352" width="515" height="40" rx="4"/>
+  <rect class="bB" x="330" y="352" width="566" height="40" rx="4" style="fill-opacity:0.45"/>
+  <text class="v" x="908" y="378">32 ~ 35 s</text>
+  <text class="why" x="1000" y="368">lease 早过期了，</text>
+  <text class="why" x="1000" y="388">等的是 30 秒的会话锁超时</text>
+
+  <text class="rh" x="30" y="448">第一版：lease 被占就 abandon</text>
+  <text class="rs" x="30" y="468">进程被杀之后</text>
+  <rect class="bR" x="330" y="432" width="640" height="40" rx="4"/>
+  <path class="flowbar" d="M970,452 L990,452"/>
+  <text class="v" x="350" y="458">10 秒内耗光 10 次投递 → 两轮进死信，会话卡死</text>
+  <text class="why" x="1000" y="448">投递次数被 abandon 烧掉</text>
+  <text class="why" x="1000" y="468">不是超时问题，是处理方式错了</text>
+
+  <text class="rh" x="30" y="508">混沌：72 轮，硬杀 3 次</text>
+  <text class="rs" x="30" y="528">12 个会话 × 6 轮</text>
+  <rect class="bG" x="330" y="492" width="256" height="40" rx="4"/>
+  <text class="v" x="598" y="518">16 s（中途那次）；72 轮 0 丢失 · 0 重复 · 0 乱序</text>
+  <text class="why" x="1000" y="508">其中 2 次 kubelet 仍先发了 SIGTERM，</text>
+  <text class="why" x="1000" y="528">走成了优雅退出；1 次中途杀掉，16 秒接管</text>
+
+  <text class="lgh" x="40" y="600">怎么调这几个数</text>
+  <text class="lg" x="40" y="630">· lease 越短，进程被杀后接管越快，但续租越频繁；跨区域时一次续租约 28 ms，每秒一次是可以承受的</text>
+  <text class="lg" x="40" y="658">· 会话锁超时决定了"卡住"这种最坏情况的接管时间；它要是比 lease 短，新主拿到锁后还得再等 lease，接管时间就变成由 lease 决定</text>
+  <text class="lg" x="40" y="686">· 发版和缩容走的都是优雅退出，把 terminationGracePeriod 设得比单轮执行时间长，平时就几乎感觉不到切换</text>
+  <text class="lg" x="40" y="714">· 编码 harness 的一轮常常是几分钟：真被杀掉时，这一轮要从头重做，接管快慢反而是次要的</text>
+</svg>
