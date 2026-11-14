@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-08",
+  "generated_at": "2026-11-14",
   "stats": {
-    "nodes": 158,
-    "links": 564,
+    "nodes": 163,
+    "links": 584,
     "orphan_links_removed": 2,
-    "claims": 899,
+    "claims": 948,
     "categories": 13
   },
   "nodes": [
@@ -23,8 +23,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.75,
+      "claims_count": 10,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "A2A 补的是语义层，协议层与治理层复用微服务——它是互操作层而非新基础设施",
@@ -111,6 +111,28 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "调模型 API 不需要；一个 Agent 调 CRM/数据库优先 MCP 或普通 API；少量 Agent、同一团队维护未必需要；多个独立 Agent 跨团队、跨框架、跨厂商协作才值得。A2A 的前提是\"对方是一个独立的 Agent\"，为了用协议而拆多 Agent 只会多出延迟、成本、故障点。A2UI 一文给出同样的顺序：前端动态 UI 是同一应用内部问题，AG-UI + A2UI 先行，需要跨系统调用独立 Agent 时再引入 A2A。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "能被发现不等于能被调用——Agent Card 只写\"怎么认证\"，能不能调要过被调用方 owner 的审批；撤销后卡片照样可见、调用被拒，不合格的 agent 根本不发卡片",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "发现分三层：集群内直接查 Kubernetes API（`kubectl get agents -l team=a` 看完整定义，RBAC 管可见性，别的框架不认识 CRD）；跨框架用 A2A Agent Card，由 controller 从 CRD 生成、注册端点按 `/.well-known/agent-card.json` 发布，卡片只放对外信息（名字、描述、skills、入口、认证方式、版本，版本后带 revision 哈希让调用方看出变没变）；企业级同步到 agent 目录（本次未做）。卡片的 `securitySchemes` 声明要 Entra 签发的 Bearer JWT，真正能不能调走目标 owner 按源 agent 与动作的批准、每请求核对源会话身份、只允许一跳。注册端点只发布 Ready 的 agent，校验失败的返回 404。与本页\"发现能力与授权能力必须分开\"一致，是它的实现形态。PoC 只做到发现，卡片里的入口（agent 网关）未实现。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "A2A 1.x 卡片入口从单个 url 改成 supportedInterfaces 列表——每项写地址、协议绑定与协议版本；官方 Python SDK 的 AgentCard 是 protobuf 定义，可用严格模式防字段名拼错被悄悄忽略",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "协议绑定取 JSONRPC / gRPC / HTTP+JSON。三张生成的卡片做两次校验：先用 SDK 的 `A2ACardResolver` 按 well-known 路径拉取解析，再用 protobuf 严格模式解析一遍（不认识的字段直接报错），三张都通过。这是本页\"0.3→1.0 破坏性改名\"Claim 的又一处具体改动。版本事实，未逐条对照规范原文。",
           "evidence_type": "",
           "review": ""
         }
@@ -238,6 +260,71 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "π0 附录 D 一手数字：动作块生成延迟本机约 73ms（14+32+27），换算的\"10Hz\"只是最大串行推理调用速率；控制执行频率是 50Hz 级（块内动作逐步执行）；重规划频率是实验设置（20Hz 平台 16 步重规划 ≈1.25Hz），\"实验设置非架构上限\"。对照：π0 整块 flow matching 联合生成（10 步积分）vs π0-FAST 串行解码 30–60 token——生成方式决定延迟结构。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "actor-snapshot-scheduling",
+      "type": "concept",
+      "title": "Actor Snapshot Scheduling",
+      "summary": "把有状态的 agent 实例（actor / 会话）和执行它的沙箱 pod（worker）拆开：pod 仍是执行单元，但不再是 agent 的部署、身份、生命周期单元。实例空闲时把状态快照到外部存储、释放执行单元；有请求来时从快照恢复到任意一个空闲的执行单元上。这样要准备的执行单元数取决于**同时在忙**的实例数，而不是 agent 或会话的总数。\n\n两个独立实现是 Agent Substrate（actor / worker，内存与文件系统快照进对象存储）和 OpenSandbox 的 Durable 会话（容器 rootfs 提交成 OCI 镜像推到 registry，恢复时用该镜像新建 Pod）。它们的共同代价在快照本身：快照范围决定恢复后还剩什么，快照耗时决定空闲阈值能压多短。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent-runtime",
+        "sandbox",
+        "checkpoint",
+        "scheduling"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "actor 与执行单元分离——空闲时快照释放 worker、请求来了恢复到任意空闲 worker；要准备的 worker 数取决于同时在忙的 actor 数",
+          "source": "Agent基础设施系列03：kagent与Agent-Substrate",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Agent Substrate 把 actor（多、大多挂起）与 worker（预启动的沙箱 pod，少）拆开：低频基础设施配置（WorkerPool）留在 Kubernetes，高频实例状态放自己的 PostgreSQL，挂起恢复不经 API server；一个 worker 一次仍只承载一个 actor。坑：挂起需上层显式调用；身份不能从环境变量读（golden snapshot 里冻结，所有 actor 读到同一值）；需 `wakeupProbe`；pre-1.0。OpenSandbox Durable 会话是第二个实现：会话 ID 稳定，空闲超阈值 commit 后删 Pod，来消息用快照镜像新建 Pod。整套收益建立在 agent 实际\"忙\"的时间占比上，动手前先从 trace 量这个数。原为 [[agent-sandbox]] 末条 Claim（0.55），第二个实现出现后升至 0.7。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "快照范围决定恢复后剩什么——rootfs 快照保留整个容器文件系统（含 `/tmp` 与 harness 原生会话文件），不保留内存与进程；恢复后\"记得上一轮\"，但后台进程没了、VM 与主机名换新",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "OpenSandbox 在沙箱所在节点起 commit Job，经 containerd 把容器 rootfs 提交成 OCI 镜像推 ACR，沙箱容器与出站边车各一份；暂停走同一机制。实测：第一轮在 `/root/work` 与 `/tmp` 各写文件、起 `sleep 3600` 后台进程、记暗号；暂停 5 分多钟后第二轮——两个文件都在、harness 答出暗号（原生会话文件在 rootfs 里随快照走）、后台进程没了但 PID 文件还在、`uptime` 是新 VM、主机名换了。对照 Agent Substrate 的两档：MEMORY（进程从冻结处继续）vs VOLUMES / ROOTFS（只存文件、进程冷启动）。编码 harness 每轮本来就是重新启动的进程，rootfs 档已足够续接上下文。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "快照耗时决定空闲阈值的下限——每轮结束 checkpoint 与暂停各 commit 一次、各约 30~40 秒，恢复约 10 秒；阈值短于 checkpoint 时暂停只能排队",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "控制面阶段记录：领预热沙箱 1.1 秒 + 初始化 0.1 秒；checkpoint 31~41 秒（4 次）；暂停 29~35 秒；恢复 9.5~11.2 秒（含重新下发出站白名单）。空闲阈值设为最小值 30 秒时，到点 checkpoint 还没做完，暂停排在它后面，一轮结束到 Pod 消失共 79 秒——两次 commit 内容几乎一样。阈值越短 Pod 释放越快、恢复越频繁。集群每天半夜自动停机重启后，暂停会话照常恢复。单环境实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "恢复时出站白名单按应用当前权限重新下发——撤销对暂停会话在恢复那一刻生效；而带内存的快照会把暂停时的凭据与身份一起冻住",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "运行中的会话撤销批准约 1.2 秒生效（授权层逐请求重判）；暂停的会话恢复时下发的就已是撤销之后的白名单，不是暂停时那一份。反面例子：OpenSandbox Credential Vault 只在 sidecar 内存，暂停后恢复为空，必须显式重新注入；Agent Substrate golden snapshot 冻结了环境变量里的身份。共同规律：凡是快照里的东西都是\"暂停那一刻\"的，权限、凭据、身份要在恢复时从沙箱外重新取，不能依赖快照里留下的值——这也是 [[credential-out-of-sandbox]] 让凭据始终留在外面的又一个理由。",
           "evidence_type": "",
           "review": ""
         }
@@ -400,8 +487,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.73,
+      "claims_count": 10,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "三层按三个问题划分；Framework 与 Runtime 的边界是\"逻辑 vs 设施\"，不是\"有没有 Session\"",
@@ -432,7 +519,7 @@
           "last_updated": "2026-11-04",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "客户说\"自建 agent runtime\"时背后往往是四件不同的事：① **隔离原语**——墙有多厚（Kata / gVisor / 直接管理的 microVM）；② **沙箱编排**——怎么按模板领环境、休眠、回收（agent-sandbox / OpenSandbox）；③ **持久执行**——长任务崩了能不能续（Dapr Workflow，每步写 state store、断点重放）；④ **调度与生命周期**——agent 在集群里是什么对象（kagent CRD、Agent Substrate actor）。持久执行与隔离无关，是独立一维：framework 自带 checkpoint 只解决\"能存能读\"，故障检测、自动重放、多副本调度仍需 runtime 提供。Dapr 横跨两层：Dapr Agents 是 Framework，sidecar 与 workflow 引擎是 Runtime。按需叠加：只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。",
+          "evidence": "客户说\"自建 agent runtime\"时背后往往是四件不同的事：① **隔离原语**——墙有多厚（Kata / gVisor / 直接管理的 microVM）；② **沙箱编排**——怎么按模板领环境、休眠、回收（agent-sandbox / OpenSandbox）；③ **持久执行**——长任务崩了能不能续（Dapr Workflow，每步写 state store、断点重放）；④ **调度与生命周期**——agent 在集群里是什么对象（kagent CRD、Agent Substrate actor）。持久执行与隔离无关，是独立一维：framework 自带 checkpoint 只解决\"能存能读\"，故障检测、自动重放、多副本调度仍需 runtime 提供。Dapr 横跨两层：Dapr Agents 是 Framework，sidecar 与 workflow 引擎是 Runtime。按需叠加：只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。持久执行的故障语义 2026-11-14 起归口 [[durable-execution]]。",
           "evidence_type": "",
           "review": ""
         },
@@ -477,6 +564,39 @@
           "confidence": 0.65,
           "status": "active",
           "evidence": "第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多\"agent 平台\"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，\"用不到的不装\"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate pre-1.0 只做 PoC。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Runtime 内部再按三个平面拆——执行、会话、治理，外加横切的定义与发现；AKS 原生只覆盖执行与部分治理，会话平面一格都填不上",
+          "source": "AKS-Agent-Runtime系列01：Sandbox之外的三个平面",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "执行平面：隔离环境、文件、命令执行、快照——AKS 给 Pod Sandboxing（Kata）、节点池与 NAP、CSI，社区有 agent-sandbox / OpenSandbox，自己补的是沙箱镜像里 harness 的适配与版本固定。会话平面：会话身份、收件箱、状态机、harness 调用与续接、暂停恢复回收——AKS 无，Dapr / Durable Task 可作底座，会话键、checkpoint 编排、回收对账、多副本全要自建（见 [[agent-session-control-plane]]）。治理平面：工作负载身份、出站网关、凭据注入、资源级授权、审计配额——AKS 给 Workload Identity 与 Cilium，社区有 agentgateway / OpenFGA，自己补 Pod 身份到会话的映射、申请审批流程、审计归集。定义与发现：CRD + controller 机制、kagent Agent CRD、A2A Agent Card，自己补统一 Agent 定义、不可变 revision、发现与调用授权分离。这是对 Runtime 层的另一种切法，与\"四子层\"不冲突：四子层按技术组件分，三平面按一次调用经过的职责分。十篇实测后的总结：\"agent runtime 的难点不在沙箱，在沙箱外面那一圈：会话、治理、身份\"。`agent-runtime-three-planes` 不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "逐请求授权是突发流量下最先撑不住的一环——常态 p50 约 105 毫秒、大头是身份解析不是 OpenFGA；100 并发时决策点撞上超时返回 503，限流一次 429 都没触发",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "决策点 561 次授权统计：p50 105 毫秒，OpenFGA 那一步只占 2.5 毫秒，约 62 毫秒花在核实沙箱身份（回查 Pod、ServiceAccount、会话与运行时状态）。网关配了每秒 20 个请求的本地限流；一个沙箱同时发 40 个小请求全部 200，发 100 个则 48 个 200、51 个 503、1 个 403、0 个 429——决策点 p50 涨到 1850 毫秒、最长 5001 毫秒，撞上单次检查 5 秒超时，网关按\"授权失败即拒绝\"挡掉。503 对调用方只是\"服务端出错\"，拿不到该退避的信号。改法：限流放在授权之前并明确返回 429；决策点多副本，对\"证书 → Pod → 会话\"解析做短时缓存。克隆一个仓库只有几次请求，影响不大；会话多起来再叠 subagent 与批量任务就会碰到。按 token 计的配额未配未测。单环境实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "agent 定义按不可变 revision 管——revision 固定的是配置（名取规范化 spec 的内容哈希、只能新建不能改），权限每次请求实时算；skills 包用 OCI artifact 按 digest 拉而不放 ConfigMap",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定\"配置和权限\"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。",
           "evidence_type": "",
           "review": ""
         }
@@ -901,8 +1021,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.72,
+      "claims_count": 17,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "沙箱拆成三件事——隔离原语、环境的分配与回收、出站与凭据；Kata 与 agent-sandbox / OpenSandbox 是上下两层，只靠 runtimeClassName 衔接",
@@ -949,13 +1069,13 @@
           "review": ""
         },
         {
-          "statement": "凭据不进沙箱、由沙箱外的中介在出站时注入——两个独立平台的同一做法；注入点仍在可信计算基内，且不等于不能滥用授权",
+          "statement": "凭据不进沙箱、由沙箱外的中介在出站时注入——四个独立平台的同一做法；注入点仍在可信计算基内，且不等于不能滥用授权",
           "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
           "first_seen": "2026-11-02",
-          "last_updated": "2026-11-04",
-          "confidence": 0.75,
+          "last_updated": "2026-11-14",
+          "confidence": 0.85,
           "status": "active",
-          "evidence": "OpenSandbox Credential Vault：沙箱进程只拿到假值，egress sidecar 透明拦截 HTTPS，按 scheme / host / method / path 匹配绑定规则，**恰好命中一条**才注入真实认证头，命中多条视为歧义拒绝；vault 明文只写不可读。Agent Substrate：每个 actor 的身份证书、JWT、API key、云 token 都不在沙箱里，由 `atenet-egress` 在沙箱外注入。边界：① egress 必须 `dns+nft` 模式，只靠 DNS 时直连 IP 可绕过域名策略；② 不能与同 pod 的 Istio / Envoy 透明代理共存；③ vault 只在 sidecar 内存，暂停后恢复是空的，恢复流程必须显式\"重新注入凭据\"；④ 读不到 vault 失败关闭（小请求 503、流式断开），sidecar 成为出站数据面的可用性依赖。凭据没有从系统消失，绑定规则要按路径和方法收窄。此 Claim 是 `host-mediated-sandbox`（HOLD）泛化后的 `credential-out-of-sandbox`，Copilot Managed Runtime 的\"宿主是唯一出口\"是同一思路的第三个实例（机制为 iframe + CSP + JSON-RPC，见 [[copilot-managed-runtime]]）。",
+          "evidence": "OpenSandbox Credential Vault、Agent Substrate `atenet-egress`、Copilot Managed Runtime 宿主中介、AKS agentgateway + 凭据代理都让沙箱只拿占位符、在唯一出口处注入真实凭据。2026-11-14 升格为独立概念页，机制、边界与实测全部归口 [[credential-out-of-sandbox]]，本条只保留结论。",
           "evidence_type": "",
           "review": ""
         },
@@ -982,10 +1102,10 @@
           "review": ""
         },
         {
-          "statement": "把 agent 本身和它执行的代码分开选粒度——受信的 agent loop 走轻粒度，不可信代码按执行次数借 VM 沙箱",
+          "statement": "把 agent 本身和它执行的代码分开选粒度——受信的 agent loop 走轻粒度，不可信代码按执行次数借 VM 沙箱（适用范围：自写 loop 且不处理大量不可信内容；多租户编码 harness 见下一条）",
           "source": "Agent基础设施系列03：kagent与Agent-Substrate",
           "first_seen": "2026-11-02",
-          "last_updated": "2026-11-04",
+          "last_updated": "2026-11-14",
           "confidence": 0.65,
           "status": "active",
           "evidence": "运行粒度光谱：一 agent 一 pod（隔离直观、空闲也花钱）→ 预热池领沙箱（解决\"派得慢\"不解决\"空闲贵\"）→ actor 快照 + worker 复用（Agent Substrate，空闲只剩对象存储里一份快照，唯一同时解决两者且保持强隔离，代价是 pre-1.0）→ 进程内 actor（Dapr，密度最高但只有逻辑隔离）→ 进程内代码沙箱（Wasm，受限）。推荐拆法：规划、调模型、调受治理 API 的 agent loop 放 Dapr actor / 进程内会话 / Substrate actor；只有模型生成的代码需要 VM 级墙，按需从预热池领 Kata 沙箱、用完归还——最贵的 VM 按执行次数付费而不是按 agent 个数。例外：Claude Code、OpenClaw 这类\"整个 agent 就是不可信执行环境\"的 coding agent 适合整体放进沙箱。选 agent-sandbox 还是 OpenSandbox 也沿这条线：agent 自己是服务、只要一个隔离 pod → agent-sandbox；agent 是调用方、沙箱是借来执行代码的工具 → OpenSandbox（execd + Credential Vault 省胶水）。",
@@ -993,13 +1113,101 @@
           "review": ""
         },
         {
+          "statement": "多租户平台上 harness 自身也当不可信——编码 harness 连同工具与工作区整个放进 Kata、沙箱内免确认运行；判断标准不按命令分，而按\"内容是否由模型 / 不可信数据决定 + 能碰到什么\"",
+          "source": "AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "harness 读模型输出、网页、README、用户上传文件，都可能带 prompt injection，被劫持后手里正好有 shell 和文件工具。Claude Code / Codex / Copilot CLI 的\"调用前确认\"和进程级沙箱（bubblewrap、seatbelt、landlock）在多租户平台上只能当第二层：平台上的 agent 多由 Teams 消息或定时任务叫起、没人点确认，进程级沙箱与宿主共享内核。编码 harness 拆不成\"loop 在外、bash 在内\"——Read / Edit / Grep 默认操作本地文件系统，拆开就得把每个文件工具改成远程调用，那是改造 harness 而非部署 harness。必须留在沙箱外的四类：模型 key / Git token / 云凭据；授权决策；模型路由、配额、计费；checkpoint 与恢复控制、保留期、审计、人工审批。默认做法：第三方编码 harness 一律整体进沙箱（拓扑 A）；自写 loop 先问\"是否处理大量不可信内容且握高权限工具\"，是则同样进沙箱，否则放外面、代码执行进沙箱（拓扑 B，注意 confused deputy，见 [[credential-out-of-sandbox]]）；两者可组合为外层 loop + 受控子会话。成本差别：拓扑 A 每会话独占一个 VM，拓扑 B 的 loop 可跨租户共享。一个参考实现在 AKS Kata 上实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "沙箱与外部共享的四类东西处理方式完全不同——凭据不共享、身份绑\"活的 Pod + 会话\"、文件优先单向带版本复制、控制通道单向",
+          "source": "AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "凭据：沙箱里只有占位符，出站网关注入。身份：出站流量带 Pod 绑定的 mTLS 证书，私钥由 CSI 投递、沙箱进程读不到；网关按证书找存活 Pod、确认只绑定一个已准备好的会话，再查授权。文件按推荐度：① 沙箱拥有工作区、外部经执行守护进程的文件 API 读写（只有一份数据）；② 进入时复制固定快照、结束时收集产出；③ 以 Git 为交换介质、读写分别授权；④ 共享 RWX 最后选——每会话单独子目录、输入只读、防 symlink 与 TOCTOU、沙箱写出的内容一律当不可信数据。控制通道：只允许控制面调沙箱，沙箱不挂 SA token、连不上 Kubernetes API（见 [[agent-session-control-plane]]）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "出站只有一条路时，配置错误的结果是\"卡住\"而不是\"泄露\"——代价是排查不直观；先在沙箱里 curl 网关，超时是路径问题，401 / 403 是授权问题",
+          "source": "AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "首次运行会话停在 running 五分钟无输出无报错：网络策略只允许连 CONNECT 网关，出站 sidecar 本应把请求封进 CONNECT 隧道，但那个版本不支持上游代理，直接连目标地址被 NetworkPolicy 静默丢弃，harness 只看到一个一直不返回的 TCP 连接。harness 不会说自己被墙了，要看 sidecar 日志与网络策略。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "沙箱底线要逐条验证并配对照组——不加出站策略的 Pod 能从 IMDS 取到节点 kubelet 身份的 Azure token；AKS 不会自动给 Kata 池打污点",
+          "source": "AKS-Agent-Runtime系列01：Sandbox之外的三个平面",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "四条底线：独立 guest kernel、无 SA token（`automountServiceAccountToken: false`）、IMDS 与 API Server 不可达、出站默认拒绝只放 DNS。对照组（runc、无策略、默认挂 token）结果正好相反：SA token 三个文件都在、API Server 返回 401、IMDS 可达——请求 token 接口直接拿到有效期 24 小时的 ARM Bearer token，`client_id` 是集群 kubelet 托管身份；新集群它还没角色，生产集群通常至少有 ACR 拉取权限，harness 被注入就是一条直通 Azure 控制面的路，Workload Identity 替代不了出站默认拒绝。AKS 会建 `kata-vm-isolation` RuntimeClass 并带 nodeSelector，Kata Pod 一定落 Kata 池；反过来不成立——新建 Kata 池节点 taints 为空，普通 runc Pod 也会被调度上去，建池时须显式 `--node-taints`。镜像已缓存时 Kata Pod 到 Ready 约 3.3 秒、runc 约 3.1 秒（小探针镜像）。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "有效权限是三份声明的交集——应用申请 ∧ 资源 owner 批准 ∧ 平台发布，由控制器投影成关系后算出；操作顺序必须先批准再申请",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "三份声明由不同的人写，各自投影成 OpenFGA 里一条关系，没有人直接写\"有权限\"。资源动作对象是\"资源 UID + 确切动作\"，动作是不透明字符串（`git.read` 不蕴含 `git.write`、无通配符）；主体与对象用 Kubernetes UID 而非名字，删了重建同名对象不继承授权。意外结果：应用申请了一个未批准的动作时，运行中的会话照常、只拒那一个动作，但**新会话整个建不了**，接口只返回笼统 503，要看应用状态才知道缺批准（\"整份申请一起算\"是从现象推断）；owner 补批准后运行中会话 5 秒内可用。所以加新权限先让 owner 批准，再在应用里加申请。`permission-intersection` 暂不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "撤销分两层生效、只挡之后的请求——授权层约 1.2 秒开始 403，网络层在 provider 下已无任何批准动作时约 3 秒移出白名单；放行中的请求不打断，做过的事撤不回",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "每 0.5 秒请求一次、删批准对象：两次实验都是约 1.2 秒开始 403（决策点每请求按当前声明重判，不等会话重建）；约 3 秒后出站边车把目的地移出白名单、连域名都解析不了，中间不到一秒两种结果交替。同一 provider 下还有别的批准动作时目的地一直留着，拒绝只在授权层——网络白名单粒度是 provider 的 Service 不是动作。恢复 3~4 秒回 200（首次 8.2 秒未细查）。与\"撤销委托后已打开的更新流还会持续几分钟\"是同一类问题：授权在请求入口判定，不追着已放行的操作。暂停会话的撤销在恢复时生效，见 [[actor-snapshot-scheduling]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "网关路由层的静态 provider 只能做只读——写操作和 Git smart-HTTP 要由懂协议的 provider 服务当执行点，再调同一个授权决策点",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "静态 provider 所有判断在网关路由里完成，配置校验只允许 GET / HEAD；一个动作对应一条路径前缀、只映射一个资源，两个仓库分开授权就得定义两个动作。Git smart-HTTP 取数据那一步本身是 POST，静态路由做不了 clone；也表达不了\"PR 目标分支必须是 main\"。写操作改由 provider 服务解析请求、算出资源与动作、调同一决策点，再用本地策略判一次，凭据由它自己持有；网关只做粗粒度路由与身份传递，授权逻辑仍只在决策点一处。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "模型请求的授权看请求体里的 model——必须是批准清单里的部署名，别名、已部署未批准的部署、未知模型名一律 403；两种协议共用一份清单",
+          "source": "AKS-Agent-Runtime系列08：模型接入层",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "网关把 model 拼成\"账号/模型\"作为资源目标，走与工具出站同一套逐请求授权：批准的部署名 200；会话层选模型用的别名 `fast` / `smart` 403；账号上部署了但没批准给该资源的 `gpt-4.1-mini` 403；`claude-*` 403。Messages 与 Responses 两种路径共用同一份清单。担心过 Claude Code 后台用小模型（haiku 系列）被拒：去掉小模型覆盖后按时间窗口统计，`--print --bare` 下 5 轮对话正好 5 次授权、全部 200，每轮只调一次主模型。harness 配置只写网关地址和占位 key。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
           "statement": "actor 与执行单元分离——pod 仍是执行单元，但不再是 agent 的部署、身份、生命周期单元",
           "source": "Agent基础设施系列03：kagent与Agent-Substrate",
           "first_seen": "2026-11-02",
-          "last_updated": "2026-11-04",
-          "confidence": 0.55,
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
           "status": "active",
-          "evidence": "Agent Substrate 把 actor（有状态 agent 实例，多、大多挂起）与 worker（预启动的沙箱 pod，少）拆开：空闲时内存与文件系统快照进对象存储释放 worker，请求来了恢复到任意空闲 worker；低频基础设施配置（WorkerPool）留在 Kubernetes，高频实例状态放自己的 PostgreSQL，挂起恢复不经 API server。执行层面一个 worker 一次仍只承载一个 actor——要准备的 worker 数取决于**同时在忙**的 actor 数而不是 agent 总数。快照范围决定恢复后剩什么：MEMORY（进程从冻结处继续）vs VOLUMES / ROOTFS（只存文件、进程冷启动）。坑：挂起需上层显式调用；身份不能从环境变量读（golden snapshot 里冻结，所有 actor 读到同一值）；需 `wakeupProbe`。整套收益建立在 agent 实际\"忙\"的时间占比上，动手前先从 trace 量这个数。单一项目来源、pre-1.0，置信度保守。",
+          "evidence": "Agent Substrate 的 actor / worker 与 OpenSandbox Durable 会话是两个独立实现：空闲时快照释放执行单元、请求来了恢复到任意空闲单元，要准备的单元数取决于同时在忙的实例数。2026-11-14 升格为独立概念页，快照范围、耗时、恢复语义全部归口 [[actor-snapshot-scheduling]]，本条只保留结论。",
           "evidence_type": "",
           "review": ""
         }
@@ -1056,6 +1264,127 @@
           "evidence": "真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 待定——依据：本轮未查到 Exa 官方 MCP 实现说明（Tavily 限流）"
+        }
+      ]
+    },
+    {
+      "id": "agent-session-control-plane",
+      "type": "concept",
+      "title": "Agent Session Control Plane",
+      "summary": "Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harness 的那一层平台代码：领沙箱、把 harness 放进去、按轮投递消息、收集输出、续接上下文、checkpoint、暂停、恢复、回收。它驱动 harness 的方式就像 harness 驱动模型和工具，所以也叫\"harness 的 harness\"。调用的单位是**会话**而不是一次 API 请求：会话 ID 稳定，背后的沙箱可以被暂停、替换、从快照重建。\n\n这一层是 Kubernetes / AKS 完全没有提供的部分。把 runtime 按执行、会话、治理三个平面拆开时，执行平面有 Kata 与 agent-sandbox / OpenSandbox，治理平面有 Workload Identity、Cilium、agentgateway、OpenFGA，会话平面一格原语都没有，会话键、收件箱、状态机、checkpoint 编排、回收与对账、多副本都要自己写。它在 [[agent-infra-three-layers]] 中对应 Runtime 层的\"持久执行\"与\"调度与生命周期\"两个子层，横跨 [[agent-sandbox]]（执行）与 [[credential-out-of-sandbox]]（治理）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "session",
+        "control-plane",
+        "harness"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 9,
+      "avg_confidence": 0.76,
+      "claims": [
+        {
+          "statement": "调用的单位是会话、结果是流式产出且先在沙箱外落库、回收归会话层而不是沙箱 TTL——这是 agent 调用与普通 API 调用的三处根本差别",
+          "source": "AKS-Agent-Runtime系列01：Sandbox之外的三个平面",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "一个编码 agent 从被 Teams @ 到被回收走十步，只有分配沙箱、放配置、启动 harness 三步在沙箱里。第一条消息建会话，之后同线程的每条消息是会话里的一轮；两天后追问时原 Pod 多半已不在，但会话还在，harness 凭原生会话文件接上下文。harness 每输出一段先在沙箱外持久化再推给渠道，渠道订阅输出流而不是阻塞等返回，沙箱中途挂掉已产出内容不丢。固定 TTL 会在长任务或 checkpoint 做到一半时删沙箱，合理做法是空闲超阈值先 checkpoint 再暂停、超保留期才删除，并另有按标签对账的兜底（见 [[reconciliation-loop]]）。运行时分四层：编排 / 会话层（平台，沙箱外）、harness（第三方、版本平台固定，沙箱内）、agent 逻辑（AGENTS.md / skills / 现场生成的代码，沙箱内）、治理（平台，沙箱外）；应用作者只写第三层。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "一轮对话的四条规矩——创建会话带幂等键、消息落盘后才 ACK 且同会话一次一轮、每轮按当前声明重新授权、先写\"新状态 + 副作用意图\"再由 runner 执行",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "渠道重试与网络抖动会让\"创建会话\"发两次，没有幂等键就多出没人认领的 VM。收件箱先写库成功才回 ACK，控制面挂了重启从库里接着处理，后续消息排队。权限不是建会话时拍快照，而是每轮开始前按应用当前声明与资源 owner 当前批准重算，中途撤销下一轮就被拒。每一步先把意图落盘，runner 重启后先做完上次没做完的副作用——这条规矩的故障语义见 [[durable-execution]]。参考实现日志实测：领预热沙箱约 1 秒、提交消息到 harness 首次调工具约 7 秒（含进程启动与首次模型调用）、工具本身 7 毫秒、整轮 16 秒——干活时间很少，大头在沙箱与 harness 准备，所以预热池与 harness 启动优化是这一层绕不开的事。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "控制面靠每个 harness 一个适配器驱动多种编码 CLI——拼命令行、解析输出成统一事件流、记住原生会话 ID；弹出确认即判本轮失败",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Claude Code、Codex、Copilot CLI、OpenCode、Pi 五种 CLI 的非交互免确认参数、输出格式、续接方式各不相同，适配器抹平差异。harness 一旦弹\"要不要允许\"就直接判失败——沙箱里没人点确认，这是免确认运行的另一面。原生会话 ID 不存控制面数据库，而是写进工作区小文件、与 harness 本地会话文件放一起随 checkpoint 走；新沙箱从快照恢复后先读它再决定新建还是续接。解析出的事件带稳定事件 ID 逐条入库，再经带游标的 SSE 推给渠道，断线从游标续读，渠道不需要知道背后是哪个 harness。harness 不只是\"装个二进制\"：版本由平台钉死并关自动更新、离线模式不连厂商服务、模型只走平台网关。多协议适配见 [[harness-portability-spectrum]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "控制通道只有一个方向——只有控制面持有沙箱生命周期 API 身份，沙箱只产出数据；需要另一个隔离环境只能走 agent 调 agent，由控制面代分配、只允许一跳、子会话不继承父权限",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "平台和 harness 之间唯一的接口是沙箱里的执行守护进程（执行命令、读写文件）。沙箱没有 ServiceAccount token、连不上 Kubernetes API、出站只走网关，harness 被劫持也没法让控制面替它做事。harness 内部的 subagent（Claude Code Task、Codex 子任务）都是同一 VM 里的进程。agent 调 agent 的约束：目标 owner 按源应用与动作逐项批准、每次请求核对源 Pod / 会话 / 应用、子会话归属源会话（知道 ID 不等于有权访问）、子沙箱权限只按目标应用自己的声明与批准计算、不共享文件系统。参考实现自列缺口：子会话无配额限流、幂等键只防重试不防刷、撤销委托后已打开的更新流还能持续几分钟。来自对一个参考实现的阅读与部署。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "自己写一个最小控制面只需四块——会话 API、状态库、runner、一个 harness 适配器；难的是贯穿所有组件的\"先落盘再执行、重启能接着做、结果不确定不盲目重放\"",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "会话 API：建会话（带幂等键）、投递消息、按游标推事件流。状态库：会话、收件箱、事件、副作用意图、会话与沙箱绑定；单副本 SQLite 够，多副本换 PostgreSQL 加 lease。runner：领沙箱、放文件、跑一轮、快照、暂停、删除，重启续做。适配器先只支持一种 harness。沙箱后端不自己写（agent-sandbox / OpenSandbox 已有领取、执行、文件、快照 API），应用定义可先用一个 YAML 写死。对账器、授权回调、渠道适配、子会话与配额等前面稳定后再补。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "会话分 Ephemeral 与 Durable 两种——Ephemeral 靠沙箱 TTL 兜底防泄漏但到期后静默换空白沙箱；Durable 每轮 checkpoint、空闲暂停、保留期到才删，空闲阈值不宜短于几分钟",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Ephemeral：一个沙箱用到底，OpenSandbox 侧 30 分钟 TTL，只在一轮执行中且离过期不到 10 分钟才续期。实测 TTL 到点即删；之后再发消息不报错——控制面连旧沙箱失败，1.2 秒从预热池换新沙箱把这一轮发过去，但文件与上下文全没了，用户侧没有任何\"上下文已丢失\"提示，渠道层不提示就像 agent 失忆。好处是控制面整个没了也不泄漏，适合一次性代码审查、批处理。Durable：每轮结束 checkpoint、空闲超 `pauseAfterIdle` 暂停拆 Pod、来消息恢复、最后活动后保留 `retention` 才清理，沙箱本身不设 TTL。每次恢复用户多等约 10 秒，阈值压得太短省下的 VM 时间换来频繁等待；交互式编码助手用 Durable 且阈值不短于几分钟。快照机制与耗时见 [[actor-snapshot-scheduling]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "多副本控制面要分开管两件事——谁收消息交给会话队列，谁能写结果交给数据库 lease + fencing token；队列挡不住卡住又醒来的旧主接着写",
+          "source": "AKS-Agent-Runtime系列06：会话管理与高可用",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "参考实现单副本 + SQLite、Deployment 用 `Recreate`，因为没有分布式 lease，启动\"围栏\"会把库里所有做到一半的事标成中断——只在确定自己是唯一主时才安全。三副本验证：Service Bus 会话队列按 session_id 同一时刻只交给一个接收者且按序（会话锁 30 秒、处理中续锁）；拿到锁后再抢 PostgreSQL lease（10 秒、每秒续），每抢到一次 token 加一；写结果是唯一带条件的一步（token 与序号都对才更新），写成功才确认消息，顺序反过来崩在中间会丢一轮。接管时长由故障类型决定：优雅退出 0.1 秒、进程被杀约 15 秒（会话锁 4 秒就放，等 lease）、进程卡住 32~35 秒（连接还在，等会话锁超时）；会话锁超时比 lease 短时新主还得再等 lease。混沌测试 12 会话 × 6 轮、随机硬杀 3 次，72 轮无丢失无重复无乱序（`--grace-period=0 --force` 下 kubelet 仍先发 SIGTERM，前两次其实是优雅退出）。落到真实控制面：会话表加 owner / token / lease_until，入口消息统一走会话队列，启动围栏改为只接管 lease 已过期的会话，terminationGracePeriod 按 harness 单轮时长设。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "拿到会话锁却发现 lease 被占时不能 abandon——每次 abandon 消耗投递次数，lease 过期前消息就进死信、会话卡死；写入被拒要按原因分流",
+          "source": "AKS-Agent-Runtime系列06：会话管理与高可用",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "第一版\"lease 被占就 abandon、过会儿再来\"：硬杀后 Service Bus 4 秒放出会话锁，但 lease 还要 10 秒过期，三个副本轮流拿锁、abandon，第 1、2 轮耗光 10 次投递进了死信；第 3 轮被序号检查拒绝（没有乱序写入，但会话卡死）。修法：拿到会话锁就说明队列已确认只有自己在处理，lease 被占只能是旧主死了或卡住，守住锁边续边等旧 lease 过期再接手——改后 15 秒接管、三轮全落地。写入被拒时：token 被抢说明自己是旧主，放手不确认交给新主；序号接不上送死信并写明原因，不能悄悄确认。踩坑实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "fencing 挡住的是写入、挡不住执行——token 要一路带到真正产生副作用的出站网关，校验\"Pod 绑定的是不是当前 token\"",
+          "source": "AKS-Agent-Runtime系列06：会话管理与高可用",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "fencing token：lease 每被抢一次递增，写结果时带条件校验，旧主醒来后写入被拒。实测让持有者在主线程阻塞 45 秒（PID 1 收不到 SIGSTOP，改用 SIGUSR1）：新主 30 多秒后以 token=2 重做第一轮，旧主解冻后接着执行，两边同时跑第一轮重叠 11 秒多。fencing 开：旧主带 token=1 写入被拒，三轮各写一次；fencing 关：旧主在新主开始第二轮后又写一次第一轮，重复且乱序，随后确认消息才收到 `SessionLockLostError`——队列知道它丢了锁，但副作用已发生。真实 agent 的副作用（推代码、建 PR、回 Teams、调内部 API）几乎不经过控制面数据库，若沙箱里直接 `git push` 两边都会推。统一校验点只能是出站网关与授权决策点（见 [[credential-out-of-sandbox]]）：本来就核对\"Pod 是否绑定在准备好的会话上\"，再加一条\"绑定是不是当前 token\"；换主后沙箱重新绑定，旧主驱动的执行流在网关被拒。网关校验部分是设计推论，未实现。`fencing-token` 作为原子概念暂不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
         }
       ]
     },
@@ -3741,6 +4070,84 @@
       ]
     },
     {
+      "id": "credential-out-of-sandbox",
+      "type": "concept",
+      "title": "Credential Out of Sandbox",
+      "summary": "凭据不进沙箱是 agent 沙箱\"门怎么管\"的核心做法：沙箱里的代码（harness、模型生成的脚本）拿不到任何原始密钥，也拿不到\"读取密钥\"所用的身份；它访问外部资源只能走沙箱外的一条出站路，由可信的中介组件认出请求来自哪个会话、判定能不能放行，放行之后才把真实凭据加到请求上。harness 需要的 API key 只是一个占位符。\n\n前提是把沙箱里的一切当作不可信：harness 读的是模型输出、网页、仓库 README，随时可能被 prompt injection 劫持，所以请求里的任何头都可能是它自己写的。这一思路已在四个平台独立出现：Copilot Managed Runtime 的宿主中介（两层 iframe + CSP + JSON-RPC 唯一出口）、OpenSandbox Credential Vault、Agent Substrate 的 `atenet-egress`、AKS 上 agentgateway + 凭据代理。凭据并没有从系统里消失，只是被移到了可信计算基里，授权规则仍要按资源和动作收窄。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "sandbox",
+        "security",
+        "egress",
+        "credential-injection"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.76,
+      "claims": [
+        {
+          "statement": "四个独立平台的同一做法——沙箱只有一个受控出口，凭据由出口处的可信中介注入；机制可以是 egress 代理，也可以是浏览器宿主中介",
+          "source": "Agent基础设施系列02：Kubernetes上的Agent沙箱",
+          "first_seen": "2026-10-29",
+          "last_updated": "2026-11-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "OpenSandbox Credential Vault：沙箱进程只拿假值，egress sidecar 透明拦截 HTTPS，按 scheme / host / method / path **恰好命中一条**绑定规则才注入真实认证头，多条命中视为歧义拒绝；vault 只写不可读。坑：egress 须 `dns+nft` 模式（只靠 DNS 时直连 IP 可绕过）、不能与同 pod 的 Istio / Envoy 透明代理共存、vault 只在 sidecar 内存（暂停恢复后为空，须显式重新注入）、读不到 vault 时失败关闭（小请求 503、流式断开）。Agent Substrate：actor 的身份证书、JWT、API key、云 token 都不在沙箱里，由 `atenet-egress` 注入。Copilot Managed Runtime：宿主是唯一出口，机制为 iframe + CSP + JSON-RPC。AKS 参考实现：Pod 网络策略只放 DNS 与出站网关 8443，出站边车透明接住请求、用 Pod 证书建 mTLS CONNECT 隧道，网关选路由、问授权、通过才取凭据。四者均有实现或实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "网关认证书不认请求头——身份只从 mTLS 连接取，沙箱带来的认证头与身份头一律剥掉；授权请求体由网关填写，动作由命中的路由决定而不是 agent 声称要做什么",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "出站边车持有一张与 Pod 绑定的证书（恰好一个 `spiffe://<trust-domain>/ns/<ns>/sa/<sa>` SAN），客户端证书只挂给边车容器，agent 容器里找不到任何私钥。证书只说明连接来自哪个 SA 的 Pod，决策点还要回查：Pod 是否还活着、是否绑定在已准备好的会话上、来源地址对不对、会话属于哪个应用、应用当前声明里有没有申请这个动作、资源当前目标与请求目标是否一致，全部对上才问 OpenFGA。八种请求实测：已申请已批准 200；资源开了但应用没申请 403（凭据代理未被调用）；无路由 404；POST 404；自带假 `Authorization` 200（被剥掉换成平台 token）；伪造身份头冒充另一沙箱 200（仍按本沙箱判定）；直连 `api.github.com` / `github.com` 连接失败（不在白名单，解析都过不了）。harness 自己检查环境变量与 git 配置也找不到 token。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "凭据在授权通过之后的最后一跳才出现——凭据代理只被放行的请求调用、只看到 host 头看不到请求内容、每请求一次不缓存；按资源换短期凭据就放在这里",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "凭据代理是网关后端策略里的一个 extAuth 服务（十几行 Python），返回的 `authorization` 头加到发往上游的请求上。代理日志：被拒的请求没有对应调用；收到的请求只有 `host`，沙箱的假认证头与请求内容都没传过来——代理只负责给凭据，看不到 agent 在做什么；4 次放行对应 4 次调用。PoC 用的是权限很大的个人 CLI token，靠网关路由把用途限制在两个仓库的 GET 上，但 token 本身没这个限制；生产应换 GitHub App installation token（只授权所需仓库、一小时过期、由代理按资源换取）——代理拿得到资源是哪个，就能按资源选不同权限的凭据。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "令牌只在控制面与网关之间流转、沙箱里一张都没有——凭据代理按\"证书 → Pod → 会话 → owner\"链向令牌服务取该会话对下游的令牌，下游身份可以是平台、用户（OBO）或 agent 自己",
+          "source": "AKS-Agent-Runtime系列09：Agent以谁的身份行事",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "系列 04 的凭据代理返回固定的平台 token，下游审计里只有\"平台来调了\"。改法：会话 API 校验用户令牌、把 oid 记为会话 owner；控制面加令牌服务，按需做 OBO，refresh token 加密后按会话存状态库（用户令牌本身不落库）；凭据代理在授权通过后沿\"证书 → Pod → 会话 → owner\"向令牌服务要这个会话对下游的令牌；agent 自己的身份由 Agent 定义里的字段指向其 agent identity。harness 照常把请求发给 provider 的 Service 名，认证全部由网关完成。不支持 OBO 的下游退回平台身份 + 网关审计，所以每个资源要声明自己用哪种身份。身份层机制见 [[entra-agent-id]]。这是设计，未实现。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "拆到沙箱外不自动更安全——loop 在外、沙箱当工具时，loop 读的沙箱输出同样可能被注入，若 loop 手握长期凭据就成了 confused deputy；对策是 loop 调外部资源也走同一网关与按会话授权",
+          "source": "AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "拓扑 B（自写可信 loop 在外，按需调沙箱执行 API）适合一个 loop 驱动多个沙箱、或流程比单个沙箱活得久的场景，但 loop 读完一段被污染的输出，会用自己的高权限去执行——低权限的不可信输入借高权限主体之手。所以凭据不进沙箱这条规矩不只针对沙箱，也针对沙箱外任何读不可信内容的组件：loop 本身不存长期凭据。系列 04 的实现也贯彻了这一点（身份只从证书取、动作由路由定、代理看不到内容），只是没有点名。`confused-deputy` 作为原子安全概念暂不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "cybernetics-agent-design",
       "type": "concept",
       "title": "控制论 Agent 设计（Cybernetics-Agent Design）",
@@ -4056,6 +4463,70 @@
       ]
     },
     {
+      "id": "durable-execution",
+      "type": "concept",
+      "title": "Durable Execution",
+      "summary": "持久执行是让长流程在进程崩溃、重启、换副本之后能接着做完的执行方式：每一步先把\"新状态 + 接下来要执行的副作用\"写进外部存储，再去执行；执行者重启后先读回没做完的部分接着做。Dapr Workflow、Temporal、Durable Task 是通用实现，agent runtime 的会话控制面也按这个规矩写。\n\n它真正难的不是\"能存能读\"——framework 自带的 checkpoint 就能做到——而是故障语义：一步执行到一半时执行者没了，结果处于\"未确认\"状态，这时重放还是不重放？有副作用的一步重放就是重复执行（再推一次代码、再建一个 PR），不重放又可能丢掉用户的消息。所以持久执行最后比的不只是接管快，而是故障时重做的范围小、重做的东西没有副作用。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent-runtime",
+        "distributed-systems",
+        "fault-tolerance"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "持久执行是 Runtime 的独立一维——每步状态写外部存储、崩溃后断点重放；framework checkpoint 只解决能存能读，故障检测、自动重放、多副本调度要 runtime 提供",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Dapr Workflow 每步写 state store、断点重放；它与隔离强度无关，是 [[agent-infra-three-layers]] Runtime 层四个子层之一。agent 会话控制面里的形态：每走一步先把\"新状态 + 接下来要执行的副作用\"（领沙箱、启动 harness、做快照）写进数据库，再由后台 runner 执行；runner 重启后先把上次没做完的副作用做完。按需叠加——只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "结果不确定时按副作用分流——执行中被杀整轮重发（编码 harness 重跑即可能重复副作用），checkpoint 中被杀则等原快照完成、不重发",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "两次删控制面 Pod（单副本，约 5 秒恢复）的实测：① 一轮 `date; sleep 45; date` 执行 10 秒时删，执行结果记为\"未确认\"，重启后确认沙箱仍是原 Pod，把这一轮**整轮重发**，harness 从头再跑；文件里只有一行，说明第一次的进程随连接断开被杀、没有和第二次重叠。② commit Job 跑起来 8 秒时删，checkpoint 同样\"未确认\"，但重启后**不重新发起快照**，每约 11 秒核对进行中的那一份，完成后检查运行时、删旧 checkpoint、照常暂停——commit 本来就由 OpenSandbox 在集群里跑，控制面只需找回自己没确认的那一步。差别的道理：重发一轮可能产生副作用但不发就丢消息；重发快照没有副作用只是浪费时间，所以等原来那份。参考实现的策略是自定义命令类运行时结果不确定就不重放、编码 harness 沿用 harness 自己的重放行为；自写时更稳妥的默认是先不重放，宁可让用户重发一次。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "高可用最后比的是故障时少重做，不只是接管快——编码 harness 一轮重做是让模型从头再来，checkpoint 勤一点重做范围就小",
+          "source": "AKS-Agent-Runtime系列06：会话管理与高可用",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三副本实测中进程被杀约 15 秒接管、第一轮从头重做；验证模型里一轮只是\"睡 20 秒\"，真实编码 harness 一轮重做的代价是整轮模型调用与工具执行，远大于接管那几秒。所以两个杠杆比缩短 lease 更重要：terminationGracePeriod 按 harness 单轮时长设，让发版和缩容走优雅退出（0.1 秒交接、零重做）；checkpoint 频率决定真被杀时回退到哪。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "启动时的\"围栏\"只在单主时安全——多副本下要改成按 lease 判断，只接管 lease 已过期的会话",
+          "source": "AKS-Agent-Runtime系列06：会话管理与高可用",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "参考实现启动时先把状态库里所有做到一半的事标成中断、再逐个核对——这等于假定\"我重启了，所以没有别人在做\"。多跑一个副本，新起来的那个会把另一个正在跑的工作全部打断。改法是每条副作用意图都带上写入它时的 fencing token，接管只针对 lease 已过期的会话；token 机制与\"挡写入不挡执行\"的边界见 [[agent-session-control-plane]]。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "embodied-ai",
       "type": "concept",
       "title": "Embodied AI（具身智能）",
@@ -4328,8 +4799,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.76,
+      "claims_count": 12,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "Agent Blueprint 承担四职责——模板、凭据持有者、容器、创建入口",
@@ -4357,12 +4828,12 @@
           "statement": "完整 Token 流程三阶段——认证走 Blueprint，中间有代表资格检查，资源授权基于 Agent Identity",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-03",
-          "last_updated": "2026-11-07",
-          "confidence": 0.8,
+          "last_updated": "2026-11-14",
+          "confidence": 0.85,
           "status": "active",
           "evidence": "① Blueprint Authentication：Blueprint 用自己的凭据向 Entra 认证（协议层就是 OAuth Client Credential Flow，Foundry 文档 \"Agent Service presents the blueprint's OAuth credentials\" 即指此）；② Entra 内部检查该 Blueprint 是否有资格代表目标 Agent Identity，通过才签发 Token（sub = Agent Identity）；③ 资源服务器按 Agent Identity 持有的 Permissions/Roles/Scopes 做访问授权。容易漏掉的是阶段②——\"授权\"实际有两种，通常说的\"真正授权\"指阶段③。",
           "evidence_type": "",
-          "review": "2026-11-07 确认——依据：[Authenticate and acquire tokens for autonomous agents](https://learn.microsoft.com/en-us/entra/agent-id/autonomous-agent-authentication-authorization-flow)（blueprint token 带 fmi_path → agent identity token → agent user token）"
+          "review": "2026-11-07 确认——依据：[Authenticate and acquire tokens for autonomous agents](https://learn.microsoft.com/en-us/entra/agent-id/autonomous-agent-authentication-authorization-flow)（blueprint token 带 fmi_path → agent identity token → agent user token）；2026-11-14 实测佐证（见下方\"两步换令牌\"Claim），0.8 → 0.85"
         },
         {
           "statement": "1:N 工厂模型的六层设计动机——本质是大规模 Agent 的 Workload Identity 治理，不是新 App",
@@ -4416,6 +4887,50 @@
           "confidence": 0.55,
           "status": "active",
           "evidence": "与 Entra Agent ID 的\"Blueprint + Agent Identity、FIC-only\"不同，Substrate 走工作负载身份路线：每个 actor 一张短期 SPIFFE 证书，egress 网关可按需签发带 actor 身份的 JWT，`ate-idp-server` 提供验签公钥便于与外部身份系统联邦；actor 进程本身不持有证书与 JWT，凭据在沙箱外注入。坑：环境变量在 golden snapshot 里冻结，从同一模板恢复的所有 actor 读到同一个值，身份必须从按 actor 投射的元数据文件读。缺口：入站只校验调用方 SPIFFE ID 是否在静态白名单，白名单内任何调用方都能访问任何 actor。自建 runtime 上的 agent 仍可映射到 Entra Agent ID 登记进 Agent 365（Runtime ↔ Platform 接口）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "下游看到的身份有三种——平台身份、OBO 代表用户、Agent ID 每个 agent 各自的身份；真实平台三种同时存在，每个资源声明自己用哪一种",
+          "source": "AKS-Agent-Runtime系列09：Agent以谁的身份行事",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "平台身份：网关注入平台凭据，下游只知道\"平台来调了\"，审计里只有一个名字、也没法按用户本人权限判断。OBO：控制面拿用户令牌用 MSAL 做 on-behalf-of 换下游令牌，令牌里同时写 oid=用户本人、azp=代办的控制面应用，下游按用户权限判断、用户没有的 agent 也拿不到；控制面用 Pod 的 Workload Identity 联合令牌作客户端断言，没有任何 secret，下游预授权了控制面所以没有同意弹窗。Agent ID：oid 是每个 agent 各自的，可单独授权、审计、停用；而控制面 app-only 令牌的 oid 是控制面本身、所有 agent 共用。很多内部系统只认服务账号或 API key、不支持 OBO，只能退回平台身份 + 网关逐请求授权与审计交代用户是谁。默认用 OBO，下游不支持才退回平台身份；agent 多起来再上 Agent ID。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Entra 会给租户里任何应用签发以你的 API 为 audience 的 app-only 令牌——未分配任何角色也照样签发，只校验 aud 的 API 谁都能调，必须同时看 scp 或 roles",
+          "source": "AKS-Agent-Runtime系列09：Agent以谁的身份行事",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "控制面应用用 client credentials 拿下游 API 的令牌，预期因下游没给它任何应用角色而失败，结果照样签发：`idtyp=app`、无 `scp`、无 `roles`、有效期 1445 分钟。授权必须同时看 `scp`（委托）或 `roles`（应用）。这条与 agent 无关，是通用的 Entra 安全事实，但 agent 平台会让一个 API 的调用方一下子多出很多来。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "OBO 换出的令牌不比用户令牌活得久；用户令牌过期后旧令牌不能再做 OBO，只能靠 OBO 时拿到的 refresh token 续——refresh token 成了控制面里最敏感的数据",
+          "source": "AKS-Agent-Runtime系列09：Agent以谁的身份行事",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "用户令牌有效期 68 分钟，OBO 换出的令牌过期时间比它早 2 秒。Durable 会话可保留好几天。用户令牌过期 2 分钟后：拿旧用户令牌重新 OBO 失败（`AADSTS500133`，断言不在有效期内）；用 MSAL 缓存里的 refresh token 续期成功，新委托令牌用户仍是本人、代办仍是控制面。所以要让 agent 在用户离开后继续以用户身份做事，控制面必须保存 refresh token（用户令牌本身留着没用）：加密存放、按会话隔离、会话删除时一起删；其有效期与吊销策略由租户决定，最终能续多久未测。另一种默认更安全：令牌过期后暂停需要用户身份的操作，等用户回来重新授权。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Agent ID 两步换令牌在 AKS 上用联合凭据跑通、无 secret；agent identity 代表用户的 OBO 卡在同意（AADSTS65001）——技术链路无障碍，卡的是授权治理",
+          "source": "AKS-Agent-Runtime系列09：Agent以谁的身份行事",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "用 Azure CLI 自带的 Graph 权限建 blueprint 与 blueprint principal（该租户已有 3 万多个 blueprint），给 blueprint 加信任 AKS 某 ServiceAccount 的联合凭据，再建一个 `ServiceIdentity` 类型的 agent identity。取令牌：blueprint 以 SA 联合令牌做 client credentials 并带 `fmi_path=<agent identity id>` 换交换令牌 T1（`sub` 是末尾为该 id 的 FMI 路径），agent identity 以 T1 作客户端断言换下游令牌，最终 `sub` / `azp` / `oid` 全是该 agent identity——与本页\"完整 Token 流程三阶段\"一致。agent 代表用户：用户令牌 audience 须为 blueprint（拿到，80 分钟），OBO 返回 `AADSTS65001` 未同意；下游预授权 agent identity 不行（只有服务主体、没有应用对象，写不进预授权列表），自建针对本人的委托授权被拒（guest 权限不足）。正规做法是管理员在 blueprint 上配可继承权限或对 agent identity 做管理员同意——这个审批要算进上线流程。代表用户一段未跑通，按文档推断，置信度保守。",
           "evidence_type": "",
           "review": ""
         }
@@ -4586,7 +5101,7 @@
           "last_updated": "2026-10-29",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "Event Grid 事件让检查在资源变更后及时发生，定时扫描看到某一时刻的全量当前状态；两路都\"读真实状态 → 比对规则 → 修偏差\"，是 [[negative-feedback]] 在运维域的形态（期望状态调和）。修复要幂等：Merge 只提交需修正的键、已合规直接返回、写后再读、资源已删就结束不重建。执行边界：被策略禁用的 Key 认证只检测并交接、不自动改回；告警只把自动化解决不了的问题交给人——一次 6 秒超时 9 秒后自愈仍发了 Sev1 Fired + Resolved 两封邮件，改为状态型告警、持续未恢复才通知、恢复不发信。未知资源类型先报错而非静默跳过。单篇单实现（`reconciliation-loop` 独立建页 HOLD）。",
+          "evidence": "Event Grid 事件让检查在资源变更后及时发生，定时扫描看到某一时刻的全量当前状态；两路都\"读真实状态 → 比对规则 → 修偏差\"，是 [[negative-feedback]] 在运维域的形态（期望状态调和）。修复要幂等：Merge 只提交需修正的键、已合规直接返回、写后再读、资源已删就结束不重建。执行边界：被策略禁用的 Key 认证只检测并交接、不自动改回；告警只把自动化解决不了的问题交给人——一次 6 秒超时 9 秒后自愈仍发了 Sev1 Fired + Resolved 两封邮件，改为状态型告警、持续未恢复才通知、恢复不发信。未知资源类型先报错而非静默跳过。2026-11-14 `reconciliation-loop` 出现第二、第三个独立实现（沙箱 / 快照对账器、Agent CRD controller）后升格建页，细节归口 [[reconciliation-loop]]。",
           "evidence_type": "",
           "review": ""
         }
@@ -4724,7 +5239,7 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 6,
       "avg_confidence": 0.73,
       "claims": [
         {
@@ -4781,6 +5296,17 @@
           "evidence": "skill 存在项目级目录里、有不可变版本，挂到 toolbox 后以 MCP Resources 暴露，agent 按 advertise（名称与描述进 system prompt）→ load（需要时取全文）→ read resources 三步按需加载，任何支持 MCP Resources 的客户端都能用。直接集成只支持用 Microsoft Copilot harness 的 Prompt Agent；Hosted Agent 自带 harness，经 Toolbox MCP endpoint 取用，加载方式自己决定。Toolbox 发布是不可变版本 + 显式 publish。成本上两类调用侧计费相同，Hosted 的 container compute 买的是\"改 harness 的权力\"。（2026-11-07 复核：原写\"Prompt Agent 侧 skill 支持在文档层面有矛盾\"已过时，见 [[foundry-agent-type-selection]] 对应 Claim 的修订。）",
           "evidence_type": "",
           "review": "2026-11-07 修订——依据：[Use skills with Microsoft Foundry agents (preview)](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/skills)、[What is Toolbox in Microsoft Foundry?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/toolbox-overview)"
+        },
+        {
+          "statement": "Hosted Agents 已包了自建 agent runtime 里最费劲的几块——每会话 VM 沙箱、空闲释放与带状态恢复、会话与对话分开、部署即建 agent identity、按用户隔离会话",
+          "source": "AKS-Agent-Runtime系列10：为什么在AKS上自建",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "逐项对照在 AKS 上自建的九篇：Kata 节点池、默认拒绝出站、不挂 SA token、挡 IMDS 由平台负责；空闲 2~60 分钟释放计算、恢复时还原 `$HOME` 与 `/files`、30 天不活动删除、无预热池要配（对照自建时 checkpoint 每轮两次 commit 各 30~40 秒、孤儿沙箱与快照镜像要自写对账器）；\"会话\"（沙箱与文件）与\"对话\"（消息历史）分开管；部署时自动建 Entra agent identity（对照自建要用 Graph 建 blueprint、联合凭据、agent identity）；工具统一走 Toolbox、身份透传在那里处理。没覆盖的三件：跑现成编码 CLI（容器须实现 Responses / Invocations 协议）、沙箱超过 2 vCPU / 4 GiB、出站按\"资源 + 动作\"逐请求批准——选型见 [[foundry-agent-type-selection]]。基于文档对照，Hosted 侧未实测。",
+          "evidence_type": "",
+          "review": ""
         }
       ]
     },
@@ -5811,7 +6337,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
+      "claims_count": 8,
       "avg_confidence": 0.78,
       "claims": [
         {
@@ -5877,6 +6403,28 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Copilot Studio 里选 harness 就是选 runtime（Standard 跑经典运行时、GitHub Copilot 跑 Agentic Runtime、Copilot Chat 由 M365 Copilot 编排器执行），因为在这类平台里\"运行时\"本身就是 harness 的实现，所以创建后不能互转、调用入口与计费也跟着不同。自建或自带 harness 的栈里两者解耦：kagent 的 Harness 字段可选 ADK、Claude Code、Codex 或自定义镜像（一 runtime 多 harness）；MAF 写的 agent 打成镜像既能上 Hosted Agent 也能上 kagent（一 harness 多 runtime）。Foundry 两种情况并存：Prompt Agent 绑死，Hosted Agent 只提供执行环境。本页其他 Claim 讲 harness 内资产（skill / MCP / hook）能否跨宿主，这条讲 harness 本身能否换宿主，两者叠加才是完整的锁定评估（锁定矩阵见 [[agent-infra-three-layers]]）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "一个控制面托管多种编码 CLI 时，模型协议差异可以压到网关一层——Claude Code 的 Messages 经网关转成 Responses 调 GPT 模型实测可用，同一修 bug 任务与原生 Codex 看不出差别",
+          "source": "AKS-Agent-Runtime系列08：模型接入层",
+          "first_seen": "2026-11-10",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "Copilot、Codex、OpenCode、Pi 原生说 OpenAI Responses；Claude Code 只说 Anthropic Messages，参考实现因此装了 Claude Code 却故意不配模型。模型网关的路由本就同时匹配 `/openai/v1/responses` 与 `/v1/messages`，agentgateway 文档写明 provider 同时支持两种格式时 Messages 请求总被转成 Responses。直接打 Messages 路径：普通对话 200（返回 id 以 `resp_` 开头，看得出背后调的是 Responses）、强制工具调用返回标准 `tool_use` 块、流式输出是完整的 Anthropic SSE 序列。多步任务（`calc.py` 两个 bug + 空列表未报错，要求修代码不改测试）：Claude Code 走转换两次 12.8 / 11.4 秒、Codex 原生两次 14.0 / 10.4 秒，四次测试全过且都只改了 `calc.py`。所以 harness 换宿主时，\"模型协议对不上\"不必改 harness，也不必限定模型厂商；Foundry 上 Claude 走原生 Messages 的路径因需填组织声明未测。小规模任务实测，长任务未测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "harness 跑进无人值守的沙箱前要逐项排它自己的自保检查——Claude Code 在 root 下拒绝跳过权限确认、需显式 `IS_SANDBOX=1`；不认识的模型名按默认上下文窗口算，会影响压缩时机",
+          "source": "AKS-Agent-Runtime系列08：模型接入层",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "按参考实现 Claude 适配器的参数（`--print --bare --safe-mode --output-format stream-json --dangerously-skip-permissions`）跑，它根本没发请求就退出——沙箱进程是 root，参考实现的适配器没设 `IS_SANDBOX=1`，就算模型配好了在这个镜像里也跑不起来。加上后 2 轮调 Bash、输出 Kata guest kernel 版本、5.9 秒。stderr 里 `unrecognized_model`：Claude Code 不认识 `gpt-5.6-luna`，上下文窗口与计价都用默认值，输出里的 cost 无参考意义，默认窗口若小于实际会提前压缩历史。这类\"harness 在个人电脑上合理的自保逻辑\"是部署 harness 时要单独适配的一层，属于 runtime 侧的可执行性而非文本可移植性。实测。",
           "evidence_type": "",
           "review": ""
         }
@@ -8338,6 +8886,82 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "实测：`session.updated` 回显 `ice_servers: null`、`output_protocol: \"websocket\"`；下行事件 `response.video.delta`（`codec: \"h264\"`），delta 是 base64 编码的**分片 MP4**（开头 `ftyp iso5`），可直接拼接；视频 h264 1920×1080 25 fps 约 2.16 Mbps，音频 AAC 16 kHz 单声道约 17 kbps **与视频在同一个 MP4 里**、没有单独的 `response.audio.delta`；拼接后时长与经过时间一致，首个分片在会话建立后约 0.9 秒到达。代价：base64 + JSON 包装让原始约 6.7 MB 变约 8.7 MB（+30%，1080p 线路上约 2.8 Mbps，可配合降分辨率/码率）；TCP 丢包有队头阻塞，没有 WebRTC 的抖动缓冲、NACK、FEC 与发送端码率自适应；播放改用 `MediaSource` + `SourceBuffer` 追加 fMP4，声音也从这一路出来，现有 WebRTC 音轨链路要改。对本页选型框架的意义：WebRTC 的价值（弱网韧性、按实时速度推送）依然成立，所以**默认走 WebRTC、建连失败才降级到 WS 下发**，而不是反过来；\"限 UDP → 只用 WS\"这条条件的适用对象从纯语音扩展到数字人。为什么 WS 在企业安全客户端下不受影响：TCP 一条连接只对一个对端，本来就是一对一，端口语义被改也碰不到它（见 [[ice-nat-traversal]] 的端口钉死 Claim）。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "reconciliation-loop",
+      "type": "concept",
+      "title": "Reconciliation Loop",
+      "summary": "调和循环反复做一件事：读系统的**真实状态**，和期望状态比对，修掉偏差。Kubernetes controller 是最出名的实现，云资源治理守护、沙箱与快照的回收对账器也是同一结构。它是 [[negative-feedback]] 在运维与平台工程里的形态：可靠性不来自某一次操作做对了，而来自\"一直在读当前状态、一直在修\"。\n\n实践中最容易出错的是方向。一个只从自己的记录出发去清理的循环，永远看不见没有记录的东西——数据库回滚、分配成功但写库前进程被杀，都会留下\"实际存在、账上没有\"的资源。所以完整的回收要两个方向都有：从记录往外清到期的，从实际资源往里找孤儿。",
+      "tags": [
+        "wiki",
+        "concept",
+        "control-theory",
+        "kubernetes",
+        "operations",
+        "garbage-collection"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.74,
+      "claims": [
+        {
+          "statement": "事件路径负责\"及时\"、定时扫描负责\"全\"——可靠性来自两路都读当前状态再比对修正；修复要幂等，调节器只自动修它能安全修的，其余交给人",
+          "source": "Azure资源标签守护：事件订阅与定时扫描的自动修复",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Event Grid 事件让检查在资源变更后及时发生，定时扫描看到某一时刻的全量状态；两路都\"读真实状态 → 比对规则 → 修偏差\"。修复幂等：只提交需修正的键、已合规直接返回、写后再读、资源已删就结束不重建。被策略禁用的 Key 认证只检测并交接、不自动改回；告警改为状态型、持续未恢复才通知、恢复不发信。未知资源类型先报错而非静默跳过。原为 [[feedback-loop]] 的运维域实例 Claim，建页后归口本页。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "回收要两个方向——会话层从状态库往外只能清有记录的，状态库没有记录的沙箱与删记录后的快照镜像都会泄漏；补一个从外往里的对账器两者合起来才完整",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "会话层维护循环每 15 秒遍历状态库，清三种：保留期到了、所属应用被删了（实测删应用后 14 秒清掉两个暂停会话的沙箱与快照记录）、准备阶段卡住超过\"操作超时 + 10 分钟\"。实测两个漏洞：① 直接调 OpenSandbox API 建一个带真实会话同款两个标签、不设 TTL 的沙箱，模拟状态库丢记录——6 分钟约 24 个周期无人管；代码里有\"按标签盘点所有沙箱\"的函数，但没有任何地方调用。Ephemeral 有 TTL 兜底，Durable 会一直占一个 Kata VM。② \"删 checkpoint\"只删 OpenSandbox 里的快照记录、不动 ACR 镜像：删应用后每个会话还留 5~6 个 tag，三天环境另有 3 个早已不存在的会话留着快照仓库。补的对账器：盘点带\"会话 ID + 应用 UID\"两个标签的沙箱与 ACR 快照仓库 → 拉会话层认识的全部会话 → 应用不存在或会话层不认识的算孤儿 → 删前重读。默认只出报告，加 `--apply` 才删，复查后剩余沙箱全部有主。会话层管\"有记录、该到期的\"，对账器管\"实际存在、没记录的\"。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "对账删除要刻意保守——只认归属标签齐全的资源、安全期长于\"操作超时\"、删前按 ID 重读、旧 tag 只摘不删 manifest、先跑几天报告模式再开删除",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "只看一个标签或按名字推断归属都容易误删，预热池里未分配的沙箱、别的系统建的沙箱一律不碰。比安全期年轻的跳过——它可能正处在\"已分配、还没写库\"的窗口（参考实现用操作超时 + 10 分钟）。同一 digest 可能挂多个 tag（见过同一会话两个大小完全一样的 tag），按 tag 删 manifest 可能把还在引用的那个一起删；摘掉 tag 后无 tag manifest 交给 ACR 保留策略（需 Premium SKU）。对账器处理的是少见的不一致、不在关键路径上，按天跑就够，但一定要有。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "快照仓库是回收里增长最快又最没人看的部分——每次 checkpoint 或暂停多一个 tag，要单独定每会话保留几个、会话删除连仓库删、配 untagged manifest 保留策略",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-12",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "每份快照镜像在 ACR 显示 1.46 GB，其中 34 层是共用的基础镜像，真正新增的最后一层约 67 MB；但 tag 随轮次线性增长，而会话层只删快照记录。参考实现文档也写明 snapshot registry 的保留与清理需要运维自己配。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "controller 的周期复查也是调和——Agent CRD controller 每 20 秒按 tag 重新解析 skills 包 digest，tag 被挪动时 Pinned 只在 status 告警、Track 生成新 revision",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "往同一个 `reviewer:v1` 推新内容后 28 秒内两个 agent 都有反应：Pinned 的 revision 仍指向原 digest，status 多一条 `bundleTagMoved` 写明钉住哪个、tag 现在指向哪个；Track 自动生成新 revision 指向新 digest，旧 revision 保留、在用的会话不受影响。期望状态（spec + 策略）与真实状态（registry 里 tag 当前指向）的比对是同一结构；区别在于修偏差的动作由策略决定是\"告警交给人\"还是\"自动跟随\"——与标签守护\"只自动修能安全修的\"同一判断。",
           "evidence_type": "",
           "review": ""
         }
@@ -12541,8 +13165,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 10,
-      "avg_confidence": 0.79,
+      "claims_count": 12,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "选型主线唯一——是否需要自己控制 Agent Runtime",
@@ -12651,6 +13275,28 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Hosted Agent 用任意框架（MAF / LangGraph / OpenAI Agents SDK）写、打成镜像，Foundry 负责每会话 VM 级沙箱、闲置回收与带状态恢复、Entra agent identity 与 Responses / Invocations 端点。所以选型主线\"是否需要自己控制 Agent Runtime\"在三层划分下可以说得更准：framework 那一半已经自选，争议只在 Runtime 层；自建 runtime 的对照清单是 kagent CRD + GitOps、AKS Kata 节点池 + agent-sandbox / OpenSandbox、PostgreSQL / Dapr state store、Workload Identity → Entra Agent ID、kmcp + agentgateway、OTel → App Insights，换来数据与执行环境留在自己网络里、隔离与出站可按安全要求定制。与 Agent 365（Platform 层）不冲突。见 [[agent-infra-three-layers]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "按\"loop 归谁\"分三类 agent——B 类（基于现成编码 harness）在作者眼里像 A、在运行时眼里像 C；真正的成本分界在 A 与 B 之间，Foundry 的 Prompt ≈ A、Hosted ≈ C，B 没有直接对应",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "A 声明式：作者只写指令、选模型、挂 MCP 与知识源，loop 是平台的通用 loop，几百个 agent 可共用一个服务、需要执行代码再按需领沙箱。B 基于现成 harness：作者写 AGENTS.md、skills、MCP 配置，没有一行 loop 代码，但跑的 loop 需要文件系统和 shell，每会话独占一个沙箱。C 自写 loop：Agent Framework / LangGraph 打成镜像。B 与 C 每会话一个 Kata VM，成本与冷启动是另一个量级。kagent 1.x 的 Harness（`kagent` / `byo` / `codex` / `claude`）分别落在三类上；本系列参考实现本质上是一个只做 B 类的平台。这给本页\"Runtime 归属\"主线补了一个维度：Prompt + Copilot harness 一档是\"Microsoft 跑 loop\"的 B 类变体，而\"用第三方编码 CLI 当 harness\"的 B 类在 Foundry 内没有托管形态。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "在 AKS 上自建 agent runtime 的理由只剩三类，前提是团队愿意长期维护控制面；A、C 类放 Foundry、只把 B 类放 AKS 的混合布局可共用同一租户与 agent 身份",
+          "source": "AKS-Agent-Runtime系列10：为什么在AKS上自建",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三类理由：① 直接跑现成编码 CLI——Hosted 要求容器实现 Responses 或 Invocations，这些 CLI 不说这些协议，要用就得自己包一层（参考实现的适配器做的正是这件事）；② 沙箱规格——Hosted 最大 2 vCPU / 4 GiB，编码 agent 快照镜像就 1.46 GB，大仓库构建与全量测试 2 vCPU 常不够，GPU 更不用说，AKS 由节点池定规格；③ 出站粒度——Hosted 可走客户 VNet、工具经 Toolbox，但\"某 agent 只能读某仓库不能推、撤销 1 秒多生效\"这一级要自己搭。代价清单（几天 PoC 就撞上）：单副本 + SQLite 发版即停、多副本要自加 lease 与 fencing；回收只从状态库往外做；突发下逐请求授权先垮（51 个 503、0 个 429）；一项申请缺批准整个应用新会话 503；Claude Code root 下要 `IS_SANDBOX=1`；令牌服务要自写、代表用户要管理员同意；再加订阅策略（Key Vault 创建即关公网、Service Bus SAS 被禁、PostgreSQL 两区开不了、集群每天半夜停机）。不愿意长期维护控制面，三个理由再充分也应先想能否在 Hosted 那侧绕过去。十篇 PoC 的总结判断，选型本身未在真实项目验证。",
           "evidence_type": "",
           "review": ""
         }
@@ -13202,6 +13848,24 @@
       "description": "\"块内一次联合生成 + 块间拿 observation 重规划\"是 agent loop 在高频控制域的实例化"
     },
     {
+      "source": "actor-snapshot-scheduling",
+      "target": "agent-sandbox",
+      "relation_type": "part-of",
+      "description": "沙箱\"房间怎么分\"一件中，环境分配与回收的一种调度形态"
+    },
+    {
+      "source": "actor-snapshot-scheduling",
+      "target": "agent-session-control-plane",
+      "relation_type": "part-of",
+      "description": "Durable 会话的暂停 / 恢复由会话控制面编排"
+    },
+    {
+      "source": "actor-snapshot-scheduling",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "constrains",
+      "description": "快照里的凭据与身份会过期或被冻结，恢复时必须从沙箱外重新取"
+    },
+    {
       "source": "advantage-function",
       "target": "reinforcement-learning",
       "relation_type": "part-of",
@@ -13398,6 +14062,54 @@
       "target": "context-engineering",
       "relation_type": "part-of",
       "description": "搜索工具是 Context Engineering 的信息获取层"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "Runtime 层持久执行与调度生命周期两个子层的具体形态（会话平面）"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "agent-sandbox",
+      "relation_type": "uses",
+      "description": "执行平面由沙箱提供，控制面是唯一持有其生命周期 API 身份的调用方"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "durable-execution",
+      "relation_type": "uses",
+      "description": "\"先写意图再执行、结果不确定不重放\"是控制面的贯穿规矩"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "reconciliation-loop",
+      "relation_type": "uses",
+      "description": "会话层从状态库往外回收，另需从外往里的对账器兜底"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "actor-snapshot-scheduling",
+      "relation_type": "uses",
+      "description": "Durable 会话靠快照换出执行单元，会话 ID 不随 Pod 走"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "uses",
+      "description": "治理平面的出站网关是 fencing token 唯一能统一校验的位置"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "harness-portability-spectrum",
+      "relation_type": "uses",
+      "description": "一个控制面经适配器托管多种 harness，正是 harness 与 runtime 不绑死的实例"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "meta-harness",
+      "relation_type": "contrasts",
+      "description": "同称\"harness 之外的一层\"，meta-harness 是优化 harness 的离线外层搜索，本页是运行时驱动 harness 的平台层"
     },
     {
       "source": "agent-zero",
@@ -14084,6 +14796,24 @@
       "description": "两本账分家（验收分不动、优化 reward 单设）是防 cost per task 被 Goodhart 的手段"
     },
     {
+      "source": "credential-out-of-sandbox",
+      "target": "agent-sandbox",
+      "relation_type": "part-of",
+      "description": "沙箱三件事中\"门怎么管\"一件的核心做法"
+    },
+    {
+      "source": "credential-out-of-sandbox",
+      "target": "copilot-managed-runtime",
+      "relation_type": "contrasts",
+      "description": "同为\"沙箱只有一个受控出口\"，那边是浏览器宿主中介（iframe + CSP + JSON-RPC），这边以 egress 代理注入凭据为主"
+    },
+    {
+      "source": "credential-out-of-sandbox",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "下游身份是平台、用户还是 agent 自己，由令牌服务按会话换取"
+    },
+    {
       "source": "cybernetics-agent-design",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -14184,6 +14914,18 @@
       "target": "hybrid-linear-attention-architecture",
       "relation_type": "uses",
       "description": "MoE / 超大 Hybrid 模型训练依赖 Megatron 的 EP/TP/PP"
+    },
+    {
+      "source": "durable-execution",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "Runtime 层四个子层中的持久执行子层"
+    },
+    {
+      "source": "durable-execution",
+      "target": "actor-snapshot-scheduling",
+      "relation_type": "contrasts",
+      "description": "前者让流程在执行者换掉后接着做，后者让执行单元在空闲时被换出；一个管故障、一个管密度"
     },
     {
       "source": "embodied-ai",
@@ -15114,6 +15856,24 @@
       "target": "voice-live-agent",
       "relation_type": "part-of",
       "description": "协议选型是 Voice Live Agent 架构的基础设施层决策"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "negative-feedback",
+      "relation_type": "uses",
+      "description": "每一路都以\"读当前状态 → 比对 → 修偏差\"的负反馈为单元"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "feedback-loop",
+      "relation_type": "part-of",
+      "description": "反馈闭环在运维与平台工程中的具体形态"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "agent-session-control-plane",
+      "relation_type": "constrains",
+      "description": "会话层自己的回收只覆盖有记录的资源，必须另配从外往里的对账"
     },
     {
       "source": "recursive-self-improvement",
@@ -16352,6 +17112,12 @@
       "description": "同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线"
     },
     {
+      "source": "foundry-agent-type-selection",
+      "target": "agent-session-control-plane",
+      "relation_type": "constrains",
+      "description": "选 AKS 自建就意味着要自己写并长期维护会话控制面"
+    },
+    {
       "source": "hybrid-inference-framework-selection",
       "target": "prefix-caching",
       "relation_type": "addresses",
@@ -16540,6 +17306,10 @@
         "harness-portability-spectrum",
         "agent-infra-three-layers",
         "agent-sandbox",
+        "agent-session-control-plane",
+        "credential-out-of-sandbox",
+        "durable-execution",
+        "actor-snapshot-scheduling",
         "agent-paradigms",
         "context-engineering",
         "context-explosion",
@@ -16562,6 +17332,7 @@
         "negative-feedback",
         "conjugate-transformation",
         "feedback-loop",
+        "reconciliation-loop",
         "generation-evaluation-separation",
         "react-paradigm",
         "scaling-laws",
