@@ -1,7 +1,7 @@
 ---
 title: "Entra Agent ID（双层身份模型）"
 created: "2026-08-03"
-updated: "2026-11-07"
+updated: "2026-11-14"
 tags:
   - wiki
   - concept
@@ -52,12 +52,12 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ### Claim: 完整 Token 流程三阶段——认证走 Blueprint，中间有代表资格检查，资源授权基于 Agent Identity
 
-- **来源**：[[Entra-Agent-ID的双层身份模型]]
+- **来源**：[[Entra-Agent-ID的双层身份模型]]、[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
 - **首次出现**：2026-08-03
-- **最近更新**：2026-11-07
-- **置信度**：0.8
+- **最近更新**：2026-11-14
+- **置信度**：0.85
 - **状态**：active
-- **复核**：2026-11-07 确认——依据：[Authenticate and acquire tokens for autonomous agents](https://learn.microsoft.com/en-us/entra/agent-id/autonomous-agent-authentication-authorization-flow)（blueprint token 带 fmi_path → agent identity token → agent user token）
+- **复核**：2026-11-07 确认——依据：[Authenticate and acquire tokens for autonomous agents](https://learn.microsoft.com/en-us/entra/agent-id/autonomous-agent-authentication-authorization-flow)（blueprint token 带 fmi_path → agent identity token → agent user token）；2026-11-14 实测佐证（见下方"两步换令牌"Claim），0.8 → 0.85
 
 > ① Blueprint Authentication：Blueprint 用自己的凭据向 Entra 认证（协议层就是 OAuth Client Credential Flow，Foundry 文档 "Agent Service presents the blueprint's OAuth credentials" 即指此）；② Entra 内部检查该 Blueprint 是否有资格代表目标 Agent Identity，通过才签发 Token（sub = Agent Identity）；③ 资源服务器按 Agent Identity 持有的 Permissions/Roles/Scopes 做访问授权。容易漏掉的是阶段②——"授权"实际有两种，通常说的"真正授权"指阶段③。
 
@@ -120,6 +120,46 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 > 与 Entra Agent ID 的"Blueprint + Agent Identity、FIC-only"不同，Substrate 走工作负载身份路线：每个 actor 一张短期 SPIFFE 证书，egress 网关可按需签发带 actor 身份的 JWT，`ate-idp-server` 提供验签公钥便于与外部身份系统联邦；actor 进程本身不持有证书与 JWT，凭据在沙箱外注入。坑：环境变量在 golden snapshot 里冻结，从同一模板恢复的所有 actor 读到同一个值，身份必须从按 actor 投射的元数据文件读。缺口：入站只校验调用方 SPIFFE ID 是否在静态白名单，白名单内任何调用方都能访问任何 actor。自建 runtime 上的 agent 仍可映射到 Entra Agent ID 登记进 Agent 365（Runtime ↔ Platform 接口）。
 
+### Claim: 下游看到的身份有三种——平台身份、OBO 代表用户、Agent ID 每个 agent 各自的身份；真实平台三种同时存在，每个资源声明自己用哪一种
+
+- **来源**：[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.8
+- **状态**：active
+
+> 平台身份：网关注入平台凭据，下游只知道"平台来调了"，审计里只有一个名字、也没法按用户本人权限判断。OBO：控制面拿用户令牌用 MSAL 做 on-behalf-of 换下游令牌，令牌里同时写 oid=用户本人、azp=代办的控制面应用，下游按用户权限判断、用户没有的 agent 也拿不到；控制面用 Pod 的 Workload Identity 联合令牌作客户端断言，没有任何 secret，下游预授权了控制面所以没有同意弹窗。Agent ID：oid 是每个 agent 各自的，可单独授权、审计、停用；而控制面 app-only 令牌的 oid 是控制面本身、所有 agent 共用。很多内部系统只认服务账号或 API key、不支持 OBO，只能退回平台身份 + 网关逐请求授权与审计交代用户是谁。默认用 OBO，下游不支持才退回平台身份；agent 多起来再上 Agent ID。实测。
+
+### Claim: Entra 会给租户里任何应用签发以你的 API 为 audience 的 app-only 令牌——未分配任何角色也照样签发，只校验 aud 的 API 谁都能调，必须同时看 scp 或 roles
+
+- **来源**：[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.85
+- **状态**：active
+
+> 控制面应用用 client credentials 拿下游 API 的令牌，预期因下游没给它任何应用角色而失败，结果照样签发：`idtyp=app`、无 `scp`、无 `roles`、有效期 1445 分钟。授权必须同时看 `scp`（委托）或 `roles`（应用）。这条与 agent 无关，是通用的 Entra 安全事实，但 agent 平台会让一个 API 的调用方一下子多出很多来。实测。
+
+### Claim: OBO 换出的令牌不比用户令牌活得久；用户令牌过期后旧令牌不能再做 OBO，只能靠 OBO 时拿到的 refresh token 续——refresh token 成了控制面里最敏感的数据
+
+- **来源**：[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.8
+- **状态**：active
+
+> 用户令牌有效期 68 分钟，OBO 换出的令牌过期时间比它早 2 秒。Durable 会话可保留好几天。用户令牌过期 2 分钟后：拿旧用户令牌重新 OBO 失败（`AADSTS500133`，断言不在有效期内）；用 MSAL 缓存里的 refresh token 续期成功，新委托令牌用户仍是本人、代办仍是控制面。所以要让 agent 在用户离开后继续以用户身份做事，控制面必须保存 refresh token（用户令牌本身留着没用）：加密存放、按会话隔离、会话删除时一起删；其有效期与吊销策略由租户决定，最终能续多久未测。另一种默认更安全：令牌过期后暂停需要用户身份的操作，等用户回来重新授权。实测。
+
+### Claim: Agent ID 两步换令牌在 AKS 上用联合凭据跑通、无 secret；agent identity 代表用户的 OBO 卡在同意（AADSTS65001）——技术链路无障碍，卡的是授权治理
+
+- **来源**：[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.7
+- **状态**：active
+
+> 用 Azure CLI 自带的 Graph 权限建 blueprint 与 blueprint principal（该租户已有 3 万多个 blueprint），给 blueprint 加信任 AKS 某 ServiceAccount 的联合凭据，再建一个 `ServiceIdentity` 类型的 agent identity。取令牌：blueprint 以 SA 联合令牌做 client credentials 并带 `fmi_path=<agent identity id>` 换交换令牌 T1（`sub` 是末尾为该 id 的 FMI 路径），agent identity 以 T1 作客户端断言换下游令牌，最终 `sub` / `azp` / `oid` 全是该 agent identity——与本页"完整 Token 流程三阶段"一致。agent 代表用户：用户令牌 audience 须为 blueprint（拿到，80 分钟），OBO 返回 `AADSTS65001` 未同意；下游预授权 agent identity 不行（只有服务主体、没有应用对象，写不进预授权列表），自建针对本人的委托授权被拒（guest 权限不足）。正规做法是管理员在 blueprint 上配可继承权限或对 agent identity 做管理员同意——这个审批要算进上线流程。代表用户一段未跑通，按文档推断，置信度保守。
+
 ## 冲突与演进
 
 - 2026-07-19：《Foundry Agent 全面对比》首次引入（身份层三类 Agent 同源：blueprint + per-agent service principal），当时单源 HOLD 不建页，论断收入 [[foundry-agent-type-selection]] 治理分层 Claim。
@@ -128,6 +168,7 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 - 2026-11-07：/revalidate 复核——确认 5（其中 1 条 +0.1）、修订 1、待定 1
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 1
+- 2026-11-14：AKS Agent Runtime 系列 09 注入四条实测（三种下游身份、app-only 只验 aud 的坑、OBO 过期与 refresh token、Agent ID 两步换令牌与代表用户卡在同意），"Token 流程三阶段"获实测佐证 0.8 → 0.85。`on-behalf-of-delegation` 作为原子概念暂不单独建页（HOLD）。
 
 ## 关联概念
 
@@ -138,3 +179,4 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 - [[2026-08-03-周一]] — 阅读 Foundry Agent Service 文档中 "Blueprint authentication" 一句引发的双层模型梳理，经 ChatGPT 讨论 + Microsoft Learn 官方文档核对成文
 - [[Agent基础设施系列03：kagent与Agent-Substrate]] — Substrate 的 per-actor SPIFFE 身份与环境变量冻结坑（2026-11-02）
+- [[2026-11-13-周五]] / [[AKS-Agent-Runtime系列09：Agent以谁的身份行事]] — OBO / app-only / Agent ID 在 AKS 上的实测

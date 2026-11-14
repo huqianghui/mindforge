@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent Service"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-14"
 tags:
   - wiki
   - concept
@@ -83,6 +83,16 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 
 > skill 存在项目级目录里、有不可变版本，挂到 toolbox 后以 MCP Resources 暴露，agent 按 advertise（名称与描述进 system prompt）→ load（需要时取全文）→ read resources 三步按需加载，任何支持 MCP Resources 的客户端都能用。直接集成只支持用 Microsoft Copilot harness 的 Prompt Agent；Hosted Agent 自带 harness，经 Toolbox MCP endpoint 取用，加载方式自己决定。Toolbox 发布是不可变版本 + 显式 publish。成本上两类调用侧计费相同，Hosted 的 container compute 买的是"改 harness 的权力"。（2026-11-07 复核：原写"Prompt Agent 侧 skill 支持在文档层面有矛盾"已过时，见 [[foundry-agent-type-selection]] 对应 Claim 的修订。）
 
+### Claim: Hosted Agents 已包了自建 agent runtime 里最费劲的几块——每会话 VM 沙箱、空闲释放与带状态恢复、会话与对话分开、部署即建 agent identity、按用户隔离会话
+
+- **来源**：[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.75
+- **状态**：active
+
+> 逐项对照在 AKS 上自建的九篇：Kata 节点池、默认拒绝出站、不挂 SA token、挡 IMDS 由平台负责；空闲 2~60 分钟释放计算、恢复时还原 `$HOME` 与 `/files`、30 天不活动删除、无预热池要配（对照自建时 checkpoint 每轮两次 commit 各 30~40 秒、孤儿沙箱与快照镜像要自写对账器）；"会话"（沙箱与文件）与"对话"（消息历史）分开管；部署时自动建 Entra agent identity（对照自建要用 Graph 建 blueprint、联合凭据、agent identity）；工具统一走 Toolbox、身份透传在那里处理。没覆盖的三件：跑现成编码 CLI（容器须实现 Responses / Invocations 协议）、沙箱超过 2 vCPU / 4 GiB、出站按"资源 + 动作"逐请求批准——选型见 [[foundry-agent-type-selection]]。基于文档对照，Hosted 侧未实测。
+
 ## 冲突与演进
 
 - 2026-07-21：Foundry 系列首次提取时只建了决策页 [[foundry-agent-type-selection]]，产品本身未建概念页，论断分散在决策页、[[azure-copilot-ecosystem]]、[[entra-agent-id]]、[[voice-live-agent]]。
@@ -104,3 +114,4 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 - [[Entra-Agent-ID的双层身份模型]] — Blueprint 与 agent identity 双层身份、Foundry 实操
 - [[Foundry-Agent与Copilot-Studio的选型]] — 与 Copilot Studio、Voice Live 的分层关系、2026 Roadmap、硬约束与决策树
 - [[GitHub-Copilot系列01：产品全景与竞争格局]] — Microsoft Copilot harness in Foundry（公开预览）
+- [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — Hosted Agents 与 AKS 自建九篇逐项对照（2026-11-13）

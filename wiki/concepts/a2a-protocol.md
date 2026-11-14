@@ -1,7 +1,7 @@
 ---
 title: "A2A Protocol"
 created: "2026-10-24"
-updated: "2026-10-24"
+updated: "2026-11-14"
 tags:
   - wiki
   - concept
@@ -112,9 +112,30 @@ A2A 和微服务治理要解决的问题高度同构（发现、契约、调用�
 
 > 调模型 API 不需要；一个 Agent 调 CRM/数据库优先 MCP 或普通 API；少量 Agent、同一团队维护未必需要；多个独立 Agent 跨团队、跨框架、跨厂商协作才值得。A2A 的前提是"对方是一个独立的 Agent"，为了用协议而拆多 Agent 只会多出延迟、成本、故障点。A2UI 一文给出同样的顺序：前端动态 UI 是同一应用内部问题，AG-UI + A2UI 先行，需要跨系统调用独立 Agent 时再引入 A2A。
 
+### Claim: 能被发现不等于能被调用——Agent Card 只写"怎么认证"，能不能调要过被调用方 owner 的审批；撤销后卡片照样可见、调用被拒，不合格的 agent 根本不发卡片
+
+- **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.75
+- **状态**：active
+
+> 发现分三层：集群内直接查 Kubernetes API（`kubectl get agents -l team=a` 看完整定义，RBAC 管可见性，别的框架不认识 CRD）；跨框架用 A2A Agent Card，由 controller 从 CRD 生成、注册端点按 `/.well-known/agent-card.json` 发布，卡片只放对外信息（名字、描述、skills、入口、认证方式、版本，版本后带 revision 哈希让调用方看出变没变）；企业级同步到 agent 目录（本次未做）。卡片的 `securitySchemes` 声明要 Entra 签发的 Bearer JWT，真正能不能调走目标 owner 按源 agent 与动作的批准、每请求核对源会话身份、只允许一跳。注册端点只发布 Ready 的 agent，校验失败的返回 404。与本页"发现能力与授权能力必须分开"一致，是它的实现形态。PoC 只做到发现，卡片里的入口（agent 网关）未实现。
+
+### Claim: A2A 1.x 卡片入口从单个 url 改成 supportedInterfaces 列表——每项写地址、协议绑定与协议版本；官方 Python SDK 的 AgentCard 是 protobuf 定义，可用严格模式防字段名拼错被悄悄忽略
+
+- **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.8
+- **状态**：active
+
+> 协议绑定取 JSONRPC / gRPC / HTTP+JSON。三张生成的卡片做两次校验：先用 SDK 的 `A2ACardResolver` 按 well-known 路径拉取解析，再用 protobuf 严格模式解析一遍（不认识的字段直接报错），三张都通过。这是本页"0.3→1.0 破坏性改名"Claim 的又一处具体改动。版本事实，未逐条对照规范原文。
+
 ## 冲突与演进
 
 - 2026-10-24：建页。来源为企业级 A2A 方案专文（按 1.0 官方规范拆解），A2UI 协议解析与 AG-UI 协议解析两文均引用其定位，[[ag-ui-protocol]] 与 [[foundry-agent-type-selection]] 早已提及 A2A 但 wiki 无归口页。未经自建项目验证，置信度 0.7~0.8（规范性条目 0.8，企业落地建议 0.7）。
+- 2026-11-14：AKS Agent Runtime 系列 07 首次在自建 PoC 上生成并校验 1.x 卡片，注入两条（发现≠调用、supportedInterfaces）。
 
 ## 关联概念
 
@@ -127,3 +148,4 @@ A2A 和微服务治理要解决的问题高度同构（发现、契约、调用�
 
 - [[2026-10-20-周二]] — 熟悉 A2A 与微服务架构的区别和联系，成文企业级 A2A 方案
 - [[企业级A2A方案：从微服务治理到Agent互操作层]] — 1.0 报文解剖、与微服务治理对照、Nacos Registry 现状、企业落地方案（2026-10-20）
+- [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — 从 Agent CRD 生成 1.x 卡片、发现三层、发现与调用授权分离（2026-11-13）

@@ -1,7 +1,7 @@
 ---
 title: "Harness 可移植性分层"
 created: "2026-08-30"
-updated: "2026-11-07"
+updated: "2026-11-14"
 tags:
   - wiki
   - concept
@@ -97,11 +97,32 @@ related:
 
 > Copilot Studio 里选 harness 就是选 runtime（Standard 跑经典运行时、GitHub Copilot 跑 Agentic Runtime、Copilot Chat 由 M365 Copilot 编排器执行），因为在这类平台里"运行时"本身就是 harness 的实现，所以创建后不能互转、调用入口与计费也跟着不同。自建或自带 harness 的栈里两者解耦：kagent 的 Harness 字段可选 ADK、Claude Code、Codex 或自定义镜像（一 runtime 多 harness）；MAF 写的 agent 打成镜像既能上 Hosted Agent 也能上 kagent（一 harness 多 runtime）。Foundry 两种情况并存：Prompt Agent 绑死，Hosted Agent 只提供执行环境。本页其他 Claim 讲 harness 内资产（skill / MCP / hook）能否跨宿主，这条讲 harness 本身能否换宿主，两者叠加才是完整的锁定评估（锁定矩阵见 [[agent-infra-three-layers]]）。
 
+### Claim: 一个控制面托管多种编码 CLI 时，模型协议差异可以压到网关一层——Claude Code 的 Messages 经网关转成 Responses 调 GPT 模型实测可用，同一修 bug 任务与原生 Codex 看不出差别
+
+- **来源**：[[AKS-Agent-Runtime系列08：模型接入层]]、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **首次出现**：2026-11-10
+- **最近更新**：2026-11-14
+- **置信度**：0.8
+- **状态**：active
+
+> Copilot、Codex、OpenCode、Pi 原生说 OpenAI Responses；Claude Code 只说 Anthropic Messages，参考实现因此装了 Claude Code 却故意不配模型。模型网关的路由本就同时匹配 `/openai/v1/responses` 与 `/v1/messages`，agentgateway 文档写明 provider 同时支持两种格式时 Messages 请求总被转成 Responses。直接打 Messages 路径：普通对话 200（返回 id 以 `resp_` 开头，看得出背后调的是 Responses）、强制工具调用返回标准 `tool_use` 块、流式输出是完整的 Anthropic SSE 序列。多步任务（`calc.py` 两个 bug + 空列表未报错，要求修代码不改测试）：Claude Code 走转换两次 12.8 / 11.4 秒、Codex 原生两次 14.0 / 10.4 秒，四次测试全过且都只改了 `calc.py`。所以 harness 换宿主时，"模型协议对不上"不必改 harness，也不必限定模型厂商；Foundry 上 Claude 走原生 Messages 的路径因需填组织声明未测。小规模任务实测，长任务未测。
+
+### Claim: harness 跑进无人值守的沙箱前要逐项排它自己的自保检查——Claude Code 在 root 下拒绝跳过权限确认、需显式 `IS_SANDBOX=1`；不认识的模型名按默认上下文窗口算，会影响压缩时机
+
+- **来源**：[[AKS-Agent-Runtime系列08：模型接入层]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.8
+- **状态**：active
+
+> 按参考实现 Claude 适配器的参数（`--print --bare --safe-mode --output-format stream-json --dangerously-skip-permissions`）跑，它根本没发请求就退出——沙箱进程是 root，参考实现的适配器没设 `IS_SANDBOX=1`，就算模型配好了在这个镜像里也跑不起来。加上后 2 轮调 Bash、输出 Kata guest kernel 版本、5.9 秒。stderr 里 `unrecognized_model`：Claude Code 不认识 `gpt-5.6-luna`，上下文窗口与计价都用默认值，输出里的 cost 无参考意义，默认窗口若小于实际会提前压缩历史。这类"harness 在个人电脑上合理的自保逻辑"是部署 harness 时要单独适配的一层，属于 runtime 侧的可执行性而非文本可移植性。实测。
+
 ## 冲突与演进
 
 - 2026-08-30：升格建页（用户裁决）。2026-08-04 HOLD 于 harness-engineering 页内 Claim；复核阈值"第 2 篇独立引用"被系列14（08-20）与 Computer Use 系列六（08-29）两次命中后解除。harness-engineering 页保留原始 Claim（Copilot Studio 证据），本页作分层判据的归口页并补 runtime 维度精确化。
 - 2026-09-04：注入首批续证——五平台横评的"搬家工具成产品类目"市场侧实证（建页后第 4 处独立来源）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、待定 2、长效 2
+- 2026-11-14：AKS Agent Runtime 系列 03/08 注入两条——一个控制面经网关协议转换托管 Messages 与 Responses 两类 harness 的实测，以及无人值守沙箱下 harness 自保检查的适配。
 
 ## 关联概念
 
@@ -114,3 +135,4 @@ related:
 - [[2026-08-20-周四]] — 系列14 成文（SDLC framework Skill 化收敛调查）
 - [[2026-08-29-周六]] — Computer Use 系列六成文（Skill 可见但 runtime 缺失实测）
 - [[Agent基础设施系列04：Framework层与三层串联]] — harness 是否平台代码决定与 runtime 是否绑死（2026-11-02）
+- [[AKS-Agent-Runtime系列08：模型接入层]] — Messages → Responses 网关转换、Claude Code 与 Codex 对照、IS_SANDBOX（2026-11-13）

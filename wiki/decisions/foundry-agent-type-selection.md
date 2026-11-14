@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted"
 created: "2026-07-21"
-updated: "2026-11-07"
+updated: "2026-11-14"
 tags:
   - wiki
   - decision
@@ -45,6 +45,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - **选择**（2026-08-16 修订为二元，2026-11-07 修订为三档）：以"是否需要自己控制 Agent Runtime / harness"为唯一主线做选型——instructions 与支持的工具就够 → Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness；要改框架、agent loop、中间件或运行时行为（含原 Workflow Agent 承接的多 Agent 固定流程场景）→ Hosted Agent，多 Agent 编排靠 Hosted 内 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills 承接
 - **理由**：两者差异的本质不是能力多少，而是 Runtime 归属；80/20 规则下大多数场景 Prompt Agent 足够且治理最全
 - **放弃理由**：不以"功能清单对比"选型——身份层两者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Shield/Content Filter 仅 Prompt Agent 内置），逐功能对比会掩盖这条主线
+- **Foundry 之外再加一档：AKS 自建**（2026-11-14 补，来自 AKS Agent Runtime 系列 10）：先按"loop 归谁"分类——A 声明式（平台自带 loop）→ Prompt Agent，在 AKS 上自建这一类等于重写一个平台；C 自写 loop → 看 2 vCPU / 4 GiB 够不够、再看下面三件事有没有必须的，都不必须就用 Hosted Agent；B 基于现成编码 CLI（Claude Code / Codex / Copilot CLI）→ 能接受自己包一层 Responses / Invocations 协议且规格够就回到 C 的判断，否则在 AKS 上自建。自建的理由只有三类：直接跑现成编码 CLI、沙箱大于 2 vCPU / 4 GiB（GB 级工具链镜像、大仓库构建、GPU）、出站按"某 agent 对某资源的某动作"逐请求批准；半个理由是统一多模型多协议网关与按自己规则改控制面。前提只有一条：团队愿意长期维护一个 agent 控制面
 - **前提假设**：Hosted 已于 2026-07/08 GA（[Hosting Agent Framework applications](https://learn.microsoft.com/en-us/agent-framework/hosting)），GA 前记录的硬约束（帧上限、连接时长、vCPU）需按 GA 文档复核；Copilot harness in Foundry 仍是公开预览。~~Workflow 相关前提~~已随退役失效，不再需要复核
 
 ## 影响范围
@@ -180,6 +181,26 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 > Hosted Agent 用任意框架（MAF / LangGraph / OpenAI Agents SDK）写、打成镜像，Foundry 负责每会话 VM 级沙箱、闲置回收与带状态恢复、Entra agent identity 与 Responses / Invocations 端点。所以选型主线"是否需要自己控制 Agent Runtime"在三层划分下可以说得更准：framework 那一半已经自选，争议只在 Runtime 层；自建 runtime 的对照清单是 kagent CRD + GitOps、AKS Kata 节点池 + agent-sandbox / OpenSandbox、PostgreSQL / Dapr state store、Workload Identity → Entra Agent ID、kmcp + agentgateway、OTel → App Insights，换来数据与执行环境留在自己网络里、隔离与出站可按安全要求定制。与 Agent 365（Platform 层）不冲突。见 [[agent-infra-three-layers]]。
 
+### Claim: 按"loop 归谁"分三类 agent——B 类（基于现成编码 harness）在作者眼里像 A、在运行时眼里像 C；真正的成本分界在 A 与 B 之间，Foundry 的 Prompt ≈ A、Hosted ≈ C，B 没有直接对应
+
+- **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.75
+- **状态**：active
+
+> A 声明式：作者只写指令、选模型、挂 MCP 与知识源，loop 是平台的通用 loop，几百个 agent 可共用一个服务、需要执行代码再按需领沙箱。B 基于现成 harness：作者写 AGENTS.md、skills、MCP 配置，没有一行 loop 代码，但跑的 loop 需要文件系统和 shell，每会话独占一个沙箱。C 自写 loop：Agent Framework / LangGraph 打成镜像。B 与 C 每会话一个 Kata VM，成本与冷启动是另一个量级。kagent 1.x 的 Harness（`kagent` / `byo` / `codex` / `claude`）分别落在三类上；本系列参考实现本质上是一个只做 B 类的平台。这给本页"Runtime 归属"主线补了一个维度：Prompt + Copilot harness 一档是"Microsoft 跑 loop"的 B 类变体，而"用第三方编码 CLI 当 harness"的 B 类在 Foundry 内没有托管形态。
+
+### Claim: 在 AKS 上自建 agent runtime 的理由只剩三类，前提是团队愿意长期维护控制面；A、C 类放 Foundry、只把 B 类放 AKS 的混合布局可共用同一租户与 agent 身份
+
+- **来源**：[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
+- **首次出现**：2026-11-13
+- **最近更新**：2026-11-14
+- **置信度**：0.7
+- **状态**：active
+
+> 三类理由：① 直接跑现成编码 CLI——Hosted 要求容器实现 Responses 或 Invocations，这些 CLI 不说这些协议，要用就得自己包一层（参考实现的适配器做的正是这件事）；② 沙箱规格——Hosted 最大 2 vCPU / 4 GiB，编码 agent 快照镜像就 1.46 GB，大仓库构建与全量测试 2 vCPU 常不够，GPU 更不用说，AKS 由节点池定规格；③ 出站粒度——Hosted 可走客户 VNet、工具经 Toolbox，但"某 agent 只能读某仓库不能推、撤销 1 秒多生效"这一级要自己搭。代价清单（几天 PoC 就撞上）：单副本 + SQLite 发版即停、多副本要自加 lease 与 fencing；回收只从状态库往外做；突发下逐请求授权先垮（51 个 503、0 个 429）；一项申请缺批准整个应用新会话 503；Claude Code root 下要 `IS_SANDBOX=1`；令牌服务要自写、代表用户要管理员同意；再加订阅策略（Key Vault 创建即关公网、Service Bus SAS 被禁、PostgreSQL 两区开不了、集群每天半夜停机）。不愿意长期维护控制面，三个理由再充分也应先想能否在 Hosted 那侧绕过去。十篇 PoC 的总结判断，选型本身未在真实项目验证。
+
 ## 冲突与演进
 
 - **2026-08-30**：注入 08-20 文档修订的三组 Hosted 运行时经济学硬约束（双 ID 生命周期/per-session 计费/冷启动无 benchmark），"Hosted 硬约束表"证据面扩充。
@@ -191,10 +212,11 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **2026-11-07**（/detect-conflict 裁决）：标题、背景、选择与前提假设同步到 /revalidate 修订后的三档框架；选项 B 改为 GA；选项 C 注释时态改为"定于"；硬约束中的 idle 断连与 session 回收超时区分开。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 1
+- **2026-11-14**：AKS Agent Runtime 系列 07/10 注入。harvest 提出的"AKS 自建 vs Hosted Agents"决策候选按用户裁决**并入本页**、不另起决策页：决策结论补"Foundry 之外再加一档 AKS 自建"的判断顺序，新增 A/B/C 分类与自建三类理由两条 Claim。`decision_status` 保持 `active`。
 
 ## 关联概念
 
-（暂无）
+- [[agent-session-control-plane]] — `constrains` 选 AKS 自建就意味着要自己写并长期维护会话控制面
 
 ## 关联方法
 
@@ -206,3 +228,5 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - [[Foundry-Toolbox与Skills解析]] — Skill 支持文档矛盾、harness 控制权、成本模型（2026-07-30）
 - [[Agent基础设施系列01：三层划分与自建路线]] — Hosted Agent 与 Agent 365 分属 Runtime 与 Platform 层、自建 runtime 对照表（2026-11-02）
 - [[Agent基础设施系列04：Framework层与三层串联]] — Hosted Agent 在锁定矩阵中的位置（2026-11-02）
+- [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — 按 loop 归谁分三类（2026-11-13）
+- [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — 与 Hosted Agents 逐项对照、自建三类理由与代价、判断顺序（2026-11-13）

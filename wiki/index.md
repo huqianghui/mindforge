@@ -90,6 +90,10 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[harness-portability-spectrum]] — Harness 可移植性分层："离模型越近越可移植"，skill/MCP 高、hook/command 低，可发现性≠可执行性
 - [[agent-infra-three-layers]] — Agent 基础设施三层：Framework / Runtime / Platform 按三问划分，Harness 是被托管的进程不单列一层；Runtime 四子层与锁定矩阵
 - [[agent-sandbox]] — Agent 沙箱：隔离原语 / 环境分配回收 / 出站与凭据三件事，Kata 隔离单位是 pod、凭据不进沙箱、冷启动拆开量
+- [[agent-session-control-plane]] — Agent 会话控制面（harness 的 harness）：调用单位是会话、幂等键与落盘才 ACK、适配器驱动多种编码 CLI、Ephemeral / Durable、会话队列 + lease / fencing 多副本
+- [[credential-out-of-sandbox]] — 凭据不进沙箱：四个平台的出口注入，网关认证书不认请求头、授权通过后才取凭据、令牌只在控制面与网关之间流转
+- [[durable-execution]] — 持久执行：先写意图再执行，结果不确定按副作用分流（整轮重发 vs 等原快照），高可用比的是少重做
+- [[actor-snapshot-scheduling]] — actor 与执行单元分离：空闲快照换出、按同时在忙的实例数备执行单元；快照范围决定恢复后剩什么
 - [[agent-paradigms]] — Agent 经典三范式：ReAct / Plan-and-Solve / Reflection
 - [[context-engineering]] — Context Engineering：从 Prompt Engineering 的正式演进
 - [[context-explosion]] — Context 爆炸：GSD/Superpowers/OpenSpec 的共同 scaling 瓶颈
@@ -112,6 +116,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[negative-feedback]] — 负反馈：error = goal - current_state，Agent 收敛的核心机制
 - [[conjugate-transformation]] — 共轭变换：表示层设计，90% 的 Agent 失败是表示问题
 - [[feedback-loop]] — 反馈闭环：区分线性工具链和控制系统的关键判据
+- [[reconciliation-loop]] — 调和循环：读真实状态比对期望再修偏差；回收要从记录往外与从实际资源往里两个方向，对账删除要刻意保守
 - [[generation-evaluation-separation]] — 生成-评估分离：三家公司独立演化的行业共识
 - [[react-paradigm]] — ReAct 范式：Thought-Action-Observation，Agent Loop 最小完备形式
 - [[scaling-laws]] — 缩放定律：Bitter Lesson 的定量化证明
