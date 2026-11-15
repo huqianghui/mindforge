@@ -144,6 +144,8 @@ When adding new knowledge to the vault:
 
 13. **wiki 知识提取/维护后自动 commit & push**（2026-11-05 用户要求："必须提交""下次这种都能自动 commit & push"）——`/extract-knowledge`、`/evolve-wiki` 及任何改动 `wiki/` 的知识编译完成后，**不问直接**提交并推送（只含 wiki 与本次改动的非私人文件），hook 重新生成的 `wiki-graph.json`/README 统计补 `chore` commit 一起推；收尾按 #10 只报 hash 与结果。不得把 wiki 改动留在工作区过夜。
 
+14. **文章成文/修改后直接 commit & push**（2026-11-15 用户要求："以后都可以先 commit & push"）——进 git 的文章（含配图、ARTICLES.md、交叉链接）写完或改完一轮，**不问直接**提交并推送，按逻辑改动分成几个 commit 依次提交；只含本次改动的非私人文件，收尾按 #10 只报 hash 与结果。
+
 - **记忆提权**：Memory 中的行为规则（"必须/禁止"）应提权到 CLAUDE.md 或 Rules；背景知识留在 Memory。详见 `.claude/rules/memory-promotion.md`，使用 `/memory-review` 定期审查。
 
 
