@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1250" width="1500" height="1250" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e2e8f0"/></marker>
+<style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#f1f5f9;font-size:15px;font-weight:600}.t{fill:#cbd5e1;font-size:13px}.tag{font-size:12px;font-weight:600}.ln{fill:#e2e8f0;font-size:16px;font-weight:700}.ld{fill:#94a3b8;font-size:13px}.fl{fill:none;stroke:#e2e8f0;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#0b1220;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#cbd5e1;font-size:13.5px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
+<rect width="1500" height="1250" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">Agent 的定义、注册、发现与调用：整体架构和出处</text>
+<text class="sub" x="30" y="72">右上角标出处：灰 Kubernetes、蓝 AKS / Azure、紫 社区、青绿 参考实现、琥珀 我在第 07 篇 PoC 里写的、红虚线 = 两边都还没有。安全沙箱实现不涉及这一层</text>
+<rect x="20" y="92" width="1460" height="190" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="120">定义与元数据</text>
+<text class="ld" x="36" y="142">谁写、存在哪</text>
+<text class="ld" x="36" y="161">存 etcd，按内容固定</text>
+<rect x="210" y="102" width="300" height="170" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="222" y="125">应用定义（参考实现）</text>
+<text class="tag" x="500" y="120" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="222" y="147">一种 CRD，只服务 B 类（现成 harness）</text>
+<text class="t" x="222" y="166">运行时类引用、入口、会话策略、</text>
+<text class="t" x="222" y="185">权限申请、默认模型</text>
+<text class="t" x="222" y="204">初始文件经 ConfigMap 放进沙箱</text>
+<text class="t" x="222" y="223">（单个上限 1 MiB）</text>
+<rect x="525" y="102" width="300" height="170" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="537" y="125">Agent CRD + type（PoC）</text>
+<text class="tag" x="815" y="120" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="537" y="147">一个 CRD 覆盖 A / B / C 三类</text>
+<text class="t" x="537" y="166">共用字段在外，各类配置分块</text>
+<text class="t" x="537" y="185">type 和配置块的对应关系</text>
+<text class="t" x="537" y="204">写成 CEL，提交时就拒绝</text>
+<text class="t" x="537" y="223">skills 包、描述、入口、权限</text>
+<rect x="840" y="102" width="300" height="170" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="852" y="125">skills 包：OCI artifact</text>
+<text class="tag" x="1130" y="120" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="852" y="147">oras 把 AGENTS.md、skills 打包</text>
+<text class="t" x="852" y="166">推到 ACR，按 digest 固定</text>
+<text class="t" x="852" y="185">Pinned / Track 两种更新策略</text>
+<text class="t" x="852" y="204">tag 被挪动时 status 告警</text>
+<text class="t" x="852" y="223">（绕开 ConfigMap 的 1 MiB）</text>
+<rect x="1155" y="102" width="325" height="170" rx="10" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="h" x="1167" y="125">Kubernetes 提供的底座</text>
+<text class="tag" x="1470" y="120" fill="#cbd5e1" text-anchor="end">Kubernetes</text>
+<text class="t" x="1167" y="147">CRD、CEL 校验、etcd</text>
+<text class="t" x="1167" y="166">controller 机制、status</text>
+<text class="t" x="1167" y="185">RBAC：谁能看、谁能改</text>
+<text class="t" x="1167" y="204">ConfigMap、ServiceAccount</text>
+<text class="t" x="1167" y="223">Workload Identity 换 ACR 令牌（AKS）</text>
+<rect x="20" y="296" width="1460" height="170" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="324">注册</text>
+<text class="ld" x="36" y="346">controller 把定义</text>
+<text class="ld" x="36" y="365">变成可发现的版本</text>
+<rect x="210" y="306" width="420" height="150" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="222" y="329">参考实现的 controller</text>
+<text class="tag" x="620" y="324" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="222" y="351">解析运行时类、资源、批准和文件内容</text>
+<text class="t" x="222" y="370">都就绪才置 Ready，发布 canonical</text>
+<text class="t" x="222" y="389">serving revision</text>
+<text class="t" x="222" y="408">新会话用最新 revision，已有会话固定原来的</text>
+<text class="t" x="222" y="427">revision 固定配置，权限每次请求实时算</text>
+<rect x="645" y="306" width="420" height="150" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="657" y="329">PoC 的 controller</text>
+<text class="tag" x="1055" y="324" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="657" y="351">语义校验：运行时、模型、镜像仓库在批准清单里</text>
+<text class="t" x="657" y="370">代码镜像必须写 digest；skills tag → digest</text>
+<text class="t" x="657" y="389">规范化后取内容哈希作 revision 名，只增不改</text>
+<text class="t" x="657" y="408">五种错误：一种被 CEL 拦，四种 Ready=False</text>
+<text class="t" x="657" y="427">不合格的不生成 revision、不发布卡片</text>
+<rect x="1080" y="306" width="400" height="150" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="1092" y="329">社区里做注册的</text>
+<text class="tag" x="1470" y="324" fill="#c4b5fd" text-anchor="end">社区</text>
+<text class="t" x="1092" y="351">kagent：Agent CRD，controller 为</text>
+<text class="t" x="1092" y="370">  每个 agent 起一个 A2A 端点</text>
+<text class="t" x="1092" y="389">Nacos：Agent / MCP 注册中心，托管</text>
+<text class="t" x="1092" y="408">  AgentCard，有版本、审核、可见性</text>
+<text class="t" x="1092" y="427">MCP Registry：登记 MCP server</text>
+<rect x="20" y="480" width="1460" height="190" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="508">发现</text>
+<text class="ld" x="36" y="530">三层：集群内、</text>
+<text class="ld" x="36" y="549">跨框架、企业级</text>
+<rect x="210" y="490" width="300" height="170" rx="10" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="h" x="222" y="513">集群内：Kubernetes API</text>
+<text class="tag" x="500" y="508" fill="#cbd5e1" text-anchor="end">Kubernetes</text>
+<text class="t" x="222" y="535">kubectl get agents -l team=a</text>
+<text class="t" x="222" y="554">完整定义、revision 历史、status</text>
+<text class="t" x="222" y="573">谁能看到由 RBAC 管</text>
+<text class="t" x="222" y="592">只有认识这个 CRD 的人能用</text>
+<rect x="525" y="490" width="330" height="170" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="537" y="513">跨框架：A2A Agent Card（PoC）</text>
+<text class="tag" x="845" y="508" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="537" y="535">controller 从 CRD 生成卡片</text>
+<text class="t" x="537" y="554">/.well-known/agent-card.json</text>
+<text class="t" x="537" y="573">只发布 Ready 的；版本带 revision 哈希</text>
+<text class="t" x="537" y="592">supportedInterfaces 列表、securitySchemes</text>
+<text class="t" x="537" y="611">用官方 SDK 和 protobuf 严格解析校验</text>
+<rect x="870" y="490" width="300" height="170" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="882" y="513">参考实现的发现方式</text>
+<text class="tag" x="1160" y="508" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="882" y="535">没有 A2A 卡片</text>
+<text class="t" x="882" y="554">调用方按命名空间 + 应用名</text>
+<text class="t" x="882" y="573">直接调会话 API</text>
+<text class="t" x="882" y="592">列出会话只返回自己的</text>
+<rect class="pulse" x="1185" y="490" width="295" height="170" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="h" x="1197" y="513">企业级目录（两边都没做）</text>
+<text class="tag" x="1470" y="508" fill="#fca5a5" text-anchor="end">还没有</text>
+<text class="t" x="1197" y="535">把卡片同步到企业 agent 目录</text>
+<text class="t" x="1197" y="554">让 Teams、Copilot、别的平台</text>
+<text class="t" x="1197" y="573">找得到 AKS 上的 agent</text>
+<text class="t" x="1197" y="592">和 agent 自己的身份一起出现</text>
+<text class="t" x="1197" y="611">（Entra Agent ID，第 09 篇）</text>
+<rect x="20" y="684" width="1460" height="250" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="712">调用</text>
+<text class="ld" x="36" y="734">协议面 + 授权</text>
+<text class="ld" x="36" y="753">能看到 ≠ 能调用</text>
+<rect x="210" y="694" width="420" height="230" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="222" y="717">参考实现：会话 API 的两种协议面</text>
+<text class="tag" x="620" y="712" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="222" y="739">HTTP：建会话、投递 prompt、按游标读更新、</text>
+<text class="t" x="222" y="758">  读条目、中止（第 03 篇）</text>
+<text class="t" x="222" y="777">MCP：同一套接口包成一个 MCP server，</text>
+<text class="t" x="222" y="796">  工具是建会话 / 投递 / 读更新 / 读条目 / 中止</text>
+<text class="t" x="222" y="815">为什么是 MCP：沙箱里的 Claude Code、Codex</text>
+<text class="t" x="222" y="834">  本身就是 MCP 客户端，不说 A2A</text>
+<text class="t" x="222" y="853">投递返回 turn ID，不等结果，调用方去读更新流</text>
+<rect x="645" y="694" width="420" height="230" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="657" y="717">参考实现：agent 调 agent 的授权</text>
+<text class="tag" x="1055" y="712" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="657" y="739">委托服务按"来源会话"建子会话，</text>
+<text class="t" x="657" y="758">  用和公开 API 相同的 owner</text>
+<text class="t" x="657" y="777">目标应用的 owner 批准哪些源应用能调、</text>
+<text class="t" x="657" y="796">  能做哪些动作（委托批准对象）</text>
+<text class="t" x="657" y="815">每次请求核对源 Pod、会话、应用；只允许一跳</text>
+<text class="t" x="657" y="834">子会话不继承调用方的权限，不共享文件系统</text>
+<text class="t" x="657" y="853">批准撤销后卡片照样能看到，调用被拒</text>
+<rect class="pulse" x="1080" y="694" width="400" height="110" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="h" x="1092" y="717">PoC 里还缺的</text>
+<text class="tag" x="1470" y="712" fill="#fca5a5" text-anchor="end">还没有</text>
+<text class="t" x="1092" y="739">卡片里的入口地址（agent 网关）没实现</text>
+<text class="t" x="1092" y="758">三类 agent 对外要提供同一套会话 API</text>
+<rect x="1080" y="814" width="400" height="110" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="1092" y="837">社区里做调用入口的</text>
+<text class="tag" x="1470" y="832" fill="#c4b5fd" text-anchor="end">社区</text>
+<text class="t" x="1092" y="859">agentgateway：代理 A2A 和 MCP，路由、</text>
+<text class="t" x="1092" y="878">  认证、授权回调；参考实现只拿它做出站</text>
+<text class="t" x="1092" y="897">A2A SDK：卡片解析、客户端和服务端</text>
+<rect x="20" y="948" width="1460" height="150" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="976">运行</text>
+<rect x="210" y="958" width="350" height="120" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="222" y="981">A 声明式：平台通用 loop</text>
+<text class="tag" x="550" y="976" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="222" y="1003">几百个 agent 共用一个服务，按需申请沙箱</text>
+<text class="t" x="222" y="1022">PoC 里做了定义和注册，loop 没做</text>
+<text class="t" x="222" y="1041">社区现成做法：kagent 的声明式 agent</text>
+<rect x="575" y="958" width="420" height="120" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="587" y="981">B 现成 harness：每会话一个沙箱</text>
+<text class="tag" x="985" y="976" fill="#5eead4" text-anchor="end">参考实现</text>
+<text class="t" x="587" y="1003">Claude Code、Codex、Copilot 等</text>
+<text class="t" x="587" y="1022">适配器把输出转成统一事件（第 03 篇）</text>
+<text class="t" x="587" y="1041">参考实现只做这一类，外加一个自定义命令口子</text>
+<rect x="1010" y="958" width="470" height="120" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="1022" y="981">C 自写 loop 的代码 agent</text>
+<text class="tag" x="1470" y="976" fill="#fde68a" text-anchor="end">我的 PoC</text>
+<text class="t" x="1022" y="1003">Agent Framework、LangGraph 写的镜像</text>
+<text class="t" x="1022" y="1022">PoC 里定义和注册做了，运行入口没做</text>
+<text class="t" x="1022" y="1041">要求镜像实现约定的会话协议</text>
+<path class="fl" d="M330,272 L330,292" marker-end="url(#a)"/>
+<path class="fl" d="M660,456 L660,476" marker-end="url(#a)"/>
+<path class="fl" d="M560,660 L560,680" marker-end="url(#a)"/>
+<path class="fl" d="M500,924 L500,944" marker-end="url(#a)"/>
+<text class="lgh" x="30" y="1130">怎么读</text>
+<text class="lg" x="30" y="1158">从上往下是一个 agent 的一生：写定义 → controller 校验并生成不可变 revision → 发布到某个目录 → 别人按协议调用、被授权拦一道 → 落到三类运行方式之一</text>
+<text class="lg" x="30" y="1182">参考实现走的是"一种 CRD + 会话 API + MCP 工具面 + 委托授权"，不做 A2A；我的 PoC 补的是"三类统一 CRD + OCI 包 + A2A 卡片"，没做调用入口</text>
+<text class="lg" x="30" y="1206">社区组件分别能接在注册（kagent、Nacos、MCP Registry）、发现（A2A 卡片、Nacos 订阅）和调用入口（agentgateway）上；企业级目录要和 agent 身份一起做</text>
+</svg>
