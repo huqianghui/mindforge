@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 830" width="1240" height="830" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxRed { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; }
+      .boxStage { fill: #111827; stroke: #64748b; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .hR { fill: #fecaca; font-size: 15px; font-weight: 600; }
+      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .mono { fill: #cbd5e1; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .col { fill: #7dd3fc; font-size: 14px; font-weight: 600; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowRed { fill: none; stroke: #f87171; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1240" height="830" rx="16"/>
+  <text class="title" x="30" y="44">Kata 与 runc 能不能混跑：四个 Pod 的实际去向</text>
+  <text class="sub" x="30" y="72">一个普通池 + 一个未打污点的 Kata 池；结论是单向的——runc Pod 能上 Kata 节点，Kata Pod 上不了普通节点</text>
+
+  <!-- top cards -->
+  <rect class="boxBlue" x="30" y="96" width="370" height="118" rx="10"/>
+  <text class="h" x="48" y="121">普通节点</text>
+  <text class="t" x="48" y="145">没有 kata-vm-isolation 标签</text>
+  <text class="t" x="48" y="167">containerd 只配了 runc / untrusted</text>
+  <text class="t" x="48" y="189">两个 handler，都是 runc.v2</text>
+
+  <rect class="box" x="430" y="96" width="380" height="118" rx="10"/>
+  <text class="h" x="448" y="121">RuntimeClass kata-vm-isolation</text>
+  <text class="mono" x="448" y="146">handler: kata</text>
+  <text class="mono" x="448" y="168">overhead.podFixed.memory: 600Mi</text>
+  <text class="mono" x="448" y="190">scheduling → kata-vm-isolation=true</text>
+
+  <rect class="boxBlue" x="840" y="96" width="370" height="118" rx="10"/>
+  <text class="h" x="858" y="121">Kata 节点</text>
+  <text class="t" x="858" y="145">标签 kata-vm-isolation=true</text>
+  <text class="t" x="858" y="167">handler：runc、kata、kata-v2、kata-cc</text>
+  <text class="t" x="858" y="189">默认没有任何污点</text>
+
+  <text class="col" x="30" y="246">Pod 怎么写</text>
+  <text class="col" x="450" y="246">经过哪一关</text>
+  <text class="col" x="850" y="246">实际结果</text>
+
+  <!-- row 1 -->
+  <rect class="box" x="30" y="260" width="370" height="96" rx="10"/>
+  <circle class="badge" cx="52" cy="284" r="13"/><text class="bn" x="52" y="289">1</text>
+  <text class="h" x="76" y="289">普通 Pod，不写 runtimeClassName</text>
+  <text class="t" x="48" y="315">不需要 toleration（Kata 池没污点）</text>
+  <text class="tGray" x="48" y="339">实验里用 agentpool 选择器确认能上 Kata 节点</text>
+  <rect class="boxStage" x="450" y="270" width="350" height="76" rx="8"/>
+  <text class="t" x="466" y="298">调度器：两个池都满足条件</text>
+  <text class="t" x="466" y="322">Kata 节点没污点，照样可选</text>
+  <rect class="boxAmber" x="850" y="260" width="360" height="96" rx="10"/>
+  <text class="hA" x="868" y="287">Running，落在 Kata 节点</text>
+  <text class="t" x="868" y="312">uname -r = 宿主内核</text>
+  <text class="t" x="868" y="336">和 VMM 共用宿主，不受 VM 保护</text>
+  <path class="flowAmber" d="M400,308 L448,308" marker-end="url(#arrAmber)"/>
+  <path class="flowAmber" d="M800,308 L848,308" marker-end="url(#arrAmber)"/>
+
+  <!-- row 2 -->
+  <rect class="box" x="30" y="372" width="370" height="96" rx="10"/>
+  <circle class="badge" cx="52" cy="396" r="13"/><text class="bn" x="52" y="401">2</text>
+  <text class="h" x="76" y="401">Kata Pod（kata-vm-isolation）</text>
+  <text class="t" x="48" y="427">只写 runtimeClassName</text>
+  <text class="tGray" x="48" y="451">不写任何调度约束</text>
+  <rect class="boxStage" x="450" y="382" width="350" height="76" rx="8"/>
+  <text class="t" x="466" y="410">准入时把 RuntimeClass 的</text>
+  <text class="t" x="466" y="434">nodeSelector 与 overhead 合进 Pod</text>
+  <rect class="box" x="850" y="372" width="360" height="96" rx="10"/>
+  <text class="hT" x="868" y="399">Running，只会落在 Kata 节点</text>
+  <text class="t" x="868" y="424">Pod 里是 guest kernel、1 个 vCPU</text>
+  <text class="t" x="868" y="448">spec.overhead 自动带上 600Mi</text>
+  <path class="flow" d="M400,420 L448,420" marker-end="url(#arr)"/>
+  <path class="flow" d="M800,420 L848,420" marker-end="url(#arr)"/>
+
+  <!-- row 3 -->
+  <rect class="box" x="30" y="484" width="370" height="96" rx="10"/>
+  <circle class="badge" cx="52" cy="508" r="13"/><text class="bn" x="52" y="513">3</text>
+  <text class="h" x="76" y="513">Kata Pod + nodeName 指定普通节点</text>
+  <text class="t" x="48" y="539">绕过调度器，直接交给普通节点</text>
+  <text class="tGray" x="48" y="563">RuntimeClass 仍是 kata-vm-isolation</text>
+  <rect class="boxStage" x="450" y="494" width="350" height="76" rx="8"/>
+  <text class="t" x="466" y="522">kubelet 准入复核 nodeSelector</text>
+  <text class="t" x="466" y="546">普通节点没有 kata 标签</text>
+  <rect class="boxRed" x="850" y="484" width="360" height="96" rx="10"/>
+  <text class="hR" x="868" y="511">被 kubelet 拒绝：NodeAffinity</text>
+  <text class="t" x="868" y="536">Pod 直接进终态，不会重试</text>
+  <text class="t" x="868" y="560">容器一次都没创建</text>
+  <path class="flowRed" d="M400,532 L448,532" marker-end="url(#arrRed)"/>
+  <path class="flowRed" d="M800,532 L848,532" marker-end="url(#arrRed)"/>
+
+  <!-- row 4 -->
+  <rect class="box" x="30" y="596" width="370" height="96" rx="10"/>
+  <circle class="badge" cx="52" cy="620" r="13"/><text class="bn" x="52" y="625">4</text>
+  <text class="h" x="76" y="625">自建 RuntimeClass：handler: kata</text>
+  <text class="t" x="48" y="651">不写 scheduling 段</text>
+  <text class="tGray" x="48" y="675">+ nodeName 指定普通节点</text>
+  <rect class="boxStage" x="450" y="606" width="350" height="76" rx="8"/>
+  <text class="t" x="466" y="634">kubelet 放行，交给 containerd</text>
+  <text class="t" x="466" y="658">config.toml 里没有 runtimes.kata</text>
+  <rect class="boxRed" x="850" y="596" width="360" height="96" rx="10"/>
+  <text class="hR" x="868" y="623">一直 ContainerCreating</text>
+  <text class="t" x="868" y="648">FailedCreatePodSandBox：</text>
+  <text class="mono" x="868" y="671">no runtime for "kata" is configured</text>
+  <path class="flowRed" d="M400,644 L448,644" marker-end="url(#arrRed)"/>
+  <path class="flowRed" d="M800,644 L848,644" marker-end="url(#arrRed)"/>
+
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="2.2s" repeatCount="indefinite" path="M400,420 L848,420"/></circle>
+  <circle r="5" fill="#fbbf24"><animateMotion dur="2.2s" repeatCount="indefinite" path="M400,308 L848,308"/></circle>
+
+  <!-- legend -->
+  <text class="el" x="30" y="728">① 混跑只发生在 Kata 节点上：普通 Pod 可以被调度过去，这是"同一节点两种 runtime"的真实含义；Kata 池默认无污点，要显式加</text>
+  <text class="el" x="30" y="754">② RuntimeClass 的 scheduling 段是第一道闸：它让 Kata Pod 自动带上节点选择，用户什么都不写也不会落错节点</text>
+  <text class="el" x="30" y="780">③ 绕过调度器也没用：kubelet 在接收 Pod 时会再按 nodeSelector 校验一次，失败的 Pod 直接判死</text>
+  <text class="el" x="30" y="806">④ 去掉 scheduling 段后闸门只剩节点本身——普通节点的 containerd 根本不认识 kata 这个 handler，Pod 卡住且只在事件里报错</text>
+</svg>

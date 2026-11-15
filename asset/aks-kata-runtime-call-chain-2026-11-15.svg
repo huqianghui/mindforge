@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 860" width="1240" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .vm { fill: #1a1430; stroke: #a78bfa; stroke-width: 2; }
+      .kernel { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; }
+      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hv { fill: #ddd6fe; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 4 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1240" height="860" rx="16"/>
+  <text class="title" x="30" y="44">Kata 替换的是哪一层：同一个 containerd，两种 shim</text>
+  <text class="sub" x="30" y="72">kubelet 与 containerd 两边完全一样，分叉发生在 containerd 按 handler 选 shim 的那一步（实测进程来自 AKS Kata 节点）</text>
+
+  <!-- shared top -->
+  <rect class="box" x="400" y="100" width="440" height="58" rx="10"/>
+  <text class="h" x="420" y="125">kubelet</text>
+  <text class="t" x="420" y="147">读 Pod 的 runtimeClassName → 取 RuntimeClass.handler</text>
+
+  <rect class="box" x="380" y="186" width="480" height="64" rx="10"/>
+  <text class="h" x="400" y="212">containerd（CRI 插件）</text>
+  <text class="t" x="400" y="236">在 config.toml 里找 runtimes.&lt;handler&gt;，按 runtime_type 拉起 shim</text>
+  <circle class="badge" cx="872" cy="218" r="13"/><text class="bn" x="872" y="223">1</text>
+
+  <path class="flow" d="M620,158 L620,184" marker-end="url(#arr)"/>
+
+  <!-- zones -->
+  <rect class="zone" x="30" y="282" width="545" height="420" rx="12"/>
+  <text class="zl" x="48" y="306">handler = runc（普通 Pod，任意节点）</text>
+  <rect class="zone" x="625" y="282" width="585" height="420" rx="12"/>
+  <text class="zl" x="643" y="306">handler = kata（Kata Pod，只在 Kata 节点）</text>
+
+  <path class="flow" d="M520,250 C510,280 480,300 470,322" marker-end="url(#arr)"/>
+  <path class="flowAmber" d="M760,250 C900,262 1080,280 1110,322" marker-end="url(#arrAmber)"/>
+
+  <!-- left chain -->
+  <rect class="box" x="60" y="324" width="485" height="58" rx="10"/>
+  <text class="h" x="80" y="349">containerd-shim-runc-v2</text>
+  <text class="t" x="80" y="371">每个 Pod 一个，常驻；只负责把进程托管给宿主</text>
+  <path class="flow" d="M300,382 L300,404" marker-end="url(#arr)"/>
+  <rect class="box" x="60" y="406" width="485" height="58" rx="10"/>
+  <text class="h" x="80" y="431">runc</text>
+  <text class="t" x="80" y="453">建 namespace + cgroup，把容器进程 exec 起来后退出</text>
+  <path class="flow" d="M300,464 L300,486" marker-end="url(#arr)"/>
+  <rect class="box" x="60" y="488" width="485" height="80" rx="10"/>
+  <text class="h" x="80" y="513">容器进程</text>
+  <text class="t" x="80" y="537">就是宿主上的普通进程，ps 里直接可见</text>
+  <text class="t" x="80" y="558">隔离靠 namespace / cgroup / seccomp</text>
+  <rect class="kernel" x="50" y="600" width="505" height="80" rx="10"/>
+  <text class="h" x="70" y="627">宿主内核（所有 runc Pod 共享）</text>
+  <text class="t" x="70" y="651">一次内核逃逸即可碰到同节点所有工作负载</text>
+  <text class="tGray" x="70" y="671">普通节点：有 /dev/kvm，但没有任何 Kata 组件</text>
+  <path class="flowGray" d="M300,568 L300,598" marker-end="url(#arrGray)"/>
+
+  <!-- right chain -->
+  <rect class="boxAmber" x="655" y="324" width="525" height="58" rx="10"/>
+  <text class="h" x="675" y="349">containerd-shim-kata-v2-go</text>
+  <text class="t" x="675" y="371">每个 Pod 一个；默认 handler 用 Go 版，Rust 版另配 kata-v2</text>
+  <circle class="badge" cx="1192" cy="353" r="13"/><text class="bn" x="1192" y="358">2</text>
+
+  <rect class="boxBlue" x="655" y="404" width="250" height="62" rx="10"/>
+  <text class="h" x="672" y="429">cloud-hypervisor</text>
+  <text class="t" x="672" y="451">VMM，每 Pod 一个进程</text>
+  <rect class="boxBlue" x="930" y="404" width="250" height="62" rx="10"/>
+  <text class="h" x="947" y="429">virtiofsd ×2</text>
+  <text class="t" x="947" y="451">把宿主侧 rootfs 共享进 VM</text>
+  <circle class="badge" cx="1192" cy="436" r="13"/><text class="bn" x="1192" y="441">4</text>
+  <path class="flowAmber" d="M780,382 L780,402" marker-end="url(#arrAmber)"/>
+  <path class="flowAmber" d="M1050,382 L1050,402" marker-end="url(#arrAmber)"/>
+
+  <rect class="vm" x="655" y="486" width="525" height="100" rx="12"/>
+  <text class="hv" x="675" y="511">Pod VM（每个 Kata Pod 一台）</text>
+  <text class="t" x="675" y="535">guest kernel ← 与宿主不同的内核，Pod 里 uname -r 看到的是它</text>
+  <text class="t" x="675" y="557">kata-agent ← 在 VM 里替 shim 建容器、执行 exec</text>
+  <text class="t" x="675" y="577">容器进程 ← 宿主 ps 看不到，只看到 VMM</text>
+  <path class="flowAmber" d="M780,466 L780,484" marker-end="url(#arrAmber)"/>
+  <path class="flowGray" d="M1060,466 L1060,484" marker-end="url(#arrGray)"/>
+  <path class="flowAmber" d="M670,353 C620,420 620,520 653,545" marker-end="url(#arrAmber)"/>
+  <circle class="badge" cx="626" cy="460" r="13"/><text class="bn" x="626" y="465">3</text>
+
+  <rect class="kernel" x="645" y="608" width="545" height="78" rx="10"/>
+  <text class="h" x="665" y="635">宿主内核 + Microsoft Hypervisor</text>
+  <text class="t" x="665" y="659">节点本身跑在 root partition 上：有 /dev/mshv、没有 /dev/kvm</text>
+  <text class="tGray" x="665" y="679">节点镜像与内核都和普通池不同，不能在普通池上"装个 Kata"</text>
+  <path class="flowGray" d="M920,586 L920,606" marker-end="url(#arrGray)"/>
+
+  <!-- particles -->
+  <circle r="5" fill="#2dd4bf"><animateMotion dur="2.6s" repeatCount="indefinite" path="M620,158 L620,186 M520,250 C510,280 480,300 470,322 L300,600"/></circle>
+  <circle r="5" fill="#fbbf24"><animateMotion dur="2.6s" repeatCount="indefinite" path="M760,250 C900,262 1080,280 1110,322 L1110,340 L780,382 L780,486"/></circle>
+
+  <!-- legend -->
+  <text class="el" x="40" y="740">① containerd 是同一个进程：handler = runc 走 io.containerd.runc.v2，handler = kata 走 io.containerd.kata.v2——Kata 替换的是 shim 与 runc 这一段，不是 containerd</text>
+  <text class="el" x="40" y="766">② Kata shim 不自己跑容器，它拉起 VMM、准备共享目录，再通过 vsock 和 VM 里的 kata-agent 通话</text>
+  <text class="el" x="40" y="792">③ 创建容器、exec、读日志都经 shim → kata-agent 转进 VM；kubectl exec 进 Kata Pod 实际是 agent 在 VM 里起的进程</text>
+  <text class="el" x="40" y="818">④ 实测每个 Kata Pod 在宿主上多出 1 个 shim、1 个 cloud-hypervisor、2 个 virtiofsd；VMM 进程常驻内存约 140~170 MB（含已触达的 guest 内存）</text>
+</svg>

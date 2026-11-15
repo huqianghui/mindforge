@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 800" width="1240" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .panel { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .vm { fill: #3b2f6b; stroke: #a78bfa; stroke-width: 1.6; }
+      .vmGhost { fill: none; stroke: #a78bfa; stroke-width: 1.6; stroke-dasharray: 6 4; }
+      .ovh { fill: #134e4a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .warn { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .row { fill: #13213a; stroke: #334155; stroke-width: 1.2; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hp { fill: #7dd3fc; font-size: 17px; font-weight: 700; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .bl { fill: #f8fafc; font-size: 13.5px; font-weight: 600; }
+      .mono { fill: #cbd5e1; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #a7f3d0; font-size: 13.5px; }
+      .scan { fill: #2dd4bf; opacity: 0.18; }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1240" height="800" rx="16"/>
+  <text class="title" x="30" y="44">一个 Kata Pod 的资源账：limit 决定 VM 多大，overhead 决定宿主多扣多少</text>
+  <text class="sub" x="30" y="72">两个 Pod 跑在同一个 Kata 节点上，默认 RuntimeClass（overhead 600Mi）；数字均为实测，横条按同一比例画</text>
+
+  <!-- left panel -->
+  <rect class="panel" x="30" y="94" width="575" height="520" rx="12"/>
+  <text class="hp" x="50" y="124">kata-2g：limits cpu 500m / memory 2Gi</text>
+
+  <circle class="badge" cx="62" cy="160" r="13"/><text class="bn" x="62" y="165">1</text>
+  <text class="h" x="84" y="165">节点为它预留（requests，调度用）</text>
+  <rect class="vm" x="50" y="180" width="386" height="44" rx="6"/>
+  <text class="bl" x="64" y="207">Pod VM 内存 2048Mi = limit</text>
+  <rect class="ovh" x="436" y="180" width="113" height="44" rx="6"/>
+  <text class="bl" x="446" y="207">+600Mi</text>
+  <rect class="scan" x="50" y="180" width="40" height="44"><animate attributeName="x" from="50" to="510" dur="3s" repeatCount="indefinite"/></rect>
+  <text class="t" x="50" y="248">合计 2648Mi，与 kubectl describe node 一致</text>
+
+  <circle class="badge" cx="62" cy="284" r="13"/><text class="bn" x="62" y="289">2</text>
+  <text class="h" x="84" y="289">VM 里看到的</text>
+  <rect class="row" x="50" y="302" width="535" height="66" rx="8"/>
+  <text class="t" x="66" y="328">MemTotal ≈ 1.94 GiB（guest kernel 先拿走一部分）</text>
+  <text class="t" x="66" y="352">nproc = 1：500m 被向上取整成 1 个 vCPU</text>
+
+  <circle class="badge" cx="62" cy="400" r="13"/><text class="bn" x="62" y="405">3</text>
+  <text class="h" x="84" y="405">宿主上的 Pod cgroup</text>
+  <rect class="row" x="50" y="418" width="535" height="66" rx="8"/>
+  <text class="mono" x="66" y="444">memory.max = 2776629248（2Gi + 600Mi）</text>
+  <text class="mono" x="66" y="468">cpu.max    = 50000 100000（0.5 核）</text>
+
+  <circle class="badge" cx="62" cy="516" r="13"/><text class="bn" x="62" y="521">4</text>
+  <text class="h" x="84" y="521">空闲时实际占用</text>
+  <rect class="row" x="50" y="534" width="535" height="62" rx="8"/>
+  <text class="t" x="66" y="560">memory.current ≈ 204 MB：VM 内存按需触达，</text>
+  <text class="t" x="66" y="582">不是一启动就占满 2Gi</text>
+
+  <!-- right panel -->
+  <rect class="panel" x="635" y="94" width="575" height="520" rx="12"/>
+  <text class="hp" x="655" y="124">kata-nolimit：不写 resources</text>
+
+  <circle class="badge" cx="667" cy="160" r="13"/><text class="bn" x="667" y="165">1</text>
+  <text class="h" x="689" y="165">节点为它预留（requests，调度用）</text>
+  <rect class="vmGhost" x="655" y="180" width="97" height="44" rx="6"/>
+  <text class="t" x="664" y="207">512Mi</text>
+  <rect class="ovh" x="752" y="180" width="113" height="44" rx="6"/>
+  <text class="bl" x="762" y="207">600Mi</text>
+  <text class="t" x="655" y="248">只记 overhead 600Mi；虚线的 512Mi VM 不进账</text>
+
+  <circle class="badge" cx="667" cy="284" r="13"/><text class="bn" x="667" y="289">2</text>
+  <text class="h" x="689" y="289">VM 里看到的</text>
+  <rect class="row" x="655" y="302" width="535" height="66" rx="8"/>
+  <text class="t" x="671" y="328">MemTotal ≈ 472 MiB：默认 VM 512Mi 减去 guest 开销</text>
+  <text class="t" x="671" y="352">nproc = 1：不写 CPU limit 也给 1 个 vCPU</text>
+
+  <circle class="badge" cx="667" cy="400" r="13"/><text class="bn" x="667" y="405">3</text>
+  <text class="h" x="689" y="405">宿主上的 Pod cgroup</text>
+  <rect class="warn" x="655" y="418" width="535" height="66" rx="8"/>
+  <text class="mono" x="671" y="444">memory.max = max   cpu.max = max</text>
+  <text class="hA" x="671" y="468">宿主侧没有上限，VMM 与 virtiofsd 不受约束</text>
+
+  <circle class="badge" cx="667" cy="516" r="13"/><text class="bn" x="667" y="521">4</text>
+  <text class="h" x="689" y="521">空闲时实际占用</text>
+  <rect class="row" x="655" y="534" width="535" height="62" rx="8"/>
+  <text class="t" x="671" y="560">memory.current ≈ 232 MB，比带 2Gi limit 的</text>
+  <text class="t" x="671" y="582">那个还多——空闲占用和 limit 大小关系不大</text>
+
+  <!-- legend -->
+  <text class="el" x="30" y="652">① 调度看的是 requests + overhead：limit 写 2Gi，节点就按 2648Mi 扣容量；不写 resources，调度只扣 600Mi，但节点上照样多一台 512Mi 的 VM</text>
+  <text class="el" x="30" y="678">② VM 的内存与 vCPU 在启动时定死：内存取 memory limit（不写为 512Mi），vCPU 取 CPU limit 向上取整（不写为 1）</text>
+  <text class="el" x="30" y="704">③ 宿主 cgroup 的 memory.max 正好等于 limit + overhead；cpu.max 仍按小数 limit 限，所以 VM 有 1 个 vCPU 但只能用半核</text>
+  <text class="el" x="30" y="730">④ 估一个节点能放多少沙箱，用 limit + 600Mi 算，不要按 runc 的"实际用多少算多少"；容器镜像越大、guest 页缓存越多，current 越高</text>
+  <text class="el" x="30" y="756">本集群的默认 RuntimeClass 是 overhead 600Mi；文档里"约 88Mi overhead、合计 600Mi"的说法与实测不一致，以 kubectl get runtimeclass 为准</text>
+</svg>
