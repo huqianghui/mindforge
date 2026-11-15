@@ -23,11 +23,24 @@ description: 编码 agent 的会话分 Ephemeral 和 Durable 两种。我在 AKS
 
 我在已有的环境里建了两个应用，一个 Durable（空闲 30 秒就暂停，这是允许的最小值），一个 Ephemeral，然后围绕它们做了几组实验。
 
-## 会话这一层由谁提供
+## 会话这一层的整体架构
 
-会话管理是 agent runtime 里最特殊的一层：沙箱可以暂停、替换、从快照重建，会话却要持续几天，中间还要保证消息不丢、一次只跑一轮、做到一半的事能接上、最后有人回收。这一层在 Kubernetes、AKS 和社区项目里几乎都是空的。第 05、06 两篇涉及的组件，按出处是这样分的：
+会话管理是 agent runtime 里最特殊的一层：沙箱可以暂停、替换、从快照重建，会话却要持续几天，中间还要保证消息不丢、一次只跑一轮、做到一半的事能接上、最后有人回收。这一层在 Kubernetes、AKS 和社区项目里几乎都是空的，参考实现的会话数据模型和逻辑全部是自己写的。
 
-![会话管理的整体架构：每一块由谁提供|1000](../../asset/aks-agent-runtime-session-architecture-2026-11-15.svg)
+![会话管理的分层架构|1000](../../asset/aks-agent-runtime-session-layers-2026-11-15.svg)
+
+从上往下六层：
+
+- **接入层**：渠道适配把 Teams 线程、定时任务、CI 流水线、agent 调 agent 都翻译成"往某个会话投递一条 prompt"；会话 API 负责建会话（带幂等键，并把应用当前的 revision 固定下来）、投递、按游标订阅更新、中止和恢复，终端用户的 Entra 令牌在这里换成会话的 owner。
+- **消息层**：两种异步做法。参考实现把收件箱直接建在状态库里，消息带序号落表、写成功才确认，单副本自己按序处理，不需要外部队列；代价是只能有一个调度者。[第 06 篇](AKS-Agent-Runtime系列06：会话管理与高可用.md)的 PoC 换成 Azure Service Bus 的会话队列：按 session_id 分组，同一会话同一时刻只交给一个副本、按序投递，失败超过次数进死信。队列只管"谁收消息"，所以数据层还要一个 lease。
+- **应用层**：控制面服务。状态机记录会话状态、版本号和下次唤醒时间，每次变化都留一条变更日志，"新状态 + 副作用意图"同事务写；执行器把每条意图记成"待执行、可能已发出、已完成"三态，重启后对"可能已发出"的逐个核对；定时器和维护循环负责空闲暂停、保留期和超时清理；harness 适配和沙箱 provider 是到沙箱后端的出口。启动围栏、渠道作业的领取令牌，都是为了"同一件事不做两遍"。
+- **数据层**：会话与绑定（会话 ↔ 应用 revision ↔ 沙箱 ID ↔ 第几代沙箱）、消息与轮次（收件箱、每轮的条目、带序号的更新流、遥测）、状态机与副作用、回收记录（删了什么、源沙箱、到期时间）和渠道映射。这些表都是参考实现自己设计的，存在 SQLite 里；多副本 PoC 在 PostgreSQL 的会话表上加了 owner、token、lease_until 和已应用序号。授权元组在 OpenFGA 里，沙箱和快照记录在 OpenSandbox 里，快照镜像在 ACR 里。
+- **元数据与配置层**：声明式的配置存在 Kubernetes（etcd）里，不在热路径上。应用定义写明运行时类、入口（会话 API、定时任务的 cron 表达式和"每次新建会话还是复用"、Teams 绑定）、会话策略（Ephemeral 或 Durable、`pauseAfterIdle`、`retention`）、权限申请和默认模型，controller 把它解析成不可变的 serving revision；运行时类定好镜像或预热池并钉死 harness；资源、provider 和批准投影成 OpenFGA 元组。另有控制面的启动参数，比如 Ephemeral 沙箱 TTL 30 分钟、单个执行沙箱最长 2 小时、会话空闲超时和单轮超时。
+- **沙箱与基础设施**：OpenSandbox（生产配置下底下接 agent-sandbox）、Kata 节点池、ACR、Pod、Job 和标签。
+
+同一套组件按出处着色，是下面这张图：
+
+![会话管理：每一块由谁提供|1000](../../asset/aks-agent-runtime-session-architecture-2026-11-15.svg)
 
 - **Kubernetes 通用**：Pod、Job（commit Job 就是一个普通 Job）、标签（会话 ID 和应用 UID 两个标签是对账的依据）、Deployment 的 `Recreate`、`terminationGracePeriod`，以及 containerd 提交 rootfs 的能力。
 - **AKS / Azure**：Kata 节点池（每个沙箱一个 VM，暂停才释放容量）、ACR（存快照镜像，清理无 tag manifest 的保留策略需要 Premium SKU）、Workload Identity、集群定时停启；第 06 篇 PoC 用到的 Service Bus 和 PostgreSQL Flexible Server。
