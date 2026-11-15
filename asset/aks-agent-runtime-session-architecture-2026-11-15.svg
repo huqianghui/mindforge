@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1180" width="1500" height="1180" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e2e8f0"/></marker>
+<style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#f1f5f9;font-size:15px;font-weight:600}.t{fill:#cbd5e1;font-size:13px}.zl{font-size:15px;font-weight:700}.fl{fill:none;stroke:#e2e8f0;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#0b1220;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#cbd5e1;font-size:13.5px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
+<rect width="1500" height="1180" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">会话管理的整体架构：每一块由谁提供</text>
+<text class="sub" x="30" y="72">颜色表示出处：灰 = Kubernetes 通用，蓝 = AKS / Azure，紫 = 社区开源，青绿 = 参考实现，橙 = 安全沙箱实现，琥珀 = 我在 PoC 里补的，红色虚线 = 目前没人提供</text>
+<rect x="30" y="92" width="260" height="64" rx="10" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="h" x="44" y="116">渠道</text>
+<text class="t" x="44" y="139">Teams、CLI、定时任务、agent 调 agent</text>
+<rect x="20" y="176" width="1460" height="420" rx="14" fill="#0d1526" stroke="#2dd4bf" stroke-width="1.4" stroke-dasharray="9 5"/>
+<text class="zl" x="36" y="200" fill="#5eead4">① 会话控制面（普通节点池）</text>
+<rect x="40" y="214" width="250" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="54" y="238">会话 API + 收件箱</text>
+<text class="t" x="54" y="261">建会话带幂等键</text>
+<text class="t" x="54" y="281">消息落盘后才 ACK</text>
+<text class="t" x="54" y="301">同一会话一次一轮</text>
+<rect x="305" y="214" width="270" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="319" y="238">状态机 + 副作用意图</text>
+<text class="t" x="319" y="261">新状态和"接下来要做的事"</text>
+<text class="t" x="319" y="281">同一事务写库</text>
+<text class="t" x="319" y="301">每一步带持久的操作 ID</text>
+<rect x="590" y="214" width="260" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="604" y="238">执行器 + 启动围栏</text>
+<text class="t" x="604" y="261">按意图调沙箱后端</text>
+<text class="t" x="604" y="281">启动时把做到一半的事</text>
+<text class="t" x="604" y="301">标成中断再逐个核对</text>
+<rect x="865" y="214" width="280" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="879" y="238">会话策略</text>
+<text class="t" x="879" y="261">Ephemeral：沙箱 TTL 兜底</text>
+<text class="t" x="879" y="281">Durable：每轮 checkpoint，</text>
+<text class="t" x="879" y="301">空闲暂停，retention 到期删</text>
+<rect x="40" y="340" width="250" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="54" y="364">结果不确定时怎么办</text>
+<text class="t" x="54" y="387">一轮执行未确认 → 整轮重发</text>
+<text class="t" x="54" y="407">快照未确认 → 等原来那份</text>
+<text class="t" x="54" y="427">（第 05 篇第三节）</text>
+<rect x="305" y="340" width="270" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="319" y="364">维护循环（每 15 秒）</text>
+<text class="t" x="319" y="387">从状态库往外清：保留期到了、</text>
+<text class="t" x="319" y="407">应用被删、准备超时</text>
+<text class="t" x="319" y="427">只认状态库里有记录的</text>
+<rect x="590" y="340" width="260" height="110" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="604" y="364">状态库：SQLite</text>
+<text class="t" x="604" y="387">单副本，Deployment 用</text>
+<text class="t" x="604" y="407">Recreate；没有分布式 lease，</text>
+<text class="t" x="604" y="427">同一个库只能有一个调度者</text>
+<rect x="865" y="340" width="280" height="110" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="879" y="364">SQLite（社区）</text>
+<text class="t" x="879" y="387">嵌入式数据库，</text>
+<text class="t" x="879" y="407">控制面状态和 OpenFGA</text>
+<text class="t" x="879" y="427">都用它</text>
+<rect x="1160" y="214" width="300" height="110" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="1174" y="238">对账器（第 05 篇补的）</text>
+<text class="t" x="1174" y="261">从外往里：按两个标签盘点</text>
+<text class="t" x="1174" y="281">沙箱和 ACR 快照仓库，</text>
+<text class="t" x="1174" y="301">会话层不认识的才删</text>
+<rect x="1160" y="340" width="300" height="236" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="1174" y="364">多副本执行器（第 06 篇 PoC）</text>
+<text class="t" x="1174" y="387">谁收消息：Service Bus 会话队列，</text>
+<text class="t" x="1174" y="407">  同一会话同一时刻只给一个副本</text>
+<text class="t" x="1174" y="427">谁能写结果：PostgreSQL lease，</text>
+<text class="t" x="1174" y="447">  每次抢到 token 加一，</text>
+<text class="t" x="1174" y="467">  写结果带 token 条件</text>
+<text class="t" x="1174" y="487">接管：优雅 0.1 s、被杀约 15 s、</text>
+<text class="t" x="1174" y="507">  卡住约 33 s</text>
+<text class="t" x="1174" y="527">尚缺：token 带到出站网关</text>
+<rect class="pulse" x="40" y="466" width="805" height="110" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="h" x="54" y="490">目前没人提供（一）</text>
+<text class="t" x="54" y="513">会话状态与沙箱实际状态的双向对账：参考实现里有按标签盘点的函数，</text>
+<text class="t" x="54" y="533">但没有地方调用它，我另写了对账器（琥珀色）</text>
+<text class="t" x="54" y="553">多副本下的单写者保证：参考实现靠单副本回避，第 06 篇做了验证</text>
+<rect class="pulse" x="865" y="466" width="280" height="110" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="h" x="879" y="490">目前没人提供（二）</text>
+<text class="t" x="879" y="513">快照仓库的保留与清理</text>
+<text class="t" x="879" y="533">一轮被整轮重发时的副作用：</text>
+<text class="t" x="879" y="553">推过代码、建过 PR 就是重复执行</text>
+<rect x="20" y="616" width="1460" height="226" rx="14" fill="#0d1526" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="9 5"/>
+<text class="zl" x="36" y="640" fill="#c4b5fd">② 沙箱后端（执行平面）</text>
+<rect x="40" y="654" width="330" height="170" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="54" y="678">OpenSandbox（社区）</text>
+<text class="t" x="54" y="701">lifecycle API：建、查、删、TTL</text>
+<text class="t" x="54" y="721">暂停 / 恢复</text>
+<text class="t" x="54" y="741">SandboxSnapshot：commit Job 把</text>
+<text class="t" x="54" y="761">  rootfs 提交成镜像推到仓库</text>
+<text class="t" x="54" y="781">Pool：预热</text>
+<rect x="385" y="654" width="330" height="170" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="399" y="678">agent-sandbox（社区）</text>
+<text class="t" x="399" y="701">参考实现生产配置里</text>
+<text class="t" x="399" y="721">接在 OpenSandbox 下面</text>
+<text class="t" x="399" y="741">暂停变成 Suspended：</text>
+<text class="t" x="399" y="761">  删 Pod 留 PVC，不存 rootfs</text>
+<text class="t" x="399" y="781">（测试配置因此改用 BatchSandbox）</text>
+<rect x="730" y="654" width="415" height="170" rx="10" fill="#2a1a10" stroke="#fb923c" stroke-width="1.5"/>
+<text class="h" x="744" y="678">安全沙箱实现（只到沙箱这一层）</text>
+<text class="t" x="744" y="701">沙箱、快照、池的归属记录在 Kubernetes 里</text>
+<text class="t" x="744" y="721">服务前先恢复持久状态，再开放接口</text>
+<text class="t" x="744" y="741">过期沙箱确认"确实不存在"才释放归属</text>
+<text class="t" x="744" y="761">没有会话、收件箱、轮次的概念——</text>
+<text class="t" x="744" y="781">接 harness 时这些由参考实现的控制面负责</text>
+<rect x="1160" y="654" width="300" height="170" rx="10" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="h" x="1174" y="678">Kubernetes 通用</text>
+<text class="t" x="1174" y="701">Pod、Job（commit Job）</text>
+<text class="t" x="1174" y="721">标签：会话 ID + 应用 UID</text>
+<text class="t" x="1174" y="741">Deployment Recreate</text>
+<text class="t" x="1174" y="761">terminationGracePeriod</text>
+<text class="t" x="1174" y="781">containerd 提交 rootfs</text>
+<rect x="20" y="862" width="1460" height="170" rx="14" fill="#0d1526" stroke="#38bdf8" stroke-width="1.4" stroke-dasharray="9 5"/>
+<text class="zl" x="36" y="886" fill="#7dd3fc">③ AKS / Azure</text>
+<rect x="40" y="900" width="270" height="114" rx="10" fill="#0f2236" stroke="#38bdf8" stroke-width="1.5"/>
+<text class="h" x="54" y="924">Kata 节点池</text>
+<text class="t" x="54" y="947">每个沙箱一个 VM</text>
+<text class="t" x="54" y="967">暂停才释放，恢复要重新</text>
+<text class="t" x="54" y="987">排得进去</text>
+<rect x="325" y="900" width="270" height="114" rx="10" fill="#0f2236" stroke="#38bdf8" stroke-width="1.5"/>
+<text class="h" x="339" y="924">ACR：快照仓库</text>
+<text class="t" x="339" y="947">每次 checkpoint / 暂停多一个 tag</text>
+<text class="t" x="339" y="967">无 tag manifest 的保留策略</text>
+<text class="t" x="339" y="987">需要 Premium SKU</text>
+<rect x="610" y="900" width="250" height="114" rx="10" fill="#0f2236" stroke="#38bdf8" stroke-width="1.5"/>
+<text class="h" x="624" y="924">Workload Identity</text>
+<text class="t" x="624" y="947">commit Job 推镜像</text>
+<text class="t" x="624" y="967">第 06 篇副本连 Service Bus</text>
+<text class="t" x="624" y="987">（SAS 被策略关掉）</text>
+<rect x="875" y="900" width="270" height="114" rx="10" fill="#0f2236" stroke="#38bdf8" stroke-width="1.5"/>
+<text class="h" x="889" y="924">Service Bus + PostgreSQL</text>
+<text class="t" x="889" y="947">会话队列、会话锁</text>
+<text class="t" x="889" y="967">Flexible Server 存 lease</text>
+<text class="t" x="889" y="987">（第 06 篇 PoC 用）</text>
+<rect x="1160" y="900" width="300" height="114" rx="10" fill="#0f2236" stroke="#38bdf8" stroke-width="1.5"/>
+<text class="h" x="1174" y="924">集群定时停启</text>
+<text class="t" x="1174" y="947">半夜停、白天起</text>
+<text class="t" x="1174" y="967">暂停的会话第二天照常恢复</text>
+<text class="t" x="1174" y="987">（第 05 篇顺带验证）</text>
+<path class="fl" d="M270,156 L270,212" marker-end="url(#a)"/>
+<circle cx="288" cy="186" r="12" fill="#2dd4bf"/><text class="bn" x="288" y="191">1</text>
+<path class="fl" d="M290,270 L303,270" marker-end="url(#a)"/>
+<circle cx="296" cy="250" r="12" fill="#2dd4bf"/><text class="bn" x="296" y="255">2</text>
+<path class="fl" d="M850,270 L857,270 L857,642 L300,642 L300,652" marker-end="url(#a)"/>
+<circle cx="857" cy="600" r="12" fill="#2dd4bf"/><text class="bn" x="857" y="605">3</text>
+<path class="fl" d="M330,824 L330,898" marker-end="url(#a)"/>
+<circle cx="348" cy="872" r="12" fill="#a78bfa"/><text class="bn" x="348" y="877">4</text>
+<path class="fl" d="M1460,270 L1490,270 L1490,852 L460,852 L460,898" marker-end="url(#a)"/>
+<circle cx="1490" cy="600" r="12" fill="#fbbf24"/><text class="bn" x="1490" y="605">5</text>
+<text class="lgh" x="30" y="1060">编号</text>
+<text class="lg" x="30" y="1086">1 渠道把消息投到会话 API，落盘后才确认；2 状态机把新状态和副作用意图同一事务写库；3 执行器按意图调沙箱后端：分配、跑一轮、checkpoint、暂停、删除</text>
+<text class="lg" x="30" y="1110">4 OpenSandbox 在沙箱所在节点起 commit Job，把 rootfs 推进 ACR；5 对账器反过来，从 OpenSandbox 和 ACR 实际存在的东西往回对，清掉会话层不认识的</text>
+<text class="lg" x="30" y="1134">会话这一层（青绿、琥珀、红）几乎全靠自己写：Kubernetes、AKS 和社区项目只提供到"沙箱"为止</text>
+</svg>

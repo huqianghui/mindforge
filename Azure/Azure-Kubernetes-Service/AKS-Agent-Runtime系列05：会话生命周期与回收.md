@@ -23,6 +23,20 @@ description: 编码 agent 的会话分 Ephemeral 和 Durable 两种。我在 AKS
 
 我在已有的环境里建了两个应用，一个 Durable（空闲 30 秒就暂停，这是允许的最小值），一个 Ephemeral，然后围绕它们做了几组实验。
 
+## 会话这一层由谁提供
+
+会话管理是 agent runtime 里最特殊的一层：沙箱可以暂停、替换、从快照重建，会话却要持续几天，中间还要保证消息不丢、一次只跑一轮、做到一半的事能接上、最后有人回收。这一层在 Kubernetes、AKS 和社区项目里几乎都是空的。第 05、06 两篇涉及的组件，按出处是这样分的：
+
+![会话管理的整体架构：每一块由谁提供|1000](../../asset/aks-agent-runtime-session-architecture-2026-11-15.svg)
+
+- **Kubernetes 通用**：Pod、Job（commit Job 就是一个普通 Job）、标签（会话 ID 和应用 UID 两个标签是对账的依据）、Deployment 的 `Recreate`、`terminationGracePeriod`，以及 containerd 提交 rootfs 的能力。
+- **AKS / Azure**：Kata 节点池（每个沙箱一个 VM，暂停才释放容量）、ACR（存快照镜像，清理无 tag manifest 的保留策略需要 Premium SKU）、Workload Identity、集群定时停启；第 06 篇 PoC 用到的 Service Bus 和 PostgreSQL Flexible Server。
+- **社区开源**：OpenSandbox 提供 TTL、暂停恢复、快照 commit Job 和预热池；生产配置下它底下再接 agent-sandbox，暂停就变成"删 Pod、留 PVC"，不再保存 rootfs（[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)）。状态库用的 SQLite 也属于这一类。
+- **参考实现自己写的**：会话 API 和收件箱、状态机加副作用意图、执行器和启动围栏、Ephemeral / Durable 策略、checkpoint 编排、"结果不确定时整轮重发还是等原来那份"的判断、每 15 秒一次的维护循环，以及单副本的部署方式。
+- **安全沙箱实现**：只做到沙箱这一层——沙箱、快照、池的归属记录在 Kubernetes 里，服务前先恢复持久状态，过期沙箱确认"确实不存在"才释放归属。它没有会话、收件箱、轮次的概念，接 harness 时这些都由参考实现的控制面负责。
+- **我在 PoC 里补的**：第四节从外往里清理的对账器；第 06 篇的多副本执行器（Service Bus 会话队列决定谁收消息，PostgreSQL lease 加 fencing token 决定谁能写结果）。
+- **目前没人提供**：会话状态与沙箱实际状态的双向对账、多副本下的单写者保证、快照仓库的保留与清理，以及一轮被整轮重发时的副作用语义。
+
 ## 一、checkpoint 和暂停到底存了什么
 
 开始之前我以为 checkpoint 是把工作区打个包传到 Blob。实际看下来不是：OpenSandbox 会在沙箱所在的节点上起一个 commit Job，通过 containerd 把容器的 rootfs 提交成 OCI 镜像，推到 ACR。沙箱容器和出站边车容器各提交一份。暂停走的是同一套机制：先 commit，镜像推完以后删掉 Pod；恢复时用这份镜像新建一个 Pod。
