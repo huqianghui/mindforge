@@ -162,7 +162,7 @@ spec:
               memory: 2Gi            # 这就是 Kata VM 的内存大小
 ```
 
-使用方一侧通常不手写 YAML，而是用 Go 或 Python SDK（`k8s-agent-sandbox`）建 Claim、等沙箱 Ready、拿到沙箱名；要多轮复用同一个环境时，用 `GetSandbox` 绑回原来的 pod。请求通过 **sandbox-router** 进入：它读 `X-Sandbox-ID`、`X-Sandbox-Namespace`、`X-Sandbox-Port` 三个请求头，转发到对应沙箱的 headless Service，其他请求头原样透传。在 Kata 和 gVisor 环境里 port-forward 本来就不可用，router 不是可选项。
+使用方一侧通常不手写 YAML，而是用 Go 或 Python SDK（`k8s-agent-sandbox`）建 Claim、等沙箱 Ready、拿到沙箱名；要多轮复用同一个环境时，用 `GetSandbox` 绑回原来的 pod。请求通过 **sandbox-router** 进入：它读 `X-Sandbox-ID`、`X-Sandbox-Namespace`、`X-Sandbox-Port` 三个请求头，转发到对应沙箱的 headless Service；`Host` 和 `Authorization` 会被 router 去掉，其他请求头原样透传。在 Kata 和 gVisor 环境里 port-forward 本来就不可用，router 不是可选项。
 
 社区有一个在 AKS 上做"每个用户一个 Kata VM、共享预热池、单个公网 IP 按请求头路由"的完整示例，照着跑一遍很快能看清全貌。但它是演示配置，放到客户环境前有三处必须改：
 
@@ -175,7 +175,7 @@ spec:
 
 ## 四、OpenSandbox：执行 API 和凭据代理都是现成的
 
-agent-sandbox 交给你的是"一个隔离好的 pod"，里面怎么执行命令、怎么读写文件，需要自己的 agent 镜像来提供。OpenSandbox 往上多做了一层，它更像一个工作区管理系统：应用后端通过 SDK（Python、Java/Kotlin、TypeScript、C#、Go）调用 lifecycle server，server 在 Kubernetes 上创建 `BatchSandbox`，controller 把它落成 pod；pod 里有 **execd** 提供命令执行、文件操作、代码运行的 API，SDK 经 ingress 网关访问它。同一套生命周期 API 在本地 Docker 和 Kubernetes 上都能用，开发阶段很方便。
+agent-sandbox 交给你的主要是"一个隔离好的 pod"。它的 SDK 有执行命令、读写文件的接口，对接的是项目正在做的沙箱内守护进程 `sandboxd`，但这部分还在早期；实际用的时候，常见做法是在镜像里放一个守护进程（`sandboxd`、E2B 的 `envd`，或者自己写的）。在 AKS 上的实测见[AKS Agent Runtime 系列 03 补充](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。OpenSandbox 往上多做了一层，它更像一个工作区管理系统：应用后端通过 SDK（Python、Java/Kotlin、TypeScript、C#、Go）调用 lifecycle server，server 在 Kubernetes 上创建 `BatchSandbox`，controller 把它落成 pod；pod 里有 **execd** 提供命令执行、文件操作、代码运行的 API，SDK 经 ingress 网关访问它。同一套生命周期 API 在本地 Docker 和 Kubernetes 上都能用，开发阶段很方便。
 
 ![OpenSandbox 的组件链、Pool 与 Credential Vault|900](../../../../asset/opensandbox-credential-vault-2026-11-02.svg)
 
@@ -255,12 +255,12 @@ sandbox.credential_vault.create(
 |---|---|---|
 | 定位 | Kubernetes 原生的沙箱编排，只管 pod 生命周期 | 带执行 API 的工作区管理系统 |
 | 核心资源 | Sandbox、SandboxTemplate、SandboxClaim、SandboxWarmPool | BatchSandbox、Pool、SandboxSnapshot |
-| 沙箱里的执行能力 | 自己的镜像提供 | execd 提供命令、文件、代码执行 API |
+| 沙箱里的执行能力 | SDK 有接口，沙箱内守护进程 `sandboxd` 尚在早期，常见做法是镜像里自带守护进程 | execd 提供命令、文件、代码执行 API |
 | 访问方式 | sandbox-router 按请求头转发 | SDK 经 ingress 网关访问 execd |
 | 出站控制 | 模板渲染 NetworkPolicy，只到 IP 和端口 | per-sandbox egress 策略，可按域名放行 |
 | 凭据 | 自己解决 | Credential Vault 在出站时注入 |
 | 批量申请 | 逐个 Claim | 一个 BatchSandbox 申请 N 个，适合评估与 RL |
-| 暂停恢复 | 休眠后按网络请求自动恢复 | 快照推到镜像仓库，同 ID 重建 |
+| 暂停恢复 | `operatingMode` 改成 `Suspended`：删 Pod、留 PVC，改回 `Running` 重建，容器层文件不保留 | 快照推到镜像仓库，同 ID 重建，整个 rootfs 都保留 |
 | 本地开发 | 需要集群 | Docker 与 K8s 同一套 API |
 
 我的建议比较简单：
