@@ -57,7 +57,7 @@ description: 讨论 AKS 做 agent runtime 时，注意力常落在 sandbox 隔�
 | 治理    | Workload Identity、Cilium 网络策略        | agentgateway / Envoy、OpenFGA              | 把 Pod 身份映射到会话、申请与审批流程、审计归集          |
 | 定义与发现 | CRD 与 controller 机制                  | kagent 的 Agent CRD、A2A Agent Card         | 统一的 Agent 定义、不可变 revision、发现与调用授权分离 |
 
-会话平面那一行 AKS 一格都填不上，这是最值得注意的地方。
+会话平面那一行 AKS 一格都填不上，这是最值得注意的地方。为什么 RBAC、NetworkPolicy 这些原生机制映射不过来、能映射到哪一步，单独写在了[补充二](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)里。
 
 执行平面里的 agent-sandbox 和 OpenSandbox，夹在 Kata 和控制面之间。Kata 只保证 Pod 跑在独立的 VM 里；预热池、领取、进沙箱执行命令的接口、暂停恢复、到期回收，是它们补上的。下面的实践 01 直接建了一个带 `runtimeClassName` 的 Pod 来验证隔离，还没有用到这两者。它们比裸 Pod 多做了什么、各自怎么用、参考实现怎么用 OpenSandbox，见[第 03 篇](AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md#沙箱后端agent-sandbox-和-opensandbox-管什么)和在 AKS 上逐项实测的[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。
 

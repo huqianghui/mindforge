@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" width="1400" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .hop { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .sbx { fill: #2a1618; stroke: #f87171; stroke-width: 1.5; }
+      .k8s { fill: #111827; stroke: #94a3b8; stroke-width: 1.4; }
+      .l7 { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .see { fill: #0f172a; stroke: #475569; stroke-width: 1.1; stroke-dasharray: 5 4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .k { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .can { fill: #5eead4; font-size: 13px; }
+      .cant { fill: #fca5a5; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 7 6; animation: dash 1.4s linear infinite; }
+      .link { fill: none; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 4; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeG { fill: #334155; stroke: #94a3b8; stroke-width: 1.3; }
+      .bn { fill: #f8fafc; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="960" rx="16"/>
+  <text class="title" x="30" y="44">一次出站请求，每种机制能看到什么</text>
+  <text class="sub" x="30" y="72">上面一排是"这一跳的判断者能看到的信息"，下面是请求本身。灰色 = Kubernetes 原生机制，青绿 = 要自己补的 L7 组件</text>
+
+  <!-- see cards -->
+  <rect class="see" x="300" y="96" width="250" height="196" rx="10"/>
+  <text class="k" x="316" y="120">NetworkPolicy / CNI 看得到</text>
+  <text class="t" x="316" y="144">源 Pod 的标签</text>
+  <text class="t" x="316" y="165">目的 IP、端口、协议</text>
+  <text class="t" x="316" y="186">（Cilium 扩展：目的域名）</text>
+  <text class="can" x="316" y="216">能做：只放行到出站网关</text>
+  <text class="cant" x="316" y="240">看不到：会话、HTTP 方法</text>
+  <text class="cant" x="316" y="261">和路径、请求体、凭据</text>
+
+  <rect class="see" x="570" y="96" width="250" height="196" rx="10"/>
+  <text class="k" x="586" y="120">出站网关看得到</text>
+  <text class="t" x="586" y="144">mTLS 证书 → Pod → 会话</text>
+  <text class="t" x="586" y="165">Host、方法、路径</text>
+  <text class="t" x="586" y="186">请求体里的 model</text>
+  <text class="can" x="586" y="216">能做：逐请求放行或拒绝、</text>
+  <text class="can" x="586" y="237">剥掉伪造头、注入凭据、</text>
+  <text class="can" x="586" y="258">按会话计量 token</text>
+
+  <rect class="see" x="840" y="96" width="250" height="196" rx="10"/>
+  <text class="k" x="856" y="120">授权决策点看得到</text>
+  <text class="t" x="856" y="144">应用申请了什么</text>
+  <text class="t" x="856" y="165">资源 owner 批准了什么</text>
+  <text class="t" x="856" y="186">平台发布了哪些动作</text>
+  <text class="can" x="856" y="216">能做：三方取交集，</text>
+  <text class="can" x="856" y="237">撤销后秒级生效</text>
+  <text class="cant" x="856" y="261">RBAC 写不出这种交集</text>
+
+  <rect class="see" x="1110" y="96" width="260" height="196" rx="10"/>
+  <text class="k" x="1126" y="120">外部资源看得到</text>
+  <text class="t" x="1126" y="144">网关注入的凭据</text>
+  <text class="t" x="1126" y="165">（用户的 OBO 令牌，</text>
+  <text class="t" x="1126" y="186">或应用自己的身份）</text>
+  <text class="cant" x="1126" y="216">看不到：是哪个会话、</text>
+  <text class="cant" x="1126" y="237">哪一轮、模型为什么</text>
+  <text class="cant" x="1126" y="258">要做这件事</text>
+
+  <!-- hops -->
+  <rect class="sbx" x="30" y="330" width="250" height="110" rx="10"/>
+  <text class="h" x="46" y="356">沙箱里的 harness</text>
+  <text class="t" x="46" y="380">决定"去读这个仓库"</text>
+  <text class="t" x="46" y="401">手里没有凭据</text>
+  <text class="t" x="46" y="422">不挂 SA token</text>
+
+  <rect class="k8s" x="300" y="330" width="250" height="110" rx="10"/>
+  <text class="h" x="316" y="356">Pod 网络（CNI）</text>
+  <text class="t" x="316" y="380">NetworkPolicy 在这里生效</text>
+  <text class="t" x="316" y="401">出站只剩一条路</text>
+
+  <rect class="l7" x="570" y="330" width="250" height="110" rx="10"/>
+  <text class="h" x="586" y="356">出站网关（L7）</text>
+  <text class="t" x="586" y="380">第 04 篇的 agentgateway</text>
+  <text class="t" x="586" y="401">或 OpenSandbox 的 egress 边车</text>
+
+  <rect class="l7" x="840" y="330" width="250" height="110" rx="10"/>
+  <text class="h" x="856" y="356">授权决策点 + 凭据代理</text>
+  <text class="t" x="856" y="380">第 04 篇用 OpenFGA</text>
+  <text class="t" x="856" y="401">通过之后才去取凭据</text>
+
+  <rect class="hop" x="1110" y="330" width="260" height="110" rx="10"/>
+  <text class="h" x="1126" y="356">GitHub / 内部 API / 模型</text>
+  <text class="t" x="1126" y="380">真正产生副作用的地方</text>
+
+  <path class="flow" d="M280,385 L298,385" marker-end="url(#arr)"/>
+  <path class="flow" d="M550,385 L568,385" marker-end="url(#arr)"/>
+  <path class="flow" d="M820,385 L838,385" marker-end="url(#arr)"/>
+  <path class="flow" d="M1090,385 L1108,385" marker-end="url(#arr)"/>
+  <path class="link" d="M425,292 L425,330"/>
+  <path class="link" d="M695,292 L695,330"/>
+  <path class="link" d="M965,292 L965,330"/>
+  <path class="link" d="M1240,292 L1240,330"/>
+  <circle class="badge" cx="289" cy="366" r="11"/><text class="bn" x="289" y="371">①</text>
+  <circle class="badge" cx="559" cy="366" r="11"/><text class="bn" x="559" y="371">②</text>
+  <circle class="badge" cx="829" cy="366" r="11"/><text class="bn" x="829" y="371">③</text>
+  <circle class="badge" cx="1099" cy="366" r="11"/><text class="bn" x="1099" y="371">④</text>
+
+  <!-- RBAC lane -->
+  <rect class="l7" x="30" y="500" width="380" height="140" rx="10"/>
+  <text class="h" x="46" y="526">控制面</text>
+  <text class="t" x="46" y="550">看得到：终端用户 oid、会话、哪一轮、</text>
+  <text class="t" x="46" y="571">这一轮由哪段模型输出触发</text>
+  <text class="can" x="46" y="600">能做：会话鉴权、审批、审计、</text>
+  <text class="can" x="46" y="621">把高风险动作留在沙箱外执行</text>
+
+  <rect class="k8s" x="500" y="500" width="400" height="140" rx="10"/>
+  <text class="h" x="516" y="526">API server（RBAC 在这里生效）</text>
+  <text class="t" x="516" y="550">看得到：主体（用户或 ServiceAccount）、</text>
+  <text class="t" x="516" y="571">资源、动词、命名空间</text>
+  <text class="can" x="516" y="600">能做：控制面能建 Claim、沙箱 SA 什么都不能</text>
+  <text class="cant" x="516" y="621">看不到：请求内容；不管 API server 以外的流量</text>
+
+  <rect class="sbx" x="990" y="500" width="380" height="140" rx="10"/>
+  <text class="h" x="1006" y="526">沙箱 Pod</text>
+  <text class="t" x="1006" y="550">被控制面经沙箱后端创建、暂停、删除</text>
+  <text class="t" x="1006" y="571">它自己调不了 API server：</text>
+  <text class="t" x="1006" y="592">没有 token，就算网络可达也只会拿到 401</text>
+
+  <path class="flowG" d="M410,570 L498,570" marker-end="url(#arrG)"/>
+  <path class="flowG" d="M900,570 L988,570" marker-end="url(#arrG)"/>
+  <circle class="badgeG" cx="454" cy="550" r="11"/><text class="bn" x="454" y="555">⑤</text>
+  <circle class="badgeG" cx="944" cy="550" r="11"/><text class="bn" x="944" y="555">⑥</text>
+
+  <text class="lgh" x="30" y="690">怎么读</text>
+  <text class="lg" x="30" y="718">①～④ 是 harness 发起的一次出站请求。越往右，判断者看到的信息越多：CNI 只看到 IP 和端口，网关看到会话和 HTTP，授权点看到三方关系</text>
+  <text class="lg" x="30" y="742">⑤⑥ 是控制面管理沙箱的路径。只有这条路经过 API server，RBAC 也只在这条路上起作用</text>
+  <text class="lg" x="30" y="766">所以 NetworkPolicy 和 RBAC 守的是"底线"：出站只有一条路，沙箱没有集群权限；"放不放行、以谁的名义"要在网关、授权点和控制面上判断</text>
+  <text class="lg" x="30" y="790">能映射的那一部分：网关可以调 SubjectAccessReview，把 RBAC 当粗粒度策略库来查；但主体只能是 ServiceAccount，表达不了会话、终端用户和三方交集</text>
+
+  <rect class="see" x="30" y="820" width="1340" height="110" rx="10"/>
+  <text class="h" x="46" y="848">外部资源只看到最后一跳</text>
+  <text class="t" x="46" y="874">GitHub 收到的是一个合法的令牌，它不知道这次读取是哪一轮、由哪段模型输出触发、用户有没有批准过。</text>
+  <text class="t" x="46" y="896">"这个决定可不可信"只能在请求离开平台之前判断，也就是在网关、授权点和控制面这几处；离开之后就没人能拦了。</text>
+</svg>

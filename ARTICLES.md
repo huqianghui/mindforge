@@ -307,6 +307,7 @@
 
 - [AKS Agent Runtime 系列 01：Sandbox 之外的三个平面](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)
 - [AKS Agent Runtime 系列 01 补充：Kata 运行时与节点池](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)
+- [AKS Agent Runtime 系列 01 补充二：Kubernetes 原生机制管不到什么](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)
 - [AKS Agent Runtime 系列 02：Harness 放在沙箱内还是沙箱外](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外.md)
 - [AKS Agent Runtime 系列 03：控制面怎么驱动编码 Harness](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md)
 - [AKS Agent Runtime 系列 03 补充：沙箱后端 agent-sandbox 与 OpenSandbox](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)
