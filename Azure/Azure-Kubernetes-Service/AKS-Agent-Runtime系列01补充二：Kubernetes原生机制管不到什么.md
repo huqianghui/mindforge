@@ -10,7 +10,7 @@ tags:
   - agent-sandbox
   - opensandbox
   - governance
-description: Kubernetes 已经有 RBAC、NetworkPolicy、TokenReview，但 agent 平台的会话和治理需求映射不过去。RBAC 只在 API server 上判断，主体是 ServiceAccount，看不到请求内容；NetworkPolicy 只认 IP 和端口，不知道连接属于哪个会话。所以它们只能守底线——沙箱没有集群权限、出站只剩一条路——而会话、终端用户、资源加动作的授权、凭据、模型、harness、agent 调 agent、审批与审计、配额这些 agent 特有的事要另外补。文中逐项说明要管什么、原生机制为什么不够、能映射到哪一步，以及 agent-sandbox 和 OpenSandbox 各自覆盖了哪些
+description: Kubernetes 已经有 RBAC、NetworkPolicy、TokenReview，但 agent 平台的会话和治理需求映射不过去。RBAC 只在 API server 上判断，主体是 ServiceAccount，看不到请求内容；NetworkPolicy 只认 IP 和端口，不知道连接属于哪个会话。所以它们只能守底线——沙箱没有集群权限、出站只剩一条路——而会话、终端用户、资源加动作的授权、凭据、模型、harness、agent 调 agent、审批与审计、配额这些 agent 特有的事要另外补。文中逐项说明要管什么、原生机制为什么不够、能映射到哪一步，以及 agent-sandbox 和 OpenSandbox 各自覆盖了哪些；最后对照两套实现已经在用的社区组件（agentgateway、Envoy、OpenFGA、cert-manager、Cilium 等）、社区还有但没用的（Dapr、Kyverno、SPIRE 等），以及复用不了、要自己写的那一层——认识会话、终端用户和资源动作的语义
 ---
 
 # AKS Agent Runtime 系列 01 补充二：Kubernetes 原生机制管不到什么
@@ -136,14 +136,76 @@ RBAC 和 NetworkPolicy 负责的是**底线**；L7 网关、授权决策点和�
 - **RuntimeClass**：每个沙箱 Pod 都显式指定 Kata，包括预热池的模板。
 - **ResourceQuota**：给沙箱命名空间设 CPU、内存和对象数的上限。
 
-**判断，要自己补：**
+**判断，底座可以复用，agent 语义要自己写（见第五节）：**
 
 - **控制面**：会话、终端用户、harness 适配、agent 调 agent、审批、审计、token 预算；
 - **出站网关和授权决策点**：会话绑定、资源加动作的三方授权、凭据注入、模型治理。
 
 **沙箱后端的位置**：agent-sandbox 和 OpenSandbox 都在底线和判断之间，只管"房间"。OpenSandbox 的 egress 边车和 Credential Vault 往判断那边多走了一步，但它只认识沙箱，不认识会话、用户和资源 owner 的批准，所以替代不了网关和授权决策点。
 
-**Kubernetes 管的是"Pod 和集群对象"，agent 平台还要管"会话、终端用户、外部资源上的动作、模型，以及不可信的决策"。** 前者用原生机制就够，后者基本都要自己补。这也是系列 01 说会话平面一格都填不上、治理平面只填了一半的原因。
+**Kubernetes 管的是"Pod 和集群对象"，agent 平台还要管"会话、终端用户、外部资源上的动作、模型，以及不可信的决策"。** 前者用原生机制就够；后者在 CNCF 生态里大多有现成的底座，真正要自己写的是把 agent 语义接上去的那一层。这也是系列 01 说会话平面一格都填不上、治理平面只填了一半的原因。
+
+## 五、能复用什么：已经在用的、社区还有的、复用不了的
+
+第三节说"要自己补"的那些事，并不都要从零写。前面几篇用到的两套实现——驱动编码 harness 的参考实现，和把 OpenSandbox 包成多租户 API 的那套安全沙箱实现——都大量复用了社区组件，自己写的只是其中一层。
+
+### 两套实现已经在用的社区组件
+
+**参考实现：**
+
+- **沙箱后端**：OpenSandbox；生产配置下面再接 agent-sandbox，测试配置用 OpenSandbox 自己的 BatchSandbox（[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)）。
+- **出站与模型网关**：agentgateway，按 Gateway API 配置路由，模型请求和资源请求都走它（第 04、08 篇）。
+- **授权决策点**：OpenFGA，存"申请、批准、发布"的关系，网关逐请求来问。
+- **沙箱的出站身份**：cert-manager 的 CSI 驱动给出站边车签发和 Pod 绑定的证书，证书主体是 SPIFFE 格式。
+- **入口与云身份**：AKS 托管的 Istio 入口网关；快照提交等云上操作用 Workload Identity。
+- **状态与观测**：控制面状态用 SQLite；遥测走 OpenTelemetry collector。
+
+**安全沙箱 API 那套实现：**
+
+- **沙箱后端**：OpenSandbox 的 BatchSandbox，对外隐藏。
+- **L7 数据面**：Envoy。一个共享的 Envoy 网关做入口，每个沙箱 Pod 里再放一个 Envoy sidecar；授权用 Envoy 的 `ext_authz` 交给外部服务判断。
+- **出站**：agentgateway 做租户级出站网关；集群数据面是 Cilium。
+- **身份**：SPIFFE 格式的工作负载身份；Entra 联合凭据，出站时换 token。
+- **观测**：OpenTelemetry。
+
+我自己在系列 PoC 里另外用过三样：第 06 篇用 Service Bus 会话队列加 PostgreSQL 的 lease 做多副本；第 07 篇用 oras 把 skills 打成 OCI artifact，CRD 校验用 CEL；第 09 篇用 Entra Agent ID 给每个 agent 独立身份。
+
+### 社区还有、两套实现都没用的
+
+- **Dapr**：Actor（每个会话一个 actor，空闲自动停用）、State、Pub/Sub、Workflow（每一步落盘、断点续跑），正好对应会话状态、收件箱和持久执行。还有调用 LLM 的 Conversation API，目前处在早期阶段。
+- **Temporal**：另一种持久执行引擎。
+- **Kyverno / Gatekeeper**：准入策略。可以在 Pod 创建时直接拒绝"没写 `runtimeClassName`"或"挂了 SA token"的沙箱 Pod。03 补充里 Pool 漏写 Kata、静默跑成 runc 的问题，用它就能拦住。
+- **SPIRE**：比 cert-manager 更完整的工作负载身份签发和轮换。
+- **OPA、SpiceDB**：另外两种授权引擎，前者偏规则，后者和 OpenFGA 一样偏关系。
+- **LLM 网关**：Envoy AI Gateway 一类专门处理模型流量的网关，做模型路由和按 token 限流。
+
+### 按需求对照
+
+| 要管的事 | 两套实现在用的组件 | 社区还有的 | 两套实现自己写的部分 |
+|---|---|---|---|
+| 会话状态、收件箱、持久执行 | SQLite（参考实现） | Dapr Actor / Workflow、Temporal | 会话状态机、副作用意图、会话 ↔ 沙箱绑定、暂停与回收的决策 |
+| 沙箱生命周期 | OpenSandbox、agent-sandbox | — | 沙箱 provider 接口；带持久操作 ID 的重放 |
+| 出站 L7 控制 | agentgateway、Envoy sidecar、Cilium | Cilium L7 策略、Istio 出口网关 | Pod → 会话 → 应用的映射；沙箱内强制走边车的包过滤规则 |
+| 资源加动作授权 | OpenFGA、Envoy `ext_authz` | OPA、SpiceDB | 申请、批准、发布的数据模型；授权服务 |
+| 凭据注入 | agentgateway、Envoy `ext_authz` 改写请求头 | OpenSandbox Credential Vault | 凭据代理；凭据和资源动作的绑定 |
+| 工作负载身份 | cert-manager CSI、SPIFFE、Workload Identity、Entra 联合凭据 | SPIRE | 证书 → 会话的映射；身份控制器 |
+| 终端用户与 OBO | Entra | — | 会话 API 上的用户校验、归属、令牌续期 |
+| 模型治理 | agentgateway | LLM 网关、Dapr Conversation API | 按会话和应用的预算、计费归属；Claude Code 协议转换的验证 |
+| 准入与规格约束 | — | Kyverno、Gatekeeper | 运行时类：只允许平台发布的镜像或预热池，并钉死 harness |
+| harness 与 agent 调 agent | — | A2A（发现与卡片） | harness 适配器、子会话、一跳限制、owner 批准 |
+| 审计与观测 | OpenTelemetry | — | 把用户、会话、轮次作为属性一路带下去；审批流程 |
+
+最右一列就是"复用不了"的部分。它们的共同点是：**都要认识会话、终端用户和外部资源上的动作**，而社区组件只认识工作负载、请求和规则。参考实现自己写的是会话 API、状态机、执行器、harness 适配器、沙箱 provider、运行时类和应用定义，以及一个带缓存的 Git 出站服务；安全沙箱实现自己写的是租户级 API 和归属校验、策略控制器（把每个沙箱的策略下发到 Envoy、DNS 和出站网关）、沙箱网络初始化、策略 DNS、出站租约代理，以及两个 `ext_authz` 授权服务和身份控制器。
+
+### 复用时要注意的三点
+
+**sidecar 放在沙箱 Pod 里，就和不可信代码在同一台 VM 里。** Kata 隔离的是 Pod 和宿主，Pod 内部的多个容器之间只有容器级隔离。sidecar 一旦持有证书或凭据，harness 在 VM 里提权就够得着它。参考实现只把证书挂给出站边车，最终判断放在网关上；安全沙箱实现先用包过滤规则把所有流量强制导进边车，策略生效前一律拒绝，也不给工作负载任何 capability。原则是：**sidecar 只负责把流量导出去，判断和凭据放在 Pod 外面。**
+
+**Dapr 适合放在控制面，不适合放进沙箱。** Dapr sidecar 要持有状态存储、消息队列的连接凭据，放进沙箱就等于交给了 agent。
+
+**这些组件的身份粒度是工作负载，不是会话。** Envoy 和 mesh 认 SPIFFE ID，对应 ServiceAccount；Dapr 认 app-id。一批沙箱往往共用一个身份，所以 `ext_authz` 背后的授权服务必须自己查"这个 Pod 现在属于哪个会话"。这一层映射是复用不来的。
+
+还有一个具体的冲突：OpenSandbox 的 Credential Vault 和同一个 Pod 里的 Istio/Envoy 透明代理不能共存，两者都要拦截出站流量。选了 Envoy sidecar 这条路，凭据注入就要放到网关或 `ext_authz` 上做。
 
 ## 相关阅读
 
