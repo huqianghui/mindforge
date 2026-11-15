@@ -53,11 +53,11 @@ harness 发起的请求，越往右走，判断者能看到的信息越多：CNI
 
 ## 三、agent 平台要管的事，逐项看
 
-先看全貌：每一项需求，Kubernetes 原生、agent-sandbox、OpenSandbox 各覆盖到哪，剩下要自己补的在系列哪一篇讲过。
+先看全貌：每一项需求，Kubernetes 原生、agent-sandbox、OpenSandbox 各覆盖到哪；社区里有哪些组件可以拿来当底座，其中哪些前面几篇的两套实现已经在用；最后剩下复用不了、要自己写的部分，在系列哪一篇讲过。
 
-![agent 平台要管的事：Kubernetes 原生、agent-sandbox、OpenSandbox 各覆盖到哪|900](../../asset/aks-agent-runtime-k8s-coverage-2026-11-15.svg)
+![agent 平台要管的事：原生、两个沙箱项目、社区方案各覆盖到哪|1000](../../asset/aks-agent-runtime-k8s-coverage-2026-11-15.svg)
 
-前四行是"房间"：Kubernetes 给墙，两个项目负责分配、进入和暂停，基本都有现成的。从"会话状态与绑定"往下是"住户和规矩"，三列几乎全灰。下面逐项说。
+前四行是"房间"：Kubernetes 给墙，两个项目负责分配、进入和暂停，基本都有现成的。从"会话状态与绑定"往下是"住户和规矩"，中间三列几乎全灰，但社区一列大多有现成的底座：Dapr 管会话状态，OpenFGA 和 Envoy 的 `ext_authz` 管授权，agentgateway 管出站和模型，cert-manager 管身份。最右一列复用不了，因为它们都要认识会话、终端用户和外部资源上的动作。各组件怎么用、复用时要注意什么，见第五节。下面逐项说。
 
 ### 会话
 
@@ -179,23 +179,9 @@ RBAC 和 NetworkPolicy 负责的是**底线**；L7 网关、授权决策点和�
 - **OPA、SpiceDB**：另外两种授权引擎，前者偏规则，后者和 OpenFGA 一样偏关系。
 - **LLM 网关**：Envoy AI Gateway 一类专门处理模型流量的网关，做模型路由和按 token 限流。
 
-### 按需求对照
+### 复用不了的部分是谁写的
 
-| 要管的事 | 两套实现在用的组件 | 社区还有的 | 两套实现自己写的部分 |
-|---|---|---|---|
-| 会话状态、收件箱、持久执行 | SQLite（参考实现） | Dapr Actor / Workflow、Temporal | 会话状态机、副作用意图、会话 ↔ 沙箱绑定、暂停与回收的决策 |
-| 沙箱生命周期 | OpenSandbox、agent-sandbox | — | 沙箱 provider 接口；带持久操作 ID 的重放 |
-| 出站 L7 控制 | agentgateway、Envoy sidecar、Cilium | Cilium L7 策略、Istio 出口网关 | Pod → 会话 → 应用的映射；沙箱内强制走边车的包过滤规则 |
-| 资源加动作授权 | OpenFGA、Envoy `ext_authz` | OPA、SpiceDB | 申请、批准、发布的数据模型；授权服务 |
-| 凭据注入 | agentgateway、Envoy `ext_authz` 改写请求头 | OpenSandbox Credential Vault | 凭据代理；凭据和资源动作的绑定 |
-| 工作负载身份 | cert-manager CSI、SPIFFE、Workload Identity、Entra 联合凭据 | SPIRE | 证书 → 会话的映射；身份控制器 |
-| 终端用户与 OBO | Entra | — | 会话 API 上的用户校验、归属、令牌续期 |
-| 模型治理 | agentgateway | LLM 网关、Dapr Conversation API | 按会话和应用的预算、计费归属；Claude Code 协议转换的验证 |
-| 准入与规格约束 | — | Kyverno、Gatekeeper | 运行时类：只允许平台发布的镜像或预热池，并钉死 harness |
-| harness 与 agent 调 agent | — | A2A（发现与卡片） | harness 适配器、子会话、一跳限制、owner 批准 |
-| 审计与观测 | OpenTelemetry | — | 把用户、会话、轮次作为属性一路带下去；审批流程 |
-
-最右一列就是"复用不了"的部分。它们的共同点是：**都要认识会话、终端用户和外部资源上的动作**，而社区组件只认识工作负载、请求和规则。参考实现自己写的是会话 API、状态机、执行器、harness 适配器、沙箱 provider、运行时类和应用定义，以及一个带缓存的 Git 出站服务；安全沙箱实现自己写的是租户级 API 和归属校验、策略控制器（把每个沙箱的策略下发到 Envoy、DNS 和出站网关）、沙箱网络初始化、策略 DNS、出站租约代理，以及两个 `ext_authz` 授权服务和身份控制器。
+第三节那张图最右一列就是"复用不了"的部分。它们的共同点是：**都要认识会话、终端用户和外部资源上的动作**，而社区组件只认识工作负载、请求和规则。参考实现自己写的是会话 API、状态机、执行器、harness 适配器、沙箱 provider、运行时类和应用定义，以及一个带缓存的 Git 出站服务；安全沙箱实现自己写的是租户级 API 和归属校验、策略控制器（把每个沙箱的策略下发到 Envoy、DNS 和出站网关）、沙箱网络初始化、策略 DNS、出站租约代理，以及两个 `ext_authz` 授权服务和身份控制器。
 
 ### 复用时要注意的三点
 
