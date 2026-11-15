@@ -133,26 +133,7 @@ description: harness 关进沙箱之后，负责把它拉起来、喂消息、�
 
 沙箱这一侧，控制面一行 Kubernetes 代码都没写：领 Pod、落到 Kata 节点、在沙箱里执行命令、做快照，全部是调 OpenSandbox 的 API。控制面只持有 OpenSandbox 的调用身份，不直接操作 Pod。
 
-### 一个 agent 从定义到被调用
-
-编码 CLI 本身就是一个 agent：它有自己的 loop，会调模型、用工具、改文件。但在平台上，用户调用的"那个 agent"不是 CLI，而是一份**应用定义**。CLI 只是这份定义里选定的引擎。
-
-参考实现里，应用定义是一个 Kubernetes 资源，写清五件事：
-
-1. **用哪个运行时**：引用平台方发布的一个运行时类。运行时类里定好了"用哪个镜像，或者从哪个预热池领"，同时钉死了用哪种 harness。应用作者不能自己换 harness，只能在平台批准的运行时里挑。
-2. **工作区里放什么**：AGENTS.md、skills、初始文件。controller 先把这些内容解析好，再生成一个不可变的 revision（第 07 篇）。
-3. **从哪里进来**：会话 API、定时任务，或者绑定到一个 Teams bot；还有一个现成的流水线模板，可以在 CI 里建会话、发第一条 prompt。
-4. **要访问哪些资源**：精确到"哪个资源的哪个动作"。申请不等于批准，要资源 owner 批准后才生效（第 04 篇）。
-5. **默认用哪个模型**：必须是一个已经批准过的模型调用权限。
-
-调用时，渠道只跟会话 API 打交道，不管背后是哪种 CLI：
-
-- **建会话**：指定应用，带幂等键。控制面这时把应用当前的 revision 固定下来，后面这个会话一直用它。
-- **投递 prompt**：每条消息是会话里的一轮。控制面按第二节的八步，经下面的沙箱 provider 在沙箱里用非交互、免确认的参数跑一次 CLI，解析它的输出。
-- **订阅更新**：按游标拉事件流，断线后接着读。
-- **中止和恢复**：中止会挡住后续的 harness 启动，并停掉这个会话的进程，但不删沙箱；恢复用来接回分配到一半的沙箱。
-
-所以"调用一个编码 agent"在平台上分成三层：用户调的是应用；应用的每一轮由控制面驱动；控制面在沙箱里启动的才是那个编码 CLI。agent 调 agent（第四节）走的也是同一套会话 API，只是调用方从人换成了另一个沙箱里的 agent。
+用户调用的"那个 agent"其实不是编码 CLI，而是一份应用定义，CLI 只是它选定的引擎；应用定义里写什么、渠道怎么建会话和投递 prompt，放在了[第 07 篇](AKS-Agent-Runtime系列07：Agent的类型、注册与发现.md#五调用一个-agent-从定义到被调用)。
 
 ### 沙箱后端的两种接法
 
@@ -175,29 +156,7 @@ description: harness 关进沙箱之后，负责把它拉起来、喂消息、�
 
 两种接法下，harness 适配器各有一整套（Copilot、Codex、Claude Code、OpenCode、Pi），都放在控制面里。后端只负责"建沙箱、进沙箱、停沙箱"，不认识 harness。这也说明了 provider 接口的价值：沙箱后端可以换，会话、harness 适配、授权这些控制面逻辑不用改。
 
-### 沙箱后端：agent-sandbox 和 OpenSandbox 管什么
-
-这两个项目都属于**执行平面**，夹在 Kata 和控制面之间。
-
-Kata 只管一件事：Pod 里的容器跑在一个独立的 VM 里。[第 01 篇](AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)的实践就是直接建一个带 `runtimeClassName` 的 Pod，验证 guest kernel、没有 SA token、出站不通，证明隔离成立。但如果控制面直接拿裸 Pod 当 agent 的执行环境，下面这些事都得自己做：
-
-- **没有预热**：每次都要现建 Pod，等调度、拉镜像、启动 VM，慢的时候要几十秒甚至几分钟；
-- **进不去**：Kata 里 port-forward 用不了，Pod 里也没有执行命令、读写文件的接口；
-- **没有生命周期**：什么时候删、空闲怎么暂停、暂停后状态存在哪，都没有现成的机制。
-
-agent-sandbox 和 OpenSandbox 把这些做成了 Kubernetes 控制器加 API。它们自己不做隔离，只在生成的 Pod 模板里写上 Kata 的 `runtimeClassName`，所以底下的运行时换成 gVisor 或 runc，上层流程也不用变。这两者是二选一的关系，和 Kata 则是上下叠加：
-
-| 控制面要做的事 | 只用 Kata Pod | agent-sandbox | OpenSandbox |
-|---|---|---|---|
-| 领一个环境 | 现建 Pod，等调度和 VM 启动 | 提一个 `SandboxClaim`，从 `SandboxWarmPool` 领 | 调 lifecycle server 建 `BatchSandbox`，从 `Pool` 的 buffer 领 |
-| 规格放在哪 | 自己维护 Pod spec | `SandboxTemplate`：RuntimeClass、节点、limits、网络策略 | `Pool` 模板，网络策略也只能写在模板里 |
-| 进沙箱执行命令、读写文件 | 自己在镜像里放服务 | 镜像里要有守护进程（项目的 `sandboxd` 尚在早期，也可用 `envd` 或自己写）；`sandbox-router` 按请求头转发 | 沙箱里自带 `execd`，SDK 直接调 |
-| 暂停与恢复 | 没有 | `operatingMode` 改成 `Suspended`：删 Pod，PVC 留着 | `pause` 生成 `SandboxSnapshot`，rootfs 推镜像仓库，同一个 ID 重建 |
-| 出站与凭据 | NetworkPolicy | 模板默认生成 NetworkPolicy，只能管到 IP 和端口 | 请求带出站策略时按域名放行，Credential Vault 在出站时注入凭据；不带就不限制 |
-
-两者的具体用法（模板、预热池、Claim、router、execd、Pool 怎么配，暂停时各自保留什么，叠在一起用要补什么），我在一个最小 AKS 集群上逐项实测过，写在[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)里。
-
-参考实现选的是 OpenSandbox。这种"控制面驱动 harness、沙箱只是借来执行"的形态，正好用得上 `execd`、`Pool` 和快照这三样。换成 agent-sandbox，沙箱里的守护进程要另外补，第 05 篇那套"rootfs 推到镜像仓库再恢复"的 Durable 会话也要改成"要保留的文件放进 PVC"。反过来，如果 agent 本身就是一个常驻服务，只需要一个隔离好的 Pod 来跑，agent-sandbox 更贴近 Kubernetes 原生用法。
+沙箱后端本身选哪个：参考实现选的是 OpenSandbox，因为这种"控制面驱动 harness、沙箱只是借来执行"的形态，正好用得上 `execd`、`Pool` 和快照这三样；换成 agent-sandbox，沙箱里的守护进程要另外补，Durable 会话也要改成"要保留的文件放进 PVC"。两者各自比裸 Kata Pod 多做了什么、三种组合怎么选，见 [03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。
 
 ### 最小控制面的四块
 
