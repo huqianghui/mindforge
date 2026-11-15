@@ -26,8 +26,23 @@ description: 按"loop 归谁"可以把 agent 分成三类——平台自带 loop
 - **参考实现**：一种应用定义 CRD，只服务基于现成 harness 的那一类；controller 解析运行时类、资源、批准和文件，全部就绪后发布不可变的 serving revision。它**没有 A2A**：调用方按命名空间和应用名直接调会话 API；同一套会话 API 还被包成一个 MCP server，工具就是"建会话、投递、读更新、读条目、中止"。选 MCP 的原因很直接：沙箱里的 Claude Code、Codex 本身就是 MCP 客户端，不说 A2A。agent 调 agent 走委托服务，按来源会话建子会话，目标 owner 批准、只允许一跳、不继承权限。
 - **我在这篇 PoC 里写的**：一个覆盖三类 agent 的 `Agent` CRD 加 CEL、用 oras 打包的 OCI skills 包、按内容哈希命名的 revision，以及按 A2A 1.x 生成的 Agent Card。卡片里的调用入口（agent 网关）没有实现。
 - **Kubernetes 提供的底座**：CRD、CEL、etcd、controller 机制、RBAC；AKS 的 Workload Identity 用来换 ACR 令牌。
-- **社区里能接上的**：注册这一层有 kagent（Agent CRD，每个 agent 自带 A2A 端点）、Nacos 的 AI 注册中心（托管 AgentCard，带版本、审核、可见性，可以搜索、发现、订阅，还能登记 MCP server、Skill、Prompt）、MCP Registry；调用入口有 agentgateway（同时代理 A2A 和 MCP）；协议层有 A2A 和 MCP 的官方 SDK。
-- **两边都还没有的**：企业级 agent 目录，也就是让 Teams、Copilot 和别的平台找得到 AKS 上的 agent。它要和 agent 自己的身份一起做（第 09 篇）。
+- **社区里能接上的**：注册这一层有 kagent（Agent CRD，每个 agent 自带 A2A 端点）、Nacos 的 AI 注册中心（托管 AgentCard，带版本、审核、可见性，可以搜索、发现、订阅，还能登记 MCP server、Skill、Prompt）、MCP Registry；agent 网关这个角色可以用 agentgateway 项目来做（同时代理 A2A 和 MCP）；协议层有 A2A 和 MCP 的官方 SDK。
+- **两边都还没有的**：独立的 agent 网关（参考实现的调用方直接打会话 API，我的 PoC 卡片里的入口地址没有实现），以及企业级 agent 目录，也就是让 Teams、Copilot 和别的平台找得到 AKS 上的 agent。后者要和 agent 自己的身份一起做（第 09 篇）。
+
+### 三种网关别混在一起
+
+系列里反复出现 agentgateway，但它是一个开源项目的名字，不是一种角色。按职责，agent 平台上有三种网关：
+
+| | agent 网关 | 模型网关（LLM proxy） | 出站网关 |
+|---|---|---|---|
+| 管什么 | agent 的注册、发现和调用转发 | 模型调用 | 沙箱访问外部工具和资源 |
+| 典型职责 | 发布卡片、按名字路由到目标 agent、代理 A2A 和 MCP、判断"源 agent 能不能调目标的这个 skill" | 模型路由、协议转换（Messages ↔ Responses）、按请求体模型名授权、token 配额与计费 | 逐请求授权、注入凭据、剥掉伪造的身份头 |
+| 调用方 | 渠道、别的 agent | 沙箱里的 harness | 沙箱里的 harness 和它生成的代码 |
+| 参考实现 | 没有独立的；调用方直接打会话 API，agent 调 agent 走 MCP 工具和委托服务 | agentgateway（第 08 篇） | agentgateway（第 04 篇） |
+| 我的 PoC | 只生成了卡片，入口没实现 | 第 08 篇验证了协议转换 | 第 04 篇补了 CONNECT 路由 |
+
+agentgateway 项目三种角色都能做，但它们面对的调用方、信任边界和授权模型都不一样，最好分开部署、分开配置：agent 网关面向集群外和其他 agent，模型网关和出站网关只面向沙箱。
+
 
 ## 一、三类 agent，按"loop 归谁"来分
 
@@ -136,7 +151,7 @@ A2A 1.x 的卡片结构和早期版本不一样，入口从单个 `url` 改成�
 
 1. **定义**：只做声明式 agent，可以直接用 kagent 的 CRD；要同时覆盖现成 harness 和自写 loop 两类，就像第二节那样自己定义一个带 `type` 的 `Agent` CRD，结构规则写成 CEL。skills 和 AGENTS.md 用 oras 打成 OCI artifact，ACR、Harbor 都行，沙箱放文件时按 digest 拉。要自己写的是 controller 的语义校验：批准清单、镜像 digest、tag 解析、内容哈希 revision、把原因写进 status。
 2. **注册中心**：二选一。Kubernetes API 为准，CRD 本身就是注册表，controller 生成卡片并发布；或者以 Nacos 为准，它管版本、审核、可见性和订阅，适合多集群和非 Kubernetes 的系统。选 Nacos 时，要自己写两边的同步：CRD 状态变化写进 Nacos，Nacos 里的审核结果回写 status，只同步 Ready 的版本。
-3. **统一入口**：所有 agent 前面放一个 agentgateway，按 agent 名路由，同时代理 A2A 和 MCP；用 Entra 签发的 JWT 认证；授权回调交给 OpenFGA，判断"源 agent 能不能调目标的这个 skill"，owner 的批准就是一条元组（[第 04 补充](AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md)）。第 04 篇已经用 agentgateway 做出站和模型网关，这里只是多一类路由。
+3. **agent 网关**：所有 agent 前面放一个统一入口，可以用 agentgateway 项目来做：按 agent 名路由、转发调用，同时代理 A2A 和 MCP；用 Entra 签发的 JWT 认证；授权回调交给 OpenFGA，判断"源 agent 能不能调目标的这个 skill"，owner 的批准就是一条元组（[第 04 补充](AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md)）。第 04、08 篇用同一个项目做了出站网关和模型网关，但 agent 网关面对的是集群外的调用方和其他 agent，最好单独部署一套，不和那两种共用配置。
 4. **协议面**：A2A 给跨框架的 agent（自写 loop 的、外部平台的）；MCP 给编码 harness，因为它们是 MCP 客户端。要自己写的是协议到会话 API 的适配：A2A 的 task 和 message 变成"建子会话、投递一轮"，会话的更新流转成 A2A 的流式事件；MCP 工具调用落到同一套会话 API 上。
 5. **企业目录**：卡片同步到 Entra Agent ID 一类的企业目录，和 agent 身份一起管理。
 
@@ -149,7 +164,7 @@ A2A 1.x 的卡片结构和早期版本不一样，入口从单个 `url` 改成�
 | 版本与审核 | 自己写（内容哈希 revision） | 每个 agent 一份配置 | 内置版本、草稿与审核 | 由目录方管理 |
 | 适合 | 全在 Kubernetes 上、要和沙箱、会话打通 | 声明式 agent 为主 | 多集群、非 Kubernetes 系统 | 让企业里其他产品找得到 |
 
-我自己的组合会是：**kagent 管声明式，自定义 CRD 管另外两类，agentgateway 做统一入口，OpenFGA 管调用授权，Nacos 只在需要跨集群、跨技术栈发现时再加。** 真正要投入的，是 controller 的语义校验和"协议到会话 API"的适配，这两块哪个开源项目都替不了。
+我自己的组合会是：**kagent 管声明式，自定义 CRD 管另外两类，agentgateway 项目单独部署一套做 agent 网关，OpenFGA 管调用授权，Nacos 只在需要跨集群、跨技术栈发现时再加。** 真正要投入的，是 controller 的语义校验和"协议到会话 API"的适配，这两块哪个开源项目都替不了。
 
 [下一篇](AKS-Agent-Runtime系列08：模型接入层.md)讲模型接入层：Claude Code、Codex 这些 harness 怎么经过网关接到 Foundry 的模型上，以及参考实现里一直没打通的 Claude Code 接 Azure OpenAI 这条路，到底能不能走通。
 

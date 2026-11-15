@@ -56,13 +56,13 @@
 <rect x="20" y="510" width="1460" height="200" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
 <text class="ln" x="36" y="538">③ 统一入口</text>
 <rect x="210" y="520" width="520" height="180" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
-<text class="h" x="222" y="543">agentgateway：A2A 和 MCP 的统一网关</text>
+<text class="h" x="222" y="543">agent 网关（可以用 agentgateway 项目）</text>
 <text class="tag" x="720" y="538" fill="#c4b5fd" text-anchor="end">开源组件</text>
-<text class="t" x="222" y="565">所有 agent 前面放一个入口，按 agent 名路由</text>
+<text class="t" x="222" y="565">所有 agent 的入口：按 agent 名路由、转发调用</text>
 <text class="t" x="222" y="584">同时代理 A2A（跨框架调用）和 MCP（工具调用）</text>
 <text class="t" x="222" y="603">JWT 认证：Entra 签发的令牌</text>
-<text class="t" x="222" y="622">授权回调：把"源 → 目标 → skill"交给外部授权服务</text>
-<text class="t" x="222" y="641">限流、追踪；第 04 篇已经用它做出站和模型网关</text>
+<text class="t" x="222" y="622">授权回调："源 → 目标 → skill"交给外部授权服务</text>
+<text class="t" x="222" y="641">和模型网关、出站网关是三种角色，可以同一个项目分开部署</text>
 <rect x="745" y="520" width="350" height="180" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
 <text class="h" x="757" y="543">授权：OpenFGA</text>
 <text class="tag" x="1085" y="538" fill="#c4b5fd" text-anchor="end">开源组件</text>

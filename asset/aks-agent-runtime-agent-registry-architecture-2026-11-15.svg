@@ -127,16 +127,17 @@
 <text class="t" x="657" y="834">子会话不继承调用方的权限，不共享文件系统</text>
 <text class="t" x="657" y="853">批准撤销后卡片照样能看到，调用被拒</text>
 <rect class="pulse" x="1080" y="694" width="400" height="110" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text class="h" x="1092" y="717">PoC 里还缺的</text>
+<text class="h" x="1092" y="717">两边都缺的：agent 网关</text>
 <text class="tag" x="1470" y="712" fill="#fca5a5" text-anchor="end">还没有</text>
-<text class="t" x="1092" y="739">卡片里的入口地址（agent 网关）没实现</text>
-<text class="t" x="1092" y="758">三类 agent 对外要提供同一套会话 API</text>
+<text class="t" x="1092" y="739">卡片里的入口地址没有实现：注册发现之后，</text>
+<text class="t" x="1092" y="758">  调用要转发到目标 agent，并做源 → 目标授权</text>
+<text class="t" x="1092" y="777">三类 agent 对外要提供同一套会话 API</text>
 <rect x="1080" y="814" width="400" height="110" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
-<text class="h" x="1092" y="837">社区里做调用入口的</text>
+<text class="h" x="1092" y="837">社区里能做 agent 网关的</text>
 <text class="tag" x="1470" y="832" fill="#c4b5fd" text-anchor="end">社区</text>
-<text class="t" x="1092" y="859">agentgateway：代理 A2A 和 MCP，路由、</text>
-<text class="t" x="1092" y="878">  认证、授权回调；参考实现只拿它做出站</text>
-<text class="t" x="1092" y="897">A2A SDK：卡片解析、客户端和服务端</text>
+<text class="t" x="1092" y="859">agentgateway 项目：代理 A2A、MCP，路由、认证、</text>
+<text class="t" x="1092" y="878">  授权回调。参考实现只用它当模型网关和</text>
+<text class="t" x="1092" y="897">  出站网关，没当 agent 网关用；另有 A2A SDK</text>
 <rect x="20" y="948" width="1460" height="150" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
 <text class="ln" x="36" y="976">运行</text>
 <rect x="210" y="958" width="350" height="120" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
