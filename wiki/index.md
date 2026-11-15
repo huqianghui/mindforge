@@ -92,6 +92,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[agent-sandbox]] — Agent 沙箱：隔离原语 / 环境分配回收 / 出站与凭据三件事，Kata 隔离单位是 pod、凭据不进沙箱、冷启动拆开量
 - [[agent-session-control-plane]] — Agent 会话控制面（harness 的 harness）：调用单位是会话、幂等键与落盘才 ACK、适配器驱动多种编码 CLI、Ephemeral / Durable、会话队列 + lease / fencing 多副本
 - [[credential-out-of-sandbox]] — 凭据不进沙箱：四个平台的出口注入，网关认证书不认请求头、授权通过后才取凭据、令牌只在控制面与网关之间流转
+- [[ai-gateway]] — AI 流量网关：按调用方分 agent 网关 / 模型网关 / 出站网关三套部署，和 LLM proxy 按"会话身份在哪一跳认出来"分工，token 限流在响应后结算，MCP 聚合一个目标失败拖垮整个入口
+- [[relationship-based-access-control]] — 关系型授权（ReBAC）：有效权限 = 申请 ∧ 批准 ∧ 发布，与 RBAC / 策略引擎的分工，查询缓存让撤销延迟一个 TTL，条件缺参数返回错误要当拒绝，模型不可变的升级顺序
 - [[durable-execution]] — 持久执行：先写意图再执行，结果不确定按副作用分流（整轮重发 vs 等原快照），高可用比的是少重做
 - [[actor-snapshot-scheduling]] — actor 与执行单元分离：空闲快照换出、按同时在忙的实例数备执行单元；快照范围决定恢复后剩什么
 - [[agent-paradigms]] — Agent 经典三范式：ReAct / Plan-and-Solve / Reflection

@@ -1,7 +1,7 @@
 ---
 title: "Agent Sandbox"
 created: "2026-11-04"
-updated: "2026-11-14"
+updated: "2026-11-15"
 tags:
   - wiki
   - concept
@@ -20,6 +20,8 @@ related:
   - "[[credential-out-of-sandbox]]"
   - "[[actor-snapshot-scheduling]]"
   - "[[agent-session-control-plane]]"
+  - "[[relationship-based-access-control]]"
+  - "[[ai-gateway]]"
 ---
 
 # Agent Sandbox（Agent 沙箱）
@@ -160,7 +162,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 - **置信度**：0.75
 - **状态**：active
 
-> 三份声明由不同的人写，各自投影成 OpenFGA 里一条关系，没有人直接写"有权限"。资源动作对象是"资源 UID + 确切动作"，动作是不透明字符串（`git.read` 不蕴含 `git.write`、无通配符）；主体与对象用 Kubernetes UID 而非名字，删了重建同名对象不继承授权。意外结果：应用申请了一个未批准的动作时，运行中的会话照常、只拒那一个动作，但**新会话整个建不了**，接口只返回笼统 503，要看应用状态才知道缺批准（"整份申请一起算"是从现象推断）；owner 补批准后运行中会话 5 秒内可用。所以加新权限先让 owner 批准，再在应用里加申请。`permission-intersection` 暂不单独建页（HOLD）。
+> 三份声明由不同的人写，各自投影成 OpenFGA 里一条关系，没有人直接写"有权限"。资源动作对象是"资源 UID + 确切动作"，动作是不透明字符串（`git.read` 不蕴含 `git.write`、无通配符）；主体与对象用 Kubernetes UID 而非名字，删了重建同名对象不继承授权。意外结果：应用申请了一个未批准的动作时，运行中的会话照常、只拒那一个动作，但**新会话整个建不了**，接口只返回笼统 503，要看应用状态才知道缺批准（"整份申请一起算"是从现象推断）；owner 补批准后运行中会话 5 秒内可用。所以加新权限先让 owner 批准，再在应用里加申请。`permission-intersection` 暂不单独建页（HOLD）。 已归口 [[relationship-based-access-control]]，模型、缓存与撤销、条件、版本的实测见该页。
 
 ### Claim: 撤销分两层生效、只挡之后的请求——授权层约 1.2 秒开始 403，网络层在 provider 下已无任何批准动作时约 3 秒移出白名单；放行中的请求不打断，做过的事撤不回
 
@@ -202,16 +204,59 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 > Agent Substrate 的 actor / worker 与 OpenSandbox Durable 会话是两个独立实现：空闲时快照释放执行单元、请求来了恢复到任意空闲单元，要准备的单元数取决于同时在忙的实例数。2026-11-14 升格为独立概念页，快照范围、耗时、恢复语义全部归口 [[actor-snapshot-scheduling]]，本条只保留结论。
 
+### Claim: 执行平面里再分三层——隔离、编排、访问；agent-sandbox 与 OpenSandbox 在编排层同类，OpenSandbox 多一层访问层并能架在 agent-sandbox 上，共三种用法
+
+- **来源**：[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.8
+- **状态**：active
+
+> 隔离层是 Kata（Pod 跑在独立 VM 里）；编排层管沙箱何时建、给谁、何时暂停删除（agent-sandbox 的 Sandbox / WarmPool / Claim，OpenSandbox 的 BatchSandbox / Pool）；访问层是生命周期 API 加沙箱内执行命令、读写文件的接口（OpenSandbox 的 lifecycle server + execd；agent-sandbox 的 SDK 对接尚早期的 sandboxd，常见做法是镜像自带 envd 或自写守护进程）。三种用法：只用 agent-sandbox（agent 是常驻服务时 router 转发 HTTP 即可，不要访问层）、只用 OpenSandbox、OpenSandbox 的 workload_provider 设为 agent-sandbox（直接建核心 Sandbox，要补 RBAC 与带 toleration 的模板；丢掉 WarmPool、模板生成的网络策略和 rootfs 快照）。参考实现生产走叠加、测试因快照只能从 BatchSandbox 生成而退回只用 OpenSandbox。AKS 实测。
+
+### Claim: 池化沙箱不套用服务端的隔离运行时配置——Pool 模板漏写 runtimeClassName 就静默跑成 runc，且宽松 toleration 会让它混跑在 Kata 节点上
+
+- **来源**：[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.85
+- **状态**：active
+
+> OpenSandbox 的 server 配了 secure_runtime=kata，但 Pool 的 Pod 是提前建好的，server 改不了它；故意不写 runtimeClassName 的池领出来的沙箱 uname -r 是宿主内核，全程无报错；Pool 模板 toleration 写 operator: Exists，这些 runc Pod 被调度到 Kata 节点与真沙箱混跑。对策：每个 Pool 显式写 runtimeClassName，上线前在领到的沙箱里对比内核，或用 Kyverno / Gatekeeper 在准入时拒绝。AKS 实测。
+
+### Claim: agent-sandbox 的默认值与领取代价——池里有货 2.7 秒、被领空或 Claim 带 env 就冷启动 23~30 秒；默认网络策略封内网段与 169.254 但连带解析不了集群服务
+
+- **来源**：[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.8
+- **状态**：active
+
+> 预热池 2 个沙箱 28 秒备好（含拉镜像与挂 Azure Disk）。Claim 不等补货、自己现建（29.7 秒）；env 要在 Pod 创建前写入，带 env 的 Claim 一律冷启动（23.4 秒，池里明明有现成的）。controller 生成 Pod 时不挂 SA token、建 headless Service、按模板生成共享 NetworkPolicy（入站只放 router，出站放公网封 10/8、172.16/12、192.168/16、169.254/16），并把 DNS 改为公网解析——集群内网关地址因此用不了，需改 Unmanaged 自写。API server 的 Service 后端是公网地址，网络上可达返回 401，挡住它的是"不挂 SA token"。删 Claim 连带删 Sandbox 与 PVC；shutdownTime + Delete 到期 4 秒内清理。AKS 实测。
+
+### Claim: 暂停语义两种——agent-sandbox 的 Suspended 只留 PVC、OpenSandbox 的快照保留整个 rootfs；预热池补货与暂停恢复抢同一份 Kata 容量
+
+- **来源**：[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.8
+- **状态**：active
+
+> agent-sandbox：operatingMode 改 Suspended 删 Pod 留 PVC（8 秒），改回 Running 重挂 Azure Disk（11 秒），PVC 文件在、/tmp 没了、新 VM、主机名不变、Pod IP 变。OpenSandbox：commit Job 把 rootfs 推镜像仓库（7~11 秒），恢复约 5 秒，/workspace 与 /tmp 都在。叠加模式下暂停变 Suspended，不再存 rootfs。第一次恢复 OpenSandbox 沙箱时 Pod 一直 Pending——暂停腾出的 CPU 被两边预热池补货占走，Kata 节点 CPU 请求到 96%，删掉别的池后才恢复。要跨暂停保留 harness 原生会话文件，用 agent-sandbox 就得放进 PVC。AKS 实测。
+
 ## 冲突与演进
 
 - `host-mediated-sandbox`（2026-10-29 HOLD）在本批出现两个非 Microsoft 低代码平台的同类实现，2026-11-04 复核后泛化为"凭据不进沙箱、出口注入"并入本页第五条 Claim，未单独建页。
 - `actor-snapshot-scheduling` 单一项目来源，作为本页最后一条 Claim 收入（HOLD），等第二个实现出现再评估。
 - 2026-11-14：AKS Agent Runtime 系列 01~09 注入。① `credential-out-of-sandbox` 与 `actor-snapshot-scheduling` 阈值满足、用户裁决升格独立页，本页两条 Claim 精简为指向；② 原「受信的 agent loop 走轻粒度」（0.65）与"多租户平台上 harness 也不可信"存在范围张力——前者默认 loop 受信，后者针对多租户编码 harness。不改写原条结论，给原条加适用范围，并另立一条（0.75，一个参考实现实测）；③ 新增沙箱与出站治理六条（卡住而非泄露、底线验证、权限交集、撤销两层、静态路由只读、模型按部署名授权）。
+- 2026-11-15：本轮 /extract-knowledge 收入 AKS Agent Runtime 系列补充篇与 03 / 05 / 07 / 10 / 11 的改动：新增执行平面三层与三种用法、池化不套隔离配置、agent-sandbox 默认值与领取代价、两种暂停语义四条 Claim；三方交集归口新建的 [[relationship-based-access-control]]。
 
 ## 关联概念
 
 - [[agent-infra-three-layers]] — `part-of` Runtime 层的隔离原语与沙箱编排子层
 - [[copilot-managed-runtime]] — `contrasts` 同为"沙箱只有一个受控出口"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据
+- [[relationship-based-access-control]] — `constrains` 沙箱能对外做什么以三方交集为准
+- [[ai-gateway]] — `uses` 出站只剩一条路，路上的判断在网关
 
 ## 来源日记
 
@@ -224,3 +269,4 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 - [[AKS-Agent-Runtime系列04：出站治理与逐请求授权]] — 权限交集、撤销两层、静态路由只读
 - [[AKS-Agent-Runtime系列08：模型接入层]] — 模型请求按部署名授权
 - [[GitHub-Copilot系列01：产品全景与竞争格局]] — 产品侧实例：Copilot session 默认跑在 GitHub 托管的隔离 micro-VM 云沙箱，关闭时存快照、可跨入口恢复
+- [[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]] — 两个后端在 AKS 上的实测与三种组合

@@ -1,7 +1,7 @@
 ---
 title: "Agent Infrastructure Three Layers"
 created: "2026-11-04"
-updated: "2026-11-14"
+updated: "2026-11-15"
 tags:
   - wiki
   - concept
@@ -133,10 +133,21 @@ related:
 
 > 统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定"配置和权限"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。
 
+### Claim: Kubernetes 原生机制守底线、L7 组件做判断——RBAC 只在 API server 上看主体与动词、NetworkPolicy 只认 IP 与端口；会话、终端用户、资源动作、模型和不可信的决策要另外补，社区组件提供底座、agent 语义这一层要自己写
+
+- **来源**：[[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.75
+- **状态**：active
+
+> 底线：NetworkPolicy 让出站只剩一条路（到网关）、RBAC 让沙箱 SA 无权限而控制面只拿必要权限、RuntimeClass 强制 Kata、ResourceQuota 限容量。判断：网关、授权决策点、控制面。router 鉴权的例子：Kubernetes 鉴权管不到 router 的数据路径（不经 API server）；pods/proxy 让 API server 变数据通道且只能按 Pod 名授权；TokenReview 只认证不授权；每沙箱一组 RoleBinding 变动太频繁——实际做法是只让控制面能进沙箱，用户鉴权放会话 API。按层看：隔离与沙箱编排开源和 AKS 覆盖较好；会话控制面（Dapr / Temporal / Service Bus / PostgreSQL 只是底座）与授权模型（OpenFGA / SPIFFE / Entra 只是底座）是最重的自研。复用时 sidecar 与不可信代码同在一个 VM，判断与凭据要放 Pod 外；Dapr 宜放控制面不进沙箱；这些组件的身份粒度是工作负载不是会话，Pod → 会话映射要自己写。
+
 ## 冲突与演进
 
 - 与 [[harness-engineering]] 中"Harness 面向 model、Agent Runtime 面向 infra，runtime 是同心圆外侧的正交承载层"一致，本页把"正交承载层"展开成四个子层并加上 Platform 层。
 - `durable-execution`（持久执行）与 `actor-snapshot-scheduling`（actor 与执行单元分离）两个候选未单独建页（2026-11-04 裁决，见 LOOP_STATE HOLD 区），分别收在本页第三条 Claim 与 [[agent-sandbox]] 中。**2026-11-14**：两者阈值均被 AKS Agent Runtime 系列命中，用户裁决分别建页 [[durable-execution]]、[[actor-snapshot-scheduling]]；同批新建会话平面的归口页 [[agent-session-control-plane]]，本页新增三平面、授权开销、revision 三条 Claim。
+- 2026-11-15：本轮 /extract-knowledge 收入 AKS Agent Runtime 系列补充篇与 03 / 05 / 07 / 10 / 11 的改动：新增"原生机制守底线、L7 组件做判断"一条，与三个平面那条 Claim 互补。
 
 ## 关联概念
 
@@ -157,3 +168,5 @@ related:
 - [[AKS-Agent-Runtime系列04：出站治理与逐请求授权]] / [[AKS-Agent-Runtime系列08：模型接入层]] — 授权开销与突发
 - [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — Agent CRD、revision、OCI skills 包
 - [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — 系列总结
+- [[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]] — 原生机制能看到什么、社区底座与自研的边界
+- [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — 八层技术栈

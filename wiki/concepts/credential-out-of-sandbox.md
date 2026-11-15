@@ -1,7 +1,7 @@
 ---
 title: "Credential Out of Sandbox"
 created: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-15"
 tags:
   - wiki
   - concept
@@ -21,6 +21,8 @@ related:
   - "[[copilot-managed-runtime]]"
   - "[[agent-session-control-plane]]"
   - "[[entra-agent-id]]"
+  - "[[ai-gateway]]"
+  - "[[relationship-based-access-control]]"
 ---
 
 # Credential Out of Sandbox（凭据不进沙箱）
@@ -83,17 +85,30 @@ related:
 
 > 拓扑 B（自写可信 loop 在外，按需调沙箱执行 API）适合一个 loop 驱动多个沙箱、或流程比单个沙箱活得久的场景，但 loop 读完一段被污染的输出，会用自己的高权限去执行——低权限的不可信输入借高权限主体之手。所以凭据不进沙箱这条规矩不只针对沙箱，也针对沙箱外任何读不可信内容的组件：loop 本身不存长期凭据。系列 04 的实现也贯彻了这一点（身份只从证书取、动作由路由定、代理看不到内容），只是没有点名。`confused-deputy` 作为原子安全概念暂不单独建页（HOLD）。
 
+### Claim: 出口限制要有兜底——请求级的出站策略漏带一次就等于没有；沙箱命名空间要有一条封 169.254.0.0/16 的兜底策略，或在节点上限制元数据访问
+
+- **来源**：[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]、[[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.8
+- **状态**：active
+
+> OpenSandbox 只有建沙箱时带了出站策略才加 egress 边车（按域名放行、NET_ADMIN 只给边车），不带就完全不受限，连节点元数据地址都可达；叠加到 agent-sandbox 时绕过了模板，模板生成的网络策略也一并没有。agent-sandbox 默认模板封了 169.254/16，但改成 Unmanaged 自写策略后要自己记得封。兜底：命名空间级 NetworkPolicy，或 AKS 的 IMDS restriction（预览，挡住所有非 hostNetwork Pod，开启后要重做节点镜像）；快照镜像不要和业务镜像放在节点身份能拉的同一个注册表。AKS 实测。
+
 ## 冲突与演进
 
 - 2026-10-29：`host-mediated-sandbox` 因三处来源同一产品 HOLD，作 [[copilot-managed-runtime]] Claim 收入。
 - 2026-11-04：Agent 基础设施系列 02/03 出现两个非 Microsoft 低代码平台的同类实现，泛化为 `credential-out-of-sandbox`，作 [[agent-sandbox]] Claim 收入（0.75），仍不建页。
 - 2026-11-14：两条复核阈值都满足——AKS Agent Runtime 系列 02 是第四个平台实现，系列 04 是专讲凭据代理与出口注入的实测文章。用户裁决建页，[[agent-sandbox]] 原 Claim 精简为指向本页，置信度 0.75 → 0.85。
+- 2026-11-15：本轮 /extract-knowledge 收入 AKS Agent Runtime 系列补充篇与 03 / 05 / 07 / 10 / 11 的改动：新增"出口限制要有兜底"一条；出站网关的角色划分归口 [[ai-gateway]]，授权判断归口 [[relationship-based-access-control]]。
 
 ## 关联概念
 
 - [[agent-sandbox]] — `part-of` 沙箱三件事中"门怎么管"一件的核心做法
 - [[copilot-managed-runtime]] — `contrasts` 同为"沙箱只有一个受控出口"，那边是浏览器宿主中介（iframe + CSP + JSON-RPC），这边以 egress 代理注入凭据为主
 - [[entra-agent-id]] — `uses` 下游身份是平台、用户还是 agent 自己，由令牌服务按会话换取
+- [[ai-gateway]] — `part-of` 出站网关是 AI 网关三种角色之一
+- [[relationship-based-access-control]] — `uses` "授权通过"由关系判断给出
 
 ## 来源日记
 
@@ -103,3 +118,5 @@ related:
 - [[AKS-Agent-Runtime系列09：Agent以谁的身份行事]] — 令牌服务与凭据代理的接法
 - [[Agent基础设施系列02：Kubernetes上的Agent沙箱]] — OpenSandbox Credential Vault
 - [[Agent基础设施系列03：kagent与Agent-Substrate]] — Agent Substrate 沙箱外注入
+- [[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]] — OpenSandbox 不带策略时出站不受限
+- [[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]] — 兜底在命名空间策略与节点元数据限制

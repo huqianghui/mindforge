@@ -1,7 +1,7 @@
 ---
 title: "Agent Session Control Plane"
 created: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-15"
 tags:
   - wiki
   - concept
@@ -22,6 +22,8 @@ related:
   - "[[reconciliation-loop]]"
   - "[[actor-snapshot-scheduling]]"
   - "[[credential-out-of-sandbox]]"
+  - "[[ai-gateway]]"
+  - "[[relationship-based-access-control]]"
 ---
 
 # Agent Session Control Plane（Agent 会话控制面）
@@ -124,11 +126,52 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 
 > fencing token：lease 每被抢一次递增，写结果时带条件校验，旧主醒来后写入被拒。实测让持有者在主线程阻塞 45 秒（PID 1 收不到 SIGSTOP，改用 SIGUSR1）：新主 30 多秒后以 token=2 重做第一轮，旧主解冻后接着执行，两边同时跑第一轮重叠 11 秒多。fencing 开：旧主带 token=1 写入被拒，三轮各写一次；fencing 关：旧主在新主开始第二轮后又写一次第一轮，重复且乱序，随后确认消息才收到 `SessionLockLostError`——队列知道它丢了锁，但副作用已发生。真实 agent 的副作用（推代码、建 PR、回 Teams、调内部 API）几乎不经过控制面数据库，若沙箱里直接 `git push` 两边都会推。统一校验点只能是出站网关与授权决策点（见 [[credential-out-of-sandbox]]）：本来就核对"Pod 是否绑定在准备好的会话上"，再加一条"绑定是不是当前 token"；换主后沙箱重新绑定，旧主驱动的执行流在网关被拒。网关校验部分是设计推论，未实现。`fencing-token` 作为原子概念暂不单独建页（HOLD）。
 
+### Claim: 控制面和沙箱后端之间只约定一个 provider 接口——必选分配与执行一轮，可选 checkpoint / 暂停 / 恢复 / 重建 / 中止 / 改出站权限，每个操作带持久操作 ID 可重放；后端可换，harness 适配留在控制面
+
+- **来源**：[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.75
+- **状态**：active
+
+> 必选：解析运行时、分配沙箱（镜像或预热池）、检查沙箱、在沙箱里执行一轮。参考实现启动时二选一、配置互斥：直接调 OpenSandbox（lifecycle server + execd），或以一个租户身份经一层安全沙箱 API（多租户归属、逐沙箱出入站策略下发到 Pod 内 Envoy / 策略 DNS / 出站网关、包过滤规则强制流量走边车且策略生效前一律拒绝、工作负载身份），后者内部仍是 OpenSandbox。两种接法各有一整套五种 CLI 的适配器，后端不认识 harness。来自对两套实现的阅读。
+
+### Claim: 用户调用的是应用定义而不是编码 CLI——平台把会话 API 同时包成 MCP 工具，因为沙箱里的 harness 本身是 MCP 客户端；参考实现不走 A2A
+
+- **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.75
+- **状态**：active
+
+> 应用定义写五件事：运行时类（镜像或预热池并钉死 harness，作者不能换）、工作区文件、入口（会话 API / 定时 / Teams 绑定 / CI 模板）、资源动作申请、默认模型。调用分三层：用户调应用、控制面驱动每一轮、沙箱里跑的才是 CLI。会话 API 的工具面是建会话、投递 prompt（返回 turn ID 不等结果）、读更新、读条目、中止；agent 调 agent 走委托服务建子会话。没有 A2A 卡片，调用方按命名空间 + 应用名直接打会话 API——也就没有独立的 agent 网关（见 [[ai-gateway]]）。来自对参考实现的阅读。
+
+### Claim: 会话的数据模型全部要自己设计——会话绑定、消息与轮次、带序号的更新流、状态机与副作用三态、回收墓碑、渠道映射；消息层可以建在状态库里，也可以交给外部会话队列
+
+- **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]、[[AKS-Agent-Runtime系列06：会话管理与高可用]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.75
+- **状态**：active
+
+> 参考实现的状态库（SQLite）里几十张表：会话 ↔ 应用 revision ↔ 沙箱 ID ↔ 第几代沙箱；收件箱（带序号）、每轮条目、带来源事件指纹的更新流、遥测；会话状态 + 版本 + 下次唤醒时间与变更日志；副作用意图记"待执行 / 可能已发出 / 已完成"三态，重启后核对"可能已发出"；回收墓碑、待清理 checkpoint；Teams 线程与定时任务映射，各带领取令牌防同一外部消息处理两次。消息层两种：收件箱在状态库（单调度者、重启有空窗）；或 Service Bus 会话队列（按 session_id 分组、按序、只给一个副本，配合数据库 lease）。元数据（应用定义、运行时类、批准）声明式存 etcd，controller 解析成不可变 revision，不在热路径上。Kubernetes、AKS、社区项目都只提供到"沙箱"为止。
+
+### Claim: harness 弹出的确认不转发到渠道——先分清是 harness 自带的交互提示（配置关掉）还是真缺能力（授能力后重跑），再用权限档位、计划阶段一次性审批、预检和带检查点的失败把权限问题挪到执行前
+
+- **来源**：[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-15
+- **置信度**：0.6
+- **状态**：active
+
+> 不转发的原因：卡着等人时沙箱、凭证、会话空耗，人可能几小时后才回；渠道那头看不到工作区无从判断；沙箱内容不可信，原样转发 harness 提示等于让注入内容借 agent 之口向真人要批准。做法：按任务类型配权限档位；超出档位先只读跑一轮产出计划与所需能力清单，控制面按结构化动作生成审批消息、批准人鉴权留审计、人只确认一次；启动前预检凭证与出口；失败时返回结构化的缺失能力并照常保存快照，同一权限原因不自动重试、按原因汇总反调档位。设计推论，未实测。
+
 ## 冲突与演进
 
 - 2026-11-14：建页。候选 `agent-runtime-session-plane` 自 2026-11-09 harvest 提出，阈值"系列 05 成文"于 11-12 满足，11-13 系列 06 补齐多副本；用户裁决建页，slug 定为 `agent-session-control-plane`。同批次 `durable-execution`、`reconciliation-loop`、`actor-snapshot-scheduling`、`credential-out-of-sandbox` 四个 HOLD 解除并各自建页，本页只保留会话层自身的论断，故障语义、回收、快照、出站凭据分别归口。
 - `fencing-token`、`agent-runtime-three-planes` 未单独建页（HOLD），前者作本页 Claim，后者作 [[agent-infra-three-layers]] Claim。
 - 来源全部是同一系列对一个参考实现的阅读、部署与补充实验，单环境测量，数字（16 秒整轮、15/33 秒接管）只在该环境成立。
+- 2026-11-15：本轮 /extract-knowledge 收入 AKS Agent Runtime 系列补充篇与 03 / 05 / 07 / 10 / 11 的改动：新增 provider 接口、应用定义与 MCP 工具面、会话数据模型与两种消息层、确认不转发渠道四条 Claim（最后一条为设计推论，0.6）。
 
 ## 关联概念
 
@@ -140,6 +183,7 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 - [[credential-out-of-sandbox]] — `uses` 治理平面的出站网关是 fencing token 唯一能统一校验的位置
 - [[harness-portability-spectrum]] — `uses` 一个控制面经适配器托管多种 harness，正是 harness 与 runtime 不绑死的实例
 - [[meta-harness]] — `contrasts` 同称"harness 之外的一层"，meta-harness 是优化 harness 的离线外层搜索，本页是运行时驱动 harness 的平台层
+- [[ai-gateway]] — `uses` 会话身份在网关一跳被回查；参考实现没有独立的 agent 网关
 
 ## 来源日记
 
@@ -151,3 +195,5 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 - [[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]] — 四层归属、一轮八步、适配器、单向控制通道、最小控制面
 - [[AKS-Agent-Runtime系列05：会话生命周期与回收]] — Ephemeral / Durable 两种会话
 - [[AKS-Agent-Runtime系列06：会话管理与高可用]] — 会话队列 + lease / fencing、接管时长、abandon 坑
+- [[AKS-Agent-Runtime系列00：导读]] — 系列术语与全景
+- [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — 应用定义与调用三层
