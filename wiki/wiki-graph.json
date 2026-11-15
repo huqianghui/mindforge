@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-15",
+  "generated_at": "2026-11-16",
   "stats": {
-    "nodes": 163,
-    "links": 584,
+    "nodes": 165,
+    "links": 599,
     "orphan_links_removed": 2,
-    "claims": 948,
+    "claims": 970,
     "categories": 13
   },
   "nodes": [
@@ -487,7 +487,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
+      "claims_count": 11,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -597,6 +597,17 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定\"配置和权限\"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Kubernetes 原生机制守底线、L7 组件做判断——RBAC 只在 API server 上看主体与动词、NetworkPolicy 只认 IP 与端口；会话、终端用户、资源动作、模型和不可信的决策要另外补，社区组件提供底座、agent 语义这一层要自己写",
+          "source": "AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "底线：NetworkPolicy 让出站只剩一条路（到网关）、RBAC 让沙箱 SA 无权限而控制面只拿必要权限、RuntimeClass 强制 Kata、ResourceQuota 限容量。判断：网关、授权决策点、控制面。router 鉴权的例子：Kubernetes 鉴权管不到 router 的数据路径（不经 API server）；pods/proxy 让 API server 变数据通道且只能按 Pod 名授权；TokenReview 只认证不授权；每沙箱一组 RoleBinding 变动太频繁——实际做法是只让控制面能进沙箱，用户鉴权放会话 API。按层看：隔离与沙箱编排开源和 AKS 覆盖较好；会话控制面（Dapr / Temporal / Service Bus / PostgreSQL 只是底座）与授权模型（OpenFGA / SPIFFE / Entra 只是底座）是最重的自研。复用时 sidecar 与不可信代码同在一个 VM，判断与凭据要放 Pod 外；Dapr 宜放控制面不进沙箱；这些组件的身份粒度是工作负载不是会话，Pod → 会话映射要自己写。",
           "evidence_type": "",
           "review": ""
         }
@@ -1021,8 +1032,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 17,
-      "avg_confidence": 0.75,
+      "claims_count": 21,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "沙箱拆成三件事——隔离原语、环境的分配与回收、出站与凭据；Kata 与 agent-sandbox / OpenSandbox 是上下两层，只靠 runtimeClassName 衔接",
@@ -1163,7 +1174,7 @@
           "last_updated": "2026-11-14",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "三份声明由不同的人写，各自投影成 OpenFGA 里一条关系，没有人直接写\"有权限\"。资源动作对象是\"资源 UID + 确切动作\"，动作是不透明字符串（`git.read` 不蕴含 `git.write`、无通配符）；主体与对象用 Kubernetes UID 而非名字，删了重建同名对象不继承授权。意外结果：应用申请了一个未批准的动作时，运行中的会话照常、只拒那一个动作，但**新会话整个建不了**，接口只返回笼统 503，要看应用状态才知道缺批准（\"整份申请一起算\"是从现象推断）；owner 补批准后运行中会话 5 秒内可用。所以加新权限先让 owner 批准，再在应用里加申请。`permission-intersection` 暂不单独建页（HOLD）。",
+          "evidence": "三份声明由不同的人写，各自投影成 OpenFGA 里一条关系，没有人直接写\"有权限\"。资源动作对象是\"资源 UID + 确切动作\"，动作是不透明字符串（`git.read` 不蕴含 `git.write`、无通配符）；主体与对象用 Kubernetes UID 而非名字，删了重建同名对象不继承授权。意外结果：应用申请了一个未批准的动作时，运行中的会话照常、只拒那一个动作，但**新会话整个建不了**，接口只返回笼统 503，要看应用状态才知道缺批准（\"整份申请一起算\"是从现象推断）；owner 补批准后运行中会话 5 秒内可用。所以加新权限先让 owner 批准，再在应用里加申请。`permission-intersection` 暂不单独建页（HOLD）。 已归口 [[relationship-based-access-control]]，模型、缓存与撤销、条件、版本的实测见该页。",
           "evidence_type": "",
           "review": ""
         },
@@ -1208,6 +1219,50 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "Agent Substrate 的 actor / worker 与 OpenSandbox Durable 会话是两个独立实现：空闲时快照释放执行单元、请求来了恢复到任意空闲单元，要准备的单元数取决于同时在忙的实例数。2026-11-14 升格为独立概念页，快照范围、耗时、恢复语义全部归口 [[actor-snapshot-scheduling]]，本条只保留结论。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "执行平面里再分三层——隔离、编排、访问；agent-sandbox 与 OpenSandbox 在编排层同类，OpenSandbox 多一层访问层并能架在 agent-sandbox 上，共三种用法",
+          "source": "AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "隔离层是 Kata（Pod 跑在独立 VM 里）；编排层管沙箱何时建、给谁、何时暂停删除（agent-sandbox 的 Sandbox / WarmPool / Claim，OpenSandbox 的 BatchSandbox / Pool）；访问层是生命周期 API 加沙箱内执行命令、读写文件的接口（OpenSandbox 的 lifecycle server + execd；agent-sandbox 的 SDK 对接尚早期的 sandboxd，常见做法是镜像自带 envd 或自写守护进程）。三种用法：只用 agent-sandbox（agent 是常驻服务时 router 转发 HTTP 即可，不要访问层）、只用 OpenSandbox、OpenSandbox 的 workload_provider 设为 agent-sandbox（直接建核心 Sandbox，要补 RBAC 与带 toleration 的模板；丢掉 WarmPool、模板生成的网络策略和 rootfs 快照）。参考实现生产走叠加、测试因快照只能从 BatchSandbox 生成而退回只用 OpenSandbox。AKS 实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "池化沙箱不套用服务端的隔离运行时配置——Pool 模板漏写 runtimeClassName 就静默跑成 runc，且宽松 toleration 会让它混跑在 Kata 节点上",
+          "source": "AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "OpenSandbox 的 server 配了 secure_runtime=kata，但 Pool 的 Pod 是提前建好的，server 改不了它；故意不写 runtimeClassName 的池领出来的沙箱 uname -r 是宿主内核，全程无报错；Pool 模板 toleration 写 operator: Exists，这些 runc Pod 被调度到 Kata 节点与真沙箱混跑。对策：每个 Pool 显式写 runtimeClassName，上线前在领到的沙箱里对比内核，或用 Kyverno / Gatekeeper 在准入时拒绝。AKS 实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "agent-sandbox 的默认值与领取代价——池里有货 2.7 秒、被领空或 Claim 带 env 就冷启动 23~30 秒；默认网络策略封内网段与 169.254 但连带解析不了集群服务",
+          "source": "AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "预热池 2 个沙箱 28 秒备好（含拉镜像与挂 Azure Disk）。Claim 不等补货、自己现建（29.7 秒）；env 要在 Pod 创建前写入，带 env 的 Claim 一律冷启动（23.4 秒，池里明明有现成的）。controller 生成 Pod 时不挂 SA token、建 headless Service、按模板生成共享 NetworkPolicy（入站只放 router，出站放公网封 10/8、172.16/12、192.168/16、169.254/16），并把 DNS 改为公网解析——集群内网关地址因此用不了，需改 Unmanaged 自写。API server 的 Service 后端是公网地址，网络上可达返回 401，挡住它的是\"不挂 SA token\"。删 Claim 连带删 Sandbox 与 PVC；shutdownTime + Delete 到期 4 秒内清理。AKS 实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "暂停语义两种——agent-sandbox 的 Suspended 只留 PVC、OpenSandbox 的快照保留整个 rootfs；预热池补货与暂停恢复抢同一份 Kata 容量",
+          "source": "AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "agent-sandbox：operatingMode 改 Suspended 删 Pod 留 PVC（8 秒），改回 Running 重挂 Azure Disk（11 秒），PVC 文件在、/tmp 没了、新 VM、主机名不变、Pod IP 变。OpenSandbox：commit Job 把 rootfs 推镜像仓库（7~11 秒），恢复约 5 秒，/workspace 与 /tmp 都在。叠加模式下暂停变 Suspended，不再存 rootfs。第一次恢复 OpenSandbox 沙箱时 Pod 一直 Pending——暂停腾出的 CPU 被两边预热池补货占走，Kata 节点 CPU 请求到 96%，删掉别的池后才恢复。要跨暂停保留 harness 原生会话文件，用 agent-sandbox 就得放进 PVC。AKS 实测。",
           "evidence_type": "",
           "review": ""
         }
@@ -1284,8 +1339,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.76,
+      "claims_count": 13,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "调用的单位是会话、结果是流式产出且先在沙箱外落库、回收归会话层而不是沙箱 TTL——这是 agent 调用与普通 API 调用的三处根本差别",
@@ -1385,6 +1440,50 @@
           "evidence": "fencing token：lease 每被抢一次递增，写结果时带条件校验，旧主醒来后写入被拒。实测让持有者在主线程阻塞 45 秒（PID 1 收不到 SIGSTOP，改用 SIGUSR1）：新主 30 多秒后以 token=2 重做第一轮，旧主解冻后接着执行，两边同时跑第一轮重叠 11 秒多。fencing 开：旧主带 token=1 写入被拒，三轮各写一次；fencing 关：旧主在新主开始第二轮后又写一次第一轮，重复且乱序，随后确认消息才收到 `SessionLockLostError`——队列知道它丢了锁，但副作用已发生。真实 agent 的副作用（推代码、建 PR、回 Teams、调内部 API）几乎不经过控制面数据库，若沙箱里直接 `git push` 两边都会推。统一校验点只能是出站网关与授权决策点（见 [[credential-out-of-sandbox]]）：本来就核对\"Pod 是否绑定在准备好的会话上\"，再加一条\"绑定是不是当前 token\"；换主后沙箱重新绑定，旧主驱动的执行流在网关被拒。网关校验部分是设计推论，未实现。`fencing-token` 作为原子概念暂不单独建页（HOLD）。",
           "evidence_type": "",
           "review": ""
+        },
+        {
+          "statement": "控制面和沙箱后端之间只约定一个 provider 接口——必选分配与执行一轮，可选 checkpoint / 暂停 / 恢复 / 重建 / 中止 / 改出站权限，每个操作带持久操作 ID 可重放；后端可换，harness 适配留在控制面",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "必选：解析运行时、分配沙箱（镜像或预热池）、检查沙箱、在沙箱里执行一轮。参考实现启动时二选一、配置互斥：直接调 OpenSandbox（lifecycle server + execd），或以一个租户身份经一层安全沙箱 API（多租户归属、逐沙箱出入站策略下发到 Pod 内 Envoy / 策略 DNS / 出站网关、包过滤规则强制流量走边车且策略生效前一律拒绝、工作负载身份），后者内部仍是 OpenSandbox。两种接法各有一整套五种 CLI 的适配器，后端不认识 harness。来自对两套实现的阅读。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "用户调用的是应用定义而不是编码 CLI——平台把会话 API 同时包成 MCP 工具，因为沙箱里的 harness 本身是 MCP 客户端；参考实现不走 A2A",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "应用定义写五件事：运行时类（镜像或预热池并钉死 harness，作者不能换）、工作区文件、入口（会话 API / 定时 / Teams 绑定 / CI 模板）、资源动作申请、默认模型。调用分三层：用户调应用、控制面驱动每一轮、沙箱里跑的才是 CLI。会话 API 的工具面是建会话、投递 prompt（返回 turn ID 不等结果）、读更新、读条目、中止；agent 调 agent 走委托服务建子会话。没有 A2A 卡片，调用方按命名空间 + 应用名直接打会话 API——也就没有独立的 agent 网关（见 [[ai-gateway]]）。来自对参考实现的阅读。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "会话的数据模型全部要自己设计——会话绑定、消息与轮次、带序号的更新流、状态机与副作用三态、回收墓碑、渠道映射；消息层可以建在状态库里，也可以交给外部会话队列",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "参考实现的状态库（SQLite）里几十张表：会话 ↔ 应用 revision ↔ 沙箱 ID ↔ 第几代沙箱；收件箱（带序号）、每轮条目、带来源事件指纹的更新流、遥测；会话状态 + 版本 + 下次唤醒时间与变更日志；副作用意图记\"待执行 / 可能已发出 / 已完成\"三态，重启后核对\"可能已发出\"；回收墓碑、待清理 checkpoint；Teams 线程与定时任务映射，各带领取令牌防同一外部消息处理两次。消息层两种：收件箱在状态库（单调度者、重启有空窗）；或 Service Bus 会话队列（按 session_id 分组、按序、只给一个副本，配合数据库 lease）。元数据（应用定义、运行时类、批准）声明式存 etcd，controller 解析成不可变 revision，不在热路径上。Kubernetes、AKS、社区项目都只提供到\"沙箱\"为止。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "harness 弹出的确认不转发到渠道——先分清是 harness 自带的交互提示（配置关掉）还是真缺能力（授能力后重跑），再用权限档位、计划阶段一次性审批、预检和带检查点的失败把权限问题挪到执行前",
+          "source": "AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "不转发的原因：卡着等人时沙箱、凭证、会话空耗，人可能几小时后才回；渠道那头看不到工作区无从判断；沙箱内容不可信，原样转发 harness 提示等于让注入内容借 agent 之口向真人要批准。做法：按任务类型配权限档位；超出档位先只读跑一轮产出计划与所需能力清单，控制面按结构化动作生成审批消息、批准人鉴权留审计、人只确认一次；启动前预检凭证与出口；失败时返回结构化的缺失能力并照常保存快照，同一权限原因不自动重试、按原因汇总反调档位。设计推论，未实测。",
+          "evidence_type": "",
+          "review": ""
         }
       ]
     },
@@ -1460,6 +1559,93 @@
           "evidence": "**现行结论（2026-11-07 修订）**：SKILL.md 已是跨平台开放标准（agentskills.io，2025-12 发布，多家主流 agent/IDE 采纳），『尚无广泛采纳证据』已过时  以下为原记录： Agent Zero 引入的 SKILL.md 标准值得关注——如果这种格式被多个框架采纳，可能出现 agent-native 的 package ecosystem（类似 npm/pip 之于编程语言）。目前仍是早期观察，尚无广泛采纳证据。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 修订——依据：SKILL.md 已成为 Anthropic 于 2025-12-18 发布的 Agent Skills 开放标准（agentskills.io），Microsoft/OpenAI/GitHub/Cursor 等已采纳：https://www.unite.ai/anthropic-opens-agent-skills-standard-continuing-its-pattern-of-building-industry-infrastructure ；https://strapi.io/blog/what-are-agent-skills-and-ho"
+        }
+      ]
+    },
+    {
+      "id": "ai-gateway",
+      "type": "concept",
+      "title": "AI Gateway",
+      "summary": "AI 网关是位于 agent、模型和外部工具之间、专门处理 AI 流量的数据面。和普通 API 网关相比，它要认识三类协议：模型调用（OpenAI / Anthropic / Responses 等格式）、工具调用（MCP，有状态、双向流）和 agent 之间的调用（A2A）。在 agent runtime 里，同一类组件按**调用方**分成三种角色：agent 网关（注册、发现与调用转发，面向渠道和其他 agent）、模型网关或 LLM proxy（模型路由、协议转换、按 token 限流，面向沙箱里的 harness）、出站网关（访问外部资源时的逐请求授权与凭据注入，面向沙箱里的 harness 和它生成的代码）。\n\n这个概念容易被产品名带偏：agentgateway 名字里带\"agent\"，实际三种角色都能做，参考实现只用了模型网关与出站网关；LiteLLM、APIM 的 AI 网关又以模型网关为主。判断该怎么部署，看的是\"会话身份在哪一跳能被认出来\"，而不是某个产品的功能清单。出站网关的凭据注入细节归口 [[credential-out-of-sandbox]]，网关背后的授权决策归口 [[relationship-based-access-control]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "gateway",
+        "llm-gateway"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.75,
+      "claims": [
+        {
+          "statement": "按调用方分三种角色——agent 网关、模型网关、出站网关的调用方、信任边界、授权模型、故障影响都不同，宜同一项目分三套部署",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "agent 网关面向渠道、其他 agent 和集群外系统：按 agent 名路由、代理 A2A 和 MCP、认证调用方、判断\"源 agent 能不能调目标的这个 skill\"，要接受外部令牌。模型网关面向沙箱里的 harness：认出 Pod 证书 → 会话 → 应用，按请求体模型名授权、协议转换、限流。出站网关面向 harness 和它生成的代码：只认 Pod 绑定证书、剥伪造头、授权后注入凭据。授权模型分别是 agent 间委托批准、模型白名单与配额、资源 + 动作三方交集；模型网关挂了只影响推理，出站网关挂了所有外部动作停。参考实现用 agentgateway 做了后两种（第 04、08 篇），没有独立的 agent 网关——调用方直接打会话 API。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "和 LLM proxy 的配合按\"会话身份在哪一跳能被认出来\"决定——前一跳管谁能调，后一跳管怎么调，两边不重复做协议转换和同层限流",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "三种组合：① 只用 AI 网关（一跳，会话身份与模型授权同处判断，但多提供方密钥、失败切换、按部门出账不如专门的 LLM proxy）；② AI 网关在前、LiteLLM / APIM 在后（前者核对 Pod 证书与会话、模型名、剥伪造头，后者选提供方与部署、失败切换、缓存、统管密钥、按团队计量；前者按会话限流，后者管组织配额）；③ 应用直走 LLM proxy、AI 网关只管 MCP、A2A 与出站——只适合模型调用不经沙箱的场景，沙箱里的 harness 这样做会断掉会话级授权和审计。设计推论，未做双跳实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "按 token 限流在响应后结算——跨过阈值的那次请求照样放行，挡住的是下一次；token 限流管平均速度，不是硬上限",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "本机实测 agentgateway：限额每分钟 400 token、每次请求 40~60 token，前几次放行，跨过阈值那次也放行，再下一次 429 带 retry-after。Kong 的 AI 限流插件、Envoy AI Gateway 的文档都写明同样的\"响应后扣减、作用于后续请求\"；APIM 的 token 限流策略可以选择在请求进来时预估 prompt token。要硬预算，就把 max_tokens 纳入策略，或在请求进来时先做预算检查。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "MCP 聚合有两面——多个 server 合成一个入口、按工具授权让 tools/list 只露出允许的；但任一目标起不来整个入口初始化失败",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "本机实测：两个 stdio MCP server 聚合成 22 个按目标名加前缀的工具（memory_*、everything_*），调用按前缀路由，约 10 毫秒；首次初始化 21.6 秒（npx 冷启动），之后约 3 秒。CEL 规则按 `mcp.tool.target` / `mcp.tool.name` 授权后，tools/list 只返回允许的 2 个，硬调未授权工具返回 HTTP 400。一个目标因依赖装不上没能启动时，客户端 initialize 直接 500，另一个正常的 server 也用不了——不相关的 MCP server 应拆到不同路由。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "A2A 代理改写卡片地址可能只改一半，外部令牌默认透传——用作 agent 网关时，卡片要从源头只写网关地址、外部令牌在网关终结",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "本机实测：经网关拉到的 Agent Card，A2A 1.x 的 supportedInterfaces[0].url 被改写为网关地址，旧版顶层 url 仍是 agent 直连地址，读旧字段的调用方会绕过网关；客户端 Authorization 头原样转给后端 agent。日志能识别 a2a.method 与调用结果，转发约 3 毫秒。单一实现、单一版本的观察。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "网关可以按出身分两类——从现有 API 网关加插件扩展（Kong、APIM、Higress、Envoy AI Gateway）与为 AI 流量新写（agentgateway、LiteLLM）；注册中心不在数据路径上",
+          "source": "AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "前一类沿用已有网关的运维、计费与门户，MCP / A2A 能力看版本与授权；后一类为 MCP、A2A 这类有状态双向流协议从头设计。Nacos 是注册中心，托管 AgentCard 与 MCP server 元数据，提供搜索、发现、订阅，请求不经过它——解决\"找得到\"，AI 网关解决\"调得通、管得住\"；阿里生态里与之配对的网关是 Higress。能力来自各项目文档，除 agentgateway 外未实测，版本间变化快。",
+          "evidence_type": "",
+          "review": ""
         }
       ]
     },
@@ -4087,8 +4273,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.76,
+      "claims_count": 6,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "四个独立平台的同一做法——沙箱只有一个受控出口，凭据由出口处的可信中介注入；机制可以是 egress 代理，也可以是浏览器宿主中介",
@@ -4142,6 +4328,17 @@
           "confidence": 0.7,
           "status": "active",
           "evidence": "拓扑 B（自写可信 loop 在外，按需调沙箱执行 API）适合一个 loop 驱动多个沙箱、或流程比单个沙箱活得久的场景，但 loop 读完一段被污染的输出，会用自己的高权限去执行——低权限的不可信输入借高权限主体之手。所以凭据不进沙箱这条规矩不只针对沙箱，也针对沙箱外任何读不可信内容的组件：loop 本身不存长期凭据。系列 04 的实现也贯彻了这一点（身份只从证书取、动作由路由定、代理看不到内容），只是没有点名。`confused-deputy` 作为原子安全概念暂不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "出口限制要有兜底——请求级的出站策略漏带一次就等于没有；沙箱命名空间要有一条封 169.254.0.0/16 的兜底策略，或在节点上限制元数据访问",
+          "source": "AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "OpenSandbox 只有建沙箱时带了出站策略才加 egress 边车（按域名放行、NET_ADMIN 只给边车），不带就完全不受限，连节点元数据地址都可达；叠加到 agent-sandbox 时绕过了模板，模板生成的网络策略也一并没有。agent-sandbox 默认模板封了 169.254/16，但改成 Unmanaged 自写策略后要自己记得封。兜底：命名空间级 NetworkPolicy，或 AKS 的 IMDS restriction（预览，挡住所有非 hostNetwork Pod，开启后要重做节点镜像）；快照镜像不要和业务镜像放在节点身份能拉的同一个注册表。AKS 实测。",
           "evidence_type": "",
           "review": ""
         }
@@ -9375,6 +9572,92 @@
       ]
     },
     {
+      "id": "relationship-based-access-control",
+      "type": "concept",
+      "title": "Relationship-Based Access Control",
+      "summary": "关系型授权回答的问题永远是同一种形式：某个主体和某个对象之间，某个关系成不成立。授权数据存成关系元组 `(user, relation, object)`，授权模型定义类型、关系以及关系之间怎么推导（并且、或者、从另一个对象继承），查询时现算。思路来自 Google 的 Zanzibar 论文，开源实现有 OpenFGA、SpiceDB。\n\n它在 agent runtime 里重要，是因为 agent 的有效权限天然是**多方关系**：应用申请了什么、资源 owner 批准了什么、平台发布了什么，三份声明由不同的人写、互不知道对方，权限是三者同时成立时算出来的。Kubernetes RBAC 只认集群 API 的主体和动词，写不出这种跨来源的\"并且\"；策略引擎能写，但要把三份数据推给它，也没有原生的反查。网关每个请求调一次 Check，决策点负责把请求翻译成这道题（见 [[credential-out-of-sandbox]]、[[ai-gateway]]）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "authorization",
+        "rebac",
+        "agent-runtime"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.8,
+      "claims": [
+        {
+          "statement": "有效权限是三份声明的交集——应用申请 ∧ 资源 owner 批准 ∧ 平台发布，由控制器各自投影成一条关系元组，没有人直接写\"有权限\"",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "模型：`resource_action` 上定义 requested: [app]、granted: [app]、published: [app:*]、perform: requested and granted and published。对象是\"资源 UID + 确切动作\"，动作是不透明字符串（git.read 不蕴含 git.write，无通配动作）。本机实测：只有申请 false、申请 + 批准 false、三条都在 true；另一应用只有批准无申请 false。主体和对象用 UID 不用名字——删了重建同名对象，旧元组还在会悄悄继承授权。对象 ID 不能含 `#`（它是\"对象#关系\"分隔符），否则 400。操作顺序：先批准再申请，否则新会话整体建不了（第 04 篇实测）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "和 RBAC、策略引擎的分工——RBAC 管集群 API，策略引擎擅长条件组合，关系型擅长归属、共享与多方关系，并原生支持反查",
+          "source": "AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "RBAC：主体绑定角色、角色对资源有动词，数据在 Role / RoleBinding。可以把外部资源定义成 CRD、让网关调 SubjectAccessReview 把 RBAC 当粗粒度策略库，但主体只能是 ServiceAccount（区分会话就得每会话一个）、表达不了三方交集与审批、没有条件。策略引擎（OPA）：规则对输入和外部数据求值，三份数据都要推送，反查\"这个应用能做哪些动作\"要自己实现。关系型：ListObjects / ListUsers 直接给出\"应用 A 能做的动作\"\"谁能对 R 做 git.read\"，用于控制台展示与权限盘点（通配主体 app:* 不会被 ListUsers 列出）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "默认强一致，打开查询缓存就变成最终一致——撤销后最长一个 TTL 内仍放行；授权路径上不开，或查询带 HIGHER_CONSISTENCY",
+          "source": "AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.85,
+          "status": "active",
+          "evidence": "OpenFGA 本机实测：默认配置删掉批准元组，下一次 Check 即 false（0.9 毫秒）；开启 check-query-cache（TTL 10 秒）后，撤销后前 10.2 秒仍返回 true；查询带 HIGHER_CONSISTENCY 立即 false。由此第 04 篇\"撤销约 1.2 秒生效\"的时间花在关系存储之外（控制器与决策点感知变化、网关下一次请求）。对 agent，撤销常发生在\"发现它在做不该做的事\"时，缓存那几秒正是最不该放行的时间；参考实现未开缓存。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "条件把过期时间、模型白名单写进批准里——但缺条件参数时返回错误而不是 false，调用方必须把错误当拒绝",
+          "source": "AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "元组带 CEL 条件：not_expired（current_time < expires_at，过期时间写在元组里、当前时间由 Check 传入）实测 11:00 true、13:00 false、不传参数 400；model_allowed（model in allowed_models）实测列表内 true、列表外 false——对应\"按请求体模型名授权\"，资源 owner 批准时就能定，不改网关配置。上下文元组可把实时状态（如 provider 是否就绪）随 Check 传入而不落库，代价是反查与变更记录都看不到，只适合每次请求能现场确定的事实。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "授权模型不可变、按 ID 引用——升级顺序必须是先写新模型、读方切新 ID、再写新形状的元组；重复写元组会报错",
+          "source": "AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "实测：用旧模型 ID 查普通关系照常 true；查带条件的元组 false（旧模型不认识该条件，元组不算数）；用旧 ID 写带条件元组 400。顺序反过来，旧读方会把新元组当不存在，表现为\"批准了却不生效\"。同一元组写第二次 400（cannot write a tuple which already exists），控制器重启后重新投影要带 on_duplicate: ignore 或先读后写。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "关系判断本身不是瓶颈——Check 亚毫秒到毫秒级，整次授权的大头在把请求翻译成关系问题的身份核实",
+          "source": "AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "本机顺序调用：内存存储 Check p50 0.38 毫秒、p99 0.76；SQLite（单连接、WAL）p50 0.81、p99 1.16；ListObjects 与 Check 同量级。集群里 OpenFGA 一步约 2.5 毫秒（多出网络与服务认证），整次授权 p50 约 105 毫秒、其中约 62 毫秒是回查 Pod、ServiceAccount、会话与运行时状态。参考实现部署为单副本 + SQLite、OIDC 认证只放行控制器与授权决策方两个身份；挂掉则所有出站请求被拒，上生产要换 PostgreSQL / MySQL 并多副本（服务本身无状态）。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "requisite-variety",
       "type": "concept",
       "title": "必要多样性定律（Law of Requisite Variety）",
@@ -14058,6 +14341,18 @@
       "description": "同为\"沙箱只有一个受控出口\"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据"
     },
     {
+      "source": "agent-sandbox",
+      "target": "relationship-based-access-control",
+      "relation_type": "constrains",
+      "description": "沙箱能对外做什么以三方交集为准"
+    },
+    {
+      "source": "agent-sandbox",
+      "target": "ai-gateway",
+      "relation_type": "uses",
+      "description": "出站只剩一条路，路上的判断在网关"
+    },
+    {
       "source": "agent-search-tools",
       "target": "context-engineering",
       "relation_type": "part-of",
@@ -14112,6 +14407,12 @@
       "description": "同称\"harness 之外的一层\"，meta-harness 是优化 harness 的离线外层搜索，本页是运行时驱动 harness 的平台层"
     },
     {
+      "source": "agent-session-control-plane",
+      "target": "ai-gateway",
+      "relation_type": "uses",
+      "description": "会话身份在网关一跳被回查；参考实现没有独立的 agent 网关"
+    },
+    {
       "source": "agent-zero",
       "target": "harness-engineering",
       "relation_type": "grounds",
@@ -14140,6 +14441,42 @@
       "target": "skill-hub-ecosystem",
       "relation_type": "extends",
       "description": "SKILL.md standard 可能扩展 Skill Hub 生态"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "part-of",
+      "description": "出站网关是\"凭据由出口处可信中介注入\"的那个出口"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "agent-session-control-plane",
+      "relation_type": "uses",
+      "description": "会话身份由控制面绑定，网关按 Pod → 会话 → 应用回查"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "relationship-based-access-control",
+      "relation_type": "uses",
+      "description": "网关的授权回调交给关系型授权决策点"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "a2a-protocol",
+      "relation_type": "uses",
+      "description": "agent 网关代理 A2A 调用、改写 Agent Card"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "agent-sandbox",
+      "relation_type": "constrains",
+      "description": "沙箱网络策略只放行到网关，网关才是\"出站唯一一条路\"上的判断点"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "openclaw-agent-gateway",
+      "relation_type": "contrasts",
+      "description": "同叫\"agent 网关\"，那边是 OpenClaw 自身的会话与渠道网关，不是面向 AI 流量的数据面"
     },
     {
       "source": "ai-inference-asic",
@@ -14812,6 +15149,18 @@
       "target": "entra-agent-id",
       "relation_type": "uses",
       "description": "下游身份是平台、用户还是 agent 自己，由令牌服务按会话换取"
+    },
+    {
+      "source": "credential-out-of-sandbox",
+      "target": "ai-gateway",
+      "relation_type": "part-of",
+      "description": "出站网关是 AI 网关三种角色之一"
+    },
+    {
+      "source": "credential-out-of-sandbox",
+      "target": "relationship-based-access-control",
+      "relation_type": "uses",
+      "description": "\"授权通过\"由关系判断给出"
     },
     {
       "source": "cybernetics-agent-design",
@@ -16024,6 +16373,30 @@
       "target": "prompt-optimization-tool-selection",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是该决策的关键前提"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "uses",
+      "description": "出站网关授权通过后才取凭据，\"通过\"由本页的关系判断给出"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "ai-gateway",
+      "relation_type": "uses",
+      "description": "网关授权回调到关系型决策点"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "agent-sandbox",
+      "relation_type": "constrains",
+      "description": "沙箱能对外做什么，以三方交集为准"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "agent-session-control-plane",
+      "relation_type": "uses",
+      "description": "控制器把应用定义、批准对象、资源声明投影成元组；每轮按当前关系重算权限"
     },
     {
       "source": "requisite-variety",
@@ -17308,6 +17681,8 @@
         "agent-sandbox",
         "agent-session-control-plane",
         "credential-out-of-sandbox",
+        "ai-gateway",
+        "relationship-based-access-control",
         "durable-execution",
         "actor-snapshot-scheduling",
         "agent-paradigms",
