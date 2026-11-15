@@ -41,7 +41,7 @@ description: 按"loop 归谁"可以把 agent 分成三类——平台自带 loop
 | 参考实现 | 没有独立的；调用方直接打会话 API，agent 调 agent 走 MCP 工具和委托服务 | agentgateway（第 08 篇） | agentgateway（第 04 篇） |
 | 我的 PoC | 只生成了卡片，入口没实现 | 第 08 篇验证了协议转换 | 第 04 篇补了 CONNECT 路由 |
 
-agentgateway 项目三种角色都能做，但它们面对的调用方、信任边界和授权模型都不一样，最好分开部署、分开配置：agent 网关面向集群外和其他 agent，模型网关和出站网关只面向沙箱。
+agentgateway 项目三种角色都能做，但它们面对的调用方、信任边界和授权模型都不一样，最好分开部署、分开配置：agent 网关面向集群外和其他 agent，模型网关和出站网关只面向沙箱。项目本身的功能、本机实测和与其他网关的对比见 [08 补充](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)。
 
 
 ## 一、三类 agent，按"loop 归谁"来分

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1064" width="1500" height="1064" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e2e8f0"/></marker>
+<style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#f1f5f9;font-size:15px;font-weight:600}.t{fill:#cbd5e1;font-size:13px}.tag{font-size:12px;font-weight:600}.ln{fill:#e2e8f0;font-size:16px;font-weight:700}.ld{fill:#94a3b8;font-size:13px}.fl{fill:none;stroke:#e2e8f0;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#0b1220;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#cbd5e1;font-size:13.5px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
+<rect width="1500" height="1064" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">agentgateway：一个数据面，三种角色</text>
+<text class="sub" x="30" y="72">它是 Linux Foundation 的开源项目（Rust、Apache-2.0）。同一个二进制能跑普通 HTTP / gRPC，也原生认识 LLM、MCP、A2A 三类流量；在 agent runtime 里通常拆成三套部署，各管一类调用方</text>
+<rect x="20" y="92" width="1460" height="250" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="120">它能做什么</text>
+<rect x="210" y="102" width="300" height="230" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="222" y="125">LLM 网关</text>
+<text class="tag" x="500" y="120" fill="#c4b5fd" text-anchor="end">agentgateway</text>
+<text class="t" x="222" y="147">统一的 OpenAI 兼容入口</text>
+<text class="t" x="222" y="166">接 OpenAI、Anthropic、Azure、</text>
+<text class="t" x="222" y="185">  Bedrock、Vertex、自建等</text>
+<text class="t" x="222" y="204">入口格式互转：Chat Completions、</text>
+<text class="t" x="222" y="223">  Anthropic Messages、Responses</text>
+<text class="t" x="222" y="242">按请求数 / 按 token 限流</text>
+<text class="t" x="222" y="261">模型名映射、失败切换、提示词防护</text>
+<rect x="525" y="102" width="300" height="230" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="537" y="125">MCP 网关</text>
+<text class="tag" x="815" y="120" fill="#c4b5fd" text-anchor="end">agentgateway</text>
+<text class="t" x="537" y="147">把多个 MCP server 聚合成一个入口</text>
+<text class="t" x="537" y="166">  工具名加目标前缀：memory_xxx</text>
+<text class="t" x="537" y="185">stdio、SSE、Streamable HTTP 后端</text>
+<text class="t" x="537" y="204">OpenAPI 转 MCP 工具</text>
+<text class="t" x="537" y="223">按工具授权：CEL 规则，</text>
+<text class="t" x="537" y="242">  tools/list 只返回允许的</text>
+<text class="t" x="537" y="261">MCP 的 OAuth 认证代理</text>
+<rect x="840" y="102" width="300" height="230" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="852" y="125">A2A 代理</text>
+<text class="tag" x="1130" y="120" fill="#c4b5fd" text-anchor="end">agentgateway</text>
+<text class="t" x="852" y="147">识别 A2A 的 JSON-RPC 方法</text>
+<text class="t" x="852" y="166">改写 Agent Card 里的入口地址</text>
+<text class="t" x="852" y="185">  指向网关自己</text>
+<text class="t" x="852" y="204">日志里带方法名和结果</text>
+<text class="t" x="852" y="223">认证、限流、追踪照常套用</text>
+<rect x="1155" y="102" width="300" height="230" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="1167" y="125">通用能力</text>
+<text class="tag" x="1445" y="120" fill="#c4b5fd" text-anchor="end">agentgateway</text>
+<text class="t" x="1167" y="147">HTTP / gRPC 路由、TLS、CORS</text>
+<text class="t" x="1167" y="166">JWT、OIDC、API key、basic auth</text>
+<text class="t" x="1167" y="185">extAuthz 授权回调、CEL 策略</text>
+<text class="t" x="1167" y="204">后端认证：Azure、AWS、GCP 身份、</text>
+<text class="t" x="1167" y="223">  令牌交换、透传</text>
+<text class="t" x="1167" y="242">CONNECT 出站代理</text>
+<text class="t" x="1167" y="261">OpenTelemetry、Prometheus</text>
+<rect x="20" y="356" width="1460" height="150" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="384">两种部署方式</text>
+<rect x="210" y="366" width="610" height="130" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="222" y="389">独立模式：一个二进制 + 一份 YAML</text>
+<text class="tag" x="810" y="384" fill="#fde68a" text-anchor="end">本机实测</text>
+<text class="t" x="222" y="411">这次本机实测用的方式：三个监听端口，分别跑 LLM、MCP、A2A</text>
+<text class="t" x="222" y="430">配置有 JSON schema，可以先校验再启动</text>
+<text class="t" x="222" y="449">适合边车、开发机、单机网关</text>
+<rect x="835" y="366" width="620" height="130" rx="10" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+<text class="h" x="847" y="389">Kubernetes 模式：Gateway API + 控制器</text>
+<text class="tag" x="1445" y="384" fill="#cbd5e1" text-anchor="end">Kubernetes</text>
+<text class="t" x="847" y="411">用 Gateway、HTTPRoute 加它自己的后端和策略资源来配置</text>
+<text class="t" x="847" y="430">参考实现就是这么用的：第 04 篇的 AgentgatewayBackend、</text>
+<text class="t" x="847" y="449">  extAuth 策略都是这一类资源；控制器把它们翻译给数据面</text>
+<rect x="20" y="520" width="1460" height="410" rx="12" fill="#0d1526" stroke="#334155" stroke-width="1.2"/>
+<text class="ln" x="36" y="548">三种角色</text>
+<text class="ld" x="36" y="570">放进 agent</text>
+<text class="ld" x="36" y="589">runtime 之后</text>
+<rect x="210" y="530" width="400" height="170" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.5"/>
+<text class="h" x="222" y="553">① agent 网关（入口）</text>
+<text class="tag" x="600" y="548" fill="#c4b5fd" text-anchor="end">agentgateway</text>
+<text class="t" x="222" y="575">调用方：渠道、别的 agent、集群外系统</text>
+<text class="t" x="222" y="594">职责：按 agent 名路由，代理 A2A、MCP，</text>
+<text class="t" x="222" y="613">  认证调用方，"源 → 目标 → skill"授权</text>
+<text class="t" x="222" y="632">参考实现：没有用它做这个角色，</text>
+<text class="t" x="222" y="651">  调用方直接打会话 API</text>
+<rect x="625" y="530" width="400" height="170" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="637" y="553">② 模型网关（LLM proxy）</text>
+<text class="tag" x="1015" y="548" fill="#5eead4" text-anchor="end">参考实现在用</text>
+<text class="t" x="637" y="575">调用方：沙箱里的 harness</text>
+<text class="t" x="637" y="594">职责：认出 Pod 证书 → 会话 → 应用，</text>
+<text class="t" x="637" y="613">  按请求体模型名授权、协议转换、限流</text>
+<text class="t" x="637" y="632">参考实现在用（第 08 篇）；</text>
+<text class="t" x="637" y="651">  Claude Code 的 Messages 经它转成 Responses</text>
+<rect x="1040" y="530" width="415" height="170" rx="10" fill="#10302d" stroke="#2dd4bf" stroke-width="1.5"/>
+<text class="h" x="1052" y="553">③ 出站网关</text>
+<text class="tag" x="1445" y="548" fill="#5eead4" text-anchor="end">参考实现在用</text>
+<text class="t" x="1052" y="575">调用方：沙箱里的 harness 和它写的代码</text>
+<text class="t" x="1052" y="594">职责：只认和 Pod 绑定的证书，</text>
+<text class="t" x="1052" y="613">  剥掉伪造头，逐请求授权后注入凭据</text>
+<text class="t" x="1052" y="632">参考实现在用（第 04 篇），</text>
+<text class="t" x="1052" y="651">  授权回调到 OpenFGA</text>
+<rect x="210" y="716" width="620" height="198" rx="10" fill="#2a1618" stroke="#f87171" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text class="h" x="222" y="739">为什么要拆成三套部署</text>
+<text class="tag" x="820" y="734" fill="#fca5a5" text-anchor="end">别混用</text>
+<text class="t" x="222" y="761">面对的调用方不同：① 面向集群外和其他 agent，② ③ 只面向沙箱</text>
+<text class="t" x="222" y="780">信任边界不同：① 要接受外部令牌；② ③ 只认 Pod 绑定证书，</text>
+<text class="t" x="222" y="799">  任何外部令牌都不该被接受</text>
+<text class="t" x="222" y="818">授权模型不同：① 是 agent 之间的委托批准；② 是模型白名单和配额；</text>
+<text class="t" x="222" y="837">  ③ 是资源 + 动作的三方交集</text>
+<text class="t" x="222" y="856">故障影响不同：模型网关挂了只影响推理，出站网关挂了所有外部动作都停</text>
+<text class="t" x="222" y="875">→ 同一个项目、三套配置和副本，分开扩缩容和发布</text>
+<rect x="845" y="716" width="610" height="198" rx="10" fill="#2a2110" stroke="#fbbf24" stroke-width="1.5"/>
+<text class="h" x="857" y="739">本机实测（独立模式）</text>
+<text class="tag" x="1445" y="734" fill="#fde68a" text-anchor="end">本机实测</text>
+<text class="t" x="857" y="761">LLM：同一个 Azure 部署，Chat Completions、Anthropic Messages、</text>
+<text class="t" x="857" y="780">  Responses 三种入口都通；经网关和直连延迟没有可测差别</text>
+<text class="t" x="857" y="799">token 限流在响应后结算：跨过阈值那次照样放行，下一次 429</text>
+<text class="t" x="857" y="818">MCP：两个 server 聚合成 22 个带前缀的工具；CEL 授权后只剩 2 个</text>
+<text class="t" x="857" y="837">  一个目标起不来，整个入口初始化失败</text>
+<text class="t" x="857" y="856">A2A：新版卡片字段的地址被改写，旧的顶层 url 没改；</text>
+<text class="t" x="857" y="875">  客户端的 Authorization 头原样转给了 agent</text>
+<path class="fl" d="M410,332 L410,354" marker-end="url(#a)"/>
+<path class="fl" d="M410,496 L410,518" marker-end="url(#a)"/>
+<text class="lgh" x="30" y="958">怎么读</text>
+<text class="lg" x="30" y="986">上面两层是项目本身：四类能力、两种部署方式。下面一层是放进 agent runtime 之后的用法：同一个数据面，按调用方拆成 agent 网关、模型网关、出站网关三套</text>
+<text class="lg" x="30" y="1010">参考实现只用了 ② ③；① 这个角色它没有，调用方直接访问会话 API。自己搭的时候，① 可以用同一个项目，但不要和 ② ③ 共用一套配置和副本</text>
+<text class="lg" x="30" y="1034">实测里的两处细节对 ① 很关键：卡片旧字段没被改写，会让调用方绕过网关；外部令牌原样透传，后端 agent 会拿到调用方的凭据——都要在配置里显式处理</text>
+</svg>

@@ -21,6 +21,8 @@ Claude Code 是例外。它只说 Anthropic 的 Messages 协议。参考实现�
 
 这篇就验证这件事：Claude Code 能不能经过同一个网关，用上 Azure OpenAI 的 GPT 模型？
 
+这篇用到的网关是开源项目 agentgateway。它在系列里同时承担了模型网关和出站网关两种角色，还能做 agent 网关；它本身是什么、三种角色怎么拆、和 LiteLLM、APIM 这类 LLM proxy 怎么分工，单独写在[补充篇](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)里。
+
 ## 一、网关其实早就准备好了
 
 ![两种协议，一个网关|900](../../asset/aks-agent-runtime-model-access-path-2026-11-13.svg)

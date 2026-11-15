@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 980" width="1500" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+<style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.ax{stroke:#475569;stroke-width:1.4}.axl{fill:#94a3b8;font-size:14px;font-weight:600}.tk{fill:#64748b;font-size:13px}.nm{fill:#f1f5f9;font-size:15px;font-weight:700}.ds{fill:#cbd5e1;font-size:13px}.h{fill:#f1f5f9;font-size:15px;font-weight:600}.t{fill:#cbd5e1;font-size:13px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.lg{fill:#cbd5e1;font-size:13.5px}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}.fl{fill:none;stroke:#a78bfa;stroke-width:1.6;stroke-dasharray:6 5;animation:d 1.4s linear infinite}@keyframes d{to{stroke-dashoffset:-22}}</style></defs>
+<rect width="1500" height="980" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">agentgateway 和其他网关的定位</text>
+<text class="sub" x="30" y="72">横轴看出身：从现有 API 网关加插件扩展出来，还是为 AI 流量新写的；纵轴看覆盖：只管模型调用，还是模型、MCP、A2A 都管。方块 = 托管服务，圆 = 自托管开源</text>
+<rect x="170" y="110" width="830" height="580" rx="12" fill="#0d1526" stroke="#334155"/>
+<line class="ax" x1="585" y1="110" x2="585" y2="690" stroke-dasharray="5 5"/>
+<line class="ax" x1="170" y1="400" x2="1000" y2="400" stroke-dasharray="5 5"/>
+<text class="axl" x="170" y="720">← 从 API 网关扩展（插件、策略）</text>
+<text class="axl" x="1000" y="720" text-anchor="end">为 AI 流量新写 →</text>
+<text class="axl" x="156" y="124" text-anchor="end">模型</text><text class="axl" x="156" y="144" text-anchor="end">+ MCP</text><text class="axl" x="156" y="164" text-anchor="end">+ A2A</text>
+<text class="axl" x="156" y="682" text-anchor="end">只管模型</text>
+<circle cx="960" cy="170" r="10" fill="#2dd4bf" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="944" y="168" text-anchor="end">agentgateway</text>
+<text class="ds" x="944" y="187" text-anchor="end">Rust 新写，LLM、MCP、A2A</text>
+<text class="ds" x="944" y="204" text-anchor="end">同一个数据面；独立或 Gateway API</text>
+<circle cx="900" cy="320" r="10" fill="#38bdf8" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="884" y="318" text-anchor="end">LiteLLM</text>
+<text class="ds" x="884" y="337" text-anchor="end">Python 写的 LLM proxy 起家</text>
+<text class="ds" x="884" y="354" text-anchor="end">虚拟 key、预算、出账；后加 MCP、A2A</text>
+<circle cx="290" cy="190" r="10" fill="#fbbf24" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="306" y="188" text-anchor="start">Kong AI Gateway</text>
+<text class="ds" x="306" y="207" text-anchor="start">Kong Gateway + AI 插件</text>
+<text class="ds" x="306" y="224" text-anchor="start">MCP 代理要企业版；支持 A2A 路由</text>
+<rect x="260" y="290" width="20" height="20" rx="3" fill="#60a5fa" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="286" y="298" text-anchor="start">Azure APIM AI 网关</text>
+<text class="ds" x="286" y="317" text-anchor="start">托管服务；llm-token-limit 等策略</text>
+<text class="ds" x="286" y="334" text-anchor="start">REST 转 MCP、代理 MCP 和 A2A</text>
+<circle cx="300" cy="430" r="10" fill="#f472b6" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="316" y="428" text-anchor="start">Higress</text>
+<text class="ds" x="316" y="447" text-anchor="start">阿里开源，Istio + Envoy + Wasm</text>
+<text class="ds" x="316" y="464" text-anchor="start">多模型接入、MCP 托管；和 Nacos 配套</text>
+<circle cx="330" cy="560" r="10" fill="#a3e635" stroke="#f8fafc" stroke-width="1.2"/>
+<text class="nm" x="346" y="558" text-anchor="start">Envoy AI Gateway</text>
+<text class="ds" x="346" y="577" text-anchor="start">Envoy Gateway 的扩展</text>
+<text class="ds" x="346" y="594" text-anchor="start">模型路由、token 限流、配额；后加 MCP</text>
+<rect x="170" y="742" width="830" height="78" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-dasharray="6 4"/>
+<text class="h" x="186" y="768">不在数据路径上：Nacos（注册中心）</text>
+<text class="t" x="186" y="790">托管 AgentCard、MCP server 元数据，提供搜索、发现、订阅，请求不经过它；常见搭配：Higress 代理，Nacos 注册</text>
+<rect x="1030" y="110" width="440" height="712" rx="12" fill="#111827" stroke="#334155"/>
+<text class="h" x="1048" y="140">怎么选</text>
+<text class="nm" x="1048" y="170" style="font-size:14px">已经有 Kong 或 APIM</text>
+<text class="t" x="1048" y="190">在现有网关上加 AI 插件和策略，</text>
+<text class="t" x="1048" y="208">运维、计费、门户都沿用；MCP、A2A</text>
+<text class="t" x="1048" y="226">能力看版本和授权</text>
+<text class="nm" x="1048" y="288" style="font-size:14px">要统一管很多模型提供方的 key、预算、出账</text>
+<text class="t" x="1048" y="308">LiteLLM 或 APIM 放在模型网关后面一跳，</text>
+<text class="t" x="1048" y="326">按团队计量；不负责沙箱会话身份</text>
+<text class="nm" x="1048" y="388" style="font-size:14px">Kubernetes 上的 agent runtime</text>
+<text class="t" x="1048" y="408">agentgateway：认得 Pod 证书和会话，</text>
+<text class="t" x="1048" y="426">一个项目覆盖模型、MCP、A2A 和出站，</text>
+<text class="t" x="1048" y="444">按角色拆三套部署</text>
+<text class="nm" x="1048" y="506" style="font-size:14px">阿里云 / Java 微服务生态</text>
+<text class="t" x="1048" y="526">Higress + Nacos：网关和注册中心</text>
+<text class="t" x="1048" y="544">配套，MCP 托管和发现一起做</text>
+<text class="nm" x="1048" y="606" style="font-size:14px">只要 Envoy 生态里的模型网关</text>
+<text class="t" x="1048" y="626">Envoy AI Gateway：沿用 Envoy Gateway</text>
+<text class="t" x="1048" y="644">的策略和限流服务</text>
+<text class="lgh" x="30" y="860">共同的坑</text>
+<text class="lg" x="30" y="886">按 token 限流时，agentgateway、Kong、Envoy AI Gateway 都在响应回来之后才扣减：跨过阈值的那一次请求照样放行，挡住的是下一次；APIM 可以选择在请求进来时预估 prompt token</text>
+<text class="lg" x="30" y="910">所以 token 限流管的是"平均速度"，不是"硬上限"；要硬上限，就把 max_tokens 也纳入策略，或者在模型网关前面再做一次请求级的预算检查</text>
+</svg>
