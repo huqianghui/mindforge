@@ -18,7 +18,7 @@ description: 讨论 AKS 做 agent runtime 时，注意力常落在 sandbox 隔�
 
 最近在讨论把 AKS 当成 agent runtime，大家的注意力几乎都在 sandbox 上：Kata 还是 runc，隔离够不够强，出站怎么拦。这些问题当然要回答，但我把一个编码 agent 从"被叫起来"到"被回收"完整走了一遍，发现 sandbox 只是其中一段。harness 本身是一个会调用模型和工具的 loop，会话要跨好几轮甚至好几天，agent 需要被定义、注册、发现，每次访问外部资源都要逐请求授权，这些都不在沙箱里发生。
 
-所以我打算写一个系列，以 Kubernetes、特别是 AKS 为基座，一个平面一个平面地把 agent runtime 搭出来，每篇配一次实践。沙箱本身——AKS 上 Kata 的规格、agent-sandbox、OpenSandbox、kagent 与 Agent Substrate——在 [Agent 基础设施系列 02](../../Notes/AI/agent/agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md) 和 [03](../../Notes/AI/agent/agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md) 已经讲过，这里只在需要时引用，不再重复。
+所以我写了这个系列，以 Kubernetes、特别是 AKS 为基座，一个平面一个平面地把 agent runtime 搭出来，每篇配一次实践。沙箱相关项目的概况——AKS 上 Kata 的规格、agent-sandbox、OpenSandbox、kagent 与 Agent Substrate——在 [Agent 基础设施系列 02](../../Notes/AI/agent/agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md) 和 [03](../../Notes/AI/agent/agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md) 讲过；它们在 AKS 上实际装起来是什么样，放在了 [01 补充](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)和 [03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)里。
 
 ## 一、把一次调用从头走到尾
 
@@ -59,7 +59,7 @@ description: 讨论 AKS 做 agent runtime 时，注意力常落在 sandbox 隔�
 
 会话平面那一行 AKS 一格都填不上，这是最值得注意的地方。为什么 RBAC、NetworkPolicy 这些原生机制映射不过来、能映射到哪一步，单独写在了[补充二](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)里。
 
-执行平面里的 agent-sandbox 和 OpenSandbox，夹在 Kata 和控制面之间。Kata 只保证 Pod 跑在独立的 VM 里；预热池、领取、进沙箱执行命令的接口、暂停恢复、到期回收，是它们补上的。下面的实践 01 直接建了一个带 `runtimeClassName` 的 Pod 来验证隔离，还没有用到这两者。它们比裸 Pod 多做了什么、各自怎么用、参考实现怎么用 OpenSandbox，见[第 03 篇](AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md#沙箱后端agent-sandbox-和-opensandbox-管什么)和在 AKS 上逐项实测的[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。
+执行平面里的 agent-sandbox 和 OpenSandbox，夹在 Kata 和控制面之间。Kata 只保证 Pod 跑在独立的 VM 里；预热池、领取、进沙箱执行命令的接口、暂停恢复、到期回收，是它们补上的。下面的实践 01 直接建了一个带 `runtimeClassName` 的 Pod 来验证隔离，还没有用到这两者。它们比裸 Pod 多做了什么、各自怎么用、参考实现怎么用 OpenSandbox，见在 AKS 上逐项实测的 [03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。
 
 ## 三、harness 本身也要当成不可信
 
@@ -92,7 +92,9 @@ description: 讨论 AKS 做 agent runtime 时，注意力常落在 sandbox 隔�
 
 ![AKS Agent Runtime 系列路线|900](../../asset/aks-agent-runtime-series-roadmap-2026-11-09.svg)
 
-顺序大致是先执行和 harness，再治理，然后是会话，最后是定义发现和定位。每篇都配一次在 AKS 上能复现的实践，后面的实践会复用前面搭好的环境：02 在这篇的基线集群上跑 harness，03 写一个最小的会话控制器去驱动它，04 给它的出站加上网关和授权。
+顺序是先执行和 harness，再治理，然后是会话，最后是定义发现、身份和定位。每篇都配一次在 AKS 上能复现的实践，后面的实践复用前面搭好的环境：02 在这篇的基线集群上跑 harness，03 拆解参考实现的控制面怎么驱动它，04 给它的出站加上网关和授权，06 再写一个三副本的会话执行器验证高可用。
+
+正篇之外有四篇补充，各自深挖一个组件：[01 补充](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)讲 Kata 运行时和节点池，[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)讲 agent-sandbox 和 OpenSandbox 作为沙箱后端，[04 补充](AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md)讲 OpenFGA，[08 补充](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)讲 agentgateway。系列 00 是导读，系列 11 回答"Kubernetes 原生机制管不到什么"。
 
 ## 六、实践 01：AKS 基线集群
 
