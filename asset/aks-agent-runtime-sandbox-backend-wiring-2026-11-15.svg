@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1040" width="1400" height="1040" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .bandC { fill: #0d1f1d; stroke: #2dd4bf; stroke-width: 1.5; stroke-dasharray: 9 5; }
+      .bandS { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.5; stroke-dasharray: 9 5; }
+      .bandR { fill: #1a1215; stroke: #f87171; stroke-width: 1.5; stroke-dasharray: 9 5; }
+      .optA { fill: #0f1d33; stroke: #38bdf8; stroke-width: 1.2; }
+      .optB { fill: #17142b; stroke: #a78bfa; stroke-width: 1.2; }
+      .bl { font-size: 16px; font-weight: 700; }
+      .ol { font-size: 15px; font-weight: 600; }
+      .cg { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cb { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
+      .cp { fill: #1d1733; stroke: #a78bfa; stroke-width: 1.4; }
+      .cr { fill: #2a1618; stroke: #f87171; stroke-width: 1.3; }
+      .bus { fill: #134e4a; stroke: #5eead4; stroke-width: 1.6; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowB { fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowP { fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeB { fill: #0c4a6e; stroke: #7dd3fc; stroke-width: 1.3; }
+      .badgeP { fill: #4c1d95; stroke: #c4b5fd; stroke-width: 1.3; }
+      .bn { fill: #f8fafc; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1040" rx="16"/>
+  <text class="title" x="30" y="44">控制面怎么用沙箱后端：参考实现的三层与两种接法</text>
+  <text class="sub" x="30" y="72">上层只认一个"沙箱 provider"接口；中层二选一（配置互斥）；下层两种接法落到同一个 Kata 节点池。harness 适配在上层，后端不认识 harness</text>
+
+  <!-- 控制面 -->
+  <rect class="bandC" x="20" y="92" width="1360" height="270" rx="14"/>
+  <text class="bl" x="38" y="118" fill="#5eead4">① 控制面（会话平面，普通节点池，可信）——"什么时候要沙箱、在里面跑什么"</text>
+
+  <rect class="cg" x="40" y="134" width="310" height="120" rx="10"/>
+  <text class="h" x="56" y="158">会话 API + 状态机 + 执行器</text>
+  <text class="t" x="56" y="182">幂等建会话、消息落盘后 ACK</text>
+  <text class="t" x="56" y="203">副作用意图先落库，执行器按意图</text>
+  <text class="t" x="56" y="224">调下面的 provider（第 03、05 篇）</text>
+
+  <rect class="cg" x="370" y="134" width="310" height="120" rx="10"/>
+  <text class="h" x="386" y="158">运行时类 + 应用定义</text>
+  <text class="t" x="386" y="182">平台方发布：选一个镜像或一个预热池，</text>
+  <text class="t" x="386" y="203">并钉死用哪种 harness</text>
+  <text class="t" x="386" y="224">应用只按名字选，再加自己的文件</text>
+
+  <rect class="cg" x="700" y="134" width="320" height="120" rx="10"/>
+  <text class="h" x="716" y="158">harness 适配器（每种后端各一套）</text>
+  <text class="t" x="716" y="182">Copilot、Codex、Claude Code、</text>
+  <text class="t" x="716" y="203">OpenCode、Pi：拼命令、解析输出、</text>
+  <text class="t" x="716" y="224">续接原生会话</text>
+
+  <rect class="cg" x="1040" y="134" width="320" height="120" rx="10"/>
+  <text class="h" x="1056" y="158">出站身份与权限</text>
+  <text class="t" x="1056" y="182">每轮按应用当前的批准重算权限，</text>
+  <text class="t" x="1056" y="203">沙箱的出站证书与 Pod 绑定，</text>
+  <text class="t" x="1056" y="224">网关逐请求核对（第 04 篇）</text>
+
+  <rect class="bus" x="40" y="270" width="1320" height="76" rx="10"/>
+  <text class="h" x="56" y="296" fill="#ccfbf1">沙箱 provider 接口（控制面和后端之间唯一的约定）</text>
+  <text class="t" x="56" y="320">必选：解析运行时 → 分配沙箱（镜像或预热池）→ 检查沙箱 → 在沙箱里执行一轮</text>
+  <text class="t" x="56" y="340">可选：checkpoint / 删 checkpoint / 暂停 / 恢复 / 从 checkpoint 重建 / 中止会话 / 更新已在跑的沙箱的出站权限。每个操作带持久的操作 ID，重启后可重放</text>
+
+  <!-- 沙箱后端 -->
+  <rect class="bandS" x="20" y="384" width="1360" height="330" rx="14"/>
+  
+
+  <rect class="optA" x="40" y="424" width="640" height="274" rx="12"/>
+  <text class="ol" x="56" y="450" fill="#7dd3fc">接法 A：直接调 OpenSandbox</text>
+  <rect class="cb" x="56" y="464" width="300" height="104" rx="10"/>
+  <text class="h" x="72" y="488">lifecycle server（REST / SDK）</text>
+  <text class="t" x="72" y="512">建、查、列、删沙箱；暂停、恢复</text>
+  <text class="t" x="72" y="533">建、查、删快照（checkpoint）</text>
+  <text class="t" x="72" y="554">到期删除兜底</text>
+  <rect class="cb" x="366" y="464" width="300" height="104" rx="10"/>
+  <text class="h" x="382" y="488">execd（沙箱里）</text>
+  <text class="t" x="382" y="512">写入 AGENTS.md 与初始文件</text>
+  <text class="t" x="382" y="533">启动 harness、读输出流</text>
+  <text class="t" x="382" y="554">读回原生会话 ID 等文件</text>
+  <rect class="cb" x="56" y="580" width="610" height="104" rx="10"/>
+  <text class="h" x="72" y="604">OpenSandbox 的 workload provider（再往下一层）</text>
+  <text class="t" x="72" y="628">生产：agent-sandbox——server 直接建核心 Sandbox，需额外 RBAC，</text>
+  <text class="t" x="72" y="649">     agent-sandbox 钉在 OpenSandbox 认得的旧版 API 上</text>
+  <text class="t" x="72" y="670">测试：BatchSandbox——因为快照目前只支持从 BatchSandbox 生成</text>
+
+  <rect class="optB" x="700" y="424" width="660" height="274" rx="12"/>
+  <text class="ol" x="716" y="450" fill="#c4b5fd">接法 B：安全沙箱 API</text>
+  <rect class="cp" x="716" y="464" width="310" height="124" rx="10"/>
+  <text class="h" x="732" y="488">租户级沙箱 API</text>
+  <text class="t" x="732" y="512">用户与归属：只能操作自己的沙箱</text>
+  <text class="t" x="732" y="533">沙箱、预热池、命令、文件</text>
+  <text class="t" x="732" y="554">出入站策略、身份与凭据绑定</text>
+  <text class="t" x="732" y="575">审计；控制面以一个租户接入</text>
+  <rect class="cp" x="1036" y="464" width="310" height="124" rx="10"/>
+  <text class="h" x="1052" y="488">策略控制器 + 身份控制器</text>
+  <text class="t" x="1052" y="512">把每个沙箱的出入站策略下发</text>
+  <text class="t" x="1052" y="533">到沙箱里的 Envoy、DNS、出站网关</text>
+  <text class="t" x="1052" y="554">为工作负载配 Entra 联合凭据，</text>
+  <text class="t" x="1052" y="575">出站时由授权服务换 token 注入</text>
+  <rect class="cp" x="716" y="600" width="630" height="84" rx="10"/>
+  <text class="h" x="732" y="624">内部仍然是 OpenSandbox</text>
+  <text class="t" x="732" y="648">生命周期请求转给私有的 OpenSandbox 后端（BatchSandbox），命令和文件请求只替</text>
+  <text class="t" x="732" y="669">"属于调用者、已就绪"的沙箱代理到 execd。OpenSandbox 对外不可见</text>
+
+  <!-- 运行时 -->
+  <rect class="bandR" x="20" y="736" width="1360" height="150" rx="14"/>
+  
+  <rect class="cr" x="40" y="776" width="640" height="94" rx="10"/>
+  <text class="h" x="56" y="800">接法 A 的沙箱 Pod</text>
+  <text class="t" x="56" y="824">execd + harness 进程 + 工作区（含原生会话文件）</text>
+  <text class="t" x="56" y="845">出站边车持 Pod 绑定证书，mTLS 连到出站网关；不挂 SA token</text>
+  <rect class="cr" x="700" y="776" width="660" height="94" rx="10"/>
+  <text class="h" x="716" y="800">接法 B 的沙箱 Pod</text>
+  <text class="t" x="716" y="824">在 A 的基础上多一个网络初始化容器：包过滤规则把流量强制导进 Envoy、</text>
+  <text class="t" x="716" y="845">策略 DNS、出站网关三个边车，策略生效前一律拒绝（fail closed）</text>
+
+  <!-- arrows -->
+  <path class="flowB" d="M360,346 L360,462" marker-end="url(#arrB)"/>
+  <path class="flowB" d="M520,346 L520,462" marker-end="url(#arrB)"/>
+  <path class="flowP" d="M1030,346 L1030,422 L1000,422 L1000,462" marker-end="url(#arrP)"/>
+  <path class="flowP" d="M1030,588 L1030,598" marker-end="url(#arrP)"/>
+  <path class="flowB" d="M360,684 L360,774" marker-end="url(#arrB)"/>
+  <path class="flowP" d="M1030,684 L1030,774" marker-end="url(#arrP)"/>
+
+  <circle class="badgeB" cx="340" cy="440" r="12"/><text class="bn" x="340" y="445">②</text>
+  <circle class="badgeB" cx="540" cy="440" r="12"/><text class="bn" x="540" y="445">③</text>
+  <circle class="badgeP" cx="1052" cy="378" r="12"/><text class="bn" x="1052" y="383">④</text>
+  <circle class="badgeB" cx="380" cy="728" r="12"/><text class="bn" x="380" y="733">⑤</text>
+  <circle class="badgeP" cx="1050" cy="728" r="12"/><text class="bn" x="1050" y="733">⑥</text>
+
+    <rect x="30" y="392" width="760" height="26" fill="#0d1729"/>
+  <text class="bl" x="38" y="410" fill="#7dd3fc">② 沙箱后端（执行平面，可信）——"沙箱怎么建、怎么进去、怎么暂停"；两种接法，启动时二选一</text>
+  <rect x="30" y="744" width="560" height="26" fill="#1a1215"/>
+  <text class="bl" x="38" y="762" fill="#fca5a5">③ 运行时（Kata 节点池，沙箱 Pod 内不可信）——"墙"，两种接法共用</text>
+  <text class="lgh" x="30" y="918">一轮对话怎么穿过三层</text>
+  <text class="lg" x="30" y="944">① 控制面按运行时类解析出镜像或预热池和 harness，执行器调 provider 接口"分配沙箱 + 执行一轮"</text>
+  <text class="lg" x="30" y="968">② 接法 A：provider 调 lifecycle server 建沙箱、暂停恢复、做快照；③ 再调沙箱里的 execd 放文件、启动 harness、读输出</text>
+  <text class="lg" x="30" y="992">④ 接法 B：provider 以租户身份调安全沙箱 API，它校验归属与策略后，再把生命周期、命令和文件请求转给内部的 OpenSandbox</text>
+  <text class="lg" x="30" y="1016">⑤⑥ 两种接法最后都在 Kata 节点上建出沙箱 Pod；B 多出的是 Pod 内强制的网络边车和逐沙箱的出入站策略</text>
+</svg>
