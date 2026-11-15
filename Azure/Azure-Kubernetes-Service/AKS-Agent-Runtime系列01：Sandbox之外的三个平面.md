@@ -59,6 +59,8 @@ description: 讨论 AKS 做 agent runtime 时，注意力常落在 sandbox 隔�
 
 会话平面那一行 AKS 一格都填不上，这是最值得注意的地方。
 
+执行平面里的 agent-sandbox 和 OpenSandbox，夹在 Kata 和控制面之间。Kata 只保证 Pod 跑在独立的 VM 里；预热池、领取、进沙箱执行命令的接口、暂停恢复、到期回收，是它们补上的。下面的实践 01 直接建了一个带 `runtimeClassName` 的 Pod 来验证隔离，还没有用到这两者。它们比裸 Pod 多做了什么、各自怎么用、参考实现怎么用 OpenSandbox，见[第 03 篇](AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md#沙箱后端agent-sandbox-和-opensandbox-管什么)和在 AKS 上逐项实测的[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)。
+
 ## 三、harness 本身也要当成不可信
 
 讨论 harness 放在哪之前，有一个前提要先定下来：**在多租户平台上，harness 自己也应该被视为不可信。** harness 读的是模型输出、网页、仓库里的 README，这些都可能带着 prompt injection；一旦被劫持，harness 就成了攻击者。Claude Code、Codex、Copilot CLI 自带的"调用前确认"和进程级沙箱（bubblewrap、seatbelt、landlock）可以当第二层防护，但不能当租户之间的边界。
@@ -127,7 +129,7 @@ kubectl get runtimeclass
 `--node-taints` 这一行是踩坑后加的。AKS 会自动建好 `kata-vm-isolation` 这个 RuntimeClass，并带上 `kubernetes.azure.com/kata-vm-isolation: "true"` 的 nodeSelector，所以 Kata Pod 一定会落到 Kata 池。但反过来不成立：我第一次建池时没加污点，节点上的 taints 是空的，结果对照组那个普通 runc Pod 也被调度到了 Kata 节点上。
 
 > [!WARNING]
-> 不要指望 AKS 替你给 Kata 池打污点。我在 2026-11 新建的集群上看到的 Kata 节点没有任何污点，普通工作负载会和沙箱混跑在同一批节点上。建池时显式加 `--node-taints`，沙箱 Pod 加对应的 toleration；已有的池可以用 `az aks nodepool update --node-taints` 补上。补上之后再调度，对照组就回到了普通节点。
+> 不要指望 AKS 替你给 Kata 池打污点。我在 2026-11 新建的集群上看到的 Kata 节点没有任何污点，普通工作负载会和沙箱混跑在同一批节点上。建池时显式加 `--node-taints`，沙箱 Pod 加对应的 toleration；已有的池可以用 `az aks nodepool update --node-taints` 补上。补上之后再调度，对照组就回到了普通节点。为什么普通 Pod 能上 Kata 节点、Kata Pod 却上不了普通节点，见[补充篇](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)。
 
 **2. 给沙箱单独一个 namespace，出站默认拒绝，只放行 DNS。** 后面加了出站网关，再单独放行到网关的流量。
 
@@ -220,6 +222,7 @@ $P curl -s -m 5 https://github.com
 做完这一步，集群就有了一个"什么都出不去"的沙箱 namespace。[下一篇](AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外.md)在里面放一个真正的编码 harness，看看它被关起来以后还能做什么、需要从哪里开口子。
 
 ## 相关阅读
+- [AKS Agent Runtime 系列 01 补充：Kata 运行时与节点池](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)——Kata 替换的是哪一层、Kata 节点多了什么、两种 runtime 怎么混跑、资源怎么算
 
 - [Agent 基础设施系列 01：三层划分与自建路线](../../Notes/AI/agent/agent-platform/Agent基础设施系列01：三层划分与自建路线.md)——Framework、Runtime、Platform 的划分，以及在 AKS 上自建的参考组合
 - [Agent 基础设施系列 02：Kubernetes 上的 Agent 沙箱](../../Notes/AI/agent/agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md)——AKS Kata 的规格与限制、agent-sandbox、OpenSandbox

@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zoneG { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneB { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .cp { fill: #111827; stroke: #94a3b8; stroke-width: 1.4; }
+      .kata { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { font-size: 15px; font-weight: 600; }
+      .cg { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .cb { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .note { fill: #1f1a0e; stroke: #fbbf24; stroke-width: 1.3; stroke-dasharray: 6 4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .ta { fill: #fde68a; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowB { fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeB { fill: #0c4a6e; stroke: #7dd3fc; stroke-width: 1.3; }
+      .badgeA { fill: #92400e; stroke: #fbbf24; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="990" rx="16"/>
+  <text class="title" x="30" y="44">执行平面里的分工：Kata 管墙，agent-sandbox / OpenSandbox 管房间</text>
+  <text class="sub" x="30" y="72">两者都是 Kubernetes 控制器，自己不做隔离，只在 Pod 模板里写 runtimeClassName。数字来自这次在 AKS 上的实测</text>
+
+  <!-- 控制面 -->
+  <rect class="cp" x="30" y="96" width="1340" height="74" rx="10"/>
+  <text class="h" x="48" y="122">控制面（第 03 篇）</text>
+  <text class="t" x="48" y="148">用 agent-sandbox：调 Kubernetes API 建 Claim，经 router 发 HTTP，执行接口自己写</text>
+  <text class="t" x="740" y="148">用 OpenSandbox：调 lifecycle server 的 REST / SDK，再调沙箱里的 execd</text>
+
+  <!-- agent-sandbox -->
+  <rect class="zoneG" x="30" y="200" width="640" height="480" rx="14"/>
+  <text class="zl" x="48" y="225" fill="#5eead4">agent-sandbox（SIG Apps，贴近 Kubernetes 原生对象）</text>
+
+  <rect class="cg" x="50" y="240" width="190" height="120" rx="10"/>
+  <text class="h" x="64" y="264">SandboxTemplate</text>
+  <text class="t" x="64" y="288">平台团队写：RuntimeClass、</text>
+  <text class="t" x="64" y="308">toleration、limits、PVC 模板</text>
+  <text class="t" x="64" y="328">controller 据此生成</text>
+  <text class="t" x="64" y="348">一份共享 NetworkPolicy</text>
+
+  <rect class="cg" x="260" y="240" width="190" height="120" rx="10"/>
+  <text class="h" x="274" y="264">SandboxWarmPool</text>
+  <text class="t" x="274" y="288">常备 N 个 Sandbox</text>
+  <text class="t" x="274" y="308">实测 2 个 28 秒备好</text>
+  <text class="t" x="274" y="328">（含拉镜像、挂 Azure Disk）</text>
+
+  <rect class="cg" x="470" y="240" width="180" height="120" rx="10"/>
+  <text class="h" x="484" y="264">SandboxClaim</text>
+  <text class="t" x="484" y="288">控制面提交的唯一对象</text>
+  <text class="t" x="484" y="308">池里有货：2.7 秒</text>
+  <text class="t" x="484" y="328">被领空或带 env：</text>
+  <text class="t" x="484" y="348">冷启动 23~30 秒</text>
+
+  <rect class="cg" x="50" y="390" width="190" height="112" rx="10"/>
+  <text class="h" x="64" y="414">Sandbox（核心）</text>
+  <text class="t" x="64" y="438">Running / Suspended</text>
+  <text class="t" x="64" y="458">shutdownTime 到期回收</text>
+  <text class="t" x="64" y="478">被领走后 owner 换成 Claim</text>
+
+  <rect class="cg" x="260" y="390" width="190" height="112" rx="10"/>
+  <text class="h" x="274" y="414">生成的 Pod</text>
+  <text class="t" x="274" y="438">+ PVC + headless Service</text>
+  <text class="t" x="274" y="458">不挂 SA token</text>
+  <text class="t" x="274" y="478">DNS 改成 8.8.8.8 / 1.1.1.1</text>
+
+  <rect class="cg" x="470" y="390" width="180" height="112" rx="10"/>
+  <text class="h" x="484" y="414">sandbox-router</text>
+  <text class="t" x="484" y="438">按 X-Sandbox-* 头转发</text>
+  <text class="t" x="484" y="458">默认不鉴权</text>
+  <text class="t" x="484" y="478">不在安装清单里</text>
+
+  <rect class="note" x="50" y="530" width="600" height="130" rx="10"/>
+  <text class="h" x="66" y="556" fill="#fde68a">沙箱里没有执行接口</text>
+  <text class="ta" x="66" y="582">router 只是 HTTP 反向代理。执行命令、读写文件、回传输出流，</text>
+  <text class="ta" x="66" y="604">要靠镜像里自己的守护进程；用 kubectl exec 就得给控制面 pods/exec 权限。</text>
+  <text class="ta" x="66" y="626">另一种做法是让 OpenSandbox 叠在上面当执行层（⑦）。</text>
+
+  <!-- OpenSandbox -->
+  <rect class="zoneB" x="730" y="200" width="640" height="480" rx="14"/>
+  <text class="zl" x="880" y="225" fill="#7dd3fc">OpenSandbox（带执行 API 的工作区系统）</text>
+
+  <rect class="cb" x="750" y="240" width="190" height="120" rx="10"/>
+  <text class="h" x="764" y="264">lifecycle server</text>
+  <text class="t" x="764" y="288">REST API + 多语言 SDK</text>
+  <text class="t" x="764" y="308">一个进程只有一套</text>
+  <text class="t" x="764" y="328">secure_runtime</text>
+  <text class="t" x="764" y="348">建一个沙箱约 6~14 秒</text>
+
+  <rect class="cb" x="960" y="240" width="190" height="120" rx="10"/>
+  <text class="h" x="974" y="264">Pool</text>
+  <text class="t" x="974" y="288">buffer 上下限，22 秒备好</text>
+  <text class="t" x="974" y="308">领一个约 3 秒</text>
+  <text class="t" x="974" y="328">runtimeClassName 必须</text>
+  <text class="t" x="974" y="348">写在 Pool 模板里</text>
+
+  <rect class="cb" x="1170" y="240" width="180" height="120" rx="10"/>
+  <text class="h" x="1184" y="264">BatchSandbox</text>
+  <text class="t" x="1184" y="288">controller 把请求</text>
+  <text class="t" x="1184" y="308">落成 Pod，注入</text>
+  <text class="t" x="1184" y="328">execd 初始化容器</text>
+
+  <rect class="cb" x="750" y="390" width="190" height="112" rx="10"/>
+  <text class="h" x="764" y="414">生成的 Pod</text>
+  <text class="t" x="764" y="438">bootstrap.sh 当 PID 1</text>
+  <text class="t" x="764" y="458">不挂 SA token</text>
+  <text class="t" x="764" y="478">默认无 NetworkPolicy</text>
+
+  <rect class="cb" x="960" y="390" width="190" height="112" rx="10"/>
+  <text class="h" x="974" y="414">egress 边车</text>
+  <text class="t" x="974" y="438">请求带出站策略才加上</text>
+  <text class="t" x="974" y="458">按域名放行</text>
+  <text class="t" x="974" y="478">NET_ADMIN 只给它</text>
+
+  <rect class="cb" x="1170" y="390" width="180" height="112" rx="10"/>
+  <text class="h" x="1184" y="414">SandboxSnapshot</text>
+  <text class="t" x="1184" y="438">commit Job 把 rootfs</text>
+  <text class="t" x="1184" y="458">推到镜像仓库</text>
+  <text class="t" x="1184" y="478">恢复时用快照建 Pod</text>
+
+  <rect class="note" x="750" y="530" width="600" height="130" rx="10"/>
+  <text class="h" x="766" y="556" fill="#fde68a">叠加：workload_provider 设成 agent-sandbox</text>
+  <text class="ta" x="766" y="582">server 直接建核心 Sandbox，execd 照样注入；但不走 WarmPool，</text>
+  <text class="ta" x="766" y="604">没有模板级 NetworkPolicy，暂停变成 Suspended（不再存 rootfs）。</text>
+  <text class="ta" x="766" y="626">还要自己补 RBAC 和带 toleration 的模板，否则 403 或 Pending。</text>
+
+  <!-- Kata -->
+  <rect class="kata" x="30" y="710" width="1340" height="80" rx="12"/>
+  <text class="zl" x="48" y="738" fill="#fca5a5">Kata 节点池（RuntimeClass kata-vm-isolation，见系列 01 补充）</text>
+  <text class="t" x="48" y="764">两边都只是在 Pod 模板里写一行 runtimeClassName，墙是同一堵。漏了这一行，Pod 照样能上 Kata 节点，但跑的是 runc。</text>
+
+  <!-- arrows -->
+  <path class="flow" d="M560,170 L560,238" marker-end="url(#arr)"/>
+  <path class="flow" d="M450,300 L468,300" marker-end="url(#arr)"/>
+  <path class="flow" d="M660,170 L660,446 L652,446" marker-end="url(#arr)"/>
+  <path class="flow" d="M470,446 L452,446" marker-end="url(#arr)"/>
+  <path class="flowB" d="M845,170 L845,238" marker-end="url(#arrB)"/>
+  <path class="flowB" d="M960,300 L942,300" marker-end="url(#arrB)"/>
+  <path class="flowB" d="M740,170 L740,446 L748,446" marker-end="url(#arrB)"/>
+  <path class="flowB" d="M1260,360 L1260,388" marker-end="url(#arrB)"/>
+  <path class="flowA" d="M750,640 L700,640 L700,375 L145,375 L145,388" marker-end="url(#arrA)"/>
+
+  <circle class="badge" cx="580" cy="205" r="12"/><text class="bn" x="580" y="210">①</text>
+  <circle class="badge" cx="459" cy="282" r="11"/><text class="bn" x="459" y="287">②</text>
+  <circle class="badge" cx="660" cy="250" r="12"/><text class="bn" x="660" y="255">③</text>
+  <circle class="badgeB" cx="822" cy="212" r="12"/><text class="bn" x="822" y="217">④</text>
+  <circle class="badgeB" cx="951" cy="282" r="11"/><text class="bn" x="951" y="287">⑤</text>
+  <circle class="badgeB" cx="740" cy="250" r="12"/><text class="bn" x="740" y="255">⑥</text>
+  <circle class="badgeA" cx="700" cy="520" r="12"/><text class="bn" x="700" y="525">⑦</text>
+
+  <text class="lgh" x="30" y="828">编号说明</text>
+  <text class="lg" x="30" y="856">① 控制面提交 SandboxClaim；② Claim 从 WarmPool 领走一个现成的 Sandbox，owner 改挂到 Claim 上；③ 控制面的 HTTP 请求带三个头经 router 进沙箱</text>
+  <text class="lg" x="30" y="880">④ 控制面调 lifecycle server 建沙箱（可带 poolRef）；⑤ 带 poolRef 时从 Pool 的 buffer 分一个 Pod；⑥ 控制面直接调沙箱里的 execd：执行命令、读写文件、取输出流</text>
+  <text class="lg" x="30" y="904">⑦ 叠加用法：OpenSandbox 的 server 不建 BatchSandbox，改建 agent-sandbox 的核心 Sandbox——上层用 execd，底层用 agent-sandbox 的对象模型</text>
+  <text class="lg" x="30" y="936">共同点：沙箱 Pod 都不挂 SA token；都只靠 runtimeClassName 进 Kata。不同点：网络默认值、暂停时保留什么、谁来提供执行接口，见正文</text>
+</svg>

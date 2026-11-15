@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1010" width="1400" height="1010" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneB { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneP { fill: #120f1f; stroke: #a78bfa; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .zl { font-size: 14px; font-weight: 600; }
+      .cp { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .os { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .sb { fill: #2a1618; stroke: #f87171; stroke-width: 1.4; }
+      .gv { fill: #1d1733; stroke: #a78bfa; stroke-width: 1.4; }
+      .ext { fill: #111827; stroke: #64748b; stroke-width: 1.4; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-dasharray: 3 5; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeA { fill: #92400e; stroke: #fbbf24; stroke-width: 1.3; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="1010" rx="16"/>
+  <text class="title" x="30" y="44">参考实现：控制面和 OpenSandbox 各做什么</text>
+  <text class="sub" x="30" y="72">青绿 = 控制面自己写的；蓝 = OpenSandbox 现成提供的；紫 = 治理平面；红 = 沙箱内、不可信。编号是一轮对话的顺序，琥珀色是一轮结束后的快照</text>
+
+  <!-- 渠道 -->
+  <rect class="ext" x="30" y="110" width="170" height="100" rx="10"/>
+  <text class="h" x="48" y="138">渠道</text>
+  <text class="t" x="48" y="162">CLI、Teams、</text>
+  <text class="t" x="48" y="184">Cron、其他 agent</text>
+
+  <!-- 控制面 -->
+  <rect class="zone" x="230" y="100" width="560" height="620" rx="14"/>
+  <text class="zl" x="248" y="125" fill="#5eead4">控制面（普通节点池上的一个 Deployment）</text>
+
+  <rect class="cp" x="250" y="140" width="250" height="130" rx="10"/>
+  <text class="h" x="266" y="165">会话 API</text>
+  <text class="t" x="266" y="190">校验用户令牌，owner 记 oid</text>
+  <text class="t" x="266" y="211">建会话必须带幂等键</text>
+  <text class="t" x="266" y="232">投递消息、读历史</text>
+  <text class="t" x="266" y="253">SSE 事件流，带游标</text>
+
+  <rect class="cp" x="250" y="290" width="250" height="130" rx="10"/>
+  <text class="h" x="266" y="315">收件箱与状态机</text>
+  <text class="t" x="266" y="340">消息落盘后才 ACK</text>
+  <text class="t" x="266" y="361">同一会话一次只跑一轮</text>
+  <text class="t" x="266" y="382">每轮开跑前重新授权</text>
+  <text class="t" x="266" y="403">状态和副作用意图同事务写</text>
+
+  <rect class="cp" x="250" y="440" width="250" height="130" rx="10"/>
+  <text class="h" x="266" y="465">应用定义</text>
+  <text class="t" x="266" y="490">不可变 revision 固定配置</text>
+  <text class="t" x="266" y="511">新会话用最新 revision</text>
+  <text class="t" x="266" y="532">AGENTS.md、skills 经</text>
+  <text class="t" x="266" y="553">ConfigMap 放进沙箱</text>
+
+  <rect class="cp" x="520" y="140" width="250" height="130" rx="10"/>
+  <text class="h" x="536" y="165">执行器（runner）</text>
+  <text class="t" x="536" y="190">逐个执行副作用意图：</text>
+  <text class="t" x="536" y="211">领沙箱、放文件、跑一轮、</text>
+  <text class="t" x="536" y="232">checkpoint、暂停、删除</text>
+  <text class="t" x="536" y="253">启动时接管没做完的意图</text>
+
+  <rect class="cp" x="520" y="290" width="250" height="130" rx="10"/>
+  <text class="h" x="536" y="315">定时器</text>
+  <text class="t" x="536" y="340">Ephemeral：一轮执行中</text>
+  <text class="t" x="536" y="361">且临近过期才续 TTL</text>
+  <text class="t" x="536" y="382">Durable：空闲到点暂停，</text>
+  <text class="t" x="536" y="403">过了 retention 才删</text>
+
+  <rect class="cp" x="520" y="440" width="250" height="130" rx="10"/>
+  <text class="h" x="536" y="465">harness 适配器</text>
+  <text class="t" x="536" y="490">五种 CLI + 自定义命令</text>
+  <text class="t" x="536" y="511">拼命令行、解析输出</text>
+  <text class="t" x="536" y="532">原生会话 ID 写进工作区，</text>
+  <text class="t" x="536" y="553">随 checkpoint 一起走</text>
+
+  <rect class="cp" x="250" y="590" width="520" height="110" rx="10"/>
+  <text class="h" x="266" y="615">状态库（SQLite）</text>
+  <text class="t" x="266" y="640">会话、收件箱、事件、副作用意图、会话 ↔ 沙箱 ↔ Pod 的绑定</text>
+  <text class="t" x="266" y="662">没有分布式 lease，同一个库只能有一个调度者：</text>
+  <text class="t" x="266" y="684">单副本，Deployment 用 Recreate（多副本见第 06 篇）</text>
+
+  <!-- OpenSandbox -->
+  <rect class="zoneB" x="820" y="100" width="550" height="330" rx="14"/>
+  <text class="zl" x="838" y="125" fill="#7dd3fc">OpenSandbox（沙箱后端，现成）</text>
+
+  <rect class="os" x="840" y="140" width="250" height="120" rx="10"/>
+  <text class="h" x="856" y="165">lifecycle server</text>
+  <text class="t" x="856" y="190">控制面唯一调用的 API</text>
+  <text class="t" x="856" y="211">创建、删除、TTL</text>
+  <text class="t" x="856" y="232">暂停与恢复的入口</text>
+
+  <rect class="os" x="1100" y="140" width="250" height="120" rx="10"/>
+  <text class="h" x="1116" y="165">Pool（预热池）</text>
+  <text class="t" x="1116" y="190">buffer 常备已 Ready 的 Pod</text>
+  <text class="t" x="1116" y="211">启动中的不算可用</text>
+  <text class="t" x="1116" y="232">领一个约 1 秒</text>
+
+  <rect class="os" x="840" y="280" width="250" height="130" rx="10"/>
+  <text class="h" x="856" y="305">BatchSandbox controller</text>
+  <text class="t" x="856" y="330">把沙箱请求落成 Pod</text>
+  <text class="t" x="856" y="351">Pod 模板写 Kata 的</text>
+  <text class="t" x="856" y="372">runtimeClassName</text>
+  <text class="t" x="856" y="393">网络策略写在 Pool 模板</text>
+
+  <rect class="os" x="1100" y="280" width="250" height="130" rx="10"/>
+  <text class="h" x="1116" y="305">SandboxSnapshot</text>
+  <text class="t" x="1116" y="330">源节点起 commit Job，</text>
+  <text class="t" x="1116" y="351">rootfs 提交成镜像推 ACR</text>
+  <text class="t" x="1116" y="372">恢复：用镜像新建 Pod</text>
+  <text class="t" x="1116" y="393">删记录不删镜像</text>
+
+  <!-- 沙箱 Pod -->
+  <rect class="vm" x="820" y="450" width="550" height="170" rx="14"/>
+  <text class="zl" x="838" y="475" fill="#fca5a5">沙箱 Pod（Kata VM，不可信）</text>
+
+  <rect class="sb" x="840" y="490" width="160" height="112" rx="10"/>
+  <text class="h" x="856" y="515">execd</text>
+  <text class="t" x="856" y="540">执行命令、读写文件</text>
+  <text class="t" x="856" y="561">控制面进沙箱的</text>
+  <text class="t" x="856" y="582">唯一一个口</text>
+
+  <rect class="sb" x="1015" y="490" width="165" height="112" rx="10"/>
+  <text class="h" x="1031" y="515">harness 进程</text>
+  <text class="t" x="1031" y="540">每轮起一个，免确认</text>
+  <text class="t" x="1031" y="561">工作区 +</text>
+  <text class="t" x="1031" y="582">原生会话文件</text>
+
+  <rect class="sb" x="1195" y="490" width="160" height="112" rx="10"/>
+  <text class="h" x="1211" y="515">出站边车</text>
+  <text class="t" x="1211" y="540">持有和 Pod 绑定</text>
+  <text class="t" x="1211" y="561">的证书，mTLS</text>
+  <text class="t" x="1211" y="582">CONNECT 到网关</text>
+
+  <!-- 治理 -->
+  <rect class="zoneP" x="820" y="640" width="550" height="140" rx="14"/>
+  <text class="zl" x="838" y="665" fill="#c4b5fd">治理平面（沙箱外，见第 04 篇）</text>
+
+  <rect class="gv" x="840" y="680" width="250" height="84" rx="10"/>
+  <text class="h" x="856" y="705">授权决策点 + 凭据代理</text>
+  <text class="t" x="856" y="729">核对 Pod ↔ 会话绑定、算权限</text>
+  <text class="t" x="856" y="750">通过之后才取凭据</text>
+
+  <rect class="gv" x="1100" y="680" width="250" height="84" rx="10"/>
+  <text class="h" x="1116" y="705">出站网关</text>
+  <text class="t" x="1116" y="729">只认 Pod 证书，剥掉伪造头</text>
+  <text class="t" x="1116" y="750">→ 模型、GitHub 等</text>
+
+  <!-- 连线 -->
+  <path class="flow" d="M200,155 L248,165" marker-end="url(#arr)"/>
+  <path class="flowG" d="M250,250 L202,200" marker-end="url(#arrG)"/>
+  <path class="flow" d="M375,270 L375,288" marker-end="url(#arr)"/>
+  <path class="flow" d="M500,330 L518,255" marker-end="url(#arr)"/>
+  <path class="flow" d="M770,180 L838,180" marker-end="url(#arr)"/>
+  <path class="flowG" d="M1100,200 L1092,200" marker-end="url(#arrG)"/>
+  <path class="flowG" d="M965,260 L965,278" marker-end="url(#arrG)"/>
+  <path class="flowG" d="M965,410 L965,488" marker-end="url(#arrG)"/>
+  <path class="flow" d="M770,250 L798,250 L798,530 L838,530" marker-end="url(#arr)"/>
+  <path class="flow" d="M1000,545 L1013,545" marker-end="url(#arr)"/>
+  <path class="flow" d="M1180,545 L1193,545" marker-end="url(#arr)"/>
+  <path class="flow" d="M1275,602 L1275,678" marker-end="url(#arr)"/>
+  <path class="flowG" d="M1100,722 L1092,722" marker-end="url(#arrG)" marker-start="url(#arrG)"/>
+  <path class="flow" d="M840,585 L812,585 L812,505 L772,505" marker-end="url(#arr)"/>
+  <path class="flow" d="M645,570 L645,588" marker-end="url(#arr)"/>
+  <path class="flowA" d="M1225,450 L1225,412" marker-end="url(#arrA)"/>
+
+  <circle class="badge" cx="222" cy="140" r="12"/><text class="bn" x="222" y="145">①</text>
+  <circle class="badge" cx="400" cy="280" r="12"/><text class="bn" x="400" y="285">②</text>
+  <circle class="badge" cx="510" cy="280" r="10"/><text class="bn" x="510" y="285">③</text>
+  <circle class="badge" cx="805" cy="163" r="12"/><text class="bn" x="805" y="168">④</text>
+  <circle class="badge" cx="798" cy="440" r="12"/><text class="bn" x="798" y="445">⑤</text>
+  <circle class="badge" cx="1297" cy="640" r="12"/><text class="bn" x="1297" y="645">⑥</text>
+  <circle class="badge" cx="826" cy="610" r="12"/><text class="bn" x="826" y="615">⑦</text>
+  <circle class="badgeA" cx="1250" cy="432" r="12"/><text class="bn" x="1250" y="437">⑧</text>
+
+  <!-- 图例 -->
+  <text class="lgh" x="30" y="822">一轮对话怎么走</text>
+  <text class="lg" x="30" y="850">① 渠道带着用户令牌和幂等键调会话 API；② 消息写进收件箱，落盘后才 ACK，状态和"跑一轮"的副作用意图在同一个事务里写库</text>
+  <text class="lg" x="30" y="874">③ 执行器取到意图；④ 调 OpenSandbox 的 lifecycle server，从 Pool 的 buffer 领一个现成的 Pod（约 1 秒），controller 负责把它落到 Kata 节点上</text>
+  <text class="lg" x="30" y="898">⑤ 经 execd 放入 AGENTS.md 和原生会话 ID 文件，再用适配器拼好的免确认命令启动 harness</text>
+  <text class="lg" x="30" y="922">⑥ harness 调模型和工具，出站只有边车 → 网关这一条路；网关逐请求问授权，通过后由凭据代理注入凭据，沙箱里从头到尾没有真凭据</text>
+  <text class="lg" x="30" y="946">⑦ execd 把 harness 的输出流回控制面，适配器解析成统一事件，逐条写库，会话 API 再按游标用 SSE 推给渠道（灰色虚线）</text>
+  <text class="lg" x="30" y="970">⑧ 一轮结束：Durable 会话做 checkpoint（30~40 秒），空闲到点再 commit 一次并删 Pod，恢复约 10 秒；Ephemeral 会话不做快照，靠 30 分钟 TTL 兜底</text>
+</svg>
