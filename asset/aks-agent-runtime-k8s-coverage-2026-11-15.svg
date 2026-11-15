@@ -1,203 +1,171 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 1030" width="1640" height="1030" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1540 1030" width="1540" height="1030" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.hc{fill:#f1f5f9;font-size:15px;font-weight:700;text-anchor:middle}.rl{fill:#e2e8f0;font-size:14px;font-weight:600}.c{font-size:13px}.own{fill:#cbd5e1;font-size:13px}.com{fill:#c4b5fd;font-size:13px}.used{fill:#e9d5ff;font-size:13px;font-weight:600}.lg{fill:#cbd5e1;font-size:13.5px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.pulse{animation:p 2.4s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}</style>
-<rect width="1640" height="1030" rx="16" fill="#0b1220"/>
+<rect width="1540" height="1030" rx="16" fill="#0b1220"/>
 <text class="title" x="30" y="44">agent 平台要管的事：原生、两个沙箱项目、社区方案各覆盖到哪</text>
-<text class="sub" x="30" y="72">青绿 = 提供了，琥珀 = 部分提供或要额外配置，灰 = 没有。紫色列是社区可复用的组件，"（在用）"表示前面几篇的两套实现已经用上；最右一列是复用不了、要自己写的部分</text>
-<rect x="30" y="96" width="230" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="145.0" y="122">要管的事</text>
-<rect x="270" y="96" width="250" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="395.0" y="122">Kubernetes 原生</text>
-<rect x="530" y="96" width="250" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="655.0" y="122">agent-sandbox</text>
-<rect x="790" y="96" width="250" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="915.0" y="122">OpenSandbox</text>
-<rect x="1050" y="96" width="290" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="1195.0" y="122">社区可复用</text>
-<rect x="1350" y="96" width="260" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
-<text class="hc" x="1480.0" y="122">要自己写（系列哪篇）</text>
+<text class="sub" x="30" y="72">青绿 = 提供了，琥珀 = 部分提供或要额外配置，灰 = 没有。紫色列是社区可复用的组件，"（在用）"表示前面几篇的两套实现已经用上；剩下要自己写的部分见系列 10 的分层技术栈图</text>
+<rect x="30" y="96" width="240" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
+<text class="hc" x="150.0" y="122">要管的事</text>
+<rect x="280" y="96" width="300" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
+<text class="hc" x="430.0" y="122">Kubernetes 原生</text>
+<rect x="590" y="96" width="270" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
+<text class="hc" x="725.0" y="122">agent-sandbox</text>
+<rect x="870" y="96" width="300" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
+<text class="hc" x="1020.0" y="122">OpenSandbox</text>
+<rect x="1180" y="96" width="330" height="40" rx="8" fill="#1e293b" stroke="#475569"/>
+<text class="hc" x="1345.0" y="122">社区可复用</text>
 <rect x="30" y="150" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="175">沙箱隔离</text>
-<rect x="270" y="150" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="282" y="175" fill="#5eead4">RuntimeClass + Kata</text>
-<rect x="530" y="150" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="542" y="175" fill="#fde68a">借用：模板写 runtimeClassName</text>
-<rect x="790" y="150" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="802" y="175" fill="#fde68a">借用：Pool 要自己写</text>
-<rect x="1050" y="150" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="175">gVisor、Firecracker；Kyverno 强制写 Kata</text>
-<rect x="1350" y="150" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="175">—（01 补充）</text>
+<rect x="280" y="150" width="300" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="292" y="175" fill="#5eead4">RuntimeClass + Kata</text>
+<rect x="590" y="150" width="270" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="602" y="175" fill="#fde68a">借用：模板写 runtimeClassName</text>
+<rect x="870" y="150" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="882" y="175" fill="#fde68a">借用：Pool 要自己写</text>
+<rect x="1180" y="150" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="175">gVisor、Firecracker；Kyverno 强制写 Kata</text>
 <rect x="30" y="196" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="221">沙箱生命周期与预热</text>
-<rect x="270" y="196" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="221" fill="#fde68a">Deployment / StatefulSet 不顺手</text>
-<rect x="530" y="196" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="542" y="221" fill="#5eead4">WarmPool、Claim、到期回收</text>
-<rect x="790" y="196" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="802" y="221" fill="#5eead4">Pool、TTL、BatchSandbox</text>
-<rect x="1050" y="196" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="221">kagent、Agent Substrate</text>
-<rect x="1350" y="196" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="221">—</text>
+<rect x="280" y="196" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="221" fill="#fde68a">Deployment / StatefulSet 不顺手</text>
+<rect x="590" y="196" width="270" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="602" y="221" fill="#5eead4">WarmPool、Claim、到期回收</text>
+<rect x="870" y="196" width="300" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="882" y="221" fill="#5eead4">Pool、TTL、BatchSandbox</text>
+<rect x="1180" y="196" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="221">kagent、Agent Substrate</text>
 <rect x="30" y="242" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="267">进沙箱执行、读写文件</text>
-<rect x="270" y="242" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="267" fill="#fde68a">kubectl exec，权限太大</text>
-<rect x="530" y="242" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="542" y="267" fill="#fde68a">sandboxd，尚早期</text>
-<rect x="790" y="242" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="802" y="267" fill="#5eead4">execd，镜像不用改</text>
-<rect x="1050" y="242" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="267">E2B envd</text>
-<rect x="1350" y="242" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="267">—</text>
+<rect x="280" y="242" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="267" fill="#fde68a">kubectl exec，权限太大</text>
+<rect x="590" y="242" width="270" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="602" y="267" fill="#fde68a">sandboxd，尚早期</text>
+<rect x="870" y="242" width="300" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="882" y="267" fill="#5eead4">execd，镜像不用改</text>
+<rect x="1180" y="242" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="267">E2B envd</text>
 <rect x="30" y="288" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="313">暂停后保留状态</text>
-<rect x="270" y="288" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="313" fill="#fde68a">PVC</text>
-<rect x="530" y="288" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="542" y="313" fill="#fde68a">Suspended，只留 PVC</text>
-<rect x="790" y="288" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="802" y="313" fill="#5eead4">rootfs 快照到镜像仓库</text>
-<rect x="1050" y="288" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="313">kubelet 容器检查点（实验特性）</text>
-<rect x="1350" y="288" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="313">快照仓库清理（05）</text>
+<rect x="280" y="288" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="313" fill="#fde68a">PVC</text>
+<rect x="590" y="288" width="270" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="602" y="313" fill="#fde68a">Suspended，只留 PVC</text>
+<rect x="870" y="288" width="300" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="882" y="313" fill="#5eead4">rootfs 快照到镜像仓库</text>
+<rect x="1180" y="288" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="313">kubelet 容器检查点（实验特性）</text>
 <rect x="30" y="334" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="359">会话状态与绑定</text>
-<rect x="270" y="334" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="359" fill="#64748b">无</text>
-<rect x="530" y="334" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="359" fill="#64748b">无</text>
-<rect x="790" y="334" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="359" fill="#64748b">无</text>
-<rect x="1050" y="334" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="359">Dapr Actor / Workflow、Temporal</text>
-<rect class="pulse" x="1350" y="334" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="359">状态机、会话↔沙箱绑定（03、05、06）</text>
+<rect x="280" y="334" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="359" fill="#64748b">无</text>
+<rect x="590" y="334" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="359" fill="#64748b">无</text>
+<rect x="870" y="334" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="359" fill="#64748b">无</text>
+<rect class="pulse" x="1180" y="334" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="359">Dapr Actor / Workflow、Temporal</text>
 <rect x="30" y="380" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="405">终端用户与 OBO</text>
-<rect x="270" y="380" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="405" fill="#64748b">集群用户不是业务用户</text>
-<rect x="530" y="380" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="405" fill="#64748b">无</text>
-<rect x="790" y="380" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="405" fill="#64748b">只有一个 API key</text>
-<rect x="1050" y="380" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="405">Entra OBO（在用）</text>
-<rect class="pulse" x="1350" y="380" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="405">会话 API 的用户与归属（09）</text>
+<rect x="280" y="380" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="405" fill="#64748b">集群用户不是业务用户</text>
+<rect x="590" y="380" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="405" fill="#64748b">无</text>
+<rect x="870" y="380" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="405" fill="#64748b">只有一个 API key</text>
+<rect class="pulse" x="1180" y="380" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="405">Entra OBO（在用）</text>
 <rect x="30" y="426" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="451">资源 + 动作逐请求授权</text>
-<rect x="270" y="426" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="451" fill="#fde68a">只管集群 API；可借 SAR 查 RBAC</text>
-<rect x="530" y="426" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="451" fill="#64748b">无</text>
-<rect x="790" y="426" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="802" y="451" fill="#fde68a">边车按域名放行</text>
-<rect x="1050" y="426" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="451">OpenFGA、Envoy ext_authz（在用）；OPA</text>
-<rect x="1350" y="426" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="451">申请/批准/发布的数据模型（04）</text>
+<rect x="280" y="426" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="451" fill="#fde68a">只管集群 API；可借 SAR 查 RBAC</text>
+<rect x="590" y="426" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="451" fill="#64748b">无</text>
+<rect x="870" y="426" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="882" y="451" fill="#fde68a">边车按域名放行</text>
+<rect x="1180" y="426" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="451">OpenFGA、Envoy ext_authz（在用）；OPA</text>
 <rect x="30" y="472" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="497">凭据不进沙箱</text>
-<rect x="270" y="472" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="497" fill="#64748b">Secret 挂进去就暴露</text>
-<rect x="530" y="472" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="497" fill="#64748b">无</text>
-<rect x="790" y="472" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="802" y="497" fill="#fde68a">Credential Vault，恢复后要重注入</text>
-<rect x="1050" y="472" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="497">agentgateway / ext_authz 注入（在用）</text>
-<rect x="1350" y="472" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="497">凭据代理与绑定（04）</text>
+<rect x="280" y="472" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="497" fill="#64748b">Secret 挂进去就暴露</text>
+<rect x="590" y="472" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="497" fill="#64748b">无</text>
+<rect x="870" y="472" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="882" y="497" fill="#fde68a">Credential Vault，恢复后要重注入</text>
+<rect x="1180" y="472" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="497">agentgateway / ext_authz 注入（在用）</text>
 <rect x="30" y="518" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="543">出站只剩一条路</text>
-<rect x="270" y="518" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="282" y="543" fill="#5eead4">NetworkPolicy（IP / 端口）</text>
-<rect x="530" y="518" width="250" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
-<text class="c" x="542" y="543" fill="#5eead4">模板默认封内网段</text>
-<rect x="790" y="518" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="802" y="543" fill="#fde68a">请求带策略才生效</text>
-<rect x="1050" y="518" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="543">Cilium（在用）、Istio 出口网关</text>
-<rect x="1350" y="518" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="543">命名空间兜底策略</text>
+<rect x="280" y="518" width="300" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="292" y="543" fill="#5eead4">NetworkPolicy（IP / 端口）</text>
+<rect x="590" y="518" width="270" height="40" rx="7" fill="#10302d" stroke="#2dd4bf"/>
+<text class="c" x="602" y="543" fill="#5eead4">模板默认封内网段</text>
+<rect x="870" y="518" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="882" y="543" fill="#fde68a">请求带策略才生效</text>
+<rect x="1180" y="518" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="543">Cilium（在用）、Istio 出口网关</text>
 <rect x="30" y="564" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="589">工作负载身份</text>
-<rect x="270" y="564" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="589" fill="#fde68a">ServiceAccount，多个沙箱共用</text>
-<rect x="530" y="564" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="589" fill="#64748b">无</text>
-<rect x="790" y="564" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="589" fill="#64748b">无</text>
-<rect x="1050" y="564" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="589">cert-manager、SPIFFE（在用）；SPIRE</text>
-<rect x="1350" y="564" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="589">证书→会话映射、fencing（04、06）</text>
+<rect x="280" y="564" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="589" fill="#fde68a">ServiceAccount，多个沙箱共用</text>
+<rect x="590" y="564" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="589" fill="#64748b">无</text>
+<rect x="870" y="564" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="589" fill="#64748b">无</text>
+<rect x="1180" y="564" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="589">cert-manager、SPIFFE（在用）；SPIRE</text>
 <rect x="30" y="610" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="635">模型调用治理</text>
-<rect x="270" y="610" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="635" fill="#64748b">无</text>
-<rect x="530" y="610" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="635" fill="#64748b">无</text>
-<rect x="790" y="610" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="635" fill="#64748b">无</text>
-<rect x="1050" y="610" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="635">agentgateway（在用）、Envoy AI Gateway</text>
-<rect class="pulse" x="1350" y="610" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="635">按会话预算、协议转换验证（08）</text>
+<rect x="280" y="610" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="635" fill="#64748b">无</text>
+<rect x="590" y="610" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="635" fill="#64748b">无</text>
+<rect x="870" y="610" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="635" fill="#64748b">无</text>
+<rect class="pulse" x="1180" y="610" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="635">agentgateway（在用）、Envoy AI Gateway</text>
 <rect x="30" y="656" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="681">harness 非交互与确认</text>
-<rect x="270" y="656" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="681" fill="#64748b">无</text>
-<rect x="530" y="656" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="681" fill="#64748b">无</text>
-<rect x="790" y="656" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="681" fill="#64748b">无</text>
-<rect x="1050" y="656" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="681">—</text>
-<rect class="pulse" x="1350" y="656" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="681">适配器、权限档位（03）</text>
+<rect x="280" y="656" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="681" fill="#64748b">无</text>
+<rect x="590" y="656" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="681" fill="#64748b">无</text>
+<rect x="870" y="656" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="681" fill="#64748b">无</text>
+<rect class="pulse" x="1180" y="656" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="681">—</text>
 <rect x="30" y="702" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="727">agent 调 agent</text>
-<rect x="270" y="702" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="282" y="727" fill="#64748b">无</text>
-<rect x="530" y="702" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="727" fill="#64748b">无</text>
-<rect x="790" y="702" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="727" fill="#64748b">无</text>
-<rect x="1050" y="702" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="727">A2A 卡片、Dapr 服务调用</text>
-<rect class="pulse" x="1350" y="702" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="727">子会话、一跳、owner 批准（03、07）</text>
+<rect x="280" y="702" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="292" y="727" fill="#64748b">无</text>
+<rect x="590" y="702" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="727" fill="#64748b">无</text>
+<rect x="870" y="702" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="727" fill="#64748b">无</text>
+<rect class="pulse" x="1180" y="702" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="727">A2A 卡片、Dapr 服务调用</text>
 <rect x="30" y="748" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="773">审批与审计</text>
-<rect x="270" y="748" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="773" fill="#fde68a">审计日志只覆盖 API server</text>
-<rect x="530" y="748" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="773" fill="#64748b">无</text>
-<rect x="790" y="748" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="802" y="773" fill="#64748b">无</text>
-<rect x="1050" y="748" width="290" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
-<text class="used" x="1062" y="773">OpenTelemetry（在用）</text>
-<rect x="1350" y="748" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="773">会话/轮次属性贯穿、审批（03、09）</text>
+<rect x="280" y="748" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="773" fill="#fde68a">审计日志只覆盖 API server</text>
+<rect x="590" y="748" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="773" fill="#64748b">无</text>
+<rect x="870" y="748" width="300" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="882" y="773" fill="#64748b">无</text>
+<rect x="1180" y="748" width="330" height="40" rx="7" fill="#2a1f45" stroke="#a78bfa" stroke-width="1.6"/>
+<text class="used" x="1192" y="773">OpenTelemetry（在用）</text>
 <rect x="30" y="794" width="230" height="40" rx="7" fill="#0f172a" stroke="#334155"/>
 <text class="rl" x="44" y="819">配额与成本</text>
-<rect x="270" y="794" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="282" y="819" fill="#fde68a">ResourceQuota：CPU、内存</text>
-<rect x="530" y="794" width="250" height="40" rx="7" fill="#111827" stroke="#334155"/>
-<text class="c" x="542" y="819" fill="#64748b">无</text>
-<rect x="790" y="794" width="250" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
-<text class="c" x="802" y="819" fill="#fde68a">池满返回 429</text>
-<rect x="1050" y="794" width="290" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
-<text class="com" x="1062" y="819">LLM 网关按 token 限流</text>
-<rect x="1350" y="794" width="260" height="40" rx="7" fill="#13213a" stroke="#38bdf8"/>
-<text class="own" x="1362" y="819">token 预算、并发上限（06、08）</text>
+<rect x="280" y="794" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="292" y="819" fill="#fde68a">ResourceQuota：CPU、内存</text>
+<rect x="590" y="794" width="270" height="40" rx="7" fill="#111827" stroke="#334155"/>
+<text class="c" x="602" y="819" fill="#64748b">无</text>
+<rect x="870" y="794" width="300" height="40" rx="7" fill="#2a2110" stroke="#fbbf24"/>
+<text class="c" x="882" y="819" fill="#fde68a">池满返回 429</text>
+<rect x="1180" y="794" width="330" height="40" rx="7" fill="#1d1733" stroke="#a78bfa" stroke-width="1"/>
+<text class="com" x="1192" y="819">LLM 网关按 token 限流</text>
 <text class="lgh" x="30" y="870">怎么读</text>
 <text class="lg" x="30" y="898">前四行是"房间"：Kubernetes 给墙，agent-sandbox 和 OpenSandbox 给分配、进入和暂停，基本都有现成的。</text>
 <text class="lg" x="30" y="922">从"会话状态与绑定"往下，中间三列几乎全灰，但紫色列大多有社区组件可以当底座：Dapr 管会话状态，OpenFGA 和 ext_authz 管授权，agentgateway 管出站和模型，cert-manager 管身份。</text>
-<text class="lg" x="30" y="946">最右一列复用不了：它们都要认识会话、终端用户和外部资源上的动作，而社区组件只认识工作负载、请求和规则。闪烁的几行是两个沙箱项目和 Kubernetes 都没有的。</text>
+<text class="lg" x="30" y="946">闪烁的几行是 Kubernetes 和两个沙箱项目都没有的；就算社区有底座，它们都要认识会话、终端用户和外部资源上的动作，这一层要自己写（系列 10）。</text>
 <text class="lg" x="30" y="970">"（在用）"指前面几篇的参考实现或安全沙箱实现已经用上；没标的是社区里有、两套实现都还没用的选项。</text>
 </svg>
