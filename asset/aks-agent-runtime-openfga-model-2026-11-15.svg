@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .zone { fill: #0d1729; stroke: #475569; stroke-width: 1.3; stroke-dasharray: 9 5; }
+      .zoneF { fill: #120f1f; stroke: #a78bfa; stroke-width: 1.5; stroke-dasharray: 9 5; }
+      .src { fill: #111827; stroke: #94a3b8; stroke-width: 1.3; }
+      .ctl { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
+      .tup { fill: #1d1733; stroke: #a78bfa; stroke-width: 1.4; }
+      .mdl { fill: #17142b; stroke: #c4b5fd; stroke-width: 1.4; }
+      .gw { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
+      .ok { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
+      .no { fill: #2a1618; stroke: #f87171; stroke-width: 1.3; }
+      .zl { font-size: 15px; font-weight: 600; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .mono { fill: #e9d5ff; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowB { fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowP { fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
+      .badgeB { fill: #0c4a6e; stroke: #7dd3fc; stroke-width: 1.3; }
+      .badgeP { fill: #4c1d95; stroke: #c4b5fd; stroke-width: 1.3; }
+      .bn { fill: #f8fafc; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">第 04 篇的"三方交集"在 OpenFGA 里怎么落地</text>
+  <text class="sub" x="30" y="72">三份声明由三个人分别写，控制器各自投影成一条关系元组；没有人直接写"有权限"，网关每次请求时让 OpenFGA 现算</text>
+
+  <!-- sources -->
+  <rect class="zone" x="20" y="96" width="330" height="520" rx="14"/>
+  <text class="zl" x="38" y="122" fill="#cbd5e1">谁写声明（Kubernetes 对象）</text>
+  <rect class="src" x="40" y="140" width="290" height="130" rx="10"/>
+  <text class="h" x="56" y="166">应用作者：应用定义</text>
+  <text class="t" x="56" y="190">"我要对资源 R 做 git.read"</text>
+  <text class="t" x="56" y="211">只表达需要，不代表允许</text>
+  <text class="t" x="56" y="232">对象用 UID 标识，不用名字</text>
+  <rect class="src" x="40" y="290" width="290" height="130" rx="10"/>
+  <text class="h" x="56" y="316">资源 owner：批准对象</text>
+  <text class="t" x="56" y="340">"允许应用 A 对 R 做 git.read"</text>
+  <text class="t" x="56" y="361">可以带条件：过期时间、</text>
+  <text class="t" x="56" y="382">允许的模型列表</text>
+  <rect class="src" x="40" y="440" width="290" height="156" rx="10"/>
+  <text class="h" x="56" y="466">平台：资源声明 + provider</text>
+  <text class="t" x="56" y="490">资源就绪、开启了 git.read，</text>
+  <text class="t" x="56" y="511">provider 支持这个动作</text>
+  <text class="t" x="56" y="532">对所有应用生效，所以用通配</text>
+  <text class="t" x="56" y="553">主体 app:*</text>
+
+  <!-- controller -->
+  <rect class="ctl" x="380" y="250" width="200" height="200" rx="12"/>
+  <text class="h" x="396" y="278">控制器</text>
+  <text class="t" x="396" y="304">监听三类对象，</text>
+  <text class="t" x="396" y="325">各自投影成元组</text>
+  <text class="t" x="396" y="346">对象变了就改元组，</text>
+  <text class="t" x="396" y="367">重复写入要带</text>
+  <text class="t" x="396" y="388">on_duplicate=ignore</text>
+  <text class="t" x="396" y="420">删除元组 = 撤销</text>
+
+  <!-- OpenFGA -->
+  <rect class="zoneF" x="610" y="96" width="770" height="520" rx="14"/>
+  <text class="zl" x="628" y="122" fill="#c4b5fd">OpenFGA（一个 store）</text>
+
+  <rect class="mdl" x="630" y="140" width="360" height="240" rx="10"/>
+  <text class="h" x="646" y="166">授权模型（不可变，按 ID 引用）</text>
+  <text class="mono" x="646" y="194">type app</text>
+  <text class="mono" x="646" y="216">type resource_action</text>
+  <text class="mono" x="662" y="238">relations</text>
+  <text class="mono" x="678" y="260">define requested: [app]</text>
+  <text class="mono" x="678" y="282">define granted: [app,</text><text class="mono" x="740" y="304">app with not_expired]</text>
+  <text class="mono" x="678" y="326">define published: [app:*]</text>
+  <text class="mono" x="678" y="348">define perform: requested and</text>
+  <text class="mono" x="740" y="366">granted and published</text>
+
+  <rect class="tup" x="1010" y="140" width="350" height="240" rx="10"/>
+  <text class="h" x="1026" y="166">关系元组（user, relation, object）</text>
+  <text class="mono" x="1026" y="196">app:A requested</text>
+  <text class="mono" x="1042" y="216">resource_action:R-uid.git.read</text>
+  <text class="mono" x="1026" y="248">app:A granted</text>
+  <text class="mono" x="1042" y="268">resource_action:R-uid.git.read</text>
+  <text class="mono" x="1026" y="300">app:* published</text>
+  <text class="mono" x="1042" y="320">resource_action:R-uid.git.read</text>
+  <text class="t" x="1026" y="352">对象 ID 里不能有 #，用 . 分隔</text>
+
+  <rect class="ok" x="630" y="400" width="350" height="196" rx="10"/>
+  <text class="h" x="646" y="426">Check：现算交集</text>
+  <text class="t" x="646" y="452">三条都在 → allowed = true</text>
+  <text class="t" x="646" y="473">缺任何一条 → false</text>
+  <text class="t" x="646" y="494">git.read 不蕴含 git.write，没有通配动作</text>
+  <text class="t" x="646" y="515">条件需要的参数（current_time、model）</text>
+  <text class="t" x="646" y="536">由网关随请求传进来，缺了直接报错</text>
+  <text class="t" x="646" y="567">本机：内存 0.38 ms，SQLite 0.81 ms</text>
+
+  <rect class="tup" x="1010" y="400" width="350" height="196" rx="10"/>
+  <text class="h" x="1026" y="426">反查：ListObjects / ListUsers</text>
+  <text class="t" x="1026" y="452">"应用 A 现在能做哪些动作"</text>
+  <text class="t" x="1026" y="473">→ git.read、issues.read</text>
+  <text class="t" x="1026" y="494">"谁能对 R 做 git.read"</text>
+  <text class="t" x="1026" y="515">→ app:A（通配的 app:* 不会被列出）</text>
+  <text class="t" x="1026" y="546">用来做控制台展示和权限盘点，</text>
+  <text class="t" x="1026" y="567">不在请求热路径上</text>
+
+  <!-- gateway -->
+  <rect class="gw" x="380" y="660" width="600" height="110" rx="12"/>
+  <text class="h" x="396" y="688">出站网关 + 授权决策点（第 04 篇）</text>
+  <text class="t" x="396" y="712">先回查证书 → Pod → 会话 → 应用，命中的路由决定动作是哪一个；</text>
+  <text class="t" x="396" y="733">最后才问 OpenFGA：Check(app:A, perform, resource_action:R-uid.git.read)</text>
+  <text class="t" x="396" y="754">集群里整次授权 p50 约 105 ms，OpenFGA 这一步约 2.5 ms</text>
+
+  <rect class="no" x="1010" y="660" width="350" height="110" rx="12"/>
+  <text class="h" x="1026" y="688">OpenFGA 不知道的</text>
+  <text class="t" x="1026" y="712">Pod 属于哪个会话、请求是哪个动作、</text>
+  <text class="t" x="1026" y="733">凭据在哪——这些都在决策点和网关上；</text>
+  <text class="t" x="1026" y="754">OpenFGA 只回答"关系成不成立"</text>
+
+  <!-- arrows -->
+  <path class="flow" d="M330,205 L378,300" marker-end="url(#arr)"/>
+  <path class="flow" d="M330,355 L378,350" marker-end="url(#arr)"/>
+  <path class="flow" d="M330,518 L378,400" marker-end="url(#arr)"/>
+  <path class="flowP" d="M580,390 L1185,390 L1185,383" marker-end="url(#arrP)"/>
+  <path class="flowB" d="M800,660 L800,598" marker-end="url(#arrB)"/>
+  
+
+  <circle class="badge" cx="350" cy="236" r="11"/><text class="bn" x="350" y="241">①</text>
+  <circle class="badge" cx="352" cy="340" r="11"/><text class="bn" x="352" y="345">②</text>
+  <circle class="badge" cx="350" cy="470" r="11"/><text class="bn" x="350" y="475">③</text>
+  <circle class="badgeP" cx="605" cy="390" r="11"/><text class="bn" x="605" y="395">④</text>
+  <circle class="badgeB" cx="822" cy="630" r="11"/><text class="bn" x="822" y="635">⑤</text>
+
+  <text class="lgh" x="30" y="814">编号说明</text>
+  <text class="lg" x="30" y="842">①②③ 应用作者、资源 owner、平台各自写自己的那份声明，彼此不需要知道对方；④ 控制器把每份声明投影成一条元组写进 OpenFGA</text>
+  <text class="lg" x="30" y="866">⑤ 网关每个请求都调一次 Check。权限是"三条元组同时存在"算出来的，所以撤销任何一方的声明（删掉对应元组），下一次 Check 就是 false</text>
+  <text class="lg" x="30" y="890">模型本身不可变：改模型就是写一个新版本，拿到新的模型 ID；网关和控制器要显式指定用哪个 ID，旧版本仍然可以查</text>
+</svg>

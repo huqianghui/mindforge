@@ -312,6 +312,7 @@
 - [AKS Agent Runtime 系列 03：控制面怎么驱动编码 Harness](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md)
 - [AKS Agent Runtime 系列 03 补充：沙箱后端 agent-sandbox 与 OpenSandbox](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)
 - [AKS Agent Runtime 系列 04：出站治理与逐请求授权](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列04：出站治理与逐请求授权.md)
+- [AKS Agent Runtime 系列 04 补充：OpenFGA 与关系型授权](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md)
 - [AKS Agent Runtime 系列 05：会话生命周期与回收](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列05：会话生命周期与回收.md)
 - [AKS Agent Runtime 系列 06：会话管理与高可用](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列06：会话管理与高可用.md)
 - [AKS Agent Runtime 系列 07：Agent 的类型、注册与发现](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列07：Agent的类型、注册与发现.md)

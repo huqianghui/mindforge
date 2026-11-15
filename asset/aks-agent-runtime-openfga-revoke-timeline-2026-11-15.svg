@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lab { fill: #111827; stroke: #475569; stroke-width: 1.2; }
+      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .ax { stroke: #475569; stroke-width: 1.2; }
+      .tick { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
+      .allow { fill: #134e4a; stroke: #2dd4bf; stroke-width: 1.4; }
+      .deny { fill: #3b1518; stroke: #f87171; stroke-width: 1.4; }
+      .flowA { fill: none; stroke: #5eead4; stroke-width: 2.4; stroke-dasharray: 8 7; animation: dash 1.1s linear infinite; }
+      .rev { fill: #fbbf24; stroke: #fde68a; stroke-width: 1.5; animation: pulse 1.6s ease-in-out infinite; }
+      .lead { stroke: #94a3b8; stroke-width: 1; stroke-dasharray: 3 3; }
+      .note { fill: #e2e8f0; font-size: 13px; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      @keyframes dash { to { stroke-dashoffset: -30; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="760" rx="16"/>
+  <text class="title" x="30" y="44">撤销批准之后，多久开始拒绝</text>
+  <text class="sub" x="30" y="72">t = 0 时删除"批准"那条元组（琥珀色闪烁点），之后反复调用 Check。青绿 = 仍返回 allowed，红 = 已拒绝。前三行是本机实测，第四行是第 04 篇在集群里的端到端结果</text>
+
+  <!-- axis: x = 300 + s*80 for 0..13s -->
+  <line class="ax" x1="300" y1="110" x2="1340" y2="110"/>
+  <text class="tick" x="300" y="100">0 s</text>
+  <text class="tick" x="460" y="100">2 s</text>
+  <text class="tick" x="620" y="100">4 s</text>
+  <text class="tick" x="780" y="100">6 s</text>
+  <text class="tick" x="940" y="100">8 s</text>
+  <text class="tick" x="1100" y="100">10 s</text>
+  <text class="tick" x="1260" y="100">12 s</text>
+  <line class="ax" x1="300" y1="110" x2="300" y2="560" stroke-dasharray="4 4"/>
+  <line class="ax" x1="1100" y1="110" x2="1100" y2="560" stroke-dasharray="4 4"/>
+
+  <!-- lane 1 -->
+  <rect class="lab" x="30" y="130" width="250" height="80" rx="10"/>
+  <text class="h" x="46" y="158">默认配置</text>
+  <text class="t" x="46" y="182">不开 Check 缓存</text>
+  <rect class="deny" x="302" y="150" width="1038" height="40" rx="6"/>
+  <text class="note" x="320" y="176">下一次 Check 就是 false（0.9 ms）</text>
+  <circle class="rev" cx="300" cy="170" r="8"/>
+
+  <!-- lane 2 -->
+  <rect class="lab" x="30" y="230" width="250" height="80" rx="10"/>
+  <text class="h" x="46" y="258">开启 Check 缓存</text>
+  <text class="t" x="46" y="282">--check-query-cache，TTL 10s</text>
+  <rect class="allow" x="302" y="250" width="814" height="40" rx="6"/>
+  <path class="flowA" d="M306,270 L1110,270"/>
+  <rect class="deny" x="1116" y="250" width="224" height="40" rx="6"/>
+  <text class="note" x="1130" y="276">10.2 s 起 false</text>
+  <circle class="rev" cx="300" cy="270" r="8"/>
+
+  <!-- lane 3 -->
+  <rect class="lab" x="30" y="330" width="250" height="80" rx="10"/>
+  <text class="h" x="46" y="358">开缓存 + 查询带</text>
+  <text class="t" x="46" y="382">HIGHER_CONSISTENCY</text>
+  <rect class="deny" x="302" y="350" width="1038" height="40" rx="6"/>
+  <text class="note" x="320" y="376">立即 false：这个一致性级别不走缓存，代价是每次都查存储</text>
+  <circle class="rev" cx="300" cy="370" r="8"/>
+
+  <!-- lane 4 -->
+  <rect class="lab" x="30" y="430" width="250" height="110" rx="10"/>
+  <text class="h" x="46" y="458">第 04 篇端到端</text>
+  <text class="t" x="46" y="482">撤销批准对象 → 控制器</text>
+  <text class="t" x="46" y="503">删元组 → 网关下一次授权</text>
+  <rect class="allow" x="302" y="450" width="94" height="30" rx="6"/>
+  <rect class="deny" x="396" y="450" width="944" height="30" rx="6"/>
+  <text class="note" x="410" y="471">授权层约 1.2 s 开始返回 403</text>
+  <rect class="allow" x="302" y="494" width="238" height="30" rx="6"/>
+  <rect class="deny" x="540" y="494" width="800" height="30" rx="6"/>
+  <text class="note" x="554" y="515">网络层约 3 s 把目的地从白名单里拿掉</text>
+  <circle class="rev" cx="300" cy="487" r="8"/>
+
+  <text class="lgh" x="30" y="604">怎么读</text>
+  <text class="lg" x="30" y="632">OpenFGA 默认是强一致的：删掉元组，下一次 Check 就拒绝。所以第 04 篇那 1.2 秒在 OpenFGA 之外——控制器和决策点感知到对象变化、更新元组，再加上网关的下一次请求</text>
+  <text class="lg" x="30" y="656">打开 Check 缓存能把延迟再压低一点，但它把 Check 变成了最终一致：撤销之后最长一个 TTL 内仍然放行。授权路径上要么不开，要么在查询里带 HIGHER_CONSISTENCY</text>
+  <text class="lg" x="30" y="680">参考实现没有开这个缓存。对 agent 来说，撤销通常发生在"发现它在做不该做的事"的时候，这 10 秒正是最不该放行的时间</text>
+  <text class="lg" x="30" y="716">本机实测：OpenFGA 官方二进制，内存存储；Check 每 0.5 秒调用一次</text>
+</svg>
