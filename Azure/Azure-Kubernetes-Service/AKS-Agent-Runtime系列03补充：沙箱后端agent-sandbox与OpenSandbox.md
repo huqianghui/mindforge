@@ -263,6 +263,12 @@ OpenSandbox 的 server 可以把 agent-sandbox 当底层：`workload_provider` �
 
 ## 八、怎么选
 
+可以先按三个问题走一遍：
+
+![沙箱后端怎么选：三个问题|900](../../asset/aks-sandbox-backends-decision-2026-11-15.svg)
+
+展开说：
+
 - **控制面驱动 harness、沙箱只是借来执行**：选 OpenSandbox。`execd`、Pool、rootfs 快照正好对上第 03 到 05 篇的需求，参考实现也是这么选的。要补的是：每个 Pool 显式写 `runtimeClassName`，沙箱命名空间加兜底网络策略，快照仓库的保留和清理策略。
 - **agent 本身是常驻服务，只需要一个隔离好的 Pod**：选 agent-sandbox。对象模型贴近 Kubernetes，默认网络策略更严。要补的是：router 的鉴权、沙箱里的执行守护进程，以及把要跨暂停保留的文件放进 PVC。
 - **集群里已经用 agent-sandbox 统一管沙箱，又想要 `execd` 这套执行 API**：用第三种，OpenSandbox 叠在 agent-sandbox 上。要接受的是：用不上 agent-sandbox 的预热池，没有模板生成的网络策略，暂停时不保存 rootfs。

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e2e8f0"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .q { fill: #2a2110; stroke: #fbbf24; stroke-width: 1.6; }
+      .o1 { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.6; }
+      .o2 { fill: #13213a; stroke: #38bdf8; stroke-width: 1.6; }
+      .o3 { fill: #1d1733; stroke: #a78bfa; stroke-width: 1.6; }
+      .alt { fill: #111827; stroke: #64748b; stroke-width: 1.3; stroke-dasharray: 6 4; }
+      .warn { fill: #2a1618; stroke: #f87171; stroke-width: 1.4; }
+      .base { fill: #111827; stroke: #94a3b8; stroke-width: 1.3; }
+      .qh { fill: #fde68a; font-size: 16px; font-weight: 700; }
+      .h { fill: #f1f5f9; font-size: 16px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13px; }
+      .k { fill: #94a3b8; font-size: 13px; font-weight: 600; }
+      .yes { fill: #5eead4; font-size: 14px; font-weight: 700; }
+      .no { fill: #fca5a5; font-size: 14px; font-weight: 700; }
+      .flow { fill: none; stroke: #e2e8f0; stroke-width: 1.8; stroke-dasharray: 7 6; animation: dash 1.3s linear infinite; }
+      .flowA { fill: none; stroke: #fbbf24; stroke-width: 1.6; stroke-dasharray: 4 5; animation: dash 1.6s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -26; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="940" rx="16"/>
+  <text class="title" x="30" y="44">沙箱后端怎么选：三个问题</text>
+  <text class="sub" x="30" y="72">琥珀框是问题，彩色框是结论：① 只用 agent-sandbox、② 只用 OpenSandbox、③ OpenSandbox 叠在 agent-sandbox 上。每个结论下面列出还要自己补的</text>
+
+  <!-- Q1 -->
+  <rect class="q" x="450" y="96" width="500" height="84" rx="12"/>
+  <text class="qh" x="470" y="126">问题 1：控制面要不要进沙箱执行命令、读写文件？</text>
+  <text class="t" x="470" y="152">驱动编码 CLI、代码解释器 → 要；agent 本身是常驻服务，</text>
+  <text class="t" x="470" y="171">控制面只给它转发 HTTP → 不要</text>
+
+  <!-- O1 -->
+  <rect class="o1" x="30" y="240" width="390" height="236" rx="12"/>
+  <text class="h" x="50" y="270" fill="#5eead4">① 只用 agent-sandbox</text>
+  <text class="t" x="50" y="296">平台写 Template + WarmPool，控制面提交 Claim，</text>
+  <text class="t" x="50" y="317">经 router 访问沙箱里的服务</text>
+  <text class="k" x="50" y="347">还要补</text>
+  <text class="t" x="50" y="371">· router 鉴权（tokenreview / scoped-token）</text>
+  <text class="t" x="50" y="392">· 跨暂停要留的文件放进 PVC</text>
+  <text class="t" x="50" y="413">· 出站域名策略、凭据注入（第 04 篇网关）</text>
+  <text class="t" x="50" y="434">· Claim 别带 env，否则吃不到预热池</text>
+  <text class="t" x="50" y="455">· 改写网络策略时自己封 169.254.0.0/16</text>
+
+  <!-- Q2 -->
+  <rect class="q" x="480" y="250" width="440" height="84" rx="12"/>
+  <text class="qh" x="500" y="280">问题 2：底层沙箱对象必须是 agent-sandbox？</text>
+  <text class="t" x="500" y="306">集群里已经用它统一管所有沙箱、按 Sandbox</text>
+  <text class="t" x="500" y="325">对象做盘点和运维</text>
+
+  <!-- O2 -->
+  <rect class="o2" x="980" y="240" width="390" height="236" rx="12"/>
+  <text class="h" x="1000" y="270" fill="#7dd3fc">② 只用 OpenSandbox</text>
+  <text class="t" x="1000" y="296">控制面调 REST / SDK，编排层是 BatchSandbox</text>
+  <text class="t" x="1000" y="317">和 Pool，访问层是 execd；参考实现测试配置</text>
+  <text class="k" x="1000" y="347">还要补</text>
+  <text class="t" x="1000" y="371">· 每个 Pool 显式写 runtimeClassName</text>
+  <text class="t" x="1000" y="392">· 沙箱命名空间加兜底网络策略</text>
+  <text class="t" x="1000" y="413">· 快照仓库的保留与清理</text>
+  <text class="t" x="1000" y="434">· 恢复留容量：预热池补货会抢位置</text>
+  <text class="t" x="1000" y="455">· 运维 lifecycle server（单副本）</text>
+
+  <!-- Q3 -->
+  <rect class="q" x="480" y="410" width="440" height="84" rx="12"/>
+  <text class="qh" x="500" y="440">问题 3：暂停后要保留整个 rootfs 吗？</text>
+  <text class="t" x="500" y="466">harness 的原生会话文件、装好的依赖都在容器层，</text>
+  <text class="t" x="500" y="485">恢复后要接着用（第 05 篇的 Durable 会话）</text>
+
+  <!-- O3 -->
+  <rect class="o3" x="480" y="560" width="440" height="210" rx="12"/>
+  <text class="h" x="500" y="590" fill="#c4b5fd">③ OpenSandbox 叠在 agent-sandbox 上</text>
+  <text class="t" x="500" y="616">workload_provider 设成 agent-sandbox；上层 execd，</text>
+  <text class="t" x="500" y="637">底层核心 Sandbox；参考实现生产配置</text>
+  <text class="k" x="500" y="667">还要补 / 要接受</text>
+  <text class="t" x="500" y="691">· 给 server 授 agents.x-k8s.io 的 RBAC</text>
+  <text class="t" x="500" y="712">· 模板里加 Kata 池的 toleration；兜底网络策略</text>
+  <text class="t" x="500" y="733">· 用不上 WarmPool；两边 API 版本要对得上</text>
+  <text class="t" x="500" y="754">· 暂停只删 Pod，跨暂停的文件放 PVC</text>
+
+  <!-- conflict note -->
+  <rect class="warn" x="980" y="560" width="390" height="130" rx="12"/>
+  <text class="h" x="1000" y="588" fill="#fca5a5">问题 2 和 3 都是"是"：有冲突</text>
+  <text class="t" x="1000" y="614">叠加模式下暂停变成 Suspended，不存 rootfs；</text>
+  <text class="t" x="1000" y="635">快照目前只能从 BatchSandbox 生成。</text>
+  <text class="t" x="1000" y="656">二选一：退回 ②，或者接受只保留 PVC 走 ③。</text>
+  <text class="t" x="1000" y="677">参考实现的测试环境就是因此退回了 ②</text>
+
+  <!-- alt: agent-sandbox + own daemon -->
+  <rect class="alt" x="30" y="520" width="390" height="130" rx="12"/>
+  <text class="h" x="50" y="548" fill="#cbd5e1">旁路：问题 1 是"要"，仍想只用 ①</text>
+  <text class="t" x="50" y="574">在镜像里补一个守护进程：项目的 sandboxd</text>
+  <text class="t" x="50" y="595">（尚早期）、E2B 的 envd，或自己写。</text>
+  <text class="t" x="50" y="616">能用，但访问层（执行、文件、输出流、</text>
+  <text class="t" x="50" y="637">鉴权）都得自己维护</text>
+
+  <!-- edges -->
+  <path class="flow" d="M450,138 L225,138 L225,238" marker-end="url(#arr)"/>
+  <text class="no" x="300" y="128">不要</text>
+  <path class="flow" d="M700,180 L700,248" marker-end="url(#arr)"/>
+  <text class="yes" x="712" y="220">要</text>
+  <path class="flow" d="M920,292 L978,292" marker-end="url(#arr)"/>
+  <text class="no" x="932" y="282">否</text>
+  <path class="flow" d="M700,334 L700,408" marker-end="url(#arr)"/>
+  <text class="yes" x="712" y="376">是</text>
+  <path class="flow" d="M700,494 L700,558" marker-end="url(#arr)"/>
+  <text class="no" x="712" y="532">否</text>
+  <path class="flow" d="M920,470 L950,470 L950,620 L978,620" marker-end="url(#arr)"/>
+  <text class="yes" x="958" y="540">是</text>
+  <path class="flowA" d="M462,180 L462,585 L422,585" marker-end="url(#arrA)"/>
+  <text class="t" x="426" y="540" fill="#fde68a">或者</text>
+
+  <!-- base -->
+  <rect class="base" x="30" y="800" width="1340" height="110" rx="12"/>
+  <text class="h" x="50" y="828">无论走哪条路</text>
+  <text class="t" x="50" y="854">两者都只管"房间"：会话、授权、凭据、审计还是控制面和治理平面的事（第 03、04 篇）。</text>
+  <text class="t" x="50" y="878">上线前在沙箱里跑一遍同样的检查：uname -r 确认在 VM 里；没有 SA token；集群 DNS、API server、元数据地址的连通情况与预期一致。</text>
+  <text class="t" x="50" y="900">三种用法的默认值差得很远，而且都不会报错。</text>
+</svg>
