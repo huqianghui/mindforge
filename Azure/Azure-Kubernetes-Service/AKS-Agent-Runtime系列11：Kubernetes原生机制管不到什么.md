@@ -1,5 +1,5 @@
 ---
-title: AKS Agent Runtime 系列 01 补充二：Kubernetes 原生机制管不到什么
+title: AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么
 created: 2026-11-15
 tags:
   - aks
@@ -13,7 +13,7 @@ tags:
 description: Kubernetes 已经有 RBAC、NetworkPolicy、TokenReview，但 agent 平台的会话和治理需求映射不过去。RBAC 只在 API server 上判断，主体是 ServiceAccount，看不到请求内容；NetworkPolicy 只认 IP 和端口，不知道连接属于哪个会话。所以它们只能守底线——沙箱没有集群权限、出站只剩一条路——而会话、终端用户、资源加动作的授权、凭据、模型、harness、agent 调 agent、审批与审计、配额这些 agent 特有的事要另外补。文中逐项说明要管什么、原生机制为什么不够、能映射到哪一步，以及 agent-sandbox 和 OpenSandbox 各自覆盖了哪些；最后对照两套实现已经在用的社区组件（agentgateway、Envoy、OpenFGA、cert-manager、Cilium 等）、社区还有但没用的（Dapr、Kyverno、SPIRE 等），以及复用不了、要自己写的那一层——认识会话、终端用户和资源动作的语义
 ---
 
-# AKS Agent Runtime 系列 01 补充二：Kubernetes 原生机制管不到什么
+# AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么
 
 [系列 01](AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md) 里，会话平面那一行 AKS 一格都填不上，治理平面也只有 Workload Identity 和网络策略可用。Kubernetes 已经有 RBAC、NetworkPolicy、TokenReview，这些机制能管到哪里、在哪里停下，决定了 agent 平台要自己补多少。
 

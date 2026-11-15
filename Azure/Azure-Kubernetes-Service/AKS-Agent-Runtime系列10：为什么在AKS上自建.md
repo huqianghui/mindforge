@@ -56,7 +56,7 @@ description: 这个系列在 AKS 上把 agent runtime 拆成执行、会话、�
 - **⑦ 注册与发现**：kagent、Nacos 的 AI 注册中心、A2A 和 MCP 的 SDK、MCP Registry、oras；要自己写的是 Agent CRD 的语义校验、内容哈希 revision、卡片生成和注册中心之间的同步（第 07 篇）。
 - **⑧ 观测与审计**：OpenTelemetry、Prometheus 和网关的访问日志，Azure 上有 Azure Monitor 和托管 Prometheus。要自己做的是把用户、会话、轮次作为属性一路带下去，让每个副作用都能追溯到触发它的那段模型输出。
 
-图里闪烁的两块，③ 会话控制面和 ⑥ 授权模型，是自建里最重的部分。它们都要认识会话、终端用户和外部资源上的动作，而这正是社区组件不认识的东西（[01 补充二](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)）。最右一列也印证了第一节的结论：如果 agent 是自写 loop、规格也在 Hosted Agents 的范围内，橙色的大部分都不用写。
+图里闪烁的两块，③ 会话控制面和 ⑥ 授权模型，是自建里最重的部分。它们都要认识会话、终端用户和外部资源上的动作，而这正是社区组件不认识的东西（[系列 11](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)）。最右一列也印证了第一节的结论：如果 agent 是自写 loop、规格也在 Hosted Agents 的范围内，橙色的大部分都不用写。
 
 ## 四、自建的代价
 

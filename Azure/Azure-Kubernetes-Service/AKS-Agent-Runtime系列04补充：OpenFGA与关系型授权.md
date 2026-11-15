@@ -159,12 +159,12 @@ OpenFGA 只回答"关系成不成立"。放回第 04 篇那条出站路上，下
 - **凭据**：授权通过之后，网关再去凭据代理取。
 - **代表哪个终端用户**：模型里的主体是应用，不是用户。如果要做"用户 U 通过应用 A 访问资源"，模型要加上用户类型和委托关系，令牌层面还要配合 OBO（[第 09 篇](AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)）。
 
-这几条边界，正好是 [01 补充二](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)里"社区组件只认识关系和规则，不认识会话"的一个具体例子：OpenFGA 把"三方交集"算得又快又准，而把请求翻译成这道题，是决策点自己写的那 62 毫秒。
+这几条边界，正好是 [系列 11](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)里"社区组件只认识关系和规则，不认识会话"的一个具体例子：OpenFGA 把"三方交集"算得又快又准，而把请求翻译成这道题，是决策点自己写的那 62 毫秒。
 
 ## 相关阅读
 
 - [AKS Agent Runtime 系列 04：出站治理与逐请求授权](AKS-Agent-Runtime系列04：出站治理与逐请求授权.md)——OpenFGA 所在的那条出站路
-- [AKS Agent Runtime 系列 01 补充二：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)——RBAC 为什么表达不了三方交集
+- [AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)——RBAC 为什么表达不了三方交集
 - [AKS Agent Runtime 系列 08：模型接入层](AKS-Agent-Runtime系列08：模型接入层.md)——按请求体模型名授权
 - [AKS Agent Runtime 系列 09：Agent 以谁的身份行事](AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)——终端用户与 OBO
 
