@@ -41,7 +41,24 @@ description: 这个系列在 AKS 上把 agent runtime 拆成执行、会话、�
 
 还有两件可以算半个理由：一个网关统一接多家模型和多种协议（第 08 篇），以及控制面要按自己的规则改（会话分配、回收策略、高可用）。前者在 Hosted Agents 里由容器代码自己决定，后者是平台托管的代价：省了运维，也就少了这部分控制权。
 
-## 三、自建的代价
+## 三、自建时每一层用什么
+
+决定自建之后，并不是每一层都要从零写。按层次看，底下几层开源和 AKS 已经覆盖得比较好，越往上，现成的组件越只是底座，要自己写的越多：
+
+![在 AKS 上自建 agent runtime：每一层用什么|1000](../../asset/aks-agent-runtime-build-stack-2026-11-15.svg)
+
+- **① 隔离**：AKS 的 Pod Sandboxing 提供 Kata 节点池；社区里还有 gVisor、Firecracker。要自己做的是节点池污点、limits、RuntimeClass，以及"出站默认拒绝、不挂 SA token"这两条底线（第 01 篇、[01 补充](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)）。
+- **② 沙箱编排**：OpenSandbox、agent-sandbox 管预热、领取、执行接口、暂停恢复；kagent、Agent Substrate 是另外两种思路。要自己做的是沙箱 provider 接口、兜底网络策略和快照仓库的清理（[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)）。
+- **③ 会话控制面**：最重的一块。Dapr 的 Actor 和 Workflow、Temporal 可以当持久执行的底座，Service Bus 会话队列和 PostgreSQL 解决多副本；但会话 API、收件箱、状态机、副作用意图、维护循环和对账器，都得自己写（第 03、05、06 篇）。
+- **④ harness**：Claude Code、Codex、Copilot CLI、OpenCode、Pi 都是现成的第三方 CLI；要自己写的是适配器（拼命令、解析输出、续接原生会话）和免确认运行的权限档位（第 03、08 篇）。
+- **⑤ 网关**：agentgateway 一个项目可以做 agent 网关、模型网关、出站网关三种角色，社区里还有 Envoy AI Gateway、Kong、LiteLLM、Higress，Azure 上有 APIM 的 AI 网关。要自己做的是三套网关的配置和信任边界，以及按会话的授权和凭据代理（第 04、07 篇、[08 补充](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)）。
+- **⑥ 授权与身份**：OpenFGA、OPA、SpiceDB 做授权决策，cert-manager、SPIFFE/SPIRE 签发工作负载身份，Kyverno 做准入约束，Entra 提供 Workload ID、Agent ID 和 OBO。要自己写的是"申请、批准、发布"的数据模型、Pod 到会话的映射和 fencing token（第 04、09 篇、[04 补充](AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md)）。
+- **⑦ 注册与发现**：kagent、Nacos 的 AI 注册中心、A2A 和 MCP 的 SDK、MCP Registry、oras；要自己写的是 Agent CRD 的语义校验、内容哈希 revision、卡片生成和注册中心之间的同步（第 07 篇）。
+- **⑧ 观测与审计**：OpenTelemetry、Prometheus 和网关的访问日志，Azure 上有 Azure Monitor 和托管 Prometheus。要自己做的是把用户、会话、轮次作为属性一路带下去，让每个副作用都能追溯到触发它的那段模型输出。
+
+图里闪烁的两块，③ 会话控制面和 ⑥ 授权模型，是自建里最重的部分。它们都要认识会话、终端用户和外部资源上的动作，而这正是社区组件不认识的东西（[01 补充二](AKS-Agent-Runtime系列01补充二：Kubernetes原生机制管不到什么.md)）。最右一列也印证了第一节的结论：如果 agent 是自写 loop、规格也在 Hosted Agents 的范围内，橙色的大部分都不用写。
+
+## 四、自建的代价
 
 AKS 给的是原语：Kata、Workload Identity、节点池、网络策略、CSI。会话层和 harness 编排层都要自己写。这个系列里，我在几天的 PoC 里就撞上了下面这些：
 
@@ -56,7 +73,7 @@ AKS 给的是原语：Kata、Workload Identity、节点池、网络策略、CSI�
 
 所以选 AKS 的前提只有一条：**团队愿意长期维护一个 agent 控制面。** 不愿意，前面那三个理由再充分，也应该先想想能不能在 Hosted Agents 那一侧绕过去。
 
-## 四、怎么选
+## 五、怎么选
 
 ![放在哪：先问 agent 是哪一类，再问三件 Hosted Agents 不管的事|900](../../asset/aks-agent-runtime-decision-2026-11-13.svg)
 
@@ -68,7 +85,7 @@ AKS 给的是原语：Kata、Workload Identity、节点池、网络策略、CSI�
 
 两边并不互斥。同一个组织完全可以把 A、C 类放在 Foundry，只把 B 类（编码 CLI）放在 AKS，共用同一个 Entra 租户、同一套 agent 身份。第 07 篇的统一外壳和第 09 篇的身份设计，在这种混合布局里一样用得上。
 
-## 五、这个系列留下的东西
+## 六、这个系列留下的东西
 
 最后把这个系列的东西整理一下，方便以后接着做：
 
