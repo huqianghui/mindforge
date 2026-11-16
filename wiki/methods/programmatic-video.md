@@ -5,7 +5,7 @@ aliases:
   - "用代码生成视频"
   - "Remotion / HyperFrames 工作流"
 created: "2026-10-14"
-updated: "2026-10-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - method
@@ -174,6 +174,7 @@ related_methods: []
 
 ## 关联概念
 
+- [[clock-driven-rendering]] — `part-of` 时钟驱动渲染是两种驱动方式之一
 - [[frame-driven-rendering]] — `uses` 整条工作流以帧号为唯一时间源：分镜按帧区间写、动画按帧号算、导出可并行且确定
 - [[compute-locus-spectrum]] — `uses` 用计算位置判据决定渲染位置（服务端 vs 客户端）与图形技术（CSS 足够 vs 上 WebGL/WebGPU），并区分 Blender 离线资产与浏览器实时光栅化
 - [[feedback-loop]] — `implements` "agent 写代码 → 内置浏览器播放 → 按画面发现问题 → 改代码"是反馈闭环在视频生产域的实例

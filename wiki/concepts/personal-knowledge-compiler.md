@@ -9,6 +9,8 @@ tags:
   - obsidian
   - omc
 aliases:
+  - "Knowledge Management"
+  - "知识管理"
   - "个人知识编译器"
   - "PKC"
 related:

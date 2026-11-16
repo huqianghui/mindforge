@@ -1,7 +1,7 @@
 ---
 title: "Codex Desktop Architecture（Codex Desktop 架构机制）"
 created: "2026-09-06"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "Codex Desktop 架构"
   - "三元组合公式"
 related:
+  - "[[agent-harness]]"
   - "[[model-harness-codesign]]"
   - "[[computer-use]]"
   - "[[mcp-vs-cli]]"
@@ -115,6 +116,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 
 ## 关联概念
 
+- [[agent-harness]] — `implements` Codex Desktop 是一个具体 harness 的架构拆解
 - [[model-harness-codesign]] — `grounds` 三元组合与 per-model 切片架构为"第一方绑定路线"提供字段级实证载体
 - [[computer-use]] — `uses` Computer Use 是 bundled plugins 一元的旗舰 payload；其分发链与治理层论断归口该页
 - [[mcp-vs-cli]] — `uses` 架构内部用 MCP 作 CLI↔native helper 的解耦协议

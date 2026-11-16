@@ -10,6 +10,7 @@ tags:
   - qmd
   - fabric-iq
 aliases:
+  - "RAG"
   - "RAG 架构对比"
 related:
   - "[[llm-wiki]]"

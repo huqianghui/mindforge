@@ -11,6 +11,8 @@ tags:
   - orchestration
   - knowledge-graph
 aliases:
+  - "Knowledge Graph"
+  - "知识图谱"
   - "Graph Engineering"
   - "图工程"
 related:

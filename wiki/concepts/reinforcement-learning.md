@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "Reinforcement Learning"
   - "RL"
 related:
+  - "[[rl-infra-framework-selection]]"
   - "[[agent-lightning]]"
   - "[[agent-paradigms]]"
   - "[[automatic-prompt-optimization]]"
@@ -186,6 +187,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 
 ## 关联概念
 
+- [[rl-infra-framework-selection]] — `part-of` RL 基建框架选型的决策页
 - [[bitter-lesson]] — `grounds` RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）
 - [[continual-self-improving-ai]] — `extends` 自我改进方法试图赋予 LLM Agent 类 RL 的学习能力
 - [[agent-paradigms]] — `grounds` RL 的 trial-and-error 是 Agent 范式的理论起点

@@ -9,6 +9,8 @@ tags:
   - skill
   - cognitive-architecture
 aliases:
+  - "Skill"
+  - "Agent Skill"
   - "Google Five Skill Patterns"
   - "Skill 认知模式"
 related:

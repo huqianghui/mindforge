@@ -10,6 +10,8 @@ tags:
   - networking
   - voice-agent
 aliases:
+  - "TURN"
+  - "STUN"
   - "ICE NAT 穿透"
   - "ICE / STUN / TURN"
   - "Interactive Connectivity Establishment"

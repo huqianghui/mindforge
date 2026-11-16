@@ -11,6 +11,8 @@ tags:
   - vllm
   - sglang
 aliases:
+  - "Prompt Cache"
+  - "prompt caching"
   - "前缀缓存"
   - "Prefix Caching"
   - "Prefix Cache"

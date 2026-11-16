@@ -1,7 +1,7 @@
 ---
 title: "自动提示优化（APO, Automatic Prompt Optimization）"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -11,12 +11,15 @@ tags:
   - beam-search
   - textual-gradient
 aliases:
+  - "Text Space Optimization"
+  - "文本空间优化"
   - "APO"
   - "Automatic Prompt Optimization"
   - "自动提示优化"
   - "文本梯度"
   - "Textual Gradient"
 related:
+  - "[[prompt-optimization-tool-selection]]"
   - "[[agent-lightning]]"
   - "[[bitter-lesson]]"
   - "[[generation-evaluation-separation]]"
@@ -154,6 +157,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 
 ## 关联概念
 
+- [[prompt-optimization-tool-selection]] — `part-of` APO 工具选型的决策页
 - [[agent-lightning]] — `part-of` APO 是 agent-lightning `algorithm/` 槽位的内置算法（一等公民），三级阶梯第一级
 - [[method-agnostic]] — `part-of` APO 是 method-agnostic 三级阶梯最低一档（不动权重、`sorted()[:beam_width]` 用 reward 排序选 prompt）
 - [[rejection-sampling-finetuning]] — `contrasts` 同属 agent-lightning method-agnostic 阶梯，APO 用 reward 排序选 prompt（不动权重）、RAFT 用 reward 筛轨迹做微调（改权重），共享同一份 grader

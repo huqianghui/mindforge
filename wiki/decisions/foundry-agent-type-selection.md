@@ -13,6 +13,9 @@ related_methods: []
 related:
   - "[[agent-runtime]]"
   - "[[agent-platform]]"
+aliases:
+  - "Hosted Agent"
+  - "Prompt Agent"
 ---
 
 # Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted
@@ -224,7 +227,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 ## 关联概念
 
 - [[agent-runtime]] — `grounds` Prompt / Hosted 的分水岭是 runtime 归属
-- [[agent-platform]] — `uses` Foundry 作为托管 agent platform 的选型
+- [[agent-platform]] — `part-of` 在 Foundry 这个托管 agent platform 上的类型选择
 - [[agent-session-control-plane]] — `constrains` 选 AKS 自建就意味着要自己写并长期维护会话控制面
 
 ## 关联方法

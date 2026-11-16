@@ -17,6 +17,7 @@ aliases:
   - "Agent 365"
   - "agent 目录"
 related:
+  - "[[foundry-agent-type-selection]]"
   - "[[agent-runtime]]"
   - "[[agent-framework]]"
   - "[[agent-harness]]"
@@ -123,6 +124,7 @@ Agent Platform 回答"企业怎么构建、运行、发现、治理这些 agent"
 
 ## 关联概念
 
+- [[foundry-agent-type-selection]] — `part-of` Foundry 上 Prompt / Hosted 的选型
 - [[agent-runtime]] — `part-of` 广义 platform 的核心；与狭义 platform 相比，runtime 在数据路径上逐请求执行，platform 管台账与合规
 - [[copilot-studio]] — `implements` 三层全包的托管 agent platform
 - [[foundry-agent-service]] — `implements` Prompt Agent 全包、Hosted Agent 托管 runtime

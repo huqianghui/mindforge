@@ -15,6 +15,7 @@ aliases:
   - "编码 harness"
   - "coding harness"
 related:
+  - "[[codex-desktop-architecture]]"
   - "[[harness-engineering]]"
   - "[[agent-framework]]"
   - "[[agent-runtime]]"
@@ -143,6 +144,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 
 ## 关联概念
 
+- [[codex-desktop-architecture]] — `part-of` 具体实现：Codex Desktop 的架构拆解
 - [[harness-engineering]] — `grounds` 把 harness 做好的工程方法
 - [[claude-code-memory-system]] — `part-of` 一个具体 harness 的记忆与指令加载机制
 - [[agent-framework]] — `contrasts` framework 是开发期材料，harness 是运行期成品

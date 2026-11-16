@@ -1,7 +1,7 @@
 ---
 title: "Enterprise Ontology"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ aliases:
   - "Fabric IQ"
   - "Palantir Ontology"
 related:
+  - "[[ontology-philosophy]]"
   - "[[rag-architecture-comparison]]"
 ---
 
@@ -123,6 +124,7 @@ related:
 
 ## 关联概念
 
+- [[ontology-philosophy]] — `implements` 本体论在企业数据语义层的落地
 - [[rag-architecture-comparison]] — `grounds` Ontology 是企业级 RAG 的语义基础层
 
 ## 来源日记

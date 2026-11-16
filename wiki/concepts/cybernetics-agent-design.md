@@ -11,6 +11,8 @@ tags:
   - harness-engineering
   - methodology
 aliases:
+  - "Control Theory"
+  - "控制论"
   - "控制论五层"
   - "Cybernetics Agent Design"
   - "控制论与 Agent 设计"

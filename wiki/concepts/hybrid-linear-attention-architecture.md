@@ -11,6 +11,7 @@ tags:
   - mamba
   - hybrid-attention
 aliases:
+  - "Hybrid Attention"
   - "Hybrid 架构"
   - "Hybrid Linear-Attention Architecture"
   - "线性注意力+全注意力混合"

@@ -1,7 +1,7 @@
 ---
 title: "规范驱动 vs 方法论框架：Vibe Coding 工具选型"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - decision
@@ -14,6 +14,8 @@ related_concepts:
 related_methods:
   - "[[gsd-project-scale-selection]]"
   - "[[gsd-five-step-workflow]]"
+related:
+  - "[[spec-driven-development]]"
 ---
 
 # 规范驱动 vs 方法论框架：Vibe Coding 工具选型
@@ -90,6 +92,7 @@ Vibe Coding 生态中存在多个框架（GSD、SpecKit、OpenSpec、Superpowers
 
 ## 关联概念
 
+- [[spec-driven-development]] — `part-of` 规范驱动与方法论框架的取舍
 - [[framework-selection]] — `grounds` 此决策的概念基础
 - [[three-layer-plugin-architecture]] — `produces` 决策产物：GSD + Superpowers + gstack 三层架构
 

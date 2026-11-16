@@ -1,7 +1,7 @@
 ---
 title: "Spec-Driven Development（SDD）"
 created: "2026-07-21"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -11,6 +11,7 @@ aliases:
   - "SDD"
   - "规格驱动开发"
 related:
+  - "[[spec-driven-vs-methodology-framework]]"
   - "[[generation-evaluation-separation]]"
   - "[[harness-engineering]]"
 ---
@@ -102,6 +103,7 @@ Spec-Driven Development（规格驱动开发）是 AI 时代的开发方法论�
 
 ## 关联概念
 
+- [[spec-driven-vs-methodology-framework]] — `part-of` 规范驱动开发相关的框架取舍
 - [[generation-evaluation-separation]] — `implements` "AI 起草，人类拍板"的分工是生成-评估分离原则在规格/合规域的具体实施
 - [[harness-engineering]] — `implements` "确定性脚本验证、不交给 LLM"是 Harness 工程原则在方法论层的具体实施
 

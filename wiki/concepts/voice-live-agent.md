@@ -1,7 +1,7 @@
 ---
 title: "Voice Live Agent"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "语音实时 Agent"
   - "Realtime Voice Agent"
 related:
+  - "[[voice-agent-build-approach]]"
   - "[[foundry-agent-type-selection]]"
   - "[[intelligent-dictation]]"
 ---
@@ -337,6 +338,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ## 关联概念
 
+- [[voice-agent-build-approach]] — `part-of` 语音 agent 怎么搭的决策页
 - [[viseme]] — `uses` 数字人 video 头像的口型驱动信号与时间轴事件协议
 - [[end-of-turn-detection]] — `uses` turn_detection 内可选的 EOU 子对象，判停精度的第二代/三代方法
 
