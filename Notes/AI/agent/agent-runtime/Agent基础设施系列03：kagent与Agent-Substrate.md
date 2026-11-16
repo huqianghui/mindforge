@@ -110,7 +110,7 @@ Substrate 把每个 actor 都当成不可信、而且彼此敌对：
 - **worker 不够时，请求会先排队。** router 可以把请求暂存（request parking），等有 worker 空出来再转发，而不是直接回 503；超过等待预算才失败。池子按实测的峰值并发来定，再按已分配的 worker 数做自动扩缩。
 - **对象存储只支持 GCS 和 S3。** 内置的存储插件只有这两种，Azure 上要用 S3 兼容的存储（kagent 的本地安装用的就是集群内的 rustfs），或者自己实现存储插件。
 - **文档和工具链以 GKE 为先。** 一键安装脚本、IAM 配置都是围绕 GCP 写的；自带集群还要求 PodCertificateRequest 和 ClusterTrustBundle 这类较新的 Kubernetes API。AKS 上的路径要自己验证，microVM 类别还依赖节点支持嵌套虚拟化。
-- **很多设计还在路上。** 项目是 pre-1.0，明说不保证向后兼容；架构文档开头就写着"大部分是目标设计，尚未实现"，自动扩缩、跨节点的状态共享、actor 在多个 worker 之间迁移后的观测串联，都还是待解决的问题。
+- **很多设计还在路上。** 写这篇时项目是 pre-1.0，明说不保证向后兼容；架构文档开头就写着"大部分是目标设计，尚未实现"，自动扩缩、跨节点的状态共享、actor 在多个 worker 之间迁移后的观测串联，都还是待解决的问题。2026-11-05 它发布了 1.0、在 GKE 上 GA，但 GKE 文档同时写明：只支持 CPU 节点、不支持 GPU 直通，挂起时不保留打开的网络连接，数据库和 MCP 连接都要在恢复后重连。
 
 ## 三、kagent：把 agent 写成 Kubernetes 资源
 
@@ -199,6 +199,7 @@ spec:
 
 - [Agent Substrate](https://github.com/agent-substrate/substrate)、[Agent Substrate Architecture](https://github.com/agent-substrate/substrate/blob/main/docs/architecture.md)
 - [Agent Substrate brings high-density, scalable, trusted infrastructure to GKE](https://cloud.google.com/blog/products/containers-kubernetes/agent-substrate-available-on-gke)
+- [Open infrastructure for autonomous agents comes to CNCF](https://cloud.google.com/blog/products/containers-kubernetes/open-infrastructure-for-autonomous-agents-comes-to-cncf)、[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)
 - [Is a Pod the right deployment unit for an AI agent?](https://www.cncf.io/blog/2026/07/14/is-a-pod-the-right-deployment-unit-for-an-ai-agent)
 - [The Future of kagent](https://kagent.dev/blog/the-future-of-kagent)
 - [kagent](https://github.com/kagent-dev/kagent)、[Agent Substrate – kagent docs](https://kagent.dev/docs/kagent/examples/agent-substrate)

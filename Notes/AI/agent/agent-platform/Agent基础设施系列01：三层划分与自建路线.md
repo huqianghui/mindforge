@@ -121,7 +121,7 @@ spec:
 kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod 解决了隔离、身份、网络策略和观测归属，但 agent 和微服务不一样：它可能只在接到任务时醒来跑几十秒，然后长时间空闲；可能临时派生几个 sub-agent；可能停下来等人审批。为每个潜在的 agent 常驻一个 Pod 很浪费。这就是 **Agent Substrate** 要解决的问题：它在 Kubernetes 之上加了一层控制面，把大量 actor（逻辑上的 agent）映射到少量常驻的 worker pod 上，actor 空闲时把内存和文件系统快照到对象存储、释放 worker，来请求时再恢复到任意空闲 worker。Kubernetes 只看到 WorkerPool 和 ActorTemplate，看不到 actor 本身。项目由 Google 发起，宣称 10~30 倍超售，演示用 8 个 pod 承载约 250 个有状态 actor，10 月刚通过 CNCF Sandbox 投票。
 
 > [!CAUTION]
-> Agent Substrate 仍是 pre-1.0，仓库自己写着 API 几乎肯定会变。它代表的方向（Pod 是执行单元，但不再是 agent 的部署、身份和生命周期单元）很值得跟，但现阶段只适合 PoC，不建议直接放进客户的生产方案。
+> 写这篇时 Agent Substrate 还是 pre-1.0。2026-11-05 它发布了 1.0，在 GKE 上 GA，同时捐给了 CNCF；kagent 1.0 也把运行时改建在它上面。但 GKE 文档列了三条限制：只支持 GKE Standard 1.37 以上的 x86 CPU 节点、不支持 GPU 直通、挂起时不保留打开的网络连接（数据库和 MCP 连接都要在恢复后重连），GitHub README 也还写着 pre-1.0。所以它现在可以进生产评估了，但在 AKS 上还没有托管形态，要自己装、自己验证这几条限制对 agent 有没有影响。
 
 ## 三、Hosted Agent 和 Agent 365 分别替你做了哪一层
 
@@ -181,7 +181,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 | OpenSandbox | 沙箱编排 | 开源，带多语言 SDK 与 Credential Vault | 需要现成执行 API 时选 |
 | Dapr Workflow / Dapr Agents | 持久执行 | Dapr 是 CNCF 毕业项目，Dapr Agents 1.0 GA | 长任务按需引入 |
 | kagent | 调度与生命周期 | CNCF Sandbox | 用 CRD 和 GitOps 管 agent |
-| Agent Substrate | 调度与生命周期 | pre-1.0，CNCF Sandbox | 跟进方向，只做 PoC |
+| Agent Substrate | 调度与生命周期 | 1.0（2026-11），GKE 上 GA，CNCF Sandbox | 仅 CPU、挂起断开连接，AKS 上先做 PoC |
 
 最后一点：三条路可以在同一个企业里并存。轻量的 agent 放 Hosted Agent，需要执行面控制的放自建 runtime，API 型 agent 就是普通服务；身份和台账统一收在 Entra 与 Agent 365。客户要的"自主可控"，多数时候指的是 Runtime 这一层，而不是要自己从头再造一个 Platform。
 
@@ -202,6 +202,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 
 - [kagent](https://github.com/kagent-dev/kagent)、[Is a Pod the right deployment unit for an AI agent?](https://www.cncf.io/blog/2026/07/14/is-a-pod-the-right-deployment-unit-for-an-ai-agent)
 - [Agent Substrate](https://github.com/agent-substrate/substrate)、[Agent Substrate brings high-density, scalable, trusted infrastructure to GKE](https://cloud.google.com/blog/products/containers-kubernetes/agent-substrate-available-on-gke)
+- [Open infrastructure for autonomous agents comes to CNCF](https://cloud.google.com/blog/products/containers-kubernetes/open-infrastructure-for-autonomous-agents-comes-to-cncf)、[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)
 - [Agent Sandbox](https://github.com/kubernetes-sigs/agent-sandbox)、[Kata-Isolated Per-Owner Agent Warm Pool on AKS](https://agent-sandbox.sigs.k8s.io/docs/use-cases/examples/kata-aks)
 - [OpenSandbox](https://github.com/opensandbox-group/OpenSandbox)
 - [Pod sandboxing with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/use-pod-sandboxing)
