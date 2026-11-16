@@ -1,7 +1,7 @@
 ---
 title: "RAG Architecture Comparison"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -75,8 +75,20 @@ related:
 
 > 基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。
 
+### Claim: 检索质量的上限取决于让不让模型自己决定"搜什么、读哪里、什么时候够"——AgenticRAG 用 Search / Find / Open / Summarize 四个工具迭代检索，BRIGHT 上 R@1 从单次检索的 8.41% 升到 49.6%，无需训练
+
+- **来源**：[[2026-05-28-AgenticRAG]]
+- **首次出现**：2026-05-28
+- **最近更新**：2026-11-16
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：理论（长效）
+
+> 传统 RAG 是固定 pipeline：检索一次再生成。AgenticRAG 把检索做成 agent loop：Search 广度召回（每次至多 10 条候选、默认 5 路子查询并行），Find 在指定文档内定位片段，Open 从行号起读整段原文，Summarize 在上下文接近上限时压缩并保留引用 ID。BRIGHT 数据集上 Claude Sonnet 4.5 从单次检索 8.41% R@1 提到 49.6%（Oracle 上限 94%），推理时集成、不需训练。与 Azure AI Search Agentic Retrieval 的分工对应：搜索引擎只负责召回，"读不读、读哪段、要不要再搜"交给模型。论文精读，数字为论文报告值。
+
 ## 冲突与演进
 
+- 2026-11-16：完备性补抽 [[2026-05-28-AgenticRAG]]，新增 1 条 Claim。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 1
 
@@ -87,5 +99,6 @@ related:
 
 ## 来源日记
 
+- [[2026-05-28-AgenticRAG]] — 把检索控制权交给模型：四工具迭代与消融
 - [[qmd与Foundry-IQ的RAG能力对比]] — RAG 对比分析
 - [[2026-04-12-周日]] — Azure 企业级 LLM Wiki 架构方案探索

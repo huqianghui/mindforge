@@ -104,8 +104,20 @@ Agent Platform 回答"企业怎么构建、运行、发现、治理这些 agent"
 
 > 统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定"配置和权限"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。
 
+### Claim: agent 资产的分发走 OCI 供应链——Registry 本质是内容寻址存储，skills 包、模型权重、SBOM、签名都可以作为 OCI artifact 进 ACR，按 digest 拉取、用 Cosign 在集群侧验签
+
+- **来源**：[[OCI镜像工具生态]]、[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
+- **首次出现**：2026-11
+- **最近更新**：2026-11-16
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：实测经验
+
+> 五个工具四类问题：Skopeo 搬运（registry 之间复制同步）、crane / regctl 操作与调试（tag、digest、manifest）、ORAS 把任意内容存成 OCI artifact、Cosign 签名与验证。认知上的转变是从"容器运行时视角"（镜像 → registry → Kubernetes，关心怎么跑）到"供应链视角"（镜像、模型、SBOM、签名都是 artifact，关心怎么管）。agent platform 里的落点：系列 07 把 skills 与 AGENTS.md 用 oras 打包推 ACR、controller 解析 digest 写进 revision、沙箱按 digest 拉（按 tag 拉会让同一 revision 的两个会话拿到不同内容）；再往前一步就是对这些 artifact 签名，在准入时验签，让"发布了哪个版本的 agent"有可验证的来源。验签一步本库尚未实践。
+
 ## 冲突与演进
 
+- 2026-11-16：完备性补抽 [[OCI镜像工具生态]]，新增 1 条 Claim。
 - 2026-11-16：独立建页。revision 一条原在 [[agent-infra-three-layers]]，原文搬来；新增托管 platform 打包层数、AKS 自建 platform、治理两处、发现三层、注册中心以谁为准五条。按用户界定区分广义（整套产品，含 runtime）与狭义（三层里的 Platform 层）两种用法：Copilot Studio、Foundry、Managed Apps 与 AKS 系列都是在讲广义的 agent platform。
 - Agent 365、Nacos、kagent 作别名与证据，不建产品页（微软三支柱之外的产品沿用"产品名不建页"规则）。
 
@@ -125,6 +137,7 @@ Agent Platform 回答"企业怎么构建、运行、发现、治理这些 agent"
 
 ## 来源日记
 
+- [[OCI镜像工具生态]] — OCI Registry 作为 artifact 仓库：镜像、模型、SBOM、签名统一进供应链
 - [[Foundry-Agent三种形态对比与选型]] — Prompt / Hosted 各托管哪几层
 - [[Copilot-Studio系列03：四种Harness对比与选型]] — 选 harness 即选 runtime
 - [[Copilot-Managed-Runtime系列03：宿主沙箱与安全边界]] — 托管应用平台的边界

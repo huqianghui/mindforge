@@ -6,7 +6,7 @@
   2. 层级缺口：没有任何 part-of / implements / extends 关联的页——平铺挂着、找不到上层概念
   3. 验证缺口：标着"未实测 / 设计推论 / 单一实现"或置信度 < 0.7 的 active Claim——下一批实验清单
   4. 张力缺口：Claim 正文自己写着"两种说法 / 一处说"的地方
-  5. 覆盖缺口：进 git 的文章没有被任何 wiki 页引用——写了但没编译进知识库
+  5. 覆盖缺口：进 git 的文章没有被任何 wiki 页引用——写了但没编译进知识库（coverage-exempt.txt 里的手册、附录除外）
   6. 漂移缺口：Claim 的来源文章在 Claim「最近更新」之后又改过——wiki 结论可能落后于文章
   7. 引导缺口：没有被任何学习路径（wiki/paths）引用的页，按 index 分类汇总——知识在，但没有入口
 
@@ -147,11 +147,19 @@ def article_index(arts):
     return {p.stem: (p, last.get(str(p.relative_to(ROOT)))) for p, _ in arts}
 
 
+def exempt():
+    f = ROOT / "wiki/scripts/coverage-exempt.txt"
+    if not f.exists():
+        return set()
+    return {l.split("\t")[0].strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")}
+
+
 def coverage(pages, idx):
+    skip = exempt()
     cited = set()
     for v in pages.values():
-        cited |= {x.strip() for x in re.findall(r"\[\[([^\]|#]+)", v["text"])}
-    miss = [p for stem, (p, _) in idx.items() if stem not in cited]
+        cited |= {x.strip().split("/")[-1] for x in re.findall(r"\[\[([^\]|#]+)", v["text"])}
+    miss = [p for stem, (p, _) in idx.items() if stem not in cited and str(p.relative_to(ROOT)) not in skip]
     return sorted(miss)
 
 

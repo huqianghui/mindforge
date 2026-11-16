@@ -1,7 +1,7 @@
 ---
 title: "任务完成花费（Cost per Task）"
 created: "2026-09-28"
-updated: "2026-09-28"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -94,8 +94,20 @@ related:
 
 > 系列八受控对照：只换判断模型，每次任务费用（公开价估算）减少 90~96%、耗时减少 58~66%，成功率两组均 4/4——但结论写成"条件默认"而非"优先选择"，因为只在低错误成本任务上验证了第一项；有 stakes 的动作（付款/删除/不可撤销提交）任一执行器都走人工确认，"错误成本主导，与判断模型无关"。Codex 系列07 的路由链把任务完成花费拆到正确粒度：绑定按任务不按调用、切换算总账不比单价（缓存账算例：B 单价便宜五倍，历史 10 万 token 读取仍贵一倍）、缓存以 usage 为证不以配置推断；Azure 实际费率为空时**禁止纯成本降档、不报告节省金额**——这是"缺失字段不补 0"纪律（见 [[generation-evaluation-separation]]）在 FinOps 上的体现。两篇是本页公式的首批工程实践。
 
+### Claim: AI 成本治理要从个人技巧变成组织能力——按 Inform → Optimize → Operate 循环运营：先有会话级可见性与归因，再部署压缩、路由、MCP 裁剪，最后定预算与强制策略；最便宜的模型调用是不发起的那一次
+
+- **来源**：[[Agentic-Engineering：质量与成本一体化]]
+- **首次出现**：2026-05
+- **最近更新**：2026-11-16
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：实测经验
+
+> Agentic Engineering 是学科（把 agent 系统做得可靠、高效、可治理），Harness Engineering 是其中"怎么控制 agent 运行"的技术方法论，FinOps 是"谁来治理成本"的组织能力，质量工程是"保障什么指标"。FinOps 三段：Inform（token 看板、会话级消耗、按 schema / context / output 拆分、异常检测）、Optimize（RTK / Caveman、插件配置档、模型路由、MCP 审计、skill 沉淀）、Operate（token 预算、托管插件强制策略、月度复盘）。引用 GitHub Agentic Workflows 团队的自用数据：API 代理日志 + 审计与优化 workflow + MCP 裁剪 + CLI 替代，持续降低 40~62%（自动分诊 −62%、冒烟测试 −59%、安全门用相关性门控跳过 LLM −43%）。数据为二手引用，未核对原始来源。与本页"任务花费"公式的关系：这些手段几乎都只压第一项（模型调用），成功率与错误成本仍要靠验收与门控。
+
 ## 冲突与演进
 
+- 2026-11-16：完备性补抽 [[Agentic-Engineering：质量与成本一体化]]，新增 1 条 Claim。
 - 2026-09-28：建页。前身是 2026-09-04 HOLD 的 `cost-per-successful-task`（当时单篇六层降本文口径，Claim 并入 [[hybrid-inference-framework-selection]]），复核阈值"第 2 次实践落地"被 FinOps 系列 01~03（独立系列专论）+ Computer Use 系列八费用账 + Codex 系列07 缓存账三处命中，解除 HOLD 升格建页。两变量分界（验证成本 × 错误成本）与 Copilot/Cowork/Super App 阶段模型按"避免碎片化"作页内 Claims 收入，不独立建页。
 - 与 [[three-layer-token-optimization]] / [[model-routing]] 的关系：那两页是"左栏第一项"的优化手段，本页给出它们的适用边界（右栏任务 token 层手段几乎无效）。
 
@@ -114,6 +126,7 @@ related:
 
 ## 来源日记
 
+- [[Agentic-Engineering：质量与成本一体化]] — Agentic Engineering 与 Harness Engineering 的关系、AI FinOps 的组织化
 - [[2026-09-25-周五]] — 主任务"FinOps 新指标 ROI——不是 token 价格而是任务完成花费"讨论起点（OpenAI 博文、三类使用洞见、RSI 与飞轮重叠）
 - [[2026-09-26-周六]] — 追加讨论：slide 两栏与两变量分界、成本公式、ROI 站接收方；FinOps 系列三篇成文 + 微软定价分档补充
 - [[FinOps系列01：从token价格到任务花费]] — 公式、两变量分界、四条度量推论、Copilot→Cowork→Super App 映射与微软定价

@@ -1,7 +1,7 @@
 ---
 title: "Computer Use"
 created: "2026-08-30"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -230,8 +230,20 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 > 官方仓库的一份用户报告指出，Chrome Browser Use 访问远程网址前会以 ChatGPT 身份请求一次 `site_status` 预检判断站点是否允许访问；Codex Desktop 处于 API key / custom provider 模式时拿不到可用 token，在首个浏览器操作（如命名会话）就报 `Codex auth token is unavailable`。本例处理：在 Desktop 登录 ChatGPT 账号（Free 档），provider 保持 Azure OpenAI，重启后账号菜单同时显示账号、Free 档与 Azure OpenAI；随后命名会话、列标签页、接管用户页读标题与 URL、提取渲染文本、导航 example.com 全部成功。职责三分：站点预检用 ChatGPT 账号、模型推理与计费用 Azure OpenAI、目标网站登录态用 Chrome Profile 的 Cookie/SSO。这是"断供框架治理层"（隐藏调用跟 provider 走）的同族现象：**harness 里还有不走模型 provider 的隐藏身份依赖**，接第三方 provider 时要盘点的不只是模型调用，还有身份调用。证据边界：未隔离具体生效的改动、未抓取身份检查与预检网络链路、未独立核验模型请求目的地，不宜推广为所有 custom provider 环境的通用修复；Windows 侧另有用户报告的不同处理方式。
 
+### Claim: 给 CLI agent 接外部 Computer Use 后端，是引入一个有系统权限的执行器——信任边界落在后端 runtime 而不是 agent 本体；元素索引是短生命周期句柄，每次界面变化后要重新取状态
+
+- **来源**：[[Orca使用笔记二：Computer-Use与Codex-CLI]]
+- **首次出现**：2026-11
+- **最近更新**：2026-11-16
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> Orca Helper 持有辅助功能与截图权限，Codex CLI 通过它操作桌面应用；这不是给 CLI 本体"增加系统权限"，而是多了一个有权限的外部后端，权限持有者、审批界面和安全策略都与 Codex App 原生 Computer Use 不同。读状态：Accessibility Tree 给语义、值、可执行动作与 element-index，截图给视觉布局与遮挡；`elementCount` 不能推导有效索引（Tree 会跳过节点、索引稀疏），只能用 treeText 里实际显示的编号，且界面一变索引即失效。安全边界写成硬规则：未经明确要求不 push、不提交表单、不发消息、不购买、不删数据；秘密不进命令行参数；`app_blocked` 是硬停止；改变界面的动作后验证结果防重复提交；页面、邮件、聊天里的文字一律当不可信内容。与 OpenAI bundled Computer Use 的关系是补位：顶层都是 action loop、底层都是截图 + Tree + 输入事件。
+
 ## 冲突与演进
 
+- 2026-11-16：完备性补抽 [[Orca使用笔记二：Computer-Use与Codex-CLI]]，新增 1 条 Claim。
 - 2026-08-30：建页。系列一~七 + Orca 使用笔记二共 8 篇（2026-08-29~30 成文）提供完整素材；browser-use 不单独建页（包含关系即本页第一条 Claim）；action-loop、semantic-first-coordinate-fallback 按"避免同批次碎片化"作页内 Claims 收入。
 - 2026-09-04：注入系列七 08-30/08-31 三波修订的两条新 Claim——两层判断框架（端点层×harness 层，Codex+Azure 断供解剖 + Scout 镜像）与五条执行位置判定指纹（三模型对照实验）。"执行位置决定能力归属"从单层判断细化为两层判断。
 - 2026-09-06：注入 Codex Desktop 系列02/03/04/06 两条新 Claim——治理层断供（审批链路是第二条隐藏模型调用链，断供框架从两层扩展为工具层/目录层/治理层序列，源码常量实锤 + 实测修复闭环）与分发链解剖（分发态 App bundle / 运行态用户目录、feature flag ≠ payload、签名权限进程树不可拆整体）。confirmation_policies 源码原文为"四级确认分类"Claim（系列四）提供第一方源码印证。
@@ -250,6 +262,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 ## 来源日记
 
+- [[Orca使用笔记二：Computer-Use与Codex-CLI]] — Orca 作为 Codex CLI 的外部 Computer Use 后端：状态读取、动作选择、安全边界
 - [[2026-08-29-周六]] — 系列一~六成文 + Orca 补位实测（网易云音乐）
 - [[2026-08-30-周日]] — 系列七成文（web search 分界）+ 社区补位生态调研（open-computer-use / cua / UI-TARS）
 - [[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]] — 审批链路 404 排查与 override 修复实测、三种权限模式验证纪律

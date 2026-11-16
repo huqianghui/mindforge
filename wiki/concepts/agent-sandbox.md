@@ -57,13 +57,14 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 ### Claim: Kata 改变了容量与调试的算法——内存按 limit 固定（默认 512Mi）、CPU 向上取整、port-forward 不通
 
-- **来源**：[[Agent基础设施系列02：Kubernetes上的Agent沙箱]]
+- **来源**：[[Agent基础设施系列02：Kubernetes上的Agent沙箱]]、[[AKS-Agent-Runtime系列01补充：Kata运行时与节点池]]
 - **首次出现**：2026-11-02
-- **最近更新**：2026-11-04
+- **最近更新**：2026-11-16
 - **置信度**：0.8
 - **状态**：active
+- **证据类型**：实测经验
 
-> VM 内存取自 pod 的 memory limit，不设就是 512Mi，跑 Chromium / pandas 易 OOM；写大了就一直被 VM 占着，不像 runc 按实际用量挤占。CPU limit 决定 vCPU 数，`500m` 实际占 1 个 vCPU，估节点能放多少沙箱要按 VM 粒度算。kubelet 的 port-forward 进宿主网络命名空间拨 127.0.0.1，服务在 guest VM 里，连接被拒——调试改 `kubectl exec`，正式访问走 router 或 Service。另：不支持 host network，Defender for Containers 不评估 Kata pod。验证隔离生效：沙箱里 `uname -r` 与节点 kernelVersion 不同。官方文档支撑。
+> VM 内存取自 pod 的 memory limit，不设就是 512Mi，跑 Chromium / pandas 易 OOM；写大了就一直被 VM 占着，不像 runc 按实际用量挤占。CPU limit 决定 vCPU 数，`500m` 实际占 1 个 vCPU，估节点能放多少沙箱要按 VM 粒度算。kubelet 的 port-forward 进宿主网络命名空间拨 127.0.0.1，服务在 guest VM 里，连接被拒——调试改 `kubectl exec`，正式访问走 router 或 Service。另：不支持 host network，Defender for Containers 不评估 Kata pod。验证隔离生效：沙箱里 `uname -r` 与节点 kernelVersion 不同。官方文档支撑。AKS 上逐层对账（01 补充实测）：调度扣的是 limit + RuntimeClass overhead——2Gi limit 的 Pod 在节点上记 2648Mi（2048 + 600），不写 resources 的 Pod 只记 600Mi 却照样起一台 512Mi 的 VM；宿主 cgroup `memory.max` 正好是 limit + overhead，`cpu.max` 仍按 500m 限半核，所以 VM 里 1 个 vCPU 只能用一半；**不写 resources 时宿主 cgroup 没有上限**，VMM 与 virtiofsd 的宿主侧开销不受约束。文档写的约 88Mi 宿主开销与实测 RuntimeClass 的 600Mi overhead 对不上，估容量以 `kubectl get runtimeclass` 为准：一台 D8s_v5（32 GiB）按每沙箱 2Gi 约放十个。小镜像已缓存时 Kata 与 runc 从创建到 Ready 都在 2~4 秒，冷启动差距来自大镜像与 harness 启动。
 
 ### Claim: 出站控制有两处静默失效——CNI 不支持时 NetworkPolicy 被忽略不报错；NetworkPolicy 只认 IP 与端口，放行 443 等于放行任意 HTTPS
 
@@ -152,6 +153,17 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 - **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 首次运行会话停在 running 五分钟无输出无报错：网络策略只允许连 CONNECT 网关，出站 sidecar 本应把请求封进 CONNECT 隧道，但那个版本不支持上游代理，直接连目标地址被 NetworkPolicy 静默丢弃，harness 只看到一个一直不返回的 TCP 连接。harness 不会说自己被墙了，要看 sidecar 日志与网络策略。实测。
+
+### Claim: Kata 换的只是 containerd 下面的 shim，但 AKS 的 Kata 节点池是另一种节点镜像——不能在普通池上开启；RuntimeClass 名与 handler 名不同；混跑只能单向
+
+- **来源**：[[AKS-Agent-Runtime系列01补充：Kata运行时与节点池]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-16
+- **置信度**：0.8
+- **状态**：active
+- **证据类型**：实测经验
+
+> kubelet 与 containerd 都不换：kubelet 从 `runtimeClassName` 取 handler 交给 containerd，handler 为 `kata` 时拉起 `containerd-shim-kata-v2`，由它起 cloud-hypervisor、virtiofsd，再经 vsock 让 VM 里的 kata-agent 建容器；每个 Kata Pod 在宿主多出 shim（约 53 MB）、VMM（约 140~170 MB）、两个 virtiofsd 四个进程，宿主 `ps` 看不到容器进程。但 Kata 节点是单独的节点镜像（带 mshv 内核、有 `/dev/mshv` 无 `/dev/kvm`，节点本身作为 Microsoft Hypervisor 的 root partition 运行），普通节点有 `/dev/kvm` 却没有任何 Kata 组件——所以只能新建 `--workload-runtime KataVmIsolation` 的池，Azure Linux、Gen2、非 Arm64、不能同开 FIPS / Trusted Launch 都落在镜像这一层。`kata-vm-isolation` 这个 RuntimeClass 建集群时就有，查得到不代表有节点能跑；它的 handler 是 `kata`，自己写 RuntimeClass 要填 handler 名。混跑：RuntimeClass 的 scheduling 段在准入时合进 nodeSelector，Kata Pod 只会上 Kata 节点——`nodeName` 硬塞普通节点被 kubelet 以 NodeAffinity 拒绝，去掉 scheduling 段再塞则卡在 ContainerCreating（`no runtime for "kata" is configured`）；反过来普通 Pod 能落到没打污点的 Kata 节点上，以 runc 运行、和所有 Pod VM 的 VMM 共用宿主内核。节点上另有 Rust 版 shim（handler `kata-v2`）与机密容器 `kata-cc`，没有对应 RuntimeClass，未验证。
 
 ### Claim: 沙箱底线要逐条验证并配对照组——不加出站策略的 Pod 能从 IMDS 取到节点 kubelet 身份的 Azure token；AKS 不会自动给 Kata 池打污点
 
@@ -259,6 +271,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 ## 冲突与演进
 
+- 2026-11-16：完备性补抽 [[AKS-Agent-Runtime系列01补充：Kata运行时与节点池]]：新增"Kata 节点池是另一种节点镜像"一条，"容量与调试算法"一条补入调度与 cgroup 对账数据。
 - 2026-11-16：/revalidate（漂移复核）——5 条确认、1 条修订：粒度光谱里 Agent Substrate 的代价由"pre-1.0"改为 1.0 GA 后的实际限制。
 - `host-mediated-sandbox`（2026-10-29 HOLD）在本批出现两个非 Microsoft 低代码平台的同类实现，2026-11-04 复核后泛化为"凭据不进沙箱、出口注入"并入本页第五条 Claim，未单独建页。
 - `actor-snapshot-scheduling` 单一项目来源，作为本页最后一条 Claim 收入（HOLD），等第二个实现出现再评估。
@@ -275,6 +288,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 ## 来源日记
 
+- [[AKS-Agent-Runtime系列01补充：Kata运行时与节点池]] — Kata 换的是哪一层、Kata 节点镜像、混跑单向、调度与 cgroup 的资源账
 - [[2026-11-02-周一]] — Agent 基础设施系列 02/03 成文
 - [[Agent基础设施系列02：Kubernetes上的Agent沙箱]] — 三件事拆解、Kata 规格与坑、agent-sandbox、OpenSandbox Pool 与 Credential Vault、选型、冷启动
 - [[Agent基础设施系列03：kagent与Agent-Substrate]] — actor / worker 模型、快照范围、安全模型、运行粒度光谱与拆法

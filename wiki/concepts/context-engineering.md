@@ -1,7 +1,7 @@
 ---
 title: "Context Engineering"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -27,7 +27,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: LLM 性能限制通常是上下文问题而非模型缺陷
 
-- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]
+- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]、[[02-Context-Engineering]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -39,7 +39,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ### Claim: Context Engineering 是 Prompt Engineering 的正式演进
 
-- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]
+- **来源**：[[Context-Engineering-vs-Model-Context-Protocol]]、[[01-Defining-the-Modern-AI-Interaction-Paradigm]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-04-13
 - **置信度**：0.8
@@ -100,6 +100,17 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 > 优势不来自对某个基础模型的访问，而来自围绕它构建的卓越、专有的 context-rich 环境。
 
+### Claim: 把上下文当一条供应链来看——取料、加工、库存、即时检索、最后装配五段，任何一段出问题都会传到输出，最后一段的提示模板补不了前面的过期数据或错误检索
+
+- **来源**：[[02-Context-Engineering]]
+- **首次出现**：2025-08-17
+- **最近更新**：2026-11-16
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：理论（长效）
+
+> 五段：① 取料——文档、数据库、外部 API、用户历史等原始来源；② 加工——分块、生成向量、补元数据；③ 库存——向量库等知识存储，要像仓库一样管"变质"（更新、过期、版本）；④ 即时检索——查询到来时按相关性取最相关的块，是质量控制点；⑤ 装配——按提示模板把检索结果与系统指令、对话历史、工具定义拼进上下文窗口。用处在于定位问题：答错时先问是哪一段坏了，而不是一律改提示词。本库"编译一次、持续维护"的 wiki 相当于把③做重、④做轻（见 [[personal-knowledge-compiler]]）。文章为英文综述（2025-08），偏概念框架，未附实测。
+
 ## 冲突与演进
 
 （暂无）
@@ -113,6 +124,11 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ## 来源日记
 
+- [[00-Full-Article]] / [[Context-Engineering-vs-MCP-MOC]] — Context Engineering vs MCP 全文与章节导航
+- [[01-Defining-the-Modern-AI-Interaction-Paradigm]] — 从 prompt engineering 到上下文的演进动因
+- [[02-Context-Engineering]] — 定义、技术工具箱、上下文供应链
+- [[03-Model-Context-Protocol]] — MCP 架构与三种原语（MCP 本身的论断归口待建的 MCP 页）
+- [[98-Conclusion]] — 学科与协议互补：CE 是认知架构、MCP 是标准化的神经系统
 - [[Context-Engineering-vs-Model-Context-Protocol]] — CE vs MCP 关系辨析
 - [[04-A-Comparative-Framework]] — 操作系统与 USB-C 比喻
 - [[05-Strategic-Implications-and-Future-Outlook]] — 战略展望

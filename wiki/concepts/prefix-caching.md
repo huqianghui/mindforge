@@ -1,7 +1,7 @@
 ---
 title: "前缀缓存（Prefix Caching）"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -163,6 +163,17 @@ related:
 
 > Codex 系列07 路由网关的缓存账：切换后新模型冷启动，历史上下文全按普通价重读。算例——留在 A：10 万 token 历史按缓存价（普通价 10%）等价 1 万；切到 B：无缓存，普通价为 A 的 20%，等价 2 万——B 单价便宜五倍这一次读取仍贵一倍，后续用量大或输出便宜时账才可能反过来。工程后果：以 thread 为绑定范围，最小保持 300 秒、冷却 120 秒、切换要过成本门槛；网关不总结或重写执行模型的输入、工具定义与 prompt_cache_key，保持同模型前缀可复用。实测：同回合第二次请求读取 15,995 与约 17,400 个缓存 token。纪律沿用 Prompt Cache 系列：缓存以 usage 为证不以配置推断，缺失字段不等于 miss 也不等于 hit；流式转发需 SSE 观察器读 usage。
 
+### Claim: agent 负载下前缀缓存要靠编排层守住——Dynamo 这类分布式编排按会话把请求送到持有 KV 的 worker、按优先级排队、把关键前缀钉住不被 LRU 驱逐；agent 侧要随请求带上延迟敏感度、预估输出长度与缓存控制提示
+
+- **来源**：[[Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure]]
+- **首次出现**：2026-05-13
+- **最近更新**：2026-11-16
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+
+> 分层：Dynamo 是分布式推理的控制面（调度请求、分配 GPU、管理 KV），vLLM / SGLang 是单机数据面（生成 token、批处理、显存）。agent 负载的特征是多轮长上下文、一次任务串联多轮推理、前后台任务并行、要求 TTFT 低——单机引擎的前缀缓存在多副本下会被打散，路由不认会话就命中不了。Dynamo 1.0 的对应机制：请求携带 agent hints（延迟敏感度、预估输出长度、缓存控制）；KV 感知 + 优先级路由（共享前缀的请求送同一节点、实时对话优先、后台批处理延后）；KV pinning（关键块常驻，显存不够先迁到 CPU 内存而不是删）；按会话 ID 路由到持有对应 KV 的 worker；节点故障时迁移未完成请求。在 AKS 上经 Gateway API Inference Extension 把 KV 路由插件嵌进端点选择。来自厂商发布材料的整理，未实测。与 Foundry 托管缓存"只有路由到恰好持有条目的机器才命中"是同一个约束的两面：托管侧不可控，自托管侧要靠编排层解决。
+
 ## 冲突与演进
 
 - 2026-09-16：注入 Prompt Cache 系列01~03 四条 Claims（两代框架三换轨/写入计费经济学/单机缓存+智能路由/结构敏感性与 API 层分叉）——页面从推理引擎层扩展到服务化封装层，C 类 83% stale 获最强 active 回填；摘要补服务层一段。
@@ -177,6 +188,7 @@ related:
 
 ## 来源日记
 
+- [[Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure]] — 分布式推理编排与单机引擎分层、agent hints、KV 感知路由与 pinning
 - [[2026-06-22-周一]] — speculative decoding 与 prefix caching 在 Hybrid 上的冲突、客户落地分步处理
 - [[线性注意力时代的推理架构之二：Prefix-Caching]] — 两条假设、三个障碍、双缓存难题、多模态杀手
 - [[线性注意力时代的推理架构之三：vLLM与SGLang]] — vLLM Hybrid KV Cache Manager 与 SGLang MambaRadixCache 框架支持对比

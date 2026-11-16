@@ -125,6 +125,17 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 
 > Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——"控制权在哪一层"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）
 
+### Claim: Claude Code 的设计潜台词是"强模型、弱规则"——loop 不做决策、Memory / Rules / Skills 都只是递到模型面前的建议，hooks 是唯一绕过模型的确定性控制点，permission 留给高风险动作的人工确认
+
+- **来源**：[[Claude-Code系列01：核心概念与设计哲学]]、[[Claude-Code系列05：六层记忆体系]]
+- **首次出现**：2026-04-13
+- **最近更新**：2026-11-16
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：理论（长效）
+
+> Claude Code 刻意选"弱结构 + 强模型"：规则和结构只是提示增强而不是强制约束。后果逐项看——Memory 不是数据库、Rules 是模型决定是否采纳的"弱条件触发"、Skills 的触发时机由模型判断、loop 本身不判断该不该调工具或是否完成；只有 hooks 由代码直接执行，是整个系统里唯一能强制的机制；permission 是"模型做决策、高风险由人批"的平衡点。追求"强结构 + 可控行为"的用户会和这个选择持续冲突，很多"像 bug"的行为（规则没被遵守、skill 没触发）都出在这里。对 harness 设计的含义：要确定性的地方用代码（hook、外部门禁），不要指望在提示层写更多规则。Memory 的 framing 证据见 [[claude-code-memory-system]]。
+
 ## 冲突与演进
 
 - 2026-11-16：独立建页。本页 8 条 Claim 全部从既有页搬来，原文与置信度不变：7 条来自 [[harness-engineering]]（定义、与 framework / runtime 的边界、三类归属、托管平台打包、编排接入、职责边界），1 条来自 [[agent-infra-three-layers]]（不单列一层）。[[harness-engineering]] 保留"怎么把 harness 做好"的工程方法类 Claim。
@@ -133,6 +144,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 ## 关联概念
 
 - [[harness-engineering]] — `grounds` 把 harness 做好的工程方法
+- [[claude-code-memory-system]] — `part-of` 一个具体 harness 的记忆与指令加载机制
 - [[agent-framework]] — `contrasts` framework 是开发期材料，harness 是运行期成品
 - [[agent-runtime]] — `contrasts` harness 面向模型，runtime 面向基础设施；runtime 把 harness 当可替换进程托管
 - [[agent-session-control-plane]] — `uses` "harness 的 harness"：控制面经适配器驱动多种编码 CLI
@@ -144,6 +156,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 
 ## 来源日记
 
+- [[Claude-Code系列01：核心概念与设计哲学]] — 强模型弱规则、hooks 是唯一确定性控制点
 - [[Agent=Model+Harness]] — Harness 的职责、per-model 差异与评测体系
 - [[Foundry-Toolbox与Skills解析]] — OpenForge 定义、Copilot Studio harness 产品证据
 - [[2026-08-10-周一]] — framework / harness / runtime 三层链条与两个边界测试

@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Memory System"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -28,7 +28,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 ### Claim: Claude Code 记忆体系分为六层，每层职责不同
 
-- **来源**：[[2026-04-13-周一]]
+- **来源**：[[Claude-Code系列05：六层记忆体系]]、[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-11-07
 - **置信度**：0.8
@@ -40,7 +40,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 ### Claim: Auto Memory 是 Claude Code 最独特的跨 Session 记忆机制
 
-- **来源**：[[2026-04-13-周一]]
+- **来源**：[[Claude-Code系列05：六层记忆体系]]、[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-11-07
 - **置信度**：0.8
@@ -52,7 +52,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 ### Claim: CLAUDE.md 最佳实践——精简行为规则 + 引用详细文档
 
-- **来源**：[[2026-04-13-周一]]
+- **来源**：[[Claude-Code系列05：六层记忆体系]]、[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-11-07
 - **置信度**：0.8
@@ -64,7 +64,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 ### Claim: Subagent Memory 为 Agent 提供独立的跨 Session 记忆空间
 
-- **来源**：[[2026-04-13-周一]]
+- **来源**：[[Claude-Code系列05：六层记忆体系]]、[[2026-04-13-周一]]
 - **首次出现**：2026-04-13
 - **最近更新**：2026-11-07
 - **置信度**：0.7
@@ -84,6 +84,28 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 > Claude Code 一侧：auto memory 以"可能相关、酌情参考"的语气注入，写在里面的行为规则会被忽略，所以行为规则要提权到 CLAUDE.md 或 rules。Copilot 一侧：官方文档明说存储的事实经模型判断后才使用、citations 核对不是系统保证，需要稳定执行的用 custom instructions。Copilot Dreaming 分析历史会话后对 instructions / skills 开 PR，就是把"记忆提权到指令文件"自动化，门控是 PR 人审；本库的 memory-review 定期审查并手动提权，相当于手工版 Dreaming，门控是本人。通用的记忆核对、投票、过期机制见 [[agent-memory-lifecycle]]。
 
+### Claim: 压缩之后不是所有指令都还在——根目录 CLAUDE.md、用户级 CLAUDE.md、MEMORY.md 索引与无 paths 的 rules 从磁盘重新注入；子目录 CLAUDE.md、带 paths 的 rules、skill 描述列表会丢，必须长期生效的规则不能放在后者
+
+- **来源**：[[Claude-Code系列05：六层记忆体系]]
+- **首次出现**：2026-04-13
+- **最近更新**：2026-11-16
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：产品与服务
+
+> 加载策略：CLAUDE.md 全文常驻、`@import` 启动时全量展开（最多 5 层）；MEMORY.md 只加载前 200 行 / 25KB，主题文件不加载，由模型用 Read 按需读；skill 启动时只加载一行描述（合计约 450 tokens），调用时才展开全文。压缩时：根目录与用户级 CLAUDE.md、MEMORY.md 索引、无 `paths:` 的 rules 从磁盘重新注入；子目录 CLAUDE.md 与带 `paths:` 的 rules 丢失，下次读到匹配文件才重载；skill 描述列表丢失；已调用的 skill 正文重新注入但有上限（每个 5K、合计 25K，最旧的先丢）。多层 CLAUDE.md 是拼接而不是语义合并——确定性优于智能性，代价是没有去重、没有条件加载。产品行为会随版本变化，具体数字以官方文档为准。
+
+### Claim: Memory 加载进上下文也不等于会被遵守——系统给 CLAUDE.md 的 framing 是"必须照做、覆盖默认行为"，给 Memory 的是"可能相关也可能不相关"；行为规则放 Memory 会输给模型的默认策略，所以行为规则要提权到 CLAUDE.md，Memory 只放背景知识
+
+- **来源**：[[Claude-Code系列05：六层记忆体系]]
+- **首次出现**：2026-04-13
+- **最近更新**：2026-11-16
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 亲历案例：Memory 里写着"认证网页用 Playwright、不要先试 WebFetch"，模型仍按默认策略先试 tavily、再试 WebFetch、最后才用 Playwright，浪费两次。根因不在加载机制而在 framing：模型按"MUST follow"与"may or may not be relevant"自动设定优先级，Memory 规则与默认行为冲突时默认行为胜出。由此得出两类信息的放法——行为规则（遇到 X 必须做 Y）需要强约束，放 CLAUDE.md / rules，绝对禁止类再评估 hook；背景知识（用户画像、项目上下文、资源指针）只需被了解，留在 Memory。提权触发：反馈含"必须 / 不要 / 禁止"、Memory 规则被违反过一次、用户说"绝对不要"。本库的记忆提权协议即源于此。
+
 ## 冲突与演进
 
 （暂无）
@@ -98,5 +120,6 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 
 ## 来源日记
 
+- [[Claude-Code系列05：六层记忆体系]] — 六层记忆体系的原文：加载策略、压缩存活规则、Memory 与 CLAUDE.md 的 framing 差异
 - [[2026-04-13-周一]] — Claude Code 记忆全景文章创作、Memory 文件结构分析
 - [[GitHub-Copilot系列02：Memory、Dreaming与自我改进]] — Copilot 文档与 Claude Code 踩坑得出同一"事实 vs 规则"分层（2026-11-03）

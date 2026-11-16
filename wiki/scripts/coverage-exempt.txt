@@ -1,0 +1,7 @@
+# 覆盖检查豁免清单：进 git、但没有可提取概念的文章（操作手册、附录、空壳）。
+# 每行：文章路径<TAB>原因。structural-gaps.py 第 5 节跳过这里列出的文章。
+Notes/tool/Dev-Tunnels实践：本地服务公网调试.md	工具操作手册：安装、命令与排障，无概念
+Notes/tool/image&container/Skopeo实战：不装Docker的镜像搬运.md	工具操作手册：镜像搬运步骤与 transport 类型
+Notes/tool/rtk/Rust开发环境与Cargo构建指南.md	语言环境入门，RTK 系列的附录
+Notes/AI/Context-Engineering/Context Engineering vs MCP/99-Works-Cited.md	参考文献列表
+Notes/AI/Context-Engineering/A Survey of Context Engineering for Large Language Models/Context-Engineering综述读书笔记.md	空壳（只有标题与占位）
