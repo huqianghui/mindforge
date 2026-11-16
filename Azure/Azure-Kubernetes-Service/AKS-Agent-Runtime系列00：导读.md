@@ -6,12 +6,12 @@ tags:
   - kubernetes
   - agent-runtime
   - series-index
-description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agent runtime，共十二篇正篇加四篇补充。导读给出系列路线、按层次的全景图、贯穿全系列的术语（三个平面、执行平面里的三层、参考实现与安全沙箱实现、三种网关等），按平台架构、安全、运维、选型四种角色的阅读路径，以及每篇一句话的索引
+description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agent runtime，共十三篇正篇加四篇补充。导读给出系列路线、按层次的全景图、贯穿全系列的术语（三个平面、执行平面里的三层、参考实现与安全沙箱实现、常驻实现、三种网关等），按平台架构、安全、运维、选型四种角色的阅读路径，以及每篇一句话的索引
 ---
 
 # AKS Agent Runtime 系列 00：导读
 
-这个系列以 Kubernetes、特别是 AKS 为基座，把 agent runtime 一个平面一个平面地搭出来，每篇配一次在 AKS 或本机上能复现的实践。正篇十二篇（00 到 11），另有四篇补充，各自深挖一个组件。
+这个系列以 Kubernetes、特别是 AKS 为基座，把 agent runtime 一个平面一个平面地搭出来，每篇配一次在 AKS 或本机上能复现的实践。正篇十三篇（00 到 12），另有四篇补充，各自深挖一个组件。
 
 ![AKS Agent Runtime 系列路线|900](../../asset/aks-agent-runtime-series-roadmap-2026-11-09.svg)
 
@@ -33,6 +33,8 @@ description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agen
 | 控制面，或"harness 的 harness" | 沙箱外驱动 harness 的平台代码：会话 API、收件箱、状态机、执行器、适配器 | 03 |
 | 参考实现 | 一套把编码 CLI 做成可共享、可治理应用的实现，系列里大部分实测都基于它 | 03 起 |
 | 安全沙箱实现 | 另一套实现：把 OpenSandbox 包在一个多租户 API 后面，加上归属、逐沙箱网络策略和工作负载身份；不认识 harness，可以作为参考实现的沙箱后端 | 03 |
+| 常驻实现 | 第三套实现：每人一个常驻的 agent 实例，StatefulSet 单副本加 Kata，状态和私有记忆都在 HOME 盘上 | 12 |
+| 常驻实例 / 会话调度 | 两种 runtime 形态：状态跟着人走、Pod 和盘长期都在；或状态跟着会话走、沙箱按会话领取和回收 | 12 |
 | 应用定义与运行时类 | 用户调用的"那个 agent"是一份应用定义；运行时类由平台发布，定好镜像或预热池并钉死 harness | 07 |
 | Ephemeral / Durable | 两种会话：一个沙箱用到底靠 TTL 兜底；或每轮 checkpoint、空闲暂停、保留期到才删 | 05 |
 | 申请、批准、发布 | 一个动作能不能做，是应用申请、资源 owner 批准、平台发布三者的交集 | 04、04 补充 |
@@ -60,6 +62,7 @@ description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agen
 - [09：Agent 以谁的身份行事](AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)——OBO 把用户和代办应用同时写进令牌，Entra Agent ID 给每个 agent 独立身份。
 - [10：为什么在 AKS 上自建](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)——对照 Foundry Hosted Agents，自建只在三类场景下值得，并列出每一层用什么。
 - [11：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)——RBAC 和 NetworkPolicy 只能守底线，会话、终端用户、资源动作、模型和不可信的决策要另外补。
+- [12：常驻实例与会话调度](AKS-Agent-Runtime系列12：常驻实例与会话调度.md)——每人一个常驻 agent 不用做快照、记忆天然有地方放，但算力按人常驻、出站默认放行；两种形态最后会走到常驻入口加会话执行池。
 
 **补充**
 

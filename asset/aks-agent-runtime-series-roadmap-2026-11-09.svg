@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 880" width="1500" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1620 880" width="1620" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <style>.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.chip{font-size:14px;font-weight:600;text-anchor:middle}.n{fill:#0b1220;font-size:14px;font-weight:700;text-anchor:middle}.nt{fill:#f1f5f9;font-size:15px;font-weight:600;text-anchor:middle}.np{fill:#94a3b8;font-size:13px;text-anchor:middle}.st{fill:#c4b5fd;font-size:13px;font-weight:600;text-anchor:middle}.sp{fill:#a5b4c8;font-size:13px;text-anchor:middle}.lg{fill:#cbd5e1;font-size:13.5px}.lgh{fill:#e2e8f0;font-size:15px;font-weight:600}.flow{fill:none;stroke:#2dd4bf;stroke-width:3;stroke-dasharray:10 8;animation:d 1.6s linear infinite}@keyframes d{to{stroke-dashoffset:-36}}.lead{stroke:#475569;stroke-width:1;stroke-dasharray:3 3}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.45}}</style>
-<rect width="1500" height="880" rx="16" fill="#0b1220"/>
+<rect width="1620" height="880" rx="16" fill="#0b1220"/>
 <text class="title" x="30" y="44">AKS Agent Runtime 系列路线</text>
-<text class="sub" x="30" y="72">十二篇正篇按平面推进，每篇配一次在 AKS 上能复现的实践；四篇补充各自深挖一个组件，挂在对应的正篇下面。全部已完成</text>
+<text class="sub" x="30" y="72">十三篇正篇按平面推进，每篇配一次在 AKS 上能复现的实践；四篇补充各自深挖一个组件，挂在对应的正篇下面。全部已完成</text>
 <rect x="30" y="96" width="140" height="36" rx="8" fill="#0f172a" stroke="#94a3b8" stroke-width="1.5"/><text class="chip" x="100.0" y="119" fill="#94a3b8">导读</text>
 <rect x="175" y="96" width="110" height="36" rx="8" fill="#0f172a" stroke="#94a3b8" stroke-width="1.5"/><text class="chip" x="230.0" y="119" fill="#94a3b8">总览</text>
 <rect x="295" y="96" width="230" height="36" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/><text class="chip" x="410.0" y="119" fill="#38bdf8">执行平面与 harness</text>
@@ -10,8 +10,8 @@
 <rect x="655" y="96" width="230" height="36" rx="8" fill="#0f172a" stroke="#2dd4bf" stroke-width="1.5"/><text class="chip" x="770.0" y="119" fill="#2dd4bf">会话平面</text>
 <rect x="895" y="96" width="110" height="36" rx="8" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/><text class="chip" x="950.0" y="119" fill="#fbbf24">定义与发现</text>
 <rect x="1015" y="96" width="230" height="36" rx="8" fill="#0f172a" stroke="#a78bfa" stroke-width="1.5"/><text class="chip" x="1130.0" y="119" fill="#a78bfa">治理（续）</text>
-<rect x="1255" y="96" width="215" height="36" rx="8" fill="#0f172a" stroke="#94a3b8" stroke-width="1.5"/><text class="chip" x="1362.5" y="119" fill="#94a3b8">定位与综述</text>
-<path class="flow" d="M80,200 L1367,200"/>
+<rect x="1255" y="96" width="335" height="36" rx="8" fill="#0f172a" stroke="#94a3b8" stroke-width="1.5"/><text class="chip" x="1422.5" y="119" fill="#94a3b8">定位与综述</text>
+<path class="flow" d="M80,200 L1484,200"/>
 <circle cx="80" cy="200" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="80" y="205">00</text>
 <line class="lead" x1="80" y1="220" x2="80" y2="268"/>
 <text class="nt" x="80" y="290">导读</text><text class="np" x="80" y="312">术语与阅读路径</text>
@@ -48,6 +48,9 @@
 <circle cx="1367" cy="200" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="1367" y="205">11</text>
 <line class="lead" x1="1367" y1="220" x2="1367" y2="358"/>
 <text class="nt" x="1367" y="380">原生管不到什么</text><text class="np" x="1367" y="402">RBAC 与网络策略的边界</text>
+<circle cx="1484" cy="200" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="1484" y="205">12</text>
+<line class="lead" x1="1484" y1="220" x2="1484" y2="268"/>
+<text class="nt" x="1484" y="290">常驻与会话</text><text class="np" x="1484" y="312">两种 runtime 形态</text>
 <line class="lead" x1="197" y1="410" x2="197" y2="474" stroke="#a78bfa"/>
 <rect x="109" y="476" width="176" height="62" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.4"/>
 <text class="st" x="197" y="500">01 补充</text><text class="sp" x="197" y="521">Kata 运行时与节点池</text>
@@ -60,10 +63,10 @@
 <line class="lead" x1="1016" y1="320" x2="1016" y2="474" stroke="#a78bfa"/>
 <rect x="928" y="476" width="176" height="62" rx="10" fill="#1d1733" stroke="#a78bfa" stroke-width="1.4"/>
 <text class="st" x="1016" y="500">08 补充</text><text class="sp" x="1016" y="521">agentgateway 三种角色</text>
-<line x1="30" y1="660" x2="1470" y2="660" stroke="#1e293b"/>
+<line x1="30" y1="660" x2="1590" y2="660" stroke="#1e293b"/>
 <circle cx="44" cy="696" r="10" fill="#2dd4bf"/><text class="lg" x="64" y="701">正篇（已完成）</text>
 <rect x="200" y="686" width="34" height="20" rx="5" fill="#1d1733" stroke="#a78bfa"/><text class="lg" x="244" y="701">补充篇：对某个组件的深挖和实测，正篇里只讲到它在系统里的位置</text>
 <text class="lg" x="30" y="740">沙箱本身在「Agent 基础设施系列」02、03 讲过；这个系列里 03 补充只讲它们作为沙箱后端怎么接到控制面上，以及 agent-sandbox 和 OpenSandbox 的三种组合</text>
 <text class="lg" x="30" y="766">威胁模型与供应链、冷启动、成本、多租户还没有单独成篇；人工审批和可观测性散落在 03、08 补充、11 里，以后有新实践再合成一篇</text>
-<text class="lg" x="30" y="792">只读一篇看全貌：00 导读；只读两篇做决策：10 和 11</text>
+<text class="lg" x="30" y="792">只读一篇看全貌：00 导读；只读两篇做决策：10 和 11；想知道"每人一个常驻 agent"怎么做，读 12</text>
 </svg>

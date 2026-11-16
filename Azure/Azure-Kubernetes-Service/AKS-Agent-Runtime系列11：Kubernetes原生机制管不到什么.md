@@ -200,6 +200,7 @@ RBAC 和 NetworkPolicy 负责的是**底线**；L7 网关、授权决策点和�
 - [AKS Agent Runtime 系列 04：出站治理与逐请求授权](AKS-Agent-Runtime系列04：出站治理与逐请求授权.md)——网关、授权决策点、凭据代理的实现
 - [AKS Agent Runtime 系列 09：Agent 以谁的身份行事](AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)——终端用户身份与 OBO
 - [AKS Agent Runtime 系列 10：为什么在 AKS 上自建](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)——自建的代价清单
+- [AKS Agent Runtime 系列 12：常驻实例与会话调度](AKS-Agent-Runtime系列12：常驻实例与会话调度.md)——另一种 runtime 形态与它的出站模型
 
 ## 参考资料
 

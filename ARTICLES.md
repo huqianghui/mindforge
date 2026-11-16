@@ -321,6 +321,7 @@
 - [AKS Agent Runtime 系列 09：Agent 以谁的身份行事](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列09：Agent以谁的身份行事.md)
 - [AKS Agent Runtime 系列 10：为什么在 AKS 上自建](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列10：为什么在AKS上自建.md)
 - [AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)
+- [AKS Agent Runtime 系列 12：常驻实例与会话调度](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列12：常驻实例与会话调度.md)
 
 #### Azure/Copilot-Managed-Runtime
 
