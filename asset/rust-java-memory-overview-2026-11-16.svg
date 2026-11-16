@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
+      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zone { fill: #0d1729; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .lane { fill: #f8fafc; font-size: 17px; font-weight: 700; }
+      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
+      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 13.5px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="860" rx="16"/>
+  <text class="title" x="30" y="44">同一个问题，两种答法：对象什么时候释放、谁能访问</text>
+  <text class="sub" x="30" y="72">Java 把判断留到运行期交给 GC；Rust 把判断前移到编译期，由 Borrow Checker 证明，运行期按作用域确定性释放</text>
+
+  <!-- 阶段分区 -->
+  <rect class="zone" x="30" y="92" width="310" height="520" rx="10"/>
+  <text class="zl" x="46" y="116">写代码</text>
+  <rect class="zone" x="355" y="92" width="370" height="520" rx="10"/>
+  <text class="zl" x="371" y="116">编译期</text>
+  <rect class="zone" x="740" y="92" width="630" height="520" rx="10"/>
+  <text class="zl" x="756" y="116">运行期</text>
+
+  <!-- Java 泳道 -->
+  <text class="lane" x="46" y="150">Java / JVM</text>
+  <rect class="box" x="46" y="164" width="278" height="150" rx="10"/>
+  <circle class="badge" cx="68" cy="188" r="13"/><text class="bn" x="68" y="193">1</text>
+  <text class="h" x="90" y="194">创建对象、复制引用</text>
+  <text class="code" x="62" y="224">User u = new User();</text>
+  <text class="code" x="62" y="246">User another = u;</text>
+  <text class="t" x="62" y="272">两个引用指向同一个 Heap 对象</text>
+  <text class="t" x="62" y="294">引用可以随意复制、传递、返回</text>
+
+  <rect class="boxGray" x="371" y="164" width="338" height="150" rx="10"/>
+  <text class="h" x="387" y="194">javac：只做类型检查</text>
+  <text class="tGray" x="387" y="224">不判断对象什么时候失效</text>
+  <text class="tGray" x="387" y="248">不限制多少个引用能同时修改对象</text>
+  <text class="tGray" x="387" y="272">生命周期问题整体留给运行期</text>
+  <text class="tGray" x="387" y="296">线程安全靠程序员用 synchronized</text>
+
+  <rect class="box" x="756" y="164" width="290" height="150" rx="10"/>
+  <circle class="badge" cx="778" cy="188" r="13"/><text class="bn" x="778" y="193">2</text>
+  <text class="h" x="800" y="194">JVM 维护对象图</text>
+  <text class="t" x="772" y="224">从 GC Roots（栈、静态变量等）</text>
+  <text class="t" x="772" y="248">出发，沿引用链标记可达对象</text>
+  <text class="t" x="772" y="272">只要还可达，对象就不会被回收</text>
+  <text class="t" x="772" y="296">局部变量消失不影响对象存活</text>
+
+  <rect class="box" x="1064" y="164" width="290" height="150" rx="10"/>
+  <circle class="badge" cx="1086" cy="188" r="13"/><text class="bn" x="1086" y="193">3</text>
+  <text class="h" x="1108" y="194">GC 回收不可达对象</text>
+  <text class="t" x="1080" y="224">不可达只是"可以回收"</text>
+  <text class="t" x="1080" y="248">什么时候真正回收由 GC 决定</text>
+  <text class="t" x="1080" y="272">代价：GC 停顿、额外内存</text>
+  <text class="t" x="1080" y="296">好处：应用代码几乎不用管释放</text>
+
+  <path class="flowGray" d="M324,239 L371,239" marker-end="url(#arrGray)"/>
+  <path class="flow" d="M709,239 L756,239" marker-end="url(#arr)"/>
+  <path class="flow" d="M1046,239 L1064,239" marker-end="url(#arr)"/>
+  <circle r="5" fill="#5eead4"><animateMotion dur="3.2s" repeatCount="indefinite" path="M324,239 L1064,239"/></circle>
+
+  <!-- Rust 泳道 -->
+  <text class="lane" x="46" y="362">Rust</text>
+  <rect class="box" x="46" y="376" width="278" height="220" rx="10"/>
+  <circle class="badge" cx="68" cy="400" r="13"/><text class="bn" x="68" y="405">1</text>
+  <text class="h" x="90" y="406">写代码时就表达关系</text>
+  <text class="code" x="62" y="436">let s = String::from("hi");</text>
+  <text class="t" x="62" y="458">s 是这个值唯一的 Owner</text>
+  <text class="code" x="62" y="488">let t = s;</text>
+  <text class="t" x="62" y="510">所有权 Move 给 t，s 作废</text>
+  <text class="code" x="62" y="540">&amp;t   /   &amp;mut t</text>
+  <text class="t" x="62" y="562">只读借用 / 独占可变借用</text>
+  <text class="t" x="62" y="584">借出去不等于交出所有权</text>
+
+  <rect class="boxAmber" x="371" y="376" width="338" height="220" rx="10"/>
+  <circle class="badgeAmber" cx="393" cy="400" r="13"/><text class="bn" x="393" y="405">2</text>
+  <text class="hAmber" x="415" y="406">Borrow Checker 逐条证明</text>
+  <text class="t" x="387" y="438">规则 A：每个值任一时刻只有一个 Owner</text>
+  <text class="t" x="387" y="462">规则 B：多个 &amp;T，或一个 &amp;mut T，</text>
+  <text class="t" x="387" y="484">　　　　两者不能同时在用</text>
+  <text class="t" x="387" y="508">规则 C：引用活不过它指向的值</text>
+  <rect x="387" y="526" width="306" height="54" rx="8" fill="#3b1d0b" stroke="#f59e0b" stroke-width="1.2"/>
+  <text class="hAmber" x="401" y="549" style="font-size:14px">证明不了就不让编译通过</text>
+  <text class="code" x="401" y="571" style="fill:#fcd34d">E0382 / E0502 / E0597 / E0106</text>
+
+  <rect class="box" x="756" y="376" width="290" height="220" rx="10"/>
+  <circle class="badge" cx="778" cy="400" r="13"/><text class="bn" x="778" y="405">3</text>
+  <text class="h" x="800" y="406">运行期没有 GC</text>
+  <text class="t" x="772" y="438">不扫描对象图，没有 GC 停顿</text>
+  <text class="t" x="772" y="462">生命周期只是编译期的约束，</text>
+  <text class="t" x="772" y="484">编译后不留任何追踪对象</text>
+  <text class="t" x="772" y="512">真要共享所有权，自己选：</text>
+  <text class="code" x="772" y="536">Rc&lt;T&gt; 单线程引用计数</text>
+  <text class="code" x="772" y="560">Arc&lt;T&gt; 跨线程引用计数</text>
+
+  <rect class="box" x="1064" y="376" width="290" height="220" rx="10"/>
+  <circle class="badge" cx="1086" cy="400" r="13"/><text class="bn" x="1086" y="405">4</text>
+  <text class="h" x="1108" y="406">确定性释放（drop）</text>
+  <text class="t" x="1080" y="438">Owner 离开作用域的那一行</text>
+  <text class="t" x="1080" y="462">自动调用 drop，释放 Heap</text>
+  <text class="t" x="1080" y="490">释放时机在编译时就确定了</text>
+  <text class="t" x="1080" y="514">不需要手写 free，</text>
+  <text class="t" x="1080" y="538">也不会 double free</text>
+  <text class="t" x="1080" y="566">类似处处生效的 try-with-resources</text>
+
+  <path class="flowAmber" d="M324,486 L371,486" marker-end="url(#arrAmber)"/>
+  <path class="flow" d="M709,486 L756,486" marker-end="url(#arr)"/>
+  <path class="flow" d="M1046,486 L1064,486" marker-end="url(#arr)"/>
+  <circle r="5" fill="#fbbf24"><animateMotion dur="3.2s" repeatCount="indefinite" path="M324,486 L1064,486"/></circle>
+
+  <!-- 各自管不到 -->
+  <rect class="boxGray" x="30" y="630" width="660" height="104" rx="10"/>
+  <text class="h" x="48" y="658">Java 的 GC 管不到</text>
+  <text class="tGray" x="48" y="686">对象还被引用、但业务上已经不需要（非预期保留，也就是 Java 里说的内存泄漏）</text>
+  <text class="tGray" x="48" y="712">数据竞争、死锁：编译器不拦，靠程序员正确使用同步</text>
+
+  <rect class="boxGray" x="710" y="630" width="660" height="104" rx="10"/>
+  <text class="h" x="728" y="658">Rust 的编译器管不到</text>
+  <text class="tGray" x="728" y="686">unsafe 块、通过 FFI 调用的 C/C++ 库；Rc / Arc 循环引用造成的泄漏</text>
+  <text class="tGray" x="728" y="712">死锁、业务逻辑错误：safe Rust 只保证内存安全和无数据竞争</text>
+
+  <!-- 图例 -->
+  <text class="h" x="30" y="772">图例</text>
+  <circle class="badge" cx="90" cy="767" r="11"/><text class="bn" x="90" y="772">1</text>
+  <text class="el" x="108" y="772">起点：开发者写下的代码；Java 只写"有引用"，Rust 要写清"谁拥有、谁借用"</text>
+  <circle class="badgeAmber" cx="90" cy="797" r="11"/><text class="bn" x="90" y="802">2</text>
+  <text class="el" x="108" y="802">Rust 把内存安全检查前移的位置；Java 这一格是灰色虚线，表示编译期不做这件事</text>
+  <line x1="80" y1="829" x2="112" y2="829" stroke="#2dd4bf" stroke-width="2.2" stroke-dasharray="8 6"/>
+  <text class="el" x="122" y="834">青绿流动线：一个对象从创建到释放的路径；Java 的 ③ 时机不确定，Rust 的 ④ 落在确定的那一行</text>
+</svg>

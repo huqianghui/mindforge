@@ -297,6 +297,10 @@
 - [PKC 系列 01：从日记到知识库](Notes/pkc/PKC系列01：从日记到知识库.md)
 - [PKC 系列 02：个人知识编译器进化](Notes/pkc/PKC系列02：个人知识编译器进化.md)
 
+### Notes/Rust
+
+- [Rust 学习系列 01：从 JVM 视角理解所有权](Notes/Rust/Rust学习系列01：从JVM视角理解所有权.md)
+
 ### Azure
 
 - [Azure Copilot 生态：Skills、MCP 与 Agents 的协作](Azure/Azure-Copilot生态：Skills、MCP与Agents的协作.md)

@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 996" width="1400" height="996" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .row { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.3; stroke-dasharray: 10 6; }
+      .codebox { fill: #0f1b30; stroke: #475569; stroke-width: 1.2; }
+      .rt { fill: #f8fafc; font-size: 17px; font-weight: 700; }
+      .code { fill: #a7f3d0; font-size: 13.5px; font-family: Menlo, Consolas, monospace; }
+      .ln { fill: #64748b; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .tick { fill: #7dd3fc; font-size: 13px; text-anchor: middle; }
+      .bl { fill: #0b1220; font-size: 13.5px; font-weight: 600; }
+      .blw { fill: #fecaca; font-size: 13.5px; font-weight: 600; }
+      .note { fill: #94a3b8; font-size: 13.5px; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .ok { fill: #2dd4bf; }
+      .okflow { fill: none; stroke: #0b1220; stroke-width: 2; stroke-dasharray: 10 10; animation: dash 1.4s linear infinite; opacity: 0.35; }
+      .amber { fill: #fbbf24; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #3b1d0b; stroke: #f87171; stroke-width: 2; stroke-dasharray: 6 4; animation: pulse 1.6s ease-in-out infinite; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+      .el { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -40; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="996" rx="16"/>
+  <text class="title" x="30" y="44">生命周期：引用能用多久，由它指向的值说了算</text>
+  <text class="sub" x="30" y="72">横轴是代码从上往下执行到第几行；每根条是一个值或一个借用的有效范围，借用条必须完整落在 Owner 条之内</text>
+  <rect class="row" x="30" y="96" width="1340" height="186" rx="12"/>
+  <text class="rt" x="48" y="124">① 合法：引用的使用落在 Owner 有效期之内</text>
+  <rect class="codebox" x="46" y="138" width="330" height="132" rx="8"/>
+  <text class="ln" x="58" y="164">1</text><text class="code" x="78" y="164">let user = String::from("Alice");</text>
+  <text class="ln" x="58" y="187">2</text><text class="code" x="78" y="187">let r = &amp;user;</text>
+  <text class="ln" x="58" y="210">3</text><text class="code" x="78" y="210">println!("{}", r);</text>
+  <text class="ln" x="58" y="233">4</text><text class="code" x="78" y="233">println!("{}", user);</text>
+  <text class="ln" x="58" y="256">5</text><text class="code" x="78" y="256">}  // user 在这里 drop</text>
+  <line class="grid" x1="440" y1="150" x2="440" y2="252"/><text class="tick" x="440" y="144">第 1 行</text>
+  <line class="grid" x1="620" y1="150" x2="620" y2="252"/><text class="tick" x="620" y="144">第 2 行</text>
+  <line class="grid" x1="800" y1="150" x2="800" y2="252"/><text class="tick" x="800" y="144">第 3 行</text>
+  <line class="grid" x1="980" y1="150" x2="980" y2="252"/><text class="tick" x="980" y="144">第 4 行</text>
+  <line class="grid" x1="1160" y1="150" x2="1160" y2="252"/><text class="tick" x="1160" y="144">第 5 行</text>
+  <rect class="ok" x="400" y="154" width="800" height="22" rx="6"/>
+  <line class="okflow" x1="404" y1="174" x2="1196" y2="174"/>
+  <text class="bl" x="410" y="170">user（Owner）</text>
+  <rect class="ok" x="580" y="183" width="260" height="22" rx="6"/>
+  <line class="okflow" x1="584" y1="203" x2="836" y2="203"/>
+  <text class="bl" x="590" y="199">r = &amp;user</text>
+  <text class="note" x="400" y="272">r 在第 3 行最后一次使用后，借用就结束了</text>
+  <rect class="row" x="30" y="296" width="1340" height="186" rx="12"/>
+  <text class="rt" x="48" y="324">② 悬空：引用活过了 Owner，编译报 E0597</text>
+  <rect class="codebox" x="46" y="338" width="330" height="132" rx="8"/>
+  <text class="ln" x="58" y="364">1</text><text class="code" x="78" y="364">let r;</text>
+  <text class="ln" x="58" y="387">2</text><text class="code" x="78" y="387">{ let value = String::from("A");</text>
+  <text class="ln" x="58" y="410">3</text><text class="code" x="78" y="410">  r = &amp;value;</text>
+  <text class="ln" x="58" y="433">4</text><text class="code" x="78" y="433">}  // value 在这里 drop</text>
+  <text class="ln" x="58" y="456">5</text><text class="code" x="78" y="456">println!("{}", r);</text>
+  <line class="grid" x1="440" y1="350" x2="440" y2="452"/><text class="tick" x="440" y="344">第 1 行</text>
+  <line class="grid" x1="620" y1="350" x2="620" y2="452"/><text class="tick" x="620" y="344">第 2 行</text>
+  <line class="grid" x1="800" y1="350" x2="800" y2="452"/><text class="tick" x="800" y="344">第 3 行</text>
+  <line class="grid" x1="980" y1="350" x2="980" y2="452"/><text class="tick" x="980" y="344">第 4 行</text>
+  <line class="grid" x1="1160" y1="350" x2="1160" y2="452"/><text class="tick" x="1160" y="344">第 5 行</text>
+  <rect class="ok" x="580" y="354" width="440" height="22" rx="6"/>
+  <line class="okflow" x1="584" y1="374" x2="1016" y2="374"/>
+  <text class="bl" x="590" y="370">value（Owner）</text>
+  <rect class="ok" x="760" y="383" width="260" height="22" rx="6"/>
+  <line class="okflow" x1="764" y1="403" x2="1016" y2="403"/>
+  <text class="bl" x="770" y="399">r = &amp;value</text>
+  <rect class="bad" x="1020" y="412" width="180" height="22" rx="6"/>
+  <text class="blw" x="1030" y="428">r 还想用</text>
+  <text x="1210" y="429" style="fill:#f87171;font-size:15px;font-weight:700">✗ E0597</text>
+  <text class="note" x="400" y="472">第 5 行时 r 指向的值已经释放：value does not live long enough</text>
+  <rect class="row" x="30" y="496" width="1340" height="186" rx="12"/>
+  <text class="rt" x="48" y="524">③ NLL：借用到最后一次使用为止，不是到作用域结束</text>
+  <rect class="codebox" x="46" y="538" width="330" height="132" rx="8"/>
+  <text class="ln" x="58" y="564">1</text><text class="code" x="78" y="564">let mut s = String::from("hi");</text>
+  <text class="ln" x="58" y="587">2</text><text class="code" x="78" y="587">let r = &amp;s;</text>
+  <text class="ln" x="58" y="610">3</text><text class="code" x="78" y="610">println!("{}", r); // 最后一次用 r</text>
+  <text class="ln" x="58" y="633">4</text><text class="code" x="78" y="633">let m = &amp;mut s;  // 可以</text>
+  <text class="ln" x="58" y="656">5</text><text class="code" x="78" y="656">m.push('!');</text>
+  <line class="grid" x1="440" y1="550" x2="440" y2="652"/><text class="tick" x="440" y="544">第 1 行</text>
+  <line class="grid" x1="620" y1="550" x2="620" y2="652"/><text class="tick" x="620" y="544">第 2 行</text>
+  <line class="grid" x1="800" y1="550" x2="800" y2="652"/><text class="tick" x="800" y="544">第 3 行</text>
+  <line class="grid" x1="980" y1="550" x2="980" y2="652"/><text class="tick" x="980" y="544">第 4 行</text>
+  <line class="grid" x1="1160" y1="550" x2="1160" y2="652"/><text class="tick" x="1160" y="544">第 5 行</text>
+  <rect class="ok" x="400" y="554" width="800" height="22" rx="6"/>
+  <line class="okflow" x1="404" y1="574" x2="1196" y2="574"/>
+  <text class="bl" x="410" y="570">s（Owner）</text>
+  <rect class="ok" x="580" y="583" width="260" height="22" rx="6"/>
+  <line class="okflow" x1="584" y1="603" x2="836" y2="603"/>
+  <text class="bl" x="590" y="599">r = &amp;s</text>
+  <rect class="amber" x="940" y="612" width="260" height="22" rx="6"/>
+  <text class="bl" x="950" y="628">m = &amp;mut s</text>
+  <text class="note" x="400" y="672">若第 5 行之后再用 r，r 与 m 重叠 → E0502</text>
+  <rect class="row" x="30" y="696" width="1340" height="186" rx="12"/>
+  <text class="rt" x="48" y="724">④ 'a：longest 的返回值按 x、y 中活得短的那个算</text>
+  <rect class="codebox" x="46" y="738" width="330" height="132" rx="8"/>
+  <text class="ln" x="58" y="764">1</text><text class="code" x="78" y="764">let x = String::from("abcd");</text>
+  <text class="ln" x="58" y="787">2</text><text class="code" x="78" y="787">let res;</text>
+  <text class="ln" x="58" y="810">3</text><text class="code" x="78" y="810">{ let y = String::from("xy");</text>
+  <text class="ln" x="58" y="833">4</text><text class="code" x="78" y="833">  res = longest(&amp;x, &amp;y); } // y drop</text>
+  <text class="ln" x="58" y="856">5</text><text class="code" x="78" y="856">println!("{}", res);</text>
+  <line class="grid" x1="440" y1="750" x2="440" y2="852"/><text class="tick" x="440" y="744">第 1 行</text>
+  <line class="grid" x1="620" y1="750" x2="620" y2="852"/><text class="tick" x="620" y="744">第 2 行</text>
+  <line class="grid" x1="800" y1="750" x2="800" y2="852"/><text class="tick" x="800" y="744">第 3 行</text>
+  <line class="grid" x1="980" y1="750" x2="980" y2="852"/><text class="tick" x="980" y="744">第 4 行</text>
+  <line class="grid" x1="1160" y1="750" x2="1160" y2="852"/><text class="tick" x="1160" y="744">第 5 行</text>
+  <rect class="ok" x="400" y="754" width="800" height="22" rx="6"/>
+  <line class="okflow" x1="404" y1="774" x2="1196" y2="774"/>
+  <text class="bl" x="410" y="770">x（Owner）</text>
+  <rect class="ok" x="760" y="783" width="260" height="22" rx="6"/>
+  <line class="okflow" x1="764" y1="803" x2="1016" y2="803"/>
+  <text class="bl" x="770" y="799">y（Owner）</text>
+  <rect class="amber" x="940" y="812" width="80" height="22" rx="6"/>
+  <text class="bl" x="950" y="828">res</text>
+  <rect class="bad" x="1020" y="841" width="180" height="22" rx="6"/>
+  <text class="blw" x="1030" y="857">res 还想用</text>
+  <text x="1210" y="858" style="fill:#f87171;font-size:15px;font-weight:700">✗ E0597</text>
+  <text class="note" x="400" y="872">实际返回的是更长的 x，但编译器只看签名 fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str</text>
+  <text class="title" x="30" y="930" style="font-size:16px">图例</text>
+  <rect class="ok" x="90" y="916" width="44" height="18" rx="5"/><text class="el" x="144" y="930">有效的值或只读借用</text>
+  <rect class="amber" x="320" y="916" width="44" height="18" rx="5"/><text class="el" x="374" y="930">要特别留意的借用（可变借用、函数返回的引用）</text>
+  <rect class="bad" x="760" y="916" width="44" height="18" rx="5"/><text class="el" x="814" y="930">超出 Owner 的部分：编译器直接拒绝</text>
+  <text class="el" x="90" y="964">生命周期只存在于编译期：编译器拿这些区间做重叠检查，编译完成后程序里没有任何计时器或计数器</text>
+</svg>
