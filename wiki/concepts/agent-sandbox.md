@@ -109,19 +109,23 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 - **来源**：[[Agent基础设施系列03：kagent与Agent-Substrate]]、[[Agent基础设施系列02：Kubernetes上的Agent沙箱]]
 - **首次出现**：2026-11-02
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.65
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 修订——依据：[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)、[Open infrastructure for autonomous agents comes to CNCF](https://cloud.google.com/blog/products/containers-kubernetes/open-infrastructure-for-autonomous-agents-comes-to-cncf)
 
-> 运行粒度光谱：一 agent 一 pod（隔离直观、空闲也花钱）→ 预热池领沙箱（解决"派得慢"不解决"空闲贵"）→ actor 快照 + worker 复用（Agent Substrate，空闲只剩对象存储里一份快照，唯一同时解决两者且保持强隔离，代价是 pre-1.0）→ 进程内 actor（Dapr，密度最高但只有逻辑隔离）→ 进程内代码沙箱（Wasm，受限）。推荐拆法：规划、调模型、调受治理 API 的 agent loop 放 Dapr actor / 进程内会话 / Substrate actor；只有模型生成的代码需要 VM 级墙，按需从预热池领 Kata 沙箱、用完归还——最贵的 VM 按执行次数付费而不是按 agent 个数。例外：Claude Code、OpenClaw 这类"整个 agent 就是不可信执行环境"的 coding agent 适合整体放进沙箱。选 agent-sandbox 还是 OpenSandbox 也沿这条线：agent 自己是服务、只要一个隔离 pod → agent-sandbox；agent 是调用方、沙箱是借来执行代码的工具 → OpenSandbox（execd + Credential Vault 省胶水）。
+> 运行粒度光谱：一 agent 一 pod（隔离直观、空闲也花钱）→ 预热池领沙箱（解决"派得慢"不解决"空闲贵"）→ actor 快照 + worker 复用（Agent Substrate，空闲只剩对象存储里一份快照，唯一同时解决两者且保持强隔离；2026-11-05 发布 1.0、GKE 上 GA，代价是只支持 CPU 节点、挂起时断开所有连接，见 [[actor-snapshot-scheduling]]）→ 进程内 actor（Dapr，密度最高但只有逻辑隔离）→ 进程内代码沙箱（Wasm，受限）。推荐拆法：规划、调模型、调受治理 API 的 agent loop 放 Dapr actor / 进程内会话 / Substrate actor；只有模型生成的代码需要 VM 级墙，按需从预热池领 Kata 沙箱、用完归还——最贵的 VM 按执行次数付费而不是按 agent 个数。例外：Claude Code、OpenClaw 这类"整个 agent 就是不可信执行环境"的 coding agent 适合整体放进沙箱。选 agent-sandbox 还是 OpenSandbox 也沿这条线：agent 自己是服务、只要一个隔离 pod → agent-sandbox；agent 是调用方、沙箱是借来执行代码的工具 → OpenSandbox（execd + Credential Vault 省胶水）。
 
 ### Claim: 多租户平台上 harness 自身也当不可信——编码 harness 连同工具与工作区整个放进 Kata、沙箱内免确认运行；判断标准不按命令分，而按"内容是否由模型 / 不可信数据决定 + 能碰到什么"
 
 - **来源**：[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]、[[AKS-Agent-Runtime系列01：Sandbox之外的三个平面]]
 - **首次出现**：2026-11-09
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > harness 读模型输出、网页、README、用户上传文件，都可能带 prompt injection，被劫持后手里正好有 shell 和文件工具。Claude Code / Codex / Copilot CLI 的"调用前确认"和进程级沙箱（bubblewrap、seatbelt、landlock）在多租户平台上只能当第二层：平台上的 agent 多由 Teams 消息或定时任务叫起、没人点确认，进程级沙箱与宿主共享内核。编码 harness 拆不成"loop 在外、bash 在内"——Read / Edit / Grep 默认操作本地文件系统，拆开就得把每个文件工具改成远程调用，那是改造 harness 而非部署 harness。必须留在沙箱外的四类：模型 key / Git token / 云凭据；授权决策；模型路由、配额、计费；checkpoint 与恢复控制、保留期、审计、人工审批。默认做法：第三方编码 harness 一律整体进沙箱（拓扑 A）；自写 loop 先问"是否处理大量不可信内容且握高权限工具"，是则同样进沙箱，否则放外面、代码执行进沙箱（拓扑 B，注意 confused deputy，见 [[credential-out-of-sandbox]]）；两者可组合为外层 loop + 受控子会话。成本差别：拓扑 A 每会话独占一个 VM，拓扑 B 的 loop 可跨租户共享。一个参考实现在 AKS Kata 上实测。
 
@@ -129,9 +133,11 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 - **来源**：[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]
 - **首次出现**：2026-11-10
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.7
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 凭据：沙箱里只有占位符，出站网关注入。身份：出站流量带 Pod 绑定的 mTLS 证书，私钥由 CSI 投递、沙箱进程读不到；网关按证书找存活 Pod、确认只绑定一个已准备好的会话，再查授权。文件按推荐度：① 沙箱拥有工作区、外部经执行守护进程的文件 API 读写（只有一份数据）；② 进入时复制固定快照、结束时收集产出；③ 以 Git 为交换介质、读写分别授权；④ 共享 RWX 最后选——每会话单独子目录、输入只读、防 symlink 与 TOCTOU、沙箱写出的内容一律当不可信数据。控制通道：只允许控制面调沙箱，沙箱不挂 SA token、连不上 Kubernetes API（见 [[agent-session-control-plane]]）。
 
@@ -139,9 +145,11 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 - **来源**：[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]
 - **首次出现**：2026-11-10
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.8
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 首次运行会话停在 running 五分钟无输出无报错：网络策略只允许连 CONNECT 网关，出站 sidecar 本应把请求封进 CONNECT 隧道，但那个版本不支持上游代理，直接连目标地址被 NetworkPolicy 静默丢弃，harness 只看到一个一直不返回的 TCP 连接。harness 不会说自己被墙了，要看 sidecar 日志与网络策略。实测。
 
@@ -169,9 +177,11 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 - **来源**：[[AKS-Agent-Runtime系列04：出站治理与逐请求授权]]、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
 - **首次出现**：2026-11-11
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 每 0.5 秒请求一次、删批准对象：两次实验都是约 1.2 秒开始 403（决策点每请求按当前声明重判，不等会话重建）；约 3 秒后出站边车把目的地移出白名单、连域名都解析不了，中间不到一秒两种结果交替。同一 provider 下还有别的批准动作时目的地一直留着，拒绝只在授权层——网络白名单粒度是 provider 的 Service 不是动作。恢复 3~4 秒回 200（首次 8.2 秒未细查）。与"撤销委托后已打开的更新流还会持续几分钟"是同一类问题：授权在请求入口判定，不追着已放行的操作。暂停会话的撤销在恢复时生效，见 [[actor-snapshot-scheduling]]。
 
@@ -199,9 +209,11 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 - **来源**：[[Agent基础设施系列03：kagent与Agent-Substrate]]、[[AKS-Agent-Runtime系列05：会话生命周期与回收]]
 - **首次出现**：2026-11-02
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.7
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列05：会话生命周期与回收]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > Agent Substrate 的 actor / worker 与 OpenSandbox Durable 会话是两个独立实现：空闲时快照释放执行单元、请求来了恢复到任意空闲单元，要准备的单元数取决于同时在忙的实例数。2026-11-14 升格为独立概念页，快照范围、耗时、恢复语义全部归口 [[actor-snapshot-scheduling]]，本条只保留结论。
 
@@ -247,6 +259,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 ## 冲突与演进
 
+- 2026-11-16：/revalidate（漂移复核）——5 条确认、1 条修订：粒度光谱里 Agent Substrate 的代价由"pre-1.0"改为 1.0 GA 后的实际限制。
 - `host-mediated-sandbox`（2026-10-29 HOLD）在本批出现两个非 Microsoft 低代码平台的同类实现，2026-11-04 复核后泛化为"凭据不进沙箱、出口注入"并入本页第五条 Claim，未单独建页。
 - `actor-snapshot-scheduling` 单一项目来源，作为本页最后一条 Claim 收入（HOLD），等第二个实现出现再评估。
 - 2026-11-14：AKS Agent Runtime 系列 01~09 注入。① `credential-out-of-sandbox` 与 `actor-snapshot-scheduling` 阈值满足、用户裁决升格独立页，本页两条 Claim 精简为指向；② 原「受信的 agent loop 走轻粒度」（0.65）与"多租户平台上 harness 也不可信"存在范围张力——前者默认 loop 受信，后者针对多租户编码 harness。不改写原条结论，给原条加适用范围，并另立一条（0.75，一个参考实现实测）；③ 新增沙箱与出站治理六条（卡住而非泄露、底线验证、权限交集、撤销两层、静态路由只读、模型按部署名授权）。

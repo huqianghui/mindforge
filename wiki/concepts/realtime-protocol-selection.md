@@ -147,9 +147,11 @@ related:
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.75（对比表与工具为文档查证；WS 下行不到 1 秒推完为实测；WebRTC 音轨上打断生效为推断，待对照实测）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > 逐项：丢包（WS 是 TCP 重传 + 队头阻塞；WebRTC 跳过由 PLC 补）、编码（PCM16 裸音频 vs Opus 约 32 kbps 带 FEC / DTX）、抖动缓冲与播放（应用自写 AudioWorklet 队列 vs 浏览器内置）、拥塞控制（只有 TCP 不感知媒体 vs RTCP 反馈 + 带宽估计）、加密（TLS vs DTLS-SRTP）、**发送节奏**（服务端能推多快推多快 vs 按实时速度）、事件通道（同一条 WS vs DataChannel 或 side-band WS）。与语音产品直接相关的三点：① 弱网差别最大——卡顿近似丢包数 × RTT；② **打断重新有意义**——WS PCM 下行上 Azure 不到 1 秒推完整段回复并标完成，`interrupt_response` 无可截断对象，WebRTC 按实时速度推、服务端知道播到哪才能截断（推断）；③ **架构会变**——媒体在浏览器与 Azure 间直连不经后端，后端代理原本承担的隐藏密钥、鉴权、记录转写、注入预生成 TTS 都要重新设计，控制靠 side-band WS（Azure Realtime 的 SDP 应答带 `Location` 头可再连控制 WS）。**可观测性不对称同源**：WebRTC 的拥塞 / 抖动 / 丢包 / RTT 在浏览器里，所以有 webrtc-internals；WS 的重传、RTT、拥塞窗口在 OS TCP 栈里，浏览器自己也看不到，只能分层——DevTools Network → WS → Messages 看帧（能直接看到下行音频不到 1 秒涌完紧跟 `response.done`）、`chrome://net-export` 看握手与代理、Wireshark（`SSLKEYLOGFILE` 解 wss，过滤 `tcp.analysis.retransmission`）或 `ss -ti` 看重传与 RTT、页面读 `ws.bufferedAmount` 当上行拥塞信号（持续上涨 = 上行跟不上、帧在本地排队，只反映上行）。一句话：webrtc-internals ≈ WS Messages + Wireshark，中间用 `bufferedAmount` 当带宽估计。
 

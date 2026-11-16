@@ -62,9 +62,11 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 - **来源**：[[AKS-Agent-Runtime系列01：Sandbox之外的三个平面]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
 - **首次出现**：2026-11-09
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列10：为什么在AKS上自建]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 执行平面：隔离环境、文件、命令执行、快照——AKS 给 Pod Sandboxing（Kata）、节点池与 NAP、CSI，社区有 agent-sandbox / OpenSandbox，自己补的是沙箱镜像里 harness 的适配与版本固定。会话平面：会话身份、收件箱、状态机、harness 调用与续接、暂停恢复回收——AKS 无，Dapr / Durable Task 可作底座，会话键、checkpoint 编排、回收对账、多副本全要自建（见 [[agent-session-control-plane]]）。治理平面：工作负载身份、出站网关、凭据注入、资源级授权、审计配额——AKS 给 Workload Identity 与 Cilium，社区有 agentgateway / OpenFGA，自己补 Pod 身份到会话的映射、申请审批流程、审计归集。定义与发现：CRD + controller 机制、kagent Agent CRD、A2A Agent Card，自己补统一 Agent 定义、不可变 revision、发现与调用授权分离。这是对 Runtime 层的另一种切法，与"四子层"不冲突：四子层按技术组件分，三平面按一次调用经过的职责分。十篇实测后的总结："agent runtime 的难点不在沙箱，在沙箱外面那一圈：会话、治理、身份"。`agent-runtime-three-planes` 不单独建页（HOLD）。
 
@@ -72,11 +74,13 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 - **来源**：[[Agent基础设施系列01：三层划分与自建路线]]
 - **首次出现**：2026-11-02
-- **最近更新**：2026-11-04
+- **最近更新**：2026-11-16
 - **置信度**：0.65
 - **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-16 修订——依据：[Open infrastructure for autonomous agents comes to CNCF](https://cloud.google.com/blog/products/containers-kubernetes/open-infrastructure-for-autonomous-agents-comes-to-cncf)，项目成熟度一句更新
 
-> 第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多"agent 平台"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，"用不到的不装"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate pre-1.0 只做 PoC。
+> 第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多"agent 平台"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，"用不到的不装"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate 写作时是 pre-1.0、只做 PoC，2026-11-05 已发布 1.0 并在 GKE 上 GA（仅 CPU 节点、挂起断开连接，见 [[actor-snapshot-scheduling]]）。
 
 ### Claim: 逐请求授权是突发流量下最先撑不住的一环——常态 p50 约 105 毫秒、大头是身份解析不是 OpenFGA；100 并发时决策点撞上超时返回 503，限流一次 429 都没触发
 
@@ -108,8 +112,20 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 > 逐项对照：容器托管与版本 → kagent Agent CRD + GitOps（多承担控制面升级、CRD 兼容）；每会话 VM 隔离沙箱 → AKS Kata 节点池 + agent-sandbox / OpenSandbox（节点容量、预热池大小、镜像来源审查）；会话与历史存储 → PostgreSQL、Dapr state store（备份与保留策略）；空闲挂起按需恢复 → 预热池休眠恢复或 Agent Substrate（冷启动调优，镜像拉取常是大头）；agent 身份 → Workload Identity 到 Entra Agent ID（身份映射、权限最小化）；工具与 MCP 接入 → kmcp + agentgateway（网关策略、MCP 鉴权）；观测 → OpenTelemetry（按逻辑 agent 而不是按 pod 归集）。换来的是数据与执行环境在自己网络里、模型 / framework / harness 自选、隔离与出站可定制、和推理或训练共享集群。AKS 系列实测后的补充：这张表还缺了最重的一块——会话控制面（[[agent-session-control-plane]]），社区组件只给底座；自建只在三类场景下值得（见 [[foundry-agent-type-selection]]）。
 
+### Claim: 同叫"暂停"，三种后端留下的东西不同——Substrate 留内存与文件、OpenSandbox + BatchSandbox 留整个 rootfs、agent-sandbox 只留 PVC；有状态连接在哪一种之后都要重建，重连归控制面
+
+- **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]、[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **首次出现**：2026-11-16
+- **最近更新**：2026-11-16
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 三种暂停：Agent Substrate 快照内存与本地文件，恢复低于一秒、进程从冻结处继续，但 GKE 文档写明挂起时不保留打开的网络连接（数据库会话、MCP 连接都要恢复后重连）；OpenSandbox 以 BatchSandbox 作 workload provider 时把 rootfs 提交成镜像，恢复后 `/workspace`、`/tmp`、harness 原生会话文件都在、进程没了（05 实测）；agent-sandbox 的 Suspended 删 Pod 留 PVC，`/tmp` 与 rootfs 都没了（03 补充实测），OpenSandbox 叠在 agent-sandbox 上的生产配置也是这一种。选后端时先问"恢复后要剩什么"：只要文件续接，PVC 就够，但原生会话文件和工作区必须放进 PVC；要进程状态才需要内存快照。共同点是网络连接都不跨暂停——harness 连着的 MCP server、出站网关的长连接、控制面打开的更新流都要在恢复后重建，这一步应由控制面在恢复时显式完成，而不是指望 harness 自己重试。Substrate 部分来自官方文档、未在 AKS 上实测。外部来源：[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)。
+
 ## 冲突与演进
 
+- 2026-11-16：/revalidate（漂移复核）——1 条确认、1 条修订（Substrate 成熟度）；新增"三种暂停语义"一条，跨后端的判断放在本页，各后端细节仍归 [[agent-sandbox]] 与 [[actor-snapshot-scheduling]]。
 - 2026-11-16：从 [[agent-infra-three-layers]] 拆出独立建页。四子层、三平面、两个问题、授权开销、原生机制守底线 5 条 Claim 原在三层页，原文搬来；新增"自建多承担运维"一条。AKS Agent Runtime 系列整个以本页为主题，系列各篇的细节分别归口上面列出的概念页，本页只放跨这些概念的判断。
 - `agent-runtime-three-planes` 维持不单独建页（三平面作本页 Claim）。
 - 同名不同物：[[copilot-managed-runtime]] 是 M365 的企业 SPA 托管平台，[[skill-runtime]] 是 skill 脚本的执行环境，都不是本页意义上的 agent runtime。

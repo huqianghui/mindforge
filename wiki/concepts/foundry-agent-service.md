@@ -89,9 +89,11 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 
 - **来源**：[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
 - **首次出现**：2026-11-13
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列10：为什么在AKS上自建]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 逐项对照在 AKS 上自建的九篇：Kata 节点池、默认拒绝出站、不挂 SA token、挡 IMDS 由平台负责；空闲 2~60 分钟释放计算、恢复时还原 `$HOME` 与 `/files`、30 天不活动删除、无预热池要配（对照自建时 checkpoint 每轮两次 commit 各 30~40 秒、孤儿沙箱与快照镜像要自写对账器）；"会话"（沙箱与文件）与"对话"（消息历史）分开管；部署时自动建 Entra agent identity（对照自建要用 Graph 建 blueprint、联合凭据、agent identity）；工具统一走 Toolbox、身份透传在那里处理。没覆盖的三件：跑现成编码 CLI（容器须实现 Responses / Invocations 协议）、沙箱超过 2 vCPU / 4 GiB、出站按"资源 + 动作"逐请求批准——选型见 [[foundry-agent-type-selection]]。基于文档对照，Hosted 侧未实测。
 

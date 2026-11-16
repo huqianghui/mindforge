@@ -33,9 +33,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.8（Microsoft Learn / RFC 查证 + 系列01 上行 WebRTC 实测；Voice Live 语音 WebRTC 是否下发 TURN 未查证）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > 四种组合：语音 · WebSocket（无 ICE / STUN / TURN，443 WSS 通即可）；语音 · WebRTC（OpenAI Realtime 官方示例 `new RTCPeerConnection()` 不配 iceServers——连公网媒体服务器往往能通，但出站 UDP 被封即建连失败，无保底）；数字人 · WebRTC（Voice Live 默认，`session.updated` 的 `session.avatar.ice_servers` 下发一台兼做 STUN 的 TURN）；数字人 · WebSocket（avatar `output_protocol: websocket`，整条链路又没有 ICE）。Voice Live 语音也能经 `rtc.call.sdp.create` 走 WebRTC，但今天与 avatar 互斥（side-band control 下不支持 avatar）。判别指纹：麦克风 `getUserMedia` 两种模式都有，`new RTCPeerConnection` 只在数字人路径出现——webrtc-internals 里"有 getUserMedia、PeerConnections 为空"即纯语音会话。
 
@@ -55,9 +57,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.8（RFC 8445 查证；对称 NAT 下靠 prflx 连公网服务器为推断）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > 候选写在 SDP 里告诉对端"往这里发，我收得到"。srflx 只是 host 那个 socket 经 NAT 后在外面"看起来"的地址；relay 的 base 在 TURN 服务器上，数据先封装交给 TURN 代发。**prflx（peer reflexive）**：对称 NAT 下发往不同目的地址会分配不同外网端口，STUN 服务器看到的地址对对端没用；对端收到检测包后把实际看到的源地址记为新候选——这是"不配 STUN 服务器也能通"的原因之一。STUN 与 TURN 不是二选一：ICE 一开始同时收集各类候选、配对后并行检测，不是 STUN 失败才试 TURN；TURN 是 STUN 的扩展，Allocate 应答本身带公网映射，配 TURN 通常顺带拿到 srflx——这正是 Azure 只下发一台 TURN 的原因。离不开 TURN 的情形：两端都在对称 NAT 后、出站 UDP 被封（企业网 / 部分 VPN / 酒店，TURN 走 TCP 或 TLS 443）、只允许 HTTP 代理出网。连 Azure 这类公网媒体服务器时，真正离不开 TURN 的主要是"出站 UDP 被封"（推断）。STUN 与 TURN 的代价不对称：STUN 回答一个小请求后不参与，TURN 全程转发所有媒体、带宽成本高所以要凭据。
 
@@ -65,9 +69,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]、[[Voice-Live系列10：ICE、STUN与TURN]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.7（公式为 RFC 8445 原文；胜出统计 n=4 同类开发网络，relay 为何胜出原因未查明）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > 完整过程：两端各自收集候选 → 经信令交换（我的成为对端的 remote candidates，反之亦然）→ 两端都把 local × remote 两两配成 candidate pair → 两端都发 STUN 检测 → controlling 一方 nominate，之后走 DTLS-SRTP。controlling 通常是发 offer 的一方，Voice Live 数字人上即浏览器。组合语义：host↔host 同局域网或双方公网；srflx/prflx↔host 我在 NAT 后、对端公网；srflx↔srflx 双方 NAT 后打洞成功；relay↔任意 我这边走 TURN。Voice Live 数字人上浏览器 host 是局域网地址，**host 必输**。优先级公式 `pair priority = 2^32 × min(G, D) + 2 × max(G, D) + (G > D ? 1 : 0)`（G = controlling 方候选优先级）——"直连优先、relay 保底"的数学体现。但实测：系列10 三次中两次 relay/udp 胜出、系列16 webrtc-internals 截图再一次 relay(udp) 胜出（local `0x37e1fff` 远低于 remote `0x64ffffff`），而浏览器到 TURN 走的就是 UDP，UDP 并未被封。**"保底"是排序语义，不等于很少用到**；排序靠后照样胜出与公式不矛盾，原因待查（检测完成先后 / nomination 时机 / srflx 那一对实际不通），且须把对端的检测与 nomination 一起算进去。
 
@@ -75,9 +81,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.85（RFC 8445 / RFC 7675 查证）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > "没有 STUN 服务器"不等于"没有 STUN 协议"。① **选路**：一台电脑有多个出口（Wi-Fi、有线、VPN、IPv4、IPv6），每个都是 host 候选，要逐一检测选最好的；② **连通性检测**：浏览器直接向对端候选发 STUN Binding Request（用 STUN 协议，不经 STUN 服务器），对端从包里学到映射地址（prflx）并回包；③ **对端同意（RFC 7675）**：浏览器绝不向没回应过 ICE 检测的地址发媒体，约每 5 秒复核一次——否则网页 JS 就能让浏览器向任意 IP 发 UDP 洪泛；ufrag / pwd 认证检测包，DTLS 握手与之绑定；④ **保活**：UDP 无连接，NAT 映射会过期；⑤ **换网**：Wi-Fi 切 4G 时 ICE restart 换路，不必重建会话。这回答了"一端明明是服务器、没有 STUN / TURN 服务器为什么还要 ICE"——安全（consent）与移动性（restart）这两件事 WebSocket 由 TCP 连接语义天然承担，UDP 上必须由 ICE 显式做。
 
@@ -85,9 +93,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]、[[Voice-Live系列12：数字人弱网表现]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.7（两条独立实测证据；最终以 SDP answer 无 `a=ice-lite` 定案，尚未抓取）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > full ICE（浏览器）收集 host / srflx / relay、主动检测、与 lite 对接时一定 controlling；ICE-lite（媒体服务器）只列网卡上绑定的地址、不问 STUN 不申请 TURN、不主动发检测只回应。lite 够用的原因：客户端在 NAT 后无所谓，它主动发检测过来，服务器从包里看到真实源地址（prflx）照着回即可；前提是必须真的公网可达。lite 常加一条 `tcptype passive` 的 host 候选（ICE-TCP，RFC 6544）给 UDP 被封的客户端兜底。**云上特例**：网卡只有内网 IP、公网 IP 是平台 1:1 NAT 映射——lite 服务器配"对外宣告地址"把公网 IP 当 host 写（对端看到 `typ host`），full ICE 服务器经 STUN 或静态映射得公网 srflx（对端看到 `typ srflx`）。开源对照：mediasoup 只支持 lite（announced address）、Janus 两种都支持并有 1:1 NAT 配置、Jitsi Videobridge 用 full ICE。**Azure 判定**：系列12 探针测到 srflx ↔ srflx、系列16 截图对端 `srflx` 且"STUN requests received / responses sent = 12 / 12"——lite 一端不主动发起检测，两条证据合起来 Azure 更像云上 1:1 NAT 后的 full ICE。推论：若如此，"Azure 只应答、浏览器包办选路"不成立，relay 胜出问题必须按两端都在检测分析。
 
@@ -95,9 +105,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.8（MDN 查证 + 一次真机截图逐项解读）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > 步骤：**先**开 `chrome://webrtc-internals` 并保持打开，同一窗口（非无痕）另开会话，等画面出现不关不刷新；Stats Tables 找 `nominated: true` 且 `state: succeeded` 的 `candidate-pair`，顺 `localCandidateId` / `remoteCandidateId` 看两端 `candidateType`——**只要一端是 relay，媒体就经过 TURN**，`relayProtocol` 说明到 TURN 走 udp / tcp / tls；Event log 的 `setRemoteDescription` 是 SDP answer，看 `a=ice-lite` 与对端候选类型。空 dump（`getUserMedia: []` 且 `PeerConnections: {}`）说明导出时无会话：已结束 / 刷新过 / 在别的 profile / 没开数字人 / 弱网降级或撞创建速率限制后 PeerConnection 已关。拿得到 `RTCPeerConnection` 实例时用 `getStats()` 打印选中对的两端类型与 `currentRoundTripTime`。**TURN 可达性探针**：用一次 `session.updated` 拿到的临时 `ice_servers` 建 `new RTCPeerConnection({ iceServers, iceTransportPolicy: "relay" })` + `createDataChannel` + `createOffer`，打出 relay 候选即中继可用，一条都没有即该网络数字人画面无保底；只测浏览器到 TURN 一段。一次截图读出的事实：Azure 只下发 `turn:relay.communication.microsoft.com:3478`、`bundlePolicy: max-bundle` 故只一对候选对；下行约 13 MB、上行十几 KB——**数字人这条 WebRTC 连接只承载下行，麦克风在 WebSocket 上**；经 TURN 的 RTT 0.262 s 与弱网实测约 300 ms 同量级。
 
@@ -105,9 +117,11 @@ ICE（Interactive Connectivity Establishment，RFC 8445）是 WebRTC 建连前�
 
 - **来源**：[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]、[[Global-Secure-Access：微软SSE的设计与实时媒体问题]]
 - **首次出现**：2026-10-14
-- **最近更新**：2026-10-16
+- **最近更新**：2026-11-16
 - **置信度**：0.8（同一台 macOS 设备实测复现 + 同 socket 多目标对照 + GSA 客户端日志佐证；Windows 客户端未测）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Global-Secure-Access：微软SSE的设计与实时媒体问题]]（2026-10-21 修订），修订后原文仍含本条的数字与结论
 
 > ICE 用**一个本地端口**同时和三个对端通信：TURN（STUN 拿 srflx、Allocate）、TURN 以 `300 Try-Alternate` 重定向的备用服务器（拿 relay）、媒体服务器（连通检查）。Chrome 对每个回包核对两件事：事务 ID 对得上、**回包来自请求发往的那个地址**（RFC 8445 的防伪造要求）。macOS 透明代理把应用的一个 UDP socket 当作一条"流"交给扩展，Global Secure Access 扩展按第一个数据报的目标建流、做一次转发决定、自建 socket 并 `connect` 到该目标——之后同一应用 socket 发往任何地址的包都送到首个对端，回包也显示来自它。后果：发往备用 TURN 的 Allocate 被送回原 TURN、回包源不符被丢 → **没有 relay**；连通检查被送到 TURN、当无关响应丢弃 → `reqSent` 一直涨、`respRecv=0`，约 15 秒 `ice=failed`，DTLS 从未开始。这和"relay 是企业网保底"不矛盾：常见企业网问题是"出向 UDP 到媒体服务器被挡、TURN 可达"，保底接得住；这次是**端口语义被改**，保底依赖的前提不成立。应用侧无效：后端把 ICE 域名解析成 IP 下发无效（钉死与地址是否合成无关）；`iceTransportPolicy: "relay"` 无效（绕不开 300 重定向）；GSA 策略里配 bypass 也不一定有效（bypass 的 UDP 流同样由扩展代发、照样钉死）。**测量纪律**：每个目标新开 socket 的系统层 STUN 测试天然绕开钉死、会全部正常而误判"网络没问题"，必须用**同一个 socket 依次发往多个目标**的对照（发往无服务 IP 也收到回复 = 包被转发给首个对端，而非仅回包地址被改写）。凡"一个端口对多个对端"的 UDP 都在影响面内（浏览器 WebRTC、P2P/NAT 穿越、mesh VPN），一对一的 TCP 与单服务器 UDP 不受影响——所以"看视频没问题、开视频会议就有问题"。
 

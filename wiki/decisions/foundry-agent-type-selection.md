@@ -188,9 +188,11 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
 - **首次出现**：2026-11-13
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]（2026-11-15 修订）、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > A 声明式：作者只写指令、选模型、挂 MCP 与知识源，loop 是平台的通用 loop，几百个 agent 可共用一个服务、需要执行代码再按需领沙箱。B 基于现成 harness：作者写 AGENTS.md、skills、MCP 配置，没有一行 loop 代码，但跑的 loop 需要文件系统和 shell，每会话独占一个沙箱。C 自写 loop：Agent Framework / LangGraph 打成镜像。B 与 C 每会话一个 Kata VM，成本与冷启动是另一个量级。kagent 1.x 的 Harness（`kagent` / `byo` / `codex` / `claude`）分别落在三类上；本系列参考实现本质上是一个只做 B 类的平台。这给本页"Runtime 归属"主线补了一个维度：Prompt + Copilot harness 一档是"Microsoft 跑 loop"的 B 类变体，而"用第三方编码 CLI 当 harness"的 B 类在 Foundry 内没有托管形态。
 
@@ -198,9 +200,11 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **来源**：[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
 - **首次出现**：2026-11-13
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.7
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列10：为什么在AKS上自建]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 三类理由：① 直接跑现成编码 CLI——Hosted 要求容器实现 Responses 或 Invocations，这些 CLI 不说这些协议，要用就得自己包一层（参考实现的适配器做的正是这件事）；② 沙箱规格——Hosted 最大 2 vCPU / 4 GiB，编码 agent 快照镜像就 1.46 GB，大仓库构建与全量测试 2 vCPU 常不够，GPU 更不用说，AKS 由节点池定规格；③ 出站粒度——Hosted 可走客户 VNet、工具经 Toolbox，但"某 agent 只能读某仓库不能推、撤销 1 秒多生效"这一级要自己搭。代价清单（几天 PoC 就撞上）：单副本 + SQLite 发版即停、多副本要自加 lease 与 fencing；回收只从状态库往外做；突发下逐请求授权先垮（51 个 503、0 个 429）；一项申请缺批准整个应用新会话 503；Claude Code root 下要 `IS_SANDBOX=1`；令牌服务要自写、代表用户要管理员同意；再加订阅策略（Key Vault 创建即关公网、Service Bus SAS 被禁、PostgreSQL 两区开不了、集群每天半夜停机）。不愿意长期维护控制面，三个理由再充分也应先想能否在 Hosted 那侧绕过去。十篇 PoC 的总结判断，选型本身未在真实项目验证。
 

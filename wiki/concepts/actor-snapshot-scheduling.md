@@ -26,7 +26,7 @@ related:
 
 把有状态的 agent 实例（actor / 会话）和执行它的沙箱 pod（worker）拆开：pod 仍是执行单元，但不再是 agent 的部署、身份、生命周期单元。实例空闲时把状态快照到外部存储、释放执行单元；有请求来时从快照恢复到任意一个空闲的执行单元上。这样要准备的执行单元数取决于**同时在忙**的实例数，而不是 agent 或会话的总数。
 
-两个独立实现是 Agent Substrate（actor / worker，内存与文件系统快照进对象存储）和 OpenSandbox 的 Durable 会话（容器 rootfs 提交成 OCI 镜像推到 registry，恢复时用该镜像新建 Pod）。它们的共同代价在快照本身：快照范围决定恢复后还剩什么，快照耗时决定空闲阈值能压多短。
+两个独立实现是 Agent Substrate（actor / worker，内存与文件系统快照进对象存储，2026-11-05 发布 1.0 并在 GKE 上 GA）和 OpenSandbox 的 Durable 会话（workload provider 用 BatchSandbox 时，容器 rootfs 提交成 OCI 镜像推到 registry，恢复时用该镜像新建 Pod）。同叫"暂停"，三种后端留下的东西不同：Substrate 留内存与文件、断开所有连接；OpenSandbox + BatchSandbox 留整个 rootfs、不留进程；agent-sandbox 的 Suspended（也是 OpenSandbox 叠在 agent-sandbox 上的生产配置）只留 PVC。它们的共同代价在快照本身：快照范围决定恢复后还剩什么，快照耗时决定空闲阈值能压多短。
 
 ## Claims
 
@@ -34,29 +34,35 @@ related:
 
 - **来源**：[[Agent基础设施系列03：kagent与Agent-Substrate]]、[[AKS-Agent-Runtime系列05：会话生命周期与回收]]
 - **首次出现**：2026-11-02
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.7
 - **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-16 修订——依据：[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)、[Open infrastructure for autonomous agents comes to CNCF](https://cloud.google.com/blog/products/containers-kubernetes/open-infrastructure-for-autonomous-agents-comes-to-cncf)
 
-> Agent Substrate 把 actor（多、大多挂起）与 worker（预启动的沙箱 pod，少）拆开：低频基础设施配置（WorkerPool）留在 Kubernetes，高频实例状态放自己的 PostgreSQL，挂起恢复不经 API server；一个 worker 一次仍只承载一个 actor。坑：挂起需上层显式调用；身份不能从环境变量读（golden snapshot 里冻结，所有 actor 读到同一值）；需 `wakeupProbe`；pre-1.0。OpenSandbox Durable 会话是第二个实现：会话 ID 稳定，空闲超阈值 commit 后删 Pod，来消息用快照镜像新建 Pod。整套收益建立在 agent 实际"忙"的时间占比上，动手前先从 trace 量这个数。原为 [[agent-sandbox]] 末条 Claim（0.55），第二个实现出现后升至 0.7。
+> Agent Substrate 把 actor（多、大多挂起）与 worker（预启动的沙箱 pod，少）拆开：低频基础设施配置（WorkerPool）留在 Kubernetes，高频实例状态放自己的 PostgreSQL，挂起恢复不经 API server；一个 worker 一次仍只承载一个 actor。坑：挂起需上层显式调用；身份不能从环境变量读（golden snapshot 里冻结，所有 actor 读到同一值）；需 `wakeupProbe`。2026-11-05 发布 1.0、GKE 上 GA，但 GKE 文档列了三条限制：要 GKE Standard 1.37 以上的 x86 节点（不支持 Autopilot）、不支持 GPU / TPU 直通、挂起时不保留打开的网络连接（数据库会话、MCP 连接都要恢复后重连）；GitHub README 仍写 pre-1.0。OpenSandbox Durable 会话是第二个实现：会话 ID 稳定，空闲超阈值 commit 后删 Pod，来消息用快照镜像新建 Pod。整套收益建立在 agent 实际"忙"的时间占比上，动手前先从 trace 量这个数。原为 [[agent-sandbox]] 末条 Claim（0.55），第二个实现出现后升至 0.7。
 
-### Claim: 快照范围决定恢复后剩什么——rootfs 快照保留整个容器文件系统（含 `/tmp` 与 harness 原生会话文件），不保留内存与进程；恢复后"记得上一轮"，但后台进程没了、VM 与主机名换新
+### Claim: 快照范围决定恢复后剩什么——OpenSandbox 用 BatchSandbox 时 rootfs 快照保留整个容器文件系统（含 `/tmp` 与 harness 原生会话文件），不保留内存与进程；换成 agent-sandbox 作 workload provider，暂停只剩 PVC
 
 - **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]、[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]、[[Agent基础设施系列03：kagent与Agent-Substrate]]
 - **首次出现**：2026-11-10
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.8
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 修订——依据：[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]（11-15 修订：两种 workload provider）、[[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]]
 
-> OpenSandbox 在沙箱所在节点起 commit Job，经 containerd 把容器 rootfs 提交成 OCI 镜像推 ACR，沙箱容器与出站边车各一份；暂停走同一机制。实测：第一轮在 `/root/work` 与 `/tmp` 各写文件、起 `sleep 3600` 后台进程、记暗号；暂停 5 分多钟后第二轮——两个文件都在、harness 答出暗号（原生会话文件在 rootfs 里随快照走）、后台进程没了但 PID 文件还在、`uptime` 是新 VM、主机名换了。对照 Agent Substrate 的两档：MEMORY（进程从冻结处继续）vs VOLUMES / ROOTFS（只存文件、进程冷启动）。编码 harness 每轮本来就是重新启动的进程，rootfs 档已足够续接上下文。
+> OpenSandbox 在沙箱所在节点起 commit Job，经 containerd 把容器 rootfs 提交成 OCI 镜像推 ACR，沙箱容器与出站边车各一份；暂停走同一机制。实测：第一轮在 `/root/work` 与 `/tmp` 各写文件、起 `sleep 3600` 后台进程、记暗号；暂停 5 分多钟后第二轮——两个文件都在、harness 答出暗号（原生会话文件在 rootfs 里随快照走）、后台进程没了但 PID 文件还在、`uptime` 是新 VM、主机名换了。对照 Agent Substrate 的两档：MEMORY（进程从冻结处继续）vs VOLUMES / ROOTFS（只存文件、进程冷启动）。编码 harness 每轮本来就是重新启动的进程，rootfs 档已足够续接上下文。**适用范围**：上述实测是 OpenSandbox 以 BatchSandbox 作 workload provider（参考实现的测试配置，快照目前只能从 BatchSandbox 生成）。生产配置让 OpenSandbox 直接建 agent-sandbox 的 Sandbox，暂停变成删 Pod 留 PVC，`/tmp` 与 rootfs 不再保存，要续接就得把原生会话文件和工作区放进 PVC（[[agent-sandbox]] 两种暂停语义一条）。
 
 ### Claim: 快照耗时决定空闲阈值的下限——每轮结束 checkpoint 与暂停各 commit 一次、各约 30~40 秒，恢复约 10 秒；阈值短于 checkpoint 时暂停只能排队
 
 - **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]
 - **首次出现**：2026-11-12
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列05：会话生命周期与回收]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 控制面阶段记录：领预热沙箱 1.1 秒 + 初始化 0.1 秒；checkpoint 31~41 秒（4 次）；暂停 29~35 秒；恢复 9.5~11.2 秒（含重新下发出站白名单）。空闲阈值设为最小值 30 秒时，到点 checkpoint 还没做完，暂停排在它后面，一轮结束到 Pod 消失共 79 秒——两次 commit 内容几乎一样。阈值越短 Pod 释放越快、恢复越频繁。集群每天半夜自动停机重启后，暂停会话照常恢复。单环境实测。
 
@@ -64,14 +70,17 @@ related:
 
 - **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]、[[Agent基础设施系列02：Kubernetes上的Agent沙箱]]、[[Agent基础设施系列03：kagent与Agent-Substrate]]
 - **首次出现**：2026-11-12
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列05：会话生命周期与回收]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 运行中的会话撤销批准约 1.2 秒生效（授权层逐请求重判）；暂停的会话恢复时下发的就已是撤销之后的白名单，不是暂停时那一份。反面例子：OpenSandbox Credential Vault 只在 sidecar 内存，暂停后恢复为空，必须显式重新注入；Agent Substrate golden snapshot 冻结了环境变量里的身份。共同规律：凡是快照里的东西都是"暂停那一刻"的，权限、凭据、身份要在恢复时从沙箱外重新取，不能依赖快照里留下的值——这也是 [[credential-out-of-sandbox]] 让凭据始终留在外面的又一个理由。
 
 ## 冲突与演进
 
+- 2026-11-16：/revalidate（漂移复核）——4 条确认、2 条修订：Agent Substrate 由 pre-1.0 改为 1.0 GA 及其三条限制；rootfs 快照限定为 BatchSandbox 配置，补上生产配置下暂停只剩 PVC。
 - 2026-11-04：HOLD，单篇（Agent 基础设施系列 03）、与 Agent Substrate 一个 pre-1.0 项目强绑定，作 [[agent-sandbox]] Claim 收入（0.55）。复核阈值：第二个独立实现。
 - 2026-11-14：AKS Agent Runtime 系列 05 的 OpenSandbox Durable 会话是第二个实现（rootfs → OCI 镜像而非内存快照），用户裁决建页。[[agent-sandbox]] 原 Claim 精简为指向本页。
 - Substrate 侧仍无自己的实测，超售密度的收益是项目方声明；OpenSandbox 侧有实测但只量了单会话。

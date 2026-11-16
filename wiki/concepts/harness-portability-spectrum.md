@@ -102,9 +102,11 @@ related:
 
 - **来源**：[[AKS-Agent-Runtime系列08：模型接入层]]、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
 - **首次出现**：2026-11-10
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.8
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > Copilot、Codex、OpenCode、Pi 原生说 OpenAI Responses；Claude Code 只说 Anthropic Messages，参考实现因此装了 Claude Code 却故意不配模型。模型网关的路由本就同时匹配 `/openai/v1/responses` 与 `/v1/messages`，agentgateway 文档写明 provider 同时支持两种格式时 Messages 请求总被转成 Responses。直接打 Messages 路径：普通对话 200（返回 id 以 `resp_` 开头，看得出背后调的是 Responses）、强制工具调用返回标准 `tool_use` 块、流式输出是完整的 Anthropic SSE 序列。多步任务（`calc.py` 两个 bug + 空列表未报错，要求修代码不改测试）：Claude Code 走转换两次 12.8 / 11.4 秒、Codex 原生两次 14.0 / 10.4 秒，四次测试全过且都只改了 `calc.py`。所以 harness 换宿主时，"模型协议对不上"不必改 harness，也不必限定模型厂商；Foundry 上 Claude 走原生 Messages 的路径因需填组织声明未测。小规模任务实测，长任务未测。
 

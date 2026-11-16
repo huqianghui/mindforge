@@ -316,9 +316,11 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]]、[[Global-Secure-Access：微软SSE的设计与实时媒体问题]]
 - **首次出现**：2026-10-14
-- **最近更新**：2026-10-16
+- **最近更新**：2026-11-16
 - **置信度**：0.8（企业安全客户端设备实测：原会话重发 3 次全部被拒；WS 下发实测可用）
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[Global-Secure-Access：微软SSE的设计与实时媒体问题]]（2026-10-21 修订），修订后原文仍含本条的数字与结论
 
 > 现象签名：数字人无画无声，但候选人说话能被转写、模型文字回复正常——因为两条通道里坏的只有 avatar WebRTC（画面与声音两条 RTP 轨；avatar 模式下 Azure 不在 WS 上发 `response.audio.delta`），TCP 上的 WS（上行、转写、文字、SDP 信令）正常；服务端 T+23~40 秒收到 `webrtc_connection_invalid`（`avatar_rate_limited=False`，不是限流），随后 `close_reason=azure_stream_ended` 循环重连。对 10-02「每会话 connect 一次」硬约束的补充：**ICE 从未连通时也只接受一次**，在原会话上重建 PeerConnection、重发 offer 的恢复逻辑会被全部拒绝；每次新建会话又消耗 avatar 新建限流（每滚动 60 秒 3 次），恢复被进一步推迟。前端两条改进：① 先走 WebRTC，ICE 若干秒内未进 `connected` 或候选对持续 `respRecv=0` → **新建会话**并把 avatar 改为 `output_protocol: websocket`（多数用户仍享 WebRTC，企业安全客户端下用户也能看到数字人）；② 检测到 ICE 停在 `checking` 且 `respRecv=0` 或拿不到 relay 候选时直接提示"网络安全客户端可能阻止了音视频连接"并走降级，不静默等 40 秒。复现不必依赖业务账号：用 Entra token 直连 Voice Live 开带 avatar 的会话，Python 走 WS 信令、Playwright 起的 Chrome 跑 WebRTC，`client_sdp` / `server_sdp` 都是 base64 编码的 `{type, sdp}` JSON。归属补充：Voice Live 下发的 TURN（`relay.communication.microsoft.com`）借用的是 Azure Communication Services 的中继，与 Teams/Skype 共用一套中继基础设施——企业网络策略对 Teams 媒体的处理会波及数字人。
 

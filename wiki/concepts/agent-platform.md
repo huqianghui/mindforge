@@ -96,9 +96,11 @@ Agent Platform 回答"企业怎么构建、运行、发现、治理这些 agent"
 
 - **来源**：[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
 - **首次出现**：2026-11-13
-- **最近更新**：2026-11-14
+- **最近更新**：2026-11-16
 - **置信度**：0.75
 - **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]（2026-11-15 修订），修订后原文仍含本条的数字与结论
 
 > 统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定"配置和权限"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。
 

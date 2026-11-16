@@ -170,9 +170,11 @@ related:
 
 - **来源**：[[Voice-Live系列16：传输层概念对齐]]
 - **首次出现**：2026-10-08
-- **最近更新**：2026-10-11
+- **最近更新**：2026-11-16
 - **置信度**：0.8（RFC 6716 / 7874 与 API 参考 2025-10-01 至 2026-06-01-preview 查证；接口设计动机与第一段 Opus 方案为推断，未实施）
 - **状态**：active
+- **证据类型**：理论（长效）
+- **复核**：2026-11-16 确认——依据：来源 [[Voice-Live系列16：传输层概念对齐]]（2026-10-14 修订），修订后原文仍含本条的数字与结论
 
 > Opus（RFC 6716，开源免专利费，WebRTC 强制支持 RFC 7874）由 SILK（线性预测，低码率语音）与 CELT（MDCT，音乐 / 低延迟）融合，加 Hybrid 档（低频 SILK + 高频 CELT），编码器按码率与内容自动切换无需重协商；码率 6~510 kbps、语音 16~32 kbps 已清晰，帧长默认 20 ms，算法延迟约 26.5 ms（低延迟模式约 5 ms）；实时特性：带内 FEC、DTX、PLC、VBR，Opus 1.5 加神经网络深度 PLC 与 DRED（冗余约 1 秒）。**带宽差 10 倍以上**：PCM16 上行 16 kHz 256 kbps / 下行 24 kHz 384 kbps vs Opus 约 24~32 kbps；permessage-deflate 对裸 PCM 只压到 95%。WebRTC 路径上 Opus 只用在浏览器到 Azure 一段，Azure 解码成 PCM 再交给模型，模型"听到"的与走 WS 时一样。Opus 与传输无关（`.opus` / `.ogg` / `.webm`、`MediaRecorder`、WebCodecs `AudioEncoder` 编出的帧完全可以走 WS），限制在 Voice Live WS 接口：输入 `pcm16` / `g711_ulaw` / `g711_alaw`，输出另加 `pcm16_8000hz` / `pcm16_16000hz`。接口为何如此（推断）：面向服务端对服务端与电话场景、TCP 已把丢包变重传使 FEC / PLC 用不上、Opus 包在字节流上需额外帧边界约定——与"三条产品线拼接缝"同源。**方向选择**：浏览器 ──Opus(WS)──▶ 后端解码 ──pcm16(WS)──▶ Azure，用户侧带宽降到约十分之一，代价是后端每路编解码、每帧多约 20 ms 打包延迟、Safari WebCodecs 兼容性待测，且**不解决 TCP 队头阻塞**；G.711 64 kbps 原生支持但 8 kHz 窄带影响识别，面试类场景不推荐；要消除卡顿只有 UDP 能避开队头阻塞，必须换 WebRTC 并接受媒体不经后端。本页 10-02"WS 上行只收 pcm16 / G.711 无 Opus"Claim 的根因澄清：是接口限制而非编码与传输绑定。
 
