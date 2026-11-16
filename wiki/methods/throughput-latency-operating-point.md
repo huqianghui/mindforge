@@ -4,7 +4,7 @@ aliases:
   - "工作点读数法"
   - "Operating Point Reading"
 created: "2026-09-04"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - method
@@ -16,6 +16,8 @@ related_concepts:
   - "[[ai-inference-asic]]"
   - "[[hybrid-linear-attention-architecture]]"
 related_methods: []
+related:
+  - "[[llm-serving]]"
 ---
 
 # Throughput-Latency Operating Point（工作点读数法）
@@ -130,6 +132,7 @@ related_methods: []
 
 ## 关联概念
 
+- [[llm-serving]] — `part-of` 读推理服务各层性能数字的方法
 - [[ai-inference-asic]] — `grounds` 方法首次成形于 Jalapeño benchmark 解读，该页保留硬件场景的详版 Claim
 - [[hybrid-linear-attention-architecture]] — `grounds` 内核级 vs 端到端读数为混合注意力的商用数字解读提供口径框架
 

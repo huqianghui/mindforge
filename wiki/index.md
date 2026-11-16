@@ -136,6 +136,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 
 ### LLM 推理与训练
 
+- [[llm-serving]] — LLM 推理服务：模型架构 / 单机引擎 / 分布式编排 / 托管 API / 硬件五层，缓存是贯穿主线；服务架构在拆分（控制面与引擎、Prefill 与 Decode）；选型带日期、读数先定工作点
 - [[hybrid-linear-attention-architecture]] — Hybrid 线性注意力架构：Transformer/Mamba/GDN/Hybrid 的"记忆怎么存"差异
 - [[prefix-caching]] — 前缀缓存：两条隐含假设，及循环状态为何让 Hybrid 命中归零
 - [[automatic-prompt-optimization]] — APO：文本梯度 + Beam Search，不动权重的 prompt 优化

@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 线性注意力架构（Hybrid Linear-Attention Architecture）"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -17,6 +17,7 @@ aliases:
   - "线性注意力+全注意力混合"
   - "Gated DeltaNet"
 related:
+  - "[[llm-serving]]"
   - "[[cascaded-pipeline]]"
   - "[[prefix-caching]]"
 ---
@@ -100,6 +101,7 @@ Hybrid 线性注意力架构是 2025–2026 年 LLM 推理架构的范式迁移�
 
 ## 关联概念
 
+- [[llm-serving]] — `part-of` 推理服务的模型架构层
 - [[prefix-caching]] — `constrains` Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，导致命中率归零
 - [[cascaded-pipeline]] — `contrasts` 推理架构选型与级联/端到端管线选型同属"为约束选架构"的工程决策family
 

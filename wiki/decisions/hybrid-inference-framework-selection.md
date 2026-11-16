@@ -1,7 +1,7 @@
 ---
 title: "Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - decision
@@ -14,6 +14,8 @@ related_concepts:
   - "[[prefix-caching]]"
   - "[[hybrid-linear-attention-architecture]]"
 related_methods: []
+related:
+  - "[[llm-serving]]"
 ---
 
 # Hybrid 模型推理框架选型——llama.cpp vs vLLM vs SGLang
@@ -136,6 +138,7 @@ related_methods: []
 
 ## 关联概念
 
+- [[llm-serving]] — `part-of` 推理服务里单机引擎的选型
 - [[prefix-caching]] — `addresses` 本决策是 prefix caching 在 Hybrid 模型上失效后的框架应对方案
 - [[hybrid-linear-attention-architecture]] — `constrains` Hybrid 架构的循环状态是触发本选型的根因，约束了哪些框架能用
 

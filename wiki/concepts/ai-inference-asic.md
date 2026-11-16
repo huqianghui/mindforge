@@ -1,7 +1,7 @@
 ---
 title: "AI 推理 ASIC"
 created: "2026-08-30"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -13,6 +13,7 @@ aliases:
   - "推理芯片"
   - "Jalapeño"
 related:
+  - "[[llm-serving]]"
   - "[[hybrid-inference-framework-selection]]"
   - "[[model-harness-codesign]]"
   - "[[prefix-caching]]"
@@ -116,6 +117,7 @@ AI ASIC（Application-Specific Integrated Circuit）是针对 AI 负载专门设
 
 ## 关联概念
 
+- [[llm-serving]] — `part-of` 推理服务的硬件层
 - [[model-harness-codesign]] — `extends` co-design 路线从 model+harness 下沉到 model+软件栈+芯片的硬件层
 - [[hybrid-inference-framework-selection]] — `grounds` 工作点读数法（峰值/最低TBT/matched）为推理框架与硬件选型的 benchmark 解读提供方法论
 - [[prefix-caching]] — `uses` KV Cache 管理、prefill/decode 分离是芯片-软件栈联合优化的软件侧对象

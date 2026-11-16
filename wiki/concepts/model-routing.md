@@ -16,6 +16,7 @@ aliases:
   - "任务分级路由"
   - "CodexSaver"
 related:
+  - "[[llm-serving]]"
   - "[[caveman-token-compression]]"
   - "[[claude-code-agent-subagent]]"
   - "[[mcp-vs-cli]]"
@@ -128,6 +129,7 @@ related:
 
 ## 关联概念
 
+- [[llm-serving]] — `uses` 路由粒度受推理服务的缓存约束
 - [[rtk-token-compression]] — `contrasts` RTK 压缩工具输出（减 token 数量），模型路由降 token 单价，两条正交轴可叠加
 - [[caveman-token-compression]] — `contrasts` Caveman 压缩 LLM 输出（减 token 数量），模型路由不动内容只换便宜模型执行
 - [[three-layer-token-optimization]] — `extends` 三层压缩（compact/RTK/Caveman）之外的第四正交轴；叠加路由后成本可从 ~78% 压缩进一步降到约 12%

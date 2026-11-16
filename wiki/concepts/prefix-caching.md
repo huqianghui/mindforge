@@ -17,6 +17,7 @@ aliases:
   - "Prefix Caching"
   - "Prefix Cache"
 related:
+  - "[[llm-serving]]"
   - "[[distributed-training-parallelism]]"
 ---
 
@@ -186,6 +187,7 @@ related:
 
 ## 关联概念
 
+- [[llm-serving]] — `part-of` 贯穿推理服务各层的缓存主线
 - [[distributed-training-parallelism]] — `contrasts` 推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别
 
 ## 来源日记

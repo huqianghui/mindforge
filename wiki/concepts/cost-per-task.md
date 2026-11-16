@@ -15,6 +15,7 @@ aliases:
   - "cost-per-successful-task"
   - "AI FinOps 任务口径"
 related:
+  - "[[llm-serving]]"
   - "[[data-flywheel]]"
   - "[[confidence-calibration]]"
   - "[[generation-evaluation-separation]]"
@@ -113,6 +114,7 @@ related:
 
 ## 关联概念
 
+- [[llm-serving]] — `uses` 推理成本归因最终落到每成功任务成本
 - [[generation-evaluation-separation]] — `extends` "成功判定归接收方、验收口径与优化口径分开"是分离原则在 FinOps 度量上的延伸——判分的一方不能是写答案的一方
 - [[model-routing]] — `constrains` 路由只优化第一项、只对左栏任务有效；切换模型须算缓存总账而非比单价
 - [[three-layer-token-optimization]] — `constrains` token 压缩手段的适用边界：右栏任务第三项主导，压第一项过头会让第三项涨回来
