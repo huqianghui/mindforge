@@ -2,7 +2,7 @@
   "generated_at": "2026-11-16",
   "stats": {
     "nodes": 169,
-    "links": 683,
+    "links": 693,
     "orphan_links_removed": 2,
     "claims": 1000,
     "categories": 13
@@ -14701,6 +14701,12 @@
     },
     {
       "source": "agent-harness",
+      "target": "codex-desktop-architecture",
+      "relation_type": "part-of",
+      "description": "具体实现：Codex Desktop 的架构拆解"
+    },
+    {
+      "source": "agent-harness",
       "target": "harness-engineering",
       "relation_type": "grounds",
       "description": "把 harness 做好的工程方法"
@@ -14902,6 +14908,12 @@
       "target": "skill-pattern",
       "relation_type": "contrasts",
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
+    },
+    {
+      "source": "agent-platform",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "part-of",
+      "description": "Foundry 上 Prompt / Hosted 的选型"
     },
     {
       "source": "agent-platform",
@@ -15313,6 +15325,12 @@
     },
     {
       "source": "automatic-prompt-optimization",
+      "target": "prompt-optimization-tool-selection",
+      "relation_type": "part-of",
+      "description": "APO 工具选型的决策页"
+    },
+    {
+      "source": "automatic-prompt-optimization",
       "target": "agent-lightning",
       "relation_type": "part-of",
       "description": "APO 是 agent-lightning `algorithm/` 槽位的内置算法（一等公民），三级阶梯第一级"
@@ -15580,6 +15598,12 @@
       "target": "harness-engineering",
       "relation_type": "part-of",
       "description": "CLAUDE.md 架构约束是 Harness Engineering 的一部分"
+    },
+    {
+      "source": "codex-desktop-architecture",
+      "target": "agent-harness",
+      "relation_type": "implements",
+      "description": "Codex Desktop 是一个具体 harness 的架构拆解"
     },
     {
       "source": "codex-desktop-architecture",
@@ -16126,6 +16150,12 @@
       "target": "llm-as-a-judge",
       "relation_type": "contrasts",
       "description": "EOU 小模型（几十 ms、不知任务）与 LLM judge（几百 ms、知道任务）叠放不替代"
+    },
+    {
+      "source": "enterprise-ontology",
+      "target": "ontology-philosophy",
+      "relation_type": "implements",
+      "description": "本体论在企业数据语义层的落地"
     },
     {
       "source": "enterprise-ontology",
@@ -17137,6 +17167,12 @@
     },
     {
       "source": "reinforcement-learning",
+      "target": "rl-infra-framework-selection",
+      "relation_type": "part-of",
+      "description": "RL 基建框架选型的决策页"
+    },
+    {
+      "source": "reinforcement-learning",
       "target": "bitter-lesson",
       "relation_type": "grounds",
       "description": "RL 是 Bitter Lesson 的经验来源（Search + Learning 统一）"
@@ -17563,6 +17599,12 @@
     },
     {
       "source": "spec-driven-development",
+      "target": "spec-driven-vs-methodology-framework",
+      "relation_type": "part-of",
+      "description": "规范驱动开发相关的框架取舍"
+    },
+    {
+      "source": "spec-driven-development",
       "target": "generation-evaluation-separation",
       "relation_type": "implements",
       "description": "\"AI 起草，人类拍板\"的分工是生成-评估分离原则在规格/合规域的具体实施"
@@ -17794,6 +17836,12 @@
       "target": "cascaded-pipeline",
       "relation_type": "part-of",
       "description": "VAD 是级联流水线的第一个模块（KWS → VAD → ASR → LLM → TTS）"
+    },
+    {
+      "source": "voice-live-agent",
+      "target": "voice-agent-build-approach",
+      "relation_type": "part-of",
+      "description": "语音 agent 怎么搭的决策页"
     },
     {
       "source": "voice-live-agent",
@@ -18169,6 +18217,12 @@
     },
     {
       "source": "programmatic-video",
+      "target": "clock-driven-rendering",
+      "relation_type": "part-of",
+      "description": "时钟驱动渲染是两种驱动方式之一"
+    },
+    {
+      "source": "programmatic-video",
       "target": "frame-driven-rendering",
       "relation_type": "uses",
       "description": "整条工作流以帧号为唯一时间源：分镜按帧区间写、动画按帧号算、导出可并行且确定"
@@ -18398,8 +18452,8 @@
     {
       "source": "foundry-agent-type-selection",
       "target": "agent-platform",
-      "relation_type": "uses",
-      "description": "Foundry 作为托管 agent platform 的选型"
+      "relation_type": "part-of",
+      "description": "在 Foundry 这个托管 agent platform 上的类型选择"
     },
     {
       "source": "foundry-agent-type-selection",
@@ -18496,6 +18550,12 @@
       "target": "distributed-training-parallelism",
       "relation_type": "constrains",
       "description": "训练后端 FSDP/Megatron 的适用规模直接决定 VERL/Slime 的取舍边界"
+    },
+    {
+      "source": "spec-driven-vs-methodology-framework",
+      "target": "spec-driven-development",
+      "relation_type": "part-of",
+      "description": "规范驱动与方法论框架的取舍"
     },
     {
       "source": "spec-driven-vs-methodology-framework",
