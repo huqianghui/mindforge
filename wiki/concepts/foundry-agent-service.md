@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent Service"
 created: "2026-11-07"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,8 @@ aliases:
   - "Azure AI Foundry Agent"
   - "Foundry Agent"
 related:
+  - "[[agent-platform]]"
+  - "[[agent-runtime]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[foundry-agent-type-selection]]"
   - "[[copilot-studio]]"
@@ -100,6 +102,8 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 
 ## 关联概念
 
+- [[agent-platform]] — `implements` Foundry 整体是托管 agent platform
+- [[agent-runtime]] — `implements` Hosted Agent 本身是托管的 agent runtime
 - [[azure-copilot-ecosystem]] — `part-of` Foundry Agent Service 是微软 Copilot / AI 生态里的 PaaS agent 运行时这一支
 - [[copilot-studio]] — `contrasts` Copilot Studio 是 SaaS 构建产品，Foundry 是 PaaS 运行时，不在同一层，常分层组合
 - [[github-copilot]] — `uses` Foundry 托管 harness（`microsoft_copilot_preview`）用的就是 GitHub Copilot 的那套 Copilot harness

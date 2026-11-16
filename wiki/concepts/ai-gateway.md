@@ -1,7 +1,7 @@
 ---
 title: "AI Gateway"
 created: "2026-11-15"
-updated: "2026-11-15"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -16,6 +16,8 @@ aliases:
   - "模型网关"
   - "agent 网关"
 related:
+  - "[[agent-runtime]]"
+  - "[[agent-platform]]"
   - "[[credential-out-of-sandbox]]"
   - "[[agent-session-control-plane]]"
   - "[[relationship-based-access-control]]"
@@ -100,6 +102,8 @@ AI 网关是位于 agent、模型和外部工具之间、专门处理 AI 流量�
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` 模型网关与出站网关在 runtime 的数据路径上
+- [[agent-platform]] — `part-of` agent 网关是自建 agent platform 的统一入口
 - [[credential-out-of-sandbox]] — `part-of` 出站网关是"凭据由出口处可信中介注入"的那个出口
 - [[agent-session-control-plane]] — `uses` 会话身份由控制面绑定，网关按 Pod → 会话 → 应用回查
 - [[relationship-based-access-control]] — `uses` 网关的授权回调交给关系型授权决策点

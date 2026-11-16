@@ -1,7 +1,7 @@
 ---
 title: "Graph Engineering"
 created: "2026-08-16"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "Graph Engineering"
   - "图工程"
 related:
+  - "[[agent-framework]]"
   - "[[loop-engineering]]"
   - "[[model-harness-codesign]]"
   - "[[personal-knowledge-compiler]]"
@@ -84,6 +85,7 @@ Graph Engineering（图工程，2026 年 7 月因 Peter Steinberger 一条 290 �
 
 ## 关联概念
 
+- [[agent-framework]] — `contrasts` LangGraph 时代的静态图 vs 模型现写的一次性图
 - [[loop-engineering]] — `extends` 含义②（循环之图）是 loop engineering 的自然延伸：设计单位从单循环升级为带锚点的循环网络（Perez 文标题即 "From Loop Engineering to Graph Engineering"）
 - [[model-harness-codesign]] — `uses` 含义①（编排图）的两条实现路线（Claude 显式 vs Codex 隐式）是第一方 harness 的路线分歧新轴
 - [[personal-knowledge-compiler]] — `grounds` 含义③（类型化知识图）为 PKC 提供 GraphRAG 坐标系定位：wikilink vault 已是 80% 图索引，缺 linter + eval

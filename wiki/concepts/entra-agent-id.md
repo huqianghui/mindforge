@@ -1,7 +1,7 @@
 ---
 title: "Entra Agent ID（双层身份模型）"
 created: "2026-08-03"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,8 @@ aliases:
   - "Agent Blueprint"
   - "Agent Identity"
 related:
+  - "[[agent-platform]]"
+  - "[[agent-runtime]]"
   - "[[foundry-agent-type-selection]]"
   - "[[azure-copilot-ecosystem]]"
 ---
@@ -172,6 +174,8 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 
 ## 关联概念
 
+- [[agent-platform]] — `part-of` agent platform 的身份一环
+- [[agent-runtime]] — `uses` runtime 里 agent 以谁的身份行事
 - [[foundry-agent-type-selection]] — `grounds` 双层身份模型是该决策"身份层三者同源、治理分水岭在内容层"论断的身份层机制依据
 - [[azure-copilot-ecosystem]] — `part-of` Entra Agent ID 是 Azure Agent 生态的身份治理底座
 

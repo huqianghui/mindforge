@@ -1,7 +1,7 @@
 ---
 title: "Copilot Studio Harness Selection"
 created: "2026-10-29"
-updated: "2026-11-04"
+updated: "2026-11-16"
 tags:
   - wiki
   - decision
@@ -17,6 +17,9 @@ related_concepts:
   - "[[harness-engineering]]"
   - "[[foundry-agent-type-selection]]"
 related_methods: []
+related:
+  - "[[agent-harness]]"
+  - "[[agent-platform]]"
 ---
 
 # Copilot Studio Harness Selection（Copilot Studio harness 选型）
@@ -115,6 +118,8 @@ Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"
 
 ## 关联概念
 
+- [[agent-harness]] — `uses` Copilot Studio 里怎么选 harness
+- [[agent-platform]] — `uses` 托管 platform 上的不可逆选择
 - [[harness-engineering]] — `extends` 产品内多 harness 并存的实例：定义在同一处、执行在三套服务里、建后不能互转
 - [[foundry-agent-type-selection]] — `contrasts` 同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线
 

@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ aliases:
   - "Model-Harness Codesign"
   - "模型-Harness 协同设计"
 related:
+  - "[[agent-harness]]"
   - "[[harness-engineering]]"
   - "[[agent-loop-architecture]]"
   - "[[meta-harness]]"
@@ -184,6 +185,7 @@ related:
 
 ## 关联概念
 
+- [[agent-harness]] — `extends` 第一方绑定 vs 多模型适配
 - [[harness-engineering]] — `extends` 把 harness 从工程实践议题延伸到产品战略层：引擎和车要不要同厂造
 - [[agent-loop-architecture]] — `uses` turn/round/run 三层 tool-calling 循环是 harness 的内核结构，VS Code 与 Claude Code 已收敛
 - [[meta-harness]] — `contrasts` 选择性评测门禁（人肉标签挑敏感改动）vs 全量评测体制（每个变体都评）；门禁守护 harness vs 门禁驱动 harness

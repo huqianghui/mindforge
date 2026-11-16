@@ -1,7 +1,7 @@
 ---
 title: "Agent Sandbox"
 created: "2026-11-04"
-updated: "2026-11-15"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ aliases:
   - "agent 执行沙箱"
   - "代码执行沙箱"
 related:
+  - "[[agent-runtime]]"
   - "[[agent-infra-three-layers]]"
   - "[[copilot-managed-runtime]]"
   - "[[credential-out-of-sandbox]]"
@@ -253,6 +254,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` 执行平面：本页是 agent runtime 的隔离原语与沙箱编排两个子层
 - [[agent-infra-three-layers]] — `part-of` Runtime 层的隔离原语与沙箱编排子层
 - [[copilot-managed-runtime]] — `contrasts` 同为"沙箱只有一个受控出口"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据
 - [[relationship-based-access-control]] — `constrains` 沙箱能对外做什么以三方交集为准

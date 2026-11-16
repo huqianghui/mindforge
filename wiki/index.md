@@ -88,7 +88,11 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[computer-use]] — Computer Use ⊃ Browser Use（广义包含；狭义原生桌面与 Browser Use 并列）：操作 UI 层的 agent 能力，action loop 协议 + Skill/Runtime 分离 + 执行位置决定补位形态
 - [[codex-desktop-architecture]] — Codex Desktop 架构机制：三元组合 runtime distribution、逐层可撬性、Computer Use 发力方向——harness 路线选择的活体实验（伞形索引页）
 - [[harness-portability-spectrum]] — Harness 可移植性分层："离模型越近越可移植"，skill/MCP 高、hook/command 低，可发现性≠可执行性
-- [[agent-infra-three-layers]] — Agent 基础设施三层：Framework / Runtime / Platform 按三问划分，Harness 是被托管的进程不单列一层；Runtime 四子层与锁定矩阵
+- [[agent-infra-three-layers]] — Agent 基础设施三层：Framework / Runtime / Platform 按三问划分，Harness 是被托管的进程不单列一层；本页为总图（托管产品分层、锁定矩阵、层间接口），各层见下面四页
+- [[agent-framework]] — Agent 框架：开发期的材料（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents），管逻辑不管设施；比的是生产运行时能力，正变成协议后可互换的 backend
+- [[agent-harness]] — Agent = Model + Harness：运行期实体，framework 搭出的成品或现成 CLI；按归谁分三类，面向模型、runtime 把它当可替换进程
+- [[agent-runtime]] — Agent 运行时：在哪跑、怎么隔离、崩了怎么续；四子层与三平面，会话、模型接入、A2A、沙箱、授权等概念的枢纽
+- [[agent-platform]] — Agent 平台：广义是整套产品（Copilot Studio / Foundry / Managed Runtime / AKS 自建），狭义是注册、身份、合规台账（Agent 365），不运行 agent
 - [[agent-sandbox]] — Agent 沙箱：隔离原语 / 环境分配回收 / 出站与凭据三件事，Kata 隔离单位是 pod、凭据不进沙箱、冷启动拆开量
 - [[agent-session-control-plane]] — Agent 会话控制面（harness 的 harness）：调用单位是会话、幂等键与落盘才 ACK、适配器驱动多种编码 CLI、Ephemeral / Durable、会话队列 + lease / fencing 多副本
 - [[credential-out-of-sandbox]] — 凭据不进沙箱：四个平台的出口注入，网关认证书不认请求头、授权通过后才取凭据、令牌只在控制面与网关之间流转

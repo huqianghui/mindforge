@@ -1,7 +1,7 @@
 ---
 title: "AG-UI 协议：Agent 三大协议的最后一环"
 created: "2026-08-04"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -12,6 +12,7 @@ aliases:
   - "AG-UI"
   - "Agent-User Interaction Protocol"
 related:
+  - "[[agent-framework]]"
   - "[[mcp-vs-cli]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[voice-live-agent]]"
@@ -95,6 +96,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ## 关联概念
 
+- [[agent-framework]] — `uses` 前端经 AG-UI 对接任意 framework backend
 - [[azure-copilot-ecosystem]] — `part-of` AG-UI 是 Foundry "custom protocols" 之一，Microsoft Agent Framework 已支持
 - [[mcp-vs-cli]] — `contrasts` MCP 解决 Agent 向下的工具集成，AG-UI 解决向上的 UI 集成——同为协议路线但方向相反
 - [[voice-live-agent]] — `extends` Voice UI 的事件需求（barge-in、partial transcript）可纳入 AG-UI 事件流，为语音层提供协议化出口

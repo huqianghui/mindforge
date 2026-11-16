@@ -1,7 +1,7 @@
 ---
 title: "A2A Protocol"
 created: "2026-10-24"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,8 @@ aliases:
   - "Agent2Agent"
   - "Agent 互操作层"
 related:
+  - "[[agent-platform]]"
+  - "[[agent-runtime]]"
   - "[[ag-ui-protocol]]"
   - "[[a2ui-protocol]]"
   - "[[mcp-vs-cli]]"
@@ -139,6 +141,8 @@ A2A 和微服务治理要解决的问题高度同构（发现、契约、调用�
 
 ## 关联概念
 
+- [[agent-platform]] — `uses` 跨框架发现靠 Agent Card
+- [[agent-runtime]] — `uses` agent 调 agent 在 runtime 里落成子会话
 - [[ag-ui-protocol]] — `contrasts` 同属 Agent 协议栈，A2A 横向连 Agent，AG-UI 向上连前端
 - [[mcp-vs-cli]] — `contrasts` MCP 管 Agent↔工具，A2A 管 Agent↔Agent；两者可嵌套（被委派的 Agent 内部用 MCP 调工具）
 - [[entra-agent-id]] — `uses` 跨 Agent 调用的工作负载身份与委派链需要独立的 Agent 身份体系承载

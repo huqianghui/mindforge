@@ -1,7 +1,7 @@
 ---
 title: "Credential Out of Sandbox"
 created: "2026-11-14"
-updated: "2026-11-15"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -17,6 +17,7 @@ aliases:
   - "egress credential injection"
   - "宿主中介沙箱"
 related:
+  - "[[agent-runtime]]"
   - "[[agent-sandbox]]"
   - "[[copilot-managed-runtime]]"
   - "[[agent-session-control-plane]]"
@@ -104,6 +105,7 @@ related:
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` agent runtime 治理平面的凭据注入
 - [[agent-sandbox]] — `part-of` 沙箱三件事中"门怎么管"一件的核心做法
 - [[copilot-managed-runtime]] — `contrasts` 同为"沙箱只有一个受控出口"，那边是浏览器宿主中介（iframe + CSP + JSON-RPC），这边以 egress 代理注入凭据为主
 - [[entra-agent-id]] — `uses` 下游身份是平台、用户还是 agent 自己，由令牌服务按会话换取

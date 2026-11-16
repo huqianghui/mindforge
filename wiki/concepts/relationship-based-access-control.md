@@ -1,7 +1,7 @@
 ---
 title: "Relationship-Based Access Control"
 created: "2026-11-15"
-updated: "2026-11-15"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,8 @@ aliases:
   - "permission-intersection"
   - "三方交集"
 related:
+  - "[[agent-runtime]]"
+  - "[[agent-platform]]"
   - "[[credential-out-of-sandbox]]"
   - "[[ai-gateway]]"
   - "[[agent-sandbox]]"
@@ -98,6 +100,8 @@ related:
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` agent runtime 治理平面的逐请求授权
+- [[agent-platform]] — `uses` agent 调 agent 的批准与调用授权
 - [[credential-out-of-sandbox]] — `uses` 出站网关授权通过后才取凭据，"通过"由本页的关系判断给出
 - [[ai-gateway]] — `uses` 网关授权回调到关系型决策点
 - [[agent-sandbox]] — `constrains` 沙箱能对外做什么，以三方交集为准

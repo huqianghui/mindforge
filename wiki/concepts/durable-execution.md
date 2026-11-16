@@ -1,7 +1,7 @@
 ---
 title: "Durable Execution"
 created: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -13,6 +13,8 @@ aliases:
   - "断点续跑"
   - "write-ahead side-effect intent"
 related:
+  - "[[agent-runtime]]"
+  - "[[agent-framework]]"
   - "[[agent-session-control-plane]]"
   - "[[agent-infra-three-layers]]"
   - "[[actor-snapshot-scheduling]]"
@@ -76,6 +78,8 @@ related:
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` agent runtime 的持久执行子层
+- [[agent-framework]] — `contrasts` framework 的 checkpoint 只定义存什么，持久执行补故障检测与重放
 - [[agent-infra-three-layers]] — `part-of` Runtime 层四个子层中的持久执行子层
 - [[actor-snapshot-scheduling]] — `contrasts` 前者让流程在执行者换掉后接着做，后者让执行单元在空闲时被换出；一个管故障、一个管密度
 

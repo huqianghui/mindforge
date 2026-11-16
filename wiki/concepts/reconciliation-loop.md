@@ -1,7 +1,7 @@
 ---
 title: "Reconciliation Loop"
 created: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -15,6 +15,8 @@ aliases:
   - "对账器"
   - "reconciler"
 related:
+  - "[[agent-runtime]]"
+  - "[[agent-platform]]"
   - "[[negative-feedback]]"
   - "[[feedback-loop]]"
   - "[[agent-session-control-plane]]"
@@ -88,6 +90,8 @@ related:
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` agent runtime 的回收与对账靠调和循环兜底
+- [[agent-platform]] — `uses` agent 定义 controller 周期复查 skills 包
 - [[negative-feedback]] — `uses` 每一路都以"读当前状态 → 比对 → 修偏差"的负反馈为单元
 - [[feedback-loop]] — `part-of` 反馈闭环在运维与平台工程中的具体形态
 - [[agent-session-control-plane]] — `constrains` 会话层自己的回收只覆盖有记录的资源，必须另配从外往里的对账

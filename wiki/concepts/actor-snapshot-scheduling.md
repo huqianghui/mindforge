@@ -1,7 +1,7 @@
 ---
 title: "Actor Snapshot Scheduling"
 created: "2026-11-14"
-updated: "2026-11-14"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "快照换出调度"
   - "会话暂停与恢复"
 related:
+  - "[[agent-runtime]]"
   - "[[agent-sandbox]]"
   - "[[agent-session-control-plane]]"
   - "[[durable-execution]]"
@@ -77,6 +78,7 @@ related:
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` agent runtime 的调度与生命周期子层
 - [[agent-sandbox]] — `part-of` 沙箱"房间怎么分"一件中，环境分配与回收的一种调度形态
 - [[agent-session-control-plane]] — `part-of` Durable 会话的暂停 / 恢复由会话控制面编排
 - [[credential-out-of-sandbox]] — `constrains` 快照里的凭据与身份会过期或被冻结，恢复时必须从沙箱外重新取

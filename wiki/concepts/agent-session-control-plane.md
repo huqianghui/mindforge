@@ -1,7 +1,7 @@
 ---
 title: "Agent Session Control Plane"
 created: "2026-11-14"
-updated: "2026-11-15"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -16,6 +16,8 @@ aliases:
   - "会话平面"
   - "agent runtime 会话层"
 related:
+  - "[[agent-runtime]]"
+  - "[[agent-harness]]"
   - "[[agent-infra-three-layers]]"
   - "[[agent-sandbox]]"
   - "[[durable-execution]]"
@@ -175,6 +177,8 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 
 ## 关联概念
 
+- [[agent-runtime]] — `part-of` 会话平面：agent runtime 里最重的自研部分
+- [[agent-harness]] — `uses` "harness 的 harness"：控制面经适配器驱动编码 harness
 - [[agent-infra-three-layers]] — `part-of` Runtime 层持久执行与调度生命周期两个子层的具体形态（会话平面）
 - [[agent-sandbox]] — `uses` 执行平面由沙箱提供，控制面是唯一持有其生命周期 API 身份的调用方
 - [[durable-execution]] — `uses` "先写意图再执行、结果不确定不重放"是控制面的贯穿规矩

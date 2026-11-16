@@ -1,7 +1,7 @@
 ---
 title: "Copilot Managed Runtime"
 created: "2026-10-29"
-updated: "2026-10-29"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -15,6 +15,8 @@ aliases:
   - "Managed Apps"
   - "managed app"
 related:
+  - "[[agent-platform]]"
+  - "[[agent-runtime]]"
   - "[[copilot-studio]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[copilot-studio-harness-selection]]"
@@ -139,6 +141,8 @@ Copilot Managed Runtime（Preview）是 Copilot Studio 的 Create apps、Copilot
 
 ## 关联概念
 
+- [[agent-platform]] — `implements` M365 侧托管应用的平台，替你承担身份、分享与治理
+- [[agent-runtime]] — `contrasts` 名字带 runtime，但托管的是应用不是 agent
 - [[azure-copilot-ecosystem]] — `part-of` Managed Runtime 是微软 Copilot 生态里"应用托管"这一层
 - [[copilot-studio-harness-selection]] — `constrains` 应用只能经 Connector 出站且收不到回调，使"能否被应用同步调用"这一维对四种 harness 都是否
 - [[generation-evaluation-separation]] — `uses` "调用成功 ≠ agent 接手"的判定沿用指纹 + 对照的验证纪律
