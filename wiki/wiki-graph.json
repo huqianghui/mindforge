@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-11-16",
   "stats": {
-    "nodes": 165,
-    "links": 599,
+    "nodes": 169,
+    "links": 682,
     "orphan_links_removed": 2,
-    "claims": 970,
+    "claims": 981,
     "categories": 13
   },
   "nodes": [
@@ -472,23 +472,23 @@
       ]
     },
     {
-      "id": "agent-infra-three-layers",
+      "id": "agent-framework",
       "type": "concept",
-      "title": "Agent Infrastructure Three Layers",
-      "summary": "把 agent 的基础设施按三个问题分层：**Framework** 回答\"agent 怎么思考、调工具、管状态\"，**Runtime** 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"，**Platform** 回答\"企业怎么发现、授权、治理、运营这些 agent\"。Harness 是用 Framework 搭出来的成品，在 Runtime 眼里是一个被托管、可替换的进程，不单列一层。\n\n这套划分解决的是一个常见混乱：开源项目往往同时声称自己是其中两三层，客户听完反而更糊涂。它也补上了 wiki 之前缺的一侧——此前 [[harness-engineering]] 和 [[harness-portability-spectrum]] 只覆盖 harness 内部，这里讲 harness 跑在哪、被谁管。Runtime 层内部再拆成隔离原语、沙箱编排、持久执行、调度与生命周期四个子层，前两个子层的展开见 [[agent-sandbox]]。",
+      "title": "Agent Framework",
+      "summary": "Agent Framework 回答\"agent 怎么思考、调工具、管状态\"：它提供 loop 原语、状态模型、工具注册、多 agent 编排语义和 checkpoint 逻辑，代表是 Microsoft Agent Framework（Semantic Kernel 与 AutoGen 合流）、LangGraph、Google ADK、OpenAI Agents SDK、Dapr Agents。它是**开发期**的概念——装上什么都不会发生，用它写出来的东西才是一个 harness（对照见 [[agent-harness]]）。\n\nFramework 和 harness 是不同层面的东西：framework 是材料、面向开发者，回答\"怎么把 agent 写出来\"；harness 是成品、面向模型，回答\"agent 运行时怎么思考和行动\"。Framework 和 runtime 的边界则是\"逻辑 vs 设施\"——Session、State、Checkpoint 这些听起来像运行时的能力，framework 都原生提供，但只定义\"存什么、何时存、怎么恢复\"，存储在哪、进程挂了谁拉起归 [[agent-runtime]]。",
       "tags": [
         "wiki",
         "concept",
         "agent",
-        "agent-runtime",
-        "agent-platform",
-        "agent-framework"
+        "agent-framework",
+        "langgraph",
+        "microsoft-agent-framework"
       ],
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
-      "avg_confidence": 0.74,
+      "claims_count": 6,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "三层按三个问题划分；Framework 与 Runtime 的边界是\"逻辑 vs 设施\"，不是\"有没有 Session\"",
@@ -502,6 +502,114 @@
           "review": ""
         },
         {
+          "statement": "多 agent 框架比的不是协作抽象，而是生产运行时能力——LangGraph 赢在持久化 checkpoint、类型化状态、human-in-the-loop 与可观测性，AutoGen 输在 API 动荡",
+          "source": "Graph-Engineering的三重含义",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "AutoGen 与 LangGraph 都能表达图（fan-in / fan-out、条件路由），分野在别处：AutoGen 以对话为中心、适合路径未知的探索，但经历 v0.2 → v0.4 破坏性重写、AG2 社区分叉、最终与 Semantic Kernel 一起并入 Microsoft Agent Framework，生产用户信任被消耗；LangGraph 赢在四件与图本身无关的事——checkpoint 持久化（中断线程可断点恢复、挂起不耗资源）、类型化状态、human-in-the-loop 一等公民、LangSmith 可观测性，加上 1.0 的 API 稳定承诺。教训：图好画，图的运维才是护城河。这些\"运行时味道\"的能力在 framework 里仍是**逻辑**——checkpoint 的格式与时机；存储高可用、进程被杀后谁拉起仍归 [[agent-runtime]]（见上一条）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "五个代码框架按编排方式与状态恢复区分——微软栈要上 Hosted Agent 先用 Microsoft Agent Framework，复杂状态图用 LangGraph，长任务跨审批看 Dapr Agents；共同前提是状态存储外置",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Microsoft Agent Framework：agent + 代码级 workflow，AgentSession 与 workflow checkpoint，Hosted Agent 一等支持、承接退役的 Foundry Workflows。LangGraph：节点 + 条件边，Checkpointer + Store 可落 PostgreSQL，Hosted Agent 与 kagent BYO 都能跑。Google ADK：多 agent + workflow agent，SessionService / MemoryService，kagent 声明式 agent 内部用的就是它的 Go / Python 实现。OpenAI Agents SDK：handoff + guardrail，session 与内置 tracing，轻量。Dapr Agents：DurableAgent 跑在 Dapr Workflow 上，每步落 state store、断点重放，仅 Python。Hosted Agent 里 planner 与 state 都由你的框架持有（Prompt Agent 则全是平台黑盒）。不要把会话和 checkpoint 留在进程内存里，否则 runtime 一换就断。选型来自文档与经验，未做横向实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "编排正从平台上的可视化产品回到 framework 的代码层——Foundry Workflows 退役后官方指引移回 Microsoft Agent Framework 的代码级 workflow；framework 搭外层确定性流程，开放式的那一步交给 harness",
+          "source": "Foundry-Agent三种形态对比与选型",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Foundry Workflows（portal 设计器 + YAML，底层就是 Microsoft Agent Framework）定于 2026-12-01 退役，确定性多 agent 协作收敛为三种机制：Hosted Agent 内用 framework / harness 的编排原语（sequential、concurrent、group-chat、handoff）、A2A 做跨团队委派、Skills 封装流程性知识——微软没有再造托管编排产品，而是把编排交还 framework 生态。对 framework 层的含义：审批、业务规则、多 agent 交接这些\"事先能写清\"的编排归 framework；需要\"自己想办法把活干完\"的那一步交给一个 harness（如 MAF workflow 的某个节点调用 GitHub Copilot SDK）。平台侧产品事实见 [[foundry-agent-type-selection]] 的 Workflow 退役 Claim。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "一个项目可以横跨两层——Dapr Agents 是 framework，Dapr sidecar 与 workflow 引擎是 runtime；判断归属要按能力拆开看，不按项目名",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "开源项目常同时声称自己是 framework、runtime 甚至 platform。Dapr 是典型：Dapr Agents（DurableAgent）是写 agent 的 Python 框架；sidecar 与 Workflow 引擎（virtual actor 上的持久执行、30 多种 state store、pub/sub、重试熔断、SPIFFE 服务身份）是 runtime。反过来，已用 LangGraph 或 Microsoft Agent Framework 写好的 agent 不想换框架，也能经 Diagrid 的集成单独接上 Dapr 的持久执行——framework 与持久执行设施可以分开选。持久执行的故障语义见 [[durable-execution]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "framework 正在变成协议后面可互换的 backend——前端经 AG-UI、调用方经 Responses / Invocations / A2A、训练侧经 rollout 接口，都不关心 agent 用哪个框架写",
+          "source": "AG-UI协议解析",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "AG-UI 的官方集成按 Agent Framework（LangGraph、CrewAI、Microsoft Agent Framework、Google ADK、Mastra）分类，前端不改代码就能换 backend；Hosted Agent 对外只暴露 /responses、/invocations、/invocations_ws，容器里用什么框架平台不管；Agent Lightning 的例子里同一套 VERL trainer 训练 AutoGen（calc_x）、LangGraph（spider、chartqa）和 OpenAI Agents SDK（unsloth SFT）写的 agent，trainer 零修改（见 [[environment-agnostic]]）。推论：选框架看的是写起来顺不顺、状态模型合不合适，迁移成本被压在协议与外置状态上——这正是三层之间 Framework ↔ Runtime 的那组接口（[[agent-infra-three-layers]]）。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "agent-harness",
+      "type": "concept",
+      "title": "Agent Harness",
+      "summary": "`Agent = Model + Harness`。Harness 是把模型变成能干活的 agent 的那套软件：agent loop、工具路由、上下文管理、权限、重试与验证。它是**运行期的实体**——用 framework 搭出来（LangGraph 写完 loop、规划、工具调用和审批就得到一个 harness），或者拿别人搭好的成品（Claude Code、Codex、GitHub Copilot、OpenCode、Pi）。\n\nHarness 面向模型，决定 agent 怎么思考和行动；framework 面向开发者，是造 harness 的材料（[[agent-framework]]）；runtime 面向基础设施，把 harness 当成一个被托管、可替换的进程（[[agent-runtime]]）。三者常被混用，本页讲 harness 是什么、归谁、和另外两层的边界在哪；怎么把 harness 做好（评测、控制论、五大支柱）归 [[harness-engineering]]，资产换 harness 能否存活归 [[harness-portability-spectrum]]，第一方绑定还是多模型归 [[model-harness-codesign]]，平台怎么从外面驱动 harness 归 [[agent-session-control-plane]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "harness",
+        "agent-runtime"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 8,
+      "avg_confidence": 0.73,
+      "claims": [
+        {
+          "statement": "OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构",
+          "source": "Foundry-Toolbox与Skills解析",
+          "first_seen": "2026-07-30",
+          "last_updated": "2026-09-12",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比\"模型之外的一切\"（LangChain）与\"信息管道代码\"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Agent framework 是 dev-time 概念，harness 是 run-time 实体——framework 是\"造 harness 的工具包\"",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是\"harness 提取物\"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张\"帮模型接触世界\"），framework 流行于应用开发圈（价值主张\"帮开发者抽象模型\"）——方向相反，\"Agent = Model, Not Framework\" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。",
+          "evidence_type": "理论（长效）",
+          "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
+        },
+        {
+          "statement": "Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-08-10",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "Agentic harness 是包在模型外、决定 Agent\"怎么思考和行动\"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为\"提前收工/上下文爆\"焦虑的是 harness 工程师，为\"生产安全/崩溃恢复/凭证下发\"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。",
+          "evidence_type": "理论（长效）",
+          "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
+        },
+        {
           "statement": "Harness 不单列一层——Framework 是材料、Harness 是成品，Runtime 把它当作可替换的进程托管",
           "source": "Agent基础设施系列01：三层划分与自建路线",
           "first_seen": "2026-11-02",
@@ -513,16 +621,70 @@
           "review": ""
         },
         {
-          "statement": "Runtime 内部有四个子层——隔离原语、沙箱编排、持久执行、调度与生命周期，各自不互相替代",
-          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "statement": "harness 按\"归谁、能不能改\"分三类，选 framework 还是直接选 harness 看任务形态——harness SDK 把能干活的 agent 放进应用，framework 让你用 agent 搭出应用",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
           "first_seen": "2026-11-02",
           "last_updated": "2026-11-04",
-          "confidence": 0.75,
+          "confidence": 0.7,
           "status": "active",
-          "evidence": "客户说\"自建 agent runtime\"时背后往往是四件不同的事：① **隔离原语**——墙有多厚（Kata / gVisor / 直接管理的 microVM）；② **沙箱编排**——怎么按模板领环境、休眠、回收（agent-sandbox / OpenSandbox）；③ **持久执行**——长任务崩了能不能续（Dapr Workflow，每步写 state store、断点重放）；④ **调度与生命周期**——agent 在集群里是什么对象（kagent CRD、Agent Substrate actor）。持久执行与隔离无关，是独立一维：framework 自带 checkpoint 只解决\"能存能读\"，故障检测、自动重放、多副本调度仍需 runtime 提供。Dapr 横跨两层：Dapr Agents 是 Framework，sidecar 与 workflow 引擎是 Runtime。按需叠加：只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。持久执行的故障语义 2026-11-14 起归口 [[durable-execution]]。",
+          "evidence": "三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness；Foundry Prompt Agent 现可在默认 harness 与 Microsoft Copilot harness 之间选，但两者都由平台托管）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要\"自己想办法干完\"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是\"harness 产品化\"的实例。",
           "evidence_type": "",
           "review": ""
         },
+        {
+          "statement": "Copilot Studio 把 harness 与 runtime 打包出售——选 harness 即选 runtime，依赖管理被扩展点取代",
+          "source": "2026-08-10-周一",
+          "first_seen": "2026-08-10",
+          "last_updated": "2026-11-07",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-07 修订）**：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称\"四种 harness\"（另有 Customer Conversation harness）；\"Copilot Chat harness 对应无代码执行\"等细节应对照最新文档；正文应补第四种  以下为原记录： 微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-07 修订——依据：Microsoft Learn Harnesses in Copilot Studio https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview ；GA 公告 https://www.microsoft.com/en-us/copilot/blog/copilot-studio/new-and-improved-github-copilot-harness-agent-skills-and-richer-context"
+        },
+        {
+          "statement": "编排接入别家 agent 的镜像两式——dsh \"loop 内挂 sub-agent\" vs OpenHands \"loop 外包住执行体\"",
+          "source": "Agent-Harness五平台对比",
+          "first_seen": "2026-08-31",
+          "last_updated": "2026-09-04",
+          "confidence": 0.7,
+          "status": "stale",
+          "evidence": "把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像\"编排层/胶水\"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"——loop 内（能力件级）还是 loop 外（架构层级）。",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-07 待定——依据：dsh 与 OpenHands ACP 能力为产品细节，本轮未查"
+        },
+        {
+          "statement": "harness 的职责边界——单轨执行器不含搜索编排：并行候选、分支比较、预算分配在 harness 之外",
+          "source": "2026-09-22-Dream-RSI",
+          "first_seen": "2026-09-22",
+          "last_updated": "2026-09-25",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——\"控制权在哪一层\"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "agent-infra-three-layers",
+      "type": "concept",
+      "title": "Agent Infrastructure Three Layers",
+      "summary": "把 agent 的基础设施按三个问题分层：**Framework** 回答\"agent 怎么思考、调工具、管状态\"，**Runtime** 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"，**Platform** 回答\"企业怎么发现、授权、治理、运营这些 agent\"。Harness 是用 Framework 搭出来的成品，在 Runtime 眼里是一个被托管、可替换的进程，不单列一层。\n\n本页是这组概念的总图，只放跨层的判断：两类托管产品各在哪一层、每种选择定死了哪几格、层与层之间靠什么接口换得动。每一层各有独立页——[[agent-framework]]、[[agent-harness]]、[[agent-runtime]]、[[agent-platform]]。新概念几乎都出在 Runtime：会话、模型接入、A2A、沙箱、逐请求授权，都挂在 [[agent-runtime]] 下面；Copilot Studio、Foundry、Copilot Managed Runtime 和 AKS 上自建的那一套，是广义的 agent platform，见 [[agent-platform]]。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "agent-platform",
+        "agent-framework"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 3,
+      "avg_confidence": 0.72,
+      "claims": [
         {
           "statement": "Hosted Agent 是托管的 Runtime、Agent 365 是 Platform 控制面——两者不在同一层，自建 runtime 与 Agent 365 不冲突",
           "source": "Agent基础设施系列01：三层划分与自建路线",
@@ -553,61 +715,6 @@
           "confidence": 0.65,
           "status": "active",
           "evidence": "Framework ↔ Runtime：容器镜像、调用协议（Responses / Invocations / A2A / ACP）、外置的状态存储——守住这三样，同一份 agent 代码可在 Hosted Agent 与 AKS 上的 kagent 之间切换（\"状态存储外置，不要把会话和 checkpoint 留在进程内存里，否则 runtime 一换就断\"）。Runtime ↔ Platform：agent 身份（Entra Agent ID）、网关路由、OTel trace，并且 trace 要按逻辑 agent 身份而不是 pod 名归集。\"同一镜像不改就换 runtime\"尚未实测，待系列 04 的 PoC 2 验证后调整置信度。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "先问两个问题再决定要不要沙箱平台——执行不执行模型生成的代码、Runtime 要不要自主可控",
-          "source": "Agent基础设施系列01：三层划分与自建路线",
-          "first_seen": "2026-11-02",
-          "last_updated": "2026-11-04",
-          "confidence": 0.65,
-          "status": "active",
-          "evidence": "第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多\"agent 平台\"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，\"用不到的不装\"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate pre-1.0 只做 PoC。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "Runtime 内部再按三个平面拆——执行、会话、治理，外加横切的定义与发现；AKS 原生只覆盖执行与部分治理，会话平面一格都填不上",
-          "source": "AKS-Agent-Runtime系列01：Sandbox之外的三个平面",
-          "first_seen": "2026-11-09",
-          "last_updated": "2026-11-14",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "执行平面：隔离环境、文件、命令执行、快照——AKS 给 Pod Sandboxing（Kata）、节点池与 NAP、CSI，社区有 agent-sandbox / OpenSandbox，自己补的是沙箱镜像里 harness 的适配与版本固定。会话平面：会话身份、收件箱、状态机、harness 调用与续接、暂停恢复回收——AKS 无，Dapr / Durable Task 可作底座，会话键、checkpoint 编排、回收对账、多副本全要自建（见 [[agent-session-control-plane]]）。治理平面：工作负载身份、出站网关、凭据注入、资源级授权、审计配额——AKS 给 Workload Identity 与 Cilium，社区有 agentgateway / OpenFGA，自己补 Pod 身份到会话的映射、申请审批流程、审计归集。定义与发现：CRD + controller 机制、kagent Agent CRD、A2A Agent Card，自己补统一 Agent 定义、不可变 revision、发现与调用授权分离。这是对 Runtime 层的另一种切法，与\"四子层\"不冲突：四子层按技术组件分，三平面按一次调用经过的职责分。十篇实测后的总结：\"agent runtime 的难点不在沙箱，在沙箱外面那一圈：会话、治理、身份\"。`agent-runtime-three-planes` 不单独建页（HOLD）。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "逐请求授权是突发流量下最先撑不住的一环——常态 p50 约 105 毫秒、大头是身份解析不是 OpenFGA；100 并发时决策点撞上超时返回 503，限流一次 429 都没触发",
-          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
-          "first_seen": "2026-11-11",
-          "last_updated": "2026-11-14",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "决策点 561 次授权统计：p50 105 毫秒，OpenFGA 那一步只占 2.5 毫秒，约 62 毫秒花在核实沙箱身份（回查 Pod、ServiceAccount、会话与运行时状态）。网关配了每秒 20 个请求的本地限流；一个沙箱同时发 40 个小请求全部 200，发 100 个则 48 个 200、51 个 503、1 个 403、0 个 429——决策点 p50 涨到 1850 毫秒、最长 5001 毫秒，撞上单次检查 5 秒超时，网关按\"授权失败即拒绝\"挡掉。503 对调用方只是\"服务端出错\"，拿不到该退避的信号。改法：限流放在授权之前并明确返回 429；决策点多副本，对\"证书 → Pod → 会话\"解析做短时缓存。克隆一个仓库只有几次请求，影响不大；会话多起来再叠 subagent 与批量任务就会碰到。按 token 计的配额未配未测。单环境实测。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "agent 定义按不可变 revision 管——revision 固定的是配置（名取规范化 spec 的内容哈希、只能新建不能改），权限每次请求实时算；skills 包用 OCI artifact 按 digest 拉而不放 ConfigMap",
-          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
-          "first_seen": "2026-11-13",
-          "last_updated": "2026-11-14",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定\"配置和权限\"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "Kubernetes 原生机制守底线、L7 组件做判断——RBAC 只在 API server 上看主体与动词、NetworkPolicy 只认 IP 与端口；会话、终端用户、资源动作、模型和不可信的决策要另外补，社区组件提供底座、agent 语义这一层要自己写",
-          "source": "AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么",
-          "first_seen": "2026-11-15",
-          "last_updated": "2026-11-15",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "底线：NetworkPolicy 让出站只剩一条路（到网关）、RBAC 让沙箱 SA 无权限而控制面只拿必要权限、RuntimeClass 强制 Kata、ResourceQuota 限容量。判断：网关、授权决策点、控制面。router 鉴权的例子：Kubernetes 鉴权管不到 router 的数据路径（不经 API server）；pods/proxy 让 API server 变数据通道且只能按 Pod 名授权；TokenReview 只认证不授权；每沙箱一组 RoleBinding 变动太频繁——实际做法是只让控制面能进沙箱，用户鉴权放会话 API。按层看：隔离与沙箱编排开源和 AKS 覆盖较好；会话控制面（Dapr / Temporal / Service Bus / PostgreSQL 只是底座）与授权模型（OpenFGA / SPIFFE / Entra 只是底座）是最重的自研。复用时 sidecar 与不可信代码同在一个 VM，判断与凭据要放 Pod 外；Dapr 宜放控制面不进沙箱；这些组件的身份粒度是工作负载不是会话，Pod → 会话映射要自己写。",
           "evidence_type": "",
           "review": ""
         }
@@ -1012,6 +1119,180 @@
           "evidence": "定义循环结构（Thought-Action-Observation）、管理上下文（trajectory 累积）、处理异常（解析错误、重试、无限循环预防）。理解范式原理可以从框架\"用户\"进阶为 Agent\"创造者\"。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）"
+        }
+      ]
+    },
+    {
+      "id": "agent-platform",
+      "type": "concept",
+      "title": "Agent Platform",
+      "summary": "Agent Platform 回答\"企业怎么构建、运行、发现、治理这些 agent\"。这个词有两种用法，要分开：\n\n- **广义**：企业实际拿来用的整套产品。Copilot Studio、Foundry Agent Service、Copilot Managed Runtime 都是微软给的 agent platform，区别在替你打包了哪几层、留给你哪几层；AKS Agent Runtime 系列做的，是用 AKS 加开源组件**自己搭一个** agent platform。\n- **狭义**：三层划分里最上面那一层，只管注册与目录、agent 身份、发现协议、安全合规与台账，代表是 Agent 365。它**不运行 agent**，也不在请求的数据路径上。\n\n广义 platform 的核心是 [[agent-runtime]]：会话、模型接入、A2A、沙箱、逐请求授权这些新概念都出在那一层；Hosted Agent 本身就是一个托管的 agent runtime，Foundry 整体才是 platform。自建时，agentgateway、OpenFGA、kagent、Nacos、agent-sandbox、OpenSandbox 这些开源组件各补其中一块，语义层和胶水要自己写。agent 定义本身（一个 CRD 加 type、不可变 revision、CEL 与 controller 两级校验）是狭义 platform 与 runtime 的交界：定义由 platform 登记和发布，runtime 按定义领沙箱、跑会话。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-platform",
+        "registry",
+        "governance"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.68,
+      "claims": [
+        {
+          "statement": "微软的三种托管 agent platform 打包的层数不同——Copilot Studio 三层全包、Foundry 的 Prompt Agent 全包而 Hosted Agent 只托管 runtime、Copilot Managed Runtime 托管的是应用而不是 agent；Agent 365 只做狭义 platform",
+          "source": "Agent基础设施系列04：Framework层与三层串联",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Copilot Studio：agent 定义是 Dataverse 的一行，选 harness 就是选 runtime（经典运行时 / Agentic Runtime / M365 Copilot 编排器），治理横跨 Power Platform 与 M365 两个 admin center，三层都定死、建后不能互转（[[copilot-studio]]）。Foundry Agent Service：Prompt Agent 的 planner 与 state 全是平台黑盒；Hosted Agent 是\"framework 自选、runtime 托管\"——每会话 VM 沙箱、空闲回收与带状态恢复、Entra agent identity、Responses / Invocations 端点，Hosted Agent 本身就是托管的 agent runtime（[[foundry-agent-service]]）。Copilot Managed Runtime：M365 侧托管的是企业内部 SPA 应用，替你承担 Entra 登录、分享、条件访问与 DLP，代价是没有自有后端与网络控制，后端只能经 Connector，连 Copilot Studio agent 都调不到（[[copilot-managed-runtime]]）。Agent 365：只有注册表、身份与合规，不运行任何 agent，自家、第三方、自建的 agent 都能登记进来。选型就是看被定死的格子里有没有将来一定要改的东西（锁定矩阵见 [[agent-infra-three-layers]]）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "在 AKS 上自建 agent platform，是在 agent runtime 外面再补定义注册、agent 网关与企业目录——开源组件各补一块（agent-sandbox / OpenSandbox、agentgateway、OpenFGA、kagent、Nacos、Dapr），controller 语义校验、会话控制面与\"协议到会话 API\"的适配要自己写",
+          "source": "AKS-Agent-Runtime系列00：导读",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "按层摊开：隔离（AKS Kata）与沙箱编排（agent-sandbox / OpenSandbox）开源和 AKS 覆盖较好；会话控制面（Dapr、Service Bus、PostgreSQL 只是底座）与授权模型（OpenFGA、SPIFFE、Entra 只是底座）是最重的自研；agentgateway 一个项目分三套部署做 agent 网关、模型网关、出站网关（[[ai-gateway]]）；定义与注册用 kagent 或自定义 Agent CRD，跨集群再加 Nacos；企业目录与 agent 身份走 Entra Agent ID 并登记进 Agent 365。和托管 platform 的对照：Hosted Agent 已包了最费劲的执行与会话几块，自建只在三类场景下值得（[[foundry-agent-type-selection]]），代价是长期维护控制面（[[agent-runtime]]）。参考实现没有独立的 agent 网关和企业目录，这两块是系列里还没做完的部分。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "狭义 platform 与 runtime 的治理各有一份——runtime 的治理平面在数据路径上逐请求判断，platform 在数据路径之外管台账、身份生命周期与合规；客户要的\"自主可控\"多半指前者",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Runtime 的治理平面：出站网关、模型网关、授权决策点、凭据注入，每个请求都经过（[[ai-gateway]]、[[relationship-based-access-control]]、[[credential-out-of-sandbox]]）。Platform：Agent 365 的注册表纳管微软自家、第三方和自建平台上的 agent，Entra Agent ID 给每个 agent 身份并套上 owner、sponsor、条件访问，Defender 与 Purview 管安全合规——它不运行 agent，也不在请求路径上（Nacos 一类注册中心同理：\"找得到\"不等于\"调得通、管得住\"）。两处靠 agent 身份、网关路由、OTel trace 对接（层间接口见 [[agent-infra-three-layers]]）。所以跑在自己 AKS 上的 agent 照样能登记进 Agent 365，自建 runtime 不必重造 platform。归纳自三篇文章，未做 Agent 365 实接。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "发现分三层、授权另走一条路——集群内查 CRD（RBAC 管可见性）、跨框架用 A2A Agent Card、企业级同步到 agent 目录；卡片只放对外信息、只发布 Ready 的版本",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "集群内：kubectl get agents 能看到完整定义（权限申请、会话策略、解析后的 digest、revision 历史），适合平台运维和同团队，别的框架与集群不认识这个 CRD。跨框架：controller 从 CRD 生成 Agent Card，按 /.well-known/agent-card.json 发布，只放名字、描述、skills、入口地址、认证方式、版本，版本号后带 revision 哈希让调用方看出 agent 变没变；三张卡片经 SDK 解析与 protobuf 严格模式两次校验通过。企业级：同步到企业 agent 目录，让 Teams、Copilot 等其他产品找得到 AKS 上的 agent——没有做，它要和 agent 自己的身份一起做。卡片里的认证声明和调用授权分开设计，\"能被发现不等于能被调用\"归口 [[a2a-protocol]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "注册中心以谁为准二选一——Kubernetes API（CRD 即注册表，与沙箱、会话打通）或 Nacos（版本、审核、可见性、订阅，适合多集群与非 Kubernetes 系统）；选后者要自己写双向同步",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-16",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "以 Kubernetes API 为准：CRD 本身就是注册表，controller 生成卡片并发布，revision 用内容哈希自己写。以 Nacos 为准：它托管 AgentCard、MCP server、Skill、Prompt 及版本，内置草稿与审核，按命名空间和可见性发现、SDK 订阅；要自己写 CRD 状态 → Nacos、Nacos 审核结果 → status 的同步，只同步 Ready 的版本。kagent 适合声明式 agent 为主；企业目录面向 Teams、Copilot。我的组合：kagent 管声明式、自定义 CRD 管另外两类、agentgateway 单独一套做 agent 网关、OpenFGA 管调用授权、Nacos 只在跨集群跨技术栈时再加。真正要投入的是 controller 的语义校验与\"协议到会话 API\"的适配，开源项目替不了。设计结论，Nacos 未实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "agent 定义按不可变 revision 管——revision 固定的是配置（名取规范化 spec 的内容哈希、只能新建不能改），权限每次请求实时算；skills 包用 OCI artifact 按 digest 拉而不放 ConfigMap",
+          "source": "AKS-Agent-Runtime系列07：Agent的类型、注册与发现",
+          "first_seen": "2026-11-13",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "统一 `Agent` CRD 加 `spec.type`，三类共用字段在外、各自配置在对应块里。纯结构规则（type 与配置块对应）写 CEL，提交即拒、集群里没有这个对象；需查外部系统的规则（批准的运行时类 / 模型 / 镜像仓库前缀、代码镜像必须写 digest、skills tag 能否解析）放 controller，结果写进 status——五种故意写错的 agent 分别被 CEL 与 controller 拦下，后四个 Ready=False、不生成 revision、注册端点返回 404。revision：新会话用最新的，在跑的会话保持原来的；参考实现文档一处说已有会话固定\"配置和权限\"、一处说权限实时算，系列 04 撤销 1 秒生效的实测支持后者。skills 包：1.6 MB 的 ConfigMap 被 API Server 拒（上限 1048576 字节，kagent 1.x 每 revision 配置与卡片合计 ≤ 256 KiB）；改用 oras 打 OCI artifact 推 ACR，controller 用 Workload Identity 换 ACR 令牌 HEAD manifest 解析 digest；沙箱放文件必须按 revision 里记的 digest 拉——按 tag 拉到的是新内容，同一 revision 的两个会话可能拿到不同 skills。tag 挪动的处理见 [[reconciliation-loop]]。实测。",
+          "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "agent-runtime",
+      "type": "concept",
+      "title": "Agent Runtime",
+      "summary": "Agent Runtime 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"。智能来自模型，可靠性来自 harness，**可运维性来自 runtime**。它把 harness 当成一个被托管、可替换的进程（[[agent-harness]]），给 framework 定义好的状态逻辑提供可靠的设施（[[agent-framework]]）；托管形态是 Foundry Hosted Agent，自建形态是 AKS 上的 Kata + 沙箱编排 + 控制面。\n\n三层里新问题几乎都出在这一层。framework 和 platform 大多能沿用已有的软件工程与企业治理，runtime 则引出一整组新概念——它们各自有页：\n\n- **执行**：隔离原语与沙箱编排（[[agent-sandbox]]）、actor 与执行单元分离（[[actor-snapshot-scheduling]]）\n- **会话**：会话身份、收件箱、状态机、lease 与 fencing、回收对账（[[agent-session-control-plane]]、[[durable-execution]]、[[reconciliation-loop]]）\n- **模型接入**：harness 的模型请求经网关认会话、转协议、限流（[[ai-gateway]]、[[harness-portability-spectrum]]）\n- **治理**：凭据不进沙箱（[[credential-out-of-sandbox]]）、逐请求授权（[[relationship-based-access-control]]）\n- **agent 之间**：A2A 调用、子会话只允许一跳（[[a2a-protocol]]）\n- **身份**：agent 以谁的身份行事（[[entra-agent-id]]）\n\n这一层有两种切法：按技术组件分四个子层（隔离、沙箱编排、持久执行、调度与生命周期），按一次调用经过的职责分三个平面（执行、会话、治理）。AKS 原生只覆盖执行和部分治理，会话平面一格都填不上。",
+      "tags": [
+        "wiki",
+        "concept",
+        "agent",
+        "agent-runtime",
+        "kubernetes",
+        "aks"
+      ],
+      "category": "AI Agent 理论与架构",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 6,
+      "avg_confidence": 0.72,
+      "claims": [
+        {
+          "statement": "Runtime 内部有四个子层——隔离原语、沙箱编排、持久执行、调度与生命周期，各自不互相替代",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "客户说\"自建 agent runtime\"时背后往往是四件不同的事：① **隔离原语**——墙有多厚（Kata / gVisor / 直接管理的 microVM）；② **沙箱编排**——怎么按模板领环境、休眠、回收（agent-sandbox / OpenSandbox）；③ **持久执行**——长任务崩了能不能续（Dapr Workflow，每步写 state store、断点重放）；④ **调度与生命周期**——agent 在集群里是什么对象（kagent CRD、Agent Substrate actor）。持久执行与隔离无关，是独立一维：framework 自带 checkpoint 只解决\"能存能读\"，故障检测、自动重放、多副本调度仍需 runtime 提供。Dapr 横跨两层：Dapr Agents 是 Framework，sidecar 与 workflow 引擎是 Runtime。按需叠加：只有长任务、跨审批流程才上持久执行，几秒结束的问答型 agent 用 framework checkpoint 足够。持久执行的故障语义 2026-11-14 起归口 [[durable-execution]]。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Runtime 内部再按三个平面拆——执行、会话、治理，外加横切的定义与发现；AKS 原生只覆盖执行与部分治理，会话平面一格都填不上",
+          "source": "AKS-Agent-Runtime系列01：Sandbox之外的三个平面",
+          "first_seen": "2026-11-09",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "执行平面：隔离环境、文件、命令执行、快照——AKS 给 Pod Sandboxing（Kata）、节点池与 NAP、CSI，社区有 agent-sandbox / OpenSandbox，自己补的是沙箱镜像里 harness 的适配与版本固定。会话平面：会话身份、收件箱、状态机、harness 调用与续接、暂停恢复回收——AKS 无，Dapr / Durable Task 可作底座，会话键、checkpoint 编排、回收对账、多副本全要自建（见 [[agent-session-control-plane]]）。治理平面：工作负载身份、出站网关、凭据注入、资源级授权、审计配额——AKS 给 Workload Identity 与 Cilium，社区有 agentgateway / OpenFGA，自己补 Pod 身份到会话的映射、申请审批流程、审计归集。定义与发现：CRD + controller 机制、kagent Agent CRD、A2A Agent Card，自己补统一 Agent 定义、不可变 revision、发现与调用授权分离。这是对 Runtime 层的另一种切法，与\"四子层\"不冲突：四子层按技术组件分，三平面按一次调用经过的职责分。十篇实测后的总结：\"agent runtime 的难点不在沙箱，在沙箱外面那一圈：会话、治理、身份\"。`agent-runtime-three-planes` 不单独建页（HOLD）。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "先问两个问题再决定要不要沙箱平台——执行不执行模型生成的代码、Runtime 要不要自主可控",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-04",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "第一问：会不会执行模型生成的代码，或需要跨轮次保留文件和进程的工作区？否 → 它就是普通服务，部署到 ACA / AKS，鉴权与审批放服务端，工具走网关，不需要沙箱平台（很多\"agent 平台\"需求其实落在这里）。第二问：是否要求 Runtime 自主可控且团队能运维 AKS？否 → 托管路线（Hosted Agent；只跑一段代码用 ACA Dynamic Sessions；长期工作区用 ACA Sandboxes）；是 → 按需逐项叠加 Kata + 沙箱编排、kagent、Dapr、Substrate，\"用不到的不装\"。项目成熟度差异大：AKS Pod Sandboxing 内置、agent-sandbox v1beta1、Dapr 毕业项目、kagent CNCF Sandbox、Agent Substrate pre-1.0 只做 PoC。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "逐请求授权是突发流量下最先撑不住的一环——常态 p50 约 105 毫秒、大头是身份解析不是 OpenFGA；100 并发时决策点撞上超时返回 503，限流一次 429 都没触发",
+          "source": "AKS-Agent-Runtime系列04：出站治理与逐请求授权",
+          "first_seen": "2026-11-11",
+          "last_updated": "2026-11-14",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "决策点 561 次授权统计：p50 105 毫秒，OpenFGA 那一步只占 2.5 毫秒，约 62 毫秒花在核实沙箱身份（回查 Pod、ServiceAccount、会话与运行时状态）。网关配了每秒 20 个请求的本地限流；一个沙箱同时发 40 个小请求全部 200，发 100 个则 48 个 200、51 个 503、1 个 403、0 个 429——决策点 p50 涨到 1850 毫秒、最长 5001 毫秒，撞上单次检查 5 秒超时，网关按\"授权失败即拒绝\"挡掉。503 对调用方只是\"服务端出错\"，拿不到该退避的信号。改法：限流放在授权之前并明确返回 429；决策点多副本，对\"证书 → Pod → 会话\"解析做短时缓存。克隆一个仓库只有几次请求，影响不大；会话多起来再叠 subagent 与批量任务就会碰到。按 token 计的配额未配未测。单环境实测。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Kubernetes 原生机制守底线、L7 组件做判断——RBAC 只在 API server 上看主体与动词、NetworkPolicy 只认 IP 与端口；会话、终端用户、资源动作、模型和不可信的决策要另外补，社区组件提供底座、agent 语义这一层要自己写",
+          "source": "AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-15",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "底线：NetworkPolicy 让出站只剩一条路（到网关）、RBAC 让沙箱 SA 无权限而控制面只拿必要权限、RuntimeClass 强制 Kata、ResourceQuota 限容量。判断：网关、授权决策点、控制面。router 鉴权的例子：Kubernetes 鉴权管不到 router 的数据路径（不经 API server）；pods/proxy 让 API server 变数据通道且只能按 Pod 名授权；TokenReview 只认证不授权；每沙箱一组 RoleBinding 变动太频繁——实际做法是只让控制面能进沙箱，用户鉴权放会话 API。按层看：隔离与沙箱编排开源和 AKS 覆盖较好；会话控制面（Dapr / Temporal / Service Bus / PostgreSQL 只是底座）与授权模型（OpenFGA / SPIFFE / Entra 只是底座）是最重的自研。复用时 sidecar 与不可信代码同在一个 VM，判断与凭据要放 Pod 外；Dapr 宜放控制面不进沙箱；这些组件的身份粒度是工作负载不是会话，Pod → 会话映射要自己写。",
+          "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Hosted Agent 替你做的每一项，自建都有开源对应；多承担的是运维——控制面升级、节点容量与预热池、会话数据库、冷启动调优、身份映射、网关策略、按 agent 归集 trace",
+          "source": "Agent基础设施系列01：三层划分与自建路线",
+          "first_seen": "2026-11-02",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "逐项对照：容器托管与版本 → kagent Agent CRD + GitOps（多承担控制面升级、CRD 兼容）；每会话 VM 隔离沙箱 → AKS Kata 节点池 + agent-sandbox / OpenSandbox（节点容量、预热池大小、镜像来源审查）；会话与历史存储 → PostgreSQL、Dapr state store（备份与保留策略）；空闲挂起按需恢复 → 预热池休眠恢复或 Agent Substrate（冷启动调优，镜像拉取常是大头）；agent 身份 → Workload Identity 到 Entra Agent ID（身份映射、权限最小化）；工具与 MCP 接入 → kmcp + agentgateway（网关策略、MCP 鉴权）；观测 → OpenTelemetry（按逻辑 agent 而不是按 pod 归集）。换来的是数据与执行环境在自己网络里、模型 / framework / harness 自选、隔离与出站可定制、和推理或训练共享集群。AKS 系列实测后的补充：这张表还缺了最重的一块——会话控制面（[[agent-session-control-plane]]），社区组件只给底座；自建只在三类场景下值得（见 [[foundry-agent-type-selection]]）。",
+          "evidence_type": "",
+          "review": ""
         }
       ]
     },
@@ -6228,7 +6509,7 @@
       "id": "harness-engineering",
       "type": "concept",
       "title": "Harness Engineering",
-      "summary": "Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineering 的超集，三者构成同心圆包含关系。核心主张是：Agent 的\"智能\"来自 model，但\"可靠性\"来自 harness——外部系统代码（Tools + Knowledge + Observation + Action Interfaces + Permissions）。这一范式在 2026 年初由 OpenAI、Anthropic、Google DeepMind 独立演化趋同，标志着行业共识。",
+      "summary": "Harness 本身是什么、归谁、和 framework / runtime 的边界，见 [[agent-harness]]；本页讲把它做好的工程方法。\n\nHarness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineering 的超集，三者构成同心圆包含关系。核心主张是：Agent 的\"智能\"来自 model，但\"可靠性\"来自 harness——外部系统代码（Tools + Knowledge + Observation + Action Interfaces + Permissions）。这一范式在 2026 年初由 OpenAI、Anthropic、Google DeepMind 独立演化趋同，标志着行业共识。",
       "tags": [
         "wiki",
         "concept",
@@ -6239,8 +6520,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 25,
-      "avg_confidence": 0.78,
+      "claims_count": 18,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -6419,17 +6700,6 @@
           "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
         },
         {
-          "statement": "OpenForge 给出 harness 的正式学术定义——orchestration scaffold，Agent = Model + Harness + Environment 三元结构",
-          "source": "Foundry-Toolbox与Skills解析",
-          "first_seen": "2026-07-30",
-          "last_updated": "2026-09-12",
-          "confidence": 0.8,
-          "status": "active",
-          "evidence": "OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比\"模型之外的一切\"（LangChain）与\"信息管道代码\"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
           "statement": "选 harness 就是选行为语义——Copilot Studio 三 harness 并存；扩展机制\"离模型越近越可移植\"",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
@@ -6441,39 +6711,6 @@
           "review": "2026-11-07 待定——依据：同上 Microsoft Learn harnesses-overview：现为四种 harness（含 Customer Conversation harness）"
         },
         {
-          "statement": "Agent framework 是 dev-time 概念，harness 是 run-time 实体——framework 是\"造 harness 的工具包\"",
-          "source": "2026-08-10-周一",
-          "first_seen": "2026-08-10",
-          "last_updated": "2026-08-10",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "Agent framework（LangGraph/CrewAI/AutoGen）提供 loop 原语、状态管理、工具注册等零件，但行为语义的关键决策（system prompt、终止条件、context 压缩）留给开发者——你用 framework 的产出物才是 harness；Claude Code / GitHub Copilot 是决策已做完的**成品 harness**。判别测试：**开箱能否直接完成任务**——Claude Code 装上就能改代码（harness），LangGraph 装上什么都不发生（framework）。三层链条：Framework —(你开发)→ Harness —(部署于)→ Runtime。中间形态是\"harness 提取物\"：Claude Agent SDK / OpenAI Agents SDK 是把成品 harness 的 loop/compaction/permission 抽成库，framework 形态但内含近完整 harness。两词来自不同部落：harness 流行于 coding agent/评测圈（价值主张\"帮模型接触世界\"），framework 流行于应用开发圈（价值主张\"帮开发者抽象模型\"）——方向相反，\"Agent = Model, Not Framework\" 正是对重 framework 封装路线的立场表态。OpenForge 三元结构里没有 framework 的位置，因为运行期它已消融在 harness 里。",
-          "evidence_type": "理论（长效）",
-          "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
-        },
-        {
-          "statement": "Copilot Studio 把 harness 与 runtime 打包出售——选 harness 即选 runtime，依赖管理被扩展点取代",
-          "source": "2026-08-10-周一",
-          "first_seen": "2026-08-10",
-          "last_updated": "2026-11-07",
-          "confidence": 0.8,
-          "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称\"四种 harness\"（另有 Customer Conversation harness）；\"Copilot Chat harness 对应无代码执行\"等细节应对照最新文档；正文应补第四种  以下为原记录： 微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。",
-          "evidence_type": "产品与服务",
-          "review": "2026-11-07 修订——依据：Microsoft Learn Harnesses in Copilot Studio https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview ；GA 公告 https://www.microsoft.com/en-us/copilot/blog/copilot-studio/new-and-improved-github-copilot-harness-agent-skills-and-richer-context"
-        },
-        {
-          "statement": "Harness 面向 model，Agent Runtime 面向 infra——runtime 是同心圆外侧的正交承载层",
-          "source": "2026-08-10-周一",
-          "first_seen": "2026-08-10",
-          "last_updated": "2026-08-10",
-          "confidence": 0.75,
-          "status": "active",
-          "evidence": "Agentic harness 是包在模型外、决定 Agent\"怎么思考和行动\"的软件层（loop、system prompt、工具调度、context 管理、permission），优化目标是任务成功率与级联失败率，词源来自 test harness；Agent Runtime 是承载 Agent 进程运行的基础设施层（沙箱生命周期、session 持久化、扩缩容、身份如 Entra Agent ID、多租户隔离），优化目标是 SLA/安全边界/成本，词源来自 language runtime。两个边界测试：① **换模型测试**——换模型需重调的属于 harness，完全不动的属于 runtime；② **谁在焦虑测试**——为\"提前收工/上下文爆\"焦虑的是 harness 工程师，为\"生产安全/崩溃恢复/凭证下发\"焦虑的是 runtime 工程师。runtime 不在 Prompt < Context < Harness 同心圆内，而是承载整组同心圆的正交层。补充公式：智能来自 model，可靠性来自 harness，**可运维性来自 runtime**。两者在 agent loop 处有真实重叠：托管 runtime（Foundry Agent Service 等）自带默认 loop，等于把最薄一层 harness 也托管了。",
-          "evidence_type": "理论（长效）",
-          "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
-        },
-        {
           "statement": "外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端",
           "source": "Vibe-Coding系列14：Harness框架的Skill化收敛",
           "first_seen": "2026-08-20",
@@ -6483,39 +6720,6 @@
           "evidence": "Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**\"变简单\"是表象，实质是职责归位**——框架竞争维度从\"机制精巧\"变成\"方法论文本质量\"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 待定——依据：Superpowers 5.0.2→6.3.0 目录对比本轮仅核到 release notes，未核各版本目录"
-        },
-        {
-          "statement": "编排接入别家 agent 的镜像两式——dsh \"loop 内挂 sub-agent\" vs OpenHands \"loop 外包住执行体\"",
-          "source": "Agent-Harness五平台对比",
-          "first_seen": "2026-08-31",
-          "last_updated": "2026-09-04",
-          "confidence": 0.7,
-          "status": "stale",
-          "evidence": "把别家 harness 纳入自己编排的两条对称路线：**dsh 在 loop 内挂**——sub-agent seam 有五个 provider（in-process spawn、fork、ACP、Codex、Claude Code），把整个外部 harness 挂为 sub-agent 是配置项而非改代码，dsh 的定位因此更像\"编排层/胶水\"而非直接竞品；**OpenHands 在 loop 外包**——经 ACP 把 Claude Code/Codex/Gemini CLI 接为后端 agent，用自己的编排、持久化、自动化外壳包住别家 harness（订阅额度 session 启动时注入，云端跑完为止）。选平台的核心判据由此明确：不是功能清单，而是\"你要对 harness 拥有多大控制权、控制发生在哪一层\"——loop 内（能力件级）还是 loop 外（架构层级）。",
-          "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：dsh 与 OpenHands ACP 能力为产品细节，本轮未查"
-        },
-        {
-          "statement": "harness 的职责边界——单轨执行器不含搜索编排：并行候选、分支比较、预算分配在 harness 之外",
-          "source": "2026-09-22-Dream-RSI",
-          "first_seen": "2026-09-22",
-          "last_updated": "2026-09-25",
-          "confidence": 0.6,
-          "status": "active",
-          "evidence": "Claude Code/OpenCode 这代 harness 提供 loop、session、context 压缩、记忆、权限、沙箱——是**单轨执行器**；探索决策（试哪个方案、开几个分支、给每支多少预算）隐式混在 LLM 的逐步决定里，plan mode 是权限门不是搜索。Dream-RSI 把探索编排做成 harness 之外的显式一层（可编程 exploration policy）——\"控制权在哪一层\"判据的新数据点：搜索/编排是尚未被现有 harness 吸收的职责，当前只能靠外层脚本（fan-out + pick-the-winner）承担。（论文初读，置信度留低）",
-          "evidence_type": "",
-          "review": ""
-        },
-        {
-          "statement": "harness 按\"归谁、能不能改\"分三类，选 framework 还是直接选 harness 看任务形态——harness SDK 把能干活的 agent 放进应用，framework 让你用 agent 搭出应用",
-          "source": "Agent基础设施系列04：Framework层与三层串联",
-          "first_seen": "2026-11-02",
-          "last_updated": "2026-11-04",
-          "confidence": 0.7,
-          "status": "active",
-          "evidence": "三类：代码框架自己搭（MAF / LangGraph / ADK / OpenAI Agents SDK / Dapr Agents，产物是镜像、质量归你）；现成 harness 拿来即用（Claude Code / Codex / GitHub Copilot / OpenHands / Goose 等，本身执行 shell 与代码，适合整个放进沙箱）；平台托管 harness 不能改（Foundry Prompt Agent、Copilot Studio 大部分 harness；Foundry Prompt Agent 现可在默认 harness 与 Microsoft Copilot harness 之间选，但两者都由平台托管）。直接选 harness 适合开放式多步工作、单 agent 能独立做完、团队无力调 loop 与上下文；用 framework 适合流程要确定可审计、多 agent 有明确交接与 human-in-the-loop、对延迟与单次成本敏感、要标准化端点便于迁移 runtime。最实用的是组合：framework 搭外层确定性流程，需要\"自己想办法干完\"的一步交给 harness。harness 的三种用法：交互式、嵌入应用（Copilot SDK 经 JSON-RPC 驱动 CLI server 模式、Claude Agent SDK）、整个当沙箱里的工作负载（kagent AgentHarness、Substrate actor）。经验：模型已定先看第一方 harness；要多模型、开源、可改转向 OpenCode / OpenHands，接受能力损耗。微软把 Copilot harness 做成跨产品复用的底座（进入 Foundry），是\"harness 产品化\"的实例。",
-          "evidence_type": "",
-          "review": ""
         }
       ]
     },
@@ -14072,6 +14276,18 @@
   "links": [
     {
       "source": "a2a-protocol",
+      "target": "agent-platform",
+      "relation_type": "uses",
+      "description": "跨框架发现靠 Agent Card"
+    },
+    {
+      "source": "a2a-protocol",
+      "target": "agent-runtime",
+      "relation_type": "uses",
+      "description": "agent 调 agent 在 runtime 里落成子会话"
+    },
+    {
+      "source": "a2a-protocol",
       "target": "ag-ui-protocol",
       "relation_type": "contrasts",
       "description": "同属 Agent 协议栈，A2A 横向连 Agent，AG-UI 向上连前端"
@@ -14132,6 +14348,12 @@
     },
     {
       "source": "actor-snapshot-scheduling",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "agent runtime 的调度与生命周期子层"
+    },
+    {
+      "source": "actor-snapshot-scheduling",
       "target": "agent-sandbox",
       "relation_type": "part-of",
       "description": "沙箱\"房间怎么分\"一件中，环境分配与回收的一种调度形态"
@@ -14180,6 +14402,12 @@
     },
     {
       "source": "ag-ui-protocol",
+      "target": "agent-framework",
+      "relation_type": "uses",
+      "description": "前端经 AG-UI 对接任意 framework backend"
+    },
+    {
+      "source": "ag-ui-protocol",
       "target": "azure-copilot-ecosystem",
       "relation_type": "part-of",
       "description": "AG-UI 是 Foundry \"custom protocols\" 之一，Microsoft Agent Framework 已支持"
@@ -14207,6 +14435,138 @@
       "target": "a2a-protocol",
       "relation_type": "contrasts",
       "description": "AG-UI 向上连前端，A2A 横向连其他 Agent"
+    },
+    {
+      "source": "agent-framework",
+      "target": "agent-harness",
+      "relation_type": "produces",
+      "description": "用 framework 搭出来的成品就是 harness；Claude Agent SDK、OpenAI Agents SDK 是从成品 harness 抽出来的库，形态是 framework"
+    },
+    {
+      "source": "agent-framework",
+      "target": "agent-runtime",
+      "relation_type": "contrasts",
+      "description": "逻辑 vs 设施：framework 定义状态与恢复，runtime 让它可靠"
+    },
+    {
+      "source": "agent-framework",
+      "target": "agent-platform",
+      "relation_type": "contrasts",
+      "description": "framework 不管注册、身份与治理"
+    },
+    {
+      "source": "agent-framework",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "三层中的 Framework 层"
+    },
+    {
+      "source": "agent-framework",
+      "target": "durable-execution",
+      "relation_type": "uses",
+      "description": "framework 的 checkpoint 只解决\"能存能读\"，持久执行补上故障检测与重放"
+    },
+    {
+      "source": "agent-framework",
+      "target": "graph-engineering",
+      "relation_type": "contrasts",
+      "description": "LangGraph 时代的图是开发者写的静态资产，新范式下的图由模型在运行时现写"
+    },
+    {
+      "source": "agent-framework",
+      "target": "ag-ui-protocol",
+      "relation_type": "uses",
+      "description": "前端经 AG-UI 对接任意 framework backend"
+    },
+    {
+      "source": "agent-framework",
+      "target": "a2a-protocol",
+      "relation_type": "contrasts",
+      "description": "同团队、共享状态、延迟敏感的步骤留在 framework 内编排，跨团队才上 A2A"
+    },
+    {
+      "source": "agent-framework",
+      "target": "framework-selection",
+      "relation_type": "contrasts",
+      "description": "同名不同物：Vibe Coding 方法论框架"
+    },
+    {
+      "source": "agent-harness",
+      "target": "harness-engineering",
+      "relation_type": "grounds",
+      "description": "把 harness 做好的工程方法"
+    },
+    {
+      "source": "agent-harness",
+      "target": "agent-framework",
+      "relation_type": "contrasts",
+      "description": "framework 是开发期材料，harness 是运行期成品"
+    },
+    {
+      "source": "agent-harness",
+      "target": "agent-runtime",
+      "relation_type": "contrasts",
+      "description": "harness 面向模型，runtime 面向基础设施；runtime 把 harness 当可替换进程托管"
+    },
+    {
+      "source": "agent-harness",
+      "target": "agent-session-control-plane",
+      "relation_type": "uses",
+      "description": "\"harness 的 harness\"：控制面经适配器驱动多种编码 CLI"
+    },
+    {
+      "source": "agent-harness",
+      "target": "agent-sandbox",
+      "relation_type": "constrains",
+      "description": "多租户平台上 harness 自身也当不可信，整个放进沙箱免确认运行"
+    },
+    {
+      "source": "agent-harness",
+      "target": "harness-portability-spectrum",
+      "relation_type": "extends",
+      "description": "资产换 harness 能否存活；harness 与 runtime 是否绑死看\"是不是平台自己的代码\""
+    },
+    {
+      "source": "agent-harness",
+      "target": "model-harness-codesign",
+      "relation_type": "extends",
+      "description": "第一方绑定 vs 多模型适配"
+    },
+    {
+      "source": "agent-harness",
+      "target": "copilot-studio-harness-selection",
+      "relation_type": "uses",
+      "description": "Copilot Studio 四种 harness 的选型"
+    },
+    {
+      "source": "agent-harness",
+      "target": "meta-harness",
+      "relation_type": "extends",
+      "description": "harness 优化被自动化为搜索问题"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "agent-framework",
+      "relation_type": "part-of",
+      "description": "Framework 层"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "agent-harness",
+      "relation_type": "contrasts",
+      "description": "harness 不单列一层，是 framework 搭出的成品、runtime 托管的进程"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "Runtime 层"
+    },
+    {
+      "source": "agent-infra-three-layers",
+      "target": "agent-platform",
+      "relation_type": "part-of",
+      "description": "Platform 层（狭义）"
     },
     {
       "source": "agent-infra-three-layers",
@@ -14329,6 +14689,180 @@
       "description": "Agent Pattern 与 Skill Pattern 正交互补"
     },
     {
+      "source": "agent-platform",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "广义 platform 的核心；与狭义 platform 相比，runtime 在数据路径上逐请求执行，platform 管台账与合规"
+    },
+    {
+      "source": "agent-platform",
+      "target": "copilot-studio",
+      "relation_type": "implements",
+      "description": "三层全包的托管 agent platform"
+    },
+    {
+      "source": "agent-platform",
+      "target": "foundry-agent-service",
+      "relation_type": "implements",
+      "description": "Prompt Agent 全包、Hosted Agent 托管 runtime"
+    },
+    {
+      "source": "agent-platform",
+      "target": "copilot-managed-runtime",
+      "relation_type": "implements",
+      "description": "M365 侧托管应用的平台，替你承担身份、分享与治理"
+    },
+    {
+      "source": "agent-platform",
+      "target": "entra-agent-id",
+      "relation_type": "part-of",
+      "description": "platform 的身份一环"
+    },
+    {
+      "source": "agent-platform",
+      "target": "a2a-protocol",
+      "relation_type": "uses",
+      "description": "跨框架发现靠 Agent Card；能被发现不等于能被调用"
+    },
+    {
+      "source": "agent-platform",
+      "target": "ai-gateway",
+      "relation_type": "contrasts",
+      "description": "注册中心解决\"找得到\"，agent 网关解决\"调得通、管得住\""
+    },
+    {
+      "source": "agent-platform",
+      "target": "reconciliation-loop",
+      "relation_type": "uses",
+      "description": "controller 周期复查 skills 包 digest"
+    },
+    {
+      "source": "agent-platform",
+      "target": "agent-framework",
+      "relation_type": "contrasts",
+      "description": "framework 不管注册与治理"
+    },
+    {
+      "source": "agent-platform",
+      "target": "agent-harness",
+      "relation_type": "contrasts",
+      "description": "调用方不应关心 agent 背后是哪个 harness"
+    },
+    {
+      "source": "agent-platform",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "三层中的 Platform 层"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-sandbox",
+      "relation_type": "part-of",
+      "description": "执行平面：隔离原语与沙箱编排"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "actor-snapshot-scheduling",
+      "relation_type": "part-of",
+      "description": "调度与生命周期子层"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-session-control-plane",
+      "relation_type": "part-of",
+      "description": "会话平面，AKS 上最重的自研"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "durable-execution",
+      "relation_type": "part-of",
+      "description": "持久执行子层"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "reconciliation-loop",
+      "relation_type": "part-of",
+      "description": "回收与对账"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "ai-gateway",
+      "relation_type": "part-of",
+      "description": "模型网关与出站网关"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "part-of",
+      "description": "治理平面的凭据注入"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "relationship-based-access-control",
+      "relation_type": "part-of",
+      "description": "治理平面的逐请求授权"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "a2a-protocol",
+      "relation_type": "uses",
+      "description": "agent 调 agent 的协议面"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "agent 身份"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-harness",
+      "relation_type": "contrasts",
+      "description": "harness 面向模型、runtime 面向基础设施"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-framework",
+      "relation_type": "contrasts",
+      "description": "逻辑 vs 设施"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-platform",
+      "relation_type": "contrasts",
+      "description": "runtime 在数据路径上执行，platform 管台账与合规"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-infra-three-layers",
+      "relation_type": "part-of",
+      "description": "三层中的 Runtime 层"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "foundry-agent-service",
+      "relation_type": "implements",
+      "description": "Hosted Agent 是托管的 runtime"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "grounds",
+      "description": "Prompt / Hosted 的分水岭正是 runtime 归属"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "copilot-managed-runtime",
+      "relation_type": "contrasts",
+      "description": "同名不同物"
+    },
+    {
+      "source": "agent-sandbox",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "执行平面：本页是 agent runtime 的隔离原语与沙箱编排两个子层"
+    },
+    {
       "source": "agent-sandbox",
       "target": "agent-infra-three-layers",
       "relation_type": "part-of",
@@ -14357,6 +14891,18 @@
       "target": "context-engineering",
       "relation_type": "part-of",
       "description": "搜索工具是 Context Engineering 的信息获取层"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "会话平面：agent runtime 里最重的自研部分"
+    },
+    {
+      "source": "agent-session-control-plane",
+      "target": "agent-harness",
+      "relation_type": "uses",
+      "description": "\"harness 的 harness\"：控制面经适配器驱动编码 harness"
     },
     {
       "source": "agent-session-control-plane",
@@ -14441,6 +14987,18 @@
       "target": "skill-hub-ecosystem",
       "relation_type": "extends",
       "description": "SKILL.md standard 可能扩展 Skill Hub 生态"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "模型网关与出站网关在 runtime 的数据路径上"
+    },
+    {
+      "source": "ai-gateway",
+      "target": "agent-platform",
+      "relation_type": "part-of",
+      "description": "agent 网关是自建 agent platform 的统一入口"
     },
     {
       "source": "ai-gateway",
@@ -15044,6 +15602,18 @@
     },
     {
       "source": "copilot-managed-runtime",
+      "target": "agent-platform",
+      "relation_type": "implements",
+      "description": "M365 侧托管应用的平台，替你承担身份、分享与治理"
+    },
+    {
+      "source": "copilot-managed-runtime",
+      "target": "agent-runtime",
+      "relation_type": "contrasts",
+      "description": "名字带 runtime，但托管的是应用不是 agent"
+    },
+    {
+      "source": "copilot-managed-runtime",
       "target": "azure-copilot-ecosystem",
       "relation_type": "part-of",
       "description": "Managed Runtime 是微软 Copilot 生态里\"应用托管\"这一层"
@@ -15059,6 +15629,18 @@
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "\"调用成功 ≠ agent 接手\"的判定沿用指纹 + 对照的验证纪律"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "agent-platform",
+      "relation_type": "implements",
+      "description": "三层全包的托管 agent platform：选 harness 即选 runtime"
+    },
+    {
+      "source": "copilot-studio",
+      "target": "agent-harness",
+      "relation_type": "uses",
+      "description": "四种 harness 是建 agent 时的显式选项"
     },
     {
       "source": "copilot-studio",
@@ -15131,6 +15713,12 @@
       "target": "reward-design-three-inputs",
       "relation_type": "uses",
       "description": "两本账分家（验收分不动、优化 reward 单设）是防 cost per task 被 Goodhart 的手段"
+    },
+    {
+      "source": "credential-out-of-sandbox",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "agent runtime 治理平面的凭据注入"
     },
     {
       "source": "credential-out-of-sandbox",
@@ -15266,6 +15854,18 @@
     },
     {
       "source": "durable-execution",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "agent runtime 的持久执行子层"
+    },
+    {
+      "source": "durable-execution",
+      "target": "agent-framework",
+      "relation_type": "contrasts",
+      "description": "framework 的 checkpoint 只定义存什么，持久执行补故障检测与重放"
+    },
+    {
+      "source": "durable-execution",
       "target": "agent-infra-three-layers",
       "relation_type": "part-of",
       "description": "Runtime 层四个子层中的持久执行子层"
@@ -15317,6 +15917,18 @@
       "target": "rag-architecture-comparison",
       "relation_type": "grounds",
       "description": "Ontology 是企业级 RAG 的语义基础层"
+    },
+    {
+      "source": "entra-agent-id",
+      "target": "agent-platform",
+      "relation_type": "part-of",
+      "description": "agent platform 的身份一环"
+    },
+    {
+      "source": "entra-agent-id",
+      "target": "agent-runtime",
+      "relation_type": "uses",
+      "description": "runtime 里 agent 以谁的身份行事"
     },
     {
       "source": "entra-agent-id",
@@ -15407,6 +16019,18 @@
       "target": "ai-adoption-six-step-evolution",
       "relation_type": "uses",
       "description": "Mitchell Hashimoto 六步模型映射到 FDE 团队的管理动作"
+    },
+    {
+      "source": "foundry-agent-service",
+      "target": "agent-platform",
+      "relation_type": "implements",
+      "description": "Foundry 整体是托管 agent platform"
+    },
+    {
+      "source": "foundry-agent-service",
+      "target": "agent-runtime",
+      "relation_type": "implements",
+      "description": "Hosted Agent 本身是托管的 agent runtime"
     },
     {
       "source": "foundry-agent-service",
@@ -15554,6 +16178,12 @@
     },
     {
       "source": "graph-engineering",
+      "target": "agent-framework",
+      "relation_type": "contrasts",
+      "description": "LangGraph 时代的静态图 vs 模型现写的一次性图"
+    },
+    {
+      "source": "graph-engineering",
       "target": "loop-engineering",
       "relation_type": "extends",
       "description": "含义②（循环之图）是 loop engineering 的自然延伸：设计单位从单循环升级为带锚点的循环网络（Perez 文标题即 \"From Loop Engineering to Graph Engineering\"）"
@@ -15602,6 +16232,12 @@
     },
     {
       "source": "harness-engineering",
+      "target": "agent-harness",
+      "relation_type": "grounds",
+      "description": "本页讲怎么把 harness 做好；harness 是什么、归谁、与 framework / runtime 的边界见 agent-harness"
+    },
+    {
+      "source": "harness-engineering",
       "target": "bitter-lesson",
       "relation_type": "contrasts",
       "description": "Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战"
@@ -15647,6 +16283,12 @@
       "target": "skill-runtime",
       "relation_type": "constrains",
       "description": "harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束"
+    },
+    {
+      "source": "harness-portability-spectrum",
+      "target": "agent-harness",
+      "relation_type": "extends",
+      "description": "harness 资产换宿主能否存活"
     },
     {
       "source": "harness-portability-spectrum",
@@ -15911,6 +16553,12 @@
       "target": "verl",
       "relation_type": "contrasts",
       "description": "VERL 在 RL 引擎内部实现\"算法可插拔\"，是同一原则在更低一层的表达"
+    },
+    {
+      "source": "model-harness-codesign",
+      "target": "agent-harness",
+      "relation_type": "extends",
+      "description": "第一方绑定 vs 多模型适配"
     },
     {
       "source": "model-harness-codesign",
@@ -16208,6 +16856,18 @@
     },
     {
       "source": "reconciliation-loop",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "agent runtime 的回收与对账靠调和循环兜底"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "agent-platform",
+      "relation_type": "uses",
+      "description": "agent 定义 controller 周期复查 skills 包"
+    },
+    {
+      "source": "reconciliation-loop",
       "target": "negative-feedback",
       "relation_type": "uses",
       "description": "每一路都以\"读当前状态 → 比对 → 修偏差\"的负反馈为单元"
@@ -16373,6 +17033,18 @@
       "target": "prompt-optimization-tool-selection",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是该决策的关键前提"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "agent runtime 治理平面的逐请求授权"
+    },
+    {
+      "source": "relationship-based-access-control",
+      "target": "agent-platform",
+      "relation_type": "uses",
+      "description": "agent 调 agent 的批准与调用授权"
     },
     {
       "source": "relationship-based-access-control",
@@ -16547,6 +17219,12 @@
       "target": "harness-engineering",
       "relation_type": "grounds",
       "description": "Skill Pattern 是 Harness 设计的认知层"
+    },
+    {
+      "source": "skill-runtime",
+      "target": "agent-runtime",
+      "relation_type": "contrasts",
+      "description": "同名不同物：skill 脚本的执行环境"
     },
     {
       "source": "skill-runtime",
@@ -17474,6 +18152,18 @@
     },
     {
       "source": "copilot-studio-harness-selection",
+      "target": "agent-harness",
+      "relation_type": "uses",
+      "description": "Copilot Studio 里怎么选 harness"
+    },
+    {
+      "source": "copilot-studio-harness-selection",
+      "target": "agent-platform",
+      "relation_type": "uses",
+      "description": "托管 platform 上的不可逆选择"
+    },
+    {
+      "source": "copilot-studio-harness-selection",
       "target": "harness-engineering",
       "relation_type": "extends",
       "description": "产品内多 harness 并存的实例：定义在同一处、执行在三套服务里、建后不能互转"
@@ -17483,6 +18173,18 @@
       "target": "foundry-agent-type-selection",
       "relation_type": "contrasts",
       "description": "同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线"
+    },
+    {
+      "source": "foundry-agent-type-selection",
+      "target": "agent-runtime",
+      "relation_type": "grounds",
+      "description": "Prompt / Hosted 的分水岭是 runtime 归属"
+    },
+    {
+      "source": "foundry-agent-type-selection",
+      "target": "agent-platform",
+      "relation_type": "uses",
+      "description": "Foundry 作为托管 agent platform 的选型"
     },
     {
       "source": "foundry-agent-type-selection",
@@ -17678,6 +18380,10 @@
         "codex-desktop-architecture",
         "harness-portability-spectrum",
         "agent-infra-three-layers",
+        "agent-framework",
+        "agent-harness",
+        "agent-runtime",
+        "agent-platform",
         "agent-sandbox",
         "agent-session-control-plane",
         "credential-out-of-sandbox",
