@@ -34,6 +34,12 @@ topics:
   agent-safety:
     label: Agent 安全与红队
     line: agent
+  agent-runtime:
+    label: Agent runtime 与沙箱基础设施
+    line: agent
+  agent-authorization:
+    label: Agent 委托、身份与授权
+    line: agent
   harness:
     label: Harness 作为一等系统层
     line: harness
