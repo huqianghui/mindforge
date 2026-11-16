@@ -1,7 +1,7 @@
 ---
 title: "学习路径：Harness 工程与 Agent 架构"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - path
@@ -127,13 +127,15 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 
 ## 第 9 站 · 基础设施：三层与沙箱
 
-- **读**：[[agent-infra-three-layers]]、[[agent-sandbox]]
+- **读**：[[agent-infra-three-layers]]、[[agent-harness]]（「harness 面向 model、runtime 面向 infra」「harness 不单列一层」）、[[agent-sandbox]]（「多租户平台上 harness 自身也当不可信」）
 - **前置**：第 3 站
-- **用时**：约 1.5 小时
+- **用时**：约 1 小时
+- **延伸**：harness 跑在哪、被谁管这一整块（执行、会话、治理、身份、定义与发现、自建 vs 托管）已单独排成 [[agent-runtime-platform]]，11 站，本站只读它的第 1、2 站即可接着往下走
 - **算会**：
   - 能按三个问题划分 Framework / Runtime / Platform，说出 harness 为什么不单列一层
+  - 能说出 harness 面向 model、runtime 面向 infra 的两个边界测试（换模型要不要重调、谁在焦虑什么）
   - 能说出沙箱的三件事：隔离原语、环境的分配与回收、出站与凭据，以及"凭据不进沙箱"的做法
-  - 能说出 agent 本身和它执行的代码为什么要分开选隔离粒度
+  - 能说出 agent 本身和它执行的代码为什么要分开选隔离粒度，以及编码 harness 为什么例外、整个放进沙箱
 
 ## 第 10 站 · 外循环：Loop Engineering 与评测门禁
 
