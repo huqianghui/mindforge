@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-11-16",
   "stats": {
-    "nodes": 171,
-    "links": 721,
+    "nodes": 172,
+    "links": 737,
     "orphan_links_removed": 2,
-    "claims": 1006,
+    "claims": 1010,
     "categories": 13
   },
   "nodes": [
@@ -7490,6 +7490,71 @@
           "status": "active",
           "evidence": "两变量坐标（[[cost-per-task]]）下：研究报告、代码风格、对话质量等左栏任务无 ground truth，评估只能是主观分——LLM-as-a-Judge 就是 RLHF learned reward model 在推理时的形态，覆盖面宽但可被投机、在离线回放里无法重新获得，因此难驱动 RL/RSI；右栏任务（报税 accept/reject、数据录入对源单据、QA 测试结果）有客观信号，评估应优先接 RLVR 式验证器，\"客服回复是否得体\"这类写不出验证器的才退回 judge。落地（FinOps 系列 03）：左栏桶 judge + 抽样人工校准，右栏桶每桶回答\"写得出验证器吗、信号延迟多久\"，答不出的暂不进优化阶梯 L2。另一维对照：judge 通过 LLM 生成文字做评估（有 rationale、可思维链、秒级、RLHF 训练的自报置信不与正确率对应），[[system-one-model]] 通过 typed decision 做判断（无理由、单次前向、校准是训练目标）——同一判断层的两种实现，DataCamp 的组合建议是 typed 决策做快速分类/路由层，困难 case 交 reasoning 模型。",
           "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "llm-serving",
+      "type": "concept",
+      "title": "LLM Serving",
+      "summary": "LLM 推理服务回答\"一个模型怎么以可接受的延迟和成本被大量调用\"。按从下到上的顺序可以分成五层，每一层在 wiki 里各有归口：\n\n- **模型架构**：注意力怎么存记忆，决定了缓存长什么样——全注意力的 KV 随长度增长，线性注意力与 Mamba 类是固定大小的循环状态，Hybrid 两者交错（[[hybrid-linear-attention-architecture]]）\n- **单机推理引擎**：vLLM、SGLang、llama.cpp 负责批处理、显存与 KV 管理、前缀复用；引擎怎么选见 [[hybrid-inference-framework-selection]]\n- **分布式编排**：Dynamo 这类控制面在多副本、多节点之上做 KV 感知路由、优先级调度、Prefill / Decode 分离（[[prefix-caching]] 的编排层一条）\n- **托管 API**：prompt caching 的命中价与写入计费、缓存放在哪台机器上（[[prefix-caching]]）\n- **硬件**：推理 ASIC、能效与芯片的联合设计（[[ai-inference-asic]]）\n\n贯穿五层的是缓存，判断各层优化效果的方法是先定工作点与分母（[[throughput-latency-operating-point]]），最终要比的是每成功任务成本（[[cost-per-task]]）。在 agent runtime 里，这一整层位于模型网关后面：网关负责认会话、转协议、限流，推理服务负责把 token 算出来（[[ai-gateway]]）。",
+      "tags": [
+        "wiki",
+        "concept",
+        "inference",
+        "llm-serving",
+        "vllm",
+        "sglang"
+      ],
+      "category": "LLM 推理与训练",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.7,
+      "claims": [
+        {
+          "statement": "推理成本按五层归因——架构定长期价格下限，引擎与系统定可售吞吐，编排守住缓存命中，API 定计费口径，硬件定能效；理论 FLOPs 降低要穿过引擎与系统层才会变成账单降价",
+          "source": "Qwen3.8-Flash与GLM-5.3-Flash的降本解剖",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "降本解剖里的六层（稀疏激活与减层、混合注意力、残差路由、N-gram 记忆外移、训练方法、推理系统兑现）前五层都在模型内部，第六层才落到服务：内存带宽、芯片间通信、批处理效率、长短请求干扰、集群调度每一关都可能把论文里省下的 FLOPs 吃掉。GLM-5.3-Flash 的做法是把优化延伸到整个系统——基于 SGLang 的专用引擎、混合精度缓存量化、Encode / Prefill / Decode 分离；它的\"端到端 3 倍\"是相对同一硬件上的初始基线，不是跨模型横比。价格上的结论分三段：模型与系统效率决定长期可持续的价格下限，限时补贴决定短期市场价，任务成功率决定用户实际付的总成本。所以读任何\"降本 N 倍\"先问它落在哪一层、相对什么基线。",
+          "evidence_type": "理论（长效）",
+          "review": ""
+        },
+        {
+          "statement": "缓存是贯穿五层的主线——架构决定缓存的形状，引擎决定能不能跨请求复用，编排决定请求能不能落到持有缓存的机器上，API 决定命中怎么计费；任何一层断掉，命中率都会掉到零",
+          "source": "线性注意力时代的推理架构之二：Prefix-Caching",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "架构层：全注意力的 KV 可以按前缀切块复用；线性注意力的循环状态原地更新、体积大、全有或全无，Hybrid 要同时管两套异构缓存，短前缀命中近零是架构迁移的副作用。引擎层：vLLM 是 token-centric、为 attention-only 的吞吐设计，Hybrid 要靠 block 对齐、伤短请求；SGLang 是 prefix-centric，RadixAttention 把 KV 组织成前缀树，再把循环状态纳入（MambaRadixCache）；llama.cpp 只是 slot 内续接，跨请求复用尚未实现。编排层：多副本下不认会话的路由会把前缀打散，要按会话路由、钉住关键前缀。API 层：托管缓存只有路由到恰好持有条目的机器才命中，命中价是独立的竞争维度。再往上，模型路由受\"缓存不跨模型共享\"约束（[[model-routing]]）。排查顺序因此是自下而上：架构支不支持 → 引擎开没开、对不对齐 → 路由认不认会话 → 计费口径。vLLM 上命中率为 0 时社区验证最有效的一招是先关掉推测解码。",
+          "evidence_type": "理论（长效）",
+          "review": ""
+        },
+        {
+          "statement": "服务架构在往\"拆开\"走——控制面与引擎分层、Prefill 与 Decode（以及多模态 Encode）拆成独立工作池分别扩缩容；推动它的是 agent 负载：长上下文、多轮复用、前后台请求并行",
+          "source": "Scaling-Agentic-AI-with-NVIDIA-Dynamo-on-Azure",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "两个\"拆\"：一是分层——Dynamo 作控制面调度请求、分配 GPU、管理 KV，vLLM / SGLang 作单机数据面；二是分阶段——Prefill（吃长输入、算力密集）与 Decode（逐 token、带宽密集）资源画像不同，混在一个池里会互相干扰，GLM-5.3-Flash 进一步把多模态 Encode 单独拆出（EPD）。agent 负载让拆分更必要：多轮对话的 KV 巨大且要跨轮复用、一次任务串联多轮推理、实时对话与后台批处理同时存在且优先级不同。拆分的代价是 KV 要在池之间搬运，所以路由和缓存管理成了编排层的核心（agent hints、KV 感知路由、pinning）。来自厂商材料与模型发布说明，本库未自建验证。",
+          "evidence_type": "产品与服务",
+          "review": ""
+        },
+        {
+          "statement": "引擎选型要带日期、带负载形态——按部署规模分档，Hybrid 与 agent 这类前缀复用重的负载 SGLang 先发；读 benchmark 先辨工作点和分母，最后落到每成功任务成本",
+          "source": "SGLang与vLLM的基因之争",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-16",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "选型的具体分档（llama.cpp / SGLang / vLLM）与\"SGLang 领先是设计基因\"的论证在 [[hybrid-inference-framework-selection]]；这里补的是选型要带的两个前提。一是日期：SGLang 在 Hybrid 上的领先是先发优势与时间窗口，不是永久护城河，vLLM 在追（跟踪 Hybrid 前缀缓存的 tracking issue），所以选型结论要写明是哪个时间点的快照。二是读数：同一套硬件能同时给出 1.9× 与 104× 两个不矛盾的数，它们是吞吐—延迟曲线上不同工作点的读数；per-kW 与 per-chip、峰时与谷时是不同分母（[[throughput-latency-operating-point]]）。最后的口径是每成功任务成本——便宜模型重试三次就可能比一次做对的贵模型更贵（[[cost-per-task]]）。",
+          "evidence_type": "产品与服务",
           "review": ""
         }
       ]
@@ -15462,6 +15527,12 @@
     },
     {
       "source": "ai-inference-asic",
+      "target": "llm-serving",
+      "relation_type": "part-of",
+      "description": "推理服务的硬件层"
+    },
+    {
+      "source": "ai-inference-asic",
       "target": "model-harness-codesign",
       "relation_type": "extends",
       "description": "co-design 路线从 model+harness 下沉到 model+软件栈+芯片的硬件层"
@@ -16119,6 +16190,12 @@
       "target": "copilot-studio-harness-selection",
       "relation_type": "constrains",
       "description": "新建默认 GitHub Copilot harness、建后不能互转，使 harness 选型成为建 agent 时的不可逆决策"
+    },
+    {
+      "source": "cost-per-task",
+      "target": "llm-serving",
+      "relation_type": "uses",
+      "description": "推理成本归因最终落到每成功任务成本"
     },
     {
       "source": "cost-per-task",
@@ -16812,6 +16889,12 @@
     },
     {
       "source": "hybrid-linear-attention-architecture",
+      "target": "llm-serving",
+      "relation_type": "part-of",
+      "description": "推理服务的模型架构层"
+    },
+    {
+      "source": "hybrid-linear-attention-architecture",
       "target": "prefix-caching",
       "relation_type": "constrains",
       "description": "Hybrid 的循环状态破坏了 prefix caching 的三条隐含假设，导致命中率归零"
@@ -16857,6 +16940,60 @@
       "target": "automatic-prompt-optimization",
       "relation_type": "constrains",
       "description": "judge 噪声直接决定 APO beam search 排序的可信度，是摆动的第一大原因"
+    },
+    {
+      "source": "llm-serving",
+      "target": "hybrid-linear-attention-architecture",
+      "relation_type": "part-of",
+      "description": "模型架构层：注意力怎么存记忆"
+    },
+    {
+      "source": "llm-serving",
+      "target": "prefix-caching",
+      "relation_type": "part-of",
+      "description": "贯穿引擎、编排、API 三层的缓存机制"
+    },
+    {
+      "source": "llm-serving",
+      "target": "hybrid-inference-framework-selection",
+      "relation_type": "part-of",
+      "description": "单机推理引擎的选型"
+    },
+    {
+      "source": "llm-serving",
+      "target": "throughput-latency-operating-point",
+      "relation_type": "uses",
+      "description": "读各层性能数字的方法"
+    },
+    {
+      "source": "llm-serving",
+      "target": "ai-inference-asic",
+      "relation_type": "part-of",
+      "description": "硬件层"
+    },
+    {
+      "source": "llm-serving",
+      "target": "model-routing",
+      "relation_type": "constrains",
+      "description": "缓存不跨模型共享，限制了上层的路由粒度"
+    },
+    {
+      "source": "llm-serving",
+      "target": "cost-per-task",
+      "relation_type": "grounds",
+      "description": "最终比的是每成功任务成本"
+    },
+    {
+      "source": "llm-serving",
+      "target": "agent-runtime",
+      "relation_type": "contrasts",
+      "description": "runtime 里的模型网关在前，推理服务在网关后面"
+    },
+    {
+      "source": "llm-serving",
+      "target": "ai-gateway",
+      "relation_type": "contrasts",
+      "description": "网关认会话与限流，推理服务负责生成"
     },
     {
       "source": "llm-wiki",
@@ -17106,6 +17243,12 @@
     },
     {
       "source": "model-routing",
+      "target": "llm-serving",
+      "relation_type": "uses",
+      "description": "路由粒度受推理服务的缓存约束"
+    },
+    {
+      "source": "model-routing",
       "target": "rtk-token-compression",
       "relation_type": "contrasts",
       "description": "RTK 压缩工具输出（减 token 数量），模型路由降 token 单价，两条正交轴可叠加"
@@ -17295,6 +17438,12 @@
       "target": "notion-as-ai-layer",
       "relation_type": "contrasts",
       "description": "Notion 在知识管理中的替代方案"
+    },
+    {
+      "source": "prefix-caching",
+      "target": "llm-serving",
+      "relation_type": "part-of",
+      "description": "贯穿推理服务各层的缓存主线"
     },
     {
       "source": "prefix-caching",
@@ -18600,6 +18749,12 @@
     },
     {
       "source": "throughput-latency-operating-point",
+      "target": "llm-serving",
+      "relation_type": "part-of",
+      "description": "读推理服务各层性能数字的方法"
+    },
+    {
+      "source": "throughput-latency-operating-point",
       "target": "ai-inference-asic",
       "relation_type": "grounds",
       "description": "方法首次成形于 Jalapeño benchmark 解读，该页保留硬件场景的详版 Claim"
@@ -18735,6 +18890,12 @@
       "target": "agent-session-control-plane",
       "relation_type": "constrains",
       "description": "选 AKS 自建就意味着要自己写并长期维护会话控制面"
+    },
+    {
+      "source": "hybrid-inference-framework-selection",
+      "target": "llm-serving",
+      "relation_type": "part-of",
+      "description": "推理服务里单机引擎的选型"
     },
     {
       "source": "hybrid-inference-framework-selection",
@@ -18979,6 +19140,7 @@
       "id": "llm",
       "name": "LLM 推理与训练",
       "members": [
+        "llm-serving",
         "hybrid-linear-attention-architecture",
         "prefix-caching",
         "automatic-prompt-optimization",
