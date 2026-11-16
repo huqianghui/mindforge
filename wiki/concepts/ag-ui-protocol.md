@@ -12,6 +12,7 @@ aliases:
   - "AG-UI"
   - "Agent-User Interaction Protocol"
 related:
+  - "[[agent-protocol-stack]]"
   - "[[agent-framework]]"
   - "[[mcp-vs-cli]]"
   - "[[azure-copilot-ecosystem]]"
@@ -96,6 +97,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 ## 关联概念
 
+- [[agent-protocol-stack]] — `part-of` agent 协议栈的一层
 - [[agent-framework]] — `uses` 前端经 AG-UI 对接任意 framework backend
 - [[azure-copilot-ecosystem]] — `part-of` AG-UI 是 Foundry "custom protocols" 之一，Microsoft Agent Framework 已支持
 - [[mcp-vs-cli]] — `contrasts` MCP 解决 Agent 向下的工具集成，AG-UI 解决向上的 UI 集成——同为协议路线但方向相反

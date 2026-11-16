@@ -16,6 +16,7 @@ aliases:
   - "模型网关"
   - "agent 网关"
 related:
+  - "[[model-context-protocol]]"
   - "[[agent-runtime]]"
   - "[[agent-platform]]"
   - "[[credential-out-of-sandbox]]"
@@ -102,6 +103,7 @@ AI 网关是位于 agent、模型和外部工具之间、专门处理 AI 流量�
 
 ## 关联概念
 
+- [[model-context-protocol]] — `uses` MCP 本身的定义与 runtime 落点
 - [[agent-runtime]] — `part-of` 模型网关与出站网关在 runtime 的数据路径上
 - [[agent-platform]] — `part-of` agent 网关是自建 agent platform 的统一入口
 - [[credential-out-of-sandbox]] — `part-of` 出站网关是"凭据由出口处可信中介注入"的那个出口

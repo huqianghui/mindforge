@@ -177,6 +177,8 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[agent-search-tools]] — AI Agent 搜索三剑客：Exa / Tavily / Context7
 - [[opencli]] — OpenCLI：CLI 的 OpenAPI 标准化接口描述
 - [[ag-ui-protocol]] — AG-UI：Agent 三大协议的最后一环（MCP 向下、A2A 横向、AG-UI 向上连 UI）
+- [[agent-protocol-stack]] — Agent 协议栈：MCP 向下、A2A 横向、AG-UI / A2UI 向上；协议面要适配到会话 API；四个协议都只管连接不管授权
+- [[model-context-protocol]] — MCP：N×M 变 M+N，三种原语三个控制者；标准化观察与行动不是决策；runtime 里的三个落点（会话 API 包成 MCP、网关聚合、暂停后重连）
 - [[a2a-protocol]] — A2A 协议：Agent 互操作层，补语义层（Agent Card / Task 生命周期 / Part·Artifact）复用微服务治理，0.3→1.0 破坏性改名，无统一 Registry API
 - [[a2ui-protocol]] — A2UI 协议：传界面描述而非界面代码，Surface / Catalog / Data Model，Renderer 是协议运行时，展示 ≠ 授权
 

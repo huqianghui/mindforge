@@ -102,7 +102,7 @@ signals:
 
 ## 第 7 站 · 治理：出站网关与凭据
 
-- **读**：[[credential-out-of-sandbox]]（全部六条）、[[ai-gateway]]（「按调用方分三种角色」「和 LLM proxy 的配合」「token 限流在响应后结算」「MCP 聚合有两面」）、[[agent-runtime]]（「Kubernetes 原生机制守底线、L7 组件做判断」）、[[AKS-Agent-Runtime系列04：出站治理与逐请求授权]]、[[AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色]]
+- **读**：[[credential-out-of-sandbox]]（全部六条）、[[ai-gateway]]（「按调用方分三种角色」「和 LLM proxy 的配合」「token 限流在响应后结算」「MCP 聚合有两面」）、[[agent-runtime]]（「Kubernetes 原生机制守底线、L7 组件做判断」）、[[model-context-protocol]]（「在 agent runtime 里 MCP 有三个落点」）、[[AKS-Agent-Runtime系列04：出站治理与逐请求授权]]、[[AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色]]
 - **前置**：第 3 站
 - **用时**：约 2 小时
 - **算会**：
@@ -136,7 +136,7 @@ signals:
 
 ## 第 10 站 · 定义与发现
 
-- **读**：[[agent-platform]]（「agent 定义按不可变 revision 管」「发现分三层、授权另走一条路」「注册中心以谁为准二选一」「agent 资产的分发走 OCI 供应链」）、[[a2a-protocol]]（「能被发现不等于能被调用」「A2A 1.x 卡片入口改成 supportedInterfaces」）、[[ai-gateway]]（「A2A 代理改写卡片地址可能只改一半」）、[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
+- **读**：[[agent-platform]]（「agent 定义按不可变 revision 管」「发现分三层、授权另走一条路」「注册中心以谁为准二选一」「agent 资产的分发走 OCI 供应链」）、[[a2a-protocol]]（「能被发现不等于能被调用」「A2A 1.x 卡片入口改成 supportedInterfaces」）、[[ai-gateway]]（「A2A 代理改写卡片地址可能只改一半」）、[[agent-protocol-stack]]（三条）、[[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]
 - **前置**：第 5、8 站
 - **用时**：约 1.5 小时
 - **算会**：
@@ -162,7 +162,7 @@ signals:
 
 - **Agent runtime 开始标准化**（知识差距 2026-11-16，高优先级）：Agent Substrate 1.0 在 GKE 上 GA、捐给 CNCF，kagent 1.0 改建在它上面 → 影响第 4 站（Substrate 不再只能做 PoC，但挂起会断开所有连接）、第 11 站（kagent 作为自建组件的形态变了）
 - **Agent 委托与越权成为独立方向**（知识差距 2026-11-16，高优先级）：A2A 多跳委托中的身份丢失、逐跳收窄权限、agent 在允许动作内越权 → 影响第 8、9、10 站（三方交集管资源动作，管不到"允许的动作里做了用户没授权的事"；"只允许一跳"的理由需要补）
-- **MCP 还没有概念页**（知识差距 2026-11-16）→ 影响第 7、10 站：MCP 聚合、会话 API 包成 MCP 工具、挂起后 MCP 连接重建都散在各页
+- **MCP 与协议栈已建页**（2026-11-16 补建 [[model-context-protocol]]、[[agent-protocol-stack]]）→ 影响第 7、10 站：MCP 的三个 runtime 落点与"四个协议都只管连接不管授权"已有归口
 - **Harness 评测转向模型与 harness 的配对**（知识差距 2026-11-16）→ 影响第 2 站：选 harness 没有脱离模型的答案
 
 ## 毕业标准
@@ -171,7 +171,7 @@ signals:
 
 ## 这条路径暴露的缺口
 
-- **概念页缺失**：MCP 本身（31 篇文章用到）；agent 协议栈的伞形页（MCP、A2A、AG-UI、A2UI 的分层）
+- **概念页缺失**：MCP 与协议栈已于 2026-11-16 补建；多跳 A2A 委托中的授权传递还没有归口
 - **方法页缺失**：最小控制面、自建 agent platform 的组件组合，目前都以 Claim 形式散在 [[agent-session-control-plane]] 与 [[agent-platform]] 里，适合整理成方法页
 - **证据不足**：agent 网关与企业目录在系列里都没有实践；Substrate 在 AKS 上未实测；模型网关 + LLM proxy 两跳未实测；Nacos 双向同步未实测（见 2026-11-16 知识差距报告的实验清单）
 - **stale**：本路径涉及的页 stale 很少（[[agent-harness]] 1 条、[[entra-agent-id]] 1 条），不需要先跑 `/revalidate`

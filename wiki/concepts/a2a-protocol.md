@@ -14,6 +14,7 @@ aliases:
   - "Agent2Agent"
   - "Agent 互操作层"
 related:
+  - "[[agent-protocol-stack]]"
   - "[[agent-platform]]"
   - "[[agent-runtime]]"
   - "[[ag-ui-protocol]]"
@@ -145,6 +146,7 @@ A2A 和微服务治理要解决的问题高度同构（发现、契约、调用�
 
 ## 关联概念
 
+- [[agent-protocol-stack]] — `part-of` agent 协议栈的一层
 - [[agent-platform]] — `uses` 跨框架发现靠 Agent Card
 - [[agent-runtime]] — `uses` agent 调 agent 在 runtime 里落成子会话
 - [[ag-ui-protocol]] — `contrasts` 同属 Agent 协议栈，A2A 横向连 Agent，AG-UI 向上连前端

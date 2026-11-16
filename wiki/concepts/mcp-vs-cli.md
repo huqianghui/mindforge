@@ -1,7 +1,7 @@
 ---
 title: "MCP vs CLI"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -11,6 +11,7 @@ tags:
 aliases:
   - "MCP vs CLI"
 related:
+  - "[[model-context-protocol]]"
   - "[[context-engineering]]"
   - "[[opencli]]"
   - "[[rtk-token-compression]]"
@@ -130,6 +131,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 ## 关联概念
 
+- [[model-context-protocol]] — `extends` MCP 本身的定义与 runtime 落点
 - [[context-engineering]] — `part-of` MCP 是 Context Engineering 的工具接入层
 - [[opencli]] — `contrasts` OpenCLI 为 CLI 路线提供标准化接口描述
 - [[rtk-token-compression]] — `contrasts` RTK 选择 CLI 代理而非 MCP 协议，体现两条工具集成路线的不同取舍

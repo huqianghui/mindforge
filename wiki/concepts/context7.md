@@ -1,7 +1,7 @@
 ---
 title: "Context7"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -11,6 +11,7 @@ tags:
 aliases:
   - "Context7"
 related:
+  - "[[model-context-protocol]]"
   - "[[agent-search-tools]]"
 ---
 
@@ -68,6 +69,7 @@ Context7 是一个实时文档 MCP Server，解决 LLM 因训练数据截止日�
 
 ## 关联概念
 
+- [[model-context-protocol]] — `implements` MCP 本身的定义与 runtime 落点
 - [[agent-search-tools]] — `part-of` Context7 是 Agent 搜索三剑客之一
 
 ## 来源日记

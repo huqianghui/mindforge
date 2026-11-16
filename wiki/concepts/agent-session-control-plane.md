@@ -16,6 +16,7 @@ aliases:
   - "会话平面"
   - "agent runtime 会话层"
 related:
+  - "[[model-context-protocol]]"
   - "[[agent-runtime]]"
   - "[[agent-harness]]"
   - "[[agent-infra-three-layers]]"
@@ -190,6 +191,7 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 
 ## 关联概念
 
+- [[model-context-protocol]] — `uses` MCP 本身的定义与 runtime 落点
 - [[agent-runtime]] — `part-of` 会话平面：agent runtime 里最重的自研部分
 - [[agent-harness]] — `uses` "harness 的 harness"：控制面经适配器驱动编码 harness
 - [[agent-infra-three-layers]] — `part-of` Runtime 层持久执行与调度生命周期两个子层的具体形态（会话平面）

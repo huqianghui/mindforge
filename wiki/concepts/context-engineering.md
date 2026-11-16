@@ -12,6 +12,7 @@ aliases:
   - "Context Engineering"
   - "上下文工程"
 related:
+  - "[[model-context-protocol]]"
   - "[[context7]]"
   - "[[cybernetics-agent-design]]"
   - "[[harness-engineering]]"
@@ -118,6 +119,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 ## 关联概念
 
+- [[model-context-protocol]] — `uses` MCP 本身的定义与 runtime 落点
 - [[harness-engineering]] — `part-of` Context Engineering 是 Harness Engineering 的子集
 - [[context7]] — `uses` Context7 是 Context Engineering 的文档层工具
 - [[cybernetics-agent-design]] — `implements` Context 管理是共轭变换（表示层设计）的工程实践

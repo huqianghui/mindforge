@@ -1,7 +1,7 @@
 ---
 title: "A2UI Protocol"
 created: "2026-10-24"
-updated: "2026-10-24"
+updated: "2026-11-16"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "Agent-to-User Interface"
   - "声明式 Generative UI"
 related:
+  - "[[agent-protocol-stack]]"
   - "[[ag-ui-protocol]]"
   - "[[a2a-protocol]]"
   - "[[mcp-vs-cli]]"
@@ -85,6 +86,7 @@ A2UI（Agent-to-User Interface，Google 发起）让 Agent 用**声明式 JSON �
 
 ## 关联概念
 
+- [[agent-protocol-stack]] — `part-of` agent 协议栈的一层
 - [[ag-ui-protocol]] — `contrasts` A2UI 管"画什么"（组件、结构、数据绑定），AG-UI 管"怎么交互"（运行生命周期、文本流、工具调用、状态同步），并承载 A2UI 载荷
 - [[a2a-protocol]] — `uses` A2UI 可经 A2A 扩展传输，让远端 Agent 直接回 UI
 - [[mcp-vs-cli]] — `contrasts` MCP 只交付经授权的业务数据、不决定 UI，A2UI 只描述界面、不取数

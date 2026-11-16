@@ -15,6 +15,7 @@ aliases:
   - "AKS Agent Runtime"
   - "agent 运行环境"
 related:
+  - "[[agent-protocol-stack]]"
   - "[[agent-sandbox]]"
   - "[[agent-session-control-plane]]"
   - "[[ai-gateway]]"
@@ -132,6 +133,7 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 ## 关联概念
 
+- [[agent-protocol-stack]] — `part-of` runtime 对外、对下的协议面
 - [[agent-sandbox]] — `part-of` 执行平面：隔离原语与沙箱编排
 - [[actor-snapshot-scheduling]] — `part-of` 调度与生命周期子层
 - [[agent-session-control-plane]] — `part-of` 会话平面，AKS 上最重的自研

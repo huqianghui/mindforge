@@ -15,6 +15,7 @@ aliases:
   - "Model-Harness Codesign"
   - "模型-Harness 协同设计"
 related:
+  - "[[model-context-protocol]]"
   - "[[agent-harness]]"
   - "[[harness-engineering]]"
   - "[[agent-loop-architecture]]"
@@ -185,6 +186,7 @@ related:
 
 ## 关联概念
 
+- [[model-context-protocol]] — `uses` MCP 本身的定义与 runtime 落点
 - [[agent-harness]] — `extends` 第一方绑定 vs 多模型适配
 - [[harness-engineering]] — `extends` 把 harness 从工程实践议题延伸到产品战略层：引擎和车要不要同厂造
 - [[agent-loop-architecture]] — `uses` turn/round/run 三层 tool-calling 循环是 harness 的内核结构，VS Code 与 Claude Code 已收敛
