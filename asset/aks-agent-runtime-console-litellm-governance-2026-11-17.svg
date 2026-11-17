@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1290" width="1400" height="1290" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs><style>
+    .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+    .sub { fill: #94a3b8; font-size: 14px; }
+    .rh { fill: #e2e8f0; font-size: 15px; font-weight: 700; }
+    .ch { font-size: 15px; font-weight: 700; }
+    .t { fill: #cbd5e1; font-size: 13.5px; }
+    .dash { fill: #475569; font-size: 14px; }
+    .bt { fill: #f1f5f9; font-size: 15px; font-weight: 700; }
+    .tg { fill: #5eead4; font-size: 13.5px; font-weight: 600; }
+    .tr { fill: #fca5a5; font-size: 13.5px; font-weight: 600; }
+    .ty { fill: #fcd34d; font-size: 13.5px; font-weight: 600; }
+    .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 700; }
+    .lg { fill: #cbd5e1; font-size: 13.5px; }
+    .gap { animation: pulse 2.2s ease-in-out infinite; }
+    .avail { stroke-dasharray: 6 4; animation: dash 1.6s linear infinite; }
+    @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    @keyframes dash { to { stroke-dashoffset: -20; } }
+  </style></defs>
+  <rect width="1400" height="1290" rx="16" fill="#0b1220"/>
+  <text class="title" x="30" y="44">治理覆盖图：按系列 11 的清单逐项看，谁已经做了、谁有能力但没接上、谁都没有</text>
+  <text class="sub" x="30" y="72">左边两列是现在真正在执行的部分；黄色虚线框是 LiteLLM 自带、但 operator 没有接的能力；红框是两边都没有、要自己补的</text>
+  <rect x="230" y="100" width="280" height="54" rx="10" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.6"/>
+  <text class="ch" x="370.0" y="133" text-anchor="middle" fill="#7dd3fc">常驻实现已做（CRD + operator）</text>
+  <rect x="520" y="100" width="280" height="54" rx="10" fill="#0f172a" stroke="#8b5cf6" stroke-width="1.6"/>
+  <text class="ch" x="660.0" y="133" text-anchor="middle" fill="#c4b5fd">LiteLLM 已经在用</text>
+  <rect x="810" y="100" width="280" height="54" rx="10" fill="#0f172a" stroke="#fbbf24" stroke-width="1.6"/>
+  <text class="ch" x="950.0" y="133" text-anchor="middle" fill="#fcd34d">LiteLLM 有，但没接上</text>
+  <rect x="1100" y="100" width="270" height="54" rx="10" fill="#0f172a" stroke="#f87171" stroke-width="1.6"/>
+  <text class="ch" x="1235.0" y="133" text-anchor="middle" fill="#fca5a5">两边都没有</text>
+  <rect x="30" y="176" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="205">隔离与资源</text>
+  <rect x="230" y="176" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="196">Kata 隔离；Sandbox 定资源、</text>
+  <text class="t" x="242" y="215">HOME 盘和运行时</text>
+  <text class="dash" x="660.0" y="205" text-anchor="middle">—</text>
+  <text class="dash" x="950.0" y="205" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="176" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="196">按 Team 或用户限制 Agent 数</text>
+  <text class="t" x="1112" y="215">和 Kata 容量</text>
+  <rect x="30" y="232" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="261">模型权限</text>
+  <rect x="230" y="232" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="252">Policy 的模型白名单，</text>
+  <text class="t" x="242" y="271">投影到每把 key</text>
+  <rect x="520" y="232" width="280" height="48" rx="8" fill="#1e1638" stroke="#8b5cf6" stroke-width="1.3"/>
+  <text class="t" x="532" y="252">在 key 上执行，未授权的</text>
+  <text class="t" x="532" y="271">模型直接拒绝</text>
+  <text class="dash" x="950.0" y="261" text-anchor="middle">—</text>
+  <text class="dash" x="1235.0" y="261" text-anchor="middle">—</text>
+  <rect x="30" y="288" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="317">预算与限流</text>
+  <rect x="230" y="288" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="308">每个 Agent 的月度预算、</text>
+  <text class="t" x="242" y="327">并发、RPM、TPM</text>
+  <rect x="520" y="288" width="280" height="48" rx="8" fill="#1e1638" stroke="#8b5cf6" stroke-width="1.3"/>
+  <text class="t" x="532" y="308">key 级执行；Team 总预算</text>
+  <text class="t" x="532" y="327">只能在控制台手动设</text>
+  <text class="dash" x="950.0" y="317" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="288" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="308">Team 总预算的声明式配置；</text>
+  <text class="t" x="1112" y="327">单次请求超支挡不住</text>
+  <rect x="30" y="344" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="373">出站访问</text>
+  <rect x="230" y="344" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="364">Cilium：公网黑名单、</text>
+  <text class="t" x="242" y="383">内网白名单、域名封禁</text>
+  <text class="dash" x="660.0" y="373" text-anchor="middle">—</text>
+  <text class="dash" x="950.0" y="373" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="344" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="364">资源加动作的逐请求授权，</text>
+  <text class="t" x="1112" y="383">撤销秒级生效</text>
+  <rect x="30" y="400" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="429">身份与凭据</text>
+  <rect x="230" y="400" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="420">Agent Identity、Broker 换</text>
+  <text class="t" x="242" y="439">短期凭据、workload identity</text>
+  <rect x="520" y="400" width="280" height="48" rx="8" fill="#1e1638" stroke="#8b5cf6" stroke-width="1.3"/>
+  <text class="t" x="532" y="420">模型凭据只在网关里，</text>
+  <text class="t" x="532" y="439">沙箱里只有自己的 key</text>
+  <rect class="avail" x="810" y="400" width="280" height="48" rx="8" fill="#2a2110" stroke="#fbbf24" stroke-width="1.3"/>
+  <text class="t" x="822" y="420">Agents 模块的 Entra</text>
+  <text class="t" x="822" y="439">身份绑定</text>
+  <text class="dash" x="1235.0" y="429" text-anchor="middle">—</text>
+  <rect x="30" y="456" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="485">harness 与 skill</text>
+  <rect x="230" y="456" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="476">harness 白名单；skill 白名单</text>
+  <text class="t" x="242" y="495">和按 Team 发布的 release</text>
+  <text class="dash" x="660.0" y="485" text-anchor="middle">—</text>
+  <text class="dash" x="950.0" y="485" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="456" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="485">harness 内部能调哪些工具</text>
+  <rect x="30" y="512" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="541">工具与 MCP</text>
+  <text class="dash" x="370.0" y="541" text-anchor="middle">—</text>
+  <text class="dash" x="660.0" y="541" text-anchor="middle">—</text>
+  <rect class="avail" x="810" y="512" width="280" height="48" rx="8" fill="#2a2110" stroke="#fbbf24" stroke-width="1.3"/>
+  <text class="t" x="822" y="541">MCP 网关、Tool Policies</text>
+  <text class="dash" x="1235.0" y="541" text-anchor="middle">—</text>
+  <rect x="30" y="568" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="597">内容安全</text>
+  <text class="dash" x="370.0" y="597" text-anchor="middle">—</text>
+  <text class="dash" x="660.0" y="597" text-anchor="middle">—</text>
+  <rect class="avail" x="810" y="568" width="280" height="48" rx="8" fill="#2a2110" stroke="#fbbf24" stroke-width="1.3"/>
+  <text class="t" x="822" y="588">Guardrails：prompt 注入、</text>
+  <text class="t" x="822" y="607">敏感信息过滤</text>
+  <text class="dash" x="1235.0" y="597" text-anchor="middle">—</text>
+  <rect x="30" y="624" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="653">高风险动作</text>
+  <text class="dash" x="370.0" y="653" text-anchor="middle">—</text>
+  <text class="dash" x="660.0" y="653" text-anchor="middle">—</text>
+  <text class="dash" x="950.0" y="653" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="624" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="644">push、建 PR、部署之前</text>
+  <text class="t" x="1112" y="663">的人工审批点</text>
+  <rect x="30" y="680" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="709">agent 调 agent</text>
+  <text class="dash" x="370.0" y="709" text-anchor="middle">—</text>
+  <text class="dash" x="660.0" y="709" text-anchor="middle">—</text>
+  <rect class="avail" x="810" y="680" width="280" height="48" rx="8" fill="#2a2110" stroke="#fbbf24" stroke-width="1.3"/>
+  <text class="t" x="822" y="700">Agents 模块：A2A 注册、</text>
+  <text class="t" x="822" y="719">调用代理、kill switch</text>
+  <rect class="gap" x="1100" y="680" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="700">调用方授权、子会话</text>
+  <text class="t" x="1112" y="719">不继承权限</text>
+  <rect x="30" y="736" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="765">审计与追溯</text>
+  <rect x="230" y="736" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="756">K8s 事件；Policy 生效</text>
+  <text class="t" x="242" y="775">要有执行证据</text>
+  <rect x="520" y="736" width="280" height="48" rx="8" fill="#1e1638" stroke="#8b5cf6" stroke-width="1.3"/>
+  <text class="t" x="532" y="756">花费日志带 trace ID、</text>
+  <text class="t" x="532" y="775">key、team、用户</text>
+  <text class="dash" x="950.0" y="765" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="736" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="756">跨日志的会话和轮次 ID；</text>
+  <text class="t" x="1112" y="775">Portal 的操作审计</text>
+  <rect x="30" y="792" width="190" height="48" rx="8" fill="#111827" stroke="#334155" stroke-width="1.1"/>
+  <text class="rh" x="44" y="821">数据保留</text>
+  <rect x="230" y="792" width="280" height="48" rx="8" fill="#0e2238" stroke="#0ea5e9" stroke-width="1.3"/>
+  <text class="t" x="242" y="812">HOME 盘随 Agent 的</text>
+  <text class="t" x="242" y="831">生命周期保留或删除</text>
+  <rect x="520" y="792" width="280" height="48" rx="8" fill="#1e1638" stroke="#8b5cf6" stroke-width="1.3"/>
+  <text class="t" x="532" y="812">prompt 和 response</text>
+  <text class="t" x="532" y="831">存进 PostgreSQL</text>
+  <text class="dash" x="950.0" y="821" text-anchor="middle">—</text>
+  <rect class="gap" x="1100" y="792" width="270" height="48" rx="8" fill="#2a1416" stroke="#f87171" stroke-width="1.3"/>
+  <text class="t" x="1112" y="812">对话内容的保留期</text>
+  <text class="t" x="1112" y="831">和读取权限</text>
+  <rect x="30" y="864" width="1340" height="210" rx="12" fill="#111827" stroke="#fbbf24" stroke-width="1.4"/>
+  <text class="bt" x="50" y="896">LiteLLM 的 Agents 和常驻实现的 Agent：同一个词，两种东西</text>
+  <text class="t" x="50" y="928">常驻实现的 Agent 是一个跑着的工作负载：一个 Pod、一块 HOME 盘、一把 key，对外是 Web 界面和 OpenAI 兼容的对话接口。</text>
+  <text class="t" x="50" y="956">LiteLLM 的 Agents 是一个 A2A 注册表加调用代理：登记别人的 Agent Card，客户端经 LiteLLM 调过去，按 agent 记用量，必要时一键停用。</text>
+  <text class="t" x="50" y="984">operator 不往这个注册表里写任何东西，集群上注册的 agent 数是 0；常驻实现的 ingress 也没有给 Agent 暴露 A2A 端点。</text>
+  <text class="tg" x="50" y="1012">判断：现在不用它。等到要做 agent 调 agent 或跨平台发现时，应该由 operator 从 CRD 同步过去，和 key、team 一样单向投影；</text>
+  <text class="tg" x="50" y="1040">不要在控制台里手工登记，否则就有了两份互相不知道的 Agent 清单。Guardrails、MCP、Tool Policies 也按同一条规矩接。</text>
+  <line x1="30" y1="1100" x2="1370" y2="1100" stroke="#1e293b"/>
+  <text class="lgh" x="30" y="1130">图例</text>
+  <rect x="30" y="1148" width="30" height="18" rx="4" fill="#0e2238" stroke="#0ea5e9"/>
+  <text class="lg" x="70" y="1162">由 CRD 声明、operator 执行，Portal 是唯一入口</text>
+  <rect x="30" y="1176" width="30" height="18" rx="4" fill="#1e1638" stroke="#8b5cf6"/>
+  <text class="lg" x="70" y="1190">LiteLLM 在执行，规则来自 operator 的投影（Team 总预算除外，它是手动设的）</text>
+  <rect x="30" y="1204" width="30" height="18" rx="4" fill="#2a2110" stroke="#fbbf24" stroke-dasharray="6 4"/>
+  <text class="lg" x="70" y="1218">LiteLLM 已经自带、可以复用；接进来时要由 operator 从 CRD 同步，而不是在控制台里手配</text>
+  <rect x="30" y="1232" width="30" height="18" rx="4" fill="#2a1416" stroke="#f87171"/>
+  <text class="lg" x="70" y="1246">两边都没有，要在会话层、出站网关或审批流程里自己补</text>
+</svg>

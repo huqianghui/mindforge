@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1060" width="1400" height="1060" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .panC { fill: #0b1a2c; stroke: #38bdf8; stroke-width: 1.8; }
+      .panL { fill: #160f2a; stroke: #a78bfa; stroke-width: 1.8; }
+      .panE { fill: #0d1f1c; stroke: #2dd4bf; stroke-width: 1.8; }
+      .hdC { fill: #7dd3fc; font-size: 20px; font-weight: 700; }
+      .hdL { fill: #c4b5fd; font-size: 20px; font-weight: 700; }
+      .hdE { fill: #5eead4; font-size: 20px; font-weight: 700; }
+      .hs { fill: #94a3b8; font-size: 13.5px; }
+      .box { fill: #111827; stroke: #334155; stroke-width: 1.2; }
+      .boxC { fill: #0e2238; stroke: #0ea5e9; stroke-width: 1.4; }
+      .boxL { fill: #1e1638; stroke: #8b5cf6; stroke-width: 1.4; }
+      .boxE { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
+      .boxY { fill: #2a2110; stroke: #fbbf24; stroke-width: 1.4; }
+      .boxW { fill: #2a1416; stroke: #f87171; stroke-width: 1.4; }
+      .bt { fill: #f1f5f9; font-size: 15px; font-weight: 700; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tg { fill: #5eead4; font-size: 13.5px; font-weight: 600; }
+      .tr { fill: #fca5a5; font-size: 13.5px; font-weight: 600; }
+      .ty { fill: #fcd34d; font-size: 13.5px; font-weight: 600; }
+      .num { fill: #fbbf24; }
+      .numW { fill: #f87171; }
+      .nt { fill: #0b1220; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .flowC { stroke: #38bdf8; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowL { stroke: #a78bfa; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowE { stroke: #2dd4bf; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowW { stroke: #f87171; stroke-width: 2.2; fill: none; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
+      .pulse { animation: pulse 2.2s ease-in-out infinite; }
+      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 700; }
+      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.3; } }
+    </style>
+    <marker id="aC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
+    <marker id="aL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+    <marker id="aE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+    <marker id="aW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+  </defs>
+  <rect class="bg" width="1400" height="1060" rx="16"/>
+  <text class="title" x="30" y="44">Runtime 管控台与 LiteLLM：配置从 CRD 单向流到 LiteLLM，LiteLLM 负责执行模型规则和记账</text>
+  <text class="sub" x="30" y="72">左边是管控面和 AKS 执行面，右边是模型接入层；黄色编号是正常的数据流，红色编号是要避开的写法，含义见底部图例</text>
+
+  <!-- ========== 左上：管控面 ========== -->
+  <rect class="panC" x="30" y="92" width="560" height="330" rx="14"/>
+  <text class="hdC" x="52" y="126">管控面</text>
+  <text class="hs" x="130" y="126">只有这里写配置，其他地方都是它的投影</text>
+
+  <rect class="boxC" x="50" y="146" width="240" height="140" rx="10"/>
+  <text class="bt" x="66" y="174">Portal（Runtime 管控台）</text>
+  <text class="t" x="66" y="200">用户：自助管理自己的 Agent</text>
+  <text class="t" x="66" y="222">管理员：Team、Agent Policy、</text>
+  <text class="t" x="66" y="242">Sandbox、Skill Marketplace</text>
+  <text class="tg" x="66" y="268">Entra 登录，按 owner 隔离</text>
+
+  <rect class="boxC" x="330" y="146" width="240" height="140" rx="10"/>
+  <text class="bt" x="346" y="174">K8s API 里的 CRD</text>
+  <text class="t" x="346" y="200">Agent / Team</text>
+  <text class="t" x="346" y="222">AgentPolicy / Sandbox</text>
+  <text class="t" x="346" y="244">写入先过准入 webhook</text>
+  <text class="ty" x="346" y="270">唯一的配置来源</text>
+
+  <rect class="boxC" x="330" y="316" width="240" height="90" rx="10"/>
+  <text class="bt" x="346" y="344">operator</text>
+  <text class="t" x="346" y="370">调和 CRD，拿到执行证据后</text>
+  <text class="t" x="346" y="392">才把 Agent 标成已生效</text>
+
+  <path class="flowC" d="M290,216 L322,216" marker-end="url(#aC)"/>
+  <circle class="num" cx="306" cy="196" r="12"/><text class="nt" x="306" y="201">1</text>
+  <path class="flowC" d="M450,286 L450,308" marker-end="url(#aC)"/>
+  <circle class="num" cx="476" cy="297" r="12"/><text class="nt" x="476" y="302">2</text>
+
+  <!-- ========== 左下：AKS 执行面 ========== -->
+  <rect class="panE" x="30" y="452" width="560" height="300" rx="14"/>
+  <text class="hdE" x="52" y="486">AKS 执行面</text>
+  <text class="hs" x="168" y="486">每个 Agent 一个命名空间</text>
+
+  <rect class="boxE" x="50" y="506" width="250" height="110" rx="10"/>
+  <text class="bt" x="66" y="534">Agent Pod</text>
+  <text class="t" x="66" y="560">StatefulSet 单副本 + Kata</text>
+  <text class="t" x="66" y="582">harness：OpenClaw / Hermes</text>
+  <text class="t" x="66" y="604">/ Custom，只带自己的 key</text>
+
+  <rect class="boxE" x="320" y="506" width="250" height="110" rx="10"/>
+  <text class="bt" x="336" y="534">HOME 盘与网络</text>
+  <text class="t" x="336" y="560">PVC：状态和私有记忆</text>
+  <text class="t" x="336" y="582">CiliumNetworkPolicy：</text>
+  <text class="t" x="336" y="604">由 Policy 的网络规则编译</text>
+
+  <rect class="box" x="50" y="636" width="520" height="96" rx="10"/>
+  <text class="bt" x="66" y="664">留在 AKS 这边的规则</text>
+  <text class="t" x="66" y="690">隔离（Kata）、资源配额（Sandbox）、出站黑白名单、只读根文件系统、</text>
+  <text class="t" x="66" y="712">K8s 权限、Agent Identity，这些 LiteLLM 都不认识</text>
+
+  <path class="flowE" d="M450,406 L450,444" marker-end="url(#aE)"/>
+  <circle class="num" cx="476" cy="428" r="12"/><text class="nt" x="476" y="433">3</text>
+
+  <!-- ========== 右：LiteLLM ========== -->
+  <rect class="panL" x="620" y="92" width="750" height="660" rx="14"/>
+  <text class="hdL" x="642" y="126">LiteLLM（模型接入层）</text>
+  <text class="hs" x="860" y="126">operator 用 master key 调它的管理 API</text>
+
+  <rect class="boxL" x="640" y="146" width="350" height="140" rx="10"/>
+  <text class="bt" x="656" y="174">Virtual Key（每个 Agent 一把）</text>
+  <text class="t" x="656" y="200">别名由 Agent 名加 UID 生成</text>
+  <text class="t" x="656" y="222">模型：共享模型访问组 + 自己的 Copilot</text>
+  <text class="t" x="656" y="244">月度预算、并发、RPM、TPM</text>
+  <text class="t" x="656" y="266">路由别名：路由名指向内部名</text>
+
+  <rect class="boxL" x="1010" y="146" width="340" height="140" rx="10"/>
+  <text class="bt" x="1026" y="174">Team（每个 Team 对应一个）</text>
+  <text class="t" x="1026" y="200">按 Team 名加固定前缀建立</text>
+  <text class="t" x="1026" y="222">模型列表留空，权限放在 key 上</text>
+  <text class="t" x="1026" y="244">Agent 的 owner 加成成员</text>
+  <text class="ty" x="1026" y="266">Team 总预算只能在这里设</text>
+
+  <rect class="boxL" x="640" y="306" width="350" height="90" rx="10"/>
+  <text class="bt" x="656" y="334">智能路由（内部名注册）</text>
+  <text class="t" x="656" y="360">Team 上定义的路由，由 operator 注册</text>
+  <text class="t" x="656" y="382">operator 不监听控制台的修改</text>
+
+  <rect class="boxL" x="1010" y="306" width="340" height="90" rx="10"/>
+  <text class="bt" x="1026" y="334">共享模型列表</text>
+  <text class="t" x="1026" y="360">来源是 Gateway 的 Helm 配置，</text>
+  <text class="t" x="1026" y="382">不归 CRD 管</text>
+
+  <rect class="box" x="640" y="416" width="350" height="96" rx="10"/>
+  <text class="bt" x="656" y="444">Agent 的模型请求</text>
+  <text class="t" x="656" y="470">带自己的 key 调 OpenAI 兼容接口，</text>
+  <text class="t" x="656" y="492">按 key 上的规则放行或返回 402/429</text>
+
+  <rect class="box" x="1010" y="416" width="340" height="96" rx="10"/>
+  <text class="bt" x="1026" y="444">模型后端</text>
+  <text class="t" x="1026" y="470">Azure OpenAI 等共享部署，</text>
+  <text class="t" x="1026" y="492">以及 owner 自己的 Copilot</text>
+
+  <rect class="boxY" x="640" y="532" width="710" height="88" rx="10"/>
+  <text class="bt" x="656" y="560">花费与请求日志</text>
+  <text class="t" x="656" y="586">每次调用记下 key、team、用户、模型、token、花费、耗时和 trace ID；</text>
+  <text class="t" x="656" y="608">按当前配置，prompt 和 response 也一起存进 PostgreSQL</text>
+
+  <rect class="boxY pulse" x="640" y="640" width="710" height="92" rx="10"/>
+  <text class="bt" x="656" y="668">LiteLLM 控制台（挂在同一个域名的子路径下，嵌进 Portal 的 Admin 页面）</text>
+  <text class="tg" x="656" y="694">适合：看用量和日志、设 Team 总预算、给集群外的程序发 key、排障</text>
+  <text class="tr" x="656" y="716">不适合：改 Agent 的 key、改 Team 的路由、改共享模型</text>
+
+  <!-- operator -> LiteLLM -->
+  <path class="flowL" d="M570,350 L604,350 L604,216 L632,216" marker-end="url(#aL)"/>
+  <circle class="num" cx="604" cy="282" r="12"/><text class="nt" x="604" y="287">4</text>
+  <!-- Agent Pod -> request -> backend -->
+  <path class="flowE" d="M175,616 L175,626 L605,626 L605,464 L632,464" marker-end="url(#aE)"/>
+  <path class="flowE" d="M990,464 L1002,464" marker-end="url(#aE)"/>
+  <circle class="num" cx="605" cy="545" r="12"/><text class="nt" x="605" y="550">5</text>
+  <!-- logs -> console -->
+  <path class="flowL" d="M995,620 L995,632" marker-end="url(#aL)"/>
+  <circle class="num" cx="1020" cy="626" r="12"/><text class="nt" x="1020" y="631">6</text>
+  <!-- console edits: wrong way -->
+  <path class="flowW" d="M1360,686 L1385,686 L1385,250 L1358,250" marker-end="url(#aW)"/>
+  <circle class="numW" cx="1385" cy="470" r="12"/><text class="nt" x="1385" y="475">7</text>
+
+  <!-- ========== 图例 ========== -->
+  <line x1="30" y1="782" x2="1370" y2="782" stroke="#1e293b"/>
+  <text class="lgh" x="30" y="812">图例</text>
+  <circle class="num" cx="44" cy="840" r="10"/><text class="nt" x="44" y="845">1</text>
+  <text class="lg" x="64" y="845">Portal 只做一件事：把用户和管理员的操作写成 CRD。它自己不存配置，也没有第二份状态</text>
+  <circle class="num" cx="44" cy="872" r="10"/><text class="nt" x="44" y="877">2</text>
+  <text class="lg" x="64" y="877">operator 监听 CRD 变化；Policy 读不到或无效时一律不放行，Agent 被挂起、key 被吊销</text>
+  <circle class="num" cx="44" cy="904" r="10"/><text class="nt" x="44" y="909">3</text>
+  <text class="lg" x="64" y="909">在 AKS 上落地执行面：Pod、HOME 盘、网络策略、命名空间与权限</text>
+  <circle class="num" cx="44" cy="936" r="10"/><text class="nt" x="44" y="941">4</text>
+  <text class="lg" x="64" y="941">把模型相关的规则投影到 LiteLLM：key、team、用户与成员关系、路由。只写不读，LiteLLM 里的改动不会回流到 CRD</text>
+  <circle class="num" cx="44" cy="968" r="10"/><text class="nt" x="44" y="973">5</text>
+  <text class="lg" x="64" y="973">运行时 Agent 只拿着自己的 key 调 LiteLLM；模型凭据留在 LiteLLM 里，沙箱里没有</text>
+  <circle class="num" cx="44" cy="1000" r="10"/><text class="nt" x="44" y="1005">6</text>
+  <text class="lg" x="64" y="1005">用量和日志只在 LiteLLM 这边有，Portal 没有用量页面，所以控制台要嵌进来看</text>
+  <circle class="numW" cx="44" cy="1032" r="10"/><text class="nt" x="44" y="1037">7</text>
+  <text class="lg" x="64" y="1037">在控制台里改 operator 管的东西：key 的限额会在下次调和时被改回，路由和共享模型的修改会悄悄让 CRD 或 Helm 配置失效</text>
+</svg>
