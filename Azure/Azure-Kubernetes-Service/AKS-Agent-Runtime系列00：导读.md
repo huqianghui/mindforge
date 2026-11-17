@@ -64,7 +64,7 @@ description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agen
 - [10：为什么在 AKS 上自建](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)——对照 Foundry Hosted Agents，自建只在三类场景下值得，并列出每一层用什么。
 - [11：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)——RBAC 和 NetworkPolicy 只能守底线，会话、终端用户、资源动作、模型和不可信的决策要另外补。
 - [12：常驻实例与会话调度](AKS-Agent-Runtime系列12：常驻实例与会话调度.md)——每人一个常驻 agent 不用做快照、记忆天然有地方放，但算力按人常驻、出站默认放行；两种形态最后会走到常驻入口加会话执行池。
-- [13：Runtime 管控台与 LiteLLM 的分工](AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工.md)——配置以 CRD 为准、单向投影到 LiteLLM；LiteLLM 的 Agents 是 A2A 注册表，不是常驻实现的 Agent；五类日志串不起来，出站授权、审批、配额和追溯两边都没有。
+- [13：Runtime 管控台与 LiteLLM 的分工](AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工.md)——配置以 CRD 为准、单向投影到 LiteLLM；Agent UI、Terminal、Desktop 三个入口各管一层；LiteLLM 的 Agents 是 A2A 注册表，不是常驻实现的 Agent；五类日志串不起来，出站授权、审批、配额和追溯两边都没有。
 
 **补充**
 

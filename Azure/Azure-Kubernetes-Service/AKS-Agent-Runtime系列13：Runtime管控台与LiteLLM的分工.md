@@ -8,7 +8,7 @@ tags:
   - litellm
   - governance
   - observability
-description: 常驻实现装好之后，管理员手里有两个控制台——平台自己的 Portal 和 LiteLLM 自带的控制台。Portal 是 runtime 管控台，只做一件事，把操作写成 Agent、Team、AgentPolicy、Sandbox 这些 CRD；operator 一边在 AKS 上落地 Pod、HOME 盘和网络策略，一边把模型相关的规则单向投影到 LiteLLM——每个 Agent 一把 key，每个 Team 一个 LiteLLM team，owner 成为 team 成员。LiteLLM 负责执行模型规则和记账，它的控制台适合看用量、设 Team 总预算、发外部 key，不适合改 operator 管的东西。LiteLLM 里的 Agents 是一个 A2A 注册表加调用代理，和常驻实现的 Agent 不是一回事，operator 没有接。日志方面五条线各管一段，没有共同的会话或轮次 ID；治理方面出站逐请求授权、高风险动作审批、容量配额和跨日志追溯两边都没有
+description: 常驻实现装好之后，管理员手里有两个控制台——平台自己的 Portal 和 LiteLLM 自带的控制台。Portal 是 runtime 管控台，只做一件事，把操作写成 Agent、Team、AgentPolicy、Sandbox 这些 CRD；operator 一边在 AKS 上落地 Pod、HOME 盘和网络策略，一边把模型相关的规则单向投影到 LiteLLM——每个 Agent 一把 key，每个 Team 一个 LiteLLM team，owner 成为 team 成员。LiteLLM 负责执行模型规则和记账，它的控制台适合看用量、设 Team 总预算、发外部 key，不适合改 operator 管的东西。Agent 工作区的 Agent UI、Terminal、Desktop 三个入口分别对应对话、直接操作环境、看和接手浏览器，Terminal 是 exec 被禁之后唯一正式的 shell 入口。LiteLLM 里的 Agents 是一个 A2A 注册表加调用代理，和常驻实现的 Agent 不是一回事，operator 没有接。日志方面五条线各管一段，没有共同的会话或轮次 ID；治理方面出站逐请求授权、高风险动作审批、容量配额和跨日志追溯两边都没有
 ---
 
 # AKS Agent Runtime 系列 13：Runtime 管控台与 LiteLLM 的分工
@@ -72,7 +72,29 @@ Team 这一行还有一个容易踩的坑。LiteLLM 的 team 是一个真正的�
 > [!IMPORTANT]
 > 把 LiteLLM 控制台当成"观察和补充"，不要当成第二个管控入口。它能改的东西远多于它应该改的东西，而且改错了界面上不会有任何提示。
 
-## 四、LiteLLM 里的 Agents 是什么
+## 四、进 Agent 的三个入口
+
+Portal 里打开一个 Agent，工作区左侧有三个入口：Agent UI、Terminal、Desktop。它们进的是同一个 Pod，只是连到不同的容器，和 Agent 打交道的层面也不一样。这个 Pod 里有三个容器：跑 harness 的主容器，带浏览器的桌面边车，以及记录会话的 logger。
+
+| 入口 | 连到哪里 | 用来做什么 |
+|---|---|---|
+| Agent UI | 主容器里 harness 自带的 Web 应用，路径 `/ui/<名字>/` | 跟 Agent 对话：发任务、看回复和工具调用、管理会话 |
+| Terminal | 主容器里 ttyd 提供的网页 shell | 绕过 Agent 直接动它的环境：同一个用户、同一块 HOME 盘，看文件、跑命令、装工具、查 Agent 为什么出错 |
+| Desktop | 桌面边车里 noVNC 远程桌面上的 Chrome | 看 Agent 用的浏览器，必要时接手：Agent 通过本机的 CDP 端口操作这个 Chrome，人在桌面上能实时看到，也能自己点 |
+
+分成三个，是因为它们对应三种完全不同的需要：
+
+- **Agent UI 是"让它做"。** 人只描述目标，执行由 Agent 决定，这是日常使用的主入口。它有自己的一层登录，用的是 Overview 页上显示的那组 Webapp Key，和 Portal 的 Entra 登录是两回事。
+- **Terminal 是"我自己来"。** 集群上有一条准入策略，专门拒绝对 Agent Pod 做 `kubectl exec`；`kubectl port-forward` 也连不上，因为 Kata Pod 的端口在虚拟机里面，kubelet 在宿主机这一侧找不到。所以平台管理员也没有别的路进这台机器，Terminal 是唯一正式的 shell 入口。
+- **Desktop 是"看着它，或者替它过一关"。** 有些事 Agent 自己做不了，比如登录要验证码或 MFA。人在桌面里登录一次，cookie 留在这个 Chrome 里，Agent 之后就能接着用。Agent 在网页上操作时，人也能在旁边看着，出问题随时接手。
+
+拆开还有部署上的考虑。桌面是一个单独的容器，有自己的 CPU 和内存配额；不需要浏览器的 Agent 可以整个不启用，harness 改用 headless 浏览器，这个入口也就没有了。终端在 chart 里也有单独的开关，要求高的环境可以只留 Agent UI。
+
+三个入口都先过 Entra，再过 ingress 上的 owner 检查，只有 Agent 的 owner 能进。管理员在后台的 Agent 列表里能看到所有人的 Agent，但进不去别人的工作区。这也是第三节说的"按路径做 owner 检查"在使用上的直接体现。
+
+还有一点要心里有数：Terminal 拿到的是沙箱里的完整 shell，Desktop 里的 Chrome 是以 `--no-sandbox` 启动的。这两个入口的隔离都只靠 Kata 虚拟机和 owner 检查，把 Agent 开给别人用之前，要清楚这三扇门都能进人。
+
+## 五、LiteLLM 里的 Agents 是什么
 
 LiteLLM 控制台里有一个 Agents 菜单，看名字很容易以为它管的就是常驻实现的那些 Agent。实际上两者是两种东西。
 
@@ -82,7 +104,7 @@ LiteLLM 的 Agents 是一个 **A2A agent 网关**：用 A2A 规范的 Agent Card
 
 所以我的判断是现在不用它。等到要做 agent 调 agent、或者要让别的平台发现这些 Agent 时，再接这个模块，但要由 operator 从 CRD 同步过去，和 key、team 一样单向投影。不要在控制台里手工登记，否则就有了两份互相不知道对方存在的 Agent 清单。LiteLLM 里的 Guardrails、MCP 网关、Tool Policies 也按这条规矩接：能力可以复用，配置的来源仍然是 CRD。
 
-## 五、日志：五条线各管一段
+## 六、日志：五条线各管一段
 
 ![五类日志各落在哪里|900](../../asset/aks-agent-runtime-console-litellm-logs-2026-11-17.svg)
 
@@ -105,7 +127,7 @@ LiteLLM 的 Agents 是一个 **A2A agent 网关**：用 A2A 规范的 Agent Card
 
 就算五条线都通了，还有一类问题回答不了：**某个副作用是哪个用户、哪一轮、哪段模型输出触发的。** 模型调用的 trace ID 只在 LiteLLM 内部有意义，Agent 输出和出站连接都不带它。Agent 输出按命名空间关联，模型调用按 key 关联，出站连接按命名空间和时间关联，三者之间没有共同的会话 ID 或轮次 ID。常驻形态下一个 Agent 就是一个人的长期实例，"同一个 Agent、时间相近"并不能缩小到某一次任务。要做到[系列 11](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md) 里说的"每个副作用能追溯到哪一轮"，需要 harness 或会话层在每一轮生成一个 ID，同时带进模型请求的元数据和出站请求的头里，再由两个网关都记下来。
 
-## 六、治理：还缺哪些
+## 七、治理：还缺哪些
 
 ![治理覆盖图|900](../../asset/aks-agent-runtime-console-litellm-governance-2026-11-17.svg)
 
@@ -122,7 +144,7 @@ LiteLLM 的 Agents 是一个 **A2A agent 网关**：用 A2A 规范的 Agent Card
 
 黄色那一列是 LiteLLM 已经自带、operator 没有接的能力：Guardrails 可以做 prompt 注入和敏感信息过滤，MCP 网关和 Tool Policies 能管工具调用，Agents 模块能做 agent 之间的注册和调用。它们值得复用，但接入方式应该和 key、team 一样，从 CRD 单向投影过去。
 
-## 七、我会怎么用
+## 八、我会怎么用
 
 1. **Portal 是唯一的写入口。** 模型、预算、限流、路由都在 Portal 里改；LiteLLM 控制台只用来看用量、设 Team 总预算、给集群外的程序发 key、排障。
 2. **一个团队一个 Team。** 共用的规则放进 Agent Policy 和 Sandbox，Team 只负责"这组人用哪套规则、带什么上下文和 skill"，这样 LiteLLM 里的用量和预算能按团队分开。

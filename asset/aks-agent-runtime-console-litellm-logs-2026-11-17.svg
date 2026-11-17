@@ -176,7 +176,7 @@
   <!-- ===== 图例 ===== -->
   <line x1="30" y1="962" x2="1370" y2="962" stroke="#1e293b"/>
   <text class="lgh" x="30" y="990">图例</text>
-  <rect class="src" x="30" y="1006" width="30" height="18" rx="4"/><text class="lg" x="70" y="1020">日志的产生点，编号 1 到 5 对应正文第五节的顺序</text>
+  <rect class="src" x="30" y="1006" width="30" height="18" rx="4"/><text class="lg" x="70" y="1020">日志的产生点，编号 1 到 5 对应正文第六节的顺序</text>
   <rect class="snk" x="30" y="1036" width="30" height="18" rx="4"/><text class="lg" x="70" y="1050">已经在记的落点</text>
   <rect class="snkW" x="30" y="1066" width="30" height="18" rx="4"/><text class="lg" x="70" y="1080">设计上有、这个集群上实际没有数据的落点；红色虚线箭头表示这条路径现在是断的</text>
   <rect class="ok" x="720" y="1006" width="30" height="18" rx="4"/><text class="lg" x="760" y="1020">这条日志能回答的问题</text>
