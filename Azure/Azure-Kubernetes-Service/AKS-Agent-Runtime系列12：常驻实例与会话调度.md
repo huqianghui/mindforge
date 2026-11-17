@@ -178,6 +178,7 @@ persistentVolumeClaimRetentionPolicy:
 - [AKS Agent Runtime 系列 05：会话生命周期与回收](AKS-Agent-Runtime系列05：会话生命周期与回收.md)
 - [AKS Agent Runtime 系列 06：会话管理与高可用](AKS-Agent-Runtime系列06：会话管理与高可用.md)
 - [AKS Agent Runtime 系列 10：为什么在 AKS 上自建](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)
+- [AKS Agent Runtime 系列 13：Runtime 管控台与 LiteLLM 的分工](AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工.md)——常驻实现的 Portal 和 LiteLLM 各管什么，日志与治理还缺哪些
 - [Agent 基础设施系列 01：三层划分与自建路线](../../Notes/AI/agent/agent-platform/Agent基础设施系列01：三层划分与自建路线.md)
 
 ## 参考资料
