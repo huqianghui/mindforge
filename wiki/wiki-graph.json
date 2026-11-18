@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-16",
+  "generated_at": "2026-11-18",
   "stats": {
-    "nodes": 172,
-    "links": 737,
+    "nodes": 173,
+    "links": 750,
     "orphan_links_removed": 2,
-    "claims": 1010,
+    "claims": 1023,
     "categories": 13
   },
   "nodes": [
@@ -987,7 +987,7 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
+      "claims_count": 9,
       "avg_confidence": 0.72,
       "claims": [
         {
@@ -1076,6 +1076,17 @@
           "status": "active",
           "evidence": "组织层没有\"给某个人开 Dreaming\"的选项，开启的范围就是 Memory 的 Repository access 里选中的全部仓库；每次运行扣 AI credits，包括没有产生改动、处理不活跃仓库的运行，用量提醒不拦截用量。运行由平台排期，不能手动触发，计划、提示词和模型都不可改，结果在 Copilot app 的 Automations → Dreaming 里看。实际做法是先收窄记忆范围再开整理：先在少量自有仓库开仓库级 Dreaming，把它开的 PR 当普通代码评审看，看过几轮结果再按仓库清单逐步放开组织级开关。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "记忆不授予任何权限——跨任务的结论不能当作\"上次已经批准过\"，可变事实使用前用当前有权限的工具重新核对；从失败中学习要过固定检查、agent 自评不算数",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "第二个实现样本：AKS 上一套常驻 agent 实现，私有记忆是平台预装的 skill，放在每个 agent 私有的 HOME 盘上，规矩写在注入沙箱、只读挂载的 AGENTS.md 里。五条：① 先查再答，工具调用失败自动记一笔；② 存结论不存原文——事实、偏好、决定和自己的建议，每条注明来源和日期，观察与推断分开记，不存对话原文、凭据、工具原始输出；写入事务式、带版本，可溯源、修正、遗忘；③ 记忆里的结论哪怕是别的 agent 引用来的，也永远不当作用户授权；④ 重复失败整理成小的、可测试的\"方法候选\"，一次只改一个方法，与现有做法对比、在后续任务里试用，通过固定检查才采用，方法得分同样不授予权限、不调度工作、不批准外部动作；⑤ 共享会话、外发消息、附件、转交任务默认不带私有记忆。第 3 条最关键：会话调度里会话一删什么都不剩，不存在拿记忆跳审批的问题；记忆能跨任务存在时就必须写成硬规则。与 GitHub Copilot 的\"使用前核对\"互相印证：两个独立实现都要求记忆在使用时重新被当前证据证明。团队 Skills 走另一条路——提交、评审、封版发布、绑定 Team、只读挂载、可撤回回滚。",
+          "evidence_type": "实现阅读 + 部署核对",
           "review": ""
         }
       ]
@@ -1289,7 +1300,7 @@
       "id": "agent-runtime",
       "type": "concept",
       "title": "Agent Runtime",
-      "summary": "Agent Runtime 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"。智能来自模型，可靠性来自 harness，**可运维性来自 runtime**。它把 harness 当成一个被托管、可替换的进程（[[agent-harness]]），给 framework 定义好的状态逻辑提供可靠的设施（[[agent-framework]]）；托管形态是 Foundry Hosted Agent，自建形态是 AKS 上的 Kata + 沙箱编排 + 控制面。\n\n三层里新问题几乎都出在这一层。framework 和 platform 大多能沿用已有的软件工程与企业治理，runtime 则引出一整组新概念——它们各自有页：\n\n- **执行**：隔离原语与沙箱编排（[[agent-sandbox]]）、actor 与执行单元分离（[[actor-snapshot-scheduling]]）\n- **会话**：会话身份、收件箱、状态机、lease 与 fencing、回收对账（[[agent-session-control-plane]]、[[durable-execution]]、[[reconciliation-loop]]）\n- **模型接入**：harness 的模型请求经网关认会话、转协议、限流（[[ai-gateway]]、[[harness-portability-spectrum]]）\n- **治理**：凭据不进沙箱（[[credential-out-of-sandbox]]）、逐请求授权（[[relationship-based-access-control]]）\n- **agent 之间**：A2A 调用、子会话只允许一跳（[[a2a-protocol]]）\n- **身份**：agent 以谁的身份行事（[[entra-agent-id]]）\n\n这一层有两种切法：按技术组件分四个子层（隔离、沙箱编排、持久执行、调度与生命周期），按一次调用经过的职责分三个平面（执行、会话、治理）。AKS 原生只覆盖执行和部分治理，会话平面一格都填不上。",
+      "summary": "Agent Runtime 回答\"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎么续\"。智能来自模型，可靠性来自 harness，**可运维性来自 runtime**。它把 harness 当成一个被托管、可替换的进程（[[agent-harness]]），给 framework 定义好的状态逻辑提供可靠的设施（[[agent-framework]]）；托管形态是 Foundry Hosted Agent，自建形态是 AKS 上的 Kata + 沙箱编排 + 控制面。\n\n三层里新问题几乎都出在这一层。framework 和 platform 大多能沿用已有的软件工程与企业治理，runtime 则引出一整组新概念——它们各自有页：\n\n- **执行**：隔离原语与沙箱编排（[[agent-sandbox]]）、actor 与执行单元分离（[[actor-snapshot-scheduling]]）\n- **会话**：会话身份、收件箱、状态机、lease 与 fencing、回收对账（[[agent-session-control-plane]]、[[durable-execution]]、[[reconciliation-loop]]）\n- **模型接入**：harness 的模型请求经网关认会话、转协议、限流（[[ai-gateway]]、[[harness-portability-spectrum]]）\n- **治理**：凭据不进沙箱（[[credential-out-of-sandbox]]）、逐请求授权（[[relationship-based-access-control]]）\n- **agent 之间**：A2A 调用、子会话只允许一跳（[[a2a-protocol]]）\n- **身份**：agent 以谁的身份行事（[[entra-agent-id]]）\n\n这一层有两种切法：按技术组件分四个子层（隔离、沙箱编排、持久执行、调度与生命周期），按一次调用经过的职责分三个平面（执行、会话、治理）。AKS 原生只覆盖执行和部分治理，会话平面一格都填不上。\n\n在 AKS 上自建时，runtime 本身又有两种形态，两种都做过初步实验：**会话调度**（状态跟着会话走，按会话领沙箱、checkpoint、空闲回收，参考实现）和**常驻实例**（状态跟着人走，每人一个 StatefulSet 单副本 + HOME 盘，暂停即缩到 0，常驻实现）。两者共用\"harness 关进 Kata、凭据不进沙箱、模型只走网关\"的底线，分歧在状态、出站默认和记忆放在哪；会走向\"轻量常驻入口 + 会话执行池\"。怎么选、往下怎么对比、哪些客户场景对应哪种形态，见 [[resident-vs-session-agent-runtime]]。",
       "tags": [
         "wiki",
         "concept",
@@ -1301,7 +1312,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
+      "claims_count": 8,
       "avg_confidence": 0.73,
       "claims": [
         {
@@ -1378,6 +1389,17 @@
           "confidence": 0.75,
           "status": "active",
           "evidence": "三种暂停：Agent Substrate 快照内存与本地文件，恢复低于一秒、进程从冻结处继续，但 GKE 文档写明挂起时不保留打开的网络连接（数据库会话、MCP 连接都要恢复后重连）；OpenSandbox 以 BatchSandbox 作 workload provider 时把 rootfs 提交成镜像，恢复后 `/workspace`、`/tmp`、harness 原生会话文件都在、进程没了（05 实测）；agent-sandbox 的 Suspended 删 Pod 留 PVC，`/tmp` 与 rootfs 都没了（03 补充实测），OpenSandbox 叠在 agent-sandbox 上的生产配置也是这一种。选后端时先问\"恢复后要剩什么\"：只要文件续接，PVC 就够，但原生会话文件和工作区必须放进 PVC；要进程状态才需要内存快照。共同点是网络连接都不跨暂停——harness 连着的 MCP server、出站网关的长连接、控制面打开的更新流都要在恢复后重建，这一步应由控制面在恢复时显式完成，而不是指望 harness 自己重试。Substrate 部分来自官方文档、未在 AKS 上实测。外部来源：[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "常驻实现在\"能装什么、能花多少\"上做得扎实，出站逐请求授权、高风险动作审批、容量配额、跨日志追溯四块两种形态都没有",
+          "source": "AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "按系列 11 的清单逐项对照常驻实现：harness 白名单、skill 白名单与按 Team 发布、模型白名单、每个 Agent 的预算与限流、Kata 与 Sandbox 的资源边界，都由 CRD 声明、operator 执行，规则执行不了一律不放行（Policy 读不到或无效则挂起 Agent、吊销 key，拿到执行证据才标为已生效）。两边都缺的四块：① 出站只到 Cilium 的\"公网黑名单、内网白名单、按域名封禁\"，做不到\"某 agent 对某资源的某动作\"，也没有撤销后秒级生效；② push、建 PR、部署、调外部系统都在 agent 手里，没有人工审批点——对人下线后还在自主推进的常驻 agent 更要紧；③ 一个 Team 或一个人最多几个 Agent、共占多少 Kata 容量没有上限；④ 日志之间没有共同的会话或轮次 ID，Portal 自己不记操作审计。LiteLLM 已自带、operator 未接的 Guardrails、MCP 网关、Tool Policies、Agents 模块可以复用，但接法应与 key、team 一样从 CRD 单向投影。",
           "evidence_type": "实测经验",
           "review": ""
         }
@@ -1718,7 +1740,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 13,
+      "claims_count": 15,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -1863,6 +1885,28 @@
           "evidence": "不转发的原因：卡着等人时沙箱、凭证、会话空耗，人可能几小时后才回；渠道那头看不到工作区无从判断；沙箱内容不可信，原样转发 harness 提示等于让注入内容借 agent 之口向真人要批准。做法：按任务类型配权限档位；超出档位先只读跑一轮产出计划与所需能力清单，控制面按结构化动作生成审批消息、批准人鉴权留审计、人只确认一次；启动前预检凭证与出口；失败时返回结构化的缺失能力并照常保存快照，同一权限原因不自动重试、按原因汇总反调档位。设计推论，未实测。",
           "evidence_type": "",
           "review": ""
+        },
+        {
+          "statement": "要让每个副作用追溯到哪一轮，会话层得每轮生成一个 ID，带进模型请求元数据和出站请求头，两个网关都记下来——常驻实现的五类日志没有共同的会话或轮次 ID",
+          "source": "AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "五类日志：① 管理操作只能靠 AKS 审计日志（kube-audit），主体是 Portal 的服务账号，Portal 自己不记操作；② Agent 输出（stdout，可能含对话原文）由可选观测 chart 采进 ADX，是 agent 自己写的，只能当线索；③ 模型调用最完整，LiteLLM 记 key、team、用户、模型、token、花费、耗时、trace ID，按当前配置 prompt 与 response 也落 PostgreSQL；④ 出站连接靠 Istio sidecar 访问日志，登记域名可见 SNI、其余只有 IP，看不到路径与方法、分不出读写；⑤ 平台组件日志与 K8s 事件。集群上实际只有 ③ 有数据：观测 chart 没装；平台组件与 Agent 都在 Kata 节点镜像上，Container Insights 采集 Pod 因内核没有 iptables nat 表一直重启；Agent Pod 没 sidecar；审计日志没开——装的时候都不报错。就算都通了，三者分别按命名空间、key、命名空间加时间关联，常驻形态下一个 Agent 就是一个人的长期实例，\"时间相近\"缩小不到某次任务。会话调度天然有会话 ID 与 turn ID，把它们一路带到两个网关就是这一条的实现位置。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "会话这一层没有任何现成组件提供——Kubernetes、AKS、社区项目都只到沙箱为止；双向对账、多副本单写者、快照仓库保留清理、整轮重发时的副作用语义目前没人提供",
+          "source": "AKS-Agent-Runtime系列05：会话生命周期与回收",
+          "first_seen": "2026-11-15",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "按出处拆：Kubernetes 提供 Pod、Job、标签（会话 ID 与应用 UID 是对账依据）、`Recreate`、`terminationGracePeriod` 与 containerd 提交 rootfs；AKS / Azure 提供 Kata 节点池、ACR（清理无 tag manifest 的保留策略要 Premium）、Workload Identity、Service Bus、PostgreSQL；社区提供 OpenSandbox 的 TTL、暂停恢复、commit Job、预热池与 SQLite。参考实现自己写了会话 API 与收件箱、状态机加副作用意图、执行器与启动围栏、Ephemeral / Durable 策略、checkpoint 编排、整轮重发还是等原快照的判断、每 15 秒的维护循环；安全沙箱实现只做到沙箱归属。PoC 补了从外往里的对账器与多副本执行器。会话层按六层看是接入、消息、应用、数据、元数据与配置、沙箱与基础设施，前五层都要自己设计。系列 10 的八层自建技术栈也是同一结论：越往上现成组件越只是底座，③ 会话控制面与 ⑥ 授权模型最重，因为只有它们要认识会话、终端用户和资源上的动作。",
+          "evidence_type": "实现阅读 + 实测",
+          "review": ""
         }
       ]
     },
@@ -1957,8 +2001,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.75,
+      "claims_count": 10,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "按调用方分三种角色——agent 网关、模型网关、出站网关的调用方、信任边界、授权模型、故障影响都不同，宜同一项目分三套部署",
@@ -2024,6 +2068,50 @@
           "status": "active",
           "evidence": "前一类沿用已有网关的运维、计费与门户，MCP / A2A 能力看版本与授权；后一类为 MCP、A2A 这类有状态双向流协议从头设计。Nacos 是注册中心，托管 AgentCard 与 MCP server 元数据，提供搜索、发现、订阅，请求不经过它——解决\"找得到\"，AI 网关解决\"调得通、管得住\"；阿里生态里与之配对的网关是 Higress。能力来自各项目文档，除 agentgateway 外未实测，版本间变化快。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "LLM proxy 的配置要以 runtime 的 CRD 为唯一来源、单向投影过去——每个 Agent 一把 key、每个 Team 一个 proxy team；proxy 控制台只用来看用量、设 Team 总预算、发集群外的 key",
+          "source": "AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "常驻实现里 Portal 只把操作写成 CRD，operator 用 master key 调 LiteLLM 管理 API：Agent → 一把 Virtual Key（别名含 Agent 名加 UID，模型 = 共享访问组 + 自己的路由，月度预算、并发、RPM、TPM）；Team → 一个 LiteLLM team（模型列表留空，权限放在 key 上）；owner → team 成员（不发 key）；Team 上的智能路由 → 一个内部名注册的路由模型。operator 只写不读，三种在控制台改东西的后果：key 限额下次调和被改回；路由修改 operator 不监听，要等 Team 有改动才被覆盖，中间两边不一致；共享模型在控制台改任何一项会把整块设置写进数据库，此后 Helm 里的值悄悄失效、界面无提示。Team 映射的坑：每把 key 只能挂一个 team，两个团队选了同一个 Team 就共用花费与总预算——一个团队一个 Team，可复用的规格放在 Policy 与 Sandbox。控制台和管理 API 同端口，嵌入 Portal 后会二次登录，能挡住的只有前面那层 Entra；按路径第一段做 owner 检查的 ingress 会把挂载前缀当成 Agent 名返回 403，要单独放行并把浏览器的 `Authorization` 头还给 LiteLLM。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "按 Agent 的月度美元预算同样是软上限——花费在响应后才知道，超了之后拒绝下一次，挡不住单次超支；对人不在时自主运行的常驻 agent 影响更大",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "与上面\"token 限流在响应后结算\"是同一机制在美元维度上的表现：放行还是 402（预算用完）/ 429（超限流）由 key 上的规则决定。常驻 agent 可能在人下线后跑满一整晚，单次与夜间的超支都挡不住。Team 总预算只能在 LiteLLM 控制台手工设，CRD 里没有声明式写法。要硬上限，仍需请求进来时先做预算检查或把 max_tokens 纳入策略。",
+          "evidence_type": "文档 + 配置核对",
+          "review": ""
+        },
+        {
+          "statement": "LiteLLM 的 Agents 是 A2A 注册表加调用代理，不是 runtime 里跑着的 agent 工作负载——要用就从 CRD 同步过去，不在控制台手工登记",
+          "source": "AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "LiteLLM 的 Agents 模块用 A2A Agent Card 登记外部 agent，客户端按 A2A 调 LiteLLM 再转发，按 agent 记用量、提供 kill switch、可绑定 Entra 应用身份——对应三种角色里的 agent 网关。常驻实现的 Agent 是一个 Pod + HOME 盘 + 一把 key，对外是 Web 界面和 OpenAI 兼容接口；集群上查到 operator 不往注册表写任何东西、注册数为 0，ingress 也没暴露 A2A 端点。手工登记会出现两份互不知道对方的 Agent 清单；Guardrails、MCP 网关、Tool Policies 同样按\"能力复用、配置来源仍是 CRD\"接入。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "网关自身开销在往 Rust 核心迁——LiteLLM 只把格式转换、流式分块、token 计数这类纯数据处理放进 Rust，网络 I/O、鉴权、日志留在 Python，每请求网关开销从约 7.5ms 降到约 0.05ms",
+          "source": "Rust学习系列01：从JVM视角理解所有权",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "数字来自 LiteLLM 官方博客的基准，未自测。拆分方式本身值得注意：迁的是 CPU 密集、无副作用的那一段，带 I/O 和策略的部分不动，所以迁移不改变网关的授权与计量语义。对 agent runtime 而言，网关开销原本就远小于授权决策点（系列 04 实测授权 p50 约 105ms），这条影响的是高并发下网关本身的 CPU 成本，而不是单次请求延迟的大头。外部来源：[Migrating LiteLLM to Rust](https://docs.litellm.ai/blog/litellm-rust-launch)。",
+          "evidence_type": "官方基准",
           "review": ""
         }
       ]
@@ -14408,6 +14496,82 @@
       ]
     },
     {
+      "id": "resident-vs-session-agent-runtime",
+      "type": "decision",
+      "title": "Resident Instance vs Session Scheduling",
+      "summary": "",
+      "tags": [
+        "wiki",
+        "decision",
+        "agent-runtime",
+        "aks",
+        "kubernetes",
+        "architecture-decision"
+      ],
+      "category": "",
+      "method_type": null,
+      "decision_status": "active",
+      "claims_count": 5,
+      "avg_confidence": 0.71,
+      "claims": [
+        {
+          "statement": "两种形态的根本分歧是\"状态跟着谁走\"——常驻实例的状态就是一块 RWO HOME 盘，会话调度的状态是一串快照加状态库",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "常驻实例：StatefulSet 只允许 0 或 1 个副本，`volumeClaimTemplates` 一块 100Gi RWO 盘挂在 HOME，两条 `Retain`；Agent CRD 的 `suspended` 为 true 时缩到 0、去掉入口路由、PVC 保留，设回 false 后 Pod 重建挂回同一块盘，harness 从盘上读回会话。没有空闲自动暂停，只有显式暂停。会话调度：领预热 Pod 约 1.2 秒，一轮之后 checkpoint 31~41 秒，空闲到阈值再 commit 一次后删 Pod，回来时从镜像新建 Pod 9.5~11.2 秒、进程是新的。常驻省掉了快照与对账，代价是算力按人常驻、单副本只有健康源冷迁移、namespace 被删时 PVC 跟着删（\"持久的 HOME 不是备份\"）。装进 AKS 后核对：Kata 调度、资源请求、盘规格都与渲染结果一致。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "出站的两种默认对应 agent 的两种用途——助手型公网默认放行加黑名单、风险在外传；执行者型默认拒绝加逐请求授权；要写企业资源就必须收进网关",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "常驻实现渲染出的 NetworkPolicy 放行集群 DNS、Istio 控制面、AI 网关 4000 端口、一个内部地址，以及 `0.0.0.0/0` 减去三个私网段和 IMDS；AgentPolicy 网络部分只有三个黑名单加一个内网白名单，按域名拉黑靠 SNI、不解密 HTTPS、对 ECH 不保证。令牌不在 Pod 里，直接出站拿到的只是公开内容，所以风险在被提示注入后把内部工具拿到的东西发到公网，黑名单只能挡已知目的地，靠审计加事后处置。会话调度侧默认拒绝、只剩出站网关，每个请求核对\"申请 ∩ 批准 ∩ 发布\"。只读工具走 Broker、其余直接出站的组合只适合以读为主的助手。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "常驻实例的入口分三层且只对 owner 开放——Agent UI 对话、Terminal 直接操作环境、Desktop 看和接手浏览器；exec 被准入策略拒绝、Kata Pod 无法 port-forward，Terminal 是唯一正式 shell 入口",
+          "source": "AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "同一个 Pod 三个容器：harness 主容器、带浏览器的桌面边车、logger。ValidatingAdmissionPolicy 对实例 namespace 的 `pods/exec` 一律返回 false，集群里 `kubectl exec` 在准入阶段被拒；`port-forward` 连不上，因为 Kata Pod 的端口在虚拟机里、kubelet 在宿主侧找不到——平台管理员也没有别的路进这台机器。Terminal 是 ttyd 网页 shell，走独立入口路由，不经 exec；Desktop 是 noVNC 上的 Chrome，agent 经本机 CDP 操作，人可以替它过验证码或 MFA。三个入口都先过 Entra、再过 ingress 按路径的 owner 检查，管理员能看到所有 Agent 但进不去别人的工作区。两处代价：harness 界面密码就是实例的 API key（chart 和启动脚本都校验两者相同），拿到界面密码等于拿到 API 凭据；Desktop 的 Chrome 以 `--no-sandbox` 启动，隔离只靠 Kata 与 owner 检查。桌面和终端在 chart 里都能单独关掉。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "两种形态会走到同一个样子——轻量常驻入口加会话执行池；中间要补的接口是执行池带发起人身份与记忆只读视图、任务结束只回写结论",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-16",
+          "last_updated": "2026-11-18",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "常驻实现路线图上的两项——Run / Session 层（长任务检查点与恢复、权限随任务收放）和共享 agent 池（无界面、队列驱动、多副本可互换、HOME 随用随弃、一把网关 key 按任务归因、没有入站路由）——后者照字面就是会话执行池。会话调度这边缺的是按人归属的长期记忆和给人用的入口，常驻实例的盘上已经在做。判断依据是两条路线图的对照，混合形态尚未实现。",
+          "evidence_type": "设计推论",
+          "review": ""
+        },
+        {
+          "statement": "管理员也作为一个 agent 运行，但权限由平台在 agent 之外收窄——没有 exec 例外、不能读写 Secret、改不了自己的登录元数据，针对它的准入 webhook 都是 fail-closed",
+          "source": "AKS-Agent-Runtime系列12：常驻实例与会话调度",
+          "first_seen": "2026-11-17",
+          "last_updated": "2026-11-18",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "平台装好后 Operator 自动起一个 Hermes 实例做运维，带一组运维 skills，负责诊断和管理同一 Operator 下的所有普通实例；对其他平台 namespace 只有可选的只读诊断。与\"记忆不授予权限\"同一思路：agent 再能干，权限边界也由平台划定，不靠 agent 自觉。",
+          "evidence_type": "实测经验",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "rl-infra-framework-selection",
       "type": "decision",
       "title": "Agent RL 基础设施框架选型——VERL vs Slime vs OpenRLHF vs TRL",
@@ -15077,6 +15241,12 @@
     },
     {
       "source": "agent-memory-lifecycle",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "常驻形态的 runtime 里，长期记忆是平台提供的一层（HOME 盘上的私有记忆 skill）"
+    },
+    {
+      "source": "agent-memory-lifecycle",
       "target": "recursive-self-improvement",
       "relation_type": "part-of",
       "description": "记忆生命周期是 RSI 中\"持久状态改进\"在上下文层的一种实现"
@@ -15332,6 +15502,18 @@
       "target": "copilot-managed-runtime",
       "relation_type": "contrasts",
       "description": "同名不同物"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "resident-vs-session-agent-runtime",
+      "relation_type": "part-of",
+      "description": "自建 runtime 的两种形态（会话调度、常驻实例）与混合形态的选择"
+    },
+    {
+      "source": "agent-runtime",
+      "target": "agent-memory-lifecycle",
+      "relation_type": "uses",
+      "description": "常驻形态多出的长期记忆层"
     },
     {
       "source": "agent-sandbox",
@@ -18956,6 +19138,66 @@
       "target": "rejection-sampling-finetuning",
       "relation_type": "contrasts",
       "description": "\"是否走向权重微调（SFT/RL）\"是本决策的关键前提——若会，则 agent-lightning 的 method-agnostic 价值才兑现"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "agent-runtime",
+      "relation_type": "part-of",
+      "description": "自建 agent runtime 的形态选择"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "agent-session-control-plane",
+      "relation_type": "uses",
+      "description": "选项 A 的会话平面全部机制"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "actor-snapshot-scheduling",
+      "relation_type": "uses",
+      "description": "会话调度靠快照换出执行单元，常驻实例不需要这一层"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "agent-sandbox",
+      "relation_type": "uses",
+      "description": "两种形态共用的 Kata 隔离与沙箱底线"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "agent-memory-lifecycle",
+      "relation_type": "uses",
+      "description": "常驻形态多出的私有记忆层与\"记忆不授予权限\""
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "ai-gateway",
+      "relation_type": "uses",
+      "description": "两种形态的模型请求都只走网关；常驻侧是 LiteLLM，月度预算是软上限"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "relationship-based-access-control",
+      "relation_type": "constrains",
+      "description": "要写企业资源时，无论哪种形态出站都要逐请求授权"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "credential-out-of-sandbox",
+      "relation_type": "constrains",
+      "description": "令牌不进沙箱是两种形态共同的底线"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "entra-agent-id",
+      "relation_type": "uses",
+      "description": "常驻实现的有效权限包含 Agent ID 授权上限，代表用户 OBO 需要管理员同意"
+    },
+    {
+      "source": "resident-vs-session-agent-runtime",
+      "target": "foundry-agent-type-selection",
+      "relation_type": "extends",
+      "description": "先决定托管还是自建，自建之后再在本页选形态"
     },
     {
       "source": "rl-infra-framework-selection",
