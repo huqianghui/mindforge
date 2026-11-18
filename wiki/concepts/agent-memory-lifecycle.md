@@ -1,7 +1,7 @@
 ---
 title: "Agent Memory Lifecycle"
 created: "2026-11-04"
-updated: "2026-11-07"
+updated: "2026-11-18"
 tags:
   - wiki
   - concept
@@ -17,6 +17,8 @@ related:
   - "[[claude-code-memory-system]]"
   - "[[github-copilot]]"
   - "[[recursive-self-improvement]]"
+  - "[[agent-runtime]]"
+  - "[[resident-vs-session-agent-runtime]]"
 ---
 
 # Agent Memory Lifecycle（Agent 记忆的生命周期）
@@ -109,7 +111,20 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 
 > 组织层没有"给某个人开 Dreaming"的选项，开启的范围就是 Memory 的 Repository access 里选中的全部仓库；每次运行扣 AI credits，包括没有产生改动、处理不活跃仓库的运行，用量提醒不拦截用量。运行由平台排期，不能手动触发，计划、提示词和模型都不可改，结果在 Copilot app 的 Automations → Dreaming 里看。实际做法是先收窄记忆范围再开整理：先在少量自有仓库开仓库级 Dreaming，把它开的 PR 当普通代码评审看，看过几轮结果再按仓库清单逐步放开组织级开关。
 
+### Claim: 记忆不授予任何权限——跨任务的结论不能当作"上次已经批准过"，可变事实使用前用当前有权限的工具重新核对；从失败中学习要过固定检查、agent 自评不算数
+
+- **来源**：[[AKS-Agent-Runtime系列12：常驻实例与会话调度]]
+- **首次出现**：2026-11-16
+- **最近更新**：2026-11-18
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实现阅读 + 部署核对
+
+> 第二个实现样本：AKS 上一套常驻 agent 实现，私有记忆是平台预装的 skill，放在每个 agent 私有的 HOME 盘上，规矩写在注入沙箱、只读挂载的 AGENTS.md 里。五条：① 先查再答，工具调用失败自动记一笔；② 存结论不存原文——事实、偏好、决定和自己的建议，每条注明来源和日期，观察与推断分开记，不存对话原文、凭据、工具原始输出；写入事务式、带版本，可溯源、修正、遗忘；③ 记忆里的结论哪怕是别的 agent 引用来的，也永远不当作用户授权；④ 重复失败整理成小的、可测试的"方法候选"，一次只改一个方法，与现有做法对比、在后续任务里试用，通过固定检查才采用，方法得分同样不授予权限、不调度工作、不批准外部动作；⑤ 共享会话、外发消息、附件、转交任务默认不带私有记忆。第 3 条最关键：会话调度里会话一删什么都不剩，不存在拿记忆跳审批的问题；记忆能跨任务存在时就必须写成硬规则。与 GitHub Copilot 的"使用前核对"互相印证：两个独立实现都要求记忆在使用时重新被当前证据证明。团队 Skills 走另一条路——提交、评审、封版发布、绑定 Team、只读挂载、可撤回回滚。
+
 ## 冲突与演进
+
+- 2026-11-18：出现第二个实现样本（AKS 常驻 agent 实现的私有记忆 skill），新增"记忆不授予权限"一条；"使用前核对"在两个独立实现中都成立，但首条 Claim 的投票与过期机制仍只有 GitHub Copilot 一家，置信度暂不调。
 
 - 2026-11-03 harvest 倾向先作 Claim 注入 [[claude-code-memory-system]]（仅一篇来源），2026-11-04 用户裁决单独建页——它是 agent 记忆的通用机制（核对、投票、过期、写权限），而 claude-code-memory-system 讲的是 Claude Code 的分层与提权，二者维度不同。目前只有 GitHub Copilot 一个实现样本，出现第二个产品或论文的同类机制后复核置信度。
 - "自我改进的门控位置"（`online-vs-offline-self-improvement-gate`）未单独建页，作为 Claim 注入 [[recursive-self-improvement]]。
@@ -119,6 +134,7 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 
 - [[claude-code-memory-system]] — `contrasts` 前者靠分层与人工提权管理记忆，本页靠核对、投票、过期自动管理
 - [[github-copilot]] — `part-of` 本页机制目前唯一的产品实现样本是 GitHub Copilot 的 Memory 与 Dreaming
+- [[agent-runtime]] — `part-of` 常驻形态的 runtime 里，长期记忆是平台提供的一层（HOME 盘上的私有记忆 skill）
 - [[recursive-self-improvement]] — `part-of` 记忆生命周期是 RSI 中"持久状态改进"在上下文层的一种实现
 
 ## 来源日记
@@ -127,3 +143,4 @@ Agent 跨会话记忆不只是"存下来、下次读"，而是一条带信任与
 - [[GitHub-Copilot系列02：Memory、Dreaming与自我改进]] — 两类记忆、生命周期、写入过滤、各入口读写差异、Dreaming 三类 dream、三方记忆方案对照
 - [[2026-11-06-周五]] — GitHub Copilot 系列 03 成文
 - [[GitHub-Copilot系列03：Memory与Dreaming的分层配置]] — Dreaming 三类能力的前提与生效方式、开启范围与计费、关掉不回滚
+- [[AKS-Agent-Runtime系列12：常驻实例与会话调度]] — 常驻实现的私有记忆五条规矩、团队 Skills 发布

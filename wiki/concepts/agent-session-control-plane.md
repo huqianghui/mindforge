@@ -1,7 +1,7 @@
 ---
 title: "Agent Session Control Plane"
 created: "2026-11-14"
-updated: "2026-11-16"
+updated: "2026-11-18"
 tags:
   - wiki
   - concept
@@ -181,7 +181,31 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 
 > 不转发的原因：卡着等人时沙箱、凭证、会话空耗，人可能几小时后才回；渠道那头看不到工作区无从判断；沙箱内容不可信，原样转发 harness 提示等于让注入内容借 agent 之口向真人要批准。做法：按任务类型配权限档位；超出档位先只读跑一轮产出计划与所需能力清单，控制面按结构化动作生成审批消息、批准人鉴权留审计、人只确认一次；启动前预检凭证与出口；失败时返回结构化的缺失能力并照常保存快照，同一权限原因不自动重试、按原因汇总反调档位。设计推论，未实测。
 
+### Claim: 要让每个副作用追溯到哪一轮，会话层得每轮生成一个 ID，带进模型请求元数据和出站请求头，两个网关都记下来——常驻实现的五类日志没有共同的会话或轮次 ID
+
+- **来源**：[[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]]、[[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]]
+- **首次出现**：2026-11-17
+- **最近更新**：2026-11-18
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 五类日志：① 管理操作只能靠 AKS 审计日志（kube-audit），主体是 Portal 的服务账号，Portal 自己不记操作；② Agent 输出（stdout，可能含对话原文）由可选观测 chart 采进 ADX，是 agent 自己写的，只能当线索；③ 模型调用最完整，LiteLLM 记 key、team、用户、模型、token、花费、耗时、trace ID，按当前配置 prompt 与 response 也落 PostgreSQL；④ 出站连接靠 Istio sidecar 访问日志，登记域名可见 SNI、其余只有 IP，看不到路径与方法、分不出读写；⑤ 平台组件日志与 K8s 事件。集群上实际只有 ③ 有数据：观测 chart 没装；平台组件与 Agent 都在 Kata 节点镜像上，Container Insights 采集 Pod 因内核没有 iptables nat 表一直重启；Agent Pod 没 sidecar；审计日志没开——装的时候都不报错。就算都通了，三者分别按命名空间、key、命名空间加时间关联，常驻形态下一个 Agent 就是一个人的长期实例，"时间相近"缩小不到某次任务。会话调度天然有会话 ID 与 turn ID，把它们一路带到两个网关就是这一条的实现位置。
+
+### Claim: 会话这一层没有任何现成组件提供——Kubernetes、AKS、社区项目都只到沙箱为止；双向对账、多副本单写者、快照仓库保留清理、整轮重发时的副作用语义目前没人提供
+
+- **来源**：[[AKS-Agent-Runtime系列05：会话生命周期与回收]]、[[AKS-Agent-Runtime系列06：会话管理与高可用]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]
+- **首次出现**：2026-11-15
+- **最近更新**：2026-11-18
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实现阅读 + 实测
+
+> 按出处拆：Kubernetes 提供 Pod、Job、标签（会话 ID 与应用 UID 是对账依据）、`Recreate`、`terminationGracePeriod` 与 containerd 提交 rootfs；AKS / Azure 提供 Kata 节点池、ACR（清理无 tag manifest 的保留策略要 Premium）、Workload Identity、Service Bus、PostgreSQL；社区提供 OpenSandbox 的 TTL、暂停恢复、commit Job、预热池与 SQLite。参考实现自己写了会话 API 与收件箱、状态机加副作用意图、执行器与启动围栏、Ephemeral / Durable 策略、checkpoint 编排、整轮重发还是等原快照的判断、每 15 秒的维护循环；安全沙箱实现只做到沙箱归属。PoC 补了从外往里的对账器与多副本执行器。会话层按六层看是接入、消息、应用、数据、元数据与配置、沙箱与基础设施，前五层都要自己设计。系列 10 的八层自建技术栈也是同一结论：越往上现成组件越只是底座，③ 会话控制面与 ⑥ 授权模型最重，因为只有它们要认识会话、终端用户和资源上的动作。
+
 ## 冲突与演进
+
+- 2026-11-18：复核 11-15 对系列 05 / 06 / 10 的修订（会话层分层架构与组件出处、自建八层技术栈），此前只部分进 wiki，补"会话层没有现成组件"一条；收入系列 13 的日志现状，补"按轮次 ID 追溯"一条。常驻实例一侧没有会话层，两种形态的取舍见 [[resident-vs-session-agent-runtime]]。
 
 - 2026-11-16：/revalidate（漂移复核）——5 条确认、1 条修订：最小控制面一条原写"agent-sandbox / OpenSandbox 都有领取、执行、文件、快照 API"，按 03 修订后的正文改为 agent-sandbox 只有领取与暂停、执行守护进程要自己补。
 - 2026-11-14：建页。候选 `agent-runtime-session-plane` 自 2026-11-09 harvest 提出，阈值"系列 05 成文"于 11-12 满足，11-13 系列 06 补齐多副本；用户裁决建页，slug 定为 `agent-session-control-plane`。同批次 `durable-execution`、`reconciliation-loop`、`actor-snapshot-scheduling`、`credential-out-of-sandbox` 四个 HOLD 解除并各自建页，本页只保留会话层自身的论断，故障语义、回收、快照、出站凭据分别归口。
@@ -216,3 +240,4 @@ Agent 会话控制面是 agent runtime 里位于沙箱之外、负责驱动 harn
 - [[AKS-Agent-Runtime系列06：会话管理与高可用]] — 会话队列 + lease / fencing、接管时长、abandon 坑
 - [[AKS-Agent-Runtime系列00：导读]] — 系列术语与全景
 - [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — 应用定义与调用三层
+- [[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]] — 五类日志与按轮次追溯的缺口

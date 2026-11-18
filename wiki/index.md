@@ -337,4 +337,5 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[hybrid-inference-framework-selection]] — Hybrid 模型推理框架选型：llama.cpp vs vLLM vs SGLang
 - [[rl-infra-framework-selection]] — Agent RL 基础设施框架选型：VERL vs Slime vs OpenRLHF vs TRL
 - [[foundry-agent-type-selection]] — Foundry Agent 选型：Prompt / Prompt + Copilot harness / Hosted 三档，Runtime 与 harness 归属主线 + 治理分层
+- [[resident-vs-session-agent-runtime]] — AKS 自建 agent runtime 的两种形态：常驻实例 vs 会话调度 vs 混合，三问决策 + 深入对比清单 + 客户场景识别
 - [[copilot-studio-harness-selection]] — Copilot Studio harness 选型：按任务重量选，建后不能互转，四种都不能被浏览器 app 同步调用

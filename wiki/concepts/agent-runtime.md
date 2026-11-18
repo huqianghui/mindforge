@@ -1,7 +1,7 @@
 ---
 title: "Agent Runtime"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-18"
 tags:
   - wiki
   - concept
@@ -28,6 +28,8 @@ related:
   - "[[agent-framework]]"
   - "[[agent-platform]]"
   - "[[agent-infra-three-layers]]"
+  - "[[resident-vs-session-agent-runtime]]"
+  - "[[agent-memory-lifecycle]]"
 ---
 
 # Agent Runtime（Agent 运行时）
@@ -46,6 +48,8 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 - **身份**：agent 以谁的身份行事（[[entra-agent-id]]）
 
 这一层有两种切法：按技术组件分四个子层（隔离、沙箱编排、持久执行、调度与生命周期），按一次调用经过的职责分三个平面（执行、会话、治理）。AKS 原生只覆盖执行和部分治理，会话平面一格都填不上。
+
+在 AKS 上自建时，runtime 本身又有两种形态，两种都做过初步实验：**会话调度**（状态跟着会话走，按会话领沙箱、checkpoint、空闲回收，参考实现）和**常驻实例**（状态跟着人走，每人一个 StatefulSet 单副本 + HOME 盘，暂停即缩到 0，常驻实现）。两者共用"harness 关进 Kata、凭据不进沙箱、模型只走网关"的底线，分歧在状态、出站默认和记忆放在哪；会走向"轻量常驻入口 + 会话执行池"。怎么选、往下怎么对比、哪些客户场景对应哪种形态，见 [[resident-vs-session-agent-runtime]]。
 
 ## Claims
 
@@ -124,7 +128,20 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 > 三种暂停：Agent Substrate 快照内存与本地文件，恢复低于一秒、进程从冻结处继续，但 GKE 文档写明挂起时不保留打开的网络连接（数据库会话、MCP 连接都要恢复后重连）；OpenSandbox 以 BatchSandbox 作 workload provider 时把 rootfs 提交成镜像，恢复后 `/workspace`、`/tmp`、harness 原生会话文件都在、进程没了（05 实测）；agent-sandbox 的 Suspended 删 Pod 留 PVC，`/tmp` 与 rootfs 都没了（03 补充实测），OpenSandbox 叠在 agent-sandbox 上的生产配置也是这一种。选后端时先问"恢复后要剩什么"：只要文件续接，PVC 就够，但原生会话文件和工作区必须放进 PVC；要进程状态才需要内存快照。共同点是网络连接都不跨暂停——harness 连着的 MCP server、出站网关的长连接、控制面打开的更新流都要在恢复后重建，这一步应由控制面在恢复时显式完成，而不是指望 harness 自己重试。Substrate 部分来自官方文档、未在 AKS 上实测。外部来源：[About Agent Substrate on GKE](https://docs.cloud.google.com/kubernetes-engine/ai-ml/about-agent-substrate)。
 
+### Claim: 常驻实现在"能装什么、能花多少"上做得扎实，出站逐请求授权、高风险动作审批、容量配额、跨日志追溯四块两种形态都没有
+
+- **来源**：[[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]]、[[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]]
+- **首次出现**：2026-11-17
+- **最近更新**：2026-11-18
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 按系列 11 的清单逐项对照常驻实现：harness 白名单、skill 白名单与按 Team 发布、模型白名单、每个 Agent 的预算与限流、Kata 与 Sandbox 的资源边界，都由 CRD 声明、operator 执行，规则执行不了一律不放行（Policy 读不到或无效则挂起 Agent、吊销 key，拿到执行证据才标为已生效）。两边都缺的四块：① 出站只到 Cilium 的"公网黑名单、内网白名单、按域名封禁"，做不到"某 agent 对某资源的某动作"，也没有撤销后秒级生效；② push、建 PR、部署、调外部系统都在 agent 手里，没有人工审批点——对人下线后还在自主推进的常驻 agent 更要紧；③ 一个 Team 或一个人最多几个 Agent、共占多少 Kata 容量没有上限；④ 日志之间没有共同的会话或轮次 ID，Portal 自己不记操作审计。LiteLLM 已自带、operator 未接的 Guardrails、MCP 网关、Tool Policies、Agents 模块可以复用，但接法应与 key、team 一样从 CRD 单向投影。
+
 ## 冲突与演进
+
+- 2026-11-18：/extract-knowledge 收入系列 12、13。两种自建形态（会话调度、常驻实例）都已做过初步实验，形态选择单独建决策页 [[resident-vs-session-agent-runtime]]（harvest 原建议先作 Claim 注入，因两种形态均已实测而改为建页）；本页摘要补两种形态，新增治理覆盖一条。
 
 - 2026-11-16：/revalidate（漂移复核）——1 条确认、1 条修订（Substrate 成熟度）；新增"三种暂停语义"一条，跨后端的判断放在本页，各后端细节仍归 [[agent-sandbox]] 与 [[actor-snapshot-scheduling]]。
 - 2026-11-16：从 [[agent-infra-three-layers]] 拆出独立建页。四子层、三平面、两个问题、授权开销、原生机制守底线 5 条 Claim 原在三层页，原文搬来；新增"自建多承担运维"一条。AKS Agent Runtime 系列整个以本页为主题，系列各篇的细节分别归口上面列出的概念页，本页只放跨这些概念的判断。
@@ -151,6 +168,8 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 - [[foundry-agent-service]] — `implements` Hosted Agent 是托管的 runtime
 - [[foundry-agent-type-selection]] — `grounds` Prompt / Hosted 的分水岭正是 runtime 归属
 - [[copilot-managed-runtime]] — `contrasts` 同名不同物
+- [[resident-vs-session-agent-runtime]] — `part-of` 自建 runtime 的两种形态（会话调度、常驻实例）与混合形态的选择
+- [[agent-memory-lifecycle]] — `uses` 常驻形态多出的长期记忆层
 
 ## 来源日记
 
@@ -161,3 +180,5 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 - [[AKS-Agent-Runtime系列04：出站治理与逐请求授权]] / [[AKS-Agent-Runtime系列08：模型接入层]] — 授权开销与突发
 - [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — 每一层用什么、自建的代价
 - [[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]] — 原生机制守底线
+- [[AKS-Agent-Runtime系列12：常驻实例与会话调度]] — 常驻实例与会话调度两种形态
+- [[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]] — 常驻实现的治理覆盖与缺口
