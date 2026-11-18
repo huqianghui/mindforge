@@ -1,7 +1,7 @@
 ---
 title: "题库：Agent Runtime 与 Agent Platform"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-18"
 tags:
   - wiki
   - path
@@ -353,9 +353,93 @@ path_id: "agent-runtime-platform"
 
 **出处**：[[ai-gateway]]
 
-## 第 11 站 · 汇合：自建 agent platform 还是用托管产品
+## 第 11 站 · 形态：常驻实例与会话调度
 
 ### Q41 · 解释
+
+**问**：AKS 上自建 agent runtime 的两种形态，共同底线是什么，分歧在哪三处？
+
+**答**：共同底线：harness 整个关进 Kata、不挂 ServiceAccount token；模型请求只走网关，沙箱里只有一把只能调模型的 key；访问企业资源的令牌不进 Pod。分歧：状态跟着谁走（常驻实例是一块 RWO HOME 盘，会话调度是一串快照加状态库）；出站默认开还是关（常驻公网默认放行加黑名单，会话调度默认拒绝、只剩出站网关）；记忆放在哪（常驻实例在盘上有私有记忆，会话调度会话一删什么都不剩）。
+
+**出处**：[[resident-vs-session-agent-runtime]]
+
+### Q42 · 场景
+
+**问**：一个团队想给二十位值班和核心开发工程师每人配一个 agent，人下线后它继续推进，第二天接着看；另一个团队想让 Teams、定时任务和流水线触发 agent 去改工单、推代码。各选哪种形态，各要补什么？
+
+**答**：前者是"跟着固定的人、状态跨天、人数有限、岗位价值高"，走常驻实例；要补备份方案（`Retain` 不等于备份）、出站外传审计、写操作收进网关、按人的预算硬上限。后者是多个调用方按次调用、执行者型写操作，走会话调度；要补会话控制面、对账器、快照仓库清理和审批点，出站必须默认拒绝加逐请求授权。
+
+**出处**：[[resident-vs-session-agent-runtime]]
+
+### Q43 · 辨析
+
+**问**："常驻实例不用做 checkpoint，所以它是会话调度的简化升级版。"对吗？
+
+**答**：不对。常驻实例省掉的快照、快照仓库清理和会话对账，是用别的代价换来的：算力按人常驻（主容器 4 vCPU 加桌面 0.5 vCPU，一百人就是 450 vCPU 的请求量），没有空闲自动休眠；单副本只支持源节点健康时的冷迁移，不做故障切换；namespace 被删时 PVC 跟着删。会话调度空闲不占 VM、能多副本、恢复时按当前权限重新下发出站白名单。两者各缺对方已有的那一块，选择的是状态的单位和控制点的位置。
+
+**出处**：[[resident-vs-session-agent-runtime]]
+
+### Q44 · 解释
+
+**问**：常驻实现的私有记忆为什么要把"记忆不授予任何权限"写成硬规则？会话调度为什么没有这个问题？
+
+**答**：记忆一旦能跨任务存在，就会有人想用它记"上次已经批准过"，下次直接跳过审批。所以规则写明：记忆里的结论哪怕是别的 agent 引用过来的，也永远不当作用户授权；会变的事实用前要通过当前有权限的工具重新核对；从失败中学习的方法候选要过固定检查才采用，agent 自评不算数，方法得分也不授予权限。会话调度里会话一删什么都不剩，不存在拿旧记忆跳审批的路径。
+
+**出处**：[[agent-memory-lifecycle]]
+
+### Q45 · 场景
+
+**问**：一家企业有几百人想要"记得我"的 agent，但大部分人一天只用一会儿。你建议什么形态？中间要补哪两个接口？
+
+**答**：混合形态：轻量常驻入口加会话执行池。常驻部分只负责"这个人是谁、以前定过什么、团队批准了哪些 skills"，不必一直占 4 vCPU；长任务、批量和事件触发的工作交给会话执行池，按会话领沙箱、checkpoint、受逐请求授权。要补的接口：执行池领任务时带上发起人身份和记忆的只读视图；任务结束时只回写结论，不回写原始输出。这是设计推论，混合形态目前没有实现。
+
+**出处**：[[resident-vs-session-agent-runtime]]
+
+## 第 12 站 · 运营：管控台、模型网关与追溯
+
+### Q46 · 解释
+
+**问**：常驻实现里 Portal 和 LiteLLM 两个控制台都能改 Teams、Keys、Budgets，以哪边为准？operator 往 LiteLLM 投影了什么？
+
+**答**：以 Portal 写下的 CRD 为准，operator 单向投影、只写不读。Agent 变成一把 Virtual Key（模型 = 共享访问组 + 自己的路由，月度预算、并发、RPM、TPM）；Team 变成一个 LiteLLM team（模型列表留空，权限放在 key 上）；owner 变成 team 成员（不发 key）；Team 上的智能路由变成一个内部名注册的路由模型。共享模型本身来自 AI 网关的 Helm 配置，不归 CRD 管。
+
+**出处**：[[ai-gateway]]
+
+### Q47 · 场景
+
+**问**：管理员在 LiteLLM 控制台里把某把 key 的 RPM 调大、改了一个 operator 注册的路由、又改了共享模型的一项设置。分别会怎样？那这个控制台该用来做什么？
+
+**答**：RPM 下一次调和被 operator 按 Policy 改回；路由的修改 operator 不监听，要等 Team 有改动时才被覆盖回去，中间两边不一致；共享模型改任何一项会把整块设置写进数据库，此后 Helm 里对应的值悄悄失效，界面没有提示。控制台只用来看用量和花费、查 402 / 429、设 Team 总预算（CRD 里没有这一项）、给集群外的程序发 key。
+
+**出处**：[[ai-gateway]]
+
+### Q48 · 辨析
+
+**问**："研发和销售规则完全一样，就让两个团队选同一个 Team，省得维护两份。"对吗？
+
+**答**：不对。operator 按一个 Team 对应一个 LiteLLM team 投影，每把 key 只能挂在一个 team 下，两个团队的花费会混在同一个 LiteLLM team 里，在那里设的总预算也被两组共用。正确做法是一个团队一个 Team，共用的规则放进 Agent Policy 和 Sandbox，让两个 Team 引用同一份。
+
+**出处**：[[ai-gateway]]
+
+### Q49 · 解释
+
+**问**：常驻实例的 Agent UI、Terminal、Desktop 三个入口各管什么？为什么 Terminal 是唯一正式的 shell 入口？
+
+**答**：Agent UI 是 harness 自带的界面，用来对话、发任务、看工具调用；Terminal 是 ttyd 网页 shell，绕过 agent 直接看文件、跑命令、查出错原因；Desktop 是 noVNC 上的 Chrome，用来看 agent 操作浏览器，必要时替它过验证码或 MFA。准入策略拒绝对实例 Pod 的 `kubectl exec`，Kata Pod 的端口在虚拟机里、kubelet 找不到，`port-forward` 也不通，管理员也没有别的路进去。三个入口都先过 Entra、再过按路径的 owner 检查，只对 owner 开放；Terminal 是完整 shell、Desktop 的 Chrome 以 `--no-sandbox` 启动，隔离只靠 Kata 与 owner 检查。
+
+**出处**：[[resident-vs-session-agent-runtime]]
+
+### Q50 · 场景
+
+**问**：安全团队问"这个 agent 昨晚推的那次代码，是哪个用户、哪一轮、哪段模型输出触发的"。在常驻实现上能回答吗？要补什么？两种形态还共同缺哪几块治理？
+
+**答**：回答不了。五类日志（管理操作、agent 输出、模型调用、出站连接、平台组件）各管一段，分别按命名空间、key、命名空间加时间关联，没有共同的会话或轮次 ID；那个集群上实际只有模型调用一条线有数据（观测 chart 没装、Kata 节点上采集 Pod 一直重启、Agent Pod 没 sidecar、审计日志没开）。要补的是会话层每轮生成一个 ID，带进模型请求元数据和出站请求头，两个网关都记下来。两种形态共同缺的四块：出站逐请求授权、高风险动作审批、容量配额、跨日志追溯与 Portal 操作审计。
+
+**出处**：[[agent-session-control-plane]]、[[agent-runtime]]
+
+## 第 13 站 · 汇合：自建 agent platform 还是用托管产品
+
+### Q51 · 解释
 
 **问**：Copilot Studio、Foundry（Prompt / Hosted）、Copilot Managed Runtime、Agent 365 各替你打包了哪几层？
 
@@ -363,7 +447,7 @@ path_id: "agent-runtime-platform"
 
 **出处**：[[agent-platform]]
 
-### Q42 · 场景
+### Q52 · 场景
 
 **问**：客户说"我们想自己掌控 agent runtime"，你先问哪两个问题？
 
@@ -371,7 +455,7 @@ path_id: "agent-runtime-platform"
 
 **出处**：[[agent-runtime]]
 
-### Q43 · 解释
+### Q53 · 解释
 
 **问**：在 AKS 上自建 agent runtime 只在哪三类场景下值得？推荐的混合布局是什么？
 
@@ -379,7 +463,7 @@ path_id: "agent-runtime-platform"
 
 **出处**：[[foundry-agent-type-selection]]
 
-### Q44 · 辨析
+### Q54 · 辨析
 
 **问**："开源组件已经很全了，用 agent-sandbox、agentgateway、OpenFGA、kagent 拼起来就是一个 agent platform。"对吗？
 

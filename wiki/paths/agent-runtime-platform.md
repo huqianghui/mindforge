@@ -1,7 +1,7 @@
 ---
 title: "学习路径：Agent Runtime 与 Agent Platform"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-18"
 tags:
   - wiki
   - path
@@ -21,18 +21,20 @@ signals:
   - "agentgateway、OpenFGA 的 release"
   - "AKS release notes（Pod Sandboxing、IMDS restriction）"
   - "Foundry Hosted Agents What's new 与 Entra Agent ID / Agent 365 文档"
+  - "LiteLLM release notes（Virtual Keys、预算、A2A Agent Gateway、Rust 核心）"
+  - "Hermes Agent、OpenClaw 的 release（常驻 harness 的原生界面与会话管理）"
   - "A2A 规范与 MCP 规范的版本变化"
 ---
 
 # 学习路径：Agent Runtime 与 Agent Platform
 
-这条路径把 AKS Agent Runtime 系列和 Agent 基础设施系列沉淀下来的知识排成一个顺序。先用一张总图分清 framework、harness、runtime、platform 四个概念，再沿 runtime 的三个平面（执行、会话、治理）一站一站往里走，最后回到"agent platform 是自己搭还是用托管产品"。会话、模型接入、A2A、沙箱、逐请求授权这些新概念几乎都出在 runtime 这一层，所以这条路径的大部分站点都在 runtime 里。
+这条路径把 AKS Agent Runtime 系列和 Agent 基础设施系列沉淀下来的知识排成一个顺序。先用一张总图分清 framework、harness、runtime、platform 四个概念，再沿 runtime 的三个平面（执行、会话、治理）一站一站往里走；然后比较 AKS 上自建 runtime 的两种形态（常驻实例与会话调度），看常驻形态装好之后的运营与追溯；最后回到"agent platform 是自己搭还是用托管产品"。会话、模型接入、A2A、沙箱、逐请求授权这些新概念几乎都出在 runtime 这一层，所以这条路径的大部分站点都在 runtime 里。
 
 **怎么用**：按站点顺序读，每站读完对照「算会」逐条自查，都能说出来、判断出来才进下一站。「算会」也是题库的出题来源。读 wiki 页时以 Claim 为单位，括号里点名的 Claim 优先读；想看实测过程再读原文。
 
 **前置**：读过 [[harness-agent-architecture]] 的前 3 站（agent loop、context、harness）会顺很多，但不是硬性要求。
 
-**预计总用时**：约 16~20 小时（读 wiki 页 + 关键原文，不含动手实验）。
+**预计总用时**：约 19~23 小时（读 wiki 页 + 关键原文，不含动手实验）。
 
 ## 第 1 站 · 总图：四个概念与三层
 
@@ -69,7 +71,7 @@ signals:
 
 ## 第 4 站 · 执行：暂停、快照与恢复
 
-- **读**：[[agent-runtime]]（「同叫暂停，三种后端留下的东西不同」）、[[actor-snapshot-scheduling]]（四条 Claim）、[[agent-sandbox]]（「暂停语义两种」）、[[AKS-Agent-Runtime系列05：会话生命周期与回收]]
+- **读**：[[agent-runtime]]（「同叫暂停，三种后端留下的东西不同」）、[[actor-snapshot-scheduling]]（四条 Claim）、[[agent-sandbox]]（「暂停语义两种」）、[[AKS-Agent-Runtime系列05：会话生命周期与回收]]；对照看 [[resident-vs-session-agent-runtime]]（「两种形态的根本分歧是状态跟着谁走」）里常驻实例的第四种暂停：缩到 0、留盘、不做快照
 - **前置**：第 3 站
 - **用时**：约 1.5 小时
 - **算会**：
@@ -80,7 +82,7 @@ signals:
 
 ## 第 5 站 · 会话：控制面
 
-- **读**：[[agent-session-control-plane]]（「调用的单位是会话」「一轮对话的四条规矩」「适配器驱动多种编码 CLI」「控制通道只有一个方向」「provider 接口」「最小控制面四块」「Ephemeral 与 Durable」「会话的数据模型」）、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
+- **读**：[[agent-session-control-plane]]（「调用的单位是会话」「一轮对话的四条规矩」「适配器驱动多种编码 CLI」「控制通道只有一个方向」「provider 接口」「最小控制面四块」「Ephemeral 与 Durable」「会话的数据模型」「会话这一层没有任何现成组件提供」）、[[AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness]]
 - **前置**：第 2 站
 - **用时**：约 2 小时
 - **算会**：
@@ -145,33 +147,59 @@ signals:
   - 能说出以 Kubernetes API 为准和以 Nacos 为准两种注册中心各适合什么，选后者要多写什么
   - 能说出用作 agent 网关时，卡片地址与外部令牌各要怎么处理
 
-## 第 11 站 · 汇合：自建 agent platform 还是用托管产品
+## 第 11 站 · 形态：常驻实例与会话调度
 
-- **读**：[[agent-platform]]（「微软的三种托管 agent platform 打包的层数不同」「在 AKS 上自建 agent platform」「狭义 platform 与 runtime 的治理各有一份」）、[[agent-runtime]]（「先问两个问题」「自建多承担的是运维」「Runtime 内部再按三个平面拆」）、[[foundry-agent-service]]（「Hosted Agents 已包了最费劲的几块」）、[[foundry-agent-type-selection]]（「按 loop 归谁分三类 agent」「在 AKS 上自建的理由只剩三类」）、[[copilot-studio]]、[[copilot-managed-runtime]]、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]、[[AKS-Agent-Runtime系列00：导读]]
-- **前置**：第 1~10 站
+- **读**：[[resident-vs-session-agent-runtime]]（全页：三个选项、三问决策、五条 Claim；「深入对比的指导」与「客户机会识别」两节）、[[agent-memory-lifecycle]]（「记忆不授予任何权限」）、[[ai-gateway]]（「按 Agent 的月度美元预算同样是软上限」）、[[AKS-Agent-Runtime系列12：常驻实例与会话调度]]
+- **前置**：第 4、6、7 站
+- **用时**：约 1.5 小时
+- **算会**：
+  - 能说出两种形态共用的三条底线，以及分歧所在的三处（状态跟着谁、出站默认、记忆放在哪）
+  - 能按三个问题（agent 跟着谁 → 状态要活多久 → 算力能否按人常驻）给一个场景选形态，并说出两条不随形态变的判断
+  - 能说出常驻实例省掉了什么（checkpoint、快照仓库、对账）、付出了什么（按人常驻的算力、单副本只有冷迁移、`Retain` 不等于备份）
+  - 能解释"记忆不授予权限"为什么在常驻形态必须写成硬规则、在会话调度里不是问题，以及混合形态中间要补的两个接口
+
+## 第 12 站 · 运营：管控台、模型网关与追溯
+
+- **读**：[[ai-gateway]]（「LLM proxy 的配置要以 runtime 的 CRD 为唯一来源」「LiteLLM 的 Agents 是 A2A 注册表加调用代理」「网关自身开销在往 Rust 核心迁」）、[[agent-session-control-plane]]（「要让每个副作用追溯到哪一轮」）、[[agent-runtime]]（「常驻实现在能装什么、能花多少上做得扎实」）、[[resident-vs-session-agent-runtime]]（「常驻实例的入口分三层」「管理员也作为一个 agent 运行」）、[[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]]
+- **前置**：第 11 站
+- **用时**：约 1.5 小时
+- **算会**：
+  - 能说出 operator 往 LiteLLM 投影了哪四类对象，以及在 LiteLLM 控制台里改 key 限额、路由、共享模型分别会发生什么
+  - 能说出 LiteLLM 控制台里唯一合理改的配置是什么、为什么一个团队要一个 Team
+  - 能说出 Agent UI、Terminal、Desktop 三个入口各管什么，以及为什么 Terminal 是唯一正式的 shell 入口
+  - 能说出五类日志各落在哪、为什么串不起来，以及按轮次追溯要补什么；能列出两种形态都缺的四块治理
+
+## 第 13 站 · 汇合：自建 agent platform 还是用托管产品
+
+- **读**：[[agent-platform]]（「微软的三种托管 agent platform 打包的层数不同」「在 AKS 上自建 agent platform」「狭义 platform 与 runtime 的治理各有一份」）、[[agent-runtime]]（「先问两个问题」「自建多承担的是运维」「Runtime 内部再按三个平面拆」）、[[foundry-agent-service]]（「Hosted Agents 已包了最费劲的几块」）、[[foundry-agent-type-selection]]（「按 loop 归谁分三类 agent」「在 AKS 上自建的理由只剩三类」）、[[copilot-studio]]、[[copilot-managed-runtime]]、[[resident-vs-session-agent-runtime]]（「决策结论」与「客户机会识别」第 5 类）、[[AKS-Agent-Runtime系列10：为什么在AKS上自建]]、[[AKS-Agent-Runtime系列00：导读]]
+- **前置**：第 1~12 站
 - **用时**：约 2 小时
 - **算会**：
   - 能说出 Copilot Studio、Foundry（Prompt / Hosted）、Copilot Managed Runtime、Agent 365 各替你打包了哪几层
   - 能说出决定要不要沙箱平台的两个问题，以及自建 runtime 时每一项托管能力对应的开源组件和要多承担的运维
   - 能说出自建只在哪三类场景下值得，以及 A、C 类放 Foundry、只把 B 类放 AKS 的混合布局
   - 能指出自建 agent platform 里开源组件替不了、必须自己写的几块
+  - 能把"托管还是自建"和"自建后选哪种形态"串成一条完整的判断顺序
 
 ## 前沿站 · 正在发生的变化
 
 这一站放刚发生、还没完全进 wiki 的变化。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
 
-- **Agent runtime 开始标准化**（知识差距 2026-11-16，高优先级）：Agent Substrate 1.0 在 GKE 上 GA、捐给 CNCF，kagent 1.0 改建在它上面 → 影响第 4 站（Substrate 不再只能做 PoC，但挂起会断开所有连接）、第 11 站（kagent 作为自建组件的形态变了）
+- **Agent runtime 开始标准化**（知识差距 2026-11-16，高优先级）：Agent Substrate 1.0 在 GKE 上 GA、捐给 CNCF，kagent 1.0 改建在它上面 → 影响第 4 站（Substrate 不再只能做 PoC，但挂起会断开所有连接）、第 13 站（kagent 作为自建组件的形态变了）
 - **Agent 委托与越权成为独立方向**（知识差距 2026-11-16，高优先级）：A2A 多跳委托中的身份丢失、逐跳收窄权限、agent 在允许动作内越权 → 影响第 8、9、10 站（三方交集管资源动作，管不到"允许的动作里做了用户没授权的事"；"只允许一跳"的理由需要补）
 - **MCP 与协议栈已建页**（2026-11-16 补建 [[model-context-protocol]]、[[agent-protocol-stack]]）→ 影响第 7、10 站：MCP 的三个 runtime 落点与"四个协议都只管连接不管授权"已有归口
 - **Harness 评测转向模型与 harness 的配对**（知识差距 2026-11-16）→ 影响第 2 站：选 harness 没有脱离模型的答案
+- **两种 runtime 形态在趋同**（系列 12 路线图对照，2026-11-18 建决策页）：常驻实现路线图上的 Run / Session 层与共享 agent 池 → 影响第 11 站（混合形态的两个接口若由常驻侧补齐，三问决策的第 3 问会变成"常驻入口能压到多轻"）
+- **网关热路径迁 Rust**（LiteLLM 官方基准约 7.5ms → 0.05ms）→ 影响第 12 站：网关自身 CPU 成本下降，但授权决策点仍是延迟大头（第 8 站）
 
 ## 毕业标准
 
-不看资料，面对"要在 AKS 上把编码 agent 做成团队共享的平台"这样一个场景，15 分钟内画出三个平面、每层用哪个组件、哪几块要自己写，并说出最可能先出事的三个地方及其依据；说不出依据的那一块，回到对应站点。
+不看资料，面对"要在 AKS 上把编码 agent 做成团队共享的平台"这样一个场景，15 分钟内画出三个平面、每层用哪个组件、哪几块要自己写，说清选常驻实例、会话调度还是混合形态的理由，并说出最可能先出事的三个地方及其依据；说不出依据的那一块，回到对应站点。
 
 ## 这条路径暴露的缺口
 
 - **概念页缺失**：MCP 与协议栈已于 2026-11-16 补建；多跳 A2A 委托中的授权传递还没有归口
 - **方法页缺失**：最小控制面、自建 agent platform 的组件组合，目前都以 Claim 形式散在 [[agent-session-control-plane]] 与 [[agent-platform]] 里，适合整理成方法页
+- **决策页的待验证项**：[[resident-vs-session-agent-runtime]] 是"部分验证"——常驻实例只做了渲染与部署核对，没有负载与故障实验；成本盈亏点、HOME 盘故障释放、轮次 ID 端到端追溯都还没测；客户场景识别信号未经真实场景验证
 - **证据不足**：agent 网关与企业目录在系列里都没有实践；Substrate 在 AKS 上未实测；模型网关 + LLM proxy 两跳未实测；Nacos 双向同步未实测（见 2026-11-16 知识差距报告的实验清单）
 - **stale**：本路径涉及的页 stale 很少（[[agent-harness]] 1 条、[[entra-agent-id]] 1 条），不需要先跑 `/revalidate`

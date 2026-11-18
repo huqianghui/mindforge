@@ -37,7 +37,7 @@ tags:
 - [[rl-post-training]] — 强化学习与后训练：Bitter Lesson → advantage 与四种形态 → 学习与 harness 分界 → reward → APO/SFT/RL 阶梯 → SFT → agent-lightning → VERL/Slime → 实跑，9 站 + 前沿站，约 16~20 小时
 - [[agent-self-improvement]] — Agent 自我改进：RSI 框架 → prompt 层 APO → skill 层 SkillOpt → harness 层 Meta-Harness → 产品记忆与 Dreaming → Dream-RSI → 凭什么说变好了，7 站 + 前沿站，约 12~15 小时
 - [[pkc]] — 个人知识编译（PKC）：问题 → 编译式 wiki 而非 RAG → Claim 存储 → 日记到概念页 → 记忆与规则 → 内外循环 → 知识图，7 站 + 前沿站，约 10~12 小时
-- [[agent-runtime-platform]] — Agent Runtime 与 Agent Platform：四概念总图 → harness 怎么被托管 → 隔离与沙箱编排 → 暂停与快照 → 会话控制面 → 持久执行与高可用 → 出站网关与凭据 → 逐请求授权 → 身份 → 定义与发现 → 自建 vs 托管，11 站 + 前沿站，约 16~20 小时
+- [[agent-runtime-platform]] — Agent Runtime 与 Agent Platform：四概念总图 → harness 怎么被托管 → 隔离与沙箱编排 → 暂停与快照 → 会话控制面 → 持久执行与高可用 → 出站网关与凭据 → 逐请求授权 → 身份 → 定义与发现 → 常驻实例与会话调度 → 管控台、模型网关与追溯 → 自建 vs 托管，13 站 + 前沿站，54 题，约 19~23 小时
 
 ## 知识工作流
 
