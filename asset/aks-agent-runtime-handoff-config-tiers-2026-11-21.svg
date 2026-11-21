@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" width="1500" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>
+.title{fill:#f8fafc;font-size:22px;font-weight:700}
+.sub{fill:#94a3b8;font-size:14px}
+.q{fill:#f1f5f9;font-size:16px;font-weight:700;text-anchor:middle}
+.qs{fill:#a5b4c8;font-size:13px;text-anchor:middle}
+.yn{font-size:14px;font-weight:700}
+.h{fill:#f1f5f9;font-size:17px;font-weight:700}
+.t{fill:#e2e8f0;font-size:14px}
+.s{fill:#a5b4c8;font-size:13px}
+.w{fill:#fca5a5;font-size:13.5px;font-weight:600}
+.num{fill:#0b1220;font-size:14px;font-weight:700;text-anchor:middle}
+.lg{fill:#cbd5e1;font-size:13.5px}
+.flow{fill:none;stroke:#2dd4bf;stroke-width:2.6;stroke-dasharray:9 7;animation:d 1.6s linear infinite}
+@keyframes d{to{stroke-dashoffset:-32}}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker></defs>
+<rect width="1500" height="900" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">一个值该放在哪里</text>
+<text class="sub" x="30" y="70">能交给别人部署的仓库里，环境相关的值不能写死，也不是什么都该做成配置项</text>
+
+<!-- decision nodes -->
+<rect x="560" y="96" width="380" height="74" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<text class="q" x="750" y="128">换一个订阅或集群，这个值会变吗？</text>
+<text class="qs" x="750" y="152">问的是"别人部署时会不会不一样"</text>
+
+<rect x="860" y="222" width="400" height="74" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<text class="q" x="1060" y="254">部署时能从集群或 Azure 查到吗？</text>
+<text class="qs" x="1060" y="278">查得到就别让人填，填错和过时都是隐患</text>
+
+<path class="flow" d="M650,170 L650,200 L250,200 L250,320" marker-end="url(#a)"/>
+<text class="yn" x="430" y="194" fill="#fca5a5">不会变</text>
+<path class="flow" d="M850,170 L850,200 L1060,200 L1060,218" marker-end="url(#a)"/>
+<text class="yn" x="900" y="194" fill="#5eead4">会变</text>
+<path class="flow" d="M960,296 L960,310 L750,310 L750,320" marker-end="url(#a)"/>
+<text class="yn" x="790" y="304" fill="#fbbf24">查不到</text>
+<path class="flow" d="M1160,296 L1160,310 L1250,310 L1250,320" marker-end="url(#a)"/>
+<text class="yn" x="1268" y="304" fill="#5eead4">查得到</text>
+
+<!-- three cards -->
+<rect x="30" y="326" width="440" height="356" rx="14" fill="#1d1733" stroke="#a78bfa"/>
+<text class="h" x="52" y="360">留在代码里：平台约定</text>
+<text class="s" x="52" y="386">由 chart、operator、门户代码共同约定，改了就对不上</text>
+<text class="t" x="52" y="424">· 平台和 agent 的命名空间</text>
+<text class="t" x="52" y="452">· Key Vault 里约定的密钥名、ACR 拉取令牌名</text>
+<text class="t" x="52" y="480">· Graph 的固定 app ID、ACR 令牌登录的固定用户名</text>
+<text class="t" x="52" y="508">· 预热池、网关证书这类模板里定义的对象名</text>
+<text class="s" x="52" y="548">做法：不做成配置项，但在部署说明里写明</text>
+<text class="s" x="52" y="570">"这些是固定名字，不要改"</text>
+<text class="w" x="52" y="612">看着像环境值，其实是协议常量：</text>
+<text class="w" x="52" y="636">全零 GUID 用户名、Graph app ID 都不该提出来</text>
+
+<rect x="530" y="326" width="440" height="356" rx="14" fill="#0f2a26" stroke="#2dd4bf"/>
+<text class="h" x="552" y="360">进配置文件：环境值</text>
+<text class="s" x="552" y="386">模板里给默认值，必须改的标出来</text>
+<text class="t" x="552" y="424">· 订阅、区域、资源组、集群名、域名前缀</text>
+<text class="t" x="552" y="452">· 节点池机型和数量、构建机规格、存储大小</text>
+<text class="t" x="552" y="480">· 模型列表和单价（部署和计费读同一行）</text>
+<text class="t" x="552" y="508">· 构建版本号、各组件版本</text>
+<text class="t" x="552" y="536">· 门户管理员名单、每人可建的 agent 数</text>
+<text class="t" x="552" y="564">· 入口网关能访问 agent 的端口列表</text>
+<text class="s" x="552" y="604">做法：一个值只在一处定义；同一份数据被两步用到，</text>
+<text class="s" x="552" y="626">两步都读这一处，不要各写一份</text>
+<text class="w" x="552" y="662">版本号写死在脚本里，改了源码就会部署旧版</text>
+
+<rect x="1030" y="326" width="440" height="356" rx="14" fill="#2a2110" stroke="#fbbf24"/>
+<text class="h" x="1052" y="360">部署时现查：集群事实</text>
+<text class="s" x="1052" y="386">每次部署从集群读，脚本可以反复跑</text>
+<text class="t" x="1052" y="424">· CoreDNS、AI 网关 Service 的地址</text>
+<text class="t" x="1052" y="452">· Pod、Service、节点网段，API Server 地址</text>
+<text class="t" x="1052" y="480">· 入口网关 Deployment 的 UID</text>
+<text class="t" x="1052" y="508">· Cilium 版本（AKS 会自动升级）</text>
+<text class="t" x="1052" y="536">· RuntimeClass、StorageClass 的 UID</text>
+<text class="s" x="1052" y="576">做法：生成的结果有变化才更新，</text>
+<text class="s" x="1052" y="598">并让读它的组件重新加载</text>
+<text class="w" x="1052" y="640">手工写进去的一份，几天后 Cilium 版本</text>
+<text class="w" x="1052" y="664">就已经和集群对不上了</text>
+
+<!-- checks -->
+<line x1="30" y1="712" x2="1470" y2="712" stroke="#1e293b"/>
+<text class="h" x="30" y="746">交给别人之前，我做的三项检查</text>
+<circle cx="44" cy="782" r="13" fill="#2dd4bf"/><text class="num" x="44" y="787">1</text>
+<text class="lg" x="66" y="787">变量来源：脚本和模板里用到的每个变量，要么在配置模板里，要么由脚本或状态文件生成；剩下的逐个确认是临时开关还是漏了</text>
+<circle cx="44" cy="818" r="13" fill="#2dd4bf"/><text class="num" x="44" y="823">2</text>
+<text class="lg" x="66" y="823">改前改后对比：把写死的值提成变量后重新生成部署配置，和线上正在用的逐字段比，只允许出现预期内的差异</text>
+<circle cx="44" cy="854" r="13" fill="#2dd4bf"/><text class="num" x="44" y="859">3</text>
+<text class="lg" x="66" y="859">公开之前扫全部 git 历史：订阅、租户、对象 ID、密码、私有资源名、同事的账号，不只看当前文件</text>
+</svg>

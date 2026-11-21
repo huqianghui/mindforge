@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 760" width="1500" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>
+.title{fill:#f8fafc;font-size:22px;font-weight:700}
+.sub{fill:#94a3b8;font-size:14px}
+.n{fill:#0b1220;font-size:15px;font-weight:700;text-anchor:middle}
+.nt{fill:#f1f5f9;font-size:15px;font-weight:600;text-anchor:middle}
+.np{fill:#94a3b8;font-size:13px;text-anchor:middle}
+.lt{fill:#e2e8f0;font-size:14px;font-weight:600}
+.ld{fill:#a5b4c8;font-size:13px}
+.lg{fill:#cbd5e1;font-size:13.5px}
+.lane{fill:#94a3b8;font-size:13px;font-weight:600}
+.flow{fill:none;stroke:#2dd4bf;stroke-width:3;stroke-dasharray:10 8;animation:d 1.6s linear infinite}
+.bad{fill:none;stroke:#f87171;stroke-width:3;stroke-dasharray:4 6}
+@keyframes d{to{stroke-dashoffset:-36}}
+.lead{stroke:#475569;stroke-width:1;stroke-dasharray:3 3}
+.pulse{animation:p 2.2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
+<rect width="1500" height="760" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">线上版本为什么会悄悄回到旧版</text>
+<text class="sub" x="30" y="70">部署按 chart 里写的版本号拉镜像和入口规则；单独替换上线的镜像只活到下一次完整部署</text>
+
+<!-- lanes -->
+<text class="lane" x="30" y="132">ACR 里的版本</text>
+<rect x="150" y="112" width="560" height="30" rx="6" fill="#132036" stroke="#38bdf8" stroke-width="1.2"/>
+<text class="ld" x="430" y="132" text-anchor="middle" style="fill:#7dd3fc">版本 A：第一次全量构建的镜像和 chart</text>
+<rect x="1050" y="112" width="420" height="30" rx="6" fill="#0f2a26" stroke="#2dd4bf" stroke-width="1.2"/>
+<text class="ld" x="1260" y="132" text-anchor="middle" style="fill:#5eead4">版本 B：换了版本号、用当前源码全量构建</text>
+
+<!-- axis -->
+<path class="flow" d="M110,230 L590,230"/>
+<path class="bad" d="M590,230 L860,230"/>
+<path class="flow" d="M860,230 L1400,230"/>
+
+<g>
+<circle cx="110" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="110" y="235">1</text>
+<text class="nt" x="110" y="282">全量构建 A</text><text class="np" x="110" y="302">镜像、chart 同一版本</text>
+</g>
+<g>
+<circle cx="270" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="270" y="235">2</text>
+<text class="nt" x="270" y="282">改源码</text><text class="np" x="270" y="302">门户页面 + 入口规则</text>
+</g>
+<g>
+<circle cx="430" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="430" y="235">3</text>
+<text class="nt" x="430" y="282">只换门户镜像</text><text class="np" x="430" y="302">功能出现</text>
+</g>
+<g>
+<circle cx="590" cy="230" r="20" fill="#fbbf24" stroke="#fef3c7" stroke-width="2"/><text class="n" x="590" y="235">4</text>
+<text class="nt" x="590" y="282">又改一处</text><text class="np" x="590" y="302">没有构建</text>
+</g>
+<g class="pulse">
+<circle cx="740" cy="230" r="22" fill="#f87171" stroke="#fecaca" stroke-width="2"/><text class="n" x="740" y="235">5</text>
+</g>
+<text class="nt" x="740" y="282" style="fill:#fca5a5">完整部署</text><text class="np" x="740" y="302">两层都回到 A</text>
+<g>
+<circle cx="960" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="960" y="235">6</text>
+<text class="nt" x="960" y="282">全量构建 B</text><text class="np" x="960" y="302">换版本号</text>
+</g>
+<g>
+<circle cx="1140" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="1140" y="235">7</text>
+<text class="nt" x="1140" y="282">部署 B</text><text class="np" x="1140" y="302">中途锁住两次</text>
+</g>
+<g>
+<circle cx="1320" cy="230" r="20" fill="#2dd4bf" stroke="#ccfbf1" stroke-width="2"/><text class="n" x="1320" y="235">8</text>
+<text class="nt" x="1320" y="282">线上全是 B</text><text class="np" x="1320" y="302">重新部署不再回退</text>
+</g>
+
+<text class="lane" x="30" y="356">每一步发生了什么</text>
+<text class="lt" x="48" y="392" style="fill:#e2e8f0">①  第一次全量构建：镜像和 chart 都是 A，线上和 ACR 一致</text>
+<text class="lt" x="48" y="422" style="fill:#e2e8f0">②  一个功能改了两层：门户页面，和入口网关的放行路径、允许嵌入</text>
+<text class="lt" x="48" y="452" style="fill:#e2e8f0">③  只重建门户镜像手工换上：功能出现，但 chart 里写的还是 A</text>
+<text class="lt" x="48" y="482" style="fill:#fde68a">④  又改了一处列表页，只在源码里，没有任何镜像带着它</text>
+<text class="lt" x="48" y="512" style="fill:#fca5a5">⑤  完整部署读 ACR 里 A 的 chart：门户镜像、入口规则都回到 A</text>
+<text class="ld" x="76" y="542" style="fill:#a5b4c8">AI 网关菜单消失；控制台被 owner 检查挡成 403，嵌入时被禁止嵌入的响应头拒掉</text>
+<text class="lt" x="48" y="576" style="fill:#e2e8f0">⑥  换一个新版本号，用当前源码全量构建 B，所有镜像和 chart 同一版本</text>
+<text class="lt" x="48" y="606" style="fill:#e2e8f0">⑦  部署 B：两次卡在 Helm 锁上，回滚到上一个正常版本释放锁后重跑</text>
+<text class="lt" x="48" y="636" style="fill:#e2e8f0">⑧  线上全是 B：之后再部署，门户、入口规则、AI 网关都按 B 来</text>
+
+<rect x="960" y="340" width="510" height="300" rx="12" fill="#0f172a" stroke="#334155"/>
+<text class="lt" x="984" y="372">每个阶段，线上两层各是哪个版本</text>
+<text class="ld" x="984" y="410">时间点</text><text class="ld" x="1140" y="410">门户镜像</text><text class="ld" x="1250" y="410">入口规则</text><text class="ld" x="1360" y="410">AI 网关</text>
+<line x1="984" y1="422" x2="1450" y2="422" stroke="#334155"/>
+<text class="lt" x="984" y="458">③ 之后</text><text class="lt" x="1140" y="458" style="fill:#5eead4">新</text><text class="lt" x="1250" y="458" style="fill:#5eead4">新*</text><text class="lt" x="1360" y="458" style="fill:#5eead4">能用</text>
+<text class="lt" x="984" y="504">⑤ 之后</text><text class="lt" x="1140" y="504" style="fill:#fca5a5">A</text><text class="lt" x="1250" y="504" style="fill:#fca5a5">A</text><text class="lt" x="1360" y="504" style="fill:#fca5a5">消失</text>
+<text class="lt" x="984" y="550">⑧ 之后</text><text class="lt" x="1140" y="550" style="fill:#5eead4">B</text><text class="lt" x="1250" y="550" style="fill:#5eead4">B</text><text class="lt" x="1360" y="550" style="fill:#5eead4">能用</text>
+<line x1="984" y1="572" x2="1450" y2="572" stroke="#334155"/>
+<text class="ld" x="984" y="598">* 入口规则也是手工升级上去的，同样不在 ACR 的 chart 里</text>
+<text class="ld" x="984" y="622">两层要同时是新版，功能才完整；少一层就坏一半</text>
+
+<line x1="30" y1="700" x2="1470" y2="700" stroke="#1e293b"/>
+<circle cx="44" cy="728" r="9" fill="#2dd4bf"/><text class="lg" x="62" y="733">按版本走的步骤</text>
+<circle cx="214" cy="728" r="9" fill="#fbbf24"/><text class="lg" x="232" y="733">只在源码里、没构建</text>
+<circle cx="420" cy="728" r="9" fill="#f87171"/><text class="lg" x="438" y="733">回退发生的那一步</text>
+<text class="lg" x="640" y="733">规则：改了源码就换版本号、全量构建再部署；单独换镜像只当临时手段</text>
+</svg>

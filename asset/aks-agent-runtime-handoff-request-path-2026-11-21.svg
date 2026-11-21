@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 960" width="1500" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>
+.title{fill:#f8fafc;font-size:22px;font-weight:700}
+.sub{fill:#94a3b8;font-size:14px}
+.zone{fill:#94a3b8;font-size:13px;font-weight:600}
+.h{fill:#f1f5f9;font-size:16px;font-weight:700}
+.t{fill:#e2e8f0;font-size:14px}
+.s{fill:#a5b4c8;font-size:13px}
+.ok{fill:#5eead4;font-size:13px;font-weight:600}
+.err{fill:#fca5a5;font-size:13.5px;font-weight:600}
+.num{fill:#0b1220;font-size:14px;font-weight:700;text-anchor:middle}
+.lg{fill:#cbd5e1;font-size:13.5px}
+.flow{fill:none;stroke:#2dd4bf;stroke-width:2.6;stroke-dasharray:9 7;animation:d 1.6s linear infinite}
+.cfg{fill:none;stroke:#fbbf24;stroke-width:2.2;stroke-dasharray:6 6;animation:d 2s linear infinite}
+@keyframes d{to{stroke-dashoffset:-32}}
+.pulse{animation:p 2.2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.45}}
+</style>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+</defs>
+<rect width="1500" height="960" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">一个请求从浏览器到 agent，要过哪几道</text>
+<text class="sub" x="30" y="70">入口网关对所有路径做同样三道处理；到了 agent 的 Pod 前面还有一层网络策略，只放行平台登记过的端口</text>
+
+<!-- browser -->
+<rect x="30" y="250" width="170" height="120" rx="12" fill="#111a2e" stroke="#64748b"/>
+<text class="h" x="52" y="284">浏览器</text>
+<text class="s" x="52" y="310">门户页面</text>
+<text class="s" x="52" y="332">嵌入的 AI 网关控制台</text>
+<text class="s" x="52" y="354">Agent UI / 终端 / 桌面</text>
+
+<!-- gateway zone -->
+<rect x="250" y="100" width="470" height="560" rx="14" fill="none" stroke="#38bdf8" stroke-dasharray="6 6"/>
+<text class="zone" x="268" y="124">入口网关（Istio + Lua 过滤器）</text>
+<g>
+<rect x="272" y="140" width="426" height="138" rx="10" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="296" cy="166" r="13" fill="#38bdf8"/><text class="num" x="296" y="171">1</text>
+<text class="h" x="318" y="172">Entra 登录检查</text>
+<text class="t" x="292" y="204">没有登录态就跳转 Entra；登录后还要在允许的组里</text>
+<text class="ok" x="292" y="232">所有路径都要过，这一道一直是对的</text>
+<text class="s" x="292" y="258">不在组里的人，登录成功后也停在这一道</text>
+</g>
+<g>
+<rect x="272" y="294" width="426" height="168" rx="10" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="296" cy="320" r="13" fill="#38bdf8"/><text class="num" x="296" y="325">2</text>
+<text class="h" x="318" y="326">owner 检查</text>
+<text class="t" x="292" y="358">取路径第一段当 agent 名，只有这个 agent 的 owner 能进</text>
+<text class="t" x="292" y="384">非 agent 的路径要在这一段之前单独放行</text>
+<text class="err" x="292" y="414">漏放行：/ai-gateway 被当成叫 ai-gateway 的 agent</text>
+<text class="err" x="292" y="438">→ 403 "does not own ai-gateway"</text>
+</g>
+<g>
+<rect x="272" y="478" width="426" height="164" rx="10" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="296" cy="504" r="13" fill="#38bdf8"/><text class="num" x="296" y="509">3</text>
+<text class="h" x="318" y="510">安全响应头</text>
+<text class="t" x="292" y="542">默认给所有响应加禁止嵌入（X-Frame-Options: DENY）</text>
+<text class="t" x="292" y="568">要嵌进门户的路径，改成只允许同源嵌入</text>
+<text class="err" x="292" y="598">漏改：门户里的 iframe 被浏览器拒绝</text>
+<text class="err" x="292" y="622">→ "refused to connect"</text>
+</g>
+
+<!-- arrows browser -> gateway -->
+<path class="flow" d="M200,310 L268,310" marker-end="url(#a)"/>
+
+<!-- targets -->
+<rect x="790" y="100" width="680" height="190" rx="14" fill="none" stroke="#a78bfa" stroke-dasharray="6 6"/>
+<text class="zone" x="808" y="124">平台命名空间</text>
+<rect x="808" y="140" width="310" height="132" rx="10" fill="#1d1733" stroke="#a78bfa"/>
+<text class="h" x="828" y="170">门户</text>
+<text class="t" x="828" y="200">管理员后台的 AI 网关页</text>
+<text class="t" x="828" y="226">用 iframe 嵌 /ai-gateway/ui/</text>
+<text class="s" x="828" y="252">页面本身在门户镜像里</text>
+<rect x="1140" y="140" width="312" height="132" rx="10" fill="#1d1733" stroke="#a78bfa"/>
+<text class="h" x="1160" y="170">AI 网关控制台（LiteLLM）</text>
+<text class="t" x="1160" y="200">挂在 /ai-gateway 前缀下</text>
+<text class="t" x="1160" y="226">控制台自己再登录一次</text>
+<text class="s" x="1160" y="252">前缀写在部署配置里，不靠手工改</text>
+
+<rect x="790" y="330" width="680" height="330" rx="14" fill="none" stroke="#2dd4bf" stroke-dasharray="6 6"/>
+<text class="zone" x="808" y="354">agent 命名空间（Kata 沙箱）</text>
+<g>
+<rect x="808" y="372" width="300" height="270" rx="10" fill="#0f2a26" stroke="#fbbf24"/>
+<circle cx="832" cy="398" r="13" fill="#fbbf24"/><text class="num" x="832" y="403">4</text>
+<text class="h" x="854" y="404">网络策略</text>
+<text class="t" x="828" y="436">operator 按平台登记生成</text>
+<text class="t" x="828" y="462">入口网关只能连登记过的端口</text>
+<text class="s" x="828" y="494">登记里有：18789、8642、9120、7681</text>
+<text class="err" x="828" y="522">漏了桌面的 6080</text>
+<text class="err" x="828" y="546">→ 桌面 "connection timeout"</text>
+<text class="s" x="828" y="578">改了登记要重启 operator，</text>
+<text class="s" x="828" y="600">各 agent 的策略才会重新生成</text>
+</g>
+<rect x="1130" y="372" width="322" height="270" rx="10" fill="#111a2e" stroke="#2dd4bf"/>
+<text class="h" x="1150" y="404">agent 的 Pod</text>
+<text class="t" x="1150" y="438">9120  Agent UI（对话）</text>
+<text class="t" x="1150" y="466">8642  Hermes API</text>
+<text class="t" x="1150" y="494">18789 OpenClaw</text>
+<text class="t" x="1150" y="522">7681  Terminal（网页 shell）</text>
+<g class="pulse"><text class="t" x="1150" y="550" style="fill:#fde68a">6080  Desktop（noVNC 桌面）</text></g>
+<text class="s" x="1150" y="584">路由早就配好了，挡住它的是</text>
+<text class="s" x="1150" y="606">左边那层网络策略</text>
+
+<path class="flow" d="M698,210 L804,210" marker-end="url(#a)"/>
+<path class="flow" d="M698,520 L804,520" marker-end="url(#a)"/>
+<path class="flow" d="M1108,520 L1126,520" marker-end="url(#a)"/>
+
+<!-- platform registration -->
+<rect x="790" y="700" width="680" height="110" rx="12" fill="#2a2110" stroke="#fbbf24"/>
+<text class="h" x="810" y="732">平台登记（平台命名空间里的一份 ConfigMap）</text>
+<text class="t" x="810" y="762">从集群现查：CoreDNS 与 AI 网关地址、各网段、API Server、入口网关 UID、Cilium 版本</text>
+<text class="t" x="810" y="788">从配置读：入口端口列表。原来是手工建的，仓库里没有，新集群会直接缺这一份</text>
+<path class="cfg" d="M958,700 L958,646" marker-end="url(#y)"/>
+
+<!-- legend -->
+<line x1="30" y1="838" x2="1470" y2="838" stroke="#1e293b"/>
+<text class="lg" x="30" y="868">① ② ③ 在入口网关的同一段脚本里，三道都对，门户和控制台才能打开；② ③ 的放行和入口规则是同一个 chart，和门户镜像要一起升级</text>
+<text class="lg" x="30" y="896">④ 是第四道：入口网关进了 agent 命名空间，还要被网络策略放行；端口少一个，对应的入口就超时，不会报权限错误</text>
+<text class="lg" x="30" y="924">三种报错对应三个位置：403 看 ②，refused to connect 看 ③，connection timeout 看 ④</text>
+</svg>
