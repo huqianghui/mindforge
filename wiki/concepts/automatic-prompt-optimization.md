@@ -1,7 +1,7 @@
 ---
 title: "自动提示优化（APO, Automatic Prompt Optimization）"
 created: "2026-06-29"
-updated: "2026-11-16"
+updated: "2026-11-21"
 tags:
   - wiki
   - concept
@@ -27,6 +27,7 @@ related:
   - "[[reinforcement-learning]]"
   - "[[rejection-sampling-finetuning]]"
   - "[[skillopt]]"
+  - "[[rl-infra-framework-selection]]"
 ---
 
 # 自动提示优化（APO, Automatic Prompt Optimization）
@@ -165,6 +166,7 @@ APO 是一种自动把 prompt 调优的完整优化方法，核心结构是「�
 - [[generation-evaluation-separation]] — `uses` Judge 打分与 Critic 诊断/生成分离，是生成-评估分离原则的体现
 - [[reinforcement-learning]] — `contrasts` APO 把 reward 用于离线 prompt 搜索，RL 把 reward 当梯度信号进 policy gradient
 - [[bitter-lesson]] — `implements` APO 是"用算力换 prompt 质量"的搜索方法，呼应算力终将胜出
+- [[rl-infra-framework-selection]] — `constrains` 从 APO 升级到 RL 时，APO 摆动的根源（评估噪声）会原样带进 RL，选 agent-lightning 还是 rllm 之前先把 reward / eval 做稳
 
 ## 来源日记
 

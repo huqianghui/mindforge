@@ -1,7 +1,7 @@
 ---
 title: "Agent RL 基础设施框架选型——VERL vs Slime vs OpenRLHF vs TRL"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-21"
 tags:
   - wiki
   - decision
@@ -18,6 +18,7 @@ related_concepts:
   - "[[reinforcement-learning]]"
   - "[[agent-lightning]]"
   - "[[distributed-training-parallelism]]"
+  - "[[automatic-prompt-optimization]]"
 related_methods: []
 ---
 
@@ -111,6 +112,17 @@ related_methods: []
 > Slime 非 drop-in replacement，迁移前需核对三项前置条件：能否接受 SGLang 唯一推理 backend、能否接受 Megatron 训练后端（从 FSDP 迁需改模型结构）、能否改造 rollout pipeline 与数据接口。三个判断信号：① 规模与 MoE——上 MoE/100B+/RL scaling 几乎一定向 Megatron 演进，此时 Slime 强绑定反成优势；70B 以下 FSDP 够用则 VERL 更省事。② 瓶颈定位——rollout 吞吐瓶颈在 VERL 内即可解（Ray/vLLM/async）或考虑 Slime 的 SGLang 强吞吐；training 能力瓶颈（大模型放不下）才考虑 Megatron。③ 架构同构性——agent-lightning 的数据流飞轮与 Slime「数据流包数据流」比 VERL「数据流包调度系统」更顺，但这是加分项而非决定项，规模与瓶颈不对齐时同构性收益不足以抵消迁移成本。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 1、待定 1、确认 1
 
+### Claim: agent-lightning 与 rllm 的 RL 内核都是 VERL，收敛稳定性的差异在算法配方层而非基础设施
+
+- **来源**：[[2026-11-01-周日]]、[[2026-11-16-周一]]
+- **首次出现**：2026-11-01
+- **最近更新**：2026-11-21
+- **置信度**：0.3
+- **状态**：active
+- **证据类型**：产品与服务
+
+> 背景是客户侧 APO 摆动大，担心换成 RL 摆动更大。两框架底层都跑 VERL，区别在上面那层：agent-lightning 是 method-agnostic 桥接层，不改算法，稳定性要自己调参，好处是 APO→SFT→RL 阶梯能复用现有 agent 和 reward 资产；rllm 内置 Agentica 的实战配方 GRPO+（去掉 KL 和 entropy loss、clip-high、leave-one-out advantage、迭代拉长上下文，DeepScaleR / DeepCoder 上验证过）。所以"rllm 是否更稳"要比的是配方，配方原则上可以手工搬回 VERL 配置复用。两者共同的前提是先把 reward / eval 做稳（扩大评估集、同 prompt 多次采样取均值）：APO 摆动的主因是评估噪声，同一个 reward 进 RL 后噪声仍是第一大不稳定源。尚未实跑对照，计划在 calc_x 上用同一 reward 比两框架的收敛曲线后回填。
+
 ## 关联概念
 
 - [[verl]] — `produces` 本决策的默认选择，Agent RL 的事实标准分布式基础设施
@@ -118,8 +130,10 @@ related_methods: []
 - [[reinforcement-learning]] — `grounds` Agent RL=系统问题而非算法问题，是本选型逻辑的理论根基
 - [[agent-lightning]] — `produces` agent-lightning 架构锁定 VERL，约束了上层可选的 RL 后端
 - [[distributed-training-parallelism]] — `constrains` 训练后端 FSDP/Megatron 的适用规模直接决定 VERL/Slime 的取舍边界
+- [[automatic-prompt-optimization]] — `constrains` APO 的摆动主要来自评估噪声，同一个 reward 进 RL 后仍是第一大不稳定源，选框架前先把 reward / eval 做稳
 
 ## 来源
 
 - [[Agent-Lightning系列07：强化学习与VERL入门]] — 三框架谱系对比（§三）、选型建议（§3.7）、agent-lightning 选 VERL 逻辑（§四）、替代方案与替换成本（§六）
 - [[Slime与VERL架构对比]] — VERL vs Slime 架构级对比、迁移决策 checklist 与三信号（§六）、架构同构性（§五）
+- [[2026-11-01-周日]]、[[2026-11-16-周一]] — agent-lightning 与 rllm 的收敛稳定性对比（追踪任务"知识差距·RL 主线"）
