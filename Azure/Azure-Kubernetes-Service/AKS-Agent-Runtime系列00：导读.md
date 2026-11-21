@@ -6,12 +6,12 @@ tags:
   - kubernetes
   - agent-runtime
   - series-index
-description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agent runtime，共十四篇正篇加四篇补充。导读给出系列路线、按层次的全景图、贯穿全系列的术语（三个平面、执行平面里的三层、参考实现与安全沙箱实现、常驻实现、三种网关等），按平台架构、安全、运维、选型四种角色的阅读路径，以及每篇一句话的索引
+description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agent runtime，共十五篇正篇加四篇补充。导读给出系列路线、按层次的全景图、贯穿全系列的术语（三个平面、执行平面里的三层、参考实现与安全沙箱实现、常驻实现、三种网关等），按平台架构、安全、运维、选型四种角色的阅读路径，以及每篇一句话的索引
 ---
 
 # AKS Agent Runtime 系列 00：导读
 
-这个系列以 Kubernetes、特别是 AKS 为基座，把 agent runtime 一个平面一个平面地搭出来，每篇配一次在 AKS 或本机上能复现的实践。正篇十四篇（00 到 13），另有四篇补充，各自深挖一个组件。
+这个系列以 Kubernetes、特别是 AKS 为基座，把 agent runtime 一个平面一个平面地搭出来，每篇配一次在 AKS 或本机上能复现的实践。正篇十五篇（00 到 14），另有四篇补充，各自深挖一个组件。
 
 ![AKS Agent Runtime 系列路线|900](../../asset/aks-agent-runtime-series-roadmap-2026-11-09.svg)
 
@@ -65,6 +65,7 @@ description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agen
 - [11：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)——RBAC 和 NetworkPolicy 只能守底线，会话、终端用户、资源动作、模型和不可信的决策要另外补。
 - [12：常驻实例与会话调度](AKS-Agent-Runtime系列12：常驻实例与会话调度.md)——每人一个常驻 agent 不用做快照、记忆天然有地方放，但算力按人常驻、出站默认放行；两种形态最后会走到常驻入口加会话执行池。
 - [13：Runtime 管控台与 LiteLLM 的分工](AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工.md)——配置以 CRD 为准、单向投影到 LiteLLM；Agent UI、Terminal、Desktop 三个入口各管一层；LiteLLM 的 Agents 是 A2A 注册表，不是常驻实现的 Agent；五类日志串不起来，出站授权、审批、配额和追溯两边都没有。
+- [14：让 PoC 能交给别人部署](AKS-Agent-Runtime系列14：让PoC能交给别人部署.md)——线上会悄悄回到 chart 里的旧版本；入口网关三道处理加 agent 前的网络策略，三种报错各对应一道；平台登记要从集群现查；配置分三类，交接前做三项检查。
 
 **补充**
 

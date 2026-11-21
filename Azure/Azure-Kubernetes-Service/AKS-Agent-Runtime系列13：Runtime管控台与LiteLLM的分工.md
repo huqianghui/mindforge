@@ -162,6 +162,7 @@ LiteLLM 的 Agents 是一个 **A2A agent 网关**：用 A2A 规范的 Agent Card
 - [AKS Agent Runtime 系列 08 补充：agentgateway 的定位与三种角色](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)
 - [AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)
 - [AKS Agent Runtime 系列 12：常驻实例与会话调度](AKS-Agent-Runtime系列12：常驻实例与会话调度.md)
+- [AKS Agent Runtime 系列 14：让 PoC 能交给别人部署](AKS-Agent-Runtime系列14：让PoC能交给别人部署.md)
 
 ## 参考资料
 

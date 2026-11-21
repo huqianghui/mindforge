@@ -327,6 +327,7 @@
 - [AKS Agent Runtime 系列 11：Kubernetes 原生机制管不到什么](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)
 - [AKS Agent Runtime 系列 12：常驻实例与会话调度](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列12：常驻实例与会话调度.md)
 - [AKS Agent Runtime 系列 13：Runtime 管控台与 LiteLLM 的分工](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工.md)
+- [AKS Agent Runtime 系列 14：让 PoC 能交给别人部署](Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列14：让PoC能交给别人部署.md)
 
 #### Azure/Copilot-Managed-Runtime
 
