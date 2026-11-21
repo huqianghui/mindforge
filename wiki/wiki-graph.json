@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-18",
+  "generated_at": "2026-11-21",
   "stats": {
     "nodes": 173,
-    "links": 750,
+    "links": 752,
     "orphan_links_removed": 2,
-    "claims": 1023,
+    "claims": 1024,
     "categories": 13
   },
   "nodes": [
@@ -14589,8 +14589,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 3,
-      "avg_confidence": 0.83,
+      "claims_count": 4,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "三框架是抽象层谱系而非替代关系——TRL 算法工具 / OpenRLHF 工程框架 / VERL 基础设施",
@@ -14624,6 +14624,17 @@
           "evidence": "Slime 非 drop-in replacement，迁移前需核对三项前置条件：能否接受 SGLang 唯一推理 backend、能否接受 Megatron 训练后端（从 FSDP 迁需改模型结构）、能否改造 rollout pipeline 与数据接口。三个判断信号：① 规模与 MoE——上 MoE/100B+/RL scaling 几乎一定向 Megatron 演进，此时 Slime 强绑定反成优势；70B 以下 FSDP 够用则 VERL 更省事。② 瓶颈定位——rollout 吞吐瓶颈在 VERL 内即可解（Ray/vLLM/async）或考虑 Slime 的 SGLang 强吞吐；training 能力瓶颈（大模型放不下）才考虑 Megatron。③ 架构同构性——agent-lightning 的数据流飞轮与 Slime「数据流包数据流」比 VERL「数据流包调度系统」更顺，但这是加分项而非决定项，规模与瓶颈不对齐时同构性收益不足以抵消迁移成本。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 确认——依据：依据：THUDM/slime README——“focuses deeply on the Megatron + SGLang path… By choosing one rollout backend”，印证“SGLang 唯一后端、Megatron 训练后端”两项前置条件 https://github.com/THUDM/slime"
+        },
+        {
+          "statement": "agent-lightning 与 rllm 的 RL 内核都是 VERL，收敛稳定性的差异在算法配方层而非基础设施",
+          "source": "2026-11-01-周日",
+          "first_seen": "2026-11-01",
+          "last_updated": "2026-11-21",
+          "confidence": 0.3,
+          "status": "active",
+          "evidence": "背景是客户侧 APO 摆动大，担心换成 RL 摆动更大。两框架底层都跑 VERL，区别在上面那层：agent-lightning 是 method-agnostic 桥接层，不改算法，稳定性要自己调参，好处是 APO→SFT→RL 阶梯能复用现有 agent 和 reward 资产；rllm 内置 Agentica 的实战配方 GRPO+（去掉 KL 和 entropy loss、clip-high、leave-one-out advantage、迭代拉长上下文，DeepScaleR / DeepCoder 上验证过）。所以\"rllm 是否更稳\"要比的是配方，配方原则上可以手工搬回 VERL 配置复用。两者共同的前提是先把 reward / eval 做稳（扩大评估集、同 prompt 多次采样取均值）：APO 摆动的主因是评估噪声，同一个 reward 进 RL 后噪声仍是第一大不稳定源。尚未实跑对照，计划在 calc_x 上用同一 reward 比两框架的收敛曲线后回填。",
+          "evidence_type": "产品与服务",
+          "review": ""
         }
       ]
     },
@@ -15820,6 +15831,12 @@
       "target": "bitter-lesson",
       "relation_type": "implements",
       "description": "APO 是\"用算力换 prompt 质量\"的搜索方法，呼应算力终将胜出"
+    },
+    {
+      "source": "automatic-prompt-optimization",
+      "target": "rl-infra-framework-selection",
+      "relation_type": "constrains",
+      "description": "从 APO 升级到 RL 时，APO 摆动的根源（评估噪声）会原样带进 RL，选 agent-lightning 还是 rllm 之前先把 reward / eval 做稳"
     },
     {
       "source": "autoresearch",
@@ -19228,6 +19245,12 @@
       "target": "distributed-training-parallelism",
       "relation_type": "constrains",
       "description": "训练后端 FSDP/Megatron 的适用规模直接决定 VERL/Slime 的取舍边界"
+    },
+    {
+      "source": "rl-infra-framework-selection",
+      "target": "automatic-prompt-optimization",
+      "relation_type": "constrains",
+      "description": "APO 的摆动主要来自评估噪声，同一个 reward 进 RL 后仍是第一大不稳定源，选框架前先把 reward / eval 做稳"
     },
     {
       "source": "spec-driven-vs-methodology-framework",

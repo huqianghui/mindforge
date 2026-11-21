@@ -17,10 +17,10 @@ The whole knowledge base is published as a website: [huqianghui.github.io/mindfo
 | 文章与笔记 | 269（Notes 174 / paper 14 / book 4 / product 6 / Azure 71） |
 | 日记 | 187 |
 | Wiki 页面 | 139 concepts + 22 methods + 12 decisions |
-| Claims（带证据的论断） | 1023 |
-| 知识图谱 | 173 节点 / 750 关系 / 9 种关系类型 |
+| Claims（带证据的论断） | 1024 |
+| 知识图谱 | 173 节点 / 752 关系 / 9 种关系类型 |
 
-> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-11-18。
+> 统计由 `wiki/scripts/export-graph.py` 自动生成，更新于 2026-11-21。
 <!-- STATS:END -->
 
 ### 知识图谱
