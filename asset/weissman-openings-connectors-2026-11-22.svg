@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 960" width="1500" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>
+.title{fill:#f8fafc;font-size:22px;font-weight:700}
+.sub{fill:#94a3b8;font-size:14px}
+.gh{fill:#f1f5f9;font-size:17px;font-weight:700}
+.gs{fill:#a5b4c8;font-size:13px}
+.it{fill:#f1f5f9;font-size:14.5px;font-weight:600}
+.d{fill:#cbd5e1;font-size:13px}
+.me{fill:#5eead4;font-size:13px}
+.num{fill:#0b1220;font-size:13px;font-weight:700;text-anchor:middle}
+.lg{fill:#cbd5e1;font-size:13.5px}
+.flow{fill:none;stroke:#2dd4bf;stroke-width:3;stroke-dasharray:10 8;animation:d 1.6s linear infinite}
+@keyframes d{to{stroke-dashoffset:-36}}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker></defs>
+<rect width="1500" height="960" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">开场、串词与图表串联：让听众一直跟得上</text>
+<text class="sub" x="30" y="70">一场演讲的时间线上，开场负责把人拉进来，串词负责让人觉得"这是讲给我的"，图表串联负责让石柱之间的过渡看得见</text>
+
+<!-- timeline -->
+<path class="flow" d="M60,118 L1440,118" marker-end="url(#a)"/>
+<text class="gs" x="60" y="104">开始</text><text class="gs" x="1400" y="104">结束</text>
+<rect x="60" y="108" width="300" height="20" rx="5" fill="#a78bfa"/><text class="num" x="210" y="123">开场</text>
+<rect x="380" y="108" width="240" height="20" rx="5" fill="#38bdf8"/><text class="num" x="500" y="123">石柱 1</text>
+<rect x="640" y="108" width="240" height="20" rx="5" fill="#38bdf8"/><text class="num" x="760" y="123">石柱 2</text>
+<rect x="900" y="108" width="240" height="20" rx="5" fill="#38bdf8"/><text class="num" x="1020" y="123">石柱 3</text>
+<rect x="1160" y="108" width="240" height="20" rx="5" fill="#64748b"/><text class="num" x="1280" y="123">收尾</text>
+
+<!-- openings -->
+<rect x="30" y="152" width="460" height="640" rx="14" fill="#1d1733" stroke="#a78bfa"/>
+<text class="gh" x="52" y="184">7 种经典开场白</text>
+<text class="gs" x="52" y="208">一段简短的开场，抓住注意力，也让自己以对话的方式开始</text>
+<g transform="translate(52,228)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">1</text>
+<text class="it" x="34" y="17">提问式</text><text class="d" x="110" y="17">向听众发问</text></g>
+<g transform="translate(52,282)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">2</text>
+<text class="it" x="34" y="17">陈述式</text><text class="d" x="110" y="17">一组惊人的数据，或鲜为人知的事实</text>
+<text class="me" x="110" y="40">实测数字：恢复 10.7 秒、预检查二十多分钟</text></g>
+<g transform="translate(52,352)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">3</text>
+<text class="it" x="34" y="17">回顾/前瞻式</text><text class="d" x="140" y="17">回首过去，或向前展望</text>
+<text class="me" x="140" y="40">讲 AI 的演进：从过去走到现在</text></g>
+<g transform="translate(52,422)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">4</text>
+<text class="it" x="34" y="17">轶事式</text><text class="d" x="110" y="17">一个简短、温暖的小故事</text>
+<text class="me" x="110" y="40">"同事截图问我：菜单怎么没了"</text></g>
+<g transform="translate(52,492)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">5</text>
+<text class="it" x="34" y="17">引证式</text><text class="d" x="110" y="17">从可靠的来源引用一段有利于你的话</text></g>
+<g transform="translate(52,546)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">6</text>
+<text class="it" x="34" y="17">格言警句式</text><text class="d" x="140" y="17">用大家都熟悉的俗语开始</text></g>
+<g transform="translate(52,600)"><circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">7</text>
+<text class="it" x="34" y="17">类比式</text><text class="d" x="110" y="17">借两种看似不相关的东西，</text>
+<text class="d" x="110" y="40">理清一个复杂、晦涩或模糊的主题</text>
+</g>
+<text class="gs" x="52" y="712">青绿色是我已经在用的；没标的几种，</text>
+<text class="gs" x="52" y="736">我在文章里几乎没用过，当面讲时可以试</text>
+
+<!-- external connectors -->
+<rect x="520" y="152" width="460" height="640" rx="14" fill="#0f172a" stroke="#38bdf8"/>
+<text class="gh" x="542" y="184">7 种外部串词</text>
+<text class="gs" x="542" y="208">把内容和眼前这群人连起来</text>
+<g transform="translate(542,228)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">1</text>
+<text class="it" x="34" y="17">直接指称</text><text class="d" x="120" y="17">点名提及听众中的一位或几位</text></g>
+<g transform="translate(542,282)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">2</text>
+<text class="it" x="34" y="17">间接指称</text><text class="d" x="120" y="17">提到与你和听众都有关联的人、</text>
+<text class="d" x="120" y="40">公司或组织</text></g>
+<g transform="translate(542,352)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">3</text>
+<text class="it" x="34" y="17">提问</text><text class="d" x="120" y="17">直接向一位或几位听众提问题</text></g>
+<g transform="translate(542,406)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">4</text>
+<text class="it" x="34" y="17">时事化</text><text class="d" x="120" y="17">联系当下发生的事</text>
+<text class="me" x="120" y="40">刚发布的模型、刚开源的项目</text></g>
+<g transform="translate(542,476)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">5</text>
+<text class="it" x="34" y="17">当地化</text><text class="d" x="120" y="17">提到与演讲地有关的信息</text></g>
+<g transform="translate(542,530)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">6</text>
+<text class="it" x="34" y="17">引用资料</text><text class="d" x="120" y="17">引用能支持观点的相关资料</text>
+<text class="me" x="120" y="40">文末的参考资料，正文里的官方文档链接</text></g>
+<g transform="translate(542,600)"><circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">7</text>
+<text class="it" x="34" y="17">量身定制开场页</text><text class="d" x="160" y="17">一页写着听众、地点和</text>
+<text class="d" x="160" y="40">日期的幻灯片开始</text></g>
+<text class="gs" x="542" y="712">写文章时 1、3、5 用不上，</text>
+<text class="gs" x="542" y="736">当面讲的时候它们最管用</text>
+
+<!-- chart linking -->
+<rect x="1010" y="152" width="460" height="640" rx="14" fill="#0f2a26" stroke="#2dd4bf"/>
+<text class="gh" x="1032" y="184">5 种图表串联技巧</text>
+<text class="gs" x="1032" y="208">在幻灯片上让结构看得见</text>
+<g transform="translate(1032,228)"><circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">1</text>
+<text class="it" x="34" y="17">缓冲页</text><text class="d" x="110" y="17">主要部分之间插入分隔页，</text>
+<text class="d" x="110" y="40">简单利落地过渡</text>
+<text class="me" x="110" y="62">系列的导读页、每节开头的总图</text></g>
+<g transform="translate(1032,320)"><circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">2</text>
+<text class="it" x="34" y="17">色标或索引</text><text class="d" x="140" y="17">重复出现的标志，不同颜色</text>
+<text class="d" x="140" y="40">表示不同部分</text>
+<text class="me" x="140" y="62">图里固定配色：完成青绿、当前琥珀</text></g>
+<g transform="translate(1032,412)"><circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">3</text>
+<text class="it" x="34" y="17">符号</text><text class="d" x="110" y="17">可辨识的记号表示各点关系</text>
+<text class="me" x="110" y="40">图里编号 ①②③，正文按编号解释</text></g>
+<g transform="translate(1032,482)"><circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">4</text>
+<text class="it" x="34" y="17">基准项</text><text class="d" x="110" y="17">连续页面里重复出现的部分，</text>
+<text class="d" x="110" y="40">创造前后相继的感觉</text>
+<text class="me" x="110" y="62">导读里的系列路线图，每篇新增一站</text></g>
+<g transform="translate(1032,574)"><circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">5</text>
+<text class="it" x="34" y="17">预期空间</text><text class="d" x="110" y="17">为接下来的内容预留空白，</text>
+<text class="d" x="110" y="40">先吊起胃口，再满足期望</text>
+<text class="me" x="110" y="62">路线图上灰色虚线的"规划中"</text></g>
+<text class="gs" x="1032" y="712">这五种我在画图时几乎都用了，</text>
+<text class="gs" x="1032" y="736">只是一直叫它们"配色规范"和"路线图"</text>
+
+<line x1="30" y1="822" x2="1470" y2="822" stroke="#1e293b"/>
+<text class="lg" x="30" y="852">左：开场只占开头一小段；中：串词散在整场里，每根石柱都可以用一两次；右：图表串联放在石柱之间的过渡处</text>
+<text class="lg" x="30" y="882">青绿色一行是我在文章和分享里已经在做的对应做法；没标的，是写文章用不上、或者我还没试过的</text>
+<text class="lg" x="30" y="912">外部串词里的点名、提问、当地化只在现场才有，这是演讲比写文章多出来的一层</text>
+</svg>

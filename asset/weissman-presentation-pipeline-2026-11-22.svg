@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" width="1500" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>
+.title{fill:#f8fafc;font-size:22px;font-weight:700}
+.sub{fill:#94a3b8;font-size:14px}
+.zone{fill:#94a3b8;font-size:13px;font-weight:600}
+.h{fill:#f1f5f9;font-size:17px;font-weight:700}
+.t{fill:#e2e8f0;font-size:14px}
+.s{fill:#a5b4c8;font-size:13px}
+.q{fill:#fde68a;font-size:14px;font-weight:600}
+.num{fill:#0b1220;font-size:15px;font-weight:700;text-anchor:middle}
+.lg{fill:#cbd5e1;font-size:13.5px}
+.flow{fill:none;stroke:#2dd4bf;stroke-width:3;stroke-dasharray:10 8;animation:d 1.6s linear infinite}
+.back{fill:none;stroke:#fbbf24;stroke-width:2;stroke-dasharray:5 6;animation:d 2.4s linear infinite reverse}
+@keyframes d{to{stroke-dashoffset:-36}}
+.pulse{animation:p 2.2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
+<marker id="y" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+</defs>
+<rect width="1500" height="900" rx="16" fill="#0b1220"/>
+<text class="title" x="30" y="44">从一个题目到一场能讲的演讲</text>
+<text class="sub" x="30" y="70">魏斯曼的准备流程：先回答四个问题，再搭骨架，最后处理开头和过渡。四个问题贯穿始终，每一步做完都回去对一遍</text>
+
+<!-- four questions band -->
+<rect x="30" y="96" width="1440" height="150" rx="14" fill="#2a2110" stroke="#fbbf24"/>
+<text class="h" x="52" y="128">四个关键问题（审稿时作者什么都先不看，只问这四个）</text>
+<g class="pulse">
+<rect x="52" y="146" width="330" height="80" rx="10" fill="#1f1a0c" stroke="#fbbf24"/>
+<text class="q" x="72" y="176">① 你的目的是什么？</text>
+<text class="s" x="72" y="204">听完之后，希望听众做什么</text>
+</g>
+<rect x="400" y="146" width="330" height="80" rx="10" fill="#1f1a0c" stroke="#fbbf24"/>
+<text class="q" x="420" y="176">② 面对的是谁？诉求是什么？</text>
+<text class="s" x="420" y="204">他们关心的事，不是我想讲的事</text>
+<rect x="748" y="146" width="330" height="80" rx="10" fill="#1f1a0c" stroke="#fbbf24"/>
+<text class="q" x="768" y="176">③ 你的罗马石柱是什么？</text>
+<text class="s" x="768" y="204">撑起整场演讲的那几个要点</text>
+<rect x="1096" y="146" width="352" height="80" rx="10" fill="#1f1a0c" stroke="#fbbf24"/>
+<text class="q" x="1116" y="176">④ 为什么按这个顺序排？</text>
+<text class="s" x="1116" y="204">换句话说：选了哪种叙述结构</text>
+
+<!-- pipeline steps -->
+<text class="zone" x="30" y="290">准备的四步</text>
+<g>
+<rect x="30" y="304" width="320" height="250" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="56" cy="332" r="15" fill="#38bdf8"/><text class="num" x="56" y="337">1</text>
+<text class="h" x="80" y="338">框架表格</text>
+<text class="t" x="52" y="374">把目的、听众、诉求写下来</text>
+<text class="t" x="52" y="400">对应问题 ① ②</text>
+<text class="s" x="52" y="440">先定"讲给谁、为了什么"，</text>
+<text class="s" x="52" y="462">后面所有取舍都以它为准</text>
+<text class="s" x="52" y="502">输出：一页纸的演讲定位</text>
+</g>
+<g>
+<rect x="400" y="304" width="320" height="250" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="426" cy="332" r="15" fill="#38bdf8"/><text class="num" x="426" y="337">2</text>
+<text class="h" x="450" y="338">头脑风暴</text>
+<text class="t" x="422" y="374">把能想到的材料全写出来</text>
+<text class="t" x="422" y="400">先不评判、不排序</text>
+<text class="s" x="422" y="440">数据、案例、观点、故事，</text>
+<text class="s" x="422" y="462">越多越好，删是下一步的事</text>
+<text class="s" x="422" y="502">输出：一堆零散的点</text>
+</g>
+<g>
+<rect x="770" y="304" width="320" height="250" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<circle cx="796" cy="332" r="15" fill="#38bdf8"/><text class="num" x="796" y="337">3</text>
+<text class="h" x="820" y="338">归类成罗马石柱</text>
+<text class="t" x="792" y="374">把零散的点归成几组</text>
+<text class="t" x="792" y="400">每组一根石柱，对应问题 ③</text>
+<text class="s" x="792" y="440">和目的、听众无关的组，</text>
+<text class="s" x="792" y="462">再好也拿掉</text>
+<text class="s" x="792" y="502">输出：几根撑得住的石柱</text>
+</g>
+<g>
+<rect x="1140" y="304" width="330" height="250" rx="12" fill="#0f2a26" stroke="#2dd4bf"/>
+<circle cx="1166" cy="332" r="15" fill="#2dd4bf"/><text class="num" x="1166" y="337">4</text>
+<text class="h" x="1190" y="338">选叙述结构排序</text>
+<text class="t" x="1162" y="374">16 种结构里选一种</text>
+<text class="t" x="1162" y="400">决定石柱的先后，对应问题 ④</text>
+<text class="s" x="1162" y="440">结构是给听众的地图：他们一次</text>
+<text class="s" x="1162" y="462">只能看到一页，要先看到森林</text>
+<text class="s" x="1162" y="502">输出：一条有顺序的主线</text>
+</g>
+<path class="flow" d="M350,430 L396,430" marker-end="url(#a)"/>
+<path class="flow" d="M720,430 L766,430" marker-end="url(#a)"/>
+<path class="flow" d="M1090,430 L1136,430" marker-end="url(#a)"/>
+<path class="back" d="M1305,304 L1305,262" marker-end="url(#y)"/>
+<path class="back" d="M930,304 L930,262" marker-end="url(#y)"/>
+<path class="back" d="M190,304 L190,262" marker-end="url(#y)"/>
+
+<!-- delivery layer -->
+<text class="zone" x="30" y="600">讲的时候还要处理两处</text>
+<rect x="30" y="614" width="700" height="170" rx="12" fill="#1d1733" stroke="#a78bfa"/>
+<circle cx="56" cy="642" r="15" fill="#a78bfa"/><text class="num" x="56" y="647">5</text>
+<text class="h" x="80" y="648">开场：7 种经典开场白</text>
+<text class="t" x="52" y="684">提问、陈述（惊人数据）、回顾/前瞻、轶事、引证、格言、类比</text>
+<text class="s" x="52" y="718">作用有两个：抓住注意力，也让自己以对话的方式进入状态</text>
+<text class="s" x="52" y="744">开场白要简短，目的达到就进入第一根石柱</text>
+<rect x="770" y="614" width="700" height="170" rx="12" fill="#1d1733" stroke="#a78bfa"/>
+<circle cx="796" cy="642" r="15" fill="#a78bfa"/><text class="num" x="796" y="647">6</text>
+<text class="h" x="820" y="648">串联：7 种外部串词 + 5 种图表串联</text>
+<text class="t" x="792" y="684">串词把听众拉进来，图表串联让石柱之间的过渡看得见</text>
+<text class="s" x="792" y="718">听众一次只看一张幻灯片，跟丢一个环节就会走神、</text>
+<text class="s" x="792" y="744">打断提问，或者自己去找那个失落的联系</text>
+<path class="flow" d="M1305,554 L1305,590 L380,590 L380,610" marker-end="url(#a)"/>
+<path class="flow" d="M1305,590 L1120,590 L1120,610" marker-end="url(#a)"/>
+
+<line x1="30" y1="812" x2="1470" y2="812" stroke="#1e293b"/>
+<text class="lg" x="30" y="842">① ~ ④：四个关键问题，① ② 在第 1 步回答，③ 在第 3 步，④ 在第 4 步；黄色虚线表示每一步做完都回到这四个问题检查一遍</text>
+<text class="lg" x="30" y="870">1 ~ 4 是准备，决定讲什么、按什么顺序讲；5、6 是讲的时候的技巧，前提是 1 ~ 4 已经做完，没有主线的演讲，开场和过渡也救不回来</text>
+</svg>
