@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -85,11 +85,11 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe-Coding系列02：架构师视角的Harness实践|Vibe Coding系列02]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.8
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：OpenAI 五支柱为对某篇外部文章的转述，本轮未取到官方原文
+- **复核**：2026-11-22 确认——依据：[Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering)：原文章节含 repository knowledge as system of record、layered domain architecture、agent legibility、golden principles、entropy and garbage collection
 
 > 仓库即系统记录、分层领域架构、Agent 可读性、黄金准则、垃圾回收。
 
@@ -241,11 +241,11 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Vibe-Coding系列14：Harness框架的Skill化收敛]]
 - **首次出现**：2026-08-20
-- **最近更新**：2026-08-30
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.9
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：Superpowers 5.0.2→6.3.0 目录对比本轮仅核到 release notes，未核各版本目录
+- **复核**：2026-11-22 确认——依据：[obra/superpowers](https://github.com/obra/superpowers) 当前 v7.0.2（2026-11-03）：顶层无 agents/、commands/，skills/ 15 个，hooks/ 只剩 session-start 与 hooks 配置——收敛趋势延续
 
 > Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**"变简单"是表象，实质是职责归位**——框架竞争维度从"机制精巧"变成"方法论文本质量"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。
 
@@ -266,6 +266,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - 2026-09-04：注入五平台横评的编排接入镜像两式（dsh loop 内挂 / OpenHands loop 外包）与"控制权在哪一层"选型判据；绑定×可分解十字定位归口 [[model-harness-codesign]]，搬家工具市场实证归口 [[harness-portability-spectrum]]。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 7、确认 1、长效 13
 - 2026-11-16：harness 作为实体的 7 条 Claim（OpenForge 定义、与 framework / runtime 的边界、三类归属、托管平台打包、编排接入两式、职责边界）搬到新页 [[agent-harness]]，本页只留"怎么把 harness 做好"的工程方法。
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 2
 
 ## 关联概念
 

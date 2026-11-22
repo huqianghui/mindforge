@@ -1,7 +1,7 @@
 ---
 title: "Realtime Protocol Selection"
 created: "2026-05-24"
-updated: "2026-11-07"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -30,11 +30,11 @@ related:
 
 - **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
-- **最近更新**：2026-05-24
+- **最近更新**：2026-11-22
 - **置信度**：0.9
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 表格：麦克风上行、转写、VAD、文字、信令走 WebSocket，WebRTC 只承载数字人下行；Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md 第 46 行SDP经同一条 WS
+- **复核**：2026-11-22 确认——依据：[Voice Live API with WebRTC](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-webrtc)：SDP 经 WebSocket 控制通道交换后音频走 WebRTC RTP 媒体轨，非音频事件另走控制通道（另有 HTTP 信令模式，不保留 WS）
 
 > WebSocket：TCP 传输层、双向消息通道、可靠但可能 delay、载荷为 JSON 事件和控制指令。WebRTC：UDP（SRTP/SCTP）、超低延迟容忍丢包、载荷为音频帧/视频帧、原生集成浏览器音频处理链（AEC/AGC/NS）。在 Voice Live 中 WebSocket 负责信令 + 会话控制，WebRTC 负责音频/视频媒体流。
 
@@ -173,6 +173,7 @@ related:
 - **2026-10-11**：用户读完 Voice Live 系列16 后解除 ice-nat-traversal HOLD——ICE / STUN / TURN 速览 Claim 迁出至 [[ice-nat-traversal]]（本页只留选型层）；注入系列16 一条 Claim（WebRTC 与 WS 的全维度差别、媒体直连后的后端职责重设计、可观测性不对称与 WS 分层工具）。
 - **2026-10-16**：注入系列17 一条 Claim（avatar `output_protocol: websocket` 实测可用），**更正** 10-02 Claim 里"UDP 封死唯一兜底是重建不带 avatar 的会话"——数字人可经 WS 以分片 MP4 下发保留，选型从"放弃数字人"变为"默认 WebRTC、建连失败降级 WS 下发"。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、长效 4
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 1
 
 ## 关联概念
 

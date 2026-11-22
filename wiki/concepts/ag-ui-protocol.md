@@ -1,7 +1,7 @@
 ---
 title: "AG-UI 协议：Agent 三大协议的最后一环"
 created: "2026-08-04"
-updated: "2026-11-16"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -33,11 +33,11 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 
 - **来源**：[[AG-UI协议解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
-- **置信度**：0.75
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.85
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：查到的 AG-UI README 与 CopilotKit 文档未直接给出 MCP/A2A/AG-UI 三协议定位原文，不能下结论
+- **复核**：2026-11-22 确认——依据：[AG-UI Overview](https://docs.ag-ui.com/introduction)：官方三层表——Agent↔User 为 AG-UI、Agent↔Tools & Data 为 MCP、Agent↔Agent 为 A2A
 
 > 官方定位图：User —AG-UI— Agent Runtime —MCP— Tools/Data，—A2A— Other Agents。AG-UI 不是 Agent Framework 也不是 UI 框架，与 MCP、A2A 一样是协议规范（Specification）。与传统 REST 的本质区别：整个交互是双向事件流（RunStarted → MessageDelta → ToolCallStarted → RenderApprovalCard → UserAction(Confirm) → ContinueRun → FinalMessage），而非一次 HTTP Response。
 
@@ -94,6 +94,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - 2026-09-12：evolve-wiki 例行复核——"Voice Agent 本质也是一种 UI"Claim 直接引用 Foundry 官方文档原话，按官方文档置信度下限规则 0.7→0.8。
 - 2026-10-24：A2A 与 A2UI 独立建页，补"第四块拼图"Claim 与两条 `contrasts` 关联（A2UI 承载关系、AG-UI ≠ MCP、应用状态 ≠ Data Model 两个边界）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、确认 1
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 1
 
 ## 关联概念
 

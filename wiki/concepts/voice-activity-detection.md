@@ -1,7 +1,7 @@
 ---
 title: "Voice Activity Detection"
 created: "2026-04-11"
-updated: "2026-11-07"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -54,11 +54,11 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 - **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.8
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：同 29，Tavily 限流
+- **复核**：2026-11-22 确认——依据：[Silero VAD README](https://github.com/snakers4/silero-vad)：JIT 模型约 2MB，30+ ms 音频块单 CPU 线程处理不到 1ms，MIT 许可
 
 > 2MB 模型，< 1ms per 32ms audio chunk，实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机，支持 barge-in。
 
@@ -124,6 +124,7 @@ Voice Activity Detection（VAD）是实时语音交互中判断用户是否在�
 
 - 2026-04-30：VAD 论文深入分析后，摘要扩展为涵盖深度学习三条路径和 Semantic VAD ≠ 打断能力的关键区分。原有 Claims 仍有效，新 Claims 补充了更细粒度的技术路径和系统级打断机制。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、长效 4、待定 1
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 1
 
 ## 关联概念
 

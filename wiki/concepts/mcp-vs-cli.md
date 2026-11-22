@@ -1,7 +1,7 @@
 ---
 title: "MCP vs CLI"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -44,11 +44,11 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - **来源**：[[MCP-vs-CLI：重新审视MCP]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
+- **最近更新**：2026-11-22
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：同上 tool search 文档；CLI 省 token 的相对优势仍在，但差距因 tool search 缩小
+- **复核**：2026-11-22 确认——依据：[Connect Claude Code to tools via MCP](https://docs.anthropic.com/en/docs/claude-code/mcp)：tool search 默认延迟加载 MCP 工具定义，CLI 单 Bash 工具的省 token 优势仍在但差距缩小
 
 > 只需单个 Bash tool 定义，model 利用预训练知识理解命令行工具。
 
@@ -80,11 +80,11 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - **来源**：[[Azure-Copilot生态：Skills、MCP与Agents的协作]]
 - **首次出现**：2026-05-14
-- **最近更新**：2026-05-24
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.9
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：本轮未查 Azure Skills 官方资料（Tavily 限流）
+- **复核**：2026-11-22 确认——依据：[microsoft/azure-skills](https://github.com/microsoft/azure-skills)：官方插件把 skills（何时用哪条 Azure 工作流）与 Azure MCP（操作在线资源）打包，部署依赖 az / azd CLI
 
 > Azure Skills 在剧本中预编排了 MCP/CLI 分工：关键专有 API（AppLens 诊断、Resource Health）走 MCP，常见成熟命令（azd up、terraform apply、kubectl）走 CLI。选择标准：模型是否熟悉 + CLI 有无等价命令 + 操作复杂度 + 安全敏感度。MCP 用上下文空间换取调用精确度；CLI 用模型内置知识换取上下文节省。
 
@@ -92,11 +92,11 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 
 - **来源**：[[Computer-Use与Browser-Use系列四：产品化]]
 - **首次出现**：2026-08-29
-- **最近更新**：2026-08-30
+- **最近更新**：2026-11-22
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：WebMCP 规范与 OpenAI 开发者文档本轮未核实
+- **复核**：2026-11-22 确认——依据：[WebMCP 规范草案](https://webmachinelearning.github.io/webmcp) 与 [Chrome Imperative API](https://developer.chrome.com/docs/ai/webmcp/imperative-api)：`document.modelContext.registerTool` 注册页面工具；Chrome 侧仍标实验特性，置信度不升
 
 > 浏览器操作产品化引入第三层：**WebMCP site tools**——页面顶层 JS 里 `document.modelContext.registerTool()` 把页面能力直接声明为 agent 工具（带 readOnlyHint/untrustedContentHint 注解），agent 不再猜 DOM、不点坐标，直接调业务语义工具。三层分工：Extension 解决"进入用户正在看的页面"（登录态）、Plugin+MCP 解决"安全稳定做业务"（页面没开也能跑）、WebMCP 解决"当前页面告诉 agent 自己能做什么"（工具随页面关闭失效）。选型判据从"MCP 上下文换精度 vs CLI 内置知识换节省"扩展为按运行位置分层：操作自家页面 → WebMCP 优先；后台任务 → MCP+API；第三方站点 → Extension/浏览器控制兜底。OpenAI 开发者文档站已实测暴露 search/lookup/navigate site tools——生产级 WebMCP 已存在。
 
@@ -128,6 +128,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - 2026-09-06：注入"MCP 作同产品内解耦协议"Claim（Codex Desktop 系列04）——MCP 角色谱系从"外部工具接入"扩展出"产品内部组件分层"一档。
 - 2026-09-12：注入"MCP 不贡献效率只贡献连接"Claim（Blender 系列02）——效率归因与运行/分发两层面辨析，DCC 域回填。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 3、确认 3
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 3
 
 ## 关联概念
 

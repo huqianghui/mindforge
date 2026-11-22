@@ -1,7 +1,7 @@
 ---
 title: "Agent Lightning"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -67,11 +67,11 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 - **来源**：[[Agent-Lightning系列02：框架全景]]
 - **首次出现**：2026-06-25
-- **最近更新**：2026-06-29
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.9
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：查到 v1.0 README 与 releases（https://github.com/microsoft/agent-lightning/releases）但未见 @rollout/prompt 资源注入的新版 API 说明，无法判断 0.3.1 写法是否仍适用
+- **复核**：2026-11-22 确认——依据：[Write Agents（latest）](https://microsoft.github.io/agent-lightning/latest/tutorials/write-agents) 与 [Agent 参考](https://microsoft.github.io/agent-lightning/stable/reference/agent)：@rollout 按签名判型并注入 `prompt_template` / `llm`，llm_rollout 与 prompt_rollout 签名均以 task 开头
 
 > `@rollout` 靠 `inspect.signature` 自动判型，硬性签名：第一参必须叫 `task`，必须带 `llm` 或 `prompt_template` 之一。框架不关心函数体用 LangChain/OpenAI/AutoGen，只认「签名 + 返回值」——所谓"零代码改动"实质是"包一层符合签名的函数"。但接入 APO 有唯一强制改造：agent 若把 prompt 写死，必须重构成 baseline `PromptTemplate` + 注入，否则 APO 没有可优化对象。
 
@@ -121,11 +121,11 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 - **来源**：[[Agent-Lightning系列03：自定义算法与Trainer集成]]
 - **首次出现**：2026-06-26
-- **最近更新**：2026-06-29
-- **置信度**：0.8
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.9
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：v1.0 README 不再描述 5 个 store 动作；未查到能确认或否定的官方文档
+- **复核**：2026-11-22 确认——依据：[Write the First Algorithm（latest）](https://microsoft.github.io/agent-lightning/latest/how-to/write-first-algorithm)：Algorithm 调 enqueue_rollout / update_resources 并查询 spans，Runner dequeue_rollout 回写，二者只经 Store 通信可跨进程跨机器
 
 > 自定义算法不依赖内置 `APO`/`VERL` 类，自己写优化循环，核心接入契约就是一组 store 动作（`enqueue_rollout` 等 5 个）。algorithm 进程（消费者）与 runner 进程（生产者）通过 store 解耦，可分进程跑也可用 Trainer 自带内存 store 一键运行。这印证了 §2.4「store 是控制平面」——它不是被动存储，而是 runner↔algorithm 之间的协调中枢，是 method-agnostic 能成立的物理基础。
 
@@ -137,7 +137,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - **置信度**：0.8
 - **状态**：stale
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：未能在 v1.0 官方文档中核对 APO 源码实现（0.3.1 源码结论），无法下结论
+- **复核**：2026-11-22 待定——依据：v1.0 主干的 apo.py 原路径已 404（目录重组），本轮未取到新版 APO 源码，无法判断 0.3.1 结论是否仍成立
 
 > 逐行打开 `apo.py` 后戳破两个直觉误解：① APO 算法核心就是「LLM 调用 + `sorted`（按 reward 排序选优）」，没有神秘机制；② APO 内部的"多 agent 协作"（Judge/Critic/Editor/BeamSearch）是同一个 LLM 扮演的虚拟角色，不是多个独立 agent 进程。这与 [[rejection-sampling-finetuning]] 的「内核是 sorted」形成同构——APO 和 SFT 共享「采样 → 按 reward 排序 → 取优」的对称结构。
 
@@ -169,11 +169,11 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 - **来源**：[[Agent-Harness五平台对比]]、[[2026-09-02-周三]]
 - **首次出现**：2026-08-31
-- **最近更新**：2026-09-04
+- **最近更新**：2026-11-22
 - **置信度**：0.5
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：DeepSeek Harness 为 preview 且未查到官方 changelog，Cordis 事件暴露情况无法核实
+- **复核**：2026-11-22 确认——依据：[deepseek-harness session-log 包](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/session/session-log-deepseek/README.md)：session log 是 Cordis 插件、Session.events 为持久事件流；前提成立，导出路线仍未实测，置信度不升
 
 > DeepSeek Harness 的 session log 是"模型可见事实的唯一来源"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将"轨迹采集/可审计执行（喂 RL、合规审计）"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh "loop 也是 plugin" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。
 
@@ -184,6 +184,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - 2026-07-03：从系列08 实战篇细化架构锁定 Claim——加入版本窗口证据（0.3.1↔verl≤0.7.0，verl 0.8.0 删 fsdp_workers），置信度 0.8→0.85。
 - 2026-09-04：注入 dsh session log 轨迹采集前端 Claim（五平台横评 + 日记 DSH 深挖场景 3）——框架首次获得"真实工作负载轨迹来源"的候选拼图，置信度 0.5 待 DSH 前置验证（headless/事件钩子）后调整。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 4、长效 2、确认 1
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 3、待定 1
 
 ## 关联概念
 

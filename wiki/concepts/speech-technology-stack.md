@@ -1,7 +1,7 @@
 ---
 title: "Speech Technology Stack"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-22"
 tags:
   - wiki
   - concept
@@ -53,11 +53,11 @@ related:
 
 - **来源**：[[Voice-Live系列01：Agent实现架构]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-22
+- **置信度**：0.8
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：Tavily 限流(429)，Silero 2MB / <1ms 每 32ms 块未能查到官方 README 确认
+- **复核**：2026-11-22 确认——依据：[Silero VAD README](https://github.com/snakers4/silero-vad)：JIT 模型约 2MB，30+ ms 音频块单 CPU 线程处理不到 1ms
 
 > 用户说话时打断 Agent 语音输出。Silero VAD（2MB 模型，< 1ms per 32ms audio chunk）实现 IDLE-LISTENING-PROCESSING-SPEAKING 状态机。
 
@@ -184,6 +184,7 @@ related:
 - 2026-10-02：注入 Voice Live 系列01 4.5.1 + 系列12 §四（采样率与编解码按方向分：上行为机器、下行为人；24 kHz 协议继承、16 kHz 实测无损、WS 不收 Opus、Opus 48k 时钟标签）与系列09（`session.voice` 会话级参数 vs 逐句 SSML、旋钮不等于生效、`voice.type` 硬约束）两条 Claim——Speech In 的采样率层与 Speech Out 的发音控制体系（G2P / Lexicon）04 月 Claims 获生产级续证。
 - 2026-10-11：注入 Voice Live 系列16 §七 Opus Claim——澄清"Opus 只有 WebRTC 能用"是 Voice Live WS 接口限制而非编码与传输绑定，补"省带宽首段 Opus / 消卡顿必须 WebRTC"方向判据。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 4、待定 1
+- 2026-11-22：loop-revalidate（Loop⑥）复核——确认 1
 
 ## 关联概念
 
