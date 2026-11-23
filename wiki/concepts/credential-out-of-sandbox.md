@@ -1,7 +1,7 @@
 ---
 title: "Credential Out of Sandbox"
 created: "2026-11-14"
-updated: "2026-11-16"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -98,7 +98,20 @@ related:
 
 > OpenSandbox 只有建沙箱时带了出站策略才加 egress 边车（按域名放行、NET_ADMIN 只给边车），不带就完全不受限，连节点元数据地址都可达；叠加到 agent-sandbox 时绕过了模板，模板生成的网络策略也一并没有。agent-sandbox 默认模板封了 169.254/16，但改成 Unmanaged 自写策略后要自己记得封。兜底：命名空间级 NetworkPolicy，或 AKS 的 IMDS restriction（预览，挡住所有非 hostNetwork Pod，开启后要重做节点镜像）；快照镜像不要和业务镜像放在节点身份能拉的同一个注册表。AKS 实测。
 
+### Claim: 沙箱里的 agent 默认连委托连接的存储都碰不到——broker 只在"不在沙箱"或"开了沙箱委托连接集成"时被授权，报错看起来像配置坏了
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：实测经验
+
+> 常驻 runtime 里，委托连接（agent 代表用户访问 Microsoft 服务）的凭据存在 agent 命名空间，由平台的 agent-broker 读写。operator 只在两种情况下给 broker 授权：agent 不在沙箱里跑，或者在沙箱里跑但开启了沙箱委托连接集成。内置管理员 agent 不在沙箱里所以正常；跑在 Kata 沙箱里的演示 agent 工作区 Identities 一栏显示 "Binding storage is unavailable"，因为那个集成默认关闭。这是"凭据不进沙箱"的默认落在产品上的样子：沙箱 agent 要用委托连接，必须显式打开一条额外集成（还需要额外的平台登记，委托连接本身还要租户管理员同意）。没打开时的报错看起来像存储坏了，所以要写进使用说明的已知限制并写明原因。
+
 ## 冲突与演进
+
+- 2026-11-23：/extract-knowledge 收入系列 14，新增"沙箱 agent 默认拿不到委托连接存储"一条（单一参考实现，0.65）。
 
 - 2026-10-29：`host-mediated-sandbox` 因三处来源同一产品 HOLD，作 [[copilot-managed-runtime]] Claim 收入。
 - 2026-11-04：Agent 基础设施系列 02/03 出现两个非 Microsoft 低代码平台的同类实现，泛化为 `credential-out-of-sandbox`，作 [[agent-sandbox]] Claim 收入（0.75），仍不建页。
@@ -124,3 +137,4 @@ related:
 - [[Agent基础设施系列03：kagent与Agent-Substrate]] — Agent Substrate 沙箱外注入
 - [[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]] — OpenSandbox 不带策略时出站不受限
 - [[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]] — 兜底在命名空间策略与节点元数据限制
+- [[AKS-Agent-Runtime系列14：让PoC能交给别人部署]] — 沙箱 agent 的委托连接要显式开集成

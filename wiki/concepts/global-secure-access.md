@@ -1,7 +1,7 @@
 ---
 title: "Global Secure Access"
 created: "2026-10-24"
-updated: "2026-10-24"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -82,7 +82,20 @@ Global Secure Access（GSA）是微软的 SSE（Security Service Edge）方案�
 
 > 同一日本东部资源每种方式 10 次、每次新建连接：chat 总计中位数经 GSA 按域名 2950 ms、按 IP 2692 ms、直连 1623 ms；服务端耗时三者都在 1.0~1.1 秒，**模型没有变慢，差距全在网络**。TLS 从约 110 ms 涨到 860~1020 ms，TCP 只多约 40 ms（TCP 握手在近端边缘完成，TLS 与数据沿边缘→connector→Azure 区域长路径走完，折算经通道一个完整往返约 400 ms vs 直连约 44 ms，绕路为推断）；按域名进入时 DNS 有约 1.3 秒的固定抖动（10 次中 3 次，疑似超时重试，推断）。客户端日志显示发往公网 IP 的连接同样进 Private 通道，跳过 DNS 只绕开 DNS 这一层，真正直连基线只能在通道正常时 Disable 再测。SDK 复用连接时建连开销只付一次，但每请求仍多约 300~400 ms 往返，对看首字节的流式输出与实时语音影响明显。样本少，适合判断量级。
 
+### Claim: 开着 GSA 时 SSH 到 Azure VM 连上即被 reset；给云上构建机下发命令改走管理面的 run-command，构建机不开任何入站端口
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.5
+- **状态**：active
+- **证据类型**：实测经验
+
+> 本机开着 GSA 时 SSH 一连上就被 reset；关掉 GSA 后公司网络出口又拦了 22 端口，把 sshd 改到 443 也连不上。所以这一次观察里 GSA 与公司出口策略两个因素叠在一起，没有单独验证是 GSA 的哪一个 profile 或哪条规则造成的 reset，置信度只给 0.5。绕开的办法不依赖本机网络路径：命令全部用 `az vm run-command` 下发，走 Azure 管理面 API、用本机 `az login` 的 Entra 身份认证，构建机 NSG 不开任何入站规则；源码包用 `az acr build` 封进 ACR 里只含这个文件的镜像，构建机 `docker pull` 后取出。run-command 单次调用有超时，长构建要放后台跑、结束时写退出码文件，本机轮询。外部来源：[Run scripts in an Azure Linux VM by using action Run Commands](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command)。
+
 ## 冲突与演进
+
+- 2026-11-23：/extract-knowledge 收入系列 14，新增"GSA 下 SSH 被 reset、改走 run-command"一条；与 UDP、DNS 两个案例无关的第 3 个 GSA 主题，但 GSA 与公司出口策略未分离，0.5。
 
 - 2026-10-16：HOLD——产品页成文但两篇来源围绕同一数字人案例，机制论断分散建模到 [[ice-nat-traversal]]、[[voice-live-agent]]、[[realtime-protocol-selection]]、[[weak-network-adaptive-degradation]]。复核阈值：出现与数字人案例无关的第 2 个 GSA 主题。
 - 2026-10-24：建页（用户 AskUserQuestion 裁决）。触发：产品页新增第八节"案例二"，Private Access 的 DNS 规则残留与性能开销是与 WebRTC 无关的第 2 个 GSA 主题，命中 HOLD 复核阈值。选择以产品概念页而非通用 `security-service-edge` 页归口（目前仅 GSA 一款 SSE 产品有实测材料）；已分散在其他页的 Claim 不搬动，本页只收产品层机制与案例二，UDP 部分只保留判断标准、细节指向 [[ice-nat-traversal]]。`udp-port-pinning` 独立建页的 HOLD 不受影响（仍只一个产品复现）。
@@ -100,3 +113,4 @@ Global Secure Access（GSA）是微软的 SSE（Security Service Edge）方案�
 - [[2026-10-21-周三]] — 诊断 Azure OpenAI 全部报网络错误（Private Access 断开、`/etc/resolver` 规则残留），做 GSA 与直连的性能对比，产品页新增案例二
 - [[Global-Secure-Access：微软SSE的设计与实时媒体问题]] — 产品定位、四个转发 profile、客户端截获机制、UDP 案例、DNS 案例与性能实测（2026-10-14 建，2026-10-21 新增第八节）
 - [[Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析]] — 端口钉死排查与复现脚本（2026-10-14）
+- [[AKS-Agent-Runtime系列14：让PoC能交给别人部署]] — GSA 下 SSH 被 reset，构建机改走 run-command（2026-11-21）

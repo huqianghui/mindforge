@@ -1,7 +1,7 @@
 ---
 title: "Agent Runtime"
 created: "2026-11-16"
-updated: "2026-11-18"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -139,7 +139,31 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 
 > 按系列 11 的清单逐项对照常驻实现：harness 白名单、skill 白名单与按 Team 发布、模型白名单、每个 Agent 的预算与限流、Kata 与 Sandbox 的资源边界，都由 CRD 声明、operator 执行，规则执行不了一律不放行（Policy 读不到或无效则挂起 Agent、吊销 key，拿到执行证据才标为已生效）。两边都缺的四块：① 出站只到 Cilium 的"公网黑名单、内网白名单、按域名封禁"，做不到"某 agent 对某资源的某动作"，也没有撤销后秒级生效；② push、建 PR、部署、调外部系统都在 agent 手里，没有人工审批点——对人下线后还在自主推进的常驻 agent 更要紧；③ 一个 Team 或一个人最多几个 Agent、共占多少 Kata 容量没有上限；④ 日志之间没有共同的会话或轮次 ID，Portal 自己不记操作审计。LiteLLM 已自带、operator 未接的 Guardrails、MCP 网关、Tool Policies、Agents 模块可以复用，但接法应与 key、team 一样从 CRD 单向投影。
 
+### Claim: 自建 runtime 交给别人部署时，最先坏的是"手工做过、仓库里没有"的东西——值按三类放：平台约定留在代码、环境值进配置、集群事实部署时现查
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> 常驻 runtime 开启沙箱执行后，operator 要从一份平台登记读运行时能力（Kata 支持的特性）和网络拓扑（CoreDNS 与 AI 网关地址、Pod/Service/节点网段、API Server 地址、入口网关身份、Cilium 版本）。上游默认不生成这份登记，要部署者按自己集群提供；手工建的那份几天后就过时了（AKS 自动升级后 Cilium 版本对不上），换一个集群部署到这一步就会失败。分类按两个问题：换订阅或集群会不会变、变了能不能从集群查到。不变的（命名空间、约定的密钥名、协议固定的 ID）留在代码里并写明"不要改"，做成配置项反而让人改出不一致；会变但查不到的（订阅、区域、资源名、机型、版本号、模型与单价、管理员名单、端口列表）进配置文件，且一个值只在一处定义；会变又查得到的（地址、网段、UID、组件版本）部署时现查。交接前三项检查：变量来源逐个对上配置模板或生成逻辑；把写死的值提成变量后重新生成配置，与线上那份逐字段对比；仓库公开前扫全部 git 历史而不只是当前文件。另一个常被混在一起的点：能登录（Entra 组）和能进管理员后台（门户管理员名单）是两层，名单按登录名 `@` 前一段匹配，来宾账号要查本租户里的 UPN 而不是邮箱。
+
+### Claim: operator 代管的 Helm 升级会被同一次部署里 operator 自己的滚动更新打断——release 锁在 pending-upgrade，回滚到最后一个 deployed 版本再重跑
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> Helm 升级先把 release 标成 pending-upgrade，做完才改成 deployed，中途被打断就留下锁，之后的部署都报 "has an unfinished operation"。实际遇到两种来路：一是自己把 `helm upgrade` 的输出接到 `| head`，head 读够几行退出、管道断开，helm 进程被中途终止，资源已应用但 release 永远停在 pending-upgrade；二是平台升级的最后一步要等内置管理员 agent 就绪，而这个 agent 的 Helm 升级由 operator 发起，同一次部署里 operator 自己也在滚动更新，旧 Pod 被替换时手上那次升级就断了，平台升级等到超时。解法一样：`helm history` 找最后一个 deployed 版本、`helm rollback` 释放锁、再重跑；第二次重跑时 operator 已是新版本，不会再自己打断自己。runtime 里凡是控制器替你调用 Helm 的地方，都要考虑控制器自身升级时的中断。
+
 ## 冲突与演进
+
+- 2026-11-23：/extract-knowledge 收入系列 14，新增"交接时最先坏的是手工做过的事、值分三类"与"operator 代管的 Helm 升级被自身滚动打断"两条；期望状态与调和范围两条归 [[reconciliation-loop]]，入站报错定位归 [[agent-sandbox]]，沙箱 agent 的委托连接授权归 [[credential-out-of-sandbox]]。
 
 - 2026-11-18：/extract-knowledge 收入系列 12、13。两种自建形态（会话调度、常驻实例）都已做过初步实验，形态选择单独建决策页 [[resident-vs-session-agent-runtime]]（harvest 原建议先作 Claim 注入，因两种形态均已实测而改为建页）；本页摘要补两种形态，新增治理覆盖一条。
 
@@ -178,6 +202,7 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 - [[AKS-Agent-Runtime系列00：导读]] — 系列全景与术语
 - [[AKS-Agent-Runtime系列01：Sandbox之外的三个平面]] — 三个平面
 - [[AKS-Agent-Runtime系列04：出站治理与逐请求授权]] / [[AKS-Agent-Runtime系列08：模型接入层]] — 授权开销与突发
+- [[AKS-Agent-Runtime系列14：让PoC能交给别人部署]] — 平台登记现查、值分三类、交接前检查、Helm 锁
 - [[AKS-Agent-Runtime系列10：为什么在AKS上自建]] — 每一层用什么、自建的代价
 - [[AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么]] — 原生机制守底线
 - [[AKS-Agent-Runtime系列12：常驻实例与会话调度]] — 常驻实例与会话调度两种形态

@@ -1,7 +1,7 @@
 ---
 title: "Agent Sandbox"
 created: "2026-11-04"
-updated: "2026-11-16"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -23,6 +23,7 @@ related:
   - "[[agent-session-control-plane]]"
   - "[[relationship-based-access-control]]"
   - "[[ai-gateway]]"
+  - "[[reconciliation-loop]]"
 ---
 
 # Agent Sandbox（Agent 沙箱）
@@ -269,7 +270,20 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 
 > agent-sandbox：operatingMode 改 Suspended 删 Pod 留 PVC（8 秒），改回 Running 重挂 Azure Disk（11 秒），PVC 文件在、/tmp 没了、新 VM、主机名不变、Pod IP 变。OpenSandbox：commit Job 把 rootfs 推镜像仓库（7~11 秒），恢复约 5 秒，/workspace 与 /tmp 都在。叠加模式下暂停变 Suspended，不再存 rootfs。第一次恢复 OpenSandbox 沙箱时 Pod 一直 Pending——暂停腾出的 CPU 被两边预热池补货占走，Kata 节点 CPU 请求到 96%，删掉别的池后才恢复。要跨暂停保留 harness 原生会话文件，用 agent-sandbox 就得放进 PVC。AKS 实测。
 
+### Claim: 入站方向也有三道处理加一层网络策略，403、refused to connect、connection timeout 各对应一处——看报错就能定位卡在哪一道
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 常驻 runtime 的入口网关用一段脚本对所有路径做三道处理再转给后端：① Entra 登录与允许组检查；② owner 检查，把路径第一段当 agent 名，门户和 AI 网关控制台这类非 agent 路径必须在这一步之前放行，否则 `/ai-gateway` 被当成一个叫 ai-gateway 的 agent，返回"不是 owner"的 403；③ 安全响应头，默认禁止嵌入，被 iframe 嵌入的路径要改成只允许同源，否则浏览器显示 refused to connect。请求进了 agent 命名空间还有第四道：operator 按平台登记生成的 CiliumNetworkPolicy，入口网关只能连登记过的端口，登记漏了桌面 6080 时，路由存在却报 upstream connect error（connection timeout）。排查口诀：403 查 owner 检查有没有放行这条路径，refused to connect 查响应头，路由存在却超时查网络策略放行了哪些端口。会话型 runtime 有同类情况：OpenSandbox dashboard 调 lifecycle API 被 operator 自带的网络策略挡住（Snapshots 为空、详情页 i/o timeout，而走 Kubernetes API 的 Pools 页正常）；NetworkPolicy 是叠加生效的，补一条放行即可，不必改 operator 自带的那条，补丁要进部署脚本。与出站方向"卡住而不是泄露"那条同理：策略漏配的表现是超时，不是权限错误。
+
 ## 冲突与演进
+
+- 2026-11-23：/extract-knowledge 收入系列 14，新增"入站三道处理加网络策略"一条，与出站方向的排查判据成对。
 
 - 2026-11-16：完备性补抽 [[AKS-Agent-Runtime系列01补充：Kata运行时与节点池]]：新增"Kata 节点池是另一种节点镜像"一条，"容量与调试算法"一条补入调度与 cgroup 对账数据。
 - 2026-11-16：/revalidate（漂移复核）——5 条确认、1 条修订：粒度光谱里 Agent Substrate 的代价由"pre-1.0"改为 1.0 GA 后的实际限制。
@@ -285,6 +299,7 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 - [[copilot-managed-runtime]] — `contrasts` 同为"沙箱只有一个受控出口"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据
 - [[relationship-based-access-control]] — `constrains` 沙箱能对外做什么以三方交集为准
 - [[ai-gateway]] — `uses` 出站只剩一条路，路上的判断在网关
+- [[reconciliation-loop]] — `uses` agent 网络策略由 operator 按平台登记调和生成
 
 ## 来源日记
 
@@ -297,5 +312,6 @@ Agent 沙箱是 agent 执行模型生成的代码、或需要跨轮次保留文�
 - [[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]] — harness 不可信、两种拓扑、四类共享物、卡住而非泄露
 - [[AKS-Agent-Runtime系列04：出站治理与逐请求授权]] — 权限交集、撤销两层、静态路由只读
 - [[AKS-Agent-Runtime系列08：模型接入层]] — 模型请求按部署名授权
+- [[AKS-Agent-Runtime系列14：让PoC能交给别人部署]] — 入口三道处理与网络策略、三种报错的定位、OpenSandbox dashboard 补放行
 - [[GitHub-Copilot系列01：产品全景与竞争格局]] — 产品侧实例：Copilot session 默认跑在 GitHub 托管的隔离 micro-VM 云沙箱，关闭时存快照、可跨入口恢复
 - [[AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox]] — 两个后端在 AKS 上的实测与三种组合

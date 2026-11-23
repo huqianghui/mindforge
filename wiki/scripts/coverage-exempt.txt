@@ -5,3 +5,4 @@ Notes/tool/image&container/Skopeo实战：不装Docker的镜像搬运.md	工具�
 Notes/tool/rtk/Rust开发环境与Cargo构建指南.md	语言环境入门，RTK 系列的附录
 Notes/AI/Context-Engineering/Context Engineering vs MCP/99-Works-Cited.md	参考文献列表
 Notes/AI/Context-Engineering/A Survey of Context Engineering for Large Language Models/Context-Engineering综述读书笔记.md	空壳（只有标题与占位）
+book/魏斯曼演讲大师课读书笔记：结构、开场与串联.md	非技术领域（演讲方法），2026-11-23 用户采纳不进 wiki，方法落在 presentation-prep skill

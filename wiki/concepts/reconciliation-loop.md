@@ -1,7 +1,7 @@
 ---
 title: "Reconciliation Loop"
 created: "2026-11-14"
-updated: "2026-11-16"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -20,6 +20,7 @@ related:
   - "[[negative-feedback]]"
   - "[[feedback-loop]]"
   - "[[agent-session-control-plane]]"
+  - "[[agent-sandbox]]"
 ---
 
 # Reconciliation Loop（调和循环）
@@ -90,7 +91,31 @@ related:
 
 > 往同一个 `reviewer:v1` 推新内容后 28 秒内两个 agent 都有反应：Pinned 的 revision 仍指向原 digest，status 多一条 `bundleTagMoved` 写明钉住哪个、tag 现在指向哪个；Track 自动生成新 revision 指向新 digest，旧 revision 保留、在用的会话不受影响。期望状态（spec + 策略）与真实状态（registry 里 tag 当前指向）的比对是同一结构；区别在于修偏差的动作由策略决定是"告警交给人"还是"自动跟随"——与标签守护"只自动修能安全修的"同一判断。
 
+### Claim: 完整部署是一次调和——期望状态是 chart 里的版本号，手工换上去的镜像和规则只活到下一次完整部署
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 一个已上线的页面在下一次完整部署后消失：第一次全量构建时源码还没有这个页面，之后只重建了门户镜像手工换上线，再做完整部署时，部署按 chart 里写的版本号拉镜像，chart 还是第一次构建的那份，门户被换回旧镜像。同一个功能还改了入口网关的两条规则，完整部署把两层一起打回去，只把镜像再换上去，页面能打开、控制台仍进不去。期望状态（chart 与 values）和真实状态（线上在跑什么）的比对是同一结构，手工改动只改了真实状态、没改期望状态，下一次调和就会被纠正回去。对策是让期望状态跟着源码走：改了源码就换一个新版本号、全量构建再部署，单独换镜像只当当天要补全量构建的临时手段；对账时把 ACR 镜像标签、各 Helm release 历史、Deployment 滚动记录三处对起来看。
+
+### Claim: 不是所有输入都在调和范围里——operator 只在启动时读的配置，改了也不会生效，要靠重启触发重新生成
+
+- **来源**：[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
+- **首次出现**：2026-11-21
+- **最近更新**：2026-11-23
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> 常驻 runtime 的 operator 按平台命名空间里的一份平台登记（运行时能力与网络拓扑）给每个 agent 生成 CiliumNetworkPolicy，但它只在启动时读这份登记。补上桌面端口 6080 后只更新 ConfigMap，等了一阵网络策略纹丝不动；重启 operator 后不到半分钟，6080 进入白名单。调和循环只对它 watch 的对象生效，启动时读一次的配置属于循环外的输入，所以部署脚本要在登记内容变化时主动重启 operator。判断一个配置改了会不会生效，先问控制器是 watch 它还是只在启动时读它。
+
 ## 冲突与演进
+
+- 2026-11-23：/extract-knowledge 收入系列 14，新增"完整部署是一次调和"和"启动时读的配置不在调和范围里"两条，分别对应期望状态的定义与调和范围的边界。
 
 - 2026-10-26 / 10-29：标签守护一文单篇单实现，`reconciliation-loop` HOLD，作 [[feedback-loop]] Claim 收入。复核阈值：第二个独立的调和实现。
 - 2026-11-14：AKS Agent Runtime 系列 05 的沙箱 / 快照对账器（另一领域、另一实现）命中阈值，系列 07 的 controller 复查是第三处。用户裁决建页，[[feedback-loop]] 原 Claim 迁入本页首条，该页保留指向。
@@ -102,6 +127,7 @@ related:
 - [[agent-platform]] — `uses` agent 定义 controller 周期复查 skills 包
 - [[negative-feedback]] — `uses` 每一路都以"读当前状态 → 比对 → 修偏差"的负反馈为单元
 - [[feedback-loop]] — `part-of` 反馈闭环在运维与平台工程中的具体形态
+- [[agent-sandbox]] — `uses` agent 网络策略由 operator 按平台登记调和生成，登记只在启动时读
 - [[agent-session-control-plane]] — `constrains` 会话层自己的回收只覆盖有记录的资源，必须另配从外往里的对账
 
 ## 来源日记
@@ -111,3 +137,4 @@ related:
 - [[Azure资源标签守护：事件订阅与定时扫描的自动修复]] — 事件 + 定时扫描双路调和
 - [[AKS-Agent-Runtime系列05：会话生命周期与回收]] — 从状态库往外 vs 从外往里、保守规则、快照仓库
 - [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]] — controller 周期复查 tag 挪动
+- [[AKS-Agent-Runtime系列14：让PoC能交给别人部署]] — 完整部署按 chart 版本号覆盖手工改动；operator 启动时读的平台登记
