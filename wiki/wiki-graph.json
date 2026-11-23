@@ -2,9 +2,9 @@
   "generated_at": "2026-11-23",
   "stats": {
     "nodes": 173,
-    "links": 752,
+    "links": 754,
     "orphan_links_removed": 2,
-    "claims": 1024,
+    "claims": 1031,
     "categories": 13
   },
   "nodes": [
@@ -1312,8 +1312,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 8,
-      "avg_confidence": 0.73,
+      "claims_count": 10,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "Runtime 内部有四个子层——隔离原语、沙箱编排、持久执行、调度与生命周期，各自不互相替代",
@@ -1402,6 +1402,28 @@
           "evidence": "按系列 11 的清单逐项对照常驻实现：harness 白名单、skill 白名单与按 Team 发布、模型白名单、每个 Agent 的预算与限流、Kata 与 Sandbox 的资源边界，都由 CRD 声明、operator 执行，规则执行不了一律不放行（Policy 读不到或无效则挂起 Agent、吊销 key，拿到执行证据才标为已生效）。两边都缺的四块：① 出站只到 Cilium 的\"公网黑名单、内网白名单、按域名封禁\"，做不到\"某 agent 对某资源的某动作\"，也没有撤销后秒级生效；② push、建 PR、部署、调外部系统都在 agent 手里，没有人工审批点——对人下线后还在自主推进的常驻 agent 更要紧；③ 一个 Team 或一个人最多几个 Agent、共占多少 Kata 容量没有上限；④ 日志之间没有共同的会话或轮次 ID，Portal 自己不记操作审计。LiteLLM 已自带、operator 未接的 Guardrails、MCP 网关、Tool Policies、Agents 模块可以复用，但接法应与 key、team 一样从 CRD 单向投影。",
           "evidence_type": "实测经验",
           "review": ""
+        },
+        {
+          "statement": "自建 runtime 交给别人部署时，最先坏的是\"手工做过、仓库里没有\"的东西——值按三类放：平台约定留在代码、环境值进配置、集群事实部署时现查",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "常驻 runtime 开启沙箱执行后，operator 要从一份平台登记读运行时能力（Kata 支持的特性）和网络拓扑（CoreDNS 与 AI 网关地址、Pod/Service/节点网段、API Server 地址、入口网关身份、Cilium 版本）。上游默认不生成这份登记，要部署者按自己集群提供；手工建的那份几天后就过时了（AKS 自动升级后 Cilium 版本对不上），换一个集群部署到这一步就会失败。分类按两个问题：换订阅或集群会不会变、变了能不能从集群查到。不变的（命名空间、约定的密钥名、协议固定的 ID）留在代码里并写明\"不要改\"，做成配置项反而让人改出不一致；会变但查不到的（订阅、区域、资源名、机型、版本号、模型与单价、管理员名单、端口列表）进配置文件，且一个值只在一处定义；会变又查得到的（地址、网段、UID、组件版本）部署时现查。交接前三项检查：变量来源逐个对上配置模板或生成逻辑；把写死的值提成变量后重新生成配置，与线上那份逐字段对比；仓库公开前扫全部 git 历史而不只是当前文件。另一个常被混在一起的点：能登录（Entra 组）和能进管理员后台（门户管理员名单）是两层，名单按登录名 `@` 前一段匹配，来宾账号要查本租户里的 UPN 而不是邮箱。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "operator 代管的 Helm 升级会被同一次部署里 operator 自己的滚动更新打断——release 锁在 pending-upgrade，回滚到最后一个 deployed 版本再重跑",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Helm 升级先把 release 标成 pending-upgrade，做完才改成 deployed，中途被打断就留下锁，之后的部署都报 \"has an unfinished operation\"。实际遇到两种来路：一是自己把 `helm upgrade` 的输出接到 `| head`，head 读够几行退出、管道断开，helm 进程被中途终止，资源已应用但 release 永远停在 pending-upgrade；二是平台升级的最后一步要等内置管理员 agent 就绪，而这个 agent 的 Helm 升级由 operator 发起，同一次部署里 operator 自己也在滚动更新，旧 Pod 被替换时手上那次升级就断了，平台升级等到超时。解法一样：`helm history` 找最后一个 deployed 版本、`helm rollback` 释放锁、再重跑；第二次重跑时 operator 已是新版本，不会再自己打断自己。runtime 里凡是控制器替你调用 Helm 的地方，都要考虑控制器自身升级时的中断。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -1422,7 +1444,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 22,
+      "claims_count": 23,
       "avg_confidence": 0.77,
       "claims": [
         {
@@ -1665,6 +1687,17 @@
           "status": "active",
           "evidence": "agent-sandbox：operatingMode 改 Suspended 删 Pod 留 PVC（8 秒），改回 Running 重挂 Azure Disk（11 秒），PVC 文件在、/tmp 没了、新 VM、主机名不变、Pod IP 变。OpenSandbox：commit Job 把 rootfs 推镜像仓库（7~11 秒），恢复约 5 秒，/workspace 与 /tmp 都在。叠加模式下暂停变 Suspended，不再存 rootfs。第一次恢复 OpenSandbox 沙箱时 Pod 一直 Pending——暂停腾出的 CPU 被两边预热池补货占走，Kata 节点 CPU 请求到 96%，删掉别的池后才恢复。要跨暂停保留 harness 原生会话文件，用 agent-sandbox 就得放进 PVC。AKS 实测。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "入站方向也有三道处理加一层网络策略，403、refused to connect、connection timeout 各对应一处——看报错就能定位卡在哪一道",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "常驻 runtime 的入口网关用一段脚本对所有路径做三道处理再转给后端：① Entra 登录与允许组检查；② owner 检查，把路径第一段当 agent 名，门户和 AI 网关控制台这类非 agent 路径必须在这一步之前放行，否则 `/ai-gateway` 被当成一个叫 ai-gateway 的 agent，返回\"不是 owner\"的 403；③ 安全响应头，默认禁止嵌入，被 iframe 嵌入的路径要改成只允许同源，否则浏览器显示 refused to connect。请求进了 agent 命名空间还有第四道：operator 按平台登记生成的 CiliumNetworkPolicy，入口网关只能连登记过的端口，登记漏了桌面 6080 时，路由存在却报 upstream connect error（connection timeout）。排查口诀：403 查 owner 检查有没有放行这条路径，refused to connect 查响应头，路由存在却超时查网络策略放行了哪些端口。会话型 runtime 有同类情况：OpenSandbox dashboard 调 lifecycle API 被 operator 自带的网络策略挡住（Snapshots 为空、详情页 i/o timeout，而走 Kubernetes API 的 Pools 页正常）；NetworkPolicy 是叠加生效的，补一条放行即可，不必改 operator 自带的那条，补丁要进部署脚本。与出站方向\"卡住而不是泄露\"那条同理：策略漏配的表现是超时，不是权限错误。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -4795,8 +4828,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 6,
-      "avg_confidence": 0.77,
+      "claims_count": 7,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "四个独立平台的同一做法——沙箱只有一个受控出口，凭据由出口处的可信中介注入；机制可以是 egress 代理，也可以是浏览器宿主中介",
@@ -4862,6 +4895,17 @@
           "status": "active",
           "evidence": "OpenSandbox 只有建沙箱时带了出站策略才加 egress 边车（按域名放行、NET_ADMIN 只给边车），不带就完全不受限，连节点元数据地址都可达；叠加到 agent-sandbox 时绕过了模板，模板生成的网络策略也一并没有。agent-sandbox 默认模板封了 169.254/16，但改成 Unmanaged 自写策略后要自己记得封。兜底：命名空间级 NetworkPolicy，或 AKS 的 IMDS restriction（预览，挡住所有非 hostNetwork Pod，开启后要重做节点镜像）；快照镜像不要和业务镜像放在节点身份能拉的同一个注册表。AKS 实测。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "沙箱里的 agent 默认连委托连接的存储都碰不到——broker 只在\"不在沙箱\"或\"开了沙箱委托连接集成\"时被授权，报错看起来像配置坏了",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "常驻 runtime 里，委托连接（agent 代表用户访问 Microsoft 服务）的凭据存在 agent 命名空间，由平台的 agent-broker 读写。operator 只在两种情况下给 broker 授权：agent 不在沙箱里跑，或者在沙箱里跑但开启了沙箱委托连接集成。内置管理员 agent 不在沙箱里所以正常；跑在 Kata 沙箱里的演示 agent 工作区 Identities 一栏显示 \"Binding storage is unavailable\"，因为那个集成默认关闭。这是\"凭据不进沙箱\"的默认落在产品上的样子：沙箱 agent 要用委托连接，必须显式打开一条额外集成（还需要额外的平台登记，委托连接本身还要租户管理员同意）。没打开时的报错看起来像存储坏了，所以要写进使用说明的已知限制并写明原因。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -6490,8 +6534,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.72,
+      "claims_count": 6,
+      "avg_confidence": 0.68,
       "claims": [
         {
           "statement": "GSA 的 Internet Access 本质是以 TCP 为中心的 Web 网关——UDP 支持不完整，实时媒体按设计就不该经过 SSE 隧道",
@@ -6546,6 +6590,17 @@
           "status": "active",
           "evidence": "同一日本东部资源每种方式 10 次、每次新建连接：chat 总计中位数经 GSA 按域名 2950 ms、按 IP 2692 ms、直连 1623 ms；服务端耗时三者都在 1.0~1.1 秒，**模型没有变慢，差距全在网络**。TLS 从约 110 ms 涨到 860~1020 ms，TCP 只多约 40 ms（TCP 握手在近端边缘完成，TLS 与数据沿边缘→connector→Azure 区域长路径走完，折算经通道一个完整往返约 400 ms vs 直连约 44 ms，绕路为推断）；按域名进入时 DNS 有约 1.3 秒的固定抖动（10 次中 3 次，疑似超时重试，推断）。客户端日志显示发往公网 IP 的连接同样进 Private 通道，跳过 DNS 只绕开 DNS 这一层，真正直连基线只能在通道正常时 Disable 再测。SDK 复用连接时建连开销只付一次，但每请求仍多约 300~400 ms 往返，对看首字节的流式输出与实时语音影响明显。样本少，适合判断量级。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "开着 GSA 时 SSH 到 Azure VM 连上即被 reset；给云上构建机下发命令改走管理面的 run-command，构建机不开任何入站端口",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "本机开着 GSA 时 SSH 一连上就被 reset；关掉 GSA 后公司网络出口又拦了 22 端口，把 sshd 改到 443 也连不上。所以这一次观察里 GSA 与公司出口策略两个因素叠在一起，没有单独验证是 GSA 的哪一个 profile 或哪条规则造成的 reset，置信度只给 0.5。绕开的办法不依赖本机网络路径：命令全部用 `az vm run-command` 下发，走 Azure 管理面 API、用本机 `az login` 的 Entra 身份认证，构建机 NSG 不开任何入站规则；源码包用 `az acr build` 封进 ACR 里只含这个文件的镜像，构建机 `docker pull` 后取出。run-command 单次调用有超时，长构建要放后台跑、结束时写退出码文件，本机轮询。外部来源：[Run scripts in an Azure Linux VM by using action Run Commands](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command)。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -9744,7 +9799,7 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
+      "claims_count": 7,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -9801,6 +9856,28 @@
           "evidence": "往同一个 `reviewer:v1` 推新内容后 28 秒内两个 agent 都有反应：Pinned 的 revision 仍指向原 digest，status 多一条 `bundleTagMoved` 写明钉住哪个、tag 现在指向哪个；Track 自动生成新 revision 指向新 digest，旧 revision 保留、在用的会话不受影响。期望状态（spec + 策略）与真实状态（registry 里 tag 当前指向）的比对是同一结构；区别在于修偏差的动作由策略决定是\"告警交给人\"还是\"自动跟随\"——与标签守护\"只自动修能安全修的\"同一判断。",
           "evidence_type": "实测经验",
           "review": "2026-11-16 确认——依据：来源 [[AKS-Agent-Runtime系列07：Agent的类型、注册与发现]]（2026-11-15 修订），修订后原文仍含本条的数字与结论"
+        },
+        {
+          "statement": "完整部署是一次调和——期望状态是 chart 里的版本号，手工换上去的镜像和规则只活到下一次完整部署",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "一个已上线的页面在下一次完整部署后消失：第一次全量构建时源码还没有这个页面，之后只重建了门户镜像手工换上线，再做完整部署时，部署按 chart 里写的版本号拉镜像，chart 还是第一次构建的那份，门户被换回旧镜像。同一个功能还改了入口网关的两条规则，完整部署把两层一起打回去，只把镜像再换上去，页面能打开、控制台仍进不去。期望状态（chart 与 values）和真实状态（线上在跑什么）的比对是同一结构，手工改动只改了真实状态、没改期望状态，下一次调和就会被纠正回去。对策是让期望状态跟着源码走：改了源码就换一个新版本号、全量构建再部署，单独换镜像只当当天要补全量构建的临时手段；对账时把 ACR 镜像标签、各 Helm release 历史、Deployment 滚动记录三处对起来看。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "不是所有输入都在调和范围里——operator 只在启动时读的配置，改了也不会生效，要靠重启触发重新生成",
+          "source": "AKS-Agent-Runtime系列14：让PoC能交给别人部署",
+          "first_seen": "2026-11-21",
+          "last_updated": "2026-11-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "常驻 runtime 的 operator 按平台命名空间里的一份平台登记（运行时能力与网络拓扑）给每个 agent 生成 CiliumNetworkPolicy，但它只在启动时读这份登记。补上桌面端口 6080 后只更新 ConfigMap，等了一阵网络策略纹丝不动；重启 operator 后不到半分钟，6080 进入白名单。调和循环只对它 watch 的对象生效，启动时读一次的配置属于循环外的输入，所以部署脚本要在登记内容变化时主动重启 operator。判断一个配置改了会不会生效，先问控制器是 watch 它还是只在启动时读它。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -15557,6 +15634,12 @@
       "description": "出站只剩一条路，路上的判断在网关"
     },
     {
+      "source": "agent-sandbox",
+      "target": "reconciliation-loop",
+      "relation_type": "uses",
+      "description": "agent 网络策略由 operator 按平台登记调和生成"
+    },
+    {
       "source": "agent-search-tools",
       "target": "context-engineering",
       "relation_type": "part-of",
@@ -17745,6 +17828,12 @@
       "target": "feedback-loop",
       "relation_type": "part-of",
       "description": "反馈闭环在运维与平台工程中的具体形态"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "agent-sandbox",
+      "relation_type": "uses",
+      "description": "agent 网络策略由 operator 按平台登记调和生成，登记只在启动时读"
     },
     {
       "source": "reconciliation-loop",
