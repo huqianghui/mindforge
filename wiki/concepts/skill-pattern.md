@@ -1,7 +1,7 @@
 ---
 title: "Skill Pattern"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -87,9 +87,20 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 
 > 不是让模型更聪明，而是作为动态 context loader 定位在 context window 尾部（attention 优势位置）。
 
+### Claim: SKILL.md 是被 agent 当指令读的文本，恶意指令可以藏在里面；只靠规则扫描或只靠 LLM 判断都会大量误报，要加上执行期的行为证据
+
+- **来源**：[The Devil Wears Markdown: Detecting Malicious Intent Hidden in AI Agent Skill Instructions through Hybrid Static, Dynamic, and Agentic Analysis](https://arxiv.org/abs/2611.10830)
+- **首次出现**：2026-11-23
+- **最近更新**：2026-11-23
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：理论
+
+> 在留出测试集（80 个恶意 skill、60 个正常 skill）上比较现有扫描器：YARA 和默认配置的 Cisco Skill Scanner 召回都是 0.91，但 60 个正常 skill 里分别误报 49 个和 33 个；Cisco 加上 LLM 分析（本地 Qwen3:8B）后召回 0.85、误报 40 个，语义更强并没有换来更好的取舍；OSS-Detect-Backdoor 只抓到 80 个里的 26 个。作者的静态 + 动态 + agent 三段式流水线召回同为 0.85，误报降到 5 个（准确率 0.88、F1 0.89），比 Cisco 加 LLM 少 87.5% 的误报。含义：skill 让模型"看到正确信息"的同一个机制，也让它看到攻击者写的指令；装第三方 skill 前的检查不能只做文本扫描。这一条讲的是 skill 的分发与安装环节，和本页其余几条讲的认知结构不同层。
+
 ## 冲突与演进
 
-（暂无）
+- 2026-11-23：知识差距分析 2026-11-23 落实，新增"恶意 skill 检测"一条（已读全文）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 5
 
 ## 关联概念

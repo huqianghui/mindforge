@@ -16,6 +16,7 @@ related:
   - "[[claude-code-extension-system]]"
   - "[[personal-knowledge-compiler]]"
   - "[[terminal-multiplexer-for-ai]]"
+  - "[[context-engineering]]"
 ---
 
 # Claude Code Memory System
@@ -116,6 +117,7 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 - [[claude-code-extension-system]] — `extends` Memory 系统与 Skills/Agents/Commands 扩展层协同工作
 - [[claude-code-agent-subagent]] — `uses` Subagent Memory 依赖 Agent/Subagent 进程隔离架构
 - [[personal-knowledge-compiler]] — `grounds` PKC 的 Auto Memory 和 Agent 记忆是知识编译系统的持久化基础
+- [[context-engineering]] — `implements` 压缩后从磁盘重新注入规则，是"不删原件、只换工作集"的上下文压缩做法
 - [[terminal-multiplexer-for-ai]] — `uses` tmux 持久会话与 Session 记忆互补
 
 ## 来源日记

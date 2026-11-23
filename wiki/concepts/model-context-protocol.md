@@ -1,7 +1,7 @@
 ---
 title: "Model Context Protocol"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -67,7 +67,20 @@ MCP 是 agent 向下连接工具与数据的协议：Anthropic 2024 年 11 月�
 
 > 一、协议选择：沙箱里的 Claude Code、Codex 都是 MCP 客户端、不说 A2A，所以参考实现把"建会话、投递、读更新、读条目、中止"包成一个 MCP server 给 agent 调 agent 用，跨框架的 agent 才用 A2A（[[agent-session-control-plane]]）。二、网关聚合：agentgateway 把两个 stdio server 合成 22 个带前缀的工具，按工具授权后 tools/list 只露出允许的，但一个 server 依赖装不上时客户端 initialize 直接 500，另一个正常的也用不了——不相关的 server 要拆到不同路由（[[ai-gateway]]）。三、暂停：MCP 是有状态长连接，Agent Substrate 文档写明挂起不保留打开的连接，rootfs 快照与 PVC 方式同样不跨暂停保留连接，恢复后要重连（[[agent-runtime]]）。治理一侧的判断——MCP 把接入成本变成治理成本——见 [[model-harness-codesign]]。
 
+### Claim: 工具描述本身就是注入入口——恶意 MCP server 可以让 agent 照常做完任务、再顺手把查询和别的 server 的响应交出去；内容过滤防不住，次级工具调用要由宿主授权
+
+- **来源**：[Log-To-Leak: Prompt Injection Attacks on Tool-Using LLM Agents via the Model Context Protocol](https://arxiv.org/abs/2610.36108)
+- **首次出现**：2026-11-23
+- **最近更新**：2026-11-23
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：理论
+
+> 攻击方式：恶意 server 在工具描述里写指令，诱导 agent 完成用户的正常任务之后，再调用它提供的"保存日志"类工具，把用户查询、其他 server 返回的内容一并传出去。在 18 组有效的模型 × server 组合上，攻击成功率 62.64%~100%，被调用时字段记录准确率 76.55%~95.64%；其中 16 组的正常任务完成率变化不超过 6.63 个百分点——任务照样做完，用户从结果上看不出异常。三种防御（提示夹心、LLM 元数据检查、IPIGuard）在 GitHub MCP + GPT-4o 上残余成功率仍在 55% 以上，而且都让任务完成率下降 2~6 个点；一个指令检测器能认出 91% 的恶意描述，却把 85.53% 的正常描述也判成可疑。作者的结论是靠内容层面的过滤做不到"低泄露且不伤任务"，次级工具调用要由宿主控制授权。对应到 wiki：这是"Host 负责把原语接进会话并管安全"那一条的具体攻击面，也说明按工具授权（[[ai-gateway]] 上的 MCP 聚合）比读描述判断意图更可靠。
+
 ## 冲突与演进
+
+- 2026-11-23：知识差距分析 2026-11-23 落实，新增 Log-To-Leak 一条（已读全文）。
 
 - 2026-11-16：名词缺口检查发现 31 篇文章打了 mcp tag、38 个概念页提到 MCP，却没有讲 MCP 本身的页，按完备性与缺失性复核建页。原本散在 [[mcp-vs-cli]]、[[ai-gateway]]、[[agent-session-control-plane]]、[[model-harness-codesign]]、[[context-engineering]] 的论断不搬动，本页只放协议本身与 runtime 落点，其余互相指向。
 

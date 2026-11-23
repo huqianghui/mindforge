@@ -1,7 +1,7 @@
 ---
 title: "Model-Harness Codesign（模型-Harness 协同设计）"
 created: "2026-07-14"
-updated: "2026-11-16"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -171,7 +171,20 @@ related:
 
 > Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成"调 A→过滤→喂 B"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为"一段代码"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。
 
+### Claim: 评测开始把 harness 当受控变量——同一个模型换通用 harness，成功率差十个点、成本差几倍；连评测适配层本身都能把成绩拉低一大截
+
+- **来源**：[Claw-SWE-Bench: A Benchmark for Evaluating OpenClaw-style Agent Harnesses on Coding Tasks](https://arxiv.org/abs/2606.12344)（v2）、[harness-hub/Qwen3.8-27B-pi-adapted 模型卡](https://huggingface.co/harness-hub/Qwen3.8-27B-pi-adapted)
+- **首次出现**：2026-11-23
+- **最近更新**：2026-11-23
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> Claw-SWE-Bench 用 350 个真实 issue（8 种语言、43 个仓库）和一套统一的适配协议，把通用 harness 放在同样的提示、运行预算、工作区约定和补丁提取方式下比较；v2 是 7 个 harness × 3 个模型、每个配置跑三遍取平均（v1 只有 5 个 harness × 2 个模型、单次运行，引用时注意版本）。以 GLM 5.1 为例，Pass@1 从 GenericAgent 的 62.9% 到 Hermes Agent 的 73.1%，总成本从 86 美元到 525 美元；DeepSeek-V4.1-Flash 下 Hermes Agent 以 36 美元做到 81.7%。适配层的影响更大：同一个 GLM 5.1，裸适配器 Pass@1 只有 19.3%（69.1% 的补丁打不上），完整适配器是 71.2%。HF 上同期出现反方向的证据：针对 pi harness 用强化学习训的 LoRA，关掉思考时 Terminal-Bench 2.1 从 39.5% 到 55.8%、SWE-bench Pro 难题集从 39.2% 到 64.7%，但模型卡的数字全部在 pi harness 下测得，换 harness 是否保留收益没有给。两边合起来：模型和 harness 的成绩是成对的，单报一个模型的分数不说 harness，信息是残缺的。与 [[meta-harness]] 里"同一模型换一层 harness 排名可跳 28 位"一致。
+
 ## 冲突与演进
+
+- 2026-11-23：知识差距分析 2026-11-23 落实，新增"harness 当受控变量"一条（Claw-SWE-Bench v2 已读全文，pi-adapted 读模型卡原文）。
 
 - 2026-07-08：《Agent=Model+Harness》文章从 VS Code 博客的第一手证据推出"第一方绑定可能是结构性最优组合"的推论，并列出五个反方论点自我制衡。
 - 2026-07-10：ChatGPT Work 发布提供产品级印证——OpenAI 把 Codex harness 泛化为通用工作 harness 并与 GPT-5.6 深度绑定，第一方路线从推论变为可观察的行业动向。
