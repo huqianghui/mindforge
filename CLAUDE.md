@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code when working with this **Obsidian vault**——一个个人笔记库，通过 LLM 辅助构建和维护个人知识库（Personal Knowledge Compiler）。
 
+## ⛔ 最高指令：严肃任务不得为赶进度省略任何步骤（2026-11-23 用户要求）
+
+本条优先级高于本文件其他所有规则、Memory 和任何"提高效率"的默认做法。
+
+用户原话："现在绝对不能赶进度，去掉一些必要步骤。knowledge gap 本就是一件低频率，严肃，专业的事情。"
+
+适用于低频、严肃、专业的分析与维护任务：`/knowledge-gap`、`/revalidate`、`/evolve-wiki`、`/detect-conflict`、`/loop-weekly`、全库 `/extract-knowledge`，以及用户明确说"全面""深度""认真"的调研。
+
+1. **流程里写到的每一步都要做完**：每一路信号、每一个维度、每一项统计。不得因为"差不多够了""时间长""结果看起来合理"而跳过。
+2. **失败不能静默**：某一步采集失败（API 报错、限流、无结果），要换方式重试；仍失败就在报告里写明失败原因和替代方式。
+3. **结论要有一手依据**：要据以补 Claim、建页、改结论的论文和网页，必须打开全文核对结论、数字的原始出处和适用条件。只读了摘要的，标"仅摘要"，不得据此下结论。区分实验论文与立场、综述文章，转引的数字注明原始出处。
+4. **交付前逐条自检**：对照流程清单，每一项标为"已做"或"失败已说明"，全部通过才交付。
+5. **宁可慢，不交付有缺口的结果**。做不完就如实说做到哪一步、还差什么，而不是交一份看起来完整的报告。
+
+2026-11-23 的违反记录：那期 knowledge gap 跳过了 GitHub trending 汇总、HF 技术趋势、arXiv 全文核对、暗引用统计。结果把一篇立场文章转引的数字当成它的原始发现，把"上下文压缩是否有损"说过头，用户指出后才补。
+
 ## What This Is
 
 This is an **Obsidian vault** containing daily work journals, long-form notes on AI/DevOps topics, and a **Personal Knowledge Wiki** (`wiki/`). The vault is not a software project — there is no build system, test suite, or package manager. Claude Code's role here is **knowledge maintainer**（知识编排与维护），not code developer.
