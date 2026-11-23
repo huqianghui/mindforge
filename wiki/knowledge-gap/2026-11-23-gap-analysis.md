@@ -282,7 +282,7 @@ trends:
 | 论文 | 时间 | 核心贡献 | wiki | 相关性 | 建议 |
 |---|---|---|---|---|---|
 | CompAct-Bench（2611.25673） | 11 月 | 200 个任务、12 个模型专测压缩后能否继续做对：整体仍明显有损；搜索类在后期越压越差，编码类反而变好，因为进度已经落在代码仓库里；压缩不只会漏信息，还会改变信息的含义 | 🔶 | 高 | 补 Claim |
-| Forget Freely, Grep Later（2611.25123） | 11 月 | 压缩照做，另存一份只追加的完整日志，需要细节时 grep 回来；ContextBench 上准确率 95~97%，纯摘要和观察遮蔽最多 21%，token 只多 6%~19% | 🔶 | 高 | 补 Claim |
+| Forget Freely, Grep Later（2611.25123） | 11 月 | 压缩照做，另存一份只追加的完整日志，需要细节时 grep 回来；ContextBench 上准确率 95~97%，纯摘要和观察遮蔽最多 21%；token 比摘要基线多 6%~19%，但 AMA-Bench stream 上是 2.3 倍（补 Claim 时复核全文发现，初稿漏了这个例外） | 🔶 | 高 | 补 Claim |
 | You don't need long context（2611.05306） | 11 月 | 后面的 token 比前面贵（开源前沿模型上最多 7 倍）；频繁压缩、保持短上下文，任务精度几乎不掉 | 🔶 | 高 | 补 Claim |
 | Claw-SWE-Bench（2606.12344） | 6 月 | 7 种通用 harness × 3 个模型、350 个任务、跑三遍取平均：模型固定时成功率和 token 消耗都随 harness 大幅变化，评测应把 harness 当受控变量 | ❌ | 高 | 补 Claim |
 | Great Listeners, Poor Decision-Makers（2611.23847） | 11 月 | 立场文章：语音 agent 的瓶颈已从识别转到决策，提出在感知和推理之外单设一层决策（动、等、问、不出声），依据是否在对我说、说话人是谁、内容置信度、动作风险。文中引用的数字（客服任务文本 agent 85%、全双工 31~51%，失败 79~90% 归因于 agent 行为）来自 τ-Voice | ❌ | 高 | 补 Claim |
@@ -374,6 +374,14 @@ trends:
 5. **链接维护**（内部维度 1）：Azure Speech 配额文档那处 wikilink 改成外部链接。
 6. **外部：上下文压缩三篇**（趋势 1）补进 [[context-engineering]] 的适用条件；**语音决策那篇**补进 [[cascaded-vs-e2e-voice]]，τ-Voice 原文仍按追踪任务去读；**安全两篇**（Log-To-Leak、Devil Wears Markdown）补进 [[model-context-protocol]]、[[skill-pattern]] 的安全边界。这几篇都已读过全文。
 7. **实验**：上期的 Substrate 和两跳网关两项还没做；本期加一项 agent-lightning 与 rllm 的对照实跑。
+
+### 当天落实情况
+
+- **复核**：[[method-agnostic]] 一条修订（来源更正为 Agent-Lightning 系列 07），[[viseme]] 一条降级 0.7 → 0.6（"实证"改"方案"）；Azure Speech 配额文档改为外部链接。
+- **入队提取**：系列 14 注入 5 页 7 条 Claim；读书笔记按建议不进 wiki，登记覆盖豁免与 HOLD。
+- **建路径**：新建 [[embodied-intelligence]]，9 站 + 前沿站、36 题；`topics.yml` 新增 `embodied-ai`，下一期开始追踪外部信号。
+- **外部 Claim**：[[context-engineering]] +2、[[cascaded-vs-e2e-voice]] +1、[[model-context-protocol]] +1、[[skill-pattern]] +1、[[model-harness-codesign]] +1，写入前重新打开全文核对数字。Claw-SWE-Bench 有 v1、v2 两版，本报告与 Claim 依据 v2（7 个 harness × 3 个模型、三次平均），v1 是 5 × 2、单次运行。
+- **未做**：三项实验需要 AKS 与 GPU 环境，本次没有做；τ-Voice 原文仍在追踪任务里。
 
 ## 附：采集执行记录
 
