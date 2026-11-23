@@ -8166,14 +8166,14 @@
         },
         {
           "statement": "「让算法替换成为配置问题」是同一原则在 infra 层的表达",
-          "source": "Agent Lightning系列03：推理与训练的分野——VERL架构拆解",
+          "source": "Agent-Lightning系列07：强化学习与VERL入门",
           "first_seen": "",
-          "last_updated": "2026-07-02",
+          "last_updated": "2026-11-23",
           "confidence": 0.8,
           "status": "active",
           "evidence": "VERL 的算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，\"让算法替换成为一个配置问题\"，与 agent-lightning 上层的 method-agnostic 一脉相承。区别是层次：agent-lightning 在 RL infra 之上做\"换优化方法\"，VERL 在 RL 引擎内部做\"换 RL 算法\"。同一个\"解耦+插槽\"形状在不同抽象层各出现一次。",
           "evidence_type": "理论（长效）",
-          "review": "2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：算法替换 配置 verl 架构拆解"
+          "review": "2026-11-23 修订（来源更正）——依据：[[Agent-Lightning系列07：强化学习与VERL入门]] §2.1「VERL 的三个核心特征」原文\"VERL 把算法与执行引擎解耦——PPO、GRPO、RLHF、RLVR 都是可插拔的配置项，其设计哲学是'让算法替换成为一个配置问题'。这与 agent-lightning 在更上层追求的 method-agnostic 一脉相承\"，与本 Claim 逐句对得上；原来源标题在 git 历史中从未存在"
         },
         {
           "statement": "environment-agnostic 是 method-agnostic 的环境侧孪生",
@@ -12030,7 +12030,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "viseme 序列比音素序列更接近渲染层——这是口型输出协议选 viseme 时间轴而非音素序列的原因",
@@ -12066,15 +12066,15 @@
           "review": ""
         },
         {
-          "statement": "客户端 viseme 渲染的六条同步工程规则——时间轴是云端计算与本地渲染两个位面的耦合接口",
-          "source": "Blender系列04：口型同步实战——从音量包络到viseme的渐进式改造与三维口型架构",
+          "statement": "viseme 时间轴是云端计算与本地渲染两个位面的耦合接口，客户端自渲染要守六条同步规则",
+          "source": "Blender系列04：人物面试动画实战",
           "first_seen": "2026-09-12",
-          "last_updated": "2026-09-25",
-          "confidence": 0.7,
+          "last_updated": "2026-11-23",
+          "confidence": 0.6,
           "status": "active",
-          "evidence": "Blender 系列独立批次的客户端接入实证：viseme 事件流由云端语音 API 下发、渲染在本地执行，`audio_offset_ms` 时间轴是跨位面耦合接口（相关判据框架见 [[compute-locus-spectrum]]）。工程规则要点：按音频播放时钟对齐而非事件到达时刻、口型过渡需插值平滑、简化方案（音量包络）与精细方案（viseme）的分界在\"是否需要可辨认的发音口型\"。卡通数字人（非人类比例明确不被 photo 头像支持）的唯一出路正是客户端拿 viseme 时间轴自渲染。",
-          "evidence_type": "",
-          "review": ""
+          "evidence": "viseme 事件流由云端语音 API 下发、渲染在本地执行，时间轴（Voice Live 的 `audio_offset_ms`，Azure Speech SDK 的 100 纳秒 tick）是跨位面的耦合接口（相关判据框架见 [[compute-locus-spectrum]]）。**已实做的**是简化方案：60 Hz 音量包络驱动一个开口形态键，说话时张合、停顿时回落，但不认发音，闭唇、圆唇都做不出来，这就是简化口型与精细口型的分界。**只核对了文档、未接入的**是精细方案：Azure Speech 输出 viseme ID 和 55 项面部系数（60 FPS，进 24 fps 要换算），事件按音频时钟对齐，不能用网络回调到达时间当动画时间。文中总结的六条同步规则：① 一次合成是一个完整版本（台词、参数、WAV、事件、音频哈希一起存档）；② 锁定声音之后再定嘴型；③ 音频剪辑与事件用同一个时间映射；④ 区分片段起点和发声起点；⑤ 统一视频时间基准（第 1 帧对应 0 秒）；⑥ 最终合成后再查偏移。其中 ④ 引用的是本片的实际数据（片段起点与发声起点差 0.01 秒）。卡通形象（非人类比例）两类 Voice Live 头像都不支持，出路是客户端拿 viseme 时间轴自渲染。",
+          "evidence_type": "实测经验",
+          "review": "2026-11-23 降级——依据：原来源标题在 git 历史中从未存在，实际出处是 [[Blender系列04：人物面试动画实战]]；该文 §五 明确写\"已核对文档、未接入影片\"，viseme 驱动的客户端渲染只是方案，原 Claim 写成\"客户端接入实证\"说强了，正文列的三条要点也不是文中的六条规则"
         }
       ]
     },
