@@ -285,7 +285,7 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 ### Claim: 数字人走 Speech 的 avatar 配额而非 Voice Live 那张表，受两条独立限制——同时活跃 5（容量语言，关闭即释放）+ 每滚动 60 秒新建 3（限流语言，关闭不退还、窗口锚定创建时刻）；配额体系里没有可申请的 avatar 对象，Azure 侧观测不到被拒
 
-- **来源**：[[Voice-Live系列13：数字人配额与限流]]、[[Quotas and limits for Azure Speech]]（官方配额页 avatar 一节）
+- **来源**：[[Voice-Live系列13：数字人配额与限流]]、[Quotas and limits for Azure Speech](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-services-quotas-and-limits)（官方配额页 avatar 一节）
 - **首次出现**：2026-10-03
 - **最近更新**：2026-10-04
 - **置信度**：0.8（实验 A/B/C + 作用域对照 + 纯语音压测，官方文档确认归属；并发作用域与 5 分钟空闲断开未验）

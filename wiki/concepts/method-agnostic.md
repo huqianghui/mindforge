@@ -1,7 +1,7 @@
 ---
 title: "method-agnostic（方法无关设计）"
 created: "2026-07-02"
-updated: "2026-11-07"
+updated: "2026-11-23"
 tags:
   - wiki
   - concept
@@ -83,13 +83,13 @@ related:
 
 ### Claim: 「让算法替换成为配置问题」是同一原则在 infra 层的表达
 
-- **来源**：[[Agent Lightning系列03：推理与训练的分野——VERL架构拆解]]
+- **来源**：[[Agent-Lightning系列07：强化学习与VERL入门]]
 - **首次出现**：2026-06
-- **最近更新**：2026-07-02
+- **最近更新**：2026-11-23
 - **置信度**：0.8
 - **状态**：active
 - **证据类型**：理论（长效）
-- **复核**：2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：算法替换 配置 verl 架构拆解
+- **复核**：2026-11-23 修订（来源更正）——依据：[[Agent-Lightning系列07：强化学习与VERL入门]] §2.1「VERL 的三个核心特征」原文"VERL 把算法与执行引擎解耦——PPO、GRPO、RLHF、RLVR 都是可插拔的配置项，其设计哲学是'让算法替换成为一个配置问题'。这与 agent-lightning 在更上层追求的 method-agnostic 一脉相承"，与本 Claim 逐句对得上；原来源标题在 git 历史中从未存在
 
 > VERL 的算法与执行引擎解耦——PPO/GRPO/RLHF/RLVR 皆为可插拔配置项，"让算法替换成为一个配置问题"，与 agent-lightning 上层的 method-agnostic 一脉相承。区别是层次：agent-lightning 在 RL infra 之上做"换优化方法"，VERL 在 RL 引擎内部做"换 RL 算法"。同一个"解耦+插槽"形状在不同抽象层各出现一次。
 
@@ -106,6 +106,8 @@ related:
 > SkillOpt 的 `ReflACTTrainer.train()` 编排六阶段流水线，但不认识任何 benchmark——所有 rollout/数据加载通过 `EnvAdapter` 接口回调。接新任务不改 trainer，只写一个 adapter。这与 agent-lightning "换算法只换槽位"同构，区别是这里换的是 **environment** 不是 algorithm。两者共同揭示：把"什么会变"隔离进一个契约层，是让框架长期可扩展的通用手法。
 
 ## 冲突与演进
+
+- **来源更正（2026-11-23 /revalidate）**：1 条修订。「让算法替换成为配置问题」一条的来源原写作"Agent Lightning系列03：推理与训练的分野——VERL架构拆解"，git 历史里没有这个标题，系列 03 的原标题也与此不同，是 07-02 抽取时记错的出处；实际出处是系列 07，内容核对无误，结论不变。11-07 那次复核判"长效"时依据的是这个不存在的来源，当时的判定作废，以本次为准。
 
 - **母概念归口（2026-07-02）**：method-agnostic 此前散落在 7 个 wiki 页（agent-lightning / verl / reinforcement-learning / rejection-sampling-finetuning / automatic-prompt-optimization / skillopt / prompt-optimization-tool-selection）作为论据，但无归口页。本次抽为独立概念页，上述页面通过 `part-of` / `grounds` 关联到此。
 - **层次澄清**：method-agnostic（换优化方法）、VERL 的算法可插拔（换 RL 算法）、environment-agnostic（换环境）三者是**同一原则在不同抽象层的实例**，不是同一层的竞争关系。本页作为"agnostic 设计脊柱"的母概念收束三者。
