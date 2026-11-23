@@ -2,9 +2,9 @@
   "generated_at": "2026-11-23",
   "stats": {
     "nodes": 173,
-    "links": 754,
+    "links": 756,
     "orphan_links_removed": 2,
-    "claims": 1031,
+    "claims": 1037,
     "categories": 13
   },
   "nodes": [
@@ -4036,8 +4036,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.76,
+      "claims_count": 9,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "LLM 性能限制通常是上下文问题而非模型缺陷",
@@ -4114,6 +4114,28 @@
           "status": "active",
           "evidence": "五段：① 取料——文档、数据库、外部 API、用户历史等原始来源；② 加工——分块、生成向量、补元数据；③ 库存——向量库等知识存储，要像仓库一样管\"变质\"（更新、过期、版本）；④ 即时检索——查询到来时按相关性取最相关的块，是质量控制点；⑤ 装配——按提示模板把检索结果与系统指令、对话历史、工具定义拼进上下文窗口。用处在于定位问题：答错时先问是哪一段坏了，而不是一律改提示词。本库\"编译一次、持续维护\"的 wiki 相当于把③做重、④做轻（见 [[personal-knowledge-compiler]]）。文章为英文综述（2025-08），偏概念框架，未附实测。",
           "evidence_type": "理论（长效）",
+          "review": ""
+        },
+        {
+          "statement": "上下文压缩是否有损，取决于任务状态存在哪里——进度已经落在外部环境里的任务几乎无损，状态只在上下文里的任务越压越差，而且压缩不只会漏信息，还会改写信息",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "CompAct-Bench 从 200 条压缩前三次都能做对的成功轨迹出发，在执行到 25%、50%、75% 处插入压缩边界，让 12 个前沿模型各自压缩前面的上下文，再由同一个执行器从对应的环境状态接着做。压缩后平均准确率掉到 56.7%，最好的 Claude Opus 5 也只有 68.5%。损失不均匀：搜索类（BrowseComp）随边界后移从 52.9% 降到 42.6%、34.6%，编码类（SWE-bench）反而从 64.0% 升到 72.7%、86.1%——编码的进度已经写进代码仓库，仓库充当了外部记忆，压缩丢的是历史而不是状态；搜索的证据只在上下文里。失败有两条路：信息被漏掉时 agent 重复做已做过的事直到预算耗尽；信息被改写（把待定的证据写成结论、把已有的进展弄丢）时 agent 提前结束。另一篇 You don't need long context 的结论是频繁压缩几乎不掉精度，甚至每做一个动作就压一次，Claude Opus 4.5 在 SWE-bench Verified 上持平、Terminal-Bench 上高 4.6 个百分点，GPT 5.6 Sol 分别低 2.0 和 3.3 个百分点；它测的正是状态落在环境里的软件工程类任务，所以和 CompAct-Bench 不矛盾。该文还给出压缩的动机：开源前沿模型上越靠后的 token 生成越贵，最多差 7 倍。两篇都是外部论文结论，没有在自己的 harness 上复测。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "压缩照做、另存一份只追加的完整日志、需要细节时 grep 回来——比纯摘要和观察遮蔽准确得多，token 开销多数情况下接近",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "GrepMem 把有损的上下文摘要和无损的轨迹日志配在一起：日志是 agent 全部历史的纯文本、只追加，agent 只多一个 `grep_history` 工具按正则取回细节，不需要 embedding、检索索引或额外模型。用强化学习在五种上下文管理策略下训练 Qwen3.5-9B 对比：ContextBench 上准确率 95%~97%，SUPO 式摘要和观察遮蔽最多 21%；BCP-Multi 上比 SUPO 高 8.8 个百分点、比 MemGPT 高 7.0。token 开销：比 SUPO 在 BCP-Multi 多 6%、ContextBench 多 19%，只有 MemGPT 的 29%；例外是 AMA-Bench stream，token 是 SUPO 的 2.3 倍、每条轨迹调 grep 约 19 次，准确率只略高。优势最大的场景是\"上下文窗口之外的精确细节后面还要用\"。证据是一篇论文、一个 9B 模型，置信度留在 0.6；它和上一条一起说明，压缩的问题可以用\"不删原件、只换工作集\"来缓解，这与 [[claude-code-memory-system]] 里\"压缩后哪些指令从磁盘重新注入\"是同一个思路。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -8258,8 +8280,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.75,
+      "claims_count": 4,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "MCP 定义三种原语、分属三个控制者——tools 由模型决定调用、resources 由应用或用户附加、prompts 由用户主动触发；三种都由 server 暴露，Host 负责把它们接进会话并管安全",
@@ -8293,6 +8315,17 @@
           "evidence": "一、协议选择：沙箱里的 Claude Code、Codex 都是 MCP 客户端、不说 A2A，所以参考实现把\"建会话、投递、读更新、读条目、中止\"包成一个 MCP server 给 agent 调 agent 用，跨框架的 agent 才用 A2A（[[agent-session-control-plane]]）。二、网关聚合：agentgateway 把两个 stdio server 合成 22 个带前缀的工具，按工具授权后 tools/list 只露出允许的，但一个 server 依赖装不上时客户端 initialize 直接 500，另一个正常的也用不了——不相关的 server 要拆到不同路由（[[ai-gateway]]）。三、暂停：MCP 是有状态长连接，Agent Substrate 文档写明挂起不保留打开的连接，rootfs 快照与 PVC 方式同样不跨暂停保留连接，恢复后要重连（[[agent-runtime]]）。治理一侧的判断——MCP 把接入成本变成治理成本——见 [[model-harness-codesign]]。",
           "evidence_type": "实测经验",
           "review": ""
+        },
+        {
+          "statement": "工具描述本身就是注入入口——恶意 MCP server 可以让 agent 照常做完任务、再顺手把查询和别的 server 的响应交出去；内容过滤防不住，次级工具调用要由宿主授权",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "攻击方式：恶意 server 在工具描述里写指令，诱导 agent 完成用户的正常任务之后，再调用它提供的\"保存日志\"类工具，把用户查询、其他 server 返回的内容一并传出去。在 18 组有效的模型 × server 组合上，攻击成功率 62.64%~100%，被调用时字段记录准确率 76.55%~95.64%；其中 16 组的正常任务完成率变化不超过 6.63 个百分点——任务照样做完，用户从结果上看不出异常。三种防御（提示夹心、LLM 元数据检查、IPIGuard）在 GitHub MCP + GPT-4o 上残余成功率仍在 55% 以上，而且都让任务完成率下降 2~6 个点；一个指令检测器能认出 91% 的恶意描述，却把 85.53% 的正常描述也判成可疑。作者的结论是靠内容层面的过滤做不到\"低泄露且不伤任务\"，次级工具调用要由宿主控制授权。对应到 wiki：这是\"Host 负责把原语接进会话并管安全\"那一条的具体攻击面，也说明按工具授权（[[ai-gateway]] 上的 MCP 聚合）比读描述判断意图更可靠。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -8312,8 +8345,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 12,
-      "avg_confidence": 0.81,
+      "claims_count": 13,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Agent = Model + Harness——模型是引擎，harness 是整辆车",
@@ -8446,6 +8479,17 @@
           "evidence": "Codex `tool_mode` 三值按模型代际分布：老模型（mini）`direct`——每个工具独立 function call；最强模型（gpt-6-astra）`code_mode_only`——工具**只能**通过写 JavaScript 在 node_repl（App bundle 内置的真 Node.js 24 运行时）里 `await` 调用，连 shell 也是被编排者（`await functions.exec(...)`，node_repl 是编排者、exec 是被编排的工具）。设计动机是 CodeAct 论点：JSON function call 只能表达扁平调用串、表达不了控制流，代码一次完成\"调 A→过滤→喂 B\"省 round-trip 与 token（中间结果留在 JS 变量不进上下文）、`Promise.allSettled` 即原生并行；把 shell 也包进 JS 是为了**单一治理入口**——所有危险操作统一表现为\"一段代码\"，审批模型只需盯一个咽喉（`node_repl_auto_review_required` 的设计动机）。Claude Code 站在 Direct 端：几十个专用离散工具点名直调、per-tool 权限天然清晰，代价是复杂编排费 round-trip。两端不是对错而是取舍：**Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」**——工具调用形态本身也是 per-model co-design 的对象，模型越强越往 CodeModeOnly 端。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 待定——依据：Codex tool_mode 三值与 gpt-6-astra 本轮检索被限流(429)，未取得来源"
+        },
+        {
+          "statement": "评测开始把 harness 当受控变量——同一个模型换通用 harness，成功率差十个点、成本差几倍；连评测适配层本身都能把成绩拉低一大截",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Claw-SWE-Bench 用 350 个真实 issue（8 种语言、43 个仓库）和一套统一的适配协议，把通用 harness 放在同样的提示、运行预算、工作区约定和补丁提取方式下比较；v2 是 7 个 harness × 3 个模型、每个配置跑三遍取平均（v1 只有 5 个 harness × 2 个模型、单次运行，引用时注意版本）。以 GLM 5.1 为例，Pass@1 从 GenericAgent 的 62.9% 到 Hermes Agent 的 73.1%，总成本从 86 美元到 525 美元；DeepSeek-V4.1-Flash 下 Hermes Agent 以 36 美元做到 81.7%。适配层的影响更大：同一个 GLM 5.1，裸适配器 Pass@1 只有 19.3%（69.1% 的补丁打不上），完整适配器是 71.2%。HF 上同期出现反方向的证据：针对 pi harness 用强化学习训的 LoRA，关掉思考时 Terminal-Bench 2.1 从 39.5% 到 55.8%、SWE-bench Pro 难题集从 39.2% 到 64.7%，但模型卡的数字全部在 pi harness 下测得，换 harness 是否保留收益没有给。两边合起来：模型和 harness 的成绩是成对的，单报一个模型的分数不说 harness，信息是残缺的。与 [[meta-harness]] 里\"同一模型换一层 harness 排名可跳 28 位\"一致。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -10862,8 +10906,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.74,
+      "claims_count": 6,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "Skill 与 Tool 本质不同",
@@ -10919,6 +10963,17 @@
           "evidence": "不是让模型更聪明，而是作为动态 context loader 定位在 context window 尾部（attention 优势位置）。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
+        },
+        {
+          "statement": "SKILL.md 是被 agent 当指令读的文本，恶意指令可以藏在里面；只靠规则扫描或只靠 LLM 判断都会大量误报，要加上执行期的行为证据",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "在留出测试集（80 个恶意 skill、60 个正常 skill）上比较现有扫描器：YARA 和默认配置的 Cisco Skill Scanner 召回都是 0.91，但 60 个正常 skill 里分别误报 49 个和 33 个；Cisco 加上 LLM 分析（本地 Qwen3:8B）后召回 0.85、误报 40 个，语义更强并没有换来更好的取舍；OSS-Detect-Backdoor 只抓到 80 个里的 26 个。作者的静态 + 动态 + agent 三段式流水线召回同为 0.85，误报降到 5 个（准确率 0.88、F1 0.89），比 Cisco 加 LLM 少 87.5% 的误报。含义：skill 让模型\"看到正确信息\"的同一个机制，也让它看到攻击者写的指令；装第三方 skill 前的检查不能只做文本扫描。这一条讲的是 skill 的分发与安装环节，和本页其余几条讲的认知结构不同层。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -14049,8 +14104,8 @@
       "category": "",
       "method_type": null,
       "decision_status": "active",
-      "claims_count": 6,
-      "avg_confidence": 0.77,
+      "claims_count": 7,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "端到端已可用于企业生产但控制力较弱——级联与混合式在多语言、自定义声音、interim response 上仍占优",
@@ -14116,6 +14171,17 @@
           "status": "active",
           "evidence": "数字人是平台级输出，四条路线都能挂，但口型由谁驱动取决于\"说\"落在哪——只有 Azure TTS 产 viseme 时间轴。题库文本经 `pre_generated_assistant_message` 走 Azure TTS，在级联与 realtime 宿主上都逐字一致（realtime 宿主耗时 1.4 s 对级联 1.8 s，指示性）。让模型自己念则取决于指令跟随：assistant item 方式两个受测模型都 0/3（把题目当对话输入去回答）；`response.instructions` 要求逐字念，`gpt-realtime-2.1` 1/3、`gpt-5-mini` 3/3——这是两个具体模型各 3 次的指令跟随样本，**不推广为\"realtime 类比 chat 类更易念错\"**，换模型或版本结论可能变。决策含义与模型无关：逐字念题是硬需求，不能寄托在任何模型的指令跟随上，所以留在 `pre_generated`（零推理、3/3）；只要走 Azure TTS 数字人就顺带成立，因此 realtime 配 Azure 音色的混合式可行、纯语音到语音（声音归模型）不合适。此前判断 realtime 不可用，是生产会话用了只在级联可用的文本型 EoU，换音频型后 realtime 整列可达（见 [[end-of-turn-detection]]）。组合原则：speech in 由模型定、speech out 由 `voice` 的家族定、建会话那一刻定死。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "语音 agent 的瓶颈已经从\"听清\"转到\"该不该动\"——要在感知和推理之外单设一层决策，决定执行、等待、追问还是不出声",
+          "source": "",
+          "first_seen": "2026-11-23",
+          "last_updated": "2026-11-23",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "文章列出语音 agent 的典型错误：执行了说给别人听的命令、按听错的内容行动、用户还没说完就动手。它转引 τ-Voice 的数据说明问题出在决策而不在识别：278 个有依据的客服任务上，纯文本推理 agent 成功率 85%，全双工语音 agent 在干净音频下 31%~51%、真实声学环境下 26%~38%，失败里 79%~90% 归因于 agent 的行为；另一项研究里音频模型选对工具的比例是 96%~97%，但同一条命令换一个说话人说时，只有 1% 的情况会保持沉默。作者提出的参考架构是在感知和推理之外加一层显式决策，依据是否在对我说、说话人是谁、内容置信度、工具可靠性、这句话说完没有、动作风险六类证据，在执行、等待、追问、不出声之间选，并论证只看转写置信度不足以决定动手。自己的实验：在录音数据上，显式门控把误执行旁人说话的比例从 41% 降到 7%~10%，同时在追问成功的前提下仍完成 83%~85% 的有效请求，好于只靠提示词的基线。对本决策的含义（推论，文章没有讨论级联与端到端之争）：这一层不管选级联还是端到端都需要；级联的好处是判停、转写、动作之间本来就有接缝，门控有地方插，端到端要靠模型或宿主暴露同类信号。和 [[end-of-turn-detection]] 里\"EOU 只决定何时触发判停、不决定是否放行开轮\"是同一件事往前多走一步。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -16121,6 +16187,12 @@
     },
     {
       "source": "claude-code-memory-system",
+      "target": "context-engineering",
+      "relation_type": "implements",
+      "description": "压缩后从磁盘重新注入规则，是\"不删原件、只换工作集\"的上下文压缩做法"
+    },
+    {
+      "source": "claude-code-memory-system",
       "target": "terminal-multiplexer-for-ai",
       "relation_type": "uses",
       "description": "tmux 持久会话与 Session 记忆互补"
@@ -16304,6 +16376,12 @@
       "target": "cybernetics-agent-design",
       "relation_type": "implements",
       "description": "Context 管理是共轭变换（表示层设计）的工程实践"
+    },
+    {
+      "source": "context-engineering",
+      "target": "claude-code-memory-system",
+      "relation_type": "uses",
+      "description": "压缩后从磁盘重新注入指令，与\"压缩 + 完整日志按需取回\"同一思路"
     },
     {
       "source": "context-explosion",
