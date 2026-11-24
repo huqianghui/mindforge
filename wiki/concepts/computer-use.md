@@ -107,13 +107,13 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界]]
 - **首次出现**：2026-08-30
-- **最近更新**：2026-09-04
+- **最近更新**：2026-11-24
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：openai/codex#3851 本轮检索未能取到该 issue，无法核实『只在默认 OpenAI provider 才附加 web_search 声明』
+- **复核**：2026-11-24 修订——依据：openai/codex 当前源码 [`core/src/tools/spec_plan.rs`](https://github.com/openai/codex/blob/main/codex-rs/core/src/tools/spec_plan.rs)（托管 web_search 在 provider 能力位 `web_search` 为真且没有可用的独立搜索时发出）、[`model-provider/src/capabilities.rs`](https://github.com/openai/codex/blob/main/codex-rs/model-provider/src/capabilities.rs)（`web_search` 默认对所有 provider 为 true，2026-10-02 起可按自定义 provider 覆盖）、[`ext/web-search/src/extension.rs`](https://github.com/openai/codex/blob/main/codex-rs/ext/web-search/src/extension.rs)（第一方独立搜索 `web.run` 只给 OpenAI、OpenAI 认证或声明 `supports_standalone_web_search` 的 provider）；相关 issue [openai/codex#40256](https://github.com/openai/codex/issues/40256)、[#33250](https://github.com/openai/codex/issues/33250)。原记录引的 #3851 实为 OpenRouter 路由的 issue，引错了。源码阅读，未重新实测
 
-> Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是"端点无执行器、声明发了没人执行"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救"断在端点层"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述"当前会话没有向我暴露 web_search 工具"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。
+> Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 2026-09 时的 Codex harness **只在默认 OpenAI provider 时才附加工具声明**——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是"端点无执行器、声明发了没人执行"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救"断在端点层"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤（2026-09）：Codex App 配 Azure provider 后模型自述"当前会话没有向我暴露 web_search 工具"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。（2026-11-24 修订：按当前源码，harness 这道门已改成按 provider 能力位判断——托管 `web_search` 默认对所有 provider 都发，10-02 起可在自定义 provider 的 `capabilities` 里关掉；新的第一方独立搜索 `web.run` 只给 OpenAI 认证或声明 `supports_standalone_web_search` 的 provider，其他 provider 拿不到，#40256 讲的就是自定义 provider 下 `web_search = "live"` 静默缺了 `web.run`。两层判断框架本身不变，变的是 harness 层的断供点。）
 
 ### Claim: 判定工具执行位置的五条指纹需多条交叉——弹本地权限恰证执行器在本地；管道决定能力下限、模型性格决定实际走几级梯
 
@@ -155,29 +155,35 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 
 - **来源**：[[Codex-Desktop系列02：gpt-5.4-mini与三条暗线]]、[[Codex-Desktop系列06：ModelInfo字段手册]]
 - **首次出现**：2026-09-05
-- **最近更新**：2026-09-12
+- **最近更新**：2026-11-24
 - **置信度**：0.85（二进制逆向 + 源码常量实锤 + 修复推断确认——"配置意图 + 404 消失"而非抓包实测；404 归因于 codex-auto-review 系"源码选择逻辑 + luna 已部署仍需 override"两条证据推出，错误信息本身不回传模型名）
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-24 修订——依据：openai/codex 当前源码 [`model-provider/src/provider.rs`](https://github.com/openai/codex/blob/main/codex-rs/model-provider/src/provider.rs)（`codex-auto-review` / `gpt-5.6-luna` 两个常量仍在；新增记忆提取默认 `gpt-6-luna`、记忆整合默认 `gpt-6.1-terra`）、[`ext/guardian-reviewer/src/model.rs`](https://github.com/openai/codex/blob/main/codex-rs/ext/guardian-reviewer/src/model.rs)（`select_review_model`：有 override 用 override，目录里找不到审批模型就回退到主模型）、[`core/src/guardian/reviewer_config.rs`](https://github.com/openai/codex/blob/main/codex-rs/core/src/guardian/reviewer_config.rs)（2026-11-19 起 Guardian 可由宿主单独选择推理 provider）
 
-> 在"端点层 × harness 层"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。
+> 在"端点层 × harness 层"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（`model-provider/src/provider.rs`）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，见 `ext/guardian-reviewer/src/model.rs` 的 `select_review_model`）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。（2026-11-24 修订：当前源码在 provider 模型目录里找不到审批模型时会回退到主模型，所以 404 只出现在"目录里列了 `codex-auto-review`、端点上却没有同名部署"的组合，比如沿用内置模型目录接第三方端点；隐藏调用也不止审批一路，记忆提取与记忆整合各有一个默认模型名（`gpt-6-luna`、`gpt-6.1-terra`），同样跟着 provider 走；2026-11-19 起 Guardian 还可以单独指定推理 provider。盘点全部模型调用这条结论因此更重要。）
 
 ### Claim: Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树疑似紧耦合（推测）
 
 - **来源**：[[Codex-Desktop系列04：Computer-Use藏身之处]]、[[Codex-Desktop系列03：bundled的真正含义]]
 - **首次出现**：2026-09-05
-- **最近更新**：2026-09-12
+- **最近更新**：2026-11-24
 - **置信度**：0.75（①② 本机路径验证 + 公开 issue 佐证；③ 为推测未直接验证——2026-09-12 按系列04 事实性修订软化）
-- **状态**：stale
+- **状态**：active
+- **证据类型**：产品与服务
+- **复核**：2026-11-24 修订——依据：本机 ChatGPT.app 26.1117.41037 实查（`Resources/plugins/openai-bundled/plugins/` 下 `computer-use` 只剩 skills 与 assets、没有 `.mcp.json`；新增 `unified-computer-use` 插件，其 `cua_repl` MCP server 是 bundle 内置的 `cua_node/bin/node_repl`，`CUA_REPL_ENABLED_SURFACES` 为 browser,computer；原生 helper 是 `cua_node/lib/node_modules/@oai/sky/Codex Computer Use.app`，bundle id `com.openai.sky.CUAService`，运行态在 `~/.codex/computer-use/` 与 `~/.codex/plugins/cache/openai-bundled/unified-computer-use/`）
 
-> 系列六"runtime 不对等"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——"Computer Use 在哪"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是"不可拆整体"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（"同源不同发行版"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。
+> 系列六"runtime 不对等"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——"Computer Use 在哪"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是"不可拆整体"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（"同源不同发行版"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。（2026-11-24 修订：上面的路径与文件名是 2026-09 的形态。当前版本里 Computer Use 不再由 `computer-use` 插件自带 `.mcp.json` 和 SkyComputerUseClient.app：入口换成 `unified-computer-use` 插件，MCP server `cua_repl` 就是 bundle 内置的 node_repl，模型写 JS 调 `cua` API，浏览器与桌面应用走同一个入口；原生 helper 改名为 Codex Computer Use.app，放在 bundle 的 `cua_node/@oai/sky` 下、安装到 `~/.codex/computer-use/`；`computer-use` 插件只剩 skills。"分发态在 App bundle、运行态在用户目录"不变。）这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。
 
 ### Claim: DCC 域实证——Computer Use 适合做"眼睛"不适合做"手"，批量制作交给应用 API
 
 - **来源**：[[Blender系列02：操作入口与官方MCP安装]]、[[Blender系列03：虎式坦克实战]]
 - **首次出现**：2026-09-07
-- **最近更新**：2026-09-12
+- **最近更新**：2026-11-24
 - **置信度**：0.75（实测三故障 + 后台路径独立验证）
-- **状态**：stale
+- **状态**：active
+- **证据类型**：实测经验
+- **复核**：2026-11-24 确认——依据：[[Blender系列02：操作入口与官方MCP安装]]、[[Blender系列03：虎式坦克实战]] 09-12 后只改过标题，库内没有推翻"Computer Use 做眼睛、批量交给 bpy API"的后续实测
 
 > Blender 实战给"UI 层天然残缺"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做"眼睛"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到"正在打开的场景"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域"能点不等于应该点"、"DOM 虚拟化真解在数据层"同构。
 
@@ -276,6 +282,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - 2026-10-14：系列一 10-13 重写澄清包含关系的口径——首条 Claim 一度被误判为"撤回包含关系"而标 outdated，经用户纠正恢复 active（0.8）：重写否定的是"Chrome integration 作中间层"的三层树和"从产品设置推技术层级"，广义 Computer Use ⊃ Browser Use 仍成立；狭义原生桌面 Computer Use 与 Browser Use 并列。新增"正交维度"Claim 作补充；摘要同步改写。同日注入系列九两条 Claim：三条执行路径无固定性能/token 排名（测量纪律）与账号身份/model provider 分开（Browser Use 站点预检依赖 ChatGPT 身份，"认证三链路相互独立"修正为"用途不同、实现可能耦合"）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 5、待定 1、长效 1
 - 2026-11-24：/evolve-wiki 按 60 天线标 stale 3 条
+- 2026-11-24：/revalidate——修订 3（Codex web_search 声明改为按 provider 能力位、#3851 引错改引 #40256 / #33250；治理层补审批回退主模型、记忆提取与整合两路隐藏调用、Guardian 可单独指定 provider；Computer Use 分发链改为 unified-computer-use + cua_repl + Codex Computer Use.app）、确认 1（DCC 域眼睛不做手）。
 
 ## 关联概念
 

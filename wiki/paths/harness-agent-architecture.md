@@ -65,7 +65,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[harness-engineering]]（Claim「Harness Engineering 是 Prompt 和 Context Engineering 的超集」「Agent 的智能来自 model，可靠性来自 harness」「harness 按归谁、能不能改分三类」）、[[generation-evaluation-separation]]
 - **前置**：第 2 站
 - **用时**：约 2 小时
-- **⚠️ stale**：[[harness-engineering]] 1/20（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[harness-engineering]] 1/20、[[generation-evaluation-separation]] 3/16（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能画出 Prompt < Context < Harness 的同心圆，说出每一圈多管了什么
   - 能说出 agent 的两种典型失败模式为什么是系统设计问题，以及级联失败为什么催生了 harness engineering
@@ -103,6 +103,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[mcp-vs-cli]]、[[a2a-protocol]]、[[ag-ui-protocol]]、[[a2ui-protocol]]；[[model-context-protocol]]（Claim「工具描述本身就是注入入口」）
 - **前置**：第 5 站
 - **用时**：约 2 小时
+- **⚠️ stale**：[[mcp-vs-cli]] 1/8、[[ag-ui-protocol]] 1/5（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 MCP 与 CLI 两条路线的取舍（context 膨胀 vs token 效率），以及为什么最终是共存
   - 能说出 MCP 向下连工具、A2A 横向连 agent、AG-UI 向上连 UI 的分工
@@ -126,7 +127,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[model-harness-codesign]]、[[codex-desktop-architecture]]
 - **前置**：第 3、5 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[codex-desktop-architecture]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[model-harness-codesign]] 2/13、[[codex-desktop-architecture]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出第一方绑定的结构性优势在训练时对齐，以及多模型适配成本为什么是笛卡尔积
   - 能用"逐层可撬性"评估一个 coding agent 接第三方模型：目录层、工具层、治理层各能不能换
@@ -138,7 +139,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[agent-infra-three-layers]]、[[agent-harness]]（「harness 面向 model、runtime 面向 infra」「harness 不单列一层」）、[[agent-sandbox]]（「多租户平台上 harness 自身也当不可信」）
 - **前置**：第 3 站
 - **用时**：约 1 小时
-- **⚠️ stale**：[[agent-harness]] 1/9（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[agent-harness]] 2/9（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **延伸**：harness 跑在哪、被谁管这一整块（执行、会话、治理、身份、定义与发现、自建 vs 托管）已单独排成 [[agent-runtime-platform]]，11 站，本站只读它的第 1、2 站即可接着往下走
 - **算会**：
   - 能按三个问题划分 Framework / Runtime / Platform，说出 harness 为什么不单列一层

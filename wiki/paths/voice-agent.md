@@ -31,6 +31,7 @@ signals:
 - **读**：[[speech-technology-stack]]、[[Speech技术全景]]
 - **前置**：无
 - **用时**：约 1 小时
+- **⚠️ stale**：[[speech-technology-stack]] 1/13（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能画出 Speech In / Core Processing / Speech Out 三层，各举两个组件
   - 能说出音频前处理链（降噪、回声消除等）为什么有严格的执行顺序
@@ -41,6 +42,7 @@ signals:
 - **读**：[[cascaded-pipeline]]、[[voice-live-agent]]（前 6 条 Claim）、[[cascaded-vs-e2e-voice]]、[[voice-cascaded-pipeline]]；[[cascaded-vs-e2e-voice]]（Claim「语音 agent 的瓶颈已经从听清转到该不该动」）
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
+- **⚠️ stale**：[[voice-live-agent]] 2/28、[[cascaded-vs-e2e-voice]] 1/7（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出级联（VAD → STT → LLM → TTS）与端到端的取舍，以及"判断模块化的标准是能否单独替换"
   - 能解释低延迟的关键是组件重叠执行，而不是单个组件更快
@@ -62,6 +64,7 @@ signals:
 - **读**：[[turn-taking]]、[[Voice-Live系列06：轮次控制的五道关卡]]、[[Voice-Live系列08：应答门控]]
 - **前置**：第 3 站
 - **用时**：约 2 小时
+- **⚠️ stale**：[[turn-taking]] 1/8（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出"轮"的三种含义：生成轮次、对话历史里的 assistant 轮、语音轮，以及它们为什么要分开
   - 能说出每轮延迟里最大的单项是什么（VAD 静音判定窗），以及话轮判停为什么是决策参数而不是技术延迟
@@ -114,6 +117,7 @@ signals:
 - **读**：[[voice-agent-build-approach]]、[[Voice-Live系列14：模型接入的三条路径]]、[[Voice-Live系列15：realtime模型与数字人]]、[[voice-live-agent]]（Claim「给会话挂大脑有且只有三条路径」）；[[voice-agent-build-approach]] 的六条 Claim（构建方式梯度、真实项目多落在直接调 API、多种方式并存、电话入口、Copilot Studio 没有内置数字人、Hosted 做语音的上限）
 - **前置**：第 2、4 站
 - **用时**：约 1.5 小时
+- **⚠️ stale**：[[voice-live-agent]] 2/28（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出原生 `model=`、BYOM、Agent 三条路径各自的约束（region 清单、profile 定死直通或级联、Agent 架构上是级联）
   - 能解释"一个模型字段承载两种语义"为什么会引出 region 报错

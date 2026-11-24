@@ -41,7 +41,7 @@ signals:
 - **读**：[[agent-infra-three-layers]]（三条跨层 Claim：托管产品各在哪一层、锁定矩阵、层间接口）、[[agent-framework]]（「逻辑 vs 设施」一条）、[[agent-harness]]（「framework 是 dev-time、harness 是 run-time」「harness 面向 model、runtime 面向 infra」「harness 不单列一层」）、[[agent-runtime]] 与 [[agent-platform]] 的摘要
 - **前置**：无
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[agent-harness]] 1/9（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[agent-harness]] 2/9（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能用三个问题区分 framework、runtime、platform，并说出 harness 为什么不单列一层
   - 能用"换一个 runtime 还在不在"判断一个能力归 framework 还是 runtime，用"换模型要不要重调"判断归 harness 还是 runtime
@@ -53,7 +53,7 @@ signals:
 - **读**：[[agent-harness]]（「harness 按归谁、能不能改分三类」「Copilot Studio 把 harness 与 runtime 打包出售」「强模型、弱规则」）、[[agent-sandbox]]（「多租户平台上 harness 自身也当不可信」）、[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[agent-harness]] 1/9（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[agent-harness]] 2/9（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 harness 的三类归属（代码框架自己搭、现成 harness、平台托管 harness），以及判断 harness 与 runtime 是否绑死的那一条标准
   - 能解释为什么编码 harness 要整个关进 Kata 沙箱、免确认运行，而自写的受信 loop 可以放在沙箱外

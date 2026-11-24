@@ -100,6 +100,7 @@ agent 怎样把经验变成对自身的持久修改？这条路径讲"不改权�
 - **读**：[[generation-evaluation-separation]]、[[llm-as-a-judge]]、[[recursive-self-improvement]]（五个验证问题）
 - **前置**：第 2~6 站
 - **用时**：约 1 小时
+- **⚠️ stale**：[[generation-evaluation-separation]] 3/16（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出生成与评估为什么要分离，以及自评为什么不可信
   - 能对任意一个自我改进方法问出五个问题：反馈是真的吗、是不是偶然得分高、验证集参与学习了吗、收益来自能力还是更多计算、新规则有没有损害旧能力
