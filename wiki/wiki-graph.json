@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-11-24",
   "stats": {
-    "nodes": 175,
-    "links": 772,
+    "nodes": 176,
+    "links": 780,
     "orphan_links_removed": 2,
-    "claims": 1061,
+    "claims": 1077,
     "categories": 14
   },
   "nodes": [
@@ -748,7 +748,7 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 11,
+      "claims_count": 12,
       "avg_confidence": 0.75,
       "claims": [
         {
@@ -871,6 +871,17 @@
           "evidence": "DeepSeek Harness 的 session log 是\"模型可见事实的唯一来源\"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将\"轨迹采集/可审计执行（喂 RL、合规审计）\"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh \"loop 也是 plugin\" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。",
           "evidence_type": "产品与服务",
           "review": "2026-11-22 确认——依据：[deepseek-harness session-log 包](https://github.com/deepseek-ai/deepseek-harness/blob/master/packages/session/session-log-deepseek/README.md)：session log 是 Cordis 插件、Session.events 为持久事件流；前提成立，导出路线仍未实测，置信度不升"
+        },
+        {
+          "statement": "用户写的是\"什么算好\"的静态零件，框架拥有的是把它们变成可迭代优化循环的算法与基础设施；一次性调 prompt 手写两百行就够，要换优化方法或上规模才值得用",
+          "source": "Agent-Lightning系列01：用APO做Prompt-Tuning",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "跑完三轮 APO 后的自问：grader、批评模板、改写模板、种子 prompt、数据集全是自己定义的，为什么还要框架？分工是一次控制反转：用户提供领域知识（什么叫选对、怎么批评、怎么改写、从哪起步），框架提供 beam search 主循环、history best 簿记（全量重评、只在严格更高时更新，自己写第一次大概率踩虚高的坑）、rollout 并行执行与超时重试、错误归类（渲染崩溃是 failed、跑通选错是 0 分）、gradient 到 edit 的接线、模板变体随机选、日志与可复现。最有分量的理由是 method-agnostic：同一份 grader、agent、数据集，今天插 APO，明天换 RL 或 SFT 的 trainer 槽位，rollout 与 reward 一行不改。诚实的另一面：最难的部分框架帮不上——它不设计 reward、不降噪、不决定数据量，三轮没赢种子的根因都在用户组件里。所以值得用的条件是任一条：会切换优化方法、想复用 RL 级别的 rollout 基础设施、需要可复现对比或上规模；只调一次 prompt 且不碰权重时，手写脚本更轻更透明。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -889,8 +900,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.74,
+      "claims_count": 8,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "Agent Loop 核心只需 30 行 Python",
@@ -967,6 +978,17 @@
           "status": "active",
           "evidence": "给\"agent loop 是什么\"补边界：Claude Code/OpenCode 的 harness 是**单轨执行器**——提供 loop、session、context 压缩、记忆、权限、沙箱，不含并行候选、分支比较、预算分配；探索决策隐式混在 LLM 的\"下一步做什么\"里；plan mode 是权限门不是搜索。Dream-RSI 的 exploration policy 是在 coding agent 之外新加的编排层（两层结构：Policy Developer Agent 改 Discovery Agent 的\"指挥方式\"），使探索 explicit and programmable；日常对应物是 fan-out + pick-the-winner 的分发脚本。（论文初读，置信度留低）",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "一个请求不是一次模型调用而是一段多轮运行——继续的原因有三种：要调工具、输出被截断要恢复、上下文超限要压缩；工具层分路由表和控制面两层",
+          "source": "Claude-Code系列01：核心概念与设计哲学",
+          "first_seen": "2026-04-16",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Claude Code 的循环是\"组装上下文 → 发给模型 → 返回文本或 tool_use → 执行工具、结果写回 messages → 继续\"，状态是 messages、轮次、工具运行环境。循环继续不只因为 tool_use，还有 max_tokens 截断后的恢复和上下文超限后的压缩。简单任务通常 1~3 轮，复杂任务 10~50 轮以上，轮数越多上下文越大，越容易触发压缩丢信息。循环本身不做任何智能决策（不判断该不该调工具、任务是否完成），决策全交给模型，这是它和传统工作流引擎的根本区别。工具层两层：路由表只做\"工具名到处理函数\"的查表，新增工具不改循环；控制面决定怎么执行——路径安全检查、Bash 在沙箱里跑、写操作要用户确认、并发安全分区（安全的批量并行、排他的串行）。代价是模型自己选工具，会在不需要时过度读文件，也会在需要时跳过验证直接回答。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -2499,8 +2521,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.79,
+      "claims_count": 12,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "APO ≠ beam search——是「文本梯度 + beam search」的完整方法",
@@ -2600,6 +2622,39 @@
           "evidence": "语感/品味类维度天然噪声大，与 APO 摆动是同一问题（评估噪声是第一大不稳定源）的主观评估版。对策：① pairwise 差分代替绝对打分——人类对\"A 好于 B\"的一致性远高于绝对分数，维度从偏好对中归纳（\"把 B 改到 A 最少动什么\"）；② BARS 锚定量表——每个维度配分档真实样例 + 边界反例，锚定样例是把 taste 压进 few-shot（规则是对品味的有损压缩，样例保留未显式化的维度）；③ 维度成立的硬检验——多专家独立打分算 Cohen's kappa，一致性低说明维度没操作化好；受控改写实验（只改一个维度看偏好率是否移动）测因果而非相关。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-07 长效——依据：库内无矛盾（grep/qmd 查 Notes/Azure/paper/wiki 同主题文章；来源文章 2026-06 之后仅有 2026-10-03 去行号的格式改动，无内容修订）；关键词：pairwise BARS"
+        },
+        {
+          "statement": "reward=None 不是打分失败而是候选模板渲染崩了，危险片段的源头是 gradient model 的批评——输出端和输入端都要堵，加渲染护栏后坏候选几乎零成本",
+          "source": "Agent-Lightning系列01：用APO做Prompt-Tuning",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "第一轮 8 个候选里 3 个 `Statuses` 全是 failed、reward 全 None，原因是 agent 用 `str.format` 渲染模板，候选里引入了不存在的占位符（`{needs_mode}`）或字面花括号（JSON 输出示例），渲染直接抛 KeyError，rollout 标 failed，求平均时按 0 算，污染统计。能跑通的候选都是用自然语言描述 JSON 字段、不写裸花括号。第二轮给 edit model 换了严格模板后仍有两个候选崩溃：一个带正则 `^\\d{4}-…`（`{4}` 被当成位置参数），一个带整段 JSON 示例——都是 gradient model（gpt-5-mini）在批评里写的原话，edit model 忠实照抄。所以约束要两端都加：gradient 模板和 edit 模板都禁止正则、JSON 示例和新变量；再加渲染护栏，渲染失败直接返回 0 分短路。护栏生效后坏候选 29 条只花 2 秒（真实候选约 28 秒），不再污染统计，只浪费搜索预算。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "小数据集上被选出来的\"历史最优分\"系统性偏高——对带噪声的分数取最大值会把正向噪声选进来；提升幅度小于同一 prompt 重测的摆幅时，不能算赢",
+          "source": "Agent-Lightning系列01：用APO做Prompt-Tuning",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "同一个种子 prompt、同样全量 29 题，五次重评是 0.586 / 0.690 / 0.672 / 0.621 / 0.655，极差约 0.10；temperature=0 也消不掉，来源是 agent 带工具调用的整条轨迹不确定，以及 LLM judge 做语义比对时会判错一两题。APO 的机制是\"对 beam 冠军全量重评、只在更高时更新 history best\"，相当于对噪声取最大值：v2 被选中那次 0.707，下一轮重评 0.503，末轮守不住，回退种子。判断逻辑：v2 号称比种子高 0.017，种子自己重测就摆 0.10，信噪比小于 1，提升不可信。`val_batch_size` 的作用也要分清：每轮选优只用一个 batch，跨轮不可比；小数据集应直接设成数据集大小，大数据集才为省成本取子集，并以全量重评的 history best 为准。顺序是先降噪（扩到 100 条以上、每题多跑几次取均值），再加 `beam_rounds`，否则加轮次只是放大噪声。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "文本梯度会把 prompt 越改越详细，但详细不等于更好——批评的方向要对齐 grader 的评判口径，否则过度工程化反而掉分",
+          "source": "Agent-Lightning系列01：用APO做Prompt-Tuning",
+          "first_seen": "2026-06-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "第一轮存活的候选都在\"过度工程化\"：输出 top-3 的 JSON、加打分公式，而 grader 要的是精确选中一个房间，啰嗦的输出反而让 judge 更难对上 `expected_choice`，分数下降，最优始终是种子。种子基线本身不弱（0.655），小数据集加高噪声下空间有限。修法是改 gradient 模板，让批评的方向对齐 reward（精确单选、简洁优先），而不是一味堆细节；或者换一个\"啰嗦输出无害\"的 grader。这是 reward 设计决定优化方向的一个具体样子。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -3160,8 +3215,8 @@
       "category": "Claude Code 与扩展生态",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.8,
+      "claims_count": 6,
+      "avg_confidence": 0.78,
       "claims": [
         {
           "statement": "Agent 和 Subagent 是同一个东西的两面",
@@ -3217,6 +3272,17 @@
           "evidence": "**现行结论（2026-11-07 修订）**：三层仍可用作分析框架，但官方现在是 subagent（含 fork）/ Agent teams 两档，后台任务属 subagent 的运行方式。正文注明 Teammate 对应官方 Agent teams，Runtime Task 不是官方独立层  以下为原记录： 三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 修订——依据：Claude Code 官方文档 Create custom subagents https://code.claude.com/docs/en/sub-agents；Claude Code 官方文档 Agent teams https://code.claude.com/docs/en/agent-teams"
+        },
+        {
+          "statement": "Subagent 是对上下文膨胀的架构级回答——与其让一个上下文不断变大再压缩，不如把子任务放进独立上下文，只带回摘要；摘要也是有损的，要完整结果就让它写文件",
+          "source": "Claude-Code系列01：核心概念与设计哲学",
+          "first_seen": "2026-04-16",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "典型用法是搜索与探索交给 subagent，主 agent 的上下文不被搜索过程污染；多个 subagent 可以并行查不同方向。这被称为\"上下文防火墙\"，GSD 这类框架把它推到极致：每个执行单元都从项目制品重建一个全新的上下文，而不是继承累积的聊天历史。代价有三：每次创建新上下文有启动开销；只有摘要回到主 agent，中间过程丢掉；看不到主对话历史（官方后来区分了继承父对话的 fork）。需要完整结果时让 subagent 写入文件，主 agent 再读。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -3236,8 +3302,8 @@
       "category": "Claude Code 与扩展生态",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.75,
+      "claims_count": 6,
+      "avg_confidence": 0.73,
       "claims": [
         {
           "statement": "自定义 Command 已并入 Skill——扩展体系是 Skill 加 Agent，Plugin 负责打包分发",
@@ -3282,6 +3348,28 @@
           "evidence": "**现行结论（2026-11-07 修订）**：演进链改为：Command 合并进 Skill，再由 Plugin 打包分发；Plugin 现在额外可含 hooks module（mod）。「Anthropic 明确表示」一句无本轮来源，删去或标出处  以下为原记录： Command → Skill → Plugin。Anthropic 明确表示未来 Plugin 将成为标准扩展方式。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 修订——依据：Claude Code 官方文档 Skills https://code.claude.com/docs/en/skills；Claude Code 官方文档 Plugins https://code.claude.com/docs/en/plugins"
+        },
+        {
+          "statement": "入口和执行分开：Command（现为 Skill）做入口，Agent 做隔离执行——把长规范塞进入口会占满主会话上下文、不能限工具、也不能被别处复用",
+          "source": "Claude-Code系列04：Command、Skill与Agent",
+          "first_seen": "2026-03-16",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "以 /obsidian 为例：入口只把参数拼进一段 prompt 交给主会话，主会话再调用 obsidian-agent；agent 在全新上下文里启动，body 作为系统提示、参数作为首条用户消息，重新加载 CLAUDE.md，跑完只返回摘要。完全可以把 agent 的全部内容写进入口直接执行，但有四个代价：大量格式规范占据主会话上下文；主会话会被其他对话干扰，agent 只看到 vault 相关信息；入口只在本项目用，agent 可以被任何会话或入口调用；入口无法限制工具权限，agent 可以精确声明可用工具。三者最核心的架构差别就在上下文与权限隔离：入口和 skill 都共享主会话的上下文与全部工具，skill 只是把知识注入进来；agent 是完全隔离的。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "不是每个角色都需要独立的 agent 定义——prompt 每次动态生成的角色用通用 agent 加模板，prompt 固定的角色才写成专用 agent 文件",
+          "source": "Claude-Code系列04：Command、Skill与Agent",
+          "first_seen": "2026-03-16",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "Superpowers 插件里的三种经典 subagent 角色：implementer 和 spec-reviewer 都是通用 agent 加动态 prompt 模板（每个任务的 prompt 不同，spec-reviewer 以\"不信任 implementer\"的立场做角色对抗），code-reviewer 才是固定系统提示的专用 agent。判断依据是 prompt 是否随任务变化：变化就用模板，固定才值得单独定义、单独限工具和模型。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -4069,8 +4157,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.73,
+      "claims_count": 10,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "LLM 性能限制通常是上下文问题而非模型缺陷",
@@ -4169,6 +4257,17 @@
           "status": "active",
           "evidence": "GrepMem 把有损的上下文摘要和无损的轨迹日志配在一起：日志是 agent 全部历史的纯文本、只追加，agent 只多一个 `grep_history` 工具按正则取回细节，不需要 embedding、检索索引或额外模型。用强化学习在五种上下文管理策略下训练 Qwen3.5-9B 对比：ContextBench 上准确率 95%~97%，SUPO 式摘要和观察遮蔽最多 21%；BCP-Multi 上比 SUPO 高 8.8 个百分点、比 MemGPT 高 7.0。token 开销：比 SUPO 在 BCP-Multi 多 6%、ContextBench 多 19%，只有 MemGPT 的 29%；例外是 AMA-Bench stream，token 是 SUPO 的 2.3 倍、每条轨迹调 grep 约 19 次，准确率只略高。优势最大的场景是\"上下文窗口之外的精确细节后面还要用\"。证据是一篇论文、一个 9B 模型，置信度留在 0.6；它和上一条一起说明，压缩的问题可以用\"不删原件、只换工作集\"来缓解，这与 [[claude-code-memory-system]] 里\"压缩后哪些指令从磁盘重新注入\"是同一个思路。",
           "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "Claude Code 的上下文按固定顺序组装，长任务里压缩几乎必然发生——要长期有效的信息写进文件，不要只留在对话里",
+          "source": "Claude-Code系列01：核心概念与设计哲学",
+          "first_seen": "2026-04-16",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "实际发给模型的是：固定系统提示 + 启动加载的 CLAUDE.md + MEMORY.md 索引 + 按条件加载的 rules + 按需注入的 skill + 累积的对话历史。接近窗口上限时自动压缩：保留系统提示、近期关键信息和当前任务，早期轮次被摘要替代，是有损的，用户也无法手动指定保留哪些。短任务（5 万 token 以内）基本不触发；10 万以上几乎必然发生，压缩后模型可能忘掉之前的决定和约定。对策是关键信息写文件——文件持久，对话会被压缩。这和本页\"压缩是否有损取决于任务状态存在哪里\"是同一件事的工程做法：把状态挪到外部环境里，压缩丢的就只是历史；[[meta-harness]] 的消融（分数加 LLM 摘要 34.9%，给完整原始轨迹 50.0%）也说明摘要补不回丢掉的因果信息。压缩的存在也解释了为什么 CLAUDE.md 要精简、skill 按需加载、subagent 用独立上下文。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -12691,8 +12790,8 @@
       "category": "语音与实时交互",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 25,
-      "avg_confidence": 0.78,
+      "claims_count": 28,
+      "avg_confidence": 0.77,
       "claims": [
         {
           "statement": "两种主流架构——级联管线与端到端",
@@ -12968,6 +13067,39 @@
           "evidence": "现象签名：数字人无画无声，但候选人说话能被转写、模型文字回复正常——因为两条通道里坏的只有 avatar WebRTC（画面与声音两条 RTP 轨；avatar 模式下 Azure 不在 WS 上发 `response.audio.delta`），TCP 上的 WS（上行、转写、文字、SDP 信令）正常；服务端 T+23~40 秒收到 `webrtc_connection_invalid`（`avatar_rate_limited=False`，不是限流），随后 `close_reason=azure_stream_ended` 循环重连。对 10-02「每会话 connect 一次」硬约束的补充：**ICE 从未连通时也只接受一次**，在原会话上重建 PeerConnection、重发 offer 的恢复逻辑会被全部拒绝；每次新建会话又消耗 avatar 新建限流（每滚动 60 秒 3 次），恢复被进一步推迟。前端两条改进：① 先走 WebRTC，ICE 若干秒内未进 `connected` 或候选对持续 `respRecv=0` → **新建会话**并把 avatar 改为 `output_protocol: websocket`（多数用户仍享 WebRTC，企业安全客户端下用户也能看到数字人）；② 检测到 ICE 停在 `checking` 且 `respRecv=0` 或拿不到 relay 候选时直接提示\"网络安全客户端可能阻止了音视频连接\"并走降级，不静默等 40 秒。复现不必依赖业务账号：用 Entra token 直连 Voice Live 开带 avatar 的会话，Python 走 WS 信令、Playwright 起的 Chrome 跑 WebRTC，`client_sdp` / `server_sdp` 都是 base64 编码的 `{type, sdp}` JSON。归属补充：Voice Live 下发的 TURN（`relay.communication.microsoft.com`）借用的是 Azure Communication Services 的中继，与 Teams/Skype 共用一套中继基础设施——企业网络策略对 Teams 媒体的处理会波及数字人。",
           "evidence_type": "实测经验",
           "review": "2026-11-16 确认——依据：来源 [[Global-Secure-Access：微软SSE的设计与实时媒体问题]]（2026-10-21 修订），修订后原文仍含本条的数字与结论"
+        },
+        {
+          "statement": "客户端防限流最容易犯三类错——本地账本窗口比服务端窄、账本只活在内存里跨不过刷新、把限流当成永久失败；限流应解析 Retry after 等满再试一次",
+          "source": "Voice-Live系列13：数字人配额与限流",
+          "first_seen": "2026-10-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "① 客户端自己记\"每窗口最多 N 次\"的账本思路对，但窗口长度若凭一次观测反推，就会比服务端的 60 秒窄：2 次/20 秒等于 6 次/分钟，账本会放行一个必然被拒的请求。会话关闭后过二三十秒再连，本地窗口已过、服务端窗口未过，正是现场那句 \"Retry after 7.0s\" 的来路；花同一份额度的路径有三条——自愈重新握手、主动切换媒体模式、全新会话，服务端看来完全一样。② 账本若是组件内状态，每次挂载都是空的；而配额是资源级的，跨页面、跨标签页、跨用户，\"重新开始\"、刷新、同一资源上第二个用户同时开始、管理员后台试听都会绕过保护；本地持久化也只护得住同一标签页，多人同时开始只能靠提并发或排队。③ 建连前的错误分支把\"无效模型\"\"不支持的区域\"标成永久失败、不再重连是对的，但限流相反，服务端明确告诉你等多久就能成功；和永久错误归为一类，结果是等 7 秒就能看到数字人却被直接降级。另外要补一条限流专用日志，因为服务端侧观测不到被拒事件。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "数字人配额是按生产形态定的，不是按开发形态——正常一次会话只花 1 次新建额度，开发时反复重开一分钟就能凑满；生产上真正的上限是同时在场 5 人，批量进场要排队",
+          "source": "Voice-Live系列13：数字人配额与限流",
+          "first_seen": "2026-10-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "数一次\"开始 → 语音作答\"里 `session.avatar.connect` 只发了 1 次，正常路径不重复建连。各动作的花费：看后台形象缩略图 0（静态 CDN）；语音试听 1；开始会话 1；重新开始、刷新或新标签页各再 1；切换媒体模式再 1（不支持会话中途重协商，切换等于重建）；关闭会话不退还。真实用户开一次、保持最多 30 分钟，3 次/分钟很宽裕；开发时\"开一次看一眼、重新开始、再看、同时后台试听对比\"一分钟就凑满。生产含义：同时在场上限 5（第 6 个直接被拒），每分钟能开始 3 个（约 20 秒一个），一批 30 人不能同时开始，要排队，超过 5 并发只能提限制或横向加资源（按资源计已实测有效）。测试期的可持续节奏：只看画面就复用当前会话；需要重开时间隔约 30 秒；会话开着时别在后台试听；密集测试关掉数字人（纯语音压到 120 次/分钟仍零失败）；更密集就再开一个资源。另一个和长会话相关的硬时限：说话状态单次连接最长 30 分钟、空闲 5 分钟断开（文档原文，空闲断开后重连是否立刻撞上新建额度尚未实测）。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "服务端看不到的限制只能自己量，但测量工具本身也要校准——用\"等待结束的时刻\"反推窗口会把 60 秒报成 69 秒，一个会报错数字的工具比没有工具更糟",
+          "source": "Voice-Live系列13：数字人配额与限流",
+          "first_seen": "2026-10-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "脚本两种模式：并发模式按固定间隔（守住速率）一个一个加直到被拒；速率模式连开直到被拒，由 `Retry after` 反推窗口长度。第一版用等待结束的时刻反推，把等待稳定的时间（最多 12 秒）也算进窗口，报出 69 秒；改用错误帧到达的时刻后报 58 秒，与精测的 60 秒只差约 2 秒（残差来自起点取的是 offer 发出时刻，窗口大概从服务端接受连接时起算）。前提是配置必须带数字人，纯语音不建 avatar 连接，脚本应检测到并直接退出，而不是给出一个空结果。该在提限制之后、换资源之后、重要演示之前、怀疑限制变了时各跑一次。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -13945,6 +14077,70 @@
           "status": "active",
           "evidence": "FinOps 系列 02 把三层嵌套循环（经济飞轮 / 工程数据飞轮 / RSI）的中圈定义为\"使用洞见 → 评估 → 优化 → 部署\"，优化手段沿本阶梯 prompt 改写 → APO → SFT → RL 升级（[[data-flywheel]]）。评估信号的成熟度对应 reward 来源：L1 阶段 LLM-judge 主观分是 RLHF 式信号、人闭合回路；到 L2 才有机会接 RLVR 式客观 reward、算法闭合回路；内圈 RSI 在 replay 中比较策略几乎只能建立在 RLVR 式信号上（主观分离线不可重得）。飞轮路线在右栏任务上的四步（人当验证器积累带标签样本 → 客观 reward 可用成功率上升 → 越过迁栏阈值 → 人力转向下一批）中，L1 阶段的 bad case 正是 L2 评估集的种子——与本页 30~50 条起步 / 100+ 条稳定的迁移阈值一致。开放问题：从 L2 到 RSI 是否有类似阈值还是取决于 replay 的 coverage。FLAN lesson 的提醒：L2 产出的 prompt 配方 / skill 文本 / 微调数据在模型换代后可能归零，评估集与验收标准最抗归零应优先投资。",
           "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "regulation-first-design",
+      "type": "method",
+      "title": "Regulation-First Design",
+      "summary": "用控制论的顺序设计 harness：先定义要维持稳定的被调节量（Regulated Variables），再识别把它拉偏的扰动、设计观测偏差的反馈通道、实现纠偏的调节器，最后才把这四步封装成 harness。传统做法是直接跳到\"用什么框架、加什么 lint\"，等于在没定义目标的情况下堆手段。\n\n在 Vibe Coding 里，真正的被调节量只有两个：**需求对齐度**（系统做的就是用户要的）和**功能可见性**（用户能在界面上看到功能正确工作）。架构、模块划分、单元测试、端到端测试、CI 都是服务这两个目标的调节器。与 [[cybernetics-harness-design-sheet]] 的关系：那张表按控制论五层（可能性空间、共轭变换、负反馈、探索、控制能力）逐项检查一个 agent 的设计；本方法按调节回路的顺序组织一个项目的 harness，两者可以先后使用。",
+      "tags": [
+        "wiki",
+        "method",
+        "cybernetics",
+        "harness-engineering",
+        "vibe-coding"
+      ],
+      "category": "",
+      "method_type": "workflow",
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.67,
+      "claims": [
+        {
+          "statement": "代码质量不是被调节量而是调节器——把手段当目标，是工程里最常见的调节失败",
+          "source": "Vibe-Coding系列13：控制论指导Harness-Engineering",
+          "first_seen": "2026-05-07",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "在 Claude Code 加 Vibe Coding 的项目实践里，本质要维持的只有需求对齐度和功能可见性两个；代码质量是维持前两者的手段，测试覆盖率是观测偏差的工具，架构一致性是降低扰动的结构设计。优化了覆盖率而用户要的功能没做对，就是把手段当成了目标。这是对我自己项目实践的归纳，换到没有用户界面的系统（后台服务、数据管线），\"功能可见性\"要换成对应的可观测结果。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "很多\"多智能体架构\"本质上是多层调节层级——需求澄清和 UI 设计两层定义目标，架构、实现、运行时三层只是保护目标",
+          "source": "Vibe-Coding系列13：控制论指导Harness-Engineering",
+          "first_seen": "2026-05-07",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "人调节评估器、评估器调节规划器、规划器调节执行器、执行器调节模型输出，每一层的反馈来源不同（直觉与业务知识、验收标准与测试结果、架构约束、lint 与单元测试），这是控制层级而不是\"agent 社会\"。落到 Claude Code 的实际流程是六层：L0 人定义目标与最终验收；L1 需求澄清（PRD、用户故事、验收标准，人确认\"就是这个\"）；L2 UI 设计（设计稿、截图，人确认\"看起来对\"）；L3 架构（模块边界、依赖检查）；L4 实现（单元、端到端、类型检查、lint，CI 绿灯）；L5 运行时（监控、错误追踪、回滚）。L1、L2 是本质的调节，L3~L5 是派生的调节。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "Agent 在某方面反复出错时，先问 harness 里有没有一个调节器专门对付这类扰动——没有就加一个，有但不够就增加它的多样性",
+          "source": "Vibe-Coding系列13：控制论指导Harness-Engineering",
+          "first_seen": "2026-05-07",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "扰动来源包括生成随机性、上下文窗口限制、需求理解偏差、工具调用错误、架构决策歧义、多文件交互副作用，只靠一条系统提示词对付不了。每种机制对付一类扰动：CLAUDE.md 与 rules 对付行为漂移，Spec 对付需求理解偏差，UI 设计稿对付功能对齐漂移，架构约束文档对付结构性退化，单元测试对付单元行为偏差，端到端测试对付用户视角的功能退化，类型系统对付接口约束违反，lint 对付风格漂移，人工评审对付高层目标偏离，记忆与 wiki 对付上下文丢失。这是 [[requisite-variety]] 定律在 harness 上的操作版。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "长期项目里不只在调节代码，也在调节调节机制本身——Spec、测试策略、CLAUDE.md、架构约束都要随项目迭代，这是二阶调节",
+          "source": "Vibe-Coding系列13：控制论指导Harness-Engineering",
+          "first_seen": "2026-05-07",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "一阶控制论问\"观察者如何控制系统\"（恒温器、PID），二阶控制论承认观察者本身也是系统的一部分。对应到 harness：一阶是人用固定规则约束 agent，二阶是 harness 自己会演化——约束文档每个迭代回顾更新、测试策略按失败模式调整、agent 配置由记忆驱动渐进改进、架构随复杂度重构。结构是\"元调节器（人加经验积累）→ 调节机制（harness）→ agent 行为 → 代码、界面、系统\"。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -16991,6 +17187,12 @@
       "description": "Regulation 立场与约束维度匹配不确定性的定律依据"
     },
     {
+      "source": "cybernetics-agent-design",
+      "target": "regulation-first-design",
+      "relation_type": "part-of",
+      "description": "按调节回路顺序组织项目 harness 的操作方法"
+    },
+    {
       "source": "data-flywheel",
       "target": "cost-per-task",
       "relation_type": "uses",
@@ -17523,6 +17725,12 @@
       "target": "skill-runtime",
       "relation_type": "constrains",
       "description": "harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "regulation-first-design",
+      "relation_type": "implements",
+      "description": "先定被调节量、再按回路搭 harness"
     },
     {
       "source": "harness-portability-spectrum",
@@ -18509,6 +18717,12 @@
       "description": "Harness 的约束丰富度下限由任务扰动多样性决定"
     },
     {
+      "source": "requisite-variety",
+      "target": "regulation-first-design",
+      "relation_type": "uses",
+      "description": "定律落到\"每类扰动配一个专门调节器\"的设计步骤"
+    },
+    {
       "source": "retained-vs-immediate-mode",
       "target": "compute-locus-spectrum",
       "relation_type": "extends",
@@ -19145,6 +19359,12 @@
       "description": "五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角"
     },
     {
+      "source": "cybernetics-harness-design-sheet",
+      "target": "regulation-first-design",
+      "relation_type": "contrasts",
+      "description": "本表检查单个 agent 的五层设计，那页按调节回路组织项目 harness"
+    },
+    {
       "source": "decision-policy-executor-split",
       "target": "system-one-model",
       "relation_type": "implements",
@@ -19461,6 +19681,30 @@
       "target": "reward-design-three-inputs",
       "relation_type": "extends",
       "description": "L2 的 reward 怎么设计：三份输入与两本账分家"
+    },
+    {
+      "source": "regulation-first-design",
+      "target": "cybernetics-agent-design",
+      "relation_type": "part-of",
+      "description": "控制论 agent 设计在项目层面的操作方法"
+    },
+    {
+      "source": "regulation-first-design",
+      "target": "requisite-variety",
+      "relation_type": "uses",
+      "description": "第 4 步\"每类扰动都有专门调节器\"的定律依据"
+    },
+    {
+      "source": "regulation-first-design",
+      "target": "harness-engineering",
+      "relation_type": "implements",
+      "description": "用调节回路的顺序搭 harness"
+    },
+    {
+      "source": "regulation-first-design",
+      "target": "cybernetics-harness-design-sheet",
+      "relation_type": "contrasts",
+      "description": "那张表按控制论五层检查单个 agent 的设计，本方法按调节回路组织项目的 harness"
     },
     {
       "source": "reward-design-three-inputs",
