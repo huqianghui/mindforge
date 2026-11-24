@@ -1,127 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000" font-family="Songti SC, STSong, Noto Serif SC, serif"><defs><filter id="rough" filterUnits="userSpaceOnUse" x="-50" y="-50" width="5000" height="5000"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter></defs>
 <style>
-.title{fill:#f8fafc;font-size:22px;font-weight:700}
-.sub{fill:#94a3b8;font-size:14px}
-.gh{fill:#f1f5f9;font-size:17px;font-weight:700}
-.gs{fill:#a5b4c8;font-size:13px}
-.it{fill:#f1f5f9;font-size:14.5px;font-weight:600}
-.en{fill:#94a3b8;font-size:12.5px}
-.d{fill:#cbd5e1;font-size:13px}
-.me{fill:#5eead4;font-size:13px}
-.num{fill:#0b1220;font-size:13px;font-weight:700;text-anchor:middle}
-.lg{fill:#cbd5e1;font-size:13.5px}
+.title{fill:#2e4c6b;font-size:22px;font-weight:700}
+.sub{fill:#6b6a64;font-size:14px}
+.gh{fill:#2e4d6b;font-size:17px;font-weight:700}
+.gs{fill:#3b3a36;font-size:13px}
+.it{fill:#2e4d6b;font-size:14.5px;font-weight:600}
+.en{fill:#6b6a64;font-size:12.5px}
+.d{fill:#384b61;font-size:13px}
+.me{fill:#25b19b;font-size:13px}
+.num{fill:#fbf7ee;font-size:13px;font-weight:700;text-anchor:middle}
+.lg{fill:#384b61;font-size:13.5px}
 .pulse{animation:p 2.4s ease-in-out infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.45}}
 </style>
-<rect width="1500" height="1000" rx="16" fill="#0b1220"/>
+<rect filter="url(#rough)" width="1500" height="1000" rx="16" fill="#fbf7ee"/>
 <text class="title" x="30" y="44">16 种叙述结构：给石柱排顺序的 16 种办法</text>
 <text class="sub" x="30" y="70">书里按编号平铺列出，我按用途分成四组；青绿色的一行是我在自己的文章和分享里已经在用、只是没叫过这个名字的地方</text>
 
 <!-- group 1 -->
-<rect x="30" y="92" width="705" height="420" rx="14" fill="#0f172a" stroke="#38bdf8"/>
+<rect filter="url(#rough)" x="30" y="92" width="705" height="420" rx="14" fill="#fbf7ee" stroke="#2586b1"/>
 <text class="gh" x="52" y="124">按顺序排：内容本身有先后或位置</text>
 <text class="gs" x="52" y="148">听众最容易跟上，适合讲过程、讲演进、讲架构</text>
 <g transform="translate(52,166)">
-<circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">1</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#2586b1"/><text class="num" x="12" y="17">1</text>
 <text class="it" x="34" y="17">模块型</text><text class="en" x="96" y="17">Modular</text>
 <text class="d" x="34" y="40">一组相似的部分前后相衔，部分之间顺序可以互换</text>
 <text class="me" x="34" y="62">系列文章的"每篇能单独读"</text>
 </g>
 <g transform="translate(52,252)" class="pulse">
-<circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">2</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#2586b1"/><text class="num" x="12" y="17">2</text>
 <text class="it" x="34" y="17">历时型</text><text class="en" x="96" y="17">Chronological</text>
 <text class="d" x="34" y="40">以时间为线串起各部分，反映事件发生的先后</text>
 <text class="me" x="34" y="62">讲 AI 的演进；排障文章的时间线图</text>
 </g>
 <g transform="translate(52,338)">
-<circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">3</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#2586b1"/><text class="num" x="12" y="17">3</text>
 <text class="it" x="34" y="17">物理型</text><text class="en" x="96" y="17">Physical</text>
 <text class="d" x="34" y="40">按内容的物理或地理位置排顺序</text>
 <text class="me" x="34" y="62">一个请求从浏览器到后端，依次经过哪几道</text>
 </g>
 <g transform="translate(52,424)">
-<circle cx="12" cy="12" r="12" fill="#38bdf8"/><text class="num" x="12" y="17">4</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#2586b1"/><text class="num" x="12" y="17">4</text>
 <text class="it" x="34" y="17">空间型</text><text class="en" x="96" y="17">Spatial</text>
 <text class="d" x="34" y="40">用物理意义上的隐喻或类比，概念化地组织内容</text>
 <text class="me" x="34" y="62">分层架构图：自下而上一层压一层</text>
 </g>
 
 <!-- group 2 -->
-<rect x="765" y="92" width="705" height="420" rx="14" fill="#2a2110" stroke="#fbbf24"/>
+<rect filter="url(#rough)" x="765" y="92" width="705" height="420" rx="14" fill="#f9f5ee" stroke="#b18a25"/>
 <text class="gh" x="787" y="124">按论证排：要说服别人接受一个判断</text>
 <text class="gs" x="787" y="148">先立靶子再给答案，适合方案汇报、选型和争议话题</text>
 <g transform="translate(787,166)" class="pulse">
-<circle cx="12" cy="12" r="12" fill="#fbbf24"/><text class="num" x="12" y="17">5</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#b18a25"/><text class="num" x="12" y="17">5</text>
 <text class="it" x="34" y="17">问题-解决型</text><text class="en" x="140" y="17">Problem/Solution</text>
 <text class="d" x="34" y="40">围绕一个问题，给出你或公司的解决办法</text>
 <text class="me" x="34" y="62">排障类文章：现象 → 原因 → 修法</text>
 </g>
 <g transform="translate(787,252)">
-<circle cx="12" cy="12" r="12" fill="#fbbf24"/><text class="num" x="12" y="17">6</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#b18a25"/><text class="num" x="12" y="17">6</text>
 <text class="it" x="34" y="17">议题-对策型</text><text class="en" x="140" y="17">Issue/Action</text>
 <text class="d" x="34" y="40">围绕一项或多项议题，提出打算采取的对策</text>
 <text class="me" x="34" y="62">"还缺哪些"一节之后接"我会怎么做"</text>
 </g>
 <g transform="translate(787,338)">
-<circle cx="12" cy="12" r="12" fill="#fbbf24"/><text class="num" x="12" y="17">7</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#b18a25"/><text class="num" x="12" y="17">7</text>
 <text class="it" x="34" y="17">机遇-手段型</text><text class="en" x="140" y="17">Opportunity/Leverage</text>
 <text class="d" x="34" y="40">以一个商业机会为契机，说明用什么手段抓住它</text>
 </g>
 <g transform="translate(787,424)">
-<circle cx="12" cy="12" r="12" fill="#fbbf24"/><text class="num" x="12" y="17">11</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#b18a25"/><text class="num" x="12" y="17">11</text>
 <text class="it" x="34" y="17">以退为进型</text><text class="en" x="130" y="17">Argument/Fallacy</text>
 <text class="d" x="34" y="40">主动提出不利于自己的观点，再指出其中的谬误反驳</text>
 </g>
 
 <!-- group 3 -->
-<rect x="30" y="534" width="705" height="340" rx="14" fill="#0f2a26" stroke="#2dd4bf"/>
+<rect filter="url(#rough)" x="30" y="534" width="705" height="340" rx="14" fill="#eef9f7" stroke="#25b19f"/>
 <text class="gh" x="52" y="566">按展示排：把一个东西讲清楚</text>
 <text class="gs" x="52" y="590">适合产品介绍、能力介绍、方案对比</text>
 <g transform="translate(52,606)">
-<circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">8</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#25b19f"/><text class="num" x="12" y="17">8</text>
 <text class="it" x="34" y="17">形式-功能型</text><text class="d" x="140" y="17">一个概念为中心，发散出它的应用或功能</text>
 </g>
 <g transform="translate(52,644)">
-<circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">9</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#25b19f"/><text class="num" x="12" y="17">9</text>
 <text class="it" x="34" y="17">特色-利益型</text><text class="d" x="140" y="17">列出产品或服务的特色，和它们带来的利益</text>
 </g>
 <g transform="translate(52,682)">
-<circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">10</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#25b19f"/><text class="num" x="12" y="17">10</text>
 <text class="it" x="34" y="17">案例研究型</text><text class="d" x="140" y="17">复述一遍如何解决问题或满足客户需要</text>
 </g>
 <g transform="translate(52,720)" class="pulse">
-<circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">12</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#25b19f"/><text class="num" x="12" y="17">12</text>
 <text class="it" x="34" y="17">比较-对比型</text><text class="d" x="140" y="17">比较说明和同行的不同之处</text>
 <text class="me" x="140" y="40">"A 与 B 的分工"、"X vs Y 选型"这类标题</text>
 </g>
 <g transform="translate(52,782)" class="pulse">
-<circle cx="12" cy="12" r="12" fill="#2dd4bf"/><text class="num" x="12" y="17">13</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#25b19f"/><text class="num" x="12" y="17">13</text>
 <text class="it" x="34" y="17">矩阵图表型</text><text class="d" x="140" y="17">用 2 阶以上的图表，把复杂概念变得好记</text>
 <text class="me" x="140" y="40">多维对比表、"哪些事在哪边做"的对照表</text>
 </g>
 
 <!-- group 4 -->
-<rect x="765" y="534" width="705" height="340" rx="14" fill="#1d1733" stroke="#a78bfa"/>
+<rect filter="url(#rough)" x="765" y="534" width="705" height="340" rx="14" fill="#f1eff8" stroke="#321782"/>
 <text class="gh" x="787" y="566">按组织排：要点之间关系松散</text>
 <text class="gs" x="787" y="590">没有天然的先后，靠形式把它们组织起来</text>
 <g transform="translate(787,606)">
-<circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">14</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#321782"/><text class="num" x="12" y="17">14</text>
 <text class="it" x="34" y="17">平行结构型</text><text class="d" x="130" y="17">每个要点下，用相同的结构深化</text>
 </g>
 <g transform="translate(787,668)">
-<circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">15</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#321782"/><text class="num" x="12" y="17">15</text>
 <text class="it" x="34" y="17">自问自答型</text><text class="d" x="130" y="17">自己提出并回答听众最想问的问题</text>
 <text class="me" x="130" y="40">每节小标题就是一个问题</text>
 </g>
 <g transform="translate(787,730)">
-<circle cx="12" cy="12" r="12" fill="#a78bfa"/><text class="num" x="12" y="17">16</text>
+<circle filter="url(#rough)" cx="12" cy="12" r="12" fill="#321782"/><text class="num" x="12" y="17">16</text>
 <text class="it" x="34" y="17">数字榜单型</text><text class="d" x="130" y="17">列出一串联系不密切的想法、事实或论点</text>
 <text class="me" x="130" y="40">"三件事"、"四块缺口"</text>
 </g>
 <text class="gs" x="787" y="826">我的体会：数字榜单最省事，也最容易让人记不住，</text>
 <text class="gs" x="787" y="850">只在要点确实互不相关时用</text>
 
-<line x1="30" y1="900" x2="1470" y2="900" stroke="#1e293b"/>
-<circle cx="44" cy="932" r="8" fill="#5eead4" class="pulse"/><text class="lg" x="60" y="937">闪烁的是我最常用的四种：历时（讲 AI 的演进离不开它）、问题-解决、比较-对比、矩阵图表</text>
+<line filter="url(#rough)" x1="30" y1="900" x2="1470" y2="900" stroke="#f0f3f7"/>
+<circle filter="url(#rough)" cx="44" cy="932" r="8" fill="#25b19b" class="pulse"/><text class="lg" x="60" y="937">闪烁的是我最常用的四种：历时（讲 AI 的演进离不开它）、问题-解决、比较-对比、矩阵图表</text>
 <text class="lg" x="30" y="966">分组是我为了好记做的，书里是 1~16 平铺；作者说这 16 种几乎囊括了所有可能碰到的演讲话题；我的做法是一场选一种做主线，局部再嵌别的</text>
 </svg>
