@@ -16,6 +16,7 @@ aliases:
 related:
   - "[[generation-evaluation-separation]]"
   - "[[presentation]]"
+  - "[[communication]]"
 ---
 
 # AI Writing Fingerprint（AI 味）
@@ -76,6 +77,7 @@ related:
 
 ## 关联概念
 
+- [[communication]] — `part-of` 沟通与表达里"写"的一侧
 - [[generation-evaluation-separation]] — `uses` agent 层的 Writer → Humanizer → Reviewer 是生成与评估分离在文本域的实例
 - [[presentation]] — `contrasts` 同属表达：演讲关心听众跟不跟得上结构，书面关心读起来是不是人在说话
 

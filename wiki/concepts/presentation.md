@@ -17,6 +17,7 @@ related:
   - "[[presentation-preparation]]"
   - "[[skill-pattern]]"
   - "[[ai-writing-fingerprint]]"
+  - "[[communication]]"
 ---
 
 # Presentation（演讲与表达）
@@ -25,7 +26,7 @@ related:
 
 演讲要解决的核心问题是**听众只能一棵树一棵树地看森林**：写演讲的人看得到全局，听众每次只看到一张幻灯片，又没法回头翻，各部分之间的关系要是没讲清，就只能自己去拼，于是走神、打断或者忙着找失落的那一环。杰瑞·魏斯曼《演讲大师课》第 1 册《说的艺术》的回答是先把结构定下来再呈现：用"罗马石柱"指撑起整场演讲的几个要点，用 16 种**叙述结构**（Flow Structures）决定石柱的先后，开头用 7 种开场白把人拉进来，石柱之间用 7 种外部串词和 5 种图表串联保持连贯。
 
-本页收这个领域的论断；把它变成可执行的准备步骤见方法页 [[presentation-preparation]]。来源是我读魏斯曼系列的笔记，以及我把这套方法做成 PPT 前置讨论 skill 的实践。四册都翻过，笔记以第 1 册为主，第 2 册（回答尖锐提问）和第 4 册（台上的表达）还没有整理。
+本页收这个领域的论断；把它变成可执行的准备步骤见方法页 [[presentation-preparation]]。来源是我读魏斯曼系列的笔记，以及我把这套方法做成 PPT 前置讨论 skill 的实践。四册都读过，笔记以第 1 册为主；第 2 册（回答尖锐提问）和第 4 册（台上的表达）读完后判断对当前不是那么重要，不再整理。本页属于 [[communication]] 的"说"这一侧。
 
 ## Claims
 
@@ -87,10 +88,11 @@ related:
 ## 冲突与演进
 
 - 2026-11-23：/extract-knowledge 初判"非技术领域、不进 wiki"，候选 `presentation-flow-structures` 记 HOLD，读书笔记登记覆盖豁免。
-- 2026-11-24：用户纠正——书、论文、文章按同一标准提取，都是认识世界的一部分，不按"非技术"排除。撤回 HOLD 与覆盖豁免，建本页与方法页 [[presentation-preparation]]，index 新增"沟通与表达"分类。本页是该领域的根页，暂无上层概念。
+- 2026-11-24：用户纠正——书、论文、文章按同一标准提取，都是认识世界的一部分，不按"非技术"排除。撤回 HOLD 与覆盖豁免，建本页与方法页 [[presentation-preparation]]，index 新增"沟通与表达"分类。2026-11-24 补建上层页 [[communication]]，本页以 `part-of` 挂上去。
 
 ## 关联概念
 
+- [[communication]] — `part-of` 沟通与表达里"说"的一侧
 - [[presentation-preparation]] — `produces` 本页的论断落成可执行的准备步骤
 - [[skill-pattern]] — `uses` 准备流程做成 skill 时用的是 Inversion 模式：先提问、确认再往下
 - [[ai-writing-fingerprint]] — `contrasts` 同属表达：书面一侧关心读起来是不是人在说话
