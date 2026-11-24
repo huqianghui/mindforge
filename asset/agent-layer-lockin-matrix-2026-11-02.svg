@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1000" width="1400" height="1000" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <linearGradient id="axis" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fbbf24"/>
-      <stop offset="1" stop-color="#2dd4bf"/>
+      <stop offset="0" stop-color="#c38f09"/>
+      <stop offset="1" stop-color="#26a696"/>
     </linearGradient>
     <style>
-      .bg { fill: #0b1220; }
-      .hd { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
-      .lock { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
-      .free { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.4; }
-      .mix { fill: #10203a; stroke: #38bdf8; stroke-width: 1.4; }
-      .name { fill: #111827; stroke: #334155; stroke-width: 1.2; }
-      .can { fill: #111827; stroke: #334155; stroke-width: 1.2; stroke-dasharray: 5 4; }
-      .grp { fill: none; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 8 6; }
-      .gl { fill: #94a3b8; font-size: 13px; font-weight: 600; }
-      .th { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .tq { fill: #94a3b8; font-size: 13px; }
-      .nm { fill: #e2e8f0; font-size: 14.5px; font-weight: 600; }
-      .nmSub { fill: #94a3b8; font-size: 13px; }
-      .tagL { fill: #fbbf24; font-size: 13px; font-weight: 700; }
-      .tagF { fill: #5eead4; font-size: 13px; font-weight: 700; }
-      .tagM { fill: #7dd3fc; font-size: 13px; font-weight: 700; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tGray { fill: #94a3b8; font-size: 13.5px; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .el { fill: #cbd5e1; font-size: 13.5px; }
-      .elh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bg { fill: #f6f8fb; }
+      .hd { fill: #f3f5f9; stroke: #7688a2; stroke-width: 1.2; }
+      .lock { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.4; }
+      .free { fill: #f2fafa; stroke: #26a696; stroke-width: 1.4; }
+      .mix { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.4; }
+      .name { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.2; }
+      .can { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .grp { fill: none; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 8 6; }
+      .gl { fill: #5e718d; font-size: 13px; font-weight: 600; }
+      .th { fill: #344965; font-size: 15px; font-weight: 600; }
+      .tq { fill: #5e718d; font-size: 13px; }
+      .nm { fill: #344965; font-size: 14.5px; font-weight: 600; }
+      .nmSub { fill: #5e718d; font-size: 13px; }
+      .tagL { fill: #c38f09; font-size: 13px; font-weight: 700; }
+      .tagF { fill: #1bb199; font-size: 13px; font-weight: 700; }
+      .tagM { fill: #036696; font-size: 13px; font-weight: 700; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tGray { fill: #5e718d; font-size: 13.5px; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .el { fill: #384b61; font-size: 13.5px; }
+      .elh { fill: #344965; font-size: 15px; font-weight: 600; }
     </style>
   </defs>
 

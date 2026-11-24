@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <radialGradient id="particle" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#a5f3fc"/>
-      <stop offset="0.5" stop-color="#22d3ee"/>
-      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="0" stop-color="#058594"/>
+      <stop offset="0.5" stop-color="#13a3b9"/>
+      <stop offset="1" stop-color="#13a3b9" stop-opacity="0"/>
     </radialGradient>
     <style>
-      .bg { fill: #0b1220; }
-      .done { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .now { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2.2; animation: pulse 2.2s ease-in-out infinite; }
-      .plan { fill: #111827; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 6 5; }
-      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
-      .hGray { fill: #cbd5e1; font-size: 16px; font-weight: 600; }
-      .lbl { fill: #94a3b8; font-size: 13px; font-weight: 600; }
-      .lblAmber { fill: #fbbf24; font-size: 13px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tGray { fill: #94a3b8; font-size: 13.5px; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lineDone { stroke: #2dd4bf; stroke-width: 4; stroke-dasharray: 12 8; animation: dash 1.2s linear infinite; }
-      .linePlan { stroke: #334155; stroke-width: 3; stroke-dasharray: 6 8; }
-      .nodeDone { fill: #0f766e; stroke: #5eead4; stroke-width: 2; }
-      .nodeNow { fill: #92400e; stroke: #fcd34d; stroke-width: 2.4; }
-      .nodePlan { fill: #1e293b; stroke: #475569; stroke-width: 2; }
-      .halo { fill: #fbbf24; opacity: 0.25; animation: breathe 1.8s ease-in-out infinite; }
-      .nl { fill: #f8fafc; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .bg { fill: #f6f8fb; }
+      .done { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .now { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2.2; animation: pulse 2.2s ease-in-out infinite; }
+      .plan { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .h { fill: #344965; font-size: 16px; font-weight: 600; }
+      .hAmber { fill: #967903; font-size: 16px; font-weight: 600; }
+      .hGray { fill: #384b61; font-size: 16px; font-weight: 600; }
+      .lbl { fill: #5e718d; font-size: 13px; font-weight: 600; }
+      .lblAmber { fill: #c38f09; font-size: 13px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tGray { fill: #5e718d; font-size: 13.5px; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .lineDone { stroke: #26a696; stroke-width: 4; stroke-dasharray: 12 8; animation: dash 1.2s linear infinite; }
+      .linePlan { stroke: #7087a9; stroke-width: 3; stroke-dasharray: 6 8; }
+      .nodeDone { fill: #12736c; stroke: #1bb199; stroke-width: 2; }
+      .nodeNow { fill: #8f4111; stroke: #c49808; stroke-width: 2.4; }
+      .nodePlan { fill: #f3f5f9; stroke: #7688a2; stroke-width: 2; }
+      .halo { fill: #c38f09; opacity: 0.25; animation: breathe 1.8s ease-in-out infinite; }
+      .nl { fill: #2e4c6b; font-size: 14px; font-weight: 700; text-anchor: middle; }
       .tag { font-size: 14px; font-weight: 600; text-anchor: middle; }
       @keyframes dash { to { stroke-dashoffset: -40; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
@@ -51,11 +51,11 @@
   <circle class="nodePlan" cx="974" cy="130" r="18"/><text class="nl" x="974" y="135">3</text>
   <circle class="nodePlan" cx="1250" cy="130" r="18"/><text class="nl" x="1250" y="135">4</text>
 
-  <text class="tag" x="150" y="174" fill="#5eead4">概念与选型</text>
-  <text class="tag" x="420" y="174" fill="#fde68a">执行面</text>
-  <text class="tag" x="697" y="174" fill="#cbd5e1">同一 agent 两种 runtime</text>
-  <text class="tag" x="974" y="174" fill="#cbd5e1">Substrate 超售</text>
-  <text class="tag" x="1250" y="174" fill="#cbd5e1">长任务续跑</text>
+  <text class="tag" x="150" y="174" fill="#1bb199">概念与选型</text>
+  <text class="tag" x="420" y="174" fill="#967903">执行面</text>
+  <text class="tag" x="697" y="174" fill="#384b61">同一 agent 两种 runtime</text>
+  <text class="tag" x="974" y="174" fill="#384b61">Substrate 超售</text>
+  <text class="tag" x="1250" y="174" fill="#384b61">长任务续跑</text>
 
   <!-- 卡片 0 -->
   <rect class="done" x="30" y="196" width="240" height="420" rx="12"/>

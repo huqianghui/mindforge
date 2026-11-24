@@ -1,39 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 900" width="1240" height="900" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
   <style>
-    .bg { fill: #0f172a; }
-    .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
-    .sub { fill: #94a3b8; font-size: 14px; }
-    .actor { fill: #1e293b; stroke: #2dd4bf; stroke-width: 2; }
-    .actorTxt { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-    .actorSub { fill: #94a3b8; font-size: 13px; }
-    .life { stroke: #475569; stroke-width: 2; stroke-dasharray: 6 6; }
-    .msg { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.6s linear infinite; }
-    .ret { stroke: #5eead4; stroke-width: 2; fill: none; stroke-dasharray: 4 6; animation: flow 2s linear infinite; }
-    .act { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.4s linear infinite; }
-    .opt { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 6 8; }
-    .lbl { fill: #e2e8f0; font-size: 15px; }
-    .code { fill: #5eead4; font-size: 14px; font-family: Menlo, Consolas, monospace; }
-    .codeA { fill: #fbbf24; font-size: 14px; font-family: Menlo, Consolas, monospace; }
-    .ev { fill: #c4b5fd; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-    .note { fill: #94a3b8; font-size: 13px; }
-    .lbl, .code, .codeA, .ev, .note { paint-order: stroke; stroke: #0f172a; stroke-width: 6px; stroke-linejoin: round; }
-    .step { fill: #0f172a; stroke: #2dd4bf; stroke-width: 2; }
-    .stepA { fill: #0f172a; stroke: #fbbf24; stroke-width: 2; }
-    .stepTxt { fill: #2dd4bf; font-size: 13px; font-weight: 700; }
-    .stepTxtA { fill: #fbbf24; font-size: 13px; font-weight: 700; }
-    .render { fill: #134e4a; fill-opacity: 0.55; stroke: #2dd4bf; stroke-width: 2; }
-    .renderTxt { fill: #e2e8f0; font-size: 13px; }
-    .renderH { fill: #5eead4; font-size: 14px; font-weight: 700; }
-    .bar { fill: #2dd4bf; animation: grow 2.4s ease-out infinite; transform-origin: left; transform-box: fill-box; }
-    .divider { stroke: #fbbf24; stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.6; }
-    .divTxt { fill: #fbbf24; font-size: 14px; font-weight: 600; paint-order: stroke; stroke: #0f172a; stroke-width: 6px; }
+    .bg { fill: #f6f8fb; }
+    .title { fill: #344965; font-size: 22px; font-weight: 700; }
+    .sub { fill: #5e718d; font-size: 14px; }
+    .actor { fill: #f3f5f9; stroke: #26a696; stroke-width: 2; }
+    .actorTxt { fill: #344965; font-size: 16px; font-weight: 600; }
+    .actorSub { fill: #5e718d; font-size: 13px; }
+    .life { stroke: #7688a2; stroke-width: 2; stroke-dasharray: 6 6; }
+    .msg { stroke: #26a696; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.6s linear infinite; }
+    .ret { stroke: #1bb199; stroke-width: 2; fill: none; stroke-dasharray: 4 6; animation: flow 2s linear infinite; }
+    .act { stroke: #c38f09; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: flow 1.4s linear infinite; }
+    .opt { stroke: #7a899f; stroke-width: 2; fill: none; stroke-dasharray: 6 8; }
+    .lbl { fill: #344965; font-size: 15px; }
+    .code { fill: #1bb199; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .codeA { fill: #c38f09; font-size: 14px; font-family: Menlo, Consolas, monospace; }
+    .ev { fill: #220495; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+    .note { fill: #5e718d; font-size: 13px; }
+    .lbl, .code, .codeA, .ev, .note { paint-order: stroke; stroke: #f6f8fb; stroke-width: 6px; stroke-linejoin: round; }
+    .step { fill: #f6f8fb; stroke: #26a696; stroke-width: 2; }
+    .stepA { fill: #f6f8fb; stroke: #c38f09; stroke-width: 2; }
+    .stepTxt { fill: #26a696; font-size: 13px; font-weight: 700; }
+    .stepTxtA { fill: #c38f09; font-size: 13px; font-weight: 700; }
+    .render { fill: #f1fbfa; fill-opacity: 0.55; stroke: #26a696; stroke-width: 2; }
+    .renderTxt { fill: #344965; font-size: 13px; }
+    .renderH { fill: #1bb199; font-size: 14px; font-weight: 700; }
+    .bar { fill: #26a696; animation: grow 2.4s ease-out infinite; transform-origin: left; transform-box: fill-box; }
+    .divider { stroke: #c38f09; stroke-width: 1.5; stroke-dasharray: 3 5; opacity: 0.6; }
+    .divTxt { fill: #c38f09; font-size: 14px; font-weight: 600; paint-order: stroke; stroke: #f6f8fb; stroke-width: 6px; }
     @keyframes flow { to { stroke-dashoffset: -36; } }
     @keyframes grow { 0% { transform: scaleX(0.05); } 40%,100% { transform: scaleX(1); } }
   </style>
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5eead4"/></marker>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1bb199"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
   </defs>
   <rect class="bg" width="1240" height="900" rx="12"/>
   <text class="title" x="40" y="44">"展示 Top 10 用户额度的柱状图"：AG-UI + Agent + MCP + A2UI 端到端</text>
@@ -115,8 +115,8 @@
   <text class="note" x="900" y="800">Renderer 自己处理，不必回 Agent</text>
 
   <!-- particles -->
-  <circle r="5" fill="#2dd4bf"><animateMotion dur="2s" repeatCount="indefinite" path="M170,190 L526,190"/></circle>
-  <circle r="5" fill="#2dd4bf"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M530,282 L836,282"/></circle>
-  <circle r="5" fill="#5eead4"><animateMotion dur="2.2s" begin="0.8s" repeatCount="indefinite" path="M530,456 L174,456"/></circle>
-  <circle r="5" fill="#fbbf24"><animateMotion dur="1.8s" repeatCount="indefinite" path="M170,780 L526,780"/></circle>
+  <circle r="5" fill="#26a696"><animateMotion dur="2s" repeatCount="indefinite" path="M170,190 L526,190"/></circle>
+  <circle r="5" fill="#26a696"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M530,282 L836,282"/></circle>
+  <circle r="5" fill="#1bb199"><animateMotion dur="2.2s" begin="0.8s" repeatCount="indefinite" path="M530,456 L174,456"/></circle>
+  <circle r="5" fill="#c38f09"><animateMotion dur="1.8s" repeatCount="indefinite" path="M170,780 L526,780"/></circle>
 </svg>
