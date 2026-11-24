@@ -54,14 +54,14 @@
   <!-- 1 -->
   <rect class="cur" x="370" y="110" width="300" height="250" rx="12"/>
   <circle class="badgeA" cx="396" cy="138" r="13"/><text class="bn" x="396" y="143">1</text>
-  <text class="hA" x="418" y="143">共同基线：Test 01</text>
+  <text class="hA" x="418" y="143">共同基线：Test 01 / 07</text>
   <text class="t" x="390" y="174">雨夜人物，Text-to-Video</text>
   <text class="t" x="390" y="198">五个 endpoint 同一条 Prompt</text>
   <text class="t" x="390" y="222">LTX 6 秒 1080p；H3 6 秒 1080P</text>
   <text class="t" x="390" y="246">Kling 6 秒，分辨率按返回值记</text>
   <text class="tg" x="390" y="278">每个 endpoint 至少 3 次</text>
-  <text class="tg" x="390" y="302">看人物一致性、步态、反射、</text>
-  <text class="tg" x="390" y="326">镜头推进是否平滑</text>
+  <text class="tg" x="390" y="302">07：同一 Prompt Fast→Pro、</text>
+  <text class="tg" x="390" y="326">Turbo→Max，看构图动作留下多少</text>
 
   <!-- 2 -->
   <rect class="plan" x="710" y="110" width="320" height="250" rx="12"/>
