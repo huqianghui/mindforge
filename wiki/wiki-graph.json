@@ -638,7 +638,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "**现行结论（2026-11-07 修订）**：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称\"四种 harness\"（另有 Customer Conversation harness）；\"Copilot Chat harness 对应无代码执行\"等细节应对照最新文档；正文应补第四种  以下为原记录： 微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。",
+          "evidence": "**现行结论（2026-11-24 修订）**：官方现行组成是 Microsoft Copilot harness、Customer Conversation harness、standard harness，经典编排与生成式编排已归入 standard；概览页另一处写作 GitHub Copilot harness，官方口径尚未统一（依据 [Harnesses overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)）。下面原记录里的三 harness 名单（Copilot Chat / Standard / GitHub Copilot）已过时，\"Copilot Chat harness 对应无代码执行\"等细节应对照最新文档  2026-11-07 的修订说明：三 harness 名单仍属实（Copilot Chat / Standard / GitHub Copilot，后者 2026-08-03 GA），但官方文档现称\"四种 harness\"（另有 Customer Conversation harness）；正文应补第四种  以下为原记录： 微软官方文档（Choose a harness）直接定义 \"The harness **is a runtime**\"——Copilot Studio 作为全托管 SaaS 把两层打包：创建 agent 时选定 harness 即确定 runtime，无第二决策点，且**创建后不可跨 harness 迁移**。三 harness（GA 名单，2026-08-03）对应的 runtime 实体：Copilot Chat harness=M365 Copilot Chat 同款运行时（无代码执行）；Standard harness=经典 topic/flow 引擎（无代码执行）；GitHub Copilot harness=GitHub Copilot SDK/CLI 运行时（与 Copilot coding agent、Cowork 同源），跑在 Copilot Studio 治理的 secure sandbox，内置 planning/shell/文件操作/URL 抓取/MCP，原生创建编辑 Office/PDF 文件，Copilot Credits 按 usage 计费（含 runtime 用量）。关键推论：托管 runtime 下**你不装依赖**——扩展能力的方式不是 pip/npm 而是 harness 扩展点（MCP、connector、skill）。对照证据：同一 GitHub Copilot 引擎在 GitHub Actions 形态（coding agent）反而允许 `copilot-setup-steps.yml` 自定义环境——同一 harness 挂不同 runtime，环境控制权完全不同，是 OpenForge 三元结构中 Environment 层的活例子。确认托管 sandbox 细节（OS/预装解释器/出站网络）最快路径是建测试 agent 让它自述环境（实测探针），文档往往滞后。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 修订——依据：Microsoft Learn Harnesses in Copilot Studio https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview ；GA 公告 https://www.microsoft.com/en-us/copilot/blog/copilot-studio/new-and-improved-github-copilot-harness-agent-skills-and-richer-context"
         },
@@ -5977,7 +5977,7 @@
       "id": "entra-agent-id",
       "type": "concept",
       "title": "Entra Agent ID（双层身份模型）",
-      "summary": "Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核心是**认证与授权分离的双层模型**：Agent Blueprint（模板 + 凭据持有者）负责\"证明是谁来申请身份\"（Authentication），Agent Identity（特殊 service principal）代表\"最终是谁在访问资源\"（Authorization + Audit）。凭据集中在少数 Blueprint 上、权限和审计分散到每个 Agent Identity 上，从而在支撑成千上万 Agent 的同时把 secret 数量压到最少。\n\n与传统 App Registration / Service Principal 的 1:1 模型不同，Blueprint 与 Agent Identity 是 1:N 工厂模型（类比 Kubernetes Deployment/Pod）——本质是把 AI Agent 当作一种新的 **Workload Identity** 来治理，而不是一种新的 App。注意 1:N 是对象模型上限（单 Blueprint ≤250 identity），Foundry 实测中 blueprint:identity 为 1:1 成对创建，\"N\"兑现在共享身份复用与多租户分发。",
+      "summary": "Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核心是**认证与授权分离的双层模型**：Agent Blueprint（模板 + 凭据持有者）负责\"证明是谁来申请身份\"（Authentication），Agent Identity（特殊 service principal）代表\"最终是谁在访问资源\"（Authorization + Audit）。凭据集中在少数 Blueprint 上、权限和审计分散到每个 Agent Identity 上，从而在支撑成千上万 Agent 的同时把 secret 数量压到最少。\n\n与传统 App Registration / Service Principal 的 1:1 模型不同，Blueprint 与 Agent Identity 是 1:N 工厂模型（类比 Kubernetes Deployment/Pod）——本质是把 AI Agent 当作一种新的 **Workload Identity** 来治理，而不是一种新的 App。注意 1:N 是对象模型上限（单 Blueprint ≤250 identity），Foundry 实测中 blueprint:identity 为 1:1 成对创建，\"N\"兑现在共享身份复用与多租户分发。当前 agent 对象模型下，创建 agent 即建专属 blueprint 与身份（2026-11-24 按官方文档修订，原\"publish 才建\"属旧模型）。",
       "tags": [
         "wiki",
         "concept",
@@ -6037,26 +6037,26 @@
           "review": "2026-11-07 确认——依据：[Agent identities, service principals, and applications](https://learn.microsoft.com/en-us/entra/agent-id/agent-service-principals)（一个 blueprint 产生多个 agent identity，凭据集中在 blueprint）"
         },
         {
-          "statement": "Foundry 身份创建时序——项目不建、首 agent 建共享对、publish 建专属对且 RBAC 不继承",
+          "statement": "Foundry 身份创建时序——当前对象模型下创建 agent 即建专属 blueprint 与身份；共享项目身份只留给旧模型的 agent，发布后 RBAC 不继承",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-04",
-          "last_updated": "2026-11-07",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "官方时序：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。",
+          "evidence": "**现行结论（2026-11-24 修订）**：在当前的 agent 对象模型下，创建 agent 就会为它建一个专属 blueprint 和默认实例的身份，不再等到 publish；项目级共享身份只留给旧的 Agent Application 发布模型下的 agent。下面\"publish 才建专属对\"的时序属于旧模型，保留作历史。RBAC 不继承、version 不等于 identity、`identity.principalId` 不是 agent 身份这几条易错点不受影响。  旧模型的时序（原记录）：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。",
           "evidence_type": "",
-          "review": "2026-11-07 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)"
+          "review": "2026-11-24 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/agent-identity)：\"In the current agent object model, creating an agent provisions a unique agent blueprint and the identity for its default instance\"（11-22 loop-revalidate 取证，用户裁决写回）"
         },
         {
-          "statement": "实测偏差——portal New agent 创建即得专属 blueprint 对，早于文档的\"publish 才建\"",
+          "statement": "创建即建专属 blueprint——文档已跟上实测",
           "source": "Entra-Agent-ID的双层身份模型",
           "first_seen": "2026-08-04",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为\"1 共享 + N 专属\"，专属对在**创建时**即落，与文档\"publish 才建\"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。",
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 修订）**：官方文档已经跟上实测——当前对象模型下创建 agent 即建专属 blueprint 与身份，实测看到的\"1 共享 + N 专属\"是旧共享身份与新模型并存的结果。原记录里\"文档滞后，还是只为治理可见性提前注册\"的两种解释，前者已被文档印证；运行时工具调用用的是哪个身份（看令牌的 sub）仍未复验。  原记录：在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为\"1 共享 + N 专属\"，专属对在**创建时**即落，与文档\"publish 才建\"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：依据：官方文档仍写“发布 agent 时才创建专属 blueprint”(https://learn.microsoft.com/en-us/entra/id-governance/agent-id-governance-overview)，与实测相左；无新实测或文档修订能判断是实现已变还是仅治理可见性，需用 token 的 sub 复验"
+          "review": "2026-11-24 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/agent-identity) 已改为\"创建 agent 即建专属 blueprint 与默认实例身份\"，与 2026-08-04 的实测一致，\"实测偏差\"不再成立（11-22 loop-revalidate 取证，用户裁决写回）；置信度按修订规则不升"
         },
         {
           "statement": "Blueprint Authentication 属 Entra OAuth 层，与 Azure RBAC 是两套授权体系",
@@ -6439,7 +6439,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "Prompt Agent：planner 黑盒、状态由 Thread / Run 承载、调用面是 Responses API，只能用 Foundry 支持的模型；内容安全（Prompt Shield、Content Filter）、审计、成本追踪开箱即用，是 Voice Live agent 绑定唯一支持的类型。Hosted Agent：LangGraph、Agent Framework、OpenAI Agents SDK 等任意框架，镜像推 ACR，Foundry 分配算力、签发专属 Entra agent identity 和 endpoint；planner、记忆、模型（含第三方模型，风险自负）都归你，内容层防护和 planner 内部可观测性要自己补。类比：Prompt 之于 Hosted，如 Azure Functions 之于 Kubernetes。Prompt 与 Hosted 是单个 agent 的两种运行时归属，原来的 Workflow 是之上的编排层，现由 Agent Framework 代码、harness 原语和 A2A 承接。",
+          "evidence": "Prompt Agent：planner 黑盒、状态由 Thread / Run 承载、调用面是 Responses API，只能用 Foundry 支持的模型；内容安全（Prompt Shield、Content Filter）、审计、成本追踪开箱即用，是 Voice Live agent 绑定唯一支持的类型。Hosted Agent：LangGraph、Agent Framework、OpenAI Agents SDK 等任意框架，镜像推 ACR，Foundry 分配算力、签发专属 Entra agent identity 和 endpoint；planner、记忆、模型（含第三方模型，风险自负）都归你；内容层防护不默认带，要显式配置 `rai_config` 平台 guardrail（2026-11-24 按官方 guardrail 文档修订，原写\"自己补\"），planner 内部可观测性要自己补。类比：Prompt 之于 Hosted，如 Azure Functions 之于 Kubernetes。Prompt 与 Hosted 是单个 agent 的两种运行时归属，原来的 Workflow 是之上的编排层，现由 Agent Framework 代码、harness 原语和 A2A 承接。",
           "evidence_type": "",
           "review": ""
         },
@@ -7244,7 +7244,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 20,
-      "avg_confidence": 0.8,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -7357,15 +7357,15 @@
           "review": "2026-11-07 长效——依据：库内无矛盾：qmd search 关键词命中的仅为来源文章与本页自身（Notes/ wiki/ paper/ book/），无更新文章反驳"
         },
         {
-          "statement": "Claude Code 的 98.7% 代码都是 Harness",
+          "statement": "Claude Code 的 98.4% 代码是运行基础设施，决策逻辑只占约 1.6%",
           "source": "Claude-Code系列07：Harness分层架构",
           "first_seen": "2026-04-17",
-          "last_updated": "2026-07-06",
-          "confidence": 0.9,
-          "status": "stale",
-          "evidence": "Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "按社区对源码的估算，Claude Code 约 51.2 万行 TypeScript、1884 个文件，其中决策逻辑约占 1.6%，其余 98.4% 是运行基础设施（工具执行、权限、上下文管理、会话、UI 等）。原记录的\"98.7%、直接调用模型的代码约 6400 行\"已按这一估算更正。含义不变：agent 的可靠性主要来自 harness 而不是那一小段调用模型的代码；社区框架的价值不在重复执行能力，而在补足约束系统和认知系统的空白。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：98.7% / 6400 行为外部分析数字，本轮未取到可靠一手来源"
+          "review": "2026-11-24 修订——依据：[arXiv 2604.14228v2](https://arxiv.org/html/2604.14228v2)（11-22 loop-revalidate 取证，用户裁决写回）；数字属社区估算，不是官方公布，置信度 0.9 → 0.8"
         },
         {
           "statement": "多模型 harness 必须自建三层评测体系——离线 benchmark → PR 门禁 → 生产 A/B",
@@ -7404,12 +7404,12 @@
           "statement": "AI Agent 创作存在三种范式——纯多 Agent / Agent+微调 / Harness 驱动",
           "source": "InkOS：AI小说创作中的Harness",
           "first_seen": "2026-04-23",
-          "last_updated": "2026-04-23",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。",
+          "status": "active",
+          "evidence": "范式一（对话驱动）：Terminal Velocity，agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent 加微调模型，推理效率高但泛化受限。范式三（harness 驱动）：InkOS，最有前景的方向；它的形态已经变了——初版是 10 个 agent 加硬编码规则、真相文件、审计循环，2.0 收敛成单一的 pi-agent harness 加 19 个 skill，由宿主负责确认、状态、原子持久化与产物真相。这一演变正好印证同页\"外层 harness 框架 skill 化收敛\"那条。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：第三方项目(Terminal Velocity/GOAT)本轮未查"
+          "review": "2026-11-24 修订——依据：[InkOS README](https://github.com/Narcooo/inkos/blob/master/README.en.md)（11-22 loop-revalidate 取证，用户裁决写回）；Terminal Velocity 与 GOAT 本轮未查，范式一、二的例子维持原记录"
         },
         {
           "statement": "V-Model 双轨把\"凡可确定性计算的绝不交给 LLM\"应用到合规领域",
@@ -7426,12 +7426,12 @@
           "statement": "选 harness 就是选行为语义——Copilot Studio 三 harness 并存；扩展机制\"离模型越近越可移植\"",
           "source": "Foundry-Toolbox与Skills解析",
           "first_seen": "2026-07-30",
-          "last_updated": "2026-08-04",
+          "last_updated": "2026-11-24",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——\"选 harness 就是选行为语义\"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话：\"离模型越近越可移植\"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。",
+          "status": "active",
+          "evidence": "Copilot Studio 一个产品里并存多种 harness，官方现行组成是 Microsoft Copilot harness、Customer Conversation harness、standard harness，原来的经典编排与生成式编排都已归入 standard（概览页另一处写作 GitHub Copilot harness，官方口径尚未统一；原记录\"经典低代码编排、生成式编排、Copilot 运行时\"三分已过时）。同一 agent 配置换 harness 跑出不同行为——\"选 harness 就是选行为语义\"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话：\"离模型越近越可移植\"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：同上 Microsoft Learn harnesses-overview：现为四种 harness（含 Customer Conversation harness）"
+          "review": "2026-11-24 修订——依据：[Copilot Studio agents overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-overview)、[Harnesses overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)（11-22 loop-revalidate 取证，用户裁决写回）"
         },
         {
           "statement": "外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端",
@@ -13235,12 +13235,12 @@
           "statement": "Voice Live API 采用 WebSocket + WebRTC 双通道架构",
           "source": "WebSocket与WebRTC深度对比",
           "first_seen": "2026-05-22",
-          "last_updated": "2026-05-24",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。",
+          "status": "active",
+          "evidence": "WebSocket 是控制面（会话配置、事件、文本、工具调用），WebRTC 是媒体面（低延迟音视频），两条通道职责解耦。信令有两种：SDP 可以经 WebSocket 控制通道交换，也可以走 HTTP 端点交换——HTTP 信令在 SDP 交换后即关闭、没有常驻 WebSocket，数字人场景暂不支持这种 side-band 方式。数字人场景里 WebRTC 只承载 avatar 下行，麦克风上行与 VAD 仍走 WebSocket，且 `output_protocol` 可以改成 websocket 让数字人也经 WebSocket 下发；要让音频也全部走 WebRTC，用的是 `voice-live/realtime/calls` 这一路。所以\"WebSocket 建控制面 → 经 WebSocket 交换 SDP → 建 PeerConnection\"只是其中一种建连时序。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 与 Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md：SDP 经 WS 交换属实；但 WebRTC 仅数字人下行，麦克风上行与 VAD 走 WS，数字人可降级为 WebSocket 下发"
+          "review": "2026-11-24 修订——依据：[Voice Live WebRTC](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-webrtc)、[Voice Live API reference 2026-06-01-preview](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-api-reference-2026-06-01-preview)（11-22 loop-revalidate 取证，用户裁决写回）"
         },
         {
           "statement": "要获得数字人最佳体验才需要 WebRTC——WebSocket-only 并非必然被淘汰",
@@ -15148,15 +15148,15 @@
           "review": "2026-11-07 修订——依据：[Introducing the Microsoft Copilot harness in Foundry Agent Service](https://devblogs.microsoft.com/foundry/microsoft-copilot-harness-in-foundry)"
         },
         {
-          "statement": "治理分层——身份层三者同源，分水岭在内容层",
+          "statement": "治理分层——身份层同源，分水岭在内容层：Prompt Agent 默认带内容防护，Hosted 要显式配置",
           "source": "Foundry-Agent三种形态对比与选型",
           "first_seen": "2026-07-19",
-          "last_updated": "2026-07-21",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。\"Hosted 治理弱\"的笼统说法是错的，必须分层说。",
+          "status": "active",
+          "evidence": "治理四层（身份、内容、审计、成本）中，身份层两类 agent 同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。分水岭在内容层，但不再是\"有没有\"，而是\"默认带还是要显式配\"：Prompt Agent 默认带 Prompt Shield / Content Filter；Hosted 可以选配平台 guardrail（`rai_config`），不配就没有，配了不写 policy 名时用 DefaultV2，policy ID 写错会 fail open（等于没防护且不报错）。另有一项仅 Hosted 适用的出站 egress 控制。原记录\"Hosted 内容安全完全自理\"已不成立。\"Hosted 治理弱\"的笼统说法是错的，必须分层说。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：依据：沿用上一轮结论——身份层有新证据 https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity ，但“内容过滤只有 Prompt Agent 内置”未找到官方原文印证，无法下结论"
+          "review": "2026-11-24 修订——依据：[Hosted agent guardrails](https://learn.microsoft.com/fil-ph/azure/foundry/agents/concepts/hosted-agent-guardrails)、[Add guardrails to hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails)（11-22 loop-revalidate 取证，用户裁决写回）"
         },
         {
           "statement": "Voice Live 与两类 Agent 的组合方向相反",
