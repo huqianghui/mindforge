@@ -23,7 +23,7 @@ related:
 
 ## 摘要
 
-Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpec）面临的核心 scaling 问题。根因是一个错误的隐含假设：context = state。GSD 的规划与状态文档随计划增多而变长（执行层每个任务是全新的 subagent 上下文，2026-11-24 复核）；Superpowers 在大功能时主协调会话的上下文也会爆炸；OpenSpec 的 Delta 模式只是将一次性爆 context 变成多次局部爆。正确做法是 state 外部存储 + context 按需投影（projection）。
+Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpec）面临的核心 scaling 问题。根因是一个错误的隐含假设：context = state。GSD 的规划与状态文档随计划增多而变长（执行层每个任务是全新的 subagent 上下文；项目已迁到 GSD Core，子 agent 只拿紧凑上下文，剩下的风险是主协调会话上下文增长，2026-11-24 复核）；Superpowers 在大功能时主协调会话的上下文也会爆炸；OpenSpec 的 Delta 模式只是将一次性爆 context 变成多次局部爆。正确做法是 state 外部存储 + context 按需投影（projection）。
 
 ## Claims
 
@@ -41,17 +41,19 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 >
 > 原记录：document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。
 
-### Claim: GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system
+### Claim: 2026-04 版 GSD 在 L3+ 项目中面临 context 爆炸、更像 checklist pipeline 而非 skill system；迁到 GSD Core 后这条只剩主协调会话的上下文增长
 
 - **来源**：[[Vibe-Coding系列05：大项目落地困局|Vibe Coding系列05]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-15
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-24
+- **置信度**：0.5
+- **状态**：active
 - **证据类型**：实测经验
-- **复核**：2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据
+- **复核**：2026-11-24 降级——依据：[gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done)（已归档，README 写明项目以 GSD Core 继续）；[open-gsd/gsd-core](https://github.com/open-gsd/gsd-core) README 与 [Context engineering](https://github.com/open-gsd/gsd-core/blob/main/docs/explanation/context-engineering.md)（重活都在全新上下文的子 agent 里做，每个 executor 起步是干净的 200k 上下文；子 agent 只拿一份紧凑的 JSON 上下文；命令以 skill 形式提供并按 `effort` 标轻重；主协调会话的上下文用 hook 估算余量，文档自己承认主会话仍会慢慢涨满）。新版没有自己实测过
 
-> 优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的"甜蜜点"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。
+> **现行结论（2026-11-24 降级）**：原判断只适用于 2026-04 的 GSD。迁到 GSD Core 之后，"没有选择层、全量拼接"已不成立——子 agent 只拿当前任务需要的紧凑上下文，命令也改成了 skill；剩下的 scaling 风险是主协调会话：它每轮都要读载荷、看状态、在阶段之间路由，上下文会持续增长，GSD Core 只用 hook 估算余量来提醒和引导，不保证放得下。所以"L2 是甜蜜点、L3+ 要补 Skill Runtime"这条选型建议要按新版重新验证，不能直接沿用。
+>
+> 原记录：优化的是可理解性和可审查性，牺牲的是 token efficiency 和 scalable context。L2 项目是 GSD 的"甜蜜点"（见 [[framework-selection]]），L3+ 项目需要补充 Skill Runtime。
 
 ### Claim: Superpowers 的核心错位是"用文本分解解决计算分解问题"——大功能里不只 subagent，主协调会话的上下文也会爆
 
@@ -106,6 +108,7 @@ Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpe
 ## 冲突与演进
 
 - 2026-11-24：/revalidate——GSD 一条降级 0.8 → 0.6（执行层是每任务新上下文）、OpenSpec 一条确认、Superpowers 一条修订（爆的是主协调会话）；摘要同步修改。
+- 2026-11-24：/revalidate 第二批——GSD 在 L3+ 爆 context 一条降级 0.7 → 0.5（GSD Core 已改成紧凑上下文 + skill，剩下主协调会话增长），摘要同步。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 4、长效 1
 

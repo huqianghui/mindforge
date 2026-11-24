@@ -1,7 +1,7 @@
 ---
 title: "生成-评估分离（Generation-Evaluation Separation）"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -25,7 +25,7 @@ related:
 
 生成-评估分离是 AI Agent 系统设计的核心架构原则：生成内容的 Agent 和评估质量的 Agent 必须分离，不能既当运动员又当裁判。OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套模式，标志着行业共识。
 
-典型实现为 Planner-Generator-Evaluator 三 Agent 架构。Meta-Harness 论文中对应 Guides（生成指导）和 Sensors（评估检测）的双重控制机制。
+典型实现为 Planner-Generator-Evaluator 三 Agent 架构。Böckeler（Martin Fowler 网站）把 harness 的控制手段分成 Guides（前馈，行动前引导）与 Sensors（反馈，行动后检测），其中 Sensors 一侧对应评估；Meta-Harness 论文的外循环里 proposer 生成候选 harness、评估集打分，也是同一分离。
 
 ## Claims
 
@@ -33,25 +33,25 @@ related:
 
 - **来源**：[[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]]
 - **首次出现**：2026-04-02
-- **最近更新**：2026-07-06
+- **最近更新**：2026-11-24
 - **置信度**：0.85
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：三家公司实践/Meta-Harness 论文表述本轮未查官方来源
+- **复核**：2026-11-24 确认——依据：[Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)（"Separating the agent doing the work from the agent judging it proves to be a strong lever"，generator 与 evaluator 两个 agent）；[Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/)（PR 由其他 agent 评审、循环到所有 agent reviewer 满意，评审几乎全部 agent-to-agent）；[Towards Autonomous Mathematics Research](https://arxiv.org/abs/2602.10177)（DeepMind Aletheia：Generator、Verifier、Reviser 三个子 agent，直到 Verifier 通过）。三家原文都核到；"独立演化"是根据时间线与各自叙述做的推断，没有一手证据证明互不参考，置信度不升
 
-> OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。
+> OpenAI、Anthropic、Google DeepMind 在 2026 年初独立演化出同一套设计范式——生成与评估必须分离。这不是巧合而是行业共识，来自各自在长时任务中的实践教训。三家的分离形态不完全相同：Anthropic 是独立的 evaluator agent，OpenAI 是 agent 之间互相评审 PR，DeepMind 是 Generator / Verifier / Reviser 循环。
 
-### Claim: Meta-Harness 中 Guides 和 Sensors 是分离原则的工程实现
+### Claim: Guides 与 Sensors 的前馈/反馈分法里，Sensors 是分离原则在 harness 控制面的落点；Meta-Harness 的"proposer 生成、评估集打分"是同一分离
 
 - **来源**：[[2026-04-16-Meta-Harness]]
 - **首次出现**：2026-04-16
-- **最近更新**：2026-07-06
-- **置信度**：0.8
-- **状态**：stale
-- **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：三家公司实践/Meta-Harness 论文表述本轮未查官方来源
+- **最近更新**：2026-11-24
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：理论
+- **复核**：2026-11-24 降级——依据：[Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)（Böckeler：Guides 是前馈控制、行动前引导，Sensors 是反馈控制、行动后观察并帮 agent 自我纠正，分 computational 与 inferential 两类）；[Meta-Harness: End-to-End Optimization of Model Harnesses](https://arxiv.org/abs/2603.28052) 全文（无 Guides / Sensors 分类，正文没有 sensor 一词；方法是 agentic proposer 读历史候选的代码、分数与轨迹后提出新 harness，再在评估任务上打分）。原 Claim 把出处写成了论文，论文笔记 [[2026-04-16-Meta-Harness]] 本身的署名是对的
 
-> Meta-Harness 论文将 Harness 组件分为 Guides（指导生成方向）和 Sensors（检测输出质量），两者独立作用于模型——这是生成-评估分离的精确工程表述。
+> Guides / Sensors 这套分法出自 Martin Fowler 网站上 Böckeler 的 harness engineering 文章，不是 Meta-Harness 论文：Guides 是前馈控制（AGENTS.md、Skills、初始化脚本，在 agent 行动前提高一次做对的概率），Sensors 是反馈控制（lint、结构测试、LLM-as-judge 审查，在行动后检测并让 agent 自我纠正）。和分离原则对得上的只有 Sensors 一侧——它是独立于生成的检测，其中 computational sensors（测试、linter）完全不依赖生成模型的判断；Guides 管的是生成本身，不是评估。Meta-Harness 论文自己体现分离的地方在外循环：proposer（Claude Code）提出候选 harness，打分来自在评估任务上的实际运行，不是 proposer 的自评。（2026-11-24 降级：原记录写作"Meta-Harness 论文将 Harness 组件分为 Guides 和 Sensors，两者独立作用于模型——这是生成-评估分离的精确工程表述"，出处与"两者都是分离"两点都不准确。）
 
 ### Claim: 写作去AI味的 Humanizer multi-pass 是分离原则在文本生成域的实例
 
@@ -93,11 +93,11 @@ related:
 
 - **来源**：[[Orca使用笔记：多Agent编排与远程互动]]
 - **首次出现**：2026-07-25
-- **最近更新**：2026-08-04
-- **置信度**：0.7
-- **状态**：stale
+- **最近更新**：2026-11-24
+- **置信度**：0.8
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：未检索 Orca 当前移动端功能，无本轮证据
+- **复核**：2026-11-24 确认——依据：[Mobile companion — Orca Docs](https://orca.dev/docs/mobile)（仍定位为"桌面的遥控器、刻意不做完整编辑器"，配对的桌面持有 agent 会话；手机上可看变更文件、stage、commit，新增在 diff 里读写 PR review 评论、解决冲突完成合并）；[stablyai/orca](https://github.com/stablyai/orca) README（Review AI Output：在 diff 行上批注并回传 agent）。评估侧能力比原记录更完整，置信度 +0.1
 
 > Orca 的产品分工把分离原则做成了物理形态：生成侧（写代码）完全交给 desktop/server 上的 Agent 编队，人类在手机上只保留评估侧动作——下指令（指挥）、看 diff（审阅）、批准 commit（拍板）。评估环节因此可以移动化、碎片化（地铁上审 diff），而生成环节保持重算力常驻。这说明生成-评估分离不仅是 Agent 内部架构原则，还能落成人机之间的异步协作边界：人类正在整体向评估侧迁移。
 
@@ -209,7 +209,7 @@ related:
 ## 冲突与演进
 
 - 2026-04-02：从三家公司的实践中识别出共同模式。
-- 2026-04-16：Meta-Harness 论文提供了更精确的 Guides/Sensors 双重控制框架。
+- 2026-04-16：Meta-Harness 论文提供了更精确的 Guides/Sensors 双重控制框架。（2026-11-24 更正：Guides/Sensors 出自 Böckeler 的文章，不是该论文，见下方复核记录。）
 - 2026-06-29：去AI味文章提供文本生成域的实例（Writer→Humanizer→Reviewer），表明该原则跨域成立。
 - 2026-07-20：SDD/Spec Kit 提供合规/规格验证域实例（"AI 起草，人类拍板，脚本验证"），且评估侧分层出"人类判断 vs 确定性脚本"两级。
 - 2026-08-03：Evaluator→Reward 链路篇提供训练循环域实例——judge ≠ policy 是 rubric-as-reward 时代 reward hacking 的第一道防线。
@@ -220,6 +220,7 @@ related:
 
 - 2026-10-02：注入 Voice Live 系列09（judged 模式后端 judge + `pre_generated` speaker，否决权在校验代码——09-25 第四域实例的落地形态）与系列12（测量工具可观测性纪律：工具要报告测到了什么、限速范围与生产拓扑一致、实测锚点与推导区间分开标、瞬时量 vs 累积量）两条 Claim；弱网降级实施归 [[weak-network-adaptive-degradation]]。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 3、长效 4
+- 2026-11-24：/revalidate——确认 2（三家公司分离原则、Orca 移动端评估侧 0.7 → 0.8）、降级 1（Guides/Sensors 出处改为 Böckeler 文章，只有 Sensors 对应评估，0.8 → 0.65）；摘要同步修改。
 
 ## 关联概念
 
@@ -234,7 +235,7 @@ related:
 ## 来源日记
 
 - [[Vibe-Coding系列01：Harness-Engineering的来龙去脉|Vibe Coding系列01]] — Section 四 三家公司独立演化的共同设计原则
-- [[2026-04-16-Meta-Harness]] — Guides/Sensors 双重控制机制
+- [[2026-04-16-Meta-Harness]] — 论文的 proposer 生成、评估集打分外循环；笔记里转述的 Guides/Sensors 分法（出自 Böckeler 文章）
 - [[去除AI味]] — Writer→Humanizer→Reviewer 三者分离（文本生成域实例）
 - [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — "AI 起草，人类拍板，脚本验证"（合规/规格验证域实例）
 - [[从Evaluator到Reward-Function]] — judge ≠ policy 分离是 reward hacking 第一道防线（训练循环域实例）

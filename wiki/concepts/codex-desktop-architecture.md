@@ -88,7 +88,7 @@ Codex Desktop（现顶着 ChatGPT.app 的名字，bundle identifier 仍是 `com.
 | 维度 | Codex Desktop | Claude Code |
 |---|---|---|
 | harness 归属 | **per-model 实例化**：系统提示词/工具形态/治理/编排/上下文机制全随模型条目分发 | **全局 harness**：系统提示词、权限模式、hooks 是全局资产，模型只是可换参数 |
-| 工具调用哲学 | 最强模型 `code_mode_only`——能力做成「一种语言」（JS 编排，node_repl 单一治理入口） | Direct 端——能力做成「更多的工具」（几十个离散工具点名直调，per-tool 权限清晰） |
+| 工具调用哲学 | 当代模型整代 `code_mode_only`（2026-11 起只剩旧的 gpt-5.5 走 direct）——能力做成「一种语言」（JS 编排，node_repl 单一治理入口） | Direct 端——能力做成「更多的工具」（几十个离散工具点名直调，per-tool 权限清晰） |
 | 能力扩展分发 | bundled plugin payload 随第一方 App 走（Computer Use 不随开源 CLI） | MCP 生态自组 + Skill/Plugin 开放目录 |
 | 上下文压缩 | 机制 prompt 全存模型条目（catalog 数据，逐模型可调） | compaction 为 harness 内建行为（黑盒） |
 | 开源边界 | 仅 CLI 一元开源（特定 build），壳与 payload proprietary | CLI 闭源但扩展面（skill/hook/MCP/subagent）全开放 |

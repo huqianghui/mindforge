@@ -85,7 +85,7 @@ path_id: "harness-agent-architecture"
 
 **问**：一个基于 checklist 拼接上下文的工作流框架，项目一大就开始"失忆"、超长。问题出在哪？
 
-**答**：全量上下文拼接模式在 L3+ 项目里必然 context 爆炸——它本质是 checklist pipeline 而不是 skill system，没有选择层（Selection Layer）按需取用。
+**答**：全量上下文拼接模式在 L3+ 项目里必然 context 爆炸——它本质是 checklist pipeline 而不是 skill system，没有选择层（Selection Layer）按需取用。（2026-04 版 GSD 是这类框架的例子；它迁到 GSD Core 后改成子 agent 只拿紧凑上下文、命令做成 skill，剩下的风险是主协调会话的上下文增长。）
 
 **出处**：[[context-explosion]]
 
@@ -127,7 +127,7 @@ path_id: "harness-agent-architecture"
 
 **问**：生成与评估为什么要分离？举两个不同领域的例子。
 
-**答**：自己评自己会放过自己的错误，评估要由独立的角色或机制完成。例子：Meta-Harness 里 Guides 与 Sensors 分离；写作去 AI 味的多轮 Humanizer；规格驱动开发里"AI 起草、人类拍板、脚本验证"。
+**答**：自己评自己会放过自己的错误，评估要由独立的角色或机制完成。例子：harness 里的 Sensors（lint、测试、LLM-as-judge，在行动后独立检测）与生成分开，Meta-Harness 的 proposer 生成候选、评估集打分；写作去 AI 味的多轮 Humanizer；规格驱动开发里"AI 起草、人类拍板、脚本验证"。
 
 **出处**：[[generation-evaluation-separation]]
 

@@ -76,6 +76,7 @@ signals:
 - **读**：[[method-agnostic]]、[[prompt-optimization-maturity-ladder]]；[[automatic-prompt-optimization]]（「小数据集上被选出来的历史最优分系统性偏高」）
 - **前置**：第 4 站
 - **用时**：约 1 小时
+- **⚠️ stale**：[[automatic-prompt-optimization]] 1/12（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出三级阶梯共享同一份 reward，只是消费方式不同
   - 能说出从 L1 迁移到 L2 的两个前提：可量化的 reward、数据量过阈值（<10 / 30~50 / 100+）

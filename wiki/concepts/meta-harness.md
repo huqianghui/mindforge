@@ -120,7 +120,7 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - [[rtk-token-compression]] — `contrasts` RTK 压缩工具输出是手工 Harness 优化，Meta-Harness 将此过程自动化
 - [[cybernetics-agent-design]] — `implements` 控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现
 - [[feedback-loop]] — `implements` Meta-Harness 是反馈闭环的自动化形式
-- [[generation-evaluation-separation]] — `implements` Meta-Harness 的 Guides/Sensors 是分离原则的自动化实现
+- [[generation-evaluation-separation]] — `implements` proposer 生成候选 harness、在评估任务上实际运行打分，评估不来自 proposer 自评
 
 ## 来源日记
 

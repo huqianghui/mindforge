@@ -33,7 +33,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 **怎么用**：按站点顺序读，每站对照「算会」自查。
 
 > [!WARNING]
-> 这个领域的底座页 stale 比例很高（多数 Claim 写于 7~8 月），概念性的结论大多仍成立，但涉及具体产品和数字的要以复核行为准。建议先跑一轮 `/revalidate` 覆盖 [[harness-engineering]]、[[model-harness-codesign]]、[[mcp-vs-cli]]。
+> 这个领域的底座页多数 Claim 写于 7~8 月，概念性的结论大多仍成立，涉及具体产品和数字的以复核行为准。[[harness-engineering]]、[[model-harness-codesign]]、[[mcp-vs-cli]] 已在 2026-11 的几轮 `/revalidate` 里复核过。
 
 **预计总用时**：约 16~20 小时（不含动手实验）。
 
@@ -53,7 +53,6 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[context-engineering]]、[[context-explosion]]、[[context-projection]]
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[context-explosion]] 1/6（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能解释"LLM 性能限制通常是上下文问题而非模型缺陷"，以及 context window 当作 RAM 的类比
   - 能说出 context 爆炸的根因：context 不等于 state
@@ -66,7 +65,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[harness-engineering]]（Claim「Harness Engineering 是 Prompt 和 Context Engineering 的超集」「Agent 的智能来自 model，可靠性来自 harness」「harness 按归谁、能不能改分三类」）、[[generation-evaluation-separation]]
 - **前置**：第 2 站
 - **用时**：约 2 小时
-- **⚠️ stale**：[[harness-engineering]] 1/20、[[generation-evaluation-separation]] 3/16（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[harness-engineering]] 1/20（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能画出 Prompt < Context < Harness 的同心圆，说出每一圈多管了什么
   - 能说出 agent 的两种典型失败模式为什么是系统设计问题，以及级联失败为什么催生了 harness engineering
@@ -127,7 +126,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[model-harness-codesign]]、[[codex-desktop-architecture]]
 - **前置**：第 3、5 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[model-harness-codesign]] 5/13、[[codex-desktop-architecture]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[codex-desktop-architecture]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出第一方绑定的结构性优势在训练时对齐，以及多模型适配成本为什么是笛卡尔积
   - 能用"逐层可撬性"评估一个 coding agent 接第三方模型：目录层、工具层、治理层各能不能换
@@ -175,6 +174,6 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 
 ## 这条路径暴露的缺口
 
-- **stale 大幅下降**：2026-11-07 全库复核与之后几轮复核后，各站读物的 stale 只剩少数（见各站 ⚠️ 行），集中在 [[model-harness-codesign]]、[[context-explosion]]
+- **stale 大幅下降**：2026-11-07 全库复核与之后几轮复核后，各站读物的 stale 只剩少数（见各站 ⚠️ 行），2026-11-24 复核后 [[model-harness-codesign]]、[[context-explosion]]、[[generation-evaluation-separation]] 已清零，剩下的零星分布在各站
 - **缺评测类概念页**：agent-eval 连续多期在知识差距报告里出现，wiki 只有 [[harness-engineering]] 与 [[model-harness-codesign]] 里的几条评测 Claim，没有"coding agent 评测"概念页
 - **安全类仍没有独立页**：MCP 注入与恶意 skill 已作为 Claim 收进 [[model-context-protocol]]、[[skill-pattern]]，但 agent 安全作为一个领域还没有伞形页
