@@ -48,7 +48,13 @@ agentgateway 项目三种角色都能做，但它们面对的调用方、信任�
 
 我一开始是参照 Foundry 来分的：一类是声明式的 prompt agent，另一类是需要自己定义一堆东西的编码 agent。后来发现第二类得再拆一次：
 
-![三类 agent：按"loop 归谁"来分，对外却是同一个外壳|900](../../asset/aks-agent-runtime-agent-types-2026-11-13.svg)
+| | A · 声明式 | B · 基于现成 harness | C · 自写 loop 的代码 |
+|---|---|---|---|
+| loop 归谁 | 平台自带的通用 loop | 第三方的 Claude Code、Codex、Copilot… | 作者自己（Agent Framework、LangGraph…） |
+| 作者写什么 | 指令、模型、MCP 工具、知识源，全是配置 | AGENTS.md、skills、MCP 配置，作者看来仍是配置 | 代码，打成容器镜像，实现约定的协议（A2A / Responses） |
+| 怎么跑 | loop 跑在共享的多租户服务里，要执行代码时再按需申请沙箱 | 每个会话独占一个沙箱（harness 要文件系统和 shell） | 和 B 一样，只是 loop 换成自己的 |
+| 打包与固定 | 配置就是全部内容，模型名要在批准清单里 | AGENTS.md + skills 打成 OCI artifact，harness 版本由运行时类固定 | 镜像按 digest 固定，仓库前缀要在批准清单里 |
+| 参照 | Foundry Prompt agent；kagent declarative | Foundry 没有直接对应；kagent harness codex / claude | Foundry Hosted agent；kagent harness byo |
 
 - **A 声明式**：loop 是平台自带的通用 loop，作者只写指令、选模型、挂 MCP 工具和知识源。
 - **B 基于现成 harness**：loop 是 Claude Code、Codex、Copilot 这些第三方 harness 的，作者写 AGENTS.md、skills、MCP 配置。
@@ -122,8 +128,6 @@ controller 每 20 秒复查一次，28 秒内两个 agent 都有了反应：
 
 ## 四、发现：分三层，授权另走一条路
 
-![发现分三层，授权另走一条路|900](../../asset/aks-agent-runtime-agent-discovery-2026-11-13.svg)
-
 **集群内**，直接查 Kubernetes API 就行，`kubectl get agents -l team=a` 能看到完整定义：权限申请、会话策略、解析后的 digest、revision 历史。谁能看到哪些 agent，由 RBAC 管。这一层适合平台运维和同一个团队的人，别的框架、别的集群不认识这个 CRD。
 
 **跨框架**，用 A2A 的 Agent Card。controller 从 CRD 生成卡片，注册端点按 `/.well-known/agent-card.json` 发布。卡片里只放对外需要的东西：名字、描述、skills、入口地址、认证方式、版本。版本号后面带上 revision 哈希，调用方能看出 agent 有没有变。
@@ -160,8 +164,6 @@ A2A 1.x 的卡片结构和早期版本不一样，入口从单个 `url` 改成�
 ## 六、怎么落地：用开源组件自己搭一套
 
 如果不用参考实现，自己在 AKS 上搭这一层，每一层都有现成的开源底座，要自己写的是中间的胶水：
-
-![用开源组件自己搭一套 agent 注册、发现和调用|1000](../../asset/aks-agent-runtime-agent-registry-build-2026-11-15.svg)
 
 1. **定义**：只做声明式 agent，可以直接用 kagent 的 CRD；要同时覆盖现成 harness 和自写 loop 两类，就像第二节那样自己定义一个带 `type` 的 `Agent` CRD，结构规则写成 CEL。skills 和 AGENTS.md 用 oras 打成 OCI artifact，ACR、Harbor 都行，沙箱放文件时按 digest 拉。要自己写的是 controller 的语义校验：批准清单、镜像 digest、tag 解析、内容哈希 revision、把原因写进 status。
 2. **注册中心**：二选一。Kubernetes API 为准，CRD 本身就是注册表，controller 生成卡片并发布；或者以 Nacos 为准，它管版本、审核、可见性和订阅，适合多集群和非 Kubernetes 的系统。选 Nacos 时，要自己写两边的同步：CRD 状态变化写进 Nacos，Nacos 里的审核结果回写 status，只同步 Ready 的版本。

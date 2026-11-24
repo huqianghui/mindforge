@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .panel { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
-      .ph { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-      .rowT { fill: #e2e8f0; font-size: 13.5px; }
-      .m { fill: #a5f3fc; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
-      .ok { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.2; }
-      .no { fill: #3b1518; stroke: #f87171; stroke-width: 1.2; }
-      .badT { fill: #5eead4; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .badR { fill: #fca5a5; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .g200 { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
-      .g503 { fill: #3b1518; stroke: #f87171; stroke-width: 1.4; animation: pulse 1.8s ease-in-out infinite; }
-      .g403 { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.4; }
-      .bl { fill: #f1f5f9; font-size: 13px; font-weight: 600; text-anchor: middle; }
-      .lat { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.4; }
-      .latT { fill: #e9d5ff; font-size: 13px; font-weight: 600; }
-      .ax { stroke: #334155; stroke-width: 1; }
-      .axl { fill: #64748b; font-size: 12.5px; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
+      .bg { fill: #fcfcfb; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .sub { fill: #6f6e69; font-size: 14px; }
+      .panel { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.2; }
+      .ph { fill: #1a4c89; font-size: 16px; font-weight: 600; }
+      .rowT { fill: #1a4c89; font-size: 13.5px; }
+      .m { fill: #1a4c89; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .ok { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.2; }
+      .no { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.2; }
+      .badT { fill: #2a78d6; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .badR { fill: #8e1616; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .g200 { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.4; }
+      .g503 { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.4; animation: pulse 1.8s ease-in-out infinite; }
+      .g403 { fill: #faefeb; stroke: #eb6834; stroke-width: 1.4; }
+      .bl { fill: #1a4c89; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .lat { fill: #ecf2f8; stroke: #2d1f84; stroke-width: 1.4; }
+      .latT { fill: #2d1f84; font-size: 13px; font-weight: 600; }
+      .ax { stroke: #e4e2dc; stroke-width: 1; }
+      .axl { fill: #e4e2dc; font-size: 12.5px; text-anchor: middle; }
+      .lg { fill: #1a4c89; font-size: 13.5px; }
+      .lgh { fill: #1a4c89; font-size: 15px; font-weight: 600; }
+      .flow { fill: none; stroke: #2a78d6; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
       @keyframes dash { to { stroke-dashoffset: -24; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
@@ -36,16 +36,16 @@
   <text class="ph" x="50" y="126">请求体里写的 model</text>
   <text class="rowT" x="440" y="126">Responses</text>
   <text class="rowT" x="540" y="126">Messages</text>
-  <text class="m" x="50" y="170">gpt-5.6-luna</text><text class="rowT" x="50" y="190" style="fill:#94a3b8;font-size:12.5px">资源上批准的部署名</text>
+  <text class="m" x="50" y="170">gpt-5.6-luna</text><text class="rowT" x="50" y="190" style="fill:#6f6e69;font-size:12.5px">资源上批准的部署名</text>
   <rect class="ok" x="440" y="152" width="70" height="30" rx="6"/><text class="badT" x="475" y="172">200</text>
   <rect class="ok" x="540" y="152" width="70" height="30" rx="6"/><text class="badT" x="575" y="172">200</text>
-  <text class="m" x="50" y="240">fast / smart</text><text class="rowT" x="50" y="260" style="fill:#94a3b8;font-size:12.5px">资源配置里定义的别名</text>
+  <text class="m" x="50" y="240">fast / smart</text><text class="rowT" x="50" y="260" style="fill:#6f6e69;font-size:12.5px">资源配置里定义的别名</text>
   <rect class="no" x="440" y="222" width="70" height="30" rx="6"/><text class="badR" x="475" y="242">403</text>
   <rect class="no" x="540" y="222" width="70" height="30" rx="6"/><text class="badR" x="575" y="242">403</text>
-  <text class="m" x="50" y="310">gpt-4.1-mini</text><text class="rowT" x="50" y="330" style="fill:#94a3b8;font-size:12.5px">账号上部署了，但没批准给这个资源</text>
+  <text class="m" x="50" y="310">gpt-4.1-mini</text><text class="rowT" x="50" y="330" style="fill:#6f6e69;font-size:12.5px">账号上部署了，但没批准给这个资源</text>
   <rect class="no" x="440" y="292" width="70" height="30" rx="6"/><text class="badR" x="475" y="312">403</text>
   <rect class="no" x="540" y="292" width="70" height="30" rx="6"/><text class="badR" x="575" y="312">403</text>
-  <text class="m" x="50" y="380">claude-haiku-4-5</text><text class="rowT" x="50" y="400" style="fill:#94a3b8;font-size:12.5px">Claude 系列的模型名</text>
+  <text class="m" x="50" y="380">claude-haiku-4-5</text><text class="rowT" x="50" y="400" style="fill:#6f6e69;font-size:12.5px">Claude 系列的模型名</text>
   <rect class="no" x="540" y="362" width="70" height="30" rx="6"/><text class="badR" x="575" y="382">403</text>
   <text class="lg" x="50" y="446">授权从请求体取 model 当作资源目标，两种协议共用一份清单</text>
   <text class="lg" x="50" y="472">别名只在会话层选模型时生效，到网关就得是部署名</text>

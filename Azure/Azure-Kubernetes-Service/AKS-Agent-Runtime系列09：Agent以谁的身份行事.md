@@ -29,7 +29,17 @@ description: 到目前为止，agent 调下游时用的都是平台网关自己�
 
 ## 二、几种身份，下游分别看到什么
 
-![agent 去调下游工具 API 时，下游看到的是谁|900](../../asset/aks-agent-runtime-identity-tokens-2026-11-13.svg)
+同一个下游 API（工单系统），换五种身份去拿令牌，下游看到的分别是谁。令牌里的声明来自这次实测解码出来的值：
+
+| | ① 平台的身份 | ② 控制面应用 app-only | ③ OBO：代表用户 | ④ Entra Agent ID | ⑤ Agent ID + OBO |
+|---|---|---|---|---|---|
+| 怎么拿到 | 网关用 Workload Identity（按配置推断，未解码） | client credentials，Workload Identity 作断言 | 用户令牌 → 控制面 A 换下游令牌（无 secret） | blueprint 换 T1，agent identity 再换资源令牌 | agent identity 代表用户（这次没能跑通） |
+| idtyp / oid | app / 网关的身份 | app / 控制面 A | user / 用户本人 | app / 这个 agent 自己 | — |
+| 下游还能看到 | 看不出是谁的事 | scp、roles 都没有，令牌照样发了 | azp = 控制面 A，scp = tickets.write | azp = 这个 agent，T1.sub 指向这个 agent | OBO 报 AADSTS65001，没有同意记录 |
+| 寿命 | — | 1445 分钟 | 跟用户令牌同时过期 | 1445 分钟 | — |
+| 意味着什么 | 所有会话、所有 agent、所有用户共用一个身份，下游审计里只有一个名字（第 04、08 篇的现状） | 只校验 aud 的 API，租户里任何应用都能调，必须同时检查 scp 或 roles | 写明"代表谁"和"谁在代办"，按用户本人的权限判断，还拿到了 refresh token | 每个 agent 一个独立主体，能单独授权、审计、停用，全程没有 secret | 要管理员在 blueprint 上配可继承权限或做同意（我是租户的 guest，做不了） |
+
+从左到右，下游能看清的东西越来越多。③ 和 ④ 解决的是两个不同的问题：③ 让 agent 的权限不超过用户本人，④ 让每个 agent 能被单独授权和追责，两者组合起来就是 ⑤。五种令牌都不会进沙箱，它们的使用者是控制面或出站网关。
 
 **OBO：代表用户。** 控制面拿着用户令牌，用 MSAL 做 on-behalf-of，换成 B 的令牌。换出来的令牌里：
 

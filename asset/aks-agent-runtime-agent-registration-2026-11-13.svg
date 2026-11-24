@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#920707"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .stage { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
-      .stageB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
-      .stageP { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.5; }
-      .fail { fill: #2a1416; stroke: #f87171; stroke-width: 1.4; }
-      .zone { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 9 5; }
-      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.5; }
-      .cardG { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; animation: pulse 2.2s ease-in-out infinite; }
-      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .r { fill: #fca5a5; font-size: 13px; }
-      .rh { fill: #fecaca; font-size: 13px; font-weight: 600; }
-      .m { fill: #a5f3fc; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
-      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowR { fill: none; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 3 4; }
-      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .stage { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
+      .stageB { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
+      .stageP { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.5; }
+      .fail { fill: #f9f3f3; stroke: #920707; stroke-width: 1.4; }
+      .zone { fill: #faf7f3; stroke: #c38f09; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .cardA { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.5; }
+      .cardG { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; animation: pulse 2.2s ease-in-out infinite; }
+      .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .r { fill: #940505; font-size: 13px; }
+      .rh { fill: #960303; font-size: 13px; font-weight: 600; }
+      .m { fill: #058594; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .num { fill: #967903; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #920707; stroke-width: 1.6; stroke-dasharray: 3 4; }
+      .flowA { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -26; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
     </style>
@@ -117,7 +117,7 @@
 
   <!-- tag 挪动 -->
   <rect class="zone" x="30" y="476" width="1340" height="290" rx="14"/>
-  <text class="h" x="48" y="504" style="fill:#fde68a">skills 包的 tag 被挪动：同一个 reviewer:v1 推了新内容（a8c0188b… → 46ee1fb2…）</text>
+  <text class="h" x="48" y="504" style="fill:#967903">skills 包的 tag 被挪动：同一个 reviewer:v1 推了新内容（a8c0188b… → 46ee1fb2…）</text>
   <rect class="cardA" x="50" y="524" width="300" height="220" rx="10"/>
   <text class="h" x="68" y="550">controller 每 20 秒复查</text>
   <text class="t" x="68" y="576">只对 Harness 类型做</text>

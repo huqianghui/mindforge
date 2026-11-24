@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
-    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bec5d0"/></marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .zone { fill: #0d1729; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 9 5; }
-      .zoneA { fill: #17130a; stroke: #fbbf24; stroke-width: 1.4; stroke-dasharray: 9 5; }
-      .zoneB { fill: #0e1a2e; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .zone { fill: #f6f8fb; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneA { fill: #faf7f3; stroke: #c38f09; stroke-width: 1.4; stroke-dasharray: 9 5; }
+      .zoneB { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 9 5; }
       .zl { font-size: 15px; font-weight: 600; }
-      .card { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
-      .cardA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.5; }
-      .cardB { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
-      .cardX { fill: #2a1416; stroke: #f87171; stroke-width: 1.5; animation: pulse 2s ease-in-out infinite; }
-      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .num { fill: #fde68a; font-size: 13px; font-weight: 600; }
-      .bad { fill: #fca5a5; font-size: 13px; font-weight: 600; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowG { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 3 5; }
+      .card { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
+      .cardA { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.5; }
+      .cardB { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
+      .cardX { fill: #f9f3f3; stroke: #920707; stroke-width: 1.5; animation: pulse 2s ease-in-out infinite; }
+      .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .num { fill: #967903; font-size: 13px; font-weight: 600; }
+      .bad { fill: #940505; font-size: 13px; font-weight: 600; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowG { fill: none; stroke: #bec5d0; stroke-width: 1.8; stroke-dasharray: 3 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
       .badgeA { fill: #92400e; stroke: #fde68a; stroke-width: 1.3; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -26; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
@@ -37,7 +37,7 @@
 
   <!-- 左：会话层 -->
   <rect class="zone" x="30" y="96" width="640" height="460" rx="14"/>
-  <text class="zl" x="48" y="122" fill="#5eead4">会话层（控制面）：从状态库往外</text>
+  <text class="zl" x="48" y="122" fill="#1bb199">会话层（控制面）：从状态库往外</text>
   <rect class="card" x="50" y="140" width="290" height="180" rx="10"/>
   <text class="h" x="68" y="166">状态库</text>
   <text class="t" x="68" y="192">每个会话：状态、绑定的沙箱 ID</text>
@@ -65,7 +65,7 @@
 
   <!-- 右：对账器 -->
   <rect class="zoneA" x="710" y="96" width="660" height="460" rx="14"/>
-  <text class="zl" x="728" y="122" fill="#fde68a">对账器（我补的）：从外往里，按标签</text>
+  <text class="zl" x="728" y="122" fill="#967903">对账器（我补的）：从外往里，按标签</text>
   <rect class="cardA" x="730" y="140" width="300" height="180" rx="10"/>
   <text class="h" x="748" y="166">盘点</text>
   <text class="t" x="748" y="192">所有带"会话 ID + 应用 UID"</text>
@@ -91,7 +91,7 @@
 
   <!-- 下：OpenSandbox / ACR -->
   <rect class="zoneB" x="30" y="600" width="1340" height="200" rx="14"/>
-  <text class="zl" x="48" y="626" fill="#7dd3fc">OpenSandbox 与 ACR（真正占资源的地方）</text>
+  <text class="zl" x="48" y="626" fill="#036696">OpenSandbox 与 ACR（真正占资源的地方）</text>
   <rect class="cardB" x="50" y="644" width="300" height="140" rx="10"/>
   <text class="h" x="68" y="670">Ephemeral 沙箱</text>
   <text class="t" x="68" y="696">OpenSandbox 侧有 30 分钟 TTL</text>
@@ -126,7 +126,7 @@
   <path class="flow" d="M640,540 C680,580 760,600 800,642" marker-end="url(#arr)"/>
   <circle class="badge" cx="560" cy="590" r="11"/><text class="bn" x="560" y="595">2</text>
   <path class="flowG" d="M650,548 L650,572 L1140,572 L1140,642" marker-end="url(#arrG)"/>
-  <circle class="badge" cx="1000" cy="572" r="11" style="fill:#334155;stroke:#64748b"/><text class="bn" x="1000" y="577">3</text>
+  <circle class="badge" cx="1000" cy="572" r="11" style="fill:#b9c4d5;stroke:#bec5d0"/><text class="bn" x="1000" y="577">3</text>
   <path class="flowA" d="M1030,230 L1048,230" marker-end="url(#arrA)"/>
   <circle class="badgeA" cx="1039" cy="210" r="11"/><text class="bn" x="1039" y="215">4</text>
   <path class="flowA" d="M1200,540 C1200,580 1180,600 1180,642" marker-end="url(#arrA)"/>
