@@ -93,7 +93,9 @@ Claude Code 的 `WebSearch` 工具本身**不含任何搜索引擎**。它做的
 把 Codex CLI 的 `model_provider` 指向 Azure OpenAI（比如 gpt-5.6-sol 部署）时，内置 web search 同样失效——但断供的位置与 Claude Code 换 Bedrock/Databricks **不在同一层**，值得单独解剖：
 
 - **端点层其实已经通了（阉割版）**：Azure OpenAI 的 Responses API 现在有服务端 `web_search` 工具（GA，不再只有 `web_search_preview`），但官方文档明确写着 "Live internet access isn't supported"——`external_web_access` 恒为 `false`，搜的是预建索引而非实时网页；按 tool call 单独计费，且可以在订阅级用 Azure CLI 整体禁用
-- **harness 层拒发声明**：Codex 的内置搜索是 OpenAI Responses 的 hosted tool，而 Codex **只在请求发往默认 OpenAI provider 时才附加这个工具声明**。一旦 `model_provider` 是自定义的（Azure、网关、vLLM），Codex 干脆不往请求里塞 `web_search`（openai/codex#3851）——`--search` / `web_search = "live"` 配了也无物可执行，哪怕端点侧其实长着执行器
+- **harness 层拒发声明**：Codex 的内置搜索是 OpenAI Responses 的 hosted tool，2026-09 我实测时 Codex **只在请求发往默认 OpenAI provider 时才附加这个工具声明**。一旦 `model_provider` 是自定义的（Azure、网关、vLLM），Codex 干脆不往请求里塞 `web_search`——`--search` / `web_search = "live"` 配了也无物可执行，哪怕端点侧其实长着执行器。同类现象见 openai/codex#33250（自定义 Responses provider 下 gpt-5.6 系列请求里根本没有 `tools`）
+
+> 2026-11 更新：新版 Codex 改成按 provider 的能力位决定发不发托管 `web_search`，默认对所有 provider 都打开，也可以在自定义 provider 的 `capabilities` 里关掉；新增的第一方独立搜索 `web.run` 只给 OpenAI 认证或声明了 `supports_standalone_web_search` 的 provider（openai/codex#40256）。两层判断的方法不变，变的是 harness 层的断供点。
 - **还有兼容性摩擦**：gpt-5.6-sol 等部署下，Codex 会往请求里发 Azure 不认的内部 header 与 `additional_tools` 命名空间，请求直接被拒（openai/codex#31875），需要本地代理剥离才能跑通
 
 所以判断"有没有 web search"要在**两层分别问**：端点层——请求落点的服务端有没有搜索执行器；harness 层——客户端愿不愿意为这个 provider 发工具声明。Claude Code + Databricks 是"端点无执行器"，Codex + Azure 是"端点有（阉割版）执行器、harness 拒发声明"——断供点上移了一层，结果殊途同归。补位路线也与 Claude Code 完全一致：在 `~/.codex/config.toml` 里配 MCP 搜索工具（Tavily / WebIQ / Exa，客户端执行、自付账单），或 browser use 反向补位（见第四节）。一个 TOML 实操坑顺带记下：顶层 `web_search` 键必须写在所有 `[section]` 头之前，否则它会静默绑定到前面的 table（变成 `model_providers.xxx.web_search`）而完全不生效。
@@ -215,7 +217,8 @@ Microsoft Scout 则演示了第三种形态——**自己不长执行器，整�
 
 - 本系列：[系列五](Computer-Use与Browser-Use系列五：最佳实践.md)（场景路由表、DOM 虚拟化教训）、[系列六](Computer-Use与Browser-Use系列六：Codex-CLI与App的分界.md)（Skill ≠ 能力、补位生态）
 - [Web search with the Responses API（Microsoft Foundry 官方文档，Azure `web_search` 限制说明）](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/web-search)
-- [Codex built-in web search only attaches to default OpenAI provider（GitHub Issue #3851）](https://github.com/openai/codex/issues/3851)
+- [--search does not inject web_search tool for gpt-5.6-terra/luna with a Responses-compatible custom provider（GitHub Issue #33250）](https://github.com/openai/codex/issues/33250)
+- [web_search = "live" silently omits web.run for custom OpenAI-auth providers（GitHub Issue #40256）](https://github.com/openai/codex/issues/40256)
 - [Codex CLI with Azure OpenAI gpt-5.6-sol fails due to internal headers（GitHub Issue #31875）](https://github.com/openai/codex/issues/31875)
 - [Microsoft Scout common questions（模型与处理链路挂靠 GitHub Copilot）](https://learn.microsoft.com/en-us/microsoft-scout/faq)
 - [LiteLLM: Claude Code WebSearch Across All Providers](https://docs.litellm.ai/docs/tutorials/claude_code_websearch)

@@ -164,7 +164,7 @@ catalog schema 通过 → Codex 成功加载 → 发出 Azure 请求 → 再处�
 
 这次实操和已有的几条线索拼在一起，能看出 Codex harness 对第三方 provider 的态度是一种**分层的"默认绑定 + 可撬"**：
 
-- [Computer Use 与 Browser Use 系列七：搜索与浏览器操作的分界](../../AI/computer-use/Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界.md) 3.3 节解剖过同一条链路的**断供面**：`model_provider` 指向 Azure 后，Codex harness 拒绝为自定义 provider 发 `web_search` 工具声明（openai/codex#3851），配置写了也无物可执行。
+- [Computer Use 与 Browser Use 系列七：搜索与浏览器操作的分界](../../AI/computer-use/Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界.md) 3.3 节解剖过同一条链路的**断供面**：`model_provider` 指向 Azure 后，Codex harness 拒绝为自定义 provider 发 `web_search` 工具声明，配置写了也无物可执行（2026-09 的行为；新版已改为按 provider 能力位决定，见系列七 3.3 节的更新）。
 - 本文是同一链路的**接入面**：模型目录这一层留了 `model_catalog_json` 替换口，而且官方 catalog 里第三方场景需要的模型定义是齐全的（GPT-6 Astra 定义完整、只是 hide）——撬开焊点只需要版本锁定 + 翻 visibility，harness 并没有在这一层设卡。
 - 对照 [Agent = Model + Harness](../Agent=Model+Harness.md) 的框架：第一方绑定不是铁板一块，而是逐层不同——模型目录层可替换（本文）、服务端工具层不可补（web_search 声明不出门）、协议层看端点兼容性（#31882/#31875 的 header 与参数摩擦）。评估"某 harness 能不能接自家模型端点"时，应该按层给出答案而不是一个总体是否。
 - 版本锁定 schema 本身也是 harness 焊接的一种形态：schema 不对外文档化、随版本演进、serde 严格校验，事实上让"跟着官方源码 tag 走"成为唯一可持续的第三方接入姿势——这与 [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的分界](../../AI/computer-use/Computer-Use与Browser-Use系列六：Codex-CLI与App的分界.md) 观察到的"App 是 CLI 的壳"在同一个方向上：**理解 Codex Desktop 的正确心智模型是理解它包内那个 CLI**。

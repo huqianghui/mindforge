@@ -105,7 +105,9 @@ const r = await functions.exec({ command: ["bash", "-lc", "git status"] });
 - **统一性**：既然认定"工具 = JS 函数"，shell 要是留在外面当独立 top-level 工具，JS 就编排不到它——"跑个命令再把输出喂给下一步逻辑"就断链。`code_mode_only` 的字面意思就是没有例外，连 shell 也是 `await functions.exec(...)`。
 - **单一治理入口**（回扣第四节的 `node_repl_auto_review_required`）：若 shell 独立、code 又是另一条路，审批模型要盯**两个**审计面。全收进 node_repl 后只剩**一个**咽喉——所有危险操作（写文件、联网、跑命令）都表现为"一段 JS 代码"，审批模型只评估这段代码即可。这正是 `node_repl_auto_review_required: true` 注释所说"code_mode_only 下代码执行是主要入口"的设计动机：**把 shell 包进 JS，是为了让治理只有一个入口而不是多个。**
 
-**这三个值构成一条光谱**：`Direct → CodeMode → CodeModeOnly`，模型越强越往右。
+**这三个值构成一条光谱**：`Direct → CodeMode → CodeModeOnly`，写这篇时是模型越强越往右。
+
+> 2026-11 更新：新版 Codex 内置模型目录里，GPT-5.6 及之后的当代模型（Sol / Terra / Luna / Astra 各代）全部标了 `code_mode_only`，只剩旧的 gpt-5.5 不设 tool_mode、走默认的 direct。OpenAI 是整代切到了光谱右端，不再只给最强模型开。
 
 ![ToolMode 光谱：从工具即接口到代码即接口|720](../../../asset/codex-toolmode-spectrum-2026-09-05.svg)
 
@@ -117,7 +119,7 @@ const r = await functions.exec({ command: ["bash", "-lc", "git status"] });
 | 复杂编排（循环/条件/过滤） | 多个 round-trip，中间结果进上下文 | 一段脚本一次完成，只回最终结果 |
 | 并行 | 一条消息发多个 tool_use | `await Promise.allSettled([...])` |
 | 权限 / 治理 | per-tool 天然清晰（每工具独立审批） | 集中到 node_repl 一个入口（配审批模型） |
-| 对模型的要求 | 低——会调工具即可 | 高——须会写正确 JS（故只给最强模型开 `code_mode_only`） |
+| 对模型的要求 | 低——会调工具即可 | 高——须会写正确 JS（写这篇时只给最强模型开 `code_mode_only`，2026-11 起当代模型整代都开） |
 | 失败调试 | 干净的工具错误 | 一个 JS 异常，更难定位 |
 
 不是谁对谁错，是两种取向：Claude Code 赌"工具够多够专，模型直接调最省心"，代价是复杂编排费 round-trip；Codex 给最新模型赌"模型强到能写代码编排，就把工具收成一套 API 让它写脚本"，换来表达力和 token 经济，代价是"代码执行"这个更大的安全面（于是必须配审批模型 + 系列04 的 `node_repl_policy.md`）。而且不是非此即彼——Claude Code 也在往 MCP code execution 靠，Codex 也给老模型（mini）保留 `direct`。**一句话：Claude Code 把能力做成「更多的工具」，Codex 给最新模型把能力做成「一种语言」。**
@@ -186,7 +188,9 @@ let model_override = turn.model_info().auto_review_model_override.as_deref();
 let review_model_id = model_override.unwrap_or(default_review_model_id);
 ```
 
-条目里的 `auto_review_model_override` 存在即整体替换默认值——系列02 修复生效的确切代码路径。其余治理字段：
+条目里的 `auto_review_model_override` 存在即整体替换默认值——系列02 修复生效的确切代码路径。
+
+> 2026-11 更新：新版源码在 provider 的模型目录里找不到审批模型时，会回退到当前主模型，所以 404 只出现在"目录里列了 `codex-auto-review`、端点上却没有同名部署"的组合。隐藏的模型调用也不止审批一路：记忆提取、记忆整合各有默认模型名（`gpt-6-luna`、`gpt-6.1-terra`），同样跟着 provider 走。其余治理字段：
 
 | 字段                               | 取值               | 作用                                                                                        |
 | -------------------------------- | ---------------- | ----------------------------------------------------------------------------------------- |

@@ -16,6 +16,9 @@ tags:
 
 > 路径与结构均已在本机验证（2026-09-05）。
 
+> [!NOTE]
+> 2026-11 更新：新版 ChatGPT Desktop 里 Computer Use 的形态变了，下文的目录与调用链是 2026-09 的版本。现在 `plugins/computer-use/` 只剩 skills 和图标，不再带 `.mcp.json`；入口换成同目录下的 `unified-computer-use` 插件，它的 MCP server `cua_repl` 就是 bundle 内置的 `cua_node/bin/node_repl`，模型写 JS 调 `cua` API，浏览器和桌面应用走同一个入口。原生 helper 改名为 `Codex Computer Use.app`，放在 `cua_node/lib/node_modules/@oai/sky/` 下，运行时安装到 `~/.codex/computer-use/`。"分发态在 App bundle、运行态在用户目录"这个结论不变。
+
 ## 引言：一个老疑问的物理答案
 
 [Computer Use 与 Browser Use 系列六：Codex CLI 与 App 的分界](../../AI/computer-use/Computer-Use与Browser-Use系列六：Codex-CLI与App的分界.md) 实测过一个现象：**standalone Codex CLI 没有 Computer Use，而 Codex Desktop 有**。当时的结论是"runtime 不对等"——本篇把这个"不对等"的物理位置找到了：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里。这正是系列03 组合公式（ChatGPT 壳 + bundled CLI + bundled plugins）第三元的具体解剖。
@@ -137,7 +140,7 @@ reconcile 是否落地会因机器/渠道而异：[openai/codex#26451](https://g
 
 ## 小结
 
-1. **Computer Use 是 bundled plugin + native helper，不是 CLI 功能**：分发态在 `Resources/plugins/openai-bundled/plugins/computer-use/`，运行态 reconcile 到 `~/.codex/`，桌面操作由 SkyComputerUseClient/Service 通过 MCP 提供。
+1. **Computer Use 是 bundled plugin + native helper，不是 CLI 功能**：分发态在 `Resources/plugins/openai-bundled/plugins/computer-use/`，运行态 reconcile 到 `~/.codex/`，桌面操作由 SkyComputerUseClient/Service 通过 MCP 提供。（2026-11 起入口是 `unified-computer-use` 插件的 `cua_repl`，helper 是 `Codex Computer Use.app`，见开头的更新说明。）
 2. **feature flag ≠ payload**：`computer_use stable true` 不代表 runtime 在场，Intel 构建就根本不带这套文件。
 3. **签名/权限/进程树可能是耦合的（推测，未直接验证）**：推测 native helper 离开 App 进程树可能起不来——若成立，能力绑定在 App 环境而非 CLI 版本；三个引用 issue 与本机实测都未直接验证这个故障模式。
 4. **`Contents/PlugIns/` 与 `Contents/Resources/plugins/` 是两套机制**：前者是 macOS 系统 plugin，后者才是 Codex agent plugin marketplace。
