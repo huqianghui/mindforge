@@ -3818,7 +3818,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 9,
-      "avg_confidence": 0.75,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "内容复杂度 × 实时性来源决定画面计算发生在哪里——四层光谱各配\"内容存在哪/谁计算/实时性来源\"判据",
@@ -3826,10 +3826,10 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-09-12",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "active",
           "evidence": "同一个产品页面（Foundry Voice Live Playground）Inspector 实探挖出的三种动态元素，加上上篇的动态 SVG，构成完整谱系：① **文档自带动画**（动态 SVG）——内容在文件里（几何描述 + 动画声明），浏览器渲染引擎计算，无实时性（动画预排练）；② **本地 JS 改文档**（D3/ECharts）——内容在 DOM 里，JS 改描述浏览器画，实时性来自离散数据更新；③ **本地 JS 涂像素**（音波球、粒子、游戏，Canvas 2D/WebGL）——内容在像素缓冲区每帧重画，JS/GPU 自己当渲染器，实时性来自本地实时数据流（音频振幅、手势）；④ **云端渲染推流**（数字人，WebRTC + `<video>`）——内容根本不在本地、是一路视频，云端 GPU 集群（神经网络）计算，本地只解码。选型口诀：动画能提前写死 → SVG（单文件、可 git diff、LLM 可生成）；图形由数据生成、更新离散 → SVG + JS（只活在网页里）；每帧全画面重绘、本地实时数据驱动 → Canvas/WebGL（保存分发即降级为位图）；照片级、生成式内容 → 云端渲染 + 视频流（浏览器只是显示器）。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "理论（长效）",
+          "review": "2026-11-24 长效——依据：库内无矛盾（来源文章 [[浏览器动态内容的计算光谱]] 09-12 后只改过标题；11-01 新写的 [[Canvas实践：从数字人到知识图谱]]、[[SVG实践：我和AI之间的视觉语言]] 沿用同一光谱划分）"
         },
         {
           "statement": "复杂度每上一个台阶，内容离\"文件\"更远一步——乐谱/舞台/转播三隐喻",
@@ -3837,43 +3837,43 @@
           "first_seen": "2026-08-26",
           "last_updated": "2026-09-12",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "active",
           "evidence": "SVG 是乐谱——内容即文档，谁拿到都能演奏；Canvas 是舞台——文档只搭台，演出全靠 JS 当场表演，散场不留痕（保存\"网页\"可复演，保存\"图\"即定格）；数字人连舞台都不要了，直接转播一场云端的演出。这条隐喻链解释了各层的可移植性与可归档性差异：越靠光谱左端，内容越接近\"可分发的文件\"（可嵌入、可 diff、可离线）；越靠右端，内容越绑定\"活的运行时\"（会话、算力、网络）。数字人三路线（云端视频合成 / 客户端 3D blendshape / Live2D 纸片人）是第 ④ 层内部的再分层——后两条路线的渲染载体又回到 `<canvas>`（WebGL），与音波球同一原理，只是画的内容从波浪线换成带骨骼的人物模型。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "理论（长效）",
+          "review": "2026-11-24 长效——依据：库内无矛盾（来源文章 09-12 后只改过标题；[[Canvas实践：从数字人到知识图谱]] 里\"Canvas 每帧重画、保存即定格\"的说法与\"舞台\"隐喻一致）"
         },
         {
           "statement": "本地 DCC 渲染是光谱的\"本地重计算端\"实例——像素由渲染器输出、模型负责规划操作修正",
           "source": "Blender系列01：为什么是Blender",
           "first_seen": "2026-09-07",
-          "last_updated": "2026-09-12",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
+          "status": "active",
           "evidence": "Blender 系列提供了浏览器之外的独立印证：AI 生成视频的工作流里像素不是模型直接输出的——**像素由渲染器输出，模型负责规划、操作和修正**（用户描述 → AI 写脚本/操作软件 → 布置资产 → 动画镜头 → 渲染 → 检查修改 → 输出）。虎式坦克 192 帧、面试动画 1536 帧全部在本地 EEVEE 渲染（分别约 2 分 39 秒 / 11 分 50 秒），与云端数字人推流恰构成\"AI 驱动画面\"的光谱两端：前者计算在本地 DCC、产物是可编辑工程 + 可分发视频文件；后者计算在云端 GPU、产物是一路只能观看的实时流。`.blend` 的\"可移植播放\"原则（动画烘焙成普通关键帧、播放不依赖脚本或 GPT）正是\"内容靠近文件端\"的收益——同一判据在浏览器域和 DCC 域给出一致的解释。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "实测经验",
+          "review": "2026-11-24 确认——依据：[[Blender系列01：为什么是Blender]]、[[Blender系列03：虎式坦克实战]] 09-12 后只改过标题，库内没有推翻本地 EEVEE 渲染与\"像素由渲染器输出\"的后续实测"
         },
         {
           "statement": "跨位面组合形态——云端语音 API 的 viseme 事件流驱动本地渲染载体，时间轴是两个位面的耦合接口",
           "source": "Blender系列04：人物面试动画实战",
           "first_seen": "2026-09-07",
-          "last_updated": "2026-09-12",
-          "confidence": 0.7,
-          "status": "stale",
+          "last_updated": "2026-11-24",
+          "confidence": 0.8,
+          "status": "active",
           "evidence": "光谱不只有\"纯本地\"和\"纯云端\"两类：Azure Speech 的 viseme 路线是**声音在云端合成、画面在本地渲染**的跨位面组合——55 项面部系数按 60 FPS 从云端事件流输出，驱动本地渲染载体（three.js blendshape、Live2D 部件、或 Blender 形态键 60FPS→24fps 时间换算）。耦合接口是时间轴：事件时间用 100 纳秒 tick、必须与最终音频同一时间映射，**不能用网络回调到达时间当动画时间**（事件在音频数据可用时触发，可能远早于播放）。这类组合的判据仍是同一条：哪部分内容复杂度高、实时性来自哪里，哪部分计算就落在对应位面——语音合成（生成式、重算力）留云端，形变渲染（结构已知、轻计算）留本地。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 确认——依据：[Get facial position with viseme](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/how-to-speech-synthesis-viseme)（blend shapes 每帧 60 FPS、每帧 55 项面部位置，`Audio offset` 单位为 100 纳秒 tick）；官方文档是新的独立来源，置信度 +0.1"
         },
         {
           "statement": "云端渲染推流层的延迟成本首批实测量化——首帧固有成本=握手 RTT+渲染冷启动，媒体流直连不经后端、每场只付一次",
           "source": "Voice-Live系列03：数字人出场延迟优化",
           "first_seen": "2026-09-14",
-          "last_updated": "2026-09-16",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "光谱第 ④ 层（云端 GPU 渲染推流）的\"延迟与 GPU 成本最高\"此前是定性判断，本文给出首批量化：数字人媒体流是**浏览器直连 Azure TURN relay、不经过应用后端**（只有 offer/answer 信令走 WS proxy），首帧固有成本由两部分组成——① **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS），与浏览器↔Azure 区域的 RTT 成正比，唯一优化手段是选离最终用户近的区域；② **Azure 侧渲染管线冷启动**（数字人合成器启动 + H.264 编码器出首个关键帧），纯服务端成本，客户端与部署拓扑都无法改变。生产实测首帧典型值 **≈2.4s**（n=9 中位 2.36s，2.10~2.43s 极稳）；后端与 Voice Live 同区域部署把信令腿压短、会话建立段省 1.6~1.7s。关键缓解因素：**每场会话只付一次**（会话全程保持、换题不重连），叠加预热+截帧占位两层体验优化后体感可归零——第 ④ 层的延迟成本是真实但可管理的一次性成本，不构成弃用云端路线的理由。",
-          "evidence_type": "",
-          "review": ""
+          "status": "active",
+          "evidence": "光谱第 ④ 层（云端 GPU 渲染推流）的\"延迟与 GPU 成本最高\"此前是定性判断，本文给出首批量化：数字人媒体流是**浏览器直连 Azure TURN relay、不经过应用后端**（只有 offer/answer 信令走 WS proxy），首帧固有成本由两部分组成——① **传输握手**（SDP answer、TURN 分配、ICE 连通性检查、DTLS），与浏览器↔Azure 区域的 RTT 成正比，唯一优化手段是选离最终用户近的区域；② **Azure 侧渲染管线冷启动**（数字人合成器启动 + H.264 编码器出首个关键帧），纯服务端成本，客户端与部署拓扑都无法改变。生产实测首帧典型值 **≈2.4s**（n=9 中位 2.36s，2.10~2.43s 极稳）；后端与 Voice Live 同区域部署把信令腿压短、会话建立段省 1.6~1.7s。关键缓解因素：**每场会话只付一次**（会话全程保持、换题不重连），叠加预热+截帧占位两层体验优化后体感可归零——第 ④ 层的延迟成本是真实但可管理的一次性成本，不构成弃用云端路线的理由。（适用范围：本条说的是 WebRTC 下发。2026-10-14 已验证 Voice Live 可把 `output_protocol` 设为 websocket，视频改为 `response.video.delta` 分片随会话 WS 下发，那条路径上媒体不再是浏览器直连 TURN，首帧构成要另测，见 [[Voice-Live系列12：数字人弱网表现]]。）",
+          "evidence_type": "实测经验",
+          "review": "2026-11-24 确认——依据：后续 [[Voice-Live系列12：数字人弱网表现]]、[[Voice-Live系列15：realtime模型与数字人]] 没有推翻首帧构成与约 2.4s 典型值；系列 12 已验证 `output_protocol` 可改为 websocket（2026-10-14），补一句适用范围"
         },
         {
           "statement": "云端渲染推流层内部再分两条合成路线——素材回放+局部神经渲染 vs 单图逐帧生成；并发单位成本与资产结构是层内判据",
@@ -4009,12 +4009,12 @@
           "statement": "服务端工具断供要分两层判断——端点层有无执行器 × harness 层肯不肯发声明，断供点越上游可补位层越少",
           "source": "Computer-Use与Browser-Use系列七：搜索与浏览器操作的分界",
           "first_seen": "2026-08-30",
-          "last_updated": "2026-09-04",
+          "last_updated": "2026-11-24",
           "confidence": 0.85,
-          "status": "stale",
-          "evidence": "Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 Codex harness **只在默认 OpenAI provider 时才附加工具声明**（openai/codex#3851）——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是\"端点无执行器、声明发了没人执行\"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救\"断在端点层\"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤：Codex App 配 Azure provider 后模型自述\"当前会话没有向我暴露 web_search 工具\"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。",
+          "status": "active",
+          "evidence": "Codex + Azure OpenAI 断供解剖补出第二层：Azure Responses API 端点层其实有阉割版 `web_search` 执行器（`external_web_access` 恒 false，搜预建索引），但 2026-09 时的 Codex harness **只在默认 OpenAI provider 时才附加工具声明**——声明根本不出门，端点侧有执行器也无用。对照 Claude Code + Databricks 是\"端点无执行器、声明发了没人执行\"。两层判断框架的推论：**断供点越靠上游，下游可补位的层就越少**——LiteLLM 代理层拦截只救\"断在端点层\"的场景（声明得先出门才有物可拦），harness 层断供只剩客户端补位；客户端补位最通用正因为它在整条链路最上游。现场实锤（2026-09）：Codex App 配 Azure provider 后模型自述\"当前会话没有向我暴露 web_search 工具\"——连第一方 App 形态也断供，能力归属跟请求落点走、不跟产品形态走。附带暴露最隐蔽的代价：工具缺失时模型可能凭训练知识一本正经作答过期数据，用户不追问根本发现不了。（2026-11-24 修订：按当前源码，harness 这道门已改成按 provider 能力位判断——托管 `web_search` 默认对所有 provider 都发，10-02 起可在自定义 provider 的 `capabilities` 里关掉；新的第一方独立搜索 `web.run` 只给 OpenAI 认证或声明 `supports_standalone_web_search` 的 provider，其他 provider 拿不到，#40256 讲的就是自定义 provider 下 `web_search = \"live\"` 静默缺了 `web.run`。两层判断框架本身不变，变的是 harness 层的断供点。）",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：openai/codex#3851 本轮检索未能取到该 issue，无法核实『只在默认 OpenAI provider 才附加 web_search 声明』"
+          "review": "2026-11-24 修订——依据：openai/codex 当前源码 [`core/src/tools/spec_plan.rs`](https://github.com/openai/codex/blob/main/codex-rs/core/src/tools/spec_plan.rs)（托管 web_search 在 provider 能力位 `web_search` 为真且没有可用的独立搜索时发出）、[`model-provider/src/capabilities.rs`](https://github.com/openai/codex/blob/main/codex-rs/model-provider/src/capabilities.rs)（`web_search` 默认对所有 provider 为 true，2026-10-02 起可按自定义 provider 覆盖）、[`ext/web-search/src/extension.rs`](https://github.com/openai/codex/blob/main/codex-rs/ext/web-search/src/extension.rs)（第一方独立搜索 `web.run` 只给 OpenAI、OpenAI 认证或声明 `supports_standalone_web_search` 的 provider）；相关 issue [openai/codex#40256](https://github.com/openai/codex/issues/40256)、[#33250](https://github.com/openai/codex/issues/33250)。原记录引的 #3851 实为 OpenRouter 路由的 issue，引错了。源码阅读，未重新实测"
         },
         {
           "statement": "判定工具执行位置的五条指纹需多条交叉——弹本地权限恰证执行器在本地；管道决定能力下限、模型性格决定实际走几级梯",
@@ -4053,34 +4053,34 @@
           "statement": "断供框架的第三层是治理层——harness 的隐藏模型调用跟 provider 走，接第三方要盘点全部模型调用而非只主模型",
           "source": "Codex-Desktop系列02：gpt-5.4-mini与三条暗线",
           "first_seen": "2026-09-05",
-          "last_updated": "2026-09-12",
+          "last_updated": "2026-11-24",
           "confidence": 0.85,
-          "status": "stale",
-          "evidence": "在\"端点层 × harness 层\"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。",
-          "evidence_type": "",
-          "review": ""
+          "status": "active",
+          "evidence": "在\"端点层 × harness 层\"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（`model-provider/src/provider.rs`）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，见 `ext/guardian-reviewer/src/model.rs` 的 `select_review_model`）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。（2026-11-24 修订：当前源码在 provider 模型目录里找不到审批模型时会回退到主模型，所以 404 只出现在\"目录里列了 `codex-auto-review`、端点上却没有同名部署\"的组合，比如沿用内置模型目录接第三方端点；隐藏调用也不止审批一路，记忆提取与记忆整合各有一个默认模型名（`gpt-6-luna`、`gpt-6.1-terra`），同样跟着 provider 走；2026-11-19 起 Guardian 还可以单独指定推理 provider。盘点全部模型调用这条结论因此更重要。）",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 修订——依据：openai/codex 当前源码 [`model-provider/src/provider.rs`](https://github.com/openai/codex/blob/main/codex-rs/model-provider/src/provider.rs)（`codex-auto-review` / `gpt-5.6-luna` 两个常量仍在；新增记忆提取默认 `gpt-6-luna`、记忆整合默认 `gpt-6.1-terra`）、[`ext/guardian-reviewer/src/model.rs`](https://github.com/openai/codex/blob/main/codex-rs/ext/guardian-reviewer/src/model.rs)（`select_review_model`：有 override 用 override，目录里找不到审批模型就回退到主模型）、[`core/src/guardian/reviewer_config.rs`](https://github.com/openai/codex/blob/main/codex-rs/core/src/guardian/reviewer_config.rs)（2026-11-19 起 Guardian 可由宿主单独选择推理 provider）"
         },
         {
           "statement": "Computer Use 的分发链——分发态在 App bundle、运行态 reconcile 到用户目录；feature flag ≠ payload、签名/权限/进程树疑似紧耦合（推测）",
           "source": "Codex-Desktop系列04：Computer-Use藏身之处",
           "first_seen": "2026-09-05",
-          "last_updated": "2026-09-12",
+          "last_updated": "2026-11-24",
           "confidence": 0.75,
-          "status": "stale",
-          "evidence": "系列六\"runtime 不对等\"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——\"Computer Use 在哪\"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是\"不可拆整体\"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（\"同源不同发行版\"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。",
-          "evidence_type": "",
-          "review": ""
+          "status": "active",
+          "evidence": "系列六\"runtime 不对等\"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——\"Computer Use 在哪\"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是\"不可拆整体\"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（\"同源不同发行版\"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。（2026-11-24 修订：上面的路径与文件名是 2026-09 的形态。当前版本里 Computer Use 不再由 `computer-use` 插件自带 `.mcp.json` 和 SkyComputerUseClient.app：入口换成 `unified-computer-use` 插件，MCP server `cua_repl` 就是 bundle 内置的 node_repl，模型写 JS 调 `cua` API，浏览器与桌面应用走同一个入口；原生 helper 改名为 Codex Computer Use.app，放在 bundle 的 `cua_node/@oai/sky` 下、安装到 `~/.codex/computer-use/`；`computer-use` 插件只剩 skills。\"分发态在 App bundle、运行态在用户目录\"不变。）这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 修订——依据：本机 ChatGPT.app 26.1117.41037 实查（`Resources/plugins/openai-bundled/plugins/` 下 `computer-use` 只剩 skills 与 assets、没有 `.mcp.json`；新增 `unified-computer-use` 插件，其 `cua_repl` MCP server 是 bundle 内置的 `cua_node/bin/node_repl`，`CUA_REPL_ENABLED_SURFACES` 为 browser,computer；原生 helper 是 `cua_node/lib/node_modules/@oai/sky/Codex Computer Use.app`，bundle id `com.openai.sky.CUAService`，运行态在 `~/.codex/computer-use/` 与 `~/.codex/plugins/cache/openai-bundled/unified-computer-use/`）"
         },
         {
           "statement": "DCC 域实证——Computer Use 适合做\"眼睛\"不适合做\"手\"，批量制作交给应用 API",
           "source": "Blender系列02：操作入口与官方MCP安装",
           "first_seen": "2026-09-07",
-          "last_updated": "2026-09-12",
+          "last_updated": "2026-11-24",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "active",
           "evidence": "Blender 实战给\"UI 层天然残缺\"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做\"眼睛\"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到\"正在打开的场景\"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域\"能点不等于应该点\"、\"DOM 虚拟化真解在数据层\"同构。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "实测经验",
+          "review": "2026-11-24 确认——依据：[[Blender系列02：操作入口与官方MCP安装]]、[[Blender系列03：虎式坦克实战]] 09-12 后只改过标题，库内没有推翻\"Computer Use 做眼睛、批量交给 bpy API\"的后续实测"
         },
         {
           "statement": "structured output 的收益模型在物理控制域翻转——格式合法性收益不成立、物理合法性才是诉求；FAST 修正：离散可行但代价在推理侧；同一权衡三次跨尺度重现",
@@ -8532,7 +8532,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility）展示了 MCP 的第三种角色：既不是\"跨应用接第三方工具\"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在\"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层\"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。",
+          "evidence": "Codex Desktop 的 Computer Use 调用链（bundled CLI → computer-use plugin → **MCP** → SkyComputerUseClient/Service → macOS Accessibility；2026-11 起入口换成 unified-computer-use 插件的 `cua_repl` MCP server，见 [[computer-use]] 分发链一条的修订）展示了 MCP 的第三种角色：既不是\"跨应用接第三方工具\"、也不是与 CLI 对垒的外部工具接入路线，而是**同一产品内部两个第一方组件之间的进程间解耦协议**——plugin 的 `.mcp.json` 把 MCP server 的 command 直接指向同一 App bundle 里的 native 可执行文件。对选型框架的含义：MCP 的协议价值不只在开放生态互操作，也在\"把平台专有 runtime（受签名、TCC 权限、进程树绑定的 native 能力）与可开源的 agent 引擎干净分层\"——CLI 一侧保持开源与可移植，重能力收进专有 helper，两者之间只剩一个标准协议界面。",
           "evidence_type": "实测经验",
           "review": "2026-11-07 确认——依据：作者对 Codex Desktop 的拆解观察，来自系列实测；库内无后续修订 wiki/concepts/mcp-vs-cli.md"
         },
@@ -9917,7 +9917,7 @@
       "id": "prefix-caching",
       "type": "concept",
       "title": "前缀缓存（Prefix Caching）",
-      "summary": "前缀缓存是 LLM 推理的核心省算优化：多条请求开头若干 token 完全相同时，这段公共前缀的 KV 只算一次、供所有请求共享，省掉重复 prefill。它隐含两条假设——缓存单位是 token 粒度的 (K,V)、且 KV prefill 后只读可任意共享——纯 Transformer 完美满足。但 2025–2026 年的架构迁移把它推到了失效边缘：Hybrid 线性注意力架构（见 [[hybrid-linear-attention-architecture]]）的线性层维护的是固定大小的循环状态，三条假设全破（原地更新无法定位前缀、状态体积大一个量级、kernel 只能 chunk 边界 checkpoint）。结果是 Qwen3.5 这类 Hybrid 模型即使显式开 `--enable-prefix-caching`，命中率也长期为 0。Hybrid 还要同时管两套异构缓存，多模态\"图像在前\"再截断公共前缀，speculative decoding 与之争用同一套状态存档能力——多个杀手叠加，命中趋近于零。\n\n在服务化封装层（OpenAI/Azure OpenAI 的 prompt caching），同一机制于 GPT-5.6 起从透明后台优化变为**可控制、可计量、单独计费的一等机制**：断点可显式指定、写入按 1.25× 计费、命中按精确边界报告、缓存驻留单机靠智能路由命中——命中本质是概率事件，缓存经济学进入\"在哪断、写多少、复用几次\"的精算维度。",
+      "summary": "前缀缓存是 LLM 推理的核心省算优化：多条请求开头若干 token 完全相同时，这段公共前缀的 KV 只算一次、供所有请求共享，省掉重复 prefill。它隐含两条假设——缓存单位是 token 粒度的 (K,V)、且 KV prefill 后只读可任意共享——纯 Transformer 完美满足。但 2025–2026 年的架构迁移把它推到了失效边缘：Hybrid 线性注意力架构（见 [[hybrid-linear-attention-architecture]]）的线性层维护的是固定大小的循环状态，三条假设全破（原地更新无法定位前缀、状态体积大一个量级、kernel 只能 chunk 边界 checkpoint）。结果是 Qwen3.5 这类 Hybrid 模型即使显式开 `--enable-prefix-caching`，命中率也长期为 0。Hybrid 还要同时管两套异构缓存，多模态\"图像在前\"再截断公共前缀，speculative decoding 与之争用同一套状态存档能力——多个杀手叠加，命中趋近于零。\n\n在服务化封装层（OpenAI/Azure OpenAI 的 prompt caching），同一机制于 GPT-5.6 起从透明后台优化变为**可控制、可计量、单独计费的一等机制**：断点可显式指定、写入单独计费（默认 30 分钟寿命 1.25×，可选 12 小时寿命 2.5×）、命中按精确边界报告、缓存驻留单机靠智能路由命中——命中本质是概率事件，缓存经济学进入\"在哪断、写多少、复用几次\"的精算维度。",
       "tags": [
         "wiki",
         "concept",
@@ -10003,45 +10003,45 @@
           "statement": "GPT-5.6 把 prompt caching 变为一等机制——控制权/计费/报告三换轨，128N 是报告取整口径而非放置规则",
           "source": "Prompt-Cache系列01：两代缓存框架对比",
           "first_seen": "2026-09-13",
-          "last_updated": "2026-09-16",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "服务化封装层的两代框架分野（GPT-5.6 前后）体现为三个换轨：**控制权**——从服务按固定间隔（GPT-5.5 为 2,048 tokens）自动放断点，变为开发者可用 `prompt_cache_breakpoint` 显式指定（每请求最多 4 个写入槽位，implicit 断点占其一）或 implicit 模式在最新 eligible 消息末尾放断点；**计费**——写入从免费变为 1.25× 单独计费、读取 0.1×；**报告**——`cached_tokens` 从向下取整 128 倍数变为精确 eligible 边界。旧\"128N\"规律是**报告取整口径**，不是断点放置规则、更不是图片计量规则——GPT-5.6+ 上隐式缓存同样非 128N（实测读取值 5,677/5,678/4,797 无一是 128 倍数）。两代的本质差别是切分依据：旧框架**按 token 计数切**（结构无关，边界可落消息中间），新框架**按内容结构切**（eligible 消息末尾或显式 content block 边界）——代价是结构敏感：原地扩写一条旧消息会让缓存端点从\"消息末尾\"变\"消息中间\"而失效，这在旧框架反而不是问题。混用两代经验是实际排错中最常见的坑。",
-          "evidence_type": "",
-          "review": ""
+          "status": "active",
+          "evidence": "服务化封装层的两代框架分野（GPT-5.6 前后）体现为三个换轨：**控制权**——从服务按固定间隔（GPT-5.5 为 2,048 tokens）自动放断点，变为开发者可用 `prompt_cache_breakpoint` 显式指定（每请求最多 4 个写入槽位，implicit 断点占其一）或 implicit 模式在最新 eligible 消息末尾放断点；**计费**——写入从免费变为单独计费（默认 30 分钟寿命 1.25×；Responses API 可选 12 小时寿命 2.5×），读取 0.1×（GPT-6.2 Astra / Sol、GPT-6.1 Sol / Terra 为 0.05×）；**报告**——`cached_tokens` 从向下取整 128 倍数变为精确 eligible 边界。旧\"128N\"规律是**报告取整口径**，不是断点放置规则、更不是图片计量规则——GPT-5.6+ 上隐式缓存同样非 128N（实测读取值 5,677/5,678/4,797 无一是 128 倍数）。两代的本质差别是切分依据：旧框架**按 token 计数切**（结构无关，边界可落消息中间），新框架**按内容结构切**（eligible 消息末尾或显式 content block 边界）——代价是结构敏感：原地扩写一条旧消息会让缓存端点从\"消息末尾\"变\"消息中间\"而失效，这在旧框架反而不是问题。混用两代经验是实际排错中最常见的坑。",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 修订——依据：[Prompt caching | OpenAI API](https://developers.openai.com/api/docs/guides/prompt-caching)（现行版：GPT-5.6+ 默认 30 分钟寿命写入 1.25×，Responses API 可选 12 小时寿命写入 2.5×；读取多数模型 0.1×、GPT-6.2 Astra / Sol 与 GPT-6.1 Sol / Terra 为 0.05×；每请求最多四个写入槽位、implicit 占一个；`cached_tokens` 5.6+ 报精确 eligible 边界、更早模型向下取整到 128 倍数）"
         },
         {
           "statement": "写入计费经济学——三类费率互斥非附加费、写入是增量 delta、explicit-only 免掉永不复用尾部的写入费",
           "source": "Prompt-Cache系列02：显式断点与Cache-Write计费",
           "first_seen": "2026-09-13",
-          "last_updated": "2026-09-16",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "每个输入 token 按且仅按三类之一计费：普通 1× / 写入 1.25× / 读取 0.1×，官方明确 \"not an additive fee\"。写入是**增量（delta）**不是整套重写——同一请求可同时 `cached_tokens>0` 且 `cache_write_tokens>0`（实测：固定长文首次写 5,676，换新图后读 5,676 写 0；纯文字第二轮读 4,797 只为新增段写 63~71）。经济性：前缀只用一次写入是净亏（1.25× vs 1×）、用两次回本（1.35× vs 2×）、用十次 2.15×（vs 10×），复用免费刷新 TTL；前缀不足 1,024 可见 token 门槛时\"扩到门槛\"的 break-even 原始长度 = 102.4 + 1177.6/N。**explicit-only 模式让最后一个显式断点之后的动态尾部（如每次一张新图）不产生写入**——\"固定前缀+永不复用尾部\"负载下隐式兜底是反向优化（每次为尾部付 1.25× 纯浪费），实测 explicit 配置第二轮写入为 0。另一个易反的方向性：槽位是上限不是配额——explicit-only 把隐式断点整体关掉，不标断点=该请求不用缓存，绝不会自动补隐式断点。因果三层也要分清：读取以此前实际保存过状态为前提（旧模型 in_memory 同样有写入动作、只是不收费）；当前命中≠当前写入；写过也不保证命中。字段缺失≠0：Chat API 未返回 cache write 字段时不能认定写入量或费用为 0，计费口径待厂商澄清。",
-          "evidence_type": "",
-          "review": ""
+          "status": "active",
+          "evidence": "每个输入 token 按且仅按三类之一计费：普通 1× / 写入 w / 读取 r，官方明确 \"not an additive fee\"（默认 30 分钟寿命 w=1.25；Responses API 的 12 小时寿命 w=2.5；r 多数模型 0.1，GPT-6.2 Astra / Sol 与 GPT-6.1 Sol / Terra 为 0.05）。写入是**增量（delta）**不是整套重写——同一请求可同时 `cached_tokens>0` 且 `cache_write_tokens>0`（实测：固定长文首次写 5,676，换新图后读 5,676 写 0；纯文字第二轮读 4,797 只为新增段写 63~71）。经济性（前缀用 N 次的总成本 = w + (N−1)r，对比不缓存的 N）：w=1.25、r=0.1 时只用一次净亏（1.25× vs 1×）、两次回本（1.35× vs 2×）、十次 2.15×（vs 10×）；r=0.05 时两次 1.30×、十次 1.70×；12 小时寿命 w=2.5 时两次仍亏（2.6× vs 2×）、三次才回本（2.7× vs 3×），只适合确定会长时间高频复用的稳定前缀。30 分钟读取会把有效期刷新到读取后至少 30 分钟。前缀不足 1,024 可见 token 门槛时\"扩到门槛\"的 break-even 原始长度按官方通用式 L = M[w+(N−1)r]/N 计算：w=1.25、r=0.1 时为 102.4 + 1177.6/N，r=0.05 时为 51.2 + 1228.8/N。**explicit-only 模式让最后一个显式断点之后的动态尾部（如每次一张新图）不产生写入**——\"固定前缀+永不复用尾部\"负载下隐式兜底是反向优化（每次为尾部付 1.25× 纯浪费），实测 explicit 配置第二轮写入为 0。另一个易反的方向性：槽位是上限不是配额——explicit-only 把隐式断点整体关掉，不标断点=该请求不用缓存，绝不会自动补隐式断点。因果三层也要分清：读取以此前实际保存过状态为前提（旧模型 in_memory 同样有写入动作、只是不收费）；当前命中≠当前写入；写过也不保证命中。字段缺失≠0：Chat API 未返回 cache write 字段时不能认定写入量或费用为 0，计费口径待厂商澄清。",
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 修订——依据：[Prompt caching | OpenAI API](https://developers.openai.com/api/docs/guides/prompt-caching)（\"Cache-write pricing is not an additive fee\"；官方给出扩到门槛的通用成本式 N×L 对比 M[w+(N−1)r]；新增 12 小时寿命 2.5× 写入与 0.05× 读取档位；30 分钟读取把有效期刷新到读取后至少 30 分钟，不重启 12 小时时钟）"
         },
         {
           "statement": "单机缓存+智能路由是规模化服务的工程选择——命中本质是概率事件，15 RPM 是溢出经验阈值非硬限",
           "source": "Prompt-Cache系列01：两代缓存框架对比",
           "first_seen": "2026-09-13",
-          "last_updated": "2026-09-16",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
+          "status": "active",
           "evidence": "官方原文：缓存状态（encrypted KV tensors）存放在 **GPU-local storage 的单台机器**上，请求只有被路由到\"恰好持有未过期匹配条目\"的机器才能命中；单一前缀流量超过 15 requests/min 可能触发 overflow routing——不是配额、不报错不拒绝，代价是命中率下降，且官方未给出随 GPU/显存/模型/context 变化的参数化公式，不要自行外推。为什么不用 Redis 类分布式缓存（**推断，非官方结论**）：① 缓存对象是 KV 张量，几千 token 前缀可达 GB 级，非 Redis 典型 KB~MB 对象；② prefill 需以显存带宽量级供给 GPU，跨网搬运 GB 张量的时间会吃掉计算节省——工程选择是\"把请求路由到数据所在机器\"而非搬数据；③ 不是做不到是权衡——业界存在分布式方案（NVIDIA Dynamo KV-aware routing + 显存→内存→SSD→对象存储多级 offload）；④ 隐私不是主因（加密/组织隔离/区域边界是策略层手段）。推论：任何\"配置对了就保证命中\"的说法都不成立——实测同图偶发 miss、新副本首次 miss 后续命中（`routing.serving_pipereplica` 字段旁证预热模型）。GPT-5.6+ 后 `prompt_cache_key` 语义从优化路由变为**计量隔离**（key 变化可能让 usage 报 miss 而物理上没 miss），旧时代\"按流量拆 key\"的最佳实践不能原样搬。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "产品与服务",
+          "review": "2026-11-24 确认——依据：[Prompt caching | OpenAI API](https://developers.openai.com/api/docs/guides/prompt-caching)（\"Cached states live on individual machines, where traffic above 15 requests per minute can lead to overflow routing\"；KV 张量可存于 GPU-local storage；5.6+ 由 OpenAI 自动路由，`prompt_cache_key` 只用于分开计量；keys 不把请求钉到某台机器、也不保证命中）。与原记录同一官方来源，置信度不升"
         },
         {
           "statement": "隐式断点的结构敏感性与 API 层分叉——\"共享前缀≠缓存前缀\"的多模态实测复刻，API 是缓存能力差异的独立变量",
           "source": "Prompt-Cache系列03：Luna图文缓存实测",
           "first_seen": "2026-09-13",
-          "last_updated": "2026-09-16",
+          "last_updated": "2026-11-24",
           "confidence": 0.75,
-          "status": "stale",
+          "status": "active",
           "evidence": "客户\"固定长文字+每次新图\"零命中要分两层剥离。**第一层是机制预期非 bug**：一条 user 消息内「文字块+图片块」结构下，唯一的隐式断点在消息末尾（图片之后），文字/图片交界处没有 lookup 边界——请求写入的是「文字+图A」整体，换图即在分叉点之前查无可查，这是官方 Gotcha #1（共享前缀≠缓存前缀）的多模态版本。修复实证：user 位置固定文字打显式断点把命中从 **0/69 拉到 62/68**；或把固定文字放进 developer/system 消息（初始连续 developer 块末尾是天然 lookup 边界，10~11/12 命中）。**第二层才是异常**：施加同样修复后 Responses API 行为与机制预测严丝合缝，而 **Chat API 在本资源全部修复配置下依然全零**（新图 0/421；串行 15s 复测 0/144 且 explicit 组连写入都为 0），同资源纯文字两轮 Chat 正常（44/48）、同图重复正常——**API 层是缓存能力差异的独立变量**：官方 GPT-5.6+ 断点/诊断文档通篇围绕 Responses 写，Chat 对图文消息断点语义是否完整实现文档未明说。定性措辞纪律：只能说\"本资源/本部署持续复现、疑似实现或部署差异、待厂商确认\"，不能推广为\"Chat 缓存不可用\"或\"所有 Azure 部署都有此问题\"。配套排查工具 `prompt_cache_diagnostics`（九种 miss 原因枚举）在本资源实测 6/6 字段整体缺失，能力差异同样待服务方确认。",
-          "evidence_type": "",
-          "review": ""
+          "evidence_type": "实测经验",
+          "review": "2026-11-24 确认——依据：[Prompt caching | OpenAI API](https://developers.openai.com/api/docs/guides/prompt-caching) 现行版仍只围绕 Responses API 写断点，通篇未提 Chat Completions；[Prompt cache diagnostics](https://developers.openai.com/api/docs/guides/prompt-caching/diagnostics) 写明\"Diagnostics are available in the Responses API for GPT-5.6 and later\"。Chat 图文异常仍无厂商根因，措辞纪律不变，置信度不动"
         },
         {
           "statement": "推理基建判据跨域成立——VLA 的 prefill/decode 类比与视频 token 自回归的 KV cache 继承",
