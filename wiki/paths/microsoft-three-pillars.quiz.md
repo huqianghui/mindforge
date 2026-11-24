@@ -127,7 +127,7 @@ path_id: "microsoft-three-pillars"
 
 **问**：一个 Foundry agent 开发时能读存储账号，发布后突然 403。最可能是什么原因？
 
-**答**：开发中的 agent 共用项目的共享身份，发布后换成专属 agent identity，原来授给共享身份的 RBAC 不会继承，要给新身份重新分配角色。
+**答**：多半是身份换了而 RBAC 没跟过去：旧的 Agent Application 发布模型下，开发中的 agent 共用项目的共享身份，发布后换成专属 agent identity，原来授给共享身份的 RBAC 不会继承，要给新身份（`agentIdentityId`）重新分配角色。当前的 agent 对象模型下，创建 agent 时就已经建了专属身份，所以要先确认这个 agent 属于哪种模型，再看角色授给了哪个身份。
 
 **出处**：[[entra-agent-id]]（Claim「Foundry 身份创建时序」）
 
@@ -387,7 +387,7 @@ path_id: "microsoft-three-pillars"
 
 **问**："Hosted Agent 的治理比 Prompt Agent 弱。"对吗？
 
-**答**：要分层说。身份层两者同源，都是 Entra agent identity，Hosted 的专属身份甚至更好审计；差别在内容层与内层可观测性——内容安全和 planner 内部埋点在 Hosted 上要自己补。
+**答**：要分层说。身份层两者同源，都是 Entra agent identity，Hosted 的专属身份甚至更好审计；差别在内容层与内层可观测性——Prompt Agent 默认带 Prompt Shield / Content Filter，Hosted 要显式配置 `rai_config` 平台 guardrail（不配就没有，policy ID 写错会 fail open）；planner 内部埋点在 Hosted 上要自己补。
 
 **出处**：[[foundry-agent-type-selection]]（Claim「治理分层」）
 

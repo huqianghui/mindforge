@@ -109,13 +109,13 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 
 - **来源**：[[WebSocket与WebRTC深度对比]]
 - **首次出现**：2026-05-22
-- **最近更新**：2026-05-24
+- **最近更新**：2026-11-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：Azure/VoiceLive/Voice-Live系列17：Global-Secure-Access下数字人的网络问题解析.md 与 Azure/VoiceLive/Voice-Live系列16：传输层概念对齐.md：SDP 经 WS 交换属实；但 WebRTC 仅数字人下行，麦克风上行与 VAD 走 WS，数字人可降级为 WebSocket 下发
+- **复核**：2026-11-24 修订——依据：[Voice Live WebRTC](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-webrtc)、[Voice Live API reference 2026-06-01-preview](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live-api-reference-2026-06-01-preview)（11-22 loop-revalidate 取证，用户裁决写回）
 
-> WebSocket 是 Control Plane（信令/控制/事件/Tool Calling），WebRTC 是 Data Plane（低延迟音视频流）。两条通道并存且职责解耦。建连时序：WebSocket 建控制面 → 通过 WebSocket 交换 SDP → WebRTC PeerConnection 建立 → 运行时协作。
+> WebSocket 是控制面（会话配置、事件、文本、工具调用），WebRTC 是媒体面（低延迟音视频），两条通道职责解耦。信令有两种：SDP 可以经 WebSocket 控制通道交换，也可以走 HTTP 端点交换——HTTP 信令在 SDP 交换后即关闭、没有常驻 WebSocket，数字人场景暂不支持这种 side-band 方式。数字人场景里 WebRTC 只承载 avatar 下行，麦克风上行与 VAD 仍走 WebSocket，且 `output_protocol` 可以改成 websocket 让数字人也经 WebSocket 下发；要让音频也全部走 WebRTC，用的是 `voice-live/realtime/calls` 这一路。所以"WebSocket 建控制面 → 经 WebSocket 交换 SDP → 建 PeerConnection"只是其中一种建连时序。
 
 ### Claim: 要获得数字人最佳体验才需要 WebRTC——WebSocket-only 并非必然被淘汰
 
@@ -359,6 +359,8 @@ Voice Live Agent 是结合语音 I/O 与 LLM 推理能力的实时对话系统�
 > 脚本两种模式：并发模式按固定间隔（守住速率）一个一个加直到被拒；速率模式连开直到被拒，由 `Retry after` 反推窗口长度。第一版用等待结束的时刻反推，把等待稳定的时间（最多 12 秒）也算进窗口，报出 69 秒；改用错误帧到达的时刻后报 58 秒，与精测的 60 秒只差约 2 秒（残差来自起点取的是 offer 发出时刻，窗口大概从服务端接受连接时起算）。前提是配置必须带数字人，纯语音不建 avatar 连接，脚本应检测到并直接退出，而不是给出一个空结果。该在提限制之后、换资源之后、重要演示之前、怀疑限制变了时各跑一次。
 
 ## 冲突与演进
+
+- 2026-11-24：/revalidate 写回 11-22 loop-revalidate 提议（用户裁决）："双通道架构"一条修订——补 HTTP 信令与 `realtime/calls` 全 WebRTC 两种形态，数字人场景 WebRTC 只承载 avatar 下行。
 
 - 2026-11-24：/extract-knowledge 厚度补抽 Voice Live 系列 13：新增实现层三类错、配额按生产形态定、自测工具要校准三条（第一到七节已在原 Claim）。
 - 2026-08-30：注入数字人渲染三路线 Claim（动态SVG下篇 Inspector 实探），页面 active 证据回填。

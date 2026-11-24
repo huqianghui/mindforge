@@ -28,14 +28,14 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 ### 选项 A: Prompt Agent（GA）
 
-- **优势**：零运维，Foundry 负责 Runtime；治理最全——Prompt Shield / Content Filter 等内容层防护内置；与 Voice Live 挂载（`agent_id` 绑定）是官方支持路径
+- **优势**：零运维，Foundry 负责 Runtime；治理最全——Prompt Shield / Content Filter 等内容层防护默认带上；与 Voice Live 挂载（`agent_id` 绑定）是官方支持路径
 - **劣势**：逻辑受限于 instructions + tools 声明式表达，无法运行自定义代码循环
 - **适用条件**：约 80% 的常规场景（知识问答、工具调用、RAG 类）
 
 ### 选项 B: Hosted Agent（GA）
 
 - **优势**：完全控制 Agent Runtime（自带框架如 LangGraph/AutoGen，容器内任意代码）；支持三种协议入口（`/responses`、`/invocations`、`/invocations_ws`）
-- **劣势**：内容层治理自理（Prompt Shield 等不内置）；有明确上限——WebSocket 帧 1 MB、单连接约 30 分钟（发 1001 后用同一 agent_session_id 重连）、沙箱最高 2 vCPU / 4 GiB；session 闲置超时默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）；已有官方语音 agent 与 Telephony integration（2026-11-07 复核，见语音 agent 文档）；"无 WebRTC"待核
+- **劣势**：内容层防护不默认带——要显式配置 `rai_config` 平台 guardrail（不配就没有；配了不写名用 DefaultV2；policy ID 写错会 fail open，2026-11-24 修订）；另有仅 Hosted 适用的出站 egress 控制；有明确上限——WebSocket 帧 1 MB、单连接约 30 分钟（发 1001 后用同一 agent_session_id 重连）、沙箱最高 2 vCPU / 4 GiB；session 闲置超时默认 15 分钟、可配置（Hosted agents 概念页写 2~60 分钟，语音 agent 页写 2~240 分钟，两处官方文档不一致）；已有官方语音 agent 与 Telephony integration（2026-11-07 复核，见语音 agent 文档）；"无 WebRTC"待核
 - **适用条件**：需要自定义推理循环 / 已有框架代码要迁移 / 多模型编排等 7 条 Hosted 信号
 
 ### 选项 C: Workflow Agent（public preview）
@@ -50,7 +50,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 - **选择**（2026-08-16 修订为二元，2026-11-07 修订为三档）：以"是否需要自己控制 Agent Runtime / harness"为唯一主线做选型——instructions 与支持的工具就够 → Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness；要改框架、agent loop、中间件或运行时行为（含原 Workflow Agent 承接的多 Agent 固定流程场景）→ Hosted Agent，多 Agent 编排靠 Hosted 内 harness/Agent Framework workflow orchestrations + A2A 协议 + Skills 承接
 - **理由**：两者差异的本质不是能力多少，而是 Runtime 归属；80/20 规则下大多数场景 Prompt Agent 足够且治理最全
-- **放弃理由**：不以"功能清单对比"选型——身份层两者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Shield/Content Filter 仅 Prompt Agent 内置），逐功能对比会掩盖这条主线
+- **放弃理由**：不以"功能清单对比"选型——身份层两者同源（Entra Agent ID blueprint + per-agent Service Principal），真正分水岭在内容层（Prompt Agent 默认带 Prompt Shield / Content Filter，Hosted 要显式配置 `rai_config` 才有，2026-11-24 修订），逐功能对比会掩盖这条主线
 - **Foundry 之外再加一档：AKS 自建**（2026-11-14 补，来自 AKS Agent Runtime 系列 10）：先按"loop 归谁"分类——A 声明式（平台自带 loop）→ Prompt Agent，在 AKS 上自建这一类等于重写一个平台；C 自写 loop → 看 2 vCPU / 4 GiB 够不够、再看下面三件事有没有必须的，都不必须就用 Hosted Agent；B 基于现成编码 CLI（Claude Code / Codex / Copilot CLI）→ 能接受自己包一层 Responses / Invocations 协议且规格够就回到 C 的判断，否则在 AKS 上自建。自建的理由只有三类：直接跑现成编码 CLI、沙箱大于 2 vCPU / 4 GiB（GB 级工具链镜像、大仓库构建、GPU）、出站按"某 agent 对某资源的某动作"逐请求批准；半个理由是统一多模型多协议网关与按自己规则改控制面。前提只有一条：团队愿意长期维护一个 agent 控制面
 - **前提假设**：Hosted 已于 2026-07/08 GA（[Hosting Agent Framework applications](https://learn.microsoft.com/en-us/agent-framework/hosting)），GA 前记录的硬约束（帧上限、连接时长、vCPU）需按 GA 文档复核；Copilot harness in Foundry 仍是公开预览。~~Workflow 相关前提~~已随退役失效，不再需要复核
 
@@ -80,17 +80,17 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 
 > **2026-11-07 修订**：Workflow 一档已移出官方类型；Copilot harness 进入 Foundry 后，主线“要不要自己控制 runtime / harness”不变，但分成三档——Prompt Agent（instructions 与支持的工具就够）、Prompt Agent + Microsoft Copilot harness（要 skills、托管执行、文件、子 agent，但不想自己持有 harness）、Hosted Agent（要改框架、agent loop、中间件或运行时行为）。
 
-### Claim: 治理分层——身份层三者同源，分水岭在内容层
+### Claim: 治理分层——身份层同源，分水岭在内容层：Prompt Agent 默认带内容防护，Hosted 要显式配置
 
 - **来源**：[[Foundry-Agent三种形态对比与选型]]
 - **首次出现**：2026-07-19
-- **最近更新**：2026-07-21
+- **最近更新**：2026-11-24
 - **置信度**：0.8
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：沿用上一轮结论——身份层有新证据 https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity ，但“内容过滤只有 Prompt Agent 内置”未找到官方原文印证，无法下结论
+- **复核**：2026-11-24 修订——依据：[Hosted agent guardrails](https://learn.microsoft.com/fil-ph/azure/foundry/agents/concepts/hosted-agent-guardrails)、[Add guardrails to hosted agents](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/add-hosted-agent-guardrails)（11-22 loop-revalidate 取证，用户裁决写回）
 
-> 治理四层（身份/内容/审计/成本）中，身份层三类 Agent 完全同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。真正的治理分水岭在内容层：Prompt Shield / Content Filter 仅 Prompt Agent 内置，Hosted Agent 内容安全完全自理。"Hosted 治理弱"的笼统说法是错的，必须分层说。
+> 治理四层（身份、内容、审计、成本）中，身份层两类 agent 同源：都走 Entra Agent ID（blueprint + per-agent Service Principal），Hosted 的身份层不弱反强（容器内代码也用同一身份体系）。分水岭在内容层，但不再是"有没有"，而是"默认带还是要显式配"：Prompt Agent 默认带 Prompt Shield / Content Filter；Hosted 可以选配平台 guardrail（`rai_config`），不配就没有，配了不写 policy 名时用 DefaultV2，policy ID 写错会 fail open（等于没防护且不报错）。另有一项仅 Hosted 适用的出站 egress 控制。原记录"Hosted 内容安全完全自理"已不成立。"Hosted 治理弱"的笼统说法是错的，必须分层说。
 
 ### Claim: Voice Live 与两类 Agent 的组合方向相反
 
@@ -212,6 +212,8 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 > 三类理由：① 直接跑现成编码 CLI——Hosted 要求容器实现 Responses 或 Invocations，这些 CLI 不说这些协议，要用就得自己包一层（参考实现的适配器做的正是这件事）；② 沙箱规格——Hosted 最大 2 vCPU / 4 GiB，编码 agent 快照镜像就 1.46 GB，大仓库构建与全量测试 2 vCPU 常不够，GPU 更不用说，AKS 由节点池定规格；③ 出站粒度——Hosted 可走客户 VNet、工具经 Toolbox，但"某 agent 只能读某仓库不能推、撤销 1 秒多生效"这一级要自己搭。代价清单（几天 PoC 就撞上）：单副本 + SQLite 发版即停、多副本要自加 lease 与 fencing；回收只从状态库往外做；突发下逐请求授权先垮（51 个 503、0 个 429）；一项申请缺批准整个应用新会话 503；Claude Code root 下要 `IS_SANDBOX=1`；令牌服务要自写、代表用户要管理员同意；再加订阅策略（Key Vault 创建即关公网、Service Bus SAS 被禁、PostgreSQL 两区开不了、集群每天半夜停机）。不愿意长期维护控制面，三个理由再充分也应先想能否在 Hosted 那侧绕过去。十篇 PoC 的总结判断，选型本身未在真实项目验证。
 
 ## 冲突与演进
+
+- 2026-11-24：/revalidate 写回 11-22 loop-revalidate 提议（用户裁决）："治理分层"一条修订——Hosted 可选配 `rai_config` 平台 guardrail，分水岭改为"Prompt 默认带、Hosted 需显式配置"；选项 B 劣势、放弃理由同步改。
 
 - **2026-08-30**：注入 08-20 文档修订的三组 Hosted 运行时经济学硬约束（双 ID 生命周期/per-session 计费/冷启动无 benchmark），"Hosted 硬约束表"证据面扩充。
 - **2026-08-16**：源文章《Foundry Agent 全面对比》2026-07-31 修订确认 Workflow Agent 于 2026-12-01 退役，官方类型收窄为 Prompt/Hosted 二元（姊妹篇《Foundry Toolbox与Skills深度解析》同日确认）。本决策页据此修订：① 选项 C 标注 `superseded`；② 选型框架主线由三选一改为二元；③ 新增 Claim 记录退役事件与编排责任下沉路径（Hosted 内 harness/Agent Framework + A2A + Skills）；④ `decision_status` 保持 `active`（决策主线本身未被推翻，仅选项集收窄）。

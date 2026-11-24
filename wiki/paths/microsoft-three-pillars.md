@@ -128,7 +128,7 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 - **读**：[[foundry-agent-type-selection]]
 - **前置**：第 9 站
 - **用时**：约 45 分钟
-- **⚠️ stale**：2 条（治理分层的内容层、Hosted 硬约束数字，复核待定）
+- **⚠️ stale**：1 条（Hosted 硬约束数字，复核待定）；治理分层的内容层已于 2026-11-24 修订为"Prompt 默认带、Hosted 需显式配置"
 - **算会**：
   - 能按三档（Prompt / Prompt + Copilot harness / Hosted）给出选型判断，并说出每档的触发信号
   - 能说出 Voice Live 与 Prompt、Hosted 两类 agent 的组合方向为什么相反

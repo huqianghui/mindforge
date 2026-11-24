@@ -42,7 +42,7 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 - **置信度**：0.8
 - **状态**：active
 
-> Prompt Agent：planner 黑盒、状态由 Thread / Run 承载、调用面是 Responses API，只能用 Foundry 支持的模型；内容安全（Prompt Shield、Content Filter）、审计、成本追踪开箱即用，是 Voice Live agent 绑定唯一支持的类型。Hosted Agent：LangGraph、Agent Framework、OpenAI Agents SDK 等任意框架，镜像推 ACR，Foundry 分配算力、签发专属 Entra agent identity 和 endpoint；planner、记忆、模型（含第三方模型，风险自负）都归你，内容层防护和 planner 内部可观测性要自己补。类比：Prompt 之于 Hosted，如 Azure Functions 之于 Kubernetes。Prompt 与 Hosted 是单个 agent 的两种运行时归属，原来的 Workflow 是之上的编排层，现由 Agent Framework 代码、harness 原语和 A2A 承接。
+> Prompt Agent：planner 黑盒、状态由 Thread / Run 承载、调用面是 Responses API，只能用 Foundry 支持的模型；内容安全（Prompt Shield、Content Filter）、审计、成本追踪开箱即用，是 Voice Live agent 绑定唯一支持的类型。Hosted Agent：LangGraph、Agent Framework、OpenAI Agents SDK 等任意框架，镜像推 ACR，Foundry 分配算力、签发专属 Entra agent identity 和 endpoint；planner、记忆、模型（含第三方模型，风险自负）都归你；内容层防护不默认带，要显式配置 `rai_config` 平台 guardrail（2026-11-24 按官方 guardrail 文档修订，原写"自己补"），planner 内部可观测性要自己补。类比：Prompt 之于 Hosted，如 Azure Functions 之于 Kubernetes。Prompt 与 Hosted 是单个 agent 的两种运行时归属，原来的 Workflow 是之上的编排层，现由 Agent Framework 代码、harness 原语和 A2A 承接。
 
 ### Claim: Hosted Agent 的运行模型是"每 session 一个 VM 级沙箱 + 三种调用协议"——Responses 是厚封装（平台托管对话历史），Invocations 是薄封装（直接交出沙箱句柄）
 

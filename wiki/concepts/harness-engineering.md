@@ -155,17 +155,17 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 > 所有 Harness 代码可归入三个控制系统：执行系统（L5 Runtime + L4 Execution，"怎么做出来"）、约束系统（L2 Planning + L1 Policy，"不能乱来"）、认知系统（L6 Eval，"从经验学到什么"）。收敛性 = 约束强度 × 反馈频率 / 执行自由度。
 
-### Claim: Claude Code 的 98.7% 代码都是 Harness
+### Claim: Claude Code 的 98.4% 代码是运行基础设施，决策逻辑只占约 1.6%
 
 - **来源**：[[Claude-Code系列07：Harness分层架构]]
 - **首次出现**：2026-04-17
-- **最近更新**：2026-07-06
-- **置信度**：0.9
-- **状态**：stale
+- **最近更新**：2026-11-24
+- **置信度**：0.8
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：98.7% / 6400 行为外部分析数字，本轮未取到可靠一手来源
+- **复核**：2026-11-24 修订——依据：[arXiv 2604.14228v2](https://arxiv.org/html/2604.14228v2)（11-22 loop-revalidate 取证，用户裁决写回）；数字属社区估算，不是官方公布，置信度 0.9 → 0.8
 
-> Claude Code 总代码量 50 万行以上，其中直接调用模型的代码约 6400 行（~1.3%）。社区框架的价值不在于重复执行能力，而在于补足约束系统和认知系统的空白。
+> 按社区对源码的估算，Claude Code 约 51.2 万行 TypeScript、1884 个文件，其中决策逻辑约占 1.6%，其余 98.4% 是运行基础设施（工具执行、权限、上下文管理、会话、UI 等）。原记录的"98.7%、直接调用模型的代码约 6400 行"已按这一估算更正。含义不变：agent 的可靠性主要来自 harness 而不是那一小段调用模型的代码；社区框架的价值不在重复执行能力，而在补足约束系统和认知系统的空白。
 
 ### Claim: 多模型 harness 必须自建三层评测体系——离线 benchmark → PR 门禁 → 生产 A/B
 
@@ -207,13 +207,13 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[InkOS：AI小说创作中的Harness]]
 - **首次出现**：2026-04-23
-- **最近更新**：2026-04-23
+- **最近更新**：2026-11-24
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：第三方项目(Terminal Velocity/GOAT)本轮未查
+- **复核**：2026-11-24 修订——依据：[InkOS README](https://github.com/Narcooo/inkos/blob/master/README.en.md)（11-22 loop-revalidate 取证，用户裁决写回）；Terminal Velocity 与 GOAT 本轮未查，范式一、二的例子维持原记录
 
-> 范式一（对话驱动）：Terminal Velocity，Agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent + 微调模型，推理效率高但泛化受限。范式三（Harness 驱动）：InkOS，10 Agent + 硬编码规则 + 真相文件 + 审计循环，最有前景的方向。
+> 范式一（对话驱动）：Terminal Velocity，agent 通过对话协商，无显式规则，长篇一致性差。范式二（模型驱动）：GOAT Storytelling Agent 加微调模型，推理效率高但泛化受限。范式三（harness 驱动）：InkOS，最有前景的方向；它的形态已经变了——初版是 10 个 agent 加硬编码规则、真相文件、审计循环，2.0 收敛成单一的 pi-agent harness 加 19 个 skill，由宿主负责确认、状态、原子持久化与产物真相。这一演变正好印证同页"外层 harness 框架 skill 化收敛"那条。
 
 ### Claim: V-Model 双轨把"凡可确定性计算的绝不交给 LLM"应用到合规领域
 
@@ -231,13 +231,13 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 - **来源**：[[Foundry-Toolbox与Skills解析]]
 - **首次出现**：2026-07-30
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-24
 - **置信度**：0.75
-- **状态**：stale
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：同上 Microsoft Learn harnesses-overview：现为四种 harness（含 Customer Conversation harness）
+- **复核**：2026-11-24 修订——依据：[Copilot Studio agents overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/agents-overview)、[Harnesses overview](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)（11-22 loop-revalidate 取证，用户裁决写回）
 
-> Copilot Studio 一个产品里并存三种 harness（经典低代码编排、生成式编排、Copilot 运行时），同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
+> Copilot Studio 一个产品里并存多种 harness，官方现行组成是 Microsoft Copilot harness、Customer Conversation harness、standard harness，原来的经典编排与生成式编排都已归入 standard（概览页另一处写作 GitHub Copilot harness，官方口径尚未统一；原记录"经典低代码编排、生成式编排、Copilot 运行时"三分已过时）。同一 agent 配置换 harness 跑出不同行为——"选 harness 就是选行为语义"的直接产品证据。由此得出跨 harness 可移植性分层：**skill（纯文本指令）与 MCP（协议标准）可移植性高；instructions/system prompt 中等（各平台注入方式不同）；subagent、hook、plugin 可移植性低（深度绑定特定 harness 实现）**。规律一句话："离模型越近越可移植"——离模型近的资产只依赖模型能读文本，离模型远的资产依赖 harness 私有机制。资产投资应优先沉淀在可移植层。
 
 ### Claim: 外层 Harness 框架 Skill 化收敛——复杂度没有消失，而是沉到宿主与模型两端
 
@@ -276,6 +276,8 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 
 ## 冲突与演进
 
+- 2026-11-24：/revalidate 写回 11-22 loop-revalidate 提议（用户裁决）：3 条修订——Claude Code 代码占比改为社区估算的 98.4% / 1.6%（0.9 → 0.8）；Copilot Studio harness 组成更新为 Microsoft Copilot / Customer Conversation / standard；InkOS 例子更新为 2.0 的单一 harness 加 19 个 skill。
+
 - 2026-11-24：/extract-knowledge 厚度补抽 Agentic Engineering：新增"学科与方法的关系、harness 的五个问题"和"Delegate → Review → Own 分工"两条。
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
 - 2026-04-17：控制论视角引入，将 Harness Engineering 从工程方法论上溯到控制论理论根基。三套框架（控制论五层 / 六层架构 / 三层控制模型）互补：搭系统用六层，调系统用三层，设计决策回控制论。
@@ -313,7 +315,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[Vibe-Coding系列02：架构师视角的Harness实践|Vibe Coding系列02]] — OpenAI 五大支柱详解
 - [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — 从 Claude Code 源码理解 Harness 实践
 - [[2026-04-16-周四]] — Meta-Harness 论文解读，补充精确 Harness 定义和自动化优化
-- [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 98.7% 是 Harness
+- [[2026-04-17-周五]] — 控制论视角引入，三层控制模型、Claude Code 绝大部分代码是 harness（数字 2026-11-24 更正为 98.4% 运行基础设施）
 - [[2026-04-23-周四]] — InkOS 跨领域验证：AI 小说创作中的 Harness Engineering 范式、三种 AI 创作范式总结
 - [[Agent=Model+Harness]] — VS Code 三层评测体系、agent 行为回归门禁、`~requires-eval-assessment` 自我申报实证、L1/L2/L3 分层约束
 - [[Spec-Kit系列00：SDD、TDD与V-Model融合]] — V-Model 确定性脚本验证（Harness 范式的合规域延伸）

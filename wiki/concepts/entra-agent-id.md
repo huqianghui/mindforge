@@ -26,7 +26,7 @@ related:
 
 Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核心是**认证与授权分离的双层模型**：Agent Blueprint（模板 + 凭据持有者）负责"证明是谁来申请身份"（Authentication），Agent Identity（特殊 service principal）代表"最终是谁在访问资源"（Authorization + Audit）。凭据集中在少数 Blueprint 上、权限和审计分散到每个 Agent Identity 上，从而在支撑成千上万 Agent 的同时把 secret 数量压到最少。
 
-与传统 App Registration / Service Principal 的 1:1 模型不同，Blueprint 与 Agent Identity 是 1:N 工厂模型（类比 Kubernetes Deployment/Pod）——本质是把 AI Agent 当作一种新的 **Workload Identity** 来治理，而不是一种新的 App。注意 1:N 是对象模型上限（单 Blueprint ≤250 identity），Foundry 实测中 blueprint:identity 为 1:1 成对创建，"N"兑现在共享身份复用与多租户分发。
+与传统 App Registration / Service Principal 的 1:1 模型不同，Blueprint 与 Agent Identity 是 1:N 工厂模型（类比 Kubernetes Deployment/Pod）——本质是把 AI Agent 当作一种新的 **Workload Identity** 来治理，而不是一种新的 App。注意 1:N 是对象模型上限（单 Blueprint ≤250 identity），Foundry 实测中 blueprint:identity 为 1:1 成对创建，"N"兑现在共享身份复用与多租户分发。当前 agent 对象模型下，创建 agent 即建专属 blueprint 与身份（2026-11-24 按官方文档修订，原"publish 才建"属旧模型）。
 
 ## Claims
 
@@ -76,30 +76,34 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 >
 > **限定（2026-08-04 实测）**：1:N 是模型上限（Graph API 单 Blueprint ≤250 identity），Foundry 实践为 1:1 成对；"N"实际兑现在三处——共享 blueprint 的 1 个 identity 被 N 个未发布 agent 复用（方向相反的 N:1）、多租户分发时 1 blueprint 投影 N 个租户本地 identity（blueprint principal 机制）、fleet 场景预留。六层动机中①⑤按字面（一类 Agent 万级实例共享 Blueprint）在 Foundry 单租户实践中未兑现；②③④⑥不依赖 N，1:1 下依然成立。Blueprint 之间无继承关系（共享与专属 blueprint 是平级独立对象）。
 
-### Claim: Foundry 身份创建时序——项目不建、首 agent 建共享对、publish 建专属对且 RBAC 不继承
+### Claim: Foundry 身份创建时序——当前对象模型下创建 agent 即建专属 blueprint 与身份；共享项目身份只留给旧模型的 agent，发布后 RBAC 不继承
 
 - **来源**：[[Entra-Agent-ID的双层身份模型]]（第六节，官方 Foundry agent-identity 概念文档 2026-07-31 版）
 - **首次出现**：2026-08-04
-- **最近更新**：2026-11-07
+- **最近更新**：2026-11-24
 - **置信度**：0.8
 - **状态**：active
-- **复核**：2026-11-07 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)
+- **复核**：2026-11-24 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/agent-identity)："In the current agent object model, creating an agent provisions a unique agent blueprint and the identity for its default instance"（11-22 loop-revalidate 取证，用户裁决写回）
 
-> 官方时序：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。
+> **现行结论（2026-11-24 修订）**：在当前的 agent 对象模型下，创建 agent 就会为它建一个专属 blueprint 和默认实例的身份，不再等到 publish；项目级共享身份只留给旧的 Agent Application 发布模型下的 agent。下面"publish 才建专属对"的时序属于旧模型，保留作历史。RBAC 不继承、version 不等于 identity、`identity.principalId` 不是 agent 身份这几条易错点不受影响。
+>
+> 旧模型的时序（原记录）：创建项目**不建**任何身份对象；项目内**第一个** agent 触发创建项目级共享 blueprint + agent identity 对；后续未发布 agent 复用共享身份；**publish** 才创建绑定 agent application 资源的专属对。publish 后 **RBAC 不继承**——新 `agentIdentityId` 必须重新授权。version ≠ identity：身份绑 agent application，v1/v2 共享同一身份（且微软 Q&A 承认文档未硬承诺版本更新时身份持续性）。查看入口：项目/agent application 资源的 Azure portal JSON View（`properties.agentIdentity`），租户全量在 Entra admin center → Agent ID。易错点：项目 JSON 的 `identity.principalId` 是 SystemAssigned managed identity（FIC 锚点），不是 agent 身份，RBAC 要授给 `agentIdentityId`。
 
 > **2026-11-07 修订**：“未发布 agent 共享项目身份、发布后换专属身份且 RBAC 要重新分配”仍是文档原意；但文档注明这是 Agent Application 发布模型下的行为，发布体验正在迁往新的 agent object model（新 agent endpoint 与发布方式），新模型下的创建时序要另查迁移文档。Foundry RBAC 角色已改名（Azure AI User → Foundry User 等，role ID 不变）。
 
-### Claim: 实测偏差——portal New agent 创建即得专属 blueprint 对，早于文档的"publish 才建"
+### Claim: 创建即建专属 blueprint——文档已跟上实测
 
 - **来源**：[[Entra-Agent-ID的双层身份模型]]（2026-08-04 Sweden Central 真实项目实测）
 - **首次出现**：2026-08-04
-- **最近更新**：2026-08-04
+- **最近更新**：2026-11-24
 - **置信度**：0.7
-- **状态**：stale
+- **状态**：active
 - **证据类型**：实测经验
-- **复核**：2026-11-07 待定——依据：依据：官方文档仍写“发布 agent 时才创建专属 blueprint”(https://learn.microsoft.com/en-us/entra/id-governance/agent-id-governance-overview)，与实测相左；无新实测或文档修订能判断是实现已变还是仅治理可见性，需用 token 的 sub 复验
+- **复核**：2026-11-24 修订——依据：[Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/agent-identity) 已改为"创建 agent 即建专属 blueprint 与默认实例身份"，与 2026-08-04 的实测一致，"实测偏差"不再成立（11-22 loop-revalidate 取证，用户裁决写回）；置信度按修订规则不升
 
-> 在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为"1 共享 + N 专属"，专属对在**创建时**即落，与文档"publish 才建"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。
+> **现行结论（2026-11-24 修订）**：官方文档已经跟上实测——当前对象模型下创建 agent 即建专属 blueprint 与身份，实测看到的"1 共享 + N 专属"是旧共享身份与新模型并存的结果。原记录里"文档滞后，还是只为治理可见性提前注册"的两种解释，前者已被文档印证；运行时工具调用用的是哪个身份（看令牌的 sub）仍未复验。
+>
+> 原记录：在 portal 点 New agent 创建两个未发布 agent，Entra 中出现两个以 agent 命名的专属 blueprint（`{project}-{agent}-{hash}-AgentIdentityBlueprint`），同时项目共享对存在——实际为"1 共享 + N 专属"，专属对在**创建时**即落，与文档"publish 才建"冲突。两种解释待验证：文档滞后（创建即注册），或提前注册仅为治理可见性、运行时仍走共享身份（需看工具调用 token 的 sub 判定）。单租户单次观察，置信度受限。
 
 ### Claim: Blueprint Authentication 属 Entra OAuth 层，与 Azure RBAC 是两套授权体系
 
@@ -163,6 +167,8 @@ Microsoft Entra Agent ID 是微软为 AI Agent 设计的身份治理体系，核
 > 用 Azure CLI 自带的 Graph 权限建 blueprint 与 blueprint principal（该租户已有 3 万多个 blueprint），给 blueprint 加信任 AKS 某 ServiceAccount 的联合凭据，再建一个 `ServiceIdentity` 类型的 agent identity。取令牌：blueprint 以 SA 联合令牌做 client credentials 并带 `fmi_path=<agent identity id>` 换交换令牌 T1（`sub` 是末尾为该 id 的 FMI 路径），agent identity 以 T1 作客户端断言换下游令牌，最终 `sub` / `azp` / `oid` 全是该 agent identity——与本页"完整 Token 流程三阶段"一致。agent 代表用户：用户令牌 audience 须为 blueprint（拿到，80 分钟），OBO 返回 `AADSTS65001` 未同意；下游预授权 agent identity 不行（只有服务主体、没有应用对象，写不进预授权列表），自建针对本人的委托授权被拒（guest 权限不足）。正规做法是管理员在 blueprint 上配可继承权限或对 agent identity 做管理员同意——这个审批要算进上线流程。代表用户一段未跑通，按文档推断，置信度保守。
 
 ## 冲突与演进
+
+- 2026-11-24：/revalidate 写回 11-22 loop-revalidate 提议（用户裁决）："实测偏差"一条修订为"文档已跟上实测"，同页"publish 建专属对"的创建时序一并改为现行结论，旧时序保留作历史；摘要补一句。
 
 - 2026-07-19：《Foundry Agent 全面对比》首次引入（身份层三类 Agent 同源：blueprint + per-agent service principal），当时单源 HOLD 不建页，论断收入 [[foundry-agent-type-selection]] 治理分层 Claim。
 - 2026-08-03：身份治理专文成文（基于 Microsoft Learn 官方文档核对），达到复核阈值（第 2 篇独立深度来源），用户裁决解除 HOLD 建页。

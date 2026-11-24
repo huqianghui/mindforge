@@ -189,9 +189,9 @@ path_id: "voice-agent"
 
 **问**：在双通道架构里，WebSocket 和 WebRTC 各管什么？
 
-**答**：WebSocket 是控制总线，传会话配置、事件和文本；WebRTC 是实时传输通道，传音视频媒体。Voice Live 里事件主要走 WebSocket，DataChannel 不是必需的。
+**答**：WebSocket 是控制总线，传会话配置、事件和文本；WebRTC 是实时传输通道，传音视频媒体。Voice Live 里事件主要走 WebSocket，DataChannel 不是必需的。数字人场景里 WebRTC 只承载 avatar 下行，麦克风上行仍走 WebSocket；SDP 既可以经 WebSocket 交换，也可以走 HTTP 端点（之后不留常驻 WebSocket，数字人暂不支持）。
 
-**出处**：[[realtime-protocol-selection]]
+**出处**：[[realtime-protocol-selection]]、[[voice-live-agent]]（Claim「双通道架构」）
 
 ### Q2 · 辨析
 
