@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-11-07
-stats: "125 concepts, 22 methods, 9 decisions, 886 claims"
+stats: "140 concepts, 23 methods, 12 decisions, 1061 claims"
 tags:
   - wiki
   - index
@@ -236,6 +236,10 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[enterprise-ontology]] — 企业本体论：Fabric IQ + Palantir Ontology
 - [[ontology-philosophy]] — 本体论哲学根基：从 Parmenides 到 Aristotle
 
+### 沟通与表达
+
+- [[presentation]] — 演讲与表达（领域根页）：听众只能一棵树一棵树地看森林，所以先定结构；16 种叙述结构按用途分四组、7 种开场白、外部串词与图表串联，与技术写作的对照
+
 ### 工程质量与测试
 
 - [[architecture-testing]] — 架构测试：可执行架构约束系统（ArchUnit/dependency-cruiser/Tach）
@@ -290,6 +294,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[gsd-five-step-workflow]] — GSD 五步开发工作流
 - [[reward-design-three-inputs]] — Reward 设计三份输入与两本账分家：验收分不动、优化 reward 按信噪比设计、盲选反推权重
 - [[programmatic-video]] — 程序化视频：Remotion / HyperFrames 选型 + agent 工作流（帧和顺序写分镜 → 五层功能 → 内置浏览器预览闭环 → 选渲染位置导出 → WebP 嵌入）
+- [[presentation-preparation]] — 演讲准备：四个关键问题 → 头脑风暴归成罗马石柱 → 选叙述结构 → 开场 → 串联 → 逐页大纲；做成 PPT 前置讨论 skill（Inversion 模式）
 
 ### Layered Strategy（分层策略）
 

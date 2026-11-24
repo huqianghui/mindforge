@@ -17,6 +17,8 @@ related:
   - "[[skill-runtime]]"
   - "[[agent-paradigms]]"
   - "[[harness-engineering]]"
+  - "[[presentation-preparation]]"
+  - "[[presentation]]"
 ---
 
 # Skill Pattern
@@ -108,6 +110,7 @@ Google 定义的五种 Skill Pattern 构成 Agent 的认知架构：Level 0 = To
 - [[skill-runtime]] — `grounds` Skill Pattern 是 Skill Runtime 的认知架构基础
 - [[agent-paradigms]] — `contrasts` Agent Pattern 与 Skill Pattern 正交互补
 - [[harness-engineering]] — `grounds` Skill Pattern 是 Harness 设计的认知层
+- [[presentation-preparation]] — `implements` 演讲准备 skill 是 Inversion 模式的实例：先提问、确认再往下
 
 ## 来源日记
 
