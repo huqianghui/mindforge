@@ -104,7 +104,7 @@ Git Credential Manager 读到这些参数后，用 Entra 的授权码流程拿�
 
 ## 五、部署步骤
 
-![Managed Runtime 发布链路|900](../../asset/managed-runtime-publish-flow-2026-10-26.svg)
+发布链路的全图见 [系列 01](Copilot-Managed-Runtime系列01：托管环境对比与选型.md) 第四节。
 
 ### 0. 准备
 

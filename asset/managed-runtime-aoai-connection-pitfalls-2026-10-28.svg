@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.8; }
-      .cardR { fill: #2a1218; stroke: #f87171; stroke-width: 1.6; }
-      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 5 4; }
-      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-      .hT { fill: #5eead4; font-size: 16px; font-weight: 600; }
-      .hR { fill: #fecaca; font-size: 16px; font-weight: 600; }
-      .hG { fill: #94a3b8; font-size: 16px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tA { fill: #fcd34d; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tT { fill: #5eead4; font-size: 13.5px; }
-      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .mA { fill: #fcd34d; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: none; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #5e718d; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.8; }
+      .cardR { fill: #faf3f4; stroke: #920707; stroke-width: 1.6; }
+      .dim { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .h { fill: #344965; font-size: 16px; font-weight: 600; }
+      .hT { fill: #1bb199; font-size: 16px; font-weight: 600; }
+      .hR { fill: #960303; font-size: 16px; font-weight: 600; }
+      .hG { fill: #5e718d; font-size: 16px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tG { fill: #5e718d; font-size: 13.5px; }
+      .tA { fill: #c49808; font-size: 13.5px; }
+      .tR { fill: #940505; font-size: 13.5px; }
+      .tT { fill: #1bb199; font-size: 13.5px; }
+      .m { fill: #344965; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #940505; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mA { fill: #c49808; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .badge { font-size: 13px; font-weight: 700; }
-      .axis { stroke: #2dd4bf; stroke-width: 3; fill: none; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
-      .node { fill: #0b1220; stroke-width: 2.4; }
+      .axis { stroke: #26a696; stroke-width: 3; fill: none; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
+      .node { fill: #f6f8fb; stroke-width: 2.4; }
       .nl { font-size: 15px; font-weight: 700; text-anchor: middle; }
-      .lead { stroke: #475569; stroke-width: 1.2; stroke-dasharray: 3 3; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lead { stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 3 3; }
+      .lg { fill: #384b61; font-size: 13.5px; }
       .pulse { animation: pulse 2s ease-in-out infinite; }
       @keyframes dash { to { stroke-dashoffset: -32; } }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -43,7 +43,7 @@
 
   <rect class="cardR" x="44" y="134" width="420" height="258" rx="10"/>
   <text class="hR" x="64" y="164">Microsoft Entra ID Integrated</text>
-  <text class="badge" x="390" y="164" fill="#f87171">✗ 建不了</text>
+  <text class="badge" x="390" y="164" fill="#920707">✗ 建不了</text>
   <text class="t" x="64" y="194">只要资源名；每个用户需有资源的</text>
   <text class="t" x="64" y="216">Cognitive Services OpenAI User 角色</text>
   <text class="tG" x="64" y="238">连接不共享，身份清楚 —— 理想选项</text>
@@ -56,7 +56,7 @@
 
   <rect class="card pulse" x="490" y="134" width="420" height="258" rx="10"/>
   <text class="hT" x="510" y="164">API Key（采用）</text>
-  <text class="badge" x="836" y="164" fill="#2dd4bf">✓ 可行</text>
+  <text class="badge" x="836" y="164" fill="#26a696">✓ 可行</text>
   <text class="t" x="510" y="194">资源名 + key；key 只存在</text>
   <text class="t" x="510" y="216">Power Platform 连接对象里</text>
   <text class="tG" x="510" y="238">不进代码、不进 ms.config.json、不进仓库</text>
@@ -68,8 +68,8 @@
 
   <rect class="dim" x="936" y="134" width="420" height="258" rx="10"/>
   <text class="hG" x="956" y="164">Managed Identity</text>
-  <text class="badge" x="866" y="164" fill="#64748b" opacity="0"> </text>
-  <text class="badge" x="1252" y="164" fill="#64748b">— 不适用</text>
+  <text class="badge" x="866" y="164" fill="#7a899f" opacity="0"> </text>
+  <text class="badge" x="1252" y="164" fill="#7a899f">— 不适用</text>
   <text class="t" x="956" y="194">只适用于 Logic Apps</text>
   <text class="tG" x="956" y="216">managed app 和 Power Apps 里不出现</text>
   <text class="t" x="956" y="256">如果资源与账号不在同一租户：</text>
@@ -83,12 +83,12 @@
   <rect class="zone" x="24" y="428" width="1352" height="320" rx="12"/>
   <text class="zt" x="44" y="454">从建连接到上线：四道坎（时间顺序）</text>
   <path class="axis" d="M90,510 L1310,510"/>
-  <circle r="6" fill="#2dd4bf"><animateMotion dur="5s" repeatCount="indefinite" path="M90,510 L1310,510"/></circle>
+  <circle r="6" fill="#26a696"><animateMotion dur="5s" repeatCount="indefinite" path="M90,510 L1310,510"/></circle>
 
-  <circle class="node" cx="200" cy="510" r="20" stroke="#f87171"/><text class="nl" x="200" y="515" fill="#fca5a5">1</text>
-  <circle class="node" cx="530" cy="510" r="20" stroke="#f87171"/><text class="nl" x="530" y="515" fill="#fca5a5">2</text>
-  <circle class="node" cx="860" cy="510" r="20" stroke="#fbbf24"/><text class="nl" x="860" y="515" fill="#fcd34d">3</text>
-  <circle class="node" cx="1190" cy="510" r="20" stroke="#2dd4bf"/><text class="nl" x="1190" y="515" fill="#5eead4">4</text>
+  <circle class="node" cx="200" cy="510" r="20" stroke="#920707"/><text class="nl" x="200" y="515" fill="#940505">1</text>
+  <circle class="node" cx="530" cy="510" r="20" stroke="#920707"/><text class="nl" x="530" y="515" fill="#940505">2</text>
+  <circle class="node" cx="860" cy="510" r="20" stroke="#c38f09"/><text class="nl" x="860" y="515" fill="#c49808">3</text>
+  <circle class="node" cx="1190" cy="510" r="20" stroke="#26a696"/><text class="nl" x="1190" y="515" fill="#1bb199">4</text>
 
   <text class="h" x="200" y="560" text-anchor="middle">建连接</text>
   <text class="h" x="530" y="560" text-anchor="middle">第一次调用</text>
@@ -109,7 +109,7 @@
   <text class="m" x="402" y="680">GET …/connections/&lt;id&gt;</text>
   <text class="tG" x="402" y="704">connectionParametersSet.values</text>
 
-  <rect class="cardR" x="716" y="578" width="290" height="152" rx="9" style="fill:#2a1f0b;stroke:#fbbf24"/>
+  <rect class="cardR" x="716" y="578" width="290" height="152" rx="9" style="fill:#fbf8f1;stroke:#c38f09"/>
   <text class="t" x="732" y="604">部署被拒：共享连接没有声明</text>
   <text class="mA" x="732" y="628">allowedActions</text>
   <text class="t" x="732" y="652">→ 只放行用到的那一个动作</text>

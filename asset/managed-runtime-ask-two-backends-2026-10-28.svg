@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 980" width="1400" height="980" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-      .hT { fill: #5eead4; font-size: 16px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 16px; font-weight: 600; }
-      .hX { fill: #64748b; font-size: 16px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tX { fill: #64748b; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tick { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
-      .grid { stroke: #1e293b; stroke-width: 1; }
+      .bg { fill: #fcfcfb; }
+      .zone { fill: none; stroke: #8a8984; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #6f6e69; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .h { fill: #384e6c; font-size: 16px; font-weight: 600; }
+      .hT { fill: #38e0c6; font-size: 16px; font-weight: 600; }
+      .hA { fill: #a08103; font-size: 16px; font-weight: 600; }
+      .hX { fill: #8a8984; font-size: 16px; font-weight: 600; }
+      .t { fill: #3c5067; font-size: 13.5px; }
+      .tG { fill: #6f6e69; font-size: 13.5px; }
+      .tX { fill: #8a8984; font-size: 13.5px; }
+      .tR { fill: #9e0505; font-size: 13.5px; }
+      .tick { fill: #6f6e69; font-size: 13px; text-anchor: middle; }
+      .grid { stroke: #eef1f6; stroke-width: 1; }
       .hop { stroke-width: 1.4; }
-      .hopT { fill: #0f2a2a; stroke: #2dd4bf; }
-      .hopA { fill: #2a1f0b; stroke: #fbbf24; }
-      .hopX { fill: #0f172a; stroke: #334155; stroke-dasharray: 5 4; }
-      .ht { fill: #e2e8f0; font-size: 13px; text-anchor: middle; }
-      .htX { fill: #64748b; font-size: 13px; text-anchor: middle; }
-      .barT { fill: #2dd4bf; }
-      .barA { fill: #fbbf24; }
-      .barX { fill: #334155; }
-      .card { fill: #13213a; stroke-width: 1.6; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .dl { fill: #cbd5e1; font-size: 13px; text-anchor: middle; }
+      .hopT { fill: #ecf8f8; stroke: #31d0bc; }
+      .hopA { fill: #faf4eb; stroke: #f5bb23; }
+      .hopX { fill: #fcfcfb; stroke: #8a8984; stroke-dasharray: 5 4; }
+      .ht { fill: #384e6c; font-size: 13px; text-anchor: middle; }
+      .htX { fill: #8a8984; font-size: 13px; text-anchor: middle; }
+      .barT { fill: #31d0bc; }
+      .barA { fill: #f5bb23; }
+      .barX { fill: #8a8984; }
+      .card { fill: #ecf0f9; stroke-width: 1.6; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
+      .sub { fill: #6f6e69; font-size: 14px; }
+      .dl { fill: #3c5067; font-size: 13px; text-anchor: middle; }
       .grow { animation: grow 2.4s ease-out infinite alternate; transform-box: fill-box; transform-origin: left center; }
       .growU { animation: growU 2.4s ease-out infinite alternate; transform-box: fill-box; transform-origin: center bottom; }
       @keyframes grow { from { transform: scaleX(0.15); } to { transform: scaleX(1); } }
@@ -80,17 +80,17 @@
   <text class="tick" x="1346" y="612">40</text>
 
   <text class="hT" x="44" y="480">Azure OpenAI</text>
-  <rect x="250" y="464" width="112" height="24" rx="4" fill="#2dd4bf" opacity="0.18"/>
+  <rect x="250" y="464" width="112" height="24" rx="4" fill="#31d0bc" opacity="0.18"/>
   <rect class="barT grow" x="362" y="464" width="112" height="24" rx="4"/>
   <text class="t" x="488" y="481">4–8 秒（典型 4.6 秒）</text>
 
   <text class="hA" x="44" y="526">Work IQ</text>
-  <rect x="250" y="510" width="420" height="24" rx="4" fill="#fbbf24" opacity="0.18"/>
+  <rect x="250" y="510" width="420" height="24" rx="4" fill="#f5bb23" opacity="0.18"/>
   <rect class="barA grow" x="670" y="510" width="308" height="24" rx="4"/>
   <text class="t" x="990" y="527">15–26 秒</text>
 
   <text class="hX" x="44" y="572">已移除的 agent</text>
-  <rect x="250" y="556" width="700" height="24" rx="4" fill="#334155" opacity="0.25"/>
+  <rect x="250" y="556" width="700" height="24" rx="4" fill="#8a8984" opacity="0.25"/>
   <rect class="barX" x="950" y="556" width="308" height="24" rx="4"/>
   <text class="tX" x="1268" y="573">25–36 秒</text>
 
@@ -130,13 +130,13 @@
   <rect class="zone" x="708" y="654" width="668" height="306" rx="12"/>
   <text class="zt" x="728" y="680">选哪种</text>
 
-  <rect class="card" x="728" y="696" width="628" height="120" rx="9" stroke="#2dd4bf"/>
+  <rect class="card" x="728" y="696" width="628" height="120" rx="9" stroke="#31d0bc"/>
   <text class="hT" x="746" y="724">默认 Azure OpenAI：快 3–5 倍，可复现，看得到用量</text>
   <text class="t" x="746" y="752">每次调用选部署；不要求用户有 M365 Copilot；分享应用即可用</text>
   <text class="tG" x="746" y="778">代价：key 由共享连接持有，配额和费用都算在资源所有者头上；</text>
   <text class="tG" x="746" y="800">只看 SOURCES，不上网</text>
 
-  <rect class="card" x="728" y="828" width="628" height="116" rx="9" stroke="#fbbf24"/>
+  <rect class="card" x="728" y="828" width="628" height="116" rx="9" stroke="#f5bb23"/>
   <text class="hA" x="746" y="856">Work IQ：没有 Azure 资源、用户都有 Copilot 许可证</text>
   <text class="t" x="746" y="884">零配置，用户自己的身份（SSO），有企业 grounding</text>
   <text class="tG" x="746" y="910">代价：不能选模型、最慢、只有回答文本；资料外的问题会</text>

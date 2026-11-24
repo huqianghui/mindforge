@@ -72,9 +72,19 @@ tags: [copilot-managed-runtime, managed-apps, architecture-pattern, dashboard, s
 
 ## 三、九个模式
 
-![九个可复用模式|900](../../asset/managed-runtime-nine-patterns-2026-10-27.svg)
+| 模式 | 参考应用里怎么用 | 套到知识库应用 | 需要什么 |
+|---|---|---|---|
+| P1 构建期快照 | 每周指标打包进 bundle | 同步脚本预计算字数、链接、标签 | 无需 Connector，GitHub Pages 也能做 |
+| P2 快照历史对比 | 指标卡"与上周比" | 保留上次图谱，算新增节点 / 新过时论断 | 无需 Connector |
+| P3 规则建议 | 优先核查、推荐动作 | 过时、低置信、成员过少的分类 | 无需 Connector |
+| P4 共享筛选状态 | 六维筛选，点图即筛 | 分类 × 状态 × 置信度 × 时间 | 无需 Connector |
+| P5 术语即数据 | 术语面板 + 下划线 + 提示词 | 知识图谱节点本身就是术语表 | 无需 Connector |
+| P6 共享状态表 | 行动项状态、异常值审核 | "这条论断已复核 / 已过时" | **仅 managed app**：SharePoint Connector |
+| P7 浏览器原生能力 | mailto、导出 Excel / PDF | 导出洞察表、生成文章 PDF | 无需 Connector |
+| P8 提示词落地问答 | Work IQ 调 M365 Copilot | 检索文章段落 → RELATED 链回原文 | **仅 managed app**：Work IQ Copilot MCP |
+| P9 版本与时效透明 | 版本徽标、数据截止日 | 标出内容同步时间与源版本 | 无需 Connector |
 
-每张卡片写了三件事：参考应用里怎么用、套到一个知识库应用上可以怎么用、需不需要 Connector。知识库应用指的是 [系列 02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md) 部署的那个站点——文章加上一个带论断与置信度的知识图谱。
+每一行写了三件事：参考应用里怎么用、套到一个知识库应用上可以怎么用、需不需要 Connector。知识库应用指的是 [系列 02](Copilot-Managed-Runtime系列02：实战部署与权限解析.md) 部署的那个站点——文章加上一个带论断与置信度的知识图谱。
 
 看下来有两个结论：
 

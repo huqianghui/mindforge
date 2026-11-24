@@ -24,8 +24,6 @@ tags: [copilot-managed-runtime, managed-apps, retrospective, connector, checklis
 
 ## 一、问答的后端
 
-![同一个问题，两种后端经过的层与实测耗时|900](../../asset/managed-runtime-ask-two-backends-2026-10-28.svg)
-
 问答页现在有两个后端，用**同一份本地检索结果和同一套提示词**（SOURCES + `[n]` + `RELATED:`）。完整对比见 [系列 11](Copilot-Managed-Runtime系列11：用Azure-OpenAI-Connector直调模型.md) 第四节，这里只列决定选型的几项：
 
 - **速度**：Azure OpenAI 4–8 秒；Work IQ 15–26 秒，提示词允许上网时 25–36 秒。
@@ -46,8 +44,6 @@ tags: [copilot-managed-runtime, managed-apps, retrospective, connector, checklis
 ---
 
 ## 二、用户数据：App state 还是 Dataverse
-
-![App state 与 Dataverse 两条存储路径|900](../../asset/managed-runtime-appstate-vs-dataverse-2026-10-27.svg)
 
 阅读进度和收藏两条路都试过（[系列 08](Copilot-Managed-Runtime系列08：用App-state保存用户数据.md)），在这个租户里的结果：
 

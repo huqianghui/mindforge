@@ -1,36 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .card { fill: #13213a; stroke: #475569; stroke-width: 1.3; }
-      .good { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2; }
-      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; }
-      .amb { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
-      .ghost { fill: #0f172a; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
-      .row { fill: #111827; stroke: #334155; stroke-width: 1; }
-      .rowG { fill: #0d1f22; stroke: #115e59; stroke-width: 1.2; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
-      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tT { fill: #5eead4; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tA { fill: #fcd34d; font-size: 13.5px; }
-      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .th { fill: #94a3b8; font-size: 13.5px; font-weight: 600; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
-      .fA { stroke: #fbbf24; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
-      .fX { stroke: #64748b; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
-      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
-      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: none; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #5e718d; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #f2f5fb; stroke: #7688a2; stroke-width: 1.3; }
+      .good { fill: #f2fafa; stroke: #1bb199; stroke-width: 2; }
+      .bad { fill: #faf3f3; stroke: #920707; stroke-width: 1.8; }
+      .amb { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
+      .ghost { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .row { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1; }
+      .rowG { fill: #f2f9fa; stroke: #f1fbfa; stroke-width: 1.2; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hT { fill: #0c8d74; font-size: 15px; font-weight: 600; }
+      .hR { fill: #940505; font-size: 15px; font-weight: 600; }
+      .hA { fill: #967903; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tG { fill: #5e718d; font-size: 13.5px; }
+      .tT { fill: #1bb199; font-size: 13.5px; }
+      .tR { fill: #940505; font-size: 13.5px; }
+      .tA { fill: #c49808; font-size: 13.5px; }
+      .m { fill: #344965; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #1bb199; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .th { fill: #5e718d; font-size: 13.5px; font-weight: 600; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .f { stroke: #26a696; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .fA { stroke: #c38f09; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .fX { stroke: #7a899f; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .num { fill: #12736c; stroke: #1bb199; stroke-width: 1.6; }
+      .nt { fill: #12876c; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -30; } }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
     </style>
@@ -78,7 +78,7 @@
   <path class="fX" d="M870,180 L910,165"/>
   <path class="fX" d="M1120,165 L1150,165"/>
   <path class="fA" d="M870,224 L910,239"/>
-  <circle r="5" fill="#fbbf24"><animateMotion dur="3s" repeatCount="indefinite" path="M270,202 L630,202 L870,224 L910,239"/></circle>
+  <circle r="5" fill="#c38f09"><animateMotion dur="3s" repeatCount="indefinite" path="M270,202 L630,202 L870,224 L910,239"/></circle>
 
   <!-- zone B: criteria -->
   <rect class="zone" x="24" y="304" width="440" height="456" rx="12"/>

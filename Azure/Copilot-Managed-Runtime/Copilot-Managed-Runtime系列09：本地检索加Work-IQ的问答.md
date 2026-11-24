@@ -121,7 +121,16 @@ if (!res.success) throw res.error ?? new Error('Work IQ Copilot 调用失败');
 
 ## 五、返回格式：要剥六层
 
-![Work IQ 的回答要剥六层才拿得到|900](../../asset/managed-runtime-workiq-unwrap-2026-10-27.svg)
+| 层 | 实测样子（节选） | 怎么处理 |
+|---|---|---|
+| ① SDK 返回结构（所有 Connector 调用都一样） | `{ success: true, data: … }`，生成的 Service 声明返回 void，内容在 `data` 里 | 先查 `success`，失败直接报错；SDK 不抛异常 |
+| ② 传输格式（可能是 JSON，也可能是 SSE） | `event: message` / `data: {"jsonrpc":"2.0",…}` | 是字符串就取最后一个 `data:` 行再 `JSON.parse` |
+| ③ MCP JSON-RPC 响应（工具调用的标准外壳） | `result.content: [{ type: "text", text: "…" }]`，`result.isError` | 处理 error 与 isError，拼接所有 text 片段 |
+| ④ text 不是回答（一段 JSON 再跟一行尾巴） | `{"conversationId":…,"reply":"","rawResponse":…}` 加 `CorrelationId: …, TimeStamp: …` | 先删掉 CorrelationId 行，再解析外层 JSON |
+| ⑤ reply 为空，内容在 rawResponse（字符串化的会话对象） | 引号、中文都被转义成 `\uXXXX`，看起来像乱码 | 再 `JSON.parse` 一次，转义就全部还原，别当乱码去修 |
+| ⑥ messages 数组（第一条是我们的提示词，最后一条才是回答） | `[0] You are the help assistant … SOURCES …` / `[n] …… [1][2]` / `RELATED: 1, 2, 3, 4` | 取最后一条且不等于提示词的 text，再交给 RELATED 解析 |
+
+任何一步解析失败都退回上一层的原文，不让界面报错——这个格式是 Preview Connector 的实测结果，文档没有写，随时可能变。
 
 这是整个实现里最花时间的部分。`result.content[0].text` **不是回答本身**：
 

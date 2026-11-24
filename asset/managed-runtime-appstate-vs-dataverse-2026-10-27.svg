@@ -1,42 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#26a696"/>
     </marker>
     <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#920707"/>
     </marker>
     <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#7a899f"/>
     </marker>
     <style>
-      .bg { fill: #0b1220; }
-      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
-      .boxGray { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 6 5; }
-      .boxRed { fill: #2a1316; stroke: #f87171; stroke-width: 1.8; }
-      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zoneG { fill: #0c1d22; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zoneR { fill: #1a1015; stroke: #f87171; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
-      .zlG { fill: #5eead4; font-size: 16px; font-weight: 700; }
-      .zlR { fill: #fca5a5; font-size: 16px; font-weight: 700; }
-      .h15 { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tGray { fill: #94a3b8; font-size: 13.5px; }
-      .tRed { fill: #fca5a5; font-size: 13.5px; }
-      .tGreen { fill: #99f6e4; font-size: 13.5px; }
-      .mono { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowRed { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 5 6; }
-      .flowGray { fill: none; stroke: #64748b; stroke-width: 1.8; stroke-dasharray: 5 6; }
+      .bg { fill: #f6f8fb; }
+      .box { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .boxBlue { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .boxGray { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.4; stroke-dasharray: 6 5; }
+      .boxRed { fill: #f9f3f4; stroke: #920707; stroke-width: 1.8; }
+      .zone { fill: none; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneG { fill: #f2f8fa; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneR { fill: #f8f4f6; stroke: #920707; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #036696; font-size: 15px; font-weight: 600; }
+      .zlG { fill: #1bb199; font-size: 16px; font-weight: 700; }
+      .zlR { fill: #940505; font-size: 16px; font-weight: 700; }
+      .h15 { fill: #344965; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tGray { fill: #5e718d; font-size: 13.5px; }
+      .tRed { fill: #940505; font-size: 13.5px; }
+      .tGreen { fill: #0c8d74; font-size: 13.5px; }
+      .mono { fill: #344965; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowRed { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 5 6; }
+      .flowGray { fill: none; stroke: #7a899f; stroke-width: 1.8; stroke-dasharray: 5 6; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
       .badgeRed { fill: #7f1d1d; stroke: #fca5a5; stroke-width: 1.4; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .el { fill: #a7f3d0; font-size: 13.5px; }
-      .elR { fill: #fecaca; font-size: 13.5px; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #128751; font-size: 13.5px; }
+      .elR { fill: #960303; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
     </style>
   </defs>
