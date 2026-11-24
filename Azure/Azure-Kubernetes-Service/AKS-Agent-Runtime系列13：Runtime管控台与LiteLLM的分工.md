@@ -41,6 +41,14 @@ description: 常驻实现装好之后，管理员手里有两个控制台——�
 | Agent 的 owner | 一个 LiteLLM 用户，加进对应 team | 用户 ID 就是 owner 的 alias，不单独发 key | 按人汇总用量 |
 | Team 上定义的智能路由 | 一个以内部名注册的路由模型 | 四档模型和分类器 | Agent 用路由名调用，网关按难度分档转发 |
 
+在 LiteLLM 控制台里看，投影的结果就是这样：每个 Agent 一把 key，别名是 Agent 名加 UID，默认带 50 美元月度预算；Team 则带着固定前缀出现在 Teams 页里。
+
+![LiteLLM 控制台的 Virtual Keys：每个 Agent 一把 key|900](../../asset/aks-agent-runtime-litellm-keys-2026-11-24.png)
+
+![LiteLLM 控制台的 Teams：Portal 里的 Team 带前缀投影过来|900](../../asset/aks-agent-runtime-litellm-teams-2026-11-24.png)
+
+两张都是我 PoC 集群上的 LiteLLM 控制台截图，Agent 名、owner 和 Team 名换成了通用名。
+
 共享模型本身不在这张表里。它们的来源是 AI 网关的 Helm 配置，不归 CRD 管，operator 只负责把共享模型的访问组授给每把 key。
 
 有三个行为直接决定了"在控制台里改东西"会发生什么：
@@ -62,6 +70,10 @@ Team 这一行还有一个容易踩的坑。LiteLLM 的 team 是一个真正的�
 | 看用量、花费、请求日志，查 402 和 429 的原因 | LiteLLM 控制台 | Portal 没有用量页面 |
 | 给集群外的程序发 key | LiteLLM 控制台 | 这些 key 不归 operator 管，它不会去动 |
 
+Portal 这一侧，模型权限、harness、skills 都写在 Agent Policy 上，界面里看到的就是一行声明：
+
+![Portal 的 Agent policies 页|900](../../asset/aks-agent-runtime-portal-policies-2026-11-24.png)
+
 把控制台嵌进 Portal 的时候还有几处要注意：
 
 - **会有两次登录。** 先过 Entra（和 Portal 共用同一个会话，嵌在 Portal 里时这一步是无感的），再用 LiteLLM 自己的管理员账号登录。这套部署没有给 LiteLLM 接单点登录，所以第二次登录免不掉。
@@ -76,6 +88,10 @@ Team 这一行还有一个容易踩的坑。LiteLLM 的 team 是一个真正的�
 
 Portal 里打开一个 Agent，工作区左侧有三个入口：Agent UI、Terminal、Desktop。它们进的是同一个 Pod，只是连到不同的容器，和 Agent 打交道的层面也不一样。这个 Pod 里有三个容器：跑 harness 的主容器，带浏览器的桌面边车，以及记录会话的 logger。
 
+![Portal 里一个 Agent 的 Overview：左侧是三个入口，右侧是模型和限额|900](../../asset/aks-agent-runtime-portal-agent-overview-2026-11-24.png)
+
+Overview 页上能直接看到第二节说的投影结果：模型经 AI 网关走共享模型和 Copilot 路由，限额（并发 10、每分钟 40 次请求、每分钟 100 万 token）由 Team 的 Agent Policy 设在这个 Agent 自己的 key 上。截图里的 Agent 名、owner 和镜像地址做了替换。
+
 | 入口 | 连到哪里 | 用来做什么 |
 |---|---|---|
 | Agent UI | 主容器里 harness 自带的 Web 应用，路径 `/ui/<名字>/` | 跟 Agent 对话：发任务、看回复和工具调用、管理会话 |
@@ -85,7 +101,14 @@ Portal 里打开一个 Agent，工作区左侧有三个入口：Agent UI、Termi
 分成三个，是因为它们对应三种完全不同的需要：
 
 - **Agent UI 是"让它做"。** 人只描述目标，执行由 Agent 决定，这是日常使用的主入口。它有自己的一层登录，用的是 Overview 页上显示的那组 Webapp Key，和 Portal 的 Entra 登录是两回事。
-- **Terminal 是"我自己来"。** 集群上有一条准入策略，专门拒绝对 Agent Pod 做 `kubectl exec`；`kubectl port-forward` 也连不上，因为 Kata Pod 的端口在虚拟机里面，kubelet 在宿主机这一侧找不到。所以平台管理员也没有别的路进这台机器，Terminal 是唯一正式的 shell 入口。
+- **Terminal 是"我自己来"。** 集群上有一条准入策略，专门拒绝对 Agent Pod 做 `kubectl exec`；`kubectl port-forward` 也会被拒——这次我想直接转发 Agent UI 的端口去截图，平台的准入 webhook 当场就挡住了：
+
+  ```text
+  error: error upgrading connection: admission webhook "sandbox-pods.<platform>" denied the request:
+  ConnectForbidden: interactive access to protected Pods is not supported
+  ```
+
+  就算放过这一关，Kata Pod 的端口也在虚拟机里面，kubelet 在宿主机这一侧找不到。所以平台管理员也没有别的路进这台机器，Terminal 是唯一正式的 shell 入口。
 - **Desktop 是"看着它，或者替它过一关"。** 有些事 Agent 自己做不了，比如登录要验证码或 MFA。人在桌面里登录一次，cookie 留在这个 Chrome 里，Agent 之后就能接着用。Agent 在网页上操作时，人也能在旁边看着，出问题随时接手。
 
 拆开还有部署上的考虑。桌面是一个单独的容器，有自己的 CPU 和内存配额；不需要浏览器的 Agent 可以整个不启用，harness 改用 headless 浏览器，这个入口也就没有了。终端在 chart 里也有单独的开关，要求高的环境可以只留 Agent UI。

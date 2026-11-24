@@ -43,6 +43,11 @@ ValidatingAdmissionPolicy + Binding    （拒绝 pods/exec）
 Job + Role + RoleBinding               （升级前钩子，只能 get / delete 这一个 StatefulSet）
 ```
 
+装好之后在 Portal 的 Sandboxes 页里，一个 Sandbox 模板就是"runtime + HOME 盘"这两项：
+
+![Portal 的 Sandboxes 页：runtime 是 kata，HOME 盘 10Gi|900](../../asset/aks-agent-runtime-portal-sandboxes-2026-11-24.png)
+
+
 StatefulSet 里值得看的几项：
 
 ```yaml
