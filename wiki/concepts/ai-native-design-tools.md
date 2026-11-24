@@ -39,13 +39,15 @@ AI-Native 设计工具正在改变设计-开发协作模式。Pencil 的核心�
 
 - **来源**：[[在Obsidian中绘制Azure架构图]]
 - **首次出现**：2026-04-13
-- **最近更新**：2026-04-13
-- **置信度**：0.6
-- **状态**：stale
+- **最近更新**：2026-11-24
+- **置信度**：0.4
+- **状态**：active
 - **证据类型**：实测经验
-- **复核**：2026-11-07 待定——依据：本轮未查到支持或反驳的证据；该 claim 为作者工作流推荐，vault 内未检索 Excalidraw/Draw.io 相关新文章
+- **复核**：2026-11-24 降级——依据：库内现行配图规范（流程、时间线类用动态 SVG，架构与关系图默认 Excalidraw）与 2026-09-23 移除 draw.io MCP 的记录；原推荐是 2026-04 的工作流
 
-> 推荐工作流："sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io"。
+> **现行结论（2026-11-24 降级）**："先用 Excalidraw 草图、再用 Draw.io 出正式图"是 2026-04 的做法。现在文章配图的做法是：流程、管线、时间线用带动画的 SVG，架构图与关系图默认用 Excalidraw，Draw.io 的 MCP 已于 2026-09-23 移除（弹窗打扰），只在本地保留，需要 Azure 官方图标时另用架构图 skill。两者"互补"作为一般判断仍可参考，但不再是这里的推荐流程。
+>
+> 原记录：推荐工作流："sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io"。
 
 ### Claim: AI 在画布上设计要有"操作、截图、对照"的闭环——先读画布状态、设计指南和可用组件，再批量操作、截图验证、重复；生成代码时沿用项目已有的框架与样式方案，颜色走 CSS 变量，并用截图对照设计稿
 
@@ -71,6 +73,7 @@ AI-Native 设计工具正在改变设计-开发协作模式。Pencil 的核心�
 
 ## 冲突与演进
 
+- 2026-11-24：/revalidate——"Excalidraw 与 Draw.io 互补"降级 0.6 → 0.4（现行配图做法已变）。
 - 2026-11-24：/extract-knowledge 厚度补抽 Pencil 上手指南：新增"画布设计闭环与设计到代码原则""Figma 与 Pencil 分工"两条；其余是操作语法速查，属手册内容不抽。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 1、待定 1

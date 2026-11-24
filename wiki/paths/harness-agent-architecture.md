@@ -53,7 +53,7 @@ agent 的智能来自模型，可靠性来自 harness。这条路径从 30 行�
 - **读**：[[context-engineering]]、[[context-explosion]]、[[context-projection]]
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[context-explosion]] 4/6（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[context-explosion]] 1/6（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能解释"LLM 性能限制通常是上下文问题而非模型缺陷"，以及 context window 当作 RAM 的类比
   - 能说出 context 爆炸的根因：context 不等于 state

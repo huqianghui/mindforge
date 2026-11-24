@@ -153,7 +153,7 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 - **Foundry hosted agent 可以跑在客户自己的 AKS 上**（2026-W47，Ignite，预览）→ 影响第 9、10 站：Hosted 与"在 AKS 上自建"之间多了"托管控制面 + 自有集群"这一档，"自建的理由只剩三类"要重评
 - **Hosted agent 出站控制 GA、内存快照预览，Foundry 语音 agent GA**（2026-W47）→ 影响第 9、10 站：Hosted 的治理与冷启动描述要更新；语音 agent 可接 Teams Phone、Twilio、Genesys
 - **Copilot Studio agent 可本地构建并托管到 Copilot Managed Runtime，Agent 365 加成本管理**（2026-W47，第三方整理，未核对官方原文）→ 影响第 6~8 站：Copilot Studio 与 Managed Runtime 的边界在收拢
-- **Copilot Studio 的 harness 口径变了**（2026-11-24 核对官方页面）：官方现列三种（Microsoft Copilot、Customer Conversation、Standard），第 7 站的选型页还按 10 月的四种写，待复核
+- **Copilot Studio 的 harness 口径变了**（2026-11-24 核对官方页面）：官方现列三种（Microsoft Copilot、Customer Conversation、Standard），[[copilot-studio-harness-selection]] 已加现行口径说明，四种口径下的选项与实测保留作记录
 - **Microsoft Copilot harness 进入 Foundry（公开预览）**→ 影响第 9、10 站：Foundry 选型从两档变三档，Prompt Agent 有了 skill
 - **Foundry 发布模型迁移**（Agent Application → 新 agent 对象模型）→ 第 3 站已按新模型修订：创建 agent 即建专属身份
 
@@ -168,4 +168,4 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 - **概念页缺失**：Power Platform 地基（环境、Dataverse、DLP 目前散在 [[copilot-studio]] 里）、M365 Copilot 本体与声明式 agent、Agent 365、Microsoft Agent Framework、Work IQ
 - **决策页缺失**：员工侧与客户侧入口的选择（"三支柱怎么选与组合"已补为 [[microsoft-ai-pillars-selection]]，"语音 agent 的构建方式"已补为 [[voice-agent-build-approach]]）
 - **stale 已基本清零**：[[harness-engineering]] 等底座页在 2026-11-07 与之后几轮复核后只剩个别 stale（见各站 ⚠️ 行）
-- **harness 口径不一致**：[[copilot-studio-harness-selection]] 按四种写、官方现为三种，需要复核
+- **harness 口径**：[[copilot-studio-harness-selection]] 已按官方三种加现行口径说明（2026-11-24），但选项分析仍按四种展开，素材更新后可重写成三种

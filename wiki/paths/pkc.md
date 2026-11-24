@@ -47,7 +47,7 @@ signals:
 - **读**：[[wiki-over-rag-for-personal-knowledge]]、[[llm-wiki]]、[[rag-architecture-comparison]]；[[rag-architecture-comparison]] 新增的两条（「消融说明多轮自主检索是唯一带来质变的因素」「Azure AI Search 的 Agentic Retrieval 只落地了查询规划与并行子查询」）
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[wiki-over-rag-for-personal-knowledge]] 1/4、[[rag-architecture-comparison]] 1/7（其余读物全部 active，读时以各 Claim 的复核行为准）
+- **⚠️ stale**：[[wiki-over-rag-for-personal-knowledge]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出编译式知识与检索式知识为什么是不同范式，不适合强行合并
   - 能说出图赢在哪（multi-hop、时间推理、跨语料）、不赢在哪（简单查找），以及"混合永远赢过纯图"

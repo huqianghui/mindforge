@@ -143,7 +143,7 @@ Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三
 ## 关联概念
 
 - [[agent-platform]] — `implements` 三层全包的托管 agent platform：选 harness 即选 runtime
-- [[agent-harness]] — `uses` 四种 harness 是建 agent 时的显式选项
+- [[agent-harness]] — `uses` harness 是建 agent 时的显式选项（官方 2026-11 现列三种：Microsoft Copilot、Customer Conversation、Standard；2026-10 实测时为四种）
 - [[azure-copilot-ecosystem]] — `part-of` Copilot Studio 是微软 Copilot 生态里面向低代码构建的那一块
 - [[copilot-managed-runtime]] — `uses` Copilot Studio 用 Create apps 生成的应用跑在 Managed Runtime 上
 - [[foundry-agent-type-selection]] — `contrasts` Copilot Studio 是 Power Platform 上的 SaaS 构建产品，Foundry Agent Service 是 Azure 上的 agent 运行时，两者不在同一层

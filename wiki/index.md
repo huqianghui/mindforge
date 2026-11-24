@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-11-07
-stats: "141 concepts, 24 methods, 12 decisions, 1109 claims"
+stats: "142 concepts, 24 methods, 12 decisions, 1112 claims"
 tags:
   - wiki
   - index
@@ -108,7 +108,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[skill-runtime]] — Skill Runtime：从 document-centric 到 capability-centric 的范式迁移
 - [[skill-pattern]] — Google 五种 Skill Pattern 认知架构
 - [[autoresearch]] — AutoResearch：受控搜索空间中的自动化爬坡
-- [[code-reuse-in-agent-era]] — Agent 时代的代码复用：四层防线
+- [[code-reuse-in-agent-era]] — Agent 时代的代码复用：四层防线；gstack 已把复用检查做进规划流程
 - [[cybernetics-agent-design]] — 控制论 Agent 设计：负反馈 + 共轭变换 + 随机探索的结构同构
 - [[meta-harness]] — Meta-Harness：用 Harness 优化 Harness 的递归搜索架构
 - [[model-harness-codesign]] — Model-Harness Codesign：第一方绑定 vs 多模型适配的路线之争

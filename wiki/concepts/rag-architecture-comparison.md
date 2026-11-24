@@ -69,13 +69,15 @@ related:
 
 - **来源**：[[2026-04-12-周日]]
 - **首次出现**：2026-04-12
-- **最近更新**：2026-04-12
-- **置信度**：0.5
-- **状态**：stale
+- **最近更新**：2026-11-24
+- **置信度**：0.4
+- **状态**：active
 - **证据类型**：产品与服务
-- **复核**：2026-11-07 待定——依据：依据：Tavily 限流(429)，未能核到 AI Search Basic 与 Cosmos Gremlin 的当前价格和状态，~$80-115/月不能下结论
+- **复核**：2026-11-24 降级——依据：[Azure Cosmos DB for Apache Gremlin](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin) 仍在维护，但 [Gremlin limits](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/limits) 页提示新建 OLAP 图或迁移 Gremlin 应用时考虑 Graph in Microsoft Fabric；OmniRAG 的官方说明与成本数字本轮未核到
 
-> 基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。
+> **现行结论（2026-11-24 降级）**：这套分工（AI Search 做语义检索、图数据库做关系遍历、复合查询先缩范围再精排）作为思路仍成立，但图这一层的产品选择变了——微软在 Gremlin 文档里把新的图分析与迁移需求引向 Fabric 里的 Graph（与 [[enterprise-ontology]] 里"Fabric IQ Graph 是 LPG 引擎"一条一致）。下面每月约 80~115 美元的成本是 2026-04 的估算，未按当前价格核实，不要直接引用。单一旧来源，置信度降到 0.4。
+>
+> 原记录：基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。
 
 ### Claim: 检索质量的上限取决于让不让模型自己决定"搜什么、读哪里、什么时候够"——AgenticRAG 用 Search / Find / Open / Summarize 四个工具迭代检索，BRIGHT 上 R@1 从单次检索的 8.41% 升到 49.6%，无需训练
 
@@ -112,6 +114,7 @@ related:
 
 ## 冲突与演进
 
+- 2026-11-24：/revalidate——"Azure 企业级 LLM Wiki 架构"降级 0.5 → 0.4（图层产品选择变化、成本未核实）。
 - 2026-11-24：/extract-knowledge 补抽 AgenticRAG 论文笔记（按书、论文、文章按同一标准提取的原则补抽偏薄内容），新增消融与落地建议、Azure 产品对照两条。
 - 2026-11-16：完备性补抽 [[2026-05-28-AgenticRAG]]，新增 1 条 Claim。
 （暂无）

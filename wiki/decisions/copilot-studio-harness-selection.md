@@ -1,7 +1,7 @@
 ---
 title: "Copilot Studio Harness Selection"
 created: "2026-10-29"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - decision
@@ -25,6 +25,8 @@ related:
 # Copilot Studio Harness Selection（Copilot Studio harness 选型）
 
 ## 背景
+
+> **现行口径（2026-11-24 复核）**：官方 [Harnesses in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview) 现在只列三种 harness——Microsoft Copilot harness（推理密集、多步、跨工具、处理文件的长任务）、Customer Conversation harness（面向客户的语音与聊天、可转人工）、Standard harness（规则明确、要稳定可预测的场景）。Microsoft Copilot harness 的职责对应下文的 GitHub Copilot harness，Copilot Chat 不再作为单独的 harness 列出；页面没有写明是改名还是合并。下面按 2026-10 的四种口径写的选项、实测与 Claim 保留作记录，选型时以三种为准。
 
 Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"与模型之间的运行时，决定什么时候调模型、塞哪些上下文、调哪个工具。官方列出四种：Standard、GitHub Copilot、Copilot Chat、Customer Conversation（预览）。定义都存在环境的 Dataverse 里（Copilot Chat 除外），但执行分在三套服务：Standard → 经典运行时（前身 Power Virtual Agents），GitHub Copilot → Agentic Runtime，Copilot Chat → M365 Copilot 编排器。
 
@@ -80,11 +82,14 @@ Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"
 
 - **来源**：[[Copilot-Studio系列03：四种Harness对比与选型]]、[[Copilot-Studio系列08：把文章库发布成Teams知识库Agent]]
 - **首次出现**：2026-10-27
-- **最近更新**：2026-10-29
+- **最近更新**：2026-11-24
 - **置信度**：0.8
 - **状态**：active
+- **复核**：2026-11-24 修订——依据：[Harnesses in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)（官方现列三种：Microsoft Copilot、Customer Conversation、Standard）；"建后不能互转"本轮未见官方变更说明，维持；New agent 菜单四个入口的对照是 2026-10-27 的界面
 
-> New agent 下拉菜单四个入口正好对应四种 harness：Agent（GitHub Copilot，按钮默认动作）、Customer Assist Agent（Customer Conversation）、Microsoft Copilot agent（Copilot Chat，新标签页打开）、Agent（Standard，"Other ways to build" 最后一项）；菜单上的小硬币图标即按 Credits 计费。已有 agent 看 Agents 列表的 Powered by 列。名字（如 "Voice Assistant"）不代表 harness。
+> **现行结论（2026-11-24 修订）**：harness 仍是建 agent 时最关键、不可逆的选择（本轮未见可以互转的说明）。但组成变了：官方现在列三种——Microsoft Copilot harness、Customer Conversation harness、Standard harness；下面"四个入口对应四种 harness"的菜单对照（含 Copilot Chat 一项）是 2026-10-27 的界面，界面可能已随口径变化，以实际菜单的 Powered by 为准。
+>
+> 原记录：New agent 下拉菜单四个入口正好对应四种 harness：Agent（GitHub Copilot，按钮默认动作）、Customer Assist Agent（Customer Conversation）、Microsoft Copilot agent（Copilot Chat，新标签页打开）、Agent（Standard，"Other ways to build" 最后一项）；菜单上的小硬币图标即按 Credits 计费。已有 agent 看 Agents 列表的 Powered by 列。名字（如 "Voice Assistant"）不代表 harness。
 
 ### Claim: 按任务重量选——简单任务用重 harness 会"想太多"，能用的 Standard 不必迁移；重活放 GitHub Copilot harness 在后台跑，经共享数据与前台 Standard 解耦
 
@@ -115,6 +120,10 @@ Copilot Studio 里建 agent 时要先选 harness——夹在"你配置的 agent"
 - **状态**：active
 
 > Standard：前身 PVA 的经典运行时，按 topics 与分支走，平台托管只能配置，接近确定性 workflow。GitHub Copilot：Agentic Runtime 上的自主 loop，带 Bash 容器与文件系统，与把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一形态，只是 runtime 由微软运营。Copilot Chat：往 M365 Copilot 编排器里加指令、知识与动作。Customer Conversation：联络中心场景的专用托管 harness。四种定义都存在 Dataverse，执行分在三套服务，所以不能互转——"选 harness 即选 runtime"的直接体现。组合用法：GitHub Copilot harness 后台定时做重活、Standard agent 前台答用户，与"framework 搭外层确定性流程、其中一步交给 harness"同一思路。
+
+## 冲突与演进
+
+- 2026-11-24：/revalidate——按官方 harnesses-overview 修订：现列三种 harness（Microsoft Copilot、Customer Conversation、Standard），背景加现行口径说明，"New agent 默认 harness"一条修订；四种口径下的选项与实测保留作记录。
 
 ## 关联概念
 
