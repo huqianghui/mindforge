@@ -9,8 +9,10 @@
   5. 覆盖缺口：进 git 的文章没有被任何 wiki 页引用——写了但没编译进知识库（coverage-exempt.txt 里的手册、附录除外）
   6. 漂移缺口：Claim 的来源文章在 Claim「最近更新」之后又改过——wiki 结论可能落后于文章
   7. 引导缺口：没有被任何学习路径（wiki/paths）引用的页，按 index 分类汇总——知识在，但没有入口
+  8. 厚度缺口：长文只抽成了很少几条 Claim。书、论文、文章用同一把尺子量（CLAUDE.md Architecture Principles #6）；
+     正文行数不含代码块和空行，分"只列在来源区、没有一条 Claim 以它为出处"和"有出处但偏薄"两类
 
-用法：python3 wiki/scripts/structural-gaps.py [--min-articles 3] [--section 1,2,3,4,5,6,7]
+用法：python3 wiki/scripts/structural-gaps.py [--min-articles 3] [--section 1,2,3,4,5,6,7,8] [--thin-lines 150] [--thin-claims 2]
 """
 import argparse
 import re
@@ -179,6 +181,36 @@ def drift(pages, idx):
     return rows
 
 
+def body_lines(path):
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    text = re.sub(r"(?s)\A---\n.*?\n---\n", "", text)
+    text = re.sub(r"(?ms)^```.*?^```", "", text)
+    return sum(1 for l in text.splitlines() if l.strip())
+
+
+def thickness(pages, idx, min_lines, max_claims):
+    """文章 stem -> 以它为出处的 Claim 数；只统计正文够长、出处 Claim 不超过 max_claims 的文章。"""
+    skip = exempt()
+    sourced, listed = Counter(), Counter()
+    for slug, title, conf, status, block in claims(pages):
+        src = re.search(r"\*\*来源\*\*：(.*)", block)
+        if src:
+            for s in set(x.strip().split("/")[-1] for x in re.findall(r"\[\[([^\]|#]+)", src.group(1))):
+                sourced[s] += 1
+    for v in pages.values():
+        for s in set(x.strip().split("/")[-1] for x in re.findall(r"\[\[([^\]|#]+)", v["text"])):
+            listed[s] += 1
+    rows = []
+    for stem, (p, _) in idx.items():
+        rel = str(p.relative_to(ROOT))
+        if rel in skip or not listed[stem]:
+            continue
+        n = body_lines(p)
+        if n >= min_lines and sourced[stem] <= max_claims:
+            rows.append((sourced[stem], n, listed[stem], rel))
+    return sorted(rows, key=lambda r: (r[0], -r[1]))
+
+
 def guidance(pages):
     on_path = set()
     for p in (ROOT / "wiki/paths").glob("*.md"):
@@ -203,7 +235,9 @@ def guidance(pages):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--min-articles", type=int, default=3)
-    ap.add_argument("--section", default="1,2,3,4,5,6,7")
+    ap.add_argument("--section", default="1,2,3,4,5,6,7,8")
+    ap.add_argument("--thin-lines", type=int, default=150)
+    ap.add_argument("--thin-claims", type=int, default=2)
     a = ap.parse_args()
     secs = set(a.section.split(","))
     pages, arts = load_wiki(), load_articles()
@@ -244,7 +278,7 @@ def main():
                     print(f"- [[{slug}]] · {t[:90]}")
             print()
 
-    if secs & {"5", "6"}:
+    if secs & {"5", "6", "8"}:
         idx = article_index(arts)
     if "5" in secs:
         rows = coverage(pages, idx)
@@ -265,6 +299,15 @@ def main():
         for c, (n, miss) in sorted(by.items(), key=lambda x: -len(x[1][1]) / max(1, x[1][0])):
             if miss:
                 print(f"- {c}：{len(miss)} / {n} 不在路径上 — {'、'.join(miss[:8])}{' …' if len(miss) > 8 else ''}")
+        print()
+
+
+    if "8" in secs:
+        rows = thickness(pages, idx, a.thin_lines, a.thin_claims)
+        zero = [r for r in rows if r[0] == 0]
+        print(f"## 8. 厚度缺口（正文 ≥ {a.thin_lines} 行、出处 Claim ≤ {a.thin_claims} 条）：{len(rows)}（其中 {len(zero)} 篇只列在来源区、没有一条 Claim 以它为出处）\n")
+        for c, n, k, rel in rows:
+            print(f"- {c} 条 · 正文 {n} 行 · {k} 页提到 · {rel}")
         print()
 
 

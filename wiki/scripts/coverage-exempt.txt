@@ -5,3 +5,5 @@ Notes/tool/image&container/Skopeo实战：不装Docker的镜像搬运.md	工具�
 Notes/tool/rtk/Rust开发环境与Cargo构建指南.md	语言环境入门，RTK 系列的附录
 Notes/AI/Context-Engineering/Context Engineering vs MCP/99-Works-Cited.md	参考文献列表
 Notes/AI/Context-Engineering/A Survey of Context Engineering for Large Language Models/Context-Engineering综述读书笔记.md	空壳（只有标题与占位）
+Azure/VoiceLive/Voice-Live系列00：导读.md	系列导读：各篇目录与路线图，论断在各篇正文
+Notes/AI/Context-Engineering/Context Engineering vs MCP/00-Full-Article.md	01~05 各章合集，各章已单独引用
