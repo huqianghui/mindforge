@@ -44,7 +44,12 @@ description: 这个系列以 AKS 为基座，一个平面一个平面地搭 agen
 
 ## 三、按角色读
 
-![按角色读这个系列|1000](../../asset/aks-agent-runtime-reading-paths-2026-11-15.svg)
+按自己关心的问题选一条路径，从左往右读。所有路径都从本篇开始：
+
+- **平台架构师**（要搭一个能跑编码 agent 的平台）：[01 三个平面](AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md) → [02 harness 放哪](AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外.md) → [03 控制面](AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md) → [03 补充 沙箱后端](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md) → [05 会话生命周期](AKS-Agent-Runtime系列05：会话生命周期与回收.md) → [07 注册与发现](AKS-Agent-Runtime系列07：Agent的类型、注册与发现.md) → [10 为什么自建](AKS-Agent-Runtime系列10：为什么在AKS上自建.md)
+- **安全与合规**（沙箱里能碰到什么、以谁的名义）：[01 补充 Kata 墙](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md) → [02 什么留在外面](AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外.md) → [04 出站授权](AKS-Agent-Runtime系列04：出站治理与逐请求授权.md) → [04 补充 OpenFGA](AKS-Agent-Runtime系列04补充：OpenFGA与关系型授权.md) → [09 以谁的身份](AKS-Agent-Runtime系列09：Agent以谁的身份行事.md) → [11 原生管不到](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md)
+- **SRE / 运维**（挂了怎么办、谁来回收、容量怎么算）：[01 补充 容量按 VM](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md) → [03 补充 暂停恢复](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md) → [05 回收与对账](AKS-Agent-Runtime系列05：会话生命周期与回收.md) → [06 多副本](AKS-Agent-Runtime系列06：会话管理与高可用.md) → [08 补充 网关部署](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)
+- **选型决策**（要不要在 AKS 上自建、选哪些组件）：[01 三个平面](AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md) → [10 对照 Hosted](AKS-Agent-Runtime系列10：为什么在AKS上自建.md) → [11 边界在哪](AKS-Agent-Runtime系列11：Kubernetes原生机制管不到什么.md) → [03 补充 沙箱后端选型](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md) → [08 补充 网关选型](AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)
 
 时间少的话，每条路径只读前三站就能拿到主要结论。补充篇是对某个组件的深挖和实测，正篇读完、想知道"这块到底怎么做"时再读。每篇都能单独读，引用前文时会给出链接。
 

@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
-    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#920707"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5c6f8a"/></marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .vm { fill: #1a1215; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 9 5; }
-      .zone { fill: #0d1729; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .vm { fill: #f8f4f6; stroke: #920707; stroke-width: 1.6; stroke-dasharray: 9 5; }
+      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.2; stroke-dasharray: 4 4; }
       .zl { font-size: 14px; font-weight: 600; }
-      .card { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
-      .cardT { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
-      .cardW { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; }
-      .cardV { fill: #1f1838; stroke: #a78bfa; stroke-width: 1.4; }
-      .ext { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; }
-      .wall { fill: #3b1219; stroke: #f87171; stroke-width: 1.4; }
-      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .tr { fill: #fecaca; font-size: 13px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowR { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 4 5; }
-      .flowG { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-dasharray: 3 5; }
+      .card { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.4; }
+      .cardT { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }
+      .cardW { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.6; }
+      .cardV { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.4; }
+      .ext { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .wall { fill: #fbf1f3; stroke: #920707; stroke-width: 1.4; }
+      .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .tr { fill: #960303; font-size: 13px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 4 5; }
+      .flowG { fill: none; stroke: #5c6f8a; stroke-width: 1.6; stroke-dasharray: 3 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -26; } }
     </style>
   </defs>
@@ -40,7 +40,7 @@
 
   <!-- Kata VM -->
   <rect class="vm" x="30" y="196" width="440" height="430" rx="14"/>
-  <text class="zl" x="48" y="222" fill="#fca5a5">一个沙箱 Pod = 一个 Kata VM（不可信）</text>
+  <text class="zl" x="48" y="222" fill="#940505">一个沙箱 Pod = 一个 Kata VM（不可信）</text>
 
   <rect class="cardW" x="50" y="240" width="400" height="118" rx="10"/>
   <text class="h" x="70" y="266">harness 进程（编码 CLI，免确认）</text>
@@ -61,11 +61,11 @@
 
   <!-- NetworkPolicy 墙 -->
   <rect class="wall" x="500" y="196" width="34" height="430" rx="6"/>
-  <text x="517" y="420" fill="#fecaca" font-size="13.5" font-weight="600" text-anchor="middle" transform="rotate(-90 517 420)">NetworkPolicy：只放行 CONNECT 网关 :8443 与 DNS</text>
+  <text x="517" y="420" fill="#960303" font-size="13.5" font-weight="600" text-anchor="middle" transform="rotate(-90 517 420)">NetworkPolicy：只放行 CONNECT 网关 :8443 与 DNS</text>
 
   <!-- CONNECT 网关 -->
   <rect class="zone" x="560" y="196" width="360" height="430" rx="12"/>
-  <text class="zl" x="578" y="222" fill="#94a3b8">治理平面（可信）</text>
+  <text class="zl" x="578" y="222" fill="#5c6f8a">治理平面（可信）</text>
   <rect class="cardT" x="580" y="240" width="320" height="140" rx="10"/>
   <text class="h" x="600" y="266">CONNECT 网关（agentgateway）</text>
   <text class="t" x="600" y="290">mTLS 证书 → 存活 Pod → 唯一会话</text>
@@ -101,9 +101,9 @@
   <path class="flowG" d="M900,310 H978" marker-end="url(#arrG)"/>
   <!-- 直连被拦 -->
   <path class="flowR" d="M450,478 H496" marker-end="url(#arrR)"/>
-  <text x="474" y="470" fill="#f87171" font-size="20" font-weight="700" text-anchor="middle">✗</text>
+  <text x="474" y="470" fill="#920707" font-size="20" font-weight="700" text-anchor="middle">✗</text>
 
-  <circle cx="0" cy="0" r="5" fill="#5eead4">
+  <circle cx="0" cy="0" r="5" fill="#1bb199">
     <animateMotion dur="5s" repeatCount="indefinite" path="M250,358 V378 M450,424 H480 V310 H740 V480 H978"/>
   </circle>
 
@@ -112,15 +112,15 @@
   <circle class="badge" cx="762" cy="206" r="12"/><text class="bn" x="762" y="211">③</text>
   <circle class="badge" cx="762" cy="394" r="12"/><text class="bn" x="762" y="399">④</text>
   <circle class="badge" cx="940" cy="466" r="12"/><text class="bn" x="940" y="471">⑤</text>
-  <circle class="badge" cx="474" cy="500" r="12" style="fill:#7f1d1d;stroke:#fca5a5"/><text class="bn" x="474" y="505">⑥</text>
+  <circle class="badge" cx="474" cy="500" r="12" style="fill:#7d1f1f;stroke:#940505"/><text class="bn" x="474" y="505">⑥</text>
 
   <!-- 说明 -->
-  <line x1="30" y1="650" x2="1370" y2="650" stroke="#1e293b" stroke-width="1.4"/>
+  <line x1="30" y1="650" x2="1370" y2="650" stroke="#f3f5f9" stroke-width="1.4"/>
   <text class="lgh" x="30" y="680">逐跳说明</text>
   <text class="lg" x="30" y="712">① harness 向配置里的集群内网关地址发模型请求，iptables 把这条连接透明地交给同一 VM 里的 egress sidecar</text>
   <text class="lg" x="30" y="740">② sidecar 带着 Pod 绑定的 mTLS 证书向 CONNECT 网关发起隧道——这是 NetworkPolicy 唯一放行的出口</text>
   <text class="lg" x="30" y="768">③ CONNECT 网关把证书解析成会话，再向控制面做 extAuth：这个会话对这个资源有没有 model.invoke</text>
   <text class="lg" x="30" y="796">④ 放行后转到模型网关；⑤ 模型网关用自己的 Workload Identity 换 Entra token，请求才第一次带上真凭据</text>
-  <text class="lg" x="30" y="824" fill="#fecaca">⑥ 如果 sidecar 不支持上游 CONNECT，它会直连目标，被 NetworkPolicy 丢弃——harness 不报错，只是一直等，会话卡在 running</text>
+  <text class="lg" x="30" y="824" fill="#960303">⑥ 如果 sidecar 不支持上游 CONNECT，它会直连目标，被 NetworkPolicy 丢弃——harness 不报错，只是一直等，会话卡在 running</text>
   <text class="lg" x="30" y="860">实测一轮：领沙箱约 1 秒，提交消息到第一次调用工具约 7 秒（含 harness 启动与首次模型调用），bash 7 毫秒，整轮 16 秒。</text>
 </svg>

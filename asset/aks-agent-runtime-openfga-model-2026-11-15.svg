@@ -1,34 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
-    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0c89c0"/></marker>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a0693"/></marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .zone { fill: #0d1729; stroke: #475569; stroke-width: 1.3; stroke-dasharray: 9 5; }
-      .zoneF { fill: #120f1f; stroke: #a78bfa; stroke-width: 1.5; stroke-dasharray: 9 5; }
-      .src { fill: #111827; stroke: #94a3b8; stroke-width: 1.3; }
-      .ctl { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.5; }
-      .tup { fill: #1d1733; stroke: #a78bfa; stroke-width: 1.4; }
-      .mdl { fill: #17142b; stroke: #c4b5fd; stroke-width: 1.4; }
-      .gw { fill: #13213a; stroke: #38bdf8; stroke-width: 1.5; }
-      .ok { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
-      .no { fill: #2a1618; stroke: #f87171; stroke-width: 1.3; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.3; stroke-dasharray: 9 5; }
+      .zoneF { fill: #f4f3f9; stroke: #2a0693; stroke-width: 1.5; stroke-dasharray: 9 5; }
+      .src { fill: #f6f8fb; stroke: #5c6f8a; stroke-width: 1.3; }
+      .ctl { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
+      .tup { fill: #f4f3f9; stroke: #2a0693; stroke-width: 1.4; }
+      .mdl { fill: #f4f3f9; stroke: #220495; stroke-width: 1.4; }
+      .gw { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
+      .ok { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }
+      .no { fill: #f9f3f4; stroke: #920707; stroke-width: 1.3; }
       .zl { font-size: 15px; font-weight: 600; }
-      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .mono { fill: #e9d5ff; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowB { fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowP { fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .mono { fill: #490099; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowB { fill: none; stroke: #0c89c0; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowP { fill: none; stroke: #2a0693; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
       .badgeB { fill: #0c4a6e; stroke: #7dd3fc; stroke-width: 1.3; }
       .badgeP { fill: #4c1d95; stroke: #c4b5fd; stroke-width: 1.3; }
-      .bn { fill: #f8fafc; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -26; } }
     </style>
   </defs>
@@ -38,7 +38,7 @@
 
   <!-- sources -->
   <rect class="zone" x="20" y="96" width="330" height="520" rx="14"/>
-  <text class="zl" x="38" y="122" fill="#cbd5e1">谁写声明（Kubernetes 对象）</text>
+  <text class="zl" x="38" y="122" fill="#384b61">谁写声明（Kubernetes 对象）</text>
   <rect class="src" x="40" y="140" width="290" height="130" rx="10"/>
   <text class="h" x="56" y="166">应用作者：应用定义</text>
   <text class="t" x="56" y="190">"我要对资源 R 做 git.read"</text>
@@ -68,7 +68,7 @@
 
   <!-- OpenFGA -->
   <rect class="zoneF" x="610" y="96" width="770" height="520" rx="14"/>
-  <text class="zl" x="628" y="122" fill="#c4b5fd">OpenFGA（一个 store）</text>
+  <text class="zl" x="628" y="122" fill="#220495">OpenFGA（一个 store）</text>
 
   <rect class="mdl" x="630" y="140" width="360" height="240" rx="10"/>
   <text class="h" x="646" y="166">授权模型（不可变，按 ID 引用）</text>

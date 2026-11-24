@@ -80,9 +80,16 @@ Kata 节点上 containerd 的配置里能直接看到这一点（只摘了 runti
 
 ## 三、两种 runtime 能不能混在一起
 
-能，但只是单向的。我在 Kata 池不打污点的情况下放了四个 Pod：
+能，但只是单向的——runc Pod 能上 Kata 节点，Kata Pod 上不了普通节点。我在一个普通池加一个不打污点的 Kata 池上放了四个 Pod（普通节点只配了 runc 的两个 handler；Kata 节点带 `kata-vm-isolation=true` 标签，handler 有 runc、kata、kata-v2、kata-cc）：
 
-![四个 Pod 的实际去向|900](../../asset/aks-kata-runtime-scheduling-2026-11-15.svg)
+| Pod 怎么写 | 经过哪一关 | 实际结果 |
+|---|---|---|
+| ① 普通 Pod，不写 `runtimeClassName`，也不需要 toleration | 调度器：两个池都满足条件，Kata 节点没污点，照样可选 | Running，落在 Kata 节点；`uname -r` 是宿主内核，和 VMM 共用宿主，不受 VM 保护 |
+| ② Kata Pod，只写 `runtimeClassName: kata-vm-isolation` | 准入时把 RuntimeClass 的 nodeSelector 与 overhead 合进 Pod | Running，只会落在 Kata 节点；Pod 里是 guest kernel、1 个 vCPU，`spec.overhead` 自动带上 600Mi |
+| ③ Kata Pod，用 `nodeName` 指定普通节点 | 绕过调度器，但 kubelet 准入时复核 nodeSelector，普通节点没有 kata 标签 | 被 kubelet 以 NodeAffinity 拒绝，Pod 直接进终态，容器一次都没创建 |
+| ④ 自建 RuntimeClass（`handler: kata`，不写 scheduling 段），再用 `nodeName` 指定普通节点 | kubelet 放行，交给 containerd，但 config.toml 里没有 `runtimes.kata` | 一直 ContainerCreating，事件里报 `FailedCreatePodSandBox: no runtime for "kata" is configured` |
+
+四个结果连起来看：混跑只发生在 Kata 节点上，Kata 池默认无污点，要显式加；RuntimeClass 的 scheduling 段是第一道闸，用户什么都不写也不会落错节点；绕过调度器也没用，kubelet 会再校验一次；去掉 scheduling 段之后，闸门只剩节点本身，Pod 卡住且只在事件里报错。
 
 关键在 RuntimeClass 本身。集群里实际的定义是这样的：
 

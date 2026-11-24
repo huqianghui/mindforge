@@ -1,35 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 860" width="1240" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#26a696"/>
     </marker>
     <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/>
     </marker>
     <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c6f8a"/>
     </marker>
     <style>
-      .bg { fill: #0b1220; }
-      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
-      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .vm { fill: #1a1430; stroke: #a78bfa; stroke-width: 2; }
-      .kernel { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; }
-      .zone { fill: none; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hv { fill: #ddd6fe; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tGray { fill: #94a3b8; font-size: 13.5px; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowGray { fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 4 5; }
+      .bg { fill: #f6f8fb; }
+      .box { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .boxBlue { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .boxAmber { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .vm { fill: #f4f2fa; stroke: #2a0693; stroke-width: 2; }
+      .kernel { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .zone { fill: none; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #036696; font-size: 15px; font-weight: 600; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hv { fill: #1d0495; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tGray { fill: #5c6f8a; font-size: 13.5px; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowGray { fill: none; stroke: #5c6f8a; stroke-width: 1.8; stroke-dasharray: 4 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .el { fill: #a7f3d0; font-size: 13.5px; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .el { fill: #128751; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
@@ -112,8 +112,8 @@
   <path class="flowGray" d="M920,586 L920,606" marker-end="url(#arrGray)"/>
 
   <!-- particles -->
-  <circle r="5" fill="#2dd4bf"><animateMotion dur="2.6s" repeatCount="indefinite" path="M620,158 L620,186 M520,250 C510,280 480,300 470,322 L300,600"/></circle>
-  <circle r="5" fill="#fbbf24"><animateMotion dur="2.6s" repeatCount="indefinite" path="M760,250 C900,262 1080,280 1110,322 L1110,340 L780,382 L780,486"/></circle>
+  <circle r="5" fill="#26a696"><animateMotion dur="2.6s" repeatCount="indefinite" path="M620,158 L620,186 M520,250 C510,280 480,300 470,322 L300,600"/></circle>
+  <circle r="5" fill="#c38f09"><animateMotion dur="2.6s" repeatCount="indefinite" path="M760,250 C900,262 1080,280 1110,322 L1110,340 L780,382 L780,486"/></circle>
 
   <!-- legend -->
   <text class="el" x="40" y="740">① containerd 是同一个进程：handler = runc 走 io.containerd.runc.v2，handler = kata 走 io.containerd.kata.v2——Kata 替换的是 shim 与 runc 这一段，不是 containerd</text>

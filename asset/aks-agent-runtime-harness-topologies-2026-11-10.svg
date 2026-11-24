@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 940" width="1400" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
-    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#920707"/></marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .panel { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
-      .ph { fill: #f1f5f9; font-size: 18px; font-weight: 700; }
-      .phs { fill: #94a3b8; font-size: 13.5px; }
-      .trust { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.4; stroke-dasharray: 8 5; }
-      .untrust { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; stroke-dasharray: 8 5; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .panel { fill: #f6f8fb; stroke: #b9c4d5; stroke-width: 1.2; }
+      .ph { fill: #2e4d6b; font-size: 18px; font-weight: 700; }
+      .phs { fill: #5c6f8a; font-size: 13.5px; }
+      .trust { fill: #f2fafa; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 8 5; }
+      .untrust { fill: #faf3f3; stroke: #920707; stroke-width: 1.6; stroke-dasharray: 8 5; }
       .zl { font-size: 14px; font-weight: 600; }
-      .card { fill: #13213a; stroke: #38bdf8; stroke-width: 1.4; }
-      .cardT { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
-      .cardW { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.6; animation: pulse 2.6s ease-in-out infinite; }
-      .h { fill: #f1f5f9; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .tr { fill: #fecaca; font-size: 13px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowR { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 4 5; }
+      .card { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.4; }
+      .cardT { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }
+      .cardW { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.6; animation: pulse 2.6s ease-in-out infinite; }
+      .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .tr { fill: #960303; font-size: 13px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #c38f09; stroke-width: 2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
+      .flowR { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 4 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
       .badgeA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.3; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -26; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
     </style>
@@ -41,7 +41,7 @@
   <text class="phs" x="52" y="148">编码类 harness（Claude Code / Codex / Copilot CLI）</text>
 
   <rect class="untrust" x="52" y="166" width="300" height="300" rx="10"/>
-  <text class="zl" x="68" y="190" fill="#fca5a5">Kata 沙箱（每会话一个 VM）</text>
+  <text class="zl" x="68" y="190" fill="#940505">Kata 沙箱（每会话一个 VM）</text>
   <rect class="cardW" x="70" y="206" width="264" height="74" rx="8"/>
   <text class="h" x="86" y="232">harness loop（免确认运行）</text>
   <text class="t" x="86" y="254">调模型、决定下一步调什么工具</text>
@@ -53,7 +53,7 @@
   <text class="t" x="86" y="426">随 checkpoint 跨沙箱保留</text>
 
   <rect class="trust" x="392" y="166" width="276" height="300" rx="10"/>
-  <text class="zl" x="408" y="190" fill="#5eead4">沙箱外（可信）</text>
+  <text class="zl" x="408" y="190" fill="#1bb199">沙箱外（可信）</text>
   <rect class="cardT" x="408" y="206" width="244" height="64" rx="8"/>
   <text class="h" x="424" y="232">会话控制面</text>
   <text class="t" x="424" y="254">分配、启动、暂停、回收</text>
@@ -70,8 +70,8 @@
   <circle class="badgeA" cx="378" cy="225" r="12"/><text class="bn" x="378" y="230">①</text>
   <circle class="badge" cx="380" cy="296" r="12"/><text class="bn" x="380" y="301">②</text>
 
-  <rect class="untrust" x="52" y="486" width="616" height="146" rx="10" style="fill:#1a1416"/>
-  <text class="zl" x="68" y="512" fill="#fca5a5">被劫持时最坏能做什么</text>
+  <rect class="untrust" x="52" y="486" width="616" height="146" rx="10" style="fill:#f7f5f6"/>
+  <text class="zl" x="68" y="512" fill="#940505">被劫持时最坏能做什么</text>
   <text class="tr" x="68" y="538">• 在自己的 VM 里删改工作区、跑任意命令——可以接受，下次从 checkpoint 恢复</text>
   <text class="tr" x="68" y="562">• 经网关访问本会话被授权的资源——权限已按会话收窄</text>
   <text class="tr" x="68" y="586">• 拿不到密钥，碰不到 Kubernetes API、IMDS、其他沙箱</text>
@@ -83,7 +83,7 @@
   <text class="phs" x="732" y="148">自写 loop（LangGraph / ADK / Agent Framework）</text>
 
   <rect class="trust" x="732" y="166" width="300" height="300" rx="10"/>
-  <text class="zl" x="748" y="190" fill="#5eead4">loop 服务（可信代码）</text>
+  <text class="zl" x="748" y="190" fill="#1bb199">loop 服务（可信代码）</text>
   <rect class="cardT" x="750" y="206" width="264" height="74" rx="8"/>
   <text class="h" x="766" y="232">loop + 记忆 + 编排</text>
   <text class="t" x="766" y="254">比沙箱活得久，可驱动多个沙箱</text>
@@ -95,7 +95,7 @@
   <text class="t" x="766" y="426">也应走同一个网关</text>
 
   <rect class="untrust" x="1072" y="166" width="276" height="300" rx="10"/>
-  <text class="zl" x="1088" y="190" fill="#fca5a5">沙箱（执行 API）</text>
+  <text class="zl" x="1088" y="190" fill="#940505">沙箱（执行 API）</text>
   <rect class="card" x="1088" y="206" width="244" height="64" rx="8"/>
   <text class="h" x="1104" y="232">code interpreter</text>
   <text class="t" x="1104" y="254">执行 loop 传来的代码</text>
@@ -112,15 +112,15 @@
   <circle class="badge" cx="1050" cy="226" r="12"/><text class="bn" x="1050" y="231">③</text>
   <circle class="badgeA" cx="1052" cy="296" r="12"/><text class="bn" x="1052" y="301">④</text>
 
-  <rect class="untrust" x="732" y="486" width="616" height="146" rx="10" style="fill:#1a1416"/>
-  <text class="zl" x="748" y="512" fill="#fca5a5">易被忽视的坑：confused deputy</text>
+  <rect class="untrust" x="732" y="486" width="616" height="146" rx="10" style="fill:#f7f5f6"/>
+  <text class="zl" x="748" y="512" fill="#940505">易被忽视的坑：confused deputy</text>
   <text class="tr" x="748" y="538">• loop 若直接持有凭据，读到被注入的沙箱输出后，会用自己的高权限执行</text>
   <text class="tr" x="748" y="562">• "拆到沙箱外"不自动更安全，只是把不可信输入换了一个入口</text>
   <text class="tr" x="748" y="586">• 对策：loop 调外部资源也走网关、按会话授权，loop 本身不存长期凭据</text>
   <text class="t" x="748" y="614">好处：一个 loop 驱动多个沙箱；沙箱销毁后 loop 还能继续</text>
 
   <!-- 图例 -->
-  <line x1="30" y1="676" x2="1370" y2="676" stroke="#1e293b" stroke-width="1.4"/>
+  <line x1="30" y1="676" x2="1370" y2="676" stroke="#f3f5f9" stroke-width="1.4"/>
   <text class="lgh" x="30" y="706">编号说明</text>
   <text class="lg" x="30" y="738">① 控制面经沙箱里的执行守护进程下发命令：放入配置文件、按轮启动 harness；这是控制面进沙箱的唯一入口</text>
   <text class="lg" x="30" y="768">② harness 的所有出站（模型、Git、MCP）都只能到网关；网关按 Pod 身份认出会话，授权后注入凭据再转发</text>

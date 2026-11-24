@@ -139,9 +139,7 @@ description: harness 关进沙箱之后，负责把它拉起来、喂消息、�
 
 控制面和沙箱后端之间只有一个约定：沙箱 provider 接口。必选的操作有四个：解析运行时、分配沙箱、检查沙箱、在沙箱里执行一轮。checkpoint、暂停、恢复、从 checkpoint 重建、中止会话、更新已在跑的沙箱的出站权限，都是可选能力。每个操作都带一个持久的操作 ID，控制面重启后可以拿同一个 ID 重放，provider 据此保证副作用不重复。
 
-这个接口下面，参考实现有两种接法，启动时二选一，配置互斥：
-
-![控制面怎么用沙箱后端：参考实现的三层与两种接法|900](../../asset/aks-agent-runtime-sandbox-backend-wiring-2026-11-15.svg)
+这个接口下面，参考实现有两种接法，启动时二选一，配置互斥（三层结构和两种接法的全图见 [03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)）：
 
 **接法 A：直接调 OpenSandbox。** provider 调 lifecycle server 建沙箱、暂停恢复、做快照，再调沙箱里的 `execd` 写入文件、启动 harness、读输出。前面几篇的实测都是这种接法。再往下一层，OpenSandbox 自己还要选一个 workload provider：
 
@@ -160,11 +158,7 @@ description: harness 关进沙箱之后，负责把它拉起来、喂消息、�
 
 ### 最小控制面的四块
 
-看完参考实现，我把"自己写一个"需要的部件列了出来：
-
-![自己写一个最小控制面要哪几块|900](../../asset/aks-agent-runtime-minimal-control-plane-2026-11-10.svg)
-
-第一版必须有的只有四块：
+看完参考实现，我把"自己写一个"需要的部件列了出来。第一版必须有的只有四块：
 
 1. **会话 API**：创建会话（带幂等键）、投递消息、按游标推事件流。
 2. **状态库**：会话、收件箱、事件、副作用意图，以及会话和沙箱的绑定关系。单副本时 SQLite 就够用，要多副本再换 PostgreSQL 并加上 lease。

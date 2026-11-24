@@ -68,9 +68,15 @@ description: agent-sandbox 和 OpenSandbox 都属于执行平面，夹在 Kata �
 
 ## 三、三种用法和对比
 
-按"每一层由谁提供"来看，一共有三种组合：
+按"每一层由谁提供"来看，一共有三种组合（最底下的隔离层三种都一样，都是靠 `runtimeClassName` 落到 Kata Pod）：
 
-![agent-sandbox 和 OpenSandbox 的三种用法：每一层由谁提供|900](../../asset/aks-sandbox-backends-combinations-2026-11-15.svg)
+| | ① 只用 agent-sandbox | ② 只用 OpenSandbox | ③ OpenSandbox 叠在 agent-sandbox 上 |
+|---|---|---|---|
+| 控制面怎么调 | Kubernetes API 提交 Claim | REST / SDK | REST / SDK（和 ② 一样） |
+| 访问层 | **自己补**：镜像里放守护进程执行命令、读写文件；入口经 sandbox-router（HTTP，按请求头） | lifecycle server + 注入沙箱的 execd；带出站策略时加 egress 边车 | lifecycle server + execd，`workload_provider` 设成 agent-sandbox |
+| 编排层 | SandboxTemplate、SandboxWarmPool、SandboxClaim、Sandbox（单例 Pod + PVC + Service） | BatchSandbox、Pool（预热池）、SandboxSnapshot（commit rootfs 到镜像仓库） | 只用 agent-sandbox 的核心 Sandbox，TTL 映射成 shutdownTime、暂停映射成 Suspended |
+| 得到 | 纯 Kubernetes 对象，GitOps、RBAC 原生；预热池领取约 3 秒；模板生成的 NetworkPolicy 默认较严；PVC 跨暂停保留 | 访问层现成，镜像不用改；暂停保留整个 rootfs；出站域名策略和 Credential Vault；多语言 SDK，本地 Docker 可开发 | 访问层用 execd，底层沙箱对象统一成 agent-sandbox，集群里按 Sandbox 统一盘点 |
+| 代价 | 访问层要自己补；router 默认不鉴权；暂停只留 PVC；没有出站域名策略和凭据注入 | 多一个 Python server 要运维；不带策略时出站不限制；Pool 漏写 `runtimeClassName` 会静默跑 runc | 用不上预热池；没有默认网络策略；暂停不再存 rootfs，快照目前只能从 BatchSandbox 生成 |
 
 1. **只用 agent-sandbox**：控制面调 Kubernetes API 提交 Claim，经 router 访问沙箱。执行命令、读写文件的接口要在沙箱镜像里自己写。这次第四节的实测就是这种用法。
 2. **只用 OpenSandbox**：控制面调 REST 或 SDK，编排层是 OpenSandbox 自己的 `BatchSandbox` 和 `Pool`。参考实现的测试配置和前几篇的实测都是这种用法。
@@ -97,10 +103,6 @@ description: agent-sandbox 和 OpenSandbox 都属于执行平面，夹在 Kata �
 | 和对方的关系 | 可以当 OpenSandbox 的编排层 | 可以把编排层换成 agent-sandbox |
 
 ## 四、agent-sandbox 怎么用
-
-只看中间这一层，两个项目各自提供的对象和控制面的调用入口是这样的。上方灰框代表调用它们的控制面，编号是控制面发起的调用：
-
-![执行平面里的分工：Kata 管墙，agent-sandbox / OpenSandbox 管房间|900](../../asset/aks-sandbox-backends-layers-2026-11-15.svg)
 
 
 ### 装上之后有什么

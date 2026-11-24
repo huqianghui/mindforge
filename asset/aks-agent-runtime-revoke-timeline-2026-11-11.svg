@@ -1,30 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lane { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .laneS { fill: #94a3b8; font-size: 13px; }
-      .s200 { fill: #0f3d38; stroke: #2dd4bf; stroke-width: 1.4; }
-      .s403 { fill: #3b1518; stroke: #f87171; stroke-width: 1.4; }
-      .s000 { fill: #1e293b; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5 4; }
-      .bl { fill: #f1f5f9; font-size: 14px; font-weight: 600; text-anchor: middle; }
-      .ev { stroke: #fbbf24; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
-      .evR { stroke: #2dd4bf; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
-      .evT { fill: #fde68a; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
-      .evTR { fill: #5eead4; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
-      .lead { stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 3 4; fill: none; }
-      .an { fill: #cbd5e1; font-size: 13.5px; }
-      .anE { fill: #cbd5e1; font-size: 13.5px; text-anchor: end; }
-      .axis { stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
-      .tick { stroke: #475569; stroke-width: 1.2; }
-      .tl { fill: #94a3b8; font-size: 13px; text-anchor: middle; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .chip200 { fill: #0f3d38; stroke: #2dd4bf; }
-      .chip403 { fill: #3b1518; stroke: #f87171; }
-      .chip000 { fill: #1e293b; stroke: #64748b; stroke-dasharray: 4 3; }
+      .bg { fill: #fcfcfb; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .sub { fill: #6f6e69; font-size: 14px; }
+      .lane { fill: #1a4c89; font-size: 15px; font-weight: 600; }
+      .laneS { fill: #6f6e69; font-size: 13px; }
+      .s200 { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.4; }
+      .s403 { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.4; }
+      .s000 { fill: #ecf2f8; stroke: #e4e2dc; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .bl { fill: #1a4c89; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .ev { stroke: #eb6834; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
+      .evR { stroke: #2a78d6; stroke-width: 2.4; animation: pulse 1.8s ease-in-out infinite; }
+      .evT { fill: #95350f; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .evTR { fill: #2a78d6; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .lead { stroke: #e4e2dc; stroke-width: 1.2; stroke-dasharray: 3 4; fill: none; }
+      .an { fill: #1a4c89; font-size: 13.5px; }
+      .anE { fill: #1a4c89; font-size: 13.5px; text-anchor: end; }
+      .axis { stroke: #2a78d6; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .tick { stroke: #e4e2dc; stroke-width: 1.2; }
+      .tl { fill: #6f6e69; font-size: 13px; text-anchor: middle; }
+      .lgh { fill: #1a4c89; font-size: 15px; font-weight: 600; }
+      .lg { fill: #1a4c89; font-size: 13.5px; }
+      .chip200 { fill: #ecf2f8; stroke: #2a78d6; }
+      .chip403 { fill: #f9ecec; stroke: #8e1616; }
+      .chip000 { fill: #ecf2f8; stroke: #e4e2dc; stroke-dasharray: 4 3; }
       @keyframes dash { to { stroke-dashoffset: -34; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
