@@ -1,22 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" width="1200" height="860" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
   <style>
-    .bg { fill: #0f172a; }
-    .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
-    .sub { fill: #94a3b8; font-size: 14px; }
-    .reuse { fill: #134e4a; fill-opacity: 0.45; stroke: #2dd4bf; stroke-width: 2; }
-    .new { fill: #78350f; fill-opacity: 0.35; stroke: #fbbf24; stroke-width: 2.5; }
-    .newBand { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 8 6; animation: pulse 2.2s ease-in-out infinite; }
-    .agent { fill: #1e293b; stroke: #94a3b8; stroke-width: 2; }
-    .h { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-    .hNew { fill: #fbbf24; font-size: 17px; font-weight: 700; }
-    .hReuse { fill: #5eead4; font-size: 17px; font-weight: 700; }
-    .t { fill: #cbd5e1; font-size: 13px; }
-    .tag { fill: #fbbf24; font-size: 13px; }
-    .flow { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 8 8; animation: flow 1.4s linear infinite; }
-    .side { stroke: #475569; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
-    .a2a { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
-    .a2aTxt { fill: #fbbf24; font-size: 13px; font-weight: 600; }
-    .leg { fill: #94a3b8; font-size: 13px; }
+    .bg { fill: #f6f8fb; }
+    .title { fill: #344965; font-size: 22px; font-weight: 700; }
+    .sub { fill: #5e718d; font-size: 14px; }
+    .reuse { fill: #f1fbfa; fill-opacity: 0.45; stroke: #26a696; stroke-width: 2; }
+    .new { fill: #753612; fill-opacity: 0.35; stroke: #c38f09; stroke-width: 2.5; }
+    .newBand { fill: none; stroke: #c38f09; stroke-width: 2; stroke-dasharray: 8 6; animation: pulse 2.2s ease-in-out infinite; }
+    .agent { fill: #f3f5f9; stroke: #5e718d; stroke-width: 2; }
+    .h { fill: #344965; font-size: 16px; font-weight: 600; }
+    .hNew { fill: #c38f09; font-size: 17px; font-weight: 700; }
+    .hReuse { fill: #1bb199; font-size: 17px; font-weight: 700; }
+    .t { fill: #384b61; font-size: 13px; }
+    .tag { fill: #c38f09; font-size: 13px; }
+    .flow { stroke: #26a696; stroke-width: 2.5; fill: none; stroke-dasharray: 8 8; animation: flow 1.4s linear infinite; }
+    .side { stroke: #7688a2; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+    .a2a { stroke: #c38f09; stroke-width: 2.5; fill: none; stroke-dasharray: 8 6; animation: flow 1.2s linear infinite; }
+    .a2aTxt { fill: #c38f09; font-size: 13px; font-weight: 600; }
+    .leg { fill: #5e718d; font-size: 13px; }
     @keyframes flow { to { stroke-dashoffset: -32; } }
     @keyframes pulse { 0%,100% { stroke-opacity: 0.45; } 50% { stroke-opacity: 1; } }
   </style>
@@ -34,36 +34,36 @@
   <text class="hReuse" x="60" y="208">Enterprise API Gateway（复用）</text>
   <text class="t" x="60" y="232">TLS 终止 / OAuth·JWT 校验 / 限流配额 / 网络访问控制 / 路由与负载均衡 / 访问日志</text>
   <rect class="new" x="60" y="242" width="780" height="24" rx="6"/>
-  <text class="tag" x="72" y="259">+ A2A 适配：SSE 长连接与超时 ｜ A2A-Version 头 ｜ tenant 透传 ｜ 身份上下文与 traceparent 透传</text>
+  <text class="tag" x="72" y="259" style="fill:#ffffff">+ A2A 适配：SSE 长连接与超时 ｜ A2A-Version 头 ｜ tenant 透传 ｜ 身份上下文与 traceparent 透传</text>
 
   <!-- L3 interoperability -->
   <rect class="newBand" x="30" y="300" width="840" height="200" rx="12"/>
   <text class="hNew" x="50" y="328">Agent Interoperability Layer（新增）</text>
   <rect class="new" x="50" y="344" width="196" height="140" rx="8"/>
-  <text class="h" x="64" y="370">Agent Catalog</text>
-  <text class="t" x="64" y="394">Agent Card 存储</text>
-  <text class="t" x="64" y="414">Skill / 模态检索</text>
-  <text class="t" x="64" y="434">版本 / Owner / 环境</text>
-  <text class="t" x="64" y="454">可见性与权限过滤</text>
-  <text class="t" x="64" y="474">（Nacos 原生 / 自建）</text>
+  <text class="h" x="64" y="370" style="fill:#ffffff">Agent Catalog</text>
+  <text class="t" x="64" y="394" style="fill:#ffffff">Agent Card 存储</text>
+  <text class="t" x="64" y="414" style="fill:#ffffff">Skill / 模态检索</text>
+  <text class="t" x="64" y="434" style="fill:#ffffff">版本 / Owner / 环境</text>
+  <text class="t" x="64" y="454" style="fill:#ffffff">可见性与权限过滤</text>
+  <text class="t" x="64" y="474" style="fill:#ffffff">（Nacos 原生 / 自建）</text>
   <rect class="new" x="256" y="344" width="196" height="140" rx="8"/>
-  <text class="h" x="270" y="370">准入与签名</text>
-  <text class="t" x="270" y="394">Inspector / TCK</text>
-  <text class="t" x="270" y="414">协议一致性门禁</text>
-  <text class="t" x="270" y="434">Card JWS 签名校验</text>
-  <text class="t" x="270" y="454">安全与质量另行验收</text>
+  <text class="h" x="270" y="370" style="fill:#ffffff">准入与签名</text>
+  <text class="t" x="270" y="394" style="fill:#ffffff">Inspector / TCK</text>
+  <text class="t" x="270" y="414" style="fill:#ffffff">协议一致性门禁</text>
+  <text class="t" x="270" y="434" style="fill:#ffffff">Card JWS 签名校验</text>
+  <text class="t" x="270" y="454" style="fill:#ffffff">安全与质量另行验收</text>
   <rect class="new" x="462" y="344" width="196" height="140" rx="8"/>
-  <text class="h" x="476" y="370">A2A Router</text>
-  <text class="t" x="476" y="394">按 Agent / Skill /</text>
-  <text class="t" x="476" y="414">tenant 解析目标</text>
-  <text class="t" x="476" y="434">多版本 interface 选择</text>
-  <text class="t" x="476" y="454">（可内嵌于 Gateway）</text>
+  <text class="h" x="476" y="370" style="fill:#ffffff">A2A Router</text>
+  <text class="t" x="476" y="394" style="fill:#ffffff">按 Agent / Skill /</text>
+  <text class="t" x="476" y="414" style="fill:#ffffff">tenant 解析目标</text>
+  <text class="t" x="476" y="434" style="fill:#ffffff">多版本 interface 选择</text>
+  <text class="t" x="476" y="454" style="fill:#ffffff">（可内嵌于 Gateway）</text>
   <rect class="new" x="668" y="344" width="186" height="140" rx="8"/>
-  <text class="h" x="682" y="370">Agent 级策略</text>
-  <text class="t" x="682" y="394">谁能调谁</text>
-  <text class="t" x="682" y="414">委派链与 Token 交换</text>
-  <text class="t" x="682" y="434">跨 Agent 调用审计</text>
-  <text class="t" x="682" y="454">配额与成本归属</text>
+  <text class="h" x="682" y="370" style="fill:#ffffff">Agent 级策略</text>
+  <text class="t" x="682" y="394" style="fill:#ffffff">谁能调谁</text>
+  <text class="t" x="682" y="414" style="fill:#ffffff">委派链与 Token 交换</text>
+  <text class="t" x="682" y="434" style="fill:#ffffff">跨 Agent 调用审计</text>
+  <text class="t" x="682" y="454" style="fill:#ffffff">配额与成本归属</text>
 
   <!-- L4 agents -->
   <text class="h" x="40" y="540">各业务部门自主交付的 Agent（框架不限：Agent Framework / LangGraph / Spring AI Alibaba …）</text>
@@ -122,7 +122,7 @@
   <path class="side" d="M870,400 L900,400"/>
   <path class="side" d="M860,228 L900,228"/>
   <path class="side" d="M860,696 L900,696"/>
-  <circle r="5" fill="#2dd4bf"><animateMotion dur="3.2s" repeatCount="indefinite" path="M450,154 L450,746"/></circle>
+  <circle r="5" fill="#26a696"><animateMotion dur="3.2s" repeatCount="indefinite" path="M450,154 L450,746"/></circle>
 
   <text class="leg" x="40" y="838">原则：不重建注册中心、网关、IAM 与可观测性；只补 Agent 语义（能力目录、协议适配、Agent 级授权与审计）</text>
 </svg>

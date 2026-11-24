@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0d1424"/>
-      <stop offset="1" stop-color="#0a0f1c"/>
+      <stop offset="0" stop-color="#f2f4fa"/>
+      <stop offset="1" stop-color="#f2f4fa"/>
     </linearGradient>
     <radialGradient id="pOuter" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#e0e7ff"/><stop offset="0.5" stop-color="#818cf8"/><stop offset="1" stop-color="#818cf8" stop-opacity="0"/>
+      <stop offset="0" stop-color="#002399"/><stop offset="0.5" stop-color="#081591"/><stop offset="1" stop-color="#081591" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="pMid" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#ccfbf1"/><stop offset="0.5" stop-color="#2dd4bf"/><stop offset="1" stop-color="#2dd4bf" stop-opacity="0"/>
+      <stop offset="0" stop-color="#0b8e72"/><stop offset="0.5" stop-color="#26a696"/><stop offset="1" stop-color="#26a696" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="pInner" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#fef3c7"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+      <stop offset="0" stop-color="#967903"/><stop offset="0.5" stop-color="#c38f09"/><stop offset="1" stop-color="#c38f09" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="core" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#fbbf24" stop-opacity="0.35"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+      <stop offset="0" stop-color="#c38f09" stop-opacity="0.35"/><stop offset="1" stop-color="#c38f09" stop-opacity="0"/>
     </radialGradient>
     <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="5" result="b"/>
@@ -35,19 +35,19 @@
   </style>
 
   <rect width="1160" height="640" rx="18" fill="url(#bg)"/>
-  <rect x="1" y="1" width="1158" height="638" rx="17" fill="none" stroke="#1e293b"/>
+  <rect x="1" y="1" width="1158" height="638" rx="17" fill="none" stroke="#f3f5f9"/>
 
-  <text x="36" y="46" font-size="21" font-weight="700" fill="#e2e8f0">数据飞轮与 RSI：三层嵌套循环，一个贯穿指标</text>
-  <text x="520" y="46" font-size="13" fill="#475569">外圈以季度计 · 中圈以周计 · 内圈以小时计 —— 转速即时间常数</text>
+  <text x="36" y="46" font-size="21" font-weight="700" fill="#344965">数据飞轮与 RSI：三层嵌套循环，一个贯穿指标</text>
+  <text x="520" y="46" font-size="13" fill="#7688a2">外圈以季度计 · 中圈以周计 · 内圈以小时计 —— 转速即时间常数</text>
 
   <!-- ===== rings (center 370,340) ===== -->
   <g fill="none" stroke-linecap="round">
-    <circle cx="370" cy="340" r="255" stroke="#1e293b" stroke-width="8"/>
-    <circle cx="370" cy="340" r="255" stroke="#818cf8" stroke-width="3" class="ringOuter" opacity="0.8"/>
-    <circle cx="370" cy="340" r="170" stroke="#1e293b" stroke-width="8"/>
-    <circle cx="370" cy="340" r="170" stroke="#2dd4bf" stroke-width="3" class="ringMid" opacity="0.85"/>
-    <circle cx="370" cy="340" r="90" stroke="#1e293b" stroke-width="8"/>
-    <circle cx="370" cy="340" r="90" stroke="#fbbf24" stroke-width="3" class="ringInner" opacity="0.9"/>
+    <circle cx="370" cy="340" r="255" stroke="#f3f5f9" stroke-width="8"/>
+    <circle cx="370" cy="340" r="255" stroke="#081591" stroke-width="3" class="ringOuter" opacity="0.8"/>
+    <circle cx="370" cy="340" r="170" stroke="#f3f5f9" stroke-width="8"/>
+    <circle cx="370" cy="340" r="170" stroke="#26a696" stroke-width="3" class="ringMid" opacity="0.85"/>
+    <circle cx="370" cy="340" r="90" stroke="#f3f5f9" stroke-width="8"/>
+    <circle cx="370" cy="340" r="90" stroke="#c38f09" stroke-width="3" class="ringInner" opacity="0.9"/>
   </g>
 
   <!-- particles -->
@@ -74,69 +74,69 @@
   </circle>
 
   <!-- ===== outer ring nodes: economic flywheel (top/right/bottom/left) ===== -->
-  <g font-size="12.5" fill="#e0e7ff" text-anchor="middle">
-    <rect x="300" y="71" width="140" height="28" rx="7" fill="#1e1b4b" stroke="#818cf8"/>
+  <g font-size="12.5" fill="#002399" text-anchor="middle">
+    <rect x="300" y="71" width="140" height="28" rx="7" fill="#f2f2fa" stroke="#081591"/>
     <text x="370" y="90">智能成本下降</text>
-    <rect x="545" y="326" width="160" height="28" rx="7" fill="#1e1b4b" stroke="#818cf8"/>
+    <rect x="545" y="326" width="160" height="28" rx="7" fill="#f2f2fa" stroke="#081591"/>
     <text x="625" y="345">更多工作值得开展</text>
-    <rect x="290" y="581" width="160" height="28" rx="7" fill="#1e1b4b" stroke="#818cf8"/>
+    <rect x="290" y="581" width="160" height="28" rx="7" fill="#f2f2fa" stroke="#081591"/>
     <text x="370" y="600">收入 · 反馈 · 需求洞察</text>
-    <rect x="25" y="326" width="180" height="28" rx="7" fill="#1e1b4b" stroke="#818cf8"/>
+    <rect x="25" y="326" width="180" height="28" rx="7" fill="#f2f2fa" stroke="#081591"/>
     <text x="115" y="345">投资下一代研究 / 基础设施</text>
   </g>
 
   <!-- ===== middle ring nodes: engineering data flywheel (diagonals, clockwise) ===== -->
-  <g font-size="12.5" fill="#ccfbf1" text-anchor="middle">
-    <rect x="180" y="206" width="140" height="28" rx="7" fill="#134e4a" stroke="#2dd4bf"/>
+  <g font-size="12.5" fill="#0b8e72" text-anchor="middle">
+    <rect x="180" y="206" width="140" height="28" rx="7" fill="#f1fbfa" stroke="#26a696"/>
     <text x="250" y="225">使用洞见 / 遥测</text>
-    <rect x="415" y="206" width="160" height="28" rx="7" fill="#134e4a" stroke="#2dd4bf"/>
+    <rect x="415" y="206" width="160" height="28" rx="7" fill="#f1fbfa" stroke="#26a696"/>
     <text x="495" y="225">评估（判成功 + 算成本）</text>
-    <rect x="420" y="446" width="150" height="28" rx="7" fill="#134e4a" stroke="#2dd4bf"/>
+    <rect x="420" y="446" width="150" height="28" rx="7" fill="#f1fbfa" stroke="#26a696"/>
     <text x="495" y="465">优化 APO → SFT → RL</text>
-    <rect x="180" y="446" width="140" height="28" rx="7" fill="#134e4a" stroke="#2dd4bf"/>
+    <rect x="180" y="446" width="140" height="28" rx="7" fill="#f1fbfa" stroke="#26a696"/>
     <text x="250" y="465">部署 · 回到使用</text>
   </g>
 
   <!-- ===== inner ring nodes: RSI ===== -->
-  <g font-size="12" fill="#fef3c7" text-anchor="middle">
-    <rect x="322" y="236" width="96" height="26" rx="7" fill="#78350f" stroke="#fbbf24"/>
-    <text x="370" y="254">探索 rollout</text>
-    <rect x="400" y="392" width="100" height="26" rx="7" fill="#78350f" stroke="#fbbf24"/>
-    <text x="450" y="410">历史 → replay</text>
-    <rect x="240" y="392" width="100" height="26" rx="7" fill="#78350f" stroke="#fbbf24"/>
-    <text x="290" y="410">dreaming 选策略</text>
+  <g font-size="12" fill="#967903" text-anchor="middle">
+    <rect x="322" y="236" width="96" height="26" rx="7" fill="#753612" stroke="#c38f09"/>
+    <text x="370" y="254" style="fill:#ffffff">探索 rollout</text>
+    <rect x="400" y="392" width="100" height="26" rx="7" fill="#753612" stroke="#c38f09"/>
+    <text x="450" y="410" style="fill:#ffffff">历史 → replay</text>
+    <rect x="240" y="392" width="100" height="26" rx="7" fill="#753612" stroke="#c38f09"/>
+    <text x="290" y="410" style="fill:#ffffff">dreaming 选策略</text>
   </g>
 
   <!-- ring legends -->
-  <text x="640" y="110" font-size="12" fill="#818cf8">外圈 · 经济飞轮（OpenAI《Building abundant intelligence》）</text>
-  <text x="640" y="205" font-size="12" fill="#2dd4bf">中圈 · 工程数据飞轮（人在环里看数据、改配方、重评估）</text>
-  <text x="640" y="240" font-size="12" fill="#fbbf24">内圈 · RSI（中圈的自动化版本：agent 对自身历史 replay）</text>
+  <text x="640" y="110" font-size="12" fill="#081591">外圈 · 经济飞轮（OpenAI《Building abundant intelligence》）</text>
+  <text x="640" y="205" font-size="12" fill="#26a696">中圈 · 工程数据飞轮（人在环里看数据、改配方、重评估）</text>
+  <text x="640" y="240" font-size="12" fill="#c38f09">内圈 · RSI（中圈的自动化版本：agent 对自身历史 replay）</text>
 
   <!-- ===== core metric ===== -->
   <circle cx="370" cy="340" r="62" fill="url(#core)" class="core"/>
-  <circle cx="370" cy="340" r="46" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
-  <text x="370" y="334" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">任务完成花费</text>
-  <text x="370" y="352" font-size="10.5" fill="#fde68a" text-anchor="middle">成功率 ÷ 成本</text>
+  <circle cx="370" cy="340" r="46" fill="#f6f8fb" stroke="#c38f09" stroke-width="1.5"/>
+  <text x="370" y="334" font-size="13" font-weight="700" fill="#c38f09" text-anchor="middle">任务完成花费</text>
+  <text x="370" y="352" font-size="10.5" fill="#967903" text-anchor="middle">成功率 ÷ 成本</text>
 
   <!-- ===== right panel ===== -->
   <g transform="translate(740,270)">
-    <rect x="0" y="0" width="390" height="150" rx="12" fill="#0f172a" stroke="#1e293b"/>
-    <text x="18" y="28" font-size="14" font-weight="700" fill="#e2e8f0">同一刻度，三层读法</text>
-    <circle cx="26" cy="54" r="5" fill="#818cf8"/>
-    <text x="40" y="58" font-size="12.5" fill="#cbd5e1">外圈：单位经济学——每完成一项任务花多少钱</text>
-    <circle cx="26" cy="82" r="5" fill="#2dd4bf"/>
-    <text x="40" y="86" font-size="12.5" fill="#cbd5e1">中圈：评估目标——reward = 成功率 / 成本</text>
-    <circle cx="26" cy="110" r="5" fill="#fbbf24"/>
-    <text x="40" y="114" font-size="12.5" fill="#cbd5e1">内圈：RSI 的优化对象——可验证 reward 的来源</text>
-    <text x="18" y="138" font-size="11.5" fill="#64748b">飞轮是 RSI 的宏观影子；RSI 是去掉人之后的飞轮</text>
+    <rect x="0" y="0" width="390" height="150" rx="12" fill="#f6f8fb" stroke="#f3f5f9"/>
+    <text x="18" y="28" font-size="14" font-weight="700" fill="#344965">同一刻度，三层读法</text>
+    <circle cx="26" cy="54" r="5" fill="#081591"/>
+    <text x="40" y="58" font-size="12.5" fill="#384b61">外圈：单位经济学——每完成一项任务花多少钱</text>
+    <circle cx="26" cy="82" r="5" fill="#26a696"/>
+    <text x="40" y="86" font-size="12.5" fill="#384b61">中圈：评估目标——reward = 成功率 / 成本</text>
+    <circle cx="26" cy="110" r="5" fill="#c38f09"/>
+    <text x="40" y="114" font-size="12.5" fill="#384b61">内圈：RSI 的优化对象——可验证 reward 的来源</text>
+    <text x="18" y="138" font-size="11.5" fill="#7a899f">飞轮是 RSI 的宏观影子；RSI 是去掉人之后的飞轮</text>
 
-    <rect x="0" y="170" width="390" height="130" rx="12" fill="#0f172a" stroke="#f43f5e" stroke-opacity="0.55"/>
-    <text x="18" y="198" font-size="14" font-weight="700" fill="#fb7185">安全阀：评估门控独立于优化目标</text>
-    <text x="18" y="224" font-size="12" fill="#cbd5e1">cost per task 直接当 RSI 目标 → Goodhart：省钱但降质</text>
-    <text x="18" y="246" font-size="12" fill="#cbd5e1">监控 / 评估不是附属环节，是内圈的刹车</text>
-    <text x="18" y="268" font-size="12" fill="#cbd5e1">验收分不动、优化 reward 单设（两本账分家）</text>
-    <text x="18" y="290" font-size="11" fill="#64748b" class="pulse">评估噪声是摆动主因——先把 reward 做稳，再让轮子转快</text>
+    <rect x="0" y="170" width="390" height="130" rx="12" fill="#f6f8fb" stroke="#bc102d" stroke-opacity="0.55"/>
+    <text x="18" y="198" font-size="14" font-weight="700" fill="#950419">安全阀：评估门控独立于优化目标</text>
+    <text x="18" y="224" font-size="12" fill="#384b61">cost per task 直接当 RSI 目标 → Goodhart：省钱但降质</text>
+    <text x="18" y="246" font-size="12" fill="#384b61">监控 / 评估不是附属环节，是内圈的刹车</text>
+    <text x="18" y="268" font-size="12" fill="#384b61">验收分不动、优化 reward 单设（两本账分家）</text>
+    <text x="18" y="290" font-size="11" fill="#7a899f" class="pulse">评估噪声是摆动主因——先把 reward 做稳，再让轮子转快</text>
   </g>
 
-  <text x="36" y="628" font-size="12" fill="#475569">区别的三个维度：人在不在环里 · 积累的是数据/资本还是能力本身 · 时间常数（季度 / 周 / 小时）</text>
+  <text x="36" y="628" font-size="12" fill="#7688a2">区别的三个维度：人在不在环里 · 积累的是数据/资本还是能力本身 · 时间常数（季度 / 周 / 小时）</text>
 </svg>
