@@ -1,7 +1,7 @@
 ---
 title: Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal
 created: 2026-11-24
-description: Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个 endpoint（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
+description: 视频模型榜单头部挤成一团、换榜名次就变；Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个 endpoint（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
 tags:
   - media-generation
   - video-generation
@@ -21,6 +21,23 @@ tags:
 视频还没到这一步，但方向已经很清楚。AI 短剧和 AI 电影类 app（红果这类平台上已经有大量 AI 生成的短剧）进入了量产阶段，质量参差不齐，量却在快速上来。之前在 [世界模型系列](../Embodied%20AI/世界模型系列05：像素路线与Cosmos.md) 里从"模拟世界"的角度讨论过视频生成，那是更大的话题；这个系列只站在**媒体生成**的角度，看现在能直接调用的视频模型各自能做什么、怎么接、怎么测。
 
 我平时的工作环境在 Azure 上，所以从 Microsoft Foundry 提供的视频模型入手。Sora 2 已经退役：OpenAI 的 Videos API 和全部 `sora-2` 版本在 2026-09-24 停止服务，Foundry 上最后一个 `sora-2` 版本（2025-12-08）的退役日是 2026-10-15。现在 Foundry 上的视频生成，换成了通过 fal 提供的五个模型。
+
+## 市面上的格局：看几张榜
+
+先看整个市场。视频模型目前主要靠人类盲评的 Elo 榜单来比较：同一个输入，两个模型各生成一段，评审选更好的那段，累计成分数。我把 Artificial Analysis 和 Design Arena 的几张榜放在一起，用同一个比例尺画出来：
+
+![视频生成模型榜单：换一张榜，名次就变|900](../../asset/media-gen-video-leaderboards-2026-11-24.svg)
+
+从这几张榜能读出四件事：
+
+- **头部挤成一团。** Artificial Analysis 文生视频榜前 8 名落在 25 分以内，每个模型的 95% 区间是 ±13 左右，彼此大面积重叠。第 1 名对第 8 名的预期胜率只有约 54%，这几名实际上分不出先后。
+- **换一张榜，名次就变。** Seedance 2.5 在 Artificial Analysis 图生视频榜和 Design Arena 多图生视频榜都是第一，在 Design Arena 图生视频榜却排第 8。H3 Max 在 Design Arena 图生视频榜第一，在 Artificial Analysis 两张榜上都排第 9。文生、图生、多图参考是不同的任务，评审人群和计分方式也不一样，不存在通吃的第一。
+- **头部基本是中国厂商。** 字节的 Seedance、阿里的 Wan、MiniMax 的 H3 和快手的 Kling 4.0 都在前列；Veo 3.1 已经落到 Kling 3.0 之后。
+- **Foundry 上这五个的位置并不整齐。** H3 Max 在头部集团里；Foundry 的 Kling v3 Pro 对应榜上的 Kling 3.0 Pro，在 Artificial Analysis 被固定为 1000 分的锚点，比头部低 160 分上下（对榜首的预期胜率不到三成），快手的新旗舰 Kling 4.0 还没上 Foundry；LTX 2.5 不在任何一张榜的前列。
+
+Elo 分数只能在同一张榜内比较：Artificial Analysis 以 Kling 3.0 Pro 为 1000 分锚点，Design Arena 从 1200 起算，两边的数字不能直接对照。读榜时我会先看三样东西：是哪个任务、什么时间、区间有多宽。差距落在区间以内的名次，我不当真。
+
+[《MiniMax H3 追到身后，留给 Seedance 的安全身位不多了》](https://www.tmtpost.com/8106194.html) 一文引用的是 Design Arena 多图生视频榜的截图。在那张榜上，两者差 45 分，换算成预期胜率约 56%。这个说法在那一个任务上成立；原图的柱子不从零画起，尾部几根又被压成一样高，看上去差距比实际大得多。
 
 ## 名字里为什么有 fal
 
@@ -137,3 +154,6 @@ This deployment does not support image-to-video or reference-to-video generation
 - [MiniMax H3 Max by fal](https://fal.ai/minimax-h3-max)
 - [MiniMax partners with fal.ai](https://www.minimax.io/news/minimax-partners-with-falai)
 - [About fal](https://fal.ai/about)
+- [AA-Video-T2V Leaderboard](https://artificialanalysis.ai/video/leaderboard/text-to-video)
+- [AA-Video-I2V Leaderboard](https://artificialanalysis.ai/video/leaderboard/image-to-video)
+- [DesignArena Image to Video Leaderboard](https://www.designarena.ai/leaderboard/image-to-video)

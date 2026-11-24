@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1130" width="1400" height="1130" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif"><style>.bg{fill:#0b1220}.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#e2e8f0;font-size:16px;font-weight:600}.t{fill:#cbd5e1;font-size:13.5px}.tg{fill:#94a3b8;font-size:13px}.m{font-size:13.5px}.v{fill:#94a3b8;font-size:13px}.ax{fill:#64748b;font-size:13px;text-anchor:middle}.axn{fill:#64748b;font-size:13px;text-anchor:end}.pul{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}</style>
+<rect class="bg" width="1400" height="1130" rx="16"/>
+<text class="title" x="30" y="44">视频生成模型榜单：换一张榜，名次就变</text>
+<text class="sub" x="30" y="72">人类盲评 Elo 的四张榜；同一个模型在文生、图生、多图参考上的名次差别很大，没有通吃的第一</text>
+<rect x="30" y="100" width="660" height="420" rx="12" fill="#0f1a2e" stroke="#334155"/>
+<text class="h" x="48" y="130">Artificial Analysis · 文生视频（含音频）</text><text class="tg" x="48" y="152">AA-Video-T2V v2.1 · Kling 3.0 Pro 固定为 1000 作锚点 · 2026-11-24 读取</text>
+<line x1="220.0" y1="170" x2="220.0" y2="476" stroke="#1e293b"/><text class="ax" x="220.0" y="496">900</text>
+<line x1="310.0" y1="170" x2="310.0" y2="476" stroke="#1e293b"/><text class="ax" x="310.0" y="496">1000</text>
+<line x1="400.0" y1="170" x2="400.0" y2="476" stroke="#1e293b"/><text class="ax" x="400.0" y="496">1100</text>
+<line x1="490.0" y1="170" x2="490.0" y2="476" stroke="#1e293b"/><text class="ax" x="490.0" y="496">1200</text>
+<line x1="580.0" y1="170" x2="580.0" y2="476" stroke="#1e293b"/><text class="ax" x="580.0" y="496">1300</text>
+<line x1="670.0" y1="170" x2="670.0" y2="476" stroke="#1e293b"/>
+<text class="axn" x="676" y="496">Elo →</text>
+<text class="m" x="48" y="193" style="fill:#cbd5e1">Wan 3.0</text>
+<line x1="220" y1="188" x2="468.4" y2="188" stroke="#1e293b" stroke-width="1"/>
+<line x1="456.70000000000005" y1="188" x2="480.1" y2="188" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="456.70000000000005" y1="183" x2="456.70000000000005" y2="193" stroke="#7dd3fc" opacity="0.6"/><line x1="480.1" y1="183" x2="480.1" y2="193" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="468.4" cy="188" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="494.4" y="193">1176 · 榜首</text>
+<text class="m" x="48" y="222" style="fill:#cbd5e1">Utopai X</text>
+<line x1="220" y1="217" x2="463.0" y2="217" stroke="#1e293b" stroke-width="1"/>
+<line x1="451.3" y1="217" x2="474.70000000000005" y2="217" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="451.3" y1="212" x2="451.3" y2="222" stroke="#7dd3fc" opacity="0.6"/><line x1="474.70000000000005" y1="212" x2="474.70000000000005" y2="222" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="463.0" cy="217" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="489.0" y="222">1170 · 胜率 49%</text>
+<text class="m" x="48" y="251" style="fill:#cbd5e1">MiniMax H3 (768p)</text>
+<line x1="220" y1="246" x2="454.9" y2="246" stroke="#1e293b" stroke-width="1"/>
+<line x1="443.20000000000005" y1="246" x2="466.6" y2="246" stroke="#f472b6" stroke-width="2.4" opacity="0.6"/><line x1="443.20000000000005" y1="241" x2="443.20000000000005" y2="251" stroke="#f472b6" opacity="0.6"/><line x1="466.6" y1="241" x2="466.6" y2="251" stroke="#f472b6" opacity="0.6"/>
+<circle cx="454.9" cy="246" r="5.5" fill="#f472b6"/>
+<text class="v" x="480.9" y="251">1161 · 胜率 48%</text>
+<text class="m" x="48" y="280" style="fill:#cbd5e1">Seedance 2.5</text>
+<line x1="220" y1="275" x2="452.20000000000005" y2="275" stroke="#1e293b" stroke-width="1"/>
+<line x1="440.5" y1="275" x2="463.9" y2="275" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="440.5" y1="270" x2="440.5" y2="280" stroke="#7dd3fc" opacity="0.6"/><line x1="463.9" y1="270" x2="463.9" y2="280" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="452.20000000000005" cy="275" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="478.20000000000005" y="280">1158 · 胜率 47%</text>
+<text class="m" x="48" y="309" style="fill:#cbd5e1">Gemini Omni Flash 1.2</text>
+<line x1="220" y1="304" x2="447.70000000000005" y2="304" stroke="#1e293b" stroke-width="1"/>
+<line x1="435.1" y1="304" x2="460.3" y2="304" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="435.1" y1="299" x2="435.1" y2="309" stroke="#7dd3fc" opacity="0.6"/><line x1="460.3" y1="299" x2="460.3" y2="309" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="447.70000000000005" cy="304" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="473.70000000000005" y="309">1153 · 胜率 47%</text>
+<text class="m" x="48" y="338" style="fill:#cbd5e1">HeyGen Video 1</text>
+<line x1="220" y1="333" x2="445.9" y2="333" stroke="#1e293b" stroke-width="1"/>
+<line x1="434.20000000000005" y1="333" x2="457.6" y2="333" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="434.20000000000005" y1="328" x2="434.20000000000005" y2="338" stroke="#7dd3fc" opacity="0.6"/><line x1="457.6" y1="328" x2="457.6" y2="338" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="445.9" cy="333" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="471.9" y="338">1151 · 胜率 46%</text>
+<text class="m" x="48" y="367" style="fill:#fde68a" font-weight="700">MiniMax H3 Max</text>
+<line x1="220" y1="362" x2="439.6" y2="362" stroke="#1e293b" stroke-width="1"/>
+<line x1="427.0" y1="362" x2="452.20000000000005" y2="362" stroke="#fbbf24" stroke-width="2.4" opacity="0.6"/><line x1="427.0" y1="357" x2="427.0" y2="367" stroke="#fbbf24" opacity="0.6"/><line x1="452.20000000000005" y1="357" x2="452.20000000000005" y2="367" stroke="#fbbf24" opacity="0.6"/>
+<circle class="pul" cx="439.6" cy="362" r="7" fill="#fbbf24"/>
+<text class="v" x="465.6" y="367">1144 · 胜率 45%</text>
+<text class="m" x="48" y="396" style="fill:#cbd5e1">Seedance 2.0</text>
+<line x1="220" y1="391" x2="430.6" y2="391" stroke="#1e293b" stroke-width="1"/>
+<line x1="418.9" y1="391" x2="442.3" y2="391" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="418.9" y1="386" x2="418.9" y2="396" stroke="#7dd3fc" opacity="0.6"/><line x1="442.3" y1="386" x2="442.3" y2="396" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="430.6" cy="391" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="456.6" y="396">1134 · 胜率 44%</text>
+<text class="m" x="48" y="425" style="fill:#cbd5e1">Kling 3.0 Pro</text>
+<line x1="220" y1="420" x2="310.0" y2="420" stroke="#1e293b" stroke-width="1"/>
+<rect x="305.0" y="415" width="10" height="10" fill="none" stroke="#a78bfa" stroke-width="2"/>
+<text class="v" x="322.0" y="425">1000 · 胜率 27%</text>
+<text class="m" x="48" y="454" style="fill:#cbd5e1">Veo 3.1</text>
+<line x1="220" y1="449" x2="276.7" y2="449" stroke="#1e293b" stroke-width="1"/>
+<line x1="264.1" y1="449" x2="289.3" y2="449" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="264.1" y1="444" x2="264.1" y2="454" stroke="#7dd3fc" opacity="0.6"/><line x1="289.3" y1="444" x2="289.3" y2="454" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="276.7" cy="449" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="302.7" y="454">963 · 胜率 23%</text>
+<rect x="710" y="100" width="660" height="420" rx="12" fill="#0f1a2e" stroke="#334155"/>
+<text class="h" x="728" y="130">Artificial Analysis · 图生视频（含音频）</text><text class="tg" x="728" y="152">AA-Video-I2V v2.1 · 同一锚点 · 2026-11-24 读取</text>
+<line x1="900.0" y1="170" x2="900.0" y2="476" stroke="#1e293b"/><text class="ax" x="900.0" y="496">900</text>
+<line x1="990.0" y1="170" x2="990.0" y2="476" stroke="#1e293b"/><text class="ax" x="990.0" y="496">1000</text>
+<line x1="1080.0" y1="170" x2="1080.0" y2="476" stroke="#1e293b"/><text class="ax" x="1080.0" y="496">1100</text>
+<line x1="1170.0" y1="170" x2="1170.0" y2="476" stroke="#1e293b"/><text class="ax" x="1170.0" y="496">1200</text>
+<line x1="1260.0" y1="170" x2="1260.0" y2="476" stroke="#1e293b"/><text class="ax" x="1260.0" y="496">1300</text>
+<line x1="1350.0" y1="170" x2="1350.0" y2="476" stroke="#1e293b"/>
+<text class="axn" x="1356" y="496">Elo →</text>
+<text class="m" x="728" y="193" style="fill:#cbd5e1">Seedance 2.5</text>
+<line x1="900" y1="188" x2="1134.9" y2="188" stroke="#1e293b" stroke-width="1"/>
+<line x1="1121.4" y1="188" x2="1148.4" y2="188" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1121.4" y1="183" x2="1121.4" y2="193" stroke="#7dd3fc" opacity="0.6"/><line x1="1148.4" y1="183" x2="1148.4" y2="193" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1134.9" cy="188" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1160.9" y="193">1161 · 榜首</text>
+<text class="m" x="728" y="222" style="fill:#cbd5e1">Utopai X</text>
+<line x1="900" y1="217" x2="1125.9" y2="217" stroke="#1e293b" stroke-width="1"/>
+<line x1="1113.3" y1="217" x2="1138.5" y2="217" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1113.3" y1="212" x2="1113.3" y2="222" stroke="#7dd3fc" opacity="0.6"/><line x1="1138.5" y1="212" x2="1138.5" y2="222" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1125.9" cy="217" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1151.9" y="222">1151 · 胜率 49%</text>
+<text class="m" x="728" y="251" style="fill:#cbd5e1">Seedance 2.0</text>
+<line x1="900" y1="246" x2="1116.9" y2="246" stroke="#1e293b" stroke-width="1"/>
+<line x1="1104.3" y1="246" x2="1129.5" y2="246" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1104.3" y1="241" x2="1104.3" y2="251" stroke="#7dd3fc" opacity="0.6"/><line x1="1129.5" y1="241" x2="1129.5" y2="251" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1116.9" cy="246" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1142.9" y="251">1141 · 胜率 47%</text>
+<text class="m" x="728" y="280" style="fill:#cbd5e1">MiniMax H3 (768p)</text>
+<line x1="900" y1="275" x2="1110.6" y2="275" stroke="#1e293b" stroke-width="1"/>
+<line x1="1098.0" y1="275" x2="1123.2" y2="275" stroke="#f472b6" stroke-width="2.4" opacity="0.6"/><line x1="1098.0" y1="270" x2="1098.0" y2="280" stroke="#f472b6" opacity="0.6"/><line x1="1123.2" y1="270" x2="1123.2" y2="280" stroke="#f472b6" opacity="0.6"/>
+<circle cx="1110.6" cy="275" r="5.5" fill="#f472b6"/>
+<text class="v" x="1136.6" y="280">1134 · 胜率 46%</text>
+<text class="m" x="728" y="309" style="fill:#cbd5e1">HeyGen Video 1</text>
+<line x1="900" y1="304" x2="1101.6" y2="304" stroke="#1e293b" stroke-width="1"/>
+<line x1="1089.0" y1="304" x2="1114.2" y2="304" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1089.0" y1="299" x2="1089.0" y2="309" stroke="#7dd3fc" opacity="0.6"/><line x1="1114.2" y1="299" x2="1114.2" y2="309" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1101.6" cy="304" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1127.6" y="309">1124 · 胜率 45%</text>
+<text class="m" x="728" y="338" style="fill:#fde68a" font-weight="700">MiniMax H3 Max</text>
+<line x1="900" y1="333" x2="1094.4" y2="333" stroke="#1e293b" stroke-width="1"/>
+<line x1="1081.8" y1="333" x2="1107.0" y2="333" stroke="#fbbf24" stroke-width="2.4" opacity="0.6"/><line x1="1081.8" y1="328" x2="1081.8" y2="338" stroke="#fbbf24" opacity="0.6"/><line x1="1107.0" y1="328" x2="1107.0" y2="338" stroke="#fbbf24" opacity="0.6"/>
+<circle class="pul" cx="1094.4" cy="333" r="7" fill="#fbbf24"/>
+<text class="v" x="1120.4" y="338">1116 · 胜率 44%</text>
+<text class="m" x="728" y="367" style="fill:#cbd5e1">Wan 3.0</text>
+<line x1="900" y1="362" x2="1088.1" y2="362" stroke="#1e293b" stroke-width="1"/>
+<line x1="1075.5" y1="362" x2="1100.7" y2="362" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1075.5" y1="357" x2="1075.5" y2="367" stroke="#7dd3fc" opacity="0.6"/><line x1="1100.7" y1="357" x2="1100.7" y2="367" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1088.1" cy="362" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1114.1" y="367">1109 · 胜率 43%</text>
+<text class="m" x="728" y="396" style="fill:#cbd5e1">Gemini Omni Flash 1.2</text>
+<line x1="900" y1="391" x2="1066.5" y2="391" stroke="#1e293b" stroke-width="1"/>
+<line x1="1053.0" y1="391" x2="1080.0" y2="391" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="1053.0" y1="386" x2="1053.0" y2="396" stroke="#7dd3fc" opacity="0.6"/><line x1="1080.0" y1="386" x2="1080.0" y2="396" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="1066.5" cy="391" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1092.5" y="396">1085 · 胜率 39%</text>
+<text class="m" x="728" y="425" style="fill:#cbd5e1">Kling 3.0 Pro</text>
+<line x1="900" y1="420" x2="990.0" y2="420" stroke="#1e293b" stroke-width="1"/>
+<rect x="985.0" y="415" width="10" height="10" fill="none" stroke="#a78bfa" stroke-width="2"/>
+<text class="v" x="1002.0" y="425">1000 · 胜率 28%</text>
+<text class="m" x="728" y="454" style="fill:#cbd5e1">Veo 3.1</text>
+<line x1="900" y1="449" x2="949.5" y2="449" stroke="#1e293b" stroke-width="1"/>
+<line x1="936.0" y1="449" x2="963.0" y2="449" stroke="#7dd3fc" stroke-width="2.4" opacity="0.6"/><line x1="936.0" y1="444" x2="936.0" y2="454" stroke="#7dd3fc" opacity="0.6"/><line x1="963.0" y1="444" x2="963.0" y2="454" stroke="#7dd3fc" opacity="0.6"/>
+<circle cx="949.5" cy="449" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="975.5" y="454">955 · 胜率 23%</text>
+<rect x="30" y="540" width="660" height="420" rx="12" fill="#0f1a2e" stroke="#334155"/>
+<text class="h" x="48" y="570">Design Arena · 图生视频</text><text class="tg" x="48" y="592">Bradley-Terry Elo，起点 1200，未给 Elo 区间 · 2026-11-17 更新</text>
+<line x1="220.0" y1="610" x2="220.0" y2="916" stroke="#1e293b"/><text class="ax" x="220.0" y="936">1000</text>
+<line x1="310.0" y1="610" x2="310.0" y2="916" stroke="#1e293b"/><text class="ax" x="310.0" y="936">1100</text>
+<line x1="400.0" y1="610" x2="400.0" y2="916" stroke="#1e293b"/><text class="ax" x="400.0" y="936">1200</text>
+<line x1="490.0" y1="610" x2="490.0" y2="916" stroke="#1e293b"/><text class="ax" x="490.0" y="936">1300</text>
+<line x1="580.0" y1="610" x2="580.0" y2="916" stroke="#1e293b"/><text class="ax" x="580.0" y="936">1400</text>
+<line x1="670.0" y1="610" x2="670.0" y2="916" stroke="#1e293b"/>
+<text class="axn" x="676" y="936">Elo →</text>
+<text class="m" x="48" y="633" style="fill:#fde68a" font-weight="700">MiniMax H3 Max</text>
+<line x1="220" y1="628" x2="507.1" y2="628" stroke="#1e293b" stroke-width="1"/>
+<circle class="pul" cx="507.1" cy="628" r="7" fill="#fbbf24"/>
+<text class="v" x="519.1" y="633">1319 · 榜首</text>
+<text class="m" x="48" y="662" style="fill:#cbd5e1">Kling 4.0</text>
+<line x1="220" y1="657" x2="505.3" y2="657" stroke="#1e293b" stroke-width="1"/>
+<circle cx="505.3" cy="657" r="5.5" fill="#a78bfa"/>
+<text class="v" x="517.3" y="662">1317 · 胜率 50%</text>
+<text class="m" x="48" y="691" style="fill:#cbd5e1">P-Video-2-Pro</text>
+<line x1="220" y1="686" x2="505.3" y2="686" stroke="#1e293b" stroke-width="1"/>
+<circle cx="505.3" cy="686" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="517.3" y="691">1317 · 胜率 50%</text>
+<text class="m" x="48" y="720" style="fill:#cbd5e1">HeyGen Video 1.0</text>
+<line x1="220" y1="715" x2="504.40000000000003" y2="715" stroke="#1e293b" stroke-width="1"/>
+<circle cx="504.40000000000003" cy="715" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="516.4000000000001" y="720">1316 · 胜率 50%</text>
+<text class="m" x="48" y="749" style="fill:#cbd5e1">Wan 3.0</text>
+<line x1="220" y1="744" x2="493.6" y2="744" stroke="#1e293b" stroke-width="1"/>
+<circle cx="493.6" cy="744" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="505.6" y="749">1304 · 胜率 48%</text>
+<text class="m" x="48" y="778" style="fill:#cbd5e1">MiniMax H3</text>
+<line x1="220" y1="773" x2="486.40000000000003" y2="773" stroke="#1e293b" stroke-width="1"/>
+<circle cx="486.40000000000003" cy="773" r="5.5" fill="#f472b6"/>
+<text class="v" x="498.40000000000003" y="778">1296 · 胜率 47%</text>
+<text class="m" x="48" y="807" style="fill:#cbd5e1">FLUX 3 Max</text>
+<line x1="220" y1="802" x2="485.5" y2="802" stroke="#1e293b" stroke-width="1"/>
+<circle cx="485.5" cy="802" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="497.5" y="807">1295 · 胜率 47%</text>
+<text class="m" x="48" y="836" style="fill:#cbd5e1">Seedance 2.5</text>
+<line x1="220" y1="831" x2="472.9" y2="831" stroke="#1e293b" stroke-width="1"/>
+<circle cx="472.9" cy="831" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="484.9" y="836">1281 · 胜率 45%</text>
+<text class="m" x="48" y="865" style="fill:#cbd5e1">Seedance 2.0</text>
+<line x1="220" y1="860" x2="457.6" y2="860" stroke="#1e293b" stroke-width="1"/>
+<circle cx="457.6" cy="860" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="469.6" y="865">1264 · 胜率 42%</text>
+<text class="m" x="48" y="894" style="fill:#cbd5e1">Gemini Omni 1.2 Flash</text>
+<line x1="220" y1="889" x2="415.3" y2="889" stroke="#1e293b" stroke-width="1"/>
+<circle cx="415.3" cy="889" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="427.3" y="894">1217 · 胜率 36%</text>
+<rect x="710" y="540" width="660" height="420" rx="12" fill="#0f1a2e" stroke="#334155"/>
+<text class="h" x="728" y="570">Design Arena · 多图生视频</text><text class="tg" x="728" y="592">钛媒体文章所引截图，未标日期；Kling 只有旧版本</text>
+<line x1="900.0" y1="610" x2="900.0" y2="916" stroke="#1e293b"/><text class="ax" x="900.0" y="936">1000</text>
+<line x1="990.0" y1="610" x2="990.0" y2="916" stroke="#1e293b"/><text class="ax" x="990.0" y="936">1100</text>
+<line x1="1080.0" y1="610" x2="1080.0" y2="916" stroke="#1e293b"/><text class="ax" x="1080.0" y="936">1200</text>
+<line x1="1170.0" y1="610" x2="1170.0" y2="916" stroke="#1e293b"/><text class="ax" x="1170.0" y="936">1300</text>
+<line x1="1260.0" y1="610" x2="1260.0" y2="916" stroke="#1e293b"/><text class="ax" x="1260.0" y="936">1400</text>
+<line x1="1350.0" y1="610" x2="1350.0" y2="916" stroke="#1e293b"/>
+<text class="axn" x="1356" y="936">Elo →</text>
+<text class="m" x="728" y="633" style="fill:#cbd5e1">Seedance 2.5</text>
+<line x1="900" y1="628" x2="1260.0" y2="628" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1260.0" cy="628" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1272.0" y="633">1400 · 榜首</text>
+<text class="m" x="728" y="662" style="fill:#cbd5e1">MiniMax H3</text>
+<line x1="900" y1="657" x2="1219.5" y2="657" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1219.5" cy="657" r="5.5" fill="#f472b6"/>
+<text class="v" x="1231.5" y="662">1355 · 胜率 44%</text>
+<text class="m" x="728" y="691" style="fill:#cbd5e1">Seedance 2.0</text>
+<line x1="900" y1="686" x2="1178.1" y2="686" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1178.1" cy="686" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1190.1" y="691">1309 · 胜率 37%</text>
+<text class="m" x="728" y="720" style="fill:#cbd5e1">Gemini Omni Flash</text>
+<line x1="900" y1="715" x2="1104.3" y2="715" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1104.3" cy="715" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1116.3" y="720">1227 · 胜率 27%</text>
+<text class="m" x="728" y="749" style="fill:#cbd5e1">Veo 3.1</text>
+<line x1="900" y1="744" x2="1101.6" y2="744" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1101.6" cy="744" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1113.6" y="749">1224 · 胜率 27%</text>
+<text class="m" x="728" y="778" style="fill:#cbd5e1">Wan 2.7</text>
+<line x1="900" y1="773" x2="1098.0" y2="773" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1098.0" cy="773" r="5.5" fill="#7dd3fc"/>
+<text class="v" x="1110.0" y="778">1220 · 胜率 26%</text>
+<text class="m" x="728" y="807" style="fill:#cbd5e1">Kling O1</text>
+<line x1="900" y1="802" x2="1020.6" y2="802" stroke="#1e293b" stroke-width="1"/>
+<circle cx="1020.6" cy="802" r="5.5" fill="#a78bfa"/>
+<text class="v" x="1032.6" y="807">1134 · 胜率 18%</text>
+<text class="m" x="728" y="836" style="fill:#cbd5e1">Kling v2.6 Pro</text>
+<line x1="900" y1="831" x2="865.8" y2="831" stroke="#1e293b" stroke-width="1"/>
+<circle cx="865.8" cy="831" r="5.5" fill="#a78bfa"/>
+<text class="v" x="877.8" y="836">962 · 胜率 7%</text>
+<rect x="30" y="980" width="1340" height="130" rx="10" fill="#0d1729" stroke="#64748b" stroke-dasharray="4 4"/>
+<circle cx="54" cy="1008" r="7" fill="#fbbf24"/><text class="t" x="68" y="1013">Foundry 上可用（H3 Max）</text>
+<circle cx="290" cy="1008" r="5.5" fill="#f472b6"/><text class="t" x="302" y="1013">MiniMax 官方基础版 H3</text>
+<circle cx="500" cy="1008" r="5.5" fill="#a78bfa"/><text class="t" x="512" y="1013">Kling（方框 = 该榜的 1000 分锚点；Foundry 上是 v3 Pro）</text>
+<circle cx="960" cy="1008" r="5.5" fill="#7dd3fc"/><text class="t" x="972" y="1013">其他模型；横线为 95% 区间</text>
+<text class="t" x="50" y="1042">四个面板用同一比例尺（每 100 Elo 等长），横向距离可以直接比较；纵轴是名次，不是数值，所以不存在“柱子从哪里起画”的问题。</text>
+<text class="t" x="50" y="1068">“胜率”是按 Elo 差换算的、对榜首的预期胜率：差 50 分约 43%，差 100 分约 36%。不同榜单的起点和锚点不同，分数只能在同一张榜内比较。</text>
+<text class="tg" x="50" y="1094">每张榜只取前列与 Foundry 相关的模型；LTX 2.5 在 Design Arena 图生视频榜有收录但不在前 20，Artificial Analysis 两张榜未见。</text>
+</svg>
