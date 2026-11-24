@@ -4,7 +4,7 @@
     "nodes": 178,
     "links": 792,
     "orphan_links_removed": 2,
-    "claims": 1111,
+    "claims": 1112,
     "categories": 14
   },
   "nodes": [
@@ -1741,18 +1741,18 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.7,
+      "avg_confidence": 0.69,
       "claims": [
         {
           "statement": "三大搜索工具互补而非可替代",
           "source": "Agent搜索三剑客：Exa、Tavily与Context7",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "Exa 用于深度语义研究，Tavily 用于实时事实搜索，Context7 用于版本特定技术文档。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 降级）**：Context7 专注版本化技术文档这一点仍成立；但 Exa 与 Tavily 的功能已大量重叠——两者都有搜索、整页抓取和多步研究，\"Exa 只做深度语义研究、Tavily 只做实时事实\"的分工已不准确，差别更多是检索风格与结果组织方式。选型时按具体任务对比结果质量与成本，而不是按产品标签分工。  原记录：Exa 用于深度语义研究，Tavily 用于实时事实搜索，Context7 用于版本特定技术文档。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：本轮未能核实 Exa/Tavily 当前定位（Tavily 限流）；仅确认 Context7 仍是文档检索 MCP https://github.com/upstash/context7"
+          "review": "2026-11-24 降级——依据：[exa-labs/exa-mcp-server](https://github.com/exa-labs/exa-mcp-server)（Exa 现提供搜索、抓取与多步研究）；本环境的 Tavily 工具同样提供 search、extract、crawl、map、research；[Context7](https://github.com/upstash/context7) 仍专注版本化技术文档（上轮已核）"
         },
         {
           "statement": "Agent 需要结构化内容而非链接列表",
@@ -1769,12 +1769,12 @@
           "statement": "Exa MCP Server 只是协议适配器",
           "source": "Agent搜索三剑客：Exa、Tavily与Context7",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.7,
-          "status": "stale",
-          "evidence": "真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.8,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 确认）**：官方仓库印证 MCP server 只是接入层，搜索、抓取与研究能力都在 Exa 的云端 API 后面（需要 API key，可连官方托管的远程 MCP 端点，也可以作为 Claude、Codex 插件安装）。工具面比原记录多了：`web_search_exa`、`web_fetch_exa`、`web_search_advanced_exa`，以及多步研究的 `agent_run`。  原记录：真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：本轮未查到 Exa 官方 MCP 实现说明（Tavily 限流）"
+          "review": "2026-11-24 确认——依据：[exa-labs/exa-mcp-server](https://github.com/exa-labs/exa-mcp-server)（官方仓库：托管 MCP 端点调用 Exa API，需 API key）；新的独立一手来源，置信度 +0.1"
         },
         {
           "statement": "agent 的外部工具栈可以分四层——检索层找最相关的信息、访问层去具体平台拿原始数据、描述层让 agent 知道工具怎么用、执行层跑命令；按\"要什么\"选层，而不是在 MCP 与 CLI 之间二选一",
@@ -2285,7 +2285,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 4,
-      "avg_confidence": 0.64,
+      "avg_confidence": 0.59,
       "claims": [
         {
           "statement": "Pencil 通过 MCP 实现 AI 主导设计",
@@ -2302,12 +2302,12 @@
           "statement": "Excalidraw 与 Draw.io 互补",
           "source": "在Obsidian中绘制Azure架构图",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.6,
-          "status": "stale",
-          "evidence": "推荐工作流：\"sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io\"。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 降级）**：\"先用 Excalidraw 草图、再用 Draw.io 出正式图\"是 2026-04 的做法。现在文章配图的做法是：流程、管线、时间线用带动画的 SVG，架构图与关系图默认用 Excalidraw，Draw.io 的 MCP 已于 2026-09-23 移除（弹窗打扰），只在本地保留，需要 Azure 官方图标时另用架构图 skill。两者\"互补\"作为一般判断仍可参考，但不再是这里的推荐流程。  原记录：推荐工作流：\"sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io\"。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：本轮未查到支持或反驳的证据；该 claim 为作者工作流推荐，vault 内未检索 Excalidraw/Draw.io 相关新文章"
+          "review": "2026-11-24 降级——依据：库内现行配图规范（流程、时间线类用动态 SVG，架构与关系图默认 Excalidraw）与 2026-09-23 移除 draw.io MCP 的记录；原推荐是 2026-04 的工作流"
         },
         {
           "statement": "AI 在画布上设计要有\"操作、截图、对照\"的闭环——先读画布状态、设计指南和可用组件，再批量操作、截图验证、重复；生成代码时沿用项目已有的框架与样式方案，颜色走 CSS 变量，并用截图对照设计稿",
@@ -3635,7 +3635,7 @@
       "id": "code-reuse-in-agent-era",
       "type": "concept",
       "title": "Code Reuse in Agent Era",
-      "summary": "Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角。现有框架（Superpowers、gstack、Compound Engineering）均未直接解决此问题。真正的解法是\"用架构约束让 agent 不得不复用\"——四层防线：CLAUDE.md 架构约束 > FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。",
+      "summary": "Coding Agent 存在结构性复用缺陷：每次会话倾向从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角。现有框架里，gstack 已在规划流程里内置复用检查（2026-11-24 复核），Superpowers 与 Compound Engineering 是否直接处理本轮未核对。真正的解法是\"用架构约束让 agent 不得不复用\"——四层防线：CLAUDE.md 架构约束 > FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。",
       "tags": [
         "wiki",
         "concept",
@@ -3646,41 +3646,52 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.77,
+      "claims_count": 4,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "Coding Agent 有结构性代码复用缺陷",
           "source": "Vibe-Coding系列07：Coding-Agent时代的代码复用|Vibe Coding系列07",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "每次会话倾向于从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角——它看到的是当前会话上下文，不是架构蓝图。",
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 确认）**：仍成立，且有了社区一手样本：Superpowers 用户报告连续两个计划里类型模型被一个任务一个任务地定下来，结构性问题要到整个分支评审时才暴露，修复耗时超过任务本身——agent 看到的是当前任务的上下文，不是整体蓝图。gstack 在规划类 skill 里专门加\"复用阶梯\"，也从侧面说明这是公认的问题。  原记录：每次会话倾向于从头实现功能而非复用已有代码，因为 agent 缺乏项目全局视角——它看到的是当前会话上下文，不是架构蓝图。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：未检索各 coding agent 当前代码复用能力，无本轮证据"
+          "review": "2026-11-24 确认——依据：[obra/superpowers#2587](https://github.com/obra/superpowers/issues/2587)（按任务逐块定型类型模型，结构问题到整体评审才暴露）；[gstack office-hours skill](https://github.com/garrytan/gstack/blob/main/office-hours/SKILL.md)、[plan-ceo-review skill](https://github.com/garrytan/gstack/blob/main/plan-ceo-review/SKILL.md)（专门加\"复用阶梯\"，说明问题被普遍承认）。证据间接，置信度不升"
         },
         {
           "statement": "现有框架均未直接解决代码复用",
           "source": "Vibe-Coding系列07：Coding-Agent时代的代码复用|Vibe Coding系列07",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "Superpowers、gstack、Compound Engineering 没有一个直接解决代码复用——CE 是知识复用不是代码复用，单人场景下 CE 与 Claude Code memory 基本等价。",
+          "status": "outdated",
+          "evidence": "**已退役（2026-11-24）**：对 gstack 不再成立——它的 office-hours、plan-ceo-review、design-review 等 skill 都写入了\"复用阶梯\"，方案模板有\"Reuses\"一栏。替代结论见同页下一条。Superpowers 与 Compound Engineering 是否直接处理代码复用，本轮没有核对，不作结论；\"CE 是知识复用不是代码复用\"一句仍可参考。  原记录：Superpowers、gstack、Compound Engineering 没有一个直接解决代码复用——CE 是知识复用不是代码复用，单人场景下 CE 与 Claude Code memory 基本等价。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：未检索各框架当前版本，无本轮证据"
+          "review": "2026-11-24 退役——依据：[gstack office-hours skill](https://github.com/garrytan/gstack/blob/main/office-hours/SKILL.md)、[plan-ceo-review skill](https://github.com/garrytan/gstack/blob/main/plan-ceo-review/SKILL.md)：gstack 的规划类 skill 已内置复用阶梯（写新代码前先停在第一个成立的台阶），方案模板要求列出复用的现有代码与模式。被下方\"gstack 已在规划流程里内置复用检查\"一条取代；Superpowers 与 Compound Engineering 本轮未查"
         },
         {
           "statement": "四层防线是代码复用的真正解法",
           "source": "Vibe-Coding系列07：Coding-Agent时代的代码复用|Vibe Coding系列07",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "不让 agent 自己学会复用，而是用架构约束让它不得不复用。四层：CLAUDE.md 架构约束（最关键）> FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。",
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 确认）**：思路不变——不指望 agent 自己学会复用，而是用约束让它不得不复用。其中\"在流程里嵌入复用检查\"这一层已有框架独立做到（gstack 的复用阶梯与方案模板里的\"复用了什么\"），印证了这一层的有效性；\"CLAUDE.md 架构约束最关键\"这一排序仍只有自己的实践支撑。  原记录：不让 agent 自己学会复用，而是用架构约束让它不得不复用。四层：CLAUDE.md 架构约束（最关键）> FEATURE.md 依赖边界 > Superpowers 流程嵌入复用检查 > Plugin 协作。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：解法主张，未查到本轮可验证证据"
+          "review": "2026-11-24 确认——依据：[gstack office-hours skill](https://github.com/garrytan/gstack/blob/main/office-hours/SKILL.md)、[plan-ceo-review skill](https://github.com/garrytan/gstack/blob/main/plan-ceo-review/SKILL.md)（把\"写新代码前先查可复用的\"嵌进规划流程，印证第三层\"流程嵌入复用检查\"）；四层整体仍是自己的主张，置信度不升"
+        },
+        {
+          "statement": "gstack 已在规划流程里内置复用检查——写新代码前先走\"复用阶梯\"，方案模板必须列出复用了哪些现有代码与模式",
+          "source": "",
+          "first_seen": "2026-11-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "gstack 的多个 skill（office-hours、plan-ceo-review、design-review）共用一段规矩：\"不熟悉的东西先搜再建\"，按\"久经考验的 → 新而流行的 → 第一性原理\"三层取舍，并且写新代码前沿着复用阶梯往下走、停在第一个成立的台阶；方案对比模板里每个方案都要写\"Reuses：利用了哪些现有代码或模式\"，范围统计也要把复用的代码算进去。这是把\"复用检查\"做成流程步骤，而不是靠 agent 自觉，与本页\"四层防线\"里的第三层同一思路。另外它的 `/learn` 把跨会话学到的项目模式、坑和偏好沉淀下来，属于知识复用。",
+          "evidence_type": "产品与服务",
+          "review": ""
         }
       ]
     },
@@ -4446,7 +4457,7 @@
       "id": "context-explosion",
       "type": "concept",
       "title": "Context Explosion",
-      "summary": "Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpec）面临的核心 scaling 问题。根因是一个错误的隐含假设：context = state。GSD 采用全量上下文拼接导致线性增长；Superpowers 的 subagent context 在大功能时也会爆炸；OpenSpec 的 Delta 模式只是将一次性爆 context 变成多次局部爆。正确做法是 state 外部存储 + context 按需投影（projection）。",
+      "summary": "Context 爆炸是当前所有 Spec/Workflow 框架（GSD、Superpowers、OpenSpec）面临的核心 scaling 问题。根因是一个错误的隐含假设：context = state。GSD 的规划与状态文档随计划增多而变长（执行层每个任务是全新的 subagent 上下文，2026-11-24 复核）；Superpowers 在大功能时主协调会话的上下文也会爆炸；OpenSpec 的 Delta 模式只是将一次性爆 context 变成多次局部爆。正确做法是 state 外部存储 + context 按需投影（projection）。",
       "tags": [
         "wiki",
         "concept",
@@ -4458,18 +4469,18 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 6,
-      "avg_confidence": 0.7,
+      "avg_confidence": 0.67,
       "claims": [
         {
           "statement": "GSD 采用全量上下文拼接模式",
           "source": "Vibe-Coding系列05：大项目落地困局|Vibe Coding系列05",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
-          "confidence": 0.8,
-          "status": "stale",
-          "evidence": "document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 降级）**：只对规划与状态文档这一层成立——ROADMAP、STATE 这类文档随计划增多而变长、要整体读入。执行层不是全量拼接：GSD 的 README 写明每个任务跑在全新的 subagent 上下文里（\"200k tokens purely for implementation\"），所以\"上下文随计划数线性增长\"不能套到执行阶段。项目已迁到新仓库继续开发（GSD Core），新版的上下文组织方式本轮没有核对。  原记录：document-centric 不是 bug 而是设计，但导致 context 随 plan 数线性增长、无选择加载、模型被迫同时做业务推理和文档解析。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据"
+          "review": "2026-11-24 降级——依据：[gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done) README（v1.3 起写明\"每个任务在全新的 subagent 上下文里执行\"）；仓库已标注迁移到新仓库 GSD Core，新版未核"
         },
         {
           "statement": "GSD 在 L3+ 项目中面临 context 爆炸，本质是 checklist pipeline 而非 skill system",
@@ -4483,26 +4494,26 @@
           "review": "2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据"
         },
         {
-          "statement": "Superpowers 的核心错位是\"用文本分解解决计算分解问题\"",
+          "statement": "Superpowers 的核心错位是\"用文本分解解决计算分解问题\"——大功能里不只 subagent，主协调会话的上下文也会爆",
           "source": "Vibe-Coding系列05：大项目落地困局|Vibe Coding系列05",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "subagent 的 context 在单个大功能时也会爆炸。",
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 修订）**：核心判断成立，但爆的位置要说准：subagent 每个任务一份新上下文，真正撑爆的是主协调会话——用户报告一个 15 个任务的移植（约 2000 行脚本），写计划时把已读过的源文件又读一遍、计划写成近 9 万字符并改了 37 次，执行时 15 个任务加评审变成 39 个 subagent，协调会话上下文涨到 83 万 token、撞了 5 次会话上限。另一个 issue 也指出计划文件本身被反复整份重读。文本分解只是把工作分给了 subagent，协调与评审的上下文仍在一个地方累积。  原记录：subagent 的 context 在单个大功能时也会爆炸。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据"
+          "review": "2026-11-24 修订——依据：[obra/superpowers#2612](https://github.com/obra/superpowers/issues/2612)（15 个任务移植约 2000 行脚本，主协调会话上下文涨到 83 万 token、撞了 5 次会话上限）；[obra/superpowers#512](https://github.com/obra/superpowers/issues/512)（计划文件被反复整份重读的开销）"
         },
         {
           "statement": "OpenSpec Delta 模式只是改变了爆炸时间分布",
           "source": "Vibe-Coding系列05：大项目落地困局|Vibe Coding系列05",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.7,
-          "status": "stale",
-          "evidence": "LLM 并不会真的\"只看 delta\"，delta 仍需还原语义上下文，从\"一次性爆 context\"变成\"多次局部爆 context\"。",
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 确认）**：仍成立。delta 只记变化，但 MODIFIED 必须写出完整的更新后需求，归档时还要按标题把 delta 合进主 spec——理解和合并都离不开原 spec 的语义上下文。维护者自己也在讨论\"确定性合并难以做好，合并应该交给 agent\"，等于承认合并这一步需要完整上下文。  原记录：LLM 并不会真的\"只看 delta\"，delta 仍需还原语义上下文，从\"一次性爆 context\"变成\"多次局部爆 context\"。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：未复核 GSD/Superpowers/OpenSpec 当前版本，无本轮证据"
+          "review": "2026-11-24 确认——依据：[Fission-AI/OpenSpec](https://github.com/Fission-AI/OpenSpec)（archive 时按需求标题把 ADDED / MODIFIED / REMOVED 确定性地合并进主 spec，MODIFIED 要写完整的更新后文本）；[OpenSpec#2033](https://github.com/Fission-AI/OpenSpec/issues/2033)（维护者在讨论确定性合并难以做好、改由 agent 合并）。证据间接，置信度不升"
         },
         {
           "statement": "所有框架共享错误假设 context = state",
@@ -10211,7 +10222,7 @@
       "method_type": null,
       "decision_status": null,
       "claims_count": 7,
-      "avg_confidence": 0.65,
+      "avg_confidence": 0.64,
       "claims": [
         {
           "statement": "qmd 与 Foundry IQ 定位不同",
@@ -10250,12 +10261,12 @@
           "statement": "Azure 企业级 LLM Wiki 架构——AI Search + CosmosDB Gremlin + OmniRAG 路由",
           "source": "2026-04-12-周日",
           "first_seen": "2026-04-12",
-          "last_updated": "2026-04-12",
-          "confidence": 0.5,
-          "status": "stale",
-          "evidence": "基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。",
+          "last_updated": "2026-11-24",
+          "confidence": 0.4,
+          "status": "active",
+          "evidence": "**现行结论（2026-11-24 降级）**：这套分工（AI Search 做语义检索、图数据库做关系遍历、复合查询先缩范围再精排）作为思路仍成立，但图这一层的产品选择变了——微软在 Gremlin 文档里把新的图分析与迁移需求引向 Fabric 里的 Graph（与 [[enterprise-ontology]] 里\"Fabric IQ Graph 是 LPG 引擎\"一条一致）。下面每月约 80~115 美元的成本是 2026-04 的估算，未按当前价格核实，不要直接引用。单一旧来源，置信度降到 0.4。  原记录：基于 Karpathy LLM Wiki 概念的 Azure 企业级方案：AI Search 做搜索主体（BM25 + Vector + 语义重排），CosmosDB Gremlin API 做 Entity/Relationship 存储与遍历（对应 Obsidian Graph View/Backlinks）。OmniRAG 路由——语义查询走 AI Search，关系查询走 Gremlin 图遍历，复合查询先图遍历缩小范围再 AI Search 精排。小规模成本 ~$80-115/月（AI Search Basic + CosmosDB Serverless）。",
           "evidence_type": "产品与服务",
-          "review": "2026-11-07 待定——依据：依据：Tavily 限流(429)，未能核到 AI Search Basic 与 Cosmos Gremlin 的当前价格和状态，~$80-115/月不能下结论"
+          "review": "2026-11-24 降级——依据：[Azure Cosmos DB for Apache Gremlin](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin) 仍在维护，但 [Gremlin limits](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/limits) 页提示新建 OLAP 图或迁移 Gremlin 应用时考虑 Graph in Microsoft Fabric；OmniRAG 的官方说明与成本数字本轮未核到"
         },
         {
           "statement": "检索质量的上限取决于让不让模型自己决定\"搜什么、读哪里、什么时候够\"——AgenticRAG 用 Search / Find / Open / Summarize 四个工具迭代检索，BRIGHT 上 R@1 从单次检索的 8.41% 升到 49.6%，无需训练",
@@ -15117,12 +15128,12 @@
           "statement": "新建 agent 默认是 GitHub Copilot harness 且建后不能与 Standard 互转——harness 是建 agent 时唯一的不可逆选择",
           "source": "Copilot-Studio系列03：四种Harness对比与选型",
           "first_seen": "2026-10-27",
-          "last_updated": "2026-10-29",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
           "status": "active",
-          "evidence": "New agent 下拉菜单四个入口正好对应四种 harness：Agent（GitHub Copilot，按钮默认动作）、Customer Assist Agent（Customer Conversation）、Microsoft Copilot agent（Copilot Chat，新标签页打开）、Agent（Standard，\"Other ways to build\" 最后一项）；菜单上的小硬币图标即按 Credits 计费。已有 agent 看 Agents 列表的 Powered by 列。名字（如 \"Voice Assistant\"）不代表 harness。",
+          "evidence": "**现行结论（2026-11-24 修订）**：harness 仍是建 agent 时最关键、不可逆的选择（本轮未见可以互转的说明）。但组成变了：官方现在列三种——Microsoft Copilot harness、Customer Conversation harness、Standard harness；下面\"四个入口对应四种 harness\"的菜单对照（含 Copilot Chat 一项）是 2026-10-27 的界面，界面可能已随口径变化，以实际菜单的 Powered by 为准。  原记录：New agent 下拉菜单四个入口正好对应四种 harness：Agent（GitHub Copilot，按钮默认动作）、Customer Assist Agent（Customer Conversation）、Microsoft Copilot agent（Copilot Chat，新标签页打开）、Agent（Standard，\"Other ways to build\" 最后一项）；菜单上的小硬币图标即按 Credits 计费。已有 agent 看 Agents 列表的 Powered by 列。名字（如 \"Voice Assistant\"）不代表 harness。",
           "evidence_type": "",
-          "review": ""
+          "review": "2026-11-24 修订——依据：[Harnesses in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)（官方现列三种：Microsoft Copilot、Customer Conversation、Standard）；\"建后不能互转\"本轮未见官方变更说明，维持；New agent 菜单四个入口的对照是 2026-10-27 的界面"
         },
         {
           "statement": "按任务重量选——简单任务用重 harness 会\"想太多\"，能用的 Standard 不必迁移；重活放 GitHub Copilot harness 在后台跑，经共享数据与前台 Standard 解耦",
@@ -17482,7 +17493,7 @@
       "source": "copilot-studio",
       "target": "agent-harness",
       "relation_type": "uses",
-      "description": "四种 harness 是建 agent 时的显式选项"
+      "description": "harness 是建 agent 时的显式选项（官方 2026-11 现列三种：Microsoft Copilot、Customer Conversation、Standard；2026-10 实测时为四种）"
     },
     {
       "source": "copilot-studio",
