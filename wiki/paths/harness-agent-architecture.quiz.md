@@ -1,7 +1,7 @@
 ---
 title: "题库：Harness 工程与 Agent 架构"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -47,6 +47,14 @@ path_id: "harness-agent-architecture"
 
 **出处**：[[agent-loop-architecture]]
 
+### Q5 · 解释
+
+**问**：Claude Code 收到一个请求后，循环会因为哪几种原因继续下去？工具层分哪两层？
+
+**答**：三种继续原因：模型返回 tool_use 要执行工具；输出被 max_tokens 截断要恢复；上下文超限要压缩后再继续。循环本身不做任何智能决策，什么时候调工具、什么时候结束都交给模型。工具层分两层：路由表只做"工具名到处理函数"的查表，新增工具不改循环；控制面决定怎么执行——路径安全检查、Bash 在沙箱里跑、写操作要确认、安全的批量并行而排他的串行。
+
+**出处**：[[agent-loop-architecture]]（Claim「一个请求不是一次模型调用而是一段多轮运行」）
+
 ## 第 2 站 · 上下文：从 prompt 到 context
 
 ### Q1 · 辨析
@@ -80,6 +88,22 @@ path_id: "harness-agent-architecture"
 **答**：全量上下文拼接模式在 L3+ 项目里必然 context 爆炸——它本质是 checklist pipeline 而不是 skill system，没有选择层（Selection Layer）按需取用。
 
 **出处**：[[context-explosion]]
+
+### Q6 · 辨析
+
+**问**："一篇论文说频繁压缩几乎不掉精度，另一篇说压缩明显有损，两者矛盾。"对吗？
+
+**答**：不矛盾，适用条件不同。CompAct-Bench 显示搜索类任务随压缩边界后移越压越差（52.9% → 34.6%），编码类反而变好（64.0% → 86.1%），因为编码的进度已经写进代码仓库，压缩丢的是历史不是状态；搜索的证据只在上下文里，压缩会漏掉甚至改写信息（把待定证据写成结论导致提前结束）。"频繁压缩几乎无损"那篇测的正是状态落在环境里的软件工程任务。工程上的做法是关键信息写文件；需要精确细节时用"压缩 + 只追加完整日志 + grep 取回"。
+
+**出处**：[[context-engineering]]（Claim「上下文压缩是否有损，取决于任务状态存在哪里」「压缩照做、另存一份只追加的完整日志」）
+
+### Q7 · 场景
+
+**问**：一个长会话里，agent 前面约定的规则后来被"忘掉"了，而且常常没做完就宣布完成。你从上下文管理的角度会怎么排查和调整？
+
+**答**：先看是不是上下文腐化：模型偏向开头和结尾，用量过半后更偏向末尾，中间的早期指令容易丢；"提前宣布完成"则是缺少外部验证纠正模型对完成度的高估。调整：要长期生效的规则放进每次都会重新注入的文件（根目录 CLAUDE.md 等），关键状态写文件而不是只留在对话里；分层加载，skill 按需触发、MCP 工具首次调用时再发现；按工作区停用用不到的 MCP server 和插件，插件禁用后其组件都不进上下文；完成与否交给测试或评审这类外部检查判断。
+
+**出处**：[[context-engineering]]（Claim「上下文能填满不代表应该填满」「Claude Code 的上下文按固定顺序组装」）
 
 ## 第 3 站 · Harness：一等系统层
 
@@ -115,6 +139,14 @@ path_id: "harness-agent-architecture"
 
 **出处**：[[harness-engineering]]
 
+### Q8 · 解释
+
+**问**：harness 不是 agent、prompt 或 workflow，那它是什么？它和 Agentic Engineering 是什么关系？
+
+**答**：harness 是一组持续回答五个问题的系统：任务怎么定义（Spec、Plan），状态怎么保存（制品、文件），上下文怎么控制（增量、重置），谁来判断好坏（评估、评审 agent），跑偏后怎么修（反馈回写到 Spec 或规则）。Agentic Engineering 是更大的学科：Harness Engineering 管"怎么控制 agent"，FinOps 管谁来治理成本，质量工程管成功率、级联失败和上下文腐化。人和 agent 的分工按 Delegate（委派调研、脚手架、测试、文档）→ Review（人审架构对齐与安全合规）→ Own（人拥有优先级、新抽象和生产签核）三档划。
+
+**出处**：[[harness-engineering]]（Claim「Agentic Engineering 是学科」「人和 agent 的分工按 Delegate → Review → Own 三档划」）
+
 ## 第 4 站 · 控制论视角
 
 ### Q1 · 辨析
@@ -148,6 +180,22 @@ path_id: "harness-agent-architecture"
 **答**：看有没有反馈闭环：控制系统会读取当前状态、和目标比较、根据误差调整；线性工具链只是按顺序执行，结果好坏不会回到下一步。
 
 **出处**：[[feedback-loop]]
+
+### Q9 · 辨析
+
+**问**："负反馈和 reward 都是反馈，只是形式不同。"对吗？
+
+**答**：不对，差在作用层级。负反馈是纠偏信号（u = -K × error），修正 prompt、工具、流程这些输入，当前一步就生效，不改模型；reward 是训练信号（θ ← θ + ∇reward），修正参数，作用在未来的行为分布上。所以 memory、RAG、self-reflection 都不改参数，属于快回路里的高级 harness，不是学习。判断一个机制是控制还是学习，看四条：改不改参数、时间尺度、有没有稳定性保证、目标是当前任务还是模型本身。
+
+**出处**：[[negative-feedback]]（Claim「负反馈和 reward 不是两种反馈形式」）、[[cybernetics-agent-design]]（Claim「判断一个机制属于控制还是学习看四条」）
+
+### Q10 · 场景
+
+**问**：用 coding agent 推进的项目越改越乱，团队想加更多 lint 和更高的测试覆盖率。按 Regulation-First 你会先问什么？
+
+**答**：先问被调节量是什么：在 Vibe Coding 里真正要维持稳定的是需求对齐度和功能可见性，代码质量、覆盖率、架构一致性都是调节器或观测工具，把手段当目标是最常见的调节失败。然后列扰动（理解偏差、需求模糊、多文件副作用等）、反馈通道和调节器，按诊断表定位："越改越乱"通常是调节器多样性不足，要增加机制的种类（Spec、UI 设计稿、模块边界、端到端测试等各对付一类扰动），而不是只加深同一类；约束本身过时了，则是缺少二阶调节，要定期更新 harness。
+
+**出处**：[[regulation-first-design]]
 
 ## 第 5 站 · 扩展机制：skill、MCP、hook
 
@@ -183,6 +231,14 @@ path_id: "harness-agent-architecture"
 
 **出处**：[[claude-code-extension-system]]
 
+### Q11 · 辨析
+
+**问**："第三方 skill 只是一份 Markdown，用规则或 LLM 扫一遍就安全了。"对吗？
+
+**答**：不对。SKILL.md 是被 agent 当指令读的文本，恶意指令可以藏在里面。在 80 个恶意、60 个正常 skill 的测试集上，YARA 和默认 Cisco Skill Scanner 召回 0.91，但正常 skill 里分别误报 49 个和 33 个；加上 LLM 分析后召回 0.85、误报 40 个，语义更强也没有换来更好的取舍；静态 + 动态 + agent 三段式加上执行期行为证据，同样召回下误报降到 5 个。只靠规则或只靠 LLM 都会大量误报。
+
+**出处**：[[skill-pattern]]（Claim「SKILL.md 是被 agent 当指令读的文本」）
+
 ## 第 6 站 · 工具与互操作协议
 
 ### Q1 · 辨析
@@ -216,6 +272,14 @@ path_id: "harness-agent-architecture"
 **答**：A2UI 传的是界面描述，UI 的 Data Model 不是业务数据的权威来源，客户端回传的数据不可信；安全审查重点从生成的代码转到组件白名单与操作授权。
 
 **出处**：[[a2ui-protocol]]
+
+### Q12 · 场景
+
+**问**：你的 agent 同时连着 GitHub MCP 和一个第三方 MCP server，任务都正常完成了。为什么仍然可能已经泄露了数据？
+
+**答**：Log-To-Leak 类攻击：恶意 server 在工具描述里写指令，让 agent 做完正常任务后再调用它提供的"保存日志"工具，把用户查询和其他 server 的响应一并传出去。18 组模型 × server 上攻击成功率 62.64%~100%，其中 16 组的正常任务完成率变化不超过 6.63 个百分点，所以从结果上看不出异常。提示夹心、LLM 元数据检查、IPIGuard 三种防御在 GitHub MCP + GPT-4o 上残余成功率仍在 55% 以上，指令检测器又把 85.53% 的正常描述判成可疑。结论是内容过滤防不住，次级工具调用要由宿主授权（比如在网关上按工具授权）。
+
+**出处**：[[model-context-protocol]]（Claim「工具描述本身就是注入入口」）
 
 ## 第 7 站 · 多 agent 与隔离
 
@@ -284,6 +348,14 @@ path_id: "harness-agent-architecture"
 **答**：微软的 Copilot harness：GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 里 `microsoft_copilot_preview` 托管 harness，是同一套。
 
 **出处**：[[github-copilot]]
+
+### Q13 · 解释
+
+**问**：为什么单报一个模型在 SWE 类基准上的分数、不说用的是什么 harness，信息是残缺的？
+
+**答**：Claw-SWE-Bench（v2）在统一的提示、预算、工作区和补丁提取下比较 7 个通用 harness × 3 个模型，每个配置跑三遍取平均：同样是 GLM 5.1，Pass@1 从 62.9% 到 73.1%，总成本从 86 美元到 525 美元；评测适配层本身也影响巨大，裸适配器只有 19.3%（69.1% 的补丁打不上），完整适配器 71.2%。另一个方向的证据是针对 pi harness 用强化学习训的 LoRA，在同一 harness 下大幅提升，但换 harness 是否保留收益没有给。模型和 harness 的成绩是成对的。
+
+**出处**：[[model-harness-codesign]]（Claim「评测开始把 harness 当受控变量」）
 
 ## 第 9 站 · 基础设施：三层与沙箱
 
