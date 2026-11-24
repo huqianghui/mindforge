@@ -345,7 +345,7 @@ path_id: "harness-agent-architecture"
 
 **问**：举一个"同一个 harness 跨产品复用"的例子。
 
-**答**：微软的 Copilot harness：GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 里 `microsoft_copilot_preview` 托管 harness，是同一套。
+**答**：微软的 Copilot harness：GitHub Copilot 的 agent loop、Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 里 `microsoft_copilot_preview` 托管 harness，是同一套。
 
 **出处**：[[github-copilot]]
 

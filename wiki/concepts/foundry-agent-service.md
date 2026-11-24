@@ -1,7 +1,7 @@
 ---
 title: "Foundry Agent Service"
 created: "2026-11-07"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -72,7 +72,7 @@ Foundry Agent Service（前身 Azure AI Agent Service）是 Azure 上的 **PaaS 
 - **置信度**：0.7
 - **状态**：active
 
-> Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，GitHub Copilot harness 可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像"每一层用谁"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。
+> Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，Microsoft Copilot harness（原 GitHub Copilot harness）可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像"每一层用谁"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。
 
 ### Claim: Foundry 的 skill 是文本而不是可执行代码，能不能用 skill、怎么装进上下文取决于 harness 归谁——换上 Copilot harness 的 Prompt Agent 才能直接挂 skill
 

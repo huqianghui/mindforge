@@ -99,7 +99,7 @@ GitHub Copilot、Copilot Studio、Foundry Agent Service 是微软 AI 技术栈�
 - **前置**：第 6 站
 - **用时**：约 1 小时
 - **算会**：
-  - 能说出官方现列的三种 harness（Microsoft Copilot、Customer Conversation、Standard）各管什么，以及为什么 harness 是建 agent 时唯一的不可逆选择；选型页与系列 03 按 2026-10 的四种写（Standard、GitHub Copilot、Copilot Chat、Customer Conversation），Microsoft Copilot harness 的职责对应原来的 GitHub Copilot harness，Copilot Chat 已不单列（官方页面没有写明改名）
+  - 能说出官方现列的三种 harness（Microsoft Copilot、Customer Conversation、Standard）各管什么，以及为什么 harness 是建 agent 时唯一的不可逆选择；选型页已按三种改写，系列 03 的正文是 2026-10 的四种口径（Standard、GitHub Copilot、Copilot Chat、Customer Conversation），开头有更新说明：Microsoft Copilot harness 的职责对应原来的 GitHub Copilot harness，Copilot Chat 已不单列（官方页面没有写明改名）
   - 能按任务重量给出选型建议，并说出"能否被应用同步调用"对当时实测的四种都是否
   - 能设计一个"确认真是 agent 在回答"的对照实验（指纹 + 两组对照）
 

@@ -1,7 +1,7 @@
 ---
 title: "Azure Copilot Ecosystem"
 created: "2026-04-11"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -151,7 +151,7 @@ Azure Copilot 生态包含三个层次：Azure Copilot Agents（Portal 内的 ag
 - **置信度**：0.7
 - **状态**：active
 
-> 三者的构建者、计费和治理各不相同：[[github-copilot]] 面向开发者，入口是 IDE / CLI / app / github.com，底座是 GitHub Enterprise 的策略与度量，按席位加 AI credits；[[copilot-studio]] 面向业务制作者与 fusion team，地基是 Power Platform 环境、Dataverse、Connector、DLP，按 Copilot Credits；[[foundry-agent-service]] 面向专业开发者，地基是 Azure 订阅、RBAC、私网，按量计费。把它们连起来的有两样：同一套 Copilot harness（GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness），以及治理面的 Entra Agent ID 与 Agent 365。大企业里三者常同时存在、分属不同团队，选型的重点是接缝处走哪条官方支持的路。
+> 三者的构建者、计费和治理各不相同：[[github-copilot]] 面向开发者，入口是 IDE / CLI / app / github.com，底座是 GitHub Enterprise 的策略与度量，按席位加 AI credits；[[copilot-studio]] 面向业务制作者与 fusion team，地基是 Power Platform 环境、Dataverse、Connector、DLP，按 Copilot Credits；[[foundry-agent-service]] 面向专业开发者，地基是 Azure 订阅、RBAC、私网，按量计费。把它们连起来的有两样：同一套 Copilot harness（GitHub Copilot 的 agent loop、Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 的 `microsoft_copilot_preview` 托管 harness），以及治理面的 Entra Agent ID 与 Agent 365。大企业里三者常同时存在、分属不同团队，选型的重点是接缝处走哪条官方支持的路。
 
 ## 冲突与演进
 

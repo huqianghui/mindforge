@@ -158,7 +158,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 - [[agent-sandbox]] — `constrains` 多租户平台上 harness 自身也当不可信，整个放进沙箱免确认运行
 - [[harness-portability-spectrum]] — `extends` 资产换 harness 能否存活；harness 与 runtime 是否绑死看"是不是平台自己的代码"
 - [[model-harness-codesign]] — `extends` 第一方绑定 vs 多模型适配
-- [[copilot-studio-harness-selection]] — `uses` Copilot Studio 四种 harness 的选型
+- [[copilot-studio-harness-selection]] — `uses` Copilot Studio 三种 harness 的选型
 - [[meta-harness]] — `extends` harness 优化被自动化为搜索问题
 - [[agent-infra-three-layers]] — `contrasts` harness 不单列一层，是 framework 搭出的成品、runtime 托管的进程
 - [[agent-platform]] — `contrasts` 调用方不应关心 agent 背后是哪个 harness

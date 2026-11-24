@@ -1,7 +1,7 @@
 ---
 title: "Agent Infrastructure Three Layers"
 created: "2026-11-04"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -55,7 +55,7 @@ related:
 - **置信度**：0.7
 - **状态**：active
 
-> "没有哪个产品是没有这些层，只是替你把其中几层定死了。"四个组合各有代表：自己搭 + 自己运营（MAF / LangGraph 跑在 kagent）、自己搭 + 平台托管（Foundry Hosted Agent）、现成 harness + 自己运营（Claude Code / OpenClaw 作为 kagent AgentHarness 或 Substrate actor）、现成 harness + 平台托管（Copilot Studio 的 GitHub Copilot harness）。其余"只能配置"的（Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation）harness 与 runtime 绑死，换 runtime 就要重写 agent。判断是否绑死只有一条：**harness 是不是平台自己的代码**。选型时先找到自己那一行，看被定死的格子里有没有将来一定要改的东西（隔离强度、出站策略、换模型、换编排）。
+> "没有哪个产品是没有这些层，只是替你把其中几层定死了。"四个组合各有代表：自己搭 + 自己运营（MAF / LangGraph 跑在 kagent）、自己搭 + 平台托管（Foundry Hosted Agent）、现成 harness + 自己运营（Claude Code / OpenClaw 作为 kagent AgentHarness 或 Substrate actor）、现成 harness + 平台托管（Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness））。其余"只能配置"的（Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation）harness 与 runtime 绑死，换 runtime 就要重写 agent。判断是否绑死只有一条：**harness 是不是平台自己的代码**。选型时先找到自己那一行，看被定死的格子里有没有将来一定要改的东西（隔离强度、出站策略、换模型、换编排）。
 
 ### Claim: 三层能不能换取决于层间接口——Framework↔Runtime 靠镜像、协议、外置状态；Runtime↔Platform 靠身份、网关、trace
 
@@ -85,7 +85,7 @@ related:
 - [[harness-engineering]] — `contrasts` harness 是贯穿 Framework 与 Runtime 的工程方法，三层划分讲的是部署层次
 - [[harness-portability-spectrum]] — `contrasts` 前者讲 harness 内部资产能否跨宿主迁移，本页讲 harness 被定在哪一层、能否换 runtime
 - [[foundry-agent-type-selection]] — `grounds` Prompt / Hosted 的分水岭正是 Runtime 层归属
-- [[copilot-studio-harness-selection]] — `grounds` Copilot Studio 四种 harness 落在锁定矩阵的不同格
+- [[copilot-studio-harness-selection]] — `grounds` Copilot Studio 的各个 harness 落在锁定矩阵的不同格
 - [[entra-agent-id]] — `uses` Runtime ↔ Platform 接口的身份一环
 
 ## 来源日记

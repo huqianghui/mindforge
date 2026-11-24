@@ -35,7 +35,7 @@ path_id: "microsoft-three-pillars"
 
 **问**：把三个支柱连起来的是哪两样东西？
 
-**答**：一是同一套 Copilot harness——GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness；二是治理面的 Entra Agent ID 与 Agent 365。
+**答**：一是同一套 Copilot harness——GitHub Copilot 的 agent loop、Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 的 `microsoft_copilot_preview` 托管 harness；二是治理面的 Entra Agent ID 与 Agent 365。
 
 **出处**：[[azure-copilot-ecosystem]]
 
@@ -271,15 +271,15 @@ path_id: "microsoft-three-pillars"
 
 **问**：为什么说 harness 是建 Copilot Studio agent 时唯一的不可逆选择？
 
-**答**：新建 agent 默认是 GitHub Copilot harness，建后不能与 Standard 互转；其他配置都能改，harness 改不了。
+**答**：harness 建后不能互转（2026-10 时新建 agent 默认是 GitHub Copilot harness，现称 Microsoft Copilot harness）；其他配置都能改，harness 改不了。
 
 **出处**：[[copilot-studio-harness-selection]]
 
 ### Q2 · 场景
 
-**问**：一个只需要按知识库回答 FAQ 的员工助手，同事建议"用新的 GitHub Copilot harness，更聪明"。你怎么看？
+**问**：一个只需要按知识库回答 FAQ 的员工助手，同事建议"用新的 Microsoft Copilot harness（原 GitHub Copilot harness），更聪明"。你怎么看？
 
-**答**：按任务重量选：简单任务用重 harness 会"想太多"，能用的 Standard 不必迁移；重活（自主拆解、要 Bash 容器）才放 GitHub Copilot harness。另外语音、程序化调用和多数渠道目前还在 Standard 上。
+**答**：按任务重量选：简单任务用重 harness 会"想太多"，能用的 Standard 不必迁移；重活（自主拆解、多步跨工具、处理文件）才放 Microsoft Copilot harness。另外语音、程序化调用和多数渠道目前还在 Standard 上。
 
 **出处**：[[copilot-studio-harness-selection]]、[[Foundry-Agent与Copilot-Studio的选型]]
 

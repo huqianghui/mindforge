@@ -1,7 +1,7 @@
 ---
 title: "微软 AI 三支柱怎么选与组合"
 created: "2026-11-08"
-updated: "2026-11-08"
+updated: "2026-11-24"
 tags:
   - wiki
   - decision
@@ -31,7 +31,7 @@ related_methods: []
 ### 选项 A: Copilot Studio
 
 - **优势**：业务团队与 fusion team 自己就能建和改；1000+ Connector、DLP、环境现成；员工在 M365 Copilot / Teams 里直接用；有 M365 Copilot 许可的内部用户用 Standard agent 可豁免 Credits（以租户计费设置为准）
-- **劣势**：运行时是黑盒；harness 建后不能互转；浏览器里的 managed app 同步调不到任何 harness 的 agent；按 Copilot Credits 计费，GitHub Copilot harness 不豁免；ALM 走 Solutions，与工程团队的 Git 流程是两套
+- **劣势**：运行时是黑盒；harness 建后不能互转；浏览器里的 managed app 同步调不到任何 harness 的 agent；按 Copilot Credits 计费，Microsoft Copilot harness（原 GitHub Copilot harness）不豁免；ALM 走 Solutions，与工程团队的 Git 流程是两套
 - **适用条件**：最终用户是员工、入口在 M365 / Teams、由业务团队长期维护、需要大量企业系统连接
 
 ### 选项 B: Foundry Prompt Agent（含 Prompt Agent + Microsoft Copilot harness）
@@ -106,7 +106,7 @@ related_methods: []
 - **状态**：active
 - **证据类型**：产品与服务
 
-> 浏览器里的 managed app 同步调不到任何 harness 的 agent；Copilot Studio 的语音只在 Standard harness 上，harness 建后不能互转；Copilot Studio 挂 Foundry agent 要求主 agent 是 GitHub Copilot harness、Foundry agent 开启 Activity 协议；Voice Live 的 agent 绑定只认 Prompt Agent 且必须 Entra 认证；数字人渲染只能来自 Azure Speech avatar；关闭公网的 Foundry project 不能从 portal 发布到 M365；managed app 只服务内部 Entra 用户。另有一票否决项：gpt-realtime 在 Global Standard 下可能在资源地域之外处理数据，严格驻留的客户要先过合规。
+> 浏览器里的 managed app 同步调不到任何 harness 的 agent；Copilot Studio 的语音只在 Standard harness 上，harness 建后不能互转；Copilot Studio 挂 Foundry agent 要求主 agent 是 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry agent 开启 Activity 协议；Voice Live 的 agent 绑定只认 Prompt Agent 且必须 Entra 认证；数字人渲染只能来自 Azure Speech avatar；关闭公网的 Foundry project 不能从 portal 发布到 M365；managed app 只服务内部 Entra 用户。另有一票否决项：gpt-realtime 在 Global Standard 下可能在资源地域之外处理数据，严格驻留的客户要先过合规。
 
 ### Claim: 大脑控制权分三档——不自控走 Copilot Studio 或 Prompt Agent，要 skill 不想持有 harness 加 Copilot harness，要改 loop 才上 Hosted
 
@@ -117,7 +117,7 @@ related_methods: []
 - **状态**：active
 - **证据类型**：产品与服务
 
-> 不需要自定义 planner、官方工具够用、治理是刚需 → Copilot Studio 的 harness 或 Foundry Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness（公开预览）；出现长期记忆、显式状态机、复杂多 agent、审批节点、跨模型路由、自定义 planner 任一信号 → Hosted Agent。Copilot Studio 内部的重活（自主拆解、Bash 容器、读写 Office 文件）放 GitHub Copilot harness。
+> 不需要自定义 planner、官方工具够用、治理是刚需 → Copilot Studio 的 harness 或 Foundry Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness（公开预览）；出现长期记忆、显式状态机、复杂多 agent、审批节点、跨模型路由、自定义 planner 任一信号 → Hosted Agent。Copilot Studio 内部的重活（自主拆解、沙箱执行、读写 Office 文件）放 Microsoft Copilot harness（原 GitHub Copilot harness）。
 
 ### Claim: 最常见的是三种组合——员工 + 客户双侧、重活下沉到 Foundry、同一个 agent 两个入口
 
@@ -128,7 +128,7 @@ related_methods: []
 - **状态**：active
 - **证据类型**：理论（长效）
 
-> 员工 + 客户双侧：员工助手用 Copilot Studio，客户侧语音用 Voice Live + Foundry Prompt Agent，两边的 agent 都在 Agent 365 里登记。重活下沉：Copilot Studio 的 GitHub Copilot harness 做编排，把需要自定义运行时的那一步交给 Foundry agent（connected agent），结果写回 Dataverse。同一个 agent 两个入口：一个 Foundry Prompt Agent 既发布到 Teams 给员工打字用，又被 Voice Live 绑定给网页语音用，prompt 和工具只维护一份。
+> 员工 + 客户双侧：员工助手用 Copilot Studio，客户侧语音用 Voice Live + Foundry Prompt Agent，两边的 agent 都在 Agent 365 里登记。重活下沉：Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）做编排，把需要自定义运行时的那一步交给 Foundry agent（connected agent），结果写回 Dataverse。同一个 agent 两个入口：一个 Foundry Prompt Agent 既发布到 Teams 给员工打字用，又被 Voice Live 绑定给网页语音用，prompt 和工具只维护一份。
 
 ### Claim: GitHub Copilot 在客户方案里的位置是开发者侧与代码平台——选型先问代码托管在哪、身份与设备用什么
 
@@ -139,7 +139,7 @@ related_methods: []
 - **状态**：active
 - **证据类型**：产品与服务
 
-> 代码在 GitHub、身份与设备用 Entra / Intune 时，Copilot 基本是开发者侧的默认选项：agent 本来就在 PR 里，身份、设备、审计不用另起。它和另外两个支柱通过同一套 Copilot harness 相连——Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness 都是同一套，所以"用 GitHub Copilot 的 harness 做业务 agent"的现实路径是 Foundry 托管 harness，而不是让业务用户用 GitHub Copilot。
+> 代码在 GitHub、身份与设备用 Entra / Intune 时，Copilot 基本是开发者侧的默认选项：agent 本来就在 PR 里，身份、设备、审计不用另起。它和另外两个支柱通过同一套 Copilot harness 相连——Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 的 `microsoft_copilot_preview` 托管 harness 都是同一套，所以"用 GitHub Copilot 的 harness 做业务 agent"的现实路径是 Foundry 托管 harness，而不是让业务用户用 GitHub Copilot。
 
 ### Claim: 和客户第一次沟通先问三个问题——用户从哪里进来、谁来建和维护、已经有哪些许可和底座
 

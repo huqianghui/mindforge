@@ -33,7 +33,7 @@ related:
 
 Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三类东西：**agent、workflow、app**。三者共享环境、Dataverse、Connector 与 DLP 这层地基，但运行时各不相同——agent 由所选 harness 决定跑在经典运行时、Agentic Runtime 还是 M365 Copilot 编排器里，app 跑在 [[copilot-managed-runtime]] 上。治理横跨 Microsoft 365 与 Power Platform 两个 admin center。
 
-它在本库的意义来自一次完整实践：给一个知识库 managed app 接 Copilot Studio agent 作问答后端，四种 harness 从浏览器里都同步调不到，期间一度误判"可行"；最后反过来，把同一批文章做成知识库 agent 发布到 Teams，由人直接使用。由此沉淀出三类知识：agent 的存储模型（Dataverse 行、YAML 配置）、调用边界（谁能调到 agent），以及"怎么确认真是 agent 在答"的验证方法。
+它在本库的意义来自一次完整实践：给一个知识库 managed app 接 Copilot Studio agent 作问答后端，当时的四种 harness 从浏览器里都同步调不到，期间一度误判"可行"；最后反过来，把同一批文章做成知识库 agent 发布到 Teams，由人直接使用。由此沉淀出三类知识：agent 的存储模型（Dataverse 行、YAML 配置）、调用边界（谁能调到 agent），以及"怎么确认真是 agent 在答"的验证方法。
 
 ## Claims
 
@@ -151,7 +151,7 @@ Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三
 - [[copilot-managed-runtime]] — `uses` Copilot Studio 用 Create apps 生成的应用跑在 Managed Runtime 上
 - [[foundry-agent-type-selection]] — `contrasts` Copilot Studio 是 Power Platform 上的 SaaS 构建产品，Foundry Agent Service 是 Azure 上的 agent 运行时，两者不在同一层
 - [[generation-evaluation-separation]] — `uses` "指纹 + 两组对照"是验证陈述纪律在 agent 路由上的应用
-- [[copilot-studio-harness-selection]] — `constrains` 新建默认 GitHub Copilot harness、建后不能互转，使 harness 选型成为建 agent 时的不可逆决策
+- [[copilot-studio-harness-selection]] — `constrains` harness 建后不能互转（2026-10 时新建默认 GitHub Copilot harness，现称 Microsoft Copilot harness），使 harness 选型成为建 agent 时的不可逆决策
 - [[github-copilot]] — `contrasts` 同一套 Copilot harness，GitHub Copilot 面向编码与代码平台，Copilot Studio 面向低代码业务 agent
 - [[foundry-agent-service]] — `contrasts` Copilot Studio 是 SaaS 构建产品，Foundry 是 PaaS 运行时，不在同一层，常分层组合
 - [[voice-agent-build-approach]] — `contrasts` 电话与数字人入口下 Copilot Studio 的能力边界

@@ -1,7 +1,7 @@
 ---
 title: "GitHub Copilot"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -60,7 +60,7 @@ GitHub Copilot 已经从 IDE 补全插件变成一套平台：入口有 IDE、CL
 - **置信度**：0.7
 - **状态**：active
 
-> ① 定制：skills、custom agents、MCP server / Connectors、plugin 进企业白名单市场，不写宿主程序。② 嵌入：Copilot SDK 在自己的应用里调同一个 harness；服务器到服务器认证（GitHub App 授只读 Copilot Requests 组织权限，installation token 交给 SDK）让后台服务不依赖登录用户调用，用量记组织名下、组织模型策略同样生效；VS Code 开放 Agent Host Protocol，自写客户端可共享同一实时 session。③ 托管：SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry Agent Service（公开预览），Microsoft 跑 agent loop 和沙箱，开发者声明式提供 skills、工具和指令。对"选 framework 还是选 harness"，微软的答案是把 harness 做成产品——与 Copilot Studio 新建 agent 默认的 GitHub Copilot harness 是同一套。
+> ① 定制：skills、custom agents、MCP server / Connectors、plugin 进企业白名单市场，不写宿主程序。② 嵌入：Copilot SDK 在自己的应用里调同一个 harness；服务器到服务器认证（GitHub App 授只读 Copilot Requests 组织权限，installation token 交给 SDK）让后台服务不依赖登录用户调用，用量记组织名下、组织模型策略同样生效；VS Code 开放 Agent Host Protocol，自写客户端可共享同一实时 session。③ 托管：SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry Agent Service（公开预览），Microsoft 跑 agent loop 和沙箱，开发者声明式提供 skills、工具和指令。对"选 framework 还是选 harness"，微软的答案是把 harness 做成产品——与 Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）是同一套。
 
 ### Claim: 团队级自动化有两条路——Automations 是产品内配置的功能，Agentic Workflows 是进仓库、走 PR、编译成 Actions YAML 的代码
 
