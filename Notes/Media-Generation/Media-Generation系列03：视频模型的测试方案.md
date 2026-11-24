@@ -172,17 +172,17 @@ notes: ""
 
 ### 第一批：五个模型的接入验证与能力抽样（2026-11-24）
 
-统一基线开跑之前，我先给每个模型挑了一个最能代表它的场景各跑一条，目的是确认整条链路——提交、轮询、取结果、下载、验片——在五个模型上都走得通，顺便看看各自的招牌能力长什么样。所以这批样片**任务互不相同、每条只跑一次**，不能拿来排质量、速度或成本的名次。系列 01、02 里引用的样片都出自这一批。表里的链接和下面的四帧封面都指向 MP4，在 GitHub 上点开会下载到本地播放。
+统一基线开跑之前，我先给每个模型挑了一个最能代表它的场景各跑一条，目的是确认整条链路——提交、轮询、取结果、下载、验片——在五个模型上都走得通，顺便看看各自的招牌能力长什么样。所以这批样片**任务互不相同、每条只跑一次**，不能拿来排质量、速度或成本的名次。系列 01、02 里引用的样片都出自这一批。表里的关键帧缩略图和下面的四帧封面都指向 MP4，在 GitHub 上点开会下载到本地播放。
 
-| 样片 | 模型 · 模式 | 请求 | 实际输出 | 接收→完成 | 结果 |
-|---|---|---|---|---|---|
-| [东京雨夜](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.mp4) | H3 Max Turbo · 文生 | 5 秒、768P、16:9 | 1344×768、24 fps、5.184 秒、有音轨 | 28 秒 | 人物、雨伞、反光和运镜与 Prompt 一致 |
-| [灯 + 杯参考](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.mp4) | H3 Max · 参考生 | 两张参考图，5 秒、768P、16:9 | 1344×768、24 fps、5.184 秒、有音轨 | 28 秒 | 两件产品的造型和颜色保留在新场景里 |
-| [灯具推镜](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.mp4) | LTX 2.5 Pro · 图生 | 首尾帧，720p、6 秒、25 fps、静音 | 1280×720、25 fps、6.000 秒、无音轨 | 54 秒 | 规格逐项兑现，构图按首尾帧变化 |
-| [瀑布长镜头](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.mp4) | LTX 2.5 Fast · 文生 | 720p、12 秒、24 fps、静音 | 1280×720、24 fps、12.000 秒、无音轨 | 81 秒 | 12 秒连续推进，地理关系稳定 |
-| [灯具推镜](../../asset/media-gen-sample-kling-start-end-2026-11-24.mp4) | Kling v3 Pro · 图生 | 首尾帧，3 秒、静音 | 1920×1080、24 fps、3.042 秒、无音轨 | 343 秒 | 首尾帧图生 API 可用 |
-| [分镜反例](../../asset/media-gen-sample-kling-storyboard-deviation-2026-11-24.mp4) | Kling v3 Pro · 文生 | `multi_prompt` 两个 4 秒镜头，中文对白 | 1920×1080、24 fps、8.042 秒、有音轨 | 371 秒 | 返回 COMPLETED，内容偏离分镜 |
-| [天文台对白](../../asset/media-gen-sample-kling-mandarin-dialogue-2026-11-24.mp4) | Kling v3 Pro · 文生 | 单段 Prompt，5 秒，中文对白 | 1920×1080、24 fps、5.042 秒、有音轨 | 187 秒 | 场景对，台词转写差一个字 |
+| 样片                                                                             | 模型 · 模式           | 请求                           | 实际输出                         | 接收→完成 | 结果                     |
+| ------------------------------------------------------------------------------ | ----------------- | ---------------------------- | ---------------------------- | ----- | ---------------------- |
+| [![东京雨夜\|280](../../asset/media-gen-sample-h3-turbo-tokyo-rain-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.mp4)<br>东京雨夜 | H3 Max Turbo · 文生 | 5 秒、768P、16:9                | 1344×768、24 fps、5.184 秒、有音轨  | 28 秒  | 人物、雨伞、反光和运镜与 Prompt 一致 |
+| [![灯 + 杯参考\|280](../../asset/media-gen-sample-h3-max-two-references-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.mp4)<br>灯 + 杯参考 | H3 Max · 参考生      | 两张参考图，5 秒、768P、16:9          | 1344×768、24 fps、5.184 秒、有音轨  | 28 秒  | 两件产品的造型和颜色保留在新场景里      |
+| [![灯具推镜\|280](../../asset/media-gen-sample-ltx-pro-start-end-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.mp4)<br>灯具推镜 | LTX 2.5 Pro · 图生  | 首尾帧，720p、6 秒、25 fps、静音       | 1280×720、25 fps、6.000 秒、无音轨  | 54 秒  | 规格逐项兑现，构图按首尾帧变化        |
+| [![瀑布长镜头\|280](../../asset/media-gen-sample-ltx-fast-12s-long-take-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.mp4)<br>瀑布长镜头 | LTX 2.5 Fast · 文生 | 720p、12 秒、24 fps、静音          | 1280×720、24 fps、12.000 秒、无音轨 | 81 秒  | 12 秒连续推进，地理关系稳定        |
+| [![灯具推镜\|280](../../asset/media-gen-sample-kling-start-end-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-kling-start-end-2026-11-24.mp4)<br>灯具推镜 | Kling v3 Pro · 图生 | 首尾帧，3 秒、静音                   | 1920×1080、24 fps、3.042 秒、无音轨 | 343 秒 | 首尾帧图生 API 可用           |
+| [![分镜反例\|280](../../asset/media-gen-sample-kling-storyboard-deviation-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-kling-storyboard-deviation-2026-11-24.mp4)<br>分镜反例 | Kling v3 Pro · 文生 | `multi_prompt` 两个 4 秒镜头，中文对白 | 1920×1080、24 fps、8.042 秒、有音轨 | 371 秒 | 返回 COMPLETED，内容偏离分镜    |
+| [![天文台对白\|280](../../asset/media-gen-sample-kling-mandarin-dialogue-thumb-2026-11-24.jpg)](../../asset/media-gen-sample-kling-mandarin-dialogue-2026-11-24.mp4)<br>天文台对白 | Kling v3 Pro · 文生 | 单段 Prompt，5 秒，中文对白           | 1920×1080、24 fps、5.042 秒、有音轨 | 187 秒 | 场景对，台词转写差一个字           |
 
 "接收→完成"是从请求被服务端接收，到第一次轮询看到 `COMPLETED` 的时间，含轮询间隔，不含下载，和前面定义的 `end_to_end` 不是同一个口径。实际输出的分辨率、帧率和时长都用 ffprobe 从 MP4 读出，不是请求里填的值。
 
