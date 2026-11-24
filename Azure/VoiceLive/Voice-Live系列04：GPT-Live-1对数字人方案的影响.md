@@ -26,9 +26,7 @@ description: 以 2026-09 Voice Live 培训的四路线架构图为骨架：级�
 ![Azure Voice Live 培训架构图：四条路线总览|700](../../asset/voice-live-four-routes-training-2026-09-18.png)
 
 > **补充（2026-10-01 实测）**：图上「接口」那一行的四种接入方式是**平台能力**，与 endpoint 类型无关；但它们与
-> 「输出」那一格的**数字人互斥**。把 WebRTC 这一项落到实际链路上逐条测过，结论如下图与两张表。
-
-![Voice Live 三条音频通路：谁能走 WebRTC、谁能带数字人|780](../../asset/voice-live-transport-matrix-2026-10-01.svg)
+> 「输出」那一格的**数字人互斥**。把 WebRTC 这一项落到实际链路上逐条测过，结论如下面两张表。
 
 **通路矩阵**（实测，真 Azure、自有区域资源）：
 

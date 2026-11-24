@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
   <defs>
     <style>
-      .bg { fill: #0f172a; }
-      .title { fill: #e2e8f0; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lane { fill: #111c33; stroke: #1e293b; stroke-width: 1.5; }
-      .laneTitle { fill: #e2e8f0; font-size: 17px; font-weight: 700; }
-      .laneNote { fill: #94a3b8; font-size: 13px; }
-      .step { fill: #fbbf24; font-size: 15px; font-weight: 700; }
-      .label { fill: #e2e8f0; font-size: 15px; }
-      .small { fill: #cbd5e1; font-size: 13px; }
-      .muted { fill: #64748b; font-size: 13px; }
-      .cand { fill: #134e4a; stroke: #2dd4bf; stroke-width: 1.5; }
-      .candRelay { fill: #1e293b; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 5 4; }
-      .center { fill: #1e293b; stroke: #334155; stroke-width: 1.5; }
-      .win { fill: #422006; stroke: #fbbf24; stroke-width: 2; }
-      .flow { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
-      .flowBack { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dashBack 1.2s linear infinite; }
-      .planned { stroke: #334155; stroke-width: 2; fill: none; stroke-dasharray: 6 6; }
-      .media { stroke: #fbbf24; stroke-width: 4; fill: none; stroke-dasharray: 14 8; animation: dash 0.9s linear infinite; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #344965; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .lane { fill: #f2f4fb; stroke: #f3f5f9; stroke-width: 1.5; }
+      .laneTitle { fill: #344965; font-size: 17px; font-weight: 700; }
+      .laneNote { fill: #5e718d; font-size: 13px; }
+      .step { fill: #c38f09; font-size: 15px; font-weight: 700; }
+      .label { fill: #344965; font-size: 15px; }
+      .small { fill: #384b61; font-size: 13px; }
+      .muted { fill: #7a899f; font-size: 13px; }
+      .cand { fill: #f1fbfa; stroke: #26a696; stroke-width: 1.5; }
+      .candRelay { fill: #f3f5f9; stroke: #7a899f; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .center { fill: #f3f5f9; stroke: #7087a9; stroke-width: 1.5; }
+      .win { fill: #fbf5f1; stroke: #c38f09; stroke-width: 2; }
+      .flow { stroke: #26a696; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dash 1.2s linear infinite; }
+      .flowBack { stroke: #26a696; stroke-width: 2.5; fill: none; stroke-dasharray: 10 8; animation: dashBack 1.2s linear infinite; }
+      .planned { stroke: #7087a9; stroke-width: 2; fill: none; stroke-dasharray: 6 6; }
+      .media { stroke: #c38f09; stroke-width: 4; fill: none; stroke-dasharray: 14 8; animation: dash 0.9s linear infinite; }
       .pulse { animation: pulse 2s ease-in-out infinite; }
       @keyframes dash { to { stroke-dashoffset: -36; } }
       @keyframes dashBack { to { stroke-dashoffset: 36; } }
@@ -61,10 +61,10 @@
   <!-- step 2 signaling -->
   <text class="step" x="365" y="315">② 信令交换：WS 上一次性的 offer / answer</text>
   <path class="flow" d="M 330 360 L 870 360"/>
-  <circle r="6" fill="#2dd4bf"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 330 360 L 870 360"/></circle>
+  <circle r="6" fill="#26a696"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 330 360 L 870 360"/></circle>
   <text class="small" x="440" y="343">offer：我的候选 → 对端的 remote candidates</text>
   <path class="flowBack" d="M 870 385 L 330 385"/>
-  <circle r="6" fill="#2dd4bf"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 870 385 L 330 385"/></circle>
+  <circle r="6" fill="#26a696"><animateMotion dur="2.4s" repeatCount="indefinite" path="M 870 385 L 330 385"/></circle>
   <text class="small" x="440" y="402">answer：对端的候选 → 我的 remote candidates</text>
 
   <!-- step 3 pairs -->
@@ -79,7 +79,7 @@
   <!-- step 4 checks -->
   <text class="step" x="365" y="620">④ 双向 STUN 检测　⑤ controlling 选定 → DTLS-SRTP 媒体</text>
   <path class="media" d="M 330 648 L 870 648"/>
-  <circle r="7" fill="#fbbf24"><animateMotion dur="1.6s" repeatCount="indefinite" path="M 870 648 L 330 648"/></circle>
+  <circle r="7" fill="#c38f09"><animateMotion dur="1.6s" repeatCount="indefinite" path="M 870 648 L 330 648"/></circle>
   <text class="small" x="440" y="670">选定后：约每 5 秒复核对端同意、定期保活、换网走 ICE restart</text>
 
   <!-- side notes -->
