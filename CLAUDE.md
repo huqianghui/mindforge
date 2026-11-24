@@ -119,8 +119,8 @@ The vault includes a **Personal Knowledge Wiki** (`wiki/`) following the Karpath
 2. **Single-Writer** — All file I/O to `wiki/` goes through sequential command pipelines. Never have multiple agents write to the same file simultaneously.
 3. **Claim-based Schema** — Knowledge is structured as assertions with evidence, confidence scores (0.0~1.0), and lifecycle status (active/conflicting/outdated/stale).
 4. **Incremental Evolution** — Wiki pages evolve through repeated extraction and review cycles. Don't try to build a complete knowledge base in one pass.
-5. **Atomic Concept Extraction** — 提取知识时，不仅提取复合/应用层概念，还必须识别**重要的技术性原子概念**并独立建页。判断标准（需同时满足）：① 在文章中被**定义或深入解释**（而非仅提及）；② 是某技术领域的**基础性概念**（如"控制论"、"负反馈"、"RAG"），而非通用术语（如 API、JSON）或非技术概念；③ 被 2+ 篇文章引用或作为其他概念页的理论基础。宁缺勿滥——不确定时不建页。
-6. **书和论文都是个人知识，必须入库**（2026-11-24 用户要求："把 book 和论文等等内容，都需要包括进去。因为它们都是我个人的知识"）——`book/`、`paper/` 里的每一篇都要提取进 wiki，**不得**以"非技术领域"、"与技术图谱关联弱"为由不进 wiki 或登记覆盖豁免；上一条"技术领域基础性概念"只约束是否单独建原子概念页，不约束是否提取 Claim。领域在 wiki 里还没有页时，建领域根页并在 index 新增分类。每次 `/extract-knowledge` 都检查书和论文的抽取厚度（长文只抽了一两条的要补）。2026-11-23 曾把魏斯曼读书笔记判为不进 wiki，被用户纠正。
+5. **Atomic Concept Extraction** — 提取知识时，不仅提取复合/应用层概念，还必须识别**重要的原子概念**并独立建页。判断标准（需同时满足）：① 在文章中被**定义或深入解释**（而非仅提及）；② 是某个领域（技术、哲学、认知、表达都算）的**基础性概念**（如"控制论"、"负反馈"、"RAG"、"本体论"），而非通用术语（如 API、JSON）；③ 被 2+ 篇文章引用或作为其他概念页的理论基础。宁缺勿滥——不确定时不建页。
+6. **书、论文、文章按同一标准提取**（2026-11-24 用户要求）——三类都是认识世界的一部分，最终都是为了提升人的能力和认知水平；技术是手段和路径，不是目的，也不是全部。用户原话："书，论文，文章都按照统一标准来处理……技术是手段是路径，不是目的不是全部。"执行上：① 同一套提取、建页、复核标准适用于 `Notes/` `Azure/` `product/` 的文章与 `book/` `paper/`，**不得**以"非技术领域""与技术图谱关联弱"为由不提取或登记覆盖豁免；② 技术论点着墨多，是因为它发展快、是专业领域、文章本身也聚焦技术，这是**篇幅上的差别，不是对待上的差别**；哲学、认知、表达这类内容同样完整提取，领域在 wiki 里还没有页时建领域根页、index 新增分类；③ 每次 `/extract-knowledge` 都按同一把尺子检查抽取厚度，长文只抽了一两条的要补，不分来源目录。2026-11-23 曾把魏斯曼读书笔记判为非技术而不进 wiki，11-24 被纠正；随后把规则写成"书和论文要特殊照顾"，再次被纠正为"统一标准"。
 
 ### Knowledge Ingest Workflow
 
