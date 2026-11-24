@@ -1,7 +1,7 @@
 ---
 title: "模型路由（Model Routing）"
 created: "2026-06-29"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -22,6 +22,8 @@ related:
   - "[[mcp-vs-cli]]"
   - "[[rtk-token-compression]]"
   - "[[three-layer-token-optimization]]"
+  - "[[system-one-model]]"
+  - "[[cost-per-task]]"
 ---
 
 # 模型路由（Model Routing）

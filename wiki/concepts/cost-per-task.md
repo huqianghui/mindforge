@@ -1,7 +1,7 @@
 ---
 title: "任务完成花费（Cost per Task）"
 created: "2026-09-28"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -23,6 +23,8 @@ related:
   - "[[hybrid-inference-framework-selection]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[reward-design-three-inputs]]"
+  - "[[three-layer-token-optimization]]"
+  - "[[bitter-lesson]]"
 ---
 
 # 任务完成花费（Cost per Task）

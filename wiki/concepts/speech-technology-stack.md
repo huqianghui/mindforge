@@ -15,6 +15,8 @@ related:
   - "[[intelligent-dictation]]"
   - "[[realtime-protocol-selection]]"
   - "[[voice-live-agent]]"
+  - "[[viseme]]"
+  - "[[end-of-turn-detection]]"
 ---
 
 # Speech Technology Stack

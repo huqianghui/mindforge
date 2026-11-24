@@ -22,6 +22,7 @@ related:
   - "[[copilot-studio-harness-selection]]"
   - "[[agent-sandbox]]"
   - "[[credential-out-of-sandbox]]"
+  - "[[generation-evaluation-separation]]"
 ---
 
 # Copilot Managed Runtime（M365 企业内 SPA 托管平台）

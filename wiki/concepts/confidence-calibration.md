@@ -1,7 +1,7 @@
 ---
 title: "置信度校准（Confidence Calibration）"
 created: "2026-09-28"
-updated: "2026-09-28"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -19,7 +19,6 @@ related:
   - "[[system-one-model]]"
   - "[[cost-per-task]]"
   - "[[harness-quality-gate]]"
-  - "[[llm-as-a-judge]]"
   - "[[generation-evaluation-separation]]"
   - "[[reinforcement-learning]]"
 ---

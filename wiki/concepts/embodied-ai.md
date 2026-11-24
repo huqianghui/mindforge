@@ -1,7 +1,7 @@
 ---
 title: "Embodied AI（具身智能）"
 created: "2026-09-25"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ related:
   - "[[spatial-intelligence]]"
   - "[[agent-loop-architecture]]"
   - "[[cybernetics-agent-design]]"
+  - "[[scaling-laws]]"
 ---
 
 # Embodied AI（具身智能）

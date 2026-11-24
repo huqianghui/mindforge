@@ -15,6 +15,7 @@ related_concepts:
   - "[[copilot-studio]]"
   - "[[foundry-agent-service]]"
   - "[[github-copilot]]"
+  - "[[entra-agent-id]]"
 related_methods: []
 ---
 

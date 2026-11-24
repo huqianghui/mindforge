@@ -1,7 +1,7 @@
 ---
 title: "数据飞轮（Data Flywheel）"
 created: "2026-09-28"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -21,6 +21,7 @@ related:
   - "[[bitter-lesson]]"
   - "[[skillopt]]"
   - "[[generation-evaluation-separation]]"
+  - "[[reward-design-three-inputs]]"
 ---
 
 # 数据飞轮（Data Flywheel）
@@ -109,6 +110,7 @@ related:
 - [[reinforcement-learning]] — `uses` 内圈 RSI 几乎只能建立在 RLVR 式可验证信号之上；RLHF 式主观分对应左栏、在离线回放中无法重新获得
 - [[bitter-lesson]] — `extends` 金字塔 doing the right task 把 Bitter Lesson 再推一层：飞轮与 RSI 都不能纠正任务选错
 - [[skillopt]] — `uses` `best_skill.md` 是 RSI 积累"能力本身"这类资产的具体形态；bad-case mining 是中圈到内圈的同一循环
+- [[generation-evaluation-separation]] — `uses` 内圈加速的刹车：判分的评估器不能与被优化策略共享目标函数
 
 ## 关联方法
 

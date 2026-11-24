@@ -1,7 +1,7 @@
 ---
 title: "Agent Platform"
 created: "2026-11-16"
-updated: "2026-11-23"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -29,6 +29,7 @@ related:
   - "[[copilot-studio]]"
   - "[[foundry-agent-service]]"
   - "[[copilot-managed-runtime]]"
+  - "[[reconciliation-loop]]"
 ---
 
 # Agent Platform（Agent 平台）

@@ -1,7 +1,7 @@
 ---
 title: "Action Chunking（动作块）"
 created: "2026-09-25"
-updated: "2026-09-25"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
 related:
   - "[[vision-language-action-model]]"
   - "[[agent-loop-architecture]]"
+  - "[[diffusion-model]]"
 ---
 
 # Action Chunking（动作块）
@@ -62,6 +63,7 @@ related:
 
 - [[vision-language-action-model]] — `part-of` VLA 连续动作头的输出单位
 - [[agent-loop-architecture]] — `extends` "块内一次联合生成 + 块间拿 observation 重规划"是 agent loop 在高频控制域的实例化
+- [[diffusion-model]] — `uses` 块内几十步动作由扩散 / flow matching 一次联合去噪生成
 
 ## 来源日记
 

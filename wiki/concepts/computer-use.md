@@ -18,6 +18,7 @@ related:
   - "[[skill-runtime]]"
   - "[[harness-portability-spectrum]]"
   - "[[vision-language-action-model]]"
+  - "[[system-one-model]]"
 ---
 
 # Computer Use

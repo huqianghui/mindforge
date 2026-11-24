@@ -1,7 +1,7 @@
 ---
 title: "过程奖励模型（PRM, Process Reward Model）"
 created: "2026-08-04"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -18,6 +18,7 @@ related:
   - "[[generation-evaluation-separation]]"
   - "[[reinforcement-learning]]"
   - "[[rejection-sampling-finetuning]]"
+  - "[[reward-design-three-inputs]]"
 ---
 
 # 过程奖励模型（PRM, Process Reward Model）

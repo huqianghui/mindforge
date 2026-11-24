@@ -1,7 +1,7 @@
 ---
 title: "语音 Agent 的构建方式"
 created: "2026-11-08"
-updated: "2026-11-08"
+updated: "2026-11-24"
 tags:
   - wiki
   - decision
@@ -13,8 +13,10 @@ related_concepts:
   - "[[voice-live-agent]]"
   - "[[foundry-agent-service]]"
   - "[[copilot-studio]]"
+  - "[[turn-taking]]"
 related_methods:
   - "[[voice-cascaded-pipeline]]"
+  - "[[weak-network-adaptive-degradation]]"
 ---
 
 # 语音 Agent 的构建方式

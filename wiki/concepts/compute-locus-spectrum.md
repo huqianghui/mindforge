@@ -15,6 +15,7 @@ aliases:
 related:
   - "[[voice-live-agent]]"
   - "[[online-learning]]"
+  - "[[spatial-intelligence]]"
 ---
 
 # Compute Locus Spectrum（计算位置光谱）
@@ -143,6 +144,7 @@ related:
 
 - [[voice-live-agent]] — `grounds` 数字人三条技术路线的选型判据（计算发生在哪里）由本光谱提供
 - [[online-learning]] — `contrasts` storage-locus（学到的知识存哪）与 compute-locus（画面在哪算）是"位面判据"家族在不同域的应用：一个问持久化位置、一个问计算位置
+- [[spatial-intelligence]] — `uses` 借空间智能的两条 3D 内容生产路线（神经 3D 生成 / Agent + DCC）补出光谱的离线生产端实例
 
 ## 来源日记
 

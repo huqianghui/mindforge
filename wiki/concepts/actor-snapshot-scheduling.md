@@ -18,6 +18,7 @@ related:
   - "[[agent-sandbox]]"
   - "[[agent-session-control-plane]]"
   - "[[durable-execution]]"
+  - "[[credential-out-of-sandbox]]"
 ---
 
 # Actor Snapshot Scheduling（actor 与执行单元分离、快照换出）

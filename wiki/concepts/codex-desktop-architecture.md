@@ -1,7 +1,7 @@
 ---
 title: "Codex Desktop Architecture（Codex Desktop 架构机制）"
 created: "2026-09-06"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -19,6 +19,7 @@ related:
   - "[[computer-use]]"
   - "[[mcp-vs-cli]]"
   - "[[harness-portability-spectrum]]"
+  - "[[model-routing]]"
 ---
 
 # Codex Desktop Architecture（Codex Desktop 架构机制）

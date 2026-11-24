@@ -1,7 +1,7 @@
 ---
 title: "反馈闭环（Feedback Loop）"
 created: "2026-04-17"
-updated: "2026-11-14"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -17,6 +17,7 @@ related:
   - "[[generation-evaluation-separation]]"
   - "[[harness-engineering]]"
   - "[[personal-knowledge-compiler]]"
+  - "[[negative-feedback]]"
 ---
 
 # 反馈闭环（Feedback Loop）

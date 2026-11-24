@@ -1,7 +1,7 @@
 ---
 title: "LLM Serving"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -25,6 +25,7 @@ related:
   - "[[model-routing]]"
   - "[[cost-per-task]]"
   - "[[agent-runtime]]"
+  - "[[ai-gateway]]"
 ---
 
 # LLM Serving（LLM 推理服务）

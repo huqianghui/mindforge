@@ -1,7 +1,7 @@
 ---
 title: "Agent Session Control Plane"
 created: "2026-11-14"
-updated: "2026-11-18"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -27,6 +27,8 @@ related:
   - "[[credential-out-of-sandbox]]"
   - "[[ai-gateway]]"
   - "[[relationship-based-access-control]]"
+  - "[[harness-portability-spectrum]]"
+  - "[[meta-harness]]"
 ---
 
 # Agent Session Control Plane（Agent 会话控制面）

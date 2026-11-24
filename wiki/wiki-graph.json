@@ -714,7 +714,7 @@
           "last_updated": "2026-11-04",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "\"没有哪个产品是没有这些层，只是替你把其中几层定死了。\"四个组合各有代表：自己搭 + 自己运营（MAF / LangGraph 跑在 kagent）、自己搭 + 平台托管（Foundry Hosted Agent）、现成 harness + 自己运营（Claude Code / OpenClaw 作为 kagent AgentHarness 或 Substrate actor）、现成 harness + 平台托管（Copilot Studio 的 GitHub Copilot harness）。其余\"只能配置\"的（Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation）harness 与 runtime 绑死，换 runtime 就要重写 agent。判断是否绑死只有一条：**harness 是不是平台自己的代码**。选型时先找到自己那一行，看被定死的格子里有没有将来一定要改的东西（隔离强度、出站策略、换模型、换编排）。",
+          "evidence": "\"没有哪个产品是没有这些层，只是替你把其中几层定死了。\"四个组合各有代表：自己搭 + 自己运营（MAF / LangGraph 跑在 kagent）、自己搭 + 平台托管（Foundry Hosted Agent）、现成 harness + 自己运营（Claude Code / OpenClaw 作为 kagent AgentHarness 或 Substrate actor）、现成 harness + 平台托管（Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness））。其余\"只能配置\"的（Foundry Prompt Agent、Copilot Studio Standard、Copilot Chat、Customer Conversation）harness 与 runtime 绑死，换 runtime 就要重写 agent。判断是否绑死只有一条：**harness 是不是平台自己的代码**。选型时先找到自己那一行，看被定死的格子里有没有将来一定要改的东西（隔离强度、出站策略、换模型、换编排）。",
           "evidence_type": "",
           "review": ""
         },
@@ -2965,7 +2965,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "三者的构建者、计费和治理各不相同：[[github-copilot]] 面向开发者，入口是 IDE / CLI / app / github.com，底座是 GitHub Enterprise 的策略与度量，按席位加 AI credits；[[copilot-studio]] 面向业务制作者与 fusion team，地基是 Power Platform 环境、Dataverse、Connector、DLP，按 Copilot Credits；[[foundry-agent-service]] 面向专业开发者，地基是 Azure 订阅、RBAC、私网，按量计费。把它们连起来的有两样：同一套 Copilot harness（GitHub Copilot 的 agent loop、Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness），以及治理面的 Entra Agent ID 与 Agent 365。大企业里三者常同时存在、分属不同团队，选型的重点是接缝处走哪条官方支持的路。",
+          "evidence": "三者的构建者、计费和治理各不相同：[[github-copilot]] 面向开发者，入口是 IDE / CLI / app / github.com，底座是 GitHub Enterprise 的策略与度量，按席位加 AI credits；[[copilot-studio]] 面向业务制作者与 fusion team，地基是 Power Platform 环境、Dataverse、Connector、DLP，按 Copilot Credits；[[foundry-agent-service]] 面向专业开发者，地基是 Azure 订阅、RBAC、私网，按量计费。把它们连起来的有两样：同一套 Copilot harness（GitHub Copilot 的 agent loop、Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 的 `microsoft_copilot_preview` 托管 harness），以及治理面的 Entra Agent ID 与 Agent 365。大企业里三者常同时存在、分属不同团队，选型的重点是接缝处走哪条官方支持的路。",
           "evidence_type": "",
           "review": ""
         }
@@ -4943,7 +4943,7 @@
       "id": "copilot-studio",
       "type": "concept",
       "title": "Copilot Studio",
-      "summary": "Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三类东西：**agent、workflow、app**。三者共享环境、Dataverse、Connector 与 DLP 这层地基，但运行时各不相同——agent 由所选 harness 决定跑在经典运行时、Agentic Runtime 还是 M365 Copilot 编排器里，app 跑在 [[copilot-managed-runtime]] 上。治理横跨 Microsoft 365 与 Power Platform 两个 admin center。\n\n它在本库的意义来自一次完整实践：给一个知识库 managed app 接 Copilot Studio agent 作问答后端，四种 harness 从浏览器里都同步调不到，期间一度误判\"可行\"；最后反过来，把同一批文章做成知识库 agent 发布到 Teams，由人直接使用。由此沉淀出三类知识：agent 的存储模型（Dataverse 行、YAML 配置）、调用边界（谁能调到 agent），以及\"怎么确认真是 agent 在答\"的验证方法。",
+      "summary": "Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三类东西：**agent、workflow、app**。三者共享环境、Dataverse、Connector 与 DLP 这层地基，但运行时各不相同——agent 由所选 harness 决定跑在经典运行时、Agentic Runtime 还是 M365 Copilot 编排器里，app 跑在 [[copilot-managed-runtime]] 上。治理横跨 Microsoft 365 与 Power Platform 两个 admin center。\n\n它在本库的意义来自一次完整实践：给一个知识库 managed app 接 Copilot Studio agent 作问答后端，当时的四种 harness 从浏览器里都同步调不到，期间一度误判\"可行\"；最后反过来，把同一批文章做成知识库 agent 发布到 Teams，由人直接使用。由此沉淀出三类知识：agent 的存储模型（Dataverse 行、YAML 配置）、调用边界（谁能调到 agent），以及\"怎么确认真是 agent 在答\"的验证方法。",
       "tags": [
         "wiki",
         "concept",
@@ -6523,7 +6523,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，GitHub Copilot harness 可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像\"每一层用谁\"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。",
+          "evidence": "Voice Live 与两类 agent 的组合方向相反：Prompt Agent 用 `agent_id` 绑定（Voice Live 在外），Hosted Agent 用 `invocations_ws`（Voice Live 作为容器内组件），`agent_id` 直连 Hosted 无文档支持。Copilot Studio 一侧，Microsoft Copilot harness（原 GitHub Copilot harness）可以把 Foundry agent 挂成 connected agent；Foundry agent 能发布进 M365 Copilot 的 Agent Store。两边的 agent 都有 Entra Agent ID，由 Agent 365 统一登记和做访问控制。选型越来越像\"每一层用谁\"的分层组合：员工在 M365 / Teams 里用先看 Copilot Studio，自有产品后端与外部客户用 Foundry，大脑要自己控制（自定义 planner、长期记忆、非微软模型）就上 Hosted Agent。",
           "evidence_type": "",
           "review": ""
         },
@@ -6935,7 +6935,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "① 定制：skills、custom agents、MCP server / Connectors、plugin 进企业白名单市场，不写宿主程序。② 嵌入：Copilot SDK 在自己的应用里调同一个 harness；服务器到服务器认证（GitHub App 授只读 Copilot Requests 组织权限，installation token 交给 SDK）让后台服务不依赖登录用户调用，用量记组织名下、组织模型策略同样生效；VS Code 开放 Agent Host Protocol，自写客户端可共享同一实时 session。③ 托管：SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry Agent Service（公开预览），Microsoft 跑 agent loop 和沙箱，开发者声明式提供 skills、工具和指令。对\"选 framework 还是选 harness\"，微软的答案是把 harness 做成产品——与 Copilot Studio 新建 agent 默认的 GitHub Copilot harness 是同一套。",
+          "evidence": "① 定制：skills、custom agents、MCP server / Connectors、plugin 进企业白名单市场，不写宿主程序。② 嵌入：Copilot SDK 在自己的应用里调同一个 harness；服务器到服务器认证（GitHub App 授只读 Copilot Requests 组织权限，installation token 交给 SDK）让后台服务不依赖登录用户调用，用量记组织名下、组织模型策略同样生效；VS Code 开放 Agent Host Protocol，自写客户端可共享同一实时 session。③ 托管：SDK 改名 Microsoft Copilot SDK，harness 以 `microsoft_copilot_preview` 进入 Foundry Agent Service（公开预览），Microsoft 跑 agent loop 和沙箱，开发者声明式提供 skills、工具和指令。对\"选 framework 还是选 harness\"，微软的答案是把 harness 做成产品——与 Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）是同一套。",
           "evidence_type": "",
           "review": ""
         },
@@ -11807,7 +11807,7 @@
           "last_updated": "2026-11-07",
           "confidence": 0.9,
           "status": "active",
-          "evidence": "Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（GitHub Copilot harness）=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。",
+          "evidence": "Agent Skills 规范（agentskills.io）只定义 SKILL.md + bundled assets 的**包格式**，不定义执行环境——SKILL.md 里写 `Prerequisites: Python 3.x` 只是给模型看的散文，无机制保证 runtime 真有 Python。**skill 声明依赖，harness + runtime 决定依赖是否被满足**。由此产生可移植性断层：指令层（markdown）跨 harness 100% 可移植（Claude Code / Copilot / Codex 都认），scripts 层把 skill 悄悄绑回特定 runtime。各 runtime 实测差异（2026-08 查证）：Claude Code 本地=宿主机有啥用啥、可自装依赖；Claude API code execution 容器=预装固定包清单 + 默认无出站网络、`pip install` 不可用；GitHub Copilot coding agent（Actions 形态）=唯一给环境控制权的，走 `copilot-setup-steps.yml` 预装；Copilot Studio（Microsoft Copilot harness（原 GitHub Copilot harness））=内置 Python 引擎（与 code interpreter 同源）但无用户安装机制、Node.js 无官方承诺。社区 skill 市场上带脚本的 skill 都隐含未声明的 runtime 假设——装前要审的不只是安全性还有环境兼容性；规范缺一个类似 package.json `engines` 的运行时声明字段。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 确认——依据：Agent Skills 官方规范 https://agentskills.io/specification ：仅定义 SKILL.md 包格式与 frontmatter；compatibility 字段仅为 ≤500 字符的环境需求说明，无执行机制"
         },
@@ -15125,7 +15125,7 @@
       "avg_confidence": 0.74,
       "claims": [
         {
-          "statement": "新建 agent 默认是 GitHub Copilot harness 且建后不能与 Standard 互转——harness 是建 agent 时唯一的不可逆选择",
+          "statement": "harness 建后不能互转，是建 agent 时唯一的不可逆选择——2026-10 时新建 agent 默认是 GitHub Copilot harness（现称 Microsoft Copilot harness）",
           "source": "Copilot-Studio系列03：四种Harness对比与选型",
           "first_seen": "2026-10-27",
           "last_updated": "2026-11-24",
@@ -15136,7 +15136,7 @@
           "review": "2026-11-24 修订——依据：[Harnesses in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview)（官方现列三种：Microsoft Copilot、Customer Conversation、Standard）；\"建后不能互转\"本轮未见官方变更说明，维持；New agent 菜单四个入口的对照是 2026-10-27 的界面"
         },
         {
-          "statement": "按任务重量选——简单任务用重 harness 会\"想太多\"，能用的 Standard 不必迁移；重活放 GitHub Copilot harness 在后台跑，经共享数据与前台 Standard 解耦",
+          "statement": "按任务重量选——简单任务用重 harness 会\"想太多\"，能用的 Standard 不必迁移；重活放 Microsoft Copilot harness（原 GitHub Copilot harness）在后台跑，经共享数据与前台 Standard 解耦",
           "source": "Copilot-Studio系列03：四种Harness对比与选型",
           "first_seen": "2026-10-27",
           "last_updated": "2026-10-29",
@@ -15147,7 +15147,7 @@
           "review": ""
         },
         {
-          "statement": "\"能否被应用同步调用\"对四种 harness 都是否——这一维不再区分选项，只决定集成方式（workflow 异步中转，或让人直接用 agent）",
+          "statement": "\"能否被应用同步调用\"对所有 harness 都是否（2026-10 实测四种）——这一维不再区分选项，只决定集成方式（workflow 异步中转，或让人直接用 agent）",
           "source": "Copilot-Managed-Runtime系列10：调用Copilot-Studio-Agent为何走不通",
           "first_seen": "2026-10-28",
           "last_updated": "2026-10-29",
@@ -15158,13 +15158,13 @@
           "review": ""
         },
         {
-          "statement": "四种 harness 放进\"harness 自己搭还是现成 × runtime 自己运营还是托管\"矩阵并不在同一格——GitHub Copilot harness 是现成 harness + 平台托管沙箱，Copilot Chat 严格说不是独立 harness",
+          "statement": "各 harness 放进\"harness 自己搭还是现成 × runtime 自己运营还是托管\"矩阵并不在同一格——Microsoft Copilot harness（原 GitHub Copilot harness）是现成 harness + 平台托管沙箱；2026-10 列出的 Copilot Chat 严格说不是独立 harness，官方现已不单列",
           "source": "Agent基础设施系列04：Framework层与三层串联",
           "first_seen": "2026-11-02",
           "last_updated": "2026-11-04",
           "confidence": 0.65,
           "status": "active",
-          "evidence": "Standard：前身 PVA 的经典运行时，按 topics 与分支走，平台托管只能配置，接近确定性 workflow。GitHub Copilot：Agentic Runtime 上的自主 loop，带 Bash 容器与文件系统，与把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一形态，只是 runtime 由微软运营。Copilot Chat：往 M365 Copilot 编排器里加指令、知识与动作。Customer Conversation：联络中心场景的专用托管 harness。四种定义都存在 Dataverse，执行分在三套服务，所以不能互转——\"选 harness 即选 runtime\"的直接体现。组合用法：GitHub Copilot harness 后台定时做重活、Standard agent 前台答用户，与\"framework 搭外层确定性流程、其中一步交给 harness\"同一思路。",
+          "evidence": "（以下是 2026-10 四种口径下的分格；现行三种里 GitHub Copilot 一格对应 Microsoft Copilot harness，Copilot Chat 一格不再单列。）Standard：前身 PVA 的经典运行时，按 topics 与分支走，平台托管只能配置，接近确定性 workflow。GitHub Copilot：Agentic Runtime 上的自主 loop，带 Bash 容器与文件系统，与把 Claude Code 作为 kagent AgentHarness 跑进沙箱是同一形态，只是 runtime 由微软运营。Copilot Chat：往 M365 Copilot 编排器里加指令、知识与动作。Customer Conversation：联络中心场景的专用托管 harness。四种定义都存在 Dataverse，执行分在三套服务，所以不能互转——\"选 harness 即选 runtime\"的直接体现。组合用法：GitHub Copilot harness 后台定时做重活、Standard agent 前台答用户，与\"framework 搭外层确定性流程、其中一步交给 harness\"同一思路。",
           "evidence_type": "",
           "review": ""
         }
@@ -15445,7 +15445,7 @@
           "last_updated": "2026-11-08",
           "confidence": 0.75,
           "status": "active",
-          "evidence": "浏览器里的 managed app 同步调不到任何 harness 的 agent；Copilot Studio 的语音只在 Standard harness 上，harness 建后不能互转；Copilot Studio 挂 Foundry agent 要求主 agent 是 GitHub Copilot harness、Foundry agent 开启 Activity 协议；Voice Live 的 agent 绑定只认 Prompt Agent 且必须 Entra 认证；数字人渲染只能来自 Azure Speech avatar；关闭公网的 Foundry project 不能从 portal 发布到 M365；managed app 只服务内部 Entra 用户。另有一票否决项：gpt-realtime 在 Global Standard 下可能在资源地域之外处理数据，严格驻留的客户要先过合规。",
+          "evidence": "浏览器里的 managed app 同步调不到任何 harness 的 agent；Copilot Studio 的语音只在 Standard harness 上，harness 建后不能互转；Copilot Studio 挂 Foundry agent 要求主 agent 是 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry agent 开启 Activity 协议；Voice Live 的 agent 绑定只认 Prompt Agent 且必须 Entra 认证；数字人渲染只能来自 Azure Speech avatar；关闭公网的 Foundry project 不能从 portal 发布到 M365；managed app 只服务内部 Entra 用户。另有一票否决项：gpt-realtime 在 Global Standard 下可能在资源地域之外处理数据，严格驻留的客户要先过合规。",
           "evidence_type": "产品与服务",
           "review": ""
         },
@@ -15456,7 +15456,7 @@
           "last_updated": "2026-11-08",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "不需要自定义 planner、官方工具够用、治理是刚需 → Copilot Studio 的 harness 或 Foundry Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness（公开预览）；出现长期记忆、显式状态机、复杂多 agent、审批节点、跨模型路由、自定义 planner 任一信号 → Hosted Agent。Copilot Studio 内部的重活（自主拆解、Bash 容器、读写 Office 文件）放 GitHub Copilot harness。",
+          "evidence": "不需要自定义 planner、官方工具够用、治理是刚需 → Copilot Studio 的 harness 或 Foundry Prompt Agent；要 skills、托管执行、文件、子 agent 但不想自己持有 harness → Prompt Agent + Microsoft Copilot harness（公开预览）；出现长期记忆、显式状态机、复杂多 agent、审批节点、跨模型路由、自定义 planner 任一信号 → Hosted Agent。Copilot Studio 内部的重活（自主拆解、沙箱执行、读写 Office 文件）放 Microsoft Copilot harness（原 GitHub Copilot harness）。",
           "evidence_type": "产品与服务",
           "review": ""
         },
@@ -15467,7 +15467,7 @@
           "last_updated": "2026-11-08",
           "confidence": 0.65,
           "status": "active",
-          "evidence": "员工 + 客户双侧：员工助手用 Copilot Studio，客户侧语音用 Voice Live + Foundry Prompt Agent，两边的 agent 都在 Agent 365 里登记。重活下沉：Copilot Studio 的 GitHub Copilot harness 做编排，把需要自定义运行时的那一步交给 Foundry agent（connected agent），结果写回 Dataverse。同一个 agent 两个入口：一个 Foundry Prompt Agent 既发布到 Teams 给员工打字用，又被 Voice Live 绑定给网页语音用，prompt 和工具只维护一份。",
+          "evidence": "员工 + 客户双侧：员工助手用 Copilot Studio，客户侧语音用 Voice Live + Foundry Prompt Agent，两边的 agent 都在 Agent 365 里登记。重活下沉：Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）做编排，把需要自定义运行时的那一步交给 Foundry agent（connected agent），结果写回 Dataverse。同一个 agent 两个入口：一个 Foundry Prompt Agent 既发布到 Teams 给员工打字用，又被 Voice Live 绑定给网页语音用，prompt 和工具只维护一份。",
           "evidence_type": "理论（长效）",
           "review": ""
         },
@@ -15478,7 +15478,7 @@
           "last_updated": "2026-11-08",
           "confidence": 0.7,
           "status": "active",
-          "evidence": "代码在 GitHub、身份与设备用 Entra / Intune 时，Copilot 基本是开发者侧的默认选项：agent 本来就在 PR 里，身份、设备、审计不用另起。它和另外两个支柱通过同一套 Copilot harness 相连——Copilot Studio 新建 agent 默认的 GitHub Copilot harness、Foundry 的 `microsoft_copilot_preview` 托管 harness 都是同一套，所以\"用 GitHub Copilot 的 harness 做业务 agent\"的现实路径是 Foundry 托管 harness，而不是让业务用户用 GitHub Copilot。",
+          "evidence": "代码在 GitHub、身份与设备用 Entra / Intune 时，Copilot 基本是开发者侧的默认选项：agent 本来就在 PR 里，身份、设备、审计不用另起。它和另外两个支柱通过同一套 Copilot harness 相连——Copilot Studio 的 Microsoft Copilot harness（原 GitHub Copilot harness）、Foundry 的 `microsoft_copilot_preview` 托管 harness 都是同一套，所以\"用 GitHub Copilot 的 harness 做业务 agent\"的现实路径是 Foundry 托管 harness，而不是让业务用户用 GitHub Copilot。",
           "evidence_type": "产品与服务",
           "review": ""
         },
@@ -16209,7 +16209,7 @@
       "source": "agent-harness",
       "target": "copilot-studio-harness-selection",
       "relation_type": "uses",
-      "description": "Copilot Studio 四种 harness 的选型"
+      "description": "Copilot Studio 三种 harness 的选型"
     },
     {
       "source": "agent-harness",
@@ -16281,7 +16281,7 @@
       "source": "agent-infra-three-layers",
       "target": "copilot-studio-harness-selection",
       "relation_type": "grounds",
-      "description": "Copilot Studio 四种 harness 落在锁定矩阵的不同格"
+      "description": "Copilot Studio 的各个 harness 落在锁定矩阵的不同格"
     },
     {
       "source": "agent-infra-three-layers",
@@ -17559,7 +17559,7 @@
       "source": "copilot-managed-runtime",
       "target": "copilot-studio-harness-selection",
       "relation_type": "constrains",
-      "description": "应用只能经 Connector 出站且收不到回调，使\"能否被应用同步调用\"这一维对四种 harness 都是否"
+      "description": "应用只能经 Connector 出站且收不到回调，使\"能否被应用同步调用\"这一维对所有 harness 都是否"
     },
     {
       "source": "copilot-managed-runtime",
@@ -17619,7 +17619,7 @@
       "source": "copilot-studio",
       "target": "copilot-studio-harness-selection",
       "relation_type": "constrains",
-      "description": "新建默认 GitHub Copilot harness、建后不能互转，使 harness 选型成为建 agent 时的不可逆决策"
+      "description": "harness 建后不能互转（2026-10 时新建默认 GitHub Copilot harness，现称 Microsoft Copilot harness），使 harness 选型成为建 agent 时的不可逆决策"
     },
     {
       "source": "copilot-studio",

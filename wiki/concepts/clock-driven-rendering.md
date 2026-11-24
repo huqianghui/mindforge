@@ -1,7 +1,7 @@
 ---
 title: "Clock-Driven Rendering"
 created: "2026-10-14"
-updated: "2026-11-04"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ aliases:
 related:
   - "[[frame-driven-rendering]]"
   - "[[compute-locus-spectrum]]"
+  - "[[programmatic-video]]"
 ---
 
 # Clock-Driven Rendering（时钟驱动渲染）
@@ -75,6 +76,7 @@ related:
 
 - [[frame-driven-rendering]] — `contrasts` 同一个"给定时间点算画面"的库，时间点取自系统时钟还是外部指定的帧号；实时场景要时长正确、离线场景要每帧正确
 - [[programmatic-video]] — `constrains` 网页动画库与 3D 渲染循环默认时钟驱动，进入视频框架前必须暂停时钟、改为按帧 seek，限定了程序化视频的动画写法与库接入方式
+- [[compute-locus-spectrum]] — `extends` 为计算位置光谱补上"时间源"这一维：同在本地 GPU 涂像素，实时播放用时钟（本页）、离线导出用帧号
 
 ## 来源日记
 

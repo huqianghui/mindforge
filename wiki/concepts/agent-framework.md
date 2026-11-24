@@ -25,6 +25,9 @@ related:
   - "[[durable-execution]]"
   - "[[graph-engineering]]"
   - "[[agent-protocol-stack]]"
+  - "[[ag-ui-protocol]]"
+  - "[[a2a-protocol]]"
+  - "[[framework-selection]]"
 ---
 
 # Agent Framework（Agent 框架）

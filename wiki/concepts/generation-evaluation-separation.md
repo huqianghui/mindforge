@@ -17,6 +17,7 @@ related:
   - "[[harness-engineering]]"
   - "[[negative-feedback]]"
   - "[[ai-writing-fingerprint]]"
+  - "[[cost-per-task]]"
 ---
 
 # 生成-评估分离（Generation-Evaluation Separation）

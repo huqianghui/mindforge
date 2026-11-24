@@ -17,6 +17,8 @@ related:
   - "[[voice-agent-build-approach]]"
   - "[[foundry-agent-type-selection]]"
   - "[[intelligent-dictation]]"
+  - "[[viseme]]"
+  - "[[end-of-turn-detection]]"
 ---
 
 # Voice Live Agent

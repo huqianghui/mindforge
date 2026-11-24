@@ -1,7 +1,7 @@
 ---
 title: "Voice Activity Detection"
 created: "2026-04-11"
-updated: "2026-11-22"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -16,6 +16,7 @@ related:
   - "[[speech-technology-stack]]"
   - "[[turn-taking]]"
   - "[[voice-live-agent]]"
+  - "[[end-of-turn-detection]]"
 ---
 
 # Voice Activity Detection

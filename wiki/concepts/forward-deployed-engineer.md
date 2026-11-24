@@ -1,7 +1,7 @@
 ---
 title: "FDE（Forward Deployed Engineer）：客户系统的外部调节器"
 created: "2026-08-04"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -16,6 +16,7 @@ related:
   - "[[ai-skill-formation]]"
   - "[[harness-engineering]]"
   - "[[personal-knowledge-compiler]]"
+  - "[[ai-adoption-six-step-evolution]]"
 ---
 
 # FDE（Forward Deployed Engineer）：客户系统的外部调节器

@@ -1,7 +1,7 @@
 ---
 title: "Harness Quality Gate"
 created: "2026-04-11"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ aliases:
   - "Quality Gate"
 related:
   - "[[harness-engineering]]"
+  - "[[generation-evaluation-separation]]"
 ---
 
 # Harness Quality Gate

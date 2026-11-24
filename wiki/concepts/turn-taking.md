@@ -17,6 +17,7 @@ related:
   - "[[grapheme-to-phoneme]]"
   - "[[speech-technology-stack]]"
   - "[[voice-live-agent]]"
+  - "[[end-of-turn-detection]]"
 ---
 
 # 话轮转换（Turn-Taking）

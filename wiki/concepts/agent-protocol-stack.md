@@ -1,7 +1,7 @@
 ---
 title: "Agent Protocol Stack"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -21,6 +21,7 @@ related:
   - "[[agent-runtime]]"
   - "[[agent-platform]]"
   - "[[agent-framework]]"
+  - "[[relationship-based-access-control]]"
 ---
 
 # Agent Protocol Stack（Agent 协议栈）

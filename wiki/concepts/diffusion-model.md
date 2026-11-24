@@ -1,7 +1,7 @@
 ---
 title: "Diffusion Model（扩散模型 / Flow Matching）"
 created: "2026-09-25"
-updated: "2026-09-25"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ related:
   - "[[vision-language-action-model]]"
   - "[[world-model]]"
   - "[[action-chunking]]"
+  - "[[rejection-sampling-finetuning]]"
 ---
 
 # Diffusion Model（扩散模型 / Flow Matching）

@@ -1,7 +1,7 @@
 ---
 title: "Model Context Protocol"
 created: "2026-11-16"
-updated: "2026-11-23"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -22,6 +22,7 @@ related:
   - "[[agent-runtime]]"
   - "[[agent-harness]]"
   - "[[model-harness-codesign]]"
+  - "[[context7]]"
 ---
 
 # Model Context Protocol（MCP）

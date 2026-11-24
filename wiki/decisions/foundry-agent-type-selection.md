@@ -8,7 +8,9 @@ tags:
   - agent
   - azure
 decision_status: "active"
-related_concepts: []
+related_concepts:
+  - "[[agent-session-control-plane]]"
+  - "[[a2a-protocol]]"
 related_methods: []
 related:
   - "[[agent-runtime]]"
@@ -235,6 +237,7 @@ Azure AI Foundry 曾提供三种 Agent 形态：Prompt Agent（GA，Foundry 托�
 - [[agent-session-control-plane]] — `constrains` 选 AKS 自建就意味着要自己写并长期维护会话控制面
 - [[copilot-studio]] — `contrasts` Copilot Studio 是 Power Platform 上的 SaaS 构建产品，Foundry Agent Service 是 Azure 上的 agent 运行时，两者不在同一层
 - [[copilot-studio-harness-selection]] — `contrasts` 同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线
+- [[a2a-protocol]] — `uses` Workflow Agent 退役后，跨 agent 编排下沉到 Hosted Agent 内的 harness，agent 之间经 A2A 互调
 
 ## 关联方法
 

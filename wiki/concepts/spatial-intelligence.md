@@ -1,7 +1,7 @@
 ---
 title: "Spatial Intelligence（空间智能）"
 created: "2026-09-25"
-updated: "2026-09-25"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -14,6 +14,7 @@ related:
   - "[[embodied-ai]]"
   - "[[world-model]]"
   - "[[compute-locus-spectrum]]"
+  - "[[personal-knowledge-compiler]]"
 ---
 
 # Spatial Intelligence（空间智能）
