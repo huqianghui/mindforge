@@ -4,7 +4,7 @@
     "nodes": 176,
     "links": 780,
     "orphan_links_removed": 2,
-    "claims": 1077,
+    "claims": 1085,
     "categories": 14
   },
   "nodes": [
@@ -2273,8 +2273,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 2,
-      "avg_confidence": 0.65,
+      "claims_count": 4,
+      "avg_confidence": 0.64,
       "claims": [
         {
           "statement": "Pencil 通过 MCP 实现 AI 主导设计",
@@ -2297,6 +2297,28 @@
           "evidence": "推荐工作流：\"sketch quickly with Excalidraw first, then produce formal architecture diagrams with Draw.io\"。",
           "evidence_type": "实测经验",
           "review": "2026-11-07 待定——依据：本轮未查到支持或反驳的证据；该 claim 为作者工作流推荐，vault 内未检索 Excalidraw/Draw.io 相关新文章"
+        },
+        {
+          "statement": "AI 在画布上设计要有\"操作、截图、对照\"的闭环——先读画布状态、设计指南和可用组件，再批量操作、截图验证、重复；生成代码时沿用项目已有的框架与样式方案，颜色走 CSS 变量，并用截图对照设计稿",
+          "source": "Pencil设计工具上手指南",
+          "first_seen": "2026-03-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "典型流程：读编辑器状态 → 取设计指南与风格标签 → 列出可复用组件 → 批量设计操作 → 对目标节点截图验证 → 重复后两步直到满意。设计稿能被 AI 稳定操作，靠的是结构化的设计系统：节点有类型和唯一 id，可复用组件用引用实例化并通过子节点覆盖改内容，slot 预留插入点，颜色、间距走设计变量（`$--primary` 一类）。从设计到代码五步：读出设计帧里的组件实例、取每个可复用组件的完整结构、逐个转成组件文件、截图对比设计稿与渲染结果、再组装成页面。原则：用项目已有的框架（React 就出 React）和样式方案（优先 Tailwind，不写内联样式），颜色用 `var(--primary)` 而不是写死色值，文本、图标、间距精确还原，SVG 要取完整路径几何。截图验证是这条链里的反馈环节，少了它 AI 只能凭结构描述猜效果。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "Figma 与 Pencil 是分工不是替代——团队协作、精细视觉和设计系统维护留在 Figma，AI 快速出原型和\"设计到代码\"交给 Pencil，Claude Code 同时连两边的 MCP 做设计资产的双向流转",
+          "source": "Pencil设计工具上手指南",
+          "first_seen": "2026-03-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Figma 是人主导设计、AI 辅助（插件加 Figma MCP），文件在云端；Pencil 是 AI 生成设计、人微调，文件是本地加密的 `.pen`，只能经 MCP 读写，内置设计到 React 的链路。配合方式：Figma 做品牌视觉、复杂交互和团队评审；从 Figma 取关键组件的设计上下文，在 Pencil 里重建，再用 AI 批量生成页面变体；Claude Code 作为桥同时连接两个 MCP。一个副作用是 `.pen` 是加密格式，普通文本工具打不开，版本管理和审阅只能经过 Pencil 本身。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -4157,8 +4179,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
-      "avg_confidence": 0.72,
+      "claims_count": 11,
+      "avg_confidence": 0.71,
       "claims": [
         {
           "statement": "LLM 性能限制通常是上下文问题而非模型缺陷",
@@ -4268,6 +4290,17 @@
           "status": "active",
           "evidence": "实际发给模型的是：固定系统提示 + 启动加载的 CLAUDE.md + MEMORY.md 索引 + 按条件加载的 rules + 按需注入的 skill + 累积的对话历史。接近窗口上限时自动压缩：保留系统提示、近期关键信息和当前任务，早期轮次被摘要替代，是有损的，用户也无法手动指定保留哪些。短任务（5 万 token 以内）基本不触发；10 万以上几乎必然发生，压缩后模型可能忘掉之前的决定和约定。对策是关键信息写文件——文件持久，对话会被压缩。这和本页\"压缩是否有损取决于任务状态存在哪里\"是同一件事的工程做法：把状态挪到外部环境里，压缩丢的就只是历史；[[meta-harness]] 的消融（分数加 LLM 摘要 34.9%，给完整原始轨迹 50.0%）也说明摘要补不回丢掉的因果信息。压缩的存在也解释了为什么 CLAUDE.md 要精简、skill 按需加载、subagent 用独立上下文。",
           "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "上下文能填满不代表应该填满——长会话有两种失败：上下文耗尽丢掉进度、模型高估完成度提前收工；对策是分层加载、按工作区裁剪 MCP、把插件开关当上下文开关",
+          "source": "Agentic-Engineering：质量与成本一体化",
+          "first_seen": "2026-05-31",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "原因是注意力不均：模型偏向上下文开头和结尾，中间的信息容易丢；用量超过一半后更偏向末尾，早期指令被\"忘掉\"。\"提前宣布完成\"的根因是没有外部验证纠正模型对完成度的高估。对策有三类：一是分层加载——系统指令始终加载、项目指令打开项目时加载、skill 按关键词触发、MCP 工具首次调用时动态发现；二是按工作区裁剪 MCP，文中案例从 15 个 server、187 个工具、每个任务约 26.5 万 token 降到 3 个 server、50 个工具、约 7.5 万 token，schema 开销少 72%（后端不需要设计稿工具，前端不需要数据库 schema）；三是插件的启用与禁用就是上下文开关，禁用后其中的 skill、MCP、hooks、agents 都不进上下文。数字是文中引用的案例，不是我自己的测量。与 [[mcp-vs-cli]] 里\"tool search 延迟加载缓解了膨胀\"是同一问题的两种解法。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -5673,8 +5706,8 @@
       "category": "数据本体论（Ontology）",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.78,
+      "claims_count": 10,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "企业数据物理统一但语义碎片化",
@@ -5752,6 +5785,39 @@
           "evidence": "Fabric IQ 的 Graph 与 Microsoft Graph（`graph.microsoft.com`，M365 REST API 网关）完全无关：它是原生 scale-out 图数据库引擎，实现 **Labeled Property Graph（LPG）**模型，查询语言用 ISO 标准 **GQL**（而非 Cypher/GraphQL）。与 Ontology 的分工是\"语义层 + 计算层\"：Ontology 作为语义路由层，把聚合类查询（KPI/DAX）路由到 Semantic Model、把多跳遍历和图算法路由到 Graph Engine。转换逻辑：关系表每行 → 节点，外键 → 带属性的边；创建 Ontology 时 Graph 作为子项目自动生成。价值边界清晰：单跳查询等价 SQL JOIN 不需要图，3 层以上关系穿越（\"订单→发货→温度传感器→冷链违规\"）才是 Graph 的主场。当前限制：不随上游自动刷新（需手动/定时）、不支持 Schema 演化（结构变更要重新 ingest）。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 确认——依据：Fabric graph 文档 https://learn.microsoft.com/en-us/fabric/graph/overview ：labeled property graph，用 ISO GQL；Fabric IQ overview https://learn.microsoft.com/en-us/fabric/iq/overview ：Ontology 创建后可选生成内置 graph model。路由到 Semantic Model 的细节与 'scale-out' 措辞本轮未逐句核对"
+        },
+        {
+          "statement": "Palantir Ontology 的四类构件分语义层与动力层——Object Type、Link Type、Interface 描述\"有什么、怎么关联、有什么共性\"，Action Type 与 Function 描述\"能做什么、怎么变\"；能读也能写，是它与 BI 语义层的根本区别",
+          "source": "Palantir-Ontology的工程实践",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Object Type 背后对应一个或多个数据集，要定主键、从数据列映射属性（含共享属性、派生属性、结构体）、设细粒度安全控制；Link Type 让本体成为图而不是扁平表，用户能沿关系链导航；Interface 做多态，多个类型共享同一形状时统一描述。Action Type 是写端：参数与校验、提交条件、副作用（通知、Webhook）、由 Function 支撑的批量逻辑，把每一个运营动作（调阀门、批工单、调库存）建模、关联、治理；Function 用 TypeScript 或 Python 写任意复杂的业务逻辑。传统架构里表和视图面向存储、ETL 管道随需求丛生、API 点对点集成 N(N-1)/2、数据湖解决存储没解决语义、BI 语义层只读不写；本体作为单一逻辑层，新应用只需引用已有的对象与动作类型，权限跟着对象走而不是在每个应用里重做。这几类构件和哲学本体论的问题一一对应：有什么存在（Object Type）、之间什么关系（Link Type）、有什么属性（Property）、能对它做什么（Action Type）、怎么变化（Function）、有什么共性（Interface），对照 [[ontology-philosophy]] 的五组范畴映射，Palantir 多出来的正是\"动作\"这一组。",
+          "evidence_type": "产品与服务",
+          "review": ""
+        },
+        {
+          "statement": "本体在 AI 平台里承担三件事——把 LLM 的回答锚定在定义好的实体与关系上、把已有业务流程变成 AI 可调用的工具、把 AI 决策带着人工审核与审计写回业务系统",
+          "source": "Palantir-Ontology的工程实践",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Palantir AIP 的主张是把 LLM 锚定在企业本体上。三重角色：① 数据锚定，回答基于本体里的实体、属性和关系而不是自由联想，减少幻觉；② 逻辑绑定，已有的业务流程、机器学习模型、优化工具成为 AI 能调用的工具，比如分析供应链风险时直接调用已定义的\"重新平衡库存\"动作，不用另开接口；③ 动作同步，把决策写回 ERP、排程平台或边缘设备，内置人工审核和完整审计。配套能力是执行前的情景分析、限定边界内的受限自动化、人和 AI 活动的完整记录。这和 agent 平台里\"边界内自主 + 审批 + 追溯\"是同一套要求，区别是边界由本体里的动作类型定义。",
+          "evidence_type": "产品与服务",
+          "review": ""
+        },
+        {
+          "statement": "Palantir 与 Fabric IQ 都用本体，但定位不同——前者是企业操作系统的核心抽象、读写统一，后者是数据平台的语义统一层、偏重读端",
+          "source": "Palantir-Ontology的工程实践",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "按 2026-03 的对照：Palantir 读写统一（Action Type），AIP 深度集成，可写回操作系统，平台封闭、通过 OSDK 对外，客户偏政府、国防和大型企业；Fabric IQ 偏重为分析和 agent 提供语义，Copilot 与 agent 通过本体取上下文，写回能力较弱（Operations Agent 当时在预览），生态开放、与 Power BI 和 Notebook 集成，面向更广的企业用户。这是产品对照，Fabric IQ 的动作能力在之后的版本里可能已经变化，引用前按官方文档复核。",
+          "evidence_type": "产品与服务",
+          "review": ""
         }
       ]
     },
@@ -7025,8 +7091,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 18,
-      "avg_confidence": 0.81,
+      "claims_count": 20,
+      "avg_confidence": 0.8,
       "claims": [
         {
           "statement": "Harness Engineering 是 Prompt Engineering 和 Context Engineering 的超集",
@@ -7225,6 +7291,28 @@
           "evidence": "Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**\"变简单\"是表象，实质是职责归位**——框架竞争维度从\"机制精巧\"变成\"方法论文本质量\"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。",
           "evidence_type": "产品与服务",
           "review": "2026-11-22 确认——依据：[obra/superpowers](https://github.com/obra/superpowers) 当前 v7.0.2（2026-11-03）：顶层无 agents/、commands/，skills/ 15 个，hooks/ 只剩 session-start 与 hooks 配置——收敛趋势延续"
+        },
+        {
+          "statement": "Agentic Engineering 是学科，Harness Engineering 是其中\"怎么控制 agent\"的技术方法；harness 不是 agent、prompt 或 workflow，而是持续回答五个问题的系统",
+          "source": "Agentic-Engineering：质量与成本一体化",
+          "first_seen": "2026-05-31",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "学科层面分三块：Harness Engineering 管 HOW（上下文管理、工具编排、评估循环、安全护栏），FinOps 管 WHO（可见性与归因、预算与策略、持续运营，见 [[cost-per-task]]），质量工程管 WHAT（任务成功率、级联失败防护、上下文腐化防治）。出发点是模型能力已经跨过门槛，挑战从\"让模型更强\"转向\"让系统更稳\"：单步 95% 准确、20 步级联只剩 36%，各家模型能力差距缩小后差异来自编排、记忆和工具使用。harness 要持续回答的五个问题：任务怎么定义（Spec、Plan），状态怎么保存（制品、文件），上下文怎么控制（增量、重置），谁来判断好坏（评估、评审 agent），跑偏后怎么修（反馈回写到 Spec 或规则）。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "人和 agent 的分工按 Delegate → Review → Own 三档划——可行性分析、脚手架、测试、文档委派出去，架构对齐与安全合规人来审，优先级、新抽象和生产签核人来拥有；开发流程各阶段按这三档配模型和工具",
+          "source": "Agentic-Engineering：质量与成本一体化",
+          "first_seen": "2026-05-31",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "七个阶段的配置思路：规划用最强模型（判断最贵），设计和构建用中档模型，测试从小模型起步、失败时升级，评审用强模型，文档用小模型并关闭输出压缩（文档需要详尽），部署从小模型起步、出事时升级。几个要点：测试阶段只输出失败用例的过滤价值最大（全部通过时输出可以从几万 token 降到几个 token）；评审阶段天然适合压缩输出，评论本来就该短而高信号；部署阶段让 MCP 直连日志系统，避免 `tail -200` 一类命令把日志整段灌进上下文。这一档划分也是 [[ai-skill-formation]] 里\"写代码交给 AI、想问题定方向验结果留给自己\"的流程化版本。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
