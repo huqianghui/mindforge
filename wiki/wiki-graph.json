@@ -2,7 +2,7 @@
   "generated_at": "2026-11-24",
   "stats": {
     "nodes": 178,
-    "links": 833,
+    "links": 832,
     "orphan_links_removed": 0,
     "claims": 1112,
     "categories": 14
@@ -15942,12 +15942,6 @@
       "description": "同团队、共享状态、延迟敏感的步骤留在 framework 内编排，跨团队才上 A2A"
     },
     {
-      "source": "a2a-protocol",
-      "target": "foundry-agent-type-selection",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "a2ui-protocol",
       "target": "agent-protocol-stack",
       "relation_type": "part-of",
@@ -15982,6 +15976,12 @@
       "target": "agent-loop-architecture",
       "relation_type": "extends",
       "description": "\"块内一次联合生成 + 块间拿 observation 重规划\"是 agent loop 在高频控制域的实例化"
+    },
+    {
+      "source": "action-chunking",
+      "target": "diffusion-model",
+      "relation_type": "uses",
+      "description": "块内几十步动作由扩散 / flow matching 一次联合去噪生成"
     },
     {
       "source": "actor-snapshot-scheduling",
@@ -17234,8 +17234,8 @@
     {
       "source": "clock-driven-rendering",
       "target": "compute-locus-spectrum",
-      "relation_type": "untyped",
-      "description": ""
+      "relation_type": "extends",
+      "description": "为计算位置光谱补上\"时间源\"这一维：同在本地 GPU 涂像素，实时播放用时钟（本页）、离线导出用帧号"
     },
     {
       "source": "code-reuse-in-agent-era",
@@ -17310,6 +17310,12 @@
       "description": "storage-locus（学到的知识存哪）与 compute-locus（画面在哪算）是\"位面判据\"家族在不同域的应用：一个问持久化位置、一个问计算位置"
     },
     {
+      "source": "compute-locus-spectrum",
+      "target": "spatial-intelligence",
+      "relation_type": "uses",
+      "description": "借空间智能的两条 3D 内容生产路线（神经 3D 生成 / Agent + DCC）补出光谱的离线生产端实例"
+    },
+    {
       "source": "computer-use",
       "target": "agent-loop-architecture",
       "relation_type": "extends",
@@ -17368,12 +17374,6 @@
       "target": "reinforcement-learning",
       "relation_type": "extends",
       "description": "RLCD 是 RLHF / RLVR 之外的第三条训练目标：优化对象从人类偏好 / 可验证正确性换成校准过的概率分布"
-    },
-    {
-      "source": "confidence-calibration",
-      "target": "llm-as-a-judge",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "conjugate-transformation",
@@ -17797,6 +17797,12 @@
     },
     {
       "source": "data-flywheel",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "内圈加速的刹车：判分的评估器不能与被优化策略共享目标函数"
+    },
+    {
+      "source": "data-flywheel",
       "target": "prompt-optimization-maturity-ladder",
       "relation_type": "uses",
       "description": "中圈优化手段沿 L0→L2 逐级上升，人的参与逐级后退；L1 用 RLHF 式主观分、L2 才有机会接 RLVR 式客观分"
@@ -17806,12 +17812,6 @@
       "target": "reward-design-three-inputs",
       "relation_type": "uses",
       "description": "两本账分家与\"确定性规则分白送零噪声信号\"是内圈安全阀的具体做法"
-    },
-    {
-      "source": "data-flywheel",
-      "target": "generation-evaluation-separation",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "diffusion-model",
@@ -17830,12 +17830,6 @@
       "target": "rejection-sampling-finetuning",
       "relation_type": "contrasts",
       "description": "同为生成方法选型语境：RAFT 适用范围讨论曾浅提扩散（跨域仅此一处独立引用）"
-    },
-    {
-      "source": "diffusion-model",
-      "target": "action-chunking",
-      "relation_type": "untyped",
-      "description": ""
     },
     {
       "source": "distributed-training-parallelism",
@@ -19674,12 +19668,6 @@
       "description": "Spatial Memory 的\"数据库式消费\"与 PKC\"编译一次持续查询\"是同一原则在空间域与知识域的两个实例"
     },
     {
-      "source": "spatial-intelligence",
-      "target": "compute-locus-spectrum",
-      "relation_type": "untyped",
-      "description": ""
-    },
-    {
       "source": "spec-driven-development",
       "target": "spec-driven-vs-methodology-framework",
       "relation_type": "part-of",
@@ -20638,6 +20626,12 @@
       "target": "copilot-studio-harness-selection",
       "relation_type": "contrasts",
       "description": "同为微软 agent 选型，Foundry 以 Runtime 归属为主线，Copilot Studio 以任务重量为主线"
+    },
+    {
+      "source": "foundry-agent-type-selection",
+      "target": "a2a-protocol",
+      "relation_type": "uses",
+      "description": "Workflow Agent 退役后，跨 agent 编排下沉到 Hosted Agent 内的 harness，agent 之间经 A2A 互调"
     },
     {
       "source": "hybrid-inference-framework-selection",
