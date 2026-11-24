@@ -9,6 +9,8 @@ tags: [copilot-studio, harness, customer-conversation, github-copilot-harness, a
 
 > [!IMPORTANT]
 > 资料截至 2026-10-27。harness 的渠道支持、计费、能否被程序调用都在 Preview 期快速变化；文中"运行在哪"的部分区分了官方确认、可观察到的事实和推断。
+>
+> 2026-11 更新：官方 [Harnesses in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/harnesses-overview) 现在只列三种 harness——**Microsoft Copilot**（推理密集、多步、跨工具、处理 Word / Excel / PowerPoint / PDF 文件，任务跑在沙箱里，按 Copilot Credits 计费）、**Customer Conversation**（面向客户的语音与聊天，可转人工）、**Standard**（规则驱动、要稳定可预测）。Microsoft Copilot harness 的职责就是下文的 GitHub Copilot harness；Copilot Chat 不再作为单独的 harness 列出，页面没有说明是改名还是合并。下文按 2026-10 的四种口径写的实测保留，选型以三种为准。
 
 [系列 02](Copilot-Studio系列02：Connector与连接.md) 讲的是 agent 怎么接外部系统；本篇讲 agent 自己跑在什么上面。这看似是实现细节，实际上决定了一个 agent **能不能被应用调用**。
 

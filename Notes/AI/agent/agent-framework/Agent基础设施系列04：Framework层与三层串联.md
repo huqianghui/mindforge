@@ -33,7 +33,7 @@ description: 把之前分散写过的 Foundry Prompt Agent 与 Hosted Agent、Co
 
 ### Copilot Studio 的四种 harness 放在哪
 
-Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copilot Studio 系列 03](../../../../Azure/Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。四种 harness 的定义都存在 Dataverse 里，但执行分在三套不同的服务上，所以创建后不能互转。放到这里的分类里，它们并不都在同一格：
+Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copilot Studio 系列 03](../../../../Azure/Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。四种 harness 的定义都存在 Dataverse 里，但执行分在三套不同的服务上，所以创建后不能互转。放到这里的分类里，它们并不都在同一格（这是 2026-10 的四种口径；2026-11 起官方只列 Microsoft Copilot、Customer Conversation、Standard 三种，Microsoft Copilot harness 对应下表的 GitHub Copilot 一行，Copilot Chat 不再单列）：
 
 | Copilot Studio harness | 实际是什么 | 对应本系列的哪一格 |
 |---|---|---|

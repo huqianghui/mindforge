@@ -57,7 +57,7 @@ tags: [copilot-studio, power-platform, power-apps, power-automate, dataverse, en
 
 ### 新旧两套界面
 
-2026-08 起 Copilot Studio 默认进入新版界面，左侧只有 **Home / Chat / Agents / Workflows / Apps**，新建 agent 默认是 GitHub Copilot harness——首页的 Agent / Workflow / App 三张卡片都标着 GitHub Copilot。要建 Standard harness 的 agent，在首页点 **Other ways to build**，或在 Agents 页点 New agent 右侧的下拉箭头选 **Agent（Standard）**；四个菜单项与四种 harness 的对应见 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md)。不同 harness 的 agent 不能互转。
+2026-08 起 Copilot Studio 默认进入新版界面，左侧只有 **Home / Chat / Agents / Workflows / Apps**，新建 agent 默认是 GitHub Copilot harness——首页的 Agent / Workflow / App 三张卡片都标着 GitHub Copilot。要建 Standard harness 的 agent，在首页点 **Other ways to build**，或在 Agents 页点 New agent 右侧的下拉箭头选 **Agent（Standard）**；四个菜单项与四种 harness 的对应见 [系列 03](Copilot-Studio系列03：四种Harness对比与选型.md)。不同 harness 的 agent 不能互转。（2026-11 起官方只列三种 harness：Microsoft Copilot、Customer Conversation、Standard，原 GitHub Copilot harness 的职责对应 Microsoft Copilot harness，见系列 03 开头的更新。）
 
 ---
 
