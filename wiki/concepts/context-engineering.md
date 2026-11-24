@@ -17,6 +17,7 @@ related:
   - "[[cybernetics-agent-design]]"
   - "[[harness-engineering]]"
   - "[[claude-code-memory-system]]"
+  - "[[rag-architecture-comparison]]"
 ---
 
 # Context Engineering
@@ -147,6 +148,7 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - [[context7]] — `uses` Context7 是 Context Engineering 的文档层工具
 - [[cybernetics-agent-design]] — `implements` Context 管理是共轭变换（表示层设计）的工程实践
 - [[claude-code-memory-system]] — `uses` 压缩后从磁盘重新注入指令，与"压缩 + 完整日志按需取回"同一思路
+- [[rag-architecture-comparison]] — `part-of` 供应链里"即时检索"那一段的架构选择，含 agentic 检索
 
 ## 来源日记
 

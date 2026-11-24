@@ -1,7 +1,7 @@
 ---
 title: "负反馈（Negative Feedback）"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -79,7 +79,20 @@ related:
 
 > 收敛性 = 约束强度 × 反馈频率 / 执行自由度。反馈频率不足会导致系统 drift，频率越高越容易收敛。
 
+### Claim: 负反馈和 reward 不是"两种反馈形式"——负反馈是纠偏信号、改的是输入、当步生效，reward 是训练信号、改的是参数、影响未来的行为分布
+
+- **来源**：[[控制论相关概念澄清]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> 常见误解是"控制论 = 负反馈、RL = 奖励函数，都是反馈"。差异在作用层级：负反馈是 error → correction（`u = -K × error`），修正 prompt、工具、流程这些系统输入，当前 step 立即生效，不改模型；reward 是标量信号 → 策略梯度（`θ ← θ + ∇reward`），修正参数，作用在未来的行为分布上。一个在外面纠偏，一个在里面改脑子。实际系统里两者分两层：快回路是运行时控制（prompt shaping、tool routing、eval 反馈、retry、guardrails），目标是当前任务成功；慢回路是训练优化（reward modeling、policy optimization），目标是模型本身变强。所以 memory、RAG、self-reflection 都不改参数，属于快回路的高级 harness，不是学习。
+
 ## 冲突与演进
+
+- 2026-11-24：/extract-knowledge 补抽《控制论相关概念澄清》，新增"负反馈与 reward 的区别"一条。
 
 - 2026-04-17：首次从控制论视角系统定义负反馈在 Agent 设计中的角色。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 4
@@ -95,4 +108,5 @@ related:
 ## 来源日记
 
 - [[控制论与科学方法论]] — Section 3.3 负反馈的完整定义
+- [[控制论相关概念澄清]] — 负反馈与 reward 的作用层级、快慢两层回路
 - [[Claude-Code系列07：Harness分层架构]] — 三层控制模型中的负反馈角色

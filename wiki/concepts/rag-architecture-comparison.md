@@ -1,7 +1,7 @@
 ---
 title: "RAG Architecture Comparison"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,7 @@ aliases:
 related:
   - "[[llm-wiki]]"
   - "[[wiki-over-rag-for-personal-knowledge]]"
+  - "[[context-engineering]]"
 ---
 
 # RAG Architecture Comparison
@@ -87,8 +88,31 @@ related:
 
 > 传统 RAG 是固定 pipeline：检索一次再生成。AgenticRAG 把检索做成 agent loop：Search 广度召回（每次至多 10 条候选、默认 5 路子查询并行），Find 在指定文档内定位片段，Open 从行号起读整段原文，Summarize 在上下文接近上限时压缩并保留引用 ID。BRIGHT 数据集上 Claude Sonnet 4.5 从单次检索 8.41% R@1 提到 49.6%（Oracle 上限 94%），推理时集成、不需训练。与 Azure AI Search Agentic Retrieval 的分工对应：搜索引擎只负责召回，"读不读、读哪段、要不要再搜"交给模型。论文精读，数字为论文报告值。
 
+### Claim: 消融说明多轮自主检索是唯一带来质变的因素——多子查询、文档内定位、上下文压缩都只是效率或可扩展性优化；落地按复杂度路由、设迭代上限
+
+- **来源**：[[2026-05-28-AgenticRAG]]
+- **首次出现**：2026-05-28
+- **最近更新**：2026-11-24
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：理论
+
+> 消融结果（BRIGHT，R@1）：只允许一次 Search 时 8.41%，是 5.9 倍差距的来源；禁用多子查询 44.84%，召回不降但工具调用多 29%（并行子查询是"用更少轮次覆盖更多"）；禁用语义 Find 46.34%，影响很小；禁用 Summarize 43.34%，对精度没有影响，但长文档、多跳推理时不压缩会溢出 128K 上下文。代价是 token 开销 2.6~7.8 倍，换 5.9 倍召回，作者判断 ROI 为正。落地建议：简单问题仍走单次 RAG（快且便宜），复杂问题走 agentic 流程；先实现多轮检索，再加并行子查询；设迭代上限（论文是 15 轮）并监控 token。定位上它是 ReAct（自主调工具）、PlanRAG（子任务规划）、Self-RAG（自反思）的融合，区别是零训练、兼容企业搜索；Search-R1 这类要用 RL 训检索策略。Summarize 这一步就是 agent 的上下文压缩，适用条件见 [[context-engineering]]。
+
+### Claim: Azure AI Search 的 Agentic Retrieval 只落地了论文里的查询规划与并行子查询——文档内深读、中途压缩、有界循环要自己用编排层补
+
+- **来源**：[[2026-05-28-AgenticRAG]]
+- **首次出现**：2026-05-28
+- **最近更新**：2026-11-24
+- **置信度**：0.55
+- **状态**：active
+- **证据类型**：产品与服务
+
+> 按 2026-05 读论文时的对照：LLM 查询规划（问题拆解）和多子查询并行检索是 Agentic Retrieval 原生内置的；Find / Open 这种文档内动态定位与翻页要用 Function Calling 加 Blob 读取自己做（产品返回的是段落）；Summarize 只有对话历史摘要，没有任务中途压缩；"最多 15 轮"的有界循环要靠外部编排（Copilot agent 或 Semantic Kernel）。论文与产品可以看作同一方向的研究与产品两条线，产品先落地了召回侧。这是产品功能对照，Agentic Retrieval 之后的版本可能已补上部分能力，引用前要按官方文档复核。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 补抽 AgenticRAG 论文笔记（用户要求书和论文完整入库），新增消融与落地建议、Azure 产品对照两条。
 - 2026-11-16：完备性补抽 [[2026-05-28-AgenticRAG]]，新增 1 条 Claim。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 1
@@ -97,6 +121,7 @@ related:
 
 - [[llm-wiki]] — `contrasts` LLM Wiki 是"编译式"知识而非"检索式"知识
 - [[wiki-over-rag-for-personal-knowledge]] — `contrasts` 该决策从个人知识管理角度论证 Wiki 优于 RAG 的选型逻辑
+- [[context-engineering]] — `part-of` RAG 是上下文供应链里"即时检索"那一段；agentic 检索里的 Summarize 就是上下文压缩
 
 ## 来源日记
 

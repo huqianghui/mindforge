@@ -21,6 +21,7 @@ related:
   - "[[feedback-loop]]"
   - "[[agent-session-control-plane]]"
   - "[[agent-sandbox]]"
+  - "[[cybernetics-agent-design]]"
 ---
 
 # Reconciliation Loop（调和循环）
@@ -124,6 +125,7 @@ related:
 ## 关联概念
 
 - [[agent-runtime]] — `part-of` agent runtime 的回收与对账靠调和循环兜底
+- [[cybernetics-agent-design]] — `implements` Kubernetes controller 是控制论反馈闭环在软件工程里的实现形态
 - [[agent-platform]] — `uses` agent 定义 controller 周期复查 skills 包
 - [[negative-feedback]] — `uses` 每一路都以"读当前状态 → 比对 → 修偏差"的负反馈为单元
 - [[feedback-loop]] — `part-of` 反馈闭环在运维与平台工程中的具体形态

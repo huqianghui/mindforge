@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering"
 created: "2026-04-13"
-updated: "2026-11-22"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -21,6 +21,7 @@ related:
   - "[[reinforcement-learning]]"
   - "[[rtk-token-compression]]"
   - "[[skill-runtime]]"
+  - "[[ai-skill-formation]]"
 ---
 
 # Harness Engineering
@@ -271,6 +272,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 ## 关联概念
 
 - [[agent-harness]] — `grounds` 本页讲怎么把 harness 做好；harness 是什么、归谁、与 framework / runtime 的边界见 agent-harness
+- [[ai-skill-formation]] — `constrains` 护栏可以分层工程化，但新人、新领域、安全关键场景下人这一层不能变薄
 - [[bitter-lesson]] — `contrasts` Harness Engineering 是人类知识编码的现代形式，可能面临 Bitter Lesson 挑战
 - [[one-person-team]] — `produces` Harness Engineering 是实现一人团队的技术基础
 - [[rtk-token-compression]] — `uses` Token 压缩是 Harness 工程的一个环节

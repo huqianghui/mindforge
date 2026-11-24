@@ -1,7 +1,7 @@
 ---
 title: "控制论 Agent 设计（Cybernetics-Agent Design）"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -19,6 +19,10 @@ aliases:
 related:
   - "[[harness-engineering]]"
   - "[[skill-runtime]]"
+  - "[[negative-feedback]]"
+  - "[[reconciliation-loop]]"
+  - "[[online-learning]]"
+  - "[[requisite-variety]]"
 ---
 
 # 控制论 Agent 设计（Cybernetics-Agent Design）
@@ -113,7 +117,42 @@ related:
 
 > 物理世界落地形态普遍是 bounded autonomy（信息理解→人工审核→边界内自动执行），与软件 Agent 权限模型（read-only→approval→auto-accept）完全同构；L4 自动驾驶把"知道自己不知道"工程化——perception confidence 低于阈值即主动降级/fallback/Minimal Risk Maneuver，ODD 边界安全退出比"开得更好"更难也更关键（负反馈的边界条件设计）。MPC（Model Predictive Control）"规划一长段、执行一小段、再重规划"是 receding horizon 闭环——2026-09-17 裁决不为其单独建页、归口控制论概念族的第二次证据来源；机器人系统的七角色分解中，控制与安全两个角色是"实现从手工设计换成学习得到"这场替换里最稳定的锚。
 
+### Claim: Cybernetics 与 Kubernetes 同出"舵手"，Harness 出自"马具"——前者讲调节一个可观测的系统，后者讲利用一股不完全可控的力量；所以 harness 是柔性控制，要多层防线叠加
+
+- **来源**：[[控制论相关概念澄清]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> Cybernetics 和 Kubernetes 共享古希腊词根 κυβερνήτης（舵手），核心隐喻是"在复杂环境中保持航向"，不是控制世界。Kubernetes 可以看作控制论在软件工程里的实现形态：controller 是"观察当前状态 → 对比目标状态 → 调整"的反馈闭环，声明式 API（如 `replicas: 3`）是"设定约束 + 反馈调节"而不是直接操作，自愈是稳态维持（homeostasis）。Harness 的本义是给马套上装备拉车，引申为把已有的力量利用起来，前提是系统可以不理解但要能用。两者在 agent 工程里的差别：经典控制面对确定性系统、控制回路可靠、精确纠偏；harness 面对概率性的模型、反馈不稳定，只能"限制 + 引导 + 利用"。因为每一层（prompt、tool、eval、retry、memory、guardrails）都不是 100% 可靠，才需要多层叠加达到工程可用的稳定性。Kubernetes 一侧的具体机制见 [[reconciliation-loop]]。
+
+### Claim: 先分清 Regulation 与 Optimization——优化回答"怎样最好"，调节回答"偏了怎么办"；做 agent 先问 Governance（边界），再问 Regulation（维持什么），然后才是 Control 与 Orchestration
+
+- **来源**：[[控制论相关概念澄清]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> Optimization 假设目标已定义、环境相对稳定，追求最小 loss 或最大 reward，失败模式是局部最优；Regulation 假设环境持续扰动、目标可能漂移，追求在变化中维持可接受的行为，失败模式是约束不足导致漂移。用优化思维做 harness（只盯 prompt 优化和单次生成质量），长任务里系统会失控，因为优化不回答"偏了怎么办"；调节思维从一开始就围绕"什么会偏（扰动）→ 怎么发现偏了（反馈）→ 怎么纠偏（调节器）"。四个常被混用的词各有所指：Governance 定义边界（guardrails、权限），Regulation 维持目标状态（eval → retry、反馈闭环），Control 是具体施力（改写 prompt、拦截工具），Orchestration 是多组件的协同顺序。不要把所有问题都当 Control 问题（"怎么让 agent 听话"），按 Governance → Regulation → Control → Orchestration 的顺序问。与 [[requisite-variety]] 的"调节不会完成"是同一立场。
+
+### Claim: 判断一个机制属于控制还是学习看四条——改不改参数、时间尺度、有没有稳定性保证、目标是当前任务还是模型本身；落到工程上的优先级是 Harness-First，离线训练次之，在线学习和 RL 最后
+
+- **来源**：[[控制论相关概念澄清]]
+- **首次出现**：2026-04-17
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> 四条规则：改参数是学习、不改是控制；即时纠偏是控制、长期优化是学习；有稳定性保证是控制、没有是学习或优化；目标是当前任务成功是控制、是模型变强是学习。训练看起来也是"输出 → 误差 → 修正"，但它是优化问题（最小化 loss）而不是控制问题（稳定输出）：修正的是参数而不是输入，跨数据分布而不是当前 step，通常离线，也不保证稳定（可能发散、过拟合）。理论上训练可以建模为最优控制（参数为状态、梯度为控制量、loss 为代价），但工程上这个统一视角反而误导设计。统一起来是三层：控制层（运行时、不改参数：prompt、tool、eval、retry、memory、guardrails）、在线学习层（运行时、改参数、双回路，见 [[online-learning]]）、训练层（离线、改参数：预训练、SFT、RLHF、DPO）。当前绝大多数 LLM agent 只工作在控制层、偶尔用离线训练，极少做在线学习，这是务实而不是落后；所以优先级是 Harness-First > 离线训练 > 在线学习 > RL，不要连 harness 都没做好就想用 RL 学策略。这是 2026-04 的判断，之后 wiki 里 [[reinforcement-learning]] 与 agent-lightning 一线积累了不少 RL 实践，"RL 最后"指的是投入顺序，不是 RL 没用。
+
 ## 冲突与演进
+
+- 2026-11-24：/extract-knowledge 补抽《控制论相关概念澄清》——此前只有在线学习两节进了 [[online-learning]]，本次补词源与 Control/Harness、Regulation 与四个治理词、控制与学习的判断规则和三层架构 3 条，负反馈与 reward 的区别归 [[negative-feedback]]。
 
 - 2026-04-17：首次从控制论视角系统审视 Agent 设计，发现 L5 Runtime 映射缺位——控制论对"状态基础设施"缺乏显式建模。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 6
@@ -122,7 +161,12 @@ related:
 
 - [[harness-engineering]] — `grounds` 控制论是 Harness Engineering 的理论根基
 - [[skill-runtime]] — `contrasts` Skill Runtime 对应控制论中缺位的 L5 状态观测层
+- [[negative-feedback]] — `part-of` 负反馈是控制论的核心机制之一
+- [[reconciliation-loop]] — `implements` Kubernetes controller 的调和循环是控制论反馈闭环的工程形态
+- [[online-learning]] — `part-of` 四概念辨析里的一档：控制层不改参数，在线学习把控制器写进模型内部（自适应控制）
+- [[requisite-variety]] — `grounds` Regulation 立场与约束维度匹配不确定性的定律依据
 
 ## 来源日记
 
 - [[2026-04-17-周五]] — 阅读《控制论与科学方法论》，整理控制论与 Agent 设计的映射
+- [[控制论相关概念澄清]] — 词源、Control 与 Harness、Regulation 与 Optimization、四个治理词、控制与学习的判断规则、三层架构
