@@ -31,13 +31,13 @@ tags:
 
 **学习路径**（`wiki/paths/`）：把网状的图谱排成有先后顺序的路径，每站标出要读的页、前置站点和「算会」标准，也是自测题库的出题来源。
 
-- [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，约 12~15 小时
-- [[voice-agent]] — 语音 Agent 与实时交互：技术栈 → 级联与端到端 → VAD / EOU → turn-taking → Speech Out → 传输 → ICE → 数字人工程 → 大脑接入 → 企业网络，10 站 + 前沿站，约 14~18 小时
-- [[harness-agent-architecture]] — Harness 工程与 Agent 架构：agent loop → context → harness → 控制论 → 扩展机制 → 协议 → 多 agent → 模型与 harness → 基础设施 → 外循环，10 站 + 前沿站（含 REA），约 16~20 小时
-- [[rl-post-training]] — 强化学习与后训练：Bitter Lesson → advantage 与四种形态 → 学习与 harness 分界 → reward → APO/SFT/RL 阶梯 → SFT → agent-lightning → VERL/Slime → 实跑，9 站 + 前沿站，约 16~20 小时
-- [[agent-self-improvement]] — Agent 自我改进：RSI 框架 → prompt 层 APO → skill 层 SkillOpt → harness 层 Meta-Harness → 产品记忆与 Dreaming → Dream-RSI → 凭什么说变好了，7 站 + 前沿站，约 12~15 小时
-- [[pkc]] — 个人知识编译（PKC）：问题 → 编译式 wiki 而非 RAG → Claim 存储 → 日记到概念页 → 记忆与规则 → 内外循环 → 知识图，7 站 + 前沿站，约 10~12 小时
-- [[agent-runtime-platform]] — Agent Runtime 与 Agent Platform：四概念总图 → harness 怎么被托管 → 隔离与沙箱编排 → 暂停与快照 → 会话控制面 → 持久执行与高可用 → 出站网关与凭据 → 逐请求授权 → 身份 → 定义与发现 → 常驻实例与会话调度 → 管控台、模型网关与追溯 → 自建 vs 托管，13 站 + 前沿站，54 题，约 19~23 小时
+- [[microsoft-three-pillars]] — 微软 AI 三支柱：GitHub Copilot、Copilot Studio、Foundry Agent Service，11 站，59 题，约 12~15 小时
+- [[voice-agent]] — 语音 Agent 与实时交互：技术栈 → 级联与端到端 → VAD / EOU → turn-taking → Speech Out → 传输 → ICE → 数字人工程 → 大脑接入 → 企业网络，10 站 + 前沿站，45 题，约 14~18 小时
+- [[harness-agent-architecture]] — Harness 工程与 Agent 架构：agent loop → context → harness → 控制论 → 扩展机制 → 协议 → 多 agent → 模型与 harness → 基础设施 → 外循环，10 站 + 前沿站，49 题，约 16~20 小时
+- [[rl-post-training]] — 强化学习与后训练：Bitter Lesson → advantage 与四种形态 → 学习与 harness 分界 → reward → APO/SFT/RL 阶梯 → SFT → agent-lightning → VERL/Slime → 实跑，9 站 + 前沿站，38 题，约 16~20 小时
+- [[agent-self-improvement]] — Agent 自我改进：RSI 框架 → prompt 层 APO → skill 层 SkillOpt → harness 层 Meta-Harness → 产品记忆与 Dreaming → Dream-RSI → 凭什么说变好了，7 站 + 前沿站，30 题，约 12~15 小时
+- [[pkc]] — 个人知识编译（PKC）：问题 → 编译式 wiki 而非 RAG → Claim 存储 → 日记到概念页 → 记忆与规则 → 内外循环 → 知识图，7 站 + 前沿站，31 题，约 10~12 小时
+- [[agent-runtime-platform]] — Agent Runtime 与 Agent Platform：四概念总图 → harness 怎么被托管 → 隔离与沙箱编排 → 暂停与快照 → 会话控制面 → 持久执行与高可用 → 出站网关与凭据 → 逐请求授权 → 身份 → 定义与发现 → 常驻实例与会话调度 → 管控台、模型网关与追溯 → 自建 vs 托管，13 站 + 前沿站，58 题，约 19~23 小时
 - [[embodied-intelligence]] — 具身智能：全景 → 分层多频率控制回路 → 空间层 → 世界模型是角色 → 路线与风险 → 扩散与 flow matching → VLA 输出架构 → 动作块与频率口径 → 数据与分层选型，9 站 + 前沿站，36 题，约 11~13 小时
 
 ## 知识工作流
