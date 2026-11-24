@@ -1,7 +1,7 @@
 ---
 title: "学习路径：语音 Agent 与实时交互"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -31,7 +31,6 @@ signals:
 - **读**：[[speech-technology-stack]]、[[Speech技术全景]]
 - **前置**：无
 - **用时**：约 1 小时
-- **⚠️ stale**：13 条里 7 条 stale，前三条（三层技术栈、能量 VAD 的局限、barge-in）是概念性的，仍可读
 - **算会**：
   - 能画出 Speech In / Core Processing / Speech Out 三层，各举两个组件
   - 能说出音频前处理链（降噪、回声消除等）为什么有严格的执行顺序
@@ -39,21 +38,20 @@ signals:
 
 ## 第 2 站 · 架构：级联与端到端
 
-- **读**：[[cascaded-pipeline]]、[[voice-live-agent]]（前 6 条 Claim）、[[cascaded-vs-e2e-voice]]、[[voice-cascaded-pipeline]]
+- **读**：[[cascaded-pipeline]]、[[voice-live-agent]]（前 6 条 Claim）、[[cascaded-vs-e2e-voice]]、[[voice-cascaded-pipeline]]；[[cascaded-vs-e2e-voice]]（Claim「语音 agent 的瓶颈已经从听清转到该不该动」）
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[cascaded-pipeline]] 3/3、[[voice-live-agent]] 11/25 stale；决策页的新 Claim（GPT-Live-1、宿主不可拆）是近期的
 - **算会**：
   - 能说出级联（VAD → STT → LLM → TTS）与端到端的取舍，以及"判断模块化的标准是能否单独替换"
   - 能解释低延迟的关键是组件重叠执行，而不是单个组件更快
   - 能说出 Voice Live 把级联与端到端放在同一个 API 后面以后，"架构决策降级为配置项"的好处和副作用（控制面归属翻转、模型是会话宿主）
+  - 能说出语音 agent 为什么要在感知和推理之外单设一层决策（执行、等待、追问、不出声），以及它依据哪六类证据
 
 ## 第 3 站 · 听：VAD 与 EOU
 
 - **读**：[[voice-activity-detection]]、[[end-of-turn-detection]]
 - **前置**：第 2 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[voice-activity-detection]] 6/8 stale；[[end-of-turn-detection]] 全部 active
 - **算会**：
   - 能区分三件事：VAD 判有没有人声、EOU 判这句话说完没有、turn-taking 决定该不该接话
   - 能说清同名的"semantic VAD"在 OpenAI 和 Azure 是两回事
@@ -84,7 +82,6 @@ signals:
 - **读**：[[realtime-protocol-selection]]、[[WebSocket与WebRTC深度对比]]、[[Voice-Live系列16：传输层概念对齐]]
 - **前置**：第 2 站
 - **用时**：约 2 小时
-- **⚠️ stale**：[[realtime-protocol-selection]] 12 条里 6 条 stale，后 6 条（媒体面 / 控制面、RTP / RTCP、建连成本）是近期的
 - **算会**：
   - 能说出 WebSocket 是控制总线、WebRTC 是实时传输通道，双通道各管什么
   - 能说出两者的差别远不止 UDP 换 TCP：丢包、编码、抖动缓冲、拥塞控制、媒体经不经过后端
@@ -109,16 +106,19 @@ signals:
   - 能说出 Azure 发送端已经做了码率自适应、客户端没有带宽杠杆，以及为什么"自适应救不了 1080p"
   - 能说出"胖视频饿死同车音频"的实测现象，以及降级为什么必须不对称（`session.avatar.connect` 每会话只接受一次）
   - 能说出数字人的两条配额限制：同时活跃 5、每滚动 60 秒新建 3，哪条关闭即释放、哪条不退还
+  - 遇到 "Retry after N s" 能说出为什么不能当永久失败，以及客户端本地账本最容易犯的三类错
+  - 能说出数字人配额为什么"按生产形态定"：一次正常会话只花 1 次新建额度，开发时反复重开一分钟就能凑满
 
 ## 第 9 站 · 大脑怎么挂：模型接入三条路径
 
-- **读**：[[voice-agent-build-approach]]、[[Voice-Live系列14：模型接入的三条路径]]、[[Voice-Live系列15：realtime模型与数字人]]、[[voice-live-agent]]（Claim「给会话挂大脑有且只有三条路径」）
+- **读**：[[voice-agent-build-approach]]、[[Voice-Live系列14：模型接入的三条路径]]、[[Voice-Live系列15：realtime模型与数字人]]、[[voice-live-agent]]（Claim「给会话挂大脑有且只有三条路径」）；[[voice-agent-build-approach]] 的六条 Claim（构建方式梯度、真实项目多落在直接调 API、多种方式并存、电话入口、Copilot Studio 没有内置数字人、Hosted 做语音的上限）
 - **前置**：第 2、4 站
 - **用时**：约 1.5 小时
 - **算会**：
   - 能说出原生 `model=`、BYOM、Agent 三条路径各自的约束（region 清单、profile 定死直通或级联、Agent 架构上是级联）
   - 能解释"一个模型字段承载两种语义"为什么会引出 region 报错
   - 能说出 agent 的价值等于交给它的内容决定权，什么场景挂 agent 反而是负资产
+  - 能按"每一轮由谁控制"排出三种构建方式（Foundry 语音 agent、Hosted + Voice Live、直接调 Voice Live API），并说出什么信号意味着前期就该按直接调 API 设计
 
 ## 第 10 站 · 企业网络现场：GSA 下的数字人
 
@@ -132,11 +132,12 @@ signals:
 
 ## 前沿站 · 正在发生的变化
 
-来自知识差距报告的 `voice-agent` 主题（连续出现 10 期，是热度最高的主题）。这一站还没进 wiki，「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
+来自知识差距报告的 `voice-agent` 主题（每期都在，是出现次数最多的主题）与 2026-W47 周报。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
 
-- **全双工语音前台 + 后台 agent 有了真实部署**（2026-10-25，中优先级）→ 影响第 2、4 站：端到端还"不到企业生产可用"吗？
-- **全双工语音 agent 补齐工具调用与后台计算**（2026-10-19，高优先级，建议深挖）→ 影响第 9 站：前台说话、后台想事情的分工
-- **语音全双工商业化拐点**（2026-09-12，高优先级）→ 影响 [[cascaded-vs-e2e-voice]] 的前提
+- **语音 agent 的瓶颈从"听清"转到"该不该动"**（2026-11-23 报告，中优先级）→ 已收进第 2 站；原始数字出自 τ-Voice，原文还没读，读完可能改第 2、4 站对"端到端是否可用于生产"的判断
+- **Foundry 语音 agent GA，可接 Teams Phone、Twilio、Genesys**（2026-W47 周报，Ignite）→ 影响第 9 站：电话入口原来只有"Copilot Studio 语音 agent"和"Voice Live + ACS"两条，现在多了托管的第三条，构建方式梯度要重新比一次
+- **原生语音到语音模型继续出新**（Grok Voice 3.0 等，二手报道）→ 影响第 2 站的级联与端到端取舍，暂作观望
+- **全双工语音 agent 补齐工具调用与后台计算**（2026-10 报告）→ 影响第 9 站：前台说话、后台想事情的分工
 - **GPT-Live-1 对数字人方案的影响**：见 [[Voice-Live系列04：GPT-Live-1对数字人方案的影响]]，它会吃掉一整层轮次控制
 
 ## 毕业标准
@@ -145,6 +146,6 @@ signals:
 
 ## 这条路径暴露的缺口
 
-- **stale 集中**：第 1~3 站的底座页（[[speech-technology-stack]]、[[voice-activity-detection]]、[[cascaded-pipeline]]）stale 比例高，建议优先 `/revalidate voice`
+- **stale 已清零**（2026-11-24 刷新时各站读物全部 active）；2026-11 之前的产品类结论仍要随 Voice Live 版本复核
 - **方法页不足**：缺"语音 agent 延迟预算怎么拆"的方法页（素材散在 [[turn-taking]] 和 Voice Live 系列 03、06）
-- **全双工**：前沿站的四条都还没有对应的概念页
+- **全双工与决策层**：前沿站几条还没有对应的概念页；"单设一层决策"目前只是 [[cascaded-vs-e2e-voice]] 的一条 Claim，原始证据 τ-Voice 未读
