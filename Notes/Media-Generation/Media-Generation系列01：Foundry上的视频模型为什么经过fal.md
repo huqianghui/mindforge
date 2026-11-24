@@ -178,9 +178,9 @@ This deployment does not support image-to-video or reference-to-video generation
 
 于是我绕过 Playground，在部署了五个模型的同一个资源上直接调图生视频路由，传了一张首帧、一张尾帧：
 
-[![Kling v3 Pro 首尾帧图生样片（点击播放 MP4）|700](../../asset/media-gen-sample-kling-start-end-2026-11-24.jpg)](../../asset/media-gen-sample-kling-start-end-2026-11-24.mp4)
+[![Kling v3 Pro 首尾帧图生样片（点击打开 MP4）|700](../../asset/media-gen-sample-kling-start-end-2026-11-24.jpg)](../../asset/media-gen-sample-kling-start-end-2026-11-24.mp4)
 
-**Kling v3 Pro · 首尾帧图生（API 直连）**　请求：首帧和尾帧各一张本地 JPEG（data URI 传入），时长 3 秒，关闭音频。实际输出：1920×1080、24 fps、3.042 秒，无音轨。观察：灯具从首帧的远景一路推到尾帧的近景，造型和颜色都保住了。两张首尾帧是扁平插画，这条样片验证的是接口和构图衔接，不代表写实画质。点击封面播放 MP4，封面是成片的四帧截图。
+**Kling v3 Pro · 首尾帧图生（API 直连）**　请求：首帧和尾帧各一张本地 JPEG（data URI 传入），时长 3 秒，关闭音频。实际输出：1920×1080、24 fps、3.042 秒，无音轨。观察：灯具从首帧的远景一路推到尾帧的近景，造型和颜色都保住了。两张首尾帧是扁平插画，这条样片验证的是接口和构图衔接，不代表写实画质。封面是成片的四帧截图，点击打开 MP4，在 GitHub 上会下载到本地播放。
 
 API 收下了首尾帧，正常返回 MP4。Playground 的提示只是界面层的限制，**Kling 的图生视频在 Foundry 上可以通过 API 用**。Reference-to-Video 是另一回事——Foundry 上只有 H3 Max 提供，Kling 3.0 产品本身虽然有参考素材能力，但 Foundry 上没有开放。
 
