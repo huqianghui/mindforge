@@ -1,0 +1,232 @@
+{
+"lede": "Microsoft Foundry 经 fal 提供的五个视频模型——Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Max Turbo——按同一套方案实测：七个测试、93 次请求、90 条成片。每个测试一页，页面里直接播放完整原片，附请求参数、实际规格、耗时、估算费用和逐条验片观察。最后一页是一条 15 秒短片从初版到成片的创作过程。",
+"howto": [
+"<b>每组 3 条是探索性样本。</b>视频生成有随机性，3 条只能描述“这次看到了什么”，不能当成模型排名；正式比较要同一组合累计 20 条以上再报 P50 / P95 和成功率。",
+"<b>评分 A/V/T/M</b> 分别是提示遵循、画质、时间一致性、可见运动，1–5 分，依据是每条四个位置的抽帧，不是逐帧播放审片。音画同步和“能不能直接交付”没有评分。",
+"<b>端到端</b>从第一次 POST 算到 MP4 下载并校验完成，含排队与轮询间隔；不是厂商公布的推理时间。",
+"<b>估算费用</b>是 Foundry 发布单价乘以实测时长，不是账单。H3 与 Kling 的实际时长都比请求略长，按秒计费时要注意。",
+"<b>同步播放</b>按钮会把一组视频同时从头播放，方便并排对比；首次加载视频需要几秒。"
+],
+"tests": [
+{
+"file": "t01.html", "preview": "t01", "title": "Test 01 · 雨夜人物：五个模型的基线",
+"tile": "同一条 Prompt、6 秒 1080p，五个模型各 3 条",
+"lede": "同一条雨夜人物 Prompt 交给五个模型，看基础的画面遵循、人物一致性和镜头运动，同时拉齐时长、耗时和费用。",
+"setup": ["五个模型都请求 6 秒、16:9、1080p（Kling 没有分辨率参数，按返回值记）。LTX 与 Kling 关闭原生音轨，H3 没有静音开关，照常带音频，所以五组的工作量并不完全相同。每组 3 条独立生成，不固定种子。"],
+"prompt_from": "t01-kling-r1",
+"stats": {"tests": ["1/7", "1"], "conds": ["ltx-fast", "ltx-pro", "h3-turbo", "h3-max", "kling"]},
+"findings": [
+"<b>五个模型都能出这个题材。</b>红色长外套、透明伞、霓虹湿街、车流和推近到近景，15 条全部出现，没有明显崩坏。差别在细节：LTX Fast r1、Pro r2 / r3 主要沿街正面推进，Prompt 要求的“转头看向镜头”不突出；Kling 三条都从斑马线路口起镜，光色更克制。",
+"<b>速度差一个数量级。</b>H3 两档端到端约 38–41 秒，LTX Fast 约 90 秒、Pro 约 117 秒，Kling 250–331 秒。要在会议里现场出片、或者批量试 Prompt，H3 是唯一不用等的选择。",
+"<b>单价和画面不成比例。</b>同为 1080p，H3 Max Turbo 一条约 0.53 美元，是五个里最便宜的；Kling 关音频约 0.74 美元，LTX Pro 约 1.02 美元。这一轮抽帧里看不出贵的那个画面明显更好。",
+"<b>时长会多出来。</b>请求 6 秒，H3 实际 6.592 秒，Kling 6.042 秒，LTX 正好 6.000 秒。对时长有硬要求的剪辑，选 LTX 或在后期裁切。",
+"<b>建议：</b>做草稿和方向探索默认用 H3 Max Turbo；要精确时长、帧率用 LTX；Kling 留给对人物表演和电影感有要求、又能等几分钟的镜头。"
+],
+"unknown": ["步态、伞和雨滴的物理、两帧之间的短暂变形都要逐条播放才能判断，这里没有结论。", "H3 带音频、LTX / Kling 不带，耗时和费用差别里有一部分来自音频，不全是模型本身。"],
+"groups": [
+{"title": "LTX 2.5 Fast", "runs": ["t01-ltx-fast-r1", "t01-ltx-fast-r2", "t01-ltx-fast-r3"], "sync": true},
+{"title": "LTX 2.5 Pro", "runs": ["t01-ltx-pro-r1", "t01-ltx-pro-r2", "t01-ltx-pro-r3"], "sync": true},
+{"title": "H3 Max Turbo", "runs": ["t01-h3-turbo-r1", "t01-h3-turbo-r2", "t01-h3-turbo-r3"], "sync": true},
+{"title": "H3 Max", "runs": ["t01-h3-max-r1", "t01-h3-max-r2", "t01-h3-max-r3"], "sync": true},
+{"title": "Kling v3 Pro", "runs": ["t01-kling-r1", "t01-kling-r2", "t01-kling-r3"], "sync": true},
+{"title": "五个模型 · 第 1 条并排", "runs": ["t01-ltx-fast-r1", "t01-ltx-pro-r1", "t01-h3-turbo-r1", "t01-h3-max-r1", "t01-kling-r1"], "sync": true}
+]
+},
+{
+"file": "t07.html", "preview": "t07", "title": "Test 07 · 草稿到成片：同族换档能保留多少",
+"tile": "LTX Fast→Pro、H3 Turbo→Max，同一 Prompt 成对比较",
+"lede": "常见做法是先用便宜、快的档位出草稿，挑中方向再换贵的档位出成片。这一页看换档之后画面还剩多少。",
+"setup": ["复用 Test 01 的十二条 LTX / H3 样片，按编号配成六对：LTX Fast 对 Pro、H3 Turbo 对 Max。成片档拿到的是同一段文字，<b>没有把草稿画面作为输入，也没有固定种子</b>，所以这里测的是“只换档、其余不变”时的保留程度。"],
+"prompt_from": "t01-ltx-fast-r1",
+"findings": [
+"<b>LTX 换档基本等于重新生成。</b>三对都出现明显的机位或轴线变化：r1 Fast 从街中心正面推进，Pro 从侧向和穿过画面的暖色轿车起镜；r2、r3 的人物位置、车辆和镜头路径也都换了。",
+"<b>H3 换档保留了大方向。</b>三对都是“远到近、终点趋向正面、伞下近景”的结构，街口店面和暖色灯牌也接近；但人物初始比例、车辆先后、领口和伞的位置每对都有改动。",
+"<b>价格差距决定了值不值得这样做。</b>1080p 下 LTX Fast 只比 Pro 便宜约四分之一，H3 Turbo 是 Max 的一半。既然换档不保留构图，LTX 的“草稿”省不了多少；H3 Turbo 拿来试 Prompt 措辞和大致视觉方向是划算的。",
+"<b>建议：</b>草稿只用来定 Prompt 和方向；要保住某一条草稿的机位和主体，得把它的关键帧作为首帧或参考图交给成片档，而不是只换模型名。"
+],
+"unknown": ["没有做“草稿关键帧作为首帧”的对照，这条建议本身还待实测。", "每对只有一组样本，看不出 Pro / Max 的画质是否稳定更好。"],
+"groups": [
+{"title": "LTX r1 · Fast → Pro", "runs": ["t01-ltx-fast-r1", "t01-ltx-pro-r1"], "sync": true},
+{"title": "LTX r2 · Fast → Pro", "runs": ["t01-ltx-fast-r2", "t01-ltx-pro-r2"], "sync": true},
+{"title": "LTX r3 · Fast → Pro", "runs": ["t01-ltx-fast-r3", "t01-ltx-pro-r3"], "sync": true},
+{"title": "H3 r1 · Turbo → Max", "runs": ["t01-h3-turbo-r1", "t01-h3-max-r1"], "sync": true},
+{"title": "H3 r2 · Turbo → Max", "runs": ["t01-h3-turbo-r2", "t01-h3-max-r2"], "sync": true},
+{"title": "H3 r3 · Turbo → Max", "runs": ["t01-h3-turbo-r3", "t01-h3-max-r3"], "sync": true}
+]
+},
+{
+"file": "t02.html", "preview": "t02", "title": "Test 02 · 宇航员对白：原生语音与 Kling 分镜",
+"tile": "五个模型说同一句英文台词；Kling 结构化分镜的两种写法",
+"lede": "一个宇航员在飞船走廊里说出 “We have a problem. The reactor is losing power.”。看五个模型的原生语音，以及 Kling 结构化分镜在 Foundry 上到底能不能用。",
+"setup": ["五个模型各跑 3 条单段 Prompt，10 秒、1080p、开启原生音频，声音要求是成年中低音、克制而担忧、正常语速。另外 Kling 跑两组结构化分镜（两个 5 秒镜头）：一组按文档只填 <code>multi_prompt</code>、顶层 <code>prompt</code> 留空；一组在顶层再写一段非空的场景摘要。台词用本机 Whisper tiny 转写核对。"],
+"prompt_from": "t02-kling-r1",
+"stats": {"tests": ["2"], "conds": ["ltx-fast", "ltx-pro", "h3-turbo", "h3-max", "kling", "kling-multi", "kling-multi-filled"]},
+"extra_table": {"head": ["条件", "转写命中完整台词", "画面是宇航员场景"], "rows": [
+["LTX Fast / Pro、H3 Turbo / Max、Kling 单段", "15／15", "15／15"],
+["Kling 分镜 · 顶层空 prompt", "0／3", "0／3"],
+["Kling 分镜 · 顶层非空摘要", "3／3", "3／3"]]},
+"findings": [
+"<b>单段 Prompt 下，五个模型都能把这句英文说出来。</b>15 条机器转写全部逐词命中，画面都是宇航员、舰内走廊和受损控制面板。面罩较暗或遮住嘴的几条，口型无法判断。",
+"<b>Kling 分镜顶层留空，内容会完全跑题。</b>3 条全是和反应堆无关的视频通话场景，转写出来是 “Hey. I miss you so much.” 之类的句子；任务状态却都是 COMPLETED。",
+"<b>顶层写上非空摘要就回到正题。</b>3 条都是宇航员并说出完整台词。但计划在 5 秒处的切镜，两条在约 6 秒才切，一条在检查窗口里没有确认硬切——镜头时长参数没有按指定执行。",
+"<b>建议：</b>在 Foundry 上用 Kling 分镜，顶层 <code>prompt</code> 必须写一段完整的场景说明；对切点精确到秒的需求，逐镜生成再剪辑更可靠。验收一定要看画面，任务成功不等于成片遵循了请求。"
+],
+"unknown": ["声线、情绪、语速和口型同步没有人工全片听审，只有机器转写。", "顶层摘要本身也写了镜头切换，无法确认后台究竟采用了哪个字段。"],
+"groups": [
+{"title": "LTX 2.5 Fast", "runs": ["t02-ltx-fast-r1", "t02-ltx-fast-r2", "t02-ltx-fast-r3"]},
+{"title": "LTX 2.5 Pro", "runs": ["t02-ltx-pro-r1", "t02-ltx-pro-r2", "t02-ltx-pro-r3"]},
+{"title": "H3 Max Turbo", "runs": ["t02-h3-turbo-r1", "t02-h3-turbo-r2", "t02-h3-turbo-r3"]},
+{"title": "H3 Max", "runs": ["t02-h3-max-r1", "t02-h3-max-r2", "t02-h3-max-r3"]},
+{"title": "Kling v3 Pro · 单段 Prompt", "runs": ["t02-kling-r1", "t02-kling-r2", "t02-kling-r3"]},
+{"title": "Kling 分镜 · 顶层空 prompt（跑题）", "runs": ["t02-kling-multi-r1", "t02-kling-multi-r2", "t02-kling-multi-r3"]},
+{"title": "Kling 分镜 · 顶层非空摘要（回到正题）", "runs": ["t02-kling-multi-filled-r1", "t02-kling-multi-filled-r2", "t02-kling-multi-filled-r3"]},
+{"title": "修正后的 Skill 常规入口复查", "runs": ["t02-kling-normal-entry-check"]}
+]
+},
+{
+"file": "t03.html", "preview": "t03", "title": "Test 03 · 海岛航拍：长镜头、4K 与高帧率",
+"tile": "五个模型各 3 条，外加 LTX Fast 的 4K / 20 秒 / 48 / 50 fps",
+"lede": "一个连续的无人机长镜头：从海面下降到瀑布崖，越过瀑布揭示一处隐藏的潟湖。看地理关系能不能在整段里保持，以及 LTX Fast 的参数上限在实际成片里是什么样子。",
+"setup": ["五个模型在共同档位各跑 3 条：10 秒、1080p。LTX Fast 另外四组各 3 条：4K（2160p）/ 10 秒、1080p / 20 秒 / 24 fps、1080p / 48 fps、1080p / 50 fps。共 27 条。"],
+"prompt_from": "t03-ltx-fast-r1",
+"stats": {"tests": ["3"], "conds": ["ltx-fast", "ltx-pro", "h3-turbo", "h3-max", "kling", "fast-4k", "fast-20s", "fast-48fps", "fast-50fps"]},
+"findings": [
+"<b>“越过瀑布、揭示潟湖”是这条 Prompt 的难点。</b>27 条里 24 条能看到崖上或林间的另一处水体；H3 Max 第 1、2 条和 H3 Turbo 第 3 条停在瀑布脚下的水潭，没有越过去。",
+"<b>LTX Fast 的参数上限都真实可用。</b>4K 文件确实是 3840×2160，48 / 50 fps 文件帧率也对；20 秒三条都在 8.75–13.75 秒之间越过瀑沿，后半段在同一片林间水域推进，地理关系没有乱。",
+"<b>但“更高”不等于“更好”。</b>缩放后的抽帧看不出 4K 有更多真实细节；48 / 50 fps 各有一条在中后段出现树冠的放射状模糊。静态抽帧无法证明高帧率更顺。",
+"<b>代价很直观。</b>4K 一条 3 美元、端到端 200–240 秒；20 秒一条 2.6 美元、250–313 秒；同样 10 秒 1080p 的 H3 Turbo 只要 0.81 美元、约 45 秒。",
+"<b>建议：</b>长镜头和高分辨率交付选 LTX Fast，但先在 1080p / 10 秒定好构图再升档；要“越过某个地标再揭示”的叙事动作，H3 不够稳定，Kling 和 LTX 这一轮全部做到了。"
+],
+"unknown": ["4K 和高帧率的观感要在大屏上完整播放对比，这里只有元数据和抽帧。", "同条件三次之间的差异是随机生成造成的，不能当成参数的因果效果。"],
+"groups": [
+{"title": "五个模型 · 第 1 条并排", "runs": ["t03-ltx-fast-r1", "t03-ltx-pro-r1", "t03-h3-turbo-r1", "t03-h3-max-r1", "t03-kling-r1"], "sync": true},
+{"title": "LTX 2.5 Fast · 10 秒 1080p", "runs": ["t03-ltx-fast-r1", "t03-ltx-fast-r2", "t03-ltx-fast-r3"]},
+{"title": "LTX 2.5 Pro · 10 秒 1080p", "runs": ["t03-ltx-pro-r1", "t03-ltx-pro-r2", "t03-ltx-pro-r3"]},
+{"title": "H3 Max Turbo", "runs": ["t03-h3-turbo-r1", "t03-h3-turbo-r2", "t03-h3-turbo-r3"]},
+{"title": "H3 Max（第 1、2 条停在瀑脚水潭）", "runs": ["t03-h3-max-r1", "t03-h3-max-r2", "t03-h3-max-r3"]},
+{"title": "Kling v3 Pro", "runs": ["t03-kling-r1", "t03-kling-r2", "t03-kling-r3"]},
+{"title": "LTX Fast · 4K / 10 秒", "runs": ["t03-fast-4k-r1", "t03-fast-4k-r2", "t03-fast-4k-r3"]},
+{"title": "LTX Fast · 20 秒", "runs": ["t03-fast-20s-r1", "t03-fast-20s-r2", "t03-fast-20s-r3"]},
+{"title": "LTX Fast · 48 fps", "runs": ["t03-fast-48fps-r1", "t03-fast-48fps-r2", "t03-fast-48fps-r3"]},
+{"title": "LTX Fast · 50 fps", "runs": ["t03-fast-50fps-r1", "t03-fast-50fps-r2", "t03-fast-50fps-r3"]}
+]
+},
+{
+"file": "t04.html", "preview": "t04", "title": "Test 04 · 鼓点音频：指定音轨能不能驱动画面",
+"tile": "H3 Max 的 target_audio 与对照组，成对比较",
+"lede": "给 H3 Max 一段真实鼓组录音，用 <code>target_audio</code> 指定为成片音轨，看画面里的击鼓动作能不能跟上鼓点。",
+"setup": ["输入是一段 8.781 秒的鼓组录音，请求 9 秒、768P。参考组和对照组用同一张鼓组照片和成对的种子，参考组多给 <code>target_audio</code>。音轨用波形和 RMS 包络与输入做互相关；画面卡点从录音的五个声起时刻附近逐帧查看。"],
+"inputs": [{"img": "drum-kit.jpg", "cap": "参考图：鼓组照片（Poecus，Wikimedia Commons，公有领域）"}],
+"prompt_from": "t04-drum-target-r1",
+"stats": {"tests": ["4"], "conds": ["drum-target", "drum-control"]},
+"extra_table": {"head": ["条件", "波形相关（最大）", "RMS 包络相关", "偏移"], "rows": [["指定目标音轨", "0.9997（3／3）", "1.0000", "0 ms"], ["对照", "0.04–0.05", "0.08–0.12", "−994 ~ 228 ms"]]},
+"findings": [
+"<b>音轨被原样保留。</b>参考组三条与输入录音的波形相关 0.9997、零偏移——成片里放的就是这段录音，对照组则是模型自己生成的另一段鼓声。",
+"<b>但“音轨对了”不等于“画面卡点”。</b>声起时刻附近能看到抬棒到下挥的变化，可鼓棒和鼓面的接触被运动模糊和机位遮挡，没法逐击确认同步。",
+"<b>参考图会被插回画面。</b>第 2 对两组都在约 1.7 秒和 7.1 秒跳回参考照片里的粉墙空鼓组，舞台上的鼓手消失、出现悬空的鼓棒——人物和场景的连续性明显被打断。",
+"<b>建议：</b><code>target_audio</code> 适合“这段视频必须配这段音乐”的场景；要动作精确卡拍，目前还得后期对位或换用专门的 Audio-to-Video 接口（只在 fal 原生平台提供，这次没有测）。参考图最好不要和成片场景差别太大，否则可能被直接插入。"
+],
+"unknown": ["逐击音画同步没有人工逐帧核对。", "fal 原生平台的 LTX Audio-to-Video 需要另一套凭据，没有对照样片。"],
+"groups": [
+{"title": "第 1 对 · 指定音轨 vs 对照", "runs": ["t04-drum-target-r1", "t04-drum-control-r1"], "sync": true},
+{"title": "第 2 对（两组都跳回参考图）", "runs": ["t04-drum-target-r2", "t04-drum-control-r2"], "sync": true},
+{"title": "第 3 对", "runs": ["t04-drum-target-r3", "t04-drum-control-r3"], "sync": true}
+]
+},
+{
+"file": "t05.html", "preview": "t05", "title": "Test 05 · 人与狗：双参考图 vs 首帧加文字",
+"tile": "两个主体同时保持外观，参考生成与图生视频的差别",
+"lede": "一位女性牵着一只金毛在海边散步。参考组把女性和金毛两张图都作为主体参考；对照组只把女性图作为首帧，金毛用文字描述。",
+"setup": ["H3 Max，6 秒、768P，两组用成对种子。女性图是先前一条生成视频里截的虚构人物，金毛是 Wikimedia Commons 的 CC0 照片。"],
+"inputs": [{"img": "woman-generated.jpg", "cap": "Image 1：生成的虚构女性（来自前一批样片截帧）"}, {"img": "golden-retriever.jpg", "cap": "Image 2：金毛（Mtlchung，Wikimedia Commons，CC0）"}],
+"prompt_from": "t05-woman-dog-ref-r1",
+"stats": {"tests": ["5"], "conds": ["woman-dog-ref", "woman-start-control"]},
+"findings": [
+"<b>双参考组一开始就在海边、两个主体同框。</b>三条从第一个抽样点（0.625 秒）起就是日落步道上的女性加金毛；金毛的浅金毛色更接近参考照片。",
+"<b>首帧组先“演”一段原图。</b>三条开头都还是输入图里的实验室背景，约 4.25 秒才换到海边并让狗出现，金毛也偏橙色——它只能按文字想象一只金毛。",
+"<b>身份是否严格保留，抽帧判断不了。</b>两组都保住了黑发和深蓝衣服，但很多帧里人脸被裁出画面或太小，狗的个体特征也无法逐帧确认。",
+"<b>建议：</b>多主体要同时出现、外观要接近参考时，用 Reference-to-Video；只需要从一张定稿图开始动起来，才用图生视频。两者的差别是输入角色不同，不是画质高低。"
+],
+"unknown": ["人脸和犬只的个体一致性需要更近景的样片和人工比对。"],
+"groups": [
+{"title": "第 1 对 · 双参考 vs 首帧", "runs": ["t05-woman-dog-ref-r1", "t05-woman-start-control-r1"], "sync": true},
+{"title": "第 2 对", "runs": ["t05-woman-dog-ref-r2", "t05-woman-start-control-r2"], "sync": true},
+{"title": "第 3 对", "runs": ["t05-woman-dog-ref-r3", "t05-woman-start-control-r3"], "sync": true}
+]
+},
+{
+"file": "t06.html", "preview": "t06", "title": "Test 06 · 挥手动作迁移：参考视频驱动 3D 角色",
+"tile": "真人挥手视频 + 卡通宇航员，参考组与文字动作对照",
+"lede": "给 H3 Max 一段真人单手挥手视频和一张 3D 卡通宇航员图，要求角色复现视频里的动作和节奏。对照组只用宇航员图作首帧，动作用文字描述。",
+"setup": ["输入视频 5.208 秒（Wikimedia Commons，CC BY-SA 4.0，裁成单人并去掉声音），请求 6 秒、768P，成对种子。动作在共有的 5.208 秒窗口里按八个时刻比较，片尾另记。"],
+"inputs": [{"video": "input-hand-wave.mp4", "poster": "input-hand-wave", "cap": "Video 1：真人单手挥手（NMu11er，Wikimedia Commons，CC BY-SA 4.0，已裁切去声）"}, {"img": "astronaut-3d.jpg", "cap": "Image 1：为本测试渲染的 3D 卡通宇航员"}],
+"prompt_from": "t06-wave-ref-r1",
+"stats": {"tests": ["6"], "conds": ["wave-ref", "wave-start-control"]},
+"findings": [
+"<b>角色造型保住了，动作没有迁移过去。</b>参考组三条都保留了宇航员的颜色、头盔和比例，但都把真人的“单手挥动”变成了“双手举起”；第 2 条还在 5.2 秒前就把手放下了，和原片仍在挥手的节奏不符。",
+"<b>文字对照反而更像要求的动作。</b>首帧加文字的三条都是单臂抬起再放下——不过它没有视频输入，谈不上动作迁移，只说明文字指令被执行了。",
+"<b>参考组还会自己加东西。</b>第 1 条背景多了心形和星星，原图和 Prompt 都没有。",
+"<b>建议：</b>在 Foundry 的 H3 Max 上，参考视频目前只能当“动作大致方向”的提示，不能指望逐帧复现手势和节奏；要严格的动作迁移，需要专门的 motion transfer / video-to-video 工具。"
+],
+"unknown": ["只看了十个时刻的姿态，没有做逐帧的动作相位和速度对比。"],
+"groups": [
+{"title": "第 1 对 · 参考视频 vs 文字动作", "runs": ["t06-wave-ref-r1", "t06-wave-start-control-r1"], "sync": true},
+{"title": "第 2 对", "runs": ["t06-wave-ref-r2", "t06-wave-start-control-r2"], "sync": true},
+{"title": "第 3 对", "runs": ["t06-wave-ref-r3", "t06-wave-start-control-r3"], "sync": true}
+]
+},
+{
+"file": "probes.html", "preview": "probe", "title": "接口边界：路由、内联图片大小与首尾帧",
+"tile": "带不带 v1、内联 JPEG 能多大、三个模型的首尾帧",
+"lede": "不比画质，只确认几条接入时容易踩的接口边界。",
+"setup": ["路由：拿 5 个旧任务分别用带 <code>/v1</code> 和不带 <code>/v1</code> 的地址各查一次状态和结果，再用不带 <code>/v1</code> 的地址提交一次新任务。内联大小：同一张小 JPEG 填充元数据到 4、8、12、16、24、64、128 MiB 作为首帧提交（像素不变）。另外补测 H3 两档和 LTX Fast 的首尾帧图生。"],
+"extra_table": {"head": ["探测", "结果"], "rows": [
+["带 /v1 的 GET 状态 / 结果", "10／10 返回 200"],
+["不带 /v1 的 GET 状态 / 结果", "10／10 返回 400"],
+["不带 /v1 的 POST 提交", "400 unknown_model"],
+["内联 JPEG 4 / 8 / 12 / 16 / 24 MiB", "都拿到任务 ID 并出片，端到端 37–40 秒"],
+["内联 JPEG 64 MiB", "HTTP 502，没有任务 ID，后台是否建了任务不明"],
+["内联 JPEG 128 MiB", "传输错误，没有任务 ID，后台是否建了任务不明"],
+["H3 Max 首尾帧", "第一次 429 限流，重试后 200 出片"]]},
+"findings": [
+"<b>路由只认带 <code>/v1</code> 的写法。</b>Learn 列表里不带版本号的路径在这个资源上查询和提交都返回 400。",
+"<b>内联首帧至少到 24 MiB 都能用。</b>64 MiB 开始出错，但两次都拿不到任务 ID，不能据此断定上限，也可能已经在后台计费。",
+"<b>建议：</b>统一走 <code>/providers/falai/v1/…</code>；大于十几 MiB 的素材改用可访问的 HTTPS 地址；遇到 429 按 <code>Retry-After</code> 等待，提交结果不明时先核对原任务，不要自动重发付费请求。"
+],
+"unknown": ["填充的是 JPEG 元数据，结论只适用于 JPEG 首帧与 JSON 请求体大小，不代表视频输入或真实像素上限。"],
+"groups": [
+{"title": "内联大小探测（同一张图，体积不同）", "runs": ["probe-inline-04mib", "probe-inline-08mib", "probe-inline-12mib", "probe-inline-16mib", "probe-inline-24mib"]},
+{"title": "首尾帧图生补测", "runs": ["aux-start-end-h3-turbo", "aux-start-end-h3-max", "aux-start-end-ltx-fast"], "sync": true}
+]
+},
+{
+"file": "kaijingji.html", "preview": "kjj", "title": "实践 · 15 秒《金刚经·开经偈》短片",
+"tile": "从系统人声的初版，到真人录音配四镜头剪辑",
+"lede": "一条 15 秒短片：配佛教画面，读出四句开经偈。比 benchmark 更直接的问题是——什么样的声音和镜头才有禅意。这一页按创作顺序放出每一版。",
+"setup": ["画面全部由 Foundry 上的 Kling v3 Pro 文生视频生成；朗诵先后试了本地系统语音、Kling 原生人声、Azure Speech 两种音色，最后用署名王菲的已有读诵录音；字幕、切点和淡入淡出在后期完成。"],
+"findings": [
+"<b>人声来源要先定，再谈合成参数。</b>初版用了本地系统语音，音色、情感、节奏都不对。人声是这条片子的主体，必须先和作者确认来源；背景音（钟声、雨声）可以按作品需要处理。",
+"<b>试听比看音色名字有用。</b>Kling 原生朗诵约 14.7 秒读完四句，转写里「受持」一字有出入；Azure Speech 云泽偏低沉稳重，晓晓偏轻柔，都能在 15 秒内读完。最后选了真人读诵录音，保留原速和停顿。",
+"<b>氛围之后，靠景别、动作和切点表达。</b>04 是一个固定的山寺远景；05 保留它做开场，再为后三句各生成一条静音镜头：竹尖悬着的水滴落下、双手展开经册、石盂水面的瓦檐倒影随涟漪变形。同一段朗诵、同样 15 秒，画面从“有环境”变成“有意思”。",
+"<b>逐镜生成，比一次生成分镜可控。</b>三个新镜头各自生成、单独验收和修剪，这和 Test 02 里 Kling 结构化分镜跑题、切点不准的结论一致。"
+],
+"groups": [
+{"title": "创作过程：同一条片子的四版", "items": [
+{"video": "kjj-00-temple-dolly-local-voice.mp4", "poster": "kjj-00-temple-dolly-local-voice", "title": "00 初版 · 佛殿推镜 + 本地系统人声", "kv": [["画面", "Kling v3 Pro 静音文生视频，15 秒"], ["人声", "本地系统语音（被否定）"]], "note": "镜头推向晨光和香烟中的佛像。作者反馈：音色、情感、节奏都不对，画面也没有禅意。"},
+{"video": "kjj-01-kling-native-voice.mp4", "poster": "kjj-01-kling-native-voice", "title": "01 试听 · Kling 原生朗诵与雨后山寺", "kv": [["画面", "Kling v3 Pro 文生视频，开启原生音频"], ["人声", "模型同次生成的普通话男声"]], "note": "画面、人声、环境声一次生成，四句约 14.7 秒读完，「受持」末字转写有出入。"},
+{"video": "kjj-04-faye-single-shot.mp4", "poster": "kjj-04-faye-single-shot", "title": "04 录音版 · 真人读诵 + 山寺单镜头", "kv": [["画面", "01 的雨后山寺远景"], ["人声", "署名王菲的读诵录音，原速四句"]], "note": "人声定下来了，但画面只有一个固定镜头。"},
+{"video": "kjj-05-faye-four-shot-final.mp4", "poster": "kjj-05-faye-four-shot-final", "title": "05 成片 · 同一段读诵配四个镜头", "kv": [["画面", "山寺远景 + 竹尖水滴 + 双手展经 + 石盂倒影"], ["规格", "1920×1080 · 24 fps · 15.000 秒"]], "note": "与 04 的音轨完全相同，只重新组织画面：一句一镜。"}
+]},
+{"title": "备选人声试听", "items": [
+{"audio": "kjj-02-azure-yunze.m4a", "title": "02 Azure Speech · 云泽男声", "kv": [["目标", "平静、低沉"], ["原始时长", "约 12.22 秒"]], "note": ""},
+{"audio": "kjj-03-azure-xiaoxiao.m4a", "title": "03 Azure Speech · 晓晓女声", "kv": [["目标", "温和、清亮"], ["原始时长", "约 11.31 秒"]], "note": ""}
+]},
+{"title": "成片里新增的三个镜头（源片）", "items": [
+{"video": "kjj-src-bamboo.mp4", "poster": "kjj-src-bamboo", "title": "百千万劫难遭遇 · 竹尖水滴", "kv": [["请求", "4 秒，静音"]], "note": "从远景收到竹尖特写，等那一滴水落下。"},
+{"video": "kjj-src-sutra.mp4", "poster": "kjj-src-sutra", "title": "我今见闻得受持 · 双手展经", "kv": [["请求", "文生视频，静音"]], "note": "让「受持」落在展开经册的动作上。"},
+{"video": "kjj-src-reflection.mp4", "poster": "kjj-src-reflection", "title": "愿解如来真实义 · 石盂倒影", "kv": [["请求", "文生视频，静音"]], "note": "水面里的瓦檐轮廓随涟漪变形。"}
+]}
+]
+}
+]
+}

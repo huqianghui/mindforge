@@ -1,0 +1,159 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 07 · 草稿到成片：同族换档能保留多少</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 07 · 草稿到成片：同族换档能保留多少</h1><p class="lede">常见做法是先用便宜、快的档位出草稿，挑中方向再换贵的档位出成片。这一页看换档之后画面还剩多少。</p><h2>测什么、怎么测</h2><p>复用 Test 01 的十二条 LTX / H3 样片，按编号配成六对：LTX Fast 对 Pro、H3 Turbo 对 Max。成片档拿到的是同一段文字，<b>没有把草稿画面作为输入，也没有固定种子</b>，所以这里测的是“只换档、其余不变”时的保留程度。</p><details><summary>Prompt 原文</summary><pre>A cinematic photorealistic shot of a young woman wearing a long red coat walking slowly through a rainy Tokyo street at night.
+Neon signs reflect on the wet pavement. Cars pass in the background, creating subtle motion blur. The woman holds a transparent umbrella and turns her head slightly toward the camera while continuing to walk.
+The camera starts with a medium-wide tracking shot, slowly moves closer, and ends with a cinematic close-up of her face.
+Natural human walking motion, realistic facial expressions, physically accurate reflections, detailed fabric movement, consistent character appearance throughout the video.
+Professional cinematography, shallow depth of field, realistic lighting, 35mm film look.
+No scene cuts, no sudden camera movements, no distorted anatomy.</pre></details><h2>结论与建议</h2><ul class="find"><li><b>LTX 换档基本等于重新生成。</b>三对都出现明显的机位或轴线变化：r1 Fast 从街中心正面推进，Pro 从侧向和穿过画面的暖色轿车起镜；r2、r3 的人物位置、车辆和镜头路径也都换了。</li><li><b>H3 换档保留了大方向。</b>三对都是“远到近、终点趋向正面、伞下近景”的结构，街口店面和暖色灯牌也接近；但人物初始比例、车辆先后、领口和伞的位置每对都有改动。</li><li><b>价格差距决定了值不值得这样做。</b>1080p 下 LTX Fast 只比 Pro 便宜约四分之一，H3 Turbo 是 Max 的一半。既然换档不保留构图，LTX 的“草稿”省不了多少；H3 Turbo 拿来试 Prompt 措辞和大致视觉方向是划算的。</li><li><b>建议：</b>草稿只用来定 Prompt 和方向；要保住某一条草稿的机位和主体，得把它的关键帧作为首帧或参考图交给成片档，而不是只换模型名。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>没有做“草稿关键帧作为首帧”的对照，这条建议本身还待实测。</li><li>每对只有一组样本，看不出 Pro / Max 的画质是否稳定更好。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>LTX r1 · Fast → Pro<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-ltx-fast-r1">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-fast-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-fast-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 80.7 秒 · 端到端 91.8 秒</div>
+<div class="kv"><span>估算</span>$0.780（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/4/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">机位基本沿街中心正面推进；人物从开始已面对镜头，转头和近处车流在抽帧不明显。末段脸上照度偏低。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-ltx-pro-r1">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-pro-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-pro-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 106.8 秒 · 端到端 116.9 秒</div>
+<div class="kv"><span>估算</span>$1.020（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">暖色轿车穿过，人物侧行后看向镜头，透明伞和霓虹街景连贯。可见从中远景到近景的推进。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX r2 · Fast → Pro<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-ltx-fast-r2">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-fast-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-fast-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 80.4 秒 · 端到端 89.7 秒</div>
+<div class="kv"><span>估算</span>$0.780（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">左侧店面与偏紫街道反射，侧向行走后转脸。伞柄、红外套与人物轮廓在抽帧中连贯。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-ltx-pro-r2">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-pro-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-pro-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 107.0 秒 · 端到端 116.6 秒</div>
+<div class="kv"><span>估算</span>$1.020（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">街中心正面机位从较宽进入近景，转头幅度在抽帧不明显。伞后车灯与湿街清楚，主体造型连贯。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r2.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX r3 · Fast → Pro<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-ltx-fast-r3">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-fast-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-fast-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 80.4 秒 · 端到端 90.0 秒</div>
+<div class="kv"><span>估算</span>$0.780（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">街边远景中可见一段跨步与车辆，后段人物转向镜头。透明伞可见水珠，霓虹与地面反射相连。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-fast-r3.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-ltx-pro-r3">
+<video controls playsinline preload="none" poster="assets/posters/t01-ltx-pro-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-ltx-pro-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 106.9 秒 · 端到端 117.7 秒</div>
+<div class="kv"><span>估算</span>$1.020（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">较对称的街中心开场，右侧白车和强蓝紫反光可见。人物多为正面，推进明确，抽帧未显示明显侧转。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-ltx-pro-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 r1 · Turbo → Max<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-h3-turbo-r1">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-turbo-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-turbo-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 40.6 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从侧向全身开始，背景车辆经过，人物转脸并以三分之四近景收尾。湿地颜色与伞面在抽帧中连贯。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-h3-max-r1">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-max-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-max-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 37.7 秒</div>
+<div class="kv"><span>估算</span>$1.055（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">近似侧向的全身开场，白车进出、店铺灯和路面反光明确。后段人物拉近到三分之四近景，始终保留红大衣和透明伞。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 r2 · Turbo → Max<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-h3-turbo-r2">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-turbo-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-turbo-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 38.9 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">路边护栏和车流可见，随人物由侧向转到更正的面部；长红衣与肩带细节在后段连贯。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-h3-max-r2">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-max-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-max-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 38.0 秒</div>
+<div class="kv"><span>估算</span>$1.055（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">开场较正的机位，人物短暂侧看，再收至面部近景。浅色高领、红大衣、伞和店面方位在四帧相容。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r2.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 r3 · Turbo → Max<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t01-h3-turbo-r3">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-turbo-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-turbo-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 38.2 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">侧向开场、白车与黑车位置变化，后段收至三分之四近景。伞与红衣的主要特征保持。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-turbo-r3.mp4">下载原片</a></figcaption></figure><figure class="card" id="t01-h3-max-r3">
+<video controls playsinline preload="none" poster="assets/posters/t01-h3-max-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t01-h3-max-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 37.8 秒</div>
+<div class="kv"><span>估算</span>$1.055（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">侧向行走起镜，车辆和高对比路面倒影可见，追拍逐步拉近。红衣和透明伞贯穿抽帧。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t01-h3-max-r3.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

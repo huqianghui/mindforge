@@ -1,0 +1,260 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 02 · 宇航员对白：原生语音与 Kling 分镜</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 02 · 宇航员对白：原生语音与 Kling 分镜</h1><p class="lede">一个宇航员在飞船走廊里说出 “We have a problem. The reactor is losing power.”。看五个模型的原生语音，以及 Kling 结构化分镜在 Foundry 上到底能不能用。</p><h2>测什么、怎么测</h2><p>五个模型各跑 3 条单段 Prompt，10 秒、1080p、开启原生音频，声音要求是成年中低音、克制而担忧、正常语速。另外 Kling 跑两组结构化分镜（两个 5 秒镜头）：一组按文档只填 <code>multi_prompt</code>、顶层 <code>prompt</code> 留空；一组在顶层再写一段非空的场景摘要。台词用本机 Whisper tiny 转写核对。</p><details><summary>Prompt 原文</summary><pre>A cinematic science fiction scene inside a futuristic spaceship.
+An astronaut walks through a narrow metallic corridor. Red emergency lights flash intermittently. The camera follows behind the astronaut, then smoothly moves around to reveal the astronaut&#x27;s helmet and a damaged control panel.
+The astronaut stops, looks at the panel, and says in a calm but concerned voice: &quot;We have a problem. The reactor is losing power.&quot;
+Include synchronized dialogue, realistic voice performance, subtle spaceship engine ambience, warning alarms, and metallic footsteps.
+Highly realistic cinematic lighting, detailed reflections on the helmet visor, natural body movement, professional science fiction cinematography.
+Maintain consistent character appearance and spatial continuity.
+Use a natural adult mid-low register voice, restrained and concerned, at an ordinary conversational pace. Keep the astronaut&#x27;s mouth visible through a clear visor when speaking.</pre></details><h2>汇总</h2><div class="tw"><table><thead><tr><th>条件</th><th>完成</th><th>实际规格</th><th>实测时长（秒）</th><th>端到端（秒）</th><th>单条估算（USD）</th></tr></thead><tbody><tr><td>LTX 2.5 Fast</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.000</td><td>116–118</td><td>1.30</td></tr><tr><td>LTX 2.5 Pro</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.000</td><td>169–169</td><td>1.70</td></tr><tr><td>H3 Max Turbo</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.144</td><td>38–42</td><td>0.81</td></tr><tr><td>H3 Max</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.144</td><td>38–46</td><td>1.62</td></tr><tr><td>Kling v3 Pro</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.042</td><td>304–410</td><td>1.86</td></tr><tr><td>Kling 分镜（顶层空 prompt）</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.042</td><td>329–385</td><td>1.86</td></tr><tr><td>Kling 分镜（顶层非空摘要）</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.042</td><td>268–455</td><td>1.86</td></tr></tbody></table></div><div class="tw"><table><thead><tr><th>条件</th><th>转写命中完整台词</th><th>画面是宇航员场景</th></tr></thead><tbody><tr><td>LTX Fast / Pro、H3 Turbo / Max、Kling 单段</td><td>15／15</td><td>15／15</td></tr><tr><td>Kling 分镜 · 顶层空 prompt</td><td>0／3</td><td>0／3</td></tr><tr><td>Kling 分镜 · 顶层非空摘要</td><td>3／3</td><td>3／3</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>单段 Prompt 下，五个模型都能把这句英文说出来。</b>15 条机器转写全部逐词命中，画面都是宇航员、舰内走廊和受损控制面板。面罩较暗或遮住嘴的几条，口型无法判断。</li><li><b>Kling 分镜顶层留空，内容会完全跑题。</b>3 条全是和反应堆无关的视频通话场景，转写出来是 “Hey. I miss you so much.” 之类的句子；任务状态却都是 COMPLETED。</li><li><b>顶层写上非空摘要就回到正题。</b>3 条都是宇航员并说出完整台词。但计划在 5 秒处的切镜，两条在约 6 秒才切，一条在检查窗口里没有确认硬切——镜头时长参数没有按指定执行。</li><li><b>建议：</b>在 Foundry 上用 Kling 分镜，顶层 <code>prompt</code> 必须写一段完整的场景说明；对切点精确到秒的需求，逐镜生成再剪辑更可靠。验收一定要看画面，任务成功不等于成片遵循了请求。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>声线、情绪、语速和口型同步没有人工全片听审，只有机器转写。</li><li>顶层摘要本身也写了镜头切换，无法确认后台究竟采用了哪个字段。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>LTX 2.5 Fast</h3><div class="grid"><figure class="card" id="t02-ltx-fast-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-fast-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-fast-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 107.2 秒 · 端到端 117.7 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">黑暗走廊背影、裂屏和红色应急灯分阶段出现，末段推进到面罩内正侧脸，抽帧可见嘴部张开。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-ltx-fast-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-fast-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-fast-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 106.7 秒 · 端到端 116.3 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/4/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">开场红光照亮背影，人物在裸露的控制板旁操作后转向近景。面罩和阴影压低了面部细节，嘴部可见程度有限。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-ltx-fast-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-fast-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-fast-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 107.1 秒 · 端到端 117.3 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">红灯走廊背影转向破损面板，再推进到宇航员头盔面部。末帧可看到手靠近面板，面部区域清楚。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-fast-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX 2.5 Pro</h3><div class="grid"><figure class="card" id="t02-ltx-pro-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-pro-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-pro-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 159.3 秒 · 端到端 169.1 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">背拍宇航员在前景红警灯下推进，后段裂屏和头盔面部进入近景。嘴部在透明面罩内清楚可见。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-ltx-pro-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-pro-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-pro-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 159.2 秒 · 端到端 169.3 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">宇航员由背后跟拍进入红灯下的裂损控制区，视角收至头盔内侧脸近景。面罩透明，抽帧末段嘴部清楚。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-ltx-pro-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-ltx-pro-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-ltx-pro-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 159.5 秒 · 端到端 169.0 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">暗红狭廊中背拍宇航员，转至破损控制屏旁的正侧近景。后段面罩内张嘴形态可见，屏幕与背景红灯保持。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-ltx-pro-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 Max Turbo</h3><div class="grid"><figure class="card" id="t02-h3-turbo-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-turbo-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-turbo-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 38.8 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">从身后走廊视角推至头盔侧脸，烧损屏和闪红照明进入画面。透明面罩中看得到侧脸嘴部区域。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-h3-turbo-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-turbo-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-turbo-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 42.0 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">背拍走廊后，由转角推到受损侧墙控制板与头盔侧脸。红色照明时有变化，人物与背包可对应。透明面罩内可见嘴部区域。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-h3-turbo-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-turbo-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-turbo-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 38.3 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/4/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">开头沿走廊从背后靠近，控制区与烧损板出现在后段。头盔结构相容，最后两帧嘴部偏暗。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-turbo-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 Max</h3><div class="grid"><figure class="card" id="t02-h3-max-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-max-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-max-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 38.5 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">样本从背后跟拍到受损控制屏，红色警报照明和侧脸可见。头盔遮挡下只能判断侧脸和面罩依稀透出的嘴部轮廓。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-h3-max-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-max-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-max-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 45.7 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">宇航员制服线条和头盔在后背、侧后再到侧脸视角相容。烧损的控制板持续可见，末段红光更多，透明面罩内侧脸和嘴部可见。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-h3-max-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-h3-max-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-h3-max-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 38.3 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">从红灯下背影切换视角至侧向近景，墙面烧损控制板持续入镜。宇航员服装轮廓一致，脸部在面罩中可见。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-h3-max-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>Kling v3 Pro · 单段 Prompt</h3><div class="grid"><figure class="card" id="t02-kling-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.4 秒 · 端到端 304.1 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">从走廊背影和红警灯转至头盔下的近景，裂损的控制屏在第四帧入镜。嘴部可见。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 398.1 秒 · 端到端 410.2 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">背影先出现在带红灯的狭廊，后转向墙上的焦黑控制面板并收至头盔面部。最后一帧嘴部可见。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 292.2 秒 · 端到端 314.2 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">背后跟拍从舰内通道开场，后段可见两处屏幕的裂损并转到头盔内正侧脸。透明面罩中能看到嘴部轮廓。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>Kling 分镜 · 顶层空 prompt（跑题）</h3><div class="grid"><figure class="card" id="t02-kling-multi-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 317.2 秒 · 端到端 328.7 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>1/4/5/1 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“Hey. I miss you so much.”</div>
+<p class="note">四帧均为坐在电脑前的男士与显示器上的女性，未出现宇航员、走廊或裂屏。申请的两段镜头内容没有出现在抽帧中。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-multi-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 370.4 秒 · 端到端 385.3 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>1/4/4/1 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“It is really great to see you today.”</div>
+<p class="note">开头是坐着看手机视频的一人，后段为手机内男子近景。5 秒计划切点周围仍是同一画面，5.917 秒仍在原机位，6.000 秒开始为男子近景。两段都没有太空或破损反应堆。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-multi-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 317.9 秒 · 端到端 330.1 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>1/4/5/1 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“It is really good to see you.”</div>
+<p class="note">四帧均为一名女士坐在电脑桌前看视频通话，显示器中为另一男子。没有宇航员、太空通道、反应堆或目标控制板。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>Kling 分镜 · 顶层非空摘要（回到正题）</h3><div class="grid"><figure class="card" id="t02-kling-multi-filled-r1">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-filled-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-filled-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 423.3 秒 · 端到端 455.4 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>3/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">前段宇航员走向控制板，后段为侧面近景。4.875–6.125 秒保持同一侧向构图，未在预定 5 秒处确认硬切；8 Hz 筛查也未标出候选。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-multi-filled-r2">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-filled-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-filled-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.2 秒 · 端到端 304.3 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">宇航员、控制台和透明面罩正面特写出现。5.875 秒侧视图到 6.000 秒正面特写之间有可见视角跳变，切换约 6 秒，较指定时刻晚约 1 秒。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t02-kling-multi-filled-r3">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-multi-filled-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-multi-filled-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 238.4 秒 · 端到端 267.7 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+<div class="kv"><span>转写</span>“We have a problem. The reactor is losing power.”</div>
+<p class="note">宇航员由走廊走至控制屏附近，后段为正面近景。5.875 秒到 6.000 秒由侧面变为正面特写，观察到的切换约 6 秒。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-multi-filled-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>修正后的 Skill 常规入口复查</h3><div class="grid"><figure class="card" id="t02-kling-normal-entry-check">
+<video controls playsinline preload="none" poster="assets/posters/t02-kling-normal-entry-check.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-normal-entry-check.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t02-kling-normal-entry-check</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 292.5 秒 · 端到端 446.4 秒</div>
+<div class="kv"><span>估算</span>$1.856（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=True</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t02-kling-normal-entry-check.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

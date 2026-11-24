@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 05 · 人与狗：双参考图 vs 首帧加文字</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 05 · 人与狗：双参考图 vs 首帧加文字</h1><p class="lede">一位女性牵着一只金毛在海边散步。参考组把女性和金毛两张图都作为主体参考；对照组只把女性图作为首帧，金毛用文字描述。</p><h2>测什么、怎么测</h2><p>H3 Max，6 秒、768P，两组用成对种子。女性图是先前一条生成视频里截的虚构人物，金毛是 Wikimedia Commons 的 CC0 照片。</p><div class="inputs"><figure><img src="assets/inputs/woman-generated.jpg" alt="Image 1：生成的虚构女性（来自前一批样片截帧）"><figcaption>Image 1：生成的虚构女性（来自前一批样片截帧）</figcaption></figure><figure><img src="assets/inputs/golden-retriever.jpg" alt="Image 2：金毛（Mtlchung，Wikimedia Commons，CC0）"><figcaption>Image 2：金毛（Mtlchung，Wikimedia Commons，CC0）</figcaption></figure></div><details><summary>Prompt 原文</summary><pre>Create a photorealistic cinematic video featuring the woman from Image 1 and the golden retriever from Image 2.
+The woman is walking along a seaside promenade at sunset, holding a leash while the golden retriever walks happily beside her.
+Preserve the woman&#x27;s facial identity, hairstyle, clothing appearance, and the dog&#x27;s breed, fur color, and physical characteristics from the reference images.
+The dog occasionally looks up at the woman and wags its tail. The woman smiles naturally and gently looks down at the dog.
+The camera follows them from a side angle, then slowly moves to a front-facing tracking shot.
+Natural human and animal movement, consistent character identity, realistic fur physics, warm cinematic sunset lighting.
+Do not change the identity or appearance of either subject.</pre></details><h2>汇总</h2><div class="tw"><table><thead><tr><th>条件</th><th>完成</th><th>实际规格</th><th>实测时长（秒）</th><th>端到端（秒）</th><th>单条估算（USD）</th></tr></thead><tbody><tr><td>H3 Max · 双参考图</td><td>3／3</td><td>1344x768 @ 24</td><td>6.592</td><td>72–72</td><td>0.53</td></tr><tr><td>H3 Max · 女性首帧 + 文字指定金毛</td><td>3／3</td><td>1344x768 @ 24</td><td>6.592</td><td>71–71</td><td>0.53</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>双参考组一开始就在海边、两个主体同框。</b>三条从第一个抽样点（0.625 秒）起就是日落步道上的女性加金毛；金毛的浅金毛色更接近参考照片。</li><li><b>首帧组先“演”一段原图。</b>三条开头都还是输入图里的实验室背景，约 4.25 秒才换到海边并让狗出现，金毛也偏橙色——它只能按文字想象一只金毛。</li><li><b>身份是否严格保留，抽帧判断不了。</b>两组都保住了黑发和深蓝衣服，但很多帧里人脸被裁出画面或太小，狗的个体特征也无法逐帧确认。</li><li><b>建议：</b>多主体要同时出现、外观要接近参考时，用 Reference-to-Video；只需要从一张定稿图开始动起来，才用图生视频。两者的差别是输入角色不同，不是画质高低。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>人脸和犬只的个体一致性需要更近景的样片和人工比对。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>第 1 对 · 双参考 vs 首帧<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t05-woman-dog-ref-r1">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-dog-ref-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-dog-ref-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 71.7 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;woman-generated.jpg&#x27;, &#x27;golden-retriever.jpg&#x27;] · seed=28111</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">首个0.625s样本已见日落海边步道、女性和金毛牵绳同行；2.25s狗抬头。后面镜头多集中在女性裙装下半身与狗，脸部超出画框，不能据此强判面部身份保留。深蓝衣领/上衣和黑发总体接近输入，狗保持浅金长毛。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t05-woman-start-control-r1">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-start-control-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-start-control-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 70.7 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=woman-generated.jpg · seed=28111</div>
+<div class="kv"><span>评分</span>3/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.625s仍是输入实验室背景中的女性近景，2.25s进入海边女性上半身，4.25s后女性和金毛清楚同框并牵绳行走。深蓝衣服/黑发/面部轮廓与输入总体接近；金毛比参考照片更偏橙金，但夕阳照度也在变化。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 2 对<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t05-woman-dog-ref-r2">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-dog-ref-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-dog-ref-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 71.8 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;woman-generated.jpg&#x27;, &#x27;golden-retriever.jpg&#x27;] · seed=28112</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.625s侧向牵犬，后段进入正面低机位，4.25s狗抬头看人。女性带深色手提包，主体服装总体深蓝；2.25s以后女性脸多被裁掉。浅金/奶油色长毛金毛可辨，具体个体脸型匹配未证实。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t05-woman-start-control-r2">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-start-control-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-start-control-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 71.5 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=woman-generated.jpg · seed=28112</div>
+<div class="kv"><span>评分</span>3/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.625s实验室内女性侧低头近景，2.25s切至海边低机位、人物躯干和犬部分同框，4.25s金毛抬头，5.875s正面同行。人物深蓝服装与黑发稳定；橙金长毛金毛可辨。环境切换来自首帧输入方式，不能忽略此条件差异。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r2.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 3 对<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t05-woman-dog-ref-r3">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-dog-ref-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-dog-ref-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 72.0 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;woman-generated.jpg&#x27;, &#x27;golden-retriever.jpg&#x27;] · seed=28113</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">海边桥景与步道从首样本就建立，女性、金毛始终同框；机位由侧向逐步转为较正的半身/全身，女性低头看犬可见。黑发与深蓝外套/下装贯穿。脸部规模较小，狗在末帧部分出框，个体身份没有可靠逐帧确认。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-dog-ref-r3.mp4">下载原片</a></figcaption></figure><figure class="card" id="t05-woman-start-control-r3">
+<video controls playsinline preload="none" poster="assets/posters/t05-woman-start-control-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t05-woman-start-control-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 71.0 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=woman-generated.jpg · seed=28113</div>
+<div class="kv"><span>评分</span>3/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.625s实验室正面近景，2.25s海边下半身+金毛，4.25s狗抬头、5.875s继续正面牵绳同行。人物外观和深蓝服装大体延续，金毛偏较暖橙金。抽帧显示两主体建立较晚，犬个体匹配无法由文字指定品种证明。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t05-woman-start-control-r3.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

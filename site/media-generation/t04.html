@@ -1,0 +1,97 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 04 · 鼓点音频：指定音轨能不能驱动画面</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 04 · 鼓点音频：指定音轨能不能驱动画面</h1><p class="lede">给 H3 Max 一段真实鼓组录音，用 <code>target_audio</code> 指定为成片音轨，看画面里的击鼓动作能不能跟上鼓点。</p><h2>测什么、怎么测</h2><p>输入是一段 8.781 秒的鼓组录音，请求 9 秒、768P。参考组和对照组用同一张鼓组照片和成对的种子，参考组多给 <code>target_audio</code>。音轨用波形和 RMS 包络与输入做互相关；画面卡点从录音的五个声起时刻附近逐帧查看。</p><div class="inputs"><figure><img src="assets/inputs/drum-kit.jpg" alt="参考图：鼓组照片（Poecus，Wikimedia Commons，公有领域）"><figcaption>参考图：鼓组照片（Poecus，Wikimedia Commons，公有领域）</figcaption></figure></div><details><summary>Prompt 原文</summary><pre>A cinematic performance video of a professional drummer playing an energetic drum solo on a dark concert stage.
+The drummer&#x27;s arm movements, drumstick impacts, cymbal vibrations, and body movements should precisely follow the rhythm and timing of the provided audio.
+The camera alternates naturally between a medium shot of the drummer and close-ups of the drumsticks hitting the snare and cymbals.
+Dramatic concert lighting, realistic physical interactions, synchronized motion, detailed instrument textures, professional music video cinematography.</pre></details><h2>汇总</h2><div class="tw"><table><thead><tr><th>条件</th><th>完成</th><th>实际规格</th><th>实测时长（秒）</th><th>端到端（秒）</th><th>单条估算（USD）</th></tr></thead><tbody><tr><td>H3 Max · 指定目标音轨</td><td>3／3</td><td>1344x768 @ 24</td><td>9.440</td><td>40–57</td><td>0.76</td></tr><tr><td>H3 Max · 对照（无音轨输入）</td><td>3／3</td><td>1344x768 @ 24</td><td>9.440</td><td>39–128</td><td>0.76</td></tr></tbody></table></div><div class="tw"><table><thead><tr><th>条件</th><th>波形相关（最大）</th><th>RMS 包络相关</th><th>偏移</th></tr></thead><tbody><tr><td>指定目标音轨</td><td>0.9997（3／3）</td><td>1.0000</td><td>0 ms</td></tr><tr><td>对照</td><td>0.04–0.05</td><td>0.08–0.12</td><td>−994 ~ 228 ms</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>音轨被原样保留。</b>参考组三条与输入录音的波形相关 0.9997、零偏移——成片里放的就是这段录音，对照组则是模型自己生成的另一段鼓声。</li><li><b>但“音轨对了”不等于“画面卡点”。</b>声起时刻附近能看到抬棒到下挥的变化，可鼓棒和鼓面的接触被运动模糊和机位遮挡，没法逐击确认同步。</li><li><b>参考图会被插回画面。</b>第 2 对两组都在约 1.7 秒和 7.1 秒跳回参考照片里的粉墙空鼓组，舞台上的鼓手消失、出现悬空的鼓棒——人物和场景的连续性明显被打断。</li><li><b>建议：</b><code>target_audio</code> 适合“这段视频必须配这段音乐”的场景；要动作精确卡拍，目前还得后期对位或换用专门的 Audio-to-Video 接口（只在 fal 原生平台提供，这次没有测）。参考图最好不要和成片场景差别太大，否则可能被直接插入。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>逐击音画同步没有人工逐帧核对。</li><li>fal 原生平台的 LTX Audio-to-Video 需要另一套凭据，没有对照样片。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>第 1 对 · 指定音轨 vs 对照<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t04-drum-target-r1">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-target-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-target-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 40.3 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · target_audio=drum-beat.wav · seed=28111</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">黑衬衣鼓手、蓝色舞台灯、浅色鼓壳连贯，后段8.25s附近切到鼓棒/鼓面特写。输入声起候选1.80/2.90/5.04/7.18s的邻帧可见抬棒到下挥的变化；触点受运动模糊和机位遮挡影响，8.24s候选跨切镜，不能逐击确认精确同步。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t04-drum-control-r1">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-control-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-control-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 38.5 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · seed=28111</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">黑西装鼓手和蓝色舞台连贯，后段推进至近处鼓面；各输入声起候选邻帧都有击鼓姿态，但它的自生成音轨与输入音轨不匹配，不能以这些候选判断本片自己的音画同步。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 2 对（两组都跳回参考图）<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t04-drum-target-r2">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-target-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-target-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 39.9 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · target_audio=drum-beat.wav · seed=28112</div>
+<div class="kv"><span>评分</span>3/3/2/3 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">主要黑色舞台鼓手与鼓面特写可见，但1.708–1.792s及7.083–7.250s回到粉墙空鼓组参考图构图；无人鼓组上出现悬空/无主鼓棒，随后又返回舞台。人物、场景和物理因果存在明显跳变。2.90/5.04s邻帧有下挥，不能据此宣布整段精确同步。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t04-drum-control-r2">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-control-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-control-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 127.6 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · seed=28112</div>
+<div class="kv"><span>评分</span>3/3/2/3 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">阶段性切入侧向鼓手与镲片特写，但1.708–1.792s及6.0s标准抽帧、7.083–7.250s邻帧显示粉墙空鼓组，舞台人物暂时消失。存在参考图与演奏场景交替的连续性问题；对照音轨不匹配输入，声起邻帧仅供共同时间点观察。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r2.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 3 对<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t04-drum-target-r3">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-target-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-target-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 57.2 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · target_audio=drum-beat.wav · seed=28113</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">耳机鼓手、棕色鼓组和暗背景贯穿抽帧，机位逐渐靠近；1.80/2.90/5.04/7.18s附近棒从高处转至低处，动作候选与声起接近。未出现鼓面清晰可定位的逐击接触，故保留同步判断。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-target-r3.mp4">下载原片</a></figcaption></figure><figure class="card" id="t04-drum-control-r3">
+<video controls playsinline preload="none" poster="assets/posters/t04-drum-control-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t04-drum-control-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 9.440 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 75.3 秒</div>
+<div class="kv"><span>估算</span>$0.755（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=9 · aspect_ratio=16:9 · reference_images=[&#x27;drum-kit.jpg&#x27;] · seed=28113</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">棕色鼓组、黑衬衣鼓手与暗舞台贯穿抽帧，机位渐近；输入候选附近有可见击鼓动作，2.90/5.04s附近低棒姿态变化较小。输入音轨相关很低，不能证明它跟随输入录音。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t04-drum-control-r3.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

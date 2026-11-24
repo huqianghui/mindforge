@@ -1,0 +1,98 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 06 · 挥手动作迁移：参考视频驱动 3D 角色</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 06 · 挥手动作迁移：参考视频驱动 3D 角色</h1><p class="lede">给 H3 Max 一段真人单手挥手视频和一张 3D 卡通宇航员图，要求角色复现视频里的动作和节奏。对照组只用宇航员图作首帧，动作用文字描述。</p><h2>测什么、怎么测</h2><p>输入视频 5.208 秒（Wikimedia Commons，CC BY-SA 4.0，裁成单人并去掉声音），请求 6 秒、768P，成对种子。动作在共有的 5.208 秒窗口里按八个时刻比较，片尾另记。</p><div class="inputs"><figure><video controls preload="none" poster="assets/posters/input-hand-wave.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/input-hand-wave.mp4" type="video/mp4"></video><figcaption>Video 1：真人单手挥手（NMu11er，Wikimedia Commons，CC BY-SA 4.0，已裁切去声）</figcaption></figure><figure><img src="assets/inputs/astronaut-3d.jpg" alt="Image 1：为本测试渲染的 3D 卡通宇航员"><figcaption>Image 1：为本测试渲染的 3D 卡通宇航员</figcaption></figure></div><details><summary>Prompt 原文</summary><pre>Create a high-quality 3D animated video featuring the astronaut character from Image 1.
+The character should reproduce the main body movements, arm gestures, and movement timing from Video 1.
+Preserve the astronaut&#x27;s original costume design, proportions, helmet, colors, and overall visual identity.
+Translate the human motion naturally into the 3D character&#x27;s body mechanics.
+Smooth character animation, physically plausible movement, consistent proportions, professional 3D animation quality.</pre></details><h2>汇总</h2><div class="tw"><table><thead><tr><th>条件</th><th>完成</th><th>实际规格</th><th>实测时长（秒）</th><th>端到端（秒）</th><th>单条估算（USD）</th></tr></thead><tbody><tr><td>H3 Max · 参考视频 + 参考图</td><td>3／3</td><td>1344x768 @ 24</td><td>6.592</td><td>38–72</td><td>0.53</td></tr><tr><td>H3 Max · 首帧 + 文字动作</td><td>3／3</td><td>1344x768 @ 24</td><td>6.592</td><td>69–107</td><td>0.53</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>角色造型保住了，动作没有迁移过去。</b>参考组三条都保留了宇航员的颜色、头盔和比例，但都把真人的“单手挥动”变成了“双手举起”；第 2 条还在 5.2 秒前就把手放下了，和原片仍在挥手的节奏不符。</li><li><b>文字对照反而更像要求的动作。</b>首帧加文字的三条都是单臂抬起再放下——不过它没有视频输入，谈不上动作迁移，只说明文字指令被执行了。</li><li><b>参考组还会自己加东西。</b>第 1 条背景多了心形和星星，原图和 Prompt 都没有。</li><li><b>建议：</b>在 Foundry 的 H3 Max 上，参考视频目前只能当“动作大致方向”的提示，不能指望逐帧复现手势和节奏；要严格的动作迁移，需要专门的 motion transfer / video-to-video 工具。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>只看了十个时刻的姿态，没有做逐帧的动作相位和速度对比。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>第 1 对 · 参考视频 vs 文字动作<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t06-wave-ref-r1">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-ref-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-ref-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 39.6 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;astronaut-3d.jpg&#x27;] · reference_videos=[&#x27;hand-wave.mp4&#x27;] · seed=28111</div>
+<div class="kv"><span>评分</span>3/5/5/3 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">白色、蓝色面罩/腰部、橙色肩部和圆润比例保持，但新增心形/星星背景。0.125/0.750s双臂在侧，1.500s开始双手举起，之后至5.167s均为双臂动作；原片是单手挥动，侧边另一手保持下垂。共享窗口没保留主手势。片尾5.5/6.25s仍举双手。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t06-wave-start-control-r1">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-start-control-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-start-control-r1</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 107.0 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=astronaut-3d.jpg · seed=28111</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.125s手臂在侧，0.750–3.000s画面左侧单臂举起，另一臂保持下垂，3.750s已回到双手在侧。共享窗口内实现文字要求的抬一只手再放下；尾段5.5/6.25s静止站立。此对照没有输入动作视频，不能视为视频时序迁移成功。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 2 对<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t06-wave-ref-r2">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-ref-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-ref-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 38.2 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;astronaut-3d.jpg&#x27;] · reference_videos=[&#x27;hand-wave.mp4&#x27;] · seed=28112</div>
+<div class="kv"><span>评分</span>3/5/5/3 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">角色造型和纯暗渐变背景保持。0.125s双臂在侧，0.750–3.750s双手举起，4.500s开始放低，5.167s双手已在腰侧；与输入单手持续挥动不符，也提前结束。尾段5.5/6.25s维持双手下放。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t06-wave-start-control-r2">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-start-control-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-start-control-r2</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 68.5 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=astronaut-3d.jpg · seed=28112</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.125s手臂在侧，0.750–3.750s画面左侧单臂举起，4.500s已放下。头部微倾、主体比例保持；符合文字单手动作然后放下，尾段5.5/6.25s手臂均在侧。未核实手腕逐次波动或人类动作精确时序。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r2.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>第 3 对<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t06-wave-ref-r3">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-ref-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-ref-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 72.1 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · aspect_ratio=16:9 · reference_images=[&#x27;astronaut-3d.jpg&#x27;] · reference_videos=[&#x27;hand-wave.mp4&#x27;] · seed=28113</div>
+<div class="kv"><span>评分</span>3/5/5/3 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">角色造型、比例和暗背景保持；0.125s双臂在侧，0.750s抬起阶段，1.500–5.167s持续双手举起/轻度摆动，未转为输入真人的单手挥动。尾段5.5/6.25s仍举双手。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-ref-r3.mp4">下载原片</a></figcaption></figure><figure class="card" id="t06-wave-start-control-r3">
+<video controls playsinline preload="none" poster="assets/posters/t06-wave-start-control-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t06-wave-start-control-r3</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 28.1 秒 · 端到端 70.5 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>resolution=768P · duration=6 · start_image=astronaut-3d.jpg · seed=28113</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">0.125s手臂在侧，0.750–3.000s画面左侧单臂举起，3.750s已放下。与文字的单手动作/收手相符，服装和背景稳定；尾段5.5/6.25s静止站立。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t06-wave-start-control-r3.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

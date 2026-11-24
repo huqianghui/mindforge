@@ -1,0 +1,44 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Media Generation 样片集：Foundry 五个视频模型实测</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><h1>Media Generation 样片集：Foundry 五个视频模型实测</h1><p class="lede">Microsoft Foundry 经 fal 提供的五个视频模型——Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Max Turbo——按同一套方案实测：七个测试、93 次请求、90 条成片。每个测试一页，页面里直接播放完整原片，附请求参数、实际规格、耗时、估算费用和逐条验片观察。最后一页是一条 15 秒短片从初版到成片的创作过程。</p>
+<div class="tiles"><a class="tile" href="t01.html"><img loading="lazy" src="assets/previews/t01.webp" alt="Test 01 · 雨夜人物：五个模型的基线">
+<div class="tt">Test 01 · 雨夜人物：五个模型的基线</div><div class="ts">同一条 Prompt、6 秒 1080p，五个模型各 3 条</div></a><a class="tile" href="t07.html"><img loading="lazy" src="assets/previews/t07.webp" alt="Test 07 · 草稿到成片：同族换档能保留多少">
+<div class="tt">Test 07 · 草稿到成片：同族换档能保留多少</div><div class="ts">LTX Fast→Pro、H3 Turbo→Max，同一 Prompt 成对比较</div></a><a class="tile" href="t02.html"><img loading="lazy" src="assets/previews/t02.webp" alt="Test 02 · 宇航员对白：原生语音与 Kling 分镜">
+<div class="tt">Test 02 · 宇航员对白：原生语音与 Kling 分镜</div><div class="ts">五个模型说同一句英文台词；Kling 结构化分镜的两种写法</div></a><a class="tile" href="t03.html"><img loading="lazy" src="assets/previews/t03.webp" alt="Test 03 · 海岛航拍：长镜头、4K 与高帧率">
+<div class="tt">Test 03 · 海岛航拍：长镜头、4K 与高帧率</div><div class="ts">五个模型各 3 条，外加 LTX Fast 的 4K / 20 秒 / 48 / 50 fps</div></a><a class="tile" href="t04.html"><img loading="lazy" src="assets/previews/t04.webp" alt="Test 04 · 鼓点音频：指定音轨能不能驱动画面">
+<div class="tt">Test 04 · 鼓点音频：指定音轨能不能驱动画面</div><div class="ts">H3 Max 的 target_audio 与对照组，成对比较</div></a><a class="tile" href="t05.html"><img loading="lazy" src="assets/previews/t05.webp" alt="Test 05 · 人与狗：双参考图 vs 首帧加文字">
+<div class="tt">Test 05 · 人与狗：双参考图 vs 首帧加文字</div><div class="ts">两个主体同时保持外观，参考生成与图生视频的差别</div></a><a class="tile" href="t06.html"><img loading="lazy" src="assets/previews/t06.webp" alt="Test 06 · 挥手动作迁移：参考视频驱动 3D 角色">
+<div class="tt">Test 06 · 挥手动作迁移：参考视频驱动 3D 角色</div><div class="ts">真人挥手视频 + 卡通宇航员，参考组与文字动作对照</div></a><a class="tile" href="probes.html"><img loading="lazy" src="assets/previews/probe.webp" alt="接口边界：路由、内联图片大小与首尾帧">
+<div class="tt">接口边界：路由、内联图片大小与首尾帧</div><div class="ts">带不带 v1、内联 JPEG 能多大、三个模型的首尾帧</div></a><a class="tile" href="kaijingji.html"><img loading="lazy" src="assets/previews/kjj.webp" alt="实践 · 15 秒《金刚经·开经偈》短片">
+<div class="tt">实践 · 15 秒《金刚经·开经偈》短片</div><div class="ts">从系统人声的初版，到真人录音配四镜头剪辑</div></a></div><h2>怎么读这些结果</h2><ul class="find"><li><b>每组 3 条是探索性样本。</b>视频生成有随机性，3 条只能描述“这次看到了什么”，不能当成模型排名；正式比较要同一组合累计 20 条以上再报 P50 / P95 和成功率。</li><li><b>评分 A/V/T/M</b> 分别是提示遵循、画质、时间一致性、可见运动，1–5 分，依据是每条四个位置的抽帧，不是逐帧播放审片。音画同步和“能不能直接交付”没有评分。</li><li><b>端到端</b>从第一次 POST 算到 MP4 下载并校验完成，含排队与轮询间隔；不是厂商公布的推理时间。</li><li><b>估算费用</b>是 Foundry 发布单价乘以实测时长，不是账单。H3 与 Kling 的实际时长都比请求略长，按秒计费时要注意。</li><li><b>同步播放</b>按钮会把一组视频同时从头播放，方便并排对比；首次加载视频需要几秒。</li></ul>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

@@ -1,0 +1,357 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Test 03 · 海岛航拍：长镜头、4K 与高帧率</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>Test 03 · 海岛航拍：长镜头、4K 与高帧率</h1><p class="lede">一个连续的无人机长镜头：从海面下降到瀑布崖，越过瀑布揭示一处隐藏的潟湖。看地理关系能不能在整段里保持，以及 LTX Fast 的参数上限在实际成片里是什么样子。</p><h2>测什么、怎么测</h2><p>五个模型在共同档位各跑 3 条：10 秒、1080p。LTX Fast 另外四组各 3 条：4K（2160p）/ 10 秒、1080p / 20 秒 / 24 fps、1080p / 48 fps、1080p / 50 fps。共 27 条。</p><details><summary>Prompt 原文</summary><pre>A breathtaking cinematic aerial shot of a tropical island surrounded by crystal-clear turquoise water.
+The camera begins high above the ocean, slowly descends toward a dramatic green cliff with a large waterfall. It then performs a smooth forward dolly movement, flying past the waterfall and revealing a hidden lagoon surrounded by dense tropical forest.
+The waterfall flows continuously, ocean waves move naturally, palm trees sway gently in the wind, and sunlight creates realistic reflections on the water.
+One continuous camera movement, realistic drone cinematography, natural motion, high environmental detail, consistent geography and lighting throughout the entire shot.</pre></details><h2>汇总</h2><div class="tw"><table><thead><tr><th>条件</th><th>完成</th><th>实际规格</th><th>实测时长（秒）</th><th>端到端（秒）</th><th>单条估算（USD）</th></tr></thead><tbody><tr><td>LTX 2.5 Fast</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.000</td><td>144–147</td><td>1.30</td></tr><tr><td>LTX 2.5 Pro</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.000</td><td>190–200</td><td>1.70</td></tr><tr><td>H3 Max Turbo</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.144</td><td>42–52</td><td>0.81</td></tr><tr><td>H3 Max</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.144</td><td>40–48</td><td>1.62</td></tr><tr><td>Kling v3 Pro</td><td>3／3</td><td>1920x1080 @ 24</td><td>10.042</td><td>308–386</td><td>1.24</td></tr><tr><td>LTX Fast · 4K</td><td>3／3</td><td>3840x2160 @ 24</td><td>10.000</td><td>202–238</td><td>3.00</td></tr><tr><td>LTX Fast · 20 秒</td><td>3／3</td><td>1920x1080 @ 24</td><td>20.000</td><td>252–313</td><td>2.60</td></tr><tr><td>LTX Fast · 48 fps</td><td>3／3</td><td>1920x1080 @ 48</td><td>10.000</td><td>251–304</td><td>1.30</td></tr><tr><td>LTX Fast · 50 fps</td><td>3／3</td><td>1920x1080 @ 50</td><td>10.000</td><td>255–306</td><td>1.30</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>“越过瀑布、揭示潟湖”是这条 Prompt 的难点。</b>27 条里 24 条能看到崖上或林间的另一处水体；H3 Max 第 1、2 条和 H3 Turbo 第 3 条停在瀑布脚下的水潭，没有越过去。</li><li><b>LTX Fast 的参数上限都真实可用。</b>4K 文件确实是 3840×2160，48 / 50 fps 文件帧率也对；20 秒三条都在 8.75–13.75 秒之间越过瀑沿，后半段在同一片林间水域推进，地理关系没有乱。</li><li><b>但“更高”不等于“更好”。</b>缩放后的抽帧看不出 4K 有更多真实细节；48 / 50 fps 各有一条在中后段出现树冠的放射状模糊。静态抽帧无法证明高帧率更顺。</li><li><b>代价很直观。</b>4K 一条 3 美元、端到端 200–240 秒；20 秒一条 2.6 美元、250–313 秒；同样 10 秒 1080p 的 H3 Turbo 只要 0.81 美元、约 45 秒。</li><li><b>建议：</b>长镜头和高分辨率交付选 LTX Fast，但先在 1080p / 10 秒定好构图再升档；要“越过某个地标再揭示”的叙事动作，H3 不够稳定，Kling 和 LTX 这一轮全部做到了。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>4K 和高帧率的观感要在大屏上完整播放对比，这里只有元数据和抽帧。</li><li>同条件三次之间的差异是随机生成造成的，不能当成参数的因果效果。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>五个模型 · 第 1 条并排<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="t03-ltx-fast-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-fast-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-fast-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 134.4 秒 · 端到端 145.8 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从开阔海面推进到撞浪崖和水雾，后两帧转到棕榈林与近似独立的圆形水域。起景到后段有明显视角变化，四帧不足以确认完整通过路径。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-ltx-pro-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-pro-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-pro-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 160.1 秒 · 端到端 190.3 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">先沿崖海侧斜向逼近瀑布，最后一帧到棕榈林中的水域。林中末帧与瀑顶之间的通过路径无法从四帧确认。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-turbo-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-turbo-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-turbo-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 49.1 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">在两侧岩崖之间逼近直落海湾的瀑布，后段越过溢流处可看到林间碧绿的内侧水域。陆地、海湾和方向在抽帧相连。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-max-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-max-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-max-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 39.7 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">半月形海岛和白沙湾逐渐拉近，瀑布始终落在左侧岩壁下。末段见棕榈围绕的瀑脚水潭，未见明确越过瀑布后的独立潟湖。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-kling-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-kling-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-kling-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 318.3 秒 · 端到端 334.1 秒</div>
+<div class="kv"><span>估算</span>$1.237（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">沿同一条海崖向瀑布进近，后段左侧远海和切岸的位置相容，越过瀑顶可见棕榈旁的新水域。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r1.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX 2.5 Fast · 10 秒 1080p</h3><div class="grid"><figure class="card" id="t03-ltx-fast-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-fast-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-fast-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 134.4 秒 · 端到端 145.8 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从开阔海面推进到撞浪崖和水雾，后两帧转到棕榈林与近似独立的圆形水域。起景到后段有明显视角变化，四帧不足以确认完整通过路径。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-ltx-fast-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-fast-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-fast-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 133.5 秒 · 端到端 144.5 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从较高远景直推海岛，穿过崖顶后显露林内圆形水域。瀑布位置和林缘在远近抽帧中相容，阳光颜色延续。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-ltx-fast-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-fast-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-fast-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 133.3 秒 · 端到端 146.8 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">远处低矮岛屿的海面开场，在 3.5 秒已到近瀑脚，6.375 秒越过林间溢流，8.875 秒见密林围绕的独立水域。海面日光偏冷，进林后为强暖色侧光；四帧能看到推进与揭示，但不足以确认远海至瀑脚及入林的完整路径。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-fast-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX 2.5 Pro · 10 秒 1080p</h3><div class="grid"><figure class="card" id="t03-ltx-pro-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-pro-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-pro-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 160.1 秒 · 端到端 190.3 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">先沿崖海侧斜向逼近瀑布，最后一帧到棕榈林中的水域。林中末帧与瀑顶之间的通过路径无法从四帧确认。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-ltx-pro-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-pro-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-pro-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 186.7 秒 · 端到端 199.5 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从岛崖与卵形海浪的远景推进，后段从暖色湿雾与棕榈之间入内水体。前后光色和崖顶植物可对应。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-ltx-pro-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-ltx-pro-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-ltx-pro-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 186.4 秒 · 端到端 199.2 秒</div>
+<div class="kv"><span>估算</span>$1.700（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080p · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">高空逆光下的海岛瀑布由远变近；后段到瀑顶的棕榈并揭示森林中的青绿水域。海面亮斑、瀑布和林缘在抽帧间相容，逆光与水面高光延续。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-ltx-pro-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 Max Turbo</h3><div class="grid"><figure class="card" id="t03-h3-turbo-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-turbo-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-turbo-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 49.1 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">在两侧岩崖之间逼近直落海湾的瀑布，后段越过溢流处可看到林间碧绿的内侧水域。陆地、海湾和方向在抽帧相连。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-turbo-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-turbo-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-turbo-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 51.6 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">由环礁边远视岛屿，逼近中间瀑布并在越过时揭示林间独立水体。早段岛屿轮廓、海浪与后段坡面连续可追踪。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-turbo-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-turbo-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-turbo-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 42.5 秒</div>
+<div class="kv"><span>估算</span>$0.812（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">开场已较靠近左侧海岬，镜头向瀑布与瀑脚水潭下沉。沿着同一条崖、沙带和绿浪收近，后段为原瀑脚水潭。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-turbo-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>H3 Max（第 1、2 条停在瀑脚水潭）</h3><div class="grid"><figure class="card" id="t03-h3-max-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-max-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-max-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 39.7 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">半月形海岛和白沙湾逐渐拉近，瀑布始终落在左侧岩壁下。末段见棕榈围绕的瀑脚水潭，未见明确越过瀑布后的独立潟湖。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-max-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-max-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-max-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.6 秒 · 端到端 47.7 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">高空远观海岬，镜头逐渐降低并朝瀑布脚下的碧绿水潭收进。礁浪、沙滩和岩崖位置在抽帧间相容。末段停在瀑脚水潭。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-h3-max-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-h3-max-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-h3-max-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.144 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 45.2 秒</div>
+<div class="kv"><span>估算</span>$1.623（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · resolution=1080P</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">高空环礁、海岛形状与瀑布通道在前两帧相容。后段朝越崖后出现的林间水域推进，末帧形成明确的隐蔽水体。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-h3-max-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>Kling v3 Pro</h3><div class="grid"><figure class="card" id="t03-kling-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-kling-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-kling-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 318.3 秒 · 端到端 334.1 秒</div>
+<div class="kv"><span>估算</span>$1.237（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">沿同一条海崖向瀑布进近，后段左侧远海和切岸的位置相容，越过瀑顶可见棕榈旁的新水域。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-kling-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-kling-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-kling-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 371.2 秒 · 端到端 386.4 秒</div>
+<div class="kv"><span>估算</span>$1.237（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">沿左侧海岸向崖上瀑布推进，6.375 秒瀑布与海岸仍在同侧，8.875 秒显露棕榈围绕的崖上内水体。前后草坡、海岸与日照方向相容。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-kling-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-kling-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-kling-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 10.042 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.9 秒 · 端到端 308.1 秒</div>
+<div class="kv"><span>估算</span>$1.237（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · aspect_ratio=16:9 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">海岸与崖壁瀑布从斜向海面远景收近，6.375 秒瀑布及左侧海岸仍相容，8.875 秒越过瀑沿，出现棕榈旁的崖上内水体。抽帧中海岸线、瀑口与草坡延续，亮日照方向相容。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-kling-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX Fast · 4K / 10 秒</h3><div class="grid"><figure class="card" id="t03-fast-4k-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-4k-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-4k-r1</div>
+<div class="kv"><span>实际</span>3840x2160 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 185.8 秒 · 端到端 209.1 秒</div>
+<div class="kv"><span>估算</span>$3.000（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=2160p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">以较低的海面视角逼近高崖瀑布，越过瀑顶后看到棕榈林内另一段青绿色水域。白水、崖顶和林地在抽帧能对应，开场的高空俯视感较弱。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-4k-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-4k-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-4k-r2</div>
+<div class="kv"><span>实际</span>3840x2160 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 187.1 秒 · 端到端 201.7 秒</div>
+<div class="kv"><span>估算</span>$3.000（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=2160p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">海崖中央瀑布由远变近，越过水线后正对棕榈包围的另一段水域。前后崖缝和植物带相容，暖色光延续。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-4k-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-4k-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-4k-r3</div>
+<div class="kv"><span>实际</span>3840x2160 · 24 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 212.6 秒 · 端到端 237.8 秒</div>
+<div class="kv"><span>估算</span>$3.000（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=2160p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">开场已在崖顶上方俯看瀑布，海面位于背景，随后贴近瀑口并转为沿崖俯看海浪，末帧出现密林间水域。明暗随俯视角改变，四帧之间有较大的方向变化；未清楚呈现从高空海面下降后直向前通过瀑布的整条路径。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-4k-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX Fast · 20 秒</h3><div class="grid"><figure class="card" id="t03-fast-20s-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-20s-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-20s-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 20.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 239.2 秒 · 端到端 251.6 秒</div>
+<div class="kv"><span>估算</span>$2.600（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=20 · resolution=1080p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">八帧于 1.25 至 8.75 秒保持同一竖崖和瀑口，11.25 秒越过瀑沿，13.75 至 19.25 秒在同一棕榈围绕的内水体推进。水面高光随视角移动，没有在检查位置看到跳变。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-20s-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-20s-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-20s-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 20.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 264.8 秒 · 端到端 281.6 秒</div>
+<div class="kv"><span>估算</span>$2.600（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=20 · resolution=1080p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">八帧显示 1.25 至 6.25 秒沿同一海崖与瀑口推进，8.75 秒越过瀑沿，11.25 至 19.25 秒继续在同一林间水道向前。河岸和棕榈带能跟踪，日光保持暖色，水面高光由海面转到浅内水体并随视角移动。开场海岸视角较低，未见高空俯看岛屿。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-20s-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-20s-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-20s-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 24 fps · 20.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.2 秒 · 端到端 313.3 秒</div>
+<div class="kv"><span>估算</span>$2.600（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=20 · resolution=1080p · aspect_ratio=16:9 · fps=24 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">八帧显示 1.25 至 8.75 秒始终接近同一前向海崖瀑布，11.25 至 13.75 秒抬过瀑沿，16.25 至 19.25 秒显露并靠近密林围绕的圆形内水体。海面强逆光高光、瀑雾和后段林地明暗随推进变化，在检查位置未见光照方向冲突；开场是较低海面机位，未见高空俯看岛屿。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-20s-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX Fast · 48 fps</h3><div class="grid"><figure class="card" id="t03-fast-48fps-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-48fps-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-48fps-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 48 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 238.5 秒 · 端到端 250.6 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=48 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/4/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">已较近海崖时开场，推进接近瀑布。中后段主要被水雾遮挡，末段能看见林间浅色水体。雾中几何路径未在四帧间看清。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-48fps-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-48fps-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-48fps-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 48 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 265.2 秒 · 端到端 280.5 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=48 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">较高的海岛远景直推中间瀑布，6.375 秒越过瀑顶伴随薄雾，末帧见棕榈包围的内水域。两侧岩崖、瀑口和林带相容，光色保持明亮偏暖。静态抽帧不支持 48 fps 比 24 fps 更流畅的结论。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-48fps-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-48fps-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-48fps-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 48 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.1 秒 · 端到端 304.3 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=48 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/4/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">从海岛俯视远景直向前接近瀑布，后段穿过棕榈边缘到圆形青绿内水体，岛形、瀑口和林带在抽帧相容。6.375 秒近处树冠及周边叶片呈可见放射状模糊，中心水域较清楚；后段林中阴影更深。静态抽帧不能评定 48 fps 的运动感知或把边缘模糊归因于帧率。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-48fps-r3.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>LTX Fast · 50 fps</h3><div class="grid"><figure class="card" id="t03-fast-50fps-r1">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-50fps-r1.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r1.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-50fps-r1</div>
+<div class="kv"><span>实际</span>1920x1080 · 50 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 238.6 秒 · 端到端 254.9 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=50 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">开场主要是近处海水与瀑脚，随后朝瀑布推近并越过明亮水线，末段内湾被棕榈包围。未显示广阔的海岛开场。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r1.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-50fps-r2">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-50fps-r2.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r2.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-50fps-r2</div>
+<div class="kv"><span>实际</span>1920x1080 · 50 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 266.2 秒 · 端到端 278.1 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=50 · generate_audio=False</div>
+<div class="kv"><span>评分</span>5/5/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">海岛与浪带由远变近，到瀑口后越过岩坡，末帧为密林围绕的青绿水域。前后瀑布和崖上的植物带相容，林中较暗而海面高光延续。静态抽帧不支持 50 fps 比 24/48 fps 更流畅的结论。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r2.mp4">下载原片</a></figcaption></figure><figure class="card" id="t03-fast-50fps-r3">
+<video controls playsinline preload="none" poster="assets/posters/t03-fast-50fps-r3.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r3.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">t03-fast-50fps-r3</div>
+<div class="kv"><span>实际</span>1920x1080 · 50 fps · 10.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 291.5 秒 · 端到端 306.1 秒</div>
+<div class="kv"><span>估算</span>$1.300（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=10 · resolution=1080p · aspect_ratio=16:9 · fps=50 · generate_audio=False</div>
+<div class="kv"><span>评分</span>4/4/5/4 <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note">开场为接近海面的视角，朝同一低矮岛崖瀑布推进，6.375 秒越过岩缝和林缘，8.875 秒显露棕榈围绕的圆形内水体。海面、内水域的日光高光相容，近处树冠及棕榈边缘在中后段抽帧有可见模糊；高空俯看岛屿的提示表现有限。静态抽帧不能评定 50 fps 的运动感知或把边缘模糊归因于帧率。</p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/t03-fast-50fps-r3.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>

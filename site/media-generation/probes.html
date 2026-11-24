@@ -1,0 +1,114 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>接口边界：路由、内联图片大小与首尾帧</title>
+<style>:root{--bg:#fbfaf7;--ink:#1f1e1b;--sub:#5f5d57;--line:#e4e1d8;--card:#ffffff;--acc:#2a78d6;--warn:#fdf1ea;--warnl:#d9592a}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--ink:#ecebe6;--sub:#a9a79f;--line:#33322e;--card:#1f1f1c;--acc:#5a9cf0;--warn:#2a1d15;--warnl:#e8885c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:1240px;margin:0 auto;padding:28px 16px 60px}
+h1,h2,h3{font-family:"Songti SC","STSong","Noto Serif SC",serif;line-height:1.35}
+h1{font-size:30px;margin:8px 0 12px}h2{font-size:22px;margin:36px 0 10px;border-top:1px solid var(--line);padding-top:22px}
+h3{font-size:18px;margin:26px 0 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+a{color:var(--acc)}.back{font-size:14px;text-decoration:none}
+.lede{font-size:16.5px;color:var(--sub);max-width:900px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;margin-top:20px}
+.tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}.tile img{width:100%;display:block;background:#000;aspect-ratio:16/9;object-fit:contain}
+.tt{font-weight:600;padding:10px 14px 2px}.ts{color:var(--sub);font-size:13.5px;padding:0 14px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.card video,.inputs video{width:100%;display:block;background:#000;aspect-ratio:16/9}
+figcaption{padding:10px 14px 14px;font-size:13.5px}.ttl{font-weight:600;font-size:14.5px;margin-bottom:4px}
+.kv{color:var(--sub);word-break:break-word}.kv span{display:inline-block;width:38px;color:var(--ink);font-weight:600}
+.note{margin:8px 0 6px}.dl{font-size:13px}small{color:var(--sub)}
+.sync{font:inherit;font-size:13px;padding:4px 10px;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:6px;cursor:pointer}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}th{font-weight:600}
+.find li{margin:6px 0}.warn{background:var(--warn);border-left:3px solid var(--warnl);padding:10px 16px;border-radius:6px;margin:16px 0}
+.warn ul{margin:6px 0}details{margin:10px 0}pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:13px}
+.inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:12px 0}
+.inputs figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.inputs img{width:100%;display:block}.inputs figcaption{font-size:13px;color:var(--sub);padding:6px 10px}
+footer{margin-top:48px;color:var(--sub);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+</style></head><body><main><a class="back" href="index.html">← 全部测试</a><h1>接口边界：路由、内联图片大小与首尾帧</h1><p class="lede">不比画质，只确认几条接入时容易踩的接口边界。</p><h2>测什么、怎么测</h2><p>路由：拿 5 个旧任务分别用带 <code>/v1</code> 和不带 <code>/v1</code> 的地址各查一次状态和结果，再用不带 <code>/v1</code> 的地址提交一次新任务。内联大小：同一张小 JPEG 填充元数据到 4、8、12、16、24、64、128 MiB 作为首帧提交（像素不变）。另外补测 H3 两档和 LTX Fast 的首尾帧图生。</p><div class="tw"><table><thead><tr><th>探测</th><th>结果</th></tr></thead><tbody><tr><td>带 /v1 的 GET 状态 / 结果</td><td>10／10 返回 200</td></tr><tr><td>不带 /v1 的 GET 状态 / 结果</td><td>10／10 返回 400</td></tr><tr><td>不带 /v1 的 POST 提交</td><td>400 unknown_model</td></tr><tr><td>内联 JPEG 4 / 8 / 12 / 16 / 24 MiB</td><td>都拿到任务 ID 并出片，端到端 37–40 秒</td></tr><tr><td>内联 JPEG 64 MiB</td><td>HTTP 502，没有任务 ID，后台是否建了任务不明</td></tr><tr><td>内联 JPEG 128 MiB</td><td>传输错误，没有任务 ID，后台是否建了任务不明</td></tr><tr><td>H3 Max 首尾帧</td><td>第一次 429 限流，重试后 200 出片</td></tr></tbody></table></div><h2>结论与建议</h2><ul class="find"><li><b>路由只认带 <code>/v1</code> 的写法。</b>Learn 列表里不带版本号的路径在这个资源上查询和提交都返回 400。</li><li><b>内联首帧至少到 24 MiB 都能用。</b>64 MiB 开始出错，但两次都拿不到任务 ID，不能据此断定上限，也可能已经在后台计费。</li><li><b>建议：</b>统一走 <code>/providers/falai/v1/…</code>；大于十几 MiB 的素材改用可访问的 HTTPS 地址；遇到 429 按 <code>Retry-After</code> 等待，提交结果不明时先核对原任务，不要自动重发付费请求。</li></ul><div class="warn"><b>未确认 / 不能下结论</b><ul><li>填充的是 JPEG 元数据，结论只适用于 JPEG 首帧与 JSON 请求体大小，不代表视频输入或真实像素上限。</li></ul></div><h2>全部样片</h2><section class="grp"><h3>内联大小探测（同一张图，体积不同）</h3><div class="grid"><figure class="card" id="probe-inline-04mib">
+<video controls playsinline preload="none" poster="assets/posters/probe-inline-04mib.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-04mib.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">probe-inline-04mib</div>
+<div class="kv"><span>实际</span>832x480 · 24 fps · 2.336 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 37.3 秒</div>
+<div class="kv"><span>估算</span>$0.058（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=2 · resolution=480P · start_image=frame-start.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-04mib.mp4">下载原片</a></figcaption></figure><figure class="card" id="probe-inline-08mib">
+<video controls playsinline preload="none" poster="assets/posters/probe-inline-08mib.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-08mib.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">probe-inline-08mib</div>
+<div class="kv"><span>实际</span>832x480 · 24 fps · 2.336 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 38.3 秒</div>
+<div class="kv"><span>估算</span>$0.058（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=2 · resolution=480P · start_image=frame-start.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-08mib.mp4">下载原片</a></figcaption></figure><figure class="card" id="probe-inline-12mib">
+<video controls playsinline preload="none" poster="assets/posters/probe-inline-12mib.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-12mib.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">probe-inline-12mib</div>
+<div class="kv"><span>实际</span>832x480 · 24 fps · 2.336 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.8 秒 · 端到端 37.8 秒</div>
+<div class="kv"><span>估算</span>$0.058（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=2 · resolution=480P · start_image=frame-start.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-12mib.mp4">下载原片</a></figcaption></figure><figure class="card" id="probe-inline-16mib">
+<video controls playsinline preload="none" poster="assets/posters/probe-inline-16mib.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-16mib.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">probe-inline-16mib</div>
+<div class="kv"><span>实际</span>832x480 · 24 fps · 2.336 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 38.7 秒</div>
+<div class="kv"><span>估算</span>$0.058（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=2 · resolution=480P · start_image=frame-start.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-16mib.mp4">下载原片</a></figcaption></figure><figure class="card" id="probe-inline-24mib">
+<video controls playsinline preload="none" poster="assets/posters/probe-inline-24mib.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-24mib.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">probe-inline-24mib</div>
+<div class="kv"><span>实际</span>832x480 · 24 fps · 2.336 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 40.1 秒</div>
+<div class="kv"><span>估算</span>$0.058（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=2 · resolution=480P · start_image=frame-start.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/probe-inline-24mib.mp4">下载原片</a></figcaption></figure></div></section><section class="grp"><h3>首尾帧图生补测<button class="sync" onclick="syncPlay(this)">▶ 同步播放这一组</button></h3><div class="grid"><figure class="card" id="aux-start-end-h3-turbo">
+<video controls playsinline preload="none" poster="assets/posters/aux-start-end-h3-turbo.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-h3-turbo.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">aux-start-end-h3-turbo</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.9 秒 · 端到端 36.5 秒</div>
+<div class="kv"><span>估算</span>$0.264（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · resolution=768P · start_image=frame-start.jpg · end_image=frame-end.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-h3-turbo.mp4">下载原片</a></figcaption></figure><figure class="card" id="aux-start-end-h3-max">
+<video controls playsinline preload="none" poster="assets/posters/aux-start-end-h3-max.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-h3-max.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">aux-start-end-h3-max</div>
+<div class="kv"><span>实际</span>1344x768 · 24 fps · 6.592 秒 · 有音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 27.7 秒 · 端到端 67.9 秒</div>
+<div class="kv"><span>估算</span>$0.527（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · resolution=768P · start_image=frame-start.jpg · end_image=frame-end.jpg</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-h3-max.mp4">下载原片</a></figcaption></figure><figure class="card" id="aux-start-end-ltx-fast">
+<video controls playsinline preload="none" poster="assets/posters/aux-start-end-ltx-fast.jpg"><source src="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-ltx-fast.mp4" type="video/mp4"></video>
+<figcaption><div class="ttl">aux-start-end-ltx-fast</div>
+<div class="kv"><span>实际</span>1280x720 · 25 fps · 6.000 秒 · 无音轨</div>
+<div class="kv"><span>耗时</span>接收→完成 57.4 秒 · 端到端 64.9 秒</div>
+<div class="kv"><span>估算</span>$0.540（发布单价 × 实测秒数）</div>
+<div class="kv"><span>请求</span>duration=6 · resolution=720p · start_image=frame-start.jpg · end_image=frame-end.jpg · fps=25 · aspect_ratio=16:9 · generate_audio=False · camera_motion=dolly_in</div>
+<div class="kv"><span>评分</span>— <small>A/V/T/M，抽帧探索性</small></div>
+
+<p class="note"></p>
+<a class="dl" href="https://github.com/huqianghui/mindforge/releases/download/media-generation-2026-11-24/aux-start-end-ltx-fast.mp4">下载原片</a></figcaption></figure></div></section>
+<footer>原片存放在 <a href="https://github.com/huqianghui/mindforge/releases/tag/media-generation-2026-11-24">GitHub Release</a>，页面里直接播放完整 MP4。评分是对抽帧的探索性判断，每组 3 条，不是正式排名；音画同步与人工可用性未评。文章见 <a href="https://github.com/huqianghui/mindforge/blob/main/Notes/Media-Generation/">Media Generation 系列</a>。</footer>
+</main><script>function syncPlay(b){const v=[...b.closest('section').querySelectorAll('video')];
+v.forEach(x=>{x.preload='auto';x.currentTime=0});Promise.all(v.map(x=>x.play().catch(()=>{})));}</script></body></html>
