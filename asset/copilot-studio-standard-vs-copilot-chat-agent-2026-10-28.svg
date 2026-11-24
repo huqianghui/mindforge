@@ -1,32 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .cardT { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .cardS { fill: #0b1f33; stroke: #38bdf8; stroke-width: 1.6; }
-      .cardM { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 1.8; }
-      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hT { fill: #99f6e4; font-size: 16px; font-weight: 700; }
-      .hS { fill: #bae6fd; font-size: 16px; font-weight: 700; }
-      .hM { fill: #ddd6fe; font-size: 15px; font-weight: 600; }
-      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tT { fill: #5eead4; font-size: 13.5px; }
-      .tS { fill: #7dd3fc; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tM { fill: #c4b5fd; font-size: 13.5px; }
-      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .lab { fill: #94a3b8; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .fT { stroke: #2dd4bf; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
-      .fS { stroke: #38bdf8; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
-      .fR { stroke: #f87171; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: none; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #5e718d; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .cardT { fill: #f2fafa; stroke: #26a696; stroke-width: 1.6; }
+      .cardS { fill: #f1f6fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .cardM { fill: #f3f3f9; stroke: #2a0693; stroke-width: 1.8; }
+      .bad { fill: #faf3f3; stroke: #920707; stroke-width: 1.6; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hT { fill: #0c8d74; font-size: 16px; font-weight: 700; }
+      .hS { fill: #046395; font-size: 16px; font-weight: 700; }
+      .hM { fill: #1d0495; font-size: 15px; font-weight: 600; }
+      .hR { fill: #940505; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tG { fill: #5e718d; font-size: 13.5px; }
+      .tT { fill: #1bb199; font-size: 13.5px; }
+      .tS { fill: #036696; font-size: 13.5px; }
+      .tR { fill: #940505; font-size: 13.5px; }
+      .tM { fill: #220495; font-size: 13.5px; }
+      .m { fill: #344965; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .lab { fill: #5e718d; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .fT { stroke: #26a696; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .fS { stroke: #0c89c0; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.3s linear infinite; }
+      .fR { stroke: #920707; stroke-width: 2; fill: none; stroke-dasharray: 4 6; }
+      .lg { fill: #384b61; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
     </style>
   </defs>

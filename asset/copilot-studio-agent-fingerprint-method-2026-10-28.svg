@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 880" width="1400" height="880" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .card { fill: #0f2a2a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .good { fill: #0f2a2a; stroke: #5eead4; stroke-width: 2.2; }
-      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
-      .amb { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 1.8; }
-      .gray { fill: #111827; stroke: #475569; stroke-width: 1.6; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hT { fill: #99f6e4; font-size: 15px; font-weight: 600; }
-      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tT { fill: #5eead4; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tA { fill: #fcd34d; font-size: 13.5px; }
-      .ax { fill: #e2e8f0; font-size: 14px; font-weight: 600; text-anchor: middle; }
-      .axs { fill: #94a3b8; font-size: 13.5px; text-anchor: middle; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .f { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
-      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
-      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: none; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #5e718d; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #f2fafa; stroke: #26a696; stroke-width: 1.6; }
+      .good { fill: #f2fafa; stroke: #1bb199; stroke-width: 2.2; }
+      .bad { fill: #faf3f3; stroke: #920707; stroke-width: 2; animation: pulse 2.2s ease-in-out infinite; }
+      .amb { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.8; }
+      .gray { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.6; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hT { fill: #0c8d74; font-size: 15px; font-weight: 600; }
+      .hR { fill: #940505; font-size: 15px; font-weight: 600; }
+      .hA { fill: #967903; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tG { fill: #5e718d; font-size: 13.5px; }
+      .tT { fill: #1bb199; font-size: 13.5px; }
+      .tR { fill: #940505; font-size: 13.5px; }
+      .tA { fill: #c49808; font-size: 13.5px; }
+      .ax { fill: #344965; font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .axs { fill: #5e718d; font-size: 13.5px; text-anchor: middle; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .f { stroke: #26a696; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #12736c; stroke: #1bb199; stroke-width: 1.6; }
+      .nt { fill: #12876c; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -30; } }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.65; } }
     </style>
@@ -74,7 +74,7 @@
   <path class="f" d="M352,210 L372,210"/>
   <path class="f" d="M684,210 L704,210"/>
   <path class="f" d="M1016,210 L1036,210"/>
-  <circle r="5" fill="#5eead4"><animateMotion dur="3s" repeatCount="indefinite" path="M352,210 L1036,210"/></circle>
+  <circle r="5" fill="#1bb199"><animateMotion dur="3s" repeatCount="indefinite" path="M352,210 L1036,210"/></circle>
 
   <!-- matrix -->
   <rect class="zone" x="24" y="320" width="900" height="420" rx="12"/>

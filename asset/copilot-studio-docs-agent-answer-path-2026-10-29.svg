@@ -1,40 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 840" width="1400" height="840" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: none; stroke: #334155; stroke-width: 1.4; stroke-dasharray: 7 5; }
-      .zt { fill: #94a3b8; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
-      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.5; }
-      .hot { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .bad { fill: #2a1215; stroke: #f87171; stroke-width: 1.8; stroke-dasharray: 6 4; }
-      .dim { fill: #111827; stroke: #475569; stroke-width: 1.2; stroke-dasharray: 6 4; }
-      .dia { fill: #1e293b; stroke: #fbbf24; stroke-width: 2; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .hR { fill: #fca5a5; font-size: 15px; font-weight: 600; }
-      .hG { fill: #99f6e4; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tG { fill: #94a3b8; font-size: 13.5px; }
-      .tA { fill: #fcd34d; font-size: 13.5px; }
-      .tR { fill: #fca5a5; font-size: 13.5px; }
-      .tT { fill: #5eead4; font-size: 13.5px; }
-      .m { fill: #e2e8f0; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .mT { fill: #5eead4; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .mR { fill: #fca5a5; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .flow { stroke: #2dd4bf; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
-      .flowA { stroke: #fbbf24; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
-      .num { fill: #0f766e; stroke: #5eead4; stroke-width: 1.6; }
-      .numA { fill: #92400e; stroke: #fcd34d; stroke-width: 1.6; }
-      .nt { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .strike { stroke: #f87171; stroke-width: 1.5; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: none; stroke: #7087a9; stroke-width: 1.4; stroke-dasharray: 7 5; }
+      .zt { fill: #5e718d; font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+      .card { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.5; }
+      .hot { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .bad { fill: #faf3f3; stroke: #920707; stroke-width: 1.8; stroke-dasharray: 6 4; }
+      .dim { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .dia { fill: #f3f5f9; stroke: #c38f09; stroke-width: 2; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hA { fill: #967903; font-size: 15px; font-weight: 600; }
+      .hR { fill: #940505; font-size: 15px; font-weight: 600; }
+      .hG { fill: #0c8d74; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tG { fill: #5e718d; font-size: 13.5px; }
+      .tA { fill: #c49808; font-size: 13.5px; }
+      .tR { fill: #940505; font-size: 13.5px; }
+      .tT { fill: #1bb199; font-size: 13.5px; }
+      .m { fill: #344965; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mT { fill: #1bb199; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .mR { fill: #940505; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .flow { stroke: #26a696; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .flowA { stroke: #c38f09; stroke-width: 2.4; fill: none; stroke-dasharray: 9 6; animation: dash 1.2s linear infinite; }
+      .num { fill: #12736c; stroke: #1bb199; stroke-width: 1.6; }
+      .numA { fill: #8f4111; stroke: #c49808; stroke-width: 1.6; }
+      .nt { fill: #12876c; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .strike { stroke: #920707; stroke-width: 1.5; }
       @keyframes dash { to { stroke-dashoffset: -30; } }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
     </style>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
   </defs>
 
   <rect class="bg" width="1400" height="840" rx="16"/>
@@ -121,8 +121,8 @@
   <text class="tA" x="562" y="420">否</text>
   <path class="flow" d="M976,234 L1006,234" marker-end="url(#ar)"/>
   <path class="flowA" d="M976,456 L1006,456" marker-end="url(#arA)"/>
-  <circle r="5" fill="#5eead4"><animateMotion dur="3.6s" repeatCount="indefinite" path="M216,314 L550,314 L550,234 L1006,234"/></circle>
-  <circle r="5" fill="#fcd34d"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M216,314 L550,314 L550,456 L1006,456"/></circle>
+  <circle r="5" fill="#1bb199"><animateMotion dur="3.6s" repeatCount="indefinite" path="M216,314 L550,314 L550,234 L1006,234"/></circle>
+  <circle r="5" fill="#c49808"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M216,314 L550,314 L550,456 L1006,456"/></circle>
 
   <!-- bottom: three observations -->
   <rect class="zone" x="24" y="588" width="1352" height="168" rx="12"/>
