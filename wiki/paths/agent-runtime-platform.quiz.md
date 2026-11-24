@@ -1,7 +1,7 @@
 ---
 title: "题库：Agent Runtime 与 Agent Platform"
 created: "2026-11-16"
-updated: "2026-11-18"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -217,6 +217,14 @@ path_id: "agent-runtime-platform"
 
 **出处**：[[reconciliation-loop]]
 
+### Q55 · 场景
+
+**问**：你改了 operator 读的平台登记（ConfigMap），给桌面加了 6080 端口，可 agent 的网络策略一直没变；另一边，上周手工 `kubectl set image` 换上去的门户镜像，今天完整部署后又回到了旧版。两件事各怎么解释？
+
+**答**：第一件：调和循环只对它 watch 的对象生效，operator 只在启动时读这份登记，属于循环外的输入，所以要在登记内容变化时主动重启 operator，网络策略才会按新登记重新生成。第二件：完整部署本身就是一次调和，期望状态是 chart 里的版本号，手工换镜像只改了真实状态、没改期望状态，下一次部署就会被纠正回去；还要注意一个功能常常同时改了门户和入口规则两层。规则是改了源码就换新版本号、全量构建再部署，单独换镜像只当临时手段并当天补全量构建。
+
+**出处**：[[reconciliation-loop]]（Claim「完整部署是一次调和」「不是所有输入都在调和范围里」）
+
 ## 第 7 站 · 治理：出站网关与凭据
 
 ### Q25 · 解释
@@ -250,6 +258,14 @@ path_id: "agent-runtime-platform"
 **答**：不带出站策略就不加 egress 边车，沙箱完全不受限，连节点元数据地址 169.254.169.254 都可达，能取到节点 kubelet 身份的 token。请求级策略漏带一次就等于没有：沙箱命名空间要有一条封 169.254.0.0/16 的兜底 NetworkPolicy，或开 AKS 的 IMDS restriction；快照镜像也不要放在节点身份能拉的同一个注册表。
 
 **出处**：[[credential-out-of-sandbox]]
+
+### Q56 · 辨析
+
+**问**：沙箱里的演示 agent 在 Identities 一栏显示 "Binding storage is unavailable"，所以"存储坏了"。对吗？
+
+**答**：不对，这是"凭据不进沙箱"的默认落在产品上的样子。委托连接的凭据存在 agent 命名空间，由平台的 broker 读写；operator 只在 agent 不在沙箱里、或开启了沙箱委托连接集成时才给 broker 授权。内置管理员 agent 不在沙箱里所以正常，跑在 Kata 沙箱里的 agent 默认拿不到。要用委托连接就得显式打开那条集成（还需要额外的平台登记、租户管理员同意），否则写进已知限制并说明原因。
+
+**出处**：[[credential-out-of-sandbox]]（Claim「沙箱里的 agent 默认连委托连接的存储都碰不到」）
 
 ## 第 8 站 · 治理：逐请求授权
 
@@ -436,6 +452,22 @@ path_id: "agent-runtime-platform"
 **答**：回答不了。五类日志（管理操作、agent 输出、模型调用、出站连接、平台组件）各管一段，分别按命名空间、key、命名空间加时间关联，没有共同的会话或轮次 ID；那个集群上实际只有模型调用一条线有数据（观测 chart 没装、Kata 节点上采集 Pod 一直重启、Agent Pod 没 sidecar、审计日志没开）。要补的是会话层每轮生成一个 ID，带进模型请求元数据和出站请求头，两个网关都记下来。两种形态共同缺的四块：出站逐请求授权、高风险动作审批、容量配额、跨日志追溯与 Portal 操作审计。
 
 **出处**：[[agent-session-control-plane]]、[[agent-runtime]]
+
+### Q57 · 场景
+
+**问**：同一个功能先后报了三种错：访问 `/ai-gateway` 返回"你不是它的 owner"的 403；门户里嵌的控制台显示 refused to connect；桌面入口报 upstream connect error（connection timeout），而路由明明配好了。各该查哪里？
+
+**答**：入口网关对所有路径做三道处理，agent 前还有一层网络策略，三种报错各对应一处。403：owner 检查把路径第一段当 agent 名，`/ai-gateway` 这类非 agent 路径要在这一步之前单独放行。refused to connect：安全响应头默认禁止嵌入，被 iframe 嵌入的路径要改成只允许同源。connection timeout 而路由存在：查 agent 命名空间里 operator 按平台登记生成的网络策略放行了哪些端口，漏了桌面的 6080 就是这个表现——策略漏配表现为超时，不是权限错误。
+
+**出处**：[[agent-sandbox]]（Claim「入站方向也有三道处理加一层网络策略」）
+
+### Q58 · 解释
+
+**问**：把自建 runtime 交给同事在别的订阅里部署，配置值该怎么分类？交接前做哪几项检查？部署卡在 "has an unfinished operation" 怎么办？
+
+**答**：按两个问题分三类：换订阅或集群不会变的（命名空间、约定的密钥名、协议固定 ID）留在代码里并写明不要改；会变但查不到的（订阅、区域、资源名、机型、版本、模型与单价、管理员名单、端口列表）进配置文件且只在一处定义；会变又查得到的（地址、网段、UID、组件版本）部署时从集群现查——手工建的平台登记几天后 Cilium 版本就过时了。交接前三项检查：变量来源逐个对上、把写死的值提成变量后与线上配置逐字段对比、公开前扫全部 git 历史。Helm 卡锁：`helm history` 找最后一个 deployed 版本、`helm rollback` 释放锁再重跑；来路有两种，一是自己把输出接到会提前退出的命令上打断了 helm，二是 operator 代管的升级被同一次部署里 operator 自己的滚动更新打断。
+
+**出处**：[[agent-runtime]]（Claim「自建 runtime 交给别人部署时最先坏的是手工做过的事」「operator 代管的 Helm 升级会被自身滚动打断」）
 
 ## 第 13 站 · 汇合：自建 agent platform 还是用托管产品
 

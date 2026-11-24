@@ -1,7 +1,7 @@
 ---
 title: "学习路径：Agent Runtime 与 Agent Platform"
 created: "2026-11-16"
-updated: "2026-11-18"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -41,6 +41,7 @@ signals:
 - **读**：[[agent-infra-three-layers]]（三条跨层 Claim：托管产品各在哪一层、锁定矩阵、层间接口）、[[agent-framework]]（「逻辑 vs 设施」一条）、[[agent-harness]]（「framework 是 dev-time、harness 是 run-time」「harness 面向 model、runtime 面向 infra」「harness 不单列一层」）、[[agent-runtime]] 与 [[agent-platform]] 的摘要
 - **前置**：无
 - **用时**：约 1.5 小时
+- **⚠️ stale**：[[agent-harness]] 1/9（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能用三个问题区分 framework、runtime、platform，并说出 harness 为什么不单列一层
   - 能用"换一个 runtime 还在不在"判断一个能力归 framework 还是 runtime，用"换模型要不要重调"判断归 harness 还是 runtime
@@ -52,6 +53,7 @@ signals:
 - **读**：[[agent-harness]]（「harness 按归谁、能不能改分三类」「Copilot Studio 把 harness 与 runtime 打包出售」「强模型、弱规则」）、[[agent-sandbox]]（「多租户平台上 harness 自身也当不可信」）、[[AKS-Agent-Runtime系列02：Harness放在沙箱内还是沙箱外]]
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
+- **⚠️ stale**：[[agent-harness]] 1/9（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 harness 的三类归属（代码框架自己搭、现成 harness、平台托管 harness），以及判断 harness 与 runtime 是否绑死的那一条标准
   - 能解释为什么编码 harness 要整个关进 Kata 沙箱、免确认运行，而自写的受信 loop 可以放在沙箱外
@@ -93,7 +95,7 @@ signals:
 
 ## 第 6 站 · 会话：持久执行、高可用与回收
 
-- **读**：[[durable-execution]]（四条）、[[agent-session-control-plane]]（「多副本控制面要分开管两件事」「拿到会话锁却发现 lease 被占时不能 abandon」「fencing 挡住的是写入、挡不住执行」）、[[reconciliation-loop]]（「回收要两个方向」「对账删除要刻意保守」「快照仓库」）、[[AKS-Agent-Runtime系列06：会话管理与高可用]]
+- **读**：[[durable-execution]]（四条）、[[agent-session-control-plane]]（「多副本控制面要分开管两件事」「拿到会话锁却发现 lease 被占时不能 abandon」「fencing 挡住的是写入、挡不住执行」）、[[reconciliation-loop]]（「回收要两个方向」「对账删除要刻意保守」「快照仓库」）、[[AKS-Agent-Runtime系列06：会话管理与高可用]]；[[reconciliation-loop]]（「完整部署是一次调和」「不是所有输入都在调和范围里」）
 - **前置**：第 5 站
 - **用时**：约 2 小时
 - **算会**：
@@ -101,10 +103,11 @@ signals:
   - 能解释"结果不确定时按副作用分流"：执行中被杀与 checkpoint 中被杀为什么处理不同
   - 能说出 fencing 挡不住执行的原因，以及 token 应该带到哪里
   - 能说出回收为什么要两个方向，以及对账删除的几条保守规则
+  - 能解释为什么手工换上线的镜像会在下一次完整部署时消失，以及 operator 只在启动时读的配置改了为什么不生效
 
 ## 第 7 站 · 治理：出站网关与凭据
 
-- **读**：[[credential-out-of-sandbox]]（全部六条）、[[ai-gateway]]（「按调用方分三种角色」「和 LLM proxy 的配合」「token 限流在响应后结算」「MCP 聚合有两面」）、[[agent-runtime]]（「Kubernetes 原生机制守底线、L7 组件做判断」）、[[model-context-protocol]]（「在 agent runtime 里 MCP 有三个落点」）、[[AKS-Agent-Runtime系列04：出站治理与逐请求授权]]、[[AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色]]
+- **读**：[[credential-out-of-sandbox]]（全部六条）、[[ai-gateway]]（「按调用方分三种角色」「和 LLM proxy 的配合」「token 限流在响应后结算」「MCP 聚合有两面」）、[[agent-runtime]]（「Kubernetes 原生机制守底线、L7 组件做判断」）、[[model-context-protocol]]（「在 agent runtime 里 MCP 有三个落点」）、[[AKS-Agent-Runtime系列04：出站治理与逐请求授权]]、[[AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色]]；[[credential-out-of-sandbox]]（「沙箱里的 agent 默认连委托连接的存储都碰不到」）、[[model-context-protocol]]（「工具描述本身就是注入入口」）
 - **前置**：第 3 站
 - **用时**：约 2 小时
 - **算会**：
@@ -112,6 +115,7 @@ signals:
   - 能说出 agent 网关、模型网关、出站网关三种角色的调用方和故障影响，以及它们和 LiteLLM 这类 LLM proxy 怎么分工
   - 能解释 token 限流为什么挡不住跨阈值的那一次，硬预算要怎么做
   - 能说出 RBAC、NetworkPolicy 能守住哪些底线、管不到哪些判断，以及出站策略为什么要有命名空间级兜底
+  - 能说出沙箱 agent 为什么默认用不了委托连接，以及恶意 MCP 工具描述为什么要靠宿主侧按工具授权来防
 
 ## 第 8 站 · 治理：逐请求授权
 
@@ -129,7 +133,6 @@ signals:
 - **读**：[[entra-agent-id]]（「下游看到的身份有三种」「Entra 会给任何应用签发 app-only 令牌」「OBO 换出的令牌不比用户令牌活得久」「Agent ID 两步换令牌在 AKS 上跑通」）、[[credential-out-of-sandbox]]（「令牌只在控制面与网关之间流转」）、[[AKS-Agent-Runtime系列09：Agent以谁的身份行事]]
 - **前置**：第 7 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[entra-agent-id]] 12 条里 1 条 stale（portal 创建时序的实测偏差），本站点名的几条均为 active
 - **算会**：
   - 能说出平台身份、OBO、Agent ID 三种下游身份的区别，以及每个资源为什么要声明自己用哪一种
   - 能解释只校验 aud 的 API 为什么谁都能调
@@ -160,7 +163,7 @@ signals:
 
 ## 第 12 站 · 运营：管控台、模型网关与追溯
 
-- **读**：[[ai-gateway]]（「LLM proxy 的配置要以 runtime 的 CRD 为唯一来源」「LiteLLM 的 Agents 是 A2A 注册表加调用代理」「网关自身开销在往 Rust 核心迁」）、[[agent-session-control-plane]]（「要让每个副作用追溯到哪一轮」）、[[agent-runtime]]（「常驻实现在能装什么、能花多少上做得扎实」）、[[resident-vs-session-agent-runtime]]（「常驻实例的入口分三层」「管理员也作为一个 agent 运行」）、[[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]]
+- **读**：[[ai-gateway]]（「LLM proxy 的配置要以 runtime 的 CRD 为唯一来源」「LiteLLM 的 Agents 是 A2A 注册表加调用代理」「网关自身开销在往 Rust 核心迁」）、[[agent-session-control-plane]]（「要让每个副作用追溯到哪一轮」）、[[agent-runtime]]（「常驻实现在能装什么、能花多少上做得扎实」）、[[resident-vs-session-agent-runtime]]（「常驻实例的入口分三层」「管理员也作为一个 agent 运行」）、[[AKS-Agent-Runtime系列13：Runtime管控台与LiteLLM的分工]]；[[agent-runtime]]（「交给别人部署时最先坏的是手工做过的事」「operator 代管的 Helm 升级会被自身滚动打断」）、[[agent-sandbox]]（「入站方向也有三道处理加一层网络策略」）、[[AKS-Agent-Runtime系列14：让PoC能交给别人部署]]
 - **前置**：第 11 站
 - **用时**：约 1.5 小时
 - **算会**：
@@ -168,6 +171,8 @@ signals:
   - 能说出 LiteLLM 控制台里唯一合理改的配置是什么、为什么一个团队要一个 Team
   - 能说出 Agent UI、Terminal、Desktop 三个入口各管什么，以及为什么 Terminal 是唯一正式的 shell 入口
   - 能说出五类日志各落在哪、为什么串不起来，以及按轮次追溯要补什么；能列出两种形态都缺的四块治理
+  - 能说出 403、refused to connect、connection timeout 各对应入口的哪一道处理，看报错就能定位
+  - 能按"换环境会不会变、变了查不查得到"把部署配置分三类，并说出交接前的三项检查与 Helm 卡在 pending-upgrade 时怎么解锁
 
 ## 第 13 站 · 汇合：自建 agent platform 还是用托管产品
 
@@ -184,6 +189,10 @@ signals:
 ## 前沿站 · 正在发生的变化
 
 这一站放刚发生、还没完全进 wiki 的变化。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
+
+- **Foundry hosted agent 可以跑在自己的 AKS 上，AKS 出了 agent 沙箱与 Pod 快照扩展**（2026-W47 周报，Ignite，预览）：AKS AI Manager for Foundry 把 hosted agent 的 runtime 部署到客户已有集群、每会话一个 Kata Pod；Agent Sandbox extension for AKS 基于开源 agent-sandbox 管创建、生命周期与预热池；Pod Snapshot 扩展把内存与进程状态存到 Blob → 影响第 3、4 站（自建的那一套被做成了扩展）与第 13 站（"自建还是托管"多了"托管控制面 + 自有集群"这个中间选项，系列 10 的前提不再完全成立），值得重走一遍第 13 站的判断
+- **Hosted agent 出站控制 GA、内存快照预览**（2026-W47）：规则在沙箱外执行、可先审计再生成允许清单 → 影响第 7 站：和本路径"凭据与出站在沙箱外"的做法同构；[[foundry-agent-type-selection]] 的冷启动描述要更新
+- **常驻 agent 被拆成五个原语**（2026-W47，Anthropic 架构指南）：事件收件箱、定时器、记忆、权限、发件箱 → 影响第 11 站：可以按五原语对照常驻实例缺了哪一块
 
 - **Agent runtime 开始标准化**（知识差距 2026-11-16，高优先级）：Agent Substrate 1.0 在 GKE 上 GA、捐给 CNCF，kagent 1.0 改建在它上面 → 影响第 4 站（Substrate 不再只能做 PoC，但挂起会断开所有连接）、第 13 站（kagent 作为自建组件的形态变了）
 - **Agent 委托与越权成为独立方向**（知识差距 2026-11-16，高优先级）：A2A 多跳委托中的身份丢失、逐跳收窄权限、agent 在允许动作内越权 → 影响第 8、9、10 站（三方交集管资源动作，管不到"允许的动作里做了用户没授权的事"；"只允许一跳"的理由需要补）
@@ -202,4 +211,5 @@ signals:
 - **方法页缺失**：最小控制面、自建 agent platform 的组件组合，目前都以 Claim 形式散在 [[agent-session-control-plane]] 与 [[agent-platform]] 里，适合整理成方法页
 - **决策页的待验证项**：[[resident-vs-session-agent-runtime]] 是"部分验证"——常驻实例只做了渲染与部署核对，没有负载与故障实验；成本盈亏点、HOME 盘故障释放、轮次 ID 端到端追溯都还没测；客户场景识别信号未经真实场景验证
 - **证据不足**：agent 网关与企业目录在系列里都没有实践；Substrate 在 AKS 上未实测；模型网关 + LLM proxy 两跳未实测；Nacos 双向同步未实测（见 2026-11-16 知识差距报告的实验清单）
-- **stale**：本路径涉及的页 stale 很少（[[agent-harness]] 1 条、[[entra-agent-id]] 1 条），不需要先跑 `/revalidate`
+- **stale**：本路径涉及的页 stale 很少（见各站 ⚠️ 行），不需要先跑 `/revalidate`
+- **系列 14 只并进了第 12 站**：交接与部署目前没有独立的方法页（`deployment-config-tiering` HOLD，等第二篇来源）
