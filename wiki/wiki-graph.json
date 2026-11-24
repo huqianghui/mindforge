@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-11-24",
   "stats": {
-    "nodes": 176,
-    "links": 780,
+    "nodes": 177,
+    "links": 786,
     "orphan_links_removed": 2,
-    "claims": 1085,
+    "claims": 1109,
     "categories": 14
   },
   "nodes": [
@@ -1740,8 +1740,8 @@
       "category": "Context 与工具集成",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.73,
+      "claims_count": 4,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "三大搜索工具互补而非可替代",
@@ -1775,6 +1775,17 @@
           "evidence": "真正的搜索能力是 Exa 专有的云端 crawler + index + embedding + ranking 系统。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 待定——依据：本轮未查到 Exa 官方 MCP 实现说明（Tavily 限流）"
+        },
+        {
+          "statement": "agent 的外部工具栈可以分四层——检索层找最相关的信息、访问层去具体平台拿原始数据、描述层让 agent 知道工具怎么用、执行层跑命令；按\"要什么\"选层，而不是在 MCP 与 CLI 之间二选一",
+          "source": "Agent-Reach与OpenCLI",
+          "first_seen": "2026-03-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "检索层是 Exa、Tavily、Context7 这类搜索服务，返回搜索结果与知识片段；访问层是 Agent-Reach 这类抓取编排（把 yt-dlp、gh、社媒抓取、网页阅读等开源工具拼成一个能力包，不需要付费 API key），返回视频、帖子、代码等原始数据；描述层是 OpenCLI 这类 CLI 结构化描述，返回工具 schema 与参数定义；执行层是 yt-dlp、gh、az、kubectl 等命令本身。选择框架：要\"找到最相关的信息\"用检索服务，要\"去某个平台抓数据\"用访问层，要\"让 agent 理解我的命令行工具\"用描述层，要\"高效执行本地命令\"直接调 CLI；混合场景是检索加抓取分层组合。描述层普及后，访问层的编排框架就不必为每个工具手写调用适配，可以从标准描述自动生成调用。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -2457,6 +2468,70 @@
           "confidence": 0.6,
           "status": "active",
           "evidence": "论文的警告是：AI 越强、生成的代码越复杂，人理解代码的能力却在变弱，监督就越难，人就是最后那道护栏。它暗含的假设是\"护栏等于人亲自读代码\"。护栏可以分四层：L1 自动护栏（CI 的 lint、测试、类型检查），L2 AI 护栏（AI 评审、不同模型互相挑错），L3 流程护栏（TDD、Spec 对照验证），L4 人类护栏（架构审查、安全关键路径的人工审计）；人只需守住 L4。用 AI 审 AI 有三个条件：要求解释而不只给结论（高层总结、架构拆解、原理）、引入不同模型的辩论、人保留最终裁判权。论文的结论仍直接有效的四种情况：新人培训（先建立概念与调试基础，不要过早只靠 prompt 编程）、进入全新技术领域（用概念查询而非委托）、医疗金融航空等安全关键系统（L4 必须足够厚）、AI 给经营或战略建议时（低绩效者盲信反而恶化）。",
+          "evidence_type": "理论",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "ai-writing-fingerprint",
+      "type": "concept",
+      "title": "AI Writing Fingerprint（AI 味）",
+      "summary": "\"AI 味\"是读者对 LLM 生成文本的直觉识别：读起来太顺、太正确、像模板。它不是玄学，而是一组可以辨识和描述的语言指纹，分内容、语言、风格、交流四类。来源也说得清：模型偏好统计上最可能的表达、RLHF 把语态收敛成\"完美学生\"、产品的系统提示把输出锚定在结构化格式上、保守的采样参数挑走了低概率但精彩的表达。去除可以在提示、后处理、agent、模型四层做，其中 agent 层的 Writer → Humanizer → Reviewer 是 [[generation-evaluation-separation]] 在文本生成域的实例。与\"AI 味\"相对的是\"人味\"：意料之外的妥帖比喻、不合语法却恰到好处的表达、带着个人记忆的细节。",
+      "tags": [
+        "wiki",
+        "concept",
+        "writing",
+        "communication",
+        "llm"
+      ],
+      "category": "沟通与表达",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 4,
+      "avg_confidence": 0.59,
+      "claims": [
+        {
+          "statement": "AI 味是一组可辨识的语言指纹，分内容、语言、风格、交流四类；中文有自己的一套信号，检测器对中文的准确率也更低",
+          "source": "去除AI味",
+          "first_seen": "2026-06-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "按 Humanizer 与 Humanizer-zh 两个项目的归纳，共 24~30 种模式。内容层：意义膨胀（动辄\"深远影响\"\"里程碑\"）、浅层堆砌动作回避论证、\"从 X 到 Y\"但两端无关、先列困难再\"然而\"转折的固定公式、\"研究表明\"却不给来源。语言层：高频词（英文 delve、tapestry、testament、landscape；中文赋能、底层逻辑、颗粒度、打通闭环、降维打击）、\"不是 X 而是 Y\"的过度对举、三连排比、为避免重复刻意换同义词、被动语态与无主语片段。风格层：破折号过多、粗体斜体装饰、标题式大写、装饰性 emoji、过于工整的列表。交流层：讨好（\"希望对你有帮助\"\"这是个好问题\"）、过度对冲、每段都要\"综上所述\"、冗余过渡词（\"值得注意的是\"）。中英差异：英文偏五段式作文与殷勤的乐观，中文偏\"总-分-总\"八股与过度客气加空洞正能量；文中引用的数据是检测器对中文的准确率 70%~85%、英文 85%~95%。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "AI 味有四个来源——条件概率偏好最常见的表达、RLHF 把语态收敛成\"完美学生\"、系统提示把输出锚定在结构化格式、保守采样挑走了低概率但精彩的表达",
+          "source": "去除AI味",
+          "first_seen": "2026-06-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "一是模型本质是给定前文预测下一个 token 的条件概率，天然偏好统计上最可能的输出，大量人类文本用\"值得注意的是\"引出重点，模型就学会并过度泛化。二是 RLHF 的标注员倾向给\"全面、平衡、礼貌\"的回答高分，模型收敛到永远两面说理、永远留余地、永远积极收尾。三是多数产品的系统提示隐含要求结构化输出（标题、列表、粗体），这部分格式被读者感知为 AI 味；模型不是不能写散文，而是被约束在\"信息密度最大化\"的表达里。四是保守的 temperature 与 top-p 让高概率 token 反复被选中，缺少一个出人意料的比喻或一句方言俚语这类低概率表达。这四条是机制解释，不是实验结论。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "去 AI 味分四层做——提示层注入人格与禁用词、后处理按\"检测 → 改写 → 审计\"三遍扫、agent 层把写作与去痕和评审分开、模型层改训练数据与采样；最有效的做法仍是让 AI 搭脚手架、核心表达自己写",
+          "source": "去除AI味",
+          "first_seen": "2026-06-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "提示层：给个人写作样本让模型模仿、明确禁止特定词汇与句式、给正反样例；或让模型出几版不指定方向的初稿，人挑最不像 AI 的片段拼接，再逐句改写被标记的句子。后处理：Humanizer-zh 识别 24 种模式、三遍扫描，可用用户写作样本做\"语音校准\"；qu-ai-wei 是 51 条改写规则加 6 条打磨动作，带语体识别，可作为 coding agent 的 skill 使用；人工\"破坏\"包括不规则标点、埋入个人记忆细节、保留口语和不完美语法。agent 层：Writer 出初稿、Humanizer 去痕、Reviewer 做最终检测，评审独立于生成。模型层：微调纳入日记、聊天、方言文学等非标准文本，降低 RLHF 对\"完美回答\"的奖励，动态调高创作场景的 temperature；水印技术与此目标相矛盾，因为水印要求输出在统计上可追踪。给写作者的建议：积累十篇以上自己满意的文章作风格参照；AI 用来查资料、列框架，核心表达自己写；在 AI 初稿上做破坏性编辑（打乱顺序、删过渡句、加入亲身经历）。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "检测与反检测会一直对抗下去，判断标准会从\"文本像不像人写的\"转向\"写作过程像不像人做的\"；最终的区分不在文本，而在真诚与责任归属",
+          "source": "去除AI味",
+          "first_seen": "2026-06-03",
+          "last_updated": "2026-11-24",
+          "confidence": 0.5,
+          "status": "active",
+          "evidence": "演进脉络：统计特征分类器对原始输出，微调 BERT 类检测器对提示工程去痕，多模型集成加水印对专用 Humanizer 工具，再往后是行为模式分析与过程验证对个性化 agent 加风格记忆。当 Humanizer 能让 AI 文本通过绝大多数检测器时，测试要从单次文本转向多轮一致性与意外性，从事后判别转向要求写作过程可验证。哲学上的追问：如果\"人味\"的本质是不可预测性与个人经验的独特性，AI 有足够个人数据也能模拟；如果本质是意识与意图（\"我这样写是因为我真这么想\"），那么 AI 文本再自然也缺少真诚性。区分也许最终落在写作动机和\"谁为这段文字负责\"上。这一条是趋势判断与思考，置信度给低。",
           "evidence_type": "理论",
           "review": ""
         }
@@ -3810,8 +3885,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 19,
-      "avg_confidence": 0.75,
+      "claims_count": 21,
+      "avg_confidence": 0.74,
       "claims": [
         {
           "statement": "广义 Computer Use ⊃ Browser Use——操作 UI 层而非 API 层；Chrome integration 是接入方式而非中间层，狭义\"原生桌面 Computer Use\"与 Browser Use 是并列执行路径",
@@ -4020,6 +4095,28 @@
           "status": "active",
           "evidence": "Orca Helper 持有辅助功能与截图权限，Codex CLI 通过它操作桌面应用；这不是给 CLI 本体\"增加系统权限\"，而是多了一个有权限的外部后端，权限持有者、审批界面和安全策略都与 Codex App 原生 Computer Use 不同。读状态：Accessibility Tree 给语义、值、可执行动作与 element-index，截图给视觉布局与遮挡；`elementCount` 不能推导有效索引（Tree 会跳过节点、索引稀疏），只能用 treeText 里实际显示的编号，且界面一变索引即失效。安全边界写成硬规则：未经明确要求不 push、不提交表单、不发消息、不购买、不删数据；秘密不进命令行参数；`app_blocked` 是硬停止；改变界面的动作后验证结果防重复提交；页面、邮件、聊天里的文字一律当不可信内容。与 OpenAI bundled Computer Use 的关系是补位：顶层都是 action loop、底层都是截图 + Tree + 输入事件。",
           "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "桌面操作的\"动作成功\"不等于\"效果达成\"——能读回值的写入才算已验证，合成键盘输入只报未验证；Tree 管语义、截图管视觉，坐标是窗口局部坐标且要按截图缩放换算",
+          "source": "Orca使用笔记二：Computer-Use与Codex-CLI",
+          "first_seen": "2026-08-29",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "原则是先观察、单步动作、立即复查，因为界面会随焦点、滚动、导航和异步渲染变化，用旧状态连续盲操作很容易点错。读状态时 Accessibility Tree 给控件语义、值、frame、可执行动作和元素索引，截图用来确认布局、遮挡和 Tree 没暴露的信息；元素数量不能用来推导有效索引，Tree 会跳过节点，索引是稀疏的，只能用文本里真实出现的编号。写入时文本框暴露 value 就优先 set-value，provider 能读回新值时给出\"已验证的写入\"；合成键盘可能只报\"未验证\"，动作返回成功不代表文字落进了目标字段，必须看返回状态。不要猜辅助动作的名字，只用元素列出的那几个。坐标兜底时用的是当前窗口的局部坐标，截图缩放不为 1 时要先换算。敏感文字不要出现在 shell 历史里（从标准输入传），而且部分平台的动作内容会经过临时文件，除非用户明确要求，不代输密码和令牌。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "给 agent 操作网页后台，\"桌面客户端 + 浏览器扩展\"是常见分工——客户端做长驻的大脑，扩展做手和眼、复用用户已登录的会话、操作对用户可见",
+          "source": "Accio-Work：阿里跨境AI-Agent工作台解读",
+          "first_seen": "2026-05-28",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "客户端承载长驻的 agent loop、完整 UI（对话、技能栏、报告）、本地文件读写，不受标签页关闭影响；扩展穿透浏览器沙箱读写页面 DOM，复用用户已登录的会话（不需要 API 凭证），操作过程用户看得见。替代方案的问题：纯 Web 应用不能长驻、不能读本地文件；纯扩展 UI 空间有限、MV3 后台脚本有生命周期限制，撑不住复杂多轮对话；纯 API 要求平台开放完整接口，卖家后台没有；无头浏览器用户看不到过程、资源开销大、容易被反爬识别。这是 [[computer-use]] 里 Browser Use 路线在产品上的一种落法：执行位置贴近用户的浏览器状态，所以能力只能放在客户端。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -4654,7 +4751,7 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
+      "claims_count": 12,
       "avg_confidence": 0.74,
       "claims": [
         {
@@ -4765,6 +4862,28 @@
           "status": "active",
           "evidence": "`…/apps/<app>/#/doc/<路径>` 与 `?doc=<路径>` 两种都打开首页：加载器 iframe 的 src 只有 `…/_platform/app/loader?ms_embedderOrigin=…`，应用读到的 `location.hash` 为空，`getContext()` 也不带外层参数；应用在跨域子 iframe 里读不到父页面地址——这是隔离设计的一部分。应用内跳转不受影响（改的是应用自己 iframe 的 hash）。后果：对外链接（邮件、Teams、agent 回答的\"来源\"）一律指向公开原文；\"分享应用里的某一页\"做不到；需要可分享单页链接的场景，静态站或 SharePoint 更合适。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "创作入口再多，产物都是同一种静态 SPA、跑在同一个宿主里——Copilot Studio 生成的应用和手写的 React 应用在能力和限制上没有本质差别；\"看起来像静态网站\"是因为托管的确实是静态资源，只是前面多了一层身份与治理壳",
+          "source": "Copilot-Managed-Runtime系列01：托管环境对比与选型",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-11-24",
+          "confidence": 0.75,
+          "status": "active",
+          "evidence": "运行中的应用拆成三块：作者的 TypeScript / JavaScript SPA（前提条件，不支持服务端渲染和任意后端）、平台提供的 SDK（暴露宿主 API，添加 Connector 时生成类型和服务代码）、平台负责的宿主（Entra 认证、加载应用、条件访问、DLP、分享限制）。入口按角色分：最终用户在 managedapps 门户打开有权限的应用，maker 在 Copilot Studio 用自然语言生成，业务用户在 Cowork 或 Code 对话里让 coding agent 生成，专业开发者用 CLI 加 SDK，管理员在 M365 管理中心看清单与健康。拆开一个已上线的分析看板：两层 iframe，内层是约 2 MB 的 ES module 加一个 CSS bundle，典型的 Vite 打包 React 应用，bundle 里能看到应用自选的图表与路由库；部分指标文本直接出现在 bundle 里，说明至少一部分数据是随发布携带的快照，只在重新部署后更新——要实时数据就走 Connector 并在页面上标明数据时间。同类看板完全能复现，难点不在托管，而在指标语义、数据准备和页面设计。另外，Preview 地址每次 build 更新、只给有仓库写权限的开发者看，Live 地址只在 deploy 时更新、是固定快照；分享分 play 与 edit 两级、互相独立。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "SharePoint 和 Managed Runtime 不在同一层——SharePoint 既是内容平台，也是 Managed Runtime 的数据源；能加 SharePoint Connector 不等于用户能读任意站点",
+          "source": "Copilot-Managed-Runtime系列01：托管环境对比与选型",
+          "first_seen": "2026-10-26",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "作为内容平台，SharePoint 管文档库、新闻、部门门户、列表、搜索、简单页面和表单，是 Teams 与 Viva 的入口，但不能当任意 React、Three.js、WebGL 应用的运行时，复杂前端要 SPFx 或嵌入外部应用；作为 Managed Runtime 的数据源，它经 SharePoint Connector 提供站点、列表、文档，CLI 引导选连接、站点和列表并生成类型代码。连接身份要对目标站点有权限，Connector 也不能被 DLP 或 ACP 拦掉，所以 Connector 权限受连接身份、站点权限、DLP 与条件访问共同约束。职责划分：SharePoint 管内容、文件、列表与站点权限，Managed Runtime 管应用入口、登录、分享与 Connector 治理，Entra 管身份与条件访问，Azure 管复杂 API、计算、索引、数据库、容器和后台作业。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -5706,8 +5825,8 @@
       "category": "数据本体论（Ontology）",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 10,
-      "avg_confidence": 0.72,
+      "claims_count": 13,
+      "avg_confidence": 0.7,
       "claims": [
         {
           "statement": "企业数据物理统一但语义碎片化",
@@ -5816,6 +5935,39 @@
           "confidence": 0.5,
           "status": "active",
           "evidence": "按 2026-03 的对照：Palantir 读写统一（Action Type），AIP 深度集成，可写回操作系统，平台封闭、通过 OSDK 对外，客户偏政府、国防和大型企业；Fabric IQ 偏重为分析和 agent 提供语义，Copilot 与 agent 通过本体取上下文，写回能力较弱（Operations Agent 当时在预览），生态开放、与 Power BI 和 Notebook 集成，面向更广的企业用户。这是产品对照，Fabric IQ 的动作能力在之后的版本里可能已经变化，引用前按官方文档复核。",
+          "evidence_type": "产品与服务",
+          "review": ""
+        },
+        {
+          "statement": "本体、DDD、Data Mesh 回答的是三个不同问题——DDD 教你怎么正确描述一个领域，Data Mesh 决定谁拥有数据、谁对质量负责，本体管数据如何被理解和操作；三者互补而不是替代",
+          "source": "Palantir数据本体论：从概念到产品",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "DDD 是方法论、聚焦领域模型、没有行动能力、要工程团队自己实现，产出是领域模型文档和代码结构；Data Mesh 是去中心化架构，领域团队各自拥有数据产品、联邦治理、领域自治，适合大型分布式组织；Palantir 本体是集中式语义层加操作闭环、统一模型、对象级权限的集中治理，适合需要全局视图和统一决策的组织。一句话类比：DDD 是设计图纸的思想，Data Mesh 是团队分工与治理的组织架构，本体是把\"数据 → 语义 → 决策 → 行动\"全链路放在一个平台上的集中式引擎。上面\"DDD 是蓝图思维\"一条只比了前两者。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "从数据到业务的落地是三步——把表重塑成对象与链接、让全组织对同一个对象说同一种语言、定义可执行的操作形成\"决策再录入\"的闭环；统一语言靠数据、逻辑、操作三层的活模型，而不是一份数据字典",
+          "source": "Palantir数据本体论：从概念到产品",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "第一步把 `tbl_customer`、`tbl_order` 这类表和 JOIN 换成 Customer、Order 对象和它们之间的语义关系，产出一张数据地图；第二步让销售、财务、客服说的\"客户\"指向同一个对象、同一套属性和关系——数据字典只是名词解释，本体还定义了关系、当前状态和行为模式，是数字孪生；第三步通过动作类型让人和 AI 能直接执行操作（调库存、批工单、重新分配资源），结果实时写回本体，形成\"决策 → 执行 → 数据更新 → 新分析 → 新决策\"的闭环。统一语言的实现依赖三层：数据层整合清洗并映射为对象，逻辑层定义规则与计算，操作层连回业务系统。逻辑层再按粒度分三档：定义层面的小模型（订单金额 = 单价 × 数量）、关系层面的中模型（供应商评级低于阈值时关联采购单要额外审批）、分析判断层面的大模型（按历史预测需求波动、自动调安全库存）。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "本体不是买来就能用的产品，而是要深度实施的方案——派驻前线部署工程师手工梳理每个对象类型和关系，AI 能辅助但业务理解靠人；全组织共享后还要解决变更冲突、版本发布与权限隔离",
+          "source": "Palantir数据本体论：从概念到产品",
+          "first_seen": "2026-03-18",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "把一个组织的业务完整映射成本体是极其复杂的工程。Palantir 的做法是向客户派驻 FDE，深入业务流程、手工建模；AIP 推出后部分建模可以由 AI 辅助，但核心的业务理解和决策仍依赖人类专家——这种重度定制化本身就是它的壁垒之一。本体被全组织共享以后的挑战是灵活性与版本冲突，对应手段是 AI 实时监测本体变更并预警冲突、自研的部署与版本管理平台（版本控制、灰度、回滚）、军工级的权限与密级隔离。这一条和 [[forward-deployed-engineer]] 的\"FDE 是外部调节器\"互相印证：本体越深，越需要持续的人在客户现场调节。",
           "evidence_type": "产品与服务",
           "review": ""
         }
@@ -9063,8 +9215,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.63,
+      "claims_count": 8,
+      "avg_confidence": 0.61,
       "claims": [
         {
           "statement": "AI 重新定义了 Cloud Solution Architect 的角色边界",
@@ -9119,6 +9271,39 @@
           "status": "active",
           "evidence": "引子文章的判据：大部分公司做不了 AI Native，是因为生意本身撑不起四个结构性特征，毛利率是诚实的指标（> 60% 大概率能做到、30~60% 只能局部、< 20% 几乎不可能）。高端技术服务团队已具备前三个（人才密度、短决策链、平台给的试错空间），缺的是第四个——协调开销。四层递进：AI Native Person（认知层，用 AI 加速思考而非替代思考）→ Vibe Coding（文化层，敢用敢试）→ Harness Engineering（工程层，输出可靠可控）→ One Person Team（组织层，每人独立闭环）。乘法关系：认知层为零，后面再好也是零；工程层缺失，认知再强也扛不住级联失败。观点文章，无量化验证。",
           "evidence_type": "理论（长效）",
+          "review": ""
+        },
+        {
+          "statement": "AI Native Team 的前提是每个成员先成为 AI Native Person——用 AI 学习而不是用 AI 免学；三个特征是保持认知主权、把学到的东西编译沉淀、持续扩展能力边界；个人这一项为零，后面的工程体系和组织模式都是零",
+          "source": "构建AI-Native-CSU-Team",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Mark Cuban 把 AI 用户分成两类：用 AI 好让自己不用学，和用 AI 好让自己什么都能学。前者是\"喝醉的实习生\"模式（复制需求、AI 吐代码、粘贴交付），思维肌肉萎缩；后者是认知放大器模式（用 AI 理解全貌、自己做判断）。三个特征：认知主权——先有判断，AI 帮着验证和扩展，\"AI 不知道它行动的后果\"，理解后果是人的能力，对架构师就是先形成架构判断再让 AI 补盲区；知识编译——学到的不沉淀就只是信息消费，AI 是编译器不是大脑（见 [[personal-knowledge-compiler]]）；边界扩展——用 AI 去碰以前没精力碰的领域。为什么是前提：成员处在\"实习生\"模式时，给他 harness 工具他会机械跑流程而不理解约束的意图，给他一人团队的权限他会大量产出低质量代码而不自知，agent 的错误输出也没人识别。所以 AI Native Team = AI Native Persons × Harness Engineering × One Person Team 模式。与 [[ai-skill-formation]] 的实验结论一致：被动依赖会让技能形成下降。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "推进团队 AI 化要\"不教工具、教范式\"——在真实交付里把约束工程化，每做一个项目约束系统就积累一层；交付物从代码扩展到客户能自己运行的 harness",
+          "source": "构建AI-Native-CSU-Team",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "\"会用工具\"和\"掌握 AI Native 工作方式\"之间的鸿沟靠一两次培训跨不过去；按 [[ai-adoption-six-step-evolution]] 的六步，多数人卡在第一步到第二步之间：会用聊天问问题，但不会把调研、协作完成一个完整任务委托给 agent。做法：不单独抽时间培训，而是在项目交付中把架构决策和编码规范写成 agent 可读的约束文件（AGENTS.md、rules），把反复犯的错误编码成 hooks 自动拦截，把重复工作流封装成 skill，用 CI 与端到端测试做最终验证——交付本身就是在建设 harness。面向客户：帮客户建立 agent 约束体系、把架构约束写成机器可读的规则而不是文档、提供 skill 与工作流模板，角色从\"代客户写代码\"变成\"帮客户建设驾驭 AI 的能力\"。团队内用定期的 Vibe Coding 活动当文化信号：展示极少人加 agent 完成完整交付的真实案例、分享 agent 犯的错误和修法、共建共享的 harness 库。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "对技术服务团队，\"毛利率\"实际是人才单位时间的产出价值——AI 化是把现有架构师升级的内生进化，不是外部抢人才的军备竞赛；落地先从高频、模式化的交付环节突破",
+          "source": "构建AI-Native-CSU-Team",
+          "first_seen": "2026-05-11",
+          "last_updated": "2026-11-24",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "回应\"利润创造组织变革的可能性、毛利率决定能否 AI Native\"的观点：这个判断对企业整体成立，但技术服务团队的人才本身就是产品，AI 提升单人产出，相当于单位成本下降、\"毛利率\"上升，AI 让人才增值而不是贬值；团队也不在市场上和模型公司抢人，而是把现有架构师升级为 AI 增强的架构师。原观点的提醒仍然有用：不要追求全面 AI 化的幻想，先从高频、模式化的交付环节突破；有限的精力放在约束系统建设上，一套好的 harness 比十次培训有价值；承认渐进，按六步走比一步到位现实。四个结构性条件里，服务团队天然具备人才密度、短决策链和平台容错，缺的是低协调开销，瓶颈在交付之前——与客户共创需求、把需求变成可落地方案要经过多层传递。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -11021,8 +11206,8 @@
       "category": "知识管理与工具",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.71,
+      "claims_count": 10,
+      "avg_confidence": 0.69,
       "claims": [
         {
           "statement": "RTK 通过 CLI 代理实现透明 token 压缩",
@@ -11099,6 +11284,39 @@
           "status": "active",
           "evidence": "通用过滤器覆盖常见命令、节省 60~90%，但有四个盲区：未覆盖的命令（每天跑几十次的 `terraform plan` 全量透传）、对个人过于保守的配置（`head_lines=50` 而输出常年不到 25 行）、反复出现的 CLI 拼写错误、文本过滤器压不动的结构化 JSON 输出。`rtk optimize` 用四个分析器扫会话历史，生成过滤器与配置建议并应用；`rtk verify` 校验生成的过滤器、`rtk gain` 度量实际节省。这是把\"工具层的调优\"做成一个有度量的反馈闭环（见 [[feedback-loop]]），而不是靠人去猜哪些命令值得压。文章描述的是设计与实现，节省数字为项目自述。",
           "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "CLI 输出是为人设计的，对 LLM 大部分是噪声——按命令写专用过滤器比通用压缩有效，测试类输出只在失败时展开，因为通过的用例对下一步决策没有边际信息",
+          "source": "RTK系列01：Rust-Token-Killer简介",
+          "first_seen": "2026-04-14",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "人需要、LLM 不需要的东西：ANSI 颜色、\"use git add…\"这类操作提示、进度条、详细的权限位与时间戳、每一个通过的测试用例。过滤器做的是\"人类可读格式\"到\"LLM 可用格式\"的转换，两种格式信息密度差距大，所以压缩率高。它不做通用文本压缩，而是给 100 多种命令各写领域过滤器，类似专用编解码之于 gzip：`git status` 的过滤器知道\"Changes not staged\"是噪声，`git diff` 的过滤器知道 hunk header 有用。测试输出用\"失败才展开\"：262 个用例全部通过时 `cargo test` 从 4823 token 降到 11 token。项目自述的 2900 多条真实命令统计里，30 分钟内常见命令合计从约 9.9 万 token 降到约 2.3 万（−77%）。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "\"为 LLM 设计输出\"是新的基础设施需求——代理层是命令行工具原生支持之前的过渡方案；这一层对启动延迟和体积要求苛刻，更适合系统语言；优化之前先要能度量",
+          "source": "RTK系列01：Rust-Token-Killer简介",
+          "first_seen": "2026-04-14",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "三个推断：一是随着 LLM 成为命令行输出的主要消费者，工具会需要 `--llm` 或紧凑输出模式、agent 框架会内置输出压缩中间件，透明代理（agent 以为自己在跑 `git status`，实际经过改写，零侵入、可卸载）是过渡期的桥梁；二是作为每条命令的代理，启动延迟要在 10 毫秒以内、单一二进制、内存几兆，所以 agent 基础设施层倾向用 Rust、Go 这类系统语言，而 agent 逻辑层不必；三是内置 `gain` 实时统计每条命令省了多少，看不见的浪费不会被优化。前两条是趋势判断，没有验证；这也是 [[context-engineering]] 在命令行这一层的做法——提高每个 token 的信息密度，而不是塞更多信息。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "过滤器可以从会话里的输出样本自动推断——命中率超过六成的噪声模式剔除、八成以上短输出里出现的成功短语生成短路规则、结构化 JSON 输出排除在外，生成后先过语法校验，失败就退回最小过滤器",
+          "source": "RTK系列03：个性化优化引擎",
+          "first_seen": "2026-04-15",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "四个分析器各管一类盲区。未覆盖命令检测：拆开复合命令，统计没有过滤器的高频命令，按平均输出长度和每月次数估算可省的 token，影响分数取 `sqrt(次数 × 平均输出字符 / 1000)`、上限 100。过滤器自动生成：对样本统计空行、时间戳、进度条、分隔线四类噪声的命中率，超过 60% 的加入剔除规则；在 80% 以上短输出里出现的通用短语（success、ok、done、0 errors）生成成功短路规则，这是 90% 以上压缩率的关键；渲染出 TOML 加内联测试后做语法解析，解析失败退回最小过滤器。配置调优：平均节省不到 30% 的命令里，带 `--json` 一类结构化输出的建议直接排除（文本过滤压不动），其余建议检查规则；按 30 天输出百分位，平均不到 50 token 却设了 500 字符透传上限的，建议调低。CLI 纠错：从会话里找反复出现的拼写错误生成纠正规则。这些是设计与实现描述，效果数字未实测。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -11247,8 +11465,8 @@
       "category": "Claude Code 与扩展生态",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.7,
+      "claims_count": 5,
+      "avg_confidence": 0.66,
       "claims": [
         {
           "statement": "融合 Skill 的正确架构是编排层而非合并层",
@@ -11282,6 +11500,28 @@
           "evidence": "同一份 SKILL.md 不仅能在 Claude Code 中运行，也可在 Chat API、OpenAI Codex、Gemini CLI 等其他 AI Agent 中使用。",
           "evidence_type": "产品与服务",
           "review": "2026-11-07 确认——依据：Claude Code 官方文档 Skills https://code.claude.com/docs/en/skills 引用 agentskills.io 跨产品通用技能规范；Superpowers 发布说明提到 Agentskills compliance https://github.com/obra/superpowers/blob/main/RELEASE-NOTES.md"
+        },
+        {
+          "statement": "PPT 生成 skill 从单一编排层演进成按规模调度的 sub-agent 架构——小于 5 页编排器自己做完，5~10 页把逐页构建和评审修复交给 sub-agent，10 页以上编排器只做协调、构建并行；风格先锁进一份契约，评审独立且最多两轮",
+          "source": "用Skill-Creator打造CSA演示工具",
+          "first_seen": "2026-03-23",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "初版是一个编排层加参考文件，eval 和实际使用发现 10 页以上的 deck 单一编排器效率不足。演进后是 7 个 sub-skill（智能编排、Azure 架构图、手绘图、HTML 幻灯片、OOXML 级 PPT、模板填充、基于文件的规划）和 6 个按需调度的 sub-agent：调研、出图、逐页构建（可并行）、合并、7 个维度的评审、按评审报告定向修复。流程是规划（每页或每章一个任务）→ 定风格（颜色、字体、版式写进 style contract）→ 执行（调研、出图、构建尽量并行）→ 合并 → 评审与修复。三种编排模式覆盖常见场景：先出图再组装（客户架构方案）、先调研再组织叙事再出图组装（内部技术分享）、分析模板占位符后填充（活动或公司品牌模板）。这个 skill 是 [[presentation-preparation]] 讨论流程的下游：内容和结构想清楚之后，才交给它生成幻灯片。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "多格式产出时，中间格式按每一页的内容选，不强行匹配最终格式，再由合并步骤统一；所有中间产物写到磁盘，组装前可以随时检查和改",
+          "source": "用Skill-Creator打造CSA演示工具",
+          "first_seen": "2026-03-23",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "简单要点、英文内容、纯图表页直接生成 pptx，没有转换开销；中文为主的页用 HTML（中日韩字体渲染更好），带语法高亮的代码块和复杂多列布局也用 HTML（原生代码渲染、CSS 布局灵活）；合并步骤负责把混合格式归一化到目标格式。每个演示文稿在输出目录下建一个工作区：任务计划（带勾选框，可以调顺序）、进度日志、风格契约（改它就能改外观）、调研发现（建页前先审）、图表清单与图片（可以预览或换成自己的）。中间产物落盘的价值是人能在最终组装前介入，而不是只拿到一个成品再整体返工。",
+          "evidence_type": "实测经验",
+          "review": ""
         }
       ]
     },
@@ -11301,8 +11541,8 @@
       "category": "Claude Code 与扩展生态",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.42,
+      "claims_count": 5,
+      "avg_confidence": 0.48,
       "claims": [
         {
           "statement": "ClawHub 是 OpenClaw 的 Skill 注册中心——规模数千至上万，且有恶意 skill 风险",
@@ -11335,6 +11575,28 @@
           "status": "active",
           "evidence": "三层：表现层（skill 发现、启用、结果展示）、编排层（agent loop 与 skill 路由调度）、执行层（API、网页自动化、数据查询）。关键设计取舍：skill 注册静态配置还是经 MCP 动态发现、调度交给模型还是规则路由。同范式产品（Claude Desktop、WorkBuddy）已具备同等架构能力，所以差异落在数据：市场需求分析靠平台交易与买家画像、定价建议靠历史成交与竞品、曝光优化靠内部排序规则——外部 agent 即使能操作页面也只能看到单个店铺的数据。推论：企业在 M365 / D365 上做同类方案，价值要落在自有业务数据与流程的接入上，而不是再造一个 skill 框架。产品分析，基于公开信息。",
           "evidence_type": "产品与服务",
+          "review": ""
+        },
+        {
+          "statement": "企业 skill hub 适合\"显式启用、隐式调用\"——用户决定 agent 能干什么、agent 决定当前该用哪个；skill 按业务场景而不是按 API 封装，执行可以是任意自动化流程",
+          "source": "Accio-Work：阿里跨境AI-Agent工作台解读",
+          "first_seen": "2026-05-28",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "Accio Work 的技能栏里用户点选启用，启用后 agent 在对话中自动调用：用户控制边界、agent 控制调度，避免 skill 爆炸。每个 skill 本质是\"LLM 推理模板 + 浏览器操作序列 + 平台数据接口\"，粒度是市场调研、客户开发这类业务场景。几个设计取舍：注册方式静态配置简单、动态发现（MCP）能热插拔但复杂；调度靠 LLM 灵活但不可预测、靠规则可控但僵硬；执行隔离安全但贵；权限选\"启用即授权\"降低交互摩擦。和 MCP 模式比：skill 由平台官方统一提供、客户端预装、在扩展加客户端里执行、适合封闭生态、用户不能自定义；MCP 是开放生态、标准 JSON-RPC、独立进程、开发者可以自建。用户能在浏览器里看到 agent 在做什么，是信任的基础。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "在通用底座上做行业方案，没有独占数据时护城河只剩一个——行业 know-how 封装进 skill 的深度；\"能连上业务系统\"不是价值，\"连上之后自动做出有用的事\"才是",
+          "source": "Accio-Work：阿里跨境AI-Agent工作台解读",
+          "first_seen": "2026-05-28",
+          "last_updated": "2026-11-24",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "既然 Claude Desktop 加自定义 MCP 加 skill 在架构上能替代任何封闭 skill hub，就要回答\"客户自己也能接 MCP，为什么要你的方案\"。方案提供商的价值：开箱即用的行业 skill 包、预调优的任务编排、一次封装多客户复用、把行业最佳实践编码进 skill、把客户自己摸索两三个月缩到一两周上线；公式是\"免费底座 + 行业 skill（自己的 IP）+ 快速交付（服务）\"。风险也清楚：MCP server 和 skill 代码量小、技术壁垒低；平台方可能自己做（已有 M365 的 MCP connector）；客户技术团队的自建门槛随生态成熟持续下降。与上一条\"护城河是独占数据\"互补：平台方（如阿里国际站）靠数据，方案提供商没有数据，只能靠 know-how 的深度，这也是 [[forward-deployed-engineer]] 里\"模式库 × harness 库\"那一项的具体样子。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -11538,8 +11800,8 @@
       "category": "LLM 推理与训练",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 9,
-      "avg_confidence": 0.81,
+      "claims_count": 11,
+      "avg_confidence": 0.79,
       "claims": [
         {
           "statement": "SkillOpt 把 SGD 四大机件搬进文本空间——有界 LR / 拒绝记忆 / 慢权重 / meta-learning",
@@ -11638,6 +11900,28 @@
           "status": "active",
           "evidence": "FinOps 系列 02：飞轮的资产是数据（需存储/治理/合规），RSI 的资产是一段几百到几千 token 的 skill 文本或一个搜索策略，用完数据即可丢——SkillOpt 的 `best_skill.md` 就是这种资产，这解释了为什么 RSI 比数据飞轮\"轻\"、时间常数可以小时计。Jev 文：企业校准决策模型的正确做法不是把全部历史塞进去训练，而是错误与分歧挖掘——从历史找 bad case（人工覆写、低置信却对、高置信却错）分送训练与校准，评估后影子部署，再从生产收新 bad case——与 SkillOpt / APO 的 bad-case mining 是同一个循环，只是优化对象不同；放到三层循环里这是中圈数据飞轮在决策模型上的具体形态（[[data-flywheel]]、[[confidence-calibration]]）。另一提醒（FLAN lesson）：skill 文本属\"可能被模型换代清零\"的中圈资产，要按此折旧。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "三种记忆在代码里落点不同——拒绝编辑缓冲只活在变量里、每个 epoch 清空，慢更新字段写进 skill 文档本身，meta skill 存在优化器侧的独立文件；force-accept 模式下慢更新只改当前 skill，不一定进最终成品",
+          "source": "SkillOpt系列01：源码篇",
+          "first_seen": "2026-07-01",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "拒绝编辑缓冲是内存里的列表，每次拒绝追加\"失败模式、被拒的编辑、前后分数\"，下一步反思时注入分析提示；epoch 边界故意清空，因为样本重排、skill 也变了，旧的失败模式可能失效。慢更新字段用一段注释围栏嵌在 skill 文档里，第二个 epoch 起按四类纵向对比（变好、变差、一直失败、一直成功）由优化模型重写，类比慢权重或 EMA。meta skill 是\"怎么改得更好\"的优化器经验，存独立 JSON，下一 epoch 加载后注入反思、聚合、选择三步的提示，不碰目标 skill，类比 Adam 的动量这类优化器状态。关键的工程事实：force-accept 模式下慢更新只改 current skill、不改 best skill，因为 best skill 必须是某个验证最优步的忠实快照，所以最终的 `best_skill.md` 可能不含慢层内容，除非它经过门控验证真的涨了分——这纠正了\"慢层内容一定进成品\"的直觉。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "优化模型与目标模型是两条独立的后端通道——目标模型每条 rollout 都调、高频且便宜，优化模型每步只调几次但推理重，决定编辑质量；所以优化模型的档位要不低于目标模型",
+          "source": "SkillOpt系列01：源码篇",
+          "first_seen": "2026-07-01",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "优化模型负责反思、聚合、选择、慢更新、meta skill、改写和自主学习率这些阶段，统一走一个入口；目标模型负责 rollout 和评估，走另一个入口；两边各自按后端配置分发到不同厂商的 SDK，目标侧还支持把 coding agent 的执行当成后端。成本结构由此而来：rollout 次数多，用便宜模型；反思是瓶颈，用强模型。这和 APO 里\"gradient model 写批评、edit model 改写\"一样，是\"谁来想、谁来做\"的分工（见 [[automatic-prompt-optimization]]），也是 [[model-routing]]\"昂贵模型判断、廉价模型执行\"在优化循环里的实例。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -16513,6 +16797,18 @@
       "description": "新人、新领域、安全关键场景下不能把验证全部交给 harness"
     },
     {
+      "source": "ai-writing-fingerprint",
+      "target": "generation-evaluation-separation",
+      "relation_type": "uses",
+      "description": "agent 层的 Writer → Humanizer → Reviewer 是生成与评估分离在文本域的实例"
+    },
+    {
+      "source": "ai-writing-fingerprint",
+      "target": "presentation",
+      "relation_type": "contrasts",
+      "description": "同属表达：演讲关心听众跟不跟得上结构，书面关心读起来是不是人在说话"
+    },
+    {
       "source": "architecture-testing",
       "target": "harness-quality-gate",
       "relation_type": "part-of",
@@ -17629,6 +17925,12 @@
       "description": "success 字段由接收方判定、验收口径与优化口径分开，是分离原则给 FinOps 度量设计的直接约束"
     },
     {
+      "source": "generation-evaluation-separation",
+      "target": "ai-writing-fingerprint",
+      "relation_type": "uses",
+      "description": "Writer → Humanizer → Reviewer 是去 AI 味的 agent 层做法"
+    },
+    {
       "source": "github-copilot",
       "target": "azure-copilot-ecosystem",
       "relation_type": "part-of",
@@ -18469,6 +18771,12 @@
       "description": "准备流程做成 skill 时用的是 Inversion 模式：先提问、确认再往下"
     },
     {
+      "source": "presentation",
+      "target": "ai-writing-fingerprint",
+      "relation_type": "contrasts",
+      "description": "同属表达：书面一侧关心读起来是不是人在说话"
+    },
+    {
       "source": "process-reward-model",
       "target": "reinforcement-learning",
       "relation_type": "part-of",
@@ -18905,6 +19213,12 @@
       "target": "claude-code-extension-system",
       "relation_type": "part-of",
       "description": "Skill 是 Claude Code 扩展体系的核心组件"
+    },
+    {
+      "source": "skill-creator-orchestration",
+      "target": "presentation-preparation",
+      "relation_type": "contrasts",
+      "description": "上游讨论内容与结构，本页的 skill 是下游生成幻灯片"
     },
     {
       "source": "skill-hub-ecosystem",
@@ -19711,6 +20025,12 @@
       "description": "做成 skill 时是 Inversion 模式的实例"
     },
     {
+      "source": "presentation-preparation",
+      "target": "skill-creator-orchestration",
+      "relation_type": "contrasts",
+      "description": "本流程产出简报与逐页大纲，交给 PPT 生成 skill 去做幻灯片"
+    },
+    {
       "source": "programmatic-video",
       "target": "clock-driven-rendering",
       "relation_type": "part-of",
@@ -20432,7 +20752,8 @@
       "id": "",
       "name": "沟通与表达",
       "members": [
-        "presentation"
+        "presentation",
+        "ai-writing-fingerprint"
       ]
     },
     {
