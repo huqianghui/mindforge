@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Agent/Subagent/Teammate Architecture"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -97,8 +97,20 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 > 以下为原记录：
 > 三层对比：① Subagent——一次性助手，空白 context 启动，仅返回摘要；② Runtime Task——后台槽位，异步执行长时间任务（npm install/pytest），完成后通知；③ Teammate——长期协作者，有名字和收件箱，可被 SendMessage 唤醒，支持 Shutdown/Plan Approval 等 FSM 协议。三者分别对应 learn-claude-code 的 S04、S08、S09-S12。
 
+### Claim: Subagent 是对上下文膨胀的架构级回答——与其让一个上下文不断变大再压缩，不如把子任务放进独立上下文，只带回摘要；摘要也是有损的，要完整结果就让它写文件
+
+- **来源**：[[Claude-Code系列01：核心概念与设计哲学]]
+- **首次出现**：2026-04-16
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> 典型用法是搜索与探索交给 subagent，主 agent 的上下文不被搜索过程污染；多个 subagent 可以并行查不同方向。这被称为"上下文防火墙"，GSD 这类框架把它推到极致：每个执行单元都从项目制品重建一个全新的上下文，而不是继承累积的聊天历史。代价有三：每次创建新上下文有启动开销；只有摘要回到主 agent，中间过程丢掉；看不到主对话历史（官方后来区分了继承父对话的 fork）。需要完整结果时让 subagent 写入文件，主 agent 再读。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽 Claude Code 系列 01：新增"subagent 是对上下文膨胀的架构级回答"一条。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 2
 
@@ -115,3 +127,4 @@ Claude Code 中 Agent 和 Subagent 是同一事物的两面——在 `.claude/ag
 - [[Claude-Code系列03：Agent、Subagent与Teammate]] — 架构解析（含 Teammate 详解）
 - [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — 进程隔离洞察
 - [[2026-04-16-周四]] — 再次学习 Claude Code 原理，Teammate 概念补充
+- [[Claude-Code系列01：核心概念与设计哲学]] — subagent 作为上下文防火墙的取舍

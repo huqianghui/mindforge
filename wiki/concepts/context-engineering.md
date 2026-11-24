@@ -1,7 +1,7 @@
 ---
 title: "Context Engineering"
 created: "2026-04-13"
-updated: "2026-11-23"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -136,8 +136,20 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 
 > GrepMem 把有损的上下文摘要和无损的轨迹日志配在一起：日志是 agent 全部历史的纯文本、只追加，agent 只多一个 `grep_history` 工具按正则取回细节，不需要 embedding、检索索引或额外模型。用强化学习在五种上下文管理策略下训练 Qwen3.5-9B 对比：ContextBench 上准确率 95%~97%，SUPO 式摘要和观察遮蔽最多 21%；BCP-Multi 上比 SUPO 高 8.8 个百分点、比 MemGPT 高 7.0。token 开销：比 SUPO 在 BCP-Multi 多 6%、ContextBench 多 19%，只有 MemGPT 的 29%；例外是 AMA-Bench stream，token 是 SUPO 的 2.3 倍、每条轨迹调 grep 约 19 次，准确率只略高。优势最大的场景是"上下文窗口之外的精确细节后面还要用"。证据是一篇论文、一个 9B 模型，置信度留在 0.6；它和上一条一起说明，压缩的问题可以用"不删原件、只换工作集"来缓解，这与 [[claude-code-memory-system]] 里"压缩后哪些指令从磁盘重新注入"是同一个思路。
 
+### Claim: Claude Code 的上下文按固定顺序组装，长任务里压缩几乎必然发生——要长期有效的信息写进文件，不要只留在对话里
+
+- **来源**：[[Claude-Code系列01：核心概念与设计哲学]]
+- **首次出现**：2026-04-16
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> 实际发给模型的是：固定系统提示 + 启动加载的 CLAUDE.md + MEMORY.md 索引 + 按条件加载的 rules + 按需注入的 skill + 累积的对话历史。接近窗口上限时自动压缩：保留系统提示、近期关键信息和当前任务，早期轮次被摘要替代，是有损的，用户也无法手动指定保留哪些。短任务（5 万 token 以内）基本不触发；10 万以上几乎必然发生，压缩后模型可能忘掉之前的决定和约定。对策是关键信息写文件——文件持久，对话会被压缩。这和本页"压缩是否有损取决于任务状态存在哪里"是同一件事的工程做法：把状态挪到外部环境里，压缩丢的就只是历史；[[meta-harness]] 的消融（分数加 LLM 摘要 34.9%，给完整原始轨迹 50.0%）也说明摘要补不回丢掉的因果信息。压缩的存在也解释了为什么 CLAUDE.md 要精简、skill 按需加载、subagent 用独立上下文。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽 Claude Code 系列 01：新增"上下文组装顺序与关键信息写文件"一条，与压缩适用条件那条互相印证。
 - 2026-11-23：知识差距分析 2026-11-23 落实，新增上下文压缩两条（CompAct-Bench + You don't need long context；GrepMem），三篇均已读全文；两篇"压缩是否有损"的结论表面相反，按"任务状态存在哪里"统一。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 5
 
@@ -160,3 +172,4 @@ Context Engineering 是从 Prompt Engineering 的正式演进——Prompt Engine
 - [[Context-Engineering-vs-Model-Context-Protocol]] — CE vs MCP 关系辨析
 - [[04-A-Comparative-Framework]] — 操作系统与 USB-C 比喻
 - [[05-Strategic-Implications-and-Future-Outlook]] — 战略展望
+- [[Claude-Code系列01：核心概念与设计哲学]] — 上下文组装顺序、压缩的触发与对策

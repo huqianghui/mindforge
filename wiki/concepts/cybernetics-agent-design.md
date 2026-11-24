@@ -23,6 +23,7 @@ related:
   - "[[reconciliation-loop]]"
   - "[[online-learning]]"
   - "[[requisite-variety]]"
+  - "[[regulation-first-design]]"
 ---
 
 # 控制论 Agent 设计（Cybernetics-Agent Design）
@@ -165,6 +166,7 @@ related:
 - [[reconciliation-loop]] — `implements` Kubernetes controller 的调和循环是控制论反馈闭环的工程形态
 - [[online-learning]] — `part-of` 四概念辨析里的一档：控制层不改参数，在线学习把控制器写进模型内部（自适应控制）
 - [[requisite-variety]] — `grounds` Regulation 立场与约束维度匹配不确定性的定律依据
+- [[regulation-first-design]] — `part-of` 按调节回路顺序组织项目 harness 的操作方法
 
 ## 来源日记
 

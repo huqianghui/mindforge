@@ -22,6 +22,7 @@ related:
   - "[[rtk-token-compression]]"
   - "[[skill-runtime]]"
   - "[[ai-skill-formation]]"
+  - "[[regulation-first-design]]"
 ---
 
 # Harness Engineering
@@ -281,6 +282,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[online-learning]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
 - [[reinforcement-learning]] — `contrasts` Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿
 - [[skill-runtime]] — `constrains` harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束
+- [[regulation-first-design]] — `implements` 先定被调节量、再按回路搭 harness
 
 ## 来源日记
 

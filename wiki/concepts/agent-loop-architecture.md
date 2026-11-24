@@ -1,7 +1,7 @@
 ---
 title: "Agent Loop Architecture"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -111,8 +111,20 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 
 > 给"agent loop 是什么"补边界：Claude Code/OpenCode 的 harness 是**单轨执行器**——提供 loop、session、context 压缩、记忆、权限、沙箱，不含并行候选、分支比较、预算分配；探索决策隐式混在 LLM 的"下一步做什么"里；plan mode 是权限门不是搜索。Dream-RSI 的 exploration policy 是在 coding agent 之外新加的编排层（两层结构：Policy Developer Agent 改 Discovery Agent 的"指挥方式"），使探索 explicit and programmable；日常对应物是 fan-out + pick-the-winner 的分发脚本。（论文初读，置信度留低）
 
+### Claim: 一个请求不是一次模型调用而是一段多轮运行——继续的原因有三种：要调工具、输出被截断要恢复、上下文超限要压缩；工具层分路由表和控制面两层
+
+- **来源**：[[Claude-Code系列01：核心概念与设计哲学]]
+- **首次出现**：2026-04-16
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：理论
+
+> Claude Code 的循环是"组装上下文 → 发给模型 → 返回文本或 tool_use → 执行工具、结果写回 messages → 继续"，状态是 messages、轮次、工具运行环境。循环继续不只因为 tool_use，还有 max_tokens 截断后的恢复和上下文超限后的压缩。简单任务通常 1~3 轮，复杂任务 10~50 轮以上，轮数越多上下文越大，越容易触发压缩丢信息。循环本身不做任何智能决策（不判断该不该调工具、任务是否完成），决策全交给模型，这是它和传统工作流引擎的根本区别。工具层两层：路由表只做"工具名到处理函数"的查表，新增工具不改循环；控制面决定怎么执行——路径安全检查、Bash 在沙箱里跑、写操作要用户确认、并发安全分区（安全的批量并行、排他的串行）。代价是模型自己选工具，会在不需要时过度读文件，也会在需要时跳过验证直接回答。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽 Claude Code 系列 01：新增"多轮运行的三种继续原因与工具层两层"一条。
 - 2026-08-30：注入 action loop 实例化 Claim（Computer Use 系列三），4 月 stale 页注入 active 新证据——agent loop 范式获得 GUI 操作域的跨域验证。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 3
 
@@ -124,3 +136,4 @@ Agent Loop 是所有 AI Agent 的运行时核心——一个 while 循环执行 
 ## 来源日记
 
 - [[Claude-Code系列02：learn-claude-code|learn-claude-code]] — Agent Loop 架构完整拆解
+- [[Claude-Code系列01：核心概念与设计哲学]] — 循环的继续原因、工具路由表与控制面

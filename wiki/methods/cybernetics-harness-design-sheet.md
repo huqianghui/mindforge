@@ -4,7 +4,7 @@ aliases:
   - "控制论 Harness Design Sheet"
   - "Harness Design Sheet"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - method
@@ -15,6 +15,7 @@ tags:
 method_type: "quality-gate"
 related_concepts:
   - "[[cybernetics-agent-design]]"
+  - "[[regulation-first-design]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
 ---
@@ -115,6 +116,7 @@ related_methods:
 ## 关联方法
 
 - [[ai-native-five-layer-pipeline]] — `contrasts` 五层 Pipeline 是工程结构视角，Design Sheet 是控制论设计维度视角
+- [[regulation-first-design]] — `contrasts` 本表检查单个 agent 的五层设计，那页按调节回路组织项目 harness
 
 ## 来源
 

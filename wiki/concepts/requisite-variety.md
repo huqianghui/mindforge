@@ -1,7 +1,7 @@
 ---
 title: "必要多样性定律（Law of Requisite Variety）"
 created: "2026-08-04"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -17,6 +17,7 @@ related:
   - "[[forward-deployed-engineer]]"
   - "[[harness-engineering]]"
   - "[[negative-feedback]]"
+  - "[[regulation-first-design]]"
 ---
 
 # 必要多样性定律（Law of Requisite Variety）
@@ -87,6 +88,7 @@ related:
 - [[forward-deployed-engineer]] — `grounds` FDE 的存在条件（跨客户 variety 优势）与持续调节商业模式的理论地基
 - [[negative-feedback]] — `part-of` 同属 Ashby 控制论体系：负反馈是调节的机制，必要多样性是调节的容量条件
 - [[harness-engineering]] — `constrains` Harness 的约束丰富度下限由任务扰动多样性决定
+- [[regulation-first-design]] — `uses` 定律落到"每类扰动配一个专门调节器"的设计步骤
 
 ## 来源日记
 

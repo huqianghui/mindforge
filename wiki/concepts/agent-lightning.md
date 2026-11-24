@@ -1,7 +1,7 @@
 ---
 title: "Agent Lightning"
 created: "2026-06-29"
-updated: "2026-11-22"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -177,7 +177,20 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 
 > DeepSeek Harness 的 session log 是"模型可见事实的唯一来源"（single source of truth）且自带 trajectory 审计视图（类 Langfuse 的 tool call 记录），五平台横评将"轨迹采集/可审计执行（喂 RL、合规审计）"列为 dsh 首选场景。这正对上 agent-lightning 主线最缺的一环：APO→SFT→RL 阶梯需要真实工作负载轨迹，而日常 coding 工作的轨迹目前不沉淀。设想路径（日记 DSH 深挖场景 3）：dsh "loop 也是 plugin" → 在 agent loop 插 middleware，把 tool call / observation / reward 以标准格式导出——白天干活、轨迹自动沉淀为训练素材。待验证：Cordis 事件系统是否暴露 loop 内部事件（tool call 前后钩子）、导出格式与 agent-lightning span/trace schema 的转换成本。dsh preview 阶段有 breaking changes，此路线是实验方向而非生产方案。
 
+### Claim: 用户写的是"什么算好"的静态零件，框架拥有的是把它们变成可迭代优化循环的算法与基础设施；一次性调 prompt 手写两百行就够，要换优化方法或上规模才值得用
+
+- **来源**：[[Agent-Lightning系列01：用APO做Prompt-Tuning]]
+- **首次出现**：2026-06-24
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> 跑完三轮 APO 后的自问：grader、批评模板、改写模板、种子 prompt、数据集全是自己定义的，为什么还要框架？分工是一次控制反转：用户提供领域知识（什么叫选对、怎么批评、怎么改写、从哪起步），框架提供 beam search 主循环、history best 簿记（全量重评、只在严格更高时更新，自己写第一次大概率踩虚高的坑）、rollout 并行执行与超时重试、错误归类（渲染崩溃是 failed、跑通选错是 0 分）、gradient 到 edit 的接线、模板变体随机选、日志与可复现。最有分量的理由是 method-agnostic：同一份 grader、agent、数据集，今天插 APO，明天换 RL 或 SFT 的 trainer 槽位，rollout 与 reward 一行不改。诚实的另一面：最难的部分框架帮不上——它不设计 reward、不降噪、不决定数据量，三轮没赢种子的根因都在用户组件里。所以值得用的条件是任一条：会切换优化方法、想复用 RL 级别的 rollout 基础设施、需要可复现对比或上规模；只调一次 prompt 且不碰权重时，手写脚本更轻更透明。
+
 ## 冲突与演进
+
+- 2026-11-24：/extract-knowledge 厚度补抽系列 01，新增"框架与手写脚本的分工和取舍"一条。
 
 - 2026-06-25：系列02 纠正系列01——SFT 不是内置算法类，而是走自定义算法扩展点（继承 `Algorithm` + `run()`）。
 - 2026-06-29：从系列07 与 Slime vs VERL 对比补充——对 VERL 是架构锁定（Agent RL=系统问题）、数据流飞轮与 Slime 同构但不同层，接入 verl/slime-rl-framework 概念页。

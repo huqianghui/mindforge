@@ -294,6 +294,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 - [[gsd-five-step-workflow]] — GSD 五步开发工作流
 - [[reward-design-three-inputs]] — Reward 设计三份输入与两本账分家：验收分不动、优化 reward 按信噪比设计、盲选反推权重
 - [[programmatic-video]] — 程序化视频：Remotion / HyperFrames 选型 + agent 工作流（帧和顺序写分镜 → 五层功能 → 内置浏览器预览闭环 → 选渲染位置导出 → WebP 嵌入）
+- [[regulation-first-design]] — Regulation-First 设计：先定被调节量（需求对齐度、功能可见性）→ 扰动 → 反馈 → 调节器 → 封装 harness；附启动清单与失败诊断表
 - [[presentation-preparation]] — 演讲准备：四个关键问题 → 头脑风暴归成罗马石柱 → 选叙述结构 → 开场 → 串联 → 逐页大纲；做成 PPT 前置讨论 skill（Inversion 模式）
 
 ### Layered Strategy（分层策略）
