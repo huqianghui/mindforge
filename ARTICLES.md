@@ -226,6 +226,12 @@
 - [落地实践系列 02：自动驾驶与世界模型](Notes/Embodied%20AI/落地实践系列02：自动驾驶与世界模型.md)
 - [落地实践系列 03：分层选型决策](Notes/Embodied%20AI/落地实践系列03：分层选型决策.md)
 
+### Notes/Media-Generation
+
+- [Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal](Notes/Media-Generation/Media-Generation系列01：Foundry上的视频模型为什么经过fal.md)
+- [Media Generation 系列 02：五个视频 endpoint 对比](Notes/Media-Generation/Media-Generation系列02：五个视频endpoint对比.md)
+- [Media Generation 系列 03：视频模型的测试方案](Notes/Media-Generation/Media-Generation系列03：视频模型的测试方案.md)
+
 ### Notes/tool
 
 - [Agent = Model + Harness](Notes/tool/Agent=Model+Harness.md)

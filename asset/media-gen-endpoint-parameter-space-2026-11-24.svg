@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 796" width="1400" height="796" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<style>.bg{fill:#0b1220}.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#e2e8f0;font-size:16px;font-weight:600}.t{fill:#cbd5e1;font-size:13.5px}.tg{fill:#94a3b8;font-size:13.5px}.ax{stroke:#334155;stroke-width:1}.axl{fill:#94a3b8;font-size:13px;text-anchor:middle}.lab{fill:#0b1220;font-size:13.5px;font-weight:600}.row{fill:#0f1a2e;stroke:#1e293b}.bar{animation:grow 1.6s ease-out}@keyframes grow{from{opacity:.2}to{opacity:1}}.note{fill:#fde68a;font-size:13.5px}</style>
+<rect class="bg" width="1400" height="796" rx="16"/>
+<text class="title" x="30" y="44">五个 endpoint 的参数空间：分辨率 × 请求时长</text>
+<text class="sub" x="30" y="72">依据 Microsoft Learn 的 Generation settings（fal 公开 API）；横轴是请求时长，条带是该档位允许的范围</text>
+<line class="ax" x1="330" y1="100" x2="330" y2="618"/><text class="axl" x="330" y="116">0s</text>
+<line class="ax" x1="418" y1="100" x2="418" y2="618"/><text class="axl" x="418" y="116">2s</text>
+<line class="ax" x1="506" y1="100" x2="506" y2="618"/><text class="axl" x="506" y="116">4s</text>
+<line class="ax" x1="594" y1="100" x2="594" y2="618"/><text class="axl" x="594" y="116">6s</text>
+<line class="ax" x1="682" y1="100" x2="682" y2="618"/><text class="axl" x="682" y="116">8s</text>
+<line class="ax" x1="770" y1="100" x2="770" y2="618"/><text class="axl" x="770" y="116">10s</text>
+<line class="ax" x1="858" y1="100" x2="858" y2="618"/><text class="axl" x="858" y="116">12s</text>
+<line class="ax" x1="946" y1="100" x2="946" y2="618"/><text class="axl" x="946" y="116">14s</text>
+<line class="ax" x1="1034" y1="100" x2="1034" y2="618"/><text class="axl" x="1034" y="116">16s</text>
+<line class="ax" x1="1122" y1="100" x2="1122" y2="618"/><text class="axl" x="1122" y="116">18s</text>
+<line class="ax" x1="1210" y1="100" x2="1210" y2="618"/><text class="axl" x="1210" y="116">20s</text>
+<rect class="row" x="30" y="130" width="1340" height="68" rx="8"/>
+<text class="h" x="46" y="160">Kling v3 Pro</text><text class="tg" x="46" y="184">US Data Zone</text>
+<rect class="bar" x="462" y="144" width="528" height="32" rx="6" fill="#a78bfa"/>
+<text class="lab" x="472" y="165">分辨率 schema 未列出</text>
+<text class="t" x="1002" y="165">3–15 秒，1 秒步进</text>
+<rect class="row" x="30" y="210" width="1340" height="156" rx="8"/>
+<text class="h" x="46" y="240">LTX 2.5 Fast</text><text class="tg" x="46" y="264">Global Standard</text>
+<rect class="bar" x="594" y="224" width="616" height="32" rx="6" fill="#2dd4bf"/>
+<text class="lab" x="604" y="245">720p / 1080p · 24/25 fps</text>
+<text class="t" x="1222" y="245">6–20 秒，2 秒步进</text>
+<rect class="bar" x="594" y="268" width="176" height="32" rx="6" fill="#14b8a6"/>
+<text class="lab" x="604" y="289">720p / 1080p · 48/50 fps</text>
+<text class="t" x="782" y="289">最长 10 秒</text>
+<rect class="bar" x="594" y="312" width="176" height="32" rx="6" fill="#fbbf24"/>
+<text class="lab" x="604" y="333">1440p / 2160p · 任意 fps</text>
+<text class="t" x="782" y="333">4K 只到 10 秒</text>
+<rect class="row" x="30" y="378" width="1340" height="68" rx="8"/>
+<text class="h" x="46" y="408">LTX 2.5 Pro</text><text class="tg" x="46" y="432">Global Standard</text>
+<rect class="bar" x="594" y="392" width="176" height="32" rx="6" fill="#38bdf8"/>
+<text class="lab" x="604" y="413">720p / 1080p</text>
+<text class="t" x="782" y="413">24/25/50 fps；6 / 8 / 10 秒或 auto</text>
+<rect class="row" x="30" y="458" width="1340" height="68" rx="8"/>
+<text class="h" x="46" y="488">MiniMax H3 Max</text><text class="tg" x="46" y="512">Global Standard</text>
+<rect class="bar" x="370" y="472" width="620" height="32" rx="6" fill="#f472b6"/>
+<text class="lab" x="380" y="493">480P / 768P / 1080P</text>
+<text class="t" x="1002" y="493">0.92–15 秒，默认 5 秒 768P</text>
+<rect class="row" x="30" y="538" width="1340" height="68" rx="8"/>
+<text class="h" x="46" y="568">H3 Max Turbo</text><text class="tg" x="46" y="592">Global Standard</text>
+<rect class="bar" x="370" y="552" width="620" height="32" rx="6" fill="#fb7185"/>
+<text class="lab" x="380" y="573">480P / 768P / 1080P</text>
+<text class="t" x="1002" y="573">同 H3 Max，无 R2V</text>
+<rect x="30" y="626" width="1340" height="150" rx="10" fill="#0d1729" stroke="#64748b" stroke-dasharray="4 4"/>
+<text class="t" x="50" y="658">① Fast 不是 Pro 的缩水版：在 Foundry 公布的参数里，Fast 的分辨率上限（2160p）和时长上限（20 秒）都比 Pro 大。</text>
+<text class="t" x="50" y="688">② Fast 的两个上限不能同时取：20 秒只在 720p / 1080p 且 24 或 25 fps 下成立；4K 和高帧率都只到 10 秒。</text>
+<text class="t" x="50" y="718">③ H3 Max / Turbo 的 1080P 是从原生 768P 做 latent refinement 得到；返回的视频可能比请求时长长约 0.7 秒，计费和对齐时要按实际时长核对。</text>
+<text class="t" x="50" y="748">④ H3 Max 的 Reference-to-Video 沿用同一组分辨率与时长；参考文件合计最多 12 个，参考视频、参考音频单段 2–15 秒、各自合计不超过 15 秒。</text>
+</svg>

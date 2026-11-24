@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 796" width="1400" height="796" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif"><style>.bg{fill:#0b1220}.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#e2e8f0;font-size:16px;font-weight:600}.hc{fill:#7dd3fc;font-size:15px;font-weight:600;text-anchor:middle}.t{fill:#cbd5e1;font-size:13px}.tg{fill:#94a3b8;font-size:13.5px}.pul{animation:pulse 2.6s ease-in-out infinite}@keyframes pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}</style>
+<rect class="bg" width="1400" height="796" rx="16"/>
+<text class="title" x="30" y="44">测试矩阵：哪条 Prompt 在哪个 endpoint 上测什么</text>
+<text class="sub" x="30" y="72">按 Foundry 当前开放的路由划分；fal 原生平台多出的能力单独标出，不和 Foundry 的结果混在一起</text>
+<text class="hc" x="407.0" y="132">Kling v3 Pro</text>
+<text class="hc" x="621.0" y="132">LTX 2.5 Fast</text>
+<text class="hc" x="835.0" y="132">LTX 2.5 Pro</text>
+<text class="hc" x="1049.0" y="132">H3 Max</text>
+<text class="hc" x="1263.0" y="132">H3 Max Turbo</text>
+<text class="h" x="40" y="180">01 雨夜人物</text><text class="tg" x="40" y="202">Text-to-Video 基线</text>
+<rect x="306" y="156" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="320" y="180" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="320" y="202">分辨率按返回值</text>
+<rect x="520" y="156" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="534" y="180" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="534" y="202">6 秒 1080p</text>
+<rect x="734" y="156" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="748" y="180" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="748" y="202">6 秒 1080p</text>
+<rect x="948" y="156" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="180" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="202">6 秒 1080P</text>
+<rect x="1162" y="156" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="1176" y="180" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="1176" y="202">6 秒 1080P</text>
+<text class="h" x="40" y="250">02 宇航员对白</text><text class="tg" x="40" y="272">原生语音与口型</text>
+<rect x="306" y="226" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="320" y="250" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="320" y="272">另跑 multi_prompt</text>
+<rect x="520" y="226" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="534" y="250" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="534" y="272">同步音频</text>
+<rect x="734" y="226" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="748" y="250" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="748" y="272">同步音频</text>
+<rect x="948" y="226" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="250" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="272">原生音频</text>
+<rect x="1162" y="226" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="1176" y="250" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="1176" y="272">原生音频</text>
+<text class="h" x="40" y="320">03 海岛航拍</text><text class="tg" x="40" y="342">长镜头与相机运动</text>
+<rect x="306" y="296" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="320" y="320" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="320" y="342">最长 15 秒</text>
+<rect x="520" y="296" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="534" y="320" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="534" y="342">+4K/10s、20s 两组</text>
+<rect x="734" y="296" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="748" y="320" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="748" y="342">10 秒</text>
+<rect x="948" y="296" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="320" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="342">最长 15 秒</text>
+<rect x="1162" y="296" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="1176" y="320" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="1176" y="342">最长 15 秒</text>
+<text class="h" x="40" y="390">04 鼓点音频</text><text class="tg" x="40" y="412">音轨驱动画面</text>
+<rect x="306" y="366" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="320" y="390" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="320" y="412">Foundry 无入口</text>
+<rect class="pul" x="520" y="366" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="534" y="390" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="534" y="412">A2V 仅 fal 原生</text>
+<rect class="pul" x="734" y="366" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="748" y="390" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="748" y="412">A2V 仅 fal 原生</text>
+<rect x="948" y="366" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="390" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="412">target_audio_url</text>
+<rect x="1162" y="366" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="1176" y="390" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="1176" y="412">Foundry 无入口</text>
+<text class="h" x="40" y="460">05 人 + 狗</text><text class="tg" x="40" y="482">多主体身份一致</text>
+<rect class="pul" x="306" y="436" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="320" y="460" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="320" y="482">elements 仅 fal 原生</text>
+<rect x="520" y="436" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="534" y="460" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="534" y="482">无参考输入</text>
+<rect x="734" y="436" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="748" y="460" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="748" y="482">无参考输入</text>
+<rect x="948" y="436" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="460" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="482">两张参考图</text>
+<rect class="pul" x="1162" y="436" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="1176" y="460" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="1176" y="482">R2V 仅 fal 原生</text>
+<text class="h" x="40" y="530">06 动作迁移</text><text class="tg" x="40" y="552">参考视频驱动动作</text>
+<rect class="pul" x="306" y="506" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="320" y="530" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="320" y="552">elements 仅 fal 原生</text>
+<rect x="520" y="506" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="534" y="530" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="534" y="552">无参考输入</text>
+<rect x="734" y="506" width="202" height="58" rx="8" fill="#111827" stroke="#334155" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="748" y="530" style="fill:#64748b;font-size:14px;font-weight:700">— 不测</text>
+<text class="t" x="748" y="552">无参考输入</text>
+<rect x="948" y="506" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="530" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="552">参考图 + 参考视频</text>
+<rect class="pul" x="1162" y="506" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="1176" y="530" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="1176" y="552">R2V 仅 fal 原生</text>
+<text class="h" x="40" y="600">附 首尾帧</text><text class="tg" x="40" y="622">Image-to-Video</text>
+<rect class="pul" x="306" y="576" width="202" height="58" rx="8" fill="#2a1f0b" stroke="#fbbf24" stroke-width="1.4"/>
+<text x="320" y="600" style="fill:#fde68a;font-size:14px;font-weight:700">◐ 条件</text>
+<text class="t" x="320" y="622">Playground 提示不支持</text>
+<rect x="520" y="576" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="534" y="600" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="534" y="622">首帧 + 尾帧</text>
+<rect x="734" y="576" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="748" y="600" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="748" y="622">首帧 + 尾帧</text>
+<rect x="948" y="576" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="962" y="600" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="962" y="622">首帧 + 尾帧</text>
+<rect x="1162" y="576" width="202" height="58" rx="8" fill="#0f2a24" stroke="#2dd4bf" stroke-width="1.4"/>
+<text x="1176" y="600" style="fill:#5eead4;font-size:14px;font-weight:700">✓ 测</text>
+<text class="t" x="1176" y="622">首帧 + 尾帧</text>
+<rect x="30" y="656" width="1340" height="120" rx="10" fill="#0d1729" stroke="#64748b" stroke-dasharray="4 4"/>
+<text class="t" x="50" y="690">① ✓ 测：Foundry 当前路由可直接测；◐ 条件：只有 fal 原生平台或需先用 API 验证，测了也要单独标注平台；— 不测：没有对应输入。</text>
+<text class="t" x="50" y="720">② 04 在 Foundry 上没有独立的 Audio-to-Video：H3 Max 的 target_audio_url 是把音轨钉进输出，画面是否卡点正是要观察的；LTX 的 A2V 只在 fal 原生平台。</text>
+<text class="t" x="50" y="750">③ 第一轮只跑 01，把五个 endpoint 的基线先拉齐；05、06 同一套素材再走一次图生视频作对照，才看得出参考输入带来的差别。</text>
+</svg>

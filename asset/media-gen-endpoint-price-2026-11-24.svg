@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 910" width="1400" height="910" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif"><style>.bg{fill:#0b1220}.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#e2e8f0;font-size:16px;font-weight:600}.t{fill:#cbd5e1;font-size:13.5px}.tg{fill:#94a3b8;font-size:13.5px}.v{fill:#f8fafc;font-size:13.5px;font-weight:600}.ax{stroke:#1e293b;stroke-width:1}.axl{fill:#94a3b8;font-size:13px;text-anchor:middle}.hl{fill:none;stroke:#fbbf24;stroke-width:2;animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style>
+<rect class="bg" width="1400" height="910" rx="16"/>
+<text class="title" x="30" y="44">生成一段 10 秒视频要花多少钱</text>
+<text class="sub" x="30" y="72">按 Foundry 发布价（每秒单价 × 10）；同一模型内只有分辨率或音频选项改变价格</text>
+<line class="ax" x1="470" y1="100" x2="470" y2="700"/><text class="axl" x="470" y="720">$0</text>
+<line class="ax" x1="600.0" y1="100" x2="600.0" y2="700"/><text class="axl" x="600.0" y="720">$0.5</text>
+<line class="ax" x1="730" y1="100" x2="730" y2="700"/><text class="axl" x="730" y="720">$1</text>
+<line class="ax" x1="860.0" y1="100" x2="860.0" y2="700"/><text class="axl" x="860.0" y="720">$1.5</text>
+<line class="ax" x1="990" y1="100" x2="990" y2="700"/><text class="axl" x="990" y="720">$2</text>
+<line class="ax" x1="1120.0" y1="100" x2="1120.0" y2="700"/><text class="axl" x="1120.0" y="720">$2.5</text>
+<line class="ax" x1="1250" y1="100" x2="1250" y2="700"/><text class="axl" x="1250" y="720">$3</text>
+<text class="h" x="40" y="142">MiniMax H3 Max Turbo</text>
+<text class="t" x="300" y="142">480P</text>
+<rect x="470" y="126" width="65" height="24" rx="5" fill="#fb7185" opacity="0.9"/>
+<text class="v" x="545" y="143">$0.25</text><text class="tg" x="605" y="143">（$0.025/秒）</text>
+<text class="t" x="300" y="176">768P</text>
+<rect x="470" y="160" width="104" height="24" rx="5" fill="#fb7185" opacity="0.9"/>
+<text class="v" x="584" y="177">$0.40</text><text class="tg" x="644" y="177">（$0.04/秒）</text>
+<text class="t" x="300" y="210">1080P</text>
+<rect x="470" y="194" width="208" height="24" rx="5" fill="#fb7185" opacity="0.9"/>
+<rect class="hl" x="467" y="191" width="214" height="30" rx="7"/>
+<text class="v" x="688" y="211">$0.80</text><text class="tg" x="748" y="211">（$0.08/秒）</text>
+<text class="h" x="40" y="258">MiniMax H3 Max</text>
+<text class="t" x="300" y="258">480P</text>
+<rect x="470" y="242" width="130" height="24" rx="5" fill="#f472b6" opacity="0.9"/>
+<text class="v" x="610" y="259">$0.50</text><text class="tg" x="670" y="259">（$0.05/秒）</text>
+<text class="t" x="300" y="292">768P</text>
+<rect x="470" y="276" width="208" height="24" rx="5" fill="#f472b6" opacity="0.9"/>
+<text class="v" x="688" y="293">$0.80</text><text class="tg" x="748" y="293">（$0.08/秒）</text>
+<text class="t" x="300" y="326">1080P</text>
+<rect x="470" y="310" width="416" height="24" rx="5" fill="#f472b6" opacity="0.9"/>
+<rect class="hl" x="467" y="307" width="422" height="30" rx="7"/>
+<text class="v" x="896" y="327">$1.60</text><text class="tg" x="956" y="327">（$0.16/秒）</text>
+<text class="h" x="40" y="374">LTX 2.5 Fast</text>
+<text class="t" x="300" y="374">720p</text>
+<rect x="470" y="358" width="234" height="24" rx="5" fill="#2dd4bf" opacity="0.9"/>
+<text class="v" x="714" y="375">$0.90</text><text class="tg" x="774" y="375">（$0.09/秒）</text>
+<text class="t" x="300" y="408">1080p</text>
+<rect x="470" y="392" width="338" height="24" rx="5" fill="#2dd4bf" opacity="0.9"/>
+<rect class="hl" x="467" y="389" width="344" height="30" rx="7"/>
+<text class="v" x="818" y="409">$1.30</text><text class="tg" x="878" y="409">（$0.13/秒）</text>
+<text class="t" x="300" y="442">1440p</text>
+<rect x="470" y="426" width="494" height="24" rx="5" fill="#2dd4bf" opacity="0.9"/>
+<text class="v" x="974" y="443">$1.90</text><text class="tg" x="1034" y="443">（$0.19/秒）</text>
+<text class="t" x="300" y="476">2160p</text>
+<rect x="470" y="460" width="780" height="24" rx="5" fill="#2dd4bf" opacity="0.9"/>
+<text class="v" x="1260" y="477">$3.00</text><text class="tg" x="1320" y="477">（$0.3/秒）</text>
+<text class="h" x="40" y="524">LTX 2.5 Pro</text>
+<text class="t" x="300" y="524">720p</text>
+<rect x="470" y="508" width="312" height="24" rx="5" fill="#38bdf8" opacity="0.9"/>
+<text class="v" x="792" y="525">$1.20</text><text class="tg" x="852" y="525">（$0.12/秒）</text>
+<text class="t" x="300" y="558">1080p</text>
+<rect x="470" y="542" width="442" height="24" rx="5" fill="#38bdf8" opacity="0.9"/>
+<rect class="hl" x="467" y="539" width="448" height="30" rx="7"/>
+<text class="v" x="922" y="559">$1.70</text><text class="tg" x="982" y="559">（$0.17/秒）</text>
+<text class="h" x="40" y="606">Kling v3 Pro</text>
+<text class="t" x="300" y="606">无音频</text>
+<rect x="470" y="590" width="320" height="24" rx="5" fill="#a78bfa" opacity="0.9"/>
+<text class="v" x="800" y="607">$1.23</text><text class="tg" x="860" y="607">（$0.1232/秒）</text>
+<text class="t" x="300" y="640">有音频</text>
+<rect x="470" y="624" width="480" height="24" rx="5" fill="#a78bfa" opacity="0.9"/>
+<text class="v" x="960" y="641">$1.85</text><text class="tg" x="1020" y="641">（$0.1848/秒）</text>
+<text class="t" x="300" y="674">音频 + Voice Control</text>
+<rect x="470" y="658" width="561" height="24" rx="5" fill="#a78bfa" opacity="0.9"/>
+<text class="v" x="1041" y="675">$2.16</text><text class="tg" x="1101" y="675">（$0.2156/秒）</text>
+<rect x="30" y="740" width="1340" height="150" rx="10" fill="#0d1729" stroke="#64748b" stroke-dasharray="4 4"/>
+<text class="t" x="50" y="772">① 琥珀色框是 1080p 档。同为 1080p，H3 Max Turbo 一段 10 秒是 $0.80，LTX Pro 是 $1.70，相差一倍多。</text>
+<text class="t" x="50" y="802">② Kling 按音频选项计价，schema 里没有分辨率档；开音频后单价比无音频高 50%。</text>
+<text class="t" x="50" y="832">③ H3 Max / Turbo 返回的视频可能比请求长约 0.7 秒，按秒计费时实际金额以账单为准。</text>
+<text class="t" x="50" y="862">④ 价格取自微软集成公告的价格表（USD／视频秒，Public Preview 口径），公告称几周内会更新到 Azure 定价页，使用前要复核。</text>
+</svg>

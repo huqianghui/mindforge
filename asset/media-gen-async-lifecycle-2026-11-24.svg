@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
+      .sub { fill: #94a3b8; font-size: 14px; }
+      .lane { fill: #0f1a2e; stroke: #334155; stroke-width: 1; }
+      .ll { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
+      .step { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
+      .stepA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
+      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
+      .t { fill: #cbd5e1; font-size: 13.5px; }
+      .tGray { fill: #94a3b8; font-size: 13.5px; }
+      .code { fill: #a7f3d0; font-size: 13px; font-family: Menlo, monospace; }
+      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .seg1 { fill: #334155; } .seg2 { fill: #475569; } .seg3 { fill: #f59e0b; } .seg4 { fill: #0ea5e9; } .seg5 { fill: #14b8a6; }
+      .brk { fill: none; stroke: #e2e8f0; stroke-width: 1.4; }
+      .brkA { fill: none; stroke: #fbbf24; stroke-width: 1.6; }
+      .bl { fill: #e2e8f0; font-size: 14px; font-weight: 600; }
+      .blA { fill: #fde68a; font-size: 14px; font-weight: 600; }
+      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .dot { fill: #2dd4bf; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+    </style>
+  </defs>
+  <rect class="bg" width="1400" height="760" rx="16"/>
+  <text class="title" x="30" y="44">视频生成是异步任务：一次调用的生命周期与耗时口径</text>
+  <text class="sub" x="30" y="72">上半部分是调用顺序，下半部分是一次请求的时间被哪些环节分走；厂商公布的速度通常只是其中一段</text>
+
+  <rect class="lane" x="30" y="96" width="1340" height="250" rx="12"/>
+  <text class="ll" x="50" y="122">调用顺序（Foundry 路由，基址 …/providers/falai/v1/{厂商}/{模型}）</text>
+
+  <rect class="step" x="50" y="140" width="240" height="180" rx="10"/>
+  <circle class="badge" cx="74" cy="164" r="12"/><text class="bn" x="74" y="169">1</text>
+  <text class="h" x="94" y="169">提交任务</text>
+  <text class="code" x="66" y="200">POST /text-to-video</text>
+  <text class="t" x="66" y="226">body：model = deployment 名</text>
+  <text class="t" x="66" y="250">prompt、duration、resolution</text>
+  <text class="t" x="66" y="274">返回 request_id</text>
+  <text class="tGray" x="66" y="300">Tier 1–4 只有 2 RPM</text>
+
+  <rect class="stepA" x="370" y="140" width="300" height="180" rx="10"/>
+  <circle class="badge" cx="394" cy="164" r="12"/><text class="bn" x="394" y="169">2</text>
+  <text class="hA" x="414" y="169">轮询状态（循环）</text>
+  <text class="code" x="386" y="200">GET /requests/{id}/status</text>
+  <text class="t" x="386" y="226">间隔 5 秒，直到 COMPLETED</text>
+  <text class="t" x="386" y="250">token 会过期：每次重新取</text>
+  <text class="tGray" x="386" y="274">失败状态要单独处理并记录</text>
+  <text class="tGray" x="386" y="300">这一段时长随排队波动最大</text>
+
+  <rect class="step" x="750" y="140" width="270" height="180" rx="10"/>
+  <circle class="badge" cx="774" cy="164" r="12"/><text class="bn" x="774" y="169">3</text>
+  <text class="h" x="794" y="169">取结果</text>
+  <text class="code" x="766" y="200">GET /requests/{id}</text>
+  <text class="t" x="766" y="226">读取 .video.url</text>
+  <text class="t" x="766" y="250">fal 原生响应还带 timings</text>
+  <text class="tGray" x="766" y="274">Foundry 侧是否透出要实测</text>
+
+  <rect class="step" x="1100" y="140" width="250" height="180" rx="10"/>
+  <circle class="badge" cx="1124" cy="164" r="12"/><text class="bn" x="1124" y="169">4</text>
+  <text class="h" x="1144" y="169">下载 MP4</text>
+  <text class="code" x="1116" y="200">curl -L video.url</text>
+  <text class="t" x="1116" y="226">带 Bearer 头下载</text>
+  <text class="t" x="1116" y="250">落本地或自己的存储</text>
+  <text class="tGray" x="1116" y="274">核对实际时长与分辨率</text>
+
+  <path class="flow" d="M292,230 L368,230" marker-end="url(#arr)"/>
+  <path class="flow" d="M672,230 L748,230" marker-end="url(#arr)"/>
+  <path class="flow" d="M1022,230 L1098,230" marker-end="url(#arr)"/>
+  <circle class="dot" r="5"><animateMotion dur="4s" repeatCount="indefinite" path="M170,330 L520,330 L885,330 L1225,330"/></circle>
+
+  <rect class="lane" x="30" y="370" width="1340" height="366" rx="12"/>
+  <text class="ll" x="50" y="398">一次请求的时间构成（示意比例，非实测）</text>
+
+  <rect class="seg1" x="60" y="430" width="90" height="44" rx="4"/>
+  <rect class="seg2" x="150" y="430" width="200" height="44"/>
+  <rect x="350" y="430" width="110" height="44" fill="#64748b"/>
+  <rect class="seg3" x="460" y="430" width="300" height="44"/>
+  <rect class="seg4" x="760" y="430" width="120" height="44"/>
+  <rect class="seg5" x="880" y="430" width="200" height="44"/>
+  <rect class="seg1" x="1080" y="430" width="260" height="44" rx="4"/>
+  <text class="t" x="70" y="458">提交</text>
+  <text class="t" x="164" y="458">排队等 GPU</text>
+  <text class="t" x="362" y="458">Prompt 改写</text>
+  <text class="h" x="540" y="458" style="fill:#1f1300">扩散去噪</text>
+  <text class="t" x="776" y="458" style="fill:#062033">编码</text>
+  <text class="t" x="896" y="458" style="fill:#03241f">轮询间隔损耗</text>
+  <text class="t" x="1096" y="458">下载</text>
+
+  <path class="brkA" d="M460,486 L460,500 L760,500 L760,486"/>
+  <text class="blA" x="470" y="524">A 厂商速度榜：timings.inference</text>
+  <text class="t" x="470" y="548">fal 自测 768p / 5 秒：Turbo 1.54 秒、Max 2.46 秒</text>
+
+  <path class="brk" d="M150,566 L150,580 L1080,580 L1080,566"/>
+  <text class="bl" x="160" y="604">B 提交到 COMPLETED：用户实际等待的主体</text>
+  <text class="t" x="160" y="628">含排队与 Prompt 改写；prompt_expansion_mode 设 quality 时改写可达 30 秒</text>
+
+  <path class="brk" d="M60,646 L60,660 L1340,660 L1340,646"/>
+  <text class="bl" x="70" y="684">C 端到端：从 POST 到 MP4 落盘，做选型对比时只用这个口径</text>
+  <text class="tGray" x="70" y="710">A 不能填进 B 或 C 的栏位；不同厂商的“几秒出片”多数是 A，测试记录里三段分开记。</text>
+</svg>
