@@ -231,6 +231,8 @@
 - [Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal](Notes/Media-Generation/Media-Generation系列01：Foundry上的视频模型为什么经过fal.md)
 - [Media Generation 系列 02：五个视频模型对比](Notes/Media-Generation/Media-Generation系列02：五个视频模型对比.md)
 - [Media Generation 系列 03：视频模型的测试方案](Notes/Media-Generation/Media-Generation系列03：视频模型的测试方案.md)
+- [Media Generation 系列 04：十五秒开经偈短片](Notes/Media-Generation/Media-Generation系列04：十五秒开经偈短片.md)
+- [Media Generation 样片集（在线播放全部原片）](https://huqianghui.github.io/mindforge/media-generation/)
 
 ### Notes/tool
 

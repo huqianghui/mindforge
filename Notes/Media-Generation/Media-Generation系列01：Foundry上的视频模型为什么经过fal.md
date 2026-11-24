@@ -14,7 +14,7 @@ tags:
 
 # Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal
 
-> 系列导航：本篇 ｜ [系列 02：五个视频模型对比](Media-Generation系列02：五个视频模型对比.md) ｜ [系列 03：视频模型的测试方案](Media-Generation系列03：视频模型的测试方案.md)
+> 系列导航：本篇 ｜ [系列 02：五个视频模型对比](Media-Generation系列02：五个视频模型对比.md) ｜ [系列 03：视频模型的测试方案](Media-Generation系列03：视频模型的测试方案.md) ｜ [系列 04：十五秒开经偈短片](Media-Generation系列04：十五秒开经偈短片.md)
 
 图片生成这两年基本成熟了。早期的六根手指、画面里的乱码字，现在都很少再碰到；gpt-image-2.6 之后还能直接出 GIF 和 SVG，图片这条线已经从"能不能用"走到了"怎么用得更顺"。
 
@@ -163,10 +163,10 @@ curl -L "$VIDEO_URL" -H "Authorization: Bearer $(get_bearer)" -o video.mp4
 几个实际接入时要留意的地方：
 
 - **资源 Key 也能用**：除了 Entra 令牌，把 Foundry 资源的 Key 放进 `api-key` 请求头同样能通。我先做了一次探测：不带 Key 查询任务返回 401，带上 Key 查询一个不存在的任务返回 404，说明鉴权已经过了，只是任务不存在。
-- **路由按带 `v1` 的写法走**：Learn 的模型列表写的是 `/providers/falai/{厂商}/{模型}/{模态}`，示例脚本用的是 `/providers/falai/v1/{厂商}/{模型}/{模态}`。我实测的是带 `v1` 的写法，五个模型都能提交、查询、取结果；不带 `v1` 的没有测。
+- **路由只认带 `v1` 的写法**：Learn 的模型列表写的是 `/providers/falai/{厂商}/{模型}/{模态}`，示例脚本用的是 `/providers/falai/v1/{厂商}/{模型}/{模态}`。我在同一个资源上两种都试了：带 `v1` 的提交、查询、取结果都正常；不带 `v1` 的查询 10 次全部返回 400，提交返回 `unknown_model`。
 - **LTX 的查询路径和提交路径不一样**：提交时在模态后面多一段 `/pro` 或 `/fast`（如 `lightricks/ltx-2.5/text-to-video/pro`），查状态和取结果用的却是两者共用的 `lightricks/ltx-2.5/requests/{id}`。
 - **参数名不统一**：LTX 和 MiniMax 的首帧叫 `image_url`，Kling 图生视频的首帧叫 `start_image_url`；分辨率的大小写也不一样（LTX 是 `1080p`，MiniMax 是 `1080P`）。完整 schema 要去 fal 的模型文档查。
-- **素材可以是 URL，也可以是 data URI**：首帧、参考图通过 URL 字段传入；小尺寸的本地 JPEG 编成 data URI 直接放进请求体也能用，本系列的首尾帧和参考图样片都是这样传的。服务端对内联文件的大小上限我没测，大文件和视频素材还是放到可访问的 HTTPS 地址更稳。
+- **素材可以是 URL，也可以是 data URI**：首帧、参考图通过 URL 字段传入；本地 JPEG 编成 data URI 直接放进请求体也能用。同一张图填充到 4、8、12、16、24 MiB 作首帧都正常出片；64 MiB 返回 502，128 MiB 传输出错，两次都没拿到任务 ID，后台有没有建任务、有没有计费都不清楚，所以我不把它当成确定的上限。十几 MiB 以上的素材，还是放到可访问的 HTTPS 地址更稳（[接口边界样片](https://huqianghui.github.io/mindforge/media-generation/probes.html)）。
 - **数值类型要按各家 schema 传**：LTX 的固定时长必须是 JSON 数字，传字符串 `"6"` 会直接返回 400；Kling 的时长在 schema 里是 `"3"` 到 `"15"` 的字符串枚举。统一封装时不能把所有模型的 `duration` 都转成同一种类型。
 - **速度数字先问口径**：厂商公布的"几秒出片"一般是推理那一段（fal 的 `timings.inference`），不含排队、Prompt 改写、编码和下载。我做对比时只用"从提交到 MP4 落盘"的端到端时间，其他口径单独记。
 

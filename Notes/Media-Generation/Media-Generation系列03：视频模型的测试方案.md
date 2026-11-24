@@ -1,7 +1,7 @@
 ---
 title: Media Generation 系列 03：视频模型的测试方案
 created: 2026-11-24
-description: 给 Foundry 上五个视频模型设计的一套小型测试。先发最小请求确认路由（已完成，附第一批七条样片），再用同一条雨夜人物 Prompt 拉齐基线并验证 Fast→Pro、Turbo→Max 的草稿到成片迁移，然后分项测原生语音、长镜头与 4K、音轨驱动、多主体参考和动作迁移；每次生成按同一组字段记录，计时把推理、提交到完成、端到端分开，按每条可用视频的成本比较。统一基线与后续各轮结果待补。
+description: 给 Foundry 上五个视频模型设计并跑完的一套小型测试（93 次请求、90 条成片，在线样片集可播放全部原片）。先发最小请求确认路由（已完成，附第一批七条样片），再用同一条雨夜人物 Prompt 拉齐基线并验证 Fast→Pro、Turbo→Max 的草稿到成片迁移，然后分项测原生语音、长镜头与 4K、音轨驱动、多主体参考和动作迁移；每次生成按同一组字段记录，计时把推理、提交到完成、端到端分开，按每条可用视频的成本比较。统一基线与后续各轮结果待补。
 tags:
   - media-generation
   - video-generation
@@ -13,14 +13,14 @@ tags:
 
 # Media Generation 系列 03：视频模型的测试方案
 
-> 系列导航：[系列 01：Foundry 上的视频模型为什么经过 fal](Media-Generation系列01：Foundry上的视频模型为什么经过fal.md) ｜ [系列 02：五个视频模型对比](Media-Generation系列02：五个视频模型对比.md) ｜ 本篇
+> 系列导航：[系列 01：Foundry 上的视频模型为什么经过 fal](Media-Generation系列01：Foundry上的视频模型为什么经过fal.md) ｜ [系列 02：五个视频模型对比](Media-Generation系列02：五个视频模型对比.md) ｜ 本篇 ｜ [系列 04：十五秒开经偈短片](Media-Generation系列04：十五秒开经偈短片.md)
 
 上一篇按文档列了一组场景假设：H3 Max Turbo 适合低成本批量出片、LTX Fast 适合长镜头和 4K、H3 Max 适合参考驱动、Kling 适合人物表演。这些都只是定位，要自己跑一遍样片才知道哪条成立。
 
 这一篇是测试方案本身：测什么、怎么测、记什么。设计的原则只有两条——**先用相同输入比基础能力，再用各自独有的接口测上限**；以及**每个结论都只在它的参数条件下成立**。
 
 > [!NOTE]
-> 本篇先写方案。第 0 轮的接口验证和一批能力抽样（五个模型、七条样片）已经跑完，记在最后的"实测记录"；统一基线和后面几轮还在进行，结果出来后补进本篇。
+> 七个测试已全部跑完：93 次请求、90 条成片，每组 3 条。结果记在最后的"实测记录"。全部原片、逐条参数和验片观察放在 [Media Generation 样片集](https://huqianghui.github.io/mindforge/media-generation/) 静态页，每个测试一页，可以直接在页面里播放完整 MP4、成组同步播放对比。
 
 ## 四轮推进
 
@@ -203,10 +203,66 @@ notes: ""
 
 这两条放在一起，结论很实际：**在 Foundry 上，Kling 的结构化分镜目前不可靠**。分镜顺序是硬要求时，我会按镜头分别生成再剪辑；只要一个镜头时，直接写单段 Prompt。这一条只有一次样本，后面会在 Test 02 的 `multi_prompt` 组里重复验证。
 
+### 第二批：七个测试的完整结果（2026-11-24）
+
+第二批按本篇方案把 Test 01–07 全部跑完，另外补了路由与内联大小的接口探测。所有结论都有三条前提：**每组只有 3 条**，只能描述这次看到了什么，不能当排名；画面判断来自每条四个位置的抽帧，不是逐帧审片；音画同步和"能不能直接交付"都没有人工评。费用是发布单价乘以实测秒数，不是账单。
+
+| 模型 | Test 01 端到端（秒） | 6 秒 1080p 单条估算（USD） | 实际时长（请求 6 秒） |
+|---|---|---|---|
+| H3 Max Turbo | 38–41 | 0.53 | 6.592 |
+| H3 Max | 38 | 1.05 | 6.592 |
+| LTX 2.5 Fast | 90–92 | 0.78 | 6.000 |
+| LTX 2.5 Pro | 117–118 | 1.02 | 6.000 |
+| Kling v3 Pro（关音频） | 250–331 | 0.74 | 6.042 |
+
+**Test 01 雨夜基线：五个模型都出得了这个题材，差别在速度。**
+
+[![Test 01 五个模型并排（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t01.webp)](https://huqianghui.github.io/mindforge/media-generation/t01.html)
+
+15 条都有红外套、透明伞、霓虹湿街和推近到近景，没有明显崩坏。LTX Fast r1、Pro r2 / r3 主要沿街正面推进，Prompt 里的"转头看向镜头"不突出；Kling 三条都从斑马线路口起镜，光色更克制。真正拉开差距的是等待时间：H3 不到一分钟，Kling 要四到五分半。H3 照常带音频，LTX 和 Kling 关了音轨，耗时和费用的差别里有一部分来自这一点。
+
+**Test 07 草稿到成片：LTX 换档等于重画，H3 保留大方向。**
+
+[![Test 07 草稿与成片成对比较（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t07.webp)](https://huqianghui.github.io/mindforge/media-generation/t07.html)
+
+成片档拿到的只是同一段文字，没有草稿画面，也没有固定种子。LTX 三对都换了机位或轴线；H3 三对保留了"远到近、终点正面、伞下近景"的结构，但人物比例、车辆和伞的位置每对都有改动。所以草稿只能用来定 Prompt 措辞和大致方向，要保住某一条的构图，得把它的关键帧作为首帧或参考图交给成片档——这一条我还没有实测。
+
+**Test 02 对白：单段 Prompt 都说得出台词，Kling 分镜要写顶层摘要。**
+
+[![Test 02 宇航员对白（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t02.webp)](https://huqianghui.github.io/mindforge/media-generation/t02.html)
+
+五个模型的单段 Prompt 共 15 条，机器转写全部逐词命中 "We have a problem. The reactor is losing power."。Kling 结构化分镜按文档只填 `multi_prompt`、顶层 `prompt` 留空时，3 条全部跑题成视频通话，转写出来是 "Hey. I miss you so much." 一类的句子，任务状态却都是 COMPLETED；顶层补一段非空场景摘要后，3 条都回到宇航员并说出完整台词，但计划在 5 秒的切镜有两条到 6 秒才切，一条没有确认硬切。声线、情绪和口型同步没有人工听审。
+
+**Test 03 航拍：LTX Fast 的上限都能用，但"更高"不等于"更好"。**
+
+[![Test 03 海岛航拍九个条件（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t03.webp)](https://huqianghui.github.io/mindforge/media-generation/t03.html)
+
+27 条里 24 条能越过瀑布看到另一处水体，H3 Max 第 1、2 条和 H3 Turbo 第 3 条停在瀑布脚下。LTX Fast 的 4K 文件确实是 3840×2160，48 / 50 fps 帧率也对，20 秒三条都在 9–14 秒越过瀑沿、后段地理关系不乱。但缩放后看不出 4K 多了真实细节，48 / 50 fps 各有一条中后段出现树冠的放射状模糊；4K 一条 3 美元、等 200 多秒，同样 10 秒 1080p 的 H3 Turbo 0.81 美元、约 45 秒。
+
+**Test 04 鼓点：音轨原样保留，画面卡点没法确认。**
+
+[![Test 04 指定音轨与对照（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t04.webp)](https://huqianghui.github.io/mindforge/media-generation/t04.html)
+
+H3 Max 用 `target_audio` 的三条，与输入录音的波形相关 0.9997、零偏移——成片里放的就是这段录音。可鼓棒和鼓面的接触被运动模糊和机位挡住，逐击同步确认不了。第 2 对两组都在约 1.7 秒和 7.1 秒跳回参考照片里的粉墙空鼓组，舞台鼓手消失、出现悬空的鼓棒：参考图会被直接插进画面。
+
+**Test 05 人与狗：双参考图一开始就同框，首帧组先"演"一段原图。**
+
+[![Test 05 双参考图与首帧加文字（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t05.webp)](https://huqianghui.github.io/mindforge/media-generation/t05.html)
+
+双参考组三条从 0.6 秒起就是日落步道上的女性加金毛，毛色接近参考照片；首帧组开头都还停在输入图的实验室背景，约 4 秒才换到海边让狗出现，金毛偏橙色。人脸常被裁出画面，严格的身份一致性抽帧判断不了。
+
+**Test 06 挥手：造型保住了，动作没迁移过去。**
+
+[![Test 06 真人挥手输入与两组输出（点击进入样片页，在线播放完整原片）|900](../../site/media-generation/assets/previews/t06.webp)](https://huqianghui.github.io/mindforge/media-generation/t06.html)
+
+参考视频组三条都保留了宇航员的颜色和比例，却都把真人的"单手挥动"变成"双手举起"，第 2 条还提前放下，第 1 条背景多出心形和星星。只给首帧和文字的对照组反而是单臂抬起再放下——不过它没有视频输入，只说明文字指令被执行了。在 Foundry 的 H3 Max 上，参考视频目前只能当动作的大致方向。
+
+**接口边界。** 不带 `/v1` 的路由查询 10 次全是 400，提交返回 `unknown_model`。同一张 JPEG 填充到 4–24 MiB 作首帧都能出片；64 MiB 返回 502、128 MiB 传输错误，两次都没拿到任务 ID，后台是否创建、是否计费都不明，所以不能据此断定上限。细节见 [接口边界页](https://huqianghui.github.io/mindforge/media-generation/probes.html)。
+
 ### 还没测的
 
 > [!IMPORTANT]
-> 第一批没有覆盖、仍按本篇方案执行的部分：五个模型同一条 Prompt 的 Test 01 统一基线和每组 3 次重复；LTX Fast 的 4K 与 48 / 50 fps 组合；Test 07 的草稿到成片迁移；Test 04 的音轨驱动；Test 05、06 的多主体参考和动作迁移；不带 `v1` 的路由、`timings` 字段和服务端对内联文件的大小上限。测完后按上面的字段整理到这里，并回到系列 02 的场景假设逐条确认或推翻。
+> 人工听审（声线、情绪、口型）、逐帧动作和音画同步、每条可用成片的实际成本（需要账单和可用阈值）、"草稿关键帧作首帧"的迁移做法、fal 原生平台的 Audio-to-Video 与 Turbo Reference-to-Video（需要该平台凭据）。要报 P50 / P95 和成功率，同一组合还要累计到 20 条以上。
 
 ## 参考
 
