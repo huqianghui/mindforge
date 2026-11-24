@@ -252,8 +252,31 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 > Superpowers 三版本目录实证（5.0.2 有 agents/commands/hooks 全家桶 → 6.3.0 只剩 14 个 skill + 1 个极简 SessionStart bootstrap hook），GSD/gstack 同步瘦身。四个收敛原因：① 宿主把基础设施内置了（subagent 体系/plan mode/任务列表/原生 hooks/session 持久化），插件再自带就是在 50 万行内层 Harness 上重复建设；② 模型变强后流程挟持的成本收益倒挂；③ skill 是唯一跨 harness 可移植载体（归口 [[harness-portability-spectrum]]）；④ 纯文本维护成本低一个量级。收敛后三层分工：方法论层（插件=纯 skill）/ 基础设施层（宿主 harness）/ 能力层（模型）。**"变简单"是表象，实质是职责归位**——框架竞争维度从"机制精巧"变成"方法论文本质量"（Superpowers 用 eval campaign 微测试每段文字存废）。选型视角随之更新：过去看机制是否完备，现在看 skill 文本质量与实证方法。用户侧值得亲手维护的只剩三类：领域角色 agent（独有领域知识）、安全 hook（独有安全边界）、方法论 skill（工作流偏好）；深嵌套刻意受限（两层半），角色扮演式流水线（BMAD）按机制需求译成扁平星型而非照搬组织树。
 
 
+### Claim: Agentic Engineering 是学科，Harness Engineering 是其中"怎么控制 agent"的技术方法；harness 不是 agent、prompt 或 workflow，而是持续回答五个问题的系统
+
+- **来源**：[[Agentic-Engineering：质量与成本一体化]]
+- **首次出现**：2026-05-31
+- **最近更新**：2026-11-24
+- **置信度**：0.65
+- **状态**：active
+- **证据类型**：理论
+
+> 学科层面分三块：Harness Engineering 管 HOW（上下文管理、工具编排、评估循环、安全护栏），FinOps 管 WHO（可见性与归因、预算与策略、持续运营，见 [[cost-per-task]]），质量工程管 WHAT（任务成功率、级联失败防护、上下文腐化防治）。出发点是模型能力已经跨过门槛，挑战从"让模型更强"转向"让系统更稳"：单步 95% 准确、20 步级联只剩 36%，各家模型能力差距缩小后差异来自编排、记忆和工具使用。harness 要持续回答的五个问题：任务怎么定义（Spec、Plan），状态怎么保存（制品、文件），上下文怎么控制（增量、重置），谁来判断好坏（评估、评审 agent），跑偏后怎么修（反馈回写到 Spec 或规则）。
+
+### Claim: 人和 agent 的分工按 Delegate → Review → Own 三档划——可行性分析、脚手架、测试、文档委派出去，架构对齐与安全合规人来审，优先级、新抽象和生产签核人来拥有；开发流程各阶段按这三档配模型和工具
+
+- **来源**：[[Agentic-Engineering：质量与成本一体化]]
+- **首次出现**：2026-05-31
+- **最近更新**：2026-11-24
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：理论
+
+> 七个阶段的配置思路：规划用最强模型（判断最贵），设计和构建用中档模型，测试从小模型起步、失败时升级，评审用强模型，文档用小模型并关闭输出压缩（文档需要详尽），部署从小模型起步、出事时升级。几个要点：测试阶段只输出失败用例的过滤价值最大（全部通过时输出可以从几万 token 降到几个 token）；评审阶段天然适合压缩输出，评论本来就该短而高信号；部署阶段让 MCP 直连日志系统，避免 `tail -200` 一类命令把日志整段灌进上下文。这一档划分也是 [[ai-skill-formation]] 里"写代码交给 AI、想问题定方向验结果留给自己"的流程化版本。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽 Agentic Engineering：新增"学科与方法的关系、harness 的五个问题"和"Delegate → Review → Own 分工"两条。
 - 2026-04-16：Meta-Harness 论文对 Harness 给出了比 LangChain 主流定义更窄、更精确的操作性定义，两者并不矛盾但侧重点不同——前者聚焦信息管道，后者泛指"模型之外的一切"。
 - 2026-04-17：控制论视角引入，将 Harness Engineering 从工程方法论上溯到控制论理论根基。三套框架（控制论五层 / 六层架构 / 三层控制模型）互补：搭系统用六层，调系统用三层，设计决策回控制论。
 - 2026-04-23：InkOS 分析证实 Harness Engineering 范式具有跨领域普适性（从 Coding 扩展到小说创作），核心公式 Agent = Model + Harness 在文学领域同样成立。
@@ -297,3 +320,4 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[Foundry-Toolbox与Skills解析]] — OpenForge 正式定义、Copilot Studio 三 harness、可移植性分层（2026-07-30）
 - [[2026-08-10-周一]] — Harness vs Agent Runtime 正交辨析（面向 model / 面向 infra、两个边界测试）；Copilot Studio 三 harness GA 与"选 harness 即选 runtime"（2026-08-10）
 - [[Agent基础设施系列04：Framework层与三层串联]] — harness 归属三类、何时选 framework / harness、harness 用法与选型表（2026-11-02）
+- [[Agentic-Engineering：质量与成本一体化]] — 学科与方法的关系、五个问题、Delegate → Review → Own

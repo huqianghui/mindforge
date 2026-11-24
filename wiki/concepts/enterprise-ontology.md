@@ -1,7 +1,7 @@
 ---
 title: "Enterprise Ontology"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -117,8 +117,42 @@ related:
 
 > Fabric IQ 的 Graph 与 Microsoft Graph（`graph.microsoft.com`，M365 REST API 网关）完全无关：它是原生 scale-out 图数据库引擎，实现 **Labeled Property Graph（LPG）**模型，查询语言用 ISO 标准 **GQL**（而非 Cypher/GraphQL）。与 Ontology 的分工是"语义层 + 计算层"：Ontology 作为语义路由层，把聚合类查询（KPI/DAX）路由到 Semantic Model、把多跳遍历和图算法路由到 Graph Engine。转换逻辑：关系表每行 → 节点，外键 → 带属性的边；创建 Ontology 时 Graph 作为子项目自动生成。价值边界清晰：单跳查询等价 SQL JOIN 不需要图，3 层以上关系穿越（"订单→发货→温度传感器→冷链违规"）才是 Graph 的主场。当前限制：不随上游自动刷新（需手动/定时）、不支持 Schema 演化（结构变更要重新 ingest）。
 
+### Claim: Palantir Ontology 的四类构件分语义层与动力层——Object Type、Link Type、Interface 描述"有什么、怎么关联、有什么共性"，Action Type 与 Function 描述"能做什么、怎么变"；能读也能写，是它与 BI 语义层的根本区别
+
+- **来源**：[[Palantir-Ontology的工程实践]]
+- **首次出现**：2026-03-18
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：产品与服务
+
+> Object Type 背后对应一个或多个数据集，要定主键、从数据列映射属性（含共享属性、派生属性、结构体）、设细粒度安全控制；Link Type 让本体成为图而不是扁平表，用户能沿关系链导航；Interface 做多态，多个类型共享同一形状时统一描述。Action Type 是写端：参数与校验、提交条件、副作用（通知、Webhook）、由 Function 支撑的批量逻辑，把每一个运营动作（调阀门、批工单、调库存）建模、关联、治理；Function 用 TypeScript 或 Python 写任意复杂的业务逻辑。传统架构里表和视图面向存储、ETL 管道随需求丛生、API 点对点集成 N(N-1)/2、数据湖解决存储没解决语义、BI 语义层只读不写；本体作为单一逻辑层，新应用只需引用已有的对象与动作类型，权限跟着对象走而不是在每个应用里重做。这几类构件和哲学本体论的问题一一对应：有什么存在（Object Type）、之间什么关系（Link Type）、有什么属性（Property）、能对它做什么（Action Type）、怎么变化（Function）、有什么共性（Interface），对照 [[ontology-philosophy]] 的五组范畴映射，Palantir 多出来的正是"动作"这一组。
+
+### Claim: 本体在 AI 平台里承担三件事——把 LLM 的回答锚定在定义好的实体与关系上、把已有业务流程变成 AI 可调用的工具、把 AI 决策带着人工审核与审计写回业务系统
+
+- **来源**：[[Palantir-Ontology的工程实践]]
+- **首次出现**：2026-03-18
+- **最近更新**：2026-11-24
+- **置信度**：0.6
+- **状态**：active
+- **证据类型**：产品与服务
+
+> Palantir AIP 的主张是把 LLM 锚定在企业本体上。三重角色：① 数据锚定，回答基于本体里的实体、属性和关系而不是自由联想，减少幻觉；② 逻辑绑定，已有的业务流程、机器学习模型、优化工具成为 AI 能调用的工具，比如分析供应链风险时直接调用已定义的"重新平衡库存"动作，不用另开接口；③ 动作同步，把决策写回 ERP、排程平台或边缘设备，内置人工审核和完整审计。配套能力是执行前的情景分析、限定边界内的受限自动化、人和 AI 活动的完整记录。这和 agent 平台里"边界内自主 + 审批 + 追溯"是同一套要求，区别是边界由本体里的动作类型定义。
+
+### Claim: Palantir 与 Fabric IQ 都用本体，但定位不同——前者是企业操作系统的核心抽象、读写统一，后者是数据平台的语义统一层、偏重读端
+
+- **来源**：[[Palantir-Ontology的工程实践]]
+- **首次出现**：2026-03-18
+- **最近更新**：2026-11-24
+- **置信度**：0.5
+- **状态**：active
+- **证据类型**：产品与服务
+
+> 按 2026-03 的对照：Palantir 读写统一（Action Type），AIP 深度集成，可写回操作系统，平台封闭、通过 OSDK 对外，客户偏政府、国防和大型企业；Fabric IQ 偏重为分析和 agent 提供语义，Copilot 与 agent 通过本体取上下文，写回能力较弱（Operations Agent 当时在预览），生态开放、与 Power BI 和 Notebook 集成，面向更广的企业用户。这是产品对照，Fabric IQ 的动作能力在之后的版本里可能已经变化，引用前按官方文档复核。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽 Palantir Ontology 工程实践：新增四类构件与读写统一、在 AI 平台里的三重角色、与 Fabric IQ 的定位差别三条。
 - 2026-08-04：回补 Fabric IQ Graph 深潜章节——LPG 引擎、GQL、语义路由/计算层分工、表到图转换与当前限制；页面由 stale 注入新活跃证据。
 - 2026-11-07：/revalidate 全库复核（证据分类）——长效 3、确认 2
 
