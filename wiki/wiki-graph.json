@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-11-23",
+  "generated_at": "2026-11-24",
   "stats": {
-    "nodes": 173,
-    "links": 756,
+    "nodes": 175,
+    "links": 772,
     "orphan_links_removed": 2,
-    "claims": 1037,
-    "categories": 13
+    "claims": 1061,
+    "categories": 14
   },
   "nodes": [
     {
@@ -2347,8 +2347,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 3,
-      "avg_confidence": 0.83,
+      "claims_count": 6,
+      "avg_confidence": 0.72,
       "claims": [
         {
           "statement": "AI 辅助编程降低约 17% 的技能形成",
@@ -2365,12 +2365,12 @@
           "statement": "AI 对不同复杂度工作的影响截然不同",
           "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
           "first_seen": "2026-04-13",
-          "last_updated": "2026-04-13",
+          "last_updated": "2026-11-24",
           "confidence": 0.8,
-          "status": "stale",
-          "evidence": "常规知识工作\"拉高下限\"，复杂决策工作\"放大差距\"。AI 是放大器不是均衡器。",
+          "status": "active",
+          "evidence": "这是论文在相关工作里归纳的已有研究，不是它自己的实验结论：呼叫中心（Brynjolfsson 等 2025，平均多解决 15% 的问题）、咨询（Dell'Acqua 等 2023，多完成 12.2% 的任务）、法律问答和写作中，经验少、技能低的人获益最多，AI 拉高下限；例外是给肯尼亚小企业主用 GPT-4 做经营建议（Otis 等 2024），按营收算的高绩效者结果改善、低绩效者反而恶化，AI 放大差距。我的理解：低门槛执行类任务里 AI 是雪中送炭，高门槛决策类任务里 AI 是放大器，基础能力越强越能驾驭它，缺乏辨别能力时反而会被反噬。",
           "evidence_type": "实测经验",
-          "review": "2026-11-07 待定——依据：论文结论按交互模式分高/低分（65–86% vs 24–39%），未见『常规工作拉高下限、复杂决策放大差距』对应表述，需回到来源笔记核对"
+          "review": "2026-11-24 修订——依据：[How AI Impacts Skill Formation](https://arxiv.org/abs/2601.20245) §2.1 相关工作原文，这一结论来自论文引用的其他研究，不是本文实验；11-07 的\"待定\"是只查了实验结果部分"
         },
         {
           "statement": "Vibe Coding 超越了论文实验设定",
@@ -2382,6 +2382,39 @@
           "evidence": "Vibe Coding 是纯 prompt-and-spec 驱动编程（人类写零代码），进入 Agentic AI 自主编程领域，与论文中的 AI 辅助编程完全不同。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-07 长效——依据：库内无矛盾（查过：wiki/ paper/ Notes/ 中同主题页与来源文章 git log，2026-04 后仅有标题精简/链接格式类改动，无反向结论）"
+        },
+        {
+          "statement": "论文的六种 AI 使用模式不是六种人，而是同一个工作流里不同阶段的选择——问题不是\"你是哪种人\"，而是\"什么时候用什么模式\"",
+          "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "论文把 35 分钟实验里的参与者归成六种画像：低分组是认知卸载（AI 委托、渐进依赖、迭代调试），高分组是认知参与（先生成后理解、混合代码解释、概念查询）。真实项目里一个人一天之内会在这些模式之间切换，对应不同阶段：架构设计用概念查询（只问原理和权衡，自己做决策）；写 Spec 和 Prompt 用混合解释（同时要方案和原理）；脚手架和 CRUD 用 AI 委托（低价值执行层完全交出去）；代码评审用先生成后理解（AI 先总结，人追问关键逻辑）；排错时避开迭代调试型（先自己诊断是 Spec 哪里偏了，再精准改 Prompt）。原则是写代码的体力活交给 AI，想问题、定方向、验结果的脑力活留给自己。这是我对论文结论的重新编排，不是论文的结论。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "当 agent 能写全部代码时，论文保留的三个评估维度要重新定义——概念理解用来写 Spec，代码阅读改成设计验证体系，调试改成诊断 Prompt 与 Spec 的偏差",
+          "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "论文测验特意排除了写代码题（语法错误 AI 能轻易纠正），保留概念理解、代码阅读、调试三类。概念理解仍然必要：不懂异步并发原理，就写不出\"用 memory channel 处理并发\"这样的约束；但评估标准应从\"答得出 API 细节\"变成\"能设计出让 AI 正确实现的约束\"。代码阅读在 agent 瞬间生成大量代码时，靠人逐行评审不现实，要靠 TDD、Spec 驱动自验、CI（lint、格式、类型检查、测试）、AI 互审、端到端测试组成的验证体系，人从代码阅读者变成验证体系设计者。调试的形态也变了：从\"读报错、定位行、修逻辑\"变成\"分析输出偏差、判断是 Spec 不够精确、Prompt 缺约束还是模型能力边界，再修正约束\"。论文发现调试能力受损最严重，这一点在新定义下仍要警惕。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "监督扩展的护栏可以分层工程化，人只守最后一层——但新人、新领域、安全关键系统、商业建议四种情况下论文的警告仍然直接成立",
+          "source": "2026-03-18-How-AI-Impacts-Skill-Formation",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "论文的警告是：AI 越强、生成的代码越复杂，人理解代码的能力却在变弱，监督就越难，人就是最后那道护栏。它暗含的假设是\"护栏等于人亲自读代码\"。护栏可以分四层：L1 自动护栏（CI 的 lint、测试、类型检查），L2 AI 护栏（AI 评审、不同模型互相挑错），L3 流程护栏（TDD、Spec 对照验证），L4 人类护栏（架构审查、安全关键路径的人工审计）；人只需守住 L4。用 AI 审 AI 有三个条件：要求解释而不只给结论（高层总结、架构拆解、原理）、引入不同模型的辩论、人保留最终裁判权。论文的结论仍直接有效的四种情况：新人培训（先建立概念与调试基础，不要过早只靠 prompt 编程）、进入全新技术领域（用概念查询而非委托）、医疗金融航空等安全关键系统（L4 必须足够厚）、AI 给经营或战略建议时（低绩效者盲信反而恶化）。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -4949,8 +4982,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 7,
-      "avg_confidence": 0.77,
+      "claims_count": 10,
+      "avg_confidence": 0.75,
       "claims": [
         {
           "statement": "Agent 与控制系统是结构同构，不是类比",
@@ -5027,6 +5060,39 @@
           "status": "active",
           "evidence": "物理世界落地形态普遍是 bounded autonomy（信息理解→人工审核→边界内自动执行），与软件 Agent 权限模型（read-only→approval→auto-accept）完全同构；L4 自动驾驶把\"知道自己不知道\"工程化——perception confidence 低于阈值即主动降级/fallback/Minimal Risk Maneuver，ODD 边界安全退出比\"开得更好\"更难也更关键（负反馈的边界条件设计）。MPC（Model Predictive Control）\"规划一长段、执行一小段、再重规划\"是 receding horizon 闭环——2026-09-17 裁决不为其单独建页、归口控制论概念族的第二次证据来源；机器人系统的七角色分解中，控制与安全两个角色是\"实现从手工设计换成学习得到\"这场替换里最稳定的锚。",
           "evidence_type": "",
+          "review": ""
+        },
+        {
+          "statement": "Cybernetics 与 Kubernetes 同出\"舵手\"，Harness 出自\"马具\"——前者讲调节一个可观测的系统，后者讲利用一股不完全可控的力量；所以 harness 是柔性控制，要多层防线叠加",
+          "source": "控制论相关概念澄清",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Cybernetics 和 Kubernetes 共享古希腊词根 κυβερνήτης（舵手），核心隐喻是\"在复杂环境中保持航向\"，不是控制世界。Kubernetes 可以看作控制论在软件工程里的实现形态：controller 是\"观察当前状态 → 对比目标状态 → 调整\"的反馈闭环，声明式 API（如 `replicas: 3`）是\"设定约束 + 反馈调节\"而不是直接操作，自愈是稳态维持（homeostasis）。Harness 的本义是给马套上装备拉车，引申为把已有的力量利用起来，前提是系统可以不理解但要能用。两者在 agent 工程里的差别：经典控制面对确定性系统、控制回路可靠、精确纠偏；harness 面对概率性的模型、反馈不稳定，只能\"限制 + 引导 + 利用\"。因为每一层（prompt、tool、eval、retry、memory、guardrails）都不是 100% 可靠，才需要多层叠加达到工程可用的稳定性。Kubernetes 一侧的具体机制见 [[reconciliation-loop]]。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "先分清 Regulation 与 Optimization——优化回答\"怎样最好\"，调节回答\"偏了怎么办\"；做 agent 先问 Governance（边界），再问 Regulation（维持什么），然后才是 Control 与 Orchestration",
+          "source": "控制论相关概念澄清",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "Optimization 假设目标已定义、环境相对稳定，追求最小 loss 或最大 reward，失败模式是局部最优；Regulation 假设环境持续扰动、目标可能漂移，追求在变化中维持可接受的行为，失败模式是约束不足导致漂移。用优化思维做 harness（只盯 prompt 优化和单次生成质量），长任务里系统会失控，因为优化不回答\"偏了怎么办\"；调节思维从一开始就围绕\"什么会偏（扰动）→ 怎么发现偏了（反馈）→ 怎么纠偏（调节器）\"。四个常被混用的词各有所指：Governance 定义边界（guardrails、权限），Regulation 维持目标状态（eval → retry、反馈闭环），Control 是具体施力（改写 prompt、拦截工具），Orchestration 是多组件的协同顺序。不要把所有问题都当 Control 问题（\"怎么让 agent 听话\"），按 Governance → Regulation → Control → Orchestration 的顺序问。与 [[requisite-variety]] 的\"调节不会完成\"是同一立场。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "判断一个机制属于控制还是学习看四条——改不改参数、时间尺度、有没有稳定性保证、目标是当前任务还是模型本身；落到工程上的优先级是 Harness-First，离线训练次之，在线学习和 RL 最后",
+          "source": "控制论相关概念澄清",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "四条规则：改参数是学习、不改是控制；即时纠偏是控制、长期优化是学习；有稳定性保证是控制、没有是学习或优化；目标是当前任务成功是控制、是模型变强是学习。训练看起来也是\"输出 → 误差 → 修正\"，但它是优化问题（最小化 loss）而不是控制问题（稳定输出）：修正的是参数而不是输入，跨数据分布而不是当前 step，通常离线，也不保证稳定（可能发散、过拟合）。理论上训练可以建模为最优控制（参数为状态、梯度为控制量、loss 为代价），但工程上这个统一视角反而误导设计。统一起来是三层：控制层（运行时、不改参数：prompt、tool、eval、retry、memory、guardrails）、在线学习层（运行时、改参数、双回路，见 [[online-learning]]）、训练层（离线、改参数：预训练、SFT、RLHF、DPO）。当前绝大多数 LLM agent 只工作在控制层、偶尔用离线训练，极少做在线学习，这是务实而不是落后；所以优先级是 Harness-First > 离线训练 > 在线学习 > RL，不要连 harness 都没做好就想用 RL 学策略。这是 2026-04 的判断，之后 wiki 里 [[reinforcement-learning]] 与 agent-lightning 一线积累了不少 RL 实践，\"RL 最后\"指的是投入顺序，不是 RL 没用。",
+          "evidence_type": "理论",
           "review": ""
         }
       ]
@@ -8619,8 +8685,8 @@
       "category": "AI Agent 理论与架构",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.77,
+      "claims_count": 5,
+      "avg_confidence": 0.76,
       "claims": [
         {
           "statement": "负反馈是 Agent 的\"灵魂\"——没有 error function 就没有系统",
@@ -8665,6 +8731,17 @@
           "evidence": "收敛性 = 约束强度 × 反馈频率 / 执行自由度。反馈频率不足会导致系统 drift，频率越高越容易收敛。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-16 确认——依据：来源 [[Claude-Code系列07：Harness分层架构]]（2026-10-14 修订），修订后原文仍含本条的数字与结论"
+        },
+        {
+          "statement": "负反馈和 reward 不是\"两种反馈形式\"——负反馈是纠偏信号、改的是输入、当步生效，reward 是训练信号、改的是参数、影响未来的行为分布",
+          "source": "控制论相关概念澄清",
+          "first_seen": "2026-04-17",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "常见误解是\"控制论 = 负反馈、RL = 奖励函数，都是反馈\"。差异在作用层级：负反馈是 error → correction（`u = -K × error`），修正 prompt、工具、流程这些系统输入，当前 step 立即生效，不改模型；reward 是标量信号 → 策略梯度（`θ ← θ + ∇reward`），修正参数，作用在未来的行为分布上。一个在外面纠偏，一个在里面改脑子。实际系统里两者分两层：快回路是运行时控制（prompt shaping、tool routing、eval 反馈、retry、guardrails），目标是当前任务成功；慢回路是训练优化（reward modeling、policy optimization），目标是模型本身变强。所以 memory、RAG、self-reflection 都不改参数，属于快回路的高级 harness，不是学习。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -8973,7 +9050,7 @@
       "id": "ontology-philosophy",
       "type": "concept",
       "title": "Ontology (Philosophy)",
-      "summary": "本体论（Ontology）是哲学中研究\"存在本身\"的分支，从 Parmenides 将\"Being\"本身作为核心研究对象开始，延伸到 Aristotle 的\"Primary Substance / Secondary Substance\"层级——直接预示了计算机本体论中的\"instance vs class\"。存在主义是对传统本体论的叛逆，将焦点从宇宙客观起源转向个体主观处境。",
+      "summary": "本体论（Ontology）是哲学中研究\"存在本身\"的分支，从 Parmenides 将\"Being\"本身作为核心研究对象开始，到 Aristotle 的范畴论与\"Primary Substance / Secondary Substance\"层级，再经共相之争、康德的批判转向和海德格尔的存在论差异。计算机科学把它收窄为\"某个领域知识的形式化规范\"（Gruber 1993、OWL），共相、性质、第一实体、本质定义、范畴关系分别成为类、属性、实例、约束和关系。另一条线索是当代转折：存在主义把焦点从宇宙的客观本源转向个体的处境，在虚无主义之后回答\"人怎样为自己的存在赋予意义\"。",
       "tags": [
         "wiki",
         "concept",
@@ -8984,8 +9061,8 @@
       "category": "数据本体论（Ontology）",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 4,
-      "avg_confidence": 0.68,
+      "claims_count": 12,
+      "avg_confidence": 0.65,
       "claims": [
         {
           "statement": "哲学三个递归层次映射\"灵魂三问\"",
@@ -9030,6 +9107,94 @@
           "evidence": "\"唯心 vs 唯物\"二分是西方框架；中国哲学（如道家\"道\"）不完全符合这一分类。",
           "evidence_type": "理论（长效）",
           "review": "2026-11-07 长效——依据：库内无矛盾（查过 ontology-philosophy、西方本体论的当代转折）；属学术上有争议的概括，置信度 0.5 已合适"
+        },
+        {
+          "statement": "计算机本体论是把\"关于一切存在的追问\"收窄成\"关于某个领域知识的形式化规范\"——Gruber 的定义四个词各有哲学对应",
+          "source": "本体论：从哲学到计算机科学",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "哲学本体论问\"存在者有哪些基本类型、本质属性是什么、彼此有什么关系、如何分类、什么是必然的\"，计算机本体论把同样的问题换成\"一个领域有哪些概念、有哪些属性、如何关联、如何构建分类体系、有哪些约束\"。转折点有三个：1970~1980 年代 AI 知识表示的需求；Tom Gruber 1993 年的定义\"本体论是一个共享的概念化的形式化、明确的规范说明\"——conceptualization 对应柏拉图的理念（超越感觉的抽象概括），shared 对应亚里士多德的共相（不是个人主观想法），explicit 对应\"属加种差\"的定义，formal 是从自然语言到机器可处理的逻辑符号的飞跃；2000 年代 W3C 的 OWL，OWL 2 的类、属性、个体、数据值直接映射传统本体论范畴。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "五组哲学范畴对应五种建模元素——共相到类、性质与偶性到属性、第一实体到实例、本质定义到约束、范畴关系到关系；没有关系，类只是孤立的标签",
+          "source": "本体论：从哲学到计算机科学",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "共相与种属对应类（Class）：都是\"一对多\"，种属层级\"动物 > 哺乳动物 > 人\"对应子类继承，\"属加种差\"的定义方法启发了继承结构。性质与偶性对应属性：性质范畴（红色、坚硬）是数据属性，关系范畴（大于、属于）是对象属性，本质属性与偶然属性对应必要与可选属性。第一实体（这一匹马）对应实例，殊相不可被多个对象共享，实例是知识库的事实层，类和属性是模式层。本质定义对应约束：基数、值域、不相交、存在约束，以及传递、对称、函数性这类逻辑公理。范畴关系对应关系：部分—整体对应 part-of、种属对应 is-a / subClassOf、实例化对应 instanceOf、因果对应 causes。上面\"Substance 层级预示 instance vs class\"一条只是其中第三组，这一条是完整的映射。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "设计本体时要带着四条哲学教训——不要把模型当成现实（康德），分类依赖视角（海德格尔），定义要严格（亚里士多德），抽象有价值也有局限（柏拉图）",
+          "source": "本体论：从哲学到计算机科学",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "康德把本体论改成\"先验分析论\"：我们只能认识现象，不能认识物自体，十二范畴是人的认识能力的结构而不是存在者的分类——所以本体是对领域的一种建模，不是领域本身。海德格尔的存在论差异（存在不是一个存在者）和三种存在方式（工具的上手状态、对象的现成状态、人的生存）提醒分类方式取决于怎么与事物打交道。中世纪的共相之争（实在论、唯名论、概念论）留下的问题是\"分类是发现还是发明\"，至今仍是建本体时要回答的。计算机本体论做的事和亚里士多德一样——给一个领域的存在者分类、界定本质属性、描述关系，区别只在范围。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "本体论向外问\"世界作为整体是什么\"，存在主义向内问\"我作为一个人的存在意味着什么\"——后者是前者在人的主体性上的演变与反叛",
+          "source": "西方本体论的当代转折",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "本体论寻找万物最普遍、最客观的本源（水、火、原子、道、理念），试图确立事物的本质；存在主义（萨特、加缪、海德格尔）不再追问宇宙的客观本源，而是聚焦人自身的处境，强调自由意志、选择，以及在荒诞的世界里主动构建意义。两者都围绕\"存在（Being）\"展开，存在主义借用了本体论关于存在的讨论，再把它转成对个体生命体验的关怀。\"To be or not to be\"也能这样分两层读：作为人生感叹属于实践论，作为\"存在还是不存在\"的追问则回到巴门尼德\"存在者存在，非存在者不存在\"。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "纯存在和纯虚无单独都无法定义，只有在相互转化的\"变易\"里意义才浮现——这也暴露了非此即彼的二元思维的局限",
+          "source": "西方本体论的当代转折",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "巴门尼德认为虚无不可思议、不可言说，但这不妨碍定义存在，存在是唯一可以用理性完美把握的东西。黑格尔在《逻辑学》里指出：把一切具体属性剥掉，只剩最纯粹的\"存在\"时，它就没有任何规定性了，这和\"纯虚无\"是一回事；只有存在与虚无相互转化、形成\"变易\"（Becoming），事物才有了确定的规定。我自己的追问是：如果存在与虚无相对、虚无无法定义，存在是否也无法定义？这正好暴露了西方\"非此即彼、二元对立\"思维的局限，黑格尔用辩证法部分回应了这个困境。与上面\"中国哲学倾向整体非二元思维\"一条是同一个方向。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "\"存在先于本质\"对人成立，对人造物反过来，对自然物则要以人为标尺；去掉造物主假设后，\"预先设定的本质\"只能由人的意识来设定",
+          "source": "西方本体论的当代转折",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "萨特的区分：人造物本质先于存在（杯子的用途在制造之前就在设计者心里）；自然物要以人为标尺才有本质（没有人的意识参与，苹果只是物理存在）；人是存在先于本质（先来到世界，本质由后天的自由选择塑造）。我的理解：传统认为万物都有先天本质，是因为预设了上帝造物——上帝造物前已在心中设定好本质；\"上帝已死\"之后这个外部标尺没了，所谓预先设定的本质，唯一的设定者只能是人的意识。萨特说人的本质也是\"虚无\"的，意思不是空无，而是人没有固定不变的本质，本质随每一次选择不断被创造、否定和改变。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "西方本体论的当代转折是从\"认识存在者\"回到\"领会存在\"——传统哲学遗忘了存在，近代理性主义把人变成了上帝，转折的方案是回到生存与存在的显现",
+          "source": "西方本体论的当代转折",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "来自王德峰教授的讲座。海德格尔指出西方哲学抓住了存在者的规定、遗忘了存在本身：存在不是事物的一种普遍属性，就像鱼感知不到水，只能对照虚无才显现，所以存在不能被\"认识\"，只能被\"领会\"。转折的时代背景是虚无主义：尼采宣告上帝死了，科学理性和资本扩张解决不了罪责感、良心不安这类深层困惑，成不了安身立命的根本。对人类中心主义的批判：古代人因分享神性获得尊严，近代笛卡尔\"我思故我在\"之后，人凭理性把原来归于上帝的至高无上收归自己，试图用理性规定和控制一切，这种自满恰恰导致\"存在的遮蔽\"。方案是海德格尔的基础本体论：人的生存先于认知和理性（两个人相爱，首先是在生存中真切地打交道，理性只是事后的表达），以及倾听存在的显现——原初的真理是\"无蔽\"（aletheia），像面对伟大艺术作品时那种无法用逻辑反驳的震撼。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "旧的意义体系崩塌之后，存在主义给出的安身立命顺序是——接受世界无意义、自我创造意义、经过骆驼到狮子到婴儿的进阶、把自由当作绝对责任、像西西弗斯一样反抗",
+          "source": "西方本体论的当代转折",
+          "first_seen": "2026-04-13",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "第一步是直面无意义：尼采的上帝已死、萨特的人被\"抛\"到荒诞世界、加缪的人渴望意义而世界给不出（荒诞感）；处理不好就陷入消极虚无主义。第二步是萨特的答案：人生没有既定剧本，安身立命的基础是通过每一次选择不断定义的真实自我，而不是社会赋予的角色。第三步是尼采的积极虚无主义三阶段：骆驼（逆来顺受地背负）、狮子（质疑被奉为权威的道德与真理）、婴儿（自己给自己定规则、赋予人生意义）。第四步：自由意味着责任，任何处境下都至少能选择应对的心态，\"别无选择\"是自欺。第五步：加缪的西西弗斯改变不了命运，但能决定面对命运的态度，攀登本身就足以充实人心——找一件自己喜欢的事，沉浸其中并赋予它意义。整条线索是从\"世界是什么\"（古典本体论），到\"无法完全认识世界\"（康德），到\"旧的意义体系崩塌\"（尼采），到\"重新理解存在本身\"（海德格尔），再到\"人必须自己为存在赋予意义\"（萨特、加缪）。",
+          "evidence_type": "理论",
+          "review": ""
         }
       ]
     },
@@ -9491,6 +9656,80 @@
       ]
     },
     {
+      "id": "presentation",
+      "type": "concept",
+      "title": "Presentation（演讲与表达）",
+      "summary": "演讲要解决的核心问题是**听众只能一棵树一棵树地看森林**：写演讲的人看得到全局，听众每次只看到一张幻灯片，又没法回头翻，各部分之间的关系要是没讲清，就只能自己去拼，于是走神、打断或者忙着找失落的那一环。杰瑞·魏斯曼《演讲大师课》第 1 册《说的艺术》的回答是先把结构定下来再呈现：用\"罗马石柱\"指撑起整场演讲的几个要点，用 16 种**叙述结构**（Flow Structures）决定石柱的先后，开头用 7 种开场白把人拉进来，石柱之间用 7 种外部串词和 5 种图表串联保持连贯。\n\n本页收这个领域的论断；把它变成可执行的准备步骤见方法页 [[presentation-preparation]]。来源是我读魏斯曼系列的笔记，以及我把这套方法做成 PPT 前置讨论 skill 的实践。四册都翻过，笔记以第 1 册为主，第 2 册（回答尖锐提问）和第 4 册（台上的表达）还没有整理。",
+      "tags": [
+        "wiki",
+        "concept",
+        "presentation",
+        "communication"
+      ],
+      "category": "沟通与表达",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 5,
+      "avg_confidence": 0.67,
+      "claims": [
+        {
+          "statement": "先定结构再呈现，是因为听众看不到森林——让听众自己拼结构，就会走神、打断或者忙着找失落的一环",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "写演讲的人看得到整片森林，听众像站在林中，每次只能看到一棵树、一张幻灯片。每一棵树都能讲得绘声绘色，但如果没有说清它和前一棵的联系，听众只能推测，又没有机会回头再看。结果是三种情况：目光呆滞、打断要求解释、不再专心听而去找失落的那一环，三种都不好。书里的结论是\"千万别让听众思考\"——这里的思考指让听众自己拼结构。所以要先理清各部分的关系再呈现，带听众俯瞰全景。这和写文章不同：文章读者可以回翻，演讲听众不能，演讲对结构的要求更高。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "16 种叙述结构按用途可分四组——按顺序排、按论证排、按展示排、按组织排；数字榜单型最省事也最难记",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "书里按编号平铺 16 种，作者认为几乎囊括了所有可能碰到的演讲话题。按用途分四组是我自己的归类：按顺序排（模块、历时、物理、空间）适合内容本身有先后或位置，听众最容易跟上；按论证排（问题-解决、议题-对策、机遇-手段、以退为进）用来说服别人接受一个判断；按展示排（形式-功能、特色-利益、案例研究、比较-对比、矩阵图表）用来把一个东西讲清楚；按组织排（平行结构、自问自答、数字榜单）用于要点之间关系松散、靠形式组织的时候。数字榜单型（\"三件事\"\"四块缺口\"）最顺手，但把联系不密切的点并列，最不容易让人记住；要点之间能找到先后或因果关系时，换成历时型或问题-解决型。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "技术写作里常用的几种结构都对得上书里的名字——演进用历时型、排障用问题-解决型、选型用比较-对比型、多维对照用矩阵图表型",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "对照我自己写系列文章和做分享的习惯：讲 AI 的演进几乎都是历时型，排障文章里的时间线也是；排障文章的骨架\"现象、原因、修法\"是问题-解决型；选型文章和\"A 与 B 的分工\"是比较-对比型；多维对比表是矩阵图表型。没意识到但也在用的：系列导读里\"每篇都能单独读\"是模块型，\"一个请求从浏览器到后端要过哪几道\"的图是物理型，分层架构图是空间型，\"还缺哪些\"接\"我会怎么做\"是议题-对策型。这条是我自己写法的归类，不是书里的论断；书给了名字，也说明了为什么这样排有效。",
+          "evidence_type": "实测经验",
+          "review": ""
+        },
+        {
+          "statement": "开场白有 7 种，写文章常用陈述式和轶事式，现场更该用提问式和类比式",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "7 种经过实战检验的开场：提问式、陈述式（惊人的数据或鲜为人知的事实）、回顾/前瞻式、轶事式（简短温暖的小故事）、引证式（可靠来源的一段话）、格言警句式、类比式（借两种看似不相关的东西理清复杂主题）。开场的作用除了引起注意，也让讲的人以舒服的对话形式开始。我写文章最常用的是陈述式（一个实测数字）和轶事式（一件刚发生的小事），讲 AI 演进时自然用回顾/前瞻式；提问、引证、格言、类比四种在文章里几乎没用过，但在现场更好用，尤其是开场直接提一个问题，让听众先在心里给出自己的答案。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "外部串词把内容和眼前这群人连起来，是演讲比文章多出来的一层；图表串联五种技巧与系列文章的路线图、状态配色、编号数据流一一对应",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "7 种外部串词：直接指称（点名听众中的人）、间接指称（提到与双方都有关的人、公司或组织）、提问、时事化、当地化、引用资料、量身定制开场页（写有听众、地点和日期）。写文章时只用得上时事化和引用资料；点名、提问、当地化只有现场才有，把文章直接搬上台讲最容易丢掉的就是这一层，所以准备时就要想好在哪根石柱上用。5 种图表串联技巧和我画图的规范对得上：缓冲页对应导读和每节开头的总图；色标或索引对应固定配色（已完成青绿、进行中琥珀）；符号对应图里 ①②③ 标数据流、正文按编号解释；基准项对应每写一篇就加一站的系列路线图；预期空间对应路线图上灰色虚线的\"规划中\"几站。",
+          "evidence_type": "实测经验",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "process-reward-model",
       "type": "concept",
       "title": "过程奖励模型（PRM, Process Reward Model）",
@@ -9559,8 +9798,8 @@
       "category": "Azure 与云平台",
       "method_type": null,
       "decision_status": null,
-      "claims_count": 5,
-      "avg_confidence": 0.67,
+      "claims_count": 7,
+      "avg_confidence": 0.65,
       "claims": [
         {
           "statement": "qmd 与 Foundry IQ 定位不同",
@@ -9615,6 +9854,28 @@
           "status": "active",
           "evidence": "传统 RAG 是固定 pipeline：检索一次再生成。AgenticRAG 把检索做成 agent loop：Search 广度召回（每次至多 10 条候选、默认 5 路子查询并行），Find 在指定文档内定位片段，Open 从行号起读整段原文，Summarize 在上下文接近上限时压缩并保留引用 ID。BRIGHT 数据集上 Claude Sonnet 4.5 从单次检索 8.41% R@1 提到 49.6%（Oracle 上限 94%），推理时集成、不需训练。与 Azure AI Search Agentic Retrieval 的分工对应：搜索引擎只负责召回，\"读不读、读哪段、要不要再搜\"交给模型。论文精读，数字为论文报告值。",
           "evidence_type": "理论（长效）",
+          "review": ""
+        },
+        {
+          "statement": "消融说明多轮自主检索是唯一带来质变的因素——多子查询、文档内定位、上下文压缩都只是效率或可扩展性优化；落地按复杂度路由、设迭代上限",
+          "source": "2026-05-28-AgenticRAG",
+          "first_seen": "2026-05-28",
+          "last_updated": "2026-11-24",
+          "confidence": 0.65,
+          "status": "active",
+          "evidence": "消融结果（BRIGHT，R@1）：只允许一次 Search 时 8.41%，是 5.9 倍差距的来源；禁用多子查询 44.84%，召回不降但工具调用多 29%（并行子查询是\"用更少轮次覆盖更多\"）；禁用语义 Find 46.34%，影响很小；禁用 Summarize 43.34%，对精度没有影响，但长文档、多跳推理时不压缩会溢出 128K 上下文。代价是 token 开销 2.6~7.8 倍，换 5.9 倍召回，作者判断 ROI 为正。落地建议：简单问题仍走单次 RAG（快且便宜），复杂问题走 agentic 流程；先实现多轮检索，再加并行子查询；设迭代上限（论文是 15 轮）并监控 token。定位上它是 ReAct（自主调工具）、PlanRAG（子任务规划）、Self-RAG（自反思）的融合，区别是零训练、兼容企业搜索；Search-R1 这类要用 RL 训检索策略。Summarize 这一步就是 agent 的上下文压缩，适用条件见 [[context-engineering]]。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "Azure AI Search 的 Agentic Retrieval 只落地了论文里的查询规划与并行子查询——文档内深读、中途压缩、有界循环要自己用编排层补",
+          "source": "2026-05-28-AgenticRAG",
+          "first_seen": "2026-05-28",
+          "last_updated": "2026-11-24",
+          "confidence": 0.55,
+          "status": "active",
+          "evidence": "按 2026-05 读论文时的对照：LLM 查询规划（问题拆解）和多子查询并行检索是 Agentic Retrieval 原生内置的；Find / Open 这种文档内动态定位与翻页要用 Function Calling 加 Blob 读取自己做（产品返回的是段落）；Summarize 只有对话历史摘要，没有任务中途压缩；\"最多 15 轮\"的有界循环要靠外部编排（Copilot agent 或 Semantic Kernel）。论文与产品可以看作同一方向的研究与产品两条线，产品先落地了召回侧。这是产品功能对照，Agentic Retrieval 之后的版本可能已补上部分能力，引用前要按官方文档复核。",
+          "evidence_type": "产品与服务",
           "review": ""
         }
       ]
@@ -13487,6 +13748,46 @@
       ]
     },
     {
+      "id": "presentation-preparation",
+      "type": "method",
+      "title": "Presentation Preparation",
+      "summary": "做幻灯片之前先把一场演讲想清楚的流程，按魏斯曼《演讲大师课》第 1 册的方法组织：贯穿始终的是**四个关键问题**——目的是什么、听众是谁和他们的诉求、罗马石柱是什么、为什么按这个顺序排（选哪种叙述结构）。步骤是先做框架表格、头脑风暴、把素材归类成石柱，再选叙述结构排序，最后准备开场与串联。作者每次审客户的演讲稿，什么都不看先问这四个问题。\n\n我把这套流程做成了 PPT 生成之前的讨论 skill（`presentation-prep`），分十个阶段和用户逐个确认，产出演讲简报和逐页大纲，再交给 PPT 生成 skill。",
+      "tags": [
+        "wiki",
+        "method",
+        "presentation"
+      ],
+      "category": "",
+      "method_type": "workflow",
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.65,
+      "claims": [
+        {
+          "statement": "每次准备演讲都从四个问题开始——目的、听众与诉求、罗马石柱、为什么是这个顺序；前两个容易想到，后两个才决定结构",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.7,
+          "status": "active",
+          "evidence": "作者审客户演讲稿时什么都不看、不听，先问这四个问题，建议读者每次演讲都先问自己并一一回答。对照我自己：准备得好的分享都先回答过前两个问题（讲给领导是要他对技术路线有判断还是要资源；同一个 agent runtime，平台架构师、安全团队、业务负责人关心的不同），只是没写下来。后两个以前想得少：习惯先堆材料、一边写一边调顺序。书里的顺序是倒过来的——先归类出石柱、选好结构，再往石柱里填材料，这样不容易写到一半发现两节在讲同一件事。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "这套准备流程适合做成\"先提问、确认再往下\"的分阶段 skill，放在 PPT 生成之前",
+          "source": "",
+          "first_seen": "2026-11-22",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "十个阶段（场合、目的、听众与诉求、主线问题、头脑风暴、罗马石柱、叙述结构、开场白、串联与收尾、逐页大纲），一次只推进一个：先听用户说，再给草案和追问，用户确认了才往下；讨论中简报实时写进 `briefs/<日期>-<题目>.md`。另有审稿模式：给已有的 PPT、大纲或文章，按书里的做法诊断并给出按影响排序的改进建议。这正是 [[skill-pattern]] 里的 Inversion 模式（输入控制，先提问再行动），用来避免\"直接生成一份看起来完整、但目的和结构没想清楚的 PPT\"。skill 已发布，可在 Claude Code、Codex 与 Claude 桌面端安装；还没有用它准备过一场真实演讲，置信度先给 0.6。",
+          "evidence_type": "实测经验",
+          "review": ""
+        }
+      ]
+    },
+    {
       "id": "programmatic-video",
       "type": "method",
       "title": "Programmatic Video",
@@ -15916,6 +16217,18 @@
       "description": "技能形成影响与一人团队模式的张力"
     },
     {
+      "source": "ai-skill-formation",
+      "target": "spec-driven-development",
+      "relation_type": "uses",
+      "description": "概念理解的新用途是写出精准的 Spec，代码阅读让位于 Spec 驱动的验证体系"
+    },
+    {
+      "source": "ai-skill-formation",
+      "target": "harness-engineering",
+      "relation_type": "constrains",
+      "description": "新人、新领域、安全关键场景下不能把验证全部交给 harness"
+    },
+    {
       "source": "architecture-testing",
       "target": "harness-quality-gate",
       "relation_type": "part-of",
@@ -16384,6 +16697,12 @@
       "description": "压缩后从磁盘重新注入指令，与\"压缩 + 完整日志按需取回\"同一思路"
     },
     {
+      "source": "context-engineering",
+      "target": "rag-architecture-comparison",
+      "relation_type": "part-of",
+      "description": "供应链里\"即时检索\"那一段的架构选择，含 agentic 检索"
+    },
+    {
       "source": "context-explosion",
       "target": "context-engineering",
       "relation_type": "constrains",
@@ -16646,6 +16965,30 @@
       "target": "skill-runtime",
       "relation_type": "contrasts",
       "description": "Skill Runtime 对应控制论中缺位的 L5 状态观测层"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "negative-feedback",
+      "relation_type": "part-of",
+      "description": "负反馈是控制论的核心机制之一"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "reconciliation-loop",
+      "relation_type": "implements",
+      "description": "Kubernetes controller 的调和循环是控制论反馈闭环的工程形态"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "online-learning",
+      "relation_type": "part-of",
+      "description": "四概念辨析里的一档：控制层不改参数，在线学习把控制器写进模型内部（自适应控制）"
+    },
+    {
+      "source": "cybernetics-agent-design",
+      "target": "requisite-variety",
+      "relation_type": "grounds",
+      "description": "Regulation 立场与约束维度匹配不确定性的定律依据"
     },
     {
       "source": "data-flywheel",
@@ -17126,6 +17469,12 @@
       "target": "agent-harness",
       "relation_type": "grounds",
       "description": "本页讲怎么把 harness 做好；harness 是什么、归谁、与 framework / runtime 的边界见 agent-harness"
+    },
+    {
+      "source": "harness-engineering",
+      "target": "ai-skill-formation",
+      "relation_type": "constrains",
+      "description": "护栏可以分层工程化，但新人、新领域、安全关键场景下人这一层不能变薄"
     },
     {
       "source": "harness-engineering",
@@ -17812,6 +18161,18 @@
       "description": "推理并行（vLLM/SGLang TP/PP，无 backward）与训练并行的本质区别"
     },
     {
+      "source": "presentation",
+      "target": "presentation-preparation",
+      "relation_type": "produces",
+      "description": "本页的论断落成可执行的准备步骤"
+    },
+    {
+      "source": "presentation",
+      "target": "skill-pattern",
+      "relation_type": "uses",
+      "description": "准备流程做成 skill 时用的是 Inversion 模式：先提问、确认再往下"
+    },
+    {
       "source": "process-reward-model",
       "target": "reinforcement-learning",
       "relation_type": "part-of",
@@ -17854,6 +18215,12 @@
       "description": "该决策从个人知识管理角度论证 Wiki 优于 RAG 的选型逻辑"
     },
     {
+      "source": "rag-architecture-comparison",
+      "target": "context-engineering",
+      "relation_type": "part-of",
+      "description": "RAG 是上下文供应链里\"即时检索\"那一段；agentic 检索里的 Summarize 就是上下文压缩"
+    },
+    {
       "source": "react-paradigm",
       "target": "agent-paradigms",
       "relation_type": "part-of",
@@ -17888,6 +18255,12 @@
       "target": "agent-runtime",
       "relation_type": "part-of",
       "description": "agent runtime 的回收与对账靠调和循环兜底"
+    },
+    {
+      "source": "reconciliation-loop",
+      "target": "cybernetics-agent-design",
+      "relation_type": "implements",
+      "description": "Kubernetes controller 是控制论反馈闭环在软件工程里的实现形态"
     },
     {
       "source": "reconciliation-loop",
@@ -18262,6 +18635,12 @@
       "description": "Skill Pattern 是 Harness 设计的认知层"
     },
     {
+      "source": "skill-pattern",
+      "target": "presentation-preparation",
+      "relation_type": "implements",
+      "description": "演讲准备 skill 是 Inversion 模式的实例：先提问、确认再往下"
+    },
+    {
       "source": "skill-runtime",
       "target": "agent-runtime",
       "relation_type": "contrasts",
@@ -18392,6 +18771,12 @@
       "target": "spec-driven-vs-methodology-framework",
       "relation_type": "part-of",
       "description": "规范驱动开发相关的框架取舍"
+    },
+    {
+      "source": "spec-driven-development",
+      "target": "ai-skill-formation",
+      "relation_type": "uses",
+      "description": "AI 写全部代码后，人的概念理解主要用来写出精准的 Spec"
     },
     {
       "source": "spec-driven-development",
@@ -19004,6 +19389,18 @@
       "target": "reward-design-three-inputs",
       "relation_type": "produces",
       "description": "判断式给出\"停\"时，矛头指回 reward 结构——两本账分家与 reward v2 是让判断式翻转为\"值得跑\"的对症改造"
+    },
+    {
+      "source": "presentation-preparation",
+      "target": "presentation",
+      "relation_type": "part-of",
+      "description": "演讲领域的准备步骤"
+    },
+    {
+      "source": "presentation-preparation",
+      "target": "skill-pattern",
+      "relation_type": "implements",
+      "description": "做成 skill 时是 Inversion 模式的实例"
     },
     {
       "source": "programmatic-video",
@@ -19697,6 +20094,13 @@
       "members": [
         "enterprise-ontology",
         "ontology-philosophy"
+      ]
+    },
+    {
+      "id": "",
+      "name": "沟通与表达",
+      "members": [
+        "presentation"
       ]
     },
     {
