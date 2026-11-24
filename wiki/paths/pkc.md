@@ -1,7 +1,7 @@
 ---
 title: "学习路径：个人知识编译（PKC）"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -35,22 +35,24 @@ signals:
 - **读**：[[personal-knowledge-compiler]]、[[PKC系列01：从日记到知识库]]
 - **前置**：无
 - **用时**：约 1.5 小时
-- **⚠️ stale**：10 条中 9 条（基础论述，变化慢）
+- **⚠️ stale**：[[personal-knowledge-compiler]] 1/11（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出日记"写入与消费结构错配"指什么，以及知识碎片化的三种表现
   - 能说出 LLM Wiki 模型的核心：LLM 是维护者，不是问答者
   - 能说出 PKC 的四层知识模型：Concept / Method / Decision / Typed Relations
+  - 能说出 PKC 最大的风险是让 AI 替自己消化，以及三项对策：无参考解释测试、记录知识在哪里被用过、先写自己的判断再让 AI 补盲区
 
 ## 第 2 站 · 选择：编译式 wiki 而不是 RAG
 
-- **读**：[[wiki-over-rag-for-personal-knowledge]]、[[llm-wiki]]、[[rag-architecture-comparison]]
+- **读**：[[wiki-over-rag-for-personal-knowledge]]、[[llm-wiki]]、[[rag-architecture-comparison]]；[[rag-architecture-comparison]] 新增的两条（「消融说明多轮自主检索是唯一带来质变的因素」「Azure AI Search 的 Agentic Retrieval 只落地了查询规划与并行子查询」）
 - **前置**：第 1 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：三页 13 条全部 stale；决策页最后一条（图与向量的胜负域）是近期的
+- **⚠️ stale**：[[wiki-over-rag-for-personal-knowledge]] 1/4、[[rag-architecture-comparison]] 1/7（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出编译式知识与检索式知识为什么是不同范式，不适合强行合并
   - 能说出图赢在哪（multi-hop、时间推理、跨语料）、不赢在哪（简单查找），以及"混合永远赢过纯图"
   - 能说出个人级（qmd）与企业级（Foundry IQ、AI Search + 图数据库）方案的分界
+  - 能说出 agentic 检索里真正带来质变的是多轮自主检索，其余只是效率优化，以及落地时为什么要按复杂度路由
 
 ## 第 3 站 · 存储：不存事实，只存论断
 
@@ -81,13 +83,13 @@ signals:
   - 能说出 Claude Code 六层记忆各自的职责
   - 能解释一条写在 memory 里的行为规则为什么会被忽略，以及"背景知识留 memory、行为规则提权到 CLAUDE.md 或 hook"的三级约束强度
   - 能对比文件记忆与后端记忆的取舍：可见可回滚 vs 团队共享与自动遗忘
+  - 能说出压缩之后哪些指令从磁盘重新注入、哪些会丢，以及为什么行为规则放 Memory 会输给模型的默认策略
 
 ## 第 6 站 · 鲜活：内循环与外循环
 
 - **读**：[[loop-engineering]]、[[Loop-Engineering概念澄清]]、[[Loop-Engineering实践：知识库外循环]]
 - **前置**：第 4 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[loop-engineering]] 15/15
 - **算会**：
   - 能说出外循环的最小内核：自动发现 + workflow + 重复 + 跨轮记忆，以及"自动发现是分水岭"
   - 能说出这个库的几个循环各管什么：每日收割、周六保鲜、周日复核、周日复盘与雷达
@@ -95,19 +97,21 @@ signals:
 
 ## 第 7 站 · 图：知识图的三种含义
 
-- **读**：[[graph-engineering]]、[[enterprise-ontology]]
+- **读**：[[graph-engineering]]、[[enterprise-ontology]]；[[enterprise-ontology]] 新增的几条（四类构件与读写统一、与 DDD 和 Data Mesh 的分工、三步落地路径、深度实施）
 - **前置**：第 2 站
 - **用时**：约 1.5 小时
-- **⚠️ stale**：[[enterprise-ontology]] 7/7
+- **⚠️ stale**：[[graph-engineering]] 2/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 graph engineering 一词的三种含义（编排图、循环网络、类型化知识图），以及只有哪一种有独立基准背书
   - 能说出何时值得上图：3 个以上独立验证步骤加复杂条件路由
   - 能说出企业 Ontology（Fabric IQ、Palantir）把数据从"可查询"升级到"可推理、可行动"指什么
+  - 能说出企业本体和 BI 语义层的根本区别（能读也能写），以及本体、DDD、Data Mesh 各回答什么问题
 
 ## 前沿站 · 正在发生的变化
 
 来自知识差距报告的 pkc-competitors、loop-engineering、wiki-health、rag-retrieval、agent-memory 主题。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
 
+- **常驻 agent 被拆成五个原语**（2026-W47，Anthropic 架构指南：事件收件箱、定时器、记忆、权限、发件箱）→ 影响第 6 站：PKC 的定时外循环本身就是一个常驻 agent，对照下来缺的是发件箱（结果只落文件，没有主动投递）；本周还因合盖睡眠漏跑了一次周报，补了"错过即补跑"的检查
 - **代码库与知识库图谱化、主动记忆注入**（2026-07-18，高优先级，建议深挖）：graphify 等代码知识图谱项目（日记追踪任务里已有调研任务）→ 影响第 2、7 站
 - **PKC 竞品热度验证**（2026-09-06）→ 影响第 1 站：同类方案的取舍
 - **Loop Engineering 工具化**→ 影响第 6 站：外循环能不能从 markdown 当数据库换成专用状态机

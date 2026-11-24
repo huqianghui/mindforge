@@ -1,7 +1,7 @@
 ---
 title: "题库：个人知识编译（PKC）"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -46,6 +46,14 @@ path_id: "pkc"
 **答**：实践反馈闭环（方法 → 实践 → 置信度回写）、知识成熟度模型、决策层、类型化关联、跨切面查询——变成"提取 → 验证 → 演进 → 查询"。
 
 **出处**：[[personal-knowledge-compiler]]
+
+### Q5 · 辨析
+
+**问**："wiki 里的 Claim 越来越多，说明我掌握的知识越来越多。"对吗？
+
+**答**：不一定。分水岭在用 AI 逃避思考还是加速思考。要防三件事：确认偏差——批准了几百条 Claim，能脱口讲清的有多少，所以每周挑几条做不看 wiki 的解释测试（学习路径的题库就是这件事的实现）；只进不出——不记录在哪里实际用过，就只是高级收藏；顺序——重要主题先花 15 分钟写下自己已知什么、初步判断是什么，再让 AI 扩展。
+
+**出处**：[[personal-knowledge-compiler]]（Claim「PKC 的风险是让 AI 替我消化」）
 
 ## 第 2 站 · 选择：编译式 wiki 而不是 RAG
 
@@ -183,6 +191,14 @@ path_id: "pkc"
 
 **出处**：[[agent-memory-lifecycle]]
 
+### Q6 · 场景
+
+**问**：你在 Memory 里写了"认证网页直接用 Playwright"，模型还是先试了两次别的工具。为什么？该把这条规则放哪？
+
+**答**：根因不在加载而在 framing：系统给 CLAUDE.md 的是"必须照做、覆盖默认行为"，给 Memory 的是"可能相关也可能不相关"，规则与默认行为冲突时默认行为胜出。行为规则（遇到 X 必须做 Y）要放 CLAUDE.md 或 rules，绝对禁止类再评估 hook；Memory 只放背景知识（用户画像、项目上下文、资源指针）。另一个原因是压缩：根目录与用户级 CLAUDE.md、MEMORY.md 索引、无 paths 的 rules 会从磁盘重新注入，子目录 CLAUDE.md、带 paths 的 rules 和 skill 描述列表会丢，必须长期生效的规则不能放在后者。
+
+**出处**：[[claude-code-memory-system]]（Claim「Memory 加载进上下文也不等于会被遵守」「压缩之后不是所有指令都还在」）
+
 ## 第 6 站 · 鲜活：内循环与外循环
 
 ### Q1 · 解释
@@ -250,3 +266,12 @@ path_id: "pkc"
 **答**：在物理统一但语义碎片化的数据之上，定义统一的业务对象和关系，并通过动作类型实现行动闭环；AI 在语义明确的对象图上推理，而不是直接读原始表。Fabric IQ 的 Ontology 目前仍是 preview。
 
 **出处**：[[enterprise-ontology]]
+
+### Q7 · 辨析
+
+**问**："企业本体就是一份更完整的数据字典。"对吗？
+
+**答**：不对。数据字典只是名词解释；本体还定义了对象之间的关系、当前状态和能执行的操作，是数字孪生。Palantir 的构件分两层：语义层（Object Type、Link Type、Interface）描述有什么、怎么关联、有什么共性，动力层（Action Type、Function）描述能做什么、怎么变——能读也能写，是它和只读的 BI 语义层的根本区别。和 DDD、Data Mesh 比：DDD 教你怎么正确描述领域，Data Mesh 决定谁拥有数据、谁对质量负责，本体管数据如何被理解和操作，三者互补。
+
+**出处**：[[enterprise-ontology]]（Claim「Palantir Ontology 的四类构件分语义层与动力层」「本体、DDD、Data Mesh 回答的是三个不同问题」）
+

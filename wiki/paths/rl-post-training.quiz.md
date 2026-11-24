@@ -1,7 +1,7 @@
 ---
 title: "题库：强化学习与后训练"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -183,6 +183,14 @@ path_id: "rl-post-training"
 
 **出处**：[[prompt-optimization-maturity-ladder]]
 
+### Q5 · 场景
+
+**问**：APO 跑完报告 history best 0.707，种子 prompt 是 0.690。团队想宣布优化成功并加大 beam_rounds 继续跑。你怎么看？
+
+**答**：先别宣布。同一个种子 prompt 在全量 29 题上五次重评就在 0.586~0.690 之间摆，极差约 0.10，temperature=0 也消不掉（agent 轨迹和 LLM judge 都不确定）。APO 只在冠军全量重评更高时才更新 history best，相当于对噪声取最大值，被选中的分数天然偏高——v2 那次 0.707，下一轮重评只有 0.503。提升 0.017 小于重测摆幅 0.10，信噪比小于 1，不能算赢。先降噪（扩到 100 条以上、每题多跑几次取均值），再加轮次，否则加轮次只是放大噪声。
+
+**出处**：[[automatic-prompt-optimization]]（Claim「小数据集上被选出来的历史最优分系统性偏高」）
+
 ## 第 6 站 · SFT：用 reward 造标签
 
 ### Q1 · 辨析
@@ -250,6 +258,14 @@ path_id: "rl-post-training"
 **答**：数据、执行（环境里怎么跑）、打分（reward）。
 
 **出处**：[[environment-agnostic]]
+
+### Q6 · 辨析
+
+**问**："grader、模板、数据集都是我自己写的，所以 agent-lightning 框架没什么价值。"对吗？
+
+**答**：要分情况。用户写的是"什么算好"的静态零件，框架拥有的是把它们变成可迭代优化循环的算法和基础设施：beam search 主循环、history best 簿记（防虚高）、rollout 并行执行与重试、错误归类（渲染崩溃算 failed、跑通选错算 0 分）、gradient 到 edit 的接线、日志与可复现。最有分量的是 method-agnostic：同一份 grader、agent、数据集，换 APO、SFT 或 RL 只换 trainer 槽位。但最难的部分框架帮不上——它不设计 reward、不降噪、不决定数据量；只调一次 prompt、不碰权重时，手写两百行脚本更轻更透明。
+
+**出处**：[[agent-lightning]]（Claim「用户写的是什么算好的静态零件」）
 
 ## 第 8 站 · 基础设施：VERL、Slime 与并行
 

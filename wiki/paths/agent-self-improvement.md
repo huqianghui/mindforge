@@ -1,7 +1,7 @@
 ---
 title: "学习路径：Agent 自我改进"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -43,29 +43,31 @@ agent 怎样把经验变成对自身的持久修改？这条路径讲"不改权�
 - **读**：[[automatic-prompt-optimization]]、[[prompt-optimization-maturity-ladder]]、[[prompt-optimization-tool-selection]]、[[Agent-Lightning算法深解：APO]]
 - **前置**：第 1 站
 - **用时**：约 2 小时
-- **⚠️ stale**：[[automatic-prompt-optimization]] 9/9、决策页 4/4
+- **⚠️ stale**：[[automatic-prompt-optimization]] 1/12、[[prompt-optimization-tool-selection]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能解释 APO 是"文本梯度 + beam search"：critic 写、editor 改，以及选 beam search 的首要理由是评估成本
   - 能说出 L0 vibe check、L1 LLM-judge、L2 数据闭环的分层依据：回路由谁闭合
   - 能说出 APO 摆动大的主因是评估噪声，而不是选错框架
+  - 能说出 APO 实跑里最常见的三个坑：reward=None 其实是候选模板渲染崩了、history best 系统性偏高、文本梯度把 prompt 越改越啰嗦
 
 ## 第 3 站 · skill 层：SkillOpt
 
 - **读**：[[skillopt]]、[[SkillOpt系列01：源码篇]]、[[SkillOpt系列04：APO与SkillOpt联合展望]]、[[2026-07-01-SkillOpt]]
 - **前置**：第 2 站
 - **用时**：约 2.5 小时
-- **⚠️ stale**：9 条中 7 条
+- **⚠️ stale**：[[skillopt]] 1/11（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 SkillOpt 把 SGD 的哪四个机件搬进文本空间：有界学习率、拒绝记忆、慢权重、meta-learning
   - 能解释"分数当筛子不当梯度"为什么是 SkillOpt 与 RL 的真正分野
   - 能说出快慢两层循环和三个数据切分各自的作用，以及 APO 与 SkillOpt 什么时候该选谁、什么时候都不跑
+  - 能说出三种记忆在代码里的落点，以及为什么 force-accept 模式下慢更新的内容不一定进最终成品
 
 ## 第 4 站 · harness 层：Meta-Harness 与 AutoResearch
 
 - **读**：[[meta-harness]]、[[autoresearch]]、[[hermes-agent]]
 - **前置**：第 1 站
 - **用时**：约 2 小时
-- **⚠️ stale**：三页 16 条全部 stale
+- **⚠️ stale**：[[hermes-agent]] 2/5（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 Meta-Harness 的两层 harness（Platform 与 User），以及完整执行 trace 为什么是不可替代的诊断信号
   - 能说出 AutoResearch 是"受控搜索空间中的自动化爬坡"，它和 Ralph Loop 的核心区别在选择机制
@@ -80,13 +82,14 @@ agent 怎样把经验变成对自身的持久修改？这条路径讲"不改权�
   - 能用 RSI 框架定位 Copilot Memory 与 Dreaming：改的只是 harness 的上下文层，横跨 L1 到 L3
   - 能说出 Copilot 的门控是"使用中的投票"，研究方法的门控是"上线前的比较"，各自的代价
   - 能说出记忆适合存背景知识、不适合存行为规则，以及这个结论两家（Claude Code、Copilot）是怎么各自走到的
+  - 能说出为什么记忆里的结论永远不能当作用户授权，以及行为规则为什么不能只放在 Memory 里
 
 ## 第 6 站 · 离线复用经验：Dream-RSI 与持续学习
 
 - **读**：[[2026-09-22-Dream-RSI]]、[[continual-self-improving-ai]]、[[2026-07-07-LifeSkill]]
 - **前置**：第 3、5 站
 - **用时**：约 2 小时
-- **⚠️ stale**：[[continual-self-improving-ai]] 7/7
+- **⚠️ stale**：[[continual-self-improving-ai]] 2/7（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 Dream-RSI 的"做梦"是什么：把探索历史变成可回放的仿真器，候选在上线前就能打分
   - 能对比"Dream-RSI 在梦里挑，Copilot Dreaming 在梦里写"
@@ -97,6 +100,7 @@ agent 怎样把经验变成对自身的持久修改？这条路径讲"不改权�
 - **读**：[[generation-evaluation-separation]]、[[llm-as-a-judge]]、[[recursive-self-improvement]]（五个验证问题）
 - **前置**：第 2~6 站
 - **用时**：约 1 小时
+- **⚠️ stale**：[[generation-evaluation-separation]] 3/16（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出生成与评估为什么要分离，以及自评为什么不可信
   - 能对任意一个自我改进方法问出五个问题：反馈是真的吗、是不是偶然得分高、验证集参与学习了吗、收益来自能力还是更多计算、新规则有没有损害旧能力
@@ -106,6 +110,7 @@ agent 怎样把经验变成对自身的持久修改？这条路径讲"不改权�
 
 来自知识差距报告的 self-evolving-agent、harness、agent-memory 主题。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
 
+- **为特定 harness 适配模型**（2026-11-23 报告）：针对 pi harness 用强化学习训的 LoRA 在同一 harness 下大幅提升 → 影响第 4 站：harness 层的改进开始反过来塑造权重层，与 Meta-Harness"权重不动、只改 harness"形成对照
 - **Harness 递归自我优化进入大厂开源阶段**（2026-10-25，高优先级，建议深挖）：Harness² 权重不动、无监督改 harness、跨任务更新"改进 harness 的方法" → 影响第 1、4 站：这是第一个可能够到 L4 的样本吗？
 - **Skill-RL 化浪潮**（2026-09-12）→ 影响第 3 站：skill 优化开始借 RL 的方法，"分数当筛子"的边界会不会被打破
 - **多组件 prompt / skill 优化的耦合问题**（2026-07-18，高优先级）→ 影响第 2、3 站：同时优化多个组件时互相干扰

@@ -1,7 +1,7 @@
 ---
 title: "题库：Agent 自我改进"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -81,6 +81,14 @@ path_id: "agent-self-improvement"
 
 **出处**：[[automatic-prompt-optimization]]
 
+### Q5 · 场景
+
+**问**：APO 日志里好几个候选的 Statuses 是 failed、reward 全是 None。是 judge 坏了吗？怎么修？
+
+**答**：多半不是。agent 用 `str.format` 渲染模板，候选里带进了不存在的占位符或字面花括号（JSON 输出示例、正则里的 `{4}`），渲染直接抛异常，rollout 标 failed、reward 为 None、求平均按 0 算。危险片段的源头常常是 gradient model 在批评里写的正则或 JSON schema，edit model 只是照抄，所以 gradient 模板和 edit 模板两端都要禁止正则、JSON 示例和新变量；再加渲染护栏，渲染失败直接返回 0 分短路，坏候选就几乎零成本、不再污染统计。
+
+**出处**：[[automatic-prompt-optimization]]（Claim「reward=None 不是打分失败而是候选模板渲染崩了」）
+
 ## 第 3 站 · skill 层：SkillOpt
 
 ### Q1 · 解释
@@ -114,6 +122,14 @@ path_id: "agent-self-improvement"
 **答**：不只。是三层机制叠加：搜索结构（APO 并行候选整体重排，SkillOpt 单谱系增量演进）、编辑幅度（APO 可整篇重写，SkillOpt 每步有界小改）、接受机制（SkillOpt 挑战者必须在验证集上胜过在位者）。而且门控不消灭噪声，只是换了表现形式。
 
 **出处**：[[skillopt]]
+
+### Q6 · 辨析
+
+**问**："SkillOpt 的慢更新字段写在 skill 文档里，所以最终交付的 best_skill.md 一定包含慢层内容。"对吗？
+
+**答**：不对。force-accept 模式下慢更新只改 current skill，不改 best skill，因为 best skill 必须是某个验证最优步的忠实快照；所以 best_skill.md 可能不含慢层内容，除非它经过门控验证真的涨了分。三种记忆的落点：拒绝编辑缓冲只活在内存变量里、每个 epoch 清空；慢更新字段嵌在 skill 文档里；meta skill 是优化器侧的独立文件，不碰目标 skill。
+
+**出处**：[[skillopt]]（Claim「三种记忆在代码里落点不同」）
 
 ## 第 4 站 · harness 层：Meta-Harness 与 AutoResearch
 

@@ -1,7 +1,7 @@
 ---
 title: "学习路径：强化学习与后训练"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -36,7 +36,6 @@ signals:
 - **读**：[[bitter-lesson]]、[[scaling-laws]]、[[reinforcement-learning]]（前三条 Claim）
 - **前置**：无
 - **用时**：约 1 小时
-- **⚠️ stale**：理论页，stale 只表示没有新证据
 - **算会**：
   - 能说出 Bitter Lesson 的核心：通用计算方法最终胜过手工领域知识，以及它为什么不是一篇 RL 论文
   - 能说出 RL 的核心贡献是 search 与 learning 的统一
@@ -74,19 +73,21 @@ signals:
 
 ## 第 5 站 · 阶梯：APO → SFT → RL 共享一份 reward
 
-- **读**：[[method-agnostic]]、[[prompt-optimization-maturity-ladder]]
+- **读**：[[method-agnostic]]、[[prompt-optimization-maturity-ladder]]；[[automatic-prompt-optimization]]（「小数据集上被选出来的历史最优分系统性偏高」）
 - **前置**：第 4 站
 - **用时**：约 1 小时
 - **算会**：
   - 能说出三级阶梯共享同一份 reward，只是消费方式不同
   - 能说出从 L1 迁移到 L2 的两个前提：可量化的 reward、数据量过阈值（<10 / 30~50 / 100+）
   - 能说出"先解决 reward、噪声、数据量，框架只是引擎不是方向盘"
+  - 能解释为什么 APO 的 history best 会系统性偏高，以及"提升小于重测摆幅就不能算赢"
 
 ## 第 6 站 · SFT：用 reward 造标签
 
 - **读**：[[rejection-sampling-finetuning]]、[[sft-rejection-sampling-hands-on]]、[[Agent-Lightning系列05：SFT路线剖析]]、[[Agent-Lightning系列06：SFT实战]]
 - **前置**：第 5 站
 - **用时**：约 2 小时
+- **⚠️ stale**：[[rejection-sampling-finetuning]] 1/9、[[sft-rejection-sampling-hands-on]] 1/3（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能解释拒绝采样微调不是"喂标准答案"，而是"用 reward 造标签"，target 是评分键
   - 能说出"答对了为什么还要训练"：把 pass@k 压成 pass@1，把搜索成本内化进权重
@@ -97,20 +98,24 @@ signals:
 - **读**：[[agent-lightning]]、[[environment-agnostic]]、[[Agent-Lightning系列02：框架全景]]
 - **前置**：第 5 站
 - **用时**：约 2 小时
+- **⚠️ stale**：[[agent-lightning]] 1/12（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 agent-lightning 从 0.3.1（9 模块脊柱、store 控制平面、adapter 接缝）到 v1.0（Trainer / API Gateway / Rollout Controller）的架构变化，以及哪些设计思想没变（控制反转、method-agnostic）
   - 能说出 method-agnostic（换算法只换槽位）和 environment-agnostic（接新任务只写 EnvAdapter）各在哪一侧
   - 能说出显式环境契约的暗面：接口实现完不等于数据流追通过
+  - 能说出用户写的是什么、框架拥有的是什么，以及什么情况下手写脚本比用框架更合适
 
 ## 第 8 站 · 基础设施：VERL、Slime 与并行
 
 - **读**：[[verl]]、[[slime-rl-framework]]、[[rl-infra-framework-selection]]、[[distributed-training-parallelism]]、[[Slime与VERL架构对比]]
 - **前置**：第 7 站
 - **用时**：约 2.5 小时
+- **⚠️ stale**：[[rl-infra-framework-selection]] 1/4（其余读物全部 active，读时以各 Claim 的复核行为准）
 - **算会**：
   - 能说出 TRL、OpenRLHF、VERL 是抽象层谱系而不是替代关系，以及 agent RL 为什么几乎必然选 VERL 类架构
   - 能说出 VERL 最大的瓶颈在 rollout，以及 Slime 用数据 buffer 解耦训练与采样的思路
   - 能说出 FSDP 切存储、TP / PP 切计算的区别
+  - 能说出 agent-lightning 与 rllm 收敛稳定性差异为什么要在算法配方层找，而不是在基础设施层（两者 RL 内核都是 VERL，尚未实跑对照）
 
 ## 第 9 站 · 实跑：calc_x 跑通 VERL
 
@@ -125,6 +130,7 @@ signals:
 
 来自知识差距报告的 agentic-rl、distillation、reward-design 主题。「算会」统一是：**能说出它改变了上面哪一站的哪条结论**。
 
+- **用强化学习给某个 harness 训 LoRA**（2026-11-23 报告，HF 上的 pi-adapted）：关掉思考时在该 harness 下追平基座最高推理强度、生成 token 少约 4.5 倍，但换 harness 是否保留收益未知 → 影响第 7 站：RL 的优化对象从"任务"变成"模型与 harness 这一对"，见 [[model-harness-codesign]]
 - **Agentic RL 的细粒度 credit assignment**（2026-10-19，高优先级，建议深挖）→ 影响第 2、4 站：多步 agent 轨迹里的 advantage 怎么分到每一步
 - **多教师 on-policy distillation 成为后训练标配**（2026-10-19，高优先级）→ 影响第 6 站：拒绝采样之外的另一条"把能力压进权重"的路
 - **RL 环境合成成赛道**（2026-09-12）→ 影响第 7 站：EnvAdapter 背后的环境从哪来
