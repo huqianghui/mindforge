@@ -17,7 +17,7 @@ tags:
 
 > 系列导航：[系列 01：Foundry 上的视频模型为什么经过 fal](Media-Generation系列01：Foundry上的视频模型为什么经过fal.md) ｜ 本篇 ｜ [系列 03：视频模型的测试方案](Media-Generation系列03：视频模型的测试方案.md)
 
-上一篇讲清了 Foundry、fal 和模型厂商各自的角色。这一篇把五个模型放在一起，看它们在输入方式、参数边界、价格上的差别。参数和价格来自文档和公开资料；文中穿插了几条我在 Foundry 上实际生成的样片，用来说明参数边界和输入方式各自是什么样子。每条都是单次生成、任务各不相同，**不用来给模型排质量、速度或成本的名次**——这要等下一篇的统一测试。样片的封面是成片的四帧截图，点击打开 MP4，在 GitHub 上会下载到本地播放。
+上一篇讲清了 Foundry、fal 和模型厂商各自的角色。这一篇把五个模型放在一起，看它们在输入方式、参数边界、价格上的差别。参数和价格来自文档和公开资料；文中穿插了几条我在 Foundry 上实际生成的样片，用来说明参数边界和输入方式各自是什么样子。每条都是单次生成、任务各不相同，**不用来给模型排质量、速度或成本的名次**——这要等下一篇的统一测试。样片的上面是成片的无声循环预览，点击打开带声音的完整 MP4，在 GitHub 上会下载到本地播放。
 
 ## 三家模型来自哪里
 
@@ -39,13 +39,13 @@ tags:
 
 两条 LTX 样片分别落在两个档位的典型位置：
 
-[![LTX 2.5 Pro 首尾帧推镜样片（点击打开 MP4）|700](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.jpg)](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.mp4)
+[![LTX 2.5 Pro 首尾帧推镜样片（循环预览，点击打开 MP4）|700](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.webp)](../../asset/media-gen-sample-ltx-pro-start-end-2026-11-24.mp4)
 
 **LTX 2.5 Pro · 首尾帧推镜**　请求：图生视频，给首帧和尾帧（同一盏灯的远景和近景插画），720p、6 秒、25 fps，`camera_motion` 设 `dolly_in`，关闭音频。实际输出：1280×720、25 fps、6.000 秒，无音轨。观察：灯具在同一构图里从远推到近，和首尾帧的尺寸变化一致，请求的规格逐项兑现。
 
-[![LTX 2.5 Fast 12 秒瀑布长镜头样片（点击打开 MP4）|700](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.jpg)](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.mp4)
+[![LTX 2.5 Fast 12 秒瀑布长镜头样片（循环预览，点击打开 MP4）|700](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.webp)](../../asset/media-gen-sample-ltx-fast-12s-long-take-2026-11-24.mp4)
 
-**LTX 2.5 Fast · 12 秒连续长镜头**　请求：文生视频，720p、12 秒、24 fps，`dolly_in`，关闭音频。实际输出：1280×720、24 fps、12.000 秒，无音轨。观察：日出时从泻湖上方匀速推向火山崖上的瀑布，抽查的四帧是一个连续推进的镜头，海岸和瀑布的位置关系没有乱。12 秒已经超出 Pro 的 10 秒上限。4K 和 48 / 50 fps 的组合这次没有测。
+**LTX 2.5 Fast · 12 秒连续长镜头**　请求：文生视频，720p、12 秒、24 fps，`dolly_in`，关闭音频。实际输出：1280×720、24 fps、12.000 秒，无音轨。观察：日出时从泻湖上方匀速推向火山崖上的瀑布，12 秒是一个连续推进的镜头，规格逐项兑现，这已经超出 Pro 的 10 秒上限。但镜头在后段越过了瀑布，最后一帧只剩海面，没有停在 Prompt 要求的"瀑布更大、海岸仍在画面里"的终点——只看几张抽帧会以为构图一直稳定，看完整条才发现结尾跑偏了。4K 和 48 / 50 fps 的组合这次没有测。
 
 两条样片场景不同，只说明各自的规格能跑通，不拿来比较 Pro 和 Fast 的画质。
 
@@ -81,15 +81,21 @@ tags:
 
 上面这两张就是前面 LTX Pro 样片和 [系列 01](Media-Generation系列01：Foundry上的视频模型为什么经过fal.md) 里 Kling 样片用的首帧和尾帧。两条成片都从左图开始、在右图结束，中间的推镜由模型补出来——首尾帧决定的是"从哪里到哪里"，画面本身基本沿用输入图。
 
+把这同一组首尾帧分别交给 LTX 2.5 Pro 和 Kling v3 Pro，放在一起播：
+
+![同一组首尾帧交给两个模型|900](../../asset/media-gen-start-end-two-models-2026-11-24.webp)
+
+左边是 LTX Pro（请求 6 秒、720p），右边是 Kling（请求 3 秒，输出 1080p）。Kling 先推到尾帧并停住，是因为它请求的时长本来就只有一半，不是生成得更快。两边起点和终点完全一样，中间的推镜轨迹也几乎一致——在首尾帧都给定的情况下，模型能自由发挥的空间很小，选哪个模型主要影响分辨率、时长档位和价格。
+
 **Reference-to-Video 把素材当约束条件。** H3 Max 的 R2V 接口分了四类输入：`reference_image_urls` 约束主体和风格，`reference_video_urls` 提供动作参考，`reference_audio_urls` 提供声音参考，`target_audio_url` 直接指定输出音轨（不能和参考音频同时用）。Prompt 里用 `Image 1`、`Image 2`、`Video 1` 这样的序号指代素材，告诉模型谁是谁。比如女主角一张图、她的狗一张图，Prompt 写清 "Image 1 is the woman, Image 2 is her dog"，模型要在新视频里同时保住两者的长相。如果只用图生视频把女主角的照片当首帧，模型并不知道还有一只狗要保持一致。
 
 H3 Max 这条样片用的就是两张参考图，Image 1 是灯，Image 2 是杯子：
 
 ![参考图 Image 1：灯具|340](../../asset/media-gen-fixture-lantern-2026-11-24.jpg) ![参考图 Image 2：杯子|340](../../asset/media-gen-fixture-mug-2026-11-24.jpg)
 
-[![H3 Max 双图参考样片（点击打开 MP4）|700](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.jpg)](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.mp4)
+[![H3 Max 双图参考样片（循环预览，点击打开 MP4）|700](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.webp)](../../asset/media-gen-sample-h3-max-two-references-2026-11-24.mp4)
 
-**H3 Max · 双图参考生成产品镜头**　请求：Reference-to-Video，`reference_image_urls` 放两张图，Prompt 说明 Image 1 是灯、Image 2 是杯子，要一个黄昏露营地的产品镜头，5 秒、768P、16:9。实际输出：1344×768、24 fps、5.184 秒，有音轨。观察：两件东西被放进一个新生成的露营夜景，灯的琥珀色和拱形提手、杯子的深蓝绿和右侧把手都保住了；参考图是扁平插画，成片却是 Prompt 要的写实场景。
+**H3 Max · 双图参考生成产品镜头**　请求：Reference-to-Video，`reference_image_urls` 放两张图，Prompt 说明 Image 1 是灯、Image 2 是杯子，要一个黄昏露营地的产品镜头，5 秒、768P、16:9。实际输出：1344×768、24 fps、5.184 秒，有音轨。观察：两件东西被放进一个新生成的露营夜景，灯的琥珀色和拱形提手、杯子的深蓝绿和右侧把手都保住了；参考图是扁平插画，成片却是 Prompt 要的写实场景。Prompt 里要求的横向移镜、焦点从灯转到杯子，成片里基本看不出来，画面接近定机位。
 
 和上面首尾帧的样片放在一起看，区别很直观：同一盏灯，当首帧时成片几乎就是那张图在动；当参考图时，模型只拿走"这是一盏什么样的灯"，构图、光线和风格都重新生成。
 
@@ -141,7 +147,7 @@ H3 Max 的宣传是"5 秒视频不到 3 秒生成"。fal 页面给的测量表�
 
 第一条我先用 Turbo 跑了一条文生草稿，Prompt 就是下一篇 Test 01 雨夜人物的精简版：
 
-[![H3 Max Turbo 东京雨夜文生样片（点击打开 MP4）|700](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.jpg)](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.mp4)
+[![H3 Max Turbo 东京雨夜文生样片（循环预览，点击打开 MP4）|700](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.webp)](../../asset/media-gen-sample-h3-turbo-tokyo-rain-2026-11-24.mp4)
 
 **H3 Max Turbo · 东京雨夜文生草稿**　请求：文生视频，5 秒、768P、16:9，要求一个连续镜头、外套和雨伞保持一致、不要对白。实际输出：1344×768、24 fps、5.184 秒，有音轨（内容没有逐段听审）。观察：红色雨衣、透明伞、湿地面上的青粉色霓虹反光从头到尾都在，镜头从侧面中景跟拍、逐渐拉到中近景，和 Prompt 写的运镜一致。按发布价，这样一条 5 秒 768P 的草稿约 0.2 美元。
 
