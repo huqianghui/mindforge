@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 796" width="1400" height="796" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <style>.bg{fill:#0b1220}.title{fill:#f8fafc;font-size:22px;font-weight:700}.sub{fill:#94a3b8;font-size:14px}.h{fill:#e2e8f0;font-size:16px;font-weight:600}.t{fill:#cbd5e1;font-size:13.5px}.tg{fill:#94a3b8;font-size:13.5px}.ax{stroke:#334155;stroke-width:1}.axl{fill:#94a3b8;font-size:13px;text-anchor:middle}.lab{fill:#0b1220;font-size:13.5px;font-weight:600}.row{fill:#0f1a2e;stroke:#1e293b}.bar{animation:grow 1.6s ease-out}@keyframes grow{from{opacity:.2}to{opacity:1}}.note{fill:#fde68a;font-size:13.5px}</style>
 <rect class="bg" width="1400" height="796" rx="16"/>
-<text class="title" x="30" y="44">五个 endpoint 的参数空间：分辨率 × 请求时长</text>
+<text class="title" x="30" y="44">五个模型的参数空间：分辨率 × 请求时长</text>
 <text class="sub" x="30" y="72">依据 Microsoft Learn 的 Generation settings（fal 公开 API）；横轴是请求时长，条带是该档位允许的范围</text>
 <line class="ax" x1="330" y1="100" x2="330" y2="618"/><text class="axl" x="330" y="116">0s</text>
 <line class="ax" x1="418" y1="100" x2="418" y2="618"/><text class="axl" x="418" y="116">2s</text>

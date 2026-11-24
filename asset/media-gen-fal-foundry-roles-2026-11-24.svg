@@ -87,7 +87,7 @@
   <text class="t" x="892" y="196">请求队列 · GPU 调度</text>
   <text class="t" x="892" y="220">面向扩散模型的推理引擎</text>
   <text class="t" x="892" y="244">request_id / 结果 URL</text>
-  <text class="tGray" x="892" y="268">首批 endpoint 托管在美国</text>
+  <text class="tGray" x="892" y="268">首批模型托管在美国</text>
   <rect class="boxAmber" x="876" y="300" width="228" height="140" rx="10"/>
   <text class="hAmber" x="892" y="328">后训练产品</text>
   <text class="t" x="892" y="354">H3 Max：基于 MiniMax H3</text>

@@ -1,7 +1,7 @@
 ---
 title: Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal
 created: 2026-11-24
-description: 视频模型榜单头部挤成一团、换榜名次就变；旗舰模型正把文字、图片、视频、声音融进同一个上下文，生成与编辑合一，更贴近人的创作方式，复杂度转移到素材组织与 API 参数上；MiniMax 缺内容分发体系而走开放权重、字节把 Seedance 留在自家产品里，这也决定了 H3 能经 fal 进入 Foundry；Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个 endpoint（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
+description: 视频模型榜单头部挤成一团、换榜名次就变；旗舰模型正把文字、图片、视频、声音融进同一个上下文，生成与编辑合一，更贴近人的创作方式，复杂度转移到素材组织与 API 参数上；MiniMax 缺内容分发体系而走开放权重、字节把 Seedance 留在自家产品里，这也决定了 H3 能经 fal 进入 Foundry；Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个模型（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
 tags:
   - media-generation
   - video-generation
@@ -14,7 +14,7 @@ tags:
 
 # Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal
 
-> 系列导航：本篇 ｜ [系列 02：五个视频 endpoint 对比](Media-Generation系列02：五个视频endpoint对比.md) ｜ [系列 03：视频模型的测试方案](Media-Generation系列03：视频模型的测试方案.md)
+> 系列导航：本篇 ｜ [系列 02：五个视频模型对比](Media-Generation系列02：五个视频模型对比.md) ｜ [系列 03：视频模型的测试方案](Media-Generation系列03：视频模型的测试方案.md)
 
 图片生成这两年基本成熟了。早期的六根手指、画面里的乱码字，现在都很少再碰到；gpt-image-2.6 之后还能直接出 GIF 和 SVG，图片这条线已经从"能不能用"走到了"怎么用得更顺"。
 
@@ -95,7 +95,7 @@ fal 本身是 2021 年由 Burkay Gur 和 Gorkem Yurtseven 创立的公司，总�
 > [!WARNING]
 > Fal services are operated outside of Microsoft facilities. 部署这些模型即代表组织同意按 fal 服务条款使用，选择把组织数据共享给 fal 并让数据流出 Microsoft；Microsoft 的产品条款、DPA 与合规认证**不适用于** fal 这一段的使用。
 
-所以"在 Foundry 里部署"不等于"继承 Azure 的数据保护边界"。这和 Foundry 上其他由 Azure 托管运行的模型不一样：请求和输入素材（参考图、参考视频、音频）都会交给 fal 处理。Kling 的 US Data Zone 说的是 Foundry 侧的数据处理范围；微软的集成公告里另外说明首批视频 endpoint 托管在美国。医疗、金融、政府这类客户在评估时，要按 fal 的服务条款单独过一遍数据驻留、保留期和合规要求，fal 有 SOC 2 也替代不了这一步。
+所以"在 Foundry 里部署"不等于"继承 Azure 的数据保护边界"。这和 Foundry 上其他由 Azure 托管运行的模型不一样：请求和输入素材（参考图、参考视频、音频）都会交给 fal 处理。Kling 的 US Data Zone 说的是 Foundry 侧的数据处理范围；微软的集成公告里另外说明首批视频模型托管在美国。医疗、金融、政府这类客户在评估时，要按 fal 的服务条款单独过一遍数据驻留、保留期和合规要求，fal 有 SOC 2 也替代不了这一步。
 
 另一个容易踩的点：**已有的 fal 账号、key 和 deployment 不能复用**。同一个模型在 Foundry 里要重新建 deployment，走 Foundry 的身份和计费。
 
@@ -121,6 +121,8 @@ fal 本身是 2021 年由 Burkay Gur 和 Gorkem Yurtseven 创立的公司，总�
 
 三个报错对应三种区域概念：Foundry 资源和项目所在区域决定能部署什么；Data Zone 和 Global 决定推理数据在多大的地理范围里处理；附属资源有自己的区域表。看报错文本里的 resource type，基本就能分清卡在哪一层。
 
+后来我换了一个 Foundry 资源，五个模型（含 Kling v3 Pro 和后加的 LTX 2.5 Fast）全部部署成功，本系列后面的样片都出自这个资源。
+
 配额也要提前看。五个模型的速率限制都是 **Tier 1–4 每分钟 2 个请求**，Tier 5 起才到 40；免费层是 0。做批量测试时，2 RPM 会直接决定一轮测试要跑多久。
 
 ## 调用：提交、轮询、取结果、下载
@@ -129,7 +131,7 @@ fal 本身是 2021 年由 Burkay Gur 和 Gorkem Yurtseven 创立的公司，总�
 
 ![视频生成异步调用的生命周期与耗时口径|900](../../asset/media-gen-async-lifecycle-2026-11-24.svg)
 
-Learn 给出的示例（以 MiniMax H3 Max 文生视频为例）压缩后是这样：
+Learn 给出的示例（以 MiniMax H3 Max 文生视频为例）用的是 Entra 令牌，压缩后是这样：
 
 ```bash
 BASE_URL="https://{FOUNDRY_RESOURCE_NAME}.services.ai.azure.com/providers/falai/v1/minimax/h3-max"
@@ -156,9 +158,12 @@ curl -L "$VIDEO_URL" -H "Authorization: Bearer $(get_bearer)" -o video.mp4
 
 几个实际接入时要留意的地方：
 
-- **路由有两种写法**：Learn 的模型列表写的是 `/providers/falai/{厂商}/{模型}/{模态}`，示例脚本用的是带 `v1` 的 `/providers/falai/v1/{厂商}/{模型}`，状态和结果查询挂在 `/requests/{id}` 下。以示例脚本为准，接入时两种都实测一下。
+- **资源 Key 也能用**：除了 Entra 令牌，把 Foundry 资源的 Key 放进 `api-key` 请求头同样能通。我先做了一次探测：不带 Key 查询任务返回 401，带上 Key 查询一个不存在的任务返回 404，说明鉴权已经过了，只是任务不存在。
+- **路由按带 `v1` 的写法走**：Learn 的模型列表写的是 `/providers/falai/{厂商}/{模型}/{模态}`，示例脚本用的是 `/providers/falai/v1/{厂商}/{模型}/{模态}`。我实测的是带 `v1` 的写法，五个模型都能提交、查询、取结果；不带 `v1` 的没有测。
+- **LTX 的查询路径和提交路径不一样**：提交时在模态后面多一段 `/pro` 或 `/fast`（如 `lightricks/ltx-2.5/text-to-video/pro`），查状态和取结果用的却是两者共用的 `lightricks/ltx-2.5/requests/{id}`。
 - **参数名不统一**：LTX 和 MiniMax 的首帧叫 `image_url`，Kling 图生视频的首帧叫 `start_image_url`；分辨率的大小写也不一样（LTX 是 `1080p`，MiniMax 是 `1080P`）。完整 schema 要去 fal 的模型文档查。
-- **素材要先变成 URL**：首帧、参考图、参考视频都通过 URL 传入，本地文件要先放到可访问的存储里。
+- **素材可以是 URL，也可以是 data URI**：首帧、参考图通过 URL 字段传入；小尺寸的本地 JPEG 编成 data URI 直接放进请求体也能用，本系列的首尾帧和参考图样片都是这样传的。服务端对内联文件的大小上限我没测，大文件和视频素材还是放到可访问的 HTTPS 地址更稳。
+- **数值类型要按各家 schema 传**：LTX 的固定时长必须是 JSON 数字，传字符串 `"6"` 会直接返回 400；Kling 的时长在 schema 里是 `"3"` 到 `"15"` 的字符串枚举。统一封装时不能把所有模型的 `duration` 都转成同一种类型。
 - **速度数字先问口径**：厂商公布的"几秒出片"一般是推理那一段（fal 的 `timings.inference`），不含排队、Prompt 改写、编码和下载。我做对比时只用"从提交到 MP4 落盘"的端到端时间，其他口径单独记。
 
 ## Playground 和 API 不一定一致
@@ -169,9 +174,17 @@ curl -L "$VIDEO_URL" -H "Authorization: Bearer $(get_bearer)" -o video.mp4
 This deployment does not support image-to-video or reference-to-video generation.
 ```
 
-但 Learn 的模型表写着 Kling v3 Pro 支持 Image-to-Video，也给了 `/providers/falai/kling/v3/pro/image-to-video` 路由。两边说法冲突时，我把它们当作两条独立的记录：Playground 是界面观察，API 要实际发请求验证。Reference-to-Video 是另一回事——Foundry 上只有 H3 Max 提供，Kling 3.0 产品本身虽然有参考素材能力，但 Foundry 的 endpoint 没有开放。
+但 Learn 的模型表写着 Kling v3 Pro 支持 Image-to-Video，也给了 `/providers/falai/kling/v3/pro/image-to-video` 路由。两边说法冲突时，我把它们当作两条独立的记录：Playground 是界面观察，API 要实际发请求验证。
 
-这也是整个系列的一条基本原则：**每条能力都要写清是哪个平台、哪个模型版本、哪个 API**。Foundry、fal 原生平台、模型厂商自己的产品，三份能力清单并不相同。下一篇按这个原则把五个 endpoint 放在一起比较。
+于是我绕过 Playground，在部署了五个模型的同一个资源上直接调图生视频路由，传了一张首帧、一张尾帧：
+
+[![Kling v3 Pro 首尾帧图生样片（点击播放 MP4）|700](../../asset/media-gen-sample-kling-start-end-2026-11-24.jpg)](../../asset/media-gen-sample-kling-start-end-2026-11-24.mp4)
+
+**Kling v3 Pro · 首尾帧图生（API 直连）**　请求：首帧和尾帧各一张本地 JPEG（data URI 传入），时长 3 秒，关闭音频。实际输出：1920×1080、24 fps、3.042 秒，无音轨。观察：灯具从首帧的远景一路推到尾帧的近景，造型和颜色都保住了。两张首尾帧是扁平插画，这条样片验证的是接口和构图衔接，不代表写实画质。点击封面播放 MP4，封面是成片的四帧截图。
+
+API 收下了首尾帧，正常返回 MP4。Playground 的提示只是界面层的限制，**Kling 的图生视频在 Foundry 上可以通过 API 用**。Reference-to-Video 是另一回事——Foundry 上只有 H3 Max 提供，Kling 3.0 产品本身虽然有参考素材能力，但 Foundry 上没有开放。
+
+这也是整个系列的一条基本原则：**每条能力都要写清是哪个平台、哪个模型版本、哪个 API**。Foundry、fal 原生平台、模型厂商自己的产品，三份能力清单并不相同；同一个平台上，界面和 API 也可能不一致。下一篇按这个原则把五个模型放在一起比较。
 
 ## 参考
 

@@ -43,23 +43,23 @@
   <rect class="done" x="30" y="110" width="300" height="250" rx="12"/>
   <circle class="badge" cx="56" cy="138" r="13"/><text class="bn" x="56" y="143">0</text>
   <text class="hD" x="78" y="143">部署与路由确认</text>
-  <text class="t" x="50" y="174">LTX Fast / Pro、H3 Max / Turbo</text>
-  <text class="t" x="50" y="198">四个 deployment：Succeeded</text>
-  <text class="t" x="50" y="222">Kling v3 Pro：Data Zone 区域受限</text>
-  <text class="t" x="50" y="246">Playground 提示不支持图生视频</text>
-  <text class="tg" x="50" y="278">待补：每个路由各发一次最小请求，</text>
-  <text class="tg" x="50" y="302">记 HTTP 状态和响应体，确认 v1</text>
-  <text class="tg" x="50" y="326">路径与 Kling 图生视频是否可用</text>
+  <text class="t" x="50" y="174">五个模型同一个 Foundry 资源</text>
+  <text class="t" x="50" y="198">五个 deployment：Succeeded</text>
+  <text class="t" x="50" y="222">api-key 鉴权、带 v1 路由全部跑通</text>
+  <text class="t" x="50" y="246">Kling 首尾帧图生 API 可用</text>
+  <text class="tg" x="50" y="278">第一批七条样片已入实测记录；</text>
+  <text class="tg" x="50" y="302">待补：不带 v1 的路由、timings</text>
+  <text class="tg" x="50" y="326">字段与内联文件大小上限</text>
 
   <!-- 1 -->
   <rect class="cur" x="370" y="110" width="300" height="250" rx="12"/>
   <circle class="badgeA" cx="396" cy="138" r="13"/><text class="bn" x="396" y="143">1</text>
   <text class="hA" x="418" y="143">共同基线：Test 01 / 07</text>
   <text class="t" x="390" y="174">雨夜人物，Text-to-Video</text>
-  <text class="t" x="390" y="198">五个 endpoint 同一条 Prompt</text>
+  <text class="t" x="390" y="198">五个模型同一条 Prompt</text>
   <text class="t" x="390" y="222">LTX 6 秒 1080p；H3 6 秒 1080P</text>
   <text class="t" x="390" y="246">Kling 6 秒，分辨率按返回值记</text>
-  <text class="tg" x="390" y="278">每个 endpoint 至少 3 次</text>
+  <text class="tg" x="390" y="278">每个模型至少 3 次</text>
   <text class="tg" x="390" y="302">07：同一 Prompt Fast→Pro、</text>
   <text class="tg" x="390" y="326">Turbo→Max，看构图动作留下多少</text>
 
@@ -94,7 +94,7 @@
   <!-- 记录 -->
   <rect class="zone" x="30" y="396" width="1340" height="200" rx="12"/>
   <text class="h" x="50" y="426">每一次生成都记同一组字段（自动采集 + 人工评分）</text>
-  <text class="t" x="50" y="458">自动：endpoint、平台、deployment、路由、请求参数、输入文件、HTTP 与任务状态、request_id</text>
+  <text class="t" x="50" y="458">自动：模型、平台、deployment、路由、请求参数、输入文件、HTTP 与任务状态、request_id</text>
   <text class="t" x="50" y="484">计时：提交 → COMPLETED、取结果、下载各自分开；有 timings 时单列，不与端到端混填</text>
   <text class="t" x="50" y="510">输出：请求时长 / 实际时长、分辨率、帧率、是否有音轨、文件大小、按单价折算的美元成本</text>
   <text class="t" x="50" y="536">人工（1–5 分）：Prompt 遵循、画质、时间一致性、动作、音频与音画同步，附一句观察</text>

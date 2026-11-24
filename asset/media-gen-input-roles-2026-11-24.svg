@@ -110,11 +110,11 @@
   <text class="t" x="960" y="472">局部替换、严格保留原镜头运动。</text>
   <text class="tg" x="960" y="500">R2V 的参考视频只提供动作参考，</text>
   <text class="tg" x="960" y="524">不能当作逐帧编辑来用。</text>
-  <rect class="chipN" x="960" y="552" width="300" height="26" rx="13"/><text class="ctN" x="974" y="570">Foundry 这五个 endpoint 都未提供</text>
+  <rect class="chipN" x="960" y="552" width="300" height="26" rx="13"/><text class="ctN" x="974" y="570">Foundry 上这五个模型都未提供</text>
 
   <rect class="colG" x="30" y="636" width="1340" height="144" rx="12"/>
   <text class="h15" x="50" y="666">三份能力清单不要混用</text>
   <text class="t" x="50" y="694">Foundry：只有 H3 Max 有 Reference-to-Video 路由，五个都有文生视频和图生视频。</text>
   <text class="t" x="50" y="720">fal 原生平台：另有 H3 Max Turbo 的 Reference-to-Video、LTX 2.5 的 Audio-to-Video、Kling v3 Pro 的参考元素（elements）。</text>
-  <text class="t" x="50" y="746">模型厂商产品：Kling 3.0 本身把文生、图生、参考生成与视频内编辑做在一个架构里；Foundry 的 Kling endpoint 只开放其中两项。</text>
+  <text class="t" x="50" y="746">模型厂商产品：Kling 3.0 本身把文生、图生、参考生成与视频内编辑做在一个架构里；Foundry 上的 Kling 只开放其中两项。</text>
 </svg>
