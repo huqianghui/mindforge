@@ -1,7 +1,7 @@
 ---
 title: "题库：微软 AI 三支柱"
 created: "2026-11-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - path
@@ -287,7 +287,7 @@ path_id: "microsoft-three-pillars"
 
 **问**："选对 harness，managed app 就能同步调用 agent。"对吗？
 
-**答**：不对。能否被浏览器里的 managed app 同步调用，四种 harness 都是否；这一维只决定集成方式——经 workflow 异步中转，或让人直接在 Teams / M365 Copilot 里用 agent。
+**答**：不对。能否被浏览器里的 managed app 同步调用，2026-10 实测的四种 harness 都是否（官方现在归为三种）；这一维只决定集成方式——经 workflow 异步中转，或让人直接在 Teams / M365 Copilot 里用 agent。
 
 **出处**：[[copilot-studio-harness-selection]]
 
@@ -348,6 +348,14 @@ path_id: "microsoft-three-pillars"
 **答**：白名单、返回类型、连接参数、allowedActions、首次授权、宿主外悬空、部署超时七关；其中两关会"状态正常但其实不通"，所以要在宿主里实测，不能只看连接状态。
 
 **出处**：[[copilot-managed-runtime]]
+
+### Q6 · 辨析
+
+**问**："用 Copilot Studio 自然语言生成的 managed app，比开发者手写的 React 应用功能更受限。"对吗？
+
+**答**：不对。创作入口再多（Copilot Studio、Cowork / Code 里的 coding agent、ms CLI 加 SDK），产物都是同一种静态 SPA、跑在同一个宿主里，差别只在"怎么写出来"。它看起来像静态网站，是因为托管的确实是静态资源，前面多了一层平台控制的身份与治理壳；部分数据可能随发布产物携带，只在重新部署后更新，要实时数据就走 Connector。
+
+**出处**：[[copilot-managed-runtime]]（Claim「创作入口再多，产物都是同一种静态 SPA」）
 
 ## 第 9 站 · 支柱三：Foundry Agent Service
 
@@ -433,6 +441,14 @@ path_id: "microsoft-three-pillars"
 
 **出处**：[[foundry-agent-type-selection]]（Claim「反向判据」）
 
+### Q7 · 解释
+
+**问**：按"loop 归谁"怎么给 agent 分类？为什么说真正的成本分界在 A 与 B 之间？
+
+**答**：A 类是声明式、平台自带 loop（≈ Foundry Prompt Agent）；C 类是自己写 loop 的镜像（≈ Hosted Agent）；B 类是基于现成编码 harness（Claude Code、Codex、Copilot CLI）的 agent，在作者眼里像 A（不写 loop），在运行时眼里像 C（要容器、要沙箱）。Hosted 要求容器说 Responses 或 Invocations 协议，这些 CLI 不说，所以 B 类没有直接对应的托管形态，要自己包一层适配器或放到 AKS。在 AKS 上自建的理由只剩三类：直接跑现成编码 CLI、沙箱规格超过 2 vCPU / 4 GiB、需要细到"某 agent 只能读某仓库"的出站粒度，前提是团队愿意长期维护控制面。
+
+**出处**：[[foundry-agent-type-selection]]（Claim「按 loop 归谁分三类 agent」「在 AKS 上自建 agent runtime 的理由只剩三类」）
+
 ## 第 11 站 · 汇合：分层组合与接缝
 
 ### Q1 · 场景
@@ -474,3 +490,20 @@ path_id: "microsoft-three-pillars"
 **答**：Hosted 已经是"framework 自选、runtime 托管"，他想把 runtime 这一半也换成自己的——数据与执行环境留在自己网络里、隔离与出站自定。可以给自建对照清单（kagent / AKS Kata + 沙箱 / 外置状态 / Workload Identity → Entra Agent ID / OTel），并说明这与 Agent 365 不冲突。
 
 **出处**：[[foundry-agent-type-selection]]（Claim「Hosted Agent 已经是 framework 自选、runtime 托管」）
+
+### Q8 · 场景
+
+**问**：两个客户都要做员工知识问答助手：A 客户由业务部门自己维护，B 客户由平台团队维护、要求进 Git 和私网。各推荐什么？
+
+**答**：两边技术上都走得通，按谁来长期维护选：A 选 Copilot Studio——业务团队自己能改、Connector 与 DLP 现成，代价是黑盒运行时、ALM 与 Git 流程分离；B 选 Foundry——按 token 计费、Git / IaC / 评测 / tracing、私网，代价是需要开发者、发布要管理员审批、企业连接要自己接。维护者决定了哪套 ALM 和技能栈能长期跑下去。
+
+**出处**：[[microsoft-ai-pillars-selection]]（Claim「谁来长期维护就选谁的平台」）
+
+### Q9 · 场景
+
+**问**：第一次见客户，30 分钟内要判断方案大方向。你先问哪几个问题？
+
+**答**：先问三个：用户从哪里进来（员工在 M365 / Teams、来电、网页或数字人、自有产品）；谁来建和维护（业务团队还是平台团队）；已经有哪些许可和底座（M365 Copilot、D365 Contact Center 会让 Copilot Studio 更顺，只有 Azure 订阅则倾向 Foundry）。之后再问平台内的路：要不要逐轮控制对话、大脑要不要自定义、要不要数字人、有无数据驻留与私网、用户内外部与是否匿名、是否被其他应用程序化调用、计费偏好。"要不要逐轮控制"最容易被低估。
+
+**出处**：[[microsoft-ai-pillars-selection]]（Claim「和客户第一次沟通先问三个问题」）
+
