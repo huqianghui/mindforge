@@ -110,6 +110,7 @@ The vault includes a **Personal Knowledge Wiki** (`wiki/`) following the Karpath
 3. **Claim-based Schema** — Knowledge is structured as assertions with evidence, confidence scores (0.0~1.0), and lifecycle status (active/conflicting/outdated/stale).
 4. **Incremental Evolution** — Wiki pages evolve through repeated extraction and review cycles. Don't try to build a complete knowledge base in one pass.
 5. **Atomic Concept Extraction** — 提取知识时，不仅提取复合/应用层概念，还必须识别**重要的技术性原子概念**并独立建页。判断标准（需同时满足）：① 在文章中被**定义或深入解释**（而非仅提及）；② 是某技术领域的**基础性概念**（如"控制论"、"负反馈"、"RAG"），而非通用术语（如 API、JSON）或非技术概念；③ 被 2+ 篇文章引用或作为其他概念页的理论基础。宁缺勿滥——不确定时不建页。
+6. **书和论文都是个人知识，必须入库**（2026-11-24 用户要求："把 book 和论文等等内容，都需要包括进去。因为它们都是我个人的知识"）——`book/`、`paper/` 里的每一篇都要提取进 wiki，**不得**以"非技术领域"、"与技术图谱关联弱"为由不进 wiki 或登记覆盖豁免；上一条"技术领域基础性概念"只约束是否单独建原子概念页，不约束是否提取 Claim。领域在 wiki 里还没有页时，建领域根页并在 index 新增分类。每次 `/extract-knowledge` 都检查书和论文的抽取厚度（长文只抽了一两条的要补）。2026-11-23 曾把魏斯曼读书笔记判为不进 wiki，被用户纠正。
 
 ### Knowledge Ingest Workflow
 
