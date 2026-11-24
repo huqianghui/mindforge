@@ -7,7 +7,7 @@
       <path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/>
     </marker>
     <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#5c6f8a"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#5e718d"/>
     </marker>
     <style>
       .bg { fill: #f6f8fb; }
@@ -15,18 +15,18 @@
       .boxBlue { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
       .boxAmber { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
       .vm { fill: #f4f2fa; stroke: #2a0693; stroke-width: 2; }
-      .kernel { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .kernel { fill: #f3f5f9; stroke: #7a899f; stroke-width: 1.4; }
       .zone { fill: none; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
       .zl { fill: #036696; font-size: 15px; font-weight: 600; }
       .h { fill: #344965; font-size: 15px; font-weight: 600; }
       .hv { fill: #1d0495; font-size: 15px; font-weight: 600; }
       .t { fill: #384b61; font-size: 13.5px; }
-      .tGray { fill: #5c6f8a; font-size: 13.5px; }
+      .tGray { fill: #5e718d; font-size: 13.5px; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
       .flowAmber { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowGray { fill: none; stroke: #5c6f8a; stroke-width: 1.8; stroke-dasharray: 4 5; }
+      .flowGray { fill: none; stroke: #5e718d; stroke-width: 1.8; stroke-dasharray: 4 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
       .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
       .el { fill: #128751; font-size: 13.5px; }

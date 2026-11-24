@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 960" width="1500" height="960" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <style>
 .title{fill:#2e4c6b;font-size:22px;font-weight:700}
-.sub{fill:#5c6f8a;font-size:14px}
-.zone{fill:#5c6f8a;font-size:13px;font-weight:600}
+.sub{fill:#5e718d;font-size:14px}
+.zone{fill:#5e718d;font-size:13px;font-weight:600}
 .h{fill:#2e4d6b;font-size:16px;font-weight:700}
 .t{fill:#344965;font-size:14px}
 .s{fill:#344255;font-size:13px}
@@ -25,7 +25,7 @@
 <text class="sub" x="30" y="70">入口网关对所有路径做同样三道处理；到了 agent 的 Pod 前面还有一层网络策略，只放行平台登记过的端口</text>
 
 <!-- browser -->
-<rect x="30" y="250" width="170" height="120" rx="12" fill="#f2f5fa" stroke="#bec5d0"/>
+<rect x="30" y="250" width="170" height="120" rx="12" fill="#f2f5fa" stroke="#7a899f"/>
 <text class="h" x="52" y="284">浏览器</text>
 <text class="s" x="52" y="310">门户页面</text>
 <text class="s" x="52" y="332">嵌入的 AI 网关控制台</text>

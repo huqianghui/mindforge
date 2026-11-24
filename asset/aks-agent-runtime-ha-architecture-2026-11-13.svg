@@ -5,21 +5,21 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .zone { fill: #f6f8fb; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 9 5; }
       .zoneB { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 9 5; }
       .zoneP { fill: #f3f3fa; stroke: #2a0693; stroke-width: 1.4; stroke-dasharray: 9 5; }
-      .zoneG { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.4; stroke-dasharray: 6 4; }
+      .zoneG { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.4; stroke-dasharray: 6 4; }
       .zl { font-size: 15px; font-weight: 600; }
       .card { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
       .cardB { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
       .cardP { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.5; }
       .cardA { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.8; animation: pulse 2.2s ease-in-out infinite; }
-      .cardG { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.2; }
+      .cardG { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; }
       .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
-      .hg { fill: #5c6f8a; font-size: 15px; font-weight: 600; }
+      .hg { fill: #5e718d; font-size: 15px; font-weight: 600; }
       .t { fill: #384b61; font-size: 13px; }
-      .tg { fill: #5c6f8a; font-size: 13px; }
+      .tg { fill: #5e718d; font-size: 13px; }
       .m { fill: #058594; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
       .num { fill: #967903; font-size: 13px; font-weight: 600; }
       .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
@@ -119,7 +119,7 @@
 
   <!-- 参考实现 -->
   <rect class="zoneG" x="30" y="610" width="560" height="170" rx="14"/>
-  <text class="zl" x="48" y="636" fill="#5c6f8a">参考实现现在的做法</text>
+  <text class="zl" x="48" y="636" fill="#5e718d">参考实现现在的做法</text>
   <text class="t" x="48" y="664">控制面单副本 + SQLite，Deployment 用 Recreate</text>
   <text class="t" x="48" y="688">代码注释写明：没有分布式 lease，同一个库不能跑两个调度器</text>
   <text class="t" x="48" y="712">启动时先"围栏"：把所有做到一半的事标成中断再重新核对</text>
@@ -127,7 +127,7 @@
   <text class="num" x="48" y="764">第 05 篇实测：删 Pod 后 5 秒恢复，每次发版都会停这么一下</text>
 
   <rect class="zoneG" x="620" y="610" width="750" height="170" rx="14"/>
-  <text class="zl" x="638" y="636" fill="#5c6f8a">我第一版踩的坑</text>
+  <text class="zl" x="638" y="636" fill="#5e718d">我第一版踩的坑</text>
   <text class="t" x="638" y="664">新副本拿到会话锁、发现 lease 被占时，我让它 abandon 这条消息、放开会话。</text>
   <text class="t" x="638" y="688">三个副本轮流抢，每次 abandon 投递次数加一，10 秒的 lease 还没过期，</text>
   <text class="t" x="638" y="712">第 1、2 轮就耗光 10 次投递进了死信。第 3 轮被序号检查拒绝——没写错，</text>

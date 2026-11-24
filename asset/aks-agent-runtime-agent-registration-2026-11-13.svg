@@ -6,7 +6,7 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .stage { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
       .stageB { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
       .stageP { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.5; }

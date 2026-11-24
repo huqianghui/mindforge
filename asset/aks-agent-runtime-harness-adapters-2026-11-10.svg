@@ -4,14 +4,14 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
-      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .zone { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 4 4; }
       .vm { fill: #f8f4f6; stroke: #920707; stroke-width: 1.4; stroke-dasharray: 8 5; }
       .zl { font-size: 14px; font-weight: 600; }
       .hcard { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.4; }
       .acard { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.6; }
       .ecard { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.4; }
-      .ch { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .ch { fill: #f3f5f9; stroke: #7a899f; stroke-width: 1.4; }
       .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
       .t { fill: #384b61; font-size: 13px; }
       .m { fill: #058594; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
@@ -53,7 +53,7 @@
 
   <!-- 中：适配器 -->
   <rect class="zone" x="480" y="96" width="420" height="560" rx="12"/>
-  <text class="zl" x="498" y="122" fill="#5c6f8a">控制面里（每个 harness 一个适配器）</text>
+  <text class="zl" x="498" y="122" fill="#5e718d">控制面里（每个 harness 一个适配器）</text>
   <rect class="acard" x="500" y="140" width="380" height="140" rx="10"/>
   <text class="h" x="520" y="168">① 拼命令行</text>
   <text class="t" x="520" y="194">固定参数：非交互、免确认、JSON 输出</text>

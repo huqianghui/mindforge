@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1520 1038" width="1520" height="1038" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
-<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5c6f8a"/></marker><style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5c6f8a;font-size:14px}.hc{fill:#2e4d6b;font-size:15px;font-weight:700;text-anchor:middle}.ln{fill:#2e4d6b;font-size:15px;font-weight:700}.lr{fill:#5c6f8a;font-size:13px}.t{font-size:13px}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.4s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}.fl{fill:none;stroke:#5c6f8a;stroke-width:1.6;stroke-dasharray:6 5;animation:d 1.4s linear infinite}@keyframes d{to{stroke-dashoffset:-22}}</style></defs>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5e718d"/></marker><style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5e718d;font-size:14px}.hc{fill:#2e4d6b;font-size:15px;font-weight:700;text-anchor:middle}.ln{fill:#2e4d6b;font-size:15px;font-weight:700}.lr{fill:#5e718d;font-size:13px}.t{font-size:13px}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.4s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}.fl{fill:none;stroke:#5e718d;stroke-width:1.6;stroke-dasharray:6 5;animation:d 1.4s linear infinite}@keyframes d{to{stroke-dashoffset:-22}}</style></defs>
 <rect width="1520" height="1038" rx="16" fill="#f6f8fb"/>
 <text class="title" x="30" y="44">在 AKS 上自建 agent runtime：每一层用什么</text>
 <text class="sub" x="30" y="72">从下往上 8 层。紫 = 开源 / 社区组件，蓝 = AKS / Azure 托管件，橙 = 要自己写的（括号里是系列篇号），青绿 = Foundry Hosted Agents 里由平台替你做的</text>
-<rect x="30" y="96" width="200" height="40" rx="8" fill="#f3f5f9" stroke="#bcc5d2"/><text class="hc" x="130.0" y="122">层</text>
-<rect x="240" y="96" width="360" height="40" rx="8" fill="#f3f5f9" stroke="#bcc5d2"/><text class="hc" x="420.0" y="122">开源 / 社区可用</text>
-<rect x="610" y="96" width="290" height="40" rx="8" fill="#f3f5f9" stroke="#bcc5d2"/><text class="hc" x="755.0" y="122">AKS / Azure 托管件</text>
-<rect x="910" y="96" width="330" height="40" rx="8" fill="#f3f5f9" stroke="#bcc5d2"/><text class="hc" x="1075.0" y="122">要自己写（系列哪篇）</text>
-<rect x="1250" y="96" width="240" height="40" rx="8" fill="#f3f5f9" stroke="#bcc5d2"/><text class="hc" x="1370.0" y="122">Hosted Agents 里对应</text>
-<rect x="30" y="150" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="180">⑧ 观测与审计</text><text class="lr" x="44" y="202">第 01、06 篇</text>
+<rect x="30" y="96" width="200" height="40" rx="8" fill="#f3f5f9" stroke="#7688a2"/><text class="hc" x="130.0" y="122">层</text>
+<rect x="240" y="96" width="360" height="40" rx="8" fill="#f3f5f9" stroke="#7688a2"/><text class="hc" x="420.0" y="122">开源 / 社区可用</text>
+<rect x="610" y="96" width="290" height="40" rx="8" fill="#f3f5f9" stroke="#7688a2"/><text class="hc" x="755.0" y="122">AKS / Azure 托管件</text>
+<rect x="910" y="96" width="330" height="40" rx="8" fill="#f3f5f9" stroke="#7688a2"/><text class="hc" x="1075.0" y="122">要自己写（系列哪篇）</text>
+<rect x="1250" y="96" width="240" height="40" rx="8" fill="#f3f5f9" stroke="#7688a2"/><text class="hc" x="1370.0" y="122">Hosted Agents 里对应</text>
+<rect x="30" y="150" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="180">⑧ 观测与审计</text><text class="lr" x="44" y="202">第 01、06 篇</text>
 <rect x="240" y="150" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="180" fill="#490099">OpenTelemetry、Prometheus</text>
 <text class="t" x="252" y="201" fill="#490099">agentgateway / Envoy 的访问日志</text>
@@ -20,7 +20,7 @@
 <text class="t" x="922" y="201" fill="#975202">副作用追溯到哪段模型输出</text>
 <rect x="1250" y="150" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="180" fill="#0b8e72">平台自带追踪与日志</text>
-<rect x="30" y="236" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="266">⑦ 注册与发现</text><text class="lr" x="44" y="288">第 07 篇</text>
+<rect x="30" y="236" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="266">⑦ 注册与发现</text><text class="lr" x="44" y="288">第 07 篇</text>
 <rect x="240" y="236" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="266" fill="#490099">kagent、Nacos AI 注册中心</text>
 <text class="t" x="252" y="287" fill="#490099">A2A / MCP SDK、MCP Registry、oras</text>
@@ -32,7 +32,7 @@
 <text class="t" x="922" y="287" fill="#975202">卡片生成、注册中心同步</text>
 <rect x="1250" y="236" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="266" fill="#0b8e72">部署即注册，发布到 Foundry</text>
-<rect x="30" y="322" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="352">⑥ 授权与身份</text><text class="lr" x="44" y="374">第 04、09 篇</text>
+<rect x="30" y="322" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="352">⑥ 授权与身份</text><text class="lr" x="44" y="374">第 04、09 篇</text>
 <rect x="240" y="322" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="352" fill="#490099">OpenFGA、OPA、SpiceDB</text>
 <text class="t" x="252" y="373" fill="#490099">cert-manager、SPIFFE / SPIRE、Kyverno</text>
@@ -44,7 +44,7 @@
 <text class="t" x="922" y="373" fill="#975202">Pod → 会话映射、fencing token</text>
 <rect x="1250" y="322" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="352" fill="#0b8e72">每个 agent 自动建 Entra 身份</text>
-<rect x="30" y="408" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="438">⑤ 网关</text><text class="lr" x="44" y="460">第 04、07、08 篇</text>
+<rect x="30" y="408" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="438">⑤ 网关</text><text class="lr" x="44" y="460">第 04、07、08 篇</text>
 <rect x="240" y="408" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="438" fill="#490099">agentgateway（agent / 模型 / 出站）</text>
 <text class="t" x="252" y="459" fill="#490099">Envoy AI Gateway、Kong、LiteLLM、Higress</text>
@@ -56,7 +56,7 @@
 <text class="t" x="922" y="459" fill="#975202">按会话授权、凭据代理</text>
 <rect x="1250" y="408" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="438" fill="#0b8e72">工具统一走 Toolbox</text>
-<rect x="30" y="494" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="524">④ harness</text><text class="lr" x="44" y="546">第 03、08 篇</text>
+<rect x="30" y="494" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="524">④ harness</text><text class="lr" x="44" y="546">第 03、08 篇</text>
 <rect x="240" y="494" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="524" fill="#490099">Claude Code、Codex、Copilot CLI、</text>
 <text class="t" x="252" y="545" fill="#490099">OpenCode、Pi（第三方 CLI）</text>
@@ -68,7 +68,7 @@
 <rect x="1250" y="494" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="524" fill="#0b8e72">要求容器实现</text>
 <text class="t" x="1262" y="545" fill="#0b8e72">Responses / Invocations 协议</text>
-<rect x="30" y="580" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="610">③ 会话控制面</text><text class="lr" x="44" y="632">第 03、05、06 篇</text>
+<rect x="30" y="580" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="610">③ 会话控制面</text><text class="lr" x="44" y="632">第 03、05、06 篇</text>
 <rect x="240" y="580" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="610" fill="#490099">Dapr Actor / Workflow、Temporal</text>
 <text class="t" x="252" y="631" fill="#490099">PostgreSQL、SQLite</text>
@@ -80,7 +80,7 @@
 <text class="t" x="922" y="631" fill="#975202">维护循环、对账器、多副本 lease</text>
 <rect x="1250" y="580" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="610" fill="#0b8e72">会话与对话分开，平台管理</text>
-<rect x="30" y="666" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="696">② 沙箱编排</text><text class="lr" x="44" y="718">见 03 补充</text>
+<rect x="30" y="666" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="696">② 沙箱编排</text><text class="lr" x="44" y="718">见 03 补充</text>
 <rect x="240" y="666" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="696" fill="#490099">OpenSandbox、agent-sandbox</text>
 <text class="t" x="252" y="717" fill="#490099">kagent、Agent Substrate</text>
@@ -92,7 +92,7 @@
 <text class="t" x="922" y="717" fill="#975202">快照仓库清理</text>
 <rect x="1250" y="666" width="240" height="78" rx="8" fill="#f2fbfa" stroke="#26a696" stroke-width="1.4"/>
 <text class="t" x="1262" y="696" fill="#0b8e72">每会话一个沙箱，空闲释放、恢复</text>
-<rect x="30" y="752" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#b9c4d5"/><text class="ln" x="44" y="782">① 隔离</text><text class="lr" x="44" y="804">见第 01 篇、01 补充</text>
+<rect x="30" y="752" width="200" height="78" rx="8" fill="#f6f8fb" stroke="#7087a9"/><text class="ln" x="44" y="782">① 隔离</text><text class="lr" x="44" y="804">见第 01 篇、01 补充</text>
 <rect x="240" y="752" width="360" height="78" rx="8" fill="#f4f3f9" stroke="#2a0693" stroke-width="1.4"/>
 <text class="t" x="252" y="782" fill="#490099">Kata Containers、gVisor</text>
 <text class="t" x="252" y="803" fill="#490099">Firecracker、Cloud Hypervisor</text>

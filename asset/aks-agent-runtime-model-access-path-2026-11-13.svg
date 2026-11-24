@@ -2,11 +2,11 @@
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
     <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
-    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#bec5d0"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7a899f"/></marker>
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .vm { fill: #f8f4f6; stroke: #920707; stroke-width: 1.4; stroke-dasharray: 8 5; }
       .zone { fill: #f6f8fb; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 9 5; }
       .cp { fill: #f3f3fa; stroke: #2a0693; stroke-width: 1.4; stroke-dasharray: 9 5; }
@@ -17,16 +17,16 @@
       .cA { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.8; animation: pulse 2.2s ease-in-out infinite; }
       .cP { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.5; }
       .cB { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.5; }
-      .cG { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.4; stroke-dasharray: 6 4; }
+      .cG { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.4; stroke-dasharray: 6 4; }
       .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
-      .hg { fill: #5c6f8a; font-size: 15px; font-weight: 600; }
+      .hg { fill: #5e718d; font-size: 15px; font-weight: 600; }
       .t { fill: #384b61; font-size: 13px; }
-      .tg { fill: #5c6f8a; font-size: 13px; }
+      .tg { fill: #5e718d; font-size: 13px; }
       .m { fill: #058594; font-size: 12.5px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
       .num { fill: #967903; font-size: 13px; font-weight: 600; }
       .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
       .flowA { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
-      .flowG { fill: none; stroke: #bec5d0; stroke-width: 1.8; stroke-dasharray: 3 5; }
+      .flowG { fill: none; stroke: #7a899f; stroke-width: 1.8; stroke-dasharray: 3 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
       .badgeA { fill: #92400e; stroke: #fde68a; stroke-width: 1.3; }
       .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }

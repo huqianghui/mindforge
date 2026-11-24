@@ -10,7 +10,7 @@
       .o1 { fill: #eef9f8; stroke: #25b19f; stroke-width: 1.6; }
       .o2 { fill: #eef2f9; stroke: #2586b1; stroke-width: 1.6; }
       .o3 { fill: #f1eff8; stroke: #321782; stroke-width: 1.6; }
-      .alt { fill: #fbf7ee; stroke: #d8d2c4; stroke-width: 1.3; stroke-dasharray: 6 4; }
+      .alt { fill: #fbf7ee; stroke: #8f897c; stroke-width: 1.3; stroke-dasharray: 6 4; }
       .warn { fill: #f7f0f1; stroke: #821717; stroke-width: 1.4; }
       .base { fill: #fbf7ee; stroke: #6b6a64; stroke-width: 1.3; }
       .qh { fill: #826d17; font-size: 16px; font-weight: 700; }

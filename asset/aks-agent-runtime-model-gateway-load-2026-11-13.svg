@@ -2,27 +2,27 @@
   <defs>
     <style>
       .bg { fill: #fcfcfb; }
-      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
       .sub { fill: #6f6e69; font-size: 14px; }
-      .panel { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.2; }
-      .ph { fill: #1a4c89; font-size: 16px; font-weight: 600; }
-      .rowT { fill: #1a4c89; font-size: 13.5px; }
-      .m { fill: #1a4c89; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
-      .ok { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.2; }
-      .no { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.2; }
-      .badT { fill: #2a78d6; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .badR { fill: #8e1616; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .g200 { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.4; }
-      .g503 { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.4; animation: pulse 1.8s ease-in-out infinite; }
-      .g403 { fill: #faefeb; stroke: #eb6834; stroke-width: 1.4; }
-      .bl { fill: #1a4c89; font-size: 13px; font-weight: 600; text-anchor: middle; }
-      .lat { fill: #ecf2f8; stroke: #2d1f84; stroke-width: 1.4; }
-      .latT { fill: #2d1f84; font-size: 13px; font-weight: 600; }
-      .ax { stroke: #e4e2dc; stroke-width: 1; }
-      .axl { fill: #e4e2dc; font-size: 12.5px; text-anchor: middle; }
-      .lg { fill: #1a4c89; font-size: 13.5px; }
-      .lgh { fill: #1a4c89; font-size: 15px; font-weight: 600; }
-      .flow { fill: none; stroke: #2a78d6; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
+      .panel { fill: #fcfcfb; stroke: #8a8984; stroke-width: 1.2; }
+      .ph { fill: #384e6c; font-size: 16px; font-weight: 600; }
+      .rowT { fill: #384e6c; font-size: 13.5px; }
+      .m { fill: #058e9e; font-size: 13px; font-family: 'SF Mono', Menlo, Consolas, monospace; }
+      .ok { fill: #ebfaf8; stroke: #31d0bc; stroke-width: 1.2; }
+      .no { fill: #f8eced; stroke: #9c0808; stroke-width: 1.2; }
+      .badT { fill: #38e0c6; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .badR { fill: #9e0505; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .g200 { fill: #ebfaf8; stroke: #31d0bc; stroke-width: 1.4; }
+      .g503 { fill: #f8eced; stroke: #9c0808; stroke-width: 1.4; animation: pulse 1.8s ease-in-out infinite; }
+      .g403 { fill: #faf4eb; stroke: #f5bb23; stroke-width: 1.4; }
+      .bl { fill: #315272; font-size: 13px; font-weight: 600; text-anchor: middle; }
+      .lat { fill: #efedf7; stroke: #2d079c; stroke-width: 1.4; }
+      .latT { fill: #4e00a3; font-size: 13px; font-weight: 600; }
+      .ax { stroke: #8a8984; stroke-width: 1; }
+      .axl { fill: #8a8984; font-size: 12.5px; text-anchor: middle; }
+      .lg { fill: #3c5067; font-size: 13.5px; }
+      .lgh { fill: #384e6c; font-size: 15px; font-weight: 600; }
+      .flow { fill: none; stroke: #31d0bc; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.2s linear infinite; }
       @keyframes dash { to { stroke-dashoffset: -24; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>

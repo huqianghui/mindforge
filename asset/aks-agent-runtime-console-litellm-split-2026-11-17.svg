@@ -3,15 +3,15 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .panC { fill: #f1f6fb; stroke: #0c89c0; stroke-width: 1.8; }
       .panL { fill: #f4f2fa; stroke: #2a0693; stroke-width: 1.8; }
       .panE { fill: #f2faf9; stroke: #26a696; stroke-width: 1.8; }
       .hdC { fill: #036696; font-size: 20px; font-weight: 700; }
       .hdL { fill: #220495; font-size: 20px; font-weight: 700; }
       .hdE { fill: #1bb199; font-size: 20px; font-weight: 700; }
-      .hs { fill: #5c6f8a; font-size: 13.5px; }
-      .box { fill: #f6f8fb; stroke: #b9c4d5; stroke-width: 1.2; }
+      .hs { fill: #5e718d; font-size: 13.5px; }
+      .box { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.2; }
       .boxC { fill: #f1f6fb; stroke: #1087bc; stroke-width: 1.4; }
       .boxL { fill: #f4f2fa; stroke: #440fbd; stroke-width: 1.4; }
       .boxE { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }

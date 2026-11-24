@@ -2,26 +2,26 @@
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
     <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#920707"/></marker>
-    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5c6f8a"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5e718d"/></marker>
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .vm { fill: #f8f4f6; stroke: #920707; stroke-width: 1.6; stroke-dasharray: 9 5; }
-      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zone { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 4 4; }
       .zl { font-size: 14px; font-weight: 600; }
       .card { fill: #f2f5fb; stroke: #0c89c0; stroke-width: 1.4; }
       .cardT { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }
       .cardW { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.6; }
       .cardV { fill: #f4f3fa; stroke: #2a0693; stroke-width: 1.4; }
-      .ext { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .ext { fill: #f3f5f9; stroke: #7a899f; stroke-width: 1.4; }
       .wall { fill: #fbf1f3; stroke: #920707; stroke-width: 1.4; }
       .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
       .t { fill: #384b61; font-size: 13px; }
       .tr { fill: #960303; font-size: 13px; }
       .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
       .flowR { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 4 5; }
-      .flowG { fill: none; stroke: #5c6f8a; stroke-width: 1.6; stroke-dasharray: 3 5; }
+      .flowG { fill: none; stroke: #5e718d; stroke-width: 1.6; stroke-dasharray: 3 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }
       .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
       .lg { fill: #384b61; font-size: 13.5px; }
@@ -65,7 +65,7 @@
 
   <!-- CONNECT 网关 -->
   <rect class="zone" x="560" y="196" width="360" height="430" rx="12"/>
-  <text class="zl" x="578" y="222" fill="#5c6f8a">治理平面（可信）</text>
+  <text class="zl" x="578" y="222" fill="#5e718d">治理平面（可信）</text>
   <rect class="cardT" x="580" y="240" width="320" height="140" rx="10"/>
   <text class="h" x="600" y="266">CONNECT 网关（agentgateway）</text>
   <text class="t" x="600" y="290">mTLS 证书 → 存活 Pod → 唯一会话</text>

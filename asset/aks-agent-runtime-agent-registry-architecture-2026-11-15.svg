@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1250" width="1500" height="1250" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#344965"/></marker>
-<style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5c6f8a;font-size:14px}.h{fill:#2e4d6b;font-size:15px;font-weight:600}.t{fill:#384b61;font-size:13px}.tag{font-size:12px;font-weight:600}.ln{fill:#344965;font-size:16px;font-weight:700}.ld{fill:#5c6f8a;font-size:13px}.fl{fill:none;stroke:#344965;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#f6f8fb;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
+<style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5e718d;font-size:14px}.h{fill:#2e4d6b;font-size:15px;font-weight:600}.t{fill:#384b61;font-size:13px}.tag{font-size:12px;font-weight:600}.ln{fill:#344965;font-size:16px;font-weight:700}.ld{fill:#5e718d;font-size:13px}.fl{fill:none;stroke:#344965;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#f6f8fb;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
 <rect width="1500" height="1250" rx="16" fill="#f6f8fb"/>
 <text class="title" x="30" y="44">Agent 的定义、注册、发现与调用：整体架构和出处</text>
 <text class="sub" x="30" y="72">右上角标出处：灰 Kubernetes、蓝 AKS / Azure、紫 社区、青绿 参考实现、琥珀 我在第 07 篇 PoC 里写的、红虚线 = 两边都还没有。安全沙箱实现不涉及这一层</text>
-<rect x="20" y="92" width="1460" height="190" rx="12" fill="#f6f8fb" stroke="#b9c4d5" stroke-width="1.2"/>
+<rect x="20" y="92" width="1460" height="190" rx="12" fill="#f6f8fb" stroke="#7087a9" stroke-width="1.2"/>
 <text class="ln" x="36" y="120">定义与元数据</text>
 <text class="ld" x="36" y="142">谁写、存在哪</text>
 <text class="ld" x="36" y="161">存 etcd，按内容固定</text>
@@ -32,7 +32,7 @@
 <text class="t" x="852" y="185">Pinned / Track 两种更新策略</text>
 <text class="t" x="852" y="204">tag 被挪动时 status 告警</text>
 <text class="t" x="852" y="223">（绕开 ConfigMap 的 1 MiB）</text>
-<rect x="1155" y="102" width="325" height="170" rx="10" fill="#f6f8fb" stroke="#5c6f8a" stroke-width="1.5"/>
+<rect x="1155" y="102" width="325" height="170" rx="10" fill="#f6f8fb" stroke="#5e718d" stroke-width="1.5"/>
 <text class="h" x="1167" y="125">Kubernetes 提供的底座</text>
 <text class="tag" x="1470" y="120" fill="#384b61" text-anchor="end">Kubernetes</text>
 <text class="t" x="1167" y="147">CRD、CEL 校验、etcd</text>
@@ -40,7 +40,7 @@
 <text class="t" x="1167" y="185">RBAC：谁能看、谁能改</text>
 <text class="t" x="1167" y="204">ConfigMap、ServiceAccount</text>
 <text class="t" x="1167" y="223">Workload Identity 换 ACR 令牌（AKS）</text>
-<rect x="20" y="296" width="1460" height="170" rx="12" fill="#f6f8fb" stroke="#b9c4d5" stroke-width="1.2"/>
+<rect x="20" y="296" width="1460" height="170" rx="12" fill="#f6f8fb" stroke="#7087a9" stroke-width="1.2"/>
 <text class="ln" x="36" y="324">注册</text>
 <text class="ld" x="36" y="346">controller 把定义</text>
 <text class="ld" x="36" y="365">变成可发现的版本</text>
@@ -68,11 +68,11 @@
 <text class="t" x="1092" y="389">Nacos：Agent / MCP 注册中心，托管</text>
 <text class="t" x="1092" y="408">  AgentCard，有版本、审核、可见性</text>
 <text class="t" x="1092" y="427">MCP Registry：登记 MCP server</text>
-<rect x="20" y="480" width="1460" height="190" rx="12" fill="#f6f8fb" stroke="#b9c4d5" stroke-width="1.2"/>
+<rect x="20" y="480" width="1460" height="190" rx="12" fill="#f6f8fb" stroke="#7087a9" stroke-width="1.2"/>
 <text class="ln" x="36" y="508">发现</text>
 <text class="ld" x="36" y="530">三层：集群内、</text>
 <text class="ld" x="36" y="549">跨框架、企业级</text>
-<rect x="210" y="490" width="300" height="170" rx="10" fill="#f6f8fb" stroke="#5c6f8a" stroke-width="1.5"/>
+<rect x="210" y="490" width="300" height="170" rx="10" fill="#f6f8fb" stroke="#5e718d" stroke-width="1.5"/>
 <text class="h" x="222" y="513">集群内：Kubernetes API</text>
 <text class="tag" x="500" y="508" fill="#384b61" text-anchor="end">Kubernetes</text>
 <text class="t" x="222" y="535">kubectl get agents -l team=a</text>
@@ -102,7 +102,7 @@
 <text class="t" x="1197" y="573">找得到 AKS 上的 agent</text>
 <text class="t" x="1197" y="592">和 agent 自己的身份一起出现</text>
 <text class="t" x="1197" y="611">（Entra Agent ID，第 09 篇）</text>
-<rect x="20" y="684" width="1460" height="250" rx="12" fill="#f6f8fb" stroke="#b9c4d5" stroke-width="1.2"/>
+<rect x="20" y="684" width="1460" height="250" rx="12" fill="#f6f8fb" stroke="#7087a9" stroke-width="1.2"/>
 <text class="ln" x="36" y="712">调用</text>
 <text class="ld" x="36" y="734">协议面 + 授权</text>
 <text class="ld" x="36" y="753">能看到 ≠ 能调用</text>
@@ -138,7 +138,7 @@
 <text class="t" x="1092" y="859">agentgateway 项目：代理 A2A、MCP，路由、认证、</text>
 <text class="t" x="1092" y="878">  授权回调。参考实现只用它当模型网关和</text>
 <text class="t" x="1092" y="897">  出站网关，没当 agent 网关用；另有 A2A SDK</text>
-<rect x="20" y="948" width="1460" height="150" rx="12" fill="#f6f8fb" stroke="#b9c4d5" stroke-width="1.2"/>
+<rect x="20" y="948" width="1460" height="150" rx="12" fill="#f6f8fb" stroke="#7087a9" stroke-width="1.2"/>
 <text class="ln" x="36" y="976">运行</text>
 <rect x="210" y="958" width="350" height="120" rx="10" fill="#faf7f2" stroke="#c38f09" stroke-width="1.5"/>
 <text class="h" x="222" y="981">A 声明式：平台通用 loop</text>

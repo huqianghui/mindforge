@@ -2,27 +2,27 @@
   <defs>
     <style>
       .bg { fill: #fcfcfb; }
-      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
       .sub { fill: #6f6e69; font-size: 14px; }
-      .lane { fill: #1a4c89; font-size: 16px; font-weight: 700; }
+      .lane { fill: #384e6c; font-size: 16px; font-weight: 700; }
       .laneS { fill: #6f6e69; font-size: 13px; }
-      .rl { fill: #1a4c89; font-size: 14px; font-weight: 600; }
-      .run { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.4; }
-      .frozen { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.4; stroke-dasharray: 5 4; }
-      .zombie { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.6; animation: pulse 1.8s ease-in-out infinite; }
-      .bl { fill: #1a4c89; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
-      .track { stroke: #e4e2dc; stroke-width: 2; stroke-dasharray: 8 6; animation: dash 1.4s linear infinite; }
-      .lease { stroke: #2d1f84; stroke-width: 1.8; stroke-dasharray: 4 4; }
-      .relock { stroke: #2a78d6; stroke-width: 1.8; stroke-dasharray: 4 4; }
-      .vt { fill: #1a4c89; font-size: 13px; }
-      .vt2 { fill: #1a4c89; font-size: 13px; }
-      .good { fill: #2a78d6; stroke: #1a4c89; stroke-width: 1.5; }
-      .bad { fill: #8e1616; stroke: #8e1616; stroke-width: 1.5; animation: pulse 1.4s ease-in-out infinite; }
-      .mk { fill: #1a4c89; font-size: 13.5px; font-weight: 600; }
+      .rl { fill: #3c5067; font-size: 14px; font-weight: 600; }
+      .run { fill: #ebfaf8; stroke: #31d0bc; stroke-width: 1.4; }
+      .frozen { fill: #fcfcfb; stroke: #8a8984; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .zombie { fill: #f8eced; stroke: #9c0808; stroke-width: 1.6; animation: pulse 1.8s ease-in-out infinite; }
+      .bl { fill: #315272; font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+      .track { stroke: #8a8984; stroke-width: 2; stroke-dasharray: 8 6; animation: dash 1.4s linear infinite; }
+      .lease { stroke: #2d079c; stroke-width: 1.8; stroke-dasharray: 4 4; }
+      .relock { stroke: #27b3f2; stroke-width: 1.8; stroke-dasharray: 4 4; }
+      .vt { fill: #25049f; font-size: 13px; }
+      .vt2 { fill: #046da0; font-size: 13px; }
+      .good { fill: #31d0bc; stroke: #0d967c; stroke-width: 1.5; }
+      .bad { fill: #9c0808; stroke: #a00303; stroke-width: 1.5; animation: pulse 1.4s ease-in-out infinite; }
+      .mk { fill: #384e6c; font-size: 13.5px; font-weight: 600; }
       .tl { fill: #6f6e69; font-size: 13px; text-anchor: middle; }
-      .axis { stroke: #2a78d6; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
-      .lgh { fill: #1a4c89; font-size: 15px; font-weight: 600; }
-      .lg { fill: #1a4c89; font-size: 13.5px; }
+      .axis { stroke: #31d0bc; stroke-width: 2.4; stroke-dasharray: 10 7; fill: none; animation: dash 1.4s linear infinite; }
+      .lgh { fill: #384e6c; font-size: 15px; font-weight: 600; }
+      .lg { fill: #3c5067; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -34; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>

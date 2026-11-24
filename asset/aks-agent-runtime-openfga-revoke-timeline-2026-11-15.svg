@@ -2,21 +2,21 @@
   <defs>
     <style>
       .bg { fill: #fcfcfb; }
-      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
       .sub { fill: #6f6e69; font-size: 14px; }
-      .lab { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.2; }
-      .h { fill: #1a4c89; font-size: 15px; font-weight: 600; }
-      .t { fill: #1a4c89; font-size: 13px; }
-      .ax { stroke: #e4e2dc; stroke-width: 1.2; }
+      .lab { fill: #fcfcfb; stroke: #8a8984; stroke-width: 1.2; }
+      .h { fill: #315272; font-size: 15px; font-weight: 600; }
+      .t { fill: #3c5067; font-size: 13px; }
+      .ax { stroke: #8a8984; stroke-width: 1.2; }
       .tick { fill: #6f6e69; font-size: 13px; text-anchor: middle; }
-      .allow { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.4; }
-      .deny { fill: #f9ecec; stroke: #8e1616; stroke-width: 1.4; }
-      .flowA { fill: none; stroke: #2a78d6; stroke-width: 2.4; stroke-dasharray: 8 7; animation: dash 1.1s linear infinite; }
-      .rev { fill: #eb6834; stroke: #95350f; stroke-width: 1.5; animation: pulse 1.6s ease-in-out infinite; }
+      .allow { fill: #ebfaf9; stroke: #31d0bc; stroke-width: 1.4; }
+      .deny { fill: #f8eced; stroke: #9c0808; stroke-width: 1.4; }
+      .flowA { fill: none; stroke: #38e0c6; stroke-width: 2.4; stroke-dasharray: 8 7; animation: dash 1.1s linear infinite; }
+      .rev { fill: #f5bb23; stroke: #a08103; stroke-width: 1.5; animation: pulse 1.6s ease-in-out infinite; }
       .lead { stroke: #6f6e69; stroke-width: 1; stroke-dasharray: 3 3; }
-      .note { fill: #1a4c89; font-size: 13px; }
-      .lg { fill: #1a4c89; font-size: 13.5px; }
-      .lgh { fill: #1a4c89; font-size: 15px; font-weight: 600; }
+      .note { fill: #384e6c; font-size: 13px; }
+      .lg { fill: #3c5067; font-size: 13.5px; }
+      .lgh { fill: #384e6c; font-size: 15px; font-weight: 600; }
       @keyframes dash { to { stroke-dashoffset: -30; } }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
     </style>

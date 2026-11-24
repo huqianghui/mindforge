@@ -9,15 +9,15 @@
     <style>
       .bg { fill: #f6f8fb; }
       .cluster { fill: none; stroke: #0c89c0; stroke-width: 1.6; stroke-dasharray: 12 6; }
-      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.2; stroke-dasharray: 4 4; }
+      .zone { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; stroke-dasharray: 4 4; }
       .zoneX { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 4 4; }
       .zl { fill: #344965; font-size: 15px; font-weight: 600; }
-      .zls { fill: #5c6f8a; font-size: 13px; }
+      .zls { fill: #5e718d; font-size: 13px; }
       .cl { fill: #036696; font-size: 15px; font-weight: 600; }
       .native { fill: #f2fafa; stroke: #26a696; stroke-width: 1.6; }
       .comm { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
       .build { fill: #fbf8f1; stroke: #c38f09; stroke-width: 1.8; stroke-dasharray: 7 4; animation: pulse 2.6s ease-in-out infinite; }
-      .ext { fill: #f3f5f9; stroke: #bec5d0; stroke-width: 1.4; }
+      .ext { fill: #f3f5f9; stroke: #7a899f; stroke-width: 1.4; }
       .deny { fill: #faf3f3; stroke: #920707; stroke-width: 1.4; stroke-dasharray: 5 4; }
       .h { fill: #2e4d6b; font-size: 15px; font-weight: 600; }
       .hc { fill: #2e4d6b; font-size: 15px; font-weight: 600; text-anchor: middle; }
@@ -25,7 +25,7 @@
       .tc { fill: #384b61; font-size: 13px; text-anchor: middle; }
       .tr { fill: #960303; font-size: 13px; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .flow { fill: none; stroke: #26a696; stroke-width: 2.1; stroke-dasharray: 7 6; animation: dash 1.2s linear infinite; }
       .flowRed { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 4 5; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.3; }

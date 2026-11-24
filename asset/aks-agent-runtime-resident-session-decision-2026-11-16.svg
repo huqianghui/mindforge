@@ -15,17 +15,17 @@
       .rhH { fill: #25b19b; font-size: 17px; font-weight: 700; }
       .t { fill: #384b61; font-size: 13.5px; }
       .el { fill: #344965; font-size: 13.5px; font-weight: 600; }
-      .edge { stroke: #d8d2c4; stroke-width: 2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .edge { stroke: #8f897c; stroke-width: 2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
       .note { fill: #f8eff0; stroke: #821717; stroke-width: 1.4; }
       .nh { fill: #821717; font-size: 15.5px; font-weight: 700; }
-      .panel { fill: #fbf7ee; stroke: #d8d2c4; stroke-width: 1.2; }
+      .panel { fill: #fbf7ee; stroke: #8f897c; stroke-width: 1.2; }
       .ph { fill: #2e4d6b; font-size: 18px; font-weight: 700; }
-      .plan { fill: #fbf7ee; stroke: #d8d2c4; stroke-width: 1.3; stroke-dasharray: 5 4; }
+      .plan { fill: #fbf7ee; stroke: #8f897c; stroke-width: 1.3; stroke-dasharray: 5 4; }
       .pt { fill: #6b6a64; font-size: 13px; font-weight: 600; }
       .conv { stroke: #25b19f; stroke-width: 2.4; fill: none; stroke-dasharray: 10 7; animation: dash 1.4s linear infinite; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
     </style>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path filter="url(#rough)" d="M0,0 L10,5 L0,10 z" fill="#d8d2c4"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path filter="url(#rough)" d="M0,0 L10,5 L0,10 z" fill="#8f897c"/></marker>
     <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path filter="url(#rough)" d="M0,0 L10,5 L0,10 z" fill="#25b19f"/></marker>
   </defs>
   <rect class="bg" width="1400" height="900" rx="16"/>

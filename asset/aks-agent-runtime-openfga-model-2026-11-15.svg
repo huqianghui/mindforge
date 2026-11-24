@@ -6,10 +6,10 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
-      .zone { fill: #f6f8fb; stroke: #bcc5d2; stroke-width: 1.3; stroke-dasharray: 9 5; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .zone { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.3; stroke-dasharray: 9 5; }
       .zoneF { fill: #f4f3f9; stroke: #2a0693; stroke-width: 1.5; stroke-dasharray: 9 5; }
-      .src { fill: #f6f8fb; stroke: #5c6f8a; stroke-width: 1.3; }
+      .src { fill: #f6f8fb; stroke: #5e718d; stroke-width: 1.3; }
       .ctl { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.5; }
       .tup { fill: #f4f3f9; stroke: #2a0693; stroke-width: 1.4; }
       .mdl { fill: #f4f3f9; stroke: #220495; stroke-width: 1.4; }

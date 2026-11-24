@@ -5,7 +5,7 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .zone { fill: #f6f8fb; stroke: #26a696; stroke-width: 1.4; stroke-dasharray: 9 5; }
       .vm { fill: #f8f4f6; stroke: #920707; stroke-width: 1.4; stroke-dasharray: 8 5; }
       .cp { fill: #f3f3fa; stroke: #2a0693; stroke-width: 1.4; stroke-dasharray: 9 5; }

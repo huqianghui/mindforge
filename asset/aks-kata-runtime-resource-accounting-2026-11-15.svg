@@ -2,25 +2,25 @@
   <defs>
     <style>
       .bg { fill: #fcfcfb; }
-      .panel { fill: #fcfcfb; stroke: #2a78d6; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .vm { fill: #2a78d6; stroke: #2d1f84; stroke-width: 1.6; }
-      .vmGhost { fill: none; stroke: #2d1f84; stroke-width: 1.6; stroke-dasharray: 6 4; }
-      .ovh { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 1.6; }
-      .warn { fill: #faefeb; stroke: #eb6834; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .row { fill: #ecf2f8; stroke: #e4e2dc; stroke-width: 1.2; }
-      .h { fill: #1a4c89; font-size: 15px; font-weight: 600; }
-      .hp { fill: #1a4c89; font-size: 17px; font-weight: 700; }
-      .hA { fill: #95350f; font-size: 15px; font-weight: 600; }
-      .t { fill: #1a4c89; font-size: 13.5px; }
+      .panel { fill: #fcfcfb; stroke: #27b3f2; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .vm { fill: #59489d; stroke: #2d079c; stroke-width: 1.6; }
+      .vmGhost { fill: none; stroke: #2d079c; stroke-width: 1.6; stroke-dasharray: 6 4; }
+      .ovh { fill: #ebfaf9; stroke: #31d0bc; stroke-width: 1.6; }
+      .warn { fill: #faf4eb; stroke: #f5bb23; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .row { fill: #ecf0f9; stroke: #8a8984; stroke-width: 1.2; }
+      .h { fill: #384e6c; font-size: 15px; font-weight: 600; }
+      .hp { fill: #046da0; font-size: 17px; font-weight: 700; }
+      .hA { fill: #a08103; font-size: 15px; font-weight: 600; }
+      .t { fill: #3c5067; font-size: 13.5px; }
       .tGray { fill: #6f6e69; font-size: 13.5px; }
-      .bl { fill: #1a4c89; font-size: 13.5px; font-weight: 600; }
-      .mono { fill: #1a4c89; font-size: 13px; font-family: Menlo, Consolas, monospace; }
-      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .bl { fill: #315272; font-size: 13.5px; font-weight: 600; }
+      .mono { fill: #3c5067; font-size: 13px; font-family: Menlo, Consolas, monospace; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
       .sub { fill: #6f6e69; font-size: 14px; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
       .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .el { fill: #1a4c89; font-size: 13.5px; }
-      .scan { fill: #2a78d6; opacity: 0.18; }
+      .el { fill: #149056; font-size: 13.5px; }
+      .scan { fill: #31d0bc; opacity: 0.18; }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
   </defs>

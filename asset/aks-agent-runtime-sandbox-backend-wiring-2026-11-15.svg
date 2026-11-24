@@ -6,7 +6,7 @@
     <style>
       .bg { fill: #f6f8fb; }
       .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
-      .sub { fill: #5c6f8a; font-size: 14px; }
+      .sub { fill: #5e718d; font-size: 14px; }
       .bandC { fill: #f2faf9; stroke: #26a696; stroke-width: 1.5; stroke-dasharray: 9 5; }
       .bandS { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.5; stroke-dasharray: 9 5; }
       .bandR { fill: #f8f4f6; stroke: #920707; stroke-width: 1.5; stroke-dasharray: 9 5; }

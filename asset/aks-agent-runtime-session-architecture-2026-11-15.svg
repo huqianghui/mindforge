@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1180" width="1500" height="1180" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#344965"/></marker>
-<style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5c6f8a;font-size:14px}.h{fill:#2e4d6b;font-size:15px;font-weight:600}.t{fill:#384b61;font-size:13px}.zl{font-size:15px;font-weight:700}.fl{fill:none;stroke:#344965;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#f6f8fb;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
+<style>.title{fill:#2e4c6b;font-size:22px;font-weight:700}.sub{fill:#5e718d;font-size:14px}.h{fill:#2e4d6b;font-size:15px;font-weight:600}.t{fill:#384b61;font-size:13px}.zl{font-size:15px;font-weight:700}.fl{fill:none;stroke:#344965;stroke-width:1.8;stroke-dasharray:7 6;animation:d 1.3s linear infinite}.bn{fill:#f6f8fb;font-size:13px;font-weight:700;text-anchor:middle}.lg{fill:#384b61;font-size:13.5px}.lgh{fill:#344965;font-size:15px;font-weight:600}.pulse{animation:p 2.2s ease-in-out infinite}@keyframes d{to{stroke-dashoffset:-26}}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.3}}</style></defs>
 <rect width="1500" height="1180" rx="16" fill="#f6f8fb"/>
 <text class="title" x="30" y="44">会话管理的整体架构：每一块由谁提供</text>
 <text class="sub" x="30" y="72">颜色表示出处：灰 = Kubernetes 通用，蓝 = AKS / Azure，紫 = 社区开源，青绿 = 参考实现，橙 = 安全沙箱实现，琥珀 = 我在 PoC 里补的，红色虚线 = 目前没人提供</text>
-<rect x="30" y="92" width="260" height="64" rx="10" fill="#f6f8fb" stroke="#5c6f8a" stroke-width="1.5"/>
+<rect x="30" y="92" width="260" height="64" rx="10" fill="#f6f8fb" stroke="#5e718d" stroke-width="1.5"/>
 <text class="h" x="44" y="116">渠道</text>
 <text class="t" x="44" y="139">Teams、CLI、定时任务、agent 调 agent</text>
 <rect x="20" y="176" width="1460" height="420" rx="14" fill="#f6f8fb" stroke="#26a696" stroke-width="1.4" stroke-dasharray="9 5"/>
@@ -97,7 +97,7 @@
 <text class="t" x="744" y="741">过期沙箱确认"确实不存在"才释放归属</text>
 <text class="t" x="744" y="761">没有会话、收件箱、轮次的概念——</text>
 <text class="t" x="744" y="781">接 harness 时这些由参考实现的控制面负责</text>
-<rect x="1160" y="654" width="300" height="170" rx="10" fill="#f6f8fb" stroke="#5c6f8a" stroke-width="1.5"/>
+<rect x="1160" y="654" width="300" height="170" rx="10" fill="#f6f8fb" stroke="#5e718d" stroke-width="1.5"/>
 <text class="h" x="1174" y="678">Kubernetes 通用</text>
 <text class="t" x="1174" y="701">Pod、Job（commit Job）</text>
 <text class="t" x="1174" y="721">标签：会话 ID + 应用 UID</text>

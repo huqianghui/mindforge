@@ -1,167 +1,167 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1540 1030" width="1540" height="1030" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
-<style>.title{font-family:"Songti SC","STSong","Noto Serif SC",serif;fill:#1a4c89;font-size:22px;font-weight:700}.sub{fill:#6f6e69;font-size:14px}.hc{fill:#1a4c89;font-size:15px;font-weight:700;text-anchor:middle}.rl{fill:#1a4c89;font-size:14px;font-weight:600}.c{font-size:13px}.own{fill:#1a4c89;font-size:13px}.com{fill:#1a4c89;font-size:13px}.used{fill:#2d1f84;font-size:13px;font-weight:600}.lg{fill:#1a4c89;font-size:13.5px}.lgh{fill:#1a4c89;font-size:15px;font-weight:600}.pulse{animation:p 2.4s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}</style>
+<style>.title{font-family:"Songti SC","STSong","Noto Serif SC",serif;fill:#315272;font-size:22px;font-weight:700}.sub{fill:#6f6e69;font-size:14px}.hc{fill:#315272;font-size:15px;font-weight:700;text-anchor:middle}.rl{fill:#384e6c;font-size:14px;font-weight:600}.c{font-size:13px}.own{fill:#3c5067;font-size:13px}.com{fill:#25049f;font-size:13px}.used{fill:#4e00a3;font-size:13px;font-weight:600}.lg{fill:#3c5067;font-size:13.5px}.lgh{fill:#384e6c;font-size:15px;font-weight:600}.pulse{animation:p 2.4s ease-in-out infinite}@keyframes p{0%,100%{stroke-opacity:1}50%{stroke-opacity:.35}}</style>
 <rect width="1540" height="1030" rx="16" fill="#fcfcfb"/>
 <text class="title" x="30" y="44">agent 平台要管的事：原生、两个沙箱项目、社区方案各覆盖到哪</text>
 <text class="sub" x="30" y="72">青绿 = 提供了，琥珀 = 部分提供或要额外配置，灰 = 没有。紫色列是社区可复用的组件，"（在用）"表示前面几篇的两套实现已经用上；剩下要自己写的部分见系列 10 的分层技术栈图</text>
-<rect x="30" y="96" width="240" height="40" rx="8" fill="#ecf2f8" stroke="#e4e2dc"/>
+<rect x="30" y="96" width="240" height="40" rx="8" fill="#eef1f6" stroke="#8a8984"/>
 <text class="hc" x="150.0" y="122">要管的事</text>
-<rect x="280" y="96" width="300" height="40" rx="8" fill="#ecf2f8" stroke="#e4e2dc"/>
+<rect x="280" y="96" width="300" height="40" rx="8" fill="#eef1f6" stroke="#8a8984"/>
 <text class="hc" x="430.0" y="122">Kubernetes 原生</text>
-<rect x="590" y="96" width="270" height="40" rx="8" fill="#ecf2f8" stroke="#e4e2dc"/>
+<rect x="590" y="96" width="270" height="40" rx="8" fill="#eef1f6" stroke="#8a8984"/>
 <text class="hc" x="725.0" y="122">agent-sandbox</text>
-<rect x="870" y="96" width="300" height="40" rx="8" fill="#ecf2f8" stroke="#e4e2dc"/>
+<rect x="870" y="96" width="300" height="40" rx="8" fill="#eef1f6" stroke="#8a8984"/>
 <text class="hc" x="1020.0" y="122">OpenSandbox</text>
-<rect x="1180" y="96" width="330" height="40" rx="8" fill="#ecf2f8" stroke="#e4e2dc"/>
+<rect x="1180" y="96" width="330" height="40" rx="8" fill="#eef1f6" stroke="#8a8984"/>
 <text class="hc" x="1345.0" y="122">社区可复用</text>
-<rect x="30" y="150" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="150" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="175">沙箱隔离</text>
-<rect x="280" y="150" width="300" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="292" y="175" fill="#2a78d6">RuntimeClass + Kata</text>
-<rect x="590" y="150" width="270" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="602" y="175" fill="#95350f">借用：模板写 runtimeClassName</text>
-<rect x="870" y="150" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="882" y="175" fill="#95350f">借用：Pool 要自己写</text>
-<rect x="1180" y="150" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="150" width="300" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="292" y="175" fill="#38e0c6">RuntimeClass + Kata</text>
+<rect x="590" y="150" width="270" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="602" y="175" fill="#a08103">借用：模板写 runtimeClassName</text>
+<rect x="870" y="150" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="882" y="175" fill="#a08103">借用：Pool 要自己写</text>
+<rect x="1180" y="150" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="175">gVisor、Firecracker；Kyverno 强制写 Kata</text>
-<rect x="30" y="196" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="196" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="221">沙箱生命周期与预热</text>
-<rect x="280" y="196" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="221" fill="#95350f">Deployment / StatefulSet 不顺手</text>
-<rect x="590" y="196" width="270" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="602" y="221" fill="#2a78d6">WarmPool、Claim、到期回收</text>
-<rect x="870" y="196" width="300" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="882" y="221" fill="#2a78d6">Pool、TTL、BatchSandbox</text>
-<rect x="1180" y="196" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="196" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="221" fill="#a08103">Deployment / StatefulSet 不顺手</text>
+<rect x="590" y="196" width="270" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="602" y="221" fill="#38e0c6">WarmPool、Claim、到期回收</text>
+<rect x="870" y="196" width="300" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="882" y="221" fill="#38e0c6">Pool、TTL、BatchSandbox</text>
+<rect x="1180" y="196" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="221">kagent、Agent Substrate</text>
-<rect x="30" y="242" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="242" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="267">进沙箱执行、读写文件</text>
-<rect x="280" y="242" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="267" fill="#95350f">kubectl exec，权限太大</text>
-<rect x="590" y="242" width="270" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="602" y="267" fill="#95350f">sandboxd，尚早期</text>
-<rect x="870" y="242" width="300" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="882" y="267" fill="#2a78d6">execd，镜像不用改</text>
-<rect x="1180" y="242" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="242" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="267" fill="#a08103">kubectl exec，权限太大</text>
+<rect x="590" y="242" width="270" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="602" y="267" fill="#a08103">sandboxd，尚早期</text>
+<rect x="870" y="242" width="300" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="882" y="267" fill="#38e0c6">execd，镜像不用改</text>
+<rect x="1180" y="242" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="267">E2B envd</text>
-<rect x="30" y="288" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="288" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="313">暂停后保留状态</text>
-<rect x="280" y="288" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="313" fill="#95350f">PVC</text>
-<rect x="590" y="288" width="270" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="602" y="313" fill="#95350f">Suspended，只留 PVC</text>
-<rect x="870" y="288" width="300" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="882" y="313" fill="#2a78d6">rootfs 快照到镜像仓库</text>
-<rect x="1180" y="288" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="288" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="313" fill="#a08103">PVC</text>
+<rect x="590" y="288" width="270" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="602" y="313" fill="#a08103">Suspended，只留 PVC</text>
+<rect x="870" y="288" width="300" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="882" y="313" fill="#38e0c6">rootfs 快照到镜像仓库</text>
+<rect x="1180" y="288" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="313">kubelet 容器检查点（实验特性）</text>
-<rect x="30" y="334" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="334" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="359">会话状态与绑定</text>
-<rect x="280" y="334" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="359" fill="#e4e2dc">无</text>
-<rect x="590" y="334" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="359" fill="#e4e2dc">无</text>
-<rect x="870" y="334" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="359" fill="#e4e2dc">无</text>
-<rect class="pulse" x="1180" y="334" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="334" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="359" fill="#8a8984">无</text>
+<rect x="590" y="334" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="359" fill="#8a8984">无</text>
+<rect x="870" y="334" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="359" fill="#8a8984">无</text>
+<rect class="pulse" x="1180" y="334" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="359">Dapr Actor / Workflow、Temporal</text>
-<rect x="30" y="380" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="380" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="405">终端用户与 OBO</text>
-<rect x="280" y="380" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="405" fill="#e4e2dc">集群用户不是业务用户</text>
-<rect x="590" y="380" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="405" fill="#e4e2dc">无</text>
-<rect x="870" y="380" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="405" fill="#e4e2dc">只有一个 API key</text>
-<rect class="pulse" x="1180" y="380" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="380" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="405" fill="#8a8984">集群用户不是业务用户</text>
+<rect x="590" y="380" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="405" fill="#8a8984">无</text>
+<rect x="870" y="380" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="405" fill="#8a8984">只有一个 API key</text>
+<rect class="pulse" x="1180" y="380" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="405">Entra OBO（在用）</text>
-<rect x="30" y="426" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="426" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="451">资源 + 动作逐请求授权</text>
-<rect x="280" y="426" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="451" fill="#95350f">只管集群 API；可借 SAR 查 RBAC</text>
-<rect x="590" y="426" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="451" fill="#e4e2dc">无</text>
-<rect x="870" y="426" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="882" y="451" fill="#95350f">边车按域名放行</text>
-<rect x="1180" y="426" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="426" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="451" fill="#a08103">只管集群 API；可借 SAR 查 RBAC</text>
+<rect x="590" y="426" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="451" fill="#8a8984">无</text>
+<rect x="870" y="426" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="882" y="451" fill="#a08103">边车按域名放行</text>
+<rect x="1180" y="426" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="451">OpenFGA、Envoy ext_authz（在用）；OPA</text>
-<rect x="30" y="472" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="472" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="497">凭据不进沙箱</text>
-<rect x="280" y="472" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="497" fill="#e4e2dc">Secret 挂进去就暴露</text>
-<rect x="590" y="472" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="497" fill="#e4e2dc">无</text>
-<rect x="870" y="472" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="882" y="497" fill="#95350f">Credential Vault，恢复后要重注入</text>
-<rect x="1180" y="472" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="472" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="497" fill="#8a8984">Secret 挂进去就暴露</text>
+<rect x="590" y="472" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="497" fill="#8a8984">无</text>
+<rect x="870" y="472" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="882" y="497" fill="#a08103">Credential Vault，恢复后要重注入</text>
+<rect x="1180" y="472" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="497">agentgateway / ext_authz 注入（在用）</text>
-<rect x="30" y="518" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="518" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="543">出站只剩一条路</text>
-<rect x="280" y="518" width="300" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="292" y="543" fill="#2a78d6">NetworkPolicy（IP / 端口）</text>
-<rect x="590" y="518" width="270" height="40" rx="7" fill="#ecf2f8" stroke="#2a78d6"/>
-<text class="c" x="602" y="543" fill="#2a78d6">模板默认封内网段</text>
-<rect x="870" y="518" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="882" y="543" fill="#95350f">请求带策略才生效</text>
-<rect x="1180" y="518" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="518" width="300" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="292" y="543" fill="#38e0c6">NetworkPolicy（IP / 端口）</text>
+<rect x="590" y="518" width="270" height="40" rx="7" fill="#ecf9f7" stroke="#31d0bc"/>
+<text class="c" x="602" y="543" fill="#38e0c6">模板默认封内网段</text>
+<rect x="870" y="518" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="882" y="543" fill="#a08103">请求带策略才生效</text>
+<rect x="1180" y="518" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="543">Cilium（在用）、Istio 出口网关</text>
-<rect x="30" y="564" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="564" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="589">工作负载身份</text>
-<rect x="280" y="564" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="589" fill="#95350f">ServiceAccount，多个沙箱共用</text>
-<rect x="590" y="564" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="589" fill="#e4e2dc">无</text>
-<rect x="870" y="564" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="589" fill="#e4e2dc">无</text>
-<rect x="1180" y="564" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="564" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="589" fill="#a08103">ServiceAccount，多个沙箱共用</text>
+<rect x="590" y="564" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="589" fill="#8a8984">无</text>
+<rect x="870" y="564" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="589" fill="#8a8984">无</text>
+<rect x="1180" y="564" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="589">cert-manager、SPIFFE（在用）；SPIRE</text>
-<rect x="30" y="610" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="610" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="635">模型调用治理</text>
-<rect x="280" y="610" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="635" fill="#e4e2dc">无</text>
-<rect x="590" y="610" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="635" fill="#e4e2dc">无</text>
-<rect x="870" y="610" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="635" fill="#e4e2dc">无</text>
-<rect class="pulse" x="1180" y="610" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="610" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="635" fill="#8a8984">无</text>
+<rect x="590" y="610" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="635" fill="#8a8984">无</text>
+<rect x="870" y="610" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="635" fill="#8a8984">无</text>
+<rect class="pulse" x="1180" y="610" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="635">agentgateway（在用）、Envoy AI Gateway</text>
-<rect x="30" y="656" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="656" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="681">harness 非交互与确认</text>
-<rect x="280" y="656" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="681" fill="#e4e2dc">无</text>
-<rect x="590" y="656" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="681" fill="#e4e2dc">无</text>
-<rect x="870" y="656" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="681" fill="#e4e2dc">无</text>
-<rect class="pulse" x="1180" y="656" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="656" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="681" fill="#8a8984">无</text>
+<rect x="590" y="656" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="681" fill="#8a8984">无</text>
+<rect x="870" y="656" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="681" fill="#8a8984">无</text>
+<rect class="pulse" x="1180" y="656" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="681">—</text>
-<rect x="30" y="702" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="702" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="727">agent 调 agent</text>
-<rect x="280" y="702" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="292" y="727" fill="#e4e2dc">无</text>
-<rect x="590" y="702" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="727" fill="#e4e2dc">无</text>
-<rect x="870" y="702" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="727" fill="#e4e2dc">无</text>
-<rect class="pulse" x="1180" y="702" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="702" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="292" y="727" fill="#8a8984">无</text>
+<rect x="590" y="702" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="727" fill="#8a8984">无</text>
+<rect x="870" y="702" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="727" fill="#8a8984">无</text>
+<rect class="pulse" x="1180" y="702" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="727">A2A 卡片、Dapr 服务调用</text>
-<rect x="30" y="748" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="748" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="773">审批与审计</text>
-<rect x="280" y="748" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="773" fill="#95350f">审计日志只覆盖 API server</text>
-<rect x="590" y="748" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="773" fill="#e4e2dc">无</text>
-<rect x="870" y="748" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="882" y="773" fill="#e4e2dc">无</text>
-<rect x="1180" y="748" width="330" height="40" rx="7" fill="#eeedf8" stroke="#2d1f84" stroke-width="1.6"/>
+<rect x="280" y="748" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="773" fill="#a08103">审计日志只覆盖 API server</text>
+<rect x="590" y="748" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="773" fill="#8a8984">无</text>
+<rect x="870" y="748" width="300" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="882" y="773" fill="#8a8984">无</text>
+<rect x="1180" y="748" width="330" height="40" rx="7" fill="#f0edf7" stroke="#2d079c" stroke-width="1.6"/>
 <text class="used" x="1192" y="773">OpenTelemetry（在用）</text>
-<rect x="30" y="794" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
+<rect x="30" y="794" width="230" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
 <text class="rl" x="44" y="819">配额与成本</text>
-<rect x="280" y="794" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="292" y="819" fill="#95350f">ResourceQuota：CPU、内存</text>
-<rect x="590" y="794" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#e4e2dc"/>
-<text class="c" x="602" y="819" fill="#e4e2dc">无</text>
-<rect x="870" y="794" width="300" height="40" rx="7" fill="#faefeb" stroke="#eb6834"/>
-<text class="c" x="882" y="819" fill="#95350f">池满返回 429</text>
-<rect x="1180" y="794" width="330" height="40" rx="7" fill="#ecf2f8" stroke="#2d1f84" stroke-width="1"/>
+<rect x="280" y="794" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="292" y="819" fill="#a08103">ResourceQuota：CPU、内存</text>
+<rect x="590" y="794" width="270" height="40" rx="7" fill="#fcfcfb" stroke="#8a8984"/>
+<text class="c" x="602" y="819" fill="#8a8984">无</text>
+<rect x="870" y="794" width="300" height="40" rx="7" fill="#f8f4ed" stroke="#f5bb23"/>
+<text class="c" x="882" y="819" fill="#a08103">池满返回 429</text>
+<rect x="1180" y="794" width="330" height="40" rx="7" fill="#efedf7" stroke="#2d079c" stroke-width="1"/>
 <text class="com" x="1192" y="819">LLM 网关按 token 限流</text>
 <text class="lgh" x="30" y="870">怎么读</text>
 <text class="lg" x="30" y="898">前四行是"房间"：Kubernetes 给墙，agent-sandbox 和 OpenSandbox 给分配、进入和暂停，基本都有现成的。</text>
