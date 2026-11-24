@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif">
   <style>
-    .t { font-size: 15px; fill: #e2e8f0; }
-    .s { font-size: 13px; fill: #94a3b8; }
-    .h { font-size: 18px; fill: #e2e8f0; font-weight: 600; }
-    .sec { font-size: 13px; fill: #64748b; letter-spacing: .05em; }
-    .box { fill: #111c33; stroke: #2dd4bf; stroke-width: 1.5; }
-    .boxa { fill: #1f1a0e; stroke: #fbbf24; stroke-width: 1.5; }
-    .boxp { fill: #0f172a; stroke: #334155; stroke-width: 1.5; stroke-dasharray: 5 4; }
-    .flow { stroke: #2dd4bf; stroke-width: 2.5; fill: none; stroke-dasharray: 10 12; animation: dash 1.6s linear infinite; }
-    .back { stroke: #fbbf24; stroke-width: 2.5; fill: none; stroke-dasharray: 10 12; animation: dash 1.6s linear infinite; }
-    .plan { stroke: #334155; stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
+    .t { font-size: 15px; fill: #344965; }
+    .s { font-size: 13px; fill: #5e718d; }
+    .h { font-size: 18px; fill: #344965; font-weight: 600; }
+    .sec { font-size: 13px; fill: #7a899f; letter-spacing: .05em; }
+    .box { fill: #f2f4fb; stroke: #26a696; stroke-width: 1.5; }
+    .boxa { fill: #f9f7f3; stroke: #c38f09; stroke-width: 1.5; }
+    .boxp { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .flow { stroke: #26a696; stroke-width: 2.5; fill: none; stroke-dasharray: 10 12; animation: dash 1.6s linear infinite; }
+    .back { stroke: #c38f09; stroke-width: 2.5; fill: none; stroke-dasharray: 10 12; animation: dash 1.6s linear infinite; }
+    .plan { stroke: #7087a9; stroke-width: 2; fill: none; stroke-dasharray: 5 4; }
     @keyframes dash { to { stroke-dashoffset: -44; } }
     .pulse { animation: pulse 1.6s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
   </style>
   <defs>
-    <marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="aa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
-    <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+    <marker id="at" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="aa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7688a2"/></marker>
   </defs>
-  <rect width="1200" height="500" rx="14" fill="#0f172a"/>
+  <rect width="1200" height="500" rx="14" fill="#f6f8fb"/>
   <text x="28" y="36" class="h">在 Codex 中使用 Remotion：视觉闭环与三种渲染输出</text>
   <text x="28" y="60" class="s">Codex 负责写代码，内置浏览器负责看效果，Remotion 负责渲染视频</text>
 
@@ -49,12 +49,12 @@
 
   <!-- feedback loop -->
   <path d="M1050,182 L1050,222 L160,222 L160,186" class="back" marker-end="url(#aa)"/>
-  <circle r="6" fill="#fbbf24">
+  <circle r="6" fill="#c38f09">
     <animateMotion dur="4s" repeatCount="indefinite" path="M1050,182 L1050,222 L160,222 L160,186"/>
   </circle>
-  <text x="605" y="244" class="t" text-anchor="middle" style="fill:#fbbf24">发现节奏、布局、转场问题 → 修改代码 → 再次预览</text>
+  <text x="605" y="244" class="t" text-anchor="middle" style="fill:#c38f09">发现节奏、布局、转场问题 → 修改代码 → 再次预览</text>
 
-  <line x1="28" y1="268" x2="1172" y2="268" stroke="#1e293b"/>
+  <line x1="28" y1="268" x2="1172" y2="268" stroke="#f3f5f9"/>
   <text x="40" y="294" class="sec">渲染输出（三条路径）</text>
 
   <!-- outputs -->
@@ -78,7 +78,7 @@
   <path d="M600,286 L990,286 L990,302" class="plan" marker-end="url(#ag)"/>
 
   <!-- mp4 -->
-  <rect x="510" y="434" width="180" height="44" rx="22" fill="#0b3b36" stroke="#2dd4bf" stroke-width="1.5" class="pulse"/>
+  <rect x="510" y="434" width="180" height="44" rx="22" fill="#f1fbfa" stroke="#26a696" stroke-width="1.5" class="pulse"/>
   <text x="600" y="462" class="t" text-anchor="middle">MP4 / 图片 / 音频</text>
   <path d="M210,402 L210,456 L506,456" class="flow" marker-end="url(#at)"/>
   <path d="M600,402 L600,430" class="flow" marker-end="url(#at)"/>

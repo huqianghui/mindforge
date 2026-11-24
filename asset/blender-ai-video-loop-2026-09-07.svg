@@ -2,29 +2,29 @@
   <title id="title">AI 驱动 Blender 生成视频的自动化闭环</title>
   <desc id="description">用户描述需求，模型编写脚本，Blender 建立场景并渲染低分辨率预览，模型检查构图、比例和光照后回到脚本继续修改；确认合格后渲染整段动画并由 FFmpeg 编码为视频。检查回路是这条流程的核心。</desc>
   <defs>
-    <marker id="arrowTeal" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#2dd4bf"/></marker>
-    <marker id="arrowAmber" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#fbbf24"/></marker>
+    <marker id="arrowTeal" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#26a696"/></marker>
+    <marker id="arrowAmber" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="#c38f09"/></marker>
   </defs>
   <style>
     text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-    .card { fill: #112f35; stroke: #2dd4bf; stroke-width: 1.4; }
-    .cardLoop { fill: #2b2410; stroke: #fbbf24; stroke-width: 1.4; }
-    .label { fill: #effcf9; font-size: 19px; font-weight: 600; text-anchor: middle; }
-    .detail { fill: #b8d7d5; font-size: 14px; text-anchor: middle; }
-    .step { fill: #2dd4bf; font-size: 13px; text-anchor: middle; }
-    .stepLoop { fill: #fbbf24; font-size: 13px; text-anchor: middle; }
-    .flow { fill: none; stroke: #2dd4bf; stroke-width: 2; marker-end: url(#arrowTeal); }
-    .loopFlow { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrowAmber); animation: dashmove 1.4s linear infinite; }
-    .particle { fill: #e0fff8; }
+    .card { fill: #f1f9fb; stroke: #26a696; stroke-width: 1.4; }
+    .cardLoop { fill: #faf8f2; stroke: #c38f09; stroke-width: 1.4; }
+    .label { fill: #188169; font-size: 19px; font-weight: 600; text-anchor: middle; }
+    .detail { fill: #37625f; font-size: 14px; text-anchor: middle; }
+    .step { fill: #26a696; font-size: 13px; text-anchor: middle; }
+    .stepLoop { fill: #c38f09; font-size: 13px; text-anchor: middle; }
+    .flow { fill: none; stroke: #26a696; stroke-width: 2; marker-end: url(#arrowTeal); }
+    .loopFlow { fill: none; stroke: #c38f09; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrowAmber); animation: dashmove 1.4s linear infinite; }
+    .particle { fill: #009976; }
     .pulse { animation: breathe 3s ease-in-out infinite; }
     @keyframes breathe { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
     @keyframes dashmove { to { stroke-dashoffset: -24; } }
     @media (prefers-reduced-motion: reduce) { .pulse, .loopFlow { animation: none; } .particle { display: none; } }
   </style>
-  <rect width="1000" height="440" rx="22" fill="#0b1727"/>
-  <text x="40" y="48" fill="#f1f7fc" font-size="26" font-weight="650">AI × Blender：从想法到视频的自动化闭环</text>
-  <circle class="pulse" cx="46" cy="80" r="5" fill="#fbbf24"/>
-  <text x="60" y="85" fill="#fbbf24" font-size="15">琥珀色虚线 = 检查修改回路（决定 AI 能否交付的关键）</text>
+  <rect width="1000" height="440" rx="22" fill="#f1f5fb"/>
+  <text x="40" y="48" fill="#1b517e" font-size="26" font-weight="650">AI × Blender：从想法到视频的自动化闭环</text>
+  <circle class="pulse" cx="46" cy="80" r="5" fill="#c38f09"/>
+  <text x="60" y="85" fill="#c38f09" font-size="15">琥珀色虚线 = 检查修改回路（决定 AI 能否交付的关键）</text>
 
   <path class="flow" d="M212 190 H236"/>
   <path class="flow" d="M402 190 H426"/>
@@ -61,7 +61,7 @@
   <text class="detail" x="883" y="219">构图·比例·光照</text>
 
   <path class="loopFlow" d="M883 250 V300 H319 V254"/>
-  <text x="600" y="292" fill="#fbbf24" font-size="14" text-anchor="middle">不合格 → 回到脚本继续修改，循环直到画面达标</text>
+  <text x="600" y="292" fill="#c38f09" font-size="14" text-anchor="middle">不合格 → 回到脚本继续修改，循环直到画面达标</text>
 
   <path class="flow" d="M509 250 V352 H560"/>
   <rect class="card" x="560" y="322" width="190" height="60" rx="12"/>
@@ -72,6 +72,6 @@
   <rect class="card" x="796" y="322" width="164" height="60" rx="12"/>
   <text class="label" x="878" y="348" font-size="16">FFmpeg 编码</text>
   <text class="detail" x="878" y="370">输出 MP4 成片</text>
-  <text x="42" y="360" fill="#c1d4e4" font-size="14">像素由渲染器输出，</text>
-  <text x="42" y="382" fill="#c1d4e4" font-size="14">模型负责规划、操作和修正。</text>
+  <text x="42" y="360" fill="#2e4f6b" font-size="14">像素由渲染器输出，</text>
+  <text x="42" y="382" fill="#2e4f6b" font-size="14">模型负责规划、操作和修正。</text>
 </svg>

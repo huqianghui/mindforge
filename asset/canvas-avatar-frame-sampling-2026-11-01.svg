@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 830" width="1400" height="830" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
-    <radialGradient id="dot" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ecfeff"/><stop offset="60%" stop-color="#2dd4bf"/><stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/></radialGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/></marker>
+    <radialGradient id="dot" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#009199"/><stop offset="60%" stop-color="#26a696"/><stop offset="100%" stop-color="#26a696" stop-opacity="0"/></radialGradient>
     <style>
-      .bg { fill: #0b1220; }
-      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zoneG { fill: none; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 8 6; }
-      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .boxB { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
-      .boxA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 700; }
-      .zlG { fill: #94a3b8; font-size: 15px; font-weight: 700; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tg { fill: #94a3b8; font-size: 13.5px; }
-      .code { fill: #a7f3d0; font-size: 13px; font-family: Menlo, monospace; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowA { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .bg { fill: #f6f8fb; }
+      .zone { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zoneG { fill: none; stroke: #7a899f; stroke-width: 1.2; stroke-dasharray: 8 6; }
+      .box { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .boxB { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .boxA { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .zl { fill: #036696; font-size: 15px; font-weight: 700; }
+      .zlG { fill: #5e718d; font-size: 15px; font-weight: 700; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hA { fill: #967903; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tg { fill: #5e718d; font-size: 13.5px; }
+      .code { fill: #128751; font-size: 13px; font-family: Menlo, monospace; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowA { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .legH { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .leg { fill: #cbd5e1; font-size: 13.5px; }
-      .legK { fill: #5eead4; font-size: 13.5px; font-weight: 700; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .legH { fill: #344965; font-size: 15px; font-weight: 600; }
+      .leg { fill: #384b61; font-size: 13.5px; }
+      .legK { fill: #1bb199; font-size: 13.5px; font-weight: 700; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
@@ -90,7 +90,7 @@
   <circle r="7" fill="url(#dot)"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#vin"/></animateMotion></circle>
   <text class="zlG" x="1030" y="118">结果</text>
 
-  <line x1="30" y1="590" x2="1370" y2="590" stroke="#1e293b" stroke-width="1.2"/>
+  <line x1="30" y1="590" x2="1370" y2="590" stroke="#f3f5f9" stroke-width="1.2"/>
   <text class="legH" x="30" y="618">为什么要读像素</text>
   <text class="legK" x="30" y="650">①</text>
   <text class="leg" x="54" y="650">"有帧在到"不等于"画面正常"：解码帧数在涨、字节在流、连接也没断，画面却可能是全黑的。</text>
