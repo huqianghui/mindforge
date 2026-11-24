@@ -16,6 +16,7 @@ aliases:
 related:
   - "[[harness-engineering]]"
   - "[[negative-feedback]]"
+  - "[[ai-writing-fingerprint]]"
 ---
 
 # 生成-评估分离（Generation-Evaluation Separation）
@@ -225,6 +226,7 @@ related:
 - [[harness-engineering]] — `grounds` 生成-评估分离是 Harness 设计的核心架构原则
 - [[negative-feedback]] — `uses` 评估结果作为负反馈驱动生成修正
 - [[cost-per-task]] — `grounds` success 字段由接收方判定、验收口径与优化口径分开，是分离原则给 FinOps 度量设计的直接约束
+- [[ai-writing-fingerprint]] — `uses` Writer → Humanizer → Reviewer 是去 AI 味的 agent 层做法
 
 - [[Voice-Live系列09：脚本朗读的机制化]] — judged 模式：后端 judge 结构化 verdict + `pre_generated` speaker，judge prompt 与代码守卫配合写法
 - [[Voice-Live系列12：数字人弱网表现]] — 测量工具可观测性纪律、限速与生产拓扑一致、实测锚点 / 推导区间分开标（弱网域续证）

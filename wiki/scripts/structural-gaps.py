@@ -10,7 +10,8 @@
   6. 漂移缺口：Claim 的来源文章在 Claim「最近更新」之后又改过——wiki 结论可能落后于文章
   7. 引导缺口：没有被任何学习路径（wiki/paths）引用的页，按 index 分类汇总——知识在，但没有入口
   8. 厚度缺口：长文只抽成了很少几条 Claim。书、论文、文章用同一把尺子量（CLAUDE.md Architecture Principles #6）；
-     正文行数不含代码块和空行，分"只列在来源区、没有一条 Claim 以它为出处"和"有出处但偏薄"两类
+     正文行数不含代码块和空行，分"只列在来源区、没有一条 Claim 以它为出处"和"有出处但偏薄"两类；
+     逐篇复核后判断不该再抽的，登记 thickness-reviewed.txt 跳过
 
 用法：python3 wiki/scripts/structural-gaps.py [--min-articles 3] [--section 1,2,3,4,5,6,7,8] [--thin-lines 150] [--thin-claims 2]
 """
@@ -188,9 +189,17 @@ def body_lines(path):
     return sum(1 for l in text.splitlines() if l.strip())
 
 
+def reviewed():
+    f = ROOT / "wiki/scripts/thickness-reviewed.txt"
+    if not f.exists():
+        return set()
+    return {l.split("\t")[0].strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")}
+
+
 def thickness(pages, idx, min_lines, max_claims):
-    """文章 stem -> 以它为出处的 Claim 数；只统计正文够长、出处 Claim 不超过 max_claims 的文章。"""
-    skip = exempt()
+    """文章 stem -> 以它为出处的 Claim 数；只统计正文够长、出处 Claim 不超过 max_claims 的文章。
+    coverage-exempt.txt（不提取）与 thickness-reviewed.txt（复核过、剩余内容不该再抽）里的文章跳过。"""
+    skip = exempt() | reviewed()
     sourced, listed = Counter(), Counter()
     for slug, title, conf, status, block in claims(pages):
         src = re.search(r"\*\*来源\*\*：(.*)", block)

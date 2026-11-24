@@ -2,7 +2,7 @@
 title: Personal Knowledge Wiki
 created: 2026-04-13
 updated: 2026-11-07
-stats: "140 concepts, 24 methods, 12 decisions, 1085 claims"
+stats: "141 concepts, 24 methods, 12 decisions, 1109 claims"
 tags:
   - wiki
   - index
@@ -239,6 +239,7 @@ wiki 页面之间的关联使用类型化前缀标注，格式：`- [[page]] —
 ### 沟通与表达
 
 - [[presentation]] — 演讲与表达（领域根页）：听众只能一棵树一棵树地看森林，所以先定结构；16 种叙述结构按用途分四组、7 种开场白、外部串词与图表串联，与技术写作的对照
+- [[ai-writing-fingerprint]] — AI 味：内容、语言、风格、交流四类语言指纹，四个成因，提示、后处理、agent、模型四层去除
 
 ### 工程质量与测试
 

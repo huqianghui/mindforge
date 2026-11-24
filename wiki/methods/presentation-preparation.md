@@ -14,6 +14,7 @@ method_type: "workflow"
 related_concepts:
   - "[[presentation]]"
   - "[[skill-pattern]]"
+  - "[[skill-creator-orchestration]]"
 related_methods: []
 ---
 
@@ -117,6 +118,7 @@ related_methods: []
 
 - [[presentation]] — `part-of` 演讲领域的准备步骤
 - [[skill-pattern]] — `implements` 做成 skill 时是 Inversion 模式的实例
+- [[skill-creator-orchestration]] — `contrasts` 本流程产出简报与逐页大纲，交给 PPT 生成 skill 去做幻灯片
 
 ## 关联方法
 

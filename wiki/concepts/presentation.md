@@ -16,6 +16,7 @@ aliases:
 related:
   - "[[presentation-preparation]]"
   - "[[skill-pattern]]"
+  - "[[ai-writing-fingerprint]]"
 ---
 
 # Presentation（演讲与表达）
@@ -92,6 +93,7 @@ related:
 
 - [[presentation-preparation]] — `produces` 本页的论断落成可执行的准备步骤
 - [[skill-pattern]] — `uses` 准备流程做成 skill 时用的是 Inversion 模式：先提问、确认再往下
+- [[ai-writing-fingerprint]] — `contrasts` 同属表达：书面一侧关心读起来是不是人在说话
 
 ## 来源日记
 

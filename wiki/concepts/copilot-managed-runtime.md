@@ -1,7 +1,7 @@
 ---
 title: "Copilot Managed Runtime"
 created: "2026-10-29"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -132,8 +132,31 @@ Copilot Managed Runtime（Preview）是 Copilot Studio 的 Create apps、Copilot
 
 > `…/apps/<app>/#/doc/<路径>` 与 `?doc=<路径>` 两种都打开首页：加载器 iframe 的 src 只有 `…/_platform/app/loader?ms_embedderOrigin=…`，应用读到的 `location.hash` 为空，`getContext()` 也不带外层参数；应用在跨域子 iframe 里读不到父页面地址——这是隔离设计的一部分。应用内跳转不受影响（改的是应用自己 iframe 的 hash）。后果：对外链接（邮件、Teams、agent 回答的"来源"）一律指向公开原文；"分享应用里的某一页"做不到；需要可分享单页链接的场景，静态站或 SharePoint 更合适。
 
+### Claim: 创作入口再多，产物都是同一种静态 SPA、跑在同一个宿主里——Copilot Studio 生成的应用和手写的 React 应用在能力和限制上没有本质差别；"看起来像静态网站"是因为托管的确实是静态资源，只是前面多了一层身份与治理壳
+
+- **来源**：[[Copilot-Managed-Runtime系列01：托管环境对比与选型]]
+- **首次出现**：2026-10-26
+- **最近更新**：2026-11-24
+- **置信度**：0.75
+- **状态**：active
+- **证据类型**：实测经验
+
+> 运行中的应用拆成三块：作者的 TypeScript / JavaScript SPA（前提条件，不支持服务端渲染和任意后端）、平台提供的 SDK（暴露宿主 API，添加 Connector 时生成类型和服务代码）、平台负责的宿主（Entra 认证、加载应用、条件访问、DLP、分享限制）。入口按角色分：最终用户在 managedapps 门户打开有权限的应用，maker 在 Copilot Studio 用自然语言生成，业务用户在 Cowork 或 Code 对话里让 coding agent 生成，专业开发者用 CLI 加 SDK，管理员在 M365 管理中心看清单与健康。拆开一个已上线的分析看板：两层 iframe，内层是约 2 MB 的 ES module 加一个 CSS bundle，典型的 Vite 打包 React 应用，bundle 里能看到应用自选的图表与路由库；部分指标文本直接出现在 bundle 里，说明至少一部分数据是随发布携带的快照，只在重新部署后更新——要实时数据就走 Connector 并在页面上标明数据时间。同类看板完全能复现，难点不在托管，而在指标语义、数据准备和页面设计。另外，Preview 地址每次 build 更新、只给有仓库写权限的开发者看，Live 地址只在 deploy 时更新、是固定快照；分享分 play 与 edit 两级、互相独立。
+
+### Claim: SharePoint 和 Managed Runtime 不在同一层——SharePoint 既是内容平台，也是 Managed Runtime 的数据源；能加 SharePoint Connector 不等于用户能读任意站点
+
+- **来源**：[[Copilot-Managed-Runtime系列01：托管环境对比与选型]]
+- **首次出现**：2026-10-26
+- **最近更新**：2026-11-24
+- **置信度**：0.7
+- **状态**：active
+- **证据类型**：实测经验
+
+> 作为内容平台，SharePoint 管文档库、新闻、部门门户、列表、搜索、简单页面和表单，是 Teams 与 Viva 的入口，但不能当任意 React、Three.js、WebGL 应用的运行时，复杂前端要 SPFx 或嵌入外部应用；作为 Managed Runtime 的数据源，它经 SharePoint Connector 提供站点、列表、文档，CLI 引导选连接、站点和列表并生成类型代码。连接身份要对目标站点有权限，Connector 也不能被 DLP 或 ACP 拦掉，所以 Connector 权限受连接身份、站点权限、DLP 与条件访问共同约束。职责划分：SharePoint 管内容、文件、列表与站点权限，Managed Runtime 管应用入口、登录、分享与 Connector 治理，Entra 管身份与条件访问，Azure 管复杂 API、计算、索引、数据库、容器和后台作业。
+
 ## 冲突与演进
 
+- 2026-11-24：/extract-knowledge 厚度补抽第二批：Copilot Managed Runtime 系列 01 +2（入口多但产物同一与"像静态网站"的原因、SharePoint 的两种角色）。
 - 2026-10-26：harvest 首提为边界候选（新产品域，单批次 01/02），HOLD 复核阈值"真实应用落地"。
 - 2026-10-27~28：系列扩到 12 篇，MR07~12 即本库 managed app 的真实落地，阈值命中；仍属产品而非基础技术概念，升级为待复核。
 - 2026-10-28：MR05 路线 ①（Copilot Studio Connector 调 Standard agent）与"Work IQ agentId 可行"被 MR10 推翻，原文已更正；本页只收更正后的结论。

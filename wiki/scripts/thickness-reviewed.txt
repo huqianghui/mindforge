@@ -1,0 +1,5 @@
+# 厚度检查已复核清单：正文够长但出处 Claim 少，逐篇看过后判断剩余内容不该再抽（操作手册、命令速查、已被别页覆盖）。
+# 每行：文章路径<TAB>复核日期与原因。structural-gaps.py 第 8 节跳过这里列出的文章；文章大改后应从这里移除重新判断。
+Notes/tool/Orca/Orca使用笔记二：Computer-Use与Codex-CLI.md	2026-11-24：剩余是安装、命令入口与操作语法速查；判断类内容已在 computer-use 三条
+Notes/tool/rtk/RTK系列03：个性化优化引擎.md	2026-11-24：剩余是 CLI 接口、模块结构与核心类型定义；设计取舍已在 rtk-token-compression 两条
+Notes/AI/agent/Agent-Reach与OpenCLI.md	2026-11-24：剩余是组件清单与对比表；层级判断在 opencli 与 agent-search-tools，CLI/MCP 成本已在 mcp-vs-cli
