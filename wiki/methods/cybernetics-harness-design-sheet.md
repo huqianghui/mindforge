@@ -16,6 +16,7 @@ method_type: "quality-gate"
 related_concepts:
   - "[[cybernetics-agent-design]]"
   - "[[regulation-first-design]]"
+  - "[[harness-five-dimension-quality-gate]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
 ---
@@ -112,6 +113,7 @@ related_methods:
 ## 关联概念
 
 - [[cybernetics-agent-design]] — `implements` 本方法是控制论五层的实践落地工具
+- [[harness-five-dimension-quality-gate]] — `contrasts` 质量门禁关注运行时检查，Design Sheet 关注设计时检查
 
 ## 关联方法
 

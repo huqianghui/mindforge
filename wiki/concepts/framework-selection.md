@@ -1,7 +1,7 @@
 ---
 title: "Framework Selection"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -13,6 +13,7 @@ aliases:
   - "Vibe Coding 框架选型"
 related:
   - "[[three-layer-plugin-architecture]]"
+  - "[[agent-framework]]"
 ---
 
 # Framework Selection
@@ -94,6 +95,7 @@ Vibe Coding 框架选型的核心原则：规范驱动框架（GSD/SpecKit/OpenS
 ## 关联概念
 
 - [[three-layer-plugin-architecture]] — `produces` 框架选型的三层架构方案
+- [[agent-framework]] — `contrasts` 同名不同物：Vibe Coding 方法论框架
 
 ## 来源日记
 

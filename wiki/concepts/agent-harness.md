@@ -1,7 +1,7 @@
 ---
 title: "Agent Harness"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -23,6 +23,8 @@ related:
   - "[[model-harness-codesign]]"
   - "[[agent-session-control-plane]]"
   - "[[agent-sandbox]]"
+  - "[[agent-infra-three-layers]]"
+  - "[[agent-platform]]"
 ---
 
 # Agent Harness
@@ -41,7 +43,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 - **首次出现**：2026-07-30
 - **最近更新**：2026-09-12
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > OpenForge 论文（arXiv:2607.21557）把 harness 正式定义为 orchestration scaffold——组织 prompt、管理工具调用、维护交互状态的编排脚手架，并把 Agent 拆成 Model + Harness + Environment 三元：Model 决策、Harness 编排、Environment 提供可执行世界（文件系统、shell、网络）。相比"模型之外的一切"（LangChain）与"信息管道代码"（Meta-Harness），三元结构额外切出 Environment 一层——同一 harness 挂不同 environment（有网/断网容器、真实/沙箱文件系统）行为语义不同，这层区分在托管平台选型时是实打实的约束（如 Responses API shell tool 的 `container_auto` 默认断网）。
 
@@ -143,6 +145,7 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 
 - 2026-11-16：独立建页。本页 8 条 Claim 全部从既有页搬来，原文与置信度不变：7 条来自 [[harness-engineering]]（定义、与 framework / runtime 的边界、三类归属、托管平台打包、编排接入、职责边界），1 条来自 [[agent-infra-three-layers]]（不单列一层）。[[harness-engineering]] 保留"怎么把 harness 做好"的工程方法类 Claim。
 - harness 定义谱系三档：泛指"模型之外的一切"（LangChain）> 编排脚手架（OpenForge）> 信息管道（Meta-Harness），见 [[harness-engineering]] 与 [[meta-harness]]。
+- 2026-11-24：/evolve-wiki 按 60 天线标 stale 1 条
 
 ## 关联概念
 
@@ -157,6 +160,8 @@ Harness 面向模型，决定 agent 怎么思考和行动；framework 面向开�
 - [[model-harness-codesign]] — `extends` 第一方绑定 vs 多模型适配
 - [[copilot-studio-harness-selection]] — `uses` Copilot Studio 四种 harness 的选型
 - [[meta-harness]] — `extends` harness 优化被自动化为搜索问题
+- [[agent-infra-three-layers]] — `contrasts` harness 不单列一层，是 framework 搭出的成品、runtime 托管的进程
+- [[agent-platform]] — `contrasts` 调用方不应关心 agent 背后是哪个 harness
 
 ## 来源日记
 

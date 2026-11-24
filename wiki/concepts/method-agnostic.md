@@ -1,7 +1,7 @@
 ---
 title: "method-agnostic（方法无关设计）"
 created: "2026-07-02"
-updated: "2026-11-23"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,8 @@ related:
   - "[[agent-lightning]]"
   - "[[verl]]"
   - "[[bitter-lesson]]"
+  - "[[skillopt]]"
+  - "[[environment-agnostic]]"
 ---
 
 # method-agnostic（方法无关设计）
@@ -122,6 +124,8 @@ related:
 > 反向入边（在对方页面声明，此处仅备注不重复建边）：[[automatic-prompt-optimization]] 与 [[rejection-sampling-finetuning]] 各以 `part-of` 指向本页（三级阶梯的两档）；[[prompt-optimization-tool-selection]] 以 method-agnostic 是否用得上作为选型关键。
 
 <!-- relation-type: implements / grounds / extends / constrains / contrasts / part-of / uses / produces -->
+- [[skillopt]] — `contrasts` environment-agnostic 是 method-agnostic 的环境侧孪生（换环境 vs 换算法）
+- [[environment-agnostic]] — `contrasts` 环境侧孪生：method-agnostic 解耦"用什么方法优化"（换算法只换槽位），environment-agnostic 解耦"在什么任务上优化"（接新环境只写 adapter）——同一 agnostic 原则的两个正交轴
 
 ## 来源日记
 

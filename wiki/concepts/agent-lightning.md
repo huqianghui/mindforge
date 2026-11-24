@@ -21,6 +21,7 @@ related:
   - "[[skillopt]]"
   - "[[slime-rl-framework]]"
   - "[[verl]]"
+  - "[[environment-agnostic]]"
 ---
 
 # Agent Lightning
@@ -207,6 +208,7 @@ Agent Lightning（`microsoft/agent-lightning`）是一个 **method-agnostic 的 
 - [[verl]] — `uses` VERL 是 agent-lightning RL 级唯一内置后端，二者是架构锁定关系
 - [[slime-rl-framework]] — `contrasts` Slime 的 Data Buffer 数据流与 agent-lightning 的 store 飞轮同构，比所绑的 VERL 更近（但不同层）
 - [[skillopt]] — `contrasts` 权重级（policy/θ，需 GPU）vs 文本级（context/外部状态，冻结/可迁移）的互补层，可叠加
+- [[environment-agnostic]] — `contrasts` 其环境契约是隐式形态（rollout 函数 + tracer 上报），与 SkillOpt 的显式 EnvAdapter 形态构成"小而隐式 vs 大而显式"的取舍两端
 
 ## 来源日记
 

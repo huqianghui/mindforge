@@ -1,7 +1,7 @@
 ---
 title: "Personal Knowledge Compiler"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -16,6 +16,7 @@ aliases:
 related:
   - "[[llm-wiki]]"
   - "[[notion-as-ai-layer]]"
+  - "[[spatial-intelligence]]"
 ---
 
 # Personal Knowledge Compiler
@@ -175,6 +176,7 @@ related:
 
 - [[llm-wiki]] — `implements` PKC 是 LLM Wiki 的实践方法论
 - [[notion-as-ai-layer]] — `contrasts` Notion 在知识管理中的替代方案
+- [[spatial-intelligence]] — `contrasts` Spatial Memory 的"数据库式消费"与 PKC"编译一次持续查询"是同一原则在空间域与知识域的两个实例
 
 ## 来源日记
 

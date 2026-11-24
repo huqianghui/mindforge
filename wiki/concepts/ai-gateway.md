@@ -1,7 +1,7 @@
 ---
 title: "AI Gateway"
 created: "2026-11-15"
-updated: "2026-11-18"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -25,6 +25,7 @@ related:
   - "[[a2a-protocol]]"
   - "[[agent-sandbox]]"
   - "[[resident-vs-session-agent-runtime]]"
+  - "[[llm-serving]]"
 ---
 
 # AI Gateway（AI 流量网关）
@@ -159,6 +160,7 @@ AI 网关是位于 agent、模型和外部工具之间、专门处理 AI 流量�
 - [[a2a-protocol]] — `uses` agent 网关代理 A2A 调用、改写 Agent Card
 - [[agent-sandbox]] — `constrains` 沙箱网络策略只放行到网关，网关才是"出站唯一一条路"上的判断点
 - [[openclaw-agent-gateway]] — `contrasts` 同叫"agent 网关"，那边是 OpenClaw 自身的会话与渠道网关，不是面向 AI 流量的数据面
+- [[llm-serving]] — `contrasts` 网关认会话与限流，推理服务负责生成
 
 ## 来源日记
 

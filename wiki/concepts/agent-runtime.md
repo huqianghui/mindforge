@@ -1,7 +1,7 @@
 ---
 title: "Agent Runtime"
 created: "2026-11-16"
-updated: "2026-11-23"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -30,6 +30,8 @@ related:
   - "[[agent-infra-three-layers]]"
   - "[[resident-vs-session-agent-runtime]]"
   - "[[agent-memory-lifecycle]]"
+  - "[[llm-serving]]"
+  - "[[skill-runtime]]"
 ---
 
 # Agent Runtime（Agent 运行时）
@@ -194,6 +196,8 @@ Agent Runtime 回答"agent 在哪跑、怎么隔离、怎么扩缩、崩了怎�
 - [[copilot-managed-runtime]] — `contrasts` 同名不同物
 - [[resident-vs-session-agent-runtime]] — `part-of` 自建 runtime 的两种形态（会话调度、常驻实例）与混合形态的选择
 - [[agent-memory-lifecycle]] — `uses` 常驻形态多出的长期记忆层
+- [[llm-serving]] — `contrasts` runtime 里的模型网关在前，推理服务在网关后面
+- [[skill-runtime]] — `contrasts` 同名不同物：skill 脚本的执行环境
 
 ## 来源日记
 

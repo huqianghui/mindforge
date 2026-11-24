@@ -121,7 +121,7 @@ related:
 - **首次出现**：2026-08-26
 - **最近更新**：2026-09-12
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > 两条独立证据延伸第一方绑定路线的边界：① **硬件层**（Jalapeño）——模型、推理软件栈（continuous batching/KV Cache/prefill-decode 分离）、芯片架构由 OpenAI 一家联合优化，官方原话 "design the full system together"；头部模型厂商自研 ASIC 成趋势后，co-design 的纵深从 model+harness 拉长到 model+软件栈+硅。② **服务端工具层**（Computer Use 系列六/七实证）——web search、code execution、computer use runtime 都长在第一方服务端：Claude Code 换到 Bedrock/Vertex/Databricks 代理后 `web_search` 声明无人执行、Codex CLI 无 `@oai/sky` runtime；第一方闭环产品"天然自带"这些能力，多模型适配路线省下绑定、付出的是每个服务端工具都要在客户端重新长一遍（Tavily MCP/Orca 补位）。连微软给自家 Copilot agent 层补搜索都走"Tavily+用户自带 key"，坐实了平台不为开放工具层垫付成本的商业逻辑。
 
@@ -155,7 +155,7 @@ related:
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.8（九层解剖与 alias 归一化为 rust-v0.153.1 源码逐字段核实；alias"化石"的历史归因为推测、shell_type 例证与官方源存在快照不一致——2026-09-12 按系列05/06 事实性修订降级）
-- **状态**：active
+- **状态**：stale
 
 > `gpt-6-astra` 的 catalog 条目九层解剖：真正属于 Model 的只有能力层（context window、modalities、reasoning levels）；完整系统提示词、工具形态（`shell_type`/`tool_mode`/`apply_patch_tool_type`）、治理四件套（auto_review / guardian_v2 / confirmation_policies / collaboration_modes）、多 agent 编排协议（root/subagent 角色 prompt）、上下文管理机制 prompt（truncation/auto-compact）、持久模式规范、商业分发矩阵（22 个 plan）全部是 harness 行为，全部随模型条目分发。推论三条：① Codex"每个模型自带一套 harness 切片"vs Claude Code"一套全局 harness 配多个模型"，是第一方绑定在数据结构层的两种架构哲学；② schema serde 严格校验的本质是**拒绝启动行为未定义的 agent**——条目是行为定义不是元数据，缺字段等于某层行为未定义；③ Ultra 不是更深的推理档，也不是委派开关——选 Ultra 时实际推理档回退到 `multi_agent_reasoning_effort`（client.rs:188-200，astra 配 `xhigh`），且仅当模型 `multi_agent_version=V2` 时才把委派策略从 ExplicitRequestOnly 切到 Proactive（multi_agents.rs `effective_multi_agent_mode()` 首行判 V2）——**委派能力的开关是 `multi_agent_version`，Ultra 是 V2 之下的 effort 回退 + 策略切换器**。关于 `shell_type`：`shell_command`/`local`/`default` 是 `UnifiedExec` 的 serde alias、运行时行为已归一化（源码事实）——co-design 的证据不是"两个模型用两种 shell 工具"；但两点证据边界要守住：mini `shell_command` 的例证出自本机 Azure catalog 快照，官方 rust-v0.153.1 models.json 中 mini 已是 `unified_exec`（快照取值来源待考）；"字段值差异记录各模型当年训练的工具形态、alias 是咬合史化石"是**推测**，无源码注释或文档直接证实。这也回答了"为什么第三方模型接进第一方 harness 总差口气"：接上的只是推理端点，接不上的是九层里剩下的八层。
 
@@ -197,6 +197,7 @@ related:
 - 2026-09-12：按 Codex 系列事实性评审修订（09-07，commit 5768895）更正 per-model 实例化 Claim 两处——① Ultra 语义修正：委派能力的开关实为 `multi_agent_version`，Ultra 是 effort 回退（取 `multi_agent_reasoning_effort`）+ 仅 V2 下的委派策略切换器，此前"Ultra=多 agent 委派开关"表述不准确；② alias 化石归因降级：mini shell_type 例证出自本机快照且与官方 models.json 不一致，"代际化石"历史归因标注为推测，Claim 置信度 0.85→0.8。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 5、长效 3
 - 2026-11-24：/revalidate——确认 3（显式图 vs 隐式图 0.8 → 0.9、搜索挂载点、可分解四型）、修订 2（ChatGPT Work 现为 Chat / Work / Codex 三种体验、GPT-5.5 已退役；tool_mode 分布由"只有最强模型 code_mode_only"变为当代模型整代 code_mode_only）
+- 2026-11-24：/evolve-wiki 按 60 天线标 stale 2 条
 
 ## 关联概念
 

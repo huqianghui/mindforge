@@ -23,6 +23,7 @@ related:
   - "[[skill-runtime]]"
   - "[[ai-skill-formation]]"
   - "[[regulation-first-design]]"
+  - "[[agent-infra-three-layers]]"
 ---
 
 # Harness Engineering
@@ -308,6 +309,7 @@ Harness Engineering（驾驭工程）是 Prompt Engineering 和 Context Engineer
 - [[reinforcement-learning]] — `contrasts` Harness 是 LLM Agent 对 RL 学习能力缺失的工程补偿
 - [[skill-runtime]] — `constrains` harness + runtime 共同决定 skill 声明的依赖是否被满足，scripts 层可移植性受 runtime 约束
 - [[regulation-first-design]] — `implements` 先定被调节量、再按回路搭 harness
+- [[agent-infra-three-layers]] — `contrasts` harness 是贯穿 Framework 与 Runtime 的工程方法，三层划分讲的是部署层次
 
 ## 来源日记
 

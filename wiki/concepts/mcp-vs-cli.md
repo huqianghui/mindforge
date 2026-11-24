@@ -1,7 +1,7 @@
 ---
 title: "MCP vs CLI"
 created: "2026-04-13"
-updated: "2026-11-22"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -15,6 +15,9 @@ related:
   - "[[context-engineering]]"
   - "[[opencli]]"
   - "[[rtk-token-compression]]"
+  - "[[a2a-protocol]]"
+  - "[[ag-ui-protocol]]"
+  - "[[a2ui-protocol]]"
 ---
 
 # MCP vs CLI
@@ -118,7 +121,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.75（本机安装实录 + 官方手册核对）
-- **状态**：active
+- **状态**：stale
 
 > Blender 官方 MCP 安装实录给"MCP=连接层"的角色定位提供了 DCC 域强实证。**"MCP 比 Computer Use 高效"这个说法成立，但效率来自它背后能直接调用的 Blender API**（一次提交批量操作、读取对象数据、接收错误信息——纯界面操作做不到），MCP 本身只是连接协议；接入 MCP 也不会缩短渲染或模拟时间（那由应用设置与硬件决定）。MCP 的真实增量是把 API 路径接到"正在打开的场景"上——保留选中对象和编辑状态的对话式连续修改，这是一次性后台脚本给不了的。配套厘清两个常混层面：**"本地进程"说的是运行方式、"npm 包"说的是分发与安装方式**——npm 装的 MCP Server 启动后通常也是本地进程；MCP 只规定客户端与服务端如何通信，不规定实现语言与包仓库（官方 Blender MCP 是 Python 项目 + uv 启动）。且一条链路可以是两段不同通信：Codex↔MCP Server 走 MCP/STDIO，MCP Server↔Blender Add-on 走本机 TCP（端口 9876 是扩展桥接端口，不是供客户端填写的 HTTP MCP 地址）。与"同产品内解耦协议"Claim 同族——都是把 MCP 从"能力来源"还原为"连接协议"的角色澄清。
 
@@ -129,6 +132,7 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - 2026-09-12：注入"MCP 不贡献效率只贡献连接"Claim（Blender 系列02）——效率归因与运行/分发两层面辨析，DCC 域回填。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 3、确认 3
 - 2026-11-22：loop-revalidate（Loop⑥）复核——确认 3
+- 2026-11-24：/evolve-wiki 按 60 天线标 stale 1 条
 
 ## 关联概念
 
@@ -136,6 +140,9 @@ MCP 和 CLI 是 AI Agent 工具集成的两条路线。MCP 的优势是跨应用
 - [[context-engineering]] — `part-of` MCP 是 Context Engineering 的工具接入层
 - [[opencli]] — `contrasts` OpenCLI 为 CLI 路线提供标准化接口描述
 - [[rtk-token-compression]] — `contrasts` RTK 选择 CLI 代理而非 MCP 协议，体现两条工具集成路线的不同取舍
+- [[a2a-protocol]] — `contrasts` MCP 管 Agent↔工具，A2A 管 Agent↔Agent；两者可嵌套（被委派的 Agent 内部用 MCP 调工具）
+- [[ag-ui-protocol]] — `contrasts` MCP 解决 Agent 向下的工具集成，AG-UI 解决向上的 UI 集成——同为协议路线但方向相反
+- [[a2ui-protocol]] — `contrasts` MCP 只交付经授权的业务数据、不决定 UI，A2UI 只描述界面、不取数
 
 ## 来源日记
 

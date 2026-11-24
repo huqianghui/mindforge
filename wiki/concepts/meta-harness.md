@@ -1,7 +1,7 @@
 ---
 title: "Meta-Harness"
 created: "2026-04-16"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -22,6 +22,8 @@ related:
   - "[[generation-evaluation-separation]]"
   - "[[harness-engineering]]"
   - "[[rtk-token-compression]]"
+  - "[[model-harness-codesign]]"
+  - "[[agent-session-control-plane]]"
 ---
 
 # Meta-Harness
@@ -121,6 +123,8 @@ Meta-Harness 是一种用 Harness 优化 Harness 的递归架构——以 Coding
 - [[cybernetics-agent-design]] — `implements` 控制论视角下，Meta-Harness 的搜索循环是负反馈 + 探索的工程实现
 - [[feedback-loop]] — `implements` Meta-Harness 是反馈闭环的自动化形式
 - [[generation-evaluation-separation]] — `implements` proposer 生成候选 harness、在评估任务上实际运行打分，评估不来自 proposer 自评
+- [[model-harness-codesign]] — `contrasts` 选择性评测门禁（人肉标签挑敏感改动）vs 全量评测体制（每个变体都评）；门禁守护 harness vs 门禁驱动 harness
+- [[agent-session-control-plane]] — `contrasts` 同称"harness 之外的一层"，meta-harness 是优化 harness 的离线外层搜索，本页是运行时驱动 harness 的平台层
 
 ## 来源日记
 

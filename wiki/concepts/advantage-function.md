@@ -1,7 +1,7 @@
 ---
 title: "优势函数（Advantage Function）"
 created: "2026-07-07"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -21,6 +21,7 @@ related:
   - "[[skillopt]]"
   - "[[verl]]"
   - "[[online-learning]]"
+  - "[[process-reward-model]]"
 ---
 
 # 优势函数（Advantage Function）
@@ -91,6 +92,7 @@ related:
 - [[skillopt]] — `contrasts` SkillOpt 把分数当离散门控信号（accept/reject），RL 把 advantage 当连续梯度信号——分数用法的两条路
 - [[verl]] — `uses` verl 实现的 PPO/GRPO 训练内核以 advantage 估计为核心
 - [[online-learning]] — `grounds` "算不算 advantage"是判断一个方法在做 RL 机器（而非 harness）的技术命门
+- [[process-reward-model]] — `contrasts` advantage 是从 outcome 反推每步相对贡献（免标注但高方差），PRM 是直接标注每步质量（高成本但低方差）——同一"步骤级信号"问题的两种解法
 
 ## 来源日记
 

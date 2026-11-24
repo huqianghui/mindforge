@@ -1,7 +1,7 @@
 ---
 title: "Agent Framework"
 created: "2026-11-16"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -24,6 +24,7 @@ related:
   - "[[agent-infra-three-layers]]"
   - "[[durable-execution]]"
   - "[[graph-engineering]]"
+  - "[[agent-protocol-stack]]"
 ---
 
 # Agent Framework（Agent 框架）
@@ -113,6 +114,7 @@ Framework 和 harness 是不同层面的东西：framework 是材料、面向开
 - [[ag-ui-protocol]] — `uses` 前端经 AG-UI 对接任意 framework backend
 - [[a2a-protocol]] — `contrasts` 同团队、共享状态、延迟敏感的步骤留在 framework 内编排，跨团队才上 A2A
 - [[framework-selection]] — `contrasts` 同名不同物：Vibe Coding 方法论框架
+- [[agent-protocol-stack]] — `contrasts` 协议之后 framework 可互换
 
 ## 来源日记
 

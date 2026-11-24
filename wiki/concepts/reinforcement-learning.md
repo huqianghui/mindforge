@@ -1,7 +1,7 @@
 ---
 title: "强化学习（Reinforcement Learning）"
 created: "2026-04-17"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -24,6 +24,7 @@ related:
   - "[[online-learning]]"
   - "[[rejection-sampling-finetuning]]"
   - "[[skillopt]]"
+  - "[[world-model]]"
 ---
 
 # 强化学习（Reinforcement Learning）
@@ -197,6 +198,7 @@ RL Agent 与 LLM Agent 共享"观察 → 决策 → 行动 → 反馈 → 循环
 - [[agent-lightning]] — `part-of` VERL（RL）是 agent-lightning 内置算法，三级阶梯最高级，需 SFT warmup
 - [[online-learning]] — `contrasts` RL 只改参数，在线学习同时改行为+参数（双回路）；在线学习的慢回路可以是在线 policy gradient
 - [[skillopt]] — `contrasts` SkillOpt 把分数当选择/门控信号（离散筛选），RL 把 reward 当梯度信号（连续参数更新）
+- [[world-model]] — `contrasts` 共享 MDP 词汇表但学不同函数：RL 学 π(a|s)，世界模型学 P(s'|s,a)；交叉有三档深度（MPC/Dreamer/MuZero）
 
 ## 来源日记
 

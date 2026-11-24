@@ -1,7 +1,7 @@
 ---
 title: "Claude Code Memory System"
 created: "2026-04-13"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -17,6 +17,8 @@ related:
   - "[[personal-knowledge-compiler]]"
   - "[[terminal-multiplexer-for-ai]]"
   - "[[context-engineering]]"
+  - "[[global-workspace-llm]]"
+  - "[[agent-memory-lifecycle]]"
 ---
 
 # Claude Code Memory System
@@ -119,6 +121,8 @@ Claude Code 拥有一套完整的六层记忆与持久化体系——从硬性�
 - [[personal-knowledge-compiler]] — `grounds` PKC 的 Auto Memory 和 Agent 记忆是知识编译系统的持久化基础
 - [[context-engineering]] — `implements` 压缩后从磁盘重新注入规则，是"不删原件、只换工作集"的上下文压缩做法
 - [[terminal-multiplexer-for-ai]] — `uses` tmux 持久会话与 Session 记忆互补
+- [[global-workspace-llm]] — `contrasts` 外置记忆（文件/上下文）与模型内生工作空间（J-space）是两种不同层次的"状态保持"
+- [[agent-memory-lifecycle]] — `contrasts` 前者靠分层与人工提权管理记忆，本页靠核对、投票、过期自动管理
 
 ## 来源日记
 

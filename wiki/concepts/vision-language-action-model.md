@@ -1,7 +1,7 @@
 ---
 title: "VLA（Vision-Language-Action Model）"
 created: "2026-09-25"
-updated: "2026-09-25"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -107,6 +107,7 @@ VLA（Vision-Language-Action）模型在 VLM 骨干上接动作输出，让同�
 - [[embodied-ai]] — `part-of` 具身智能五条主线的行动层
 - [[action-chunking]] — `uses` 动作块是 VLA 输出的基本单位（块内并行去噪、块间闭环重规划）
 - [[computer-use]] — `contrasts` 同为"模型操作世界"，输出问题形状相反：离散命令+确定性执行器 vs 连续多峰控制信号
+- [[world-model]] — `contrasts` 信息流方向相反：VLA 条件里有目标、产生动作；世界模型任务中立、消费动作预测后果
 
 ## 来源日记
 

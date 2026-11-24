@@ -4,7 +4,7 @@ aliases:
   - "GSD 五步开发工作流"
   - "Get Shit Done Workflow"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - method
@@ -15,6 +15,7 @@ method_type: "workflow"
 related_concepts:
   - "[[three-layer-plugin-architecture]]"
   - "[[framework-selection]]"
+  - "[[ai-adoption-six-step-evolution]]"
 related_methods:
   - "[[ai-native-five-layer-pipeline]]"
   - "[[code-reuse-four-layer-defense]]"
@@ -114,6 +115,7 @@ GSD（Get Stuff Done）五步工作流是使用 GSD + Superpowers 进行 Vibe Co
 
 - [[three-layer-plugin-architecture]] — `uses` 三层架构是此工作流的框架基础
 - [[framework-selection]] — `implements` 框架选型决定是否使用此工作流
+- [[ai-adoption-six-step-evolution]] — `contrasts` GSD 聚焦单次项目执行，六步进化聚焦长期工作模式转变
 
 ## 关联方法
 

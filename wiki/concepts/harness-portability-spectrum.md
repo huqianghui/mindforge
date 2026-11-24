@@ -1,7 +1,7 @@
 ---
 title: "Harness 可移植性分层"
 created: "2026-08-30"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -16,6 +16,7 @@ related:
   - "[[harness-engineering]]"
   - "[[model-harness-codesign]]"
   - "[[skill-runtime]]"
+  - "[[agent-infra-three-layers]]"
 ---
 
 # Harness 可移植性分层
@@ -133,6 +134,7 @@ related:
 - [[harness-engineering]] — `part-of` 可移植性分层是 harness 资产投资决策的一个判据维度，原始 Claim 归口该页
 - [[skill-runtime]] — `uses` scripts 断层与 runtime 依赖问题界定了 skill 可移植性的下界
 - [[model-harness-codesign]] — `constrains` 第一方绑定路线的服务端工具全家桶（runtime 私有接口）天然压低跨 harness 可移植性
+- [[agent-infra-three-layers]] — `contrasts` 前者讲 harness 内部资产能否跨宿主迁移，本页讲 harness 被定在哪一层、能否换 runtime
 
 ## 来源日记
 

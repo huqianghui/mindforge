@@ -1,7 +1,7 @@
 ---
 title: "A2A Protocol"
 created: "2026-10-24"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -23,6 +23,7 @@ related:
   - "[[entra-agent-id]]"
   - "[[foundry-agent-type-selection]]"
   - "[[orchestrator-pattern-multi-agent]]"
+  - "[[agent-framework]]"
 ---
 
 # A2A Protocol（A2A 协议）
@@ -153,6 +154,7 @@ A2A 和微服务治理要解决的问题高度同构（发现、契约、调用�
 - [[mcp-vs-cli]] — `contrasts` MCP 管 Agent↔工具，A2A 管 Agent↔Agent；两者可嵌套（被委派的 Agent 内部用 MCP 调工具）
 - [[entra-agent-id]] — `uses` 跨 Agent 调用的工作负载身份与委派链需要独立的 Agent 身份体系承载
 - [[orchestrator-pattern-multi-agent]] — `constrains` 只有跨团队/跨框架的独立 Agent 才值得拆成 A2A 调用，同团队的编排留在框架内
+- [[agent-framework]] — `contrasts` 同团队、共享状态、延迟敏感的步骤留在 framework 内编排，跨团队才上 A2A
 
 ## 来源日记
 

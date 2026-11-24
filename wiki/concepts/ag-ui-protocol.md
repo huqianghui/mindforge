@@ -1,7 +1,7 @@
 ---
 title: "AG-UI 协议：Agent 三大协议的最后一环"
 created: "2026-08-04"
-updated: "2026-11-22"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -74,7 +74,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - **首次出现**：2026-07-30
 - **最近更新**：2026-09-12
 - **置信度**：0.8
-- **状态**：active
+- **状态**：stale
 
 > Foundry 文档把 AG-UI 与 voice、webhook 并列为 "custom protocols"，因为它们都是 Agent 对外交互方式而非内部推理机制。Voice UI 需要的事件（interrupt、partial transcript、speaking started/stopped、barge-in）与 AG-UI 的事件流模型同构。Hosted Agent 输出 AG-UI Event 后，React/Blazor/移动端/Voice UI 可复用同一条事件流——Microsoft Agent Framework 已宣布支持 AG-UI。
 
@@ -95,6 +95,7 @@ AG-UI（Agent-User Interaction Protocol）标准化 **Agent Backend 与 Frontend
 - 2026-10-24：A2A 与 A2UI 独立建页，补"第四块拼图"Claim 与两条 `contrasts` 关联（A2UI 承载关系、AG-UI ≠ MCP、应用状态 ≠ Data Model 两个边界）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——待定 1、确认 1
 - 2026-11-22：loop-revalidate（Loop⑥）复核——确认 1
+- 2026-11-24：/evolve-wiki 按 60 天线标 stale 1 条
 
 ## 关联概念
 

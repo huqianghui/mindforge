@@ -1,7 +1,7 @@
 ---
 title: "Copilot Studio"
 created: "2026-10-29"
-updated: "2026-11-16"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -22,6 +22,9 @@ related:
   - "[[copilot-studio-harness-selection]]"
   - "[[foundry-agent-type-selection]]"
   - "[[generation-evaluation-separation]]"
+  - "[[github-copilot]]"
+  - "[[foundry-agent-service]]"
+  - "[[voice-agent-build-approach]]"
 ---
 
 # Copilot Studio（微软低代码 agent 构建产品）
@@ -149,6 +152,9 @@ Copilot Studio 是盖在 Power Platform 地基上的 AI 构建产品，能造三
 - [[foundry-agent-type-selection]] — `contrasts` Copilot Studio 是 Power Platform 上的 SaaS 构建产品，Foundry Agent Service 是 Azure 上的 agent 运行时，两者不在同一层
 - [[generation-evaluation-separation]] — `uses` "指纹 + 两组对照"是验证陈述纪律在 agent 路由上的应用
 - [[copilot-studio-harness-selection]] — `constrains` 新建默认 GitHub Copilot harness、建后不能互转，使 harness 选型成为建 agent 时的不可逆决策
+- [[github-copilot]] — `contrasts` 同一套 Copilot harness，GitHub Copilot 面向编码与代码平台，Copilot Studio 面向低代码业务 agent
+- [[foundry-agent-service]] — `contrasts` Copilot Studio 是 SaaS 构建产品，Foundry 是 PaaS 运行时，不在同一层，常分层组合
+- [[voice-agent-build-approach]] — `contrasts` 电话与数字人入口下 Copilot Studio 的能力边界
 
 ## 来源日记
 

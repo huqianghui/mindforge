@@ -20,6 +20,8 @@ related:
   - "[[copilot-studio]]"
   - "[[azure-copilot-ecosystem]]"
   - "[[copilot-studio-harness-selection]]"
+  - "[[agent-sandbox]]"
+  - "[[credential-out-of-sandbox]]"
 ---
 
 # Copilot Managed Runtime（M365 企业内 SPA 托管平台）
@@ -169,6 +171,8 @@ Copilot Managed Runtime（Preview）是 Copilot Studio 的 Create apps、Copilot
 - [[azure-copilot-ecosystem]] — `part-of` Managed Runtime 是微软 Copilot 生态里"应用托管"这一层
 - [[copilot-studio-harness-selection]] — `constrains` 应用只能经 Connector 出站且收不到回调，使"能否被应用同步调用"这一维对四种 harness 都是否
 - [[generation-evaluation-separation]] — `uses` "调用成功 ≠ agent 接手"的判定沿用指纹 + 对照的验证纪律
+- [[agent-sandbox]] — `contrasts` 同为"沙箱只有一个受控出口"，前者是浏览器宿主中介（iframe + CSP + JSON-RPC），本页是 egress 代理注入凭据
+- [[credential-out-of-sandbox]] — `contrasts` 同为"沙箱只有一个受控出口"，那边是浏览器宿主中介（iframe + CSP + JSON-RPC），这边以 egress 代理注入凭据为主
 
 ## 来源日记
 

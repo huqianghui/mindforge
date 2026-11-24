@@ -1,7 +1,7 @@
 ---
 title: "共轭变换（Conjugate Transformation）"
 created: "2026-04-17"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -18,6 +18,7 @@ related:
   - "[[cybernetics-agent-design]]"
   - "[[harness-engineering]]"
   - "[[negative-feedback]]"
+  - "[[global-workspace-llm]]"
 ---
 
 # 共轭变换（Conjugate Transformation）
@@ -77,6 +78,7 @@ related:
 - [[context-engineering]] — `implements` Context Engineering 的核心工作就是设计共轭变换
 - [[harness-engineering]] — `grounds` 表示层设计是 Harness 工程的关键环节
 - [[negative-feedback]] — `uses` 负反馈的 error 计算依赖正确的表示（共轭变换）
+- [[global-workspace-llm]] — `contrasts` 共轭变换在表示层外部做投影设计，J-lens 在模型内部读出表示的输出投影——同为"换基读表示"思路
 
 ## 来源日记
 

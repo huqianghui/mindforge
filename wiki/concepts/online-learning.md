@@ -1,7 +1,7 @@
 ---
 title: "在线学习（Online Learning）"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -20,6 +20,7 @@ related:
   - "[[harness-engineering]]"
   - "[[negative-feedback]]"
   - "[[reinforcement-learning]]"
+  - "[[compute-locus-spectrum]]"
 ---
 
 # 在线学习（Online Learning）
@@ -137,6 +138,7 @@ related:
 - [[cybernetics-agent-design]] — `part-of` 在线学习是控制论四概念辨析（控制论/RL/优化/在线学习）的一档，对应控制论中的自适应控制
 - [[negative-feedback]] — `uses` 在线学习的快回路就是负反馈控制（error → correction，不改参数）
 - [[harness-engineering]] — `contrasts` Harness 是外部控制器不改参数，在线学习把控制器写进模型内部改参数；伪在线学习（memory/RAG/reflection）本质仍是 harness
+- [[compute-locus-spectrum]] — `contrasts` storage-locus（学到的知识存哪）与 compute-locus（画面在哪算）是"位面判据"家族在不同域的应用：一个问持久化位置、一个问计算位置
 
 ## 来源日记
 

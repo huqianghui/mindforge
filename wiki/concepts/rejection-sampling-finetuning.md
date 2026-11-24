@@ -1,7 +1,7 @@
 ---
 title: "拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）"
 created: "2026-06-29"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -30,6 +30,7 @@ related:
   - "[[prompt-optimization-tool-selection]]"
   - "[[reinforcement-learning]]"
   - "[[skillopt]]"
+  - "[[diffusion-model]]"
 ---
 
 # 拒绝采样微调（Rejection Sampling Fine-tuning / RAFT / STaR）
@@ -167,6 +168,7 @@ related:
 - [[skillopt]] — `contrasts` 同属拒绝采样谱系"打分筛选、只留改进"，RAFT 筛样本、SkillOpt 筛编辑
 - [[advantage-function]] — `contrasts` RAFT 的 reward 只当接受/拒绝阈值（无基线、选完即弃），在 reward 用法光谱最左；advantage 在最右（减基线进梯度）
 - [[prompt-optimization-tool-selection]] — `contrasts` "是否走向权重微调（SFT/RL）"是该决策的关键前提
+- [[diffusion-model]] — `contrasts` 同为生成方法选型语境：RAFT 适用范围讨论曾浅提扩散（跨域仅此一处独立引用）
 
 ## 来源日记
 

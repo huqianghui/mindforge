@@ -1,7 +1,7 @@
 ---
 title: "OpenClaw Agent Gateway"
 created: "2026-04-13"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -18,6 +18,7 @@ related:
   - "[[agent-zero]]"
   - "[[hermes-agent]]"
   - "[[skill-hub-ecosystem]]"
+  - "[[ai-gateway]]"
 ---
 
 # OpenClaw Agent Gateway
@@ -114,6 +115,7 @@ OpenClaw / claw0 是一个教学级 Agent 网关架构，揭示了生产级 Agen
 - [[skill-hub-ecosystem]] — `part-of` OpenClaw 也是 Skill Hub 生态的一部分
 - [[hermes-agent]] — `contrasts` 单体自主进程 vs Gateway+Node 分布式架构
 - [[agent-zero]] — `contrasts` 三种 Agent 哲学光谱中的极端自主端
+- [[ai-gateway]] — `contrasts` 同叫"agent 网关"，那边是 OpenClaw 自身的会话与渠道网关，不是面向 AI 流量的数据面
 
 ## 关联方法
 

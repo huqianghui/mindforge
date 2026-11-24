@@ -1,7 +1,7 @@
 ---
 title: "LLM-as-a-Judge（三层正交评估模型）"
 created: "2026-08-03"
-updated: "2026-11-07"
+updated: "2026-11-24"
 tags:
   - wiki
   - concept
@@ -16,6 +16,8 @@ related:
   - "[[automatic-prompt-optimization]]"
   - "[[generation-evaluation-separation]]"
   - "[[reward-design-three-inputs]]"
+  - "[[end-of-turn-detection]]"
+  - "[[system-one-model]]"
 ---
 
 # LLM-as-a-Judge（三层正交评估模型）
@@ -119,6 +121,8 @@ LLM-as-a-Judge 是用通用 LLM 充当评估裁判的方法，2024 年后成为�
 - [[generation-evaluation-separation]] — `implements` judge（评估者）与被评估的生成者分离是该原则在评估层的体现；judge ≠ policy 是 reward hacking 第一道防线
 - [[reward-design-three-inputs]] — `grounds` Reliability 偏差清单为该方法的 σ_noise 测量与降噪决策（拆分 judge、多次取中位数、≥85% 盲选一致率）提供依据
 - [[automatic-prompt-optimization]] — `constrains` judge 噪声直接决定 APO beam search 排序的可信度，是摆动的第一大原因
+- [[end-of-turn-detection]] — `contrasts` EOU 小模型（几十 ms、不知任务）与 LLM judge（几百 ms、知道任务）叠放不替代
+- [[system-one-model]] — `contrasts` 两种判断层实现：LLM 生成式评估（有 rationale、可推理、校准差、秒级）vs typed decision（无理由、单次前向、校准即训练目标、亚秒级）
 
 ## 来源日记
 

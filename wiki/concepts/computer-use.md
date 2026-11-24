@@ -17,6 +17,7 @@ related:
   - "[[model-harness-codesign]]"
   - "[[skill-runtime]]"
   - "[[harness-portability-spectrum]]"
+  - "[[vision-language-action-model]]"
 ---
 
 # Computer Use
@@ -156,7 +157,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.85（二进制逆向 + 源码常量实锤 + 修复推断确认——"配置意图 + 404 消失"而非抓包实测；404 归因于 codex-auto-review 系"源码选择逻辑 + luna 已部署仍需 override"两条证据推出，错误信息本身不回传模型名）
-- **状态**：active
+- **状态**：stale
 
 > 在"端点层 × harness 层"两层判断框架之上，Codex Desktop 接 Azure 实测补出断供的层级序列：**工具层**（web_search 声明不发）→ **目录层**（catalog schema 版本锁定；退休元数据是 OpenAI 第一方生命周期、与第三方 deployment 现实脱节——`retirement_at` 源码注释为 Informational，CLI 不执行退休，自动迁移是 UI 层行为）→ **治理层**（本条核心）：审批（Approve for me）是**第二条隐藏的模型调用链**，同样打到你配置的 provider。默认审批模型名以常量写死在源码（provider.rs:131-133）：ChatGPT 登录态取 `codex-auto-review`（Codex 内部合成名，任何第三方端点必然无同名 deployment → 404）、API key 认证态取 `gpt-5.6-luna`；修复是条目级 `auto_review_model_override` 指向真实存在的 deployment（存在即整体替换默认值，guardian/review.rs:897-898）。治理层断供最阴险处在错误归因困难：主模型正常、404 出现在审批环节、报错不说明发起方。且治理层实为**四件套**（审批模型 / guardian_v2 安全分类器 / confirmation_policies 确认政策 / collaboration_modes），全部是模型条目字段——每个环节都可能发起模型调用或依赖模型名，都是潜在断点（confirmation_policies 源码原文同时印证了系列四的四级确认分类）。配套验证纪律：三种权限模式对应三种运行态，只有 Approve for me（`approvals_reviewer: auto_review`）才真正走审批模型——Full access 下写文件成功不能作为审批链路修复的证据。
 
@@ -166,7 +167,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - **首次出现**：2026-09-05
 - **最近更新**：2026-09-12
 - **置信度**：0.75（①② 本机路径验证 + 公开 issue 佐证；③ 为推测未直接验证——2026-09-12 按系列04 事实性修订软化）
-- **状态**：active
+- **状态**：stale
 
 > 系列六"runtime 不对等"的物理答案：Computer Use 不在 CLI 二进制里，而在 App bundle 携带的 plugin payload 里——`Resources/plugins/openai-bundled/plugins/computer-use/`（plugin.json + .mcp.json + skills + SkyComputerUseClient.app），`.mcp.json` 把 MCP server 的 command 指向 bundle 内的 native helper；Codex 启动时经 bundled plugin marketplace reconciliation 把 payload 安装到 `~/.codex/plugins/cache/`——"Computer Use 在哪"有两个答案：**分发态在 App bundle，运行态在用户目录**。边界证据分两档：① payload 随 CPU 架构走——Intel x64 构建根本不带这套文件，而 `codex features list` 仍显示 `computer_use stable true`（**feature flag ≠ payload**）；② bundled CLI 手动补挂 plugin 后也能获得能力——载体是 plugin payload 而非 App 本身；③（**推测，未直接验证**）SkyComputerUseClient 从 Codex.app 进程树之外启动可能因 code signature / launch context 失败——三个引用 issue 均未直接描述该故障模式、本机也无对照测试，推测与 macOS TCC 的 responsible-process 归因链有关：App Bundle + native helper + 签名 + TCC 权限 + 进程树**可能是紧密耦合的，但不是"不可拆整体"的定论**；这个方向若成立，可解释 standalone 与 bundled CLI 版本号相同能力也不同（"同源不同发行版"在能力层的表现）。另注：整条配置层调用链（CLI → plugin → MCP → SkyComputerUseClient → macOS Accessibility）目前的证据全是文件位置与 `.mcp.json` 指向，尚无一次真实触发的运行时观测（进程树、日志时间线）坐实每一跳。这是第一方绑定在**分发层**的形态：能力扩展做成 bundle 内 payload，随第一方 App 分发而不随开源 CLI 分发。
 
@@ -176,7 +177,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - **首次出现**：2026-09-07
 - **最近更新**：2026-09-12
 - **置信度**：0.75（实测三故障 + 后台路径独立验证）
-- **状态**：active
+- **状态**：stale
 
 > Blender 实战给"UI 层天然残缺"补上桌面 DCC 域的实测注脚。三入口分工：**bpy Python API** 做批量建模/改参数/设关键帧/渲染（一次脚本执行完成大量重复操作），**Computer Use** 只做"眼睛"（查看窗口实际状态、打开文件），**MCP** 把 API 路径接到"正在打开的场景"（保留选中对象与编辑状态）。Computer Use 窗口操作实测接连三故障：`noWindowsAvailable`（-10005）、用户粘贴操作冲突、dmg 安装镜像未推出导致两处应用共享同一 bundle identifier（`org.blenderfoundation.blender`）而窗口定位歧义——改完整应用路径可读状态但并非全部操作恢复。关键的归因纪律：**故障只影响桌面界面操作，后台脚本生成与渲染独立验证成功，不能从 UI 故障推断模型生成失败**。UI 不可靠时切数据层/API 层的补位实例：扩展安装绕过 GUI，走 Blender 后台接口 `bpy.ops.extensions.package_install_files` 完成。GUI 操作易受窗口焦点、用户并发操作、安装状态干扰——与浏览器域"能点不等于应该点"、"DOM 虚拟化真解在数据层"同构。
 
@@ -274,6 +275,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - 2026-09-28：注入系列八两条 Claim——首次把"下一步做什么"的判断从通用 LLM 换成 typed 决策模型做单变量受控对照，并给出 Jev skill 的条件默认路由规则；系列五场景路由表因此新增"判断模型"这一维。方法层归口 [[decision-policy-executor-split]]。
 - 2026-10-14：系列一 10-13 重写澄清包含关系的口径——首条 Claim 一度被误判为"撤回包含关系"而标 outdated，经用户纠正恢复 active（0.8）：重写否定的是"Chrome integration 作中间层"的三层树和"从产品设置推技术层级"，广义 Computer Use ⊃ Browser Use 仍成立；狭义原生桌面 Computer Use 与 Browser Use 并列。新增"正交维度"Claim 作补充；摘要同步改写。同日注入系列九两条 Claim：三条执行路径无固定性能/token 排名（测量纪律）与账号身份/model provider 分开（Browser Use 站点预检依赖 ChatGPT 身份，"认证三链路相互独立"修正为"用途不同、实现可能耦合"）。
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 5、待定 1、长效 1
+- 2026-11-24：/evolve-wiki 按 60 天线标 stale 3 条
 
 ## 关联概念
 
@@ -282,6 +284,7 @@ Computer Use 是 agent 直接操作 UI 层（而非 API 层）的能力：观察
 - [[skill-runtime]] — `grounds` "Skill 可见但 runtime 缺失"是 skill 声明与执行环境分离的又一实证（与 scripts 断层同构）
 - [[harness-portability-spectrum]] — `grounds` Skill 跨 CLI/App 可发现但 runtime 不可移植，是可移植性分层的第 3 处独立论证
 - [[system-one-model]] — `uses` action loop 里"选下一步动作"这一判断可交给 typed 决策模型（DOM 元素编号表 → Choice），执行与验收仍在执行器
+- [[vision-language-action-model]] — `contrasts` 同为"模型操作世界"，输出问题形状相反：离散命令+确定性执行器 vs 连续多峰控制信号
 
 ## 来源日记
 
