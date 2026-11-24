@@ -1,44 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1060" width="1400" height="1060" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .panC { fill: #0b1a2c; stroke: #38bdf8; stroke-width: 1.8; }
-      .panL { fill: #160f2a; stroke: #a78bfa; stroke-width: 1.8; }
-      .panE { fill: #0d1f1c; stroke: #2dd4bf; stroke-width: 1.8; }
-      .hdC { fill: #7dd3fc; font-size: 20px; font-weight: 700; }
-      .hdL { fill: #c4b5fd; font-size: 20px; font-weight: 700; }
-      .hdE { fill: #5eead4; font-size: 20px; font-weight: 700; }
-      .hs { fill: #94a3b8; font-size: 13.5px; }
-      .box { fill: #111827; stroke: #334155; stroke-width: 1.2; }
-      .boxC { fill: #0e2238; stroke: #0ea5e9; stroke-width: 1.4; }
-      .boxL { fill: #1e1638; stroke: #8b5cf6; stroke-width: 1.4; }
-      .boxE { fill: #10302d; stroke: #2dd4bf; stroke-width: 1.4; }
-      .boxY { fill: #2a2110; stroke: #fbbf24; stroke-width: 1.4; }
-      .boxW { fill: #2a1416; stroke: #f87171; stroke-width: 1.4; }
-      .bt { fill: #f1f5f9; font-size: 15px; font-weight: 700; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tg { fill: #5eead4; font-size: 13.5px; font-weight: 600; }
-      .tr { fill: #fca5a5; font-size: 13.5px; font-weight: 600; }
-      .ty { fill: #fcd34d; font-size: 13.5px; font-weight: 600; }
-      .num { fill: #fbbf24; }
-      .numW { fill: #f87171; }
-      .nt { fill: #0b1220; font-size: 14px; font-weight: 700; text-anchor: middle; }
-      .flowC { stroke: #38bdf8; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
-      .flowL { stroke: #a78bfa; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
-      .flowE { stroke: #2dd4bf; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
-      .flowW { stroke: #f87171; stroke-width: 2.2; fill: none; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
+      .bg { fill: #f6f8fb; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5c6f8a; font-size: 14px; }
+      .panC { fill: #f1f6fb; stroke: #0c89c0; stroke-width: 1.8; }
+      .panL { fill: #f4f2fa; stroke: #2a0693; stroke-width: 1.8; }
+      .panE { fill: #f2faf9; stroke: #26a696; stroke-width: 1.8; }
+      .hdC { fill: #036696; font-size: 20px; font-weight: 700; }
+      .hdL { fill: #220495; font-size: 20px; font-weight: 700; }
+      .hdE { fill: #1bb199; font-size: 20px; font-weight: 700; }
+      .hs { fill: #5c6f8a; font-size: 13.5px; }
+      .box { fill: #f6f8fb; stroke: #b9c4d5; stroke-width: 1.2; }
+      .boxC { fill: #f1f6fb; stroke: #1087bc; stroke-width: 1.4; }
+      .boxL { fill: #f4f2fa; stroke: #440fbd; stroke-width: 1.4; }
+      .boxE { fill: #f2fbfa; stroke: #26a696; stroke-width: 1.4; }
+      .boxY { fill: #faf7f2; stroke: #c38f09; stroke-width: 1.4; }
+      .boxW { fill: #f9f3f3; stroke: #920707; stroke-width: 1.4; }
+      .bt { fill: #2e4d6b; font-size: 15px; font-weight: 700; }
+      .t { fill: #384b61; font-size: 13.5px; }
+      .tg { fill: #1bb199; font-size: 13.5px; font-weight: 600; }
+      .tr { fill: #940505; font-size: 13.5px; font-weight: 600; }
+      .ty { fill: #c49808; font-size: 13.5px; font-weight: 600; }
+      .num { fill: #c38f09; }
+      .numW { fill: #920707; }
+      .nt { fill: #f6f8fb; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .flowC { stroke: #0c89c0; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowL { stroke: #2a0693; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowE { stroke: #26a696; stroke-width: 2.2; fill: none; stroke-dasharray: 8 6; animation: dash 1.6s linear infinite; }
+      .flowW { stroke: #920707; stroke-width: 2.2; fill: none; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
       .pulse { animation: pulse 2.2s ease-in-out infinite; }
-      .lgh { fill: #e2e8f0; font-size: 15px; font-weight: 700; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
+      .lgh { fill: #344965; font-size: 15px; font-weight: 700; }
+      .lg { fill: #384b61; font-size: 13.5px; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.3; } }
     </style>
-    <marker id="aC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#38bdf8"/></marker>
-    <marker id="aL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/></marker>
-    <marker id="aE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker>
-    <marker id="aW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>
+    <marker id="aC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0c89c0"/></marker>
+    <marker id="aL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a0693"/></marker>
+    <marker id="aE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#26a696"/></marker>
+    <marker id="aW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#920707"/></marker>
   </defs>
   <rect class="bg" width="1400" height="1060" rx="16"/>
   <text class="title" x="30" y="44">Runtime 管控台与 LiteLLM：配置从 CRD 单向流到 LiteLLM，LiteLLM 负责执行模型规则和记账</text>
@@ -162,7 +162,7 @@
   <circle class="numW" cx="1385" cy="470" r="12"/><text class="nt" x="1385" y="475">7</text>
 
   <!-- ========== 图例 ========== -->
-  <line x1="30" y1="782" x2="1370" y2="782" stroke="#1e293b"/>
+  <line x1="30" y1="782" x2="1370" y2="782" stroke="#f3f5f9"/>
   <text class="lgh" x="30" y="812">图例</text>
   <circle class="num" cx="44" cy="840" r="10"/><text class="nt" x="44" y="845">1</text>
   <text class="lg" x="64" y="845">Portal 只做一件事：把用户和管理员的操作写成 CRD。它自己不存配置，也没有第二份状态</text>

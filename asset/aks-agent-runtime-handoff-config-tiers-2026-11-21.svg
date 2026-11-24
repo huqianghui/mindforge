@@ -1,44 +1,44 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" width="1500" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" width="1500" height="900" font-family="Songti SC, STSong, Noto Serif SC, serif">
 <style>
-.title{fill:#f8fafc;font-size:22px;font-weight:700}
-.sub{fill:#94a3b8;font-size:14px}
-.q{fill:#f1f5f9;font-size:16px;font-weight:700;text-anchor:middle}
-.qs{fill:#a5b4c8;font-size:13px;text-anchor:middle}
+.title{fill:#2e4c6b;font-size:22px;font-weight:700}
+.sub{fill:#6b6a64;font-size:14px}
+.q{fill:#2e4d6b;font-size:16px;font-weight:700;text-anchor:middle}
+.qs{fill:#3b3a36;font-size:13px;text-anchor:middle}
 .yn{font-size:14px;font-weight:700}
-.h{fill:#f1f5f9;font-size:17px;font-weight:700}
-.t{fill:#e2e8f0;font-size:14px}
-.s{fill:#a5b4c8;font-size:13px}
-.w{fill:#fca5a5;font-size:13.5px;font-weight:600}
-.num{fill:#0b1220;font-size:14px;font-weight:700;text-anchor:middle}
-.lg{fill:#cbd5e1;font-size:13.5px}
-.flow{fill:none;stroke:#2dd4bf;stroke-width:2.6;stroke-dasharray:9 7;animation:d 1.6s linear infinite}
+.h{fill:#2e4d6b;font-size:17px;font-weight:700}
+.t{fill:#344965;font-size:14px}
+.s{fill:#3b3a36;font-size:13px}
+.w{fill:#821717;font-size:13.5px;font-weight:600}
+.num{fill:#fbf7ee;font-size:14px;font-weight:700;text-anchor:middle}
+.lg{fill:#384b61;font-size:13.5px}
+.flow{fill:none;stroke:#25b19f;stroke-width:2.6;stroke-dasharray:9 7;animation:d 1.6s linear infinite}
 @keyframes d{to{stroke-dashoffset:-32}}
 </style>
-<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/></marker></defs>
-<rect width="1500" height="900" rx="16" fill="#0b1220"/>
+<defs><filter id="rough" filterUnits="userSpaceOnUse" x="-50" y="-50" width="5000" height="5000"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="5" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path filter="url(#rough)" d="M0,0 L10,5 L0,10 z" fill="#25b19f"/></marker></defs>
+<rect filter="url(#rough)" width="1500" height="900" rx="16" fill="#fbf7ee"/>
 <text class="title" x="30" y="44">一个值该放在哪里</text>
 <text class="sub" x="30" y="70">能交给别人部署的仓库里，环境相关的值不能写死，也不是什么都该做成配置项</text>
 
 <!-- decision nodes -->
-<rect x="560" y="96" width="380" height="74" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<rect filter="url(#rough)" x="560" y="96" width="380" height="74" rx="12" fill="#fbf7ee" stroke="#2586b1"/>
 <text class="q" x="750" y="128">换一个订阅或集群，这个值会变吗？</text>
 <text class="qs" x="750" y="152">问的是"别人部署时会不会不一样"</text>
 
-<rect x="860" y="222" width="400" height="74" rx="12" fill="#0f172a" stroke="#38bdf8"/>
+<rect filter="url(#rough)" x="860" y="222" width="400" height="74" rx="12" fill="#fbf7ee" stroke="#2586b1"/>
 <text class="q" x="1060" y="254">部署时能从集群或 Azure 查到吗？</text>
 <text class="qs" x="1060" y="278">查得到就别让人填，填错和过时都是隐患</text>
 
-<path class="flow" d="M650,170 L650,200 L250,200 L250,320" marker-end="url(#a)"/>
-<text class="yn" x="430" y="194" fill="#fca5a5">不会变</text>
-<path class="flow" d="M850,170 L850,200 L1060,200 L1060,218" marker-end="url(#a)"/>
-<text class="yn" x="900" y="194" fill="#5eead4">会变</text>
-<path class="flow" d="M960,296 L960,310 L750,310 L750,320" marker-end="url(#a)"/>
-<text class="yn" x="790" y="304" fill="#fbbf24">查不到</text>
-<path class="flow" d="M1160,296 L1160,310 L1250,310 L1250,320" marker-end="url(#a)"/>
-<text class="yn" x="1268" y="304" fill="#5eead4">查得到</text>
+<path filter="url(#rough)" class="flow" d="M650,170 L650,200 L250,200 L250,320" marker-end="url(#a)"/>
+<text class="yn" x="430" y="194" fill="#821717">不会变</text>
+<path filter="url(#rough)" class="flow" d="M850,170 L850,200 L1060,200 L1060,218" marker-end="url(#a)"/>
+<text class="yn" x="900" y="194" fill="#25b19b">会变</text>
+<path filter="url(#rough)" class="flow" d="M960,296 L960,310 L750,310 L750,320" marker-end="url(#a)"/>
+<text class="yn" x="790" y="304" fill="#b18a25">查不到</text>
+<path filter="url(#rough)" class="flow" d="M1160,296 L1160,310 L1250,310 L1250,320" marker-end="url(#a)"/>
+<text class="yn" x="1268" y="304" fill="#25b19b">查得到</text>
 
 <!-- three cards -->
-<rect x="30" y="326" width="440" height="356" rx="14" fill="#1d1733" stroke="#a78bfa"/>
+<rect filter="url(#rough)" x="30" y="326" width="440" height="356" rx="14" fill="#f1eff8" stroke="#321782"/>
 <text class="h" x="52" y="360">留在代码里：平台约定</text>
 <text class="s" x="52" y="386">由 chart、operator、门户代码共同约定，改了就对不上</text>
 <text class="t" x="52" y="424">· 平台和 agent 的命名空间</text>
@@ -50,7 +50,7 @@
 <text class="w" x="52" y="612">看着像环境值，其实是协议常量：</text>
 <text class="w" x="52" y="636">全零 GUID 用户名、Graph app ID 都不该提出来</text>
 
-<rect x="530" y="326" width="440" height="356" rx="14" fill="#0f2a26" stroke="#2dd4bf"/>
+<rect filter="url(#rough)" x="530" y="326" width="440" height="356" rx="14" fill="#eef9f7" stroke="#25b19f"/>
 <text class="h" x="552" y="360">进配置文件：环境值</text>
 <text class="s" x="552" y="386">模板里给默认值，必须改的标出来</text>
 <text class="t" x="552" y="424">· 订阅、区域、资源组、集群名、域名前缀</text>
@@ -63,7 +63,7 @@
 <text class="s" x="552" y="626">两步都读这一处，不要各写一份</text>
 <text class="w" x="552" y="662">版本号写死在脚本里，改了源码就会部署旧版</text>
 
-<rect x="1030" y="326" width="440" height="356" rx="14" fill="#2a2110" stroke="#fbbf24"/>
+<rect filter="url(#rough)" x="1030" y="326" width="440" height="356" rx="14" fill="#f9f5ee" stroke="#b18a25"/>
 <text class="h" x="1052" y="360">部署时现查：集群事实</text>
 <text class="s" x="1052" y="386">每次部署从集群读，脚本可以反复跑</text>
 <text class="t" x="1052" y="424">· CoreDNS、AI 网关 Service 的地址</text>
@@ -77,12 +77,12 @@
 <text class="w" x="1052" y="664">就已经和集群对不上了</text>
 
 <!-- checks -->
-<line x1="30" y1="712" x2="1470" y2="712" stroke="#1e293b"/>
+<line filter="url(#rough)" x1="30" y1="712" x2="1470" y2="712" stroke="#f0f3f7"/>
 <text class="h" x="30" y="746">交给别人之前，我做的三项检查</text>
-<circle cx="44" cy="782" r="13" fill="#2dd4bf"/><text class="num" x="44" y="787">1</text>
+<circle filter="url(#rough)" cx="44" cy="782" r="13" fill="#25b19f"/><text class="num" x="44" y="787">1</text>
 <text class="lg" x="66" y="787">变量来源：脚本和模板里用到的每个变量，要么在配置模板里，要么由脚本或状态文件生成；剩下的逐个确认是临时开关还是漏了</text>
-<circle cx="44" cy="818" r="13" fill="#2dd4bf"/><text class="num" x="44" y="823">2</text>
+<circle filter="url(#rough)" cx="44" cy="818" r="13" fill="#25b19f"/><text class="num" x="44" y="823">2</text>
 <text class="lg" x="66" y="823">改前改后对比：把写死的值提成变量后重新生成部署配置，和线上正在用的逐字段比，只允许出现预期内的差异</text>
-<circle cx="44" cy="854" r="13" fill="#2dd4bf"/><text class="num" x="44" y="859">3</text>
+<circle filter="url(#rough)" cx="44" cy="854" r="13" fill="#25b19f"/><text class="num" x="44" y="859">3</text>
 <text class="lg" x="66" y="859">公开之前扫全部 git 历史：订阅、租户、对象 ID、密码、私有资源名、同事的账号，不只看当前文件</text>
 </svg>

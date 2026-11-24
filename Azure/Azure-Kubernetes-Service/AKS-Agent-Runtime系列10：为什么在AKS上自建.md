@@ -18,7 +18,18 @@ description: 这个系列在 AKS 上把 agent runtime 拆成执行、会话、�
 
 我对着 Hosted Agents 现在的文档，把这个系列里自己搭的每一块都找了一下对应：
 
-![九篇里自己搭的每一块，在 Foundry Hosted Agents 里是什么|900](../../asset/aks-agent-runtime-vs-hosted-agents-2026-11-13.svg)
+| 层 | AKS 自建（这个系列实测，含踩到的坑） | Foundry Hosted Agents（文档写明的能力） |
+|---|---|---|
+| 执行隔离（01、02） | Kata 节点池，每会话一个 VM，规格按节点池随意选；默认拒绝出站、不挂 SA token、IMDS 不可达都要自己配 | 每会话一个 VM 隔离沙箱，平台负责；**规格最大 2 vCPU / 4 GiB**，协议库支持 Python、C# |
+| harness（02、03、08） | Claude Code、Codex、Copilot CLI 直接关进沙箱免确认跑；Claude Code 要 `IS_SANDBOX=1` 才能在 root 下免确认 | 容器里跑任意框架，对外实现 Responses / Invocations；**没有"托管现成编码 CLI"这一类**，要自己包一层协议 |
+| 控制面 / 会话（03、06） | 自己写八步状态机、适配器、事件流；参考实现单副本 + SQLite，多副本要 lease + fencing 自己做 | 会话 API、对话历史（Responses）由平台管；会话是沙箱和文件，对话是消息历史，两者分开 |
+| 出站治理（04） | 网关认 Pod 证书，按"申请 ∧ 批准 ∧ 发布"逐请求授权；缺一项批准新会话就整体 503，授权在突发下最先撑不住 | 出站可以走客户自己的 VNet，工具统一经 Toolbox MCP；**"某个 agent 对某个资源的某个动作"这一级的批准要另想办法** |
+| 生命周期（05） | rootfs 打成镜像推 ACR，每轮两次 commit，恢复约 10 秒；会话库没记录的 Durable 沙箱、删记录后的快照镜像没人回收 | 空闲 2~60 分钟释放，恢复时还原 `$HOME` 和 `/files`；30 天不活动删除，没有预热池要配 |
+| 注册与发现（07） | Agent CRD + controller，skills 打 OCI 包按 digest 固定；自己生成 A2A Agent Card，发现与授权分开 | 平台保存镜像、agent 版本和 agent identity；对外发现（卡片、目录）这次没有核实 |
+| 模型接入（08） | 一个网关同时接 Responses 和 Messages，协议在网关里转换；别名在网关不认，Foundry 上的 Claude 部署需组织声明（未测） | 容器内用 agent identity 调 Foundry 模型，换哪家模型、走什么协议由容器里的代码决定 |
+| 身份（09） | OBO、Agent ID 都能用 AKS 联合凭据跑，无 secret；Agent ID 的 OBO 需要管理员同意，令牌服务要自己写 | 部署时自动给每个 agent 建 Entra agent identity，按用户隔离会话，Toolbox 统一处理身份透传 |
+
+表里加粗的三处，是 Hosted Agents 目前没有直接对应、也是选 AKS 的真正理由：要直接跑现成的编码 CLI、沙箱要比 2 vCPU / 4 GiB 大、出站要按"资源 + 动作"逐请求批准。左栏里的坑则是选 AKS 的代价——这些都是在几天的 PoC 里撞上的。
 
 对完之后，最直观的感受是：**这个系列花篇幅最多、坑也最多的那几块，Hosted Agents 都已经包了。**
 
@@ -43,9 +54,7 @@ description: 这个系列在 AKS 上把 agent runtime 拆成执行、会话、�
 
 ## 三、自建时每一层用什么
 
-决定自建之后，并不是每一层都要从零写。按层次看，底下几层开源和 AKS 已经覆盖得比较好，越往上，现成的组件越只是底座，要自己写的越多：
-
-![在 AKS 上自建 agent runtime：每一层用什么|1000](../../asset/aks-agent-runtime-build-stack-2026-11-15.svg)
+决定自建之后，并不是每一层都要从零写。按层次看，底下几层开源和 AKS 已经覆盖得比较好，越往上，现成的组件越只是底座，要自己写的越多（分层全景图见 [00 导读](AKS-Agent-Runtime系列00：导读.md)）：
 
 - **① 隔离**：AKS 的 Pod Sandboxing 提供 Kata 节点池；社区里还有 gVisor、Firecracker。要自己做的是节点池污点、limits、RuntimeClass，以及"出站默认拒绝、不挂 SA token"这两条底线（第 01 篇、[01 补充](AKS-Agent-Runtime系列01补充：Kata运行时与节点池.md)）。
 - **② 沙箱编排**：OpenSandbox、agent-sandbox 管预热、领取、执行接口、暂停恢复；kagent、Agent Substrate 是另外两种思路。要自己做的是沙箱 provider 接口、兜底网络策略和快照仓库的清理（[03 补充](AKS-Agent-Runtime系列03补充：沙箱后端agent-sandbox与OpenSandbox.md)）。

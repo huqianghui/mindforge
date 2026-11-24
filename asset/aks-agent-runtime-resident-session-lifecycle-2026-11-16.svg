@@ -1,33 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 920" width="1400" height="920" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lane { fill: #0f172a; stroke: #1e293b; stroke-width: 1.2; }
-      .lhR { fill: #c4b5fd; font-size: 19px; font-weight: 700; }
-      .lhS { fill: #7dd3fc; font-size: 19px; font-weight: 700; }
-      .ls { fill: #94a3b8; font-size: 13.5px; }
-      .axis { stroke: #2dd4bf; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flow 1.4s linear infinite; }
-      .axisP { stroke: #334155; stroke-width: 3; fill: none; stroke-dasharray: 6 8; }
-      .nd { fill: #10302d; stroke: #2dd4bf; stroke-width: 2.4; }
-      .ndA { fill: #3a2a08; stroke: #fbbf24; stroke-width: 2.6; animation: pulse 1.8s ease-in-out infinite; }
-      .ndP { fill: #0f172a; stroke: #64748b; stroke-width: 2; stroke-dasharray: 4 4; }
-      .nl { fill: #e2e8f0; font-size: 15px; font-weight: 700; text-anchor: middle; }
-      .nlA { fill: #fcd34d; font-size: 15px; font-weight: 700; text-anchor: middle; }
-      .nlP { fill: #94a3b8; font-size: 15px; font-weight: 700; text-anchor: middle; }
-      .lead { stroke: #475569; stroke-width: 1.2; }
-      .card { fill: #111827; stroke: #2dd4bf; stroke-width: 1.1; stroke-opacity: 0.6; }
-      .cardA { fill: #1f1a0b; stroke: #fbbf24; stroke-width: 1.4; }
-      .cardP { fill: #0f172a; stroke: #64748b; stroke-width: 1.2; stroke-dasharray: 5 4; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tA { fill: #fde68a; font-size: 13.5px; }
-      .tP { fill: #94a3b8; font-size: 13.5px; }
-      .box { fill: #111827; stroke: #334155; stroke-width: 1.2; }
-      .bh { fill: #f1f5f9; font-size: 16px; font-weight: 700; }
-      .tg { fill: #5eead4; font-size: 13.5px; }
-      .tr { fill: #fca5a5; font-size: 13.5px; }
-      .lgd { fill: #cbd5e1; font-size: 13px; }
+      .bg { fill: #fcfcfb; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #1a4c89; font-size: 22px; font-weight: 700; }
+      .sub { fill: #6f6e69; font-size: 14px; }
+      .lane { fill: #fcfcfb; stroke: #ecf2f8; stroke-width: 1.2; }
+      .lhR { fill: #1a4c89; font-size: 19px; font-weight: 700; }
+      .lhS { fill: #1a4c89; font-size: 19px; font-weight: 700; }
+      .ls { fill: #6f6e69; font-size: 13.5px; }
+      .axis { stroke: #2a78d6; stroke-width: 3; fill: none; stroke-dasharray: 10 8; animation: flow 1.4s linear infinite; }
+      .axisP { stroke: #e4e2dc; stroke-width: 3; fill: none; stroke-dasharray: 6 8; }
+      .nd { fill: #ecf2f8; stroke: #2a78d6; stroke-width: 2.4; }
+      .ndA { fill: #faefeb; stroke: #eb6834; stroke-width: 2.6; animation: pulse 1.8s ease-in-out infinite; }
+      .ndP { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 2; stroke-dasharray: 4 4; }
+      .nl { fill: #1a4c89; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .nlA { fill: #eb6834; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .nlP { fill: #6f6e69; font-size: 15px; font-weight: 700; text-anchor: middle; }
+      .lead { stroke: #e4e2dc; stroke-width: 1.2; }
+      .card { fill: #fcfcfb; stroke: #2a78d6; stroke-width: 1.1; stroke-opacity: 0.6; }
+      .cardA { fill: #faefeb; stroke: #eb6834; stroke-width: 1.4; }
+      .cardP { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.2; stroke-dasharray: 5 4; }
+      .t { fill: #1a4c89; font-size: 13.5px; }
+      .tA { fill: #95350f; font-size: 13.5px; }
+      .tP { fill: #6f6e69; font-size: 13.5px; }
+      .box { fill: #fcfcfb; stroke: #e4e2dc; stroke-width: 1.2; }
+      .bh { fill: #1a4c89; font-size: 16px; font-weight: 700; }
+      .tg { fill: #2a78d6; font-size: 13.5px; }
+      .tr { fill: #8e1616; font-size: 13.5px; }
+      .lgd { fill: #1a4c89; font-size: 13px; }
       @keyframes flow { to { stroke-dashoffset: -36; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.3; } }
     </style>
@@ -45,7 +45,7 @@
   <text class="ls" x="134" y="128">一个人，一个 Pod，一块盘</text>
 
   <path class="axis" d="M120,200 L1260,200"/>
-  <circle r="5" fill="#5eead4"><animateMotion dur="6s" repeatCount="indefinite" path="M120,200 L1260,200"/></circle>
+  <circle r="5" fill="#2a78d6"><animateMotion dur="6s" repeatCount="indefinite" path="M120,200 L1260,200"/></circle>
 
   <circle class="nd" cx="120" cy="200" r="13"/><text class="nl" x="120" y="176">创建</text>
   <circle class="nd" cx="310" cy="200" r="13"/><text class="nl" x="310" y="176">在线</text>
@@ -99,7 +99,7 @@
 
   <path class="axis" d="M120,514 L1070,514"/>
   <path class="axisP" d="M1070,514 L1260,514"/>
-  <circle r="5" fill="#5eead4"><animateMotion dur="5s" repeatCount="indefinite" path="M120,514 L1070,514"/></circle>
+  <circle r="5" fill="#2a78d6"><animateMotion dur="5s" repeatCount="indefinite" path="M120,514 L1070,514"/></circle>
 
   <circle class="nd" cx="120" cy="514" r="13"/><text class="nl" x="120" y="490">领取</text>
   <circle class="nd" cx="310" cy="514" r="13"/><text class="nl" x="310" y="490">一轮</text>

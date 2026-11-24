@@ -106,8 +106,6 @@ LiteLLM 的 Agents 是一个 **A2A agent 网关**：用 A2A 规范的 Agent Card
 
 ## 六、日志：五条线各管一段
 
-![五类日志各落在哪里|900](../../asset/aks-agent-runtime-console-litellm-logs-2026-11-17.svg)
-
 把一个 Agent 从被配置到干活这一路产生的日志摊开，一共五类：
 
 1. **管理操作。** Portal 上改 Team、Policy，挂起和删除 Agent，最终都是一次 K8s API 写入，要靠 AKS 的审计日志（诊断设置里的 kube-audit 类别）来记。主体是 Portal 的服务账号，真实操作人要靠 Portal 转发的身份信息去对。Portal 自己不记操作日志。
