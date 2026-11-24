@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-11-24",
   "stats": {
-    "nodes": 177,
-    "links": 786,
+    "nodes": 178,
+    "links": 792,
     "orphan_links_removed": 2,
-    "claims": 1109,
+    "claims": 1111,
     "categories": 14
   },
   "nodes": [
@@ -3746,6 +3746,46 @@
           "status": "active",
           "evidence": "系列07 在模型菜单加 `auto-jev` 条目：目录层给一个别名，provider 地址指向本机回环 HTTP 服务（launchd 常驻，不随 Codex 启停），网关读请求自带的 `thread_id`/`turn_id`/`context_window_id` 做任务级绑定后转发 Azure 七个部署之一并流式回传——Codex 侧完全透明，与 CodexSaver 的 MCP 路径（agent 主动派发）是两条路。安装器改三处文件并备份，先起服务再改配置、哈希校验回滚。实测坑：Desktop 菜单可见但选择后回退，原因是项目级 config 固定了模型覆盖全局（已移除）——与系列02\"全局配置菜单\"暗线同族。CLI `-m auto-jev` 走正式配置。已实测/已实现未启用/待校准三类事实见 [[model-routing]] 与 [[decision-policy-executor-split]]。",
           "evidence_type": "",
+          "review": ""
+        }
+      ]
+    },
+    {
+      "id": "communication",
+      "type": "concept",
+      "title": "Communication（沟通与表达）",
+      "summary": "这是\"沟通与表达\"领域的根页：把自己的判断讲给别人、写给别人的能力。技术是我的主业，但技术判断要变成影响力，最后都要经过表达这一步——一场分享、一篇文章、一页方案。这个领域目前有两条线：**说**，以演讲为主，核心是听众不能回翻，所以结构要先行（[[presentation]]，准备步骤见 [[presentation-preparation]]）；**写**，核心是读起来是不是一个人在说话，而不是模板（[[ai-writing-fingerprint]]）。\n\n范围说明：魏斯曼《演讲大师课》四册都读过，第 1 册《说的艺术》整理成了笔记；第 2 册（回答尖锐提问）和第 4 册（台上的表达）读完后判断对当前的我不是那么重要，没有写笔记，这里也不追补。",
+      "tags": [
+        "wiki",
+        "concept",
+        "communication"
+      ],
+      "category": "沟通与表达",
+      "method_type": null,
+      "decision_status": null,
+      "claims_count": 2,
+      "avg_confidence": 0.6,
+      "claims": [
+        {
+          "statement": "说和写面对的是两种不同的受众处境——听众不能回翻，所以演讲要先把结构讲清楚；读者能回翻但会被模板腔劝退，所以文章要先像一个人在说话",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "演讲听众站在林中，每次只看到一棵树、一张幻灯片，没有机会回头，结构要由讲的人主动带出来（叙述结构、缓冲页、基准项、外部串词）；文章读者可以回翻、跳读，结构可以靠标题和图承担，但读者对\"AI 味\"很敏感——意义膨胀、模板化的转折、讨好和空洞总结，一旦出现就不再信任内容。两边共用一部分工具：16 种叙述结构里的历时型、问题-解决型、比较-对比型在文章里同样好用，系列文章的路线图和状态配色也就是图表串联。差别在现场：点名、提问、当地化这类外部串词只有演讲才有，把文章直接搬上台最容易丢掉的就是这一层。这一条是两篇来源合起来的归纳。",
+          "evidence_type": "理论",
+          "review": ""
+        },
+        {
+          "statement": "表达的准备顺序是先想清楚再动手——先回答目的、受众和要点，再选结构，最后才是页面或文字；交给 AI 生成时，这一步也不能省",
+          "source": "魏斯曼演讲大师课读书笔记：结构、开场与串联",
+          "first_seen": "2026-11-24",
+          "last_updated": "2026-11-24",
+          "confidence": 0.6,
+          "status": "active",
+          "evidence": "魏斯曼审稿时什么都不看，先问四个问题（目的、听众与诉求、罗马石柱、为什么是这个顺序）。生成工具越强，越容易跳过这一步，直接得到一份看起来完整、但目的和结构没想清楚的成品。所以我把这四个问题做成了 PPT 生成之前的讨论 skill，一次只推进一个阶段，确认了才往下，产出简报和逐页大纲后再交给生成工具（见 [[presentation-preparation]]、[[skill-creator-orchestration]]）。写文章同理：先定要回答的问题和结构，AI 用来查资料、列框架，核心表达自己写，再做一遍去 AI 味的检查。",
+          "evidence_type": "实测经验",
           "review": ""
         }
       ]
@@ -10031,7 +10071,7 @@
       "id": "presentation",
       "type": "concept",
       "title": "Presentation（演讲与表达）",
-      "summary": "演讲要解决的核心问题是**听众只能一棵树一棵树地看森林**：写演讲的人看得到全局，听众每次只看到一张幻灯片，又没法回头翻，各部分之间的关系要是没讲清，就只能自己去拼，于是走神、打断或者忙着找失落的那一环。杰瑞·魏斯曼《演讲大师课》第 1 册《说的艺术》的回答是先把结构定下来再呈现：用\"罗马石柱\"指撑起整场演讲的几个要点，用 16 种**叙述结构**（Flow Structures）决定石柱的先后，开头用 7 种开场白把人拉进来，石柱之间用 7 种外部串词和 5 种图表串联保持连贯。\n\n本页收这个领域的论断；把它变成可执行的准备步骤见方法页 [[presentation-preparation]]。来源是我读魏斯曼系列的笔记，以及我把这套方法做成 PPT 前置讨论 skill 的实践。四册都翻过，笔记以第 1 册为主，第 2 册（回答尖锐提问）和第 4 册（台上的表达）还没有整理。",
+      "summary": "演讲要解决的核心问题是**听众只能一棵树一棵树地看森林**：写演讲的人看得到全局，听众每次只看到一张幻灯片，又没法回头翻，各部分之间的关系要是没讲清，就只能自己去拼，于是走神、打断或者忙着找失落的那一环。杰瑞·魏斯曼《演讲大师课》第 1 册《说的艺术》的回答是先把结构定下来再呈现：用\"罗马石柱\"指撑起整场演讲的几个要点，用 16 种**叙述结构**（Flow Structures）决定石柱的先后，开头用 7 种开场白把人拉进来，石柱之间用 7 种外部串词和 5 种图表串联保持连贯。\n\n本页收这个领域的论断；把它变成可执行的准备步骤见方法页 [[presentation-preparation]]。来源是我读魏斯曼系列的笔记，以及我把这套方法做成 PPT 前置讨论 skill 的实践。四册都读过，笔记以第 1 册为主；第 2 册（回答尖锐提问）和第 4 册（台上的表达）读完后判断对当前不是那么重要，不再整理。本页属于 [[communication]] 的\"说\"这一侧。",
       "tags": [
         "wiki",
         "concept",
@@ -16798,6 +16838,12 @@
     },
     {
       "source": "ai-writing-fingerprint",
+      "target": "communication",
+      "relation_type": "part-of",
+      "description": "沟通与表达里\"写\"的一侧"
+    },
+    {
+      "source": "ai-writing-fingerprint",
       "target": "generation-evaluation-separation",
       "relation_type": "uses",
       "description": "agent 层的 Writer → Humanizer → Reviewer 是生成与评估分离在文本域的实例"
@@ -17149,6 +17195,24 @@
       "target": "model-routing",
       "relation_type": "uses",
       "description": "provider 层回环网关是模型路由在 Codex 架构内的接入位置（目录别名 → 本机服务 → Azure 部署）"
+    },
+    {
+      "source": "communication",
+      "target": "presentation",
+      "relation_type": "part-of",
+      "description": "说：演讲的结构、开场与串联"
+    },
+    {
+      "source": "communication",
+      "target": "ai-writing-fingerprint",
+      "relation_type": "part-of",
+      "description": "写：书面表达里的 AI 味与去除方法"
+    },
+    {
+      "source": "communication",
+      "target": "presentation-preparation",
+      "relation_type": "part-of",
+      "description": "说之前的准备流程"
     },
     {
       "source": "compute-locus-spectrum",
@@ -18760,6 +18824,12 @@
     },
     {
       "source": "presentation",
+      "target": "communication",
+      "relation_type": "part-of",
+      "description": "沟通与表达里\"说\"的一侧"
+    },
+    {
+      "source": "presentation",
       "target": "presentation-preparation",
       "relation_type": "produces",
       "description": "本页的论断落成可执行的准备步骤"
@@ -20014,6 +20084,12 @@
     },
     {
       "source": "presentation-preparation",
+      "target": "communication",
+      "relation_type": "part-of",
+      "description": "沟通与表达领域的准备流程"
+    },
+    {
+      "source": "presentation-preparation",
       "target": "presentation",
       "relation_type": "part-of",
       "description": "演讲领域的准备步骤"
@@ -20752,6 +20828,7 @@
       "id": "",
       "name": "沟通与表达",
       "members": [
+        "communication",
         "presentation",
         "ai-writing-fingerprint"
       ]
