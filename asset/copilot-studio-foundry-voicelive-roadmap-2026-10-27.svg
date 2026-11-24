@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800" width="1400" height="800" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .band { fill: #0f1a2e; stroke: #1e293b; stroke-width: 1; }
-      .laneName { fill: #e2e8f0; font-size: 16px; font-weight: 700; }
-      .laneSub { fill: #94a3b8; font-size: 13px; }
-      .axis { stroke: #334155; stroke-width: 1; }
-      .mon { fill: #64748b; font-size: 13px; text-anchor: middle; }
-      .done { fill: none; stroke: #2dd4bf; stroke-width: 3; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
-      .plan { fill: none; stroke: #334155; stroke-width: 3; stroke-dasharray: 6 6; }
-      .nDone { fill: #0f766e; stroke: #5eead4; stroke-width: 2; }
-      .nCur { fill: #92400e; stroke: #fbbf24; stroke-width: 2.5; animation: pulse 2s ease-in-out infinite; }
-      .nPlan { fill: #1e293b; stroke: #64748b; stroke-width: 2; stroke-dasharray: 3 3; }
-      .lh { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .lhC { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .lhP { fill: #94a3b8; font-size: 15px; font-weight: 600; }
-      .lt { fill: #cbd5e1; font-size: 13px; }
-      .ltP { fill: #94a3b8; font-size: 13px; }
+      .bg { fill: #f6f8fb; }
+      .band { fill: #f2f5fb; stroke: #f3f5f9; stroke-width: 1; }
+      .laneName { fill: #344965; font-size: 16px; font-weight: 700; }
+      .laneSub { fill: #5e718d; font-size: 13px; }
+      .axis { stroke: #7087a9; stroke-width: 1; }
+      .mon { fill: #7a899f; font-size: 13px; text-anchor: middle; }
+      .done { fill: none; stroke: #26a696; stroke-width: 3; stroke-dasharray: 10 6; animation: dash 1.4s linear infinite; }
+      .plan { fill: none; stroke: #7087a9; stroke-width: 3; stroke-dasharray: 6 6; }
+      .nDone { fill: #12736c; stroke: #1bb199; stroke-width: 2; }
+      .nCur { fill: #8f4111; stroke: #c38f09; stroke-width: 2.5; animation: pulse 2s ease-in-out infinite; }
+      .nPlan { fill: #f3f5f9; stroke: #7a899f; stroke-width: 2; stroke-dasharray: 3 3; }
+      .lh { fill: #344965; font-size: 15px; font-weight: 600; }
+      .lhC { fill: #967903; font-size: 15px; font-weight: 600; }
+      .lhP { fill: #5e718d; font-size: 15px; font-weight: 600; }
+      .lt { fill: #384b61; font-size: 13px; }
+      .ltP { fill: #5e718d; font-size: 13px; }
       .mid { text-anchor: middle; }
-      .today { stroke: #fbbf24; stroke-width: 1.6; stroke-dasharray: 4 4; }
-      .todayT { fill: #fbbf24; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lg { fill: #cbd5e1; font-size: 13.5px; }
-      .particle { fill: #5eead4; }
+      .today { stroke: #c38f09; stroke-width: 1.6; stroke-dasharray: 4 4; }
+      .todayT { fill: #c38f09; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .lg { fill: #384b61; font-size: 13.5px; }
+      .particle { fill: #1bb199; }
       @keyframes dash { to { stroke-dashoffset: -32; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; r: 9; } 50% { stroke-opacity: 0.35; r: 12; } }
     </style>
@@ -107,11 +107,11 @@
   <text class="lh mid" x="830" y="514">09 agent / workflow / app</text>
   <text class="lt mid" x="830" y="536">一个 studio，Apps 仍是 Preview</text>
   <circle class="nCur" cx="1010" cy="480" r="9"/>
-  <rect x="910" y="416" width="200" height="40" fill="#0d1727"/>
+  <rect x="910" y="416" width="200" height="40" fill="#f2f5fb"/>
   <text class="lhC mid" x="1010" y="450">10 real-time voice 电话</text>
   <text class="lt mid" x="1010" y="432">Teams Phone Agent 计费上线</text>
   <circle class="nCur" cx="1060" cy="480" r="9"/>
-  <rect x="1025" y="497" width="175" height="46" fill="#0d1727"/>
+  <rect x="1025" y="497" width="175" height="46" fill="#f2f5fb"/>
   <text class="lhC mid" x="1110" y="514">10 挂接 Foundry agent</text>
   <text class="lt mid" x="1110" y="536">MCP / A2A 渠道 Preview</text>
 

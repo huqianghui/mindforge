@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lane { fill: #111c31; stroke: #1e293b; }
-      .lh { fill: #e2e8f0; font-size: 16px; font-weight: 600; }
-      .lt { fill: #94a3b8; font-size: 13.5px; }
-      .axis { stroke: #334155; stroke-width: 2; }
-      .ok { fill: #2dd4bf; }
-      .bad { fill: #f87171; }
-      .lbl { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .note { fill: #cbd5e1; font-size: 13.5px; }
-      .noteAmber { fill: #fde68a; font-size: 13.5px; }
-      .noteRed { fill: #fca5a5; font-size: 13.5px; }
-      .lead { stroke: #64748b; stroke-width: 1; stroke-dasharray: 3 3; }
-      .mailRed { fill: #3b1414; stroke: #f87171; stroke-width: 1.8; }
-      .mailAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .quiet { fill: #111827; stroke: #475569; stroke-width: 1.4; stroke-dasharray: 5 4; }
-      .bracket { fill: none; stroke: #fbbf24; stroke-width: 1.8; }
+      .bg { fill: #fcfcfb; }
+      .title {font-family:"Songti SC","STSong","Noto Serif SC",serif; fill: #315272; font-size: 22px; font-weight: 700; }
+      .sub { fill: #6f6e69; font-size: 14px; }
+      .lane { fill: #ecf0f8; stroke: #eef1f6; }
+      .lh { fill: #384e6c; font-size: 16px; font-weight: 600; }
+      .lt { fill: #6f6e69; font-size: 13.5px; }
+      .axis { stroke: #8a8984; stroke-width: 2; }
+      .ok { fill: #31d0bc; }
+      .bad { fill: #9c0808; }
+      .lbl { fill: #384e6c; font-size: 15px; font-weight: 600; }
+      .note { fill: #3c5067; font-size: 13.5px; }
+      .noteAmber { fill: #a08103; font-size: 13.5px; }
+      .noteRed { fill: #9e0505; font-size: 13.5px; }
+      .lead { stroke: #8a8984; stroke-width: 1; stroke-dasharray: 3 3; }
+      .mailRed { fill: #f9ecec; stroke: #9c0808; stroke-width: 1.8; }
+      .mailAmber { fill: #faf4eb; stroke: #f5bb23; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .quiet { fill: #fcfcfb; stroke: #8a8984; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .bracket { fill: none; stroke: #f5bb23; stroke-width: 1.8; }
       .scan { animation: blink 3s ease-in-out infinite; }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
       @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }

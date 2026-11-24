@@ -1,38 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 940" width="1360" height="940" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#26a696"/>
     </marker>
     <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/>
     </marker>
     <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#920707"/>
     </marker>
     <style>
-      .bg { fill: #0b1220; }
-      .box { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .boxBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
-      .boxAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .boxRed { fill: #2a1215; stroke: #f87171; stroke-width: 1.6; }
-      .zone { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
-      .hRed { fill: #fecaca; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .tGray { fill: #94a3b8; font-size: 13px; }
-      .warn { fill: #fca5a5; font-size: 13px; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowAmber { fill: none; stroke: #fbbf24; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .flowRed { fill: none; stroke: #f87171; stroke-width: 2; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
+      .bg { fill: #f6f8fb; }
+      .box { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .boxBlue { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .boxAmber { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .boxRed { fill: #faf3f3; stroke: #920707; stroke-width: 1.6; }
+      .zone { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #036696; font-size: 15px; font-weight: 600; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #967903; font-size: 16px; font-weight: 600; }
+      .hRed { fill: #960303; font-size: 15px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .tGray { fill: #5e718d; font-size: 13px; }
+      .warn { fill: #940505; font-size: 13px; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .flow { fill: none; stroke: #26a696; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowAmber { fill: none; stroke: #c38f09; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .flowRed { fill: none; stroke: #920707; stroke-width: 2; stroke-dasharray: 5 6; animation: dash 1.6s linear infinite; }
       .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
       .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .chip { fill: #111827; stroke: #475569; stroke-width: 1.2; }
-      .el { fill: #a7f3d0; font-size: 13px; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .chip { fill: #f6f8fb; stroke: #7688a2; stroke-width: 1.2; }
+      .el { fill: #128751; font-size: 13px; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
     </style>
@@ -181,9 +181,9 @@
   <text class="tGray" x="1100" y="752">管理只能回到 GitHub 设置</text>
 
   <!-- 粒子 -->
-  <circle r="4" fill="#5eead4"><animateMotion dur="5s" repeatCount="indefinite" path="M 320 200 L 360 200 M 654 200 L 694 200 M 998 200 L 1038 200"/></circle>
-  <circle r="4" fill="#5eead4"><animateMotion dur="4s" repeatCount="indefinite" path="M 1186 300 L 1186 352 M 1042 456 L 1002 456 M 698 456 L 658 456"/></circle>
-  <circle r="4" fill="#fcd34d"><animateMotion dur="3s" repeatCount="indefinite" path="M 848 356 L 848 330 L 1110 330 L 1110 304"/></circle>
+  <circle r="4" fill="#1bb199"><animateMotion dur="5s" repeatCount="indefinite" path="M 320 200 L 360 200 M 654 200 L 694 200 M 998 200 L 1038 200"/></circle>
+  <circle r="4" fill="#1bb199"><animateMotion dur="4s" repeatCount="indefinite" path="M 1186 300 L 1186 352 M 1042 456 L 1002 456 M 698 456 L 658 456"/></circle>
+  <circle r="4" fill="#c49808"><animateMotion dur="3s" repeatCount="indefinite" path="M 848 356 L 848 330 L 1110 330 L 1110 304"/></circle>
 
   <!-- ===== 图例 ===== -->
   <text class="h" x="30" y="814">编号说明</text>

@@ -1,40 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 900" width="1360" height="900" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#5e718d"/>
     </marker>
     <marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#c38f09"/>
     </marker>
     <style>
-      .bg { fill: #0b1220; }
-      .plot { fill: #0d1729; stroke: #334155; stroke-width: 1.2; }
-      .quad { fill: none; stroke: #334155; stroke-width: 1; stroke-dasharray: 4 6; }
-      .axis { stroke: #94a3b8; stroke-width: 1.6; }
-      .ax { fill: #94a3b8; font-size: 13px; }
-      .axh { fill: #cbd5e1; font-size: 14px; font-weight: 600; }
-      .ql { fill: #475569; font-size: 13px; }
-      .card { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .cardBlue { fill: #10203a; stroke: #38bdf8; stroke-width: 1.6; }
-      .cardGray { fill: #111827; stroke: #64748b; stroke-width: 1.4; }
-      .cardAmber { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hAmber { fill: #fde68a; font-size: 16px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13px; }
-      .tGray { fill: #94a3b8; font-size: 13px; }
-      .good { fill: #5eead4; font-size: 13px; }
-      .bad { fill: #fca5a5; font-size: 13px; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .panel { fill: #0d1729; stroke: #38bdf8; stroke-width: 1.4; stroke-dasharray: 10 6; }
-      .zl { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
-      .move { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
-      .dotA { fill: #fbbf24; }
-      .dotT { fill: #2dd4bf; }
-      .dotB { fill: #38bdf8; }
-      .dotG { fill: #94a3b8; }
+      .bg { fill: #f6f8fb; }
+      .plot { fill: #f6f8fb; stroke: #7087a9; stroke-width: 1.2; }
+      .quad { fill: none; stroke: #7087a9; stroke-width: 1; stroke-dasharray: 4 6; }
+      .axis { stroke: #5e718d; stroke-width: 1.6; }
+      .ax { fill: #5e718d; font-size: 13px; }
+      .axh { fill: #384b61; font-size: 14px; font-weight: 600; }
+      .ql { fill: #7688a2; font-size: 13px; }
+      .card { fill: #f2f5fb; stroke: #26a696; stroke-width: 1.6; }
+      .cardBlue { fill: #f1f5fb; stroke: #0c89c0; stroke-width: 1.6; }
+      .cardGray { fill: #f6f8fb; stroke: #7a899f; stroke-width: 1.4; }
+      .cardAmber { fill: #fbf8f1; stroke: #c38f09; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h { fill: #344965; font-size: 15px; font-weight: 600; }
+      .hAmber { fill: #967903; font-size: 16px; font-weight: 600; }
+      .t { fill: #384b61; font-size: 13px; }
+      .tGray { fill: #5e718d; font-size: 13px; }
+      .good { fill: #1bb199; font-size: 13px; }
+      .bad { fill: #940505; font-size: 13px; }
+      .title { fill: #2e4c6b; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5e718d; font-size: 14px; }
+      .panel { fill: #f6f8fb; stroke: #0c89c0; stroke-width: 1.4; stroke-dasharray: 10 6; }
+      .zl { fill: #036696; font-size: 15px; font-weight: 600; }
+      .move { fill: none; stroke: #c38f09; stroke-width: 2; stroke-dasharray: 6 6; animation: dash 1.4s linear infinite; }
+      .dotA { fill: #c38f09; }
+      .dotT { fill: #26a696; }
+      .dotB { fill: #0c89c0; }
+      .dotG { fill: #5e718d; }
       .badgeAmber { fill: #92400e; stroke: #fcd34d; stroke-width: 1.4; }
-      .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
+      .bn { fill:#ffffff; font-size: 13px; font-weight: 700; text-anchor: middle; }
       @keyframes dash { to { stroke-dashoffset: -24; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.4; } }
     </style>
