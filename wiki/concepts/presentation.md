@@ -86,7 +86,7 @@ related:
 ## 冲突与演进
 
 - 2026-11-23：/extract-knowledge 初判"非技术领域、不进 wiki"，候选 `presentation-flow-structures` 记 HOLD，读书笔记登记覆盖豁免。
-- 2026-11-24：用户纠正——书和论文都是个人知识，都要进 wiki。撤回 HOLD 与覆盖豁免，建本页与方法页 [[presentation-preparation]]，index 新增"沟通与表达"分类。本页是该领域的根页，暂无上层概念。
+- 2026-11-24：用户纠正——书、论文、文章按同一标准提取，都是认识世界的一部分，不按"非技术"排除。撤回 HOLD 与覆盖豁免，建本页与方法页 [[presentation-preparation]]，index 新增"沟通与表达"分类。本页是该领域的根页，暂无上层概念。
 
 ## 关联概念
 

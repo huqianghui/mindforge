@@ -112,7 +112,7 @@ related:
 
 ## 冲突与演进
 
-- 2026-11-24：/extract-knowledge 补抽 AgenticRAG 论文笔记（用户要求书和论文完整入库），新增消融与落地建议、Azure 产品对照两条。
+- 2026-11-24：/extract-knowledge 补抽 AgenticRAG 论文笔记（按书、论文、文章按同一标准提取的原则补抽偏薄内容），新增消融与落地建议、Azure 产品对照两条。
 - 2026-11-16：完备性补抽 [[2026-05-28-AgenticRAG]]，新增 1 条 Claim。
 （暂无）
 - 2026-11-07：/revalidate 全库复核（证据分类）——确认 2、待定 1
