@@ -1,30 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 760" width="1400" height="760" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', sans-serif">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+      <path d="M0,0 L10,5 L0,10 z" fill="#2f6f5e"/>
     </marker>
     <style>
-      .bg { fill: #0b1220; }
-      .title { fill: #f8fafc; font-size: 22px; font-weight: 700; }
-      .sub { fill: #94a3b8; font-size: 14px; }
-      .lane { fill: #0f1a2e; stroke: #334155; stroke-width: 1; }
-      .ll { fill: #7dd3fc; font-size: 15px; font-weight: 600; }
-      .step { fill: #13213a; stroke: #2dd4bf; stroke-width: 1.6; }
-      .stepA { fill: #2a1f0b; stroke: #fbbf24; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
-      .h { fill: #e2e8f0; font-size: 15px; font-weight: 600; }
-      .hA { fill: #fde68a; font-size: 15px; font-weight: 600; }
-      .t { fill: #cbd5e1; font-size: 13.5px; }
-      .tGray { fill: #94a3b8; font-size: 13.5px; }
-      .code { fill: #a7f3d0; font-size: 13px; font-family: Menlo, monospace; }
-      .flow { fill: none; stroke: #2dd4bf; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
-      .seg1 { fill: #334155; } .seg2 { fill: #475569; } .seg3 { fill: #f59e0b; } .seg4 { fill: #0ea5e9; } .seg5 { fill: #14b8a6; }
-      .brk { fill: none; stroke: #e2e8f0; stroke-width: 1.4; }
-      .brkA { fill: none; stroke: #fbbf24; stroke-width: 1.6; }
-      .bl { fill: #e2e8f0; font-size: 14px; font-weight: 600; }
-      .blA { fill: #fde68a; font-size: 14px; font-weight: 600; }
-      .badge { fill: #0f766e; stroke: #5eead4; stroke-width: 1.4; }
+      .bg { fill: #f3f6f4; }
+      .title { fill: #14211c; font-size: 22px; font-weight: 700; }
+      .sub { fill: #5b6b64; font-size: 14px; }
+      .lane { fill: #ffffff; stroke: #d5ddd8; stroke-width: 1; }
+      .ll { fill: #2f6f5e; font-size: 15px; font-weight: 600; }
+      .step { fill: #ffffff; stroke: #2f6f5e; stroke-width: 1.6; }
+      .stepA { fill: #fff6e0; stroke: #c98500; stroke-width: 2; animation: pulse 2.4s ease-in-out infinite; }
+      .h { fill: #14211c; font-size: 15px; font-weight: 600; }
+      .hA { fill: #8a5a00; font-size: 15px; font-weight: 600; }
+      .t { fill: #2e3b36; font-size: 13.5px; }
+      .tGray { fill: #6b7a73; font-size: 13.5px; }
+      .code { fill: #2f6f5e; font-size: 13px; font-family: Menlo, monospace; }
+      .flow { fill: none; stroke: #2f6f5e; stroke-width: 2.2; stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+      .seg1 { fill: #d3dcd7; } .seg2 { fill: #b9c6bf; } .seg3 { fill: #e3a21a; } .seg4 { fill: #7fb0d6; } .seg5 { fill: #9fcdbf; }
+      .brk { fill: none; stroke: #2e3b36; stroke-width: 1.4; }
+      .brkA { fill: none; stroke: #c98500; stroke-width: 1.6; }
+      .bl { fill: #14211c; font-size: 14px; font-weight: 600; }
+      .blA { fill: #8a5a00; font-size: 14px; font-weight: 600; }
+      .badge { fill: #2f6f5e; stroke: #2f6f5e; stroke-width: 1.4; }
       .bn { fill: #f0fdfa; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .dot { fill: #2dd4bf; }
+      .dot { fill: #c98500; }
       @keyframes dash { to { stroke-dashoffset: -28; } }
       @keyframes pulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
     </style>
@@ -73,14 +73,13 @@
   <path class="flow" d="M292,230 L368,230" marker-end="url(#arr)"/>
   <path class="flow" d="M672,230 L748,230" marker-end="url(#arr)"/>
   <path class="flow" d="M1022,230 L1098,230" marker-end="url(#arr)"/>
-  <circle class="dot" r="5"><animateMotion dur="4s" repeatCount="indefinite" path="M170,330 L520,330 L885,330 L1225,330"/></circle>
 
   <rect class="lane" x="30" y="370" width="1340" height="366" rx="12"/>
   <text class="ll" x="50" y="398">一次请求的时间构成（示意比例，非实测）</text>
 
   <rect class="seg1" x="60" y="430" width="90" height="44" rx="4"/>
   <rect class="seg2" x="150" y="430" width="200" height="44"/>
-  <rect x="350" y="430" width="110" height="44" fill="#64748b"/>
+  <rect x="350" y="430" width="110" height="44" fill="#a3b2aa"/>
   <rect class="seg3" x="460" y="430" width="300" height="44"/>
   <rect class="seg4" x="760" y="430" width="120" height="44"/>
   <rect class="seg5" x="880" y="430" width="200" height="44"/>
@@ -89,8 +88,8 @@
   <text class="t" x="164" y="458">排队等 GPU</text>
   <text class="t" x="362" y="458">Prompt 改写</text>
   <text class="h" x="540" y="458" style="fill:#1f1300">扩散去噪</text>
-  <text class="t" x="776" y="458" style="fill:#062033">编码</text>
-  <text class="t" x="896" y="458" style="fill:#03241f">轮询间隔损耗</text>
+  <text class="t" x="776" y="458" style="fill:#14211c">编码</text>
+  <text class="t" x="896" y="458" style="fill:#14211c">轮询间隔损耗</text>
   <text class="t" x="1096" y="458">下载</text>
 
   <path class="brkA" d="M460,486 L460,500 L760,500 L760,486"/>

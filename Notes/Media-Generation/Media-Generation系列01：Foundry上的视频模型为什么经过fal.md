@@ -113,8 +113,6 @@ fal 本身是 2021 年由 Burkay Gur 和 Gorkem Yurtseven 创立的公司，总�
 
 我在 East US 的项目里，LTX 和 MiniMax 四个 deployment 一次就成功了，显示版本 2026-11-02、状态 Succeeded。Kling 连着报了三次错，每次的原因都不一样：
 
-![部署 Kling v3 Pro 时的三个报错与三种区域约束|900](../../asset/media-gen-deploy-region-constraints-2026-11-24.svg)
-
 1. **选了 Global Standard**：Kling 只提供 Data Zone Standard，这是选项选错。
 2. **改成 Data Zone Standard 仍报 East US 不支持**：这是模型级的项目区域限制。通用的 Data Zone 文档里 East US 是支持区域，但那张表不代表 fal 的 Kling 也能在这里部署；Learn 的 fal 页面目前也没有列出 Kling 的可用项目区域。
 3. **换到 West Central US 新建资源**：报错的资源类型是 `microsoft.insights/components`，卡住的是向导顺带创建的 Application Insights，不是模型。
