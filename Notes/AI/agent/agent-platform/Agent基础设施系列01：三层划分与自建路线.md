@@ -193,6 +193,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 - [Agent 基础设施系列 03：kagent 与 Agent Substrate](../agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)——把 agent 当作 CRD 和 actor 来管
 - Runtime：Dapr Agents——把持久执行做进运行时（随 PoC 4 成文）
 - [Agent 基础设施系列 04：Framework 层与三层串联](../agent-framework/Agent基础设施系列04：Framework层与三层串联.md)——框架对比、三层接口与 PoC 路线
+- [Agent 基础设施系列 05：完整 Agent 方案的三条路线](Agent基础设施系列05：完整Agent方案的三条路线.md)——微软技术栈、混合与全开源的七层对照，Agent 365 的边界与跨云补齐
 
 沙箱之外的会话平面、治理平面与 harness 编排，在 AKS 上按平面逐篇实践的部分另起了 [AKS Agent Runtime 系列](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)。
 

@@ -56,6 +56,7 @@
 ### Notes/AI/agent/agent-platform
 
 - [Agent 基础设施系列 01：三层划分与自建路线](Notes/AI/agent/agent-platform/Agent基础设施系列01：三层划分与自建路线.md)
+- [Agent 基础设施系列 05：完整 Agent 方案的三条路线](Notes/AI/agent/agent-platform/Agent基础设施系列05：完整Agent方案的三条路线.md)
 
 ### Notes/AI/agent/agent-runtime
 

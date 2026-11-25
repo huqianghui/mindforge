@@ -186,6 +186,7 @@ binds:
 ## 相关阅读
 
 - [Agent 基础设施系列 01：三层划分与自建路线](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md)——Platform、Runtime、Framework 三层的划分，网关在 Platform 层
+- [Agent 基础设施系列 05：完整 Agent 方案的三条路线](../agent-platform/Agent基础设施系列05：完整Agent方案的三条路线.md)——微软这一侧的网关（AI Gateway、APIM、AGC）与混合方案里 agentgateway 的位置
 - [AKS Agent Runtime 系列 08 补充：agentgateway 的定位与三种角色](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列08补充：agentgateway的定位与三种角色.md)——本机实测三类流量，与 Kong、APIM、Higress、LiteLLM 的对照
 - [Agent 基础设施系列 03：kagent 与 Agent Substrate](../agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)——和 agentgateway 同出一源的 agent 运行与编排
 - [企业级 A2A 方案：从微服务治理到 Agent 互操作层](../protocol/企业级A2A方案：从微服务治理到Agent互操作层.md)——A2A 流量治理的整体方案
