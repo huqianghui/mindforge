@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="930" viewBox="0 0 1500 930" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#dbe4ee" stroke-width="1"/></pattern><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<rect width="1500" height="930" fill="#f8fafc"/><rect width="1500" height="930" fill="url(#grid)"/>
+<text x="40" y="50" font-size="26" font-weight="700" fill="#0f172a">agentregistry v0.4.0：同一份目录，三条落地路径</text>
+<text x="40" y="80" font-size="15" fill="#475569">本地运行时会顺手把 agentgateway 配好；Kubernetes 运行时只生成 kagent 资源，网关要自己配；只当目录用时，目录里登记的是网关地址</text>
+<rect x="40" y="115" width="300" height="150" rx="10" fill="#ffffff" stroke="#0369a1" stroke-width="2"/>
+<text x="56" y="143" font-size="16" font-weight="700" fill="#0369a1">① 写与打包：arctl</text>
+<text x="56" y="167" font-size="13.5" fill="#334155">init：ADK、FastMCP、MCP Go 脚手架</text>
+<text x="56" y="188" font-size="13.5" fill="#334155">build --push：镜像推到 OCI 仓库</text>
+<text x="56" y="209" font-size="13.5" fill="#334155">apply -f：登记成 ar.dev/v1alpha1 资源</text>
+<text x="56" y="230" font-size="13.5" fill="#334155">也可以直接 POST /v0/apply</text>
+<rect x="40" y="280" width="300" height="138" rx="8" fill="#0f172a"/>
+<text x="54" y="304" font-size="13" fill="#94a3b8" font-family="Menlo,Consolas,monospace">apiVersion: ar.dev/v1alpha1</text>
+<text x="54" y="324" font-size="13" fill="#7dd3fc" font-family="Menlo,Consolas,monospace">kind: MCPServer</text>
+<text x="54" y="344" font-size="13" fill="#e2e8f0" font-family="Menlo,Consolas,monospace">metadata: { name: weather, tag: v1 }</text>
+<text x="54" y="364" font-size="13" fill="#e2e8f0" font-family="Menlo,Consolas,monospace">spec:</text>
+<text x="54" y="384" font-size="13" fill="#86efac" font-family="Menlo,Consolas,monospace">  remote: { type: streamable-http,</text>
+<text x="54" y="404" font-size="13" fill="#86efac" font-family="Menlo,Consolas,monospace">            url: https://…/mcp }</text>
+<rect x="400" y="115" width="380" height="440" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2.4"/>
+<text x="420" y="146" font-size="19" font-weight="700" fill="#7c3aed">② 目录：agentregistry</text>
+<text x="420" y="170" font-size="13.5" fill="#475569">PostgreSQL 存储，按 name + tag 版本化</text>
+<rect x="420" y="188" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="212" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">MCPServer</text>
+<text x="550" y="212" font-size="13" fill="#475569">npm / PyPI / OCI 包或远程端点</text>
+<rect x="420" y="232" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="256" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Agent</text>
+<text x="550" y="256" font-size="13" fill="#475569">引用 MCP、skill、prompt、plugin</text>
+<rect x="420" y="276" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="300" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Skill</text>
+<text x="550" y="300" font-size="13" fill="#475569">SKILL.md + 资料，打成镜像</text>
+<rect x="420" y="320" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="344" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Prompt</text>
+<text x="550" y="344" font-size="13" fill="#475569">可复用的指令模板</text>
+<rect x="420" y="364" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="388" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Plugin</text>
+<text x="550" y="388" font-size="13" fill="#475569">v0.4.0 新增，UI 里没有页签</text>
+<rect x="420" y="408" width="340" height="36" rx="6" fill="#f5f3ff" stroke="#ddd6fe"/>
+<text x="434" y="432" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Model</text>
+<text x="550" y="432" font-size="13" fill="#475569">v0.4.0 新增，只存密钥引用</text>
+<line x1="420" y1="460" x2="760" y2="460" stroke="#e2e8f0"/>
+<text x="420" y="484" font-size="14" font-weight="700" fill="#5b21b6" font-family="Menlo,Consolas,monospace">Runtime · Deployment</text>
+<text x="420" y="506" font-size="13" fill="#475569">Deployment 指定目标、运行时与模型，</text>
+<text x="420" y="526" font-size="13" fill="#475569">由控制器异步调和、写回状态</text>
+<text x="420" y="546" font-size="13" fill="#b91c1c">OSS 版：无认证，authz 全部放行</text>
+<line x1="340" y1="190" x2="396" y2="190" stroke="#0369a1" stroke-width="2.4" marker-end="url(#ah)"/>
+<rect x="400" y="575" width="380" height="120" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+<text x="416" y="603" font-size="16" font-weight="700" fill="#7c3aed">消费方式</text>
+<text x="416" y="627" font-size="13.5" fill="#334155">Web UI（:12121）与 REST /v0/*</text>
+<text x="416" y="648" font-size="13.5" fill="#334155">内置 MCP server（:31313）：18 个只读工具</text>
+<text x="416" y="669" font-size="13.5" fill="#334155">可选：MCP Registry v0.1 只读兼容接口</text>
+<text x="416" y="690" font-size="13.5" fill="#334155">arctl configure：生成 IDE 的 MCP 配置</text>
+<rect x="850" y="115" width="610" height="165" rx="12" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+<text x="870" y="147" font-size="17" font-weight="700" fill="#047857">③a 本地运行时（Docker Compose）</text>
+<text x="870" y="175" font-size="14" fill="#334155">arctl 起一个内置的 arctl-agentgateway 容器</text>
+<text x="870" y="199" font-size="14" fill="#334155">按目录里的 MCP server 和 agent 生成网关路由</text>
+<rect x="870" y="227" width="570" height="34" rx="6" fill="#ffffff" stroke="#047857" stroke-dasharray="5 4"/>
+<text x="886" y="250" font-size="14.5" font-weight="700" fill="#047857">✓ 网关路由自动生成</text>
+<path d="M 780 300 C 815 300, 815 197, 846 197" fill="none" stroke="#047857" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="850" y="305" width="610" height="165" rx="12" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+<text x="870" y="337" font-size="17" font-weight="700" fill="#b45309">③b Kubernetes 运行时</text>
+<text x="870" y="365" font-size="14" fill="#334155">生成 kagent 的 Agent、RemoteMCPServer</text>
+<text x="870" y="389" font-size="14" fill="#334155">和 kmcp 的 MCPServer，集群要先装 kagent</text>
+<rect x="870" y="417" width="570" height="34" rx="6" fill="#ffffff" stroke="#b45309" stroke-dasharray="5 4"/>
+<text x="886" y="440" font-size="14.5" font-weight="700" fill="#b45309">✗ 不碰 agentgateway，路由自己配</text>
+<path d="M 780 300 C 815 300, 815 387, 846 387" fill="none" stroke="#b45309" stroke-width="2.2" marker-end="url(#ah)"/>
+<rect x="850" y="495" width="610" height="165" rx="12" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<text x="870" y="527" font-size="17" font-weight="700" fill="#1d4ed8">③c 目录里登记网关地址（本次 PoC 与 ③b 并用）</text>
+<text x="870" y="555" font-size="14" fill="#334155">目录登记的是网关地址，不是后端地址</text>
+<text x="870" y="579" font-size="14" fill="#334155">registry 的 MCP server 作为网关的一个 target</text>
+<rect x="870" y="607" width="570" height="34" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-dasharray="5 4"/>
+<text x="886" y="630" font-size="14.5" font-weight="700" fill="#1d4ed8">✓ 认证、授权、审计都在网关上</text>
+<path d="M 780 380 C 815 380, 815 577, 846 577" fill="none" stroke="#1d4ed8" stroke-width="2.2" marker-end="url(#ah)"/>
+<text x="40" y="742" font-size="17" font-weight="700" fill="#0f172a">本次 PoC 的接法（AKS，agentgateway 独立模式）</text>
+<circle cx="56" cy="790" r="15" fill="#0f172a"/>
+<text x="56" y="796" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+<text x="80" y="786" font-size="14.5" font-weight="700" fill="#0f172a">registry 只开 ClusterIP</text>
+<text x="80" y="808" font-size="13" fill="#475569">网关第二主机名 + Entra 登录</text>
+<line x1="296" y1="790" x2="320" y2="790" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="346" cy="790" r="15" fill="#0f172a"/>
+<text x="346" y="796" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+<text x="370" y="786" font-size="14.5" font-weight="700" fill="#0f172a">registry :31313/mcp</text>
+<text x="370" y="808" font-size="13" fill="#475569">作网关 MCP target，只读工具</text>
+<line x1="586" y1="790" x2="610" y2="790" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="636" cy="790" r="15" fill="#0f172a"/>
+<text x="636" y="796" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<text x="660" y="786" font-size="14.5" font-weight="700" fill="#0f172a">Deployment → kagent</text>
+<text x="660" y="808" font-size="13" fill="#475569">kagent 0.10.7 建 BYO Agent</text>
+<line x1="876" y1="790" x2="900" y2="790" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="926" cy="790" r="15" fill="#0f172a"/>
+<text x="926" y="796" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+<text x="950" y="786" font-size="14.5" font-weight="700" fill="#0f172a">网关 /a2a/ 路由</text>
+<text x="950" y="808" font-size="13" fill="#475569">手工指向 kagent 建的 Service</text>
+<line x1="1166" y1="790" x2="1190" y2="790" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<circle cx="1216" cy="790" r="15" fill="#0f172a"/>
+<text x="1216" y="796" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">5</text>
+<text x="1240" y="786" font-size="14.5" font-weight="700" fill="#0f172a">kagent 的模型</text>
+<text x="1240" y="808" font-size="13" fill="#475569">走网关内部入口，护栏照样生效</text>
+<text x="40" y="860" font-size="13.5" fill="#64748b">源码依据：v0.4.0 中只有 internal/registry/runtimes/local 引用 agentgateway；runtimes/kubernetes 只生成 kagent.dev/v1alpha2 Agent、RemoteMCPServer 与 kagent.dev/v1alpha1 MCPServer</text>
+<text x="40" y="884" font-size="13.5" fill="#64748b">接口、工具清单与部署状态：2026-11-25 在 AKS 上对 v0.4.0 实测；registry 里的 Deployment 一直停在 Progressing，kagent 侧已 Ready</text>
+</svg>
