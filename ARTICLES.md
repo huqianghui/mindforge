@@ -71,6 +71,10 @@
 
 - [agentgateway 的定位与扩展机制](Notes/AI/agent/agent-gateway/agentgateway的定位与扩展机制.md)
 
+### Notes/AI/agent/agent-registry
+
+- [agentregistry 的定位与部署实践](Notes/AI/agent/agent-registry/agentregistry的定位与部署实践.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)
