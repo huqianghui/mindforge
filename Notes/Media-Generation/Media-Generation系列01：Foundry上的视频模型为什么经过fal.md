@@ -1,7 +1,7 @@
 ---
 title: Media Generation 系列 01：Foundry 上的视频模型为什么经过 fal
 created: 2026-11-24
-description: 视频模型榜单头部挤成一团、换榜名次就变；旗舰模型正把文字、图片、视频、声音融进同一个上下文，生成与编辑合一，更贴近人的创作方式，复杂度转移到素材组织与 API 参数上；MiniMax 缺内容分发体系而走开放权重、字节把 Seedance 留在自家产品里，这也决定了 H3 能经 fal 进入 Foundry；Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个模型（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
+description: 视频模型榜单头部挤成一团、换榜名次就变；旗舰模型正把文字、图片、视频、声音融进同一个上下文，生成与编辑合一，更贴近人的创作方式，复杂度转移到素材组织与 API 参数上；MiniMax 缺内容分发体系而走开放权重、字节把 Seedance 留在自家产品里，这也决定了 H3 能经 fal 进入 Foundry，而同样开放权重的 MAGI-2 Preview 在 fal 上没有端点，开放权重只是进平台的前提之一；Sora 2 退役后，Microsoft Foundry 的视频生成换成 fal 提供的五个模型（Kling v3 Pro、LTX 2.5 Fast / Pro、MiniMax H3 Max / Turbo）。模型研发方、后训练方、推理服务方与接入平台是四个不同角色，fal 一段在 Microsoft 设施之外运行，Microsoft 的产品条款与 DPA 不覆盖它；部署时部署类型、模型级区域白名单与附属资源区域是三种不同约束；调用是提交、轮询、取结果、下载的异步任务。
 tags:
   - media-generation
   - video-generation
@@ -72,6 +72,8 @@ MiniMax 有海螺、MiniMax Hub 和 API，官网披露模型和 AI 产品累计�
 字节的情况正相反。Seedance 留在自己的产品体系里：即梦面向创作者，豆包和剪映面向大众用户，火山引擎对接广告、电商和内容制作客户，Gauth 把它带进教育。模型一做出来，第一个使用场景、第一批付费客户和第一手反馈都在自己家里。按钛媒体文章引述火山引擎负责人的说法，今年上半年 Seedance 贡献了火山 MaaS 收入的一半以上。
 
 这两条路线直接决定了我在 Foundry 上能用到什么。H3 是开放权重，fal 才能在它上面做后训练、做推理优化，再作为 H3 Max / Turbo 进入 Foundry 的目录；Seedance 在几张榜上都排在头部，却不在 Foundry 这五个里。**一个模型能不能出现在云平台上，除了看它强不强，还要看厂商选的是哪种分发方式。**
+
+开放权重也只是前提之一。Sand.ai 在 2026 年 8 月开源的 MAGI-2 Preview 就没有走到这一步：它是 114B 参数的 MoE，每个 token 只激活约 6B，画面和声音由同一个 Transformer 一次生成，权重、推理代码（Apache 2.0）和技术报告都已公开。但它只出 10 秒一种时长，先在 512×896 出预览、再放大到 1088×1920，自己部署要 8 张 Hopper GPU；现在放出的是未蒸馏版，预览阶段要走 100 步去噪，蒸馏版还没发布。我查了 fal 的模型目录：上一代 MAGI-1 在 2025 年 4 月上过 fal，三个端点现在都标成了 deprecated；MAGI-2 在 fal 上没有端点，也就进不了 Foundry。要用它，眼下只有 Sand.ai 自己的 API、Magi 产品，或者自己部署。H3 能进 Foundry，靠的不只是开放权重，还有 MiniMax 和 fal 的合作，以及 fal 在它上面做的后训练和推理优化。
 
 ## 名字里为什么有 fal
 
@@ -199,6 +201,9 @@ API 收下了首尾帧，正常返回 MP4。Playground 的提示只是界面层�
 - [MiniMax H3 Max by fal](https://fal.ai/minimax-h3-max)
 - [MiniMax partners with fal.ai](https://www.minimax.io/news/minimax-partners-with-falai)
 - [About fal](https://fal.ai/about)
+- [MAGI-2 Preview: Scaling Video Generation Models Efficiently](https://sand.ai/blog/magi-2-preview)
+- [SandAI-org/MAGI-2-preview](https://github.com/SandAI-org/MAGI-2-preview)
+- [sand-ai/MAGI-2-preview](https://huggingface.co/sand-ai/MAGI-2-preview)
 - [AA-Video-T2V Leaderboard](https://artificialanalysis.ai/video/leaderboard/text-to-video)
 - [AA-Video-I2V Leaderboard](https://artificialanalysis.ai/video/leaderboard/image-to-video)
 - [DesignArena Image to Video Leaderboard](https://www.designarena.ai/leaderboard/image-to-video)
