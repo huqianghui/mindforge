@@ -641,7 +641,7 @@
    "lede": "不比画质，只确认接入时的接口边界。重点是：fal 原生平台标记支持、但 Microsoft Foundry 文档没有列出的能力，在 Foundry 上到底能不能调用。面向 Azure 客户时，以 Foundry 的实测结果为准。",
    "setup": [
     "路由：拿 5 个旧任务分别用带 <code>/v1</code> 和不带 <code>/v1</code> 的地址各查一次状态和结果，再用不带 <code>/v1</code> 的地址提交一次新任务。内联大小：同一张小 JPEG 填充元数据到 4、8、12、16、24、64、128 MiB 作为首帧提交（像素不变）。另外补测 H3 两档和 LTX Fast 的首尾帧图生。",
-    "能力差距：用同一个 Foundry 资源和 Key，对 fal 原生平台有、Foundry 文档没列的四项各发一次最短请求（2 秒 / 3 秒、最低分辨率），成功受理就跑到出片并验片。"
+    "能力差距：用同一个 Foundry 资源和 Key，对 fal 原生平台有、Foundry 文档没列的四项各发一次最短请求（2 秒 / 3 秒、最低分辨率），成功受理就跑到出片并验片。Kling <code>elements</code> 第一轮看不出差别，又补了一轮：参考主体换成外观特征很具体的 3D 卡通宇航员，Prompt 只写 <code>@Element1</code>、不描述外观，带 elements 跑 2 条，不带的对照跑 1 条，各 5 秒。"
    ],
    "extra_table": {
     "head": [
@@ -691,20 +691,21 @@
      ],
      [
       "<b>Kling v3 Pro · 图生视频带 <code>elements</code></b><br><code>/v1/kling/v3/pro/image-to-video</code>",
-      "<b>Foundry 受理并出片</b>：200 → COMPLETED，1920×1080、3.04 秒，端到端 422 秒。但参考元素是否真的生效<b>无法确认</b>：不带 elements 的对照同样出现金毛，两条都没有照片里那只狗的写实外观（见下方样片）。"
+      "<b>Foundry 受理并出片，但参考主体没有生效</b>：两轮共 5 条都 200 → COMPLETED。第一轮（金毛照片）对照组同样出现金毛；第二轮（宇航员）带 elements 的 2 条一条是浅蓝色简笔小人、一条是穿蓝衣服的男孩，都没有面罩、橙色肩垫、胸前面板和靴子，对照组是黑色火柴人（见下方样片）。"
      ]
     ]
    },
    "findings": [
     "<b>路由只认带 <code>/v1</code> 的写法。</b>Learn 列表里不带版本号的路径在这个资源上查询和提交都返回 400。",
     "<b>fal 有、Foundry 没列的能力，在 Foundry 上就是不能用。</b>H3 Max Turbo 的 Reference-to-Video、LTX 2.5 Fast / Pro 的 Audio-to-Video 三条路由都返回 404——不是参数错，是 Foundry 上没有这个接口。要用它们只能直接对接 fal（单独账号和计费，数据直接发给 fal，不经过 Microsoft），对 Azure 客户来说这等于<b>目前不可用</b>。",
-    "<b>Kling 的 <code>elements</code> 参数能透传，但效果未证实。</b>路由本身是 Foundry 公开的图生视频，带上 elements 请求被正常受理并出片；但这一次对照里看不出参考图起了作用。把它当成“Foundry 上可调用、效果待验证”，不要当成已支持的主体参考能力。",
+    "<b>Kling 的 <code>elements</code> 能受理，但实测没有生效。</b>路由本身是 Foundry 公开的图生视频，带上 elements 请求被正常受理并出片；两轮对照里，参考图的外观都没有出现在成片里，带 elements 的两条宇航员测试连彼此的造型都不一致。和前三项的 404 不同，它不报错，但效果等同于没传——不要把它当成 Foundry 上可用的主体参考能力。",
     "<b>内联首帧至少到 24 MiB 都能用。</b>64 MiB 开始出错，但两次都拿不到任务 ID，不能据此断定上限，也可能已经在后台计费。",
     "<b>建议：</b>统一走 <code>/providers/falai/v1/…</code>；能力选型以 Learn 列出的路由为准，fal 文档里多出的能力先当作 Foundry 不支持；大于十几 MiB 的素材改用 HTTPS 地址；429 按 <code>Retry-After</code> 等待，提交结果不明时先核对原任务，不要自动重发。"
    ],
    "unknown": [
     "填充的是 JPEG 元数据，内联大小结论只适用于 JPEG 首帧与 JSON 请求体大小。",
-    "Kling elements 各只跑了一次、且首帧是插画风格，要确认它是否生效，需要写实首帧加多次对照。",
+    "Kling elements 两轮首帧都是扁平插画，参考图是照片或 3D 渲染，风格差异可能让模型重绘主体；不过面罩这类标志性特征完全消失，不像单纯的风格转换。只传了 <code>frontal_image</code>，没有测可选的 <code>reference_images</code>。",
+    "Kling 要求首帧至少 300×300，480×270 的首帧提交后状态显示 COMPLETED、取结果时 422，这类失败是否计费以账单为准。",
     "404 只说明这些路由现在没有开放，Foundry 以后是否增加，以 Learn 页面更新为准。"
    ],
    "groups": [
@@ -772,6 +773,72 @@
       }
      ],
      "sync": true
+    },
+    {
+     "title": "Kling elements 第二轮：3D 宇航员参考 vs 不带（对照）",
+     "sync": true,
+     "items": [
+      {
+       "video": "gap-kling-el-astro-1.mp4",
+       "poster": "gap-kling-el-astro-1",
+       "title": "带 elements · 第 1 条",
+       "kv": [
+        [
+         "请求",
+         "灯具首帧 + elements[frontal_image]=宇航员 · Prompt 只写 @Element1 · 5 秒 · 静音"
+        ],
+        [
+         "实际",
+         "1920×1080 · 24 fps · 5.042 秒"
+        ],
+        [
+         "耗时",
+         "端到端 335 秒"
+        ]
+       ],
+       "note": "走进来的是浅蓝色、没有五官的简笔小人，挥手动作执行了；没有面罩、橙色肩垫和胸前面板。"
+      },
+      {
+       "video": "gap-kling-el-astro-2.mp4",
+       "poster": "gap-kling-el-astro-2",
+       "title": "带 elements · 第 2 条",
+       "kv": [
+        [
+         "请求",
+         "同上，重复一次"
+        ],
+        [
+         "实际",
+         "1920×1080 · 24 fps · 5.042 秒"
+        ],
+        [
+         "耗时",
+         "端到端 283 秒"
+        ]
+       ],
+       "note": "变成穿蓝衣服、白领子的卡通男孩，和第 1 条造型完全不同——参考图没有锁定主体。"
+      },
+      {
+       "video": "gap-kling-el-astro-control.mp4",
+       "poster": "gap-kling-el-astro-control",
+       "title": "不带 elements（对照）",
+       "kv": [
+        [
+         "请求",
+         "同一首帧，Prompt 写 a small character，去掉 elements"
+        ],
+        [
+         "实际",
+         "1920×1080 · 24 fps · 5.042 秒"
+        ],
+        [
+         "耗时",
+         "端到端 221 秒"
+        ]
+       ],
+       "note": "黑色火柴人走进来挥手。三条的差别只是随机造型，看不出参考图的影响。"
+      }
+     ]
     }
    ],
    "inputs": [
@@ -782,6 +849,10 @@
     {
      "img": "frame-start.jpg",
      "cap": "首帧：灯具插画"
+    },
+    {
+     "img": "astronaut-3d.jpg",
+     "cap": "第二轮 elements 参考图：3D 卡通宇航员（与 Test 06 同一张）"
     }
    ]
   },

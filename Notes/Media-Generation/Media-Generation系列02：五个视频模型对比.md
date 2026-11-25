@@ -108,7 +108,7 @@ R2V 也可以同时给 `image_url` 当首帧——这时视频从这张图开始
 - **Foundry**：五个都有文生视频和图生视频，只有 H3 Max 有 R2V 路由。
 - **fal 原生平台**：开放得更多。H3 Max Turbo 也有 R2V，LTX 2.5 有独立的 Audio-to-Video（按输入音频秒数计费），Kling v3 Pro 有多镜头 `multi_prompt` 和参考元素 `elements`。
 
-这些多出来的能力，我拿同一个 Foundry 资源逐个实测过（[接口边界样片](https://huqianghui.github.io/mindforge/media-generation/probes.html)）：H3 Max Turbo 的 R2V、LTX Fast / Pro 的 Audio-to-Video 三条路由都返回 **404 Not Found**——不是参数写错，是 Foundry 上没有这个接口。Kling 的 `elements` 走的是 Foundry 公开的图生视频路由，请求能受理、也出了片，但和不带 `elements` 的对照比，看不出参考图起了作用。
+这些多出来的能力，我拿同一个 Foundry 资源逐个实测过（[接口边界样片](https://huqianghui.github.io/mindforge/media-generation/probes.html)）：H3 Max Turbo 的 R2V、LTX Fast / Pro 的 Audio-to-Video 三条路由都返回 **404 Not Found**——不是参数写错，是 Foundry 上没有这个接口。Kling 的 `elements` 走的是 Foundry 公开的图生视频路由，请求能受理、也出了片，但参考主体没有生效。我做了两轮对照：第一轮参考图是金毛照片，不带 `elements` 的对照组同样出现金毛；第二轮换成外观很具体的 3D 卡通宇航员，Prompt 只写 `@Element1`、不描述外观，带 `elements` 的两条一条是浅蓝色简笔小人、一条是穿蓝衣服的男孩，面罩、橙色肩垫这些特征一个都没出现。它不报错，但效果等同于没传。
 
 所以面向 Azure 客户时，**以 Foundry 的实测为准**：fal 文档里标着支持、Foundry 上调不通的，就是 Foundry 不支持；要用只能直接对接 fal，那意味着单独的账号和计费，数据直接发给 fal、连 Foundry 这一层身份和计费都不经过。
 - **模型厂商自己的产品**：Kling 3.0 把文生、图生、参考生成和视频内编辑做进了同一个架构，Foundry 上的 Kling 只开放了其中两项。
@@ -121,7 +121,7 @@ R2V 也可以同时给 `image_url` 当首帧——这时视频从这张图开始
 |---|---|---|---|---|
 | 文生视频 | Foundry 有 | Foundry 有 | Foundry 有 | Foundry 有 |
 | 图生视频（首帧 + 可选尾帧） | Foundry API 实测可用；Playground 提示不支持 | Foundry 有 | Foundry 有 | Foundry 有 |
-| Reference-to-Video | `elements` 可透传，效果未证实；fal 原生标记支持 | 无 | Foundry 有 | **Foundry 不支持（实测 404）**，fal 原生标记支持 |
+| Reference-to-Video | `elements` 可受理，**实测未生效**；fal 原生标记支持 | 无 | Foundry 有 | **Foundry 不支持（实测 404）**，fal 原生标记支持 |
 | Audio-to-Video | 无 | **Foundry 不支持（实测 404）**，fal 原生标记支持 | 通过 `target_audio_url` 指定音轨 | 无 |
 | 原生音频 | 有，`generate_audio` 支持中英文语音 | 有，画面音频同步生成 | 有 | 有 |
 | 多镜头 | `multi_prompt`；Foundry 上要补顶层 `prompt`，一次实测成片偏离分镜 | LTX-2.5 有原生多镜头，Foundry 参数待查 | 单次请求可切多个镜头（fal 样例） | 同左，待验证 |

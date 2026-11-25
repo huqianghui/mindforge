@@ -34,7 +34,7 @@ tags:
 
 ![测试矩阵|900](../../asset/media-gen-test-matrix-2026-11-24.svg)
 
-矩阵按 Foundry 当前开放的路由划分。只在 fal 原生平台上有的能力（LTX 的 Audio-to-Video、H3 Max Turbo 的 R2V、Kling 的 `elements`）标成"条件"。后来在 Foundry 上实测：前两项返回 404，Foundry 不支持；`elements` 能受理但效果未证实（见实测记录的接口边界一段）。
+矩阵按 Foundry 当前开放的路由划分。只在 fal 原生平台上有的能力（LTX 的 Audio-to-Video、H3 Max Turbo 的 R2V、Kling 的 `elements`）标成"条件"。后来在 Foundry 上实测：前两项返回 404，Foundry 不支持；`elements` 能受理，但两轮对照都没有生效（见实测记录的接口边界一段）。
 
 ## 测试用例
 
@@ -257,12 +257,12 @@ H3 Max 用 `target_audio` 的三条，与输入录音的波形相关 0.9997、�
 
 参考视频组三条都保留了宇航员的颜色和比例，却都把真人的"单手挥动"变成"双手举起"，第 2 条还提前放下，第 1 条背景多出心形和星星。只给首帧和文字的对照组反而是单臂抬起再放下——不过它没有视频输入，只说明文字指令被执行了。在 Foundry 的 H3 Max 上，参考视频目前只能当动作的大致方向。
 
-**接口边界。** 不带 `/v1` 的路由查询 10 次全是 400，提交返回 `unknown_model`。同一张 JPEG 填充到 4–24 MiB 作首帧都能出片；64 MiB 返回 502、128 MiB 传输错误，两次都没拿到任务 ID，后台是否创建、是否计费都不明，所以不能据此断定上限。fal 原生平台有、Foundry 文档没列的四项也都在 Foundry 上实测了：H3 Max Turbo 的 Reference-to-Video、LTX Fast / Pro 的 Audio-to-Video 三条路由返回 404，**Foundry 不支持**，只有 fal 原生平台标记支持；Kling 图生视频带 `elements` 能受理并出片，但和不带 `elements` 的对照比看不出参考图生效，记为"可调用、效果未证实"。细节和两条 Kling 样片见 [接口边界页](https://huqianghui.github.io/mindforge/media-generation/probes.html)。
+**接口边界。** 不带 `/v1` 的路由查询 10 次全是 400，提交返回 `unknown_model`。同一张 JPEG 填充到 4–24 MiB 作首帧都能出片；64 MiB 返回 502、128 MiB 传输错误，两次都没拿到任务 ID，后台是否创建、是否计费都不明，所以不能据此断定上限。fal 原生平台有、Foundry 文档没列的四项也都在 Foundry 上实测了：H3 Max Turbo 的 Reference-to-Video、LTX Fast / Pro 的 Audio-to-Video 三条路由返回 404，**Foundry 不支持**，只有 fal 原生平台标记支持；Kling 图生视频带 `elements` 能受理并出片，但参考主体没有生效：第二轮把参考图换成 3D 卡通宇航员，Prompt 只写 `@Element1`，带 `elements` 的两条造型彼此不同，都没有宇航员的面罩、肩垫和胸前面板，对照组是火柴人，记为"可受理、实测未生效"。这一轮还踩到一个限制：Kling 首帧至少 300×300，480×270 的首帧提交后状态显示完成，取结果时才报 422。细节和五条 Kling 样片见 [接口边界页](https://huqianghui.github.io/mindforge/media-generation/probes.html)。
 
 ### 还没测的
 
 > [!IMPORTANT]
-> 人工听审（声线、情绪、口型）、逐帧动作和音画同步、每条可用成片的实际成本（需要账单和可用阈值）、"草稿关键帧作首帧"的迁移做法、Kling `elements` 是否真的生效（需要写实首帧和多次对照）。要报 P50 / P95 和成功率，同一组合还要累计到 20 条以上。
+> 人工听审（声线、情绪、口型）、逐帧动作和音画同步、每条可用成片的实际成本（需要账单和可用阈值）、"草稿关键帧作首帧"的迁移做法、Kling `elements` 在写实首帧、带 `reference_images` 时是否生效。要报 P50 / P95 和成功率，同一组合还要累计到 20 条以上。
 
 ## 参考
 
