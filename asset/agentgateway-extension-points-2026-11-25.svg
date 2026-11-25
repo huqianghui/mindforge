@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="850" viewBox="0 0 1500 850" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+<rect width="1500" height="850" fill="#f7f4ec"/>
+<text x="40" y="48" font-size="24" font-weight="700" fill="#1f2937">agentgateway 的扩展点挂在请求链路的哪里</text>
+<text x="40" y="76" font-size="14" fill="#64748b">实线框 = 调外部服务（颜色代表协议），虚线框 = 内置能力；附着点决定执行时机：Gateway → Route → Backend，响应按原路返回</text>
+<rect x="30" y="112" width="130" height="56" rx="10" fill="#1f2937"/>
+<text x="95" y="146" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">Agent / 应用</text>
+<line x1="160" y1="140" x2="1308" y2="140" stroke="#475569" stroke-width="2.2" marker-end="url(#ah)"/>
+<text x="560" y="130" font-size="14" fill="#475569">请求进入（OpenAI / Anthropic / MCP / A2A / 普通 HTTP）</text>
+<rect x="190" y="175" width="330" height="470" rx="14" fill="#efe9dc" stroke="#d6cdb8"/>
+<text x="208" y="207" font-size="18" font-weight="700" fill="#1f2937">① Gateway / Listener</text>
+<text x="208" y="230" font-size="13" fill="#64748b">选路由之前</text>
+<rect x="204" y="248" width="302" height="56" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="222" y="271" font-size="15" font-weight="700" fill="#0f766e">JWT · API Key · Basic · OIDC</text>
+<text x="222" y="294" font-size="13" fill="#334155">内置认证，先认出调用方</text>
+<rect x="204" y="316" width="302" height="76" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="204" y="316" width="7" height="76" rx="3" fill="#1d4ed8"/>
+<text x="222" y="339" font-size="15" font-weight="700" fill="#1d4ed8">ExtAuthz</text>
+<text x="222" y="362" font-size="13" fill="#334155">Envoy ext_authz gRPC，或 HTTP 回调</text>
+<text x="222" y="382" font-size="13" fill="#334155">OPA 一类外部服务决定放行/拒绝</text>
+<rect x="204" y="404" width="302" height="76" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="204" y="404" width="7" height="76" rx="3" fill="#1d4ed8"/>
+<text x="222" y="427" font-size="15" font-weight="700" fill="#1d4ed8">ExtProc</text>
+<text x="222" y="450" font-size="13" fill="#334155">Envoy ext_proc gRPC</text>
+<text x="222" y="470" font-size="13" fill="#334155">双向流式读写请求与响应的头和 body</text>
+<text x="208" y="620" font-size="13" fill="#64748b">这一层只能挂认证、ExtAuthz、ExtProc、变换</text>
+<rect x="545" y="175" width="330" height="470" rx="14" fill="#efe9dc" stroke="#d6cdb8"/>
+<text x="563" y="207" font-size="18" font-weight="700" fill="#1f2937">② Route</text>
+<text x="563" y="230" font-size="13" fill="#64748b">选后端之前，可挂全部策略</text>
+<rect x="559" y="248" width="302" height="76" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="577" y="271" font-size="15" font-weight="700" fill="#0f766e">CEL 授权 · 变换 · 本地限流</text>
+<text x="577" y="294" font-size="13" fill="#334155">内置，进程内执行</text>
+<text x="577" y="314" font-size="13" fill="#334155">自定义 CEL 函数可跨策略复用</text>
+<rect x="559" y="336" width="302" height="76" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="559" y="336" width="7" height="76" rx="3" fill="#1d4ed8"/>
+<text x="577" y="359" font-size="15" font-weight="700" fill="#1d4ed8">Remote Rate Limit</text>
+<text x="577" y="382" font-size="13" fill="#334155">Envoy RLS gRPC</text>
+<text x="577" y="402" font-size="13" fill="#334155">计数放在外部，多副本共享配额</text>
+<rect x="559" y="424" width="302" height="76" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="559" y="424" width="7" height="76" rx="3" fill="#1d4ed8"/>
+<text x="577" y="447" font-size="15" font-weight="700" fill="#1d4ed8">ExtProc 做语义路由</text>
+<text x="577" y="470" font-size="13" fill="#334155">例：vLLM Semantic Router</text>
+<text x="577" y="490" font-size="13" fill="#334155">按 prompt 内容改写 model 字段</text>
+<rect x="900" y="175" width="390" height="470" rx="14" fill="#efe9dc" stroke="#d6cdb8"/>
+<text x="918" y="207" font-size="18" font-weight="700" fill="#1f2937">③ Backend</text>
+<text x="918" y="230" font-size="13" fill="#64748b">选定后端之后</text>
+<text x="918" y="258" font-size="14" font-weight="700" fill="#475569">LLM 后端</text>
+<rect x="914" y="268" width="362" height="56" rx="8" fill="#ffffff" stroke="#c2410c" stroke-width="1.6"/>
+<rect x="914" y="268" width="7" height="56" rx="3" fill="#c2410c"/>
+<text x="932" y="291" font-size="15" font-weight="700" fill="#c2410c">Prompt Guard Webhook</text>
+<text x="932" y="314" font-size="13" fill="#334155">HTTP POST /request：pass / mask / reject</text>
+<rect x="914" y="334" width="362" height="56" rx="8" fill="#ffffff" stroke="#c2410c" stroke-width="1.6"/>
+<rect x="914" y="334" width="7" height="56" rx="3" fill="#c2410c"/>
+<text x="932" y="357" font-size="15" font-weight="700" fill="#c2410c">Virtual Model Callout</text>
+<text x="932" y="380" font-size="13" fill="#334155">HTTP POST：外部服务决定用哪个模型</text>
+<rect x="914" y="400" width="362" height="56" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="914" y="400" width="7" height="56" rx="3" fill="#1d4ed8"/>
+<text x="932" y="423" font-size="15" font-weight="700" fill="#1d4ed8">Inference Routing → EPP</text>
+<text x="932" y="446" font-size="13" fill="#334155">ext_proc gRPC：在 InferencePool 里挑 Pod</text>
+<text x="918" y="478" font-size="14" font-weight="700" fill="#475569">MCP 后端</text>
+<rect x="914" y="488" width="362" height="56" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="932" y="511" font-size="15" font-weight="700" fill="#0f766e">MCP authn / authz</text>
+<text x="932" y="534" font-size="13" fill="#334155">内置 OAuth 与按工具的 CEL 授权</text>
+<rect x="914" y="554" width="362" height="56" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6"/>
+<rect x="914" y="554" width="7" height="56" rx="3" fill="#7c3aed"/>
+<text x="932" y="577" font-size="15" font-weight="700" fill="#7c3aed">mcpGuardrails（remote）</text>
+<text x="932" y="600" font-size="13" fill="#334155">ExtMCP gRPC：按 MCP 方法 pass / mutate / deny</text>
+<rect x="1315" y="112" width="160" height="56" rx="10" fill="#1f2937"/>
+<text x="1395" y="146" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">上游</text>
+<rect x="1315" y="190" width="160" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+<text x="1395" y="220" font-size="14" fill="#1f2937" text-anchor="middle">LLM 提供商</text>
+<rect x="1315" y="254" width="160" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+<text x="1395" y="284" font-size="14" fill="#1f2937" text-anchor="middle">自托管模型 Pod</text>
+<rect x="1315" y="318" width="160" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+<text x="1395" y="348" font-size="14" fill="#1f2937" text-anchor="middle">MCP server</text>
+<rect x="1315" y="382" width="160" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+<text x="1395" y="412" font-size="14" fill="#1f2937" text-anchor="middle">A2A agent</text>
+<rect x="1315" y="446" width="160" height="50" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+<text x="1395" y="476" font-size="14" fill="#1f2937" text-anchor="middle">普通 HTTP / gRPC</text>
+<path d="M 1395 510 L 1395 672 L 95 672 L 95 172" fill="none" stroke="#475569" stroke-width="2.2" stroke-dasharray="8 5" marker-end="url(#ah)"/>
+<text x="120" y="664" font-size="14" fill="#475569">④ 响应回程（流式响应边生成边经过这些环节）</text>
+<rect x="190" y="694" width="300" height="76" rx="8" fill="#ffffff" stroke="#c2410c" stroke-width="1.6"/>
+<rect x="190" y="694" width="7" height="76" rx="3" fill="#c2410c"/>
+<text x="208" y="717" font-size="15" font-weight="700" fill="#c2410c">Response Guard Webhook</text>
+<text x="208" y="740" font-size="13" fill="#334155">HTTP POST /response</text>
+<text x="208" y="760" font-size="13" fill="#334155">可拒绝或打码模型输出</text>
+<rect x="512" y="694" width="300" height="76" rx="8" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.6"/>
+<rect x="512" y="694" width="7" height="76" rx="3" fill="#1d4ed8"/>
+<text x="530" y="717" font-size="15" font-weight="700" fill="#1d4ed8">ExtProc 响应阶段</text>
+<text x="530" y="740" font-size="13" fill="#334155">改写响应头和 body</text>
+<text x="530" y="760" font-size="13" fill="#334155">也可以直接返回 ImmediateResponse</text>
+<rect x="834" y="694" width="300" height="76" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.6"/>
+<rect x="834" y="694" width="7" height="76" rx="3" fill="#7c3aed"/>
+<text x="852" y="717" font-size="15" font-weight="700" fill="#7c3aed">ExtMCP 响应阶段</text>
+<text x="852" y="740" font-size="13" fill="#334155">改写 tools/list、工具结果</text>
+<text x="852" y="760" font-size="13" fill="#334155">如给敏感字段打码</text>
+<rect x="1156" y="694" width="300" height="76" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1174" y="717" font-size="15" font-weight="700" fill="#0f766e">访问日志 · OTel trace</text>
+<text x="1174" y="740" font-size="13" fill="#334155">内置，带 gen_ai 与 MCP 属性</text>
+<text x="1174" y="760" font-size="13" fill="#334155">记录 token、模型与费用</text>
+<rect x="190" y="808" width="26" height="16" rx="3" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="1.6"/>
+<text x="224" y="822" font-size="13" fill="#334155">Envoy 兼容 gRPC（ext_authz / ext_proc / RLS）</text>
+<rect x="610" y="808" width="26" height="16" rx="3" fill="#c2410c" stroke="#c2410c" stroke-width="1.6"/>
+<text x="644" y="822" font-size="13" fill="#334155">HTTP JSON 回调</text>
+<rect x="880" y="808" width="26" height="16" rx="3" fill="#7c3aed" stroke="#7c3aed" stroke-width="1.6"/>
+<text x="914" y="822" font-size="13" fill="#334155">ExtMCP gRPC（MCP 语义）</text>
+<rect x="1170" y="808" width="26" height="16" rx="3" fill="#ffffff" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="1204" y="822" font-size="13" fill="#334155">内置 / 进程内 CEL</text>
+</svg>

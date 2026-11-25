@@ -66,6 +66,10 @@
 
 - [Agent 基础设施系列 04：Framework 层与三层串联](Notes/AI/agent/agent-framework/Agent基础设施系列04：Framework层与三层串联.md)
 
+### Notes/AI/agent/agent-gateway
+
+- [agentgateway 的定位与扩展机制](Notes/AI/agent/agent-gateway/agentgateway的定位与扩展机制.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)

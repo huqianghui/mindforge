@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<rect width="1400" height="800" fill="#fbfaf7"/>
+<text x="40" y="48" font-size="24" font-weight="700" fill="#1e293b">同一个会话的第 2 轮，发给哪个 Pod 差别很大</text>
+<text x="40" y="76" font-size="14" fill="#64748b">多轮对话里每一轮都带着前面的全部内容；前缀已经在某个 Pod 的 KV cache 里，换一个 Pod 就要从头 prefill</text>
+<text x="40" y="122" font-size="15" font-weight="700" fill="#334155">第 1 轮</text>
+<rect x="110" y="100" width="260" height="34" rx="6" fill="#99f6e4"/>
+<text x="240.0" y="122" font-size="14" fill="#1e293b" text-anchor="middle">System Prompt + Context</text>
+<rect x="375" y="100" width="90" height="34" rx="6" fill="#99f6e4"/>
+<text x="420.0" y="122" font-size="14" fill="#1e293b" text-anchor="middle">Q1</text>
+<text x="40" y="170" font-size="15" font-weight="700" fill="#334155">第 2 轮</text>
+<rect x="110" y="148" width="260" height="34" rx="6" fill="#99f6e4"/>
+<text x="240.0" y="170" font-size="14" fill="#1e293b" text-anchor="middle">System Prompt + Context</text>
+<rect x="375" y="148" width="90" height="34" rx="6" fill="#99f6e4"/>
+<text x="420.0" y="170" font-size="14" fill="#1e293b" text-anchor="middle">Q1</text>
+<rect x="470" y="148" width="90" height="34" rx="6" fill="#99f6e4"/>
+<text x="515.0" y="170" font-size="14" fill="#1e293b" text-anchor="middle">A1</text>
+<rect x="565" y="148" width="90" height="34" rx="6" fill="#fde68a"/>
+<text x="610.0" y="170" font-size="14" fill="#1e293b" text-anchor="middle">Q2</text>
+<text x="680" y="170" font-size="14" fill="#475569">青色 = 与上一轮相同的前缀，已在 Pod 1 缓存；黄色 = 本轮新增，必须计算</text>
+<rect x="40" y="205" width="640" height="570" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+<text x="64" y="240" font-size="18" font-weight="700" fill="#1e293b">普通负载均衡：轮询到 Pod 3</text>
+<text x="64" y="264" font-size="13" fill="#64748b">Kubernetes Service 只看连接，不知道谁缓存了什么</text>
+<rect x="240" y="285" width="240" height="56" rx="10" fill="#1e293b"/>
+<text x="360" y="310" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">agentgateway</text>
+<text x="360" y="330" font-size="13" fill="#cbd5e1" text-anchor="middle">收到第 2 轮请求</text>
+<rect x="64" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="80" y="458" font-size="15" font-weight="700" fill="#334155">Pod 1 · vLLM</text>
+<text x="80" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="80" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="120" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="160" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="200" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="80" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="120" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="160" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="200" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<text x="80" y="588" font-size="13" fill="#475569">本会话前缀</text>
+<rect x="268" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="284" y="458" font-size="15" font-weight="700" fill="#334155">Pod 2 · vLLM</text>
+<text x="284" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="284" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="324" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="364" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="404" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="284" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="324" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="364" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="404" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<text x="284" y="588" font-size="13" fill="#475569">其他会话</text>
+<rect x="472" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="488" y="458" font-size="15" font-weight="700" fill="#334155">Pod 3 · vLLM</text>
+<text x="488" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="488" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="528" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="568" y="494" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="608" y="494" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="488" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="528" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="568" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="608" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<text x="488" y="588" font-size="13" fill="#475569">其他会话 / 空闲</text>
+<path d="M 360 341 C 360 395, 566 375, 566 430" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+<circle r="9" fill="#f59e0b" opacity="0"><animate attributeName="opacity" values="1;1" dur="7s" repeatCount="indefinite"/><animateMotion dur="7s" repeatCount="indefinite" path="M 360 341 C 360 395, 566 375, 566 430" keyPoints="0;1;1" keyTimes="0;0.2;1" calcMode="linear"/></circle>
+<text x="64" y="636" font-size="14" font-weight="700" fill="#334155">Prefill 计算量</text>
+<rect x="64" y="648" width="592" height="26" rx="6" fill="#f1f5f9"/>
+<rect x="64" y="648" width="592" height="26" rx="6" fill="#fb923c"><animate attributeName="width" values="0;0;592;592" keyTimes="0;0.2;0.85;1" dur="7s" repeatCount="indefinite"/></rect>
+<text x="64" y="700" font-size="14" fill="#334155">Pod 3 没有这段前缀：System + Context + Q1 + A1 + Q2 全部重算</text>
+<text x="64" y="740" font-size="16" font-weight="700" fill="#c2410c">首 token 等得久，GPU 算力花在重复劳动上</text>
+<rect x="720" y="205" width="640" height="570" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+<text x="744" y="240" font-size="18" font-weight="700" fill="#1e293b">Inference Routing：EPP 选中 Pod 1</text>
+<text x="744" y="264" font-size="13" fill="#64748b">HTTPRoute → InferencePool → EPP 返回目标 Pod</text>
+<rect x="920" y="285" width="240" height="56" rx="10" fill="#1e293b"/>
+<text x="1040" y="310" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle">agentgateway</text>
+<text x="1040" y="330" font-size="13" fill="#cbd5e1" text-anchor="middle">收到第 2 轮请求</text>
+<rect x="1180" y="285" width="160" height="56" rx="10" fill="#ecfeff" stroke="#0e7490" stroke-width="1.5"/>
+<text x="1260" y="310" font-size="15" font-weight="700" fill="#0e7490" text-anchor="middle">EPP</text>
+<text x="1260" y="330" font-size="13" fill="#0e7490" text-anchor="middle">查前缀命中</text>
+<line x1="1160" y1="313" x2="1180" y2="313" stroke="#0e7490" stroke-width="2" stroke-dasharray="5 4"/>
+<rect x="744" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="760" y="458" font-size="15" font-weight="700" fill="#334155">Pod 1 · vLLM</text>
+<text x="760" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="760" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="800" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="840" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="880" y="494" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="760" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="800" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="840" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<rect x="880" y="534" width="34" height="32" rx="4" fill="#5eead4" stroke="#e2e8f0"/>
+<text x="760" y="588" font-size="13" fill="#475569">本会话前缀</text>
+<rect x="948" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="964" y="458" font-size="15" font-weight="700" fill="#334155">Pod 2 · vLLM</text>
+<text x="964" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="964" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1004" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1044" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1084" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="964" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1004" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1044" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1084" y="534" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<text x="964" y="588" font-size="13" fill="#475569">其他会话</text>
+<rect x="1152" y="430" width="188" height="170" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="1168" y="458" font-size="15" font-weight="700" fill="#334155">Pod 3 · vLLM</text>
+<text x="1168" y="482" font-size="13" fill="#64748b">KV cache</text>
+<rect x="1168" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1208" y="494" width="34" height="32" rx="4" fill="#cbd5e1" stroke="#e2e8f0"/>
+<rect x="1248" y="494" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="1288" y="494" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="1168" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="1208" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="1248" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<rect x="1288" y="534" width="34" height="32" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
+<text x="1168" y="588" font-size="13" fill="#475569">其他会话 / 空闲</text>
+<rect x="740" y="426" width="196" height="178" rx="14" fill="none" stroke="#14b8a6" stroke-width="3"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.6s" repeatCount="indefinite"/></rect>
+<path d="M 1040 341 C 1040 395, 838 375, 838 430" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/>
+<circle r="9" fill="#f59e0b" opacity="0"><animate attributeName="opacity" values="1;1" dur="7s" repeatCount="indefinite"/><animateMotion dur="7s" repeatCount="indefinite" path="M 1040 341 C 1040 395, 838 375, 838 430" keyPoints="0;1;1" keyTimes="0;0.2;1" calcMode="linear"/></circle>
+<text x="744" y="636" font-size="14" font-weight="700" fill="#334155">Prefill 计算量</text>
+<rect x="744" y="648" width="592" height="26" rx="6" fill="#f1f5f9"/>
+<rect x="744" y="648" width="88" height="26" rx="6" fill="#14b8a6"><animate attributeName="width" values="0;0;88;88" keyTimes="0;0.2;0.32;1" dur="7s" repeatCount="indefinite"/></rect>
+<text x="744" y="700" font-size="14" fill="#334155">前缀命中缓存，只需计算新增的 Q2</text>
+<text x="744" y="740" font-size="16" font-weight="700" fill="#0f766e">首 token 快，省下的算力留给别的请求</text>
+</svg>
