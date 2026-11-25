@@ -54,7 +54,9 @@ function splitFrontMatter(text: string): [FrontMatter, string] {
 function preprocess(body: string, index: ContentIndex): string {
   return body
     .replace(/\[\[([^\]|#]+)(?:#([^\]|]+))?(?:\|([^\]]+))?\]\]/g, (_, target: string, anchor?: string, alias?: string) => {
-      const doc = index.byStem.get(target.trim());
+      // 文件名重名时（如 README）Obsidian 用库根起的路径写法 [[Notes/x/README]]，按路径再找一次
+      const t = target.trim();
+      const doc = index.byStem.get(t) ?? index.byPath.get(`${t}.md`) ?? index.byPath.get(t);
       const label = alias ?? target;
       return doc ? `[${label}](${docHash(doc.path, anchor)})` : label;
     })

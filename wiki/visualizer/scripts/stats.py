@@ -81,7 +81,8 @@ def build(vault: Path, doc_paths: list[str], tracked: set[str], out: Path) -> No
         for m in RE_WIKI.finditer(scan):
             internal += 1
             name = m.group(1).strip()
-            if name in wiki_names:
+            # 文件名重名时 Obsidian 写成库根起的路径（[[Notes/x/README]]），与阅读器一致按路径再认一次
+            if name in wiki_names or f"{name}.md" in tracked or name in tracked:
                 continue
             if RE_DIARY.match(name):
                 private += 1
