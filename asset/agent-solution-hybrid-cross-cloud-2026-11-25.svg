@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<defs><filter id="rough" filterUnits="userSpaceOnUse" x="0" y="0" width="1600" height="1060"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/></filter><pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="9" stroke="#000" stroke-opacity="0.07" stroke-width="3"/></pattern><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
+<rect width="1600" height="1060" fill="#fdfcf8"/>
+<text x="40" y="50" font-size="27" font-weight="700" fill="#1e3a5f">混合方案：一个控制面，多朵云上的运行时与网关</text>
+<text x="40" y="82" font-size="15" fill="#64748b">台账、身份、观测收在微软控制面；Azure 之外的数据路径用开源网关和运行时。三种连线代表三种接入深度</text>
+<text x="40" y="128" font-size="19" font-weight="700" fill="#3b82f6">控制面（Microsoft）：唯一的台账与身份源</text>
+<g filter="url(#rough)"><rect x="60" y="148" width="470" height="112" rx="12" fill="#dbeafe" stroke="#1e3a5f" stroke-width="2.4"/><rect x="60" y="148" width="470" height="112" rx="12" fill="url(#hatch)"/></g>
+<text x="295.0" y="198.0" font-size="18" font-weight="700" fill="#1e3a5f" text-anchor="middle">Agent 365</text>
+<text x="295.0" y="223.0" font-size="14" font-weight="400" fill="#1e3a5f" text-anchor="middle">注册表 · 工具策略 · Defender / Purview</text>
+<g filter="url(#rough)"><rect x="565" y="148" width="470" height="112" rx="12" fill="#ede9fe" stroke="#6d28d9" stroke-width="2.4"/><rect x="565" y="148" width="470" height="112" rx="12" fill="url(#hatch)"/></g>
+<text x="800.0" y="198.0" font-size="18" font-weight="700" fill="#6d28d9" text-anchor="middle">Entra Agent ID</text>
+<text x="800.0" y="223.0" font-size="14" font-weight="400" fill="#6d28d9" text-anchor="middle">blueprint · owner / sponsor · Conditional Access</text>
+<g filter="url(#rough)"><rect x="1070" y="148" width="470" height="112" rx="12" fill="#d1fae5" stroke="#047857" stroke-width="2.4"/><rect x="1070" y="148" width="470" height="112" rx="12" fill="url(#hatch)"/></g>
+<text x="1305.0" y="198.0" font-size="18" font-weight="700" fill="#047857" text-anchor="middle">Azure Monitor / App Insights</text>
+<text x="1305.0" y="223.0" font-size="14" font-weight="400" fill="#047857" text-anchor="middle">统一 trace · 评估 · 成本</text>
+<g filter="url(#rough)"><rect x="40" y="470" width="360" height="410" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/></g>
+<text x="60" y="505" font-size="21" font-weight="700" fill="#334155">Azure</text>
+<g filter="url(#rough)"><rect x="430" y="470" width="360" height="410" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/></g>
+<text x="450" y="505" font-size="21" font-weight="700" fill="#334155">AWS</text>
+<g filter="url(#rough)"><rect x="820" y="470" width="360" height="410" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/></g>
+<text x="840" y="505" font-size="21" font-weight="700" fill="#334155">GCP</text>
+<g filter="url(#rough)"><rect x="1210" y="470" width="360" height="410" rx="16" fill="#ffffff" stroke="#94a3b8" stroke-width="1.8"/></g>
+<text x="1230" y="505" font-size="21" font-weight="700" fill="#334155">任意 Kubernetes / 本地</text>
+<g filter="url(#rough)"><rect x="60" y="528" width="320" height="96" rx="12" fill="#dbeafe" stroke="#1e3a5f" stroke-width="2.4"/><rect x="60" y="528" width="320" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="220.0" y="570.0" font-size="18" font-weight="700" fill="#1e3a5f" text-anchor="middle">Foundry Hosted Agent</text>
+<text x="220.0" y="595.0" font-size="14" font-weight="400" fill="#1e3a5f" text-anchor="middle">Copilot Studio · Prompt Agent</text>
+<g filter="url(#rough)"><rect x="60" y="660" width="320" height="96" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2.4"/><rect x="60" y="660" width="320" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="220.0" y="702.0" font-size="18" font-weight="700" fill="#b45309" text-anchor="middle">Azure AI Gateway</text>
+<text x="220.0" y="727.0" font-size="14" font-weight="400" fill="#b45309" text-anchor="middle">模型 + MCP；A2A 走 APIM</text>
+<text x="60" y="800" font-size="14" fill="#475569">原生接入：自动进台账、自带 Agent ID</text>
+<text x="60" y="824" font-size="14" fill="#475569">策略在网关上逐请求执行</text>
+<g filter="url(#rough)"><rect x="450" y="528" width="155" height="96" rx="12" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.4"/><rect x="450" y="528" width="155" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="527.5" y="570.0" font-size="17" font-weight="700" fill="#b91c1c" text-anchor="middle">AgentCore</text>
+<text x="527.5" y="595.0" font-size="14" font-weight="400" fill="#b91c1c" text-anchor="middle">托管 agent</text>
+<g filter="url(#rough)"><rect x="625" y="528" width="155" height="96" rx="12" fill="#dbeafe" stroke="#1e3a5f" stroke-width="2.4"/><rect x="625" y="528" width="155" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="702.5" y="570.0" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle">EKS + kagent</text>
+<text x="702.5" y="595.0" font-size="14" font-weight="400" fill="#1e3a5f" text-anchor="middle">自建 agent</text>
+<g filter="url(#rough)"><rect x="450" y="660" width="330" height="96" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2.4"/><rect x="450" y="660" width="330" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="615.0" y="702.0" font-size="18" font-weight="700" fill="#b45309" text-anchor="middle">agentgateway</text>
+<text x="615.0" y="727.0" font-size="14" font-weight="400" fill="#b45309" text-anchor="middle">LLM · MCP · A2A，认 Entra JWT</text>
+<text x="450" y="800" font-size="14" fill="#475569">托管 agent：只读同步、手动触发</text>
+<text x="450" y="824" font-size="14" fill="#475569">自建 agent：接 Agent 365 SDK + OTel</text>
+<g filter="url(#rough)"><rect x="840" y="528" width="155" height="96" rx="12" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.4"/><rect x="840" y="528" width="155" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="917.5" y="570.0" font-size="17" font-weight="700" fill="#b91c1c" text-anchor="middle">Vertex AI</text>
+<text x="917.5" y="595.0" font-size="14" font-weight="400" fill="#b91c1c" text-anchor="middle">托管 agent</text>
+<g filter="url(#rough)"><rect x="1015" y="528" width="155" height="96" rx="12" fill="#dbeafe" stroke="#1e3a5f" stroke-width="2.4"/><rect x="1015" y="528" width="155" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="1092.5" y="570.0" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle">GKE + kagent</text>
+<text x="1092.5" y="595.0" font-size="14" font-weight="400" fill="#1e3a5f" text-anchor="middle">自建 agent</text>
+<g filter="url(#rough)"><rect x="840" y="660" width="330" height="96" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2.4"/><rect x="840" y="660" width="330" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="1005.0" y="702.0" font-size="18" font-weight="700" fill="#b45309" text-anchor="middle">agentgateway</text>
+<text x="1005.0" y="727.0" font-size="14" font-weight="400" fill="#b45309" text-anchor="middle">同一份策略模板</text>
+<text x="840" y="800" font-size="14" fill="#475569">直连 Vertex 模型的请求</text>
+<text x="840" y="824" font-size="14" fill="#475569">不经网关就只能看、不能管</text>
+<g filter="url(#rough)"><rect x="1230" y="528" width="320" height="96" rx="12" fill="#dbeafe" stroke="#1e3a5f" stroke-width="2.4"/><rect x="1230" y="528" width="320" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="1390.0" y="570.0" font-size="18" font-weight="700" fill="#1e3a5f" text-anchor="middle">kagent · agent-sandbox</text>
+<text x="1390.0" y="595.0" font-size="14" font-weight="400" fill="#1e3a5f" text-anchor="middle">Dapr Workflow</text>
+<g filter="url(#rough)"><rect x="1230" y="660" width="320" height="96" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2.4"/><rect x="1230" y="660" width="320" height="96" rx="12" fill="url(#hatch)"/></g>
+<text x="1390.0" y="702.0" font-size="18" font-weight="700" fill="#b45309" text-anchor="middle">agentgateway</text>
+<text x="1390.0" y="727.0" font-size="14" font-weight="400" fill="#b45309" text-anchor="middle">SPIFFE / SPIRE 签发工作负载身份</text>
+<text x="1230" y="800" font-size="14" fill="#475569">私有机房、主权云、边缘集群</text>
+<text x="1230" y="824" font-size="14" fill="#475569">同一套接入方式</text>
+<line x1="220" y1="624" x2="220" y2="656" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="615" y1="624" x2="615" y2="656" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="1005" y1="624" x2="1005" y2="656" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="1390" y1="624" x2="1390" y2="656" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+<path d="M 220 528 L 220 262" fill="none" stroke="#1d4ed8" stroke-width="2.6" marker-end="url(#ah)" filter="url(#rough)"/>
+<text x="232" y="380" font-size="14" font-weight="700" fill="#1d4ed8">原生集成</text>
+<path d="M 800 260 L 800 420" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" filter="url(#rough)"/>
+<path d="M 600 420 L 1505 420" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" filter="url(#rough)"/>
+<path d="M 703 420 L 703 525" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" marker-end="url(#ah)" filter="url(#rough)"/>
+<path d="M 1093 420 L 1093 525" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" marker-end="url(#ah)" filter="url(#rough)"/>
+<path d="M 1505 420 L 1505 525" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" marker-end="url(#ah)" filter="url(#rough)"/>
+<text x="815" y="300" font-size="14" font-weight="700" fill="#7c3aed">身份联合：EKS / GKE OIDC、SPIFFE</text>
+<text x="815" y="322" font-size="14" font-weight="700" fill="#7c3aed">→ Entra 联合凭据，免存密钥</text>
+<path d="M 400 262 C 430 340, 500 380, 527 525" fill="none" stroke="#dc2626" stroke-width="2.6" stroke-dasharray="12 8" marker-end="url(#ah)" filter="url(#rough)"/>
+<path d="M 470 262 C 620 330, 860 340, 917 525" fill="none" stroke="#dc2626" stroke-width="2.6" stroke-dasharray="12 8" marker-end="url(#ah)" filter="url(#rough)"/>
+<text x="240" y="452" font-size="14" font-weight="700" fill="#dc2626">registry sync：只读、手动同步</text>
+<path d="M 703 528 C 760 400, 1150 340, 1200 264" fill="none" stroke="#047857" stroke-width="2.6" marker-end="url(#ah)" filter="url(#rough)"/>
+<path d="M 1093 528 C 1120 420, 1250 340, 1290 264" fill="none" stroke="#047857" stroke-width="2.6" marker-end="url(#ah)" filter="url(#rough)"/>
+<path d="M 1485 528 C 1485 430, 1430 330, 1400 264" fill="none" stroke="#047857" stroke-width="2.6" marker-end="url(#ah)" filter="url(#rough)"/>
+<text x="1462" y="372" font-size="14" font-weight="700" fill="#047857">Agent 365 SDK</text>
+<text x="1462" y="394" font-size="14" font-weight="700" fill="#047857">+ OTel</text>
+<g filter="url(#rough)"><rect x="830" y="905" width="730" height="130" rx="10" fill="#1e293b"/></g>
+<text x="852" y="938" font-size="14" fill="#94a3b8" font-family="Menlo,Consolas,monospace"># Entra 联合凭据：让 EKS 里的 agent 用自己的 SA token 换 Entra token</text>
+<text x="852" y="963" font-size="14" fill="#22c55e" font-family="Menlo,Consolas,monospace">issuer:   https://oidc.eks.&lt;region&gt;.amazonaws.com/id/&lt;cluster-id&gt;</text>
+<text x="852" y="988" font-size="14" fill="#22c55e" font-family="Menlo,Consolas,monospace">subject:  system:serviceaccount:agents:planner</text>
+<text x="852" y="1013" font-size="14" fill="#22c55e" font-family="Menlo,Consolas,monospace">audience: api://AzureADTokenExchange</text>
+<path d="M 60 930 L 130 930" fill="none" stroke="#1d4ed8" stroke-width="2.6" filter="url(#rough)"/>
+<text x="145" y="935" font-size="14" fill="#334155">原生集成</text>
+<path d="M 60 956 L 130 956" fill="none" stroke="#dc2626" stroke-width="2.6" stroke-dasharray="12 8" filter="url(#rough)"/>
+<text x="145" y="961" font-size="14" fill="#334155">只读同步（看得见、管不深）</text>
+<path d="M 60 982 L 130 982" fill="none" stroke="#047857" stroke-width="2.6" filter="url(#rough)"/>
+<text x="145" y="987" font-size="14" fill="#334155">SDK + OTel 上报（可观测、有身份）</text>
+<path d="M 60 1008 L 130 1008" fill="none" stroke="#7c3aed" stroke-width="2.6" stroke-dasharray="3 7" stroke-linecap="round" filter="url(#rough)"/>
+<text x="145" y="1013" font-size="14" fill="#334155">身份联合（不存密钥）</text>
+</svg>

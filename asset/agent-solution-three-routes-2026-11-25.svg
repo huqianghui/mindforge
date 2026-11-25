@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="975" viewBox="0 0 1500 975" font-family="'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif">
+<rect width="1500" height="975" fill="#fafaf9"/>
+<text x="40" y="50" font-size="26" font-weight="700" fill="#1c1917">完整 agent 方案的三条路线：每一层由谁补上</text>
+<text x="40" y="80" font-size="15" fill="#57534e">同样七层，三种拼法；颜色表示这一层在该路线下的完整程度（截至 2026 年 11 月）</text>
+<rect x="270" y="105" width="395" height="84" rx="12" fill="#1d4ed8"/>
+<text x="467.5" y="141" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">微软技术栈</text>
+<text x="467.5" y="170" font-size="14" fill="#e7e5e4" text-anchor="middle">Agent 365 + Foundry + AI Gateway</text>
+<rect x="270" y="205" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="290" cy="231" r="6" fill="#16a34a"/>
+<text x="306" y="236" font-size="15" font-weight="700" fill="#1c1917">MAF（开源）· Copilot Studio harness</text>
+<text x="306" y="264" font-size="13.5" fill="#44403c">也接受 LangGraph、Claude Agent SDK</text>
+<rect x="270" y="301" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="290" cy="327" r="6" fill="#d97706"/>
+<text x="306" y="332" font-size="15" font-weight="700" fill="#1c1917">Hosted Agent · Copilot Studio</text>
+<text x="306" y="360" font-size="13.5" fill="#44403c">只能跑在 Azure 上</text>
+<rect x="270" y="397" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="290" cy="423" r="6" fill="#d97706"/>
+<text x="306" y="428" font-size="15" font-weight="700" fill="#1c1917">AI Gateway（模型 + MCP）· APIM（A2A）</text>
+<text x="306" y="456" font-size="13.5" fill="#44403c">AGC 管集群内推理：分在三个产品</text>
+<rect x="270" y="493" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="290" cy="519" r="6" fill="#d97706"/>
+<text x="306" y="524" font-size="15" font-weight="700" fill="#1c1917">Agent 365 注册表是管理员台账</text>
+<text x="306" y="552" font-size="13.5" fill="#44403c">第三方只读同步；运行时发现靠 Agent Card</text>
+<rect x="270" y="589" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="290" cy="615" r="6" fill="#16a34a"/>
+<text x="306" y="620" font-size="15" font-weight="700" fill="#1c1917">Entra Agent ID：blueprint、owner、CA</text>
+<text x="306" y="648" font-size="13.5" fill="#44403c">第三方平台的 agent 仍在预览</text>
+<rect x="270" y="685" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="290" cy="711" r="6" fill="#16a34a"/>
+<text x="306" y="716" font-size="15" font-weight="700" fill="#1c1917">OTel → Azure Monitor · Foundry 评估</text>
+<text x="306" y="744" font-size="13.5" fill="#44403c">外部 agent 的观测已 GA</text>
+<rect x="270" y="781" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="290" cy="807" r="6" fill="#16a34a"/>
+<text x="306" y="812" font-size="15" font-weight="700" fill="#1c1917">Defender · Purview · Intune</text>
+<text x="306" y="840" font-size="13.5" fill="#44403c">需要 Agent 365 或 E7 许可</text>
+<rect x="680" y="105" width="395" height="84" rx="12" fill="#7c3aed"/>
+<text x="877.5" y="141" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">混合方案</text>
+<text x="877.5" y="170" font-size="14" fill="#e7e5e4" text-anchor="middle">微软控制面 + 他云开源数据路径</text>
+<rect x="680" y="205" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="700" cy="231" r="6" fill="#16a34a"/>
+<text x="716" y="236" font-size="15" font-weight="700" fill="#1c1917">按团队自选框架</text>
+<text x="716" y="264" font-size="13.5" fill="#44403c">Agent 365 SDK 不限框架</text>
+<rect x="680" y="301" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="700" cy="327" r="6" fill="#16a34a"/>
+<text x="716" y="332" font-size="15" font-weight="700" fill="#1c1917">Azure 用托管运行时</text>
+<text x="716" y="360" font-size="13.5" fill="#44403c">其他云用 kagent 或该云自家托管</text>
+<rect x="680" y="397" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="700" cy="423" r="6" fill="#16a34a"/>
+<text x="716" y="428" font-size="15" font-weight="700" fill="#1c1917">Azure 用 AI Gateway，他云用 agentgateway</text>
+<text x="716" y="456" font-size="13.5" fill="#44403c">两套网关的策略要人工对齐</text>
+<rect x="680" y="493" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="700" cy="519" r="6" fill="#d97706"/>
+<text x="716" y="524" font-size="15" font-weight="700" fill="#1c1917">Agent 365 统一台账</text>
+<text x="716" y="552" font-size="13.5" fill="#44403c">自建 agent 接 SDK，托管 agent 只读同步</text>
+<rect x="680" y="589" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="700" cy="615" r="6" fill="#16a34a"/>
+<text x="716" y="620" font-size="15" font-weight="700" fill="#1c1917">Entra 作为唯一身份源</text>
+<text x="716" y="648" font-size="13.5" fill="#44403c">他云经 workload identity federation 接入</text>
+<rect x="680" y="685" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="700" cy="711" r="6" fill="#16a34a"/>
+<text x="716" y="716" font-size="15" font-weight="700" fill="#1c1917">OTel Collector 双写</text>
+<text x="716" y="744" font-size="13.5" fill="#44403c">Azure Monitor + 本地观测后端</text>
+<rect x="680" y="781" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="700" cy="807" r="6" fill="#d97706"/>
+<text x="716" y="812" font-size="15" font-weight="700" fill="#1c1917">只覆盖经过微软组件的流量</text>
+<text x="716" y="840" font-size="13.5" fill="#44403c">他云 agent 直连模型的请求管不到</text>
+<rect x="1090" y="105" width="395" height="84" rx="12" fill="#0f766e"/>
+<text x="1287.5" y="141" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle">全开源方案</text>
+<text x="1287.5" y="170" font-size="14" fill="#e7e5e4" text-anchor="middle">agentregistry + kagent + agentgateway</text>
+<rect x="1090" y="205" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="1110" cy="231" r="6" fill="#16a34a"/>
+<text x="1126" y="236" font-size="15" font-weight="700" fill="#1c1917">LangGraph · ADK · MAF</text>
+<text x="1126" y="264" font-size="13.5" fill="#44403c">OpenAI Agents SDK 等</text>
+<rect x="1090" y="301" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="1110" cy="327" r="6" fill="#16a34a"/>
+<text x="1126" y="332" font-size="15" font-weight="700" fill="#1c1917">kagent · agent-sandbox · Dapr</text>
+<text x="1126" y="360" font-size="13.5" fill="#44403c">任意 Kubernetes、任意云</text>
+<rect x="1090" y="397" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="1110" cy="423" r="6" fill="#16a34a"/>
+<text x="1126" y="428" font-size="15" font-weight="700" fill="#1c1917">agentgateway：一个数据面</text>
+<text x="1126" y="456" font-size="13.5" fill="#44403c">LLM、MCP、A2A、HTTP 一套策略</text>
+<rect x="1090" y="493" width="395" height="84" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<circle cx="1110" cy="519" r="6" fill="#d97706"/>
+<text x="1126" y="524" font-size="15" font-weight="700" fill="#1c1917">agentregistry · Nacos · MCP Registry</text>
+<text x="1126" y="552" font-size="13.5" fill="#44403c">目录有了，审批与生命周期要自建</text>
+<rect x="1090" y="589" width="395" height="84" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.6"/>
+<circle cx="1110" cy="615" r="6" fill="#dc2626"/>
+<text x="1126" y="620" font-size="15" font-weight="700" fill="#1c1917">SPIFFE/SPIRE + Keycloak</text>
+<text x="1126" y="648" font-size="13.5" fill="#44403c">能做认证与委托，没有 owner 与风险模型</text>
+<rect x="1090" y="685" width="395" height="84" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<circle cx="1110" cy="711" r="6" fill="#16a34a"/>
+<text x="1126" y="716" font-size="15" font-weight="700" fill="#1c1917">OTel + Langfuse / Phoenix / Grafana</text>
+<text x="1126" y="744" font-size="13.5" fill="#44403c">自己运维存储与告警</text>
+<rect x="1090" y="781" width="395" height="84" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.6"/>
+<circle cx="1110" cy="807" r="6" fill="#dc2626"/>
+<text x="1126" y="812" font-size="15" font-weight="700" fill="#1c1917">DLP、合规审计、影子 agent 发现</text>
+<text x="1126" y="840" font-size="13.5" fill="#44403c">自研或另买商业产品</text>
+<text x="40" y="255" font-size="17" font-weight="700" fill="#292524">Framework / Harness</text>
+<text x="40" y="351" font-size="17" font-weight="700" fill="#292524">Runtime</text>
+<line x1="40" y1="295" x2="250" y2="295" stroke="#d6d3d1" stroke-width="1"/>
+<text x="40" y="447" font-size="17" font-weight="700" fill="#292524">Gateway</text>
+<line x1="40" y1="391" x2="250" y2="391" stroke="#d6d3d1" stroke-width="1"/>
+<text x="40" y="543" font-size="17" font-weight="700" fill="#292524">注册与发现</text>
+<line x1="40" y1="487" x2="250" y2="487" stroke="#d6d3d1" stroke-width="1"/>
+<text x="40" y="639" font-size="17" font-weight="700" fill="#292524">身份</text>
+<line x1="40" y1="583" x2="250" y2="583" stroke="#d6d3d1" stroke-width="1"/>
+<text x="40" y="735" font-size="17" font-weight="700" fill="#292524">观测</text>
+<line x1="40" y1="679" x2="250" y2="679" stroke="#d6d3d1" stroke-width="1"/>
+<text x="40" y="831" font-size="17" font-weight="700" fill="#292524">安全合规</text>
+<line x1="40" y1="775" x2="250" y2="775" stroke="#d6d3d1" stroke-width="1"/>
+<rect x="270" y="909" width="30" height="20" rx="4" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+<text x="310" y="925" font-size="14" fill="#44403c">完整</text>
+<rect x="490" y="909" width="30" height="20" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1.6"/>
+<text x="530" y="925" font-size="14" fill="#44403c">有条件 / 部分</text>
+<rect x="710" y="909" width="30" height="20" rx="4" fill="#fee2e2" stroke="#dc2626" stroke-width="1.6"/>
+<text x="750" y="925" font-size="14" fill="#44403c">缺口 / 需自研</text>
+<text x="950" y="925" font-size="13" fill="#78716c">各格内容依据 Microsoft Learn、官方 Ignite 公告与各开源项目文档</text>
+</svg>
