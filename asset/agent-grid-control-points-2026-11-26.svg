@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 830" width="1400" height="830" font-family="PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif">
+  <style>
+    .t { font-size: 16px; fill: #1f2937; font-weight: 600; }
+    .b { font-size: 14px; fill: #374151; }
+    .s { font-size: 13px; fill: #4b5563; }
+    .lane { font-size: 13px; }
+    @keyframes flow { to { stroke-dashoffset: -36 } }
+    .fl { stroke-dasharray: 10 8; animation: flow 2.2s linear infinite; }
+  </style>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+  <rect width="1400" height="830" fill="#f3f8f6"/>
+  <text x="40" y="42" font-size="22" font-weight="700" fill="#0f172a">一次 agent 调用里，谁管哪一段</text>
+  <text x="40" y="68" class="s">从 agent 出发的五类目的地，各控制点能覆盖的流量范围不同</text>
+
+  <!-- lanes -->
+  <rect x="370" y="180" width="160" height="565" rx="12" fill="#16a34a" fill-opacity=".12" stroke="#16a34a" stroke-opacity=".5"/>
+  <text x="450" y="170" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">Agent Grid</text>
+  <rect x="590" y="180" width="180" height="195" rx="12" fill="#2563eb" fill-opacity=".10" stroke="#2563eb" stroke-opacity=".5"/>
+  <text x="680" y="170" text-anchor="middle" font-size="16" font-weight="700" fill="#1d4ed8">AI Gateway</text>
+  <rect x="590" y="420" width="180" height="195" rx="12" fill="#9333ea" fill-opacity=".10" stroke="#9333ea" stroke-opacity=".5"/>
+
+  <!-- agent 365 -->
+  <rect x="820" y="90" width="230" height="60" rx="10" fill="#fff" stroke="#94a3b8" stroke-dasharray="5 4"/>
+  <text x="836" y="114" class="t">Agent 365</text>
+  <text x="836" y="136" class="s">台账；把工具策略写进 AI Gateway</text>
+  <path d="M820,135 C 796,135 796,212 778,212" fill="none" stroke="#64748b" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <polygon points="780,206 770,212 780,218" fill="#64748b"/>
+
+  <!-- agent box -->
+  <rect x="60" y="370" width="200" height="180" rx="14" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="80" y="404" font-size="18" font-weight="700" fill="#0f172a">Agent</text>
+  <text x="80" y="432" class="b">ACI 沙箱或 AKS Pod</text>
+  <text x="80" y="456" class="b">已登记为 grid 成员</text>
+  <text x="80" y="488" class="s">身份：短期 SPIFFE 证书</text>
+  <text x="80" y="510" class="s">流量在沙箱外被截获</text>
+
+  <!-- flow lines -->
+  <g fill="none" stroke="#334155" stroke-width="2" class="fl" opacity=".75">
+    <path d="M260,460 C 310,460 300,220 350,220 H 1056" marker-end="url(#ah)"/>
+    <path d="M260,460 C 310,460 300,340 350,340 H 1056" marker-end="url(#ah)"/>
+    <path d="M260,460 H 1056" marker-end="url(#ah)"/>
+    <path d="M260,460 C 310,460 300,580 350,580 H 1056" marker-end="url(#ah)"/>
+    <path d="M260,460 C 310,460 300,700 350,700 H 1056" marker-end="url(#ah)"/>
+  </g>
+
+  <!-- lane notes in gaps -->
+  <g class="lane" fill="#166534" text-anchor="middle">
+    <text x="450" y="272">FQDN / URL 过滤</text>
+    <text x="450" y="292">MCP 工具级过滤</text>
+    <text x="450" y="392">TLS 检查</text>
+    <text x="450" y="412">Prompt Shields</text>
+    <text x="450" y="512">mTLS + SPIFFE</text>
+    <text x="450" y="532">首条命中，其余拒绝</text>
+    <text x="450" y="632">只管 ACI 沙箱组</text>
+    <text x="450" y="652">和 AKS 里的成员</text>
+  </g>
+  <g class="lane" fill="#1e40af" text-anchor="middle">
+    <text x="680" y="272">模型路由与计量</text>
+    <text x="680" y="292">MCP 工具策略</text>
+  </g>
+  <g class="lane" fill="#6b21a8" text-anchor="middle">
+    <text x="680" y="502" font-size="15" font-weight="700">APIM</text>
+    <text x="680" y="524">A2A 与业务 API</text>
+  </g>
+
+  <!-- destinations -->
+  <g>
+    <rect x="1060" y="185" width="300" height="70" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="1078" y="214" class="t">模型</text>
+    <text x="1078" y="238" class="s">Foundry、OpenAI、Anthropic</text>
+    <rect x="1060" y="305" width="300" height="70" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="1078" y="334" class="t">MCP 工具</text>
+    <text x="1078" y="358" class="s">按工具名放行或拦截</text>
+    <rect x="1060" y="425" width="300" height="70" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="1078" y="454" class="t">另一个 agent</text>
+    <text x="1078" y="478" class="s">A2A 调用</text>
+    <rect x="1060" y="545" width="300" height="70" rx="10" fill="#fff" stroke="#cbd5e1"/>
+    <text x="1078" y="574" class="t">Azure PaaS、企业 API</text>
+    <text x="1078" y="598" class="s">存储、数据库、内部服务</text>
+    <rect x="1060" y="665" width="300" height="70" rx="10" fill="#fff" stroke="#16a34a"/>
+    <text x="1078" y="694" class="t">外网与 SaaS</text>
+    <text x="1078" y="718" class="s">这一路只有 Agent Grid 管得到</text>
+  </g>
+
+  <!-- bottom notes -->
+  <text x="40" y="784" class="b">AI Gateway 和 APIM 只管改调了它们端点的流量；Agent Grid 在沙箱外截获成员的全部出站流量，agent 绕不过去</text>
+  <text x="40" y="810" class="b">Agent 365 不在请求路径上；目的地最终用 Entra Agent ID 的 token 授权，Agent Grid 的 SPIFFE 身份在预览期还没有接 Entra</text>
+</svg>
