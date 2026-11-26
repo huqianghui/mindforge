@@ -88,9 +88,9 @@ spec:
   nodeSelector:
     kubernetes.azure.com/kata-vm-isolation: "true"
   tolerations:
-    - key: kata
+    - key: sandbox                 # 对应建池时的 --node-taints sandbox=true:NoSchedule
       operator: Equal
-      value: enabled
+      value: "true"
       effect: NoSchedule
 ```
 
@@ -129,7 +129,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 
 **Foundry Hosted Agent** 是托管的 Runtime。你把用任意 framework 写的 agent 打成容器，平台负责镜像与版本、agent 身份、会话存储，并为每个会话启动一个 VM 级隔离的沙箱，沙箱在活跃、空闲、恢复之间切换；对外用 Responses、Invocations 或 Activity 协议提供端点。它的细节在 [Foundry Agent 三种形态对比与选型](../../../../Azure/Foundary-Agent/Foundry-Agent三种形态对比与选型.md) 里写过。
 
-**Agent 365** 是 Platform 层的控制面，今年 5 月 GA：统一的 agent 注册表，可以纳管微软自家、第三方和自建平台上的 agent；身份由 Entra Agent ID 提供（owner、sponsor、条件访问都能套上去），安全和合规接 Defender 与 Purview。它不运行 agent。
+**Agent 365** 是 Platform 层的控制面，今年 5 月 GA：统一的 agent 注册表，微软自家和接了 Agent 365 SDK 的自建 agent 能完整纳管，第三方平台上的 agent 目前只能只读同步进来（边界见 [系列 05](Agent基础设施系列05：完整Agent方案的三条路线.md)）；身份由 Entra Agent ID 提供（owner、sponsor、条件访问都能套上去），安全和合规接 Defender 与 Purview。它不运行 agent。
 
 这意味着**自建 runtime 和用 Agent 365 并不冲突**——跑在自己 AKS 上的 agent 照样可以申请 Entra Agent ID、登记进 Agent 365，让安全团队在同一张台账里看到它。客户真正要权衡的，是"Runtime 这一层要不要自己掌控"。下面是 Hosted Agent 提供的能力和开源自建的对应关系：
 
@@ -194,6 +194,8 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 - Runtime：Dapr Agents——把持久执行做进运行时（随 PoC 4 成文）
 - [Agent 基础设施系列 04：Framework 层与三层串联](../agent-framework/Agent基础设施系列04：Framework层与三层串联.md)——框架对比、三层接口与 PoC 路线
 - [Agent 基础设施系列 05：完整 Agent 方案的三条路线](Agent基础设施系列05：完整Agent方案的三条路线.md)——微软技术栈、混合与全开源的七层对照，Agent 365 的边界与跨云补齐
+- [Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别](../agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)——治理层放到跨平台范围上：三朵云与跨云方案
+- [Agent 基础设施系列 07：Blueprint 与 Agent Identity 的实例模式](../agent-identity/Agent基础设施系列07：Blueprint与Agent-Identity的实例模式.md)——身份层：blueprint、实例模式与 Copilot Studio、Foundry 的用法
 
 沙箱之外的会话平面、治理平面与 harness 编排，在 AKS 上按平面逐篇实践的部分另起了 [AKS Agent Runtime 系列](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)。
 

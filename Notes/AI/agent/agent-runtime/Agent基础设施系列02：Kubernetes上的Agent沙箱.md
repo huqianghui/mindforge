@@ -56,7 +56,7 @@ gVisor 是另一条路：不起 VM，而是用一个用户态内核拦截并实�
 
 ### 调度单位一定是 pod 吗
 
-在 Kubernetes 里，pod 是最小的调度单位，所以默认答案是"一个沙箱一个 pod"——agent-sandbox 的一个 `Sandbox` 就是一个 pod，kagent 目前也是一个 agent 对应一个 Pod、Service 和 ServiceAccount。但 agent 的特点是大量、短时、大部分时间空闲，社区已经在往更细的粒度走，思路有几种：
+在 Kubernetes 里，pod 是最小的调度单位，所以默认答案是"一个沙箱一个 pod"——agent-sandbox 的一个 `Sandbox` 就是一个 pod，kagent 默认的 Deployment 方式也是一个 agent 对应一个 Pod、Service 和 ServiceAccount。但 agent 的特点是大量、短时、大部分时间空闲，社区已经在往更细的粒度走，思路有几种：
 
 | 粒度 | 怎么做 | 隔离边界 | 代表 |
 |---|---|---|---|
@@ -106,6 +106,9 @@ kubectl get nodes -L kubernetes.azure.com/kata-vm-isolation
 
 有了墙，还得有人负责分配房间。agent 的工作区是单例、有状态、大部分时间空闲的，用 Deployment 和 StatefulSet 硬凑并不顺手。Kubernetes SIG Apps 的 agent-sandbox 专门做这件事，它本身不做隔离，只管理 pod，隔离交给 RuntimeClass。
 
+> [!NOTE]
+> 这篇写的是自己装 agent-sandbox。2026 年 11 月 AKS 推出了 [Agent Sandbox cluster extension](https://learn.microsoft.com/en-us/azure/aks/agent-sandbox-cluster-extension)（预览），把开源的 agent-sandbox 做成 AKS 的集群扩展来装和升级，运行时二选一：一种是节点池上的 Kata VM 隔离，节点容量和节点池你自己管；另一种是由 Azure Container Instances 承载的 serverless 沙箱，不用管节点。每次安装只支持一种运行时，处在预览阶段，不承诺 SLA。下面讲的 CRD、模板和 router 在扩展里是同一套。
+
 它的资源分工很清晰：
 
 - **Sandbox**（核心 CRD）：一个有稳定主机名、可选持久存储的单例 pod。
@@ -149,9 +152,9 @@ spec:
       nodeSelector:
         kubernetes.azure.com/kata-vm-isolation: "true"
       tolerations:
-        - key: kata
+        - key: sandbox               # 对应建池时的 --node-taints sandbox=true:NoSchedule
           operator: Equal
-          value: enabled
+          value: "true"
           effect: NoSchedule
       containers:
         - name: agent

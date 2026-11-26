@@ -21,14 +21,14 @@ description: 区别不在管一个还是管全部——Agent Platform 也管它�
 
 ## 一、Platform 管造和跑，fleet 管跨平台的运营
 
-[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层。Foundry、AgentCore、Gemini Enterprise Agent Platform 都是 platform：给你建 agent 的工具、跑 agent 的运行时，再给每个 agent 配上身份、观测和评估。一个平台托管几百个 agent 很正常，Foundry 有 Control Plane 的 fleet 监控，AgentCore 有组织级的 Registry，所以两者的区别**不在数量**。平台的治理范围止于它自己托管的 agent。
+先对齐一下用词。[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层，那里的 Platform 指**治理层**：企业怎么发现、授权、治理、运营这些 agent。市场上叫"agent platform"的产品，比如 Foundry、AgentCore、Gemini Enterprise Agent Platform，是另一回事：它们把建 agent 的工具（Framework）、跑 agent 的托管环境（Runtime）和管自家 agent 的那部分治理层打包在一起，给每个 agent 配上身份、观测和评估。这篇标题里的 Agent Platform 指的是这种产品。一个平台托管几百个 agent 很正常，Foundry 有 Control Plane 的 fleet 监控，AgentCore 有组织级的 Registry，所以两者的区别**不在数量**。平台的治理范围止于它自己托管的 agent。
 
 Fleet management 是一种能力，在两个范围上都存在：
 
 - **平台内**：平台管自己托管的那一群 agent，比如 Foundry Control Plane 管订阅里的 Foundry agent，LangSmith Fleet 管在它里面建出来的 agent。这一层是平台的本职，各家都在做。
 - **跨平台**：不管 agent 是哪个平台建的、跑在哪朵云上，把企业里所有 agent 当成一笔资产来运营，Agent 365、Lyzr、ServiceNow 做的是这一层。
 
-把 fleet management 说成"agent platform 的责任"，对平台内这一层是对的；企业真正缺的是跨平台那一层，这篇主要讲它。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
+把 fleet management 说成"agent platform 的责任"，对平台内这一层是对的；企业真正缺的是跨平台那一层，这篇主要讲它。换成系列 01 的说法，跨平台的 fleet management 就是治理层脱离任何一个产品、覆盖全部 agent 时的样子。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
 
 1. **清点**：一共有多少 agent，包括不是这个平台建的；
 2. **健康**：每个 agent 的错误、延迟、升级人工、质量漂移，能逐个看也能汇总看；
