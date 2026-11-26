@@ -10,7 +10,7 @@ tags:
   - gemini-enterprise-agent-platform
   - ai-gateway
   - multi-cloud
-description: Agent Platform 管的是把一个 agent 造好、跑好，fleet management 管的是一次改动能不能落到几百个 agent 上。分界有两条——能不能看到别家平台建的 agent，以及是否站在请求路径上。三朵云的出发点不同，微软从身份和台账出发、出了 Azure 只能只读同步，AWS 从版本和灰度出发、整个 fleet 换模型要自己写脚本，Google 从网络数据面出发、跨云网关还没上线。跨云方案分 SaaS 套件、中立控制面、云厂商外延和开源自建四类，共同的边界是一次改全部只对经过网关的流量成立；网关本身又分 LLM、AI、Agent 三档，A2A 放不放进网关，取决于把网关当成消费入口还是网络边界
+description: Agent Platform 管的是把一个 agent 造好、跑好，fleet management 管的是一次改动能不能落到几百个 agent 上。分界有两条——能不能看到别家平台建的 agent，以及是否站在请求路径上。三朵云的出发点不同，微软从身份和台账出发、出了 Azure 只能只读同步，AWS 从版本和灰度出发、整个 fleet 换模型要自己写脚本，Google 从网络数据面出发、跨云网关还没上线。跨云方案分 SaaS 套件、中立控制面、云厂商外延和开源自建四类，共同的边界是业务 agent 的一次改全部只对经过网关的流量成立，自带登录的 coding agent 则靠统一启动入口注入指令；网关本身又分 LLM、AI、Agent 三档，A2A 放不放进网关，取决于把网关当成消费入口还是网络边界
 ---
 
 # Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别
@@ -35,7 +35,13 @@ Fleet management 换了一个视角：把企业里所有 agent 当成一个整�
 
 健康这一项我会再加一层业务结果。错误率和漂移只能说明 agent 有没有出问题，回答不了"这几百个 agent 值不值"。ServiceNow AI Control Tower 的 Measure、Agent 365 的 Business Analytics 都在往这个方向补；垂直行业的厂商做得更直接，比如做金融研究外包的 Acuity Analytics，按工作流统计周转时间和准确率。
 
-"fleet"这个词在市场上还有另一种用法，要先分清。这篇讲的是管好企业已有的一群 agent；另一种是卖给你一群现成的 agent。Acuity Analytics 的 [Agent Fleet](https://www.acuityanalytics.com/agent-fleet/) 就属于后者：面向资管、私募、投行、信贷的一套 agent 工作流，每份输出由它的分析师复核，治理指的是单个工作流内的审计记录和人工复核，没有对其他平台 agent 的清点，也没有网关。客户说"agent fleet"时，先问清楚是哪一种。
+"fleet"这个词在市场上至少有三种用法，要先分清：
+
+- **管好企业已有的一群业务 agent**：这篇主要讲的就是这一种，Lyzr OpenController、Agent 365 都在这一格。
+- **卖给你一群现成的 agent**：Acuity Analytics 的 [Agent Fleet](https://www.acuityanalytics.com/agent-fleet/) 是面向资管、私募、投行、信贷的一套 agent 工作流，每份输出由它的分析师复核，治理指的是单个工作流内的审计记录和人工复核，没有对其他平台 agent 的清点，也没有网关。
+- **运营一群 coding agent 会话**：开源项目 [Agent Fleet](https://agent-fleet.org/) 把团队在用的 Claude Code、Codex CLI、GitHub Copilot CLI、OpenCode、Cursor CLI、Kiro 等原样跑在自己的服务器上，统一管会话、worktree、调度和用量，管的是开发者手边的工具层。第三节会单独讲它和业务 agent 的 fleet 有什么不同。
+
+客户说"agent fleet"时，先问清楚是哪一种。
 
 按这五个指标去看具体产品，会发现分界其实是两条：
 
@@ -139,7 +145,21 @@ Google 在 Next '26 把 Vertex AI 改成了 Gemini Enterprise Agent Platform，�
 
 **第四类：开源自建。** 数据面用 [agentgateway](../agent-gateway/agentgateway的定位与扩展机制.md)，一个代理同时管 LLM、MCP、A2A；目录和审批用 [agentregistry](../agent-registry/agentregistry的定位与部署实践.md)；身份用 SPIFFE/SPIRE 加 Keycloak。数据面天然跨云，缺的是 owner、到期回收、风险分级这层治理，要自己写。[系列 05](../agent-platform/Agent基础设施系列05：完整Agent方案的三条路线.md) 的混合方案就是这一类和微软控制面的组合。
 
-四类放在一起，共同的边界不变：**清点可以靠同步、扫描、连接器做到全量，触达只能靠流量经过网关**。所以选跨云方案，本质上是在选"把哪一个网关放到所有 agent 的路上"，以及"台账以谁为准"。
+对业务 agent 来说，四类放在一起，共同的边界不变：**清点可以靠同步、扫描、连接器做到全量，触达只能靠流量经过网关**。所以选跨云方案，本质上是在选"把哪一个网关放到所有 agent 的路上"，以及"台账以谁为准"。
+
+### coding agent 的 fleet：不经过网关的触达
+
+上面的结论有一个例外，就是 coding agent。前面提到的开源 [Agent Fleet](https://github.com/k-k1/agent-fleet)（Apache-2.0，个人项目，2026 年 6 月建仓库）是个很好的参照。它的部署**不经手 AI 提供方的凭据**：每个成员在控制台里用自己的账号登录各家 CLI，模型调用直接从 CLI 发到提供方，不经过它，也就没有 LLM 网关可言。但它照样做到了几件 fleet 的事。
+
+**触达靠统一启动入口。** 全局策略和每个成员的指令，在会话启动时按每种 CLI 自己的习惯写进去（Cursor 是唯一不接收的）；管理员还能定好成员启动会话时默认的模型和执行方式。这是配置面的触达：所有会话都从它这里启动，改一处就落到每一种 agent 上。代价是只管它启动的会话，也管不到单次请求，开发者在自己笔记本上直接跑的 Claude Code 不在范围内。
+
+**版本管的是上游 CLI。** 每个 CLI 都钉在验证过的版本上，自动升级要主动打开；每天有个监视任务发现新版本，就拿真实的 CLI（包括交互式 TUI）跑契约测试，"看到新版本"和"测过了"分开记录。这和 AgentCore 的版本管理正好相反：AgentCore 管的是你自己发布的 agent，这里管的是别人发布、你在用的 harness。Copilot、Claude Code 这类 CLI 几天一更，企业要统一管开发者工具时，这个做法很实用。
+
+**花费不把"没上报"当成免费。** token 按功能、agent、模型拆分统计，没有上报 token 的调用单独记为"未计量"，不算成 0。这条原则对所有 fleet 的花费统计都适用。
+
+另外几个设计也是 coding agent 场景特有的：额度用完时，被截断的一轮在额度恢复后自动续上，或者把整个任务移交给还有额度的另一种 agent；跨 agent 的共享记忆记录每条改动是哪个会话写的，可以回滚；网络这一层，AWS 部署可以选一个出站网关，记录每条连接属于哪个 workspace，并强制白名单。
+
+所以 coding agent 的 fleet 和业务 agent 的 fleet 抓手不同：业务 agent 的流量能收口到网关上，coding agent 自带登录，抓手在启动入口和运行环境。这和我在 [AKS Agent Runtime 系列 03](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列03：控制面怎么驱动编码Harness.md) 里写的控制面驱动编码 harness、[Orca 使用笔记](../../../tool/Orca/Orca使用笔记：多Agent编排与远程互动.md)里的多 agent 编排是同一个方向。企业那一侧，按 Lyzr 那篇文章的说法，Agent 365 借 Defender 和 Intune 发现本地 agent，OpenClaw 先支持、coding agent 排在后面；即便做到了，也只是发现。
 
 ### 网关管到哪一层：LLM、AI 还是 Agent
 
@@ -213,3 +233,4 @@ Lyzr 那篇文章最后提了一个验收办法，我觉得比看功能表有用
 - [ServiceNow's AI Control Tower Gets Enforcement Muscle](https://theaieconomy.substack.com/p/servicenow-ai-control-tower-knowledge-2026-enforcement)
 - [Salesforce Introduces the Trusted Enterprise AI Harness](https://www.salesforce.com/news/stories/enterprise-ai-harness)
 - [Agent Fleet: Agentic AI Platform for Financial Services](https://www.acuityanalytics.com/agent-fleet/)
+- [Agent Fleet: Self-Hosted Operations for AI Coding Agents](https://agent-fleet.org/)
