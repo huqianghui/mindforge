@@ -185,7 +185,7 @@ spec:
 
 ## 五、放到客户方案里
 
-- **今天上生产**：kagent 的 Agent（Deployment 运行时）加上 Kata 节点池，或者把 agent 做成普通服务、执行代码时去 agent-sandbox / OpenSandbox 的预热池借沙箱。两条路都是成熟组件。
+- **今天上生产**：kagent 的 Agent（Deployment 运行时）加上 Kata 节点池，或者把 agent 做成普通服务、执行代码时去 agent-sandbox / OpenSandbox 的预热池借沙箱。两条路都是成熟组件。不想自己装 agent-sandbox 的，AKS 现在有托管的 Agent Sandbox 集群扩展可选，但还是预览（见 [系列 02](Agent基础设施系列02：Kubernetes上的Agent沙箱.md)）。
 - **Substrate 先做 PoC**：动手之前，先从 trace 里量一下 agent 实际"忙"的时间占比——整套方案的收益都建立在这个数字上，如果 agent 大部分时间都在忙，超售就没有意义。然后再决定哪些状态必须跨挂起保留、用 MEMORY 还是 VOLUMES 范围、谁来调用挂起。
 - **Azure 上要补的**：S3 兼容的快照存储、在 AKS 上的安装路径、microVM 类别需要的嵌套虚拟化节点规格，都要自己验证。
 - **跟进 kagent 的新 API**：主线迁移到 Substrate 会带来破坏性变更，API 提案还在讨论中，现在基于 v0.10.x 写的 CRD 将来要迁移。

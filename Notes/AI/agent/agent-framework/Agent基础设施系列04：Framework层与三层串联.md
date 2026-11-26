@@ -129,7 +129,7 @@ harness 的用法也有三种，选之前先想清楚是哪一种：**交互式�
 三层可以分别选，但能不能换取决于层与层之间的接口：
 
 - **Framework ↔ Runtime**：容器镜像、调用协议（Responses、Invocations、A2A、ACP）、外置的状态存储。守住这三样，同一份 agent 代码可以在 Hosted Agent 和 AKS 上的 kagent 之间切换。
-- **Runtime ↔ Platform**：agent 身份（Entra Agent ID，见 [Entra Agent ID 的双层身份模型](../../../../Azure/Foundary-Agent/Entra-Agent-ID的双层身份模型.md)）、网关路由、OTel trace。不管 agent 跑在托管还是自建 runtime 上，都按这三样接入，最后在 Agent 365 里汇成同一张台账。
+- **Runtime ↔ Platform**：agent 身份（Entra Agent ID，见 [Entra Agent ID 的双层身份模型](../../../../Azure/Foundary-Agent/Entra-Agent-ID的双层身份模型.md) 和 [系列 07](../agent-identity/Agent基础设施系列07：Blueprint与Agent-Identity的实例模式.md)）、网关路由、OTel trace。不管 agent 跑在托管还是自建 runtime 上，都按这三样接入，最后在 Agent 365 里汇成同一张台账。
 
 反过来看，最容易被锁住的是平台托管 harness：它的 harness 和 runtime 是绑在一起的，换 runtime 就意味着重写 agent。这是给客户做选型时最值得提前讲清楚的一点。
 
