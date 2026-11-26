@@ -33,6 +33,10 @@ Fleet management 换了一个视角：把企业里所有 agent 当成一个整�
 
 前四个大多数平台都在补，第五个才是 fleet 和 platform 真正拉开差距的地方。
 
+健康这一项我会再加一层业务结果。错误率和漂移只能说明 agent 有没有出问题，回答不了"这几百个 agent 值不值"。ServiceNow AI Control Tower 的 Measure、Agent 365 的 Business Analytics 都在往这个方向补；垂直行业的厂商做得更直接，比如做金融研究外包的 Acuity Analytics，按工作流统计周转时间和准确率。
+
+"fleet"这个词在市场上还有另一种用法，要先分清。这篇讲的是管好企业已有的一群 agent；另一种是卖给你一群现成的 agent。Acuity Analytics 的 [Agent Fleet](https://www.acuityanalytics.com/agent-fleet/) 就属于后者：面向资管、私募、投行、信贷的一套 agent 工作流，每份输出由它的分析师复核，治理指的是单个工作流内的审计记录和人工复核，没有对其他平台 agent 的清点，也没有网关。客户说"agent fleet"时，先问清楚是哪一种。
+
 按这五个指标去看具体产品，会发现分界其实是两条：
 
 - **能不能看到别家建的 agent**。平台天然只认识自己托管的 agent；fleet 要求的是全量清点，包括别的云、别的 SaaS、开发者笔记本上的 coding agent。
@@ -208,3 +212,4 @@ Lyzr 那篇文章最后提了一个验收办法，我觉得比看功能表有用
 - [ServiceNow expands AI Control Tower](https://newsroom.servicenow.com/press-releases/details/2026/ServiceNow-expands-AI-Control-Tower-to-discover-observe-govern-secure-and-measure-AI-deployed-across-any-system-in-the-enterprise/default.aspx)
 - [ServiceNow's AI Control Tower Gets Enforcement Muscle](https://theaieconomy.substack.com/p/servicenow-ai-control-tower-knowledge-2026-enforcement)
 - [Salesforce Introduces the Trusted Enterprise AI Harness](https://www.salesforce.com/news/stories/enterprise-ai-harness)
+- [Agent Fleet: Agentic AI Platform for Financial Services](https://www.acuityanalytics.com/agent-fleet/)
