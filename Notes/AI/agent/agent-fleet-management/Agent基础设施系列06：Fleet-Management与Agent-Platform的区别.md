@@ -10,7 +10,7 @@ tags:
   - gemini-enterprise-agent-platform
   - ai-gateway
   - multi-cloud
-description: Agent Platform 管的是把一个 agent 造好、跑好，fleet management 管的是一次改动能不能落到几百个 agent 上。分界有两条——能不能看到别家平台建的 agent，以及是否站在请求路径上。三朵云的出发点不同，微软从身份和台账出发、出了 Azure 只能只读同步，AWS 从版本和灰度出发、整个 fleet 换模型要自己写脚本，Google 从网络数据面出发、跨云网关还没上线。跨云方案分 SaaS 套件、中立控制面、云厂商外延和开源自建四类，共同的边界是业务 agent 的一次改全部只对经过网关的流量成立，自带登录的 coding agent 则靠统一启动入口注入指令；网关本身又分 LLM、AI、Agent 三档，A2A 放不放进网关，取决于把网关当成消费入口还是网络边界
+description: 区别不在管一个还是管全部——Agent Platform 也管它托管的成百上千个 agent。Platform 管造和跑，治理范围止于自己托管的 agent；fleet management 管跨平台的运营，不论 agent 是谁建的、跑在哪。分界有两条——能不能看到别家平台建的 agent，以及是否站在请求路径上。三朵云的出发点不同，微软从身份和台账出发、出了 Azure 只能只读同步，AWS 从版本和灰度出发、整个 fleet 换模型要自己写脚本，Google 从网络数据面出发、跨云网关还没上线。跨云方案分 SaaS 套件、中立控制面、云厂商外延和开源自建四类，共同的边界是业务 agent 的一次改全部只对经过网关的流量成立，自带登录的 coding agent 则靠统一启动入口注入指令；网关本身又分 LLM、AI、Agent 三档，A2A 放不放进网关，取决于把网关当成消费入口还是网络边界
 ---
 
 # Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别
@@ -19,11 +19,11 @@ description: Agent Platform 管的是把一个 agent 造好、跑好，fleet man
 
 我和客户聊 agent 平台时，常把 fleet management 和 agent platform 混成一件事。这篇把两者分开，再看三朵云各自给了什么解法，以及跨云的方案能做到哪一步。
 
-## 一、Platform 管一个 agent，fleet 管全部 agent
+## 一、Platform 管造和跑，fleet 管跨平台的运营
 
-[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层。Foundry、AgentCore、Gemini Enterprise Agent Platform 都是 platform：给你建 agent 的工具、跑 agent 的运行时，再给每个 agent 配上身份、观测和评估。它关心的是**这一个 agent** 有没有造好、跑好。
+[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层。Foundry、AgentCore、Gemini Enterprise Agent Platform 都是 platform：给你建 agent 的工具、跑 agent 的运行时，再给每个 agent 配上身份、观测和评估。一个平台托管几百个 agent 很正常，Foundry 有 Control Plane 的 fleet 监控，AgentCore 有组织级的 Registry，所以两者的区别**不在数量**。平台的治理范围止于它自己托管的 agent，关心的是这些 agent 造得好不好、跑得稳不稳。
 
-Fleet management 换了一个视角：把企业里所有 agent 当成一个整体来运营。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
+Fleet management 换了一个视角：不管 agent 是哪个平台建的、跑在哪朵云上，把企业里所有 agent 当成一笔资产来运营。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
 
 1. **清点**：一共有多少 agent，包括不是这个平台建的；
 2. **健康**：每个 agent 的错误、延迟、升级人工、质量漂移，能逐个看也能汇总看；
