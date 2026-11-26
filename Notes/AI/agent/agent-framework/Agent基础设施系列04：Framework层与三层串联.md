@@ -31,6 +31,8 @@ description: 把之前分散写过的 Foundry Prompt Agent 与 Hosted Agent、Co
 > [!NOTE]
 > Foundry 的 Workflows 将于 2026-12-01 退役，官方指引是把多 agent 编排移回 Microsoft Agent Framework 的代码级 workflow。这也说明编排正在从"平台上的可视化产品"回到 framework 层。
 
+多 agent 怎么分工、委派、handoff（OpenAI 早期的 Swarm、LangGraph 的 swarm 库都属于这一类）是 framework 层的协作拓扑；一群 agent 怎么被创建、授权、审计和退役是平台层的运营模型，也就是 fleet。两者不互相替代，区别见 [系列 06](../agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)。
+
 ### Copilot Studio 的四种 harness 放在哪
 
 Copilot Studio 把"选 harness"做成了建 agent 时的显式选项（见 [Copilot Studio 系列 03](../../../../Azure/Copilot-Studio/Copilot-Studio系列03：四种Harness对比与选型.md)）。四种 harness 的定义都存在 Dataverse 里，但执行分在三套不同的服务上，所以创建后不能互转。放到这里的分类里，它们并不都在同一格（这是 2026-10 的四种口径；2026-11 起官方只列 Microsoft Copilot、Customer Conversation、Standard 三种，Microsoft Copilot harness 对应下表的 GitHub Copilot 一行，Copilot Chat 不再单列）：

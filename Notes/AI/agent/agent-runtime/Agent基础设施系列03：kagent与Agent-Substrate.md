@@ -129,6 +129,8 @@ kagent（CNCF Sandbox，由 Solo.io 发起）解决的是另一件事：**让平
 
 kagent controller 监听这些资源，准备 agent 运行、管理会话，对外暴露 A2A、MCP 和 gRPC 接口；agent 之间通过 A2A 互相调用，所以一个"团队"就是一张互相引用的 agent 图。引用 MCP server 时建议用 `toolNames` 显式列出要用的工具，而不是把一个 server 的所有工具都挂给 agent。
 
+这套做法就是用 Kubernetes 管 Pod 的方式管 agent：用 CRD 声明 agent 的期望状态，由 controller 去落实和维持。Kubernetes 本身只管 Pod 和节点，不理解 agent 的身份、工具权限和会话，kagent 这类项目补的正是这一层；它管的仍是一个集群里的一群 agent，跨平台的 fleet 管理见 [系列 06](../agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)。
+
 ### 三种运行方式
 
 ![kagent 的三种运行方式|900](../../../../asset/kagent-runtimes-2026-11-02.svg)

@@ -21,9 +21,14 @@ description: 区别不在管一个还是管全部——Agent Platform 也管它�
 
 ## 一、Platform 管造和跑，fleet 管跨平台的运营
 
-[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层。Foundry、AgentCore、Gemini Enterprise Agent Platform 都是 platform：给你建 agent 的工具、跑 agent 的运行时，再给每个 agent 配上身份、观测和评估。一个平台托管几百个 agent 很正常，Foundry 有 Control Plane 的 fleet 监控，AgentCore 有组织级的 Registry，所以两者的区别**不在数量**。平台的治理范围止于它自己托管的 agent，关心的是这些 agent 造得好不好、跑得稳不稳。
+[系列 01](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md) 把 agent 基础设施分成 Framework、Runtime、Platform 三层。Foundry、AgentCore、Gemini Enterprise Agent Platform 都是 platform：给你建 agent 的工具、跑 agent 的运行时，再给每个 agent 配上身份、观测和评估。一个平台托管几百个 agent 很正常，Foundry 有 Control Plane 的 fleet 监控，AgentCore 有组织级的 Registry，所以两者的区别**不在数量**。平台的治理范围止于它自己托管的 agent。
 
-Fleet management 换了一个视角：不管 agent 是哪个平台建的、跑在哪朵云上，把企业里所有 agent 当成一笔资产来运营。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
+Fleet management 是一种能力，在两个范围上都存在：
+
+- **平台内**：平台管自己托管的那一群 agent，比如 Foundry Control Plane 管订阅里的 Foundry agent，LangSmith Fleet 管在它里面建出来的 agent。这一层是平台的本职，各家都在做。
+- **跨平台**：不管 agent 是哪个平台建的、跑在哪朵云上，把企业里所有 agent 当成一笔资产来运营，Agent 365、Lyzr、ServiceNow 做的是这一层。
+
+把 fleet management 说成"agent platform 的责任"，对平台内这一层是对的；企业真正缺的是跨平台那一层，这篇主要讲它。Lyzr 那篇文章用五个指标来衡量，我觉得概括得不错：
 
 1. **清点**：一共有多少 agent，包括不是这个平台建的；
 2. **健康**：每个 agent 的错误、延迟、升级人工、质量漂移，能逐个看也能汇总看；
@@ -75,6 +80,12 @@ Lyzr 自己也承认这个边界：一次改全部只对流量经过它网关的
 - **运营一群 coding agent 会话**：开源项目 [Agent Fleet](https://agent-fleet.org/) 把团队在用的 Claude Code、Codex CLI、GitHub Copilot CLI、OpenCode、Cursor CLI、Kiro 等原样跑在自己的服务器上，统一管会话、worktree、调度和用量，管的是开发者手边的工具层。第三节会单独讲它和业务 agent 的 fleet 有什么不同。
 
 客户说"agent fleet"时，先问清楚是哪一种。
+
+这个词本身也能说明问题。fleet 读 /fliːt/，来自古英语的 flēot（船），和 flēotan（漂浮）同源（[Wiktionary: fleet](https://en.wiktionary.org/wiki/fleet)），本义是一支舰队，后来扩展到车队、机队，再到 IT 里的服务器群、Intune 管的终端设备群。这些用法的共同点**不是数量多，而是被统一管理**：一百台各管各的服务器不叫 fleet，一百台由同一个平台统一开通、配置、打补丁、扩缩、退役的服务器才叫。agent fleet 沿用的是同一层意思。
+
+在 Kubernetes 里，fleet 也不是"一组 Pod"。Kubernetes 没有 `PodFleet` 这种资源，一组 Pod 由 Deployment、ReplicaSet、StatefulSet 这些控制器管；一组节点对应的是 AKS 的 node pool。Kubernetes 语境里说 fleet，通常指比单个集群更高一层的多集群管理，比如 [Azure Kubernetes Fleet Manager](https://learn.microsoft.com/en-us/azure/kubernetes-fleet/) 把多个 AKS 和 Arc 集群当成一个整体，统一编排升级、把资源下发到各成员集群。所以"agent runtime"和"agent fleet runtime"也不是一个东西换了新名字：前者管一个 agent 怎么跑，后者管一群 agent 怎么被开通、运营和退役；"agent fleet runtime"目前也不是一个有统一定义的标准术语，不同厂商会叫它 agent platform、fleet manager 或 control plane。
+
+另一个常被拿来对比的词是 swarm。OpenAI 早期的 Swarm 和 LangGraph 的 swarm 库讲的是多个 agent 怎么分工、委派、handoff，描述的是**协作拓扑**，属于 framework 层；fleet 描述的是一群 agent 怎么被创建、共享、授权和审计，是**运营模型**，属于平台层。两者不互相替代：一个 fleet 里可以有几个 agent 以 swarm 的方式协作，也可以有完全独立运行、从不参与协作的 agent。
 
 微软的文档里还有一个更窄的说法。Entra Agent ID 把 [agent fleet](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet) 定义为"跑在同一个云运行时上的一组 agent"，每个 agent 有自己的 agent identity。这是**身份层的专门含义**：Entra 的职责是身份，所以它只从身份的角度看 fleet，讨论的是一份凭据怎么派生一组互不越权的身份，跨平台清点、花费、一次改全部都不在它的范围里。
 
