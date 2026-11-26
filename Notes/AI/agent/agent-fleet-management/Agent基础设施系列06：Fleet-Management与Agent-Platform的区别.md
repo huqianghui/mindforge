@@ -105,6 +105,28 @@ Lyzr 自己也承认这个边界：一次改全部只对流量经过它网关的
 
 所以微软的形状是：**清点最全，身份最强，但出了 Azure 就只剩看得见**。花费这一项，Agent 365 Business Analytics 刚进 Frontier 预览，能看用量和花费预测；真正能拦住花费的，是 AI Gateway 上的成本上限，它只管经过网关的流量。
 
+#### Azure 侧的 fleet 运营台：Foundry Control Plane
+
+Agent 365 之外，Azure 上还有一层容易和注册表混淆的东西：Foundry Control Plane。它的 [fleet 监控](https://learn.microsoft.com/en-us/azure/foundry/control-plane/monitoring-across-fleet) 在 Operate 下面，自动发现当前订阅里的 Foundry agent（prompt agent、workflow、hosted agent）、Azure SRE Agent 和 Logic Apps 的 agent loop，给出活跃 agent 数、运行完成率、错误趋势、token 用量和估算花费，能从 fleet 级指标一路钻到单个 agent 的 trace，对 Foundry agent 还能启停。前提是 agent 按 OpenTelemetry 的 GenAI 语义约定把遥测送进 Application Insights，没接的 agent 既没有健康指标也没有花费数据。
+
+它和 Agent 365 的分工是：
+
+- **范围不同**：Control Plane 按订阅、按 RBAC 汇总，不同的人看到的 agent 不一样，Reader 只能看，Contributor 才能启停；Agent 365 和 Entra 的 agent 清单是整个 tenant 的。
+- **职责不同**：Control Plane 管 Azure 上 agent 的健康、花费和排障，相当于 AWS 的 AgentCore 控制台加 CloudWatch；没有审批流，也不是给 agent 互相查找用的目录。企业的台账还是 Agent 365。
+
+Control Plane 最近有一个变化，正好落在"看得见"和"管得住"的分界上。原来的 custom agent 是让客户端改调 AI Gateway 的地址，由网关代理流量，所以 Foundry 能拦截请求、封禁 agent；这个机制已经不能新建，2027-05-07 弃用。替代它的 [external agent](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent)（预览）让 agent 保留自己的端点，只把带 `gen_ai.agent.id` 的 OpenTelemetry span 发给 Foundry，Foundry 只存注册元数据，不托管、不代理、不调用，**也就没有基于网关的封禁**。对外部 agent，Foundry 从"能拦住"退回到"看得见、能评估"，AI Gateway 回到只管模型和 MCP 工具。
+
+external agent 可以跑在任何云和本地，所以一个可行的做法是**建一个 hub 订阅，当观测和评估的中心**：在 hub 里建一个 Foundry project 并连上 Application Insights，各处自建的 agent 把 span 发过来，再逐个注册成 external agent。这样能在一处看到清单、trace，并直接在 trace 上跑评估。但它的边界要说清楚：
+
+- **管不住**：没有封禁和启停，删除注册也不影响 agent 运行。
+- **原生 Foundry agent 搬不过来**：别的订阅里的 Foundry agent 在各自订阅里被发现，Control Plane 一次只看选中的订阅；能集中的只是遥测，多个 project 可以把 trace 送到同一个 Application Insights。
+- **别人托管的 agent 进不来**：要在 agent 代码里接 OTel，Agentforce、Copilot Studio、Bedrock 托管的 agent 改不了代码，还得走 Agent 365 的 connected platforms。
+- **花费看不全**：Control Plane 的花费来自所在订阅的 Cost Management，external agent 调的是别处的模型，钱不会出现在 hub 订阅里。这一点是我按文档推断的，没有实测。
+- **敏感内容会集中**：打开消息内容采集后，各团队 agent 的提示词和回复都进了 hub 的 Application Insights，数据驻留、Reader 权限、要不要关掉内容采集，都要先定。
+- **还是预览**：人工评估、把 trace 转成评估数据集、AI 红队测试，目前都不支持 external agent。
+
+所以在 Azure 上，我会把三件事分开放：**台账在 Agent 365，观测和评估在 hub project，管控在 hub 上的 AI Gateway**。每一层只做自己那件事。
+
 ### AWS：从版本和灰度出发
 
 AWS 在"版本"这一项上做得最扎实。AgentCore Runtime 每次更新都会生成一个完整、自包含的新版本，`DEFAULT` endpoint 自动指向最新版本，你自己建的 `PROD` 之类的 endpoint 则停在你指定的版本上，不会被更新带走（[AgentCore Runtime versioning and endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agent-runtime-versioning.html)）。Well-Architected 的 Agentic AI Lens 建议用 endpoint 的权重路由做灰度：新版本先放 5%~10% 的流量，看质量指标，干净了再放量，并配自动的放行门槛（[AGENTOPS02-BP03](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp03.html)）。
@@ -140,7 +162,7 @@ Google 在 Next '26 把 Vertex AI 改成了 Gemini Enterprise Agent Platform，�
 | 指标 | 微软 | AWS | Google |
 |---|---|---|---|
 | 清点 | 注册表 GA；他云 agent 只读、手动同步 | Registry GA；自动发现只限 AgentCore | Registry GA；外部 agent 手工登记，跨云自动注册 Limited Preview |
-| 健康 | Agent 365 活动视图、Foundry 评估；外部 agent 要接 SDK | CloudWatch 按版本出指标（Lens 推荐做法） | online monitor 持续评估漂移 |
+| 健康 | Foundry Control Plane 按订阅做 fleet 监控；外部 agent 要接 OTel 或 SDK | CloudWatch 按版本出指标（Lens 推荐做法） | online monitor 持续评估漂移 |
 | 版本 | 没有 fleet 级灰度 | 不可变版本 + endpoint 权重灰度，最完整 | 没查到与 AgentCore endpoint 权重灰度对应的机制 |
 | 花费 | AI Gateway 成本上限（软上限）；Business Analytics 预览 | 标签做成本分摊，没有按 agent 拦截 | token 预算按 agent 归属，用完返回 429 |
 | 触达 | 工具策略经网关下发；只管经过 AI Gateway 的流量 | 要自己写脚本逐个 runtime 推 | 网关上的策略对所有经过它的 agent 生效 |
@@ -253,5 +275,8 @@ Lyzr 那篇文章最后提了一个验收办法，我觉得比看功能表有用
 - [Salesforce Introduces the Trusted Enterprise AI Harness](https://www.salesforce.com/news/stories/enterprise-ai-harness)
 - [Agent Fleet: Agentic AI Platform for Financial Services](https://www.acuityanalytics.com/agent-fleet/)
 - [Agent Fleet: Self-Hosted Operations for AI Coding Agents](https://agent-fleet.org/)
+- [Monitor AI agent fleet health and performance](https://learn.microsoft.com/en-us/azure/foundry/control-plane/monitoring-across-fleet)
+- [Manage agents at scale in Microsoft Foundry Control Plane](https://learn.microsoft.com/en-us/azure/foundry/control-plane/how-to-manage-agents)
+- [Register external agents for observability and evaluation](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/register-external-agent)
 - [Plan an agent fleet on a shared runtime](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet)
 - [Agent identity blueprints in Microsoft Entra Agent ID](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint)
