@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 820" width="1360" height="820" font-family="PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif">
+  <style>
+    .t { font-size: 15px; fill: #2b2b2b; }
+    .s { font-size: 13px; fill: #6b6b6b; }
+    .ax { font-size: 14px; fill: #444; }
+    .h { font-size: 15px; fill: #8a5a00; font-weight: 600; }
+    @keyframes breathe { 0%,100% { opacity: .35 } 50% { opacity: .8 } }
+    .zone { animation: breathe 4s ease-in-out infinite; }
+    @keyframes dash { to { stroke-dashoffset: -40 } }
+    .flow { animation: dash 2.5s linear infinite; }
+  </style>
+  <rect width="1360" height="820" fill="#faf8f3"/>
+
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#1f1f1f">看得见 vs 管得住：各家 fleet 方案的位置</text>
+  <text x="40" y="70" class="s">横轴是能覆盖多大范围的 agent，纵轴是控制有多深；一次改动落到全部 agent，只在右上角成立</text>
+
+  <!-- fleet zone -->
+  <rect class="zone" x="880" y="96" width="450" height="214" rx="14" fill="#ffe7b3"/>
+  <rect x="880" y="96" width="450" height="214" rx="14" fill="none" stroke="#e0a43a" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="896" y="122" class="h">右上角：跨云且在请求路径上</text>
+
+  <!-- grid -->
+  <g stroke="#e4dfd3" stroke-width="1">
+    <line x1="170" y1="200" x2="1330" y2="200"/>
+    <line x1="170" y1="430" x2="1330" y2="430"/>
+    <line x1="170" y1="600" x2="1330" y2="600"/>
+  </g>
+  <!-- axes -->
+  <line x1="170" y1="680" x2="1330" y2="680" stroke="#555" stroke-width="1.5"/>
+  <line x1="170" y1="680" x2="170" y2="96" stroke="#555" stroke-width="1.5"/>
+  <polygon points="1330,674 1344,680 1330,686" fill="#555"/>
+  <polygon points="164,96 170,82 176,96" fill="#555"/>
+
+  <text x="156" y="205" class="ax" text-anchor="end">请求路径上执行</text>
+  <text x="156" y="435" class="ax" text-anchor="end">注册 + 审批</text>
+  <text x="156" y="605" class="ax" text-anchor="end">只读台账</text>
+  <text x="182" y="92" class="ax" font-weight="600">控制深度</text>
+
+  <text x="300" y="704" class="ax" text-anchor="middle">只管自家平台</text>
+  <text x="620" y="704" class="ax" text-anchor="middle">自家云内跨运行时</text>
+  <text x="1000" y="704" class="ax" text-anchor="middle">跨云、跨厂商</text>
+  <text x="1330" y="728" class="ax" text-anchor="end" font-weight="600">覆盖范围</text>
+
+  <!-- drop-off arrow: leaving home cloud -->
+  <path class="flow" d="M305,250 C 380,560 700,640 962,604" fill="none" stroke="#3b6fd8" stroke-width="2" stroke-dasharray="8 6" opacity=".75"/>
+  <polygon points="960,597 974,604 961,611" fill="#3b6fd8" opacity=".75"/>
+  <text x="330" y="560" class="s" fill="#3b6fd8">出了自家云，控制深度掉到只读</text>
+
+  <!-- Microsoft in-house -->
+  <circle cx="300" cy="230" r="9" fill="#3b6fd8"/>
+  <text x="316" y="226" class="t">Agent 365 + AI Gateway</text>
+  <text x="316" y="244" class="s">M365、Foundry、Copilot Studio 内</text>
+
+  <!-- AWS runtime -->
+  <circle cx="300" cy="310" r="9" fill="#e8892b"/>
+  <text x="316" y="306" class="t">AgentCore Runtime</text>
+  <text x="316" y="324" class="s">不可变版本 + endpoint 权重灰度</text>
+
+  <!-- AWS registry -->
+  <circle cx="620" cy="440" r="9" fill="#e8892b"/>
+  <text x="636" y="446" class="t">AWS Agent Registry</text>
+  <text x="636" y="464" class="s">审批流；自动发现只限 AgentCore</text>
+
+  <!-- Google in-cloud -->
+  <circle cx="600" cy="205" r="9" fill="#2e9d6a"/>
+  <text x="616" y="226" class="t">Google Agent Gateway</text>
+  <text x="616" y="244" class="s">token 预算、A2A 都过网关</text>
+
+  <!-- Google cross-cloud (coming soon) -->
+  <circle cx="900" cy="162" r="9" fill="#faf8f3" stroke="#2e9d6a" stroke-width="2.5" stroke-dasharray="4 3"/>
+  <text x="916" y="158" class="t">Google 跨云 Agent Gateway</text>
+  <text x="916" y="176" class="s">coming soon，Envoy 跑在你的集群</text>
+
+  <!-- open source -->
+  <circle cx="900" cy="262" r="9" fill="#2a8f9e"/>
+  <text x="916" y="258" class="t">开源自建：agentgateway + agentregistry</text>
+  <text x="916" y="276" class="s">数据面统一，治理层自己写</text>
+
+  <!-- Salesforce -->
+  <circle cx="840" cy="345" r="9" fill="#faf8f3" stroke="#8a55c9" stroke-width="2.5" stroke-dasharray="4 3"/>
+  <text x="824" y="341" class="t" text-anchor="end">Salesforce AI Control Plane</text>
+  <text x="824" y="359" class="s" text-anchor="end">FY28（2027-02 起）开始推出</text>
+
+  <!-- ServiceNow -->
+  <circle cx="980" cy="385" r="9" fill="#8a55c9"/>
+  <text x="996" y="381" class="t">ServiceNow AI Control Tower</text>
+  <text x="996" y="399" class="s">连接器发现 + 停用；不管发布</text>
+
+  <!-- Agent 365 connected platforms -->
+  <circle cx="980" cy="604" r="9" fill="#3b6fd8"/>
+  <text x="964" y="634" class="t" text-anchor="end">Agent 365 connected platforms</text>
+  <text x="964" y="652" class="s" text-anchor="end">他云 agent 只读同步、手动触发</text>
+
+  <!-- Lyzr bar -->
+  <text x="1318" y="142" class="t" text-anchor="end" font-weight="600">Lyzr OpenController</text>
+  <line x1="1290" y1="205" x2="1290" y2="600" stroke="#7a7a7a" stroke-width="6" stroke-linecap="round" opacity=".35"/>
+  <circle cx="1290" cy="205" r="9" fill="#7a7a7a"/>
+  <circle cx="1290" cy="600" r="9" fill="#faf8f3" stroke="#7a7a7a" stroke-width="2.5"/>
+  <text x="1274" y="200" class="s" text-anchor="end">经网关</text>
+  <text x="1274" y="216" class="s" text-anchor="end">可改</text>
+  <text x="1274" y="590" class="s" text-anchor="end">只登记</text>
+  <text x="1274" y="606" class="s" text-anchor="end">只能看</text>
+
+  <!-- legend -->
+  <g transform="translate(40,760)">
+    <circle cx="8" cy="0" r="7" fill="#3b6fd8"/><text x="22" y="5" class="s">微软</text>
+    <circle cx="80" cy="0" r="7" fill="#e8892b"/><text x="94" y="5" class="s">AWS</text>
+    <circle cx="152" cy="0" r="7" fill="#2e9d6a"/><text x="166" y="5" class="s">Google</text>
+    <circle cx="240" cy="0" r="7" fill="#8a55c9"/><text x="254" y="5" class="s">SaaS 套件</text>
+    <circle cx="340" cy="0" r="7" fill="#2a8f9e"/><text x="354" y="5" class="s">开源</text>
+    <circle cx="410" cy="0" r="7" fill="#7a7a7a"/><text x="424" y="5" class="s">中立控制面</text>
+    <circle cx="530" cy="0" r="7" fill="#faf8f3" stroke="#555" stroke-width="2" stroke-dasharray="3 2"/><text x="544" y="5" class="s">虚线 = 预览或规划中</text>
+    <text x="720" y="5" class="s">位置是按公开文档的定性判断（截至 2026-11），不是评分</text>
+  </g>
+</svg>

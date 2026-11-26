@@ -209,6 +209,7 @@ blueprint 上的联合凭据大致长这样（字段含义与普通应用注册�
 ## 相关阅读
 
 - [Agent 基础设施系列 01：三层划分与自建路线](Agent基础设施系列01：三层划分与自建路线.md)——Framework、Runtime、Platform 的划分
+- [Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别](../agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)——把全部 agent 当成一个整体来管，三朵云与跨云方案的差异
 - [Agent 基础设施系列 03：kagent 与 Agent Substrate](../agent-runtime/Agent基础设施系列03：kagent与Agent-Substrate.md)——开源运行时
 - [Agent 基础设施系列 04：Framework 层与三层串联](../agent-framework/Agent基础设施系列04：Framework层与三层串联.md)——三层之间的接口
 - [agentgateway 的定位与扩展机制](../agent-gateway/agentgateway的定位与扩展机制.md)——开源网关这一层
