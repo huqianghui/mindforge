@@ -79,6 +79,10 @@
 
 - [Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别](Notes/AI/agent/agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)
 
+### Notes/AI/agent/agent-identity
+
+- [Agent 基础设施系列 07：Blueprint 与 Agent Identity 的实例模式](Notes/AI/agent/agent-identity/Agent基础设施系列07：Blueprint与Agent-Identity的实例模式.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)
