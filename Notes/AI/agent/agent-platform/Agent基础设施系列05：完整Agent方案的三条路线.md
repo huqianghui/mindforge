@@ -35,7 +35,7 @@ description: 一个完整的 agent 方案要七层——Framework 或 Harness、
 |---|---|---|
 | Framework / Harness | Microsoft Agent Framework（MAF，开源，.NET 与 Python）；Copilot Studio 自带的几种 harness；Foundry 也接受 LangGraph、Claude Agent SDK 等 | MAF 1.0 于 2026-04-02 GA |
 | Runtime | Foundry Hosted Agent（每会话沙箱、缩到零）、Prompt Agent、Copilot Studio；也可以自己跑在 AKS 或 ACA 上 | Hosted Agent 已 GA |
-| Gateway | Azure AI Gateway（模型与 MCP 工具）、APIM（A2A 与业务 API）、Application Gateway for Containers（AKS 内的推理路由）、Entra Global Secure Access（网络层） | AI Gateway 于 11-17 GA |
+| Gateway | Azure AI Gateway（模型与 MCP 工具）、APIM（A2A 与业务 API）、Application Gateway for Containers（AKS 内的推理路由）、Entra Global Secure Access（网络层） | AI Gateway 于 11-17 GA，2027-01-01 起收费 |
 | 注册与发现 | Agent 365 注册表做企业台账；agent 之间的运行时发现靠 A2A Agent Card | 注册表已 GA |
 | 身份 | Entra Agent ID：blueprint、agent identity、owner 与 sponsor、Conditional Access、OBO | 已 GA |
 | 观测 | Microsoft OpenTelemetry Distro → Azure Monitor / Application Insights，Foundry 的 tracing 与评估，Agent 365 的活动视图 | 外部 agent 的观测与评估已 GA |
@@ -53,11 +53,25 @@ Agent 365 的注册表是 Microsoft 365 管理中心里的 agent 台账。Micros
 
 ### 网关拆在三个产品里
 
-- **Azure AI Gateway**：预览阶段是 APIM 的一个 SKU（`Microsoft.ApiManagement/service`，SKU 为 `AIGateway`）。2026-10-14 起换成独立的资源类型 `Microsoft.ApiManagement/aigateways`，两者只共用资源提供程序；旧 SKU 的资源 2027-01-15 之后会被删除，资源类型是资源 ID 的一部分，不能原地转换，只能新建再迁移。它管模型（统一别名、路由与失败切换、成本上限）和 MCP 工具（联合、把 OpenAPI 和 connector 转成 MCP），按请求数计费。
+- **Azure AI Gateway**：预览阶段是 APIM 的一个 SKU（`Microsoft.ApiManagement/service`，SKU 为 `AIGateway`）。2026-10-14 起换成独立的资源类型 `Microsoft.ApiManagement/aigateways`，两者只共用资源提供程序；旧 SKU 的资源 2027-01-15 之后会被删除，资源类型是资源 ID 的一部分，不能原地转换，只能新建再迁移。它管模型（统一别名、路由与失败切换、成本上限）和 MCP 工具（联合、把 OpenAPI 和 connector 转成 MCP），细节见下面单独一节。
 - **APIM**：继续负责完整的 API 生命周期，经典与 v2 tier 保留原有的 AI 网关能力。A2A agent API 在 APIM 里于 2026-06 GA，AI Gateway 的 GA 公告里没有提到 A2A。
 - **Application Gateway for Containers（AGC）**：Application Gateway 家族的一员，是 Azure 上独立的资源，L7 数据面由 Azure 托管、跑在集群外；集群里跑 ALB Controller，把 Gateway、HTTPRoute、InferencePool 翻译成 AGC 的配置，AKS 提供托管的 add-on 来装它。它实现了 Gateway API Inference Extension，自带按请求体取模型名的 body-based router，InferencePool 和 EPP 由你自己部署在集群里。它只服务 AKS。
 
 A2A 放在 APIM 而不是 AI Gateway，从职责上不好跟客户讲。我用的一个解释框架是**按方向分**：APIM 在发布侧，把自己的能力当成产品发布出去——业务 API、REST 转成的 MCP、通过 Agent Card 暴露的 agent 都算；AI Gateway 在消费侧，管应用和 agent 去调用哪些模型、哪些工具。这个框架只能降低解释成本，并不严密：agent A 调 agent B，对 A 来说是消费，却要走 APIM；MCP 两边都有。Microsoft 自己的说法只是"业务 API 留在 APIM，模型与工具流量用 AI Gateway，两者可以并存"，没有解释 A2A 为什么留在 APIM。
+
+### AI Gateway GA 后跟方案设计相关的几点
+
+**后端不限于 Azure。** 模型可以来自 Foundry、Azure OpenAI、OpenAI、Anthropic、Amazon Bedrock、Google Vertex AI 或任意 OpenAI 兼容端点，应用按自己定义的别名调用，换模型不改代码；对外提供 OpenAI 兼容接口和 Anthropic Messages API 两种调用格式。路由按优先级、权重或自定义条件，Model Router 按成本或质量自动选模型还是预览。MCP 支持多个规范版本，包括 2026-07 的最新版。
+
+**身份与凭据留在网关。** 调用方用 Entra ID 或网关访问密钥认证，内置角色控制谁能用哪些模型和工具，提供方密钥和工具凭据不进应用代码；工具调用支持 OBO，让工具以登录用户自己的权限执行。
+
+**观测不绑定 Azure Monitor。** 每次模型和工具调用记录调用方、目标、token 和结果，能追到具体 agent，按 OpenTelemetry 导出到 Application Insights、Datadog、Splunk、Grafana Cloud 或任意 OTLP 端点。成本按用户、团队、应用、agent、提供方统计；成本上限是在估算花费达到预算后拒绝新请求，算的是估算值，和其他网关一样是软上限。
+
+**网络隔离多数还在预览。** 入站 Private Link、访问私有后端的 VNet 集成都是预览，GA 时可用的是 IP 过滤和托管身份。
+
+**和 Foundry 是 hub-and-spoke。** 平台团队在网关上定一次规则，各团队继续在自己的 Foundry project 里开发；多个 project 可以共用一份部署（包括 PTU），失败时切到另一个 Foundry 资源或其他提供方。Foundry 的 Prompt Agent 通过 model connection 使用网关上的模型，不用改代码，这一项是预览。
+
+**计费与区域。** 每个网关每月前 10,000 次请求免费；超过之后按网关收 500 美元每月（按小时计），含 1,000 万次请求；再往上每百万次 20 美元。2027-01-01 起才开始实际收费，各区域的确切价格到时公布。GA 时开放 17 个区域，美国、加拿大、欧洲、澳大利亚、日本、东南亚，列表里没有中国区。按网关收固定月费意味着拆得越细越贵，一个平台团队管一个或少数几个网关更划算。
 
 ### Agent 365 SDK 不绑定 Copilot Studio
 
@@ -88,12 +102,12 @@ Ignite 上还宣布同步进来的 agent 会自动获得 Entra Agent ID，覆盖
 
 ### 策略只在流量经过微软组件时才生效
 
-Agent 365 能管的，是经过 AI Gateway、APIM、Global Secure Access 或接了 SDK 的那部分。AWS 上的 agent 直接调 Bedrock 上的模型，这条流量不经过任何微软组件，Agent 365 只能从同步过来的元数据和活动数据里看到它，管不到具体的请求。
+Agent 365 能管的，是经过 AI Gateway、APIM、Global Secure Access 或接了 SDK 的那部分。AWS 上的 agent 直接调 Bedrock 上的模型，这条流量不经过任何微软组件，Agent 365 只能从同步过来的元数据和活动数据里看到它，管不到具体的请求。AI Gateway 的后端可以是 Bedrock 和 Vertex AI，所以要把这条流量纳入治理，可以让 agent 改调 AI Gateway、由网关再转给 Bedrock；代价是请求多绕一趟 Azure 区域，延迟和跨云出站流量要先评估。
 
 ### 其他几处
 
 - **托管运行时只在 Azure 上**：Hosted Agent 和 Copilot Studio 都没有 AWS、GCP 上的部署形态。
-- **有条件的能力**：工具调用的威胁防护只对注册在 AI Gateway 上的 MCP server 生效，而且需要委托的用户 token，不支持 app-only 的 S2S 调用；在 APIM v2 上，Agent 365 只能列出 MCP server、整台封禁或解封，不能精确到单个工具。
+- **有条件的能力**：工具调用的威胁防护（Defender 与 Purview 检查工具调用和返回结果，GA 公告里仍标预览）只对注册在 AI Gateway 上的 MCP server 生效，而且需要委托的用户 token，不支持 app-only 的 S2S 调用；在 APIM v2 上，Agent 365 只能列出 MCP server、整台封禁或解封，不能精确到单个工具。
 - **许可按人算**：注册表和基础的治理动作随 Microsoft 365 附带；观测、租户级的工具策略、Purview 和 Defender 的 agent 能力、Graph API 都要 Agent 365 或 E7，许可按用户分配。
 - **预览项多**：动态 agent 风险、本地 agent 的 Entra Agent ID、影子 agent 发现、多租户管理在 Ignite 时都是预览。
 
@@ -128,15 +142,15 @@ blueprint 上的联合凭据大致长这样（字段含义与普通应用注册�
 
 ## 四、全开源方案：能搭起来，缺治理这一层
 
-| 层 | 开源组件 |
-|---|---|
-| Framework / Harness | LangGraph、Google ADK、MAF（也是开源的）、OpenAI Agents SDK |
-| Runtime | kagent、agent-sandbox 或 OpenSandbox、Dapr Workflow |
-| Gateway | agentgateway，或 Envoy AI Gateway、Higress |
-| 注册与发现 | agentregistry（MCP server、agent、skill、prompt 的目录与审批，agent 的 blueprint）、Nacos、MCP Registry |
-| 身份 | SPIFFE/SPIRE（工作负载身份）+ Keycloak（每个 agent 一个 OAuth client、令牌交换） |
-| 授权 | OpenFGA、OPA |
-| 观测 | OpenTelemetry + Langfuse、Phoenix 或 Grafana 一套 |
+| 层                   | 开源组件                                                                                     |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| Framework / Harness | LangGraph、Google ADK、MAF（也是开源的）、OpenAI Agents SDK                                        |
+| Runtime             | kagent、agent-sandbox 或 OpenSandbox、Dapr Workflow                                         |
+| Gateway             | agentgateway，或 Envoy AI Gateway、Higress                                                  |
+| 注册与发现               | agentregistry（MCP server、agent、skill、prompt 的目录与审批，agent 的 blueprint）、Nacos、MCP Registry |
+| 身份                  | SPIFFE/SPIRE（工作负载身份）+ Keycloak（每个 agent 一个 OAuth client、令牌交换）                            |
+| 授权                  | OpenFGA、OPA                                                                              |
+| 观测                  | OpenTelemetry + Langfuse、Phoenix 或 Grafana 一套                                            |
 
 这几层都能找到成熟或在快速成熟的项目，一套全开源的方案是搭得起来的，而且天然跨云。缺的是把这些串起来的治理层：
 
