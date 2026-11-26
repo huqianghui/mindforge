@@ -35,16 +35,19 @@ Fleet management 换了一个视角：把企业里所有 agent 当成一个整�
 
 健康这一项我会再加一层业务结果。错误率和漂移只能说明 agent 有没有出问题，回答不了"这几百个 agent 值不值"。ServiceNow AI Control Tower 的 Measure、Agent 365 的 Business Analytics 都在往这个方向补；垂直行业的厂商做得更直接，比如做金融研究外包的 Acuity Analytics，按工作流统计周转时间和准确率。
 
-"fleet"这个词至少有四种用法，要先分清：
+"fleet"这个词在市场上有三种用法，要先分清：
 
 - **管好企业已有的一群业务 agent**：这篇主要讲的就是这一种，Lyzr OpenController、Agent 365 都在这一格。
 - **卖给你一群现成的 agent**：Acuity Analytics 的 [Agent Fleet](https://www.acuityanalytics.com/agent-fleet/) 是面向资管、私募、投行、信贷的一套 agent 工作流，每份输出由它的分析师复核，治理指的是单个工作流内的审计记录和人工复核，没有对其他平台 agent 的清点，也没有网关。
 - **运营一群 coding agent 会话**：开源项目 [Agent Fleet](https://agent-fleet.org/) 把团队在用的 Claude Code、Codex CLI、GitHub Copilot CLI、OpenCode、Cursor CLI、Kiro 等原样跑在自己的服务器上，统一管会话、worktree、调度和用量，管的是开发者手边的工具层。第三节会单独讲它和业务 agent 的 fleet 有什么不同。
-- **身份层的 fleet**：Microsoft Entra Agent ID 文档里的 [agent fleet](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet) 是最窄、最明确的一种，指跑在同一个运行时、共用一套算力和代码的一组 agent，每个 agent 有自己的 agent identity。这是自建 agent 平台时的身份设计问题，下面单独说。
 
 客户说"agent fleet"时，先问清楚是哪一种。
 
-### Entra 里的 fleet：一个 multi-instance blueprint 派生的一组身份
+微软的文档里还有一个更窄的说法。Entra Agent ID 把 [agent fleet](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet) 定义为"跑在同一个云运行时上的一组 agent"，每个 agent 有自己的 agent identity。这是**身份层的专门含义**：Entra 的职责是身份，所以它只从身份的角度看 fleet，讨论的是一份凭据怎么派生一组互不越权的身份，跨平台清点、花费、一次改全部都不在它的范围里。
+
+这不等于微软把 fleet 的概念收窄了，微软自己就在用两种意思：Entra 文档用窄义；Foundry 的 [fleet 监控](https://learn.microsoft.com/en-us/azure/foundry/control-plane/monitoring-across-fleet) 开头讲的是"从孤立的 copilot 走向自主的多 agent fleet"，要跨企业监控所有 agent、模型和工具，用的是宽义，和本文说的是同一件事；Agent 365 不用这个词，自称 AI agent 的控制面，做的也是宽义 fleet management 的事。所以宽义是主流，Entra 的定义是这个词在身份层的一个专门用法，读微软文档时看到 fleet，要先看是哪个产品的文档。
+
+### Entra 的窄义 fleet：一个 multi-instance blueprint 派生的一组身份
 
 Entra 的 fleet 对应的是 agent identity blueprint。运行时只持有一份 blueprint 凭据，用它给这个 blueprint 派生的任何 agent identity 拿 token，每次请求由运行时决定用哪个身份。要把它理解对，得先分清 blueprint 和 tenant 之间两个互相独立的维度（[Agent identity blueprints](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint)）：
 
@@ -52,6 +55,16 @@ Entra 的 fleet 对应的是 agent identity blueprint。运行时只持有一份
 - **每个 tenant 里能派生几个 Agent ID**，也就是 instance mode（预览）：single-instance 每个 tenant 只有 1 个 Agent ID，和 blueprint 共用一个 OAuth client ID；multi-instance 能派生多个，每个有自己的 client ID，由 blueprint 在该 tenant 里的 blueprint principal 负责建、删和模拟拿 token。模式在创建时用 `isSingleInstance` 定下，之后不能改。
 
 这里的 instance 指**身份实例，不是运行副本**。文档明确说 instance mode 不计算进程、副本和用户会话数：一个本地 assistant 装在 100 台电脑上，仍然只有 1 个 Agent ID，跑在终端设备上的 public client 也必须用 single-instance；只有每个 agent 需要独立的权限或生命周期时，才用 multi-instance。所以 Entra 的 fleet，准确说是**某个 tenant 里一个 multi-instance blueprint 加上它派生的一组 Agent ID**。一个 blueprint principal 最多派生 250 个，fleet 更大，或者 agent 分属不同客户、不同信任区时，就要拆成多个 blueprint。
+
+把这个窄义和另外两种说法放在一起，差别在三件事上：
+
+| | Entra 的 fleet | coding agent 的 fleet（agent-fleet.org） | 宽义的 fleet management |
+|---|---|---|---|
+| 共享什么 | 同一个运行时、同一套代码、同一份 blueprint 凭据 | 同一台服务器和控制台，agent 种类各不相同 | 什么都不共享，分散在各朵云、各个平台 |
+| 一个成员是什么 | 长期存在的 agent，有开通和退役 | 一次会话，一个任务加一个 worktree | 已经存在的 agent，不管是谁建的 |
+| 身份 | 每个 agent 一个 Agent ID，运行时逐请求选用 | 没有 agent 身份，成员用自己的账号登录各家 CLI | 各平台自己的身份，靠同步或映射对齐 |
+
+Entra 的定义在形状上最接近 coding agent 的 fleet，都是很多东西跑在一个共享宿主上，但身份模型正好相反。按 Entra 自己的分类，Claude Code、Copilot CLI 这类 coding agent 其实**不算 fleet**：跑在终端设备上的 public client 必须用 single-instance，装在 100 台电脑上也只有 1 个 Agent ID。开源社区说的"一群 coding agent"，在 Entra 看来是少数几个 single-instance agent 开出来的很多次会话，每次都代表某个用户在做事。只有平台托管各团队、各客户各自的 agent，每个都要独立的权限和生命周期时，才是 Entra 意义上的 fleet。
 
 fleet 文档里有几条安全要求，自建平台时都用得上：
 
