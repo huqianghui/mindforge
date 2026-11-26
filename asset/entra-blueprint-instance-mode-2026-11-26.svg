@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 920" width="1440" height="920" font-family="PingFang SC, Helvetica Neue, Helvetica, Arial, sans-serif">
+  <style>
+    .t { font-size: 16px; fill: #1f2937; font-weight: 600; }
+    .b { font-size: 14px; fill: #374151; }
+    .s { font-size: 13px; fill: #6b7280; }
+    .m { font-size: 13px; fill: #374151; font-family: Menlo, Consolas, monospace; }
+    .hd { font-size: 16px; fill: #334155; font-weight: 600; }
+  </style>
+  <defs>
+    <marker id="aA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+    <marker id="aM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker>
+  </defs>
+  <rect width="1440" height="920" fill="#f4f6f9"/>
+
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#111827">Blueprint 与 tenant：两个互相独立的维度</text>
+  <text x="40" y="70" class="s">横向看 blueprint 能用在哪些 tenant，纵向看每个 tenant 里能派生几个 Agent ID</text>
+
+  <!-- tenant columns -->
+  <rect x="40" y="96" width="370" height="664" rx="14" fill="#e9eef5" stroke="#94a3b8" stroke-dasharray="6 5"/>
+  <rect x="450" y="96" width="480" height="664" rx="14" fill="#e9eef5" stroke="#94a3b8" stroke-dasharray="6 5"/>
+  <rect x="970" y="96" width="430" height="664" rx="14" fill="#e9eef5" stroke="#94a3b8" stroke-dasharray="6 5"/>
+  <text x="60" y="126" class="hd">发布方 tenant：blueprint 建在这里</text>
+  <text x="60" y="148" class="s">single-tenant 时，Agent ID 也建在这里</text>
+  <text x="470" y="126" class="hd">客户 tenant A</text>
+  <text x="470" y="148" class="s">multitenant blueprint 加入后</text>
+  <text x="990" y="126" class="hd">客户 tenant B</text>
+  <text x="990" y="148" class="s">同一个 blueprint，另一个 tenant</text>
+
+  <!-- ===== Row 1: single-instance ===== -->
+  <rect x="70" y="210" width="310" height="150" rx="10" fill="#fff" stroke="#f3d3a8"/>
+  <rect x="70" y="210" width="8" height="150" rx="4" fill="#d97706"/>
+  <rect x="92" y="222" width="122" height="24" rx="12" fill="#fdecd3"/>
+  <text x="153" y="239" font-size="13" fill="#b45309" text-anchor="middle" font-weight="600">single-instance</text>
+  <text x="92" y="272" class="t">Blueprint S</text>
+  <text x="92" y="296" class="m">isSingleInstance = true</text>
+  <text x="92" y="318" class="b">appId = X；没有 blueprint principal</text>
+  <text x="92" y="342" class="s">例：本地 agent、单一身份的托管服务</text>
+
+  <!-- bus row1 -->
+  <path d="M380,250 H 430 V 192 H 1190 V 214" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#aA)"/>
+  <path d="M690,192 V 214" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#aA)"/>
+  <text x="470" y="184" class="s" fill="#b45309">每个 tenant 只有 1 个 Agent ID</text>
+
+  <rect x="480" y="218" width="420" height="112" rx="10" fill="#fff" stroke="#f3d3a8"/>
+  <text x="500" y="248" class="t">Agent ID</text>
+  <text x="500" y="274" class="m">client ID = X（与 blueprint 共用）</text>
+  <text x="500" y="298" class="b">直接用共享 client ID 拿 token，不模拟</text>
+  <text x="500" y="320" class="s">public client 走授权码 + PKCE，不带凭据</text>
+  <text x="480" y="356" class="s">装在 100 台设备上，仍然只有这 1 个</text>
+
+  <rect x="1000" y="218" width="380" height="112" rx="10" fill="#fff" stroke="#f3d3a8"/>
+  <text x="1020" y="248" class="t">Agent ID</text>
+  <text x="1020" y="274" class="m">client ID = X</text>
+  <text x="1020" y="298" class="b">同一个 client ID，在 B 里另一个对象</text>
+
+  <!-- divider -->
+  <line x1="60" y1="388" x2="1380" y2="388" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- ===== Row 2: multi-instance ===== -->
+  <rect x="70" y="440" width="310" height="190" rx="10" fill="#fff" stroke="#c7c4f5"/>
+  <rect x="70" y="440" width="8" height="190" rx="4" fill="#4f46e5"/>
+  <rect x="92" y="452" width="118" height="24" rx="12" fill="#e4e2fb"/>
+  <text x="151" y="469" font-size="13" fill="#4338ca" text-anchor="middle" font-weight="600">multi-instance</text>
+  <text x="92" y="502" class="t">Blueprint M</text>
+  <text x="92" y="526" class="m">isSingleInstance = false</text>
+  <text x="92" y="550" class="b">appId = Y</text>
+  <text x="92" y="574" class="b">凭据：托管身份 FIC，只有一份</text>
+  <text x="92" y="598" class="s">例：Copilot Studio 的全局 blueprint、</text>
+  <text x="92" y="616" class="s">自建 agent 平台</text>
+
+  <!-- bus row2 -->
+  <path d="M380,480 H 430 V 418 H 1190 V 440" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#aM)"/>
+  <path d="M690,418 V 440" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#aM)"/>
+  <text x="470" y="410" class="s" fill="#4338ca">每个 tenant 先落一个 blueprint principal</text>
+
+  <!-- tenant A principal + agents -->
+  <rect x="480" y="444" width="420" height="104" rx="10" fill="#fff" stroke="#c7c4f5"/>
+  <text x="500" y="472" class="t">Blueprint principal</text>
+  <text x="500" y="496" class="b">token 的 oid、建删的审计都记在它名下</text>
+  <text x="500" y="518" class="m">AgentIdentity.CreateAsManager</text>
+  <text x="500" y="538" class="s">继承权限授在这里；最多派生 250 个</text>
+
+  <path d="M690,548 L 550,614" fill="none" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#aM)"/>
+  <path d="M690,548 L 690,614" fill="none" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#aM)"/>
+  <path d="M690,548 L 830,614" fill="none" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#aM)"/>
+  <text x="490" y="584" class="s">建、删</text>
+  <text x="900" y="584" class="s" text-anchor="end">模拟拿 token</text>
+
+  <g>
+    <rect x="490" y="618" width="120" height="62" rx="8" fill="#fff" stroke="#c7c4f5"/>
+    <text x="550" y="644" class="b" text-anchor="middle">Agent ID 1</text>
+    <text x="550" y="664" class="m" text-anchor="middle">client ID a1</text>
+    <rect x="630" y="618" width="120" height="62" rx="8" fill="#fff" stroke="#c7c4f5"/>
+    <text x="690" y="644" class="b" text-anchor="middle">Agent ID 2</text>
+    <text x="690" y="664" class="m" text-anchor="middle">client ID a2</text>
+    <rect x="770" y="618" width="120" height="62" rx="8" fill="#fff" stroke="#c7c4f5"/>
+    <text x="830" y="644" class="b" text-anchor="middle">Agent ID 3</text>
+    <text x="830" y="664" class="m" text-anchor="middle">client ID a3</text>
+  </g>
+  <text x="480" y="712" class="s">每个 Agent ID 有自己的 client ID、权限和生命周期</text>
+  <text x="480" y="732" class="s">拿 token 分两步：交换令牌带 fmi_path 指定子身份</text>
+
+  <!-- tenant B principal + agents -->
+  <rect x="1000" y="444" width="380" height="104" rx="10" fill="#fff" stroke="#c7c4f5"/>
+  <text x="1020" y="472" class="t">Blueprint principal</text>
+  <text x="1020" y="496" class="b">B 里自己的一个，和 A 互不相干</text>
+  <text x="1020" y="518" class="s">权限按 tenant 授，250 上限也按它算</text>
+
+  <path d="M1190,548 L 1110,614" fill="none" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#aM)"/>
+  <path d="M1190,548 L 1270,614" fill="none" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#aM)"/>
+  <rect x="1050" y="618" width="120" height="62" rx="8" fill="#fff" stroke="#c7c4f5"/>
+  <text x="1110" y="644" class="b" text-anchor="middle">Agent ID 1</text>
+  <text x="1110" y="664" class="m" text-anchor="middle">client ID b1</text>
+  <rect x="1210" y="618" width="120" height="62" rx="8" fill="#fff" stroke="#c7c4f5"/>
+  <text x="1270" y="644" class="b" text-anchor="middle">Agent ID 2</text>
+  <text x="1270" y="664" class="m" text-anchor="middle">client ID b2</text>
+
+  <!-- bottom notes -->
+  <g transform="translate(40,796)">
+    <rect width="1360" height="96" rx="12" fill="#fff" stroke="#e2e8f0"/>
+    <text x="24" y="32" class="b"><tspan font-weight="600">横向</tspan>：能用在哪些 tenant。single-tenant 只在发布方 tenant 派生身份；multitenant 发布出去，客户加进自己的 tenant 后在那里派生</text>
+    <text x="24" y="58" class="b"><tspan font-weight="600">纵向</tspan>：每个 tenant 几个 Agent ID，即 instance mode，创建时定下、之后不能改；instance 指身份实例，不是运行副本</text>
+    <text x="24" y="84" class="b" fill="#b91c1c"><tspan font-weight="600">安全边界</tspan>：凭据只在 blueprint 上一份，泄露会波及所有 tenant 里它派生的身份，所以按信任区和客户拆 blueprint</text>
+  </g>
+</svg>

@@ -55,6 +55,10 @@ blueprint 和 tenant 之间有两个互相独立的维度，文档特别提醒�
 | **single-tenant** | 企业自己开发的本地 assistant，或者一个用单一身份做后台任务、替登录用户办事的托管服务 | 企业自建的 agent 平台，托管各团队各自的 agent（Entra 文档里的 agent fleet） |
 | **multitenant** | ISV 发布一个本地 agent，每个客户 tenant 里各有 1 个 Agent ID | ISV 或微软自己的 SaaS，在每个客户 tenant 里给每个 agent 派生身份，Copilot Studio 就是这一格 |
 
+下面这张图把两个维度和三种对象画在一起：横向是 blueprint 从发布方 tenant 加入客户 tenant，纵向是两种实例模式在每个 tenant 里落下的对象。
+
+![Blueprint 与 tenant 的两个维度：single-instance 与 multi-instance 在各 tenant 里落下的对象|900](../../../../asset/entra-blueprint-instance-mode-2026-11-26.svg)
+
 ### instance 不是运行副本
 
 这一点最容易误解。文档原话是：实例模式不计算运行的进程、副本或用户会话。
