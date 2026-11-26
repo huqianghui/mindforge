@@ -35,7 +35,7 @@ description: 一个完整的 agent 方案要七层——Framework 或 Harness、
 |---|---|---|
 | Framework / Harness | Microsoft Agent Framework（MAF，开源，.NET 与 Python）；Copilot Studio 自带的几种 harness；Foundry 也接受 LangGraph、Claude Agent SDK 等 | MAF 1.0 于 2026-04-02 GA |
 | Runtime | Foundry Hosted Agent（每会话沙箱、缩到零）、Prompt Agent、Copilot Studio；也可以自己跑在 AKS 或 ACA 上 | Hosted Agent 已 GA |
-| Gateway | Azure AI Gateway（模型与 MCP 工具）、APIM（A2A 与业务 API）、Application Gateway for Containers（AKS 内的推理路由）、Entra Global Secure Access（网络层） | AI Gateway 于 11-17 GA，2027-01-01 起收费 |
+| Gateway | Azure AI Gateway（模型与 MCP 工具）、APIM（A2A 与业务 API）、Application Gateway for Containers（AKS 内的推理路由）、Entra Global Secure Access（用户侧网络）、Agent Grid（工作负载侧网络，预览） | AI Gateway 于 11-17 GA，2027-01-01 起收费 |
 | 注册与发现 | Agent 365 注册表做企业台账；agent 之间的运行时发现靠 A2A Agent Card | 注册表已 GA |
 | 身份 | Entra Agent ID：blueprint、agent identity、owner 与 sponsor、Conditional Access、OBO | 已 GA |
 | 观测 | Microsoft OpenTelemetry Distro → Azure Monitor / Application Insights，Foundry 的 tracing 与评估，Agent 365 的活动视图 | 外部 agent 的观测与评估已 GA |
@@ -66,6 +66,9 @@ Agent 365 的注册表是 Microsoft 365 管理中心里的 agent 台账。Micros
 注册表管的是"企业有哪些 agent"。agent 运行时互相发现，靠的是 A2A 的 Agent Card：Hosted Agent 可以发布 Agent Card，APIM 可以把它导入成 A2A agent API。Agent 365 的注册表能不能作为 agent 运行时查询的发现服务，我没有查到官方说法；它的 Graph API 能读注册表和执行治理动作，但需要 E7 或 Agent 365 许可。
 
 ### 网关拆在三个产品里
+
+> [!NOTE]
+> 写完这篇后，微软在 Ignite 2026 发布了 Agent Grid（limited preview）：在 ACI 沙箱组和 AKS 的工作负载外截获流量，按 SPIFFE 身份做微分段、FQDN 与 URL 过滤、MCP 工具级过滤和 Prompt Shields 检查，属于网络层的管控，和下面三个产品不在一层。它和 AI Gateway 怎么分工见 [系列 08](../agent-grid%28network-security%29/Agent基础设施系列08：Agent-Grid的网络层管控.md)。
 
 - **Azure AI Gateway**：预览阶段是 APIM 的一个 SKU（`Microsoft.ApiManagement/service`，SKU 为 `AIGateway`）。2026-10-14 起换成独立的资源类型 `Microsoft.ApiManagement/aigateways`，两者只共用资源提供程序；旧 SKU 的资源 2027-01-15 之后会被删除，资源类型是资源 ID 的一部分，不能原地转换，只能新建再迁移。它管模型（统一别名、路由与失败切换、成本上限）和 MCP 工具（联合、把 OpenAPI 和 connector 转成 MCP），细节见下面单独一节。
 - **APIM**：继续负责完整的 API 生命周期，经典与 v2 tier 保留原有的 AI 网关能力。A2A agent API 在 APIM 里于 2026-06 GA，AI Gateway 的 GA 公告里没有提到 A2A。

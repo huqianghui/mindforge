@@ -236,7 +236,7 @@ Google 在 Next '26 把 Vertex AI 改成了 Gemini Enterprise Agent Platform，�
 
 换句话说，A2A 调用本身就是一次 HTTP/JSON-RPC 请求，里面没有模型调用，要管的是谁能调、调多少次、怎么限流和审计，按请求次数计量，和业务 API 是一类流量。微软把它放在 APIM 而不是 AI Gateway，按这个角度就讲得通：APIM 按请求管 API，AI Gateway 按 token 管模型和工具。不过 A2A 也不完全等同于普通 API：一个 task 可以跑很久，中间有状态变化、流式返回和推送通知；agent 之间传的是自然语言写的任务和结果，可能带敏感数据，需要 DLP、内容安全这类检查。按 API 的方式管 A2A，身份和调用量能管住，内容这一层要另外补。
 
-**把网关当成 agent 的网络边界。** 这一派不区分流量是去模型、去工具还是去另一个 agent，凡是出入 agent 的连接都要认证身份、检查策略、留下审计。Google 的 Agent Gateway 底下是 Secure Web Proxy 和负载均衡器，本质是零信任的网络边界，A2A 自然在里面。
+**把网关当成 agent 的网络边界。** 这一派不区分流量是去模型、去工具还是去另一个 agent，凡是出入 agent 的连接都要认证身份、检查策略、留下审计。Google 的 Agent Gateway 底下是 Secure Web Proxy 和负载均衡器，本质是零信任的网络边界，A2A 自然在里面。微软在 Ignite 2026 也补上了这一派：Agent Grid 在 ACI 沙箱和 AKS 的工作负载外截获流量、按 SPIFFE 身份执行策略，agent 调 agent 也在它的管辖里，所以现在微软内部两种定义并存，见 [系列 08](../agent-grid%28network-security%29/Agent基础设施系列08：Agent-Grid的网络层管控.md)。
 
 对 fleet 来说，眼下第一种已经够用。最痛的"一次改全部"是换模型和改策略，落在模型和工具这一层；企业里多数多 agent 协作还发生在同一个框架、同一个进程里（一个 CrewAI crew、一张 LangGraph 图），根本不经过网络。等跨团队、跨平台的 A2A 调用多起来，第二种定义会变得必要，到时候 agent 调 agent 的权限和审计，也需要一个站在路径上的控制点。
 

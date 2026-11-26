@@ -196,6 +196,7 @@ kagent 团队自己也在反思"一个 agent 一个 Pod"是不是对的。Pod �
 - [Agent 基础设施系列 05：完整 Agent 方案的三条路线](Agent基础设施系列05：完整Agent方案的三条路线.md)——微软技术栈、混合与全开源的七层对照，Agent 365 的边界与跨云补齐
 - [Agent 基础设施系列 06：Fleet Management 与 Agent Platform 的区别](../agent-fleet-management/Agent基础设施系列06：Fleet-Management与Agent-Platform的区别.md)——治理层放到跨平台范围上：三朵云与跨云方案
 - [Agent 基础设施系列 07：Blueprint 与 Agent Identity 的实例模式](../agent-identity/Agent基础设施系列07：Blueprint与Agent-Identity的实例模式.md)——身份层：blueprint、实例模式与 Copilot Studio、Foundry 的用法
+- [Agent 基础设施系列 08：Agent Grid 的网络层管控](../agent-grid%28network-security%29/Agent基础设施系列08：Agent-Grid的网络层管控.md)——网络层：在沙箱外按身份管 agent 的全部连接
 
 沙箱之外的会话平面、治理平面与 harness 编排，在 AKS 上按平面逐篇实践的部分另起了 [AKS Agent Runtime 系列](../../../../Azure/Azure-Kubernetes-Service/AKS-Agent-Runtime系列01：Sandbox之外的三个平面.md)。
 
