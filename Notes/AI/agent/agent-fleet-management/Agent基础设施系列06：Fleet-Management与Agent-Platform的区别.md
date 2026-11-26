@@ -35,13 +35,32 @@ Fleet management 换了一个视角：把企业里所有 agent 当成一个整�
 
 健康这一项我会再加一层业务结果。错误率和漂移只能说明 agent 有没有出问题，回答不了"这几百个 agent 值不值"。ServiceNow AI Control Tower 的 Measure、Agent 365 的 Business Analytics 都在往这个方向补；垂直行业的厂商做得更直接，比如做金融研究外包的 Acuity Analytics，按工作流统计周转时间和准确率。
 
-"fleet"这个词在市场上至少有三种用法，要先分清：
+"fleet"这个词至少有四种用法，要先分清：
 
 - **管好企业已有的一群业务 agent**：这篇主要讲的就是这一种，Lyzr OpenController、Agent 365 都在这一格。
 - **卖给你一群现成的 agent**：Acuity Analytics 的 [Agent Fleet](https://www.acuityanalytics.com/agent-fleet/) 是面向资管、私募、投行、信贷的一套 agent 工作流，每份输出由它的分析师复核，治理指的是单个工作流内的审计记录和人工复核，没有对其他平台 agent 的清点，也没有网关。
 - **运营一群 coding agent 会话**：开源项目 [Agent Fleet](https://agent-fleet.org/) 把团队在用的 Claude Code、Codex CLI、GitHub Copilot CLI、OpenCode、Cursor CLI、Kiro 等原样跑在自己的服务器上，统一管会话、worktree、调度和用量，管的是开发者手边的工具层。第三节会单独讲它和业务 agent 的 fleet 有什么不同。
+- **身份层的 fleet**：Microsoft Entra Agent ID 文档里的 [agent fleet](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet) 是最窄、最明确的一种，指跑在同一个运行时、共用一套算力和代码的一组 agent，每个 agent 有自己的 agent identity。这是自建 agent 平台时的身份设计问题，下面单独说。
 
 客户说"agent fleet"时，先问清楚是哪一种。
+
+### Entra 里的 fleet：一个 multi-instance blueprint 派生的一组身份
+
+Entra 的 fleet 对应的是 agent identity blueprint。运行时只持有一份 blueprint 凭据，用它给这个 blueprint 派生的任何 agent identity 拿 token，每次请求由运行时决定用哪个身份。要把它理解对，得先分清 blueprint 和 tenant 之间两个互相独立的维度（[Agent identity blueprints](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint)）：
+
+- **能用在哪些 tenant**：blueprint 总是建在某一个 tenant 里，和普通应用的 app registration 一样。single-tenant 的只在本 tenant 里派生身份；multitenant 的通过微软的目录发布，客户加进自己的 tenant 后就能在那里派生身份。
+- **每个 tenant 里能派生几个 Agent ID**，也就是 instance mode（预览）：single-instance 每个 tenant 只有 1 个 Agent ID，和 blueprint 共用一个 OAuth client ID；multi-instance 能派生多个，每个有自己的 client ID，由 blueprint 在该 tenant 里的 blueprint principal 负责建、删和模拟拿 token。模式在创建时用 `isSingleInstance` 定下，之后不能改。
+
+这里的 instance 指**身份实例，不是运行副本**。文档明确说 instance mode 不计算进程、副本和用户会话数：一个本地 assistant 装在 100 台电脑上，仍然只有 1 个 Agent ID，跑在终端设备上的 public client 也必须用 single-instance；只有每个 agent 需要独立的权限或生命周期时，才用 multi-instance。所以 Entra 的 fleet，准确说是**某个 tenant 里一个 multi-instance blueprint 加上它派生的一组 Agent ID**。一个 blueprint principal 最多派生 250 个，fleet 更大，或者 agent 分属不同客户、不同信任区时，就要拆成多个 blueprint。
+
+fleet 文档里有几条安全要求，自建平台时都用得上：
+
+- **选身份的代码就是安全边界**。blueprint 凭据能给 fleet 里任何一个 agent 拿 token，身份必须由运行时查自己的 agent 目录决定，不能从请求、提示词或工具输出里接收 agent ID。
+- **token broker 和 agent 代码隔开**。agent 跑不可信代码时，能调到 broker 的进程就能冒用任何一个 agent。
+- **按 agent 的授权在运行时里做**。用户调 fleet 里的 agent 用的是 blueprint 的 `access_agent` scope，所有 agent 共用一个 audience，token 只证明用户是谁，"这个用户能不能用这个 agent"要运行时自己判断。
+- **继承权限少用**。在 blueprint principal 上授一次，所有子身份都继承，但这些权限不显示在 agent identity 上，审计起来更难。
+
+凭据只有一份、配在 blueprint 上，所以一个 multitenant 的 blueprint 用同一份凭据就能进所有加了它的客户 tenant。我的理解是，这正是文档建议按客户、按信任区拆 blueprint 的原因。[系列 05](../agent-platform/Agent基础设施系列05：完整Agent方案的三条路线.md) 混合方案里，EKS 上的 kagent 用 blueprint 的联合凭据换 Entra token，就是一个 Entra 意义上的 fleet；fleet management 管的则是这些 fleet 之上的全部 agent。
 
 按这五个指标去看具体产品，会发现分界其实是两条：
 
@@ -234,3 +253,5 @@ Lyzr 那篇文章最后提了一个验收办法，我觉得比看功能表有用
 - [Salesforce Introduces the Trusted Enterprise AI Harness](https://www.salesforce.com/news/stories/enterprise-ai-harness)
 - [Agent Fleet: Agentic AI Platform for Financial Services](https://www.acuityanalytics.com/agent-fleet/)
 - [Agent Fleet: Self-Hosted Operations for AI Coding Agents](https://agent-fleet.org/)
+- [Plan an agent fleet on a shared runtime](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet)
+- [Agent identity blueprints in Microsoft Entra Agent ID](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-blueprint)
