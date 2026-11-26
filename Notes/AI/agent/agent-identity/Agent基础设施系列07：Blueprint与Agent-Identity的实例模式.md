@@ -10,7 +10,7 @@ tags:
   - foundry
   - hosted-agent
   - agent-fleet
-description: Entra Agent ID 里 blueprint 和 tenant 有两个互相独立的维度——blueprint 能用在哪些 tenant（single-tenant 或 multitenant），以及每个 tenant 里能派生几个 Agent ID（single-instance 或 multi-instance）。instance 指身份实例而不是运行副本，multi-instance 靠 blueprint principal 模拟子身份拿 token，single-instance 直接用共享的 client ID。Copilot Studio 用一个微软发布的全局 blueprint 派生所有 agent 的身份，Foundry 给每个 prompt agent 和 hosted agent 配独立的 blueprint 和默认实例身份，hosted agent 的 autopilot 模式才真正用到多个身份实例；自建 agent fleet 时，选身份的代码、token broker 和 blueprint 数量都是安全边界
+description: Entra Agent ID 里 blueprint 和 tenant 有两个互相独立的维度——blueprint 能用在哪些 tenant（single-tenant 或 multitenant），以及每个 tenant 里能派生几个 Agent ID（single-instance 或 multi-instance）。instance 指身份实例而不是运行副本，multi-instance 靠 blueprint principal 模拟子身份拿 token，single-instance 直接用共享的 client ID。Copilot Studio 用一个微软发布的全局 blueprint 派生所有 agent 的身份，Foundry 给每个 prompt agent 和 hosted agent 配独立的 blueprint 和默认实例身份，hosted agent 发布成 Autopilot 时，一个 blueprint 才真正雇用出多个实例身份；blueprint 按信任边界拆，换版本、加工具都不换；身份、用户委托、业务审批是三层，不能混；自建 agent fleet 时，选身份的代码、token broker 和 blueprint 数量都是安全边界
 ---
 
 # Agent 基础设施系列 07：Blueprint 与 Agent Identity 的实例模式
@@ -97,13 +97,35 @@ multi-instance 的模拟模型把凭据和权限分开了：凭据在 blueprint 
 
 对 multitenant 的 blueprint，这一点更要紧：凭据只有一份，它能进所有加了这个 blueprint 的客户 tenant。这就是 fleet 文档建议"不同信任区、不同客户用不同 blueprint"的原因。
 
-## 四、微软自己的产品怎么用
+## 四、blueprint 管什么、怎么拆
+
+### 数量按信任边界定
+
+Entra 的 [架构规划文档](https://learn.microsoft.com/en-us/entra/agent-id/how-to-plan-agent-identity-architecture) 把默认做法写得很明确：**每个信任边界一个 blueprint，每个逻辑 agent 一个 agent identity**。前者是因为 blueprint 泄露会波及它下面所有身份，后者是为了审计、追踪和访问控制能精确到具体某个 agent。[设计模式文档](https://learn.microsoft.com/en-us/entra/agent-id/concept-agent-id-design-patterns) 给了几种典型结构：
+
+- **同一信任边界里的多个角色**：一个 blueprint 派生多个 agent identity，每个角色一个，日志能区分是谁做的，下游权限也各不相同；
+- **编排者加跨信任边界的工人**：编排者一个 blueprint，各组工人分属不同的运行时、密钥或团队时，各用各的 blueprint，一个域出事不波及其他域；
+- **按用户、部门或环境建实例**：比如每个云环境一个 SOC 分析 agent、每个部门一个审计 agent，一个 blueprint 派生几十到一两百个身份，而不是给目录里每个用户都建一个。
+
+所以 blueprint 本来就不是为了"让身份少一点"而存在的。减少凭据数量是它的效果之一，真正决定它怎么拆的是信任边界。
+
+### 换版本、加工具都不换 blueprint
+
+blueprint 管的是身份和凭据边界，不管 agent 的代码、Prompt、模型、框架和版本。所以：
+
+- **agent 发新版本**，换模型、改 Prompt、加 MCP 工具、从 LangGraph 换到 Agent Framework，通常既不需要新 blueprint，也不需要新 agent identity；
+- **给 Foundry prompt agent 加一个 SharePoint、Web Search 或 Foundry IQ 工具**，改的是 agent 定义和工具连接，blueprint 和身份都不会自动换掉；
+- **加工具也不等于授权**。工具加进去了，这个身份能不能访问对应资源，还是要看你有没有给它授权，或者这个工具是不是走用户委托，第六节会说。
+
+什么时候该考虑换 blueprint？看信任边界有没有变。一个 agent 从只读 SharePoint 变成能写、再变成能碰 HR 敏感数据、能代表用户做高权限操作时，它其实已经换了信任区，这时应该重新评估它是否还和原来那组 agent 共用一个 blueprint，至少要重新设计它的权限边界。
+
+## 五、微软自己的产品怎么用
 
 ### Copilot Studio：一个全局 blueprint 派生所有 agent
 
 Copilot Studio 是 multitenant 加 multi-instance 的典型（[Manage Entra Agent IDs](https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-use-entra-agent-identities)）：
 
-- 一个 environment 里第一次创建 agent 身份时，Copilot Studio 在 tenant 里加上 **Microsoft Copilot Studio agent identity blueprint**（应用 ID `25664c89-cea5-4ab6-b924-a54fd8a19ae0`）和对应的 blueprint principal。这个 blueprint 是微软发布的，所有 Copilot Studio agent 的身份都是这个全局 blueprint 的子身份。
+- 一个 environment 里第一次创建 agent 身份时，Copilot Studio 在 tenant 里加上 **Microsoft Copilot Studio agent identity blueprint**（应用 ID `25664c89-cea5-4ab6-b924-a54fd8a19ae0`）和对应的 blueprint principal。这个 blueprint 是微软发布的，所有 Copilot Studio agent 的身份都是这个全局 blueprint 的子身份。文档没有写它的 `isSingleInstance`，但每个 agent 的身份都是作为这个 **blueprint principal** 的子身份建出来的，而只有 multi-instance 才有 blueprint principal，所以可以判断它是 multi-instance。
 - **身份什么时候建，看 harness**：standard harness 在创建 agent 时就建；Microsoft Copilot harness 存草稿时不建，第一次发布时才建，哪怕没配任何渠道（[App registration, agent identities, and authentication](https://learn.microsoft.com/en-us/microsoft-copilot-studio/govern-agents-identities-overview)）。
 - **发布时把 connector 权限挂到身份上**：agent 用到的每个 Power Platform connector 都会作为 API 权限挂在它的 Agent ID 上，Entra 和 Microsoft 365 管理员不用进 Power Platform 管理中心就能看到这个 agent 能调哪些 connector，还能用 Conditional Access 针对这些 connector 加网络位置、设备合规、风险条件。真正执行这些 scope 的只有 Power Platform 的 connector 运行时，运行时还会按 connector 策略和数据策略再校验一次。
 - **删除 agent 时，身份一起删**。2026 年 5 月起不能再按 environment 关掉自动建身份。
@@ -120,9 +142,11 @@ Foundry 走的是另一条路（[Agent identity concepts in Microsoft Foundry](h
 - **调工具时走四步交换**：Agent Service 用 blueprint 的凭据认证，Entra 给这个 agent identity 发 token，Agent Service 再拿它换目标服务 audience 的 token，最后带着这个 token 调 MCP server 或 A2A 端点。这就是 multi-instance 的模拟路径，只是这个 blueprint 下面只有一个默认实例。
 - **旧的共享身份还在**。项目级的共享 blueprint 和身份仍然会开通，给没有独立身份的旧 agent 用；从共享身份或旧的 Agent Application 迁到新模型，身份会变，原来的角色分配不会带过去。
 
-所以 Foundry 是"multi-instance 的 blueprint，每个只用一个默认实例"。好处是每个 agent 一个独立的凭据边界：一个 blueprint 出事只影响一个 agent。我在双层身份模型那篇实测到的"每个 agent 成对出现一个 blueprint 和一个身份"，和这个模型是一致的。
+Foundry 的 [Autopilot 概念文档](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/autopilot-overview) 把普通 agent 的形状说得更直接：**一个 agent、一个 blueprint、一个 agent identity，没有 agent 用户账号**；这个 blueprint 由 blueprint 应用和 blueprint service principal 两部分组成。Foundry 的文档同样没有写 `isSingleInstance` 的值，我按两点判断它是 multi-instance：它有 blueprint principal，只有 multi-instance 才有；同一个 blueprint 在 Autopilot 场景下能派生出多个实例身份，下面会讲。
 
-### Foundry hosted agent：autopilot 才用到多个实例
+所以 Foundry 是"multi-instance 的 blueprint，平时只用一个默认实例"。好处是每个 agent 一个独立的凭据边界，一个 blueprint 出事只影响一个 agent。我在双层身份模型那篇实测到的"每个 agent 成对出现一个 blueprint 和一个身份"，和这个模型是一致的。
+
+### Foundry hosted agent：Autopilot 才用到多个实例
 
 hosted agent 在身份模型上和 prompt agent 一样，区别在运行时怎么拿 token（[Hosted agent token service reference](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agent-token-service)）：
 
@@ -130,7 +154,15 @@ hosted agent 在身份模型上和 prompt agent 一样，区别在运行时怎�
 - **Azure Identity 的 `ManagedIdentityCredential` 访问的其实是这个 token service**，名字容易误导：它拿到的是 agent identity 的 token，不是项目托管身份的。`WorkloadIdentityCredential` 访问不到这个服务。
 - **身份选择有硬规则**：不指定 client ID 时用当前实例的身份；只能选当前实例或默认实例的 client ID，指定其他任何 client ID 都会被拒绝。
 
-这里第一次出现了"当前实例"和"默认实例"的区别。普通的 hosted agent 只有默认实例，两者是同一个身份。**autopilot 模式的 agent 不一样**：当前实例的身份由 Microsoft 365 提供，和默认实例不是同一个，hosted runtime 用会话把每个实例的身份上下文隔开。autopilot agent 还会用一个 blueprint 交换令牌去模拟 agent 的用户账号，这个令牌绑定在当前实例的身份上，只能用于这一个身份。这是我在 Azure 上看到的、真正"一个 agent 定义派生多个身份实例"的用法，和 Entra fleet 文档描述的模型对得上。
+这里第一次出现了"当前实例"和"默认实例"的区别。普通的 hosted agent 只有默认实例，两者是同一个身份。**Autopilot 不一样**，它是我在 Azure 上看到的、真正"一个 blueprint 派生多个身份实例"的用法（[What is an autopilot in Microsoft Foundry?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/autopilot-overview)、[Quickstart: Build your first autopilot](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/agent-365)）：
+
+- **不是直接做一个 Autopilot，而是做一个 blueprint**。从 hosted agent 发布时设 `publishAsAutopilot`，发布范围只能是整个 tenant；Microsoft 365 管理员在管理中心审批，并定下"雇用范围"，也就是谁可以从这个 blueprint 创建实例。
+- **每"雇用"一个实例，就建一个新的 agent identity 和一个新的 agent 用户账号**，消耗一个许可，雇用的人成为它的经理，它会出现在组织架构里，在 Teams 里主动和你聊天。形状是一个 blueprint 对多个实例。
+- **两个身份对象各管各的，不能互换**：agent identity 是它的基础设施身份；agent 用户账号代表它在 Microsoft 365 里以自己的名义做事，而不是代表某个用户。
+- **运行时**，当前实例的身份由 Microsoft 365 提供，和默认实例不是同一个，hosted runtime 用会话把每个实例的身份上下文隔开。Autopilot 还会用一个 blueprint 交换令牌去模拟实例的 agent 用户账号，这个令牌绑定在当前实例的身份上，只能用于这一个身份。
+- **只有 hosted agent 能发布成 Autopilot**。按 [Agent 365 集成文档](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-365-integration)，prompt agent 和 hosted agent 都会同步进 Agent 365 的注册表，但 prompt agent 不支持 Autopilot 发布。
+
+这和 Entra fleet 文档描述的模型对得上：一个 blueprint，按需开通、各自独立权限和生命周期的一组身份。
 
 ### 放在一起看
 
@@ -139,14 +171,47 @@ hosted agent 在身份模型上和 prompt agent 一样，区别在运行时怎�
 | Copilot Studio | tenant 里一个微软发布的全局 blueprint | 每个 agent 一个，全挂在同一个 blueprint 下 | standard harness 创建时；Microsoft Copilot harness 首次发布时 | 微软管理 |
 | Foundry prompt agent | 每个 agent 一个 | 一个默认实例 | 创建 agent 时 | blueprint 上的联合凭据，信任微软第一方应用 |
 | Foundry hosted agent（普通） | 每个 agent 一个 | 一个默认实例 | 创建 agent 时 | 同上，沙箱内无凭据，经 token service 取 |
-| Foundry hosted agent（autopilot） | 每个 agent 一个 | 默认实例加 Microsoft 365 提供的当前实例 | 默认实例创建时；当前实例由 Microsoft 365 提供 | 同上 |
+| Foundry hosted agent（Autopilot） | 每个 Autopilot 一个 | 每雇用一个实例，新增一个 agent identity 和一个 agent 用户账号 | 默认身份在创建时建；实例身份在被雇用时建 | 同上 |
 | 自己写的 agent（Agent 365 SDK 或自建平台） | 自己决定 | 自己决定 | 自己的开通服务或 Agent 365 | 自己配，推荐托管身份的 FIC |
 
 两种分法的取舍很清楚：Copilot Studio 一个 blueprint 管全部，治理集中，一个开关就能停掉所有 agent，但凭据边界也只有一个；Foundry 每个 agent 一个 blueprint，凭据边界最细，代价是 tenant 里 blueprint 对象很多。
 
 在我查到的微软产品里，没有看到明确使用 single-instance 的；按文档的描述，它目前主要留给自己开发的本地 agent，以及只需要一个身份的托管服务。
 
-## 五、自建平台时：multi-instance 落地成 fleet
+## 六、身份、委托、审批：三层别混
+
+讨论 blueprint 时，很容易把三件不同的事搅在一起：agent 是谁、它借谁的权限做事、这一次具体操作谁批准。它们是三层：
+
+1. **agent 身份：agent 是谁。** 由 Entra Agent ID 管：blueprint、agent identity、agent 用户账号。
+2. **用户委托：agent 在谁的授权下做事。** 由 OBO、委托权限和 consent 管。
+3. **业务审批：这一次操作批不批。** 由工作流、人工介入和业务规则管。
+
+一个 agent 可以同时有自己的身份、在这次请求里代表 Alice、并在删除文件前等 Alice 点批准，三者并不矛盾。
+
+### 前两层：application-only 和委托
+
+Foundry 把工具调用分成两种访问模式（[User delegation for tools](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/user-delegation)）：
+
+- **application-only**：agent 以自己的身份做事，没有登录用户参与，能访问什么取决于授给 agent identity 的角色和权限。适合后台自动化，比如读一个专用的存储账户。
+- **委托**：agent 代表登录用户做事，agent identity 是这次调用的执行者，但用户本人也必须有权访问资源。适合个人数据和企业用户数据。
+
+不同工具支持的模式不一样。**SharePoint 工具只支持委托**，文档写明 app-only 和 service principal 认证都不支持，用应用身份去调会报 `AppOnly OBO tokens not supported by target service`（[Use SharePoint with the Foundry Agent Service API](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/sharepoint)）。所以同一个 agent 被 Alice 和 Bob 用时，Alice 能读到她有权限的 Finance 文档，Bob 读不到：agent 没有把 Alice 的权限存进自己的身份里，而是每次请求时代表当前用户去拿下游 token。
+
+委托缺授权时怎么办，是协议层面的流程，不是写进 Prompt 里（[Configure user delegation for tools](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-user-delegation)）：
+
+1. 调用 agent 后，检查返回里有没有 `oauth_consent_request`；
+2. 有的话，把其中的 `consent_link` 作为链接或按钮展示给用户，在浏览器里打开；
+3. 用户登录并确认所需权限，然后客户端继续这次对话。
+
+也可以请 tenant 管理员把这些委托权限**直接授给 agent 的 blueprint**，之后工具调用就不会再弹出 consent。这里又一次看到 blueprint 在运行时的作用：委托权限的同意是记在 blueprint 上的。
+
+LangChain 的 LangSmith Fleet 把同样的区分做成了两种 agent（[Two different types of agent authorization](https://www.langchain.com/blog/two-different-types-of-agent-authorization)）：**Claws** 有一套固定的凭据，谁来用都一样，比如团队共用的 Linear Slack bot；**Assistants** 代表调用它的用户，每个人用自己的 OAuth 账号登录工具，比如个人邮件助手。前者对应 application-only，后者对应委托。
+
+### 第三层：业务审批要自己做
+
+OAuth consent 授的是"这个 agent 可以请求这类权限"，业务审批决定的是"这一次删除、付款、改生产配置能不能执行"，两者不是一回事。Entra Agent ID 不会为每次工具调用生成一个审批界面，业务审批要在应用或编排层实现：Logic Apps 或 Power Automate 的审批、Agent Framework 工作流里的人工介入、在 MCP 工具外面包一层审批，或者自建运行时的暂停、等待、恢复。Entra 能提供的是身份、审计、权限和 Conditional Access，审批流程本身不在它的职责里。
+
+## 七、自建平台时：multi-instance 落地成 fleet
 
 自己做一个托管多个 agent 的平台，比如 [系列 05](../agent-platform/Agent基础设施系列05：完整Agent方案的三条路线.md) 混合方案里 EKS 上的 kagent，就是在实现 Entra 意义上的 agent fleet（[Plan an agent fleet on a shared runtime](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet)）。除了 blueprint，运行时这边要自己做三个组件：
 
@@ -166,7 +231,7 @@ hosted agent 在身份模型上和 prompt agent 一样，区别在运行时怎�
 
 还有一个数量上限：**一个 blueprint principal 最多派生 250 个 agent identity**。fleet 更大时要建多个 blueprint，开通时给每个 agent 分配一个 blueprint 并记进目录；运行时也要按 agent 找到对应的 blueprint 配置和凭据，只换 agent ID 不会自动换 blueprint。
 
-## 六、怎么选实例模式
+## 八、怎么选实例模式
 
 我的判断规则很简单：
 
@@ -190,9 +255,17 @@ hosted agent 在身份模型上和 prompt agent 一样，区别在运行时怎�
 - [Agent autonomous app OAuth flow](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-autonomous-app-oauth-flow)
 - [How are agent identities created?](https://learn.microsoft.com/en-us/entra/agent-id/agent-id-creation-channels)
 - [Plan an agent fleet on a shared runtime](https://learn.microsoft.com/en-us/entra/agent-id/plan-agent-fleet)
+- [Plan your agent identity architecture](https://learn.microsoft.com/en-us/entra/agent-id/how-to-plan-agent-identity-architecture)
+- [Microsoft Entra Agent ID design patterns](https://learn.microsoft.com/en-us/entra/agent-id/concept-agent-id-design-patterns)
 - [What's new in Microsoft Entra Agent ID](https://learn.microsoft.com/en-us/entra/agent-id/whats-new-agent-id)
 - [Manage Entra Agent IDs in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-use-entra-agent-identities)
 - [App registration, agent identities, and authentication in Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/govern-agents-identities-overview)
 - [Recreate Copilot Studio agents with Microsoft Entra Agent ID](https://learn.microsoft.com/en-us/entra/agent-id/migrate-copilot-studio-agents-to-agent-id)
 - [Agent identity concepts in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-identity)
 - [Hosted agent token service reference](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/hosted-agent-token-service)
+- [What is an autopilot in Microsoft Foundry?](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/autopilot-overview)
+- [Microsoft Agent 365 integration with Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/agent-365-integration)
+- [User delegation for tools in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/user-delegation)
+- [Configure user delegation for tools in Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/configure-user-delegation)
+- [Use SharePoint with the Foundry Agent Service API](https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/sharepoint)
+- [Two different types of agent authorization](https://www.langchain.com/blog/two-different-types-of-agent-authorization)
