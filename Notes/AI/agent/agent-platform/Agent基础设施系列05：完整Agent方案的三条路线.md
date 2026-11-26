@@ -49,6 +49,20 @@ Agent 365 的注册表是 Microsoft 365 管理中心里的 agent 台账。Micros
 
 它不运行 agent，也不在请求的路径上。真正逐请求执行策略的是网关：Agent 365 能发现 Azure AI Gateway 上注册的 MCP server 并下发工具策略，执行由网关在每次工具调用时完成。
 
+这条链路具体是这样走的：
+
+1. **发现**：租户管理员在 Microsoft 365 管理中心授权一次，给 Agent 365 的服务身份授予 `A365 MCP Gateway Policy Operator` 角色。之后 Agent 365 扫描租户里的网关，把上面的 MCP server 和工具读进 **Agents → Tools** 清单，发布方显示为 AI Gateway。Agent 365 只做管理，自己不调用这些 MCP server。
+2. **定策略**：管理员在这份清单里封掉整个 MCP server，或者只关掉其中某个工具。
+3. **写进网关**：Agent 365 通过 Azure 控制面，在网关上对应 API 的入站策略里插一条托管策略，然后由网关逐次拦截。封整个 server 返回 HTTP 403；封单个工具返回 HTTP 200，JSON-RPC 结果里带 `isError: true` 和"不要重试"的说明，让 agent 知道这个工具不可用，而不是当成网络错误反复重试。
+4. **威胁防护（预览）**：调用工具之前、结果返回 agent 之前，交给 Defender 和 Purview 检查。
+
+所以网关上的策略有两个来源：Agent 365 下发的管"能不能用"，网关自己配的 Entra 角色、限流、成本上限、Content Safety 管"怎么用"，两者在网关上叠加执行。
+
+两处前提要提前说清：
+
+- **Agent 365 不会把 agent 的流量引到网关**。开发者要自己把 agent 配成调网关的 MCP 端点；要防止绕过，还得在网络上限制 MCP server 只接受网关的调用。
+- **单个工具的封禁要求 MCP server 在 AI Gateway 上配了固定的工具白名单**。工具列表是动态的话，Agent 365 拿不到工具清单，只能到 AI Gateway 门户里封。这份集成文档目前写的还是预览期的 AI Gateway SKU，GA 后换成了独立资源类型，上线前要实测一次。
+
 注册表管的是"企业有哪些 agent"。agent 运行时互相发现，靠的是 A2A 的 Agent Card：Hosted Agent 可以发布 Agent Card，APIM 可以把它导入成 A2A agent API。Agent 365 的注册表能不能作为 agent 运行时查询的发现服务，我没有查到官方说法；它的 Graph API 能读注册表和执行治理动作，但需要 E7 或 Agent 365 许可。
 
 ### 网关拆在三个产品里
