@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1250" width="1240" height="1250" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker><marker id="arR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="arT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker></defs>
+<rect width="1240" height="1250" fill="#ffffff"/>
+<text x="30" y="42" font-size="22" font-weight="700" fill="#0f172a">把 Claude Code 装进沙箱：一个任务从发起到结果回到终端</text>
+<text x="30" y="68" font-size="14" fill="#475569">本机只跑 sbx 脚本和 aca CLI；agent 的循环、依赖安装、测试、改代码都在沙箱里；真 token 只在出站代理之后出现</text>
+<rect x="15" y="90" width="210" height="58" rx="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.8"/>
+<text x="120" y="115" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">本机</text><text x="120" y="137" font-size="13" text-anchor="middle" fill="#475569">sbx + aca CLI</text>
+<line x1="120" y1="148" x2="120" y2="1120" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 6"/>
+<rect x="265" y="90" width="210" height="58" rx="10" fill="#f1f5f9" stroke="#334155" stroke-width="1.8"/>
+<text x="370" y="115" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">ACA 数据面</text><text x="370" y="137" font-size="13" text-anchor="middle" fill="#475569">Data Owner 角色</text>
+<line x1="370" y1="148" x2="370" y2="1120" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 6"/>
+<rect x="535" y="90" width="210" height="58" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.8"/>
+<text x="640" y="115" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">沙箱 microVM</text><text x="640" y="137" font-size="13" text-anchor="middle" fill="#475569">Claude Code · pip · /work</text>
+<line x1="640" y1="148" x2="640" y2="1120" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 6"/>
+<rect x="795" y="90" width="210" height="58" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+<text x="900" y="115" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">出站代理</text><text x="900" y="137" font-size="13" text-anchor="middle" fill="#475569">沙箱外 · 按规则处理</text>
+<line x1="900" y1="148" x2="900" y2="1120" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 6"/>
+<rect x="1015" y="90" width="210" height="58" rx="10" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+<text x="1120" y="115" font-size="16" font-weight="700" text-anchor="middle" fill="#0f172a">外部服务</text><text x="1120" y="137" font-size="13" text-anchor="middle" fill="#475569">模型端点 · pypi · github</text>
+<line x1="1120" y1="148" x2="1120" y2="1120" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 6"/>
+<circle cx="34" cy="185" r="15" fill="#4338ca"/><text x="34" y="190" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">1</text>
+<text x="56" y="190" font-size="14" font-weight="700" fill="#4338ca">sbx up · 约 4 秒</text>
+<line x1="120" y1="215" x2="362" y2="215" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="245.0" y="207" font-size="13" text-anchor="middle" fill="#1e293b">create --snapshot claude-base</text>
+<line x1="370" y1="250" x2="632" y2="250" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="505.0" y="242" font-size="13" text-anchor="middle" fill="#1e293b">从快照恢复：Claude Code、pip、环境变量都现成</text>
+<line x1="120" y1="285" x2="362" y2="285" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="245.0" y="277" font-size="13" text-anchor="middle" fill="#1e293b">egress apply</text>
+<line x1="370" y1="318" x2="892" y2="318" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="635.0" y="310" font-size="13" text-anchor="middle" fill="#1e293b">挂上策略：默认拒绝 · 注入 token · 放行 pypi</text>
+<circle cx="34" cy="365" r="15" fill="#4338ca"/><text x="34" y="370" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">2</text>
+<text x="56" y="370" font-size="14" font-weight="700" fill="#4338ca">sbx push · 约 3 秒</text>
+<line x1="120" y1="395" x2="632" y2="395" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="380.0" y="387" font-size="13" text-anchor="middle" fill="#1e293b">fs write 仓库 tar 包，再 exec 解包到 /work（都经数据面）</text>
+<circle cx="34" cy="445" r="15" fill="#4338ca"/><text x="34" y="450" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">3</text>
+<text x="56" y="450" font-size="14" font-weight="700" fill="#4338ca">sbx run "任务" · 约 17 秒</text>
+<line x1="120" y1="475" x2="632" y2="475" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="380.0" y="467" font-size="13" text-anchor="middle" fill="#1e293b">fs write 任务文本；exec claude -p …（这个请求一直挂着）</text>
+<rect x="560" y="500" width="665" height="350" rx="12" fill="none" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="8 5"/>
+<text x="575" y="522" font-size="13" font-weight="700" fill="#0d9488">agent 循环：全部在沙箱里，跳过所有审批（墙在沙箱外）</text>
+<rect x="632" y="535" width="16" height="300" rx="4" fill="#99f6e4"/>
+<line x1="640" y1="560" x2="892" y2="560" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="770.0" y="552" font-size="13" text-anchor="middle" fill="#1e293b">调模型，带的是 Bearer dummy</text>
+<rect x="790" y="575" width="220" height="62" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.8"/>
+<text x="900" y="598" font-size="13" font-weight="700" text-anchor="middle" fill="#991b1b">命中 inject 规则</text><text x="900" y="620" font-size="13" text-anchor="middle" fill="#991b1b">用 group secret 改写请求头</text>
+<line x1="900" y1="665" x2="1112" y2="665" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arR)"/>
+<text x="1010.0" y="657" font-size="13" text-anchor="middle" fill="#991b1b">Bearer 真 token</text>
+<line x1="1120" y1="700" x2="648" y2="700" stroke="#334155" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+<text x="880.0" y="692" font-size="13" text-anchor="middle" fill="#1e293b">模型回复：下一步要调的工具</text>
+<text x="660" y="738" font-size="13" fill="#134e4a">pip install · pytest · 改 stats.py</text><text x="660" y="756" font-size="13" fill="#134e4a">（工具都在沙箱本地执行）</text>
+<line x1="640" y1="790" x2="892" y2="790" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="770.0" y="782" font-size="13" text-anchor="middle" fill="#1e293b">pip 访问 pypi / 访问 github</text>
+<text x="1010" y="782" font-size="13" fill="#0f766e">pypi 放行</text><text x="1010" y="802" font-size="13" font-weight="700" fill="#dc2626">github 403</text>
+<line x1="900" y1="790" x2="992" y2="790" stroke="#0d9488" stroke-width="2" marker-end="url(#arT)"/>
+<circle cx="34" cy="885" r="15" fill="#4338ca"/><text x="34" y="890" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">4</text>
+<text x="56" y="890" font-size="14" font-weight="700" fill="#4338ca">结果回到终端</text>
+<line x1="640" y1="915" x2="128" y2="915" stroke="#334155" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+<text x="380.0" y="907" font-size="13" text-anchor="middle" fill="#1e293b">exec 返回 stdout：三行总结 + 轮次、花费、耗时</text>
+<circle cx="34" cy="965" r="15" fill="#4338ca"/><text x="34" y="970" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">5</text>
+<text x="56" y="970" font-size="14" font-weight="700" fill="#4338ca">sbx pull · 约 4 秒</text>
+<line x1="120" y1="995" x2="632" y2="995" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="380.0" y="987" font-size="13" text-anchor="middle" fill="#1e293b">resume；exec git diff（只取已跟踪文件）</text>
+<line x1="640" y1="1025" x2="128" y2="1025" stroke="#334155" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/>
+<text x="380.0" y="1017" font-size="13" text-anchor="middle" fill="#1e293b">补丁 → 本地 git apply</text>
+<circle cx="34" cy="1075" r="15" fill="#4338ca"/><text x="34" y="1080" font-size="14" font-weight="700" text-anchor="middle" fill="#fff">6</text>
+<text x="56" y="1080" font-size="14" font-weight="700" fill="#4338ca">sbx down · 约 7 秒</text>
+<line x1="120" y1="1105" x2="632" y2="1105" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/>
+<text x="380.0" y="1097" font-size="13" text-anchor="middle" fill="#1e293b">stop：挂起，保留内存和磁盘，不收计算费；忘了也会在空闲 600 秒后自动挂起</text>
+<g font-size="13" fill="#334155"><line x1="30" y1="1150" x2="70" y2="1150" stroke="#334155" stroke-width="2" marker-end="url(#ar)"/><text x="80" y="1155">请求</text><line x1="140" y1="1150" x2="180" y2="1150" stroke="#334155" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ar)"/><text x="190" y="1155">返回</text><line x1="250" y1="1150" x2="290" y2="1150" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arR)"/><text x="300" y="1155">真 token 只出现在这一段</text></g>
+<rect x="30" y="1180" width="385" height="50" rx="8" fill="#f8fafc" stroke="#94a3b8"/><text x="44" y="1201" font-size="13" font-weight="700" fill="#0f172a">本机</text><text x="44" y="1220" font-size="13" fill="#475569">用户的 Entra 身份（az login），只用来调数据面</text>
+<rect x="430" y="1180" width="385" height="50" rx="8" fill="#f8fafc" stroke="#94a3b8"/><text x="444" y="1201" font-size="13" font-weight="700" fill="#0f172a">sandbox group secret</text><text x="444" y="1220" font-size="13" fill="#475569">Databricks token，只有出站代理能用</text>
+<rect x="830" y="1180" width="385" height="50" rx="8" fill="#f8fafc" stroke="#94a3b8"/><text x="844" y="1201" font-size="13" font-weight="700" fill="#0f172a">沙箱里</text><text x="844" y="1220" font-size="13" fill="#475569">只有 dummy 假 token，拿不到任何真凭据</text>
+</svg>

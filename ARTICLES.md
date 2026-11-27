@@ -92,6 +92,8 @@
 - [Agent 基础设施系列 09：AKS Pod Sandboxing](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：AKS-Pod-Sandboxing.md)
 - [Agent 基础设施系列 10：ACA Sandboxes](Notes/AI/agent/agent-sandbox/Agent基础设施系列10：ACA-Sandboxes.md)
 - [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](Notes/AI/agent/agent-sandbox/Agent基础设施系列11：AKS与ACA的沙箱选型.md)
+- [Agent 基础设施系列 12：本地 coding agent 调用 ACA 沙箱](Notes/AI/agent/agent-sandbox/Agent基础设施系列12：本地coding-agent调用ACA沙箱.md)
+- [Agent 基础设施系列 13：把 coding agent 装进 ACA 沙箱](Notes/AI/agent/agent-sandbox/Agent基础设施系列13：把coding-agent装进ACA沙箱.md)
 
 ### Notes/AI/computer-use
 

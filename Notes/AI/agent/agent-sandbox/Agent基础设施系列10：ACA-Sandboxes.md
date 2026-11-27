@@ -121,6 +121,8 @@ ACA 的网络管控都在沙箱外面：入站和出站各有一个托管代理�
 
 ## 相关阅读
 
+- [Agent 基础设施系列 12：本地 coding agent 调用 ACA 沙箱](Agent基础设施系列12：本地coding-agent调用ACA沙箱.md)——Copilot CLI、VS Code Copilot、Claude Code 的实测
+- [Agent 基础设施系列 13：把 coding agent 装进 ACA 沙箱](Agent基础设施系列13：把coding-agent装进ACA沙箱.md)——本地只留遥控器、key 不进沙箱
 - [Agent 基础设施系列 09：AKS Pod Sandboxing](Agent基础设施系列09：AKS-Pod-Sandboxing.md)——Kata 隔离边界、v1 与 v2、资源规则
 - [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](Agent基础设施系列11：AKS与ACA的沙箱选型.md)——分层对比与决策树
 - [Agent 基础设施系列 02：Kubernetes 上的 Agent 沙箱](../agent-runtime/Agent基础设施系列02：Kubernetes上的Agent沙箱.md)——Kata、agent-sandbox、OpenSandbox 的分层与选型
