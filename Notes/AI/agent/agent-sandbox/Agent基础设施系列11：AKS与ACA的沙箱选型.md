@@ -32,12 +32,12 @@ ACA 的文档反复强调 microVM，容易让人以为它和 Kata 是两种隔�
 | 状态 | 跟着 Pod 走，删了就没；v2 的模板克隆和快照恢复前提还在预览 | 内存 + 磁盘快照、挂起恢复、fan-out 克隆是基本操作 |
 | 启动 | 镜像已缓存时 Pod 到 Ready 约 2 秒（我在系列 01 补充里实测） | 文档称从缓存镜像启动不到一秒、从快照恢复更快（我没实测） |
 | 规格 | 由 Pod 的 limits 决定，VM 起来后不变，小数 CPU 向上取整 | 七档规格或直接指定；从快照新建时沿用快照的规格 |
-| VMM 是谁 | 公开：Cloud Hypervisor，跑在 Microsoft Hypervisor 的 root partition 上 | 文档没写，只说是独立内核、硬件级隔离 |
+| VMM 是谁 | Cloud Hypervisor，跑在 Microsoft Hypervisor 的 root partition 上 | 文档没写，但快照的元数据里 `vmmType` 是 `cloudhypervisor`，也是 Cloud Hypervisor |
 | 嵌套虚拟化 | 依赖：节点要选支持嵌套虚拟化的 Gen2 规格 | 不用管，平台负责 |
 
 两点结论：
 
-- **隔离强度上不用纠结。** 两边都是 VM 级边界，选型不该在这一层分高下。ACA 用的是哪种 VMM，文档没公开，需要做安全评审的话要找微软确认。
+- **隔离强度上不用纠结。** 两边都是 VM 级边界，选型不该在这一层分高下。ACA 的文档没写 VMM，但我实际建快照时，API 返回的元数据里 `vmmType` 是 `cloudhypervisor`，和 AKS 上的 Kata 是同一个 VMM；正式做安全评审时，这类信息仍以微软的书面说明为准。
 - **差别在 VM 之上能做什么。** 之所以 agent 工作区需要挂起恢复、快照克隆这类能力，是因为 agent 的会话长、大部分时间在等模型或等人。ACA 天然有这些能力，是因为它直接管 VM；AKS 要做到同样的事，要么等 Kata v2 的快照恢复成熟，要么换成 OpenSandbox 的 Firecracker 运行时这类自己管 VMM 的方案，等于在 Kubernetes 之外再维护一套 VM 管理。
 
 ## 二、两者对比
