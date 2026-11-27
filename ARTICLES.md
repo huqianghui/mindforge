@@ -89,7 +89,7 @@
 
 ### Notes/AI/agent/agent-sandbox
 
-- [Agent 基础设施系列 09：Azure 上的沙箱隔离](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：Azure上的沙箱隔离.md)
+- [Agent 基础设施系列 09：AKS 与 ACA 的沙箱选型](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：AKS与ACA的沙箱选型.md)
 
 ### Notes/AI/computer-use
 
