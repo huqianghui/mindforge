@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" width="1200" height="1000" font-family="Kaiti SC, STKaiti, KaiTi, PingFang SC, Microsoft YaHei, sans-serif">
+  <defs>
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="4"/>
+    </filter>
+    <marker id="a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#2b2b2b" stroke-width="1.8"/></marker>
+  </defs>
+  <rect width="1200" height="1000" fill="#fffdf6"/>
+
+  <text x="60" y="52" font-size="26" font-weight="700" fill="#2b2b2b">Azure 上的 agent 沙箱怎么选</text>
+  <text x="60" y="82" font-size="16" fill="#6b6257">从上往下问，前面的问题优先；"是"往右走，"否"往下走</text>
+
+  <!-- start -->
+  <g filter="url(#rough)">
+    <rect x="160" y="104" width="300" height="44" rx="22" fill="#2b2b2b"/>
+  </g>
+  <text x="310" y="133" font-size="18" text-anchor="middle" fill="#fffdf6">要让 agent 跑不可信代码</text>
+
+  <!-- questions -->
+  <g filter="url(#rough)" fill="#fff7e0" stroke="#2b2b2b" stroke-width="2.2">
+    <rect x="60" y="176" width="500" height="86" rx="12"/>
+    <rect x="60" y="320" width="500" height="86" rx="12"/>
+    <rect x="60" y="464" width="500" height="86" rx="12"/>
+    <rect x="60" y="608" width="500" height="86" rx="12"/>
+    <rect x="60" y="752" width="500" height="86" rx="12"/>
+  </g>
+  <g font-size="19" fill="#2b2b2b">
+    <text x="84" y="212">① 只执行一段代码、用完即弃，</text>
+    <text x="114" y="242">不需要保留状态？</text>
+    <text x="84" y="356">② 必须要可用区冗余、合同 SLA，</text>
+    <text x="114" y="386">或部署在 Azure Government / China？</text>
+    <text x="84" y="500">③ 出站要接 Agent Grid，或者身份、</text>
+    <text x="114" y="530">网络要细到每个沙箱各不相同？</text>
+    <text x="84" y="644">④ 团队已经在运维 AKS，</text>
+    <text x="114" y="674">并要求运行时自主可控、深度定制？</text>
+    <text x="84" y="788">⑤ 要挂起恢复、带状态的工作区、</text>
+    <text x="114" y="818">快速 fan-out，出站和凭据要现成？</text>
+  </g>
+
+  <!-- arrows: down (no) -->
+  <g stroke="#2b2b2b" stroke-width="2.2" fill="none" marker-end="url(#a)" filter="url(#rough)">
+    <line x1="310" y1="148" x2="310" y2="172"/>
+    <line x1="310" y1="262" x2="310" y2="316"/>
+    <line x1="310" y1="406" x2="310" y2="460"/>
+    <line x1="310" y1="550" x2="310" y2="604"/>
+    <line x1="310" y1="694" x2="310" y2="748"/>
+    <line x1="310" y1="838" x2="310" y2="892"/>
+    <!-- right (yes) -->
+    <line x1="560" y1="219" x2="676" y2="219"/>
+    <line x1="560" y1="363" x2="676" y2="363"/>
+    <line x1="560" y1="507" x2="676" y2="507"/>
+    <line x1="560" y1="651" x2="676" y2="651"/>
+    <line x1="560" y1="795" x2="676" y2="795"/>
+  </g>
+  <g font-size="17" fill="#b4441f" font-weight="700">
+    <text x="322" y="296">否</text><text x="322" y="440">否</text><text x="322" y="584">否</text><text x="322" y="728">否</text><text x="322" y="872">否</text>
+    <text x="604" y="208">是</text><text x="604" y="352">是</text><text x="604" y="496">是</text><text x="604" y="640">是</text><text x="604" y="784">是</text>
+  </g>
+
+  <!-- outcomes -->
+  <g filter="url(#rough)" stroke="#2b2b2b" stroke-width="2.2">
+    <rect x="680" y="172" width="480" height="94" rx="14" fill="#dcebfb"/>
+    <rect x="680" y="316" width="480" height="94" rx="14" fill="#dff3e4"/>
+    <rect x="680" y="460" width="480" height="94" rx="14" fill="#dff3e4"/>
+    <rect x="680" y="604" width="480" height="94" rx="14" fill="#dff3e4"/>
+    <rect x="680" y="748" width="480" height="94" rx="14" fill="#fde7cf"/>
+    <rect x="60" y="896" width="1100" height="70" rx="14" fill="#eeeae2"/>
+  </g>
+  <g fill="#2b2b2b">
+    <text x="704" y="208" font-size="21" font-weight="700">ACA dynamic sessions</text>
+    <text x="704" y="240" font-size="16" fill="#4a4a4a">池子替你管分配和回收，接入最轻</text>
+
+    <text x="704" y="352" font-size="21" font-weight="700">AKS + Pod Sandboxing</text>
+    <text x="704" y="384" font-size="16" fill="#4a4a4a">ACA Sandboxes 目前没有 SLA、可用区和主权云</text>
+
+    <text x="704" y="496" font-size="21" font-weight="700">AKS + Pod Sandboxing</text>
+    <text x="704" y="528" font-size="16" fill="#4a4a4a">不想管节点：评估 Agent Sandbox 扩展的 ACI 运行时</text>
+
+    <text x="704" y="640" font-size="21" font-weight="700">AKS + Kata + 沙箱编排</text>
+    <text x="704" y="672" font-size="16" fill="#4a4a4a">agent-sandbox 或 OpenSandbox；先用 v1，v2 测试池验证</text>
+
+    <text x="704" y="784" font-size="21" font-weight="700">ACA Sandboxes</text>
+    <text x="704" y="816" font-size="16" fill="#b4441f">上线前补：出站 Deny、按信任拆组、key 走代理、数据放外部</text>
+
+    <text x="84" y="938" font-size="19">需求还不清晰 → 先用 ACA Sandboxes 做原型，跑通后再按 ②~④ 判断要不要迁到 AKS</text>
+  </g>
+</svg>

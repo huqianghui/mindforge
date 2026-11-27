@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" width="1200" height="820" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <rect width="1200" height="820" fill="#faf6ee"/>
+  <text x="40" y="48" font-size="22" font-weight="700" fill="#1f2a44">砖与房子：两条路各自现成了什么</text>
+  <text x="40" y="76" font-size="14" fill="#5b6478">AKS 只给了隔离这一层，其余要自己拼；ACA 几乎每层都现成，缺口在身份粒度和可靠性</text>
+
+  <!-- column headers -->
+  <rect x="320" y="100" width="410" height="60" rx="10" fill="#1f2a44"/>
+  <text x="525" y="128" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">AKS Pod Sandboxing</text>
+  <text x="525" y="149" font-size="13" text-anchor="middle" fill="#c7cfe0">一块砖：容器运行时</text>
+  <rect x="750" y="100" width="410" height="60" rx="10" fill="#1f2a44"/>
+  <text x="955" y="128" font-size="17" font-weight="700" text-anchor="middle" fill="#ffffff">ACA Sandboxes</text>
+  <text x="955" y="149" font-size="13" text-anchor="middle" fill="#c7cfe0">一栋房子：托管沙箱服务</text>
+
+  <g font-size="14">
+    <!-- row template: y step 62, height 52 -->
+    <!-- 1 isolation -->
+    <text x="40" y="203" font-size="15" font-weight="600" fill="#1f2a44">隔离</text>
+    <text x="40" y="222" font-size="13" fill="#6b7280">独立内核的 VM</text>
+    <rect x="320" y="180" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="340" y="211" fill="#14532d">现成 · Kata + Cloud Hypervisor，v1 GA</text>
+    <rect x="750" y="180" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="211" fill="#14532d">现成 · 每个沙箱一台 microVM</text>
+
+    <!-- 2 template -->
+    <text x="40" y="265" font-size="15" font-weight="600" fill="#1f2a44">环境模板</text>
+    <text x="40" y="284" font-size="13" fill="#6b7280">镜像、规格</text>
+    <rect x="320" y="242" width="410" height="52" rx="8" fill="#fbe8c8" stroke="#c98a1b"/>
+    <text x="340" y="273" fill="#7c4a03">自建 · 容器镜像 + Pod 模板自己维护</text>
+    <rect x="750" y="242" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="273" fill="#14532d">现成 · 公共/自定义/提交镜像，七档规格，YAML</text>
+
+    <!-- 3 allocation -->
+    <text x="40" y="327" font-size="15" font-weight="600" fill="#1f2a44">分配与预热</text>
+    <text x="40" y="346" font-size="13" fill="#6b7280">要一台就有一台</text>
+    <rect x="320" y="304" width="410" height="52" rx="8" fill="#fbe8c8" stroke="#c98a1b"/>
+    <text x="340" y="335" fill="#7c4a03">自建 · 加 agent-sandbox 或 OpenSandbox</text>
+    <rect x="750" y="304" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="335" fill="#14532d">现成 · API 直接创建，秒级启动</text>
+
+    <!-- 4 state -->
+    <text x="40" y="389" font-size="15" font-weight="600" fill="#1f2a44">状态</text>
+    <text x="40" y="408" font-size="13" fill="#6b7280">快照、挂起恢复</text>
+    <rect x="320" y="366" width="410" height="52" rx="8" fill="#dbe7fb" stroke="#3b6fd4"/>
+    <text x="340" y="397" fill="#1e3a8a">预览 · v2 模板克隆，快照恢复只有前提</text>
+    <rect x="750" y="366" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="397" fill="#14532d">现成 · 内存 + 磁盘快照、fan-out</text>
+
+    <!-- 5 lifecycle -->
+    <text x="40" y="451" font-size="15" font-weight="600" fill="#1f2a44">回收</text>
+    <text x="40" y="470" font-size="13" fill="#6b7280">空闲挂起、到期删除</text>
+    <rect x="320" y="428" width="410" height="52" rx="8" fill="#fbe8c8" stroke="#c98a1b"/>
+    <text x="340" y="459" fill="#7c4a03">自建 · 控制器或编排层自己写</text>
+    <rect x="750" y="428" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="459" fill="#14532d">现成 · 自动挂起、自动删除，停止不收计算费</text>
+
+    <!-- 6 egress -->
+    <text x="40" y="513" font-size="15" font-weight="600" fill="#1f2a44">出站与凭据</text>
+    <text x="40" y="532" font-size="13" fill="#6b7280">能连哪里、key 放哪</text>
+    <rect x="320" y="490" width="410" height="52" rx="8" fill="#fbe8c8" stroke="#c98a1b"/>
+    <text x="340" y="521" fill="#7c4a03">自建 · NetworkPolicy、egress 代理；可接 Agent Grid</text>
+    <rect x="750" y="490" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="514" fill="#14532d">现成 · 代理注入 key、webhook</text>
+    <text x="770" y="533" font-size="13" font-weight="600" fill="#b42318">但默认不限制，要自己改成 Deny</text>
+
+    <!-- 7 identity -->
+    <text x="40" y="575" font-size="15" font-weight="600" fill="#1f2a44">身份粒度</text>
+    <text x="40" y="594" font-size="13" fill="#6b7280">每台沙箱能拿什么权限</text>
+    <rect x="320" y="552" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="340" y="583" fill="#14532d">可细到每个 Pod · workload identity</text>
+    <rect x="750" y="552" width="410" height="52" rx="8" fill="#fbdcdc" stroke="#c0392b"/>
+    <text x="770" y="583" fill="#7f1d1d">缺口 · 身份挂在组上共享，数据面只有一个角色</text>
+
+    <!-- 8 reliability -->
+    <text x="40" y="637" font-size="15" font-weight="600" fill="#1f2a44">可靠性</text>
+    <text x="40" y="656" font-size="13" fill="#6b7280">可用区、SLA、区域</text>
+    <rect x="320" y="614" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="340" y="645" fill="#14532d">跟着集群走 · 可跨可用区部署节点池</text>
+    <rect x="750" y="614" width="410" height="52" rx="8" fill="#fbdcdc" stroke="#c0392b"/>
+    <text x="770" y="645" fill="#7f1d1d">缺口 · 无可用性 SLA、无可用区、单区域</text>
+
+    <!-- 9 ops -->
+    <text x="40" y="699" font-size="15" font-weight="600" fill="#1f2a44">运维</text>
+    <text x="40" y="718" font-size="13" fill="#6b7280">谁管节点和容量</text>
+    <rect x="320" y="676" width="410" height="52" rx="8" fill="#fbe8c8" stroke="#c98a1b"/>
+    <text x="340" y="707" fill="#7c4a03">自己管 · 节点池、容量按 VM 粒度规划</text>
+    <rect x="750" y="676" width="410" height="52" rx="8" fill="#d9f2e3" stroke="#2f9e63"/>
+    <text x="770" y="707" fill="#14532d">托管 · 不管节点，受默认 300 核配额限制</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="13" fill="#374151">
+    <rect x="40" y="764" width="22" height="18" rx="4" fill="#d9f2e3" stroke="#2f9e63"/><text x="70" y="778">现成</text>
+    <rect x="140" y="764" width="22" height="18" rx="4" fill="#dbe7fb" stroke="#3b6fd4"/><text x="170" y="778">预览中</text>
+    <rect x="256" y="764" width="22" height="18" rx="4" fill="#fbe8c8" stroke="#c98a1b"/><text x="286" y="778">要自建或自己运维</text>
+    <rect x="432" y="764" width="22" height="18" rx="4" fill="#fbdcdc" stroke="#c0392b"/><text x="462" y="778">目前的缺口</text>
+  </g>
+</svg>

@@ -89,7 +89,9 @@
 
 ### Notes/AI/agent/agent-sandbox
 
-- [Agent 基础设施系列 09：AKS 与 ACA 的沙箱选型](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：AKS与ACA的沙箱选型.md)
+- [Agent 基础设施系列 09：AKS Pod Sandboxing](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：AKS-Pod-Sandboxing.md)
+- [Agent 基础设施系列 10：ACA Sandboxes](Notes/AI/agent/agent-sandbox/Agent基础设施系列10：ACA-Sandboxes.md)
+- [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](Notes/AI/agent/agent-sandbox/Agent基础设施系列11：AKS与ACA的沙箱选型.md)
 
 ### Notes/AI/computer-use
 

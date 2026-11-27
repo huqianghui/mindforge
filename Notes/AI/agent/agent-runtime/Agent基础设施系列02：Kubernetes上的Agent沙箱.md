@@ -287,7 +287,8 @@ sandbox.credential_vault.create(
 ## 相关阅读
 
 - [Agent 基础设施系列 01：三层划分与自建路线](../agent-platform/Agent基础设施系列01：三层划分与自建路线.md)
-- [Agent 基础设施系列 09：AKS 与 ACA 的沙箱选型](../agent-sandbox/Agent基础设施系列09：AKS与ACA的沙箱选型.md)——AKS Pod Sandboxing 与 ACA Sandboxes 的对比和决策树
+- [Agent 基础设施系列 09：AKS Pod Sandboxing](../agent-sandbox/Agent基础设施系列09：AKS-Pod-Sandboxing.md)——按官方文档梳理 Kata 隔离边界、v1 与 v2、资源规则
+- [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](../agent-sandbox/Agent基础设施系列11：AKS与ACA的沙箱选型.md)——与 ACA Sandboxes 的对比和决策树
 - [Copilot Managed Runtime 系列 03：宿主沙箱与安全边界](../../../../Azure/Copilot-Managed-Runtime/Copilot-Managed-Runtime系列03：宿主沙箱与安全边界.md)
 
 ## 参考资料

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
+    <style>
+      .flow { stroke-dasharray: 8 6; animation: f 1.2s linear infinite; }
+      @keyframes f { to { stroke-dashoffset: -28; } }
+    </style>
+  </defs>
+  <rect width="1200" height="800" fill="#f8fafc"/>
+
+  <text x="30" y="44" font-size="22" font-weight="700" fill="#0f172a">ACA Sandboxes：一个 group，进出各一个代理</text>
+  <text x="30" y="72" font-size="14" fill="#475569">sandbox group 是管理边界也是信任边界；沙箱是独立内核的 microVM；入站和出站都在沙箱外的托管代理上管</text>
+
+  <!-- planes -->
+  <rect x="260" y="92" width="330" height="56" rx="8" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="280" y="116" font-size="15" font-weight="600" fill="#3730a3">ARM 控制面</text>
+  <text x="280" y="137" font-size="13" fill="#4338ca">组的增删改、VNet 连接</text>
+  <rect x="610" y="92" width="330" height="56" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+  <text x="630" y="116" font-size="15" font-weight="600" fill="#1e40af">数据面（SandboxGroup Data Owner）</text>
+  <text x="630" y="137" font-size="13" fill="#1d4ed8">沙箱、镜像、快照、文件、端口、出站策略</text>
+  <line x1="425" y1="148" x2="425" y2="168" stroke="#6366f1" stroke-width="2"/>
+  <line x1="775" y1="148" x2="775" y2="168" stroke="#3b82f6" stroke-width="2"/>
+
+  <!-- group -->
+  <rect x="240" y="168" width="720" height="560" rx="16" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+  <text x="330" y="198" font-size="16" font-weight="700" fill="#0f172a">sandbox group</text>
+  <text x="460" y="198" font-size="13" fill="#64748b">区域级 ARM 资源 · 一个组最多 10 万个沙箱</text>
+
+  <!-- ingress proxy -->
+  <rect x="200" y="225" width="100" height="175" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="250" y="252" font-size="15" font-weight="700" text-anchor="middle" fill="#1e40af">入站代理</text>
+  <text x="250" y="280" font-size="13" text-anchor="middle" fill="#1e3a8a">每个端口</text>
+  <text x="250" y="298" font-size="13" text-anchor="middle" fill="#1e3a8a">一个 HTTPS</text>
+  <text x="250" y="322" font-size="13" text-anchor="middle" fill="#1e3a8a">可要求</text>
+  <text x="250" y="340" font-size="13" text-anchor="middle" fill="#1e3a8a">Entra 认证</text>
+  <text x="250" y="366" font-size="13" text-anchor="middle" fill="#1e3a8a">请求可唤醒</text>
+  <text x="250" y="384" font-size="13" text-anchor="middle" fill="#1e3a8a">停止的沙箱</text>
+
+  <!-- egress proxy -->
+  <rect x="900" y="225" width="100" height="175" rx="10" fill="#f0fdfa" stroke="#0d9488" stroke-width="2"/>
+  <text x="950" y="252" font-size="15" font-weight="700" text-anchor="middle" fill="#115e59">出站代理</text>
+  <text x="950" y="280" font-size="13" text-anchor="middle" fill="#134e4a">规则按顺序</text>
+  <text x="950" y="298" font-size="13" text-anchor="middle" fill="#134e4a">首条命中</text>
+  <text x="950" y="322" font-size="13" text-anchor="middle" fill="#134e4a">注入 key</text>
+  <text x="950" y="340" font-size="13" text-anchor="middle" fill="#134e4a">webhook 决策</text>
+  <text x="950" y="366" font-size="13" font-weight="700" text-anchor="middle" fill="#dc2626">不配策略</text>
+  <text x="950" y="384" font-size="13" font-weight="700" text-anchor="middle" fill="#dc2626">= 不受限</text>
+
+  <!-- sandboxes -->
+  <g>
+    <rect x="320" y="225" width="173" height="175" rx="10" fill="#f1f5f9" stroke="#334155"/>
+    <text x="406" y="252" font-size="15" font-weight="600" text-anchor="middle" fill="#0f172a">agent 工作区</text>
+    <rect x="356" y="264" width="100" height="24" rx="12" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="406" y="281" font-size="13" text-anchor="middle" fill="#166534">Running</text>
+    <text x="406" y="318" font-size="13" text-anchor="middle" fill="#334155">microVM</text>
+    <text x="406" y="338" font-size="13" text-anchor="middle" fill="#334155">独立内核</text>
+    <text x="406" y="378" font-size="13" text-anchor="middle" fill="#64748b">档位 M · ubuntu</text>
+  </g>
+  <g>
+    <rect x="513" y="225" width="173" height="175" rx="10" fill="#f1f5f9" stroke="#334155" stroke-dasharray="5 4"/>
+    <text x="599" y="252" font-size="15" font-weight="600" text-anchor="middle" fill="#0f172a">长会话 agent</text>
+    <rect x="549" y="264" width="100" height="24" rx="12" fill="#e2e8f0" stroke="#64748b"/>
+    <text x="599" y="281" font-size="13" text-anchor="middle" fill="#334155">Stopped</text>
+    <text x="599" y="318" font-size="13" text-anchor="middle" fill="#334155">内存和磁盘</text>
+    <text x="599" y="338" font-size="13" text-anchor="middle" fill="#334155">存成快照</text>
+    <text x="599" y="378" font-size="13" text-anchor="middle" fill="#64748b">不收计算费</text>
+  </g>
+  <g>
+    <rect x="706" y="225" width="173" height="175" rx="10" fill="#f1f5f9" stroke="#334155"/>
+    <rect x="712" y="231" width="173" height="175" rx="10" fill="none" stroke="#94a3b8"/>
+    <text x="792" y="252" font-size="15" font-weight="600" text-anchor="middle" fill="#0f172a">fan-out 副本 ×N</text>
+    <rect x="742" y="264" width="100" height="24" rx="12" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="792" y="281" font-size="13" text-anchor="middle" fill="#166534">Running</text>
+    <text x="792" y="318" font-size="13" text-anchor="middle" fill="#334155">从同一个快照</text>
+    <text x="792" y="338" font-size="13" text-anchor="middle" fill="#334155">克隆出来</text>
+    <text x="792" y="378" font-size="13" text-anchor="middle" fill="#64748b">规格沿用快照</text>
+  </g>
+
+  <!-- in-group arrows -->
+  <line x1="300" y1="312" x2="318" y2="312" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="880" y1="312" x2="898" y2="312" stroke="#0d9488" stroke-width="2.5" marker-end="url(#arg)"/>
+
+  <!-- shared resources -->
+  <text x="270" y="460" font-size="15" font-weight="700" fill="#0f172a">组内共享</text>
+  <g font-size="13" text-anchor="middle">
+    <rect x="270" y="476" width="124" height="104" rx="10" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="332" y="502" font-size="15" font-weight="600" fill="#713f12">镜像</text>
+    <text x="332" y="526" fill="#854d0e">公共 / 自定义</text>
+    <text x="332" y="546" fill="#854d0e">/ 提交</text>
+    <text x="332" y="568" fill="#a16207">定文件系统</text>
+
+    <rect x="406" y="476" width="124" height="104" rx="10" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="468" y="502" font-size="15" font-weight="600" fill="#713f12">快照</text>
+    <text x="468" y="526" fill="#854d0e">内存 + 磁盘</text>
+    <text x="468" y="546" fill="#854d0e">挂起或克隆</text>
+    <text x="468" y="568" fill="#a16207">定运行时状态</text>
+
+    <rect x="542" y="476" width="124" height="104" rx="10" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="604" y="502" font-size="15" font-weight="600" fill="#713f12">卷</text>
+    <text x="604" y="526" fill="#854d0e">Blob 可多挂</text>
+    <text x="604" y="546" fill="#854d0e">Data Disk 单挂</text>
+    <text x="604" y="568" fill="#a16207">持久数据</text>
+
+    <rect x="678" y="476" width="124" height="104" rx="10" fill="#f0fdfa" stroke="#0d9488"/>
+    <text x="740" y="502" font-size="15" font-weight="600" fill="#115e59">Secrets</text>
+    <text x="740" y="526" fill="#134e4a">不进沙箱</text>
+    <text x="740" y="546" fill="#134e4a">由出站代理</text>
+    <text x="740" y="568" fill="#134e4a">注入请求头</text>
+
+    <rect x="814" y="476" width="124" height="104" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    <text x="876" y="502" font-size="15" font-weight="600" fill="#991b1b">托管身份</text>
+    <text x="876" y="526" fill="#b91c1c">挂在组上</text>
+    <text x="876" y="546" fill="#b91c1c">每台沙箱</text>
+    <text x="876" y="568" fill="#b91c1c">都能换 token</text>
+  </g>
+
+  <!-- secrets -> egress proxy -->
+  <path d="M 740 476 L 740 428 L 965 428 L 965 402" fill="none" stroke="#0d9488" stroke-width="2" class="flow" marker-end="url(#arg)"/>
+  <!-- identity -> sandboxes -->
+  <path d="M 876 476 L 876 450 L 406 450 L 406 402" fill="none" stroke="#dc2626" stroke-width="2" class="flow" marker-end="url(#arr)"/>
+  <line x1="599" y1="450" x2="599" y2="402" stroke="#dc2626" stroke-width="2" class="flow" marker-end="url(#arr)"/>
+  <line x1="792" y1="450" x2="792" y2="402" stroke="#dc2626" stroke-width="2" class="flow" marker-end="url(#arr)"/>
+
+  <!-- warning bar -->
+  <rect x="270" y="604" width="668" height="100" rx="10" fill="#fff1f2" stroke="#fda4af"/>
+  <text x="290" y="634" font-size="15" font-weight="700" fill="#9f1239">⚠ 组就是信任边界</text>
+  <text x="290" y="660" font-size="13" fill="#881337">沙箱里跑的是不可信代码，组的托管身份有什么权限，注入的代码就能拿到什么权限</text>
+  <text x="290" y="684" font-size="13" fill="#881337">数据面只有 Data Owner 一个角色 → 按信任等级拆组，身份只授最小权限</text>
+
+  <!-- left sources -->
+  <rect x="20" y="236" width="150" height="62" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="95" y="262" font-size="14" font-weight="600" text-anchor="middle" fill="#0f172a">公网客户端</text>
+  <text x="95" y="284" font-size="13" text-anchor="middle" fill="#64748b">预览、API 调用</text>
+  <rect x="20" y="320" width="150" height="62" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="95" y="346" font-size="14" font-weight="600" text-anchor="middle" fill="#0f172a">你的 VNet</text>
+  <text x="95" y="368" font-size="13" text-anchor="middle" fill="#64748b">经 private endpoint</text>
+  <line x1="170" y1="267" x2="198" y2="290" stroke="#2563eb" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="170" y1="351" x2="198" y2="335" stroke="#2563eb" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- right destinations -->
+  <rect x="1030" y="236" width="150" height="62" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="1105" y="262" font-size="14" font-weight="600" text-anchor="middle" fill="#0f172a">模型 API</text>
+  <text x="1105" y="284" font-size="13" text-anchor="middle" fill="#64748b">GitHub 等公网服务</text>
+  <rect x="1030" y="320" width="150" height="62" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="1105" y="346" font-size="14" font-weight="600" text-anchor="middle" fill="#0f172a">VNet 私有资源</text>
+  <text x="1105" y="368" font-size="13" text-anchor="middle" fill="#64748b">经委派子网</text>
+  <line x1="1000" y1="290" x2="1028" y2="267" stroke="#0d9488" stroke-width="2" marker-end="url(#arg)"/>
+  <line x1="1000" y1="335" x2="1028" y2="351" stroke="#0d9488" stroke-width="2" marker-end="url(#arg)"/>
+
+  <!-- footer -->
+  <text x="30" y="768" font-size="13" fill="#475569">可靠性边界：组是区域级的，不支持可用区、没有可用性 SLA，跨区域要每个区域各建一个组；快照不能跨区域迁移</text>
+</svg>
