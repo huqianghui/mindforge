@@ -87,6 +87,10 @@
 
 - [Agent 基础设施系列 08：Agent Grid 的网络层管控](Notes/AI/agent/agent-grid%28network-security%29/Agent基础设施系列08：Agent-Grid的网络层管控.md)
 
+### Notes/AI/agent/agent-sandbox
+
+- [Agent 基础设施系列 09：Azure 上的沙箱隔离](Notes/AI/agent/agent-sandbox/Agent基础设施系列09：Azure上的沙箱隔离.md)
+
 ### Notes/AI/computer-use
 
 - [Computer Use 与 Browser Use 系列一：概念与产品形态](Notes/AI/computer-use/Computer-Use与Browser-Use系列一：概念与产品形态.md)
