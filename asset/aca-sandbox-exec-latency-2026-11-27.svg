@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" width="1000" height="440" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+<rect width="1000" height="440" fill="#fcfcfb"/>
+<text x="40" y="44" font-size="20" font-weight="700" fill="#0b0b0b">一次 aca sandbox exec 要多久</text>
+<text x="40" y="70" font-size="14" fill="#52514e">本机在亚洲，命令只是 echo hi；每个区域连测 5 次。时间几乎全花在网络往返上，和沙箱本身无关</text>
+<line x1="240" y1="105" x2="240" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="240" y="352" font-size="13" text-anchor="middle" fill="#52514e">0 秒</text>
+<line x1="380.0" y1="105" x2="380.0" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="380.0" y="352" font-size="13" text-anchor="middle" fill="#52514e">0.5 秒</text>
+<line x1="520" y1="105" x2="520" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="520" y="352" font-size="13" text-anchor="middle" fill="#52514e">1 秒</text>
+<line x1="660.0" y1="105" x2="660.0" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="660.0" y="352" font-size="13" text-anchor="middle" fill="#52514e">1.5 秒</text>
+<line x1="800" y1="105" x2="800" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="800" y="352" font-size="13" text-anchor="middle" fill="#52514e">2 秒</text>
+<line x1="940.0" y1="105" x2="940.0" y2="330" stroke="#e7e6e2" stroke-width="1"/>
+<text x="940.0" y="352" font-size="13" text-anchor="middle" fill="#52514e">2.5 秒</text>
+<text x="40" y="170" font-size="15" font-weight="600" fill="#0b0b0b">centralus（美国中部）</text>
+<line x1="240" y1="165" x2="940.0" y2="165" stroke="#d6d5d0" stroke-width="1"/>
+<circle cx="844.8" cy="165" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="858.8" cy="165" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="797.2" cy="165" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="816.8" cy="165" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="898.0" cy="165" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<line x1="844.8" y1="147" x2="844.8" y2="183" stroke="#0b0b0b" stroke-width="2"/>
+<text x="844.8" y="139" font-size="13" text-anchor="middle" fill="#0b0b0b">中位 2.16 秒</text>
+<path d="M 399.9 157 L 407.9 165 L 399.9 173 L 391.9 165 Z" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/>
+<text x="399.9" y="197" font-size="13" text-anchor="middle" fill="#52514e">新建一次 TLS 连接 0.57 秒</text>
+<text x="40" y="280" font-size="15" font-weight="600" fill="#0b0b0b">eastasia（东亚）</text>
+<line x1="240" y1="275" x2="940.0" y2="275" stroke="#d6d5d0" stroke-width="1"/>
+<circle cx="592.8" cy="275" r="6" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="606.8" cy="275" r="6" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="612.4" cy="275" r="6" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="556.4" cy="275" r="6" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="562.0" cy="275" r="6" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<line x1="592.8" y1="257" x2="592.8" y2="293" stroke="#0b0b0b" stroke-width="2"/>
+<text x="592.8" y="249" font-size="13" text-anchor="middle" fill="#0b0b0b">中位 1.26 秒</text>
+<path d="M 319.2 267 L 327.2 275 L 319.2 283 L 311.2 275 Z" fill="#fcfcfb" stroke="#eb6834" stroke-width="2"/>
+<text x="319.2" y="307" font-size="13" text-anchor="middle" fill="#52514e">新建一次 TLS 连接 0.28 秒</text>
+<g font-size="13" fill="#52514e"><circle cx="46" cy="392" r="6" fill="#52514e"/><text x="60" y="397">一次 exec 往返（实测）</text>
+<path d="M 236 384 L 244 392 L 236 400 L 228 392 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="2"/><text x="252" y="397">到数据面新建一次 TLS 连接（curl 实测，3 次平均）</text></g>
+<text x="40" y="425" font-size="13" fill="#52514e">一次 exec ≈ 本地取 token 约 0.5 秒 + GET 沙箱信息 + POST 执行命令，两次请求各要建一次连接；选近的区域能省掉将近一半</text>
+</svg>
