@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 900" width="1300" height="900" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <rect width="1300" height="900" fill="#fbfaf7"/>
+  <text x="40" y="48" font-size="22" font-weight="700" fill="#1c1917">coding agent 身边的四种"沙箱"</text>
+  <text x="40" y="76" font-size="14" fill="#57534e">名字都叫沙箱，墙的位置、厚度和归属完全不同；接上一种并不会替代另一种</text>
+
+  <!-- axis -->
+  <line x1="40" y1="112" x2="1260" y2="112" stroke="#a8a29e" stroke-width="1.5"/>
+  <polygon points="1260,107 1272,112 1260,117" fill="#a8a29e"/>
+  <text x="40" y="102" font-size="13" fill="#78716c">离 agent 所在的机器越来越远，墙越来越厚</text>
+
+  <g font-size="13">
+    <!-- card 1 -->
+    <rect x="40" y="130" width="290" height="500" rx="14" fill="#ffffff" stroke="#d6d3d1"/>
+    <rect x="40" y="130" width="290" height="10" rx="5" fill="#f59e0b"/>
+    <text x="60" y="170" font-size="17" font-weight="700" fill="#1c1917">① harness 的终端沙箱</text>
+    <text x="60" y="194" fill="#78716c">策略级，不是虚拟机</text>
+    <text x="60" y="230" font-weight="700" fill="#292524">在哪跑</text>
+    <text x="60" y="250" fill="#44403c">agent 所在的那台机器上</text>
+    <text x="60" y="284" font-weight="700" fill="#292524">墙是什么</text>
+    <text x="60" y="304" fill="#44403c">操作系统机制限制命令的文件、</text>
+    <text x="60" y="322" fill="#44403c">网络访问；macOS 用系统自带机制，</text>
+    <text x="60" y="340" fill="#44403c">Linux 用 bubblewrap + slirp4netns</text>
+    <text x="60" y="374" font-weight="700" fill="#292524">谁掌控</text>
+    <text x="60" y="394" fill="#44403c">你，按会话开关、按路径放行</text>
+    <text x="60" y="428" font-weight="700" fill="#292524">防什么</text>
+    <text x="60" y="448" fill="#44403c">agent 的命令乱碰本机文件、</text>
+    <text x="60" y="466" fill="#44403c">乱连网络；仍以你的账号运行</text>
+    <text x="60" y="500" font-weight="700" fill="#292524">例子</text>
+    <text x="60" y="520" fill="#44403c">VS Code Sandboxing for terminal</text>
+    <text x="60" y="538" fill="#44403c">Claude Code、Codex 的沙箱模式</text>
+    <rect x="56" y="560" width="258" height="54" rx="8" fill="#fef3c7"/>
+    <text x="70" y="582" fill="#92400e">默认只限文件，</text>
+    <text x="70" y="600" fill="#92400e">出站网络要另外配</text>
+
+    <!-- card 2 -->
+    <rect x="350" y="130" width="290" height="500" rx="14" fill="#ffffff" stroke="#d6d3d1"/>
+    <rect x="350" y="130" width="290" height="10" rx="5" fill="#a855f7"/>
+    <text x="370" y="170" font-size="17" font-weight="700" fill="#1c1917">② 桌面应用内置的 VM</text>
+    <text x="370" y="194" fill="#78716c">应用自带，本机上的虚拟机</text>
+    <text x="370" y="230" font-weight="700" fill="#292524">在哪跑</text>
+    <text x="370" y="250" fill="#44403c">你的电脑上，由应用拉起</text>
+    <text x="370" y="284" font-weight="700" fill="#292524">墙是什么</text>
+    <text x="370" y="304" fill="#44403c">一台本地 Linux VM，</text>
+    <text x="370" y="322" fill="#44403c">镜像十几个 GB，随应用下载</text>
+    <text x="370" y="374" font-weight="700" fill="#292524">谁掌控</text>
+    <text x="370" y="394" fill="#44403c">应用厂商；一般没法改指向</text>
+    <text x="370" y="412" fill="#44403c">别的执行环境</text>
+    <text x="370" y="446" font-weight="700" fill="#292524">防什么</text>
+    <text x="370" y="466" fill="#44403c">应用的本地 agent 模式跑的代码</text>
+    <text x="370" y="484" fill="#44403c">碰不到宿主系统</text>
+    <text x="370" y="518" font-weight="700" fill="#292524">例子</text>
+    <text x="370" y="538" fill="#44403c">Claude 桌面版的本地 VM</text>
+    <rect x="366" y="560" width="258" height="54" rx="8" fill="#f3e8ff"/>
+    <text x="380" y="582" fill="#6b21a8">删了会重新下载；接上云沙箱</text>
+    <text x="380" y="600" fill="#6b21a8">也不会让它改用云沙箱</text>
+
+    <!-- card 3 -->
+    <rect x="660" y="130" width="290" height="500" rx="14" fill="#ffffff" stroke="#d6d3d1"/>
+    <rect x="660" y="130" width="290" height="10" rx="5" fill="#3b82f6"/>
+    <text x="680" y="170" font-size="17" font-weight="700" fill="#1c1917">③ 厂商托管的云端沙箱</text>
+    <text x="680" y="194" fill="#78716c">选 "Cloud" 时用到的那种</text>
+    <text x="680" y="230" font-weight="700" fill="#292524">在哪跑</text>
+    <text x="680" y="250" fill="#44403c">厂商的云上，按会话分配</text>
+    <text x="680" y="284" font-weight="700" fill="#292524">墙是什么</text>
+    <text x="680" y="304" fill="#44403c">厂商管理的隔离环境，</text>
+    <text x="680" y="322" fill="#44403c">拉取 GitHub 仓库后工作</text>
+    <text x="680" y="374" font-weight="700" fill="#292524">谁掌控</text>
+    <text x="680" y="394" fill="#44403c">厂商；网络、身份、生命周期</text>
+    <text x="680" y="412" fill="#44403c">都不归你配</text>
+    <text x="680" y="446" font-weight="700" fill="#292524">防什么</text>
+    <text x="680" y="466" fill="#44403c">工作完全不落在你的机器上，</text>
+    <text x="680" y="484" fill="#44403c">机器关了也继续跑</text>
+    <text x="680" y="518" font-weight="700" fill="#292524">例子</text>
+    <text x="680" y="538" fill="#44403c">VS Code 的 Cloud 会话、</text>
+    <text x="680" y="556" fill="#44403c">GitHub Copilot.app 的 Cloud</text>
+    <rect x="676" y="570" width="258" height="44" rx="8" fill="#dbeafe"/>
+    <text x="690" y="597" fill="#1e40af">本地沙箱设置管不到它</text>
+
+    <!-- card 4 -->
+    <rect x="970" y="130" width="290" height="500" rx="14" fill="#ffffff" stroke="#10b981" stroke-width="2"/>
+    <rect x="970" y="130" width="290" height="10" rx="5" fill="#10b981"/>
+    <text x="990" y="170" font-size="17" font-weight="700" fill="#1c1917">④ 自己掌控的云上沙箱</text>
+    <text x="990" y="194" fill="#78716c">microVM 或 Kata VM</text>
+    <text x="990" y="230" font-weight="700" fill="#292524">在哪跑</text>
+    <text x="990" y="250" fill="#44403c">你自己订阅里的云资源</text>
+    <text x="990" y="284" font-weight="700" fill="#292524">墙是什么</text>
+    <text x="990" y="304" fill="#44403c">每个沙箱一台独立内核的 VM，</text>
+    <text x="990" y="322" fill="#44403c">加沙箱外的出站代理或网络策略</text>
+    <text x="990" y="374" font-weight="700" fill="#292524">谁掌控</text>
+    <text x="990" y="394" fill="#44403c">你：镜像、规格、出站、</text>
+    <text x="990" y="412" fill="#44403c">身份、凭据、生命周期</text>
+    <text x="990" y="446" font-weight="700" fill="#292524">防什么</text>
+    <text x="990" y="466" fill="#44403c">不可信代码逃出 VM；</text>
+    <text x="990" y="484" fill="#44403c">agent 连不该连的地方</text>
+    <text x="990" y="518" font-weight="700" fill="#292524">例子</text>
+    <text x="990" y="538" fill="#44403c">ACA Sandboxes（系列 10~14）</text>
+    <text x="990" y="556" fill="#44403c">AKS Pod Sandboxing（系列 09）</text>
+    <rect x="986" y="570" width="258" height="44" rx="8" fill="#d1fae5"/>
+    <text x="1000" y="597" fill="#065f46">agent 可以整个装进去跑</text>
+  </g>
+
+  <!-- nesting -->
+  <text x="40" y="676" font-size="17" font-weight="700" fill="#1c1917">叠在一起时会怎样</text>
+  <g font-size="14">
+    <rect x="40" y="692" width="600" height="88" rx="10" fill="#ffffff" stroke="#d6d3d1"/>
+    <text x="60" y="720" font-weight="700" fill="#292524">agent 在本机跑（不管连不连云沙箱）</text>
+    <text x="60" y="744" fill="#44403c">① 要开着：被送去云沙箱的只是部分命令，</text>
+    <text x="60" y="766" fill="#44403c">agent 在本机的其余动作仍要靠它和权限设置来管</text>
+    <rect x="660" y="692" width="600" height="88" rx="10" fill="#fff1f2" stroke="#fda4af"/>
+    <text x="680" y="720" font-weight="700" fill="#9f1239">agent 整个跑在 ④ 里（如 Agents window 连 ACA 沙箱）</text>
+    <text x="680" y="744" fill="#881337">再开 ① 是沙箱套沙箱：实测缺 /dev/net/tun 直接起不来；</text>
+    <text x="680" y="766" fill="#881337">关掉 ①，由 VM 边界和出站策略来管</text>
+    <rect x="40" y="796" width="1220" height="68" rx="10" fill="#ffffff" stroke="#d6d3d1"/>
+    <text x="60" y="824" font-weight="700" fill="#292524">②③④ 彼此不替代</text>
+    <text x="60" y="848" fill="#44403c">接上自己的云沙箱，不会让桌面应用改用它，也不会改变厂商云会话的配置；每一种都要在它自己的入口单独配置和核实</text>
+  </g>
+</svg>
