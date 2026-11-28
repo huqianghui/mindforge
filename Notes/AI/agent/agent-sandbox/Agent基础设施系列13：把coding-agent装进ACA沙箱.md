@@ -198,10 +198,12 @@ esac
 
 所以，**skill 是说明书，MCP 才是协议**。要让多个 harness 统一走 ACA，比较可行的是 MCP，或者每家都装同一份 skill。
 
-**接上 ACA 以后，本地的沙箱镜像能不能删？** 不能，两者管的不是同一件事。比如 Claude 桌面版会在本机起一台 Linux VM，体积十几个 GB，它的本地 agent 模式就在这台 VM 里跑代码，是 app 内置的执行环境。我没找到能把它改指向 ACA 的设置；删掉它，app 会重新下载，里面的会话数据也可能丢失。Claude Code、Codex 在本机用的是操作系统层面的沙箱策略，管的是"agent 在本机执行命令时能碰到什么"。ACA 是 agent 可以选择去用的一台远程机器，**接上它并不会让这些本地沙箱失效，也不能替代它们**。
+**接上 ACA 以后，本地的沙箱镜像能不能删？** 不能，两者管的不是同一件事。比如 Claude 桌面版会在本机起一台 Linux VM，体积十几个 GB，它的本地 agent 模式就在这台 VM 里跑代码，是 app 内置的执行环境。我没找到能把它改指向 ACA 的设置；删掉它，app 会重新下载，里面的会话数据也可能丢失。Claude Code、Codex 在本机用的是操作系统层面的沙箱策略，管的是"agent 在本机执行命令时能碰到什么"。ACA 是 agent 可以选择去用的一台远程机器，**接上它并不会让这些本地沙箱失效，也不能替代它们**。几种沙箱的区别和叠加规则，单独整理在了[系列 15](Agent基础设施系列15：几种沙箱的区分.md)；用 VS Code 的 Agents window 交互式地驱动沙箱里的 agent，见[系列 14](Agent基础设施系列14：把ACA沙箱接进VS-Code-Agents-window.md)。
 
 ## 相关阅读
 
+- [Agent 基础设施系列 14：把 ACA 沙箱接进 VS Code Agents window](Agent基础设施系列14：把ACA沙箱接进VS-Code-Agents-window.md)——用 Agents window 当遥控器
+- [Agent 基础设施系列 15：几种沙箱的区分](Agent基础设施系列15：几种沙箱的区分.md)——终端沙箱、桌面 VM、厂商云沙箱与自己的云沙箱
 - [Agent 基础设施系列 12：本地 coding agent 调用 ACA 沙箱](Agent基础设施系列12：本地coding-agent调用ACA沙箱.md)——三个本地 agent 的实测与踩坑
 - [Agent 基础设施系列 10：ACA Sandboxes](Agent基础设施系列10：ACA-Sandboxes.md)——sandbox group、出站代理与凭据注入
 - [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](Agent基础设施系列11：AKS与ACA的沙箱选型.md)——Kata 与 microVM、决策树

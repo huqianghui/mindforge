@@ -94,6 +94,8 @@
 - [Agent 基础设施系列 11：AKS 与 ACA 的沙箱选型](Notes/AI/agent/agent-sandbox/Agent基础设施系列11：AKS与ACA的沙箱选型.md)
 - [Agent 基础设施系列 12：本地 coding agent 调用 ACA 沙箱](Notes/AI/agent/agent-sandbox/Agent基础设施系列12：本地coding-agent调用ACA沙箱.md)
 - [Agent 基础设施系列 13：把 coding agent 装进 ACA 沙箱](Notes/AI/agent/agent-sandbox/Agent基础设施系列13：把coding-agent装进ACA沙箱.md)
+- [Agent 基础设施系列 14：把 ACA 沙箱接进 VS Code Agents window](Notes/AI/agent/agent-sandbox/Agent基础设施系列14：把ACA沙箱接进VS-Code-Agents-window.md)
+- [Agent 基础设施系列 15：几种沙箱的区分](Notes/AI/agent/agent-sandbox/Agent基础设施系列15：几种沙箱的区分.md)
 
 ### Notes/AI/computer-use
 
