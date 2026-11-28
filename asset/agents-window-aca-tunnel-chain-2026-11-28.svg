@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 860" width="1300" height="860" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#1d3a5f" stroke-width="0.6"/></pattern>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7dd3fc"/></marker>
+    <marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fcd34d"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+    <style>.flow{stroke-dasharray:9 6;animation:f 1.4s linear infinite}@keyframes f{to{stroke-dashoffset:-30}}</style>
+  </defs>
+  <rect width="1300" height="860" fill="#0b2140"/>
+  <rect width="1300" height="860" fill="url(#grid)"/>
+  <text x="36" y="46" font-size="22" font-weight="700" fill="#e0f2fe">VS Code Agents window 经 Dev Tunnel 把 agent 跑在 ACA 沙箱里</text>
+  <text x="36" y="74" font-size="14" fill="#93c5fd">两端都是主动向外连中继，沙箱不开任何入站端口；agent 循环、命令执行、会话状态都在沙箱里，本机只是客户端</text>
+
+  <!-- client -->
+  <rect x="36" y="110" width="300" height="300" rx="12" fill="#0f2d52" stroke="#7dd3fc" stroke-width="2"/>
+  <text x="56" y="140" font-size="17" font-weight="700" fill="#e0f2fe">你的 Mac（客户端）</text>
+  <rect x="56" y="156" width="260" height="120" rx="8" fill="#123a66" stroke="#38bdf8"/>
+  <text x="72" y="182" font-size="15" font-weight="600" fill="#f0f9ff">VS Code · Agents window</text>
+  <text x="72" y="206" font-size="13" fill="#bae6fd">Environment 选择器里选中沙箱</text>
+  <text x="72" y="228" font-size="13" fill="#bae6fd">对话、审批、看改动、开终端</text>
+  <text x="72" y="250" font-size="13" fill="#bae6fd">断开不影响沙箱里的会话</text>
+  <rect x="56" y="290" width="260" height="100" rx="8" fill="#123a66" stroke="#64748b" stroke-dasharray="5 4"/>
+  <text x="72" y="316" font-size="15" font-weight="600" fill="#e2e8f0">aca CLI（另一套身份）</text>
+  <text x="72" y="340" font-size="13" fill="#cbd5e1">Entra 账号 + Data Owner 角色</text>
+  <text x="72" y="362" font-size="13" fill="#cbd5e1">只用来建沙箱、传文件、启动隧道</text>
+
+  <!-- relay -->
+  <rect x="470" y="150" width="300" height="150" rx="12" fill="#0f2d52" stroke="#fcd34d" stroke-width="2"/>
+  <text x="490" y="180" font-size="17" font-weight="700" fill="#fef3c7">Dev Tunnels 中继</text>
+  <text x="490" y="208" font-size="13" fill="#fde68a">按 GitHub 账号授权：只有隧道所有者能连</text>
+  <text x="490" y="230" font-size="13" fill="#fde68a">按区域选中继（这次落在日本东部）</text>
+  <text x="490" y="252" font-size="13" fill="#fde68a">断线后自动重连，会话不丢</text>
+  <text x="490" y="282" font-size="13" fill="#fde68a">隧道名：aca-sandbox-lab</text>
+
+  <!-- ACA data plane -->
+  <rect x="470" y="340" width="300" height="70" rx="12" fill="#0f2d52" stroke="#64748b" stroke-dasharray="5 4"/>
+  <text x="490" y="368" font-size="15" font-weight="600" fill="#e2e8f0">ACA 数据面</text>
+  <text x="490" y="392" font-size="13" fill="#cbd5e1">create · fs write · exec · lifecycle</text>
+
+  <!-- sandbox -->
+  <rect x="900" y="110" width="364" height="560" rx="14" fill="#0f2d52" stroke="#34d399" stroke-width="2.5"/>
+  <text x="920" y="140" font-size="17" font-weight="700" fill="#d1fae5">ACA 沙箱（microVM · azure-dev 镜像）</text>
+  <text x="920" y="162" font-size="13" fill="#a7f3d0">hostname adc-sandbox · 自动挂起已关</text>
+  <g font-size="13">
+    <rect x="920" y="178" width="324" height="58" rx="8" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="936" y="202" font-size="14" font-weight="600" fill="#ecfeff">code tunnel</text>
+    <text x="936" y="223" fill="#a5f3fc">常驻进程，主动连中继，注册隧道</text>
+    <rect x="920" y="246" width="324" height="58" rx="8" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="936" y="270" font-size="14" font-weight="600" fill="#ecfeff">VS Code Server</text>
+    <text x="936" y="291" fill="#a5f3fc">首次连接时由客户端自动装进来</text>
+    <rect x="920" y="314" width="324" height="58" rx="8" fill="#065f46" stroke="#34d399" stroke-width="2"/>
+    <text x="936" y="338" font-size="14" font-weight="600" fill="#ecfdf5">code agent host</text>
+    <text x="936" y="359" fill="#bbf7d0">托管 agent 会话，不依附编辑器窗口</text>
+    <rect x="920" y="382" width="324" height="58" rx="8" fill="#065f46" stroke="#34d399" stroke-width="2"/>
+    <text x="936" y="406" font-size="14" font-weight="600" fill="#ecfdf5">copilot-runtime --headless</text>
+    <text x="936" y="427" fill="#bbf7d0">Copilot 的 agent 循环本体，命令在这里执行</text>
+    <rect x="920" y="450" width="158" height="74" rx="8" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="934" y="474" font-size="14" font-weight="600" fill="#ecfeff">会话状态</text>
+    <text x="934" y="495" fill="#a5f3fc">~/.copilot/</text>
+    <text x="934" y="513" fill="#a5f3fc">session-state</text>
+    <rect x="1086" y="450" width="158" height="74" rx="8" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="1100" y="474" font-size="14" font-weight="600" fill="#ecfeff">项目目录</text>
+    <text x="1100" y="495" fill="#a5f3fc">/workspaces/</text>
+    <text x="1100" y="513" fill="#a5f3fc">demo-stats</text>
+    <rect x="920" y="534" width="324" height="58" rx="8" fill="#422006" stroke="#f59e0b" stroke-width="2"/>
+    <text x="936" y="558" font-size="14" font-weight="600" fill="#fef3c7">沙箱磁盘上存着隧道登录 token</text>
+    <text x="936" y="579" fill="#fde68a">~/.vscode-cli 下；agent 进程环境里没有 token</text>
+    <rect x="920" y="602" width="324" height="52" rx="8" fill="#3b0d0d" stroke="#f87171"/>
+    <text x="936" y="624" font-size="14" font-weight="600" fill="#fee2e2">Sandboxing for terminal 要关掉</text>
+    <text x="936" y="644" fill="#fecaca">缺 /dev/net/tun，套娃沙箱起不来</text>
+  </g>
+
+  <!-- copilot api -->
+  <rect x="900" y="700" width="364" height="64" rx="12" fill="#0f2d52" stroke="#94a3b8"/>
+  <text x="920" y="728" font-size="15" font-weight="600" fill="#e2e8f0">GitHub / Copilot 服务</text>
+  <text x="920" y="750" font-size="13" fill="#cbd5e1">沙箱里的 agent 出站访问这些服务</text>
+
+  <!-- arrows -->
+  <line x1="336" y1="216" x2="466" y2="216" stroke="#7dd3fc" stroke-width="2.5" class="flow" marker-end="url(#a)"/>
+  <text x="344" y="206" font-size="13" fill="#7dd3fc">② 出站 wss</text>
+  <line x1="896" y1="207" x2="774" y2="207" stroke="#fcd34d" stroke-width="2.5" class="flow" marker-end="url(#ay)"/>
+  <text x="790" y="196" font-size="13" fill="#fcd34d">① 出站 wss</text>
+  <line x1="336" y1="340" x2="466" y2="370" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <line x1="770" y1="375" x2="896" y2="375" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ag)"/>
+  <line x1="1082" y1="670" x2="1082" y2="698" stroke="#94a3b8" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- steps -->
+  <g font-size="14" fill="#e0f2fe">
+    <text x="36" y="460" font-size="16" font-weight="700" fill="#e0f2fe">一次连接的顺序</text>
+    <text x="36" y="490">① 沙箱里 code tunnel 用 GitHub 设备码登录，向中继注册隧道</text>
+    <text x="36" y="516">② Agents window 选 Dev Tunnels，按同一个 GitHub 账号列出隧道并连接</text>
+    <text x="36" y="542">③ 客户端把 VS Code Server 装进沙箱，起 agent host 和 copilot-runtime</text>
+    <text x="36" y="568">④ 选沙箱上的项目目录、信任它、关掉终端沙箱，发任务</text>
+    <text x="36" y="594">⑤ agent 循环在沙箱里跑：读改文件、执行命令、调模型</text>
+    <text x="36" y="620">⑥ 关掉客户端，会话仍留在沙箱里；下次直接从下拉框选中接回</text>
+  </g>
+  <rect x="36" y="652" width="820" height="112" rx="10" fill="#0f2d52" stroke="#64748b" stroke-dasharray="5 4"/>
+  <text x="56" y="680" font-size="15" font-weight="700" fill="#e2e8f0">另一条路：GitHub Environments（预览）</text>
+  <text x="56" y="706" font-size="13" fill="#cbd5e1">沙箱里 code agent host --github-environment 可以注册成功（日志显示 ready），</text>
+  <text x="56" y="728" font-size="13" fill="#cbd5e1">但这次 VS Code 和 GitHub Copilot.app 都发现不了它；账号、组织策略、CLI 版本已排除。</text>
+  <text x="56" y="750" font-size="13" fill="#cbd5e1">目前能用的是 Dev Tunnels 这条。</text>
+
+  <g font-size="13" fill="#cbd5e1">
+    <line x1="36" y1="806" x2="76" y2="806" stroke="#7dd3fc" stroke-width="2.5" stroke-dasharray="9 6"/><text x="84" y="811">GitHub 身份的连接</text>
+    <line x1="230" y1="806" x2="270" y2="806" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4"/><text x="278" y="811">Azure 身份的管理操作</text>
+    <rect x="450" y="797" width="18" height="16" rx="3" fill="#065f46" stroke="#34d399"/><text x="476" y="811">agent 实际运行的位置</text>
+    <rect x="650" y="797" width="18" height="16" rx="3" fill="#422006" stroke="#f59e0b"/><text x="676" y="811">和系列 13 不同：沙箱里有登录 token</text>
+  </g>
+</svg>
